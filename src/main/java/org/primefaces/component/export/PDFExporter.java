@@ -27,7 +27,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 
 import com.lowagie.text.Document;
@@ -41,10 +40,10 @@ import com.lowagie.text.pdf.PdfWriter;
 
 public class PDFExporter extends Exporter {
 
-	@Override
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
+	public void export(FacesContext facesContext, UIData table, String filename, int[] excludeColumns, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
 		try {
 	        Document document = new Document(PageSize.A4.rotate());
+	        document.setPageSize(PageSize.A4);
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        PdfWriter.getInstance(document, baos);
 	        document.open();
@@ -53,7 +52,7 @@ public class PDFExporter extends Exporter {
 	    		preProcessor.invoke(facesContext.getELContext(), new Object[]{document});
 	    	}
 	        
-			PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType);
+			PdfPTable pdfTable = exportPDFTable(table, excludeColumns);
 	    	document.add(pdfTable);
 	    	
 	    	if(postProcessor != null) {
@@ -69,18 +68,17 @@ public class PDFExporter extends Exporter {
 		}
 	}
 	
-	private PdfPTable exportPDFTable(UIData table, boolean pageOnly, int[] excludeColumns, String encoding) {
+	private PdfPTable exportPDFTable(UIData table, int[] excludeColumns) {
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
+    	int tableSize = table.getRowCount();
     	PdfPTable pdfTable = new PdfPTable(numberOfColumns);
-    	Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
-    	Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
-    	
-    	int first = pageOnly ? table.getFirst() : 0;
-    	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
+    	Font font = FontFactory.getFont(FontFactory.TIMES, "UTF-8");
+    	Font headerFont = FontFactory.getFont(FontFactory.TIMES, "UTF-8", Font.DEFAULTSIZE, Font.BOLD);
     	
     	addColumnHeaders(pdfTable, columns, headerFont);
-    	for(int i = first; i < size; i++) {
+    	
+    	for (int i = 0; i < tableSize; i++) {
     		table.setRowIndex(i);
 			for (int j = 0; j < numberOfColumns; j++) {
 				UIColumn column = columns.get(j);

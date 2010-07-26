@@ -173,15 +173,6 @@
 	</description>
 </attribute>
 <attribute>
-	<name>onselect</name>
-	<required></required>
-	<type>java.lang.String</type>
-	<ignoreInComponent>true</ignoreInComponent>
-	<description>
-		Html onselect attribute of the input text
-	</description>
-</attribute>
-<attribute>
 	<name>readonly</name>
 	<required></required>
 	<type>boolean</type>

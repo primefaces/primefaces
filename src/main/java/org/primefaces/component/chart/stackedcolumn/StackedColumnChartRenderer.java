@@ -35,7 +35,7 @@ import org.primefaces.resource.ResourceUtils;
 public class StackedColumnChartRenderer extends BaseChartRenderer implements PartialRenderer {
 
 	@Override
-	protected void encodeScript(FacesContext facesContext, UIChart chart) throws IOException{
+	protected void encodeChartScript(FacesContext facesContext, UIChart chart) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = chart.getClientId(facesContext);
 		String xfieldName = getFieldName(chart.getValueExpression("xfield"));
@@ -44,17 +44,16 @@ public class StackedColumnChartRenderer extends BaseChartRenderer implements Par
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
+		writer.write("PrimeFaces.onContentReady(\"" + clientId + "\", function() {\n");
 		
-		if(!chart.isLive()) {
+		if(!chart.isLive())
 			encodeLocalData(facesContext, chart, xfieldName, series);
-		}
 		
 		encodeDataSource(facesContext, chart, xfieldName, series);
 		encodeSeriesDef(facesContext, chart, series);
 		encodeChartWidget(facesContext, chart, clientId, xfieldName);
-		
-		writer.write("});");
+			
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}
@@ -150,10 +149,6 @@ public class StackedColumnChartRenderer extends BaseChartRenderer implements Par
 		
 		if(stackedColumnChart.getStyle() != null) {
 			writer.write(",style:" + stackedColumnChart.getStyle() + "");
-		}
-		
-		if(chart.getDataTipFunction() != null) {
-			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
 		}
 		
 		writer.write("});\n");

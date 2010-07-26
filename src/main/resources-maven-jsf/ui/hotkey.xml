@@ -13,11 +13,6 @@
 	<rendererType>org.primefaces.component.HotkeyRenderer</rendererType>
 	<rendererClass>org.primefaces.component.hotkey.HotkeyRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
@@ -56,25 +51,24 @@
 			</description>
 		</attribute>
 		<attribute>
-			<name>process</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Comma seperated list of clientIds that will be processed partially in JSF lifecycle instead of the whole component tree.
-			</description>
-		</attribute>
-		<attribute>
 			<name>handler</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>The javascript event which will be performed when there is a event with the specific </description>
 		</attribute>
 		<attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Flag for partial process, when set to true, parent form will be submitted but only the component the ajax event is attached to will be processed by JSF.</description>
+		</attribute>
+		<attribute>
 			<name>onstart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>
-				Javascript event handler to be called before ajax request begins.
+				Javascript event to be called before ajax request begins.
 			</description>
 		</attribute>
 		<attribute>
@@ -82,48 +76,11 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>
-				Javascript event handler to be called when ajax request is completed.
-			</description>
-		</attribute>
-		<attribute>
-			<name>onerror</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called when ajax request fails.
-			</description>
-		</attribute>
-		<attribute>
-			<name>onsuccess</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called when ajax request succeeds.
-			</description>
-		</attribute>
-		<attribute>
-			<name>global</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>
-				Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
-			</description>
-		</attribute>
-		<attribute>
-			<name>async</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>
-				When set to true, ajax requests will not be queued.
+				Javascript event to be called when ajax request is completed.
 			</description>
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>/yui/utilities/utilities.js</name>
-		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
@@ -131,7 +88,7 @@
 			<name>/jquery/plugins/hotkey/jquery.hotkeys-0.7.9.min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/primefaces/ajax/ajax.js</name>
 		</resource>
 	</resources>
 </component>

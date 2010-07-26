@@ -18,7 +18,7 @@
 		&widget_var_attribute;
 		<attribute>
 			<name>global</name>
-			<required>false</required>`
+			<required>true</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<description>Makes tooltip global which uses title attributes of elements in page to create
@@ -101,31 +101,13 @@
 			<defaultValue>blue</defaultValue>
 			<description>Style of the tooltip, default is blue.</description>
 		</attribute>
-		<attribute>
-			<name>for</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id of the component to attach the tooltip</description>
-		</attribute>
-		<attribute>
-			<name>forElement</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id of the html element to attach the tooltip</description>
-		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>/yui/utilities/utilities.js</name>
-		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/tooltip/jquery.qtip-1.0.min.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/jquery/plugins/tooltip/qtip-1.0.0-rc3.min.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/tooltip/tooltip.js</name>

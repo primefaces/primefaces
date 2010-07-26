@@ -18,12 +18,12 @@ public class DragDropEvent extends FacesEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+		return (listener instanceof DropListener);
 	}
 
 	@Override
 	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+		((DropListener) listener).processDragDrop(this);
 	}
 	
 	public String getDragId() {

@@ -38,7 +38,7 @@
 			<name>idleListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void idleListener(org.primefaces.event.IdleEvent)</method-signature>
+			<method-signature>void idleListener(org.primefaces.event.idlemonitor.IdleEvent)</method-signature>
 		</attribute>
 		<attribute>
 			<name>update</name>
@@ -51,16 +51,13 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>/jquery/plugins/idletimer/idletimer.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/primefaces/ajax/ajax.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/idlemonitor/idlemonitor.js</name>

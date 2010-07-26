@@ -1,16 +1,24 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.Rating = function(clientId, cfg) {
 	this.clientId = clientId;
 	var escapedClientId = PrimeFaces.escapeClientId(this.clientId);
 	var ratingConfig = {};
 	
-	if(cfg.hasRateListener) {		
-		ratingConfig.callback = function(value, link) {
-			var params = {};
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = cfg.update;
-			params[PrimeFaces.PARTIAL_PROCESS_PARAM] = clientId;
-			
-			PrimeFaces.ajax.AjaxRequest(cfg.actionURL, {formId:cfg.formId}, params);
-		};
+	if(cfg.hasRateListener != undefined) {
+		var xhrOptions = {partialSubmit:true,formClientId:cfg.formClientId};
+
+		if(cfg.update != undefined) {
+			ratingConfig.callback = function(value, link) {
+				PrimeFaces.ajax.AjaxRequest(cfg.actionURL, xhrOptions, "update=" + cfg.update + "&rating=" + value + "&" + clientId + "=" + clientId);
+			};
+		}
+		else {
+			ratingConfig.callback = function(value, link) {
+				PrimeFaces.ajax.AjaxRequest(cfg.actionURL, xhrOptions);
+			};
+		}
 	}
 	
 	jQuery(escapedClientId + ' .pf-rating-star').rating(ratingConfig);	

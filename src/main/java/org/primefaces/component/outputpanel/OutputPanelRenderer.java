@@ -17,7 +17,6 @@ package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -29,9 +28,8 @@ public class OutputPanelRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		OutputPanel panel = (OutputPanel) component;
-		String tagName = getLayoutTag(facesContext, panel);
 		
-		writer.startElement(tagName, panel);
+		writer.startElement("span", panel);
 		writer.writeAttribute("id", panel.getClientId(facesContext), "id");
 		
 		if(panel.getStyle() != null) {
@@ -43,7 +41,7 @@ public class OutputPanelRenderer extends CoreRenderer {
 		
 		renderChildren(facesContext, panel);
 		
-		writer.endElement(tagName);
+		writer.endElement("span");
 	}
 	
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
@@ -52,16 +50,6 @@ public class OutputPanelRenderer extends CoreRenderer {
 	
 	public boolean getRendersChildren() {
 		return true;
-	}
-	
-	protected String getLayoutTag(FacesContext facesContext, OutputPanel panel) {
-		String layout = panel.getLayout();
-		if(layout.equalsIgnoreCase("inline"))
-			return "span";
-		else if(layout.equalsIgnoreCase("block"))
-			return "div";
-		else
-			throw new FacesException("Layout type '" + layout + "' is not a valid value for OutputPanel '" + panel.getClientId(facesContext)  + "'");
 	}
 	
 }

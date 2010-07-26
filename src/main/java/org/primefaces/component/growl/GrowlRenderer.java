@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.resource.ResourceUtils;
+import org.primefaces.util.ComponentUtils;
 
 public class GrowlRenderer extends CoreRenderer {
 
@@ -33,14 +34,10 @@ public class GrowlRenderer extends CoreRenderer {
 		Growl growl = (Growl) component;
 		String clientId = growl.getClientId(facesContext);
 		
-		writer.startElement("span", growl);
-		writer.writeAttribute("id", clientId, "id");
-		writer.endElement("span");
-		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function(){");
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 
 		Iterator<FacesMessage> messages = growl.isGlobalOnly() ? facesContext.getMessages(null) : facesContext.getMessages();
 		
@@ -59,7 +56,7 @@ public class GrowlRenderer extends CoreRenderer {
 			else if(!growl.isShowSummary() && growl.isShowDetail())
 				writer.write("title:'',text:'" + detail + "'");
 			
-			if(!isValueBlank(severityImage))
+			if(!ComponentUtils.isValueBlank(severityImage))
 				writer.write(",image:'" + severityImage + "'");
 			
 			if(growl.isSticky())
@@ -67,16 +64,18 @@ public class GrowlRenderer extends CoreRenderer {
 			else
 				writer.write(",sticky:false");
 			
-			if(growl.getLife() != 6000) writer.write(",time:" + growl.getLife());
+			if(growl.getLife() != 3000) writer.write(",time:" + growl.getLife());
 			
-			writer.write("});");	
-			
-			message.rendered();
+			writer.write("});\n");	
 		}
 		
-		writer.write("});");
+		writer.write("});\n");
 		
 		writer.endElement("script");
+		
+		writer.startElement("span", growl);
+		writer.writeAttribute("id", clientId, "id");
+		writer.endElement("span");
 	}
 	
 	private String getImage(FacesContext facesContext, Growl growl, FacesMessage message) {

@@ -154,15 +154,6 @@
 				  When true clicking outside of overlay will close lightbox.
 			</description>
 		</attribute>
-		<attribute>
-			<name>group</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>
-				Defines grouping, by default children belong to same group and switching is enabled.
-			</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
@@ -176,9 +167,6 @@
 		</resource>
 		<resource>
 			<name>/jquery/plugins/lightbox/colorbox.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/core/core.js</name>
 		</resource>
 	</resources>
 </component>

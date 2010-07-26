@@ -46,7 +46,7 @@
 			<name>life</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>6000</defaultValue>
+			<defaultValue>3000</defaultValue>
 			<description>Duration to display a non-sticky message.</description>
 		</attribute>
 		<attribute>
@@ -76,16 +76,16 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/growl/assets/growl.css</name>
+			<name>/jquery/plugins/gritter/assets/gritter.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/growl/growl.js</name>
+			<name>/jquery/plugins/gritter/jquery.gritter.js</name>
 		</resource>
 	</resources>
 </component>

@@ -22,7 +22,8 @@ import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.event.ItemSelectEvent;
-import org.primefaces.facelets.MethodRule;
+
+import com.sun.faces.facelets.tag.MethodRule;
 
 public class ChartHandler extends ComponentHandler {
 

@@ -28,8 +28,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		AjaxStatus status = (AjaxStatus) component;
 
-		encodeMarkup(context, status);
 		encodeScript(context, status);
+		encodeMarkup(context, status);
 	}
 
 	protected void encodeScript(FacesContext facesContext, AjaxStatus status) throws IOException {
@@ -40,6 +40,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		
 		writer.write(var + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');\n");
 		
 		encodeCallback(facesContext, status, var, "ajaxSend", "onprestart", "prestart");
@@ -47,7 +49,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		encodeCallback(facesContext, status, var, "ajaxError", "onerror", "error");
 		encodeCallback(facesContext, status, var, "ajaxSuccess", "onsuccess", "success");
 		encodeCallback(facesContext, status, var, "ajaxComplete", "oncomplete", "complete");
-
+		
+		writer.write("});");
 		writer.endElement("script");
 	}
 	
@@ -68,21 +71,28 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
+		if(status.getStyle() != null) 
+			writer.writeAttribute("style", status.getStyle(), "style");
+		if(status.getStyleClass() != null) 
+			writer.writeAttribute("class", status.getStyleClass(), "styleClass");
 		
-		if(status.getStyle() != null)  writer.writeAttribute("style", status.getStyle(), "style");
-		if(status.getStyleClass() != null)  writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+		for(String facet : AjaxStatus.FACETS)
+			encodeStatusFacetMarkup(facesContext, status, facet);
 		
-		for(String facetName : AjaxStatus.FACETS) {
-			UIComponent facet = status.getFacet(facetName);
-			if(facet != null) {
-				writer.startElement("div", null);
-				writer.writeAttribute("id", clientId + "_" + facetName, null);
-				writer.writeAttribute("style", "display:none", null);
-				
-				renderChild(facesContext, facet);	
-				
-				writer.endElement("div");
-			}
+		writer.endElement("div");
+	}
+	
+	private void encodeStatusFacetMarkup(FacesContext facesContext, AjaxStatus status, String facetName) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = status.getClientId(facesContext);
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_" + facetName, null);
+		writer.writeAttribute("style", "display:none", null);
+		
+		UIComponent facet = status.getFacet(facetName);
+		if(facet != null) {
+			renderChild(facesContext, facet);
 		}
 		
 		writer.endElement("div");

@@ -33,9 +33,8 @@ public class HotkeyRenderer extends CoreRenderer {
 		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 		Hotkey hotkey = (Hotkey) component;
 
-		if(params.containsKey(hotkey.getClientId(facesContext))) {
+		if(params.containsKey(hotkey.getClientId(facesContext)))
 			hotkey.queueEvent(new ActionEvent(hotkey));
-		}
 	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -46,16 +45,32 @@ public class HotkeyRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
+		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){\n");
 	
 		if(hotkey.getHandler() == null) {
+			String formClientId = null;
 			UIComponent form = ComponentUtils.findParentForm(facesContext,hotkey);
 
-			if(form == null) {
-				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
-			}
+			if (form != null)
+				formClientId = ComponentUtils.findParentForm(facesContext,hotkey).getClientId(facesContext);
+			else
+				throw new FacesException("Hotkey:"+ clientId+ " needs to be enclosed in a form when using an hotkeyListener");
+
+			String params = clientId + "=" + clientId;
+			if(hotkey.getUpdate() != null)
+				params += "&update=" + hotkey.getUpdate();
+			else	
+				params += "&update=" + formClientId;
+				
+			writer.write("PrimeFaces.ajax.AjaxRequest(");
+			writer.write("'" + getActionURL(facesContext) + "'");
+
+			writer.write(",{formClientId:'" + formClientId + "'");
+			if(hotkey.isPartialSubmit()) writer.write(",partialSubmit:true");
+			if(hotkey.getOnstart() != null) writer.write(",onstart: function() {" + hotkey.getOnstart() + ";}");
+			if(hotkey.getOncomplete() != null) writer.write(",oncomplete: function() {" + hotkey.getOncomplete() + ";}");
 			
-			writer.write(buildAjaxRequest(facesContext, hotkey, form.getClientId(facesContext), clientId));
+			writer.write("},'" + params + "');\n");
 		} else {
 			writer.write(hotkey.getHandler() + ";");
 		}

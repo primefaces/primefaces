@@ -1,3 +1,6 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.Keyboard = function(id, options) {
 	this.id = PrimeFaces.escapeClientId(id);
 	this.cfg = options;

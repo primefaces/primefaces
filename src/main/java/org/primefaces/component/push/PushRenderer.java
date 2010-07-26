@@ -30,8 +30,8 @@ public class PushRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Push push = (Push) component;
 		
-		encodeMarkup(facesContext, push);
 		encodeScript(facesContext, push);
+		encodeMarkup(facesContext, push);
 	}
 	
 	private void encodeScript(FacesContext facesContext, Push push) throws IOException {
@@ -44,7 +44,7 @@ public class PushRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {\n");
-		writer.write(var + " = new PrimeFaces.widget.Subscriber('" + clientId + "', {");
+		writer.write(var + " = new PrimeFaces.comet.Subscriber('" + clientId + "', {");
 		writer.write("channel:'" + getResourceURL(facesContext, channel) + "?widget=" + var + "'");
 		writer.write(",onpublish:" + push.getOnpublish());
 		writer.write("});});");

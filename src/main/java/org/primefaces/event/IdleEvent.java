@@ -12,11 +12,12 @@ public class IdleEvent extends FacesEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+		return (listener instanceof IdleEventListener);
 	}
 
 	@Override
 	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+		((IdleEventListener) listener).processIdleEvent(this);
 	}
+
 }

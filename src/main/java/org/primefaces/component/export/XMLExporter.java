@@ -16,8 +16,6 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,29 +27,24 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 
 public class XMLExporter extends Exporter {
 
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+	public void export(FacesContext facesContext, UIData table, String filename, int[] excludeColumns, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
     	
-		OutputStream os = response.getOutputStream();
-		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
-		PrintWriter writer = new PrintWriter(osw);	
+		PrintWriter writer = new PrintWriter(response.getOutputStream());
 		
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+    	int rows = table.getRowCount();
     	List<String> headers = getHeaderTexts(table);
     	String var = table.getVar().toLowerCase();
     	
     	writer.write("<?xml version=\"1.0\"?>\n");
     	writer.write("<" + table.getId() + ">\n");
     	
-    	int first = pageOnly ? table.getFirst() : 0;
-    	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
-    	
-    	for (int i = first; i < size; i++) {
+    	for (int i = 0; i < rows; i++) {
     		table.setRowIndex(i);
     		
     		writer.write("\t<" + var + ">\n");

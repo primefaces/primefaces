@@ -17,7 +17,6 @@ package org.primefaces.component.tooltip;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -36,24 +35,24 @@ public class TooltipRenderer extends CoreRenderer {
 		encodeScript(facesContext, tooltip);
 	}
 
-	protected void encodeScript(FacesContext facesContext, Tooltip tooltip) throws IOException {
+	private void encodeScript(FacesContext facesContext, Tooltip tooltip) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String var = createUniqueWidgetVar(facesContext, tooltip);
 		boolean global = tooltip.isGlobal();
-		String owner = getOwner(facesContext, tooltip);
+		String forComponent = null;
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		if(!global)
-			writer.write("PrimeFaces.onContentReady('" + owner + "', function() {");
-		else
-			writer.write("jQuery(function() {");
+		if(!global) {
+			forComponent = tooltip.getParent().getClientId(facesContext);
+			writer.write("PrimeFaces.onContentReady('" + forComponent + "', function() {\n");
+		}
 			
 		writer.write(var + " = new PrimeFaces.widget.Tooltip({");
 		writer.write("global:" + global);
 		if(!global) {
-			writer.write(",forComponent:'" + owner + "'");
+			writer.write(",forComponent:'" + forComponent + "'");
 			writer.write(",content:'");
 			if(tooltip.getValue() == null)
 				renderChildren(facesContext, tooltip);
@@ -80,44 +79,17 @@ public class TooltipRenderer extends CoreRenderer {
 		else
 			writer.write(",style:" + style  + "\n");
 		
-		writer.write("});");	
+		writer.write("});\n");	
 		
-		writer.write("});");	
+		if(!global) {
+			writer.write("});\n");	
+		}
 		
 		writer.endElement("script");
 	}
-	
-	/**
-	 * Find the element to attach the tooltip.
-	 * If tooltip is global, this method returns null, otherwise algorithm looks at for, forElement and parent in order
-	 * 
-	 * @param facesContext	FacesContext instance
-	 * @param tooltip		Tooltip component
-	 * @return				ClientId of the element to receive the tooltip
-	 */
-	protected String getOwner(FacesContext facesContext, Tooltip tooltip) {
-		if(tooltip.isGlobal())
-			return null;
-		else {
-			String _for = tooltip.getFor();
-			
-			if(_for != null) {
-				UIComponent forComponent = tooltip.findComponent(_for);
-				if(forComponent == null)
-					throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-				else
-					return forComponent.getClientId(facesContext);
-				
-			} else if(tooltip.getForElement() != null) {
-				return tooltip.getForElement();
-			} else {
-				return tooltip.getParent().getClientId(facesContext);
-			}
-		}
-	}
 
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
+		
 	}
 
 	public boolean getRendersChildren() {

@@ -32,10 +32,6 @@ public class DataExporterTag extends TagSupport {
 	
 	private ValueExpression fileName;
 	
-	private ValueExpression pageOnly;
-	
-	private ValueExpression encoding;
-	
 	private ValueExpression excludeColumns;
 	
 	private MethodExpression preProcessor;
@@ -43,7 +39,7 @@ public class DataExporterTag extends TagSupport {
 	private MethodExpression postProcessor;
 
 	public int doStartTag() throws JspException {
-		ActionListener actionListener = new DataExporter(target, type, fileName, pageOnly, excludeColumns, encoding, preProcessor, postProcessor);
+		ActionListener actionListener = new DataExporter(target, type, fileName, excludeColumns, preProcessor, postProcessor);
 
 		UIComponentClassicTagBase tag = UIComponentClassicTagBase.getParentUIComponentClassicTagBase(pageContext);
 
@@ -84,14 +80,6 @@ public class DataExporterTag extends TagSupport {
 		this.fileName = fileName;
 	}
 	
-	public ValueExpression getPageOnly() {
-		return pageOnly;
-	}
-
-	public void setPageOnly(ValueExpression pageOnly) {
-		this.pageOnly = pageOnly;
-	}
-
 	public ValueExpression getExcludeColumns() {
 		return excludeColumns;
 	}
@@ -116,22 +104,12 @@ public class DataExporterTag extends TagSupport {
 		this.postProcessor = postProcessor;
 	}
 
-	public ValueExpression getEncoding() {
-		return encoding;
-	}
-
-	public void setEncoding(ValueExpression encoding) {
-		this.encoding = encoding;
-	}
-
 	public void release() {
 		target = null;
 		type = null;
 		fileName = null;
-		pageOnly = null;
 		excludeColumns = null;
 		preProcessor = null;
 		postProcessor = null;
-		encoding = null;
 	}
 }

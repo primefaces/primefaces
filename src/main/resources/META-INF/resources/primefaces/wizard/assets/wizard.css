@@ -1,0 +1,23 @@
+.pf-wizard-nav {
+}
+
+.pf-wizard-prev, .pf-wizard-next {
+	height: 32px;
+	width: 32px;
+	cursor: pointer;
+}
+
+.pf-wizard-prev {
+	background: url(primefaces_resource:url:/primefaces/wizard/assets/prev.png) no-repeat;
+	float:left;
+}
+
+.pf-wizard-next {
+	background: url(primefaces_resource:url:/primefaces/wizard/assets/next.png) no-repeat;
+	float:right;
+}
+
+.pf-wizard-viewport {
+	padding: 1px;
+	clear:both;
+}

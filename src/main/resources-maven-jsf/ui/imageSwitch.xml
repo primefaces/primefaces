@@ -18,22 +18,6 @@
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
 		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				 Style of the container element.
-			</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				 Style class of container element.
-			</description>
-		</attribute>
-		<attribute>
 			<name>effect</name>
 			<required>true</required>
 			<type>java.lang.String</type>
@@ -69,13 +53,10 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/jquery/plugins/imageswitch/imageswitch.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/imageswitch/imageswitch.js</name>

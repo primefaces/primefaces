@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -28,17 +24,11 @@
 			<description>TreeNode instance to model the tree</description>
 		</attribute>
 		<attribute>
-			<name>var</name>
+			<name>toggleMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Name of the request-scoped variable that'll be used as the holder of each treenode data</description>
-		</attribute>
-		<attribute>
-			<name>dynamic</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Dynamic trees use ajax to load nodes and non-dynamic setting creates a pure client side tree.</description>
+			<defaultValue>async</defaultValue>
+			<description>Specifies the toggleMode, valid values are "client" or "async"(default)</description>
 		</attribute>
 		<attribute>
 			<name>cache</name>
@@ -63,21 +53,21 @@
 			<name>nodeSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeSelectListener(org.primefaces.event.NodeSelectEvent)</method-signature>
+			<method-signature>void nodeSelectListener(org.primefaces.event.tree.NodeSelectEvent)</method-signature>
 			<description>Method expression to listen node select events</description>
 		</attribute>
 		<attribute>
 			<name>nodeExpandListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeExpandListener(org.primefaces.event.NodeExpandEvent)</method-signature>
+			<method-signature>void nodeExpandListener(org.primefaces.event.tree.NodeExpandEvent)</method-signature>
 			<description>Method expression to listen node expand events</description>
 		</attribute>
 		<attribute>
 			<name>nodeCollapseListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeCollapseListener(org.primefaces.event.NodeCollapseEvent)</method-signature>
+			<method-signature>void nodeCollapseListener(org.primefaces.event.tree.NodeCollapseEvent)</method-signature>
 			<description>Method expression to listen node collapse events</description>
 		</attribute>
 		<attribute>
@@ -93,70 +83,6 @@
 			<defaultValue>false</defaultValue>
 			<description>Determines if all nodes of the tree should be expanded initially.</description>
 		</attribute>
-		<attribute>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Client side id of the component(s) to be updated after async partial submit request triggered by a node click.
-			</description>
-		</attribute>
-		<attribute>
-			<name>onselectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called before ajax request for ajax node selection request begins.
-			</description>
-		</attribute>
-		<attribute>
-			<name>onselectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called after ajax request for node selection request is completed.
-			</description>
-		</attribute>
-		<attribute>
-			<name>selection</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
-			<description>
-				A TreeNode array that would be populated with the selected nodes.
-			</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of the main container of panel.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the main container of panel.</description>
-		</attribute>
-		<attribute>
-			<name>propagateSelectionUp</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Specifies if selection will be propagated up to the parents of clicked node.</description>
-		</attribute>
-		<attribute>
-			<name>propagateSelectionDown</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Specifies if selection will be propagated down to the children of clicked node.</description>
-		</attribute>
-		<attribute>
-			<name>selectionMode</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Specifies the selection mode, valid options are "single", "multiple" and "checkbox".</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
@@ -166,13 +92,13 @@
 			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/yui/treeview/treeview-min.js</name>
-		</resource>
-		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
+		<resource>
+			<name>/yui/treeview/treeview-min.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/treeview/treeview.js</name>

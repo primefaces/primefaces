@@ -16,7 +16,7 @@
 package org.primefaces.touch.component.application;
 
 import java.io.IOException;
-import java.util.ListIterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.resource.ResourceHolder;
 import org.primefaces.resource.ResourceUtils;
 
 public class ApplicationRenderer extends CoreRenderer {
@@ -33,7 +34,7 @@ public class ApplicationRenderer extends CoreRenderer {
 	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Application application = (Application) component;
-		
+		ResourceHolder resourceHolder = ResourceUtils.getResourceHolder(facesContext);
 		String themeRelativePath = "/jquery/plugins/jqtouch/themes/" + application.getTheme();
 		String themeRealPath = ResourceUtils.getResourceURL(facesContext, themeRelativePath);
 		
@@ -41,13 +42,17 @@ public class ApplicationRenderer extends CoreRenderer {
 		
 		writer.startElement("head", null);
 		
-		renderCSSDependency(facesContext, "/jquery/plugins/jqtouch/jqtouch.min.css");
 		renderCSSDependency(facesContext, themeRelativePath + "/theme.min.css");
 		
-		ListIterator<UIComponent> iter = (facesContext.getViewRoot().getComponentResources(facesContext, "head")).listIterator();
-		while(iter.hasNext()) {
-			UIComponent resource = (UIComponent)iter.next();
-			resource.encodeAll(facesContext);
+		for(String resource : resourceHolder.getResources()) {
+			if(resource.endsWith("css"))
+				renderCSSDependency(facesContext, resource);
+			else if(resource.endsWith("js"))
+				renderScriptDependency(facesContext, resource);
+			else
+				logger.log(Level.WARNING, "Resource \"{0}\" is queued for inclusion but it's not a supported type, only 'css' and 'js' files can be included.", resource);
+				
+			writer.write("\n");
 		}
 	
 		writer.startElement("script", null);

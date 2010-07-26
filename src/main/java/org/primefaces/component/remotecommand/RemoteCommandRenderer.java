@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -28,12 +29,11 @@ import org.primefaces.util.ComponentUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 	
-	public void decode(FacesContext facesContext, UIComponent component) {
-		RemoteCommand command = (RemoteCommand) component;
-		
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(facesContext))) {
-			command.queueEvent(new ActionEvent(command));
-		}
+	public void decode(FacesContext facesContext, UIComponent component) {		
+		String param = component.getClientId(facesContext);
+
+		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param))
+			component.queueEvent(new ActionEvent(component));
 	}
 	
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -41,21 +41,48 @@ public class RemoteCommandRenderer extends CoreRenderer {
 		RemoteCommand command = (RemoteCommand) component;
 		String clientId = command.getClientId(facesContext);
 		UIComponent form = ComponentUtils.findParentForm(facesContext, command);
-		
 		if(form == null) {
 			throw new FacesException("Remote Command '" + command.getName() + "' must be enclosed inside a form component.");
 		}
-		
-		String formClientId = form.getClientId(facesContext);
 		
 		writer.startElement("script", command);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(command.getName() + " = function() {");
 		
-		writer.write(buildAjaxRequest(facesContext, command, formClientId, clientId));
+		writer.write("PrimeFaces.ajax.AjaxRequest('");
+		writer.write(getActionURL(facesContext));
+		writer.write("',{");
+		writer.write("formClientId:'" + form.getClientId(facesContext) + "'");
+		writer.write(",partialSubmit:true");
 		
-		writer.write("}");
+		if(command.getOnstart() != null)
+			writer.write(",onstart:function(){" + command.getOnstart() + ";}");
+		if(command.getOncomplete() != null)
+			writer.write(",oncomplete:function(){" + command.getOncomplete() + ";}");
+		
+		writer.write("},");
+		
+		writer.write("'update=");
+		if(command.getUpdate() != null)
+			writer.write(command.getUpdate());
+		else
+ 			writer.write(form.getClientId(facesContext));
+		
+		//UIParams
+		for(UIComponent kid : command.getChildren()) {
+			if(kid instanceof UIParameter) {
+				UIParameter parameter = (UIParameter) component;
+				
+				writer.write("&");
+				writer.write(parameter.getName());
+				writer.write("=");
+				writer.write((String) parameter.getValue());
+			}
+		}
+		
+		writer.write("&" + clientId + "=" + clientId);
+		writer.write("');}");
 
 		writer.endElement("script");
 	}

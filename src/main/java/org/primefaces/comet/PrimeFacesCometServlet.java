@@ -34,9 +34,4 @@ public class PrimeFacesCometServlet extends AtmosphereServlet {
 		
 		atmosphereHandlers.put(CometContext.CHANNEL_PATH + "*", new AtmosphereHandlerWrapper(new PrimeFacesCometHandler(), new DefaultBroadcaster()));
 	}
-
-	@Override
-	protected boolean detectJerseyRuntime(ServletConfig servletConfig) {
-		return false;
-	}
 }

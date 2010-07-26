@@ -22,12 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Default streamer for scripts, css, images and all other content
+ * Streams non-css resources like images, scripts
  */
 public class DefaultResourceStreamer implements ResourceStreamer {
 
 	public boolean isAppropriateStreamer(String mimeType) {
-		return (mimeType != null);
+		return (mimeType != null && !mimeType.equals("text/css"));
 	}
 
 	public void stream(HttpServletRequest request, HttpServletResponse response, InputStream inputStream) throws IOException {

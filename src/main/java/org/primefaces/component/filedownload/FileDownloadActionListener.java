@@ -32,26 +32,22 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
 	private ValueExpression value;
 	
-	private ValueExpression contentDisposition;
-	
 	public FileDownloadActionListener() {}
 	
-	public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition) {
+	public FileDownloadActionListener(ValueExpression value) {
 		this.value = value;
-		this.contentDisposition = contentDisposition;
 	}
 
 	public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ELContext elContext = facesContext.getELContext();
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-	
-		String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";	
+		
 		StreamedContent content = (StreamedContent) value.getValue(elContext);
 		
 		try {
 			response.setContentType(content.getContentType());
-			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=" + content.getName());
+			response.setHeader("Content-disposition", "attachment;filename=" + content.getName());
 			
 			byte[] buffer = new byte[2048];
 	
@@ -78,14 +74,12 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 		Object values[] = (Object[]) state;
 
 		value = (ValueExpression) values[0];
-		contentDisposition = (ValueExpression) values[1];
 	}
 
 	public Object saveState(FacesContext facesContext) {
-		Object values[] = new Object[2];
+		Object values[] = new Object[1];
 
 		values[0] = value;
-		values[1] = contentDisposition;
 		
 		return ((Object[]) values);
 	}

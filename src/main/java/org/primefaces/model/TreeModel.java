@@ -15,21 +15,17 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-
 import javax.faces.model.DataModel;
 
-public class TreeModel extends DataModel implements Serializable {
+public class TreeModel extends DataModel {
 
 	private Object wrappedData = null;	
 	private int rowIndex = -1;
-	private TreeNode root;
 	
 	public TreeModel() {}
 	
 	public TreeModel(TreeNode node) {
 		this.wrappedData = node;
-		this.root = node;
 	}
 	
 	@Override
@@ -60,12 +56,8 @@ public class TreeModel extends DataModel implements Serializable {
 	@Override
 	public void setRowIndex(int rowIndex) {
 		this.rowIndex = rowIndex;
-		if(rowIndex >= 0) {
-			TreeNode childNode = ((TreeNode) wrappedData).getChildren().get(rowIndex);
-			setWrappedData(childNode);
-		} else {
-			setWrappedData(root);
-		}
+		TreeNode childNode = ((TreeNode) wrappedData).getChildren().get(rowIndex);
+		setWrappedData(childNode);
 	}
 
 	@Override

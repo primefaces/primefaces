@@ -16,19 +16,56 @@
 package org.primefaces.component.resources;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.resource.ResourceHolder;
 
-@Deprecated
 public class ResourcesRenderer extends CoreRenderer {
 
 	private static Logger logger = Logger.getLogger(ResourcesRenderer.class.getName());
 	
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		logger.info("p:resources component is deprecated and has no use in PrimeFaces 2.0 as JSF 2.0 resource apis are used instead to place resources on page.");
+		ResourceHolder resourceQueue = getResourceHolder(facesContext);
+		ResponseWriter writer = facesContext.getResponseWriter();
+		Resources resources = (Resources) component;
+		String excludedResources = resources.getExclude();
+		
+		writer.write("\n");
+		
+		for(String resource : resourceQueue.getResources()) {
+			if(isResourceExcluded(excludedResources, resource))
+				continue;
+			
+			if(resource.endsWith("css"))
+				renderCSSDependency(facesContext, resource);
+			else if(resource.endsWith("js"))
+				renderScriptDependency(facesContext, resource);
+			else
+				logger.log(Level.WARNING, "Resource '{0}' is queued for inclusion but it's not a supported type, only 'css' and 'js' files can be included.", resource);
+				
+			writer.write("\n");
+		}
+		
+		writer.write("\n");
+	}
+	
+	private boolean isResourceExcluded(String excludedResources, String resource) {
+		if(excludedResources == null)
+			return false;
+		else
+			return excludedResources.indexOf(resource) != -1;	
+	}
+	
+	protected ResourceHolder getResourceHolder(FacesContext facesContext) {
+		ValueExpression ve = facesContext.getApplication().getExpressionFactory().createValueExpression(facesContext.getELContext(), "#{primeFacesResourceHolder}", ResourceHolder.class);
+		
+		return (ResourceHolder) ve.getValue(facesContext.getELContext());
 	}
 }

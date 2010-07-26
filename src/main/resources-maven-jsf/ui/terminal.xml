@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.TerminalRenderer</rendererType>
 	<rendererClass>org.primefaces.component.terminal.TerminalRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -70,13 +66,13 @@
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
+		<resource>
 			<name>/jquery/plugins/wterm/wterm.css</name>
 		</resource>
 		<resource>
 			<name>/jquery/plugins/wterm/wterm.jquery.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/core/core.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/terminal/terminal.js</name>

@@ -51,15 +51,19 @@ public class IdleMonitorRenderer extends CoreRenderer {
 		writer.write("timeout:" + monitor.getTimeout());
 		
 		if(monitor.getIdleListener() != null) {
+			String formClientId = null;
 			UIComponent form = ComponentUtils.findParentForm(facesContext, monitor);
 			
-			if(form == null)
+			if(form != null)
+				formClientId = ComponentUtils.findParentForm(facesContext, monitor).getClientId(facesContext);
+			else
 				throw new FacesException("UIAjax:" + clientId + " needs to be enclosed in a form when using an idleListener");
-		
+			
 			writer.write(",hasIdleListener:true");
 			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
-			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-			writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, monitor, monitor.getUpdate()) + "'");
+			writer.write(",formClientId:'" + formClientId + "'");
+			if(monitor.getUpdate() != null)
+				writer.write(",update:'" + monitor.getUpdate()+ "'");
 		}
 		
 		if(monitor.getOnidle() != null)

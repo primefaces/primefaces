@@ -17,12 +17,12 @@ public class FileUploadEvent extends FacesEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+		return (listener instanceof FileUploadListener);
 	}
 
 	@Override
 	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+		((FileUploadListener) listener).processFileUpload(this);
 	}
 	
 	public UploadedFile getFile() {

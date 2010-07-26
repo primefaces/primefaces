@@ -1,3 +1,6 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.PickList = function(id, config) {
 	this.id = id;
 	this.config = config;

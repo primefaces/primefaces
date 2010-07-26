@@ -16,7 +16,6 @@
 package org.primefaces.component.graphicimage;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -24,7 +23,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.DynamicContentStreamer;
+import org.primefaces.application.lifecycle.DynamicImageStreamer;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -35,32 +34,48 @@ public class GraphicImageRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		GraphicImage image = (GraphicImage) component;
 		String clientId = image.getClientId(facesContext);
-		String imageSrc = image.getValue() == null ? "" : getImageSrc(facesContext, image);
 		
 		writer.startElement("img", image);
 		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("src", imageSrc, null);
+		writer.writeAttribute("src", getImageSrc(facesContext, image), null);
 		
-		if(image.getAlt() == null) writer.writeAttribute("alt", "", null);	//xhtml
-		if(image.getStyleClass() != null) writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+		encodePassThruAttributes(facesContext, HTML.IMG_ATTRS, image);
 		
-		renderPassThruAttributes(facesContext, image, HTML.IMG_ATTRS);
-
+		if(image.getStyleClass() != null)
+			writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+		
 		writer.endElement("img");
 	}
 	
-	protected String getImageSrc(FacesContext facesContext, GraphicImage image) {
-		String src = null;
+	private void encodePassThruAttributes(FacesContext facesContext, String[] attributes, UIComponent component) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		for(String attribute : attributes) {
+			Object value = component.getAttributes().get(attribute);
+			
+			if(shouldRenderAttribute(value))
+				writer.writeAttribute(attribute, value.toString(), attribute);
+		}
+	}
+	
+	private String getImageSrc(FacesContext facesContext, GraphicImage image) {
 		Object value = image.getValue();
-
-		//Create url for dynamic or static image
+		if(value == null)
+			return "";
+		
 		if(value instanceof StreamedContent) {
 			ValueExpression valueVE = image.getValueExpression("value");
 			String veString = valueVE.getExpressionString();
-			String expressionParamValue = veString.substring(2, veString.length() - 1);
+			String expressionParamValue = veString.substring(2, veString.length() -1);
 			
-			StringBuilder builder = new StringBuilder(getActionURL(facesContext));
-			builder.append("?").append(DynamicContentStreamer.DYNAMIC_CONTENT_PARAM).append("=").append(expressionParamValue);
+			String url = getActionURL(facesContext);
+			if(url.contains("?"))
+				url = url + "&";
+			else
+				url = url + "?";
+			
+			StringBuilder builder = new StringBuilder(url);
+			builder.append(DynamicImageStreamer.DYNAMICIMAGE_PARAM).append("=").append(expressionParamValue);
 			
 			for(UIComponent kid : image.getChildren()) {
 				if(kid instanceof UIParameter) {
@@ -70,19 +85,11 @@ public class GraphicImageRenderer extends CoreRenderer {
 				}
 			}
 			
-			src = builder.toString();
+			return builder.toString();
 		}
 		else {
-	        src = getResourceURL(facesContext, (String) value);
-		}
-		
-		//Add caching if needed
-		if(!image.isCache()) {
-			src += src.contains("?") ? "&" : "?";
-			
-			src = src + "primefaces_image=" + UUID.randomUUID().toString();
-		}
-
-		return src;
+	        return getResourceURL(facesContext, value.toString());
+		}	
 	}
 }
+

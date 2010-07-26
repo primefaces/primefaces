@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.chart.PieChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.pie.PieChartRenderer</rendererClass>
 	<parent>org.primefaces.component.chart.UIChart</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
@@ -124,7 +120,7 @@
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
+			<method-signature>void itemSelectListener(org.primefaces.event.chart.ItemSelectEvent)</method-signature>
 			<description>Method expression to listen chart series item select events</description>
 		</attribute>
 		<attribute>
@@ -143,13 +139,6 @@
 			<ignoreInComponent>true</ignoreInComponent>
 			<description>Height of the chart</description>
 		</attribute>
-		<attribute>
-			<name>dataTipFunction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-			<description>Javascript function name to customize the data tips.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
@@ -157,6 +146,9 @@
 		</resource>
 		<resource>
 			<name>/yui/datasource/datasource-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/json/json-min.js</name>
 		</resource>
 		<resource>
 			<name>/yui/swf/swf-min.js</name>
@@ -168,7 +160,7 @@
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/primefaces/ajax/ajax.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/charts/charts.js</name>

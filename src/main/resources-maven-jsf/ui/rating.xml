@@ -30,7 +30,7 @@
 			<name>rateListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void rateListener(org.primefaces.event.RateEvent)</method-signature>
+			<method-signature>void rateListener(org.primefaces.event.rating.RateEvent)</method-signature>
 			<description>A server side listener to process a RateEvent</description>
 		</attribute>
 		<attribute>
@@ -65,7 +65,7 @@
 			<name>/jquery/plugins/rating/jquery.rating.pack.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/primefaces/ajax/ajax.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/rating/rating.js</name>

@@ -12,11 +12,7 @@
 	<rendererType>org.primefaces.component.TabViewRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -28,24 +24,25 @@
 			<description>Index of the active tab</description>
 		</attribute>
 		<attribute>
-			<name>effect</name>
+			<name>orientation</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Applies a transition effect during changing the tabs. Valid values are 'opacity', 'height' and 'width'.</description>
+			<defaultValue>top</defaultValue>
+			<description>Defines how the tabs should oriented, valid values are top|bottom|left|right</description>
 		</attribute>
 		<attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>normal</defaultValue>
-			<description>Defines the duration of effect</description>
-		</attribute>
-		<attribute>
-			<name>dynamic</name>
+			<name>contentTransition</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies the toggleMode, dynamic setting fetches it's content with ajax on tab switch.</description>
+			<description>Applies a transition effect during changing the tabs, default value is false</description>
+		</attribute>
+		<attribute>
+			<name>toggleMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>client</defaultValue>
+			<description>Specifies the toggleMode, valid values are "client"(default) or "async"</description>
 		</attribute>
 		<attribute>
 			<name>cache</name>
@@ -55,32 +52,19 @@
 			<description>When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab
 			does not communicate with server. If caching is turned off, tab contents are refetched from server each time tab is clicked. This setting is true by default.</description>
 		</attribute>
-		<attribute>
-			<name>collapsible</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>An active tab can be collapsed onclick when collapsible option is enabled</description>
-		</attribute>
-		<attribute>
-			<name>event</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Event to use when selecting a tab</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.tabs.css</name>
+			<name>/yui/tabview/assets/skins/sam/tabview.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/yui/tabview/tabview-min.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/tabview/tabview.js</name>

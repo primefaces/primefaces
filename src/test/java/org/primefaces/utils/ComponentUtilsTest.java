@@ -48,6 +48,6 @@ public class ComponentUtilsTest {
 		assertEquals("#test", ComponentUtils.escapeJQueryId(id));
 		
 		id="form:test";
-		assertEquals("#form\\\\:test", ComponentUtils.escapeJQueryId(id));
+		assertEquals("#form\\:test", ComponentUtils.escapeJQueryId(id));
 	}
 }

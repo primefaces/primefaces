@@ -1,39 +1,57 @@
-PrimeFaces.widget.Draggable = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
+PrimeFaces.widget.Draggable = function(clientId, cfg) {
+	if(cfg.proxy)
+		this.dd = new YAHOO.util.DDProxy(clientId);
+	else
+		this.dd = new YAHOO.util.DD(clientId);
 	
-	jQuery(PrimeFaces.escapeClientId(this.cfg.target)).draggable(this.cfg);
+	this.dd.cfg = cfg;
+	
+	if(!this.dd.cfg.dragOnly) {
+		this.dd.onDragDrop = this.onDragDrop;
+		this.dd.onInvalidDrop = this.onInvalidDrop;
+		this.dd.position = YAHOO.util.Dom.getXY(clientId);
+	}
 }
 
-PrimeFaces.widget.Droppable = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+PrimeFaces.widget.Draggable.prototype.onDragDrop = function(e, id) {
+	var DOM = YAHOO.util.Dom;
+	var targetPosition = DOM.getXY(id);
 	
-	this.setupDropHandler();
+	new YAHOO.util.Motion(  
+			this.id, {points: {  
+							to: targetPosition
+			                  } 
+			                }, 0.3, YAHOO.util.Easing.easeOut).animate();
 	
-	jQuery(PrimeFaces.escapeClientId(this.cfg.target)).droppable(this.cfg);
+	this.position = targetPosition;
+	
+	//Send ajax request
+	var xhrOptions = {partialSubmit:true, formClientId:this.cfg.formClientId};
+	
+	if(this.cfg.update != undefined) {
+		PrimeFaces.ajax.AjaxRequest(this.cfg.actionURL, xhrOptions, "update=" + this.cfg.update + "&dragId=" + this.id + "&" + id + "=" + id);
+	}
+	else {
+		PrimeFaces.ajax.AjaxRequest(this.cfg.actionURL, xhrOptions, "&dragId=" + this.id + "&" + id + "=" + id);
+	}
 }
 
-PrimeFaces.widget.Droppable.prototype.setupDropHandler = function() {
-	var droppable = this;
-	
-	this.cfg.drop = function(event, ui) {
-		if(droppable.cfg.onDrop) {
-			droppable.cfg.onDrop.call(this, event, ui);
-		}
-		
-		var params = {};
-		params[droppable.id] = droppable.id;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = droppable.id;
-		params[droppable.id + "_dragId"] = ui.draggable.attr('id');
-		params[droppable.id + "_dropId"] = droppable.cfg.target;
-		
-		if(droppable.cfg.onDropUpdate) {
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = droppable.cfg.onDropUpdate;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(droppable.cfg.url, {
-			formId: droppable.cfg.formId
-		}, params);
-	};
+PrimeFaces.widget.Draggable.prototype.onInvalidDrop = function(e) {
+	new YAHOO.util.Motion(  
+				this.id, {points: {  
+								to: this.position 
+				                  } 
+				                }, 0.3, YAHOO.util.Easing.easeOut).animate(); 
 }
+
+PrimeFaces.widget.Droppable = function(clientId, groupId, cfg) {
+	PrimeFaces.widget.Droppable.superclass.constructor.call(this, clientId, groupId, cfg);
+}
+
+YAHOO.lang.extend(PrimeFaces.widget.Droppable, YAHOO.util.DDTarget,
+{
+	
+});

@@ -20,7 +20,7 @@ import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
-import org.primefaces.facelets.MethodRule;
+import com.sun.faces.facelets.tag.MethodRule;
 
 public class TerminalHandler extends ComponentHandler {
 

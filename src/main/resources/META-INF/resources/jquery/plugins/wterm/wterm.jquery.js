@@ -165,22 +165,15 @@
       // PrimeFaces Dispatcher
       var cdispatch  = {
     		  DISPATCH: function(tokens) {
-    	  		 var requestParams = jQuery(PrimeFaces.escapeClientId(options.formId)).serialize(),
-    	  		 params = {};
-    	  		 
-    	  		 params[PrimeFaces.PARTIAL_SOURCE_PARAM] = options.clientId;
-    	  		 params[ PrimeFaces.PARTIAL_PROCESS_PARAM] = options.clientId;
-    	  		 params[ PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-    	  		 params['args'] = tokens.join(",");
-    	  		 
-    	  		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
+    	  		 var formSubmitMarkerParam = PrimeFaces.ajax.AjaxUtils.getFormParam(options.formClientId),
+    	  		 stateParam = "javax.faces.ViewState=" + PrimeFaces.ajax.AjaxUtils.encodeViewState();
     	  		 
     	  		jQuery.ajax({
     			  url: options.url,
     			  type: "POST",
     			  cache: false,
     			  dataType: "text",
-    			  data:  requestParams,
+    			  data: "ajaxSource=" + options.clientId + "&" + formSubmitMarkerParam + "&" + stateParam + "&primefacesAjaxRequest=true&args=" + tokens.join(","),
     			  success: function(data) {
     	  			 update_content(settings.PS1, tokens.join(' '), data);
     			   }

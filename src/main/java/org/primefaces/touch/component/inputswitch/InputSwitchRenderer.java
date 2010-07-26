@@ -16,7 +16,6 @@
 package org.primefaces.touch.component.inputswitch;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,43 +24,20 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class InputSwitchRenderer extends CoreRenderer {
-	
-	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		InputSwitch inputSwitch = (InputSwitch) component;
-		String clientId = inputSwitch.getClientId(facesContext);
-		
-		if(params.containsKey(clientId)) {
-			String value = params.get(clientId);
-			
-			if(value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true")) {
-				inputSwitch.setSubmittedValue(true);
-			} 
-		} else {
-			inputSwitch.setSubmittedValue(false);
-		}
-	}
 
-	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		InputSwitch inputSwitch = (InputSwitch) component;
-		String clientId = inputSwitch.getClientId(facesContext);
 		Boolean value = (Boolean) inputSwitch.getValue();
 		
 		writer.startElement("span", inputSwitch);
 		writer.writeAttribute("class", "toggle", null);
 		
 		writer.startElement("input", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "checkbox", null);
-		
 		if(value != null && value.booleanValue() == true) {
 			writer.writeAttribute("checked", "checked", null);
 		}
-		
 		writer.endElement("input");
 		
 		writer.endElement("span");

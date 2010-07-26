@@ -18,7 +18,6 @@ package org.primefaces.component.message;
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
@@ -26,55 +25,44 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class MessageRenderer extends CoreRenderer {
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
-		Message uiMessage = (Message) component;
-		UIComponent target = uiMessage.findComponent(uiMessage.getFor());
-		if(target == null) {
-			throw new FacesException("Cannot find component \"" + uiMessage.getFor() + "\" in view.");
-		}
-			
-		Iterator<FacesMessage> msgs = facesContext.getMessages(target.getClientId(facesContext));
+		Message message = (Message) component;
+		String forComponentClientId = ComponentUtils.findComponentById(facesContext, facesContext.getViewRoot(), message.getFor()).getClientId(facesContext);
+		Iterator<FacesMessage> msgs = facesContext.getMessages(forComponentClientId);
+		FacesMessage msg = msgs.hasNext() ? msgs.next() : null;		//Only support one message to display 
 
-		writer.startElement("span", uiMessage);
-		writer.writeAttribute("id", uiMessage.getClientId(facesContext), null);
+		writer.startElement("span", message);
+		writer.writeAttribute("id", message.getClientId(facesContext), null);
 		
-		if(msgs.hasNext()) {
-			FacesMessage msg = msgs.next();
+		if(msg != null) {
+			Severity severity = msg.getSeverity();
+			String severityKey = null;
 			
-			if(msg.isRendered() && !uiMessage.isRedisplay()) {
-				writer.endElement("span");
-				return;
+			if(severity.equals(FacesMessage.SEVERITY_ERROR)) severityKey = "error";
+			else if(severity.equals(FacesMessage.SEVERITY_INFO)) severityKey = "info";
+			else if(severity.equals(FacesMessage.SEVERITY_WARN)) severityKey = "warn";
+			else if(severity.equals(FacesMessage.SEVERITY_FATAL))  severityKey = "fatal";
 				
-			} else {
-				Severity severity = msg.getSeverity();
-				String severityKey = null;
+			writer.writeAttribute("class", "pf-message-" + severityKey, null);
+			
+			if(message.isShowSummary())
+				encodeMessageText(writer, msg.getSummary(), severityKey + "-summary");
+			if(message.isShowDetail())
+				encodeMessageText(writer, msg.getDetail(), severityKey + "-detail");
 				
-				if(severity.equals(FacesMessage.SEVERITY_ERROR)) severityKey = "error";
-				else if(severity.equals(FacesMessage.SEVERITY_INFO)) severityKey = "info";
-				else if(severity.equals(FacesMessage.SEVERITY_WARN)) severityKey = "warn";
-				else if(severity.equals(FacesMessage.SEVERITY_FATAL))  severityKey = "fatal";
-					
-				writer.writeAttribute("class", "ui-message-" + severityKey + " ui-widget ui-corner-all", null);
-				
-				if(uiMessage.isShowSummary())
-					encodeMessageText(writer, msg.getSummary(), severityKey + "-summary");
-				if(uiMessage.isShowDetail())
-					encodeMessageText(writer, msg.getDetail(), severityKey + "-detail");
-					
-				msg.rendered();
-			}
 		}
-		
+
 		writer.endElement("span");
 	}
 	
 	private void encodeMessageText(ResponseWriter writer, String text, String severity) throws IOException {
 		writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-message-" + severity, null);
+		writer.writeAttribute("class", "pf-message-" + severity, null);
 		writer.write(text);
 		writer.endElement("span");
 	}

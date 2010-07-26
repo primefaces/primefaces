@@ -18,35 +18,26 @@ package org.primefaces.model;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.column.Column;
-
 /**
- * Generic comparator for column sorting.
+ * Generic comparator using bean properties to compare two beans.
  */
 public class BeanPropertyComparator implements Comparator {
 
-	private Column column;
+	private ValueExpression sortByExpression;
 	
 	private String order;
 	
 	private String var;
 	
-	private ValueExpression sortByExpression;
-	
-	private MethodExpression sortFunction;
-	
 	private Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
 	
-	public BeanPropertyComparator(Column column, String var, String order) {
-		this.column = column;
+	public BeanPropertyComparator(ValueExpression sortByExpression, String var, String order) {
+		this.sortByExpression = sortByExpression;
 		this.var = var;
 		this.order = order;
-		this.sortByExpression = column.getValueExpression("sortBy");
-		this.sortFunction = column.getSortFunction();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -59,21 +50,9 @@ public class BeanPropertyComparator implements Comparator {
 			facesContext.getExternalContext().getRequestMap().put(var, obj2);
 			Object value2 = sortByExpression.getValue(facesContext.getELContext());
 			
-			//Empty check
-			if(value1 == null)
-				return 1;
-			else if(value2 == null)
-				return -1;
-				
-			int result;
-			if(sortFunction == null) {
-				result = ((Comparable) value1).compareTo(value2);
-			} else {
-				result = (Integer) sortFunction.invoke(facesContext.getELContext(), new Object[]{value1, value2});
-			}
+			int value = ((Comparable) value1).compareTo(value2);
 			
-			return order.equals("asc") ? result : -1 * result;
-			
+			return order.equals("asc") ? value : -1 * value;
 		} catch (Exception e) {
 			logger.severe("Error in sorting");
 			

@@ -1,28 +1,33 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.ChartUtils = {
 	
 	createPollingParams : function(chartId) {
 		var viewstate = PrimeFaces.ajax.AjaxUtils.encodeViewState();
 	
-		var params = PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + chartId;
-		params = params + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
+		var params = "ajaxSource=" + chartId;
+		params = params + "&primefacesAjaxRequest=true";
 		params = params + "&javax.faces.ViewState=" + viewstate;
 		
 		return params;
 	},
 	
 	itemSelectHandler: function(event, cfg) {
-		var requestConfig = {formId : cfg.formId};
 		
-		var params = {};
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = cfg.clientId;
-		params['itemIndex'] = event.index;
-		params['seriesIndex'] = event.seriesIndex;
-		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = cfg.update;
-		params[cfg.clientId] = cfg.clientId;
+		var requestConfig = {
+			partialSubmit : true,
+			formClientId : cfg.formClientId
+		};
 		
-		if(cfg.oncomplete) {
-			requestConfig.oncomplete = cfg.oncomplete;
+		if(cfg.oncomplete != undefined) {
+			requestConfig.oncomplete=cfg.oncomplete;
 		}
+		
+		var params = cfg.clientId + "=" + cfg.clientId;
+		params = params + "&seriesIndex=" + event.index;
+		params = params + "&itemIndex=" + event.index;
+		params = params + "&update=" + cfg.update;
 		
 		PrimeFaces.ajax.AjaxRequest(cfg.url, requestConfig, params);
 	}

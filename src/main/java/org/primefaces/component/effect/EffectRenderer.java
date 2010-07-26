@@ -17,13 +17,13 @@ package org.primefaces.component.effect;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class EffectRenderer extends CoreRenderer {
 
@@ -34,11 +34,8 @@ public class EffectRenderer extends CoreRenderer {
 		String effectedComponentClientId = null;
 		
 		if(effect.getFor() != null) {
-			UIComponent target = effect.findComponent(effect.getFor());
-			if(target != null)
-				effectedComponentClientId = target.getClientId(facesContext);
-			else
-				throw new FacesException("Cannot find component \"" + effect.getFor() + "\" in view.");
+			UIComponent target = ComponentUtils.findComponentById(facesContext, facesContext.getViewRoot(), effect.getFor());
+			effectedComponentClientId = target.getClientId(facesContext);
 		} else {
 			effectedComponentClientId = parentClientId;
 		}
@@ -48,12 +45,10 @@ public class EffectRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		if(effect.getEvent().equals("load")) {
-			writer.write(animation);
-		} else {
-			writer.write("YAHOO.util.Event.addListener('" + parentClientId + "', '" + effect.getEvent() + "', " +
-					"function(e) {" + animation + "});\n");
-		}
+		writer.write("PrimeFaces.onContentReady(\"" + parentClientId + "\", function() {\n");
+		writer.write("YAHOO.util.Event.addListener(\"" + parentClientId + "\", \"" + effect.getEvent() + "\", " +
+												"function(e) {" + animation + "});\n");
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}

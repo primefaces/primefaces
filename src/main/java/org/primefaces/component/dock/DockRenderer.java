@@ -17,15 +17,11 @@ package org.primefaces.component.dock;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
-import org.primefaces.util.ComponentUtils;
 
 public class DockRenderer extends CoreRenderer {
 
@@ -33,25 +29,21 @@ public class DockRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Dock dock = (Dock) component;
 		
-		if(dock.shouldBuildFromModel()) {
-			dock.buildMenuFromModel();
-		}
-		
 		encodeStyle(context,dock);
-		
-		encodeMarkup(context, dock);
 		encodeScript(context, dock);
+		encodeMarkup(context, dock);
 	}
 	
-	protected void encodeStyle(FacesContext context, Dock dock) throws IOException {
+	private void encodeStyle(FacesContext context, Dock dock) throws IOException {
 		//IE specific style class
 		ResponseWriter responseWriter = context.getResponseWriter();
 		responseWriter.write("<!--[if lt IE 7]>\n<style type=\"text/css\">\n");
-		responseWriter.write(".pf-dock img { behavior: url('" + ResourceUtils.getResourceURL(context, "/primefaces/dock/assets/iepngfix.htc") + "');}");
+		responseWriter.write(".pf-dock img { behavior: url(primefaces_resources:url:/primefaces/dock/assets/iepngfix.htc) }");
 		responseWriter.write("</style><![endif]-->");
+		
 	}
 
-	protected void encodeScript(FacesContext facesContext, Dock dock) throws IOException {
+	private void encodeScript(FacesContext facesContext, Dock dock) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dock.getClientId(facesContext);
 		String position = dock.getPosition();
@@ -62,6 +54,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(widgetVar + " = new PrimeFaces.widget.Dock('" + clientId + "', {");
 		writer.write("maxWidth: " + dock.getMaxWidth());
 		writer.write(",items: 'a'");
@@ -71,11 +64,13 @@ public class DockRenderer extends CoreRenderer {
 		writer.write(",proximity: " + dock.getProximity());
 		writer.write(",halign: '" + dock.getHalign() + "'");
 		writer.write("});\n");
-
+		
+		writer.write("});");
+		
 		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Dock dock) throws IOException {
+	private void encodeMarkup(FacesContext facesContext, Dock dock) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dock.getClientId(facesContext);
 		String position = dock.getPosition();
@@ -87,82 +82,56 @@ public class DockRenderer extends CoreRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "pf-dock-container-" + position, null);
 		
-		encodeMenuItems(facesContext, dock);
+		encodeDockItems(facesContext, dock);
 		
 		writer.endElement("div");
 		
 		writer.endElement("div");
 	}
 	
-	protected void encodeMenuItems(FacesContext facesContext, Dock dock) throws IOException {
+	private void encodeDockItems(FacesContext facesContext, Dock dock) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String position = dock.getPosition();
 		
 		for(UIComponent child : dock.getChildren()) {
-			if(child instanceof MenuItem && child.isRendered()) {
-				MenuItem menuitem = (MenuItem) child;
-				String clientId = menuitem.getClientId(facesContext);
-				
-				String styleClass = "pf-dock-item-" + position;
-				if(menuitem.getStyleClass() != null) {
-					styleClass = styleClass + " " + menuitem.getStyleClass();
-				}
+			if(child instanceof DockItem && child.isRendered()) {
+				DockItem dockItem = (DockItem) child;
 				
 				writer.startElement("a", null);
-				writer.writeAttribute("id", menuitem.getClientId(facesContext), null);
-				writer.writeAttribute("class", styleClass, null);
-				
-				if(menuitem.getStyle() != null) writer.writeAttribute("style", menuitem.getStyle(), null);
-				
-				if(menuitem.getUrl() != null) {
-					writer.writeAttribute("href", getResourceURL(facesContext, menuitem.getUrl()), null);
-					if(menuitem.getOnclick() != null) writer.writeAttribute("onclick", menuitem.getOnclick(), null);
-					if(menuitem.getTarget() != null) writer.writeAttribute("target", menuitem.getTarget(), null);
-				} else {
-					writer.writeAttribute("href", "javascript:void(0)", null);
-					
-					UIComponent form = ComponentUtils.findParentForm(facesContext, menuitem);
-					if(form == null) {
-						throw new FacesException("Dock must be inside a form element");
-					}
-					
-					String formClientId = form.getClientId(facesContext);
-					String command = menuitem.isAjax() ? buildAjaxRequest(facesContext, menuitem, formClientId, clientId) : buildNonAjaxRequest(facesContext, menuitem, formClientId, clientId);
-					
-					command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
-					
-					writer.writeAttribute("onclick", command, null);
+				writer.writeAttribute("class", "pf-dock-item-" + position, null);
+				writer.writeAttribute("href", dockItem.getUrl(), "href");
+				if(dockItem.getOnclick() != null) {
+					writer.writeAttribute("onclick", dockItem.getOnclick(), "onclick");
 				}
 				
 				if(position.equalsIgnoreCase("top")) {
-					encodeItemIcon(facesContext, menuitem);
-					encodeItemLabel(facesContext, menuitem);
+					encodeItemIcon(facesContext, dockItem);
+					encodeItemLabel(facesContext, dockItem);
 				}
 				else{
-					encodeItemLabel(facesContext, menuitem);
-					encodeItemIcon(facesContext, menuitem);
+					encodeItemLabel(facesContext, dockItem);
+					encodeItemIcon(facesContext, dockItem);
 				}
-				
+					
 				writer.endElement("a");
 			}
 		}
 	}
 	
-	protected void encodeItemIcon(FacesContext facesContext, MenuItem menuitem) throws IOException {
+	private void encodeItemIcon(FacesContext facesContext, DockItem dockItem) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("img", null);
-		writer.writeAttribute("src", getResourceURL(facesContext, menuitem.getIcon()), null);
+		writer.writeAttribute("src", getResourceURL(facesContext, dockItem.getIcon()), "icon");
 		writer.endElement("img");
 	}
 	
-	protected void encodeItemLabel(FacesContext facesContext, MenuItem menuitem) throws IOException {
+	private void encodeItemLabel(FacesContext facesContext, DockItem dockItem) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("span", null);
-
-		if(menuitem.getValue() != null) writer.write((String) menuitem.getValue());
-		
+		if(dockItem.getLabel() != null)
+			writer.write(dockItem.getLabel());
 		writer.endElement("span");
 	}
 

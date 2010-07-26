@@ -79,6 +79,7 @@ public class HTML {
 		"alt",
 		"dir",
 		"disabled",
+		"image",
 		"label",
 		"lang",
 		"readonly",
@@ -98,15 +99,27 @@ public class HTML {
 	public static String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
 		"accesskey",
 		"alt",
+		"autocomplete",
+		"binding",
+		"converter",
+		"converterMessage",
 		"dir",
 		"disabled",
+		"immediate",
+		"label",
 		"lang",
 		"maxlength",
 		"readonly",
+		"rendered",
+		"required",
+		"requiredMessage",
 		"size",
 		"style",
 		"tabindex",
-		"title"
+		"title",
+		"validator",
+		"validatorMessage",
+		"valueChangeListener"
 	};
 	
 	public static String[] LINK_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);

@@ -26,8 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.datatable.DataTable;
-
 public abstract class Exporter {
 	
 	public List<UIColumn> getColumnsToExport(UIData table, int[] excludedColumns) {
@@ -53,8 +51,6 @@ public abstract class Exporter {
 		}
     }
 
-	public abstract void export(FacesContext facesContext, DataTable table,
-			String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,
-			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+	public abstract void export(FacesContext facesContext, UIData data, String filename, int[] excludedColumns, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException;
+	
 }

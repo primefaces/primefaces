@@ -1,104 +1,60 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.TreeView = function(id, definition, config) {
-	PrimeFaces.widget.TreeView.superclass.constructor.call(this, id + "_container", definition);
-	this.clientId = id;
+	PrimeFaces.widget.TreeView.superclass.constructor.call(this, id, definition);
 	this.cfg = config;
 	
-	//Custom nodeclick handler
-	if(this.cfg.onNodeClick) {
-		this.subscribe('clickEvent', this.cfg.onNodeClick);
-	}
-	
-	this.subscribe("clickEvent", this.handleNodeClick);
-
-	//Selection
-	if(this.isSelectionEnabled()) {
-		this.setNodesProperty('propagateHighlightDown', this.cfg.propagateHighlightDown); 
-		this.setNodesProperty('propagateHighlightUp', this.cfg.propagateHighlightUp);
-		
-		if(this.cfg.selectionMode === 'single') {
-			this.singleNodeHighlight = true;
-		}		
-	}
-	
-	if(this.cfg.dynamic) {
-		this.subscribe("expand", this.expandListener);
-		this.subscribe("collapse", this.collapseListener);
-	}
-	
-	//Dynamic tree
-	if(this.cfg.dynamic) {
-		this.setDynamicLoad(this.doDynamicLoadNodeRequest);
-	}
+	this.subscribe("clickEvent", this.labelClickListener);
+	this.subscribe("expand", this.expandListener);
+	this.subscribe("collapse", this.collapseListener);
+	this.setupToggleMode();
 }
 
 YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 {
-	handleNodeClick : function(args) {
-		if(this.isSelectionEnabled()) {
-			this.handleNodeSelection(args);
-			
-			if(this.cfg.hasSelectListener || this.cfg.update) {
-				this.doNodeSelectRequest(args);
-			}
-		} else {
-			args.node.focus();
-		}
-
-		return false;
-	},
+	TOGGLE_MODE_CLIENT : "client",
 	
-	handleNodeSelection : function(args) {
-		this.onEventToggleHighlight(args);
-		
-		var selected,
-		nodes = this.getNodesByProperty('highlightState', 1),
-		rowKeys = [];
-		
-		if(nodes) {
-			for(var i = 0; i < nodes.length; i++) {
-				rowKeys.push(nodes[i].data.rowKey);
-			}
-			
-			selected = rowKeys.join(",");
-		} else {
-			selected = "";
+	TOGGLE_MODE_ASYNC : "async",
+	
+	labelClickListener : function(e) {
+		if(this.cfg.onNodeClick != undefined) {
+			this.cfg.onNodeClick(e);
 		}
 		
-		document.getElementById(this.clientId + "_selection").value = selected;
-		
-		return false;
-	},
-
-	doNodeSelectRequest : function(args) {
-		this.selectedAction = "SELECT";
-		this.selectedRowKey = args.node.data.rowKey;
-	
-		var params = this.getNodeSelectRequestParams();
-		var options = {formId: this.cfg.formId};
-		
-		if(this.cfg.onselectStart)
-			options.onstart = this.cfg.onselectStart;
-		if(this.cfg.onselectComplete)
-			options.oncomplete = this.cfg.onselectComplete;
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.actionURL, options, params);
-		
-		return false;
+		if(this.isAsync()) {
+			document.getElementById(this.cfg.eventFieldId).value = "SELECT";
+			document.getElementById(this.cfg.rowKeyFieldId).value = e.node.data.rowKey;
+			
+			var url = this.cfg.actionURL;
+			var params = this.getAsyncRequestParams();
+			var callback = {
+			  success: function(response){/*nothing to do yet with response*/}
+			};
+			
+			YAHOO.util.Connect.asyncRequest('POST', url, callback, params);
+			
+			return false;
+		}
 	},
 	
 	expandListener : function(node) {
-		this.selectedAction = "EXPAND";
-		this.selectedRowKey = node.data.rowKey;
+		if(this.isAsync()) {
+			document.getElementById(this.cfg.eventFieldId).value = "EXPAND";
+			document.getElementById(this.cfg.rowKeyFieldId).value = node.data.rowKey;
+		}
 	},
 	
 	collapseListener : function(node) {
-		if(!this.cfg.cache) {
-			this.selectedAction = "COLLAPSE";
-			this.selectedRowKey = node.data.rowKey;
+		if(this.isAsync() && !this.cfg.cache) {
+			document.getElementById(this.cfg.eventFieldId).value = "COLLAPSE";
+			document.getElementById(this.cfg.rowKeyFieldId).value = node.data.rowKey;
 			
 			node.isLoading=true;
 			node.updateIcon();
 			
+			var url = this.cfg.actionURL;
+			var params = this.getAsyncRequestParams();
 			var callback = {
 			  success: this.handleCollapseComplete,
 			  argument: {
@@ -107,7 +63,7 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 			  scope:this
 			};
 			
-			YAHOO.util.Connect.asyncRequest('POST', this.cfg.actionURL, callback, this.getToggleRequestParams());
+			YAHOO.util.Connect.asyncRequest('POST', url, callback, params);
 		}
 	},
 	
@@ -118,10 +74,16 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 		node.updateIcon();
 	},
 	
+	setupToggleMode : function() {
+		if(this.cfg.toggleMode == this.TOGGLE_MODE_ASYNC)
+			 this.setDynamicLoad(this.doDynamicLoadNodeRequest);
+	},
+
 	doDynamicLoadNodeRequest : function(node, fnLoadComplete) {
-		var url = this.tree.cfg.actionURL,
-		params = this.tree.getToggleRequestParams(),
-		callback = {
+		var url = this.tree.cfg.actionURL;
+		var params = this.tree.getAsyncRequestParams();
+		
+		var callback = {
 		  success: this.tree.handleDynamicLoadSuccess,
 		  failure: this.tree.handleDynamicLoadFailure,
 		  argument: {
@@ -134,59 +96,43 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 	},
 	
 	handleDynamicLoadSuccess : function(response) {
-		var node = response.argument.node,
-		xmlDoc = response.responseXML.documentElement,
-		nodes = xmlDoc.getElementsByTagName("node");
+		var node = response.argument.node;
+		var xmlDoc = response.responseXML.documentElement;
+		var nodes = xmlDoc.getElementsByTagName("node");
 		
 		for(var i=0; i < nodes.length; i++) {
-			var content = nodes[i].childNodes[0].firstChild.data,
-			rowKeyValue = nodes[i].childNodes[1].firstChild.data,
-			isLeafStringValue = nodes[i].childNodes[2].firstChild.data,
-			isLeafValue = (isLeafStringValue == "true") ? true : false,
-			nodeData = {html: content, rowKey: rowKeyValue, isLeaf: isLeafValue};
+			var labelValue = nodes[i].childNodes[0].firstChild.data;
+			var rowKeyValue = nodes[i].childNodes[1].firstChild.data;
+			var isLeafStringValue = nodes[i].childNodes[2].firstChild.data;
+			var isLeafValue = (isLeafStringValue == "true") ? true : false;
 			
-			if(nodes[i].childNodes[3]) {
-				nodeData.contentStyle = nodes[i].childNodes[3].firstChild.data;
-			}
+			var nodeData = {label: labelValue, rowKey: rowKeyValue, isLeaf: isLeafValue};
 			
-			var tempNode = new YAHOO.widget.HTMLNode(nodeData, node, false);
+			var tempNode = new YAHOO.widget.TextNode(nodeData, node, false);
 		}
 		
 		response.argument.fnLoadComplete();
 	},
-
+	
 	handleDynamicLoadFailure : function(response) {
-		alert("Exception occured in dynamically loading tree node:" + response.responseText);
+		alert("Failed:" + response.responseText);
 	},
 	
-	getToggleRequestParams : function() {
-		var requestParams = jQuery(PrimeFaces.escapeClientId(this.cfg.formId)).serialize();
-		
-		var params = {};
-		params[this.clientId] = this.clientId;
-		params[PrimeFaces.PARTIAL_SOURCE_PARAM] = this.clientId;
-		params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.clientId;
-		params[this.clientId + "_rowKey"] = this.selectedRowKey;
-		params[this.clientId + "_action"] = this.selectedAction;
-		
-		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
-		
-		return requestParams;
+	isAsync : function() {
+		return this.cfg.toggleMode == this.TOGGLE_MODE_ASYNC;
 	},
 	
-	getNodeSelectRequestParams : function() {
-		var params = {};
-		params[this.clientId] = this.clientId;
-		params[this.clientId + '_rowKey'] = this.selectedRowKey;
-		params[this.clientId + '_action'] = this.selectedAction;
-		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.update;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.clientId;
+	getAsyncRequestParams : function() {
+		var viewstate = PrimeFaces.ajax.AjaxUtils.encodeViewState();
+		
+		var params = "ajaxSource=" + this.cfg.clientId;
+		params = params + "&primefacesAjaxRequest=true";
+		params = params + "&javax.faces.ViewState=" + viewstate;
+		params = params + "&" + this.cfg.rowKeyFieldId + "=" + document.getElementById(this.cfg.rowKeyFieldId).value;
+		params = params + "&" + this.cfg.eventFieldId + "=" + document.getElementById(this.cfg.eventFieldId).value;
+		params = params + "&" + this.cfg.clientId + "=" + this.cfg.clientId;
+		params = params + "&" + PrimeFaces.ajax.AjaxUtils.getFormParam(this.cfg.formClientId);
 		
 		return params;
-	},
-	
-	isSelectionEnabled : function() {
-		return this.cfg.selectionMode != undefined;
 	}
 });

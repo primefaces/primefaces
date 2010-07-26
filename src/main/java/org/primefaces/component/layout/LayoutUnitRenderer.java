@@ -31,8 +31,10 @@ public class LayoutUnitRenderer extends CoreRenderer {
 		
 		writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(facesContext), "id");
-		if(unit.getStyle() != null) writer.writeAttribute("style", unit.getStyle(), "style");
-		if(unit.getStyleClass() != null) writer.writeAttribute("class", unit.getStyleClass(), "styleClass");
+		if(unit.getStyle() != null)
+			writer.writeAttribute("style", unit.getStyle(), "style");
+		if(unit.getStyleClass() != null)
+			writer.writeAttribute("class", unit.getStyleClass(), "styleClass");
 	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {

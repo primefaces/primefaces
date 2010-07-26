@@ -19,12 +19,12 @@ public class RateEvent extends FacesEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+		return (listener instanceof RateEventListener);
 	}
 
 	@Override
 	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+		((RateEventListener) listener).processRateEvent(this);
 	}
 	
 	public Double getRating() {

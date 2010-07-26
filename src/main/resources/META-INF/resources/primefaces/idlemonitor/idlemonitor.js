@@ -1,28 +1,29 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.IdleMonitor = function(clientId, cfg) {
 	
 	jQuery(document).bind("idle.idleTimer", function(){
 		
-		if(cfg.hasIdleListener) {
-			var xhrOptions = {formId:cfg.formId};
+		if(cfg.hasIdleListener != undefined) {
+			var xhrOptions = {partialSubmit:true,formClientId:cfg.formClientId};
 			
-			if(cfg.onidle) {
+			if(cfg.onidle != undefined) {
 				xhrOptions.oncomplete = cfg.onidle;
 			}
 			
-			var params = {};
-			params[clientId] = clientId;
-			params[PrimeFaces.PARTIAL_PROCESS_PARAM] = clientId;
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = cfg.update;
-
-			PrimeFaces.ajax.AjaxRequest(cfg.actionURL, xhrOptions, params);
+			if(cfg.update != undefined)
+				PrimeFaces.ajax.AjaxRequest(cfg.actionURL, xhrOptions, "update=" + cfg.update + "&" + clientId + "=" + clientId);
+			else
+				PrimeFaces.ajax.AjaxRequest(cfg.actionURL, xhrOptions);
 			
-		} else if(cfg.onidle) {
+		} else if(cfg.onidle != null) {
 			cfg.onidle();
 		}
 	});
 	
 	jQuery(document).bind("active.idleTimer", function(){
-		if(cfg.onactive) {
+		if(cfg.onactive != null) {
 			cfg.onactive();
 		}
 	});

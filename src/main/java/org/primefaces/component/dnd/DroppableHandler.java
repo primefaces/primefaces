@@ -20,7 +20,8 @@ import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.event.DragDropEvent;
-import org.primefaces.facelets.MethodRule;
+
+import com.sun.faces.facelets.tag.MethodRule;
 
 public class DroppableHandler extends ComponentHandler {
 

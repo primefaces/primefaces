@@ -16,112 +16,139 @@
 package org.primefaces.component.dialog;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.event.CloseEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
-public class DialogRenderer extends CoreRenderer {
-	
-	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Dialog dialog = (Dialog) component;
-		String clientId = dialog.getClientId(facesContext);
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
-		
-		//Queue close event
-		if(params.containsKey(clientId + "_closed")) {
-			dialog.setVisible(false);
-			dialog.queueEvent(new CloseEvent(dialog));
-		}
-	}
+public class DialogRenderer extends CoreRenderer{
 
-	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Dialog dialog = (Dialog) component;
 		
-		encodeMarkup(facesContext, dialog);
 		encodeScript(facesContext, dialog);
+		encodeMarkup(facesContext, dialog);
+	}
+	
+	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+		//Do nothing
 	}
 
-	protected void encodeScript(FacesContext facesContext, Dialog dialog) throws IOException{
+	public boolean getRendersChildren() {
+		return true;
+	}
+
+	private void encodeScript(FacesContext facesContext, Dialog dialog) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dialog.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, dialog);
+		
+		String dialogVar = createUniqueWidgetVar(facesContext, dialog);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
-		writer.write(var + " = new PrimeFaces.widget.Dialog('" + clientId + "',");
 		
-		writer.write("{");
-		writer.write("autoOpen:" + dialog.isVisible());
-		writer.write(",minHeight:" + dialog.getMinHeight());
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		
-		if(dialog.getStyleClass() != null) writer.write(",dialogClass:'" + dialog.getStyleClass() + "'");
-		if(dialog.getWidth() != 300) writer.write(",width:" + dialog.getWidth());
-		if(dialog.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + dialog.getHeight());
-		if(!dialog.isDraggable()) writer.write(",draggable: false");
-		if(dialog.isModal()) writer.write(",modal: true");
-		if(dialog.getZindex() != 1000) writer.write(",zIndex:" + dialog.getZindex());
-		if(!dialog.isResizable()) writer.write(",resizable:false");
-		if(dialog.getMinWidth() != 150) writer.write(",minWidth:" + dialog.getMinWidth());
-		if(dialog.getShowEffect() != null) writer.write(",show:'" + dialog.getShowEffect() + "'");
-		if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
-		if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
-		if(!dialog.isClosable()) writer.write(",closable:false");
+		writer.write(dialogVar + " = new PrimeFaces.widget.Dialog('" + clientId + "',");
+		writeConfig(facesContext, dialog);
+		writer.write(");\n");
+		writer.write(dialogVar + ".render();\n");
 		
-		//Position
-		String position = dialog.getPosition();	
-		if(position != null) {
-			if(position.contains(","))
-				writer.write(",position:[" + position + "]");
-			else
-				writer.write(",position:'" + position + "'");
-		}
-		
-		//Ajax Close
-		if(dialog.getCloseListener() != null || dialog.getOnCloseUpdate() != null) {
-			writer.write(",ajaxClose:true");
-			writer.write(",url:'" + getActionURL(facesContext) + "'");
-			
-			if(dialog.getOnCloseUpdate() != null)
-				writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(facesContext, dialog, dialog.getOnCloseUpdate()) + "'");
-		}
-		
-		writer.write("});");
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Dialog dialog) throws IOException{
+	private void writeConfig(FacesContext facesContext, Dialog dialog) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.write("{");
+		writer.write("visible:" + dialog.isVisible());
+		if(dialog.getWidth() != null) writer.write(",width: '" + dialog.getWidth() + "'");
+		if(dialog.getHeight() != null) writer.write(",height: '" + dialog.getHeight() + "'");
+		if(!dialog.isDraggable()) writer.write(",draggable: false");
+		if(dialog.getUnderlay() != null && !dialog.getUnderlay().equalsIgnoreCase("shadow")) writer.write(",underlay: '" + dialog.getUnderlay() + "'");
+		if(dialog.isFixedCenter()) writer.write(",fixedcenter: true");
+		if(!dialog.isClose()) writer.write(",close: false");
+		if(dialog.isConstrainToViewport()) writer.write(",constraintoviewport: true");
+		if(dialog.getX() != -1) writer.write(",x:" + dialog.getX());
+		if(dialog.getY() != -1) writer.write(",y:" + dialog.getY());
+		if(dialog.getEffect() != null) writer.write(",effect:{effect:YAHOO.widget.ContainerEffect." + dialog.getEffect().toUpperCase() + ", duration: " + dialog.getEffectDuration() + "}");
+		if(dialog.isModal()) writer.write(",modal: true");
+		if(dialog.getZindex() != -1) writer.write(",zIndex:" + dialog.getZindex());
+		if(dialog.isResizable()) writer.write(",resizable:" + dialog.isResizable());
+		if(dialog.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + dialog.getMinWidth());
+		if(dialog.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + dialog.getMinHeight());
+		
+		writer.write("}\n");
+	}
+
+	private void encodeMarkup(FacesContext facesContext, Dialog dialog) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dialog.getClientId(facesContext);
-		String headerText = dialog.getHeader();
 	
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId , null);
-		if(headerText != null) {
-			writer.writeAttribute("title", headerText, null);
+		if(dialog.getStyle() != null) writer.writeAttribute("style", dialog.getStyle(), null);
+		if(dialog.getStyleClass() != null) writer.writeAttribute("class", dialog.getStyleClass(), null);
+		
+		encodeHeader(facesContext, dialog);
+		encodeBody(facesContext, dialog);
+		
+		if(dialog.getFooter() != null || dialog.getFacet("footer") != null) {
+			encodeFooter(facesContext, dialog);
 		}
-
-		renderChildren(facesContext, dialog);
 		
 		writer.endElement("div");
 	}
 	
-	@Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
+	private void encodeHeader(FacesContext facesContext, Dialog dialog) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		UIComponent header = dialog.getFacet("header");
+		UIComponent headerControls = dialog.getFacet("headerControls");
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "hd", null);
+		if(header != null)
+			renderChild(facesContext, header);
+		else if(dialog.getHeader() != null)
+			writer.write(dialog.getHeader());
+		
+		if(headerControls != null) {
+			writer.startElement("span", null);
+			writer.writeAttribute("class", "pf-dialog-headercontrols", null);
+			renderChild(facesContext, headerControls);
+			writer.endElement("span");
+		}
+			
+		writer.endElement("div");
+	}
+	
+	private void encodeBody(FacesContext facesContext, Dialog dialog) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "bd", null);
+		if(dialog.isResizable())
+			writer.writeAttribute("style", "overflow:auto", null);
+			
+		renderChildren(facesContext, dialog);
+		writer.endElement("div");
 	}
 
-	@Override
-	public boolean getRendersChildren() {
-		return true;
+	private void encodeFooter(FacesContext facesContext, Dialog dialog) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		UIComponent footer = dialog.getFacet("footer");
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "ft", null);
+		if(footer != null)
+			renderChild(facesContext, footer);
+		if(dialog.getFooter() != null)
+			writer.write(dialog.getFooter());
+		
+		writer.endElement("div");
 	}
 }

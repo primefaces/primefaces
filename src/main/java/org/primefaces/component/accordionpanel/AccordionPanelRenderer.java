@@ -17,7 +17,6 @@ package org.primefaces.component.accordionpanel;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,83 +27,92 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
-	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		AccordionPanel accordionPanel = (AccordionPanel) component;
-		String activeIndexParam = accordionPanel.getClientId(facesContext) + "_active";
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		
-		if(params.containsKey(activeIndexParam)) {
-			accordionPanel.setActiveIndex(Integer.valueOf(params.get(activeIndexParam)));
-		}
-	}
-
-	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		AccordionPanel accordionPanel = (AccordionPanel) component;
 		
-		encodeMarkup(facesContext, accordionPanel);
+		//restore active tab states
+		String clientId = accordionPanel.getClientId(facesContext);
+		String activeTabIndex = facesContext.getExternalContext().getRequestParameterMap().get(clientId + "_container_state");
+		if(activeTabIndex != null) {
+			if(activeTabIndex.equals(""))
+				accordionPanel.setActiveIndex(null);
+			else
+				accordionPanel.setActiveIndex(activeTabIndex);
+		}
+		
 		encodeScript(facesContext, accordionPanel);
+		encodeMarkup(facesContext, accordionPanel);
 	}
-	
-	protected void encodeMarkup(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
+
+	private void encodeScript(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = accordionPanel.getClientId(facesContext);
+		String var = createUniqueWidgetVar(facesContext, accordionPanel);
+		
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		writer.write(var + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "_container',");
+		writer.write("{");
+		
+		writer.write("collapsible:true");
+		writer.write(",width:'100%'");
+		
+		if(accordionPanel.getActiveIndex() != null) 
+			writer.write(",expandItem:[" + accordionPanel.getActiveIndex() + "]");
+		else
+			writer.write(",expandItem:[]");
+			
+		if(accordionPanel.isMultiple()) writer.write(",expandable:true");
+		if(accordionPanel.getSpeed() != 0.5) writer.write(",animationSpeed:" + accordionPanel.getSpeed());
+		if(!accordionPanel.isAnimate()) writer.write(",animate:false");
+		if(accordionPanel.isHover()) writer.write(",hoverActivated:true");
+		if(accordionPanel.getHoverDelay() != 500) writer.write(",hoverTimeout:" + accordionPanel.getSpeed());
+		
+		writer.write("});});");
+		
+		writer.endElement("script");
+	}
+
+	private void encodeMarkup(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = accordionPanel.getClientId(facesContext);
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		if(accordionPanel.getStyle() != null) writer.writeAttribute("style", accordionPanel.getStyle(), null);
-		if(accordionPanel.getStyleClass() != null) writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
+		if(accordionPanel.getStyle() != null)
+			writer.writeAttribute("style", accordionPanel.getStyle(), null);
+		if(accordionPanel.getStyleClass() != null)
+			writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
 		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_acco", null);
-		
+		writer.startElement("ul", null);
+		writer.writeAttribute("id", clientId + "_container", null);
 		encodeTabs(facesContext, accordionPanel);
-		
-		writer.endElement("div");
+		writer.endElement("ul");
 		
 		encodeStateHolder(facesContext, accordionPanel);
 		
 		writer.endElement("div");
 	}
-
-	protected void encodeScript(FacesContext facesContext, AccordionPanel acco) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = acco.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, acco);
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write(widgetVar + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
-		writer.write("active:" + acco.getActiveIndex());
-		writer.write(",animated:'" + acco.getEffect() + "'");
-		
-		if(acco.getEvent() != null) writer.write(",event:'" + acco.getEvent() + "'");
-		if(!acco.isAutoHeight()) writer.write(",autoHeight:false");
-		if(acco.isCollapsible()) writer.write(",collapsible:true");
-		if(acco.isFillSpace()) writer.write(",fillSpace:true");
-		if(acco.isDisabled()) writer.write(",disabled:true");
-		
-		writer.write("});");
-		
-		writer.endElement("script");
-	}
-
-	protected void encodeStateHolder(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
+	
+	private void encodeStateHolder(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = accordionPanel.getClientId(facesContext);
-		String stateHolderId = clientId + "_active"; 
+		String stateHolderId = clientId + "_container_state"; 
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", stateHolderId, null);
 		writer.writeAttribute("name", stateHolderId, null);
-		writer.writeAttribute("value", accordionPanel.getActiveIndex(), null);
+		
+		if(accordionPanel.getActiveIndex() != null) {
+			writer.writeAttribute("value", accordionPanel.getActiveIndex(), null);
+		}
 		writer.endElement("input");
 	}
 	
-	protected void encodeTabs(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
+	private void encodeTabs(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		for(Iterator<UIComponent> kids = accordionPanel.getChildren().iterator(); kids.hasNext();) {
@@ -113,20 +121,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
 			if(kid.isRendered() && kid instanceof Tab) {
 				Tab tab = (Tab) kid;
 				
-				//title
-				writer.startElement("h3", null);
-				writer.startElement("a", null);
-				writer.writeAttribute("href", "#", null);
-				if(tab.getTitle() != null) {
+				writer.startElement("li", null);
+				writer.startElement("p", null);
+				if(tab.getTitle() != null)
 					writer.write(tab.getTitle());
-				}
-				writer.endElement("a");
-				writer.endElement("h3");
+				writer.endElement("p");
 				
-				//content
 				writer.startElement("div", null);
 				renderChild(facesContext, tab);
 				writer.endElement("div");
+				writer.endElement("li");
 			}
 		}
 	}

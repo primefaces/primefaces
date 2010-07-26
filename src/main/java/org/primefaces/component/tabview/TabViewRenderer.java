@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,156 +16,77 @@
 package org.primefaces.component.tabview;
 
 import java.io.IOException;
-import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.ServletResponse;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.PartialRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
-	
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		TabView tabView = (TabView) component;
-		String activeIndexValue = params.get(tabView.getClientId(facesContext) + "_activeIndex");
-		
-		if(!isValueEmpty(activeIndexValue)) {
-			tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
-		}
-	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		TabView tabView = (TabView) component;
 		
-		encodeMarkup(facesContext, tabView);
-		encodeScript(facesContext, tabView);
+		encodeTabViewScript(facesContext, tabView);
+		encodeTabViewMarkup(facesContext, tabView);
 	}
 	
 	public void encodePartially(FacesContext facesContext, UIComponent component) throws IOException {
 		TabView tabView = (TabView) component;
-		Tab activeTab = (Tab) tabView.getChildren().get(tabView.getActiveIndex());
+		String activeTabIndexParam = facesContext.getExternalContext().getRequestParameterMap().get("activeTabIndex");
+		int activeTabIndex = Integer.parseInt(activeTabIndexParam);
 		
-		ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
-		response.setContentType("text/xml");
+		Tab activeTab = (Tab) tabView.getChildren().get(activeTabIndex);
 		
-		ResponseWriter writer = facesContext.getResponseWriter();
-		try {
-			writer.write("<?xml version=\"1.0\" encoding=\"" + response.getCharacterEncoding() + "\"?>");
-			writer.write("<partialResponse>");
-			
-			//Tab content
-			writer.write("<tabContent>");
-			writer.startCDATA();
-			renderChildren(facesContext, activeTab);
-			writer.endCDATA();
-			writer.write("</tabContent>");
-	
-			//State
-			writer.write("<state>");
-			writer.startCDATA();
-			
-			StateManager stateManager = facesContext.getApplication().getStateManager();
-			stateManager.writeState(facesContext, stateManager.saveView(facesContext));
-			
-			writer.endCDATA();
-			writer.write("</state>");
-			
-			writer.write("</partialResponse>");
-		}catch(IOException exception) {
-			exception.printStackTrace();
-		}
-
-		facesContext.responseComplete();
-	}
-	
-	private void encodeScript(FacesContext facesContext, TabView tabView) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = tabView.getClientId(facesContext);
-		String tabViewVar = createUniqueWidgetVar(facesContext, tabView);
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-
-	    writer.write(tabViewVar + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
-	    
-	    writer.write("selected:" + tabView.getActiveIndex());
-	    
-	    if(tabView.isDynamic()) {
-	    	UIComponent form = ComponentUtils.findParentForm(facesContext, tabView);
-	    	if(form == null) {
-		  	    throw new FacesException("TabView " + clientId + " must be nested inside a form when dynamic content loading is enabled");
-	    	}
-		  	    
-	    	writer.write(",dynamic:true");
-	    	writer.write(",url:'" + getActionURL(facesContext) + "'");
-	    	writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-	  	    writer.write(",cache:" + tabView.isCache());
-	  	    
-	    } else {
-	    	writer.write(",dynamic:false");
-	    }
-	    
-	    if(tabView.isCollapsible()) writer.write(",collapsible:true");
-	    if(tabView.getEvent() != null) writer.write(",event:'" + tabView.getEvent() + "'");
-	    if(tabView.getEffect() != null) {
-	    	writer.write(",fx: {");
-	    	writer.write(tabView.getEffect() +":'toggle'");
-	    	writer.write(",duration:'" + tabView.getEffectDuration() + "'");
-	    	writer.write("}");
-	    }
-	    
-	    writer.write("});");
-	    
-	    writer.endElement("script");
+		renderChildren(facesContext, activeTab);
 	}
 
-	private void encodeMarkup(FacesContext facesContext, TabView tabView) throws IOException {
+	private void encodeTabViewMarkup(FacesContext facesContext, TabView tabView) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = tabView.getClientId(facesContext);
-		int activeIndex = tabView.getActiveIndex();
+		
+		int activeTabIndex = getActiveTabIndex( facesContext, tabView, clientId );
+		String activeTabIndexHolder = getActiveTabIndexHolder(clientId);
 		
 		writer.startElement("div", tabView);
 		writer.writeAttribute("id", clientId , null);
+		writer.writeAttribute("class", "yui-navset", null);
 		
-		encodeHeaders(facesContext, tabView, activeIndex);
-		encodeContents(facesContext, tabView, activeIndex);
+		encodeTabHeaders(facesContext, tabView, activeTabIndex);
+		encodeTabContents(facesContext, tabView, activeTabIndex);
 		
-		encodeActiveIndexHolder(facesContext, tabView);
+		encodeActiveIndexHolder(facesContext, activeTabIndex, activeTabIndexHolder);
 		
 		writer.endElement("div");
 	}
 
-	private void encodeActiveIndexHolder(FacesContext facesContext, TabView tabView) throws IOException {
+	private void encodeActiveIndexHolder(FacesContext facesContext, int activeTabIndex, String activeTabIndexHolder) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String paramName = tabView.getClientId(facesContext) + "_activeIndex";
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", paramName, null);
-		writer.writeAttribute("name", paramName, null);
-		writer.writeAttribute("value", tabView.getActiveIndex(), null);
+		writer.writeAttribute("id", activeTabIndexHolder, null);
+		writer.writeAttribute("name", activeTabIndexHolder, null);
+		writer.writeAttribute("value", activeTabIndex, null);
 		writer.endElement("input");
 	}
 	
-	private void encodeHeaders(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
+	private void encodeTabHeaders(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("ul", null);
+		writer.writeAttribute("class", "yui-nav", null);
 		
-		for(int i = 0; i < tabView.getChildren().size(); i++) {
-			UIComponent kid = tabView.getChildren().get(i);
+		for (int i = 0; i < tabView.getChildren().size(); i++) {
+			Tab tab = (Tab) tabView.getChildren().get(i);
 			
-			if(kid.isRendered() && kid instanceof Tab) {
-				Tab tab = (Tab) kid;
-				
+			if(tab.isRendered()) {
 				writer.startElement("li", null);
+				
+				if( i == activeTabIndex )
+					writer.writeAttribute("class", "selected", null);
 				
 				writer.startElement("a", null);
 				writer.writeAttribute("href", "#" + tab.getClientId(facesContext), null);
@@ -181,20 +102,22 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 		writer.endElement("ul");
 	}
 	
-	private void encodeContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
+	private void encodeTabContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
-		for(int i = 0; i < tabView.getChildren().size(); i++) {
-			UIComponent kid = tabView.getChildren().get(i);
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "yui-content", null);
+		
+		for (int i = 0; i < tabView.getChildren().size(); i++) {
+			Tab tab = (Tab) tabView.getChildren().get(i);
 			
-			if(kid.isRendered() && kid instanceof Tab) {
-				Tab tab = (Tab) kid;
+			if(tab.isRendered()) {
 				writer.startElement("div", null);
-				writer.writeAttribute("id", tab.getClientId(facesContext), null);
 				
-				if(tabView.isDynamic()) {
-					if(i == activeTabIndex)
+				if(tabView.isAsyncToggling()) {
+					if(i == activeTabIndex) {
 						renderChildren(facesContext, tab);
+					}
 				} else {
 					renderChildren(facesContext, tab);
 				}
@@ -202,8 +125,51 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 				writer.endElement("div");
 			}
 		}
+		
+		writer.endElement("div");
 	}
 
+	private int getActiveTabIndex(FacesContext facesContext, TabView tabView, String clientId) {
+		String activeTabIndexHiddenFieldId = getActiveTabIndexHolder(clientId);
+		String activeTabIndex = (String) facesContext.getExternalContext().getRequestParameterMap().get(activeTabIndexHiddenFieldId);
+		
+		if( activeTabIndex != null && activeTabIndex != "")
+			tabView.setActiveIndex(Integer.parseInt(activeTabIndex));
+	
+		return tabView.getActiveIndex();
+	}
+
+	private void encodeTabViewScript(FacesContext facesContext, TabView tabView) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = tabView.getClientId(facesContext);
+		String tabViewVar = createUniqueWidgetVar(facesContext, tabView);
+		String activeTabIndexHolder = getActiveTabIndexHolder(clientId);
+		
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+		
+		writer.write("PrimeFaces.onContentReady(\"" + clientId + "\", function() {\n");
+	    writer.write(tabViewVar + " = new PrimeFaces.widget.TabView(\"" + clientId + "\",");
+	    writer.write("{");
+	    writer.write("clientId:\"" + clientId + "\"");
+	    writer.write(",activeTabIndexHolder:\"" + activeTabIndexHolder + "\"");
+	    writer.write(",orientation:\"" + tabView.getOrientation() + "\"");
+	    writer.write(",toggleMode:\"" + tabView.getToggleMode() + "\"");
+	    writer.write(",actionURL:\"" + getActionURL(facesContext) + "\"");
+	    writer.write(",cache:" + tabView.isCache() + "");
+	    writer.write(",contentTransition:" + tabView.isContentTransition() );
+	 
+	    writer.write("});\n");
+	    
+		writer.write("});\n");
+	    
+	    writer.endElement("script");
+	}
+
+	private String getActiveTabIndexHolder(String clientId) {
+		return clientId + ":activeIndex";
+	}
+	
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
 	}

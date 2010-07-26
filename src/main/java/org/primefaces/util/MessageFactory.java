@@ -27,8 +27,7 @@ import javax.faces.context.FacesContext;
 
 public class MessageFactory {
 
-	private static String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
-	private static String PRIMEFACES_BUNDLE_BASENAME = "org.primefaces.Messages";
+	private static String DEFAULT_BUNDLE_BASENAME = "org.primefaces.Messages";
 	private static String DEFAULT_DETAIL_SUFFIX = "_detail";
 
 	private MessageFactory() {}
@@ -46,7 +45,6 @@ public class MessageFactory {
 		String userBundleName = FacesContext.getCurrentInstance().getApplication().getMessageBundle();
         ResourceBundle bundle = null;
         
-        //try user defined bundle first
         if(userBundleName != null) {
         	 try {
                  bundle = ResourceBundle.getBundle(userBundleName, locale, getCurrentClassLoader(userBundleName));
@@ -57,20 +55,6 @@ public class MessageFactory {
              }
         }
         
-        //try primefaces bundle
-        if(summary == null) {
-        	try {
-				bundle = ResourceBundle.getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, getCurrentClassLoader(PRIMEFACES_BUNDLE_BASENAME));
-				if (bundle == null) {
-					throw new NullPointerException();
-				}
-				summary = bundle.getString(messageId);
-			} catch (MissingResourceException e) {
-				 // No Op
-			}
-		}
-        
-        //fallback to default jsf bundle
         if(summary == null) {
         	try {
 				bundle = ResourceBundle.getBundle(DEFAULT_BUNDLE_BASENAME, locale, getCurrentClassLoader(DEFAULT_BUNDLE_BASENAME));
@@ -99,7 +83,7 @@ public class MessageFactory {
 	public static String getFormattedText(Locale locale, String message, Object params[]) {
 		MessageFormat messageFormat = null;
 		
-		if(params == null || message == null)
+		if(params == null)
 			return message;
 		
 		if(locale != null)

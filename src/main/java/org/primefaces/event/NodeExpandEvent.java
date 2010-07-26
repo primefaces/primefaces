@@ -3,7 +3,6 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.model.TreeNode;
 
@@ -18,12 +17,12 @@ public class NodeExpandEvent extends FacesEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+		return (listener instanceof NodeExpandListener);
 	}
 
 	@Override
 	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+		((NodeExpandListener) listener).processNodeExpand(this);
 	}
 
 	public TreeNode getTreeNode() {
@@ -32,10 +31,5 @@ public class NodeExpandEvent extends FacesEvent {
 
 	public void setTreeNode(TreeNode treeNode) {
 		this.treeNode = treeNode;
-	}
-	
-	@Override
-	public PhaseId getPhaseId() {
-		return PhaseId.INVOKE_APPLICATION;
 	}
 }

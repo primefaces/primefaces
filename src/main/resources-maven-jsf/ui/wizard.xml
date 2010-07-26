@@ -7,28 +7,48 @@
 	<tag>wizard</tag>
 	<tagClass>org.primefaces.component.wizard.WizardTag</tagClass>
 	<componentClass>org.primefaces.component.wizard.Wizard</componentClass>
-	<componentHandlerClass>org.primefaces.component.wizard.WizardHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Wizard</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.WizardRenderer</rendererType>
 	<rendererClass>org.primefaces.component.wizard.WizardRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-		<interface>
-			<name>javax.faces.component.NamingContainer</name>
-		</interface>
-	</interfaces>
+	<parent>org.primefaces.component.wizard.UIWizard</parent>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
 		<attribute>
 			<name>step</name>
 			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Index of the current step in flow</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Id of the current step in flow</description>
+			<defaultValue>slide</defaultValue>
+			<description>
+				Effect to be used for switching, "slide" or "toggle".
+			</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>400</defaultValue>
+			<description>
+				Width of the viewport in pixels
+			</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>400</defaultValue>
+			<description>
+				Height of the viewport in pixels
+			</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -43,75 +63,32 @@
 			<description>StyleClass of the main wizard container</description>
 		</attribute>
 		<attribute>
-			<name>flowListener</name>
+			<name>speed</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void flowListener()</method-signature>
-			<description>A server side listener to be invoked when wizard flow is processed back or forth</description>
+			<type>java.lang.Integer</type>
+			<defaultValue>500</defaultValue>
+			<description>Speed of animation in ms.</description>
 		</attribute>
 		<attribute>
-			<name>showNavBar</name>
+			<name>customUI</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Specifies visibility of default navigation controls in navigation bar.</description>
-		</attribute>
-		<attribute>
-			<name>onback</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Javascript event handler to be invoked when flow goes back.</description>
-		</attribute>
-		<attribute>
-			<name>onnext</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Javascript event handler to be invoked when flow goes next.</description>
-		</attribute>
-		<attribute>
-			<name>nextLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>Next</defaultValue>
-			<description>Label of the next step navigation button.</description>
-		</attribute>
-		<attribute>
-			<name>backLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>Back</defaultValue>
-			<description>Label of the back step navigation button.</description>
-		</attribute>
-		<attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Enabled fade effect during pagination.</description>
-		</attribute>
-		<attribute>
-			<name>effectSpeed</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>normal</defaultValue>
-			<description>Speed of the fade effect during pagination.</description>
+			<defaultValue>false</defaultValue>
+			<description>When customUI is turned on, navigational controls won't be rendered and page authors can create their own ui using client side api.</description>
 		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/wizard/wizard.css</name>
-		</resource>
-		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+			<name>/primefaces/wizard/assets/wizard.css</name>
 		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/jquery/plugins/tabswitch/tabswitch.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/wizard/wizard.js</name>

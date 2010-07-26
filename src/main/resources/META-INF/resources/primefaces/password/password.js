@@ -1,3 +1,6 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.Password = function(id, cfg) {
 	cfg.lang = {
 		length : "",

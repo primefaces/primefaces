@@ -121,9 +121,6 @@
 			<name>/jquery/plugins/keyboard/keypad.min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
-		</resource>
-		<resource>
 			<name>/primefaces/keyboard/keyboard.js</name>
 		</resource>
 	</resources>

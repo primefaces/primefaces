@@ -9,7 +9,8 @@ import javax.faces.view.facelets.MetaRuleset;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.facelets.MethodRule;
+
+import com.sun.faces.facelets.tag.MethodRule;
 
 public class TreeHandler extends ComponentHandler {
 

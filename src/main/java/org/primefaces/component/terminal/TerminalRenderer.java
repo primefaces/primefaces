@@ -16,6 +16,7 @@
 package org.primefaces.component.terminal;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -32,8 +33,8 @@ public class TerminalRenderer extends CoreRenderer implements PartialRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Terminal terminal = (Terminal) component;
 		
-		encodeMarkup(facesContext, terminal);
 		encodeScript(facesContext, terminal);
+		encodeMarkup(facesContext, terminal);
 	}
 
 	private void encodeMarkup(FacesContext facesContext, Terminal terminal) throws IOException {
@@ -52,16 +53,17 @@ public class TerminalRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(var + " = new PrimeFaces.widget.Terminal('" + clientId + "', {");
 		writer.write("PS1:'" + terminal.getPrompt() + "'");
 		writer.write(",clientId:'" + clientId + "'");
 		writer.write(",url:'" + getActionURL(facesContext) + "'");
-		writer.write(",formId:'" + ComponentUtils.findParentForm(facesContext, terminal).getClientId(facesContext) + "'");
+		writer.write(",formClientId:'" + ComponentUtils.findParentForm(facesContext, terminal).getClientId(facesContext) + "'");
   		if(terminal.getWelcomeMessage() != null) writer.write(",WELCOME_MESSAGE:'" + terminal.getWelcomeMessage() + "'");
 		if(terminal.getWidth() != null) writer.write(",WIDTH:'" + terminal.getWidth() + "'");
 		if(terminal.getHeight() != null) writer.write(",HEIGHT:'" + terminal.getHeight() + "'");
-		writer.write("});");
+		writer.write("});});\n");
 		
 		writer.endElement("script");
 	}
@@ -73,12 +75,8 @@ public class TerminalRenderer extends CoreRenderer implements PartialRenderer {
 		String tokens[] = argsParam.split(",");
 		String command = tokens[0];
 		String[] args;
-		if(tokens.length > 1) {
-			args = new String[tokens.length - 1];
-			for (int t = 1; t < tokens.length; t++) {
-				args[t - 1] = tokens[t];
-			}
-		}
+		if(tokens.length > 1)
+			args = Arrays.copyOfRange(tokens, 1, tokens.length);
 		else
 			args = new String[0];
 		

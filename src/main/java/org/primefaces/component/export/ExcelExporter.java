@@ -21,6 +21,7 @@ import java.util.List;
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,29 +30,26 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 
 public class ExcelExporter extends Exporter {
 
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+	public void export(FacesContext facesContext, UIData table, String filename, int[] excludeColumns, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
     	HSSFWorkbook wb = new HSSFWorkbook();
     	HSSFSheet sheet = wb.createSheet();
     	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
+    	int tableSize = table.getRowCount();
+    	
     	if(preProcessor != null) {
     		preProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
     	}
     	
     	addColumnHeaders(sheet, columns);
     	
-    	int first = pageOnly ? table.getFirst() : 0;
-    	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
-    	int sheetRowIndex = 1;
-    	
-    	for(int i = first; i < size; i++) {
+    	for (int i = 0; i < tableSize; i++) {
     		table.setRowIndex(i);
-			HSSFRow row = sheet.createRow(sheetRowIndex++);
+			HSSFRow row = sheet.createRow(i+1);
 			
 			for (int j = 0; j < numberOfColumns; j++) {
 				UIColumn column = columns.get(j);
@@ -112,5 +110,5 @@ public class ExcelExporter extends Exporter {
         response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xls");
 
         generatedExcel.write(response.getOutputStream());
-    }
+    }  
 }

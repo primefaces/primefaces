@@ -16,8 +16,6 @@ PrimeFaces.touch.Application = function(config) {
 
 PrimeFaces.touch.Application.prototype.goTo = function(viewId, effect) {
 	this.jqt.goTo('#' + viewId, effect);
-	
-	jQuery('.active').removeClass('active');
 }
 
 PrimeFaces.touch.Application.prototype.goBack = function() {

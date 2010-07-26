@@ -39,7 +39,6 @@ public abstract class UIChart extends UIComponentBase {
 	private java.lang.String _wmode;
 	private java.lang.String _width;
 	private java.lang.String _height;
-	private String _dataTipFunction;
 	
 	public java.lang.String getWidgetVar() {
 		if(_widgetVar != null )
@@ -181,17 +180,6 @@ public abstract class UIChart extends UIComponentBase {
 		this._oncomplete = _oncomplete;
 	}
 	
-	public String getDataTipFunction() {
-		if(_dataTipFunction != null )
-			return _dataTipFunction;
-
-		ValueExpression ve = getValueExpression("dataTipFunction");
-		return ve != null ? (java.lang.String) ve.getValue(getFacesContext().getELContext())  : null;
-	}
-	public void setDataTipFunction(String _dataTipFunction) {
-		this._dataTipFunction = _dataTipFunction;
-	}
-	
 	public void broadcast(FacesEvent event) throws AbortProcessingException {
 		super.broadcast(event);
 		
@@ -206,7 +194,7 @@ public abstract class UIChart extends UIComponentBase {
 	}
 
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[15];
+		Object values[] = new Object[14];
 		values[0] = super.saveState(context);
 		values[1] = _widgetVar;
 		values[2] = _value;
@@ -221,7 +209,6 @@ public abstract class UIChart extends UIComponentBase {
 		values[11] = _wmode;
 		values[12] = _width;
 		values[13] = _height;
-		values[14] = _dataTipFunction;
 		
 		return ((Object) values);
 	}
@@ -241,6 +228,5 @@ public abstract class UIChart extends UIComponentBase {
 		_wmode = (String) values[11];
 		_width = (String) values[12];
 		_height = (String) values[13];
-		_dataTipFunction = (String) values[14];
 	}
 }

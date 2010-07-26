@@ -17,7 +17,6 @@ package org.primefaces.component.tabslider;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,16 +27,12 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class TabSliderRenderer extends CoreRenderer {
 	
-	private static final Logger logger = Logger.getLogger(TabSliderRenderer.class.getName());
-	
 	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		logger.info("TabSlider is deprecated, use Carousel instead");
-		
 		TabSlider slider = (TabSlider) component;
 		
-		encodeMarkup(facesContext, slider);
 		encodeScript(facesContext, slider);
+		encodeMarkup(facesContext, slider);
 	}
 	
 	private void encodeScript(FacesContext facesContext, TabSlider slider) throws IOException {
@@ -48,15 +43,14 @@ public class TabSliderRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(widgetVar + " = new PrimeFaces.widget.TabSlider('" + clientId + "', {");
 		writer.write("easing:'" + slider.getEffect() + "'");
 		encodeHeaders(facesContext, slider);
-		
 		if(slider.getActiveIndex() != 1) writer.write(",activeIndex:" + slider.getActiveIndex());
 		if(slider.getEffectDuration() != 600) writer.write(",animationTime:" + slider.getEffectDuration());
 		if(!slider.isNavigator()) writer.write(",buildNavigation:false");
-		
-		writer.write("});");
+		writer.write("});});");
 		
 		writer.endElement("script");
 	}

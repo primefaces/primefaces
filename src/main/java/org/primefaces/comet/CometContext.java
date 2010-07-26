@@ -33,10 +33,6 @@ public class CometContext {
 	private CometContext() {}
 
 	public static void publish(String channel, Object object) {	
-		if(object == null) {
-			throw new IllegalArgumentException("Publish data cannot be null");
-		}
-		
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();

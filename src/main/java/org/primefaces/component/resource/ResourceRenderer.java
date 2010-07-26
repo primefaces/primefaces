@@ -33,16 +33,19 @@ public class ResourceRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Resource resource = (Resource) component;
 		String resourcePath = resource.getName();
-
+		
+		writer.write("\n");
 		if(resourcePath != null) {
-			writer.write("\n");
-			
 			if(resourcePath.endsWith("css"))
 				renderCSSDependency(facesContext, resourcePath);
 			else if(resourcePath.endsWith("js"))
 				renderScriptDependency(facesContext, resourcePath);
 			else
 				logger.log(Level.WARNING, "Resource \"{0}\" is queued for inclusion but it's not a supported type, only 'css' and 'js' files can be included.", resource);
+				
+			writer.write("\n");
 		}
+		
+		writer.write("\n");
 	}
 }

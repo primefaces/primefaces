@@ -17,12 +17,12 @@ package org.primefaces.component.printer;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class PrinterRenderer extends CoreRenderer {
 
@@ -31,17 +31,16 @@ public class PrinterRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Printer printer = (Printer) component;
 		String parentClientId = printer.getParent().getClientId(facesContext);
-		UIComponent target = printer.findComponent(printer.getTarget());
-		if(target == null)
-			throw new FacesException("Cannot find component \"" + printer.getTarget() + "\" in view.");
+		String targetClientId = ComponentUtils.findComponentById(facesContext, facesContext.getViewRoot(), printer.getTarget()).getClientId(facesContext);
 		
 		writer.startElement("script", printer);
 		writer.writeAttribute("type", "text/javascript", null);
-			
+		
+		writer.write("PrimeFaces.onContentReady('" + parentClientId + "', function() {\n");		
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + parentClientId + "')).click(function(e) {\n");
 		writer.write("e.preventDefault();\n");
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + target.getClientId(facesContext) + "')).jqprint();\n");
-		writer.write("});");
+		writer.write("jQuery(PrimeFaces.escapeClientId('" + targetClientId + "')).jqprint();\n");
+		writer.write("});});\n");
 
 		writer.endElement("script");
 	}

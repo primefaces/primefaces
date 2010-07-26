@@ -19,7 +19,7 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Value referencing to the data of the image</description>
+			<description>Value referencing to the binary data of the image</description>
 		</attribute>
 		<attribute>
 			<name>alt</name>
@@ -208,15 +208,6 @@
 			<ignoreInComponent>true</ignoreInComponent>
 			<description>
 				 onmouseup dom event handler
-			</description>
-		</attribute>
-		<attribute>
-			<name>cache</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>
-				 Controls caching behavior of browsers
 			</description>
 		</attribute>
 	</attributes>

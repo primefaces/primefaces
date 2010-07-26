@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
-<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -12,47 +11,47 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.SliderRenderer</rendererType>
 	<rendererClass>org.primefaces.component.slider.SliderRenderer</rendererClass>
-	<parent>javax.faces.component.UIOutput</parent>
+	<parent>javax.faces.component.UIComponentBase</parent>
 	<attributes>
-		&output_component_attributes;
+		&standard_uicomponent_attributes;
 		&widget_var_attribute;
 		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the component that the slider will be used for.</description>
-		</attribute>
-		<attribute>
-			<name>display</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id of the component to display the slider value.</description>
+			<description>Id of the component that the slider will be used for</description>
 		</attribute>
 		<attribute>
 			<name>minValue</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
 			<description>Minimum value of the slider</description>
 		</attribute>
 		<attribute>
 			<name>maxValue</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>100</defaultValue>
 			<description>Maximum value of the slider</description>
 		</attribute>
 		<attribute>
-			<name>style</name>
+			<name>thumbImage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of panel.</description>
+			<description>Image of the slider thumb</description>
 		</attribute>
 		<attribute>
-			<name>styleClass</name>
+			<name>tickMarks</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the main container of panel.</description>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Fixed pixel increments that the slider will move in</description>
+		</attribute>
+		<attribute>
+			<name>size</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>200</defaultValue>
+			<description>size of the background image of slider, this must be changed when the background image is changed</description>
 		</attribute>
 		<attribute>
 			<name>animate</name>
@@ -66,35 +65,18 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>horizontal</defaultValue>
-			<description>Specifies the type of the slider, valid values are "horizontal" and "vertical".</description>
-		</attribute>
-		<attribute>
-			<name>step</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-			<description>Defines the amount of each step.</description>
-		</attribute>
-		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Disables or enables slider.</description>
+			<description>horizontal|vertical, Specifies the type of the slider</description>
 		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.slider.css</name>
+			<name>/yui/slider/assets/skins/sam/slider.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/yui/slider/slider-min.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/slider/slider.js</name>

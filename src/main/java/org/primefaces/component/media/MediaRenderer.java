@@ -18,16 +18,13 @@ package org.primefaces.component.media;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.DynamicContentStreamer;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.HTML;
@@ -47,7 +44,7 @@ public class MediaRenderer extends CoreRenderer {
 	
 	private void encodeObjectTag(FacesContext facesContext, Media media, MediaPlayer player) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String src = getMediaSrc(facesContext, media);
+		String src = getResourceURL(facesContext, media.getValue());
 		
 		writer.startElement("object", media);
 		writer.writeAttribute("classid", player.getClassId(), null);
@@ -74,7 +71,7 @@ public class MediaRenderer extends CoreRenderer {
 	
 	private void encodeEmbedTag(FacesContext facesContext, Media media, MediaPlayer player) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String src = getMediaSrc(facesContext, media);
+		String src = getResourceURL(facesContext, media.getValue());
 		
 		writer.startElement("embed", media);
 		writer.writeAttribute("pluginspage", player.getPlugingPage(), null);
@@ -112,14 +109,15 @@ public class MediaRenderer extends CoreRenderer {
 			writer.endElement("param");
 		}
 	}
-
+	
 	private MediaPlayer resolvePlayer(FacesContext facesContext, Media media) {
+		
 		if(media.getPlayer() != null) {
 			return MediaPlayerFactory.getPlayer(media.getPlayer());
 		}
-		else if(media.getValue() instanceof String){
+		else {
 			Map<String,MediaPlayer> players = MediaPlayerFactory.getPlayers();
-			String[] tokens = ((String) media.getValue()).split("\\.");
+			String[] tokens = media.getValue().split("\\.");
 			String type = tokens[tokens.length-1];
 			
 			for(MediaPlayer mp : players.values()) {
@@ -129,39 +127,5 @@ public class MediaRenderer extends CoreRenderer {
 		}
 		
 		throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(facesContext) + "', cannot play source:" + media.getValue());
-	}
-
-	private String getMediaSrc(FacesContext facesContext, Media media) {
-		Object value = media.getValue();
-		if(value == null)
-			return "";
-		
-		if(value instanceof StreamedContent) {
-			ValueExpression valueVE = media.getValueExpression("value");
-			String veString = valueVE.getExpressionString();
-			String expressionParamValue = veString.substring(2, veString.length() -1);
-			
-			String url = getActionURL(facesContext);
-			if(url.contains("?"))
-				url = url + "&";
-			else
-				url = url + "?";
-			
-			StringBuilder builder = new StringBuilder(url);
-			builder.append(DynamicContentStreamer.DYNAMIC_CONTENT_PARAM).append("=").append(expressionParamValue);
-			
-			for(UIComponent kid : media.getChildren()) {
-				if(kid instanceof UIParameter) {
-					UIParameter param = (UIParameter) kid;
-					
-					builder.append("&").append(param.getName()).append("=").append(param.getValue());
-				}
-			}
-			
-			return builder.toString();
-		}
-		else {
-	        return getResourceURL(facesContext, media.getValue().toString());
-		}	
 	}
 }

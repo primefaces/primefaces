@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -35,6 +34,22 @@ import javax.faces.model.SelectItem;
 public class ComponentUtils {
 	
 	private static String TRINIDAD_FORM_FAMILY = "org.apache.myfaces.trinidad.Form";
+	
+	public static UIComponent findComponentById(FacesContext context, UIComponent root, String id) {
+		UIComponent component = null;
+		
+		for (int i = 0; i < root.getChildCount() && component == null; i++) {
+			UIComponent child = (UIComponent) root.getChildren().get(i);
+			component = findComponentById(context, child, id);
+		}
+
+		if (root.getId() != null) {
+			if (component == null && root.getId().equals(id)) {
+				component = root;
+			}
+		}
+		return component;
+	}
 	
 	/**
 	 * Algorithm works as follows;
@@ -125,6 +140,20 @@ public class ComponentUtils {
 		return value.toString();
 	}
 
+	public static boolean isValueEmpty(String value) {
+		if (value == null || "".equals(value))
+			return true;
+		
+		return false;
+	}
+	
+	public static boolean isValueBlank(String value) {
+		if(value == null)
+			return true;
+		
+		return value.trim().equals("");
+	}
+
 	public static UIComponent findParentForm(FacesContext context, UIComponent component) {
 		UIComponent parent = component.getParent();
 		
@@ -149,8 +178,6 @@ public class ComponentUtils {
 				String decoratedValue = attributeValue + ";" + value;
 				
 				component.getAttributes().put(attribute, decoratedValue);
-			} else {
-				component.getAttributes().put(attribute, attributeValue);
 			}
 		} else {
 				component.getAttributes().put(attribute, value);
@@ -183,93 +210,13 @@ public class ComponentUtils {
 					for(SelectItem item : collection)
 						items.add(new SelectItem(item.getValue(), item.getLabel()));
 				}
-			}
+			}  
 		}
 		
 		return items;
 	}
 
 	public static String escapeJQueryId(String id) {
-		return "#" + id.replaceAll(":", "\\\\\\\\:");
-	}
-	
-	public static String formatKeywords(FacesContext facesContext, UIComponent component, String processRequest) {
-		String process = processRequest;
-		
-		if(process.indexOf("@this") != -1)
-			process = process.replaceFirst("@this", component.getClientId(facesContext));
-		if(process.indexOf("@form") != -1) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, component);
-			if(form == null)
-				throw new FacesException("Component " + component.getClientId(facesContext) + " needs to be enclosed in a form");
-			
-			process = process.replaceFirst("@form", form.getClientId(facesContext));
-		}
-		if(process.indexOf("@parent") != -1)
-			process = process.replaceFirst("@parent", component.getParent().getClientId(facesContext));
-		
-		return process;
-	}
-	
-	public static String findClientIds(FacesContext facesContext, UIComponent component, String list) {
-		if(list == null)
-			return "@none";
-		
-		String formattedList = formatKeywords(facesContext, component, list);
-		String[] ids = formattedList.split("[,\\s]+");
-		StringBuffer buffer = new StringBuffer();
-		
-		for(int i = 0; i < ids.length; i++) {
-			if(i != 0)
-				buffer.append(",");
-			
-			String id = ids[i].trim();
-			
-			if(id.equals("@all") || id.equals("@none"))
-				buffer.append(id);
-			else {
-				UIComponent comp = component.findComponent(id);
-				if(comp != null)
-					buffer.append(comp.getClientId(facesContext));
-				else
-					buffer.append(id);
-			}
-		}
-		
-		return buffer.toString();
-	}
-	
-	public static String findComponentClientId(String id) {
-	    UIComponent component = null;
-
-	    FacesContext facesContext = FacesContext.getCurrentInstance();
-	    component = findComponent(facesContext.getViewRoot(), id);
-
-	    return component.getClientId(facesContext);
-	}
-	
-	public static UIComponent findComponent(UIComponent base, String id) {
-	    if (id.equals(base.getId()))
-	      return base;
-	  
-	    UIComponent kid = null;
-	    UIComponent result = null;
-	    Iterator<UIComponent> kids = base.getFacetsAndChildren();
-	    while (kids.hasNext() && (result == null)) {
-	      kid = (UIComponent) kids.next();
-	      if (id.equals(kid.getId())) {
-	        result = kid;
-	        break;
-	      }
-	      result = findComponent(kid, id);
-	      if (result != null) {
-	        break;
-	      }
-	    }
-	    return result;
-	}
-	
-	public static boolean isLiteralText(UIComponent component) {
-		return component.getFamily().equalsIgnoreCase("facelets.LiteralText");
+		return "#" + id.replaceAll(":", "\\\\:");
 	}
 }

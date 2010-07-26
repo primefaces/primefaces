@@ -35,20 +35,16 @@ public class DataExporterTagHandler extends TagHandler {
 	private final TagAttribute target;
 	private final TagAttribute type;
 	private final TagAttribute fileName;
-	private final TagAttribute pageOnly;
 	private final TagAttribute excludeColumns;
 	private final TagAttribute preProcessor;
 	private final TagAttribute postProcessor;
-	private final TagAttribute encoding;
 
 	public DataExporterTagHandler(TagConfig tagConfig) {
 		super(tagConfig);
 		this.target = getRequiredAttribute("target");
 		this.type = getRequiredAttribute("type");
 		this.fileName = getRequiredAttribute("fileName");
-		this.pageOnly = getAttribute("pageOnly");
 		this.excludeColumns = getAttribute("excludeColumns");
-		this.encoding = getAttribute("encoding");
 		this.preProcessor = getAttribute("preProcessor");
 		this.postProcessor = getAttribute("postProcessor");
 	}
@@ -58,20 +54,12 @@ public class DataExporterTagHandler extends TagHandler {
 			ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
 			ValueExpression typeVE = type.getValueExpression(faceletContext, Object.class);
 			ValueExpression fileNameVE = fileName.getValueExpression(faceletContext, Object.class);
-			ValueExpression pageOnlyVE = null;
 			ValueExpression excludeColumnsVE = null;
-			ValueExpression encodingVE = null;
 			MethodExpression preProcessorME = null;
 			MethodExpression postProcessorME = null;
 			
 			if(excludeColumns != null) {
 				excludeColumnsVE = excludeColumns.getValueExpression(faceletContext, Object.class);
-			}
-			if(encoding != null) {
-				encodingVE = encoding.getValueExpression(faceletContext, Object.class);
-			}
-			if(pageOnly != null) {
-				pageOnlyVE = pageOnly.getValueExpression(faceletContext, Object.class);
 			}
 			if(preProcessor != null) {
 				preProcessorME = preProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
@@ -81,7 +69,7 @@ public class DataExporterTagHandler extends TagHandler {
 			}
 			
 			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE,excludeColumnsVE,encodingVE, preProcessorME, postProcessorME));
+			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, excludeColumnsVE, preProcessorME, postProcessorME));
 		}
 	}
 

@@ -1,3 +1,6 @@
+if(PrimeFaces == undefined) var PrimeFaces = {};
+if(PrimeFaces.widget == undefined) PrimeFaces.widget = {};
+
 PrimeFaces.widget.TabSlider = function(elId, cfg) {
 	this.id = PrimeFaces.escapeClientId(elId);
 	this.cfg = cfg;

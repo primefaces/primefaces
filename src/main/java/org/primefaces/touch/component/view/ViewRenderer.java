@@ -17,13 +17,13 @@ package org.primefaces.touch.component.view;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.touch.component.navbarcontrol.NavBarControl;
+import org.primefaces.util.ComponentUtils;
 
 public class ViewRenderer extends CoreRenderer {
 
@@ -59,8 +59,7 @@ public class ViewRenderer extends CoreRenderer {
 		NavBarControl leftControl = (NavBarControl) view.getFacet("leftNavBar");
 		NavBarControl rightControl = (NavBarControl) view.getFacet("rightNavBar");
 
-		//TODO: Fix the code duplication here
-		if(leftControl != null && leftControl.isRendered()) {
+		if(leftControl != null) {
 			String href="#";
 			String viewId = leftControl.getView();
 			String styleClass = leftControl.getType() != null ? leftControl.getType() : "";
@@ -73,13 +72,8 @@ public class ViewRenderer extends CoreRenderer {
 			if(viewId != null) {
 				if(viewId.equals("home"))
 					href = href + "home";
-				else {
-					UIComponent viewComponent = leftControl.findComponent(leftControl.getView());
-					if(viewComponent == null)
-						throw new FacesException("Cannot find component \"" + leftControl.getView() + "\" in view.");
-					
-					href = href + viewComponent.getClientId(facesContext);	
-				}
+				else
+					href = href + ComponentUtils.findComponentById(facesContext, facesContext.getViewRoot(), leftControl.getView()).getClientId(facesContext);
 			}
 			
 			writer.writeAttribute("href", href, null);
@@ -91,7 +85,7 @@ public class ViewRenderer extends CoreRenderer {
 			writer.endElement("a");
 		}
 		
-		if(rightControl != null && rightControl.isRendered()) {
+		if(rightControl != null) {
 			String href="#";
 			String viewId = rightControl.getView();
 			String styleClass = rightControl.getType() != null ? rightControl.getType() : "";
@@ -104,13 +98,8 @@ public class ViewRenderer extends CoreRenderer {
 			if(viewId != null) {
 				if(viewId.equals("home"))
 					href = href + "home";
-				else {
-					UIComponent viewComponent = rightControl.findComponent(rightControl.getView());
-					if(viewComponent == null)
-						throw new FacesException("Cannot find component \"" + rightControl.getView() + "\" in view.");
-					
-					href = href + viewComponent.getClientId(facesContext);	
-				}
+				else
+					href = href + ComponentUtils.findComponentById(facesContext, facesContext.getViewRoot(), rightControl.getView()).getClientId(facesContext);
 			}
 			
 			writer.writeAttribute("href", href, null);

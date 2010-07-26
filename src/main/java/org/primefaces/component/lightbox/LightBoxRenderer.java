@@ -16,8 +16,10 @@
 package org.primefaces.component.lightbox;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -30,12 +32,29 @@ public class LightBoxRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		LightBox lightBox = (LightBox) component;
 		String clientId = lightBox.getClientId(facesContext);
+		String widgetVar = createUniqueWidgetVar(facesContext, lightBox);
+		
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		writer.write("var lightBoxTarget = PrimeFaces.escapeClientId('" + clientId + "')" + " + ' a';\n");
+		writer.write(widgetVar + " = jQuery(lightBoxTarget).colorbox({");
+		writer.write("transition:'" + lightBox.getTransition() + "'");
+		encodeCFG(facesContext, lightBox);
+		writer.write("});\n");
+		writer.write("});\n");
+		
+		writer.endElement("script");
 		
 		writer.startElement("div", lightBox);
 		writer.writeAttribute("id", clientId, "id");
+		if(lightBox.getStyle() != null)
+			writer.writeAttribute("style", lightBox.getStyle(), null);
+		if(lightBox.getStyleClass() != null)
+			writer.writeAttribute("class", lightBox.getStyleClass(), null);
 		
-		if(lightBox.getStyle() != null) writer.writeAttribute("style", lightBox.getStyle(), null);
-		if(lightBox.getStyleClass() != null) writer.writeAttribute("class", lightBox.getStyleClass(), null);
+		groupChildren(facesContext, lightBox);
 	}
 	
 	private void encodeCFG(FacesContext facesContext, LightBox lightBox) throws IOException {
@@ -62,14 +81,12 @@ public class LightBoxRenderer extends CoreRenderer {
 		}
 		if(!lightBox.isOverlayClose()) writer.write(",overlayClose:false");
 		if(lightBox.getCurrentTemplate() != null) writer.write(",current:'" + lightBox.getCurrentTemplate() + "'");
-		if(lightBox.isGroup()) writer.write(",rel:'" + clientId + "'");
 	}
 
 	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		LightBox lightBox = (LightBox) component;
-		String widgetVar = createUniqueWidgetVar(facesContext, lightBox);
 		String clientId = lightBox.getClientId(facesContext);
 		
 		if(lightBox.getFacet("inline") != null) {
@@ -86,16 +103,16 @@ public class LightBoxRenderer extends CoreRenderer {
 		}
 		
 		writer.endElement("div");
+	}
+	
+	private void groupChildren(FacesContext facesContext, LightBox lightBox) {
+		String clientId = lightBox.getClientId(facesContext);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("var lightBoxTarget = PrimeFaces.escapeClientId('" + clientId + "')" + " + ' a';\n");
-		writer.write(widgetVar + " = jQuery(lightBoxTarget).colorbox({");
-		writer.write("transition:'" + lightBox.getTransition() + "'");
-		encodeCFG(facesContext, lightBox);
-		writer.write("});");
-		
-		writer.endElement("script");
+		for (Iterator<UIComponent> iterator = lightBox.getChildren().iterator(); iterator.hasNext();) {
+			UIComponent kid = iterator.next();
+			
+			if(kid instanceof HtmlOutputLink)
+				((HtmlOutputLink) kid).setRel(clientId);
+		}
 	}
 }

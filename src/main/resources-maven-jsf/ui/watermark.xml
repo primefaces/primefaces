@@ -21,23 +21,8 @@
 			<type>java.lang.String</type>
 			<description>The text that will be visible as watermark</description>
 		</attribute>
-		<attribute>
-			<name>for</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id of the component to attach the watermark</description>
-		</attribute>
-		<attribute>
-			<name>forElement</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>jQuery selector to attach the watermark</description>
-		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>/primefaces/watermark/watermark.css</name>
-		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
@@ -45,7 +30,7 @@
 			<name>/jquery/plugins/watermark/watermark.min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/primefaces/watermark/watermark.css</name>
 		</resource>
 	</resources>
 </component>

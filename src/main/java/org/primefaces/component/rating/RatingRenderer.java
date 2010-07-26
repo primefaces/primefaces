@@ -24,7 +24,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.event.RateEvent;
 import org.primefaces.renderkit.CoreRenderer;
@@ -35,27 +34,22 @@ public class RatingRenderer extends CoreRenderer {
 	@Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		Rating rating = (Rating) component;
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap(); 
 		String clientId = rating.getClientId(facesContext);
-		String rateValue = params.get(clientId + "_input");
+		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap(); 
 		
-		if(rating.getRateListener() != null) {
-			RateEvent rateEvent;
+		boolean isRateEvent = params.containsKey(clientId);
+		
+		if(isRateEvent) {
+			String rateValue = params.get("rating");
 			
-			if(isValueBlank(rateValue))
-				rateEvent = new RateEvent(rating, null);
+			if(rateValue.equals(""))
+				rating.queueEvent(new RateEvent(rating, null));
 			else
-				rateEvent = new RateEvent(rating, Double.valueOf(rateValue));
-			
-			if(rating.isImmediate())
-				rateEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-			else
-				rateEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-			
-			rating.queueEvent(rateEvent);
+				rating.queueEvent(new RateEvent(rating, Double.valueOf(rateValue)));
 		}
 		else {
-			rating.setSubmittedValue(rateValue);
+			String regularValue = (String) params.get(clientId + "_input");
+			rating.setSubmittedValue(regularValue);
 		}
 	}
 
@@ -63,30 +57,39 @@ public class RatingRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Rating rating = (Rating) component;
 		
-		encodeMarkup(facesContext, rating);
 		encodeScript(facesContext, rating);
+		encodeMarkup(facesContext, rating);
 	}
 	
 	private void encodeScript(FacesContext facesContext, Rating rating) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = rating.getClientId(facesContext);
 		String ratingVar = createUniqueWidgetVar(facesContext, rating);
+		String formClientId = null;
+		
 		UIComponent form = ComponentUtils.findParentForm(facesContext, rating);
 		
-		if(form == null)
+		if(form != null)
+			formClientId = form.getClientId(facesContext);
+		else
 			throw new FacesException("Rating:" + clientId + " needs to be enclosed in a form when using an rateListener");
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		
 		writer.write(ratingVar + " = new PrimeFaces.widget.Rating('" + clientId +"'");
 		writer.write(",{");
 		if(rating.getRateListener() != null) {
 			writer.write("hasRateListener:true");
-			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
+			writer.write(",formClientId:'" + formClientId + "'");
 			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
-			writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, rating, rating.getUpdate()) + "'");
+			if(rating.getUpdate() != null)
+				writer.write(",update:'" + rating.getUpdate()+ "'");
 		}
+		writer.write("});\n");
+		
 		writer.write("});");
 		
 		writer.endElement("script");

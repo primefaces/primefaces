@@ -27,14 +27,6 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Boolean for only exporting the current displayed page</description>
-			<name>pageOnly</name>
-			<required>false</required>
-			<deferred-value>
-				<type>java.lang.Boolean</type>
-			</deferred-value>
-		</attribute>
-		<attribute>
 			<description>Comma seperated list of columns to be neglected</description>
 			<name>excludeColumns</name>
 			<required>false</required>
@@ -43,24 +35,17 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Character encoding to use in exporting the document.</description>
-			<name>encoding</name>
-			<deferred-value>
-				<type>java.lang.String</type>
-			</deferred-value>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Pre hook to manipulate exported document.]]></description>
 			<name>preProcessor</name>
 			<required>false</required>
+			<description><![CDATA[Pre hook to manipulate exported document.]]></description>
 			<deferred-method>
 				<method-signature>void preProcessor(java.lang.Object)</method-signature>
 			</deferred-method>
 		</attribute>
 		<attribute>
-			<description><![CDATA[Post hook to manipulate exported document.]]></description>
 			<name>postProcessor</name>
 			<required>false</required>
+			<description><![CDATA[Post hook to manipulate exported document.]]></description>
 			<deferred-method>
 				<method-signature>void postProcessor(java.lang.Object)</method-signature>
 			</deferred-method>
@@ -107,14 +92,6 @@
 			<required>true</required>
 			<deferred-value>
 				<type>java.lang.Object</type>
-			</deferred-value>
-		</attribute>
-		<attribute>
-			<description>Sets the content-disposition header .</description>
-			<name>contentDisposition</name>
-			<required>false</required>
-			<deferred-value>
-				<type>java.lang.String</type>
 			</deferred-value>
 		</attribute>
 	</tag>

@@ -47,16 +47,13 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 	
 	public void decode(FacesContext facesContext, UIComponent component) {
 		Tree tree = (Tree) component;
+		String clientId = tree.getClientId(facesContext);
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
 		
-		String clientId = tree.getClientId(facesContext);
-		String rowKeyParam = clientId + "_rowKey";
-		String actionParam = clientId + "_action";
-		String selectionParam = clientId + "_selection";
-		
-		if(params.containsKey(clientId) && params.containsKey(rowKeyParam) && params.containsKey(actionParam)) {
-			String rowKey = params.get(rowKeyParam);
-			String event = params.get(actionParam);
+		if(params.containsKey(clientId)) {
+			String rowKey = params.get(clientId + "_rowKey");
+			String event = params.get(clientId + "_event");
+			
 			TreeNode root = (TreeNode) tree.getValue();
 			TreeNode currentNode = treeExplorer.findTreeNode(rowKey, new TreeModel(root));
 			
@@ -69,43 +66,11 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 					currentNode.setExpanded(true);
 					tree.queueEvent(new NodeExpandEvent(tree, currentNode));
 				break;
-
+					
 				case COLLAPSE:
 					currentNode.setExpanded(false);
 					tree.queueEvent(new NodeCollapseEvent(tree, currentNode));
 				break;
-			}
-		}
-		
-		//Selection
-		if(params.containsKey(selectionParam)) {
-			String selectedNodesValue = params.get(selectionParam);
-			boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
-			
-			if(selectedNodesValue.equals("")) {
-				if(isSingle)
-					tree.setSelection(null);
-				else
-					tree.setSelection(new TreeNode[0]);
-			}
-			else {
-				String[] selectedRowKeys = selectedNodesValue.split(",");
-				TreeModel model = new TreeModel((TreeNode) tree.getValue());
-				
-				if(isSingle) {
-					TreeNode selectedNode = treeExplorer.findTreeNode(selectedRowKeys[0], model);
-					tree.setSelection(selectedNode);
-					
-				} else {
-					TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
-
-					for(int i = 0 ; i < selectedRowKeys.length; i++) {
-						selectedNodes[i] = treeExplorer.findTreeNode(selectedRowKeys[i], model);
-						model.setRowIndex(-1);	//reset
-					}
-					
-					tree.setSelection(selectedNodes);
-				}
 			}
 		}
 	}
@@ -124,32 +89,18 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
 		response.setContentType("text/xml");
 		
-		writer.write("<?xml version=\"1.0\" encoding=\"" + response.getCharacterEncoding() + "\"?>");
 		writer.write("<nodes>");
 		
 		for(Iterator<TreeNode> iterator = currentNode.getChildren().iterator(); iterator.hasNext();) {
 			TreeNode child = iterator.next();
-			UITreeNode uiTreeNode = tree.getUITreeNodeByType(child.getType());
 			
-			facesContext.getExternalContext().getRequestMap().put(tree.getVar(), child.getData());
 			writer.write("<node>");
-			
-				writer.write("<content>");
-				writer.startCDATA();
-				renderChildren(facesContext, uiTreeNode);
-				writer.endCDATA();
-				writer.write("</content>");
-				
+				writer.write("<label>" + child.toString() + "</label>");
 				writer.write("<rowKey>" + rowKey + "." + rowIndex + "</rowKey>");
 				writer.write("<isLeaf>" + child.isLeaf() + "</isLeaf>");
-				if(uiTreeNode.getStyleClass() != null) {
-					writer.write("<contentClass>" + uiTreeNode.getStyleClass() + "</contentClass>");
-				}
 			writer.write("</node>");
 			
 			rowIndex ++;
-			
-			facesContext.getExternalContext().getRequestMap().remove(tree.getVar());
 		}
 		
 		writer.write("</nodes>");
@@ -158,11 +109,11 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;
 		
-		encodeMarkup(facesContext, tree);
-		encodeScript(facesContext, tree);
+		encodeTreeWidget(facesContext, tree);
+		encodeTreeMarkup(facesContext, tree);
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Tree tree) throws IOException {
+	protected void encodeTreeWidget(FacesContext facesContext, Tree tree) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = tree.getClientId(facesContext);
 		String formClientId = null;
@@ -177,47 +128,37 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 			
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
-		//Nodes
-		writer.write(treeVar + " = new PrimeFaces.widget.TreeView('" + clientId + "', [\n");
-		if(root != null) {
-			int rowIndex = 0;
-			for(Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
-				encodeTreeNode(facesContext, tree, iterator.next(), String.valueOf(rowIndex));
-				rowIndex ++;
-				
-				if(iterator.hasNext())
-					writer.write(",");
-			}
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		writer.write(treeVar + " = new PrimeFaces.widget.TreeView('" + clientId + "_container', [\n");
+		
+		int rowIndex = 0;
+		for (Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
+			encodeTreeNode(facesContext, tree, iterator.next(), String.valueOf(rowIndex));
+			rowIndex ++;
+			
+			if(iterator.hasNext())
+				writer.write(",");
 		}
-		writer.write("],{");
+
+		writer.write("],{\n");
 		
 		//Config
-		writer.write("dynamic:" + tree.isDynamic());
-		writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
-		writer.write(",formId:'" + formClientId + "'");
-		writer.write(",cache:" + tree.isCache());
+		writer.write("toggleMode:'" + tree.getToggleMode() + "'");
 		
-		//Selection
-		if(tree.getSelectionMode() != null) {
-			writer.write(",selectionMode:'" + tree.getSelectionMode() + "'");
-			writer.write(",propagateHighlightDown:" + tree.isPropagateSelectionDown());
-			writer.write(",propagateHighlightUp:" + tree.isPropagateSelectionUp());
-			
-			if(tree.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, tree, tree.getUpdate()) + "'");
-			if(tree.getOnselectStart() != null) writer.write(",onselectStart:function(xhr){" + tree.getOnselectStart() + ";}");
-			if(tree.getOnselectComplete() != null) writer.write(",onselectComplete:function(xhr,status,args){" + tree.getOnselectComplete() + ";}");
+		if(!isClientToggling(tree)) {
+			writer.write(",clientId:'" + clientId + "'");
+			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
+			writer.write(",rowKeyFieldId:'" + clientId + "_rowKey'");
+			writer.write(",eventFieldId:'" + clientId + "_event'");
+			writer.write(",formClientId:'" + formClientId + "'");
+			writer.write(",cache:" + tree.isCache());
 		}
-		
-		if(tree.getNodeSelectListener() != null) writer.write(",hasSelectListener:true");
-		if(tree.getNodeExpandListener() != null) writer.write(",hasExpandListener:true");
-		if(tree.getNodeCollapseListener() != null) writer.write(",hasCollapseListener:true");
-		
 		if(tree.getOnNodeClick() != null) {
 			writer.write(",onNodeClick:" + tree.getOnNodeClick());
 		}
 		
-		writer.write("});\n");
+		writer.write("\n});\n");
 		
 		//Animations
 		if(tree.getExpandAnim() != null)
@@ -226,6 +167,8 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 			writer.write(treeVar + ".setCollapseAnim(YAHOO.widget.TVAnim." + tree.getCollapseAnim() + ");\n");
 		
 		writer.write(treeVar + ".render();\n");
+			
+		writer.write("});");
 
 		writer.endElement("script");
 	}
@@ -233,39 +176,28 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 	protected void encodeTreeNode(FacesContext facesContext, Tree tree, TreeNode node, String rowKey) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		int rowIndex = 0;
-		UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
 		
 		//On initial page load, if tree is set to expanded, mark all nodes as expanded
 		if(!isPostBack() && tree.isExpanded()) {
 			node.setExpanded(true);
 		}
 		
-		facesContext.getExternalContext().getRequestMap().put(tree.getVar(), node.getData());
-		writer.write("{html:'");
-		renderChildren(facesContext, uiTreeNode);
-		facesContext.getExternalContext().getRequestMap().remove(tree.getVar());
-
-		writer.write("',type:'html'");
-		writer.write(",rowKey:'" + rowKey + "'");
+		writer.write("{type:'text\', label:'" + node.toString() + "', rowKey:'" + rowKey + "'");
 		
-		if(node.isLeaf()) writer.write(",isLeaf:true");
-		if(uiTreeNode.getStyleClass() != null) writer.write(",contentStyle:'" + uiTreeNode.getStyleClass() + "'");
-		
-		if(node.isExpanded()) {
+		if(node.isLeaf())
+			writer.write(",isLeaf:true");
+		if(node.isExpanded())
 			writer.write(",expanded:true");
-			if(tree.isDynamic())
-				writer.write(",dynamicLoadComplete:true");
-		}
 		
-		if(node.isExpanded() || !tree.isDynamic()) {
+		if(isClientToggling(tree) && !node.isLeaf()) {
 			writer.write(",children:[");
 			
-			for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
+			for (Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
 				String childRowKey = rowKey + "." + rowIndex;
 				encodeTreeNode(facesContext, tree, iterator.next(), childRowKey);
 				
 				rowIndex ++;
-
+				
 				if(iterator.hasNext())
 					writer.write(",");
 			}
@@ -275,41 +207,40 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.write("}");
 	}
-
-	protected void encodeMarkup(FacesContext facesContext, Tree tree) throws IOException {
+	
+	protected void encodeTreeMarkup(FacesContext facesContext, Tree tree) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = tree.getClientId(facesContext);
-		boolean selectionEnabled = tree.getSelectionMode() != null;
 		
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
-		if(tree.getStyle() != null) writer.writeAttribute("style", tree.getStyle(), null);
-		if(tree.getStyleClass() != null) writer.writeAttribute("class", tree.getStyleClass(), null);
+		
+		encodeHiddenInput(facesContext, clientId + "_rowKey");
+		encodeHiddenInput(facesContext, clientId + "_event");
 		
 		writer.startElement("div", tree);
-		writer.writeAttribute("id", clientId + "_container", null);
-		if(selectionEnabled) {
-			String selectionClass = tree.getSelectionMode().equalsIgnoreCase("checkbox") ? "ygtv-checkbox" : "ygtv-highlight";
-			writer.writeAttribute("class", selectionClass, null);
-		}
+		writer.writeAttribute("id", clientId + "_container", null);		
 		writer.endElement("div");
-		
-		if(selectionEnabled) {
-			writer.startElement("input", null);
-			writer.writeAttribute("id", clientId + "_selection", null);
-			writer.writeAttribute("name", clientId + "_selection", null);
-			writer.writeAttribute("type", "hidden", null);
-			writer.endElement("input");
-		}
 		
 		writer.endElement("div");
 	}
 	
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-		//Do nothing
+	protected void encodeHiddenInput(FacesContext facesContext, String id) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.startElement("input", null);
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.endElement("input");
 	}
 	
-	public boolean getRendersChildren() {
-		return true;
+	protected boolean isClientToggling(Tree tree) {
+		String toggleMode = tree.getToggleMode();
+		
+		if(toggleMode == null)
+			return true;
+		else
+			return toggleMode.equalsIgnoreCase("client");
 	}
 }

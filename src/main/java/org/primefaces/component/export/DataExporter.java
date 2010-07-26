@@ -22,12 +22,12 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
-import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
 
 public class DataExporter implements ActionListener, StateHolder {
 
@@ -37,10 +37,6 @@ public class DataExporter implements ActionListener, StateHolder {
 	
 	private ValueExpression fileName;
 	
-	private ValueExpression encoding;
-	
-	private ValueExpression pageOnly;
-
 	private ValueExpression excludeColumns;
 	
 	private MethodExpression preProcessor;
@@ -49,15 +45,13 @@ public class DataExporter implements ActionListener, StateHolder {
 	
 	public DataExporter() {}
 
-	public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,ValueExpression exludeColumns, ValueExpression encoding, MethodExpression preProcessor, MethodExpression postProcessor) {
+	public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression exludeColumns, MethodExpression preProcessor, MethodExpression postProcessor) {
 		this.target = target;
 		this.type = type;
 		this.fileName = fileName;
-		this.pageOnly = pageOnly;
 		this.excludeColumns = exludeColumns;
 		this.preProcessor = preProcessor;
 		this.postProcessor = postProcessor;
-		this.encoding = encoding;
 	}
 
 	public void processAction(ActionEvent event){
@@ -67,30 +61,17 @@ public class DataExporter implements ActionListener, StateHolder {
 		String tableId = (String) target.getValue(elContext);
 		String exportAs = (String) type.getValue(elContext);
 		String outputFileName = (String) fileName.getValue(elContext);
-	
-		String encodingType = "UTF-8";
-		if(encoding != null) 
-			encodingType = (String) encoding.getValue(elContext);
-
 		int[] excludedColumnIndexes = null;
-		if(excludeColumns != null)
-			excludedColumnIndexes = resolveExcludedColumnIndexes((String) excludeColumns.getValue(elContext));
 		
-		boolean isPageOnly = false;
-		if(pageOnly != null) {
-			isPageOnly = pageOnly.isLiteralText() ? Boolean.valueOf(pageOnly.getValue(facesContext.getELContext()).toString()) : (Boolean) pageOnly.getValue(facesContext.getELContext());
+		if(excludeColumns != null) {
+			excludedColumnIndexes = resolveExcludedColumnIndexes((String) excludeColumns.getValue(elContext));
 		}
 		
 		try {
 			Exporter exporter = ExporterFactory.getExporterForType(exportAs);
-			UIComponent target = event.getComponent().findComponent(tableId);
-			if(target == null)
-				throw new FacesException("Cannot find component \"" + tableId + "\" in view.");
-			if(!(target instanceof DataTable))
-				throw new FacesException("Unsupported datasource target:\"" + target.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+			UIData table = (UIData) ComponentUtils.findComponentById(facesContext, facesContext.getViewRoot(), tableId);
 			
-			DataTable table = (DataTable) target;
-			exporter.export(facesContext, table, outputFileName, isPageOnly, excludedColumnIndexes, encodingType, preProcessor, postProcessor);
+			exporter.export(facesContext, table, outputFileName, excludedColumnIndexes, preProcessor, postProcessor);
 			
 			facesContext.responseComplete();
 		} catch (IOException e) {
@@ -122,24 +103,20 @@ public class DataExporter implements ActionListener, StateHolder {
 		target = (ValueExpression) values[0];
 		type = (ValueExpression) values[1];
 		fileName = (ValueExpression) values[2];
-		pageOnly = (ValueExpression) values[3];
-		excludeColumns = (ValueExpression) values[4];
-		preProcessor = (MethodExpression) values[5];
-		postProcessor = (MethodExpression) values[6];
-		encoding = (ValueExpression) values[7];
+		excludeColumns = (ValueExpression) values[3];
+		preProcessor = (MethodExpression) values[4];
+		postProcessor = (MethodExpression) values[5];
 	}
 
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[8];
+		Object values[] = new Object[6];
 
 		values[0] = target;
 		values[1] = type;
 		values[2] = fileName;
-		values[3] = pageOnly;
-		values[4] = excludeColumns;
-		values[5] = preProcessor;
-		values[6] = postProcessor;
-		values[7] = encoding;
+		values[3] = excludeColumns;
+		values[4] = preProcessor;
+		values[5] = postProcessor;
 		
 		return ((Object[]) values);
 	}

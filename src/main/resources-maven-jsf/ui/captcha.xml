@@ -36,12 +36,5 @@
 			<defaultValue>en</defaultValue>
 			<description>Key of the supported languages, default is "en"</description>
 		</attribute>
-		<attribute>
-			<name>tabindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-			<description>TabIndex value of the captcha</description>
-		</attribute>
 	</attributes>
 </component>

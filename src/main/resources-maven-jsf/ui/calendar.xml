@@ -9,7 +9,6 @@
 	<tag>calendar</tag>
 	<tagClass>org.primefaces.component.calendar.CalendarTag</tagClass>
 	<componentClass>org.primefaces.component.calendar.Calendar</componentClass>
-	<componentHandlerClass>org.primefaces.component.calendar.CalendarHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Calendar</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.CalendarRenderer</rendererType>
@@ -18,6 +17,12 @@
 	<attributes>
 		&input_component_attributes;
 		&widget_var_attribute;
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Displays a title text at the top of calendar</description>
+		</attribute>
 		<attribute>
 			<name>mindate</name>
 			<required>false</required>
@@ -31,6 +36,13 @@
 			<description>Sets calendar's maximum visible date. Can be java.lang.String or java.util.Date. If String, maxdate will be parsed with the format "MM/dd/yyyy". </description>
 		</attribute>
 		<attribute>
+			<name>selection</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>single</defaultValue>
+			<description>Sets calendar's selection mode, "single" selects only one date, "multiple" can select multiple dates. Default value is "single".</description>
+		</attribute>
+		<attribute>
 			<name>pages</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -38,11 +50,11 @@
 			<description>Enables multiple page rendering if more than 1, default value is 1.</description>
 		</attribute>
 		<attribute>
-			<name>disabled</name>
+			<name>close</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Disables the calendar.</description>
+			<defaultValue>true</defaultValue>
+			<description>Displays a close icon the top of calendar</description>
 		</attribute>
 		<attribute>
 			<name>mode</name>
@@ -68,24 +80,49 @@
 			<description>Locale for localization and date conversion, can be String or a java.util.Locale instance.</description>
 		</attribute>
 		<attribute>
+			<name>showWeekdays</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Determines rendering of weekday headers</description>
+		</attribute>
+		<attribute>
+			<name>monthFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Specifies display format of months, possible values are "short", "medium", "long"(default)</description>
+		</attribute>
+		<attribute>
+			<name>weekdayFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Determines rendering of weekday format, possible values are "1char", "short"(default), "medium", "long"</description>
+		</attribute>
+		<attribute>
+			<name>startWeekday</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Specifies first day of week, by default it's 0 corresponding to sunday</description>
+		</attribute>
+		<attribute>
 			<name>popupIcon</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>Icon of the popup button</description>
 		</attribute>
 		<attribute>
-			<name>popupIconOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>When enabled, popup icon is rendered without the button.</description>
-		</attribute>
-		<attribute>
 			<name>navigator</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+			<defaultValue>true</defaultValue>
 			<description>Enables month/year navigator</description>
+		</attribute>
+		<attribute>
+			<name>pagedate</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<description>Initial month and year shown on calendar in MM/yyyy format, can be a String or a java.util.Date.</description>
 		</attribute>
 		<attribute>
 			<name>timeZone</name>
@@ -94,115 +131,38 @@
 			<description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
 		</attribute>
 		<attribute>
-			<name>readOnlyInputText</name>
+			<name>showWeekHeader</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Makes input text of a popup calendar readonly.</description>
-		</attribute>
-			<attribute>
-			<name>onSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Specifies the components to update with ajax when a date is selected.</description>
+			<description>Determines displaying week headers.</description>
 		</attribute>
 		<attribute>
-			<name>selectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void selectListener()</method-signature>
-			<description>A server side listener to invoke instantly with ajax when a date is completed</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of the main container of calendar.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the main container of calendar.</description>
-		</attribute>
-		<attribute>
-			<name>inputStyle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of the input text of popup display.</description>
-		</attribute>
-		<attribute>
-			<name>inputStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the input text of popup display.</description>
-		</attribute>
-		<attribute>
-			<name>showButtonPanel</name>
+			<name>showWeekFooter</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies the visibility of button panel that contains today and done buttons.</description>
-		</attribute>
-		<attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Specifies the effect to use when displaying and hiding the calendar.</description>
-		</attribute>
-		<attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>normal</defaultValue>
-			<description>Specifies the speed of the display effect used.</description>
-		</attribute>
-		<attribute>
-			<name>showOn</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Specifies the event to display the overlay in popup mode, valid values are "focus", "button" and "both".</description>
-		</attribute>
-		<attribute>
-			<name>showWeek</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>When enabled, week number of year is displayed next to each week.</description>
-		</attribute>
-		<attribute>
-			<name>showOtherMonths</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>When enabled, days belonging to other months are displayed.</description>
-		</attribute>
-		<attribute>
-			<name>selectOtherMonths</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>When enabled, days belonging to other months become selectable.</description>
+			<description>Determines displaying week footer.</description>
 		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.datepicker.css</name>
+			<name>/yui/container/assets/skins/sam/container.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/calendar/assets/skins/sam/calendar.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>/yui/container/container-min.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/calendar/calendar.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/calendar/calendar_i18n.js</name>
+			<name>/yui/calendar/calendar-min.js</name>
 		</resource>
 	</resources>
 </component>

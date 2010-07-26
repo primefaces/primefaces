@@ -40,8 +40,8 @@ public class KeyboardRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Keyboard keyboard = (Keyboard) component;
 		
-		encodeMarkup(facesContext, keyboard);
 		encodeScript(facesContext, keyboard);
+		encodeMarkup(facesContext, keyboard);
 	}
 	
 	private void encodeScript(FacesContext facesContext, Keyboard keyboard) throws IOException {
@@ -51,7 +51,8 @@ public class KeyboardRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(var + " = new PrimeFaces.widget.Keyboard('" + clientId + "', {");
 		writer.write("showOn:'" + keyboard.getShowMode() + "'");
 		writer.write(",showAnim:'" + keyboard.getEffect() + "'");
@@ -73,7 +74,7 @@ public class KeyboardRenderer extends CoreRenderer {
 		if(keyboard.getClearLabel() != null) writer.write(",clearText:'" + keyboard.getClearLabel() + "'");
 		if(keyboard.getCloseLabel() != null) writer.write(",closeText:'" + keyboard.getCloseLabel() + "'");
 	
-		writer.write("});");
+		writer.write("});\n});\n");
 		
 		writer.endElement("script");
 	}

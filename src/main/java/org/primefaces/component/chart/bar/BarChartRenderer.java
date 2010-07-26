@@ -35,7 +35,7 @@ import org.primefaces.resource.ResourceUtils;
 public class BarChartRenderer extends BaseChartRenderer implements PartialRenderer {
 	
 	@Override
-	protected void encodeScript(FacesContext facesContext, UIChart chart) throws IOException{
+	protected void encodeChartScript(FacesContext facesContext, UIChart chart) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = chart.getClientId(facesContext);
 		String yfieldName = getFieldName(chart.getValueExpression("yfield"));
@@ -44,17 +44,16 @@ public class BarChartRenderer extends BaseChartRenderer implements PartialRender
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
-				
-		if(!chart.isLive()) {
+		writer.write("PrimeFaces.onContentReady(\"" + clientId + "\", function() {\n");
+		
+		if(!chart.isLive())
 			encodeLocalData(facesContext, chart, yfieldName, series);
-		}
 		
 		encodeDataSource(facesContext, chart, yfieldName, series);
 		encodeSeriesDef(facesContext, chart, series);
 		encodeChartWidget(facesContext, chart, clientId, yfieldName);
-		
-		writer.write("});");
+			
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}
@@ -148,11 +147,6 @@ public class BarChartRenderer extends BaseChartRenderer implements PartialRender
 		if(barChart.getTitleY() != null)
 			writer.write("yAxis.title = '" + barChart.getTitleY() + "';\n");
 		
-		if(barChart.getLabelFunctionX() != null)
-			writer.write("xAxis.labelFunction = '" + barChart.getLabelFunctionX() + "';\n");
-		if(barChart.getLabelFunctionY() != null)
-			writer.write("yAxis.labelFunction = '" + barChart.getLabelFunctionY() + "';\n");
-		
 		//Encode chart widget
 		writer.write(chartVar + " = new YAHOO.widget.BarChart(\"" + clientId + "\"," + getDataSourceVar(barChart) + ",{");
 		writer.write("yField:\"" + yfieldName + "\"");
@@ -169,10 +163,6 @@ public class BarChartRenderer extends BaseChartRenderer implements PartialRender
 		
 		if(barChart.getStyle() != null) {
 			writer.write(",style:" + barChart.getStyle() + "");
-		}
-		
-		if(chart.getDataTipFunction() != null) {
-			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
 		}
 		
 		writer.write(",xAxis:xAxis");

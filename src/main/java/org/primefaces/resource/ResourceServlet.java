@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.primefaces.resource.stream.CSSResourceStreamer;
 import org.primefaces.resource.stream.DefaultResourceStreamer;
 import org.primefaces.resource.stream.ResourceStreamer;
 
@@ -58,7 +59,7 @@ public class ResourceServlet extends HttpServlet {
 	private void initMimeTypes() {
 		mimeTypes = new HashMap<String, String>();
 		mimeTypes.put("css", "text/css");
-		mimeTypes.put("js", "text/javascript");
+		mimeTypes.put("js", "text/js");
 		mimeTypes.put("jpg", "image/jpeg");
 		mimeTypes.put("jpeg", "image/jpeg");
 		mimeTypes.put("png", "image/png");
@@ -69,6 +70,7 @@ public class ResourceServlet extends HttpServlet {
 	private void initResourceStreamers() {
 		resourceStreamers = new ArrayList<ResourceStreamer>();
 		resourceStreamers.add(new DefaultResourceStreamer());
+		resourceStreamers.add(new CSSResourceStreamer());
 	}
 
 	@Override
@@ -104,10 +106,7 @@ public class ResourceServlet extends HttpServlet {
 	    catch (Exception exception) {
 	    	logger.log(Level.SEVERE, "Error in streaming resource \"{0}\". Exception is \"{1}\"", new Object[]{resourcePath, exception.getMessage()});
 	    } finally {
-	    	if(inputStream != null) {
-	    		inputStream.close();
-	    	}
-	    	
+	    	inputStream.close();
 	    	resp.getOutputStream().flush();
 	    	resp.getOutputStream().close();
 	    }
@@ -129,11 +128,6 @@ public class ResourceServlet extends HttpServlet {
 	}
 
 	protected String getResourcePath(String requestURI) {
-		int jsessionidIndex = requestURI.toLowerCase().indexOf(";jsessionid");
-		if(jsessionidIndex != -1) {
-			requestURI = requestURI.substring(0, jsessionidIndex);
-		}
-		
 		int patternIndex = requestURI.indexOf(ResourceUtils.RESOURCE_VERSION_PATTERN);
 		
 		return requestURI.substring(patternIndex + ResourceUtils.RESOURCE_VERSION_PATTERN.length(), requestURI.length());

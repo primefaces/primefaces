@@ -15,9 +15,7 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-
-public class TreeExplorerImpl implements TreeExplorer, Serializable {
+public class TreeExplorerImpl implements TreeExplorer {
 
 	public TreeNode findTreeNode(String path, TreeModel model) {
 		String[] paths = path.split("\\.");

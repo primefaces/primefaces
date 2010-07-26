@@ -73,9 +73,6 @@
 			<name>/jquery/plugins/anythingslider/jquery.easing.1.2.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
-		</resource>
-		<resource>
 			<name>/primefaces/tabslider/tabslider.js</name>
 		</resource>
 	</resources>

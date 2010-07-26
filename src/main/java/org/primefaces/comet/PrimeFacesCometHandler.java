@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -36,8 +35,6 @@ import org.atmosphere.cpr.AtmosphereHandler;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.primefaces.application.PrimeFacesPhaseListener;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
 
 @SuppressWarnings("unchecked")
 public class PrimeFacesCometHandler implements AtmosphereHandler {
@@ -106,32 +103,14 @@ public class PrimeFacesCometHandler implements AtmosphereHandler {
 		HttpServletRequest request = (HttpServletRequest) event.getResource().getRequest();
 		HttpServletResponse response = ((HttpServletResponse) event.getResource().getResponse());
 
-		Object msg = event.getMessage();
-		String jsonData = null;
-		try {
-			jsonData = isBean(msg) ? "{\"data\":" + new JSONObject(msg).toString() + "}" : new JSONObject().put("data", msg.toString()).toString();
-		} catch (JSONException e) {
-			throw new FacesException(e.getMessage());
-		}
-
+		String msg = (String) event.getMessage();
 		String widget = request.getParameter("widget");
-		String script = "<script type=\"text/javascript\">window.parent." + widget + ".handlePublish(" + jsonData + ");</script>";
+		String script = "<script type=\"text/javascript\">window.parent." + widget + ".handlePublish('" + msg + "');</script>";
 			
 		response.getWriter().write(script);
 		response.getWriter().flush();
 
 		if(logger.isLoggable(Level.FINE))
-			logger.log(Level.FINE, "Publishing to \"{0}\" has completed", request.getRemoteAddr());
-	}
-	
-	private boolean isBean(Object value) {
-		if(value == null)
-			return false;
-		
-		if(value instanceof Boolean || value instanceof String || value instanceof Number) {
-			return false;
-	    }
-		
-		return true;
+			logger.log(Level.FINE, "Publishing to \"{0}\" has subscribed", request.getRemoteAddr());
 	}
 }

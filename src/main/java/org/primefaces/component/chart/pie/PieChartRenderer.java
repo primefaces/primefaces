@@ -32,7 +32,7 @@ import org.primefaces.resource.ResourceUtils;
 public class PieChartRenderer extends BaseChartRenderer implements PartialRenderer {
 	
 	@Override
-	protected void encodeScript(FacesContext facesContext, UIChart uichart) throws IOException{
+	protected void encodeChartScript(FacesContext facesContext, UIChart uichart) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		PieChart chart = (PieChart) uichart;
 		String clientId = chart.getClientId(facesContext);
@@ -43,16 +43,15 @@ public class PieChartRenderer extends BaseChartRenderer implements PartialRender
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
+		writer.write("PrimeFaces.onContentReady(\"" + clientId + "\", function() {\n");
 		
-		if(!chart.isLive()) {
+		if(!chart.isLive())
 			encodeLocalData(facesContext, chart, categoryFieldName, dataFieldName);
-		}
 		
 		encodeDataSource(facesContext, chart, categoryFieldName, dataFieldName);
 		encodeChartWidget(facesContext, chart, clientId, categoryFieldName, dataFieldName);
 		
-		writer.write("});");
+		writer.write("});\n");
 
 		writer.endElement("script");
 	}
@@ -144,10 +143,7 @@ public class PieChartRenderer extends BaseChartRenderer implements PartialRender
 			writer.write(",style:" + chart.getStyle() + "");
 		}
 		if(chart.getSeriesStyle() != null) {
-			writer.write(",series: [{ style: " + chart.getSeriesStyle() + " }]");
-		}
-		if(chart.getDataTipFunction() != null) {
-			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
+			writer.write(",series: [{ style: " + chart.getSeriesStyle() + " }] ");
 		}
 		
 		writer.write("});\n");
