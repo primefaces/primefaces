@@ -110,8 +110,8 @@
 		<attribute>
 			<name>sizeLimit</name>
 			<required>false</required>
-			<type>java.lang.Long</type>
-			<defaultValue>java.lang.Long.MAX_VALUE</defaultValue>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
 			<description>
 				Number of maximum bytes that is allowed for a file size.
 			</description>
@@ -130,18 +130,6 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<description>When customUI is turned on, upload and cancel controls won't be rendered and page authors can create their own ui using client side api.</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of the main container of fileUpload.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the main container of fileUpload.</description>
 		</attribute>
 	</attributes>
 	<resources>

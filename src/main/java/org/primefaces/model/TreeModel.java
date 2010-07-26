@@ -15,11 +15,9 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-
 import javax.faces.model.DataModel;
 
-public class TreeModel extends DataModel implements Serializable {
+public class TreeModel extends DataModel {
 
 	private Object wrappedData = null;	
 	private int rowIndex = -1;

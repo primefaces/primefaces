@@ -20,11 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseListener;
 
 /**
  * Custom UIViewRoot wrapper to be used only in partial tree processing
@@ -46,7 +43,6 @@ public class PartialViewRoot extends UIViewRoot {
 		this.base = base;
 		children = new ArrayList<UIComponent>();
 		parents = new ArrayList<UIComponent>();
-		this.getViewMap().putAll(base.getViewMap());
 	}
 
 	public UIViewRoot getBase() {
@@ -88,94 +84,5 @@ public class PartialViewRoot extends UIViewRoot {
 	@Override
 	public Map<String, Object> getAttributes() {
 		return base.getAttributes();
-	}
-	
-	public void restoreBase() {
-		for (int i = 0; i < getChildCount(); i++) {
-			UIComponent kid = getChildren().get(i);
-			kid.setParent(getParents().get(i));
-		}
-		
-		this.base.getViewMap(true).putAll(this.getViewMap());
-	}
-
-	@Override
-	public void addPhaseListener(PhaseListener phaseListener) {
-		base.addPhaseListener(phaseListener);
-	}
-
-	@Override
-	public MethodExpression getAfterPhaseListener() {
-		return base.getAfterPhaseListener();
-	}
-
-	@Override
-	public MethodExpression getBeforePhaseListener() {
-		return base.getBeforePhaseListener();
-	}
-
-	@Override
-	public String getClientId(FacesContext context) {
-		return base.getClientId(context);
-	}
-
-	@Override
-	public String getFamily() {
-		return base.getFamily();
-	}
-
-	@Override
-	public String getId() {
-		return base.getId();
-	}
-
-	@Override
-	public boolean isRendered() {
-		return base.isRendered();
-	}
-
-	@Override
-	public void removePhaseListener(PhaseListener phaseListener) {
-		base.removePhaseListener(phaseListener);
-	}
-
-	@Override
-	public void restoreState(FacesContext facesContext, Object state) {
-		base.restoreState(facesContext, state);
-	}
-
-	@Override
-	public Object saveState(FacesContext facesContext) {
-		return base.saveState(facesContext);
-	}
-
-	@Override
-	public void setAfterPhaseListener(MethodExpression afterPhaseListener) {
-		super.setAfterPhaseListener(afterPhaseListener);
-	}
-
-	@Override
-	public void setBeforePhaseListener(MethodExpression beforePhaseListener) {
-		base.setBeforePhaseListener(beforePhaseListener);
-	}
-
-	@Override
-	public void setLocale(Locale locale) {
-		base.setLocale(locale);
-	}
-
-	@Override
-	public void setRendered(boolean state) {
-		base.setRendered(state);
-	}
-
-	@Override
-	public void setRenderKitId(String renderKitId) {
-		base.setRenderKitId(renderKitId);
-	}
-
-	@Override
-	public void setViewId(String viewId) {
-		base.setViewId(viewId);
 	}
 }

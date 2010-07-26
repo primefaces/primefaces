@@ -19,9 +19,7 @@ import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ResizeEvent;
-import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.LayoutUnitToggleEvent;
 import org.primefaces.facelets.MethodRule;
 
 public class LayoutHandler extends ComponentHandler {
@@ -33,10 +31,9 @@ public class LayoutHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
+		Class[] eventClasses = new Class[]{LayoutUnitToggleEvent.class};
 		
-		metaRuleset.addRule(new MethodRule("toggleListener", null, new Class[]{ToggleEvent.class}));
-		metaRuleset.addRule(new MethodRule("closeListener", null, new Class[]{CloseEvent.class}));
-		metaRuleset.addRule(new MethodRule("resizeListener", null, new Class[]{ResizeEvent.class}));
+		metaRuleset.addRule(new MethodRule("toggleListener", null, eventClasses));
 		
 		return metaRuleset;  
 	} 

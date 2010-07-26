@@ -1,6 +1,9 @@
-jQuery(document).ready(function() {
-	jQuery('body').addClass('yui-skin-sam');
-});
+YAHOO.util.Event.onDOMReady(
+	function() {
+		if(!YAHOO.util.Dom.hasClass(document.body, "yui-skin-sam"))
+			YAHOO.util.Dom.addClass(document.body, "yui-skin-sam");
+	}
+);
 
 PrimeFaces = {
 
@@ -95,13 +98,10 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
 		dataType : "xml",
 		data : requestParams,
 		success : function(data, status, xhr) {
-			if(cfg.onsuccess) {
-				var value = cfg.onsuccess(data, status, xhr, this.args);
-				if(value === false)
-					return;
-			}
-		
 			PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+			if(cfg.onsuccess) {
+				cfg.onsuccess(data, status, xhr, this.args);
+			}
 		},
 		complete : function(xhr, status) {
 			if(cfg.oncomplete) {
@@ -130,40 +130,34 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
 }
 
 PrimeFaces.ajax.AjaxResponse = function(responseXML) {
-	var xmlDoc = responseXML.documentElement;
+	var xmlDoc = responseXML.documentElement,
+	components = xmlDoc.getElementsByTagName("component"),
+	state = xmlDoc.getElementsByTagName("state")[0].firstChild.data,
+	callbackParams = xmlDoc.getElementsByTagName("callbackParam");
 	
-	var redirect = xmlDoc.getElementsByTagName("redirect-url");
-	if(redirect.length > 0) {
-		window.location = redirect[0].firstChild.data;
-	} else {
-		var components = xmlDoc.getElementsByTagName("component"),
-		state = xmlDoc.getElementsByTagName("state")[0].firstChild.data,
-		callbackParams = xmlDoc.getElementsByTagName("callbackParam");
+	PrimeFaces.ajax.AjaxUtils.updateState(state);
+	
+	for(var i=0; i < components.length; i++) {
+		var clientId = components[i].childNodes[0].firstChild.data,
+		output = components[i].childNodes[1].firstChild.data;
 		
-		PrimeFaces.ajax.AjaxUtils.updateState(state);
+		//Replace any statemarkers with actual state
+		var filteredOutput = output.replace(PrimeFaces.ajax.AjaxUtils.STATE_MARKER_EXPR, state);
 		
-		for(var i=0; i < components.length; i++) {
-			var clientId = components[i].childNodes[0].firstChild.data,
-			output = components[i].childNodes[1].firstChild.data;
-			
-			//Replace any statemarkers with actual state
-			var filteredOutput = output.replace(PrimeFaces.ajax.AjaxUtils.STATE_MARKER_EXPR, state);
-			
-			jQuery(PrimeFaces.escapeClientId(clientId)).replaceWith(filteredOutput);
-		}
-		
-		var args = {};
-		for(var j=0; j < callbackParams.length; j++) {
-			var jsonObj = jQuery.parseJSON(callbackParams[j].firstChild.data);
-			
-			for(var paramName in jsonObj) {
-				if(paramName)
-					args[paramName] = jsonObj[paramName];
-			}
-		}
-		
-		this.args = args;
+		jQuery(PrimeFaces.escapeClientId(clientId)).replaceWith(filteredOutput);
 	}
+	
+	var args = {};
+	for(var j=0; j < callbackParams.length; j++) {
+		var jsonObj = YAHOO.lang.JSON.parse(callbackParams[j].firstChild.data);
+		
+		for(var paramName in jsonObj) {
+			if(paramName)
+				args[paramName] = jsonObj[paramName];
+		}
+	}
+	
+	this.args = args;
 }
 
 PrimeFaces.ajax.RequestManager = {

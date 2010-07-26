@@ -12,11 +12,6 @@
 	<rendererType>org.primefaces.component.PollRenderer</rendererType>
 	<rendererClass>org.primefaces.component.poll.PollRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -112,15 +107,6 @@
 			<defaultValue>false</defaultValue>
 			<description>
 				When set to true, ajax requests will not be queued.
-			</description>
-		</attribute>
-		<attribute>
-			<name>autoStart</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>
-				In autoStart mode, polling starts automatically on page load, to start polling on demand set to false.
 			</description>
 		</attribute>
 	</attributes>

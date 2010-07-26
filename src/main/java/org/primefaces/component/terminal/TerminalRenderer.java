@@ -32,8 +32,8 @@ public class TerminalRenderer extends CoreRenderer implements PartialRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Terminal terminal = (Terminal) component;
 		
-		encodeMarkup(facesContext, terminal);
 		encodeScript(facesContext, terminal);
+		encodeMarkup(facesContext, terminal);
 	}
 
 	private void encodeMarkup(FacesContext facesContext, Terminal terminal) throws IOException {
@@ -52,7 +52,8 @@ public class TerminalRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(var + " = new PrimeFaces.widget.Terminal('" + clientId + "', {");
 		writer.write("PS1:'" + terminal.getPrompt() + "'");
 		writer.write(",clientId:'" + clientId + "'");
@@ -61,7 +62,7 @@ public class TerminalRenderer extends CoreRenderer implements PartialRenderer {
   		if(terminal.getWelcomeMessage() != null) writer.write(",WELCOME_MESSAGE:'" + terminal.getWelcomeMessage() + "'");
 		if(terminal.getWidth() != null) writer.write(",WIDTH:'" + terminal.getWidth() + "'");
 		if(terminal.getHeight() != null) writer.write(",HEIGHT:'" + terminal.getHeight() + "'");
-		writer.write("});");
+		writer.write("});});\n");
 		
 		writer.endElement("script");
 	}

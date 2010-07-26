@@ -75,6 +75,9 @@
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
+			<name>/jquery/plugins/imageswitch/imageswitch.js</name>
+		</resource>
+		<resource>
 			<name>/primefaces/core/core.js</name>
 		</resource>
 		<resource>

@@ -29,8 +29,8 @@ public class InplaceRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Inplace inplace = (Inplace) component;
 		
-		encodeMarkup(facesContext, inplace);
 		encodeScript(facesContext, inplace);
+		encodeMarkup(facesContext, inplace);
 	}
 
 	private void encodeMarkup(FacesContext facesContext, Inplace inplace) throws IOException {
@@ -75,11 +75,12 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(var + " = new PrimeFaces.widget.Inplace('" + clientId + "', {");
 		writer.write("effect:'" + inplace.getEffect() + "'");
 		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
 		if(inplace.isDisabled()) writer.write(",disabled:true");
-		writer.write("});");
+		writer.write("});});");
 		writer.endElement("script");
 	}
 	

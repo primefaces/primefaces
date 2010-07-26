@@ -12,10 +12,9 @@ public class FileDownloadTag extends TagSupport {
 
 	private ValueExpression value;
 	
-	private ValueExpression contentDisposition;
-
 	public int doStartTag() throws JspException {
-		ActionListener actionListener = new FileDownloadActionListener(value, contentDisposition);
+
+		ActionListener actionListener = new FileDownloadActionListener(value);
 
 		UIComponentClassicTagBase tag = UIComponentClassicTagBase.getParentUIComponentClassicTagBase(pageContext);
 
@@ -38,16 +37,7 @@ public class FileDownloadTag extends TagSupport {
 		this.value = value;
 	}
 	
-	public ValueExpression getContentDisposition() {
-		return contentDisposition;
-	}
-
-	public void setContentDisposition(ValueExpression contentDisposition) {
-		this.contentDisposition = contentDisposition;
-	}
-	
 	public void release() {
 		value = null;
-		contentDisposition = null;
 	}
 }

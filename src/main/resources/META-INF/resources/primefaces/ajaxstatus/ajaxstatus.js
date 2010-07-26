@@ -3,8 +3,9 @@ PrimeFaces.widget.AjaxStatus = function(clientId) {
 }
 
 PrimeFaces.widget.AjaxStatus.prototype.bindFacet = function(eventName, facetToShow) {
-	jQuery(this.clientId).bind(eventName, function() {
-		jQuery(this).children().hide();
+	var childrenSelector = this.clientId + " div";
+	jQuery(document).bind(eventName, function() {
+		jQuery(childrenSelector).hide();
 	
 		jQuery(PrimeFaces.escapeClientId(facetToShow)).show();
 	});

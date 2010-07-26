@@ -1,10 +1,9 @@
 package org.primefaces.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DualListModel<T> implements Serializable {
+public class DualListModel<T> {
 
 	private List<T> source = new ArrayList<T>();
 	private List<T> target = new ArrayList<T>();

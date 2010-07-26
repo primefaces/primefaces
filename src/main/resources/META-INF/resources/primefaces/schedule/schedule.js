@@ -3,14 +3,17 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	this.cfg = cfg;
 	this.setupEventSource();
 	
-	if(this.cfg.language)
+	if(this.cfg.language) {
 	    this.applyLocale();
+	}
 	
-	if(this.cfg.hasEventDialog) 
+	if(this.cfg.hasEventDialog) {
 		this.createEventDialog();
+	}
 
-	if(this.cfg.editable)
+	if(this.cfg.editable) {
 		this.setupEventHandlers();
+	}
 	
 	jQuery(PrimeFaces.escapeClientId(this.clientId) + "_container").fullCalendar(this.cfg);
 }
@@ -29,75 +32,97 @@ PrimeFaces.widget.Schedule.prototype.applyLocale = function() {
 }
 
 PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
-	var scope = this;
-
+	var clientId = this.clientId,
+	cfg = this.cfg,
+	dialog = this.dialog;
+		
 	this.cfg.dayClick = function(dayDate, allDay, jsEvent, view) {
 		var params = {};
-		params[scope.clientId] = scope.clientId;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = scope.clientId;
-		params[scope.clientId + '_selectedDate'] = dayDate.getTime();
+		params[PrimeFaces.PARTIAL_SOURCE_PARAM] = clientId;
+		params[clientId] = clientId;
+		params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
+		params[clientId + '_selectedDate'] = dayDate.toUTCString();
 		
-		if(scope.cfg.onDateSelectUpdate) params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.onDateSelectUpdate;
-		else if(scope.cfg.hasEventDialog) params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.dialogClientId;
+		var requestParams = "";
+		requestParams = jQuery(PrimeFaces.escapeClientId(cfg.formId)).serialize();
+		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
 		
-		var config = {formId:scope.cfg.formId};
-		
-		if(scope.cfg.hasEventDialog && scope.cfg.onDateSelectUpdate == undefined) {
-			config.oncomplete = function() { 
-				scope.dialog.show();
-			};
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(scope.cfg.url, config, params);
+		jQuery.ajax({
+			   type: "POST",
+			   url: cfg.url,
+			   data: requestParams,
+			   dataType: "html",
+			   success: function(response){
+					jQuery(PrimeFaces.escapeClientId(clientId) + "_dialogContainer_bd").html(response);
+					dialog.show();
+			   }
+			 });
 	}
 
 	this.cfg.eventClick = function(calEvent, jsEvent, view) {
 		var params = {};
-		params[scope.clientId] = scope.clientId;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = scope.clientId;
-		params[scope.clientId + '_selectedEventId'] = calEvent.id;
+		params[PrimeFaces.PARTIAL_SOURCE_PARAM] = clientId;
+		params[clientId] = clientId;
+		params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
+		params[clientId + '_selectedEventId'] = calEvent.id;
 		
-		if(scope.cfg.onEventSelectUpdate) params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.onEventSelectUpdate;
-		else if(scope.cfg.hasEventDialog) params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.dialogClientId;
+		var requestParams = "";
+		requestParams = jQuery(PrimeFaces.escapeClientId(cfg.formId)).serialize();
+		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
 		
-		var config = {formId:scope.cfg.formId};
-		
-		if(scope.cfg.hasEventDialog && scope.cfg.onEventSelectUpdate == undefined) {
-			config.oncomplete = function() { 
-				scope.dialog.show();
-			};
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(scope.cfg.url, config, params);
+		jQuery.ajax({
+			   type: "POST",
+			   url: cfg.url,
+			   data: requestParams,
+			   dataType: "html",
+			   success: function(response){
+					jQuery(PrimeFaces.escapeClientId(clientId) + "_dialogContainer_bd").html(response);
+					dialog.show();
+			   }
+			 });
 	}
 	
 	this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
 		var params = {};
-		params[scope.clientId] = scope.clientId;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = scope.clientId;
-		params[scope.clientId + '_changedEventId'] = calEvent.id;
-		params[scope.clientId + '_dayDelta'] = dayDelta;
-		params[scope.clientId + '_minuteDelta'] = minuteDelta;
+		params[PrimeFaces.PARTIAL_SOURCE_PARAM] = clientId;
+		params[clientId] = clientId;
+		params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
+		params[clientId + '_movedEventId'] = calEvent.id;
+		params['dayDelta'] = dayDelta;
+		params['minuteDelta'] = minuteDelta;
 		
-		if(scope.cfg.onEventMoveUpdate) 
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.onEventMoveUpdate;
+		var requestParams = "";
+		requestParams = jQuery(PrimeFaces.escapeClientId(cfg.formId)).serialize();
+		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
 		
-		PrimeFaces.ajax.AjaxRequest(scope.cfg.url, {formId:scope.cfg.formId}, params);
+		jQuery.ajax({
+			   type: "POST",
+			   url: cfg.url,
+			   data: requestParams,
+			   dataType: "json"
+			 });
 	}
 	
 	this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
 		var params = {};
-		params[scope.clientId] = scope.clientId;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = scope.clientId;
-		params[scope.clientId + '_changedEventId'] = calEvent.id;
-		params[scope.clientId + '_dayDelta'] = dayDelta;
-		params[scope.clientId + '_minuteDelta'] = minuteDelta;
-		params[scope.clientId + '_resized'] = true;
+		params[PrimeFaces.PARTIAL_SOURCE_PARAM] = clientId;
+		params[clientId] = clientId;
+		params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
+		params[clientId + '_movedEventId'] = calEvent.id;
+		params['dayDelta'] = dayDelta;
+		params['minuteDelta'] = minuteDelta;
+		params['resized'] = true;
 		
-		if(scope.cfg.onEventResizeUpdate) 
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.onEventResizeUpdate;
+		var requestParams = "";
+		requestParams = jQuery(PrimeFaces.escapeClientId(cfg.formId)).serialize();
+		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
 		
-		PrimeFaces.ajax.AjaxRequest(scope.cfg.url, {formId:scope.cfg.formId}, params);
+		jQuery.ajax({
+			   type: "POST",
+			   url: cfg.url,
+			   data: requestParams,
+			   dataType: "json"
+			 });
 	}
 }
 
@@ -112,8 +137,8 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
 		var params = {};
 		params[PrimeFaces.PARTIAL_SOURCE_PARAM] = clientId;
 		params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-		params[clientId + "_start"] = start.getTime();
-		params[clientId + "_end"] = end.getTime();
+		params[clientId + "_start"] = start.toUTCString();
+		params[clientId + "_end"] = end.toUTCString();
 		
 		requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
 		
@@ -234,27 +259,5 @@ PrimeFaces.widget.ScheduleResourceBundle = {
             week : "\u9031",
             day : "\u65e5",
 			allDayText : "\u7d42-\u65e5"
-		},
-		fi :{
-			monthNamesShort : ["Tammi", "Helmi", "Maalis", "Huhti", "Touko", "Kes\u00E4", "Hein\u00E4", "Elo", "Syys", "Loka", "Marras", "Joulu"],
-			monthNames : ["Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kes\u00E4kuu", "Hein\u00E4kuu", "Elokuu", "Syyskuu", "Lokakuu", "Marraskuu", "Joulukuu"],
-			dayNamesShort : ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"],
-			dayNames : ["Sunnuntai", "Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai"],
-			today : "t\u00E4n\u00E4\u00E4n",
-			month : "kuukausi",
-			week : "viikko",
-			day : "p\u00E4iv\u00E4",
-			allDayText : "koko p\u00E4iv\u00E4"
-		},
-		hu :{
-			monthNamesShort : ["Jan", "Feb", "M\u00e1r", "\u00c1pr", "M\u00e1j", "J\u00fan", "J\u00fal", "Aug", "Szep", "Okt", "Nov", "Dec"],
-			monthNames : ["Janu\u00e1r", "Febru\u00e1r", "M\u00e1rcius", "\u00c1prilis", "M\u00e1jus", "J\u00fanius", "J\u00falius", "Augusztus", "Szeptember", "Okt\u00f3ber", "November", "December"],
-			dayNamesShort : [ "Vas", "H\u00e9t", "Ked", "Sze", "Cs\u00fc", "P\u00e9n", "Szo"],
-			dayNames : ["Vas\u00e1rnap", "H\u00e9tf\u0151", "Kedd", "Szerda", "Cs\u00fct\u00f6rt\u00f6k", "P\u00e9ntek", "Szombat"],
-			today : "ma",
-			month : "h\u00f3nap",
-			week : "h\u00e9t",
-			day : "nap",
-			allDayText : "eg\u00e9sz nap"
 		}
 }

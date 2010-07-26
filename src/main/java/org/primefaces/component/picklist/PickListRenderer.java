@@ -48,8 +48,8 @@ public class PickListRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		PickList pickList = (PickList) component;
 		
-		encodeMarkup(facesContext, pickList);
 		encodeScript(facesContext, pickList);
+		encodeMarkup(facesContext, pickList);
 	}
 	
 	private void encodeScript(FacesContext facesContext, PickList pickList) throws IOException {
@@ -59,8 +59,10 @@ public class PickListRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
-		writer.write(widgetVar + " = new PrimeFaces.widget.PickList('" + clientId + "', {});");		
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		writer.write(widgetVar + " = new PrimeFaces.widget.PickList('" + clientId + "', {});\n");		
+		writer.write("});");
 		
 		writer.endElement("script");
 	}
@@ -82,7 +84,7 @@ public class PickListRenderer extends CoreRenderer {
 		
 		//Source
 		writer.startElement("td", null);
-		encodeList(facesContext, pickList, clientId + "_source", widgetVar, "ui-picklist-source", model.getSource());
+		encodeList(facesContext, pickList, clientId + "_source", widgetVar, "pf-picklist-source", model.getSource());
 		writer.endElement("td");
 		
 		//Controls
@@ -102,7 +104,7 @@ public class PickListRenderer extends CoreRenderer {
 		
 		//Target
 		writer.startElement("td", null);
-		encodeList(facesContext, pickList, clientId + "_target", widgetVar, "ui-picklist-target", model.getTarget());
+		encodeList(facesContext, pickList, clientId + "_target", widgetVar, "pf-picklist-target", model.getTarget());
 		writer.endElement("td");
 		
 		writer.endElement("tr");
@@ -115,7 +117,7 @@ public class PickListRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 
 		writer.startElement("div", null);
-		writer.writeAttribute("class", "ui-picklist-control", null);
+		writer.writeAttribute("class", "pf-picklist-control", null);
 		
 		writer.startElement("button", null);
 		writer.writeAttribute("type", "push", null);
@@ -133,7 +135,7 @@ public class PickListRenderer extends CoreRenderer {
 		
 		if(control != null) {
 			writer.startElement("div", null);
-			writer.writeAttribute("class", "ui-picklist-control", null);
+			writer.writeAttribute("class", "pf-picklist-control", null);
 			
 			ComponentUtils.decorateAttribute(control, "onclick", widgetVar + "." + facet + "();return false;");
 			renderChild(facesContext, control);
@@ -145,7 +147,7 @@ public class PickListRenderer extends CoreRenderer {
 	@SuppressWarnings("unchecked")
 	private void encodeList(FacesContext facesContext, PickList  pickList, String listId, String widgetVar, String styleClass, List model) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String method = styleClass.equals("ui-picklist-source") ? ".add();" : ".remove();";
+		String method = styleClass.equals("pf-picklist-source") ? ".add();" : ".remove();";
 		
 		writer.startElement("select", null);
 		writer.writeAttribute("id", listId, "id");

@@ -15,8 +15,8 @@ PrimeFaces.widget.ChartUtils = {
 		
 		var params = {};
 		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = cfg.clientId;
+		params['seriesIndex'] = event.index;
 		params['itemIndex'] = event.index;
-		params['seriesIndex'] = event.seriesIndex;
 		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = cfg.update;
 		params[cfg.clientId] = cfg.clientId;
 		

@@ -40,8 +40,8 @@ public class PasswordRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Password password = (Password) component;
 		
-		encodeMarkup(facesContext, password);
 		encodeScript(facesContext, password);
+		encodeMarkup(facesContext, password);
 	}
 	
 	private void encodeScript(FacesContext facesContext, Password password) throws IOException {
@@ -52,8 +52,7 @@ public class PasswordRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
-
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write(var + " = new PrimeFaces.widget.Password('" + clientId + "', {");
 		
 		writer.write("length:" + password.getMinLength());
@@ -78,7 +77,6 @@ public class PasswordRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "password", null);
-		writer.writeAttribute("autocomplete", password.isAutocomplete(), "autocomplete");
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(facesContext, password);
 		if(valueToRender != null) {

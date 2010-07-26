@@ -79,6 +79,7 @@ public class HTML {
 		"alt",
 		"dir",
 		"disabled",
+		"image",
 		"label",
 		"lang",
 		"readonly",

@@ -22,7 +22,6 @@ import javax.faces.event.FacesListener;
 /**
  * Event fired when a layout unit is toggled
  */
-@Deprecated
 public class LayoutUnitToggleEvent extends FacesEvent {
 	
 	private String unit;

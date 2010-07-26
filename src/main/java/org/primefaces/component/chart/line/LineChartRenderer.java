@@ -35,7 +35,7 @@ import org.primefaces.resource.ResourceUtils;
 public class LineChartRenderer extends BaseChartRenderer implements PartialRenderer {
 	
 	@Override
-	protected void encodeScript(FacesContext facesContext, UIChart chart) throws IOException{
+	protected void encodeChartScript(FacesContext facesContext, UIChart chart) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = chart.getClientId(facesContext);
 		String xfieldName = getFieldName(chart.getValueExpression("xfield"));
@@ -44,17 +44,16 @@ public class LineChartRenderer extends BaseChartRenderer implements PartialRende
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
-
-		if(!chart.isLive()) {
+		writer.write("PrimeFaces.onContentReady(\"" + clientId + "\", function() {\n");
+		
+		if(!chart.isLive())
 			encodeLocalData(facesContext, chart, xfieldName, series);
-		}
 		
 		encodeDataSource(facesContext, chart, xfieldName, series);
 		encodeSeriesDef(facesContext, chart, series);
 		encodeChartWidget(facesContext, chart, clientId, xfieldName);
-
-		writer.write("});");
+			
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}

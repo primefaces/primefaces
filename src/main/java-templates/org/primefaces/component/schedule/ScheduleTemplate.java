@@ -3,9 +3,7 @@ import javax.faces.component.UIComponent;
 import org.primefaces.component.schedule.Schedule;
 import org.primefaces.component.schedule.ScheduleEventDialog;
 import org.primefaces.event.ScheduleEntrySelectEvent;
-import org.primefaces.event.DateSelectEvent;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
+import org.primefaces.event.ScheduleDateSelectEvent;
 
 	private java.util.Locale appropriateLocale;
 	private ScheduleEventDialog eventDialog;
@@ -34,10 +32,10 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		MethodExpression me = null;
 		
-		if(event instanceof ScheduleEntrySelectEvent) me = getEventSelectListener();
-		else if(event instanceof DateSelectEvent) me = getDateSelectListener();
-		else if(event instanceof ScheduleEntryMoveEvent) me = getEventMoveListener();
-		else if(event instanceof ScheduleEntryResizeEvent) me = getEventResizeListener();
+		if(event instanceof ScheduleEntrySelectEvent)
+			me = getEventSelectListener();
+		else if(event instanceof ScheduleDateSelectEvent)
+			me = getDateSelectListener();
 		
 		if (me != null) {
 			me.invoke(facesContext.getELContext(), new Object[] {event});
@@ -55,17 +53,4 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 		}
 		
 		return eventDialog;	
-	}
-	
-	public void processDecodes(FacesContext facesContext) {
-		if(isScheduleRequest(facesContext)) {
-			decode(facesContext);
-			facesContext.renderResponse();
-		} else {
-			super.processDecodes(facesContext);
-		}
-    }
-	
-	private boolean isScheduleRequest(FacesContext facesContext) {
-		return facesContext.getExternalContext().getRequestParameterMap().containsKey(getClientId(facesContext));
 	}

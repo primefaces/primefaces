@@ -9,8 +9,6 @@
 	<componentClass>org.primefaces.component.schedule.ScheduleEventDialog</componentClass>
 	<componentType>org.primefaces.component.ScheduleEventDialog</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.ScheduleEventDialogRenderer</rendererType>
-	<rendererClass>org.primefaces.component.schedule.ScheduleEventDialogRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
 	<attributes>
 		&standard_uicomponent_attributes;

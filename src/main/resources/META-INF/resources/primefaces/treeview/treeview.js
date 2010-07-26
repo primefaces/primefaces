@@ -3,73 +3,29 @@ PrimeFaces.widget.TreeView = function(id, definition, config) {
 	this.clientId = id;
 	this.cfg = config;
 	
-	//Custom nodeclick handler
 	if(this.cfg.onNodeClick) {
 		this.subscribe('clickEvent', this.cfg.onNodeClick);
 	}
 	
-	this.subscribe("clickEvent", this.handleNodeClick);
-
-	//Selection
-	if(this.isSelectionEnabled()) {
+	if(this.cfg.hasSelection) {
+		this.subscribe('clickEvent', this.highlightListener);
 		this.setNodesProperty('propagateHighlightDown', this.cfg.propagateHighlightDown); 
-		this.setNodesProperty('propagateHighlightUp', this.cfg.propagateHighlightUp);
-		
-		if(this.cfg.selectionMode === 'single') {
-			this.singleNodeHighlight = true;
-		}		
+		this.setNodesProperty('propagateHighlightUp', this.cfg.propagateHighlightUp); 
 	}
 	
 	if(this.cfg.dynamic) {
+		this.subscribe("clickEvent", this.labelClickListener);
 		this.subscribe("expand", this.expandListener);
 		this.subscribe("collapse", this.collapseListener);
-	}
-	
-	//Dynamic tree
-	if(this.cfg.dynamic) {
 		this.setDynamicLoad(this.doDynamicLoadNodeRequest);
+	} else {
+		this.subscribe('clickEvent', function(args) {return false;});
 	}
 }
 
 YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 {
-	handleNodeClick : function(args) {
-		if(this.isSelectionEnabled()) {
-			this.handleNodeSelection(args);
-			
-			if(this.cfg.hasSelectListener || this.cfg.update) {
-				this.doNodeSelectRequest(args);
-			}
-		} else {
-			args.node.focus();
-		}
-
-		return false;
-	},
-	
-	handleNodeSelection : function(args) {
-		this.onEventToggleHighlight(args);
-		
-		var selected,
-		nodes = this.getNodesByProperty('highlightState', 1),
-		rowKeys = [];
-		
-		if(nodes) {
-			for(var i = 0; i < nodes.length; i++) {
-				rowKeys.push(nodes[i].data.rowKey);
-			}
-			
-			selected = rowKeys.join(",");
-		} else {
-			selected = "";
-		}
-		
-		document.getElementById(this.clientId + "_selection").value = selected;
-		
-		return false;
-	},
-
-	doNodeSelectRequest : function(args) {
+	labelClickListener : function(args) {
 		this.selectedAction = "SELECT";
 		this.selectedRowKey = args.node.data.rowKey;
 	
@@ -109,6 +65,25 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 			
 			YAHOO.util.Connect.asyncRequest('POST', this.cfg.actionURL, callback, this.getToggleRequestParams());
 		}
+	},
+	
+	highlightListener : function(args) {
+		this.onEventToggleHighlight(args);
+		var selected,
+		nodes = this.getNodesByProperty('highlightState', 1),
+		rowKeys = [];
+		
+		if(nodes) {
+			for(var i = 0; i < nodes.length; i++) {
+				rowKeys.push(nodes[i].data.rowKey);
+			}
+			
+			selected = rowKeys.join(",");
+		} else {
+			selected = "";
+		}
+		
+		document.getElementById(this.clientId + "_selection").value = selected;
 	},
 	
 	handleCollapseComplete : function(response) {
@@ -178,15 +153,11 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 	getNodeSelectRequestParams : function() {
 		var params = {};
 		params[this.clientId] = this.clientId;
-		params[this.clientId + '_rowKey'] = this.selectedRowKey;
-		params[this.clientId + '_action'] = this.selectedAction;
+		params[this.clientId + "_rowKey"] = this.selectedRowKey;
+		params[this.clientId + "_action"] = this.selectedAction;
 		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.update;
 		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.clientId;
 		
 		return params;
-	},
-	
-	isSelectionEnabled : function() {
-		return this.cfg.selectionMode != undefined;
 	}
 });

@@ -16,27 +16,22 @@
 package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
+import java.util.Iterator;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class BreadCrumbRenderer extends CoreRenderer {
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		BreadCrumb breadCrumb = (BreadCrumb) component;
-		
-		if(breadCrumb.shouldBuildFromModel()) {
-			breadCrumb.buildMenuFromModel();
-		}
 
-		encodeMarkup(facesContext, breadCrumb);
 		encodeScript(facesContext, breadCrumb);
+		encodeMarkup(facesContext, breadCrumb);
 	}
 
 	private void encodeScript(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
@@ -46,8 +41,9 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).jBreadCrumb({");
-		writer.write("overlayClass:'ui-breadcrumb-chevron'");
+		writer.write("overlayClass:'pf-breadCrumb-chevron'");
 		
 		if(!breadCrumb.isPreview()) {
 			int childCount = breadCrumb.getChildCount();
@@ -65,14 +61,15 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		        
 		writer.write("});");
 
+		writer.write("});\n");
+
 		writer.endElement("script");
 	}
 
 	private void encodeMarkup(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = breadCrumb.getClientId(facesContext);
-		String defaultStyleClass = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-corner-all";
-		String styleClass = breadCrumb.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + " " + breadCrumb.getStyleClass();
+		String styleClass = breadCrumb.getStyleClass() == null ? "pf-breadCrumb pf-module" : "pf-breadCrumb pf-module " + breadCrumb.getStyleClass();
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -81,12 +78,22 @@ public class BreadCrumbRenderer extends CoreRenderer {
 
 		writer.startElement("ul", null);
 
-		for(UIComponent child : breadCrumb.getChildren()) {
+		for (Iterator<UIComponent> iterator = breadCrumb.getChildren().iterator(); iterator.hasNext();) {
+			UIComponent child = iterator.next();
+			
 			if(child.isRendered() && child instanceof MenuItem) {
-
+				MenuItem menuItem = (MenuItem) child;
+				
 				writer.startElement("li", null);
 
-				encodeMenuItem(facesContext, (MenuItem) child);
+				writer.startElement("a", null);
+				writer.writeAttribute("href", menuItem.getUrl(), null);
+
+				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+				if(menuItem.getLabel() != null) writer.write(menuItem.getLabel());
+
+				writer.endElement("a");
 
 				writer.endElement("li");
 			}
@@ -95,46 +102,6 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.endElement("ul");
 		
 		writer.endElement("div");
-	}
-	
-	protected void encodeMenuItem(FacesContext facesContext, MenuItem menuItem) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		if(menuItem.shouldRenderChildren()) {
-			renderChildren(facesContext, menuItem);
-		} else {
-			String clientId = menuItem.getClientId(facesContext);
-			
-			writer.startElement("a", null);
-			writer.writeAttribute("id", clientId, null);
-			
-			if(menuItem.getStyle() != null) writer.writeAttribute("style", menuItem.getStyle(), null);
-			if(menuItem.getStyleClass() != null) writer.writeAttribute("class", menuItem.getStyleClass(), null);
-			
-			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(facesContext, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-			} else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
-				
-				UIComponent form = ComponentUtils.findParentForm(facesContext, menuItem);
-				if(form == null) {
-					throw new FacesException("Breadcrumb must be inside a form element");
-				}
-				
-				String formClientId = form.getClientId(facesContext);
-				String command = menuItem.isAjax() ? buildAjaxRequest(facesContext, menuItem, formClientId, clientId) : buildNonAjaxRequest(facesContext, menuItem, formClientId, clientId);
-				
-				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-				
-				writer.writeAttribute("onclick", command, null);
-			}
-			
-			if(menuItem.getValue() != null) writer.write((String) menuItem.getValue());
-			
-			writer.endElement("a");
-		}
 	}
 
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

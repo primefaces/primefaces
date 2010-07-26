@@ -51,8 +51,4 @@ public abstract class RequestContext {
 	public abstract void addPartialUpdateTarget(String name);
 	
 	public abstract List<String> getPartialUpdateTargets();
-	
-	public abstract String getAjaxRedirectUrl();
-	
-	public abstract void setAjaxRedirectUrl(String url);
 }

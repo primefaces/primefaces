@@ -59,13 +59,8 @@ public class BeanPropertyComparator implements Comparator {
 			facesContext.getExternalContext().getRequestMap().put(var, obj2);
 			Object value2 = sortByExpression.getValue(facesContext.getELContext());
 			
-			//Empty check
-			if(value1 == null)
-				return 1;
-			else if(value2 == null)
-				return -1;
-				
 			int result;
+			
 			if(sortFunction == null) {
 				result = ((Comparable) value1).compareTo(value2);
 			} else {

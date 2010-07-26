@@ -16,26 +16,18 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import org.primefaces.component.api.AjaxSource;
 import org.primefaces.resource.ResourceUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 public class CoreRenderer extends Renderer {
 	
-	private final static String WIDGET_VAR_PREFIX = "widget_";
+	private final static String WIDGET_VAR_SUFFIX = "_widget";
 	
 	protected void renderScriptDependency(FacesContext facesContext, String scriptPath) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
@@ -84,14 +76,10 @@ public class CoreRenderer extends Renderer {
 		return facesContext.getExternalContext().encodeResourceURL(actionURL);
 	}
 	
-	protected String getResourceURL(FacesContext facesContext, String value) {
-		if(value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-			return value;
-		} else {
-			String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
-			
-			return facesContext.getExternalContext().encodeResourceURL(url);
-		}
+	protected String getResourceURL(FacesContext facesContext, String url) {
+		String resourceURL = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, url);
+		
+		return facesContext.getExternalContext().encodeResourceURL(resourceURL);
 	}
 	
 	public boolean isPostback(FacesContext facesContext) {
@@ -165,10 +153,10 @@ public class CoreRenderer extends Renderer {
 		if(widgetVar != null)
 			return widgetVar;
 		
-		String regex = "-|" + UINamingContainer.getSeparatorChar(facesContext);
-		String formattedClientId = component.getClientId(facesContext).replaceAll(regex, "_");
+		String formattedClientId = component.getClientId(facesContext).replaceAll(":", "_");
+		String variableName = formattedClientId + WIDGET_VAR_SUFFIX;
 		
-		return WIDGET_VAR_PREFIX + facesContext.getExternalContext().encodeNamespace(formattedClientId);
+		return facesContext.getExternalContext().encodeNamespace(variableName);
 	}
 	
     protected boolean shouldRenderAttribute(Object value) {
@@ -219,101 +207,5 @@ public class CoreRenderer extends Renderer {
 			return true;
 		
 		return value.trim().equals("");
-	}
-	
-	protected String buildAjaxRequest(FacesContext facesContext, AjaxSource source, String formId, String decodeParam) {	
-		UIComponent component = (UIComponent) source;
-		
-		StringBuilder req = new StringBuilder();
-		req.append("PrimeFaces.ajax.AjaxRequest('");
-		req.append(getActionURL(facesContext));
-		req.append("',{");
-		req.append("formId:'");
-		req.append(formId);
-		req.append("'");
-		
-		if(source.isAsync()) req.append(",async:true");
-		
-		//source
-		if(source.getOnstart() != null) req.append(",onstart:function(xhr){" + source.getOnstart() + ";}");
-		if(source.getOnerror() != null) req.append(",onerror:function(xhr, status, error){" + source.getOnerror() + ";}");
-		if(source.getOnsuccess() != null) req.append(",onsuccess:function(data, status, xhr, args){" + source.getOnsuccess() + ";}"); 
-		if(source.getOncomplete() != null) req.append(",oncomplete:function(xhr, status, args){" + source.getOncomplete() + ";}");
-
-		req.append(",global:" + source.isGlobal());
-		
-		req.append("},{");
-		
-		req.append("'" + decodeParam + "'");
-		req.append(":");
-		req.append("'" + decodeParam + "'");
-		
-		if(source.getUpdate() != null) {
-			req.append(",'" + Constants.PARTIAL_UPDATE_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, component, source.getUpdate()) + "'");
-		}
-		
-		if(source.getProcess() != null) {
-			req.append(",'" + Constants.PARTIAL_PROCESS_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, component, source.getProcess()) + "'");
-		}
-		
-		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter parameter = (UIParameter) child;
-				
-				req.append(",");
-				req.append("'" + parameter.getName() + "'");
-				req.append(":");
-				req.append("'" + parameter.getValue() + "'");
-			}
-		}
-		
-		req.append("});");
-		
-		req.append("return false;");
-		
-		return req.toString();
-	}
-	
-	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
-		Map<String,Object> params = new HashMap<String, Object>();
-		String process = (String) component.getAttributes().get("process");
-		boolean isPartialProcess = process != null;
-		
-		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter parameter = (UIParameter) child;
-				params.put(parameter.getName(), parameter.getValue());
-			}
-		}
-		
-		StringBuffer request = new StringBuffer();
-		request.append("PrimeFaces.addSubmitParam('" + formId + "', {'" + decodeParam + "':'" + decodeParam + "'");
-		
-		if(!params.isEmpty() || isPartialProcess) {
-			if(isPartialProcess) {
-				request.append("," + Constants.PARTIAL_PROCESS_PARAM + ":'" + ComponentUtils.findClientIds(facesContext, component, process) + "'");
-			}
-			
-			if(!params.isEmpty()) {
-				for(Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext();) {
-					String paramName = iterator.next();
-					Object paramValue = (Object) params.get(paramName);
-					String toSend = paramValue != null ? paramValue.toString() : "";
-					
-					request.append(",'" + paramName + "':'" + toSend + "'");
-				}
-			}
-		}
-		
-		request.append("});");
-		request.append("jQuery(PrimeFaces.escapeClientId('" + formId + "')).submit();");
-		
-		return request.toString();
-	}
-	
-	protected String escapeText(String value) {
-		return value == null ? "" : value.replaceAll("'", "\\\\'");
 	}
 }

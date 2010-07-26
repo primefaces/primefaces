@@ -28,10 +28,10 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/resize/assets/skins/sam/resize.css</name>
+			<name>/yui/assets/skins/sam/resize.css</name>
 		</resource>
 		<resource>
-			<name>/yui/imagecropper/assets/skins/sam/imagecropper.css</name>
+			<name>/yui/assets/skins/sam/imagecropper.css</name>
 		</resource>
 		<resource>
 			<name>/yui/utilities/utilities.js</name>

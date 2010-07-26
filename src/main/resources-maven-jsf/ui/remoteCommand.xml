@@ -12,11 +12,6 @@
 	<rendererType>org.primefaces.component.RemoteCommandRenderer</rendererType>
 	<rendererClass>org.primefaces.component.remotecommand.RemoteCommandRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&command_component_attributes;
 		<attribute>

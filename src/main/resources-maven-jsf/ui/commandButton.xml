@@ -2,6 +2,7 @@
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
 <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
 <!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 <!ENTITY html_command_button_attributes			SYSTEM "../entities/html_command_button_attributes.xml">
@@ -15,14 +16,8 @@
 	<rendererType>org.primefaces.component.CommandButtonRenderer</rendererType>
 	<rendererClass>org.primefaces.component.commandbutton.CommandButtonRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlCommandButton</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&command_component_attributes;
-		&widget_var_attribute;
 		<attribute>
 			<name>ajax</name>
 			<required>false</required>
@@ -185,7 +180,7 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 			<description>
-				Type of button like "submit", "reset", "image", "button".
+				Type of button, "submit" or "reset".
 			</description>
 		</attribute>
 		<attribute>
@@ -344,19 +339,13 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
-		<resource>
 			<name>/primefaces/core/core.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/button/button.js</name>
 		</resource>
 	</resources>
 </component>

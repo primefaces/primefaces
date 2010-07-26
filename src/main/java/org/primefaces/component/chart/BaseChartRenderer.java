@@ -50,8 +50,8 @@ public class BaseChartRenderer extends CoreRenderer {
 		UIChart chart = (UIChart) component;
 		
 		encodeResources(facesContext);
-		encodeMarkup(facesContext, chart);
-		encodeScript(facesContext, chart);
+		encodeChartScript(facesContext, chart);
+		encodeChartMarkup(facesContext, chart);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class BaseChartRenderer extends CoreRenderer {
 	 * @param chart
 	 * @throws IOException
 	 */
-	protected void encodeScript(FacesContext facesContext, UIChart chart) throws IOException {
+	protected void encodeChartScript(FacesContext facesContext, UIChart chart) throws IOException {
 		
 	}
 	
@@ -114,11 +114,12 @@ public class BaseChartRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.write("YAHOO.widget.Chart.SWFURL = '" + ResourceUtils.getResourceURL(facesContext, "/yui/charts/assets/charts.swf") + "'");
+		writer.write("YAHOO.widget.Chart.SWFURL = \"" + ResourceUtils.getResourceURL(facesContext,
+						"/yui/charts/assets/charts.swf") + "\"");
 		writer.endElement("script");
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, UIChart chart) throws IOException{
+	protected void encodeChartMarkup(FacesContext facesContext, UIChart chart) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("div", null);
@@ -128,6 +129,7 @@ public class BaseChartRenderer extends CoreRenderer {
 		if(chart.getStyleClass() != null)
 			writer.writeAttribute("class", chart.getStyleClass(), "styleClass");
 		
+			
 		writer.endElement("div");
 	}
 	
@@ -144,7 +146,7 @@ public class BaseChartRenderer extends CoreRenderer {
 		if(chart.getOncomplete() != null)
 			writer.write(",oncomplete: function() {" + chart.getOncomplete() + ";}");
 		
-		writer.write("});");
+		writer.write("})\n");
 	}
 	
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

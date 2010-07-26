@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>dockItem</tag>
+	<tagClass>org.primefaces.component.dock.DockItemTag</tagClass>
+	<componentClass>org.primefaces.component.dock.DockItem</componentClass>
+	<componentType>org.primefaces.component.DockItem</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>label</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>Label of the item.</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Html onclick handler of the item.
+			</description>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>
+				Image icon of the item.
+			</description>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>
+				URL of the item to be used for navigation.
+			</description>
+		</attribute>
+	</attributes>
+</component>

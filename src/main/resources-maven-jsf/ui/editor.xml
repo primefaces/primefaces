@@ -64,19 +64,16 @@
 			<name>/yui/menu/assets/skins/sam/menu.css</name>
 		</resource>
 		<resource>
-			<name>/yui/button/assets/skins/sam/button.css</name>
+			<name>/yui/assets/skins/sam/button.css</name>
 		</resource>
 		<resource>
-			<name>/yui/resize/assets/skins/sam/resize.css</name>
+			<name>/yui/assets/skins/sam/resize.css</name>
 		</resource>
 		<resource>
 			<name>/yui/container/assets/skins/sam/container.css</name>
 		</resource>
 		<resource>
 			<name>/yui/editor/assets/skins/sam/editor.css</name>
-		</resource>
-		<resource>
-			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>/yui/utilities/utilities.js</name>

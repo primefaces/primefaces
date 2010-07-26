@@ -30,8 +30,8 @@ public class PushRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Push push = (Push) component;
 		
-		encodeMarkup(facesContext, push);
 		encodeScript(facesContext, push);
+		encodeMarkup(facesContext, push);
 	}
 	
 	private void encodeScript(FacesContext facesContext, Push push) throws IOException {

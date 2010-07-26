@@ -19,21 +19,22 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 	
-	public void decode(FacesContext facesContext, UIComponent component) {
-		RemoteCommand command = (RemoteCommand) component;
-		
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(facesContext))) {
-			command.queueEvent(new ActionEvent(command));
-		}
+	public void decode(FacesContext facesContext, UIComponent component) {		
+		String param = component.getClientId(facesContext);
+
+		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param))
+			component.queueEvent(new ActionEvent(component));
 	}
 	
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -41,7 +42,6 @@ public class RemoteCommandRenderer extends CoreRenderer {
 		RemoteCommand command = (RemoteCommand) component;
 		String clientId = command.getClientId(facesContext);
 		UIComponent form = ComponentUtils.findParentForm(facesContext, command);
-		
 		if(form == null) {
 			throw new FacesException("Remote Command '" + command.getName() + "' must be enclosed inside a form component.");
 		}
@@ -53,9 +53,48 @@ public class RemoteCommandRenderer extends CoreRenderer {
 		
 		writer.write(command.getName() + " = function() {");
 		
-		writer.write(buildAjaxRequest(facesContext, command, formClientId, clientId));
+		writer.write("PrimeFaces.ajax.AjaxRequest('");
+		writer.write(getActionURL(facesContext));
+		writer.write("',{");
+		writer.write("formId:'" + formClientId + "'");
+
+		if(command.isAsync()) writer.write(",async:true");
 		
-		writer.write("}");
+		//Callbacks
+		if(command.getOnstart() != null) writer.write(",onstart:function(xhr){" + command.getOnstart() + ";}");
+		if(command.getOnerror() != null) writer.write(",onerror:function(xhr, status, error){" + command.getOnerror() + ";}");
+		if(command.getOnsuccess() != null) writer.write(",onsuccess:function(data, status, xhr, args){" + command.getOnsuccess() + ";}"); 
+		if(command.getOncomplete() != null) writer.write(",oncomplete:function(xhr, status, args){" + command.getOncomplete() + ";}");
+
+		writer.write(",global:" + command.isGlobal());
+		
+		writer.write("},{");
+		
+		writer.write("'" + clientId + "':'" + clientId  + "'");
+		
+		if(command.getUpdate() != null) {
+			writer.write(",'" + Constants.PARTIAL_UPDATE_PARAM + "':");
+			writer.write("'" + ComponentUtils.findClientIds(facesContext, command, command.getUpdate()) + "'");
+		}
+		
+		if(command.getProcess() != null) {
+			writer.write(",'" + Constants.PARTIAL_PROCESS_PARAM + "':");
+			writer.write("'" + ComponentUtils.findClientIds(facesContext, command, command.getProcess()) + "'");
+		}
+		
+		//UIParams
+		for(UIComponent kid : command.getChildren()) {
+			if(kid instanceof UIParameter) {
+				UIParameter parameter = (UIParameter) component;
+				
+				writer.write(",");
+				writer.write("'" + parameter.getName() + "'");
+				writer.write(":");
+				writer.write("'" + (String) parameter.getValue() + "'");
+			}
+		}
+		
+		writer.write("});}");
 
 		writer.endElement("script");
 	}

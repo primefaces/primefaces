@@ -63,8 +63,8 @@ public class RatingRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Rating rating = (Rating) component;
 		
-		encodeMarkup(facesContext, rating);
 		encodeScript(facesContext, rating);
+		encodeMarkup(facesContext, rating);
 	}
 	
 	private void encodeScript(FacesContext facesContext, Rating rating) throws IOException {
@@ -79,6 +79,8 @@ public class RatingRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		
 		writer.write(ratingVar + " = new PrimeFaces.widget.Rating('" + clientId +"'");
 		writer.write(",{");
 		if(rating.getRateListener() != null) {
@@ -87,6 +89,8 @@ public class RatingRenderer extends CoreRenderer {
 			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
 			writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, rating, rating.getUpdate()) + "'");
 		}
+		writer.write("});\n");
+		
 		writer.write("});");
 		
 		writer.endElement("script");

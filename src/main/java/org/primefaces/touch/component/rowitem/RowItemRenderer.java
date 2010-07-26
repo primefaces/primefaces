@@ -18,14 +18,15 @@ package org.primefaces.touch.component.rowitem;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 public class RowItemRenderer extends CoreRenderer {
 	
@@ -41,7 +42,6 @@ public class RowItemRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		RowItem rowItem = (RowItem) component;
-		String clientId = rowItem.getClientId(facesContext);
 		boolean isNavigation = rowItem.getView() != null;
 		boolean isDynamic = rowItem.getUpdate() != null;
 		
@@ -57,7 +57,7 @@ public class RowItemRenderer extends CoreRenderer {
 			String href;
 			
 			if(isNavigation) {
-				href = "javascript:void(0)";
+				href = "javascript:none";
 			} else if(rowItem.getUrl() != null){
 				href = rowItem.getUrl();
 			} else {
@@ -71,21 +71,13 @@ public class RowItemRenderer extends CoreRenderer {
 			}
 			
 			if(isNavigation) {
-				String onclick = "TouchFaces.goTo('" + rowItem.getView() + "','slide')";
-				
 				if(isDynamic) {
 					UIComponent form = ComponentUtils.findParentForm(facesContext, rowItem);
-					if(form == null) {
-						throw new FacesException("RowItem \"" + clientId + "\" must be inside a form element when using ajax update");
-					}
+					String ajaxRequest = getAjaxRequest(facesContext, rowItem, form.getClientId(facesContext));
 					
-					rowItem.setOncomplete(onclick);		//Navigate after content is loaded
-					
-					String request = buildAjaxRequest(facesContext, rowItem, form.getClientId(facesContext), clientId);
-					
-					writer.writeAttribute("onclick", request, null);
+					writer.writeAttribute("onclick", ajaxRequest, null);
 				} else {
-					writer.writeAttribute("onclick", onclick, null);
+					writer.writeAttribute("onclick", "TouchFaces.goTo('" + rowItem.getView() + "','slide')", null);
 				}
 			}
 			
@@ -97,6 +89,49 @@ public class RowItemRenderer extends CoreRenderer {
 		}
 		
 		writer.endElement("li");
+	}
+	
+	//TODO: A common AjaxRequest builder sounds better
+	private String getAjaxRequest(FacesContext facesContext, RowItem item, String formClientId) {
+		String clientId = item.getClientId(facesContext);
+		
+		StringBuilder req = new StringBuilder();
+		req.append("PrimeFaces.ajax.AjaxRequest('");
+		req.append(getActionURL(facesContext));
+		req.append("',{");
+		req.append("formId:'");
+		req.append(formClientId);
+		req.append("',");
+		
+		req.append("oncomplete:function(){");
+		req.append("TouchFaces.goTo('");
+		req.append(item.getView());
+		req.append("','slide');}");
+		req.append("},{");
+		
+		req.append("'" + clientId + "'");
+		req.append(":");
+		req.append("'" + clientId + "'");
+		
+		if(item.getUpdate() != null) {
+			req.append(",'" + Constants.PARTIAL_UPDATE_PARAM + "':");
+			req.append("'" + ComponentUtils.findClientIds(facesContext, item, item.getUpdate()) + "'");
+		}
+		
+		for(UIComponent component : item.getChildren()) {
+			if(component instanceof UIParameter) {
+				UIParameter parameter = (UIParameter) component;
+				
+				req.append(",");
+				req.append("'" + parameter.getName() + "'");
+				req.append(":");
+				req.append("'" + parameter.getValue() + "'");
+			}
+		}
+		
+		req.append("});");
+		
+		return req.toString();
 	}
 	
 	@Override

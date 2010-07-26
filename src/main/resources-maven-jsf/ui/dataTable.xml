@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
 	<rendererClass>org.primefaces.component.datatable.DataTableRenderer</rendererClass>
 	<parent>javax.faces.component.UIData</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&data_component_attributes;
 		&widget_var_attribute;
@@ -39,19 +35,6 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>Template for the rowsPerPage dropdown, default value is "25,50,100"</description>
-		</attribute>
-		<attribute>
-			<name>currentPageReportTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Template for the {currentPageReport} UI.</description>
-		</attribute>
-		<attribute>
-			<name>paginatorAlwaysVisible</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Defines if paginator should be hidden when number of rows displayed is less than paginator rowsPerPage option.</description>
 		</attribute>
 		<attribute>
 			<name>scrollable</name>
@@ -113,7 +96,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>
-				Type for row click selection, can be 'multiple', 'single', 'cellblock', 'cellrange' and 'singlecell';
+				Type for row click selection, can be 'multiple' or 'single'.
 			</description>
 		</attribute>
 		<attribute>
@@ -251,35 +234,31 @@
 			<defaultValue>1</defaultValue>
 			<description>Index of the current page, first page is 1.</description>
 		</attribute>
-		<attribute>
-			<name>pageLinks</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>10</defaultValue>
-			<description>Number of pageLinks to display when paginator is enabled, defaults to 10.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/paginator/paginator.css</name>
+			<name>/yui/paginator/assets/skins/sam/paginator.css</name>
 		</resource>
 		<resource>
-			<name>/primefaces/datatable/datatable.css</name>
-		</resource>
-		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/datatable/assets/skins/sam/datatable.css</name>
 		</resource>
 		<resource>
 			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
+			<name>/yui/json/json-min.js</name>
+		</resource>
+		<resource>
 			<name>/yui/datasource/datasource-min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/paginator/paginator.js</name>
+			<name>/yui/paginator/paginator-min.js</name>
 		</resource>
 		<resource>
 			<name>/yui/datatable/datatable-min.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>

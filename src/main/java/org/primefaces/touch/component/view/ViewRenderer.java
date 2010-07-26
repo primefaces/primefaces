@@ -59,8 +59,7 @@ public class ViewRenderer extends CoreRenderer {
 		NavBarControl leftControl = (NavBarControl) view.getFacet("leftNavBar");
 		NavBarControl rightControl = (NavBarControl) view.getFacet("rightNavBar");
 
-		//TODO: Fix the code duplication here
-		if(leftControl != null && leftControl.isRendered()) {
+		if(leftControl != null) {
 			String href="#";
 			String viewId = leftControl.getView();
 			String styleClass = leftControl.getType() != null ? leftControl.getType() : "";
@@ -91,7 +90,7 @@ public class ViewRenderer extends CoreRenderer {
 			writer.endElement("a");
 		}
 		
-		if(rightControl != null && rightControl.isRendered()) {
+		if(rightControl != null) {
 			String href="#";
 			String viewId = rightControl.getView();
 			String styleClass = rightControl.getType() != null ? rightControl.getType() : "";

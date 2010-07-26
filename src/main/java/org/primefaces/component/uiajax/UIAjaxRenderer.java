@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -33,9 +32,8 @@ public class UIAjaxRenderer extends CoreRenderer {
 		UIAjax ajax = (UIAjax) component;
 		String clientId = ajax.getClientId(facesContext);
 		
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(clientId)) {
+		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(clientId))
 			ajax.queueEvent(new ActionEvent(ajax));
-		}
 	}
 	
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -51,23 +49,26 @@ public class UIAjaxRenderer extends CoreRenderer {
 		else
 			throw new FacesException("UIAjax:" + clientId + " needs to be enclosed in a form");
 		
-		String ajaxRequest = createAjaxRequest(facesContext, uiajax, formClientId, clientId);
-
+		String ajaxRequest = getAjaxRequest(facesContext, uiajax, formClientId);
+		
 		ComponentUtils.decorateAttribute(parent, "on" + uiajax.getEvent(), ajaxRequest);
 	}
 	
-	protected String createAjaxRequest(FacesContext facesContext, UIAjax uiajax, String formId, String decodeParam) {	
+	//TODO: A common AjaxRequest builder sounds better
+	private String getAjaxRequest(FacesContext facesContext, UIAjax uiajax, String formClientId) {
+		String clientId = uiajax.getClientId(facesContext);
+
 		StringBuilder req = new StringBuilder();
 		req.append("PrimeFaces.ajax.AjaxRequest('");
 		req.append(getActionURL(facesContext));
 		req.append("',{");
 		req.append("formId:'");
-		req.append(formId);
+		req.append(formClientId);
 		req.append("'");
 		
 		if(uiajax.isAsync()) req.append(",async:true");
 		
-		//source
+		//Callbacks
 		if(uiajax.getOnstart() != null) req.append(",onstart:function(xhr){" + uiajax.getOnstart() + ";}");
 		if(uiajax.getOnerror() != null) req.append(",onerror:function(xhr, status, error){" + uiajax.getOnerror() + ";}");
 		if(uiajax.getOnsuccess() != null) req.append(",onsuccess:function(data, status, xhr, args){" + uiajax.getOnsuccess() + ";}"); 
@@ -77,31 +78,20 @@ public class UIAjaxRenderer extends CoreRenderer {
 		
 		req.append("},{");
 		
-		req.append("'" + decodeParam + "'");
+		req.append("'" + clientId + "'");
 		req.append(":");
-		req.append("'" + decodeParam + "'");
+		req.append("'" + clientId + "'");
 		
 		if(uiajax.getUpdate() != null) {
 			req.append(",'" + Constants.PARTIAL_UPDATE_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, uiajax.getParent(), uiajax.getUpdate()) + "'");
+			req.append("'" + ComponentUtils.findClientIds(facesContext, uiajax, uiajax.getUpdate()) + "'");
 		}
 		
 		if(uiajax.getProcess() != null) {
 			req.append(",'" + Constants.PARTIAL_PROCESS_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, uiajax.getParent(), uiajax.getProcess()) + "'");
+			req.append("'" + ComponentUtils.findClientIds(facesContext, uiajax, uiajax.getProcess()) + "'");
 		}
-		
-		for(UIComponent child : uiajax.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter parameter = (UIParameter) child;
-				
-				req.append(",");
-				req.append("'" + parameter.getName() + "'");
-				req.append(":");
-				req.append("'" + parameter.getValue() + "'");
-			}
-		}
-		
+
 		req.append("});");
 		
 		return req.toString();

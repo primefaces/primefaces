@@ -1,126 +1,82 @@
-PrimeFaces.widget.Wizard = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.Wizard = function(clientId, cfg) {
+	this.tabSelector = PrimeFaces.escapeClientId(clientId) + " div.pf-wizard-tab";
+	this.clientId = clientId;
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(this.id);
-	this.content = this.jqId + '_content';
-	this.backNav = this.jqId + '_back';
-	this.nextNav = this.jqId + '_next';
-	this.currentStep = this.cfg.initialStep;
-	var currentStepIndex = this.getStepIndex(this.currentStep);
-
-	/*
-	 * Navigation controls
-	 */
-	jQuery(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
-	jQuery(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
-
-	jQuery(this.backNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
-	jQuery(this.nextNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
+	this.cfg.clientId = clientId.replace(/:/g,"_");
+	this.step = 0;
+	this.navPrev = jQuery(PrimeFaces.escapeClientId(clientId) + "_prev");
+	this.navNext = jQuery(PrimeFaces.escapeClientId(clientId) + "_next");
 	
-	if(currentStepIndex == 0)
-		jQuery(this.backNav).hide();
-	else if(currentStepIndex == this.cfg.steps.length - 1)
-		jQuery(this.nextNav).hide();
-}
-
-PrimeFaces.widget.Wizard.prototype.back = function() {
-	var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) - 1];
-	
-	this.loadStep(stepToGo, true);
+	jQuery(this.tabSelector).tabSwitch('create', this.cfg);
 }
 
 PrimeFaces.widget.Wizard.prototype.next = function() {
-	var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) + 1];
-	
-	this.loadStep(stepToGo, false);
+	if(this.getStep() != (this.cfg.size-1)) {
+		this.move(1);
+	}
 }
 
-PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
-	var requestParams = jQuery(PrimeFaces.escapeClientId(this.cfg.formId)).serialize(),
-	_self = this,
-	params = {};
-	
-	params[PrimeFaces.PARTIAL_SOURCE_PARAM] = this.id;
-	params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.id;
-	params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-	params[this.id + '_wizardRequest'] = true;
-	params[this.id + '_currentStep'] = this.currentStep;
-	params[this.id + '_stepToGo'] = stepToGo;
-	
-	if(isBack) {
-		params[this.id + '_backRequest'] = true;
+PrimeFaces.widget.Wizard.prototype.previous = function() {
+	if(this.getStep() != 0) {
+		this.move(-1);
 	}
-	
-	requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
-		
-	jQuery.ajax({
-		url: this.cfg.url,
-		type: "POST",
-		cache: false,
-		dataType: "xml",
-		data: requestParams,
-		success : function(data, status, xhr) {
-			var xmlDoc = data.documentElement,
-			content = xmlDoc.getElementsByTagName("content")[0].firstChild.data,
-			state = xmlDoc.getElementsByTagName("state")[0].firstChild.data,
-			success = xmlDoc.getElementsByTagName("success")[0].firstChild.data;
-			_self.currentStep = xmlDoc.getElementsByTagName("current-step")[0].firstChild.data;
+}
 
-			PrimeFaces.ajax.AjaxUtils.updateState(state);
+PrimeFaces.widget.Wizard.prototype.move = function(stepFactor) {
+	var wizard = this,
+	stepToGo = this.getStep() + stepFactor,
+	params = PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + this.clientId;
+	
+	params = params + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
+	params = params + "&stepToGo=" + stepToGo;
+	params = params + "&currentStep=" + this.getStep();
+	params = params + "&" + jQuery(PrimeFaces.escapeClientId(this.cfg.formId)).serialize();
+	
+	jQuery.ajax({
+		type: "POST",
+		url: this.cfg.actionURL,
+		data: params,
+		dataType: "xml",
+		success: function(responseXML) {
+			var xmlDoc = responseXML.documentElement,
+			wizardTab = xmlDoc.getElementsByTagName("wizardtab")[0],
+			success = wizardTab.childNodes[0].firstChild.data,
+			tabContent = wizardTab.childNodes[1].firstChild.data,
+			state = xmlDoc.getElementsByTagName("state")[0].firstChild.data,
+			tabToUpdate;
 			
-			if(success == 'true') {
-				//update content
-				if(_self.cfg.effect) {
-					jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-						jQuery(_self.content).html(content);
-						jQuery(_self.content).fadeIn();
-					});
-				} else {
-					jQuery(_self.content).html(content);
-				}
+			if(success == "true") {
+				tabToUpdate = PrimeFaces.escapeClientId(wizard.clientId) + "_tab" + stepToGo;
+				jQuery(tabToUpdate).html(tabContent);
 				
-				//update navigation controls
-				var currentStepIndex = _self.getStepIndex(_self.currentStep);
-				if(currentStepIndex == _self.cfg.steps.length - 1) {
-					_self.hideNextNav();
-					_self.showBackNav();
-				} else if(currentStepIndex == 0) {
-					_self.hideBackNav();
-					_self.showNextNav();
-				} else {
-					_self.showBackNav();
-					_self.showNextNav();
-				}
+				wizard.cfg.step = stepFactor;
+				jQuery(wizard.tabSelector).tabSwitch('moveStep', wizard.cfg);
+				wizard.step = wizard.step + stepFactor;
+				
+				if(wizard.step == 0)
+					wizard.navPrev.hide();
+				else if(wizard.step == 1)
+					wizard.navPrev.show();
+				else if(wizard.step == (wizard.cfg.size - 1))
+					wizard.navNext.hide();
+				else if(wizard.step == (wizard.cfg.size - 2))
+					wizard.navNext.show();
 				
 			} else {
-				//update content
-				jQuery(_self.content).html(content);
+				tabToUpdate = PrimeFaces.escapeClientId(wizard.clientId) + "_tab" + wizard.getStep();
+				jQuery(tabToUpdate).html(tabContent);
 			}
+			
+			//update state
+			PrimeFaces.ajax.AjaxUtils.updateState(state);
 		}
 	});
 }
 
-PrimeFaces.widget.Wizard.prototype.getStepIndex = function(step) {
-	for(var i=0; i < this.cfg.steps.length; i++) {
-		if(this.cfg.steps[i] == step)
-			return i;
-	}
-	
-	return -1;
+PrimeFaces.widget.Wizard.prototype.getStep = function() {
+	return this.step;
 }
 
-PrimeFaces.widget.Wizard.prototype.showNextNav = function() {
-	jQuery(this.nextNav).fadeIn();
-}
-
-PrimeFaces.widget.Wizard.prototype.hideNextNav = function() {
-	jQuery(this.nextNav).fadeOut();
-}
-
-PrimeFaces.widget.Wizard.prototype.showBackNav = function() {
-	jQuery(this.backNav).fadeIn();
-}
-
-PrimeFaces.widget.Wizard.prototype.hideBackNav = function() {
-	jQuery(this.backNav).fadeOut();
+PrimeFaces.widget.Wizard.prototype.getSize = function() {
+	return this.cfg.size;
 }

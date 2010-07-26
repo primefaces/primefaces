@@ -45,16 +45,16 @@ import org.primefaces.model.TreeNode;
 			return node;
 	}
 	
+	public boolean hasSelection() {
+		return getValueExpression("selection") != null;
+	}
+	
 	public void processUpdates(FacesContext context) {
 		super.processUpdates(context);
-		Object selection = this.getSelection();
+		TreeNode[] selection = this.getSelection();
 		
 		if(selection != null) {
 			this.getValueExpression("selection").setValue(context.getELContext(), selection);
 			setSelection(null);
 		}
-	}
-	
-	public boolean hasAjaxListener() {
-		return getNodeSelectListener() != null || getNodeExpandListener() != null || getNodeCollapseListener() != null;
 	}

@@ -2,53 +2,65 @@ import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIColumn;
-import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.el.ValueExpression;
 import org.primefaces.component.column.Column;
-import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.Serializable;
 import java.lang.StringBuffer;
-import java.io.Serializable;
 
-	public void processDecodes(FacesContext facesContext) {
+	public void processDecodes(FacesContext context) {
 		if(isDynamic()) {
-			super.processDecodes(facesContext);
+			super.processDecodes(context);
 		} else {
 			int originalRows = getRows();
 			setRows(getRowCount());
-			super.processDecodes(facesContext);
+			super.processDecodes(context);
 			setRows(originalRows);
-			
-			//Update current page state for client side datatable
-			Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
-			String clientId = getClientId(facesContext);
-			String pageParam = clientId + "_page";
-			
-			if(isPaginator() && params.containsKey(pageParam)) {
-				int page = Integer.parseInt(params.get(pageParam));
-				setPage(page);
-			}
+		}
+		
+		//Set current page and first
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		String currentPageParam = getClientId(context) + "_currentPage";
+		if(isPaginator() && params.containsKey(currentPageParam)) {
+			int currentPage = Integer.parseInt(params.get(currentPageParam));
+			setPage(currentPage);
+			setFirst((currentPage - 1) * getRows());
 		}
     }
 	
-	public void processUpdates(FacesContext isAjaxDataRequest) {
-		super.processUpdates(isAjaxDataRequest);
+	public void processUpdates(FacesContext context) {
+		super.processUpdates(context);	
 		
-		if(!isAjaxDataRequest(isAjaxDataRequest)) {
-			ValueExpression selectionVE = this.getValueExpression("selection");
-			if(selectionVE != null) {
-				selectionVE.setValue(isAjaxDataRequest.getELContext(), this.getSelection());
-				this.setSelection(null);
-			}
+		ValueExpression selectionVE = this.getValueExpression("selection");
+		if(selectionVE != null) {
+			selectionVE.setValue(context.getELContext(), this.getSelection());
+			this.setSelection(null);
 		}
 	}
-
+	
+	private String columnSelectionMode = null;
+	
+	public String getColumnSelectionMode() {
+		if(columnSelectionMode == null) { 
+			for(Iterator<javax.faces.component.UIComponent> children = getChildren().iterator(); children.hasNext();) {
+				javax.faces.component.UIComponent kid = children.next();
+				
+				if(kid.isRendered() && kid instanceof Column) {
+					Column column = (Column) kid;
+					
+					if(column.getSelectionMode() != null) {
+						columnSelectionMode = column.getSelectionMode();
+					}
+				}
+			}
+		}
+		
+		return columnSelectionMode;
+	}
+	
 	void loadLazyData() {
 		DataModel model = getDataModel();
 		if(model instanceof LazyDataModel) {
@@ -84,46 +96,32 @@ import java.io.Serializable;
 		return getFilterMap().size() > 0;
 	}
 	
-	public boolean isAjaxDataRequest(FacesContext facesContext) {
-		return facesContext.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(facesContext) + "_ajaxData");
+	public void assignDataModel(javax.faces.model.DataModel model) {
+		setDataModel(model);
 	}
 	
-	private List<String> selected= new ArrayList<String>();
+	private List<Integer> selectedRowIndexes = new ArrayList<Integer>();
 	
-	public List<String> getSelected() {
-		return selected;
+	public List<Integer> getSelectedRowIndexes() {
+		return selectedRowIndexes;
 	}
 	
-	public void setSelected(List<String> selected) {
-		this.selected = selected;
+	public void setSelectedRowIndexes(List<Integer> selectedRowIndexes) {
+		this.selectedRowIndexes = selectedRowIndexes;
 	}
 	
 	public boolean isSelectionEnabled() {
-		return this.getSelectionMode() != null;
+		return this.getSelectionMode() != null || this.getColumnSelectionMode() != null;
 	}
 	
 	public boolean isSingleSelectionMode() {
-		String selectionMode = this.getSelectionMode();
-		
-		if(selectionMode != null)
-			return selectionMode.equals("single") || selectionMode.equals("singlecell");
-		else
-			return false;
+		return (this.getSelectionMode() != null && this.getSelectionMode().equals("single")) || (this.getColumnSelectionMode() != null && this.getColumnSelectionMode().equals("single"));
 	}
 	
-	public boolean isCellSelection() {
-		String selectionMode = this.getSelectionMode();
-		
-		if(selectionMode != null)
-			return selectionMode.indexOf("cell") != -1;
-		else
-			return false;
-	}
-	
-	public String getSelectedAsString() {
+	public String getSelectedRowIndexesAsString() {
 		StringBuffer buffer = new StringBuffer();
-		for(Iterator<String> iter = selected.iterator();iter.hasNext();) {
-			buffer.append(iter.next());
+		for(Iterator<Integer> iter = selectedRowIndexes.iterator();iter.hasNext();) {
+			buffer.append(String.valueOf(iter.next()));
 			
 			if(iter.hasNext())
 				buffer.append(",");
@@ -131,23 +129,3 @@ import java.io.Serializable;
 		
 		return buffer.toString();
 	}
-	
-    public UIColumn getColumnByClientId(String clientId) {
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
-    	
-    	for(UIComponent kid : getChildren()) {
-    		if(kid.getClientId(facesContext).equals(clientId))
-    			return (UIColumn) kid;
-    	}
-    	
-    	return null;
-    }
-	
-	@Override
-    public void restoreState(FacesContext context, Object state) {
-        super.restoreState(context, state);
-        
-        if(getStateHelper().get("value") == null) {
-        	getStateHelper().put("value", new ArrayList());
-        }
-    }

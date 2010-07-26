@@ -190,7 +190,7 @@ public class ComponentUtils {
 	}
 
 	public static String escapeJQueryId(String id) {
-		return "#" + id.replaceAll(":", "\\\\\\\\:");
+		return "#" + id.replaceAll(":", "\\\\:");
 	}
 	
 	public static String formatKeywords(FacesContext facesContext, UIComponent component, String processRequest) {
@@ -267,9 +267,5 @@ public class ComponentUtils {
 	      }
 	    }
 	    return result;
-	}
-	
-	public static boolean isLiteralText(UIComponent component) {
-		return component.getFamily().equalsIgnoreCase("facelets.LiteralText");
 	}
 }

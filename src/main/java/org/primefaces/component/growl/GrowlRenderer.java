@@ -33,14 +33,10 @@ public class GrowlRenderer extends CoreRenderer {
 		Growl growl = (Growl) component;
 		String clientId = growl.getClientId(facesContext);
 		
-		writer.startElement("span", growl);
-		writer.writeAttribute("id", clientId, "id");
-		writer.endElement("span");
-		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function(){");
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 
 		Iterator<FacesMessage> messages = growl.isGlobalOnly() ? facesContext.getMessages(null) : facesContext.getMessages();
 		
@@ -69,14 +65,18 @@ public class GrowlRenderer extends CoreRenderer {
 			
 			if(growl.getLife() != 6000) writer.write(",time:" + growl.getLife());
 			
-			writer.write("});");	
+			writer.write("});\n");	
 			
 			message.rendered();
 		}
 		
-		writer.write("});");
+		writer.write("});\n");
 		
 		writer.endElement("script");
+		
+		writer.startElement("span", growl);
+		writer.writeAttribute("id", clientId, "id");
+		writer.endElement("span");
 	}
 	
 	private String getImage(FacesContext facesContext, Growl growl, FacesMessage message) {

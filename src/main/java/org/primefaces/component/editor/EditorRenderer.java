@@ -37,11 +37,11 @@ public class EditorRenderer extends CoreRenderer{
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Editor editor = (Editor) component;
 
-		encodeMarkup(facesContext, editor);
-		encodeScript(facesContext, editor);
+		encodeEditorScript(facesContext, editor);
+		encodeEditorMarkup(facesContext, editor);
 	}
 
-	private void encodeMarkup(FacesContext facesContext, Editor editor) throws IOException{
+	private void encodeEditorMarkup(FacesContext facesContext, Editor editor) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		String clientId = editor.getClientId(facesContext);
@@ -88,7 +88,7 @@ public class EditorRenderer extends CoreRenderer{
 		}
 	}
 
-	private void encodeScript(FacesContext facesContext, Editor editor) throws IOException{
+	private void encodeEditorScript(FacesContext facesContext, Editor editor) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = editor.getClientId(facesContext);
 		String editorVariable = createUniqueWidgetVar(facesContext, editor);
@@ -97,6 +97,7 @@ public class EditorRenderer extends CoreRenderer{
 		writer.startElement("script", editor);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");	
 		writer.write(editorVariable + " = new PrimeFaces.widget.Editor('" + getInputId(clientId) + "',{");
 		writer.write("width:'" + editor.getWidth() + "'");
 		writer.write(",height:'" + editor.getHeight() + "'");
@@ -115,6 +116,7 @@ public class EditorRenderer extends CoreRenderer{
 		writer.write("});\n");
 		
 		writer.write(editorVariable + ".render();\n");
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}

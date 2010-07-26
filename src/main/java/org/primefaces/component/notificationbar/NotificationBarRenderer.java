@@ -28,13 +28,13 @@ public class NotificationBarRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		NotificationBar bar = (NotificationBar) component;
 		
-		encodeMarkup(facesContext, bar);
 		encodeScript(facesContext, bar);
+		encodeMarkup(facesContext, bar);
 	}
 	
 	private void encodeMarkup(FacesContext facesContext, NotificationBar bar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String styleClass = bar.getStyleClass() == null ? "ui-notificationbar" : "ui-notificationbar " + bar.getStyleClass();
+		String styleClass = bar.getStyleClass() == null ? "pf-notificationbar" : "pf-notificationbar " + bar.getStyleClass();
 		String var = createUniqueWidgetVar(facesContext, bar);
 		UIComponent close = bar.getFacet("close");
 		
@@ -45,7 +45,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 		
 		if(close != null) {
 			writer.startElement("span", null);
-			writer.writeAttribute("class", "ui-notificationbar-close", null);
+			writer.writeAttribute("class", "pf-notificationbar-close", null);
 			writer.writeAttribute("onclick", var + ".hide()", null);
 			renderChild(facesContext, close);
 			writer.endElement("span");
@@ -64,8 +64,8 @@ public class NotificationBarRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
-
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		
 		writer.write(var + " = new PrimeFaces.widget.NotificationBar('" + clientId + "',{");
 		writer.write("position:'" + bar.getPosition() + "'");
 		writer.write(",effect:'" + bar.getEffect() + "'");
@@ -74,7 +74,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 		if(bar.isAutoDisplay())
 			writer.write(",autoDisplay:true");
 		
-		writer.write("});});");
+		writer.write("});});\n");
 		
 		writer.endElement("script");
 	}

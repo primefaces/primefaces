@@ -15,21 +15,84 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-public interface ScheduleModel {
+public class ScheduleModel<T extends ScheduleEvent> implements Serializable {
+	
+	private List<T> events;
+
+	public ScheduleModel() {
+		events = new ArrayList<T>(); 
+	}
+	
+	public ScheduleModel(List<T> events) {
+		this.events = events;
+	}
+	
+	public void addEvent(T t) {
+		t.setId(UUID.randomUUID().toString());
 		
-	public void addEvent(ScheduleEvent event);
+		events.add(t);
+	}
 	
-	public boolean deleteEvent(ScheduleEvent event);
+	public boolean deleteEvent(T t) {
+		return events.remove(t);
+	}
 	
-	public List<ScheduleEvent> getEvents();
+	public List<T> getEvents() {
+		return events;
+	}
 	
-	public ScheduleEvent getEvent(String id);
+	public void setEvents(List<T> events) {
+		this.events = events;
+	}
 	
-	public void updateEvent(ScheduleEvent event);
+	public T getEvent(String id) {
+		for(T t: events) {
+			if(t.getId().equals(id))
+				return t;
+		}
+		
+		return null;
+	}
 	
-	public int getEventCount();
+	public void updateEvent(T event) {
+		int index = -1;
+		
+		for(int i = 0 ; i < events.size(); i++) {
+			if(events.get(i).getId().equals(event.getId())) {
+				index = i;
+				
+				break;
+			}
+		}
+		
+		if(index >= 0) {
+			events.set(index, event);
+		}
+	}
 	
-	public void clear();
+	public int getEventCount() {
+		return events.size();
+	}
+	
+	/**
+	 * Method to be used when implementing lazy loading, implementers should override to fetch events that belong to a particular period
+	 * 
+	 * @param start	Start date of period
+	 * @param end 	End date of period
+	 */
+	public void fetchEvents(Date start, Date end) {}
+	
+	/**
+	 * When implementing lazy loading, isLazy() should return true
+	 * 
+	 */
+	public boolean isLazy() {
+		return false;
+	}
 }

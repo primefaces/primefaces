@@ -16,7 +16,6 @@
 package org.primefaces.application;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,9 +25,6 @@ import javax.faces.FacesException;
 import javax.faces.application.StateManager;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseEvent;
@@ -43,19 +39,17 @@ import org.primefaces.component.PartialViewRoot;
 import org.primefaces.context.RequestContext;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.ApplicationUtils;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.RendererUtils;
 
 public class PrimeFacesPhaseListener implements PhaseListener {
 	
 	private static final Logger logger = Logger.getLogger(PrimeFacesPhaseListener.class.getName());
 
 	public void afterPhase(PhaseEvent phaseEvent) {
-		try {
-			RequestContext.getCurrentInstance().release();
-		}catch(NullPointerException exception) {
-			logger.info("Warning: RequestContext is already null before releasing. This means you have more than one PrimeFaces jar in your classpath.");
-		}
+		RequestContext.getCurrentInstance().release();
 	}
 	
 	public void beforePhase(PhaseEvent phaseEvent) {
@@ -69,17 +63,14 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 		}
 
 		if(isAjaxRequest) {
-			try {
-				handleAjaxRequest(facesContext);
-			} catch (Exception e) {
-				throw new FacesException(e);
-			}
+			handleAjaxRequest(facesContext);
 		}
 	}
 	
-	private void handleAjaxRequest(FacesContext facesContext) throws IOException {
+	private void handleAjaxRequest(FacesContext facesContext) {
 		RequestContext requestContext = RequestContext.getCurrentInstance();
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
+		String viewNamespace = ApplicationUtils.getViewNamespace(facesContext);
 		
 		if(logger.isLoggable(Level.FINE)) {
 			logger.fine("Processing PrimeFaces ajax request");
@@ -97,23 +88,18 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 			
 			ResponseWriter writer = facesContext.getResponseWriter();
 			try {
-				writer.write("<?xml version=\"1.0\" encoding=\"" + response.getCharacterEncoding() + "\"?>");
 				writer.write("<partialResponse>");
 				
-				if(requestContext.getAjaxRedirectUrl() != null) {
-					writer.write("<redirect-url>" + RequestContext.getCurrentInstance().getAjaxRedirectUrl() + "</redirect-url>");
-				} else {
-					if(idsToUpdate != null) {
-						writeComponents(facesContext, idsToUpdate);
-					}
-					
-					writeState(facesContext);
-					
-					//Send request callback parameters
-					requestContext.addCallbackParam("validationFailed", facesContext.isValidationFailed());
+				if(idsToUpdate != null) {
+					writeComponents(facesContext, idsToUpdate, viewNamespace);
+				}
+				
+				writeState(facesContext);
+				
+				if(!requestContext.getCallbackParams().isEmpty()) {
 					writeCallbackParams(facesContext, requestContext);
 				}
-
+				
 				writer.write("</partialResponse>");
 			}catch(IOException exception) {
 				exception.printStackTrace();
@@ -129,7 +115,6 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 		}
 		
 		facesContext.responseComplete();
-		facesContext.getResponseWriter().close();
 	}
 	
 	private String[] getIdsToUpdate(FacesContext facesContext, RequestContext requestContext) {
@@ -157,36 +142,66 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 	 */
 	private void restorePartialView(FacesContext facesContext) {
 		PartialViewRoot partialView = (PartialViewRoot) facesContext.getViewRoot();
-
-		partialView.restoreBase();
-		facesContext.setViewRoot(partialView.getBase());
+		
+		for (int i = 0; i < partialView.getChildCount(); i++) {
+			UIComponent kid = partialView.getChildren().get(i);
+			kid.setParent(partialView.getParents().get(i));
+		}
+		
+		facesContext.setViewRoot(partialView.getBase());	
 		partialView = null;
 	}
-	
+
+	/**
+	 * Write state to sync with client
+	 */
 	private void writeState(FacesContext facesContext) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.write("<state>");
-		writer.startCDATA();
+		RendererUtils.startCDATA(facesContext);
 		
 		StateManager stateManager = facesContext.getApplication().getStateManager();
 		stateManager.writeState(facesContext, stateManager.saveView(facesContext));
 		
-		writer.endCDATA();
+		RendererUtils.endCDATA(facesContext);
 		writer.write("</state>");
 	}
 
 	/**
 	 * Write partial output of each component
 	 */
-	private void writeComponents(FacesContext facesContext, String[] ids) throws IOException {
+	private void writeComponents(FacesContext facesContext, String[] ids, String namespace) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		VisitContext visitContext = VisitContext.createVisitContext(facesContext, Arrays.asList(ids), null);
 		
 		writer.write("<components>");
-		
-		facesContext.getViewRoot().visitTree(visitContext, RENDER_RESPONSE);
-		
+		for(String id : ids) {
+			String clientId = id.trim();
+			
+			//Portlet namespace support
+			if(!namespace.equals("")) {
+				String viewrootClientId = facesContext.getViewRoot().getClientId(facesContext);
+				
+				if(viewrootClientId.indexOf(namespace) == -1)	//portlet 2
+					clientId = namespace + ":" + viewrootClientId + ":" + clientId;
+				else											//portlet 1
+					clientId = viewrootClientId + ":" + clientId;
+			}
+			
+			writer.write("<component>");
+			writer.write("<id>" + clientId + "</id>");
+			writer.write("<output>");
+			RendererUtils.startCDATA(facesContext);
+			
+			boolean found = facesContext.getViewRoot().invokeOnComponent(facesContext, clientId, RENDER_RESPONSE);
+			if(found == false) {
+		    	logger.log(Level.WARNING, "Component \"{0}\" not found to be updated partially", clientId);
+			}
+				
+			RendererUtils.endCDATA(facesContext);
+			writer.write("</output>");
+			writer.write("</component>");
+		}
 		writer.write("</components>");
 	}
 	
@@ -230,29 +245,15 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 		return PhaseId.RENDER_RESPONSE;
 	}
 	
-	public static final VisitCallback RENDER_RESPONSE = new VisitCallback() {
-
-		public VisitResult visit(VisitContext visitContext, UIComponent component) {
-			FacesContext facesContext = visitContext.getFacesContext();
-			ResponseWriter writer = visitContext.getFacesContext().getResponseWriter();
-			String clientId = component.getClientId(facesContext);
-			
+	public static final ContextCallback RENDER_RESPONSE = new ContextCallback() {
+		public void invokeContextCallback(FacesContext facesContext, UIComponent component) {
 			try {
-				writer.write("<component>");
-				writer.write("<id>" + clientId + "</id>");
-				writer.write("<output>");
-				writer.startCDATA();
-				
 				component.encodeAll(facesContext);
-					
-				writer.endCDATA();
-				writer.write("</output>");
-				writer.write("</component>");
-			} catch(Exception e) {
-				throw new FacesException(e);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
-			
-			return VisitResult.ACCEPT;
 		}
 	};
 	
@@ -280,7 +281,6 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 		try {
 			ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
 			ServletRequest request = (ServletRequest) facesContext.getExternalContext().getRequest();
-			response.setCharacterEncoding(request.getCharacterEncoding());
 			
 			RenderKit renderKit = facesContext.getRenderKit();
 			ResponseWriter responseWriter = renderKit.createResponseWriter(response.getWriter(), null, request.getCharacterEncoding());

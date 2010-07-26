@@ -29,8 +29,8 @@ public class ImageCompareRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ImageCompare compare = (ImageCompare) component;
 		
-		encodeMarkup(facesContext, compare);
 		encodeScript(facesContext, compare);
+		encodeMarkup(facesContext, compare);
 	}
 	
 	private void encodeScript(FacesContext facesContext, ImageCompare compare) throws IOException {
@@ -40,10 +40,11 @@ public class ImageCompareRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).beforeAfter({");
 		writer.write("imagePath:'" + ResourceUtils.getResourceURL(facesContext, "/jquery/plugins/imagecompare/")  + "'");
 		writer.write(",showFullLinks : false");
-		writer.write("});");
+		writer.write("});});");
 		writer.endElement("script");
 	}
 	

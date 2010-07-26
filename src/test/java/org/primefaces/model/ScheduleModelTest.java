@@ -23,18 +23,18 @@ public class ScheduleModelTest {
 
 	@Test
 	public void addEvents() {
-		ScheduleModel model = new DefaultScheduleModel();
-		model.addEvent(new DefaultScheduleEvent("Entry 1", null, null));
-		model.addEvent(new DefaultScheduleEvent("Entry 2", null, null));
+		ScheduleModel<ScheduleEventImpl> model = new ScheduleModel<ScheduleEventImpl>();
+		model.addEvent(new ScheduleEventImpl("Entry 1", null, null));
+		model.addEvent(new ScheduleEventImpl("Entry 2", null, null));
 		
 		assertEquals(2, model.getEventCount());
 	}
 	
 	@Test
 	public void deleteEvent() {
-		ScheduleModel model = new DefaultScheduleModel();
-		ScheduleEvent event1 = new DefaultScheduleEvent("Entry 1", null, null);
-		ScheduleEvent event2 = new DefaultScheduleEvent("Entry 2", null, null);
+		ScheduleModel<ScheduleEventImpl> model = new ScheduleModel<ScheduleEventImpl>();
+		ScheduleEventImpl event1 = new ScheduleEventImpl("Entry 1", null, null);
+		ScheduleEventImpl event2 = new ScheduleEventImpl("Entry 2", null, null);
 		
 		model.addEvent(event1);
 		model.addEvent(event2);
@@ -47,12 +47,12 @@ public class ScheduleModelTest {
 	
 	@Test
 	public void findEventById() {
-		ScheduleModel model = new DefaultScheduleModel();
-		model.addEvent(new DefaultScheduleEvent("Entry 1", null, null));
-		model.addEvent(new DefaultScheduleEvent("Entry 2", null, null));
-		model.addEvent(new DefaultScheduleEvent("Entry 3", null, null));
-		model.addEvent(new DefaultScheduleEvent("Entry 4", null, null));
-		model.addEvent(new DefaultScheduleEvent("Entry 5", null, null));
+		ScheduleModel<ScheduleEventImpl> model = new ScheduleModel<ScheduleEventImpl>();
+		model.addEvent(new ScheduleEventImpl("Entry 1", null, null));
+		model.addEvent(new ScheduleEventImpl("Entry 2", null, null));
+		model.addEvent(new ScheduleEventImpl("Entry 3", null, null));
+		model.addEvent(new ScheduleEventImpl("Entry 4", null, null));
+		model.addEvent(new ScheduleEventImpl("Entry 5", null, null));
 		
 		String id = model.getEvents().get(2).getId();
 		

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,40 +17,24 @@ package org.primefaces.component.watermark;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class WatermarkRenderer extends CoreRenderer {
 
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
 		Watermark watermark = (Watermark) component;
-		String target = null;
-		
-		if(watermark.getFor() != null) {
-			String _for = watermark.getFor();	
-			UIComponent forComponent = watermark.findComponent(_for);
-			if(forComponent == null) {
-				throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-			}
-			target = ComponentUtils.escapeJQueryId(forComponent.getClientId(context));
-			
-		} else if(watermark.getForElement() != null) {
-			target = watermark.getForElement();
-		} else {
-			throw new FacesException("Either for or forElement options must be used to define a watermark");
-		}
+		String forComponent = watermark.getParent().getClientId(facesContext);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function() {");
-		writer.write("jQuery('" + target + "').watermark('" + watermark.getValue() + "', {className:'ui-watermark'});");
+		writer.write("PrimeFaces.onContentReady('" + forComponent + "', function() {\n");
+		writer.write("jQuery(PrimeFaces.escapeClientId('" + forComponent + "')).watermark('" + watermark.getValue() + "', {className:'pf-watermark'});");
 		writer.write("});");
 		
 		writer.endElement("script");

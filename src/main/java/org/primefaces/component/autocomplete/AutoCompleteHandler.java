@@ -19,9 +19,9 @@ import java.util.List;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
-import org.primefaces.event.SelectEvent;
 import org.primefaces.facelets.MethodRule;
 
 public class AutoCompleteHandler extends ComponentHandler {
@@ -33,9 +33,10 @@ public class AutoCompleteHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
+		Class[] paramList = new Class[]{String.class}; 
 		
-		metaRuleset.addRule(new MethodRule("completeMethod", List.class, new Class[]{String.class}));
-		metaRuleset.addRule(new MethodRule("selectListener", null, new Class[]{SelectEvent.class}));
+		MetaRule metaRule = new MethodRule("completeMethod", List.class, paramList); 
+		metaRuleset.addRule(metaRule);
 		
 		return metaRuleset; 
 	} 

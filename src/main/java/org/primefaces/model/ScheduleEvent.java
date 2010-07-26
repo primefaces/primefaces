@@ -15,9 +15,10 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public interface ScheduleEvent {
+public interface ScheduleEvent extends Serializable {
 
     public String getId();
     

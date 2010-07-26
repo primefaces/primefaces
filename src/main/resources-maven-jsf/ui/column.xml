@@ -26,6 +26,14 @@
 			<description>Boolean to make the column width resizable, default is false</description>
 		</attribute>
 		<attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Type of the selection column; 'multiple' or 'single'. Multiple places checkboxes and Single places radio buttons inside this column.
+			</description>
+		</attribute>
+		<attribute>
 			<name>parser</name>
 			<required>false</required>
 			<type>java.lang.String</type>

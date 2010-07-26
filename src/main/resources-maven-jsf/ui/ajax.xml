@@ -12,12 +12,6 @@
 	<rendererType>org.primefaces.component.UIAjaxRenderer</rendererType>
 	<rendererClass>org.primefaces.component.uiajax.UIAjaxRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<ajaxSource>true</ajaxSource>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>

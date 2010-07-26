@@ -42,8 +42,8 @@ public class InputMaskRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		InputMask inputMask = (InputMask) component;
 		
-		encodeMarkup(facesContext, inputMask);
 		encodeScript(facesContext, inputMask);
+		encodeMarkup(facesContext, inputMask);
 	}
 	
 	private void encodeScript(FacesContext facesContext, InputMask inputMask) throws IOException {
@@ -52,13 +52,14 @@ public class InputMaskRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).mask('"+inputMask.getMask()+"'");
 		
 		if(inputMask.getPlaceHolder()!=null)
 			writer.write(",{placeholder:'"+inputMask.getPlaceHolder()+"'}");
 
-		writer.write(");");
+		writer.write(")});\n");
 	
 		writer.endElement("script");
 	}

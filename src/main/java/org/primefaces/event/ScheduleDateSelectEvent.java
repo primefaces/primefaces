@@ -7,7 +7,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
 
-@Deprecated
 public class ScheduleDateSelectEvent extends FacesEvent {
 
 	public ScheduleDateSelectEvent(UIComponent component, Date date) {

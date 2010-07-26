@@ -30,6 +30,9 @@
 	</attributes>
 	<resources>
 		<resource>
+			<name>/jquery/plugins/jqtouch/jqtouch.min.css</name>
+		</resource>
+		<resource>
 			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>

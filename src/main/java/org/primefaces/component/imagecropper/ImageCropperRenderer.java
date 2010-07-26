@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.faces.component.UIComponent;
@@ -30,6 +31,8 @@ import javax.servlet.ServletContext;
 
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
+
+import com.lowagie.text.Image;
 
 public class ImageCropperRenderer extends CoreRenderer {
 	
@@ -43,11 +46,11 @@ public class ImageCropperRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ImageCropper cropper = (ImageCropper) component;
 
-		encodeScript(facesContext, cropper);
-		encodeMarkup(facesContext, cropper);
+		encodeImageCropperScript(facesContext, cropper);
+		encodeImageCropperMarkup(facesContext, cropper);
 	}
 
-	private void encodeScript(FacesContext facesContext, ImageCropper cropper) throws IOException{
+	private void encodeImageCropperScript(FacesContext facesContext, ImageCropper cropper) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String cropperVar = createUniqueWidgetVar(facesContext, cropper);
 		String clientId = cropper.getClientId(facesContext);
@@ -74,7 +77,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 	
-	private void encodeMarkup(FacesContext facesContext, ImageCropper cropper) throws IOException{
+	private void encodeImageCropperMarkup(FacesContext facesContext, ImageCropper cropper) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = cropper.getClientId(facesContext);
 		String coordsHolder = getCoordsHolder(clientId);

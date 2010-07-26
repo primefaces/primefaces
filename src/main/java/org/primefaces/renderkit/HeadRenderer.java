@@ -24,8 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import org.primefaces.resource.ResourceUtils;
-
 /**
  * Temporary Custom HeadRenderer to fix an issue with Mojarra-2.0.2 that causes queued resources to be rendered after
  * resources defined by page author making it hard to override default styles of components for skinning
@@ -37,22 +35,6 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
         
-        //Skin
-        String skin = context.getExternalContext().getInitParameter("primefaces.skin");
-        if(skin == null) {
-        	skin = "sam";	//default
-        }
-        
-        if(!skin.equalsIgnoreCase("none")) {
-        	String path = "/skins/" + skin + "/skin.css";
-        	writer.startElement("link", null);
-    		writer.writeAttribute("rel", "stylesheet", null);
-    		writer.writeAttribute("type", "text/css", null);
-    		writer.writeAttribute("href", ResourceUtils.getResourceURL(context, path), null);
-    		writer.endElement("link");
-        }
-        
-        //Resources
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
         while (iter.hasNext()) {

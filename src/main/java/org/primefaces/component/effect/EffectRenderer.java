@@ -49,10 +49,14 @@ public class EffectRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		if(effect.getEvent().equals("load")) {
-			writer.write(animation);
+			writer.write("PrimeFaces.onContentReady('" + effectedComponentClientId + "', function() {" + animation + "});");
 		} else {
+			writer.write("PrimeFaces.onContentReady('" + parentClientId + "', function() {\n");
+			
 			writer.write("YAHOO.util.Event.addListener('" + parentClientId + "', '" + effect.getEvent() + "', " +
 					"function(e) {" + animation + "});\n");
+			
+			writer.write("});\n");
 		}
 		
 		writer.endElement("script");

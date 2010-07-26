@@ -34,9 +34,9 @@ public class ResizableRenderer extends CoreRenderer {
 		writer.startElement("script", resizable);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(document).ready(function(){");
+		writer.write("YAHOO.util.Event.addListener(window, \"load\", function(e) {\n");
 		
-		writer.write(resizableVar + " = new YAHOO.util.Resize('"+ parentClientId + "',{");
+		writer.write(resizableVar + " = new YAHOO.util.Resize(\""+ parentClientId + "\",{");
 		writer.write("proxy:" + resizable.isProxy());
 		
 		if(resizable.isStatus()) writer.write(",status:" + resizable.isStatus());

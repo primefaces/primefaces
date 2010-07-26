@@ -31,7 +31,6 @@ public class RequestContextImpl extends RequestContext {
 	
 	private ExternalContext externalContext = null;
 	private Map<Object, Object> attributes;
-	private String ajaxRedirectUrl = null;
 	
 	public RequestContextImpl(ExternalContext externalContext) {
 		this.externalContext = externalContext;
@@ -79,15 +78,5 @@ public class RequestContextImpl extends RequestContext {
 			attributes.put(PARTIAL_UPDATE_TARGETS_KEY, new ArrayList());
 		}
 		return (List<String>) attributes.get(PARTIAL_UPDATE_TARGETS_KEY);
-	}
-	
-	@Override
-	public String getAjaxRedirectUrl() {
-		return ajaxRedirectUrl;
-	}
-	
-	@Override
-	public void setAjaxRedirectUrl(String ajaxRedirectUrl) {
-		this.ajaxRedirectUrl = ajaxRedirectUrl;
 	}
 }

@@ -30,6 +30,20 @@ public class LightBoxRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		LightBox lightBox = (LightBox) component;
 		String clientId = lightBox.getClientId(facesContext);
+		String widgetVar = createUniqueWidgetVar(facesContext, lightBox);
+		
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
+		writer.write("var lightBoxTarget = PrimeFaces.escapeClientId('" + clientId + "')" + " + ' a';\n");
+		writer.write(widgetVar + " = jQuery(lightBoxTarget).colorbox({");
+		writer.write("transition:'" + lightBox.getTransition() + "'");
+		encodeCFG(facesContext, lightBox);
+		writer.write("});\n");
+		writer.write("});\n");
+		
+		writer.endElement("script");
 		
 		writer.startElement("div", lightBox);
 		writer.writeAttribute("id", clientId, "id");
@@ -69,7 +83,6 @@ public class LightBoxRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		LightBox lightBox = (LightBox) component;
-		String widgetVar = createUniqueWidgetVar(facesContext, lightBox);
 		String clientId = lightBox.getClientId(facesContext);
 		
 		if(lightBox.getFacet("inline") != null) {
@@ -86,16 +99,5 @@ public class LightBoxRenderer extends CoreRenderer {
 		}
 		
 		writer.endElement("div");
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("var lightBoxTarget = PrimeFaces.escapeClientId('" + clientId + "')" + " + ' a';\n");
-		writer.write(widgetVar + " = jQuery(lightBoxTarget).colorbox({");
-		writer.write("transition:'" + lightBox.getTransition() + "'");
-		encodeCFG(facesContext, lightBox);
-		writer.write("});");
-		
-		writer.endElement("script");
 	}
 }

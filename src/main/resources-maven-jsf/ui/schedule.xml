@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.ScheduleRenderer</rendererType>
 	<rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -58,6 +54,15 @@
 			<type>java.lang.Object</type>
 			<description>
 				The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date.
+			</description>
+		</attribute>
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Enables/disables use of jQuery UI themes.
 			</description>
 		</attribute>
 		<attribute>
@@ -119,117 +124,14 @@
 			<name>dateSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void dateSelectListener(org.primefaces.event.DateSelectEvent)</method-signature>
+			<method-signature>void dateSelectListener(org.primefaces.event.ScheduleDateSelectEvent)</method-signature>
 			<description>A server side listener to invoke when a date is selected.</description>
-		</attribute>
-		<attribute>
-			<name>eventMoveListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void eventMoveListener(org.primefaces.event.ScheduleEntryMoveEvent)</method-signature>
-			<description>A server side listener to invoke when an entry is moved.</description>
-		</attribute>
-		<attribute>
-			<name>eventResizeListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void eventResizeListener(org.primefaces.event.ScheduleEntryResizeEvent)</method-signature>
-			<description>A server side listener to invoke when an event is resized.</description>
-		</attribute>
-		<attribute>
-			<name>onEventSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id(s) of components to update with ajax after an event is select, by default schedule event dialog is updated.</description>
-		</attribute>
-		<attribute>
-			<name>onDateSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id(s) of components to update with ajax after an empty date is select, by default schedule event dialog is updated.</description>
-		</attribute>
-		<attribute>
-			<name>onEventMoveUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id(s) of components to update with ajax after an event is moved</description>
-		</attribute>
-		<attribute>
-			<name>onEventResizeUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Id(s) of components to update with ajax after an event is resized</description>
-		</attribute>
-		<attribute>
-			<name>showHeader</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Specifies visibility of header content.</description>
-		</attribute>
-		<attribute>
-			<name>leftHeaderTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>prev,next today</defaultValue>
-			<description>Content of left side of header.</description>
-		</attribute>
-		<attribute>
-			<name>centerHeaderTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>title</defaultValue>
-			<description>Content of header center.</description>
-		</attribute>
-		<attribute>
-			<name>rightHeaderTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>month,agendaWeek,agendaDay</defaultValue>
-			<description>Content of right side of header.</description>
-		</attribute>
-		<attribute>
-			<name>allDaySlot</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Determines if all-day slot will be displayed in agendaWeek or agendaDay views.</description>
-		</attribute>
-		<attribute>
-			<name>slotMinutes</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>30</defaultValue>
-			<description>Interval in minutes in an hour to create a slot.</description>
-		</attribute>
-		<attribute>
-			<name>firstHour</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>6</defaultValue>
-			<description>First hour to display in day view.</description>
-		</attribute>
-		<attribute>
-			<name>minTime</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Minimum time to display in a day view.</description>
-		</attribute>
-		<attribute>
-			<name>maxTime</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Maximum time to display in a day view.</description>
-		</attribute>
-		<attribute>
-			<name>startWeekday</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-			<description>Specifies first day of week, by default it's 0 corresponding to sunday</description>
 		</attribute>
 	</attributes>
 	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
 		<resource>
 			<name>/jquery/plugins/fullcalendar/fullcalendar.css</name>
 		</resource>
@@ -240,7 +142,7 @@
 			<name>/jquery/plugins/fullcalendar/fullcalendar.min.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>/jquery/plugins/ui/jquery.ui.custom.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>

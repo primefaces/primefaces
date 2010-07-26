@@ -1,36 +1,61 @@
-.ui-panel {
-	padding: 0.2em;
-}
-
-.ui-panel .ui-panel-titlebar {
-	padding: 0.5em 1em 0.3em;
+.pf-panel {
+	border-color:#808080;
+	border-style:solid;
+	border-width:1px 0;
 	position: relative;
 }
 
-.ui-panel .ui-panel-title {
-	float: left;
-	margin: 0.1em 16px 0.2em 0;
+.pf-panel-hd, .pf-panel-bd, .pf-panel-ft {
+	border-color:#808080;
+	border-style:solid;
+	border-width:0 1px;
+	margin:0 -1px;
 }
 
-.ui-panel .ui-panel-titlebar-icon {
-	float: right;
+.pf-panel-hd {
+	background: transparent url(../../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;
+	color:#000000;
+	font-size:93%;
+	font-weight:bold;
+	line-height:2;
+	padding:0 10px;
+	border-bottom:1px solid #CCCCCC;
 }
 
-.ui-panel .ui-panel-titlebar-icon,
-.ui-panel .ui-panel-titlebar-icon:hover,
-.ui-panel .ui-panel-titlebar-icon:focus {
-	margin-left:0.2em;
+.pf-panel-hd-toggleable {
+	cursor:pointer;
 }
 
-.ui-panel .ui-panel-content {
-	border: 0;
-	background: none;
-	padding: 0.5em 1em;
+.pf-panel-bd {
+	padding:10px;
 }
 
-.ui-panel .ui-panel-footer {
-	border-width:1px 0 0;
-	margin:0.5em 0 0;
-	padding:0.5em 1em;
-	text-align:left;
+.pf-panel-bd, .pf-panel-ft {
+	background-color:#F2F2F2;
+}
+
+.pf-panel-ft {
+	border-top:1px solid #808080;
+	font-size:77%;
+	padding:5px 10px;
+}
+
+.pf-panel-toggler-expanded, .pf-panel-toggler-collapsed {
+	cursor:pointer;
+	right:3px;
+	height:14px;
+	width:14px;
+	top:5px;
+	position:absolute;
+	overflow:hidden;
+	text-decoration:none;
+	text-indent:-10000em;
+}
+
+.pf-panel-toggler-expanded {
+	background: url(../../yui/assets/skins/sam/sprite.png) no-repeat 0 -400px;
+}
+
+.pf-panel-toggler-collapsed {
+	background: url(../../yui/assets/skins/sam/sprite.png) no-repeat 0 -350px;
 }

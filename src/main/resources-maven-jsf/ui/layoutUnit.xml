@@ -17,48 +17,62 @@
 			<name>position</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Position of the unit, can be "top","bottom","center","left","right".</description>
+			<description>Position of the unit, can be "north","south","center","west","east".</description>
 		</attribute>
 		<attribute>
-			<name>width</name>
+			<name>size</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Width of the unit in pixels, applies to left and right units.</description>
+			<type>java.lang.String</type>
+			<description>Size of the unit. Accepted values are 'auto' or an integer value in pixels.</description>
 		</attribute>
 		<attribute>
-			<name>height</name>
+			<name>minSize</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Height of the unit in pixels, applies to top and bottom units.</description>
+			<defaultValue>50</defaultValue>
+			<description>Minimum size of the unit when resizing, 0 is as small as unit can go.</description>
+		</attribute>
+		<attribute>
+			<name>maxSize</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Maximum size of the unit when resizing, 0 is as small as unit can go.</description>
+		</attribute>
+		<attribute>
+			<name>spacingOpen</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>6</defaultValue>
+			<description>Spacing between adjacent unit when unit is open.</description>
+		</attribute>
+		<attribute>
+			<name>spacingClosed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>6</defaultValue>
+			<description>Spacing between adjacent unit when unit is closed.</description>
 		</attribute>
 		<attribute>
 			<name>resizable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+			<defaultValue>true</defaultValue>
 			<description>Makes the unit resizable.</description>
 		</attribute>
 		<attribute>
 			<name>closable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+			<defaultValue>true</defaultValue>
 			<description>Makes the unit closable.</description>
 		</attribute>
 		<attribute>
-			<name>collapsible</name>
+			<name>slidable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Makes the unit collapsible.</description>
-		</attribute>
-		<attribute>
-			<name>scrollable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Makes the unit closable.</description>
+			<defaultValue>true</defaultValue>
+			<description>Makes the unit slidable.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -73,86 +87,65 @@
 			<description>Style to apply to container element.</description>
 		</attribute>
 		<attribute>
-			<name>header</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Text for header.</description>
-		</attribute>
-		<attribute>
-			<name>footer</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Footer for header.</description>
-		</attribute>
-		<attribute>
-			<name>minWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Minimum width boundary in resizing.</description>
-		</attribute>
-		<attribute>
-			<name>maxWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Maximum width boundary in resizing.</description>
-		</attribute>
-		<attribute>
-			<name>minHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Minimum Maximum height boundary in resizing. boundary in resizing.</description>
-		</attribute>
-		<attribute>
-			<name>maxHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Maximum height boundary in resizing.</description>
-		</attribute>
-		<attribute>
-			<name>gutter</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>4px</defaultValue>
-			<description>Gutter of the layout unit.</description>
-		</attribute>
-		<attribute>
-			<name>zindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>zindex property to control overlapping with other elements</description>
-		</attribute>
-		<attribute>
-			<name>visible</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Specifies visibility of unit.</description>
-		</attribute>
-		<attribute>
-			<name>collapsed</name>
+			<name>closed</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies toggle status of unit.</description>
+			<description>When true, unit is displayed as closed by default.</description>
 		</attribute>
 		<attribute>
-			<name>proxyResize</name>
+			<name>effect</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Defines the resize preview mode.</description>
+			<type>java.lang.String</type>
+			<description>Name of the effect to be used for toggle animation.</description>
 		</attribute>
 		<attribute>
-			<name>collapseSize</name>
+			<name>effectSpeed</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-			<description>Size of the unit when collapsed.</description>
+			<type>java.lang.String</type>
+			<description>Speed of the toggle effect.</description>
+		</attribute>
+		<attribute>
+			<name>togglerLengthOpen</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Length of the toggler button when unit is open.</description>
+		</attribute>
+		<attribute>
+			<name>togglerLengthClosed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Length of the toggler button when unit is closed.</description>
+		</attribute>
+		<attribute>
+			<name>togglerAlignOpen</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Alignment of the toggler button when unit is open.</description>
+		</attribute>
+		<attribute>
+			<name>togglerAlignClosed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Alignment of the toggler button when unit is closed.</description>
+		</attribute>
+		<attribute>
+			<name>togglerTipOpen</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Tooltip text of toggler when unit is open.</description>
+		</attribute>
+		<attribute>
+			<name>togglerTipClosed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Tooltip text of toggler when unit is closed.</description>
+		</attribute>
+		<attribute>
+			<name>resizerTip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Tooltip text of resizer bar.</description>
 		</attribute>
 	</attributes>
 </component>

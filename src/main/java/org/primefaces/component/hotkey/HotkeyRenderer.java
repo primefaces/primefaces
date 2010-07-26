@@ -26,6 +26,7 @@ import javax.faces.event.ActionEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 public class HotkeyRenderer extends CoreRenderer {
 
@@ -33,9 +34,8 @@ public class HotkeyRenderer extends CoreRenderer {
 		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 		Hotkey hotkey = (Hotkey) component;
 
-		if(params.containsKey(hotkey.getClientId(facesContext))) {
+		if(params.containsKey(hotkey.getClientId(facesContext)))
 			hotkey.queueEvent(new ActionEvent(hotkey));
-		}
 	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -46,16 +46,42 @@ public class HotkeyRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
+		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){\n");
 	
 		if(hotkey.getHandler() == null) {
+			String formClientId = null;
 			UIComponent form = ComponentUtils.findParentForm(facesContext,hotkey);
 
-			if(form == null) {
-				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
-			}
+			if (form != null)
+				formClientId = ComponentUtils.findParentForm(facesContext,hotkey).getClientId(facesContext);
+			else
+				throw new FacesException("Hotkey:"+ clientId+ " needs to be enclosed in a form when using an hotkeyListener");
+		
+			writer.write("PrimeFaces.ajax.AjaxRequest(");
+			writer.write("'" + getActionURL(facesContext) + "'");
+
+			writer.write(",{formId:'" + formClientId + "'");
 			
-			writer.write(buildAjaxRequest(facesContext, hotkey, form.getClientId(facesContext), clientId));
+			if(hotkey.isAsync()) writer.write(",async:true");
+			
+			//Callbacks
+			if(hotkey.getOnstart() != null) writer.write(",onstart:function(xhr){" + hotkey.getOnstart() + ";}");
+			if(hotkey.getOnerror() != null) writer.write(",onerror:function(xhr, status, error){" + hotkey.getOnerror() + ";}");
+			if(hotkey.getOnsuccess() != null) writer.write(",onsuccess:function(data, status, xhr, args){" + hotkey.getOnsuccess() + ";}"); 
+			if(hotkey.getOncomplete() != null) writer.write(",oncomplete:function(xhr, status, args){" + hotkey.getOncomplete() + ";}");
+
+			writer.write(",global:" + hotkey.isGlobal());
+			
+			writer.write("},");
+			
+			writer.write("{'" + clientId + "':'" + clientId + "'");
+			if(hotkey.getUpdate() != null)
+				writer.write(",'" + Constants.PARTIAL_UPDATE_PARAM + "':'" + ComponentUtils.findClientIds(facesContext, hotkey, hotkey.getUpdate()) + "'");
+			
+			if(hotkey.getProcess() != null)
+				writer.write(",'" + Constants.PARTIAL_PROCESS_PARAM + "':'" + ComponentUtils.findClientIds(facesContext, hotkey, hotkey.getProcess()) + "'");
+		
+			writer.write("});");
 		} else {
 			writer.write(hotkey.getHandler() + ";");
 		}

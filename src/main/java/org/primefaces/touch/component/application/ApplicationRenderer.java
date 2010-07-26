@@ -41,7 +41,6 @@ public class ApplicationRenderer extends CoreRenderer {
 		
 		writer.startElement("head", null);
 		
-		renderCSSDependency(facesContext, "/jquery/plugins/jqtouch/jqtouch.min.css");
 		renderCSSDependency(facesContext, themeRelativePath + "/theme.min.css");
 		
 		ListIterator<UIComponent> iter = (facesContext.getViewRoot().getComponentResources(facesContext, "head")).listIterator();

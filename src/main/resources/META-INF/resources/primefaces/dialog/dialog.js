@@ -1,36 +1,48 @@
-PrimeFaces.widget.Dialog = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+PrimeFaces.widget.Dialog = function(clientId, config) {
+	PrimeFaces.widget.Dialog.superclass.constructor.call(this, clientId, config);
+	this.clientId = clientId;
+	this.config = config;
 	
-	jQuery(this.jqId).dialog(this.cfg);	
-	
-	if(this.cfg.ajaxClose) {
-		jQuery(this.jqId).bind('dialogclose', {dialog: this}, this.triggerCloseEvent);
-	}
-	
-	if(this.cfg.closable == false) {
-		jQuery(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
+	if(this.config.resizable) {
+		this.setupResizer();
 	}
 }
 
-PrimeFaces.widget.Dialog.prototype.show = function() {
-	jQuery(this.jqId).dialog('open');	
-}
+YAHOO.lang.extend(PrimeFaces.widget.Dialog, YAHOO.widget.Panel,
+{
+	setupResizer : function() {
+		var resizeConfig = {
+			handles: ["br"],
+	        autoRatio: false,
+	        status: false
+		};
+		if(this.config.minWidth != undefined) 
+			resizeConfig.minWidth =  this.config.minWidth;
+		if(this.config.minHeight != undefined) 
+			resizeConfig.minHeight =  this.config.minHeight;
+		     
+		var resize = new YAHOO.util.Resize(this.clientId, resizeConfig);
+		
+        resize.on("startResize", function(args) {
 
-PrimeFaces.widget.Dialog.prototype.hide = function() {
-	jQuery(this.jqId).dialog('close');
-}
+		    if(this.cfg.getProperty("constraintoviewport")) {
+                var D = YAHOO.util.Dom;
 
-PrimeFaces.widget.Dialog.prototype.triggerCloseEvent = function(event, ui) {
-	var d = event.data.dialog,
-	params = {};
-	params[d.id + "_closed"] = true;
-	params[PrimeFaces.PARTIAL_PROCESS_PARAM] = d.id;
-	
-	if(d.cfg.onCloseUpdate) {
-		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = d.cfg.onCloseUpdate;
+                var clientRegion = D.getClientRegion();
+                var elRegion = D.getRegion(this.element);
+
+                resize.set("maxWidth", clientRegion.right - elRegion.left - YAHOO.widget.Overlay.VIEWPORT_OFFSET);
+                resize.set("maxHeight", clientRegion.bottom - elRegion.top - YAHOO.widget.Overlay.VIEWPORT_OFFSET);
+            } else {
+                resize.set("maxWidth", null);
+                resize.set("maxHeight", null);
+        	}
+
+        }, this, true);
+
+        resize.on("resize", function(args) {
+            var panelHeight = args.height;
+            this.cfg.setProperty("height", panelHeight + "px");
+        }, this, true);
 	}
-	
-	PrimeFaces.ajax.AjaxRequest(d.cfg.url, {}, params);
-}
+});

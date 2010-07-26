@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -37,20 +36,22 @@ public class ImageSwitchRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ImageSwitch imageSwitch = (ImageSwitch) component;
 		
-		encodeMarkup(facesContext, imageSwitch);
 		encodeScript(facesContext, imageSwitch);
+		encodeMarkup(facesContext, imageSwitch);
 	}
 
 	private void encodeScript(FacesContext facesContext, ImageSwitch imageSwitch) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = imageSwitch.getClientId(facesContext);
 		String widgetVar = createUniqueWidgetVar(facesContext, imageSwitch);
-		String imageId = clientId.replaceAll(String.valueOf(UINamingContainer.getSeparatorChar(facesContext)), "_") + "_img";
+		String imageClientId = imageSwitch.getChildren().get(0).getClientId(facesContext);
 			
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
+		
+		writer.write("PrimeFaces.onContentReady('" + clientId + "', function() {\n");
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.ImageSwitch('" + imageId + "',{");
+		writer.write(widgetVar + " = new PrimeFaces.widget.ImageSwitch('" + imageClientId + "',{");
 		writer.write("effect:'" + imageSwitch.getEffect() + "'");
 		writer.write(",speed:" + imageSwitch.getSpeed());
 		writer.write(",slideshowSpeed:" + imageSwitch.getSlideshowSpeed());
@@ -58,6 +59,8 @@ public class ImageSwitchRenderer extends CoreRenderer {
 		writer.write("},");
 		writer.write(getImagesAsJSArray(facesContext, imageSwitch));
 		writer.write(");\n");
+
+		writer.write("});");
 
 		writer.endElement("script");
 	}
@@ -80,19 +83,14 @@ public class ImageSwitchRenderer extends CoreRenderer {
 	private void encodeMarkup(FacesContext facesContext, ImageSwitch imageSwitch) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = imageSwitch.getClientId(facesContext);
-		String imageId = clientId.replaceAll(String.valueOf(UINamingContainer.getSeparatorChar(facesContext)), "_") + "_img";
 		
 		writer.startElement("div", imageSwitch);
 		writer.writeAttribute("id", clientId, "id");
 		if(imageSwitch.getStyle() != null) writer.writeAttribute("style", imageSwitch.getStyle(), null);
 		if(imageSwitch.getStyleClass() != null) writer.writeAttribute("class", imageSwitch.getStyleClass(), null);
 		
-		GraphicImage firstImage = (GraphicImage) imageSwitch.getChildren().get(0);
-		writer.startElement("img", null);
-		writer.writeAttribute("id", imageId, null);
-		writer.writeAttribute("alt", firstImage.getAlt(), null);
-		writer.writeAttribute("src", getImageSrc(facesContext, firstImage), null);
-		writer.endElement("img");
+		UIComponent firstChild = imageSwitch.getChildren().get(0);
+		renderChild(facesContext, firstChild);
 		
 		writer.endElement("div");
 	}

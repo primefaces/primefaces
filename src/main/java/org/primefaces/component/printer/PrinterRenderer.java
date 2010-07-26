@@ -37,11 +37,12 @@ public class PrinterRenderer extends CoreRenderer {
 		
 		writer.startElement("script", printer);
 		writer.writeAttribute("type", "text/javascript", null);
-			
+		
+		writer.write("PrimeFaces.onContentReady('" + parentClientId + "', function() {\n");		
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + parentClientId + "')).click(function(e) {\n");
 		writer.write("e.preventDefault();\n");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + target.getClientId(facesContext) + "')).jqprint();\n");
-		writer.write("});");
+		writer.write("});});\n");
 
 		writer.endElement("script");
 	}
