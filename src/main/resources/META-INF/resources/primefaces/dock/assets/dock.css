@@ -1,0 +1,64 @@
+/* top */
+.pf-dock-top, .pf-dock-bottom {
+	position: relative; 
+	height: 50px; 
+	text-align: center;
+}
+.pf-dock-container-top {
+	position: absolute;
+	height: 50px;
+	background: url(dock-bg-top.gif);
+	padding-left: 20px;
+}
+a.pf-dock-item-top {
+	display: block;
+	width: 40px;
+	color: #000;
+	position: absolute;
+	top: 0px;
+	text-align: center;
+	text-decoration: none;
+	font: bold 12px Arial, Helvetica, sans-serif;
+}
+.pf-dock-item-top img {
+	border: none; 
+	margin: 5px 10px 0px; 
+	width: 100%; 
+}
+.pf-dock-item-top span {
+	display: none; 
+	padding-left: 20px;
+}
+
+/* bottom */
+.pf-dock-bottom {
+	width: 100%;
+	bottom: 0px;
+	position: absolute;
+	left: 0px;
+}
+.pf-dock-container-bottom {
+	position: absolute;
+	height: 50px;
+	background: url(dock-bg-bottom.gif);
+	padding-left: 20px;
+}
+a.pf-dock-item-bottom {
+	display: block; 
+	font: bold 12px Arial, Helvetica, sans-serif;
+	width: 40px; 
+	color: #000; 
+	bottom: 0px; 
+	position: absolute;
+	text-align: center;
+	text-decoration: none;
+}
+.pf-dock-item-bottom span {
+	display: none;
+	padding-left: 20px;
+}
+.pf-dock-item-bottom img {
+	border: none; 
+	margin: 5px 10px 0px; 
+	width: 100%; 
+}

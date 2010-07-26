@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>editor</tag>
+	<tagClass>org.primefaces.component.editor.EditorTag</tagClass>
+	<componentClass>org.primefaces.component.editor.Editor</componentClass>
+	<componentType>org.primefaces.component.Editor</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.EditorRenderer</rendererType>
+	<rendererClass>org.primefaces.component.editor.EditorRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>500px</defaultValue>
+			<description>Width of the editor</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>300px</defaultValue>
+			<description>Height of the editor</description>
+		</attribute>
+		<attribute>
+			<name>resizable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Makes editor resizable</description>
+		</attribute>
+		<attribute>
+			<name>language</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Language of the texts displayed on editor, default is English(en).</description>
+		</attribute>
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Title text of the editor, defaults to "Text Editing Tools".</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Disables the editor.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/menu/assets/skins/sam/menu.css</name>
+		</resource>
+		<resource>
+			<name>/yui/button/assets/skins/sam/button.css</name>
+		</resource>
+		<resource>
+			<name>/yui/resize/assets/skins/sam/resize.css</name>
+		</resource>
+		<resource>
+			<name>/yui/container/assets/skins/sam/container.css</name>
+		</resource>
+		<resource>
+			<name>/yui/editor/assets/skins/sam/editor.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/container/container-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/menu/menu-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/button/button-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/editor/editor-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/resize/resize-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/editor/editor.js</name>
+		</resource>
+	</resources>
+</component>

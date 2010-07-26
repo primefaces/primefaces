@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>growl</tag>
+	<tagClass>org.primefaces.component.growl.GrowlTag</tagClass>
+	<componentClass>org.primefaces.component.growl.Growl</componentClass>
+	<componentType>org.primefaces.component.Growl</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.GrowlRenderer</rendererType>
+	<rendererClass>org.primefaces.component.growl.GrowlRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>sticky</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Specifies if the message should stay instead of hidden automatically.</description>
+		</attribute>
+		<attribute>
+			<name>showSummary</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Specifies if the summary of the FacesMessage should be displayed.</description>
+		</attribute>
+		<attribute>
+			<name>showDetail</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Specifies if the detail of the FacesMessage should be displayed.</description>
+		</attribute>
+		<attribute>
+			<name>globalOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>When true, only facesmessages with no clientIds are displayed.</description>
+		</attribute>
+		<attribute>
+			<name>life</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>6000</defaultValue>
+			<description>Duration to display a non-sticky message.</description>
+		</attribute>
+		<attribute>
+			<name>warnIcon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Image for the warning messages.</description>
+		</attribute>
+		<attribute>
+			<name>infoIcon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Image for the info messages.</description>
+		</attribute>
+		<attribute>
+			<name>errorIcon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Image for the error messages.</description>
+		</attribute>
+		<attribute>
+			<name>fatalIcon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Image for the fatal messages.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/growl/assets/growl.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/growl/growl.js</name>
+		</resource>
+	</resources>
+</component>

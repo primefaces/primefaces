@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>contextMenu</tag>
+	<tagClass>org.primefaces.component.contextmenu.ContextMenuTag</tagClass>
+	<componentClass>org.primefaces.component.contextmenu.ContextMenu</componentClass>
+	<componentType>org.primefaces.component.ContextMenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ContextMenuRenderer</rendererType>
+	<rendererClass>org.primefaces.component.contextmenu.ContextMenuRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Id of the component to attach the context menu.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the main container of panel.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the main container of panel.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/menu/menu.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/container/container-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/menu/menu.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/contextmenu/contextmenu.js</name>
+		</resource>
+	</resources>
+</component>

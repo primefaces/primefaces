@@ -1,0 +1,36 @@
+.ui-panel {
+	padding: 0.2em;
+}
+
+.ui-panel .ui-panel-titlebar {
+	padding: 0.5em 1em 0.3em;
+	position: relative;
+}
+
+.ui-panel .ui-panel-title {
+	float: left;
+	margin: 0.1em 16px 0.2em 0;
+}
+
+.ui-panel .ui-panel-titlebar-icon {
+	float: right;
+}
+
+.ui-panel .ui-panel-titlebar-icon,
+.ui-panel .ui-panel-titlebar-icon:hover,
+.ui-panel .ui-panel-titlebar-icon:focus {
+	margin-left:0.2em;
+}
+
+.ui-panel .ui-panel-content {
+	border: 0;
+	background: none;
+	padding: 0.5em 1em;
+}
+
+.ui-panel .ui-panel-footer {
+	border-width:1px 0 0;
+	margin:0.5em 0 0;
+	padding:0.5em 1em;
+	text-align:left;
+}

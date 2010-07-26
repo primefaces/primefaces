@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>slider</tag>
+	<tagClass>org.primefaces.component.slider.SliderTag</tagClass>
+	<componentClass>org.primefaces.component.slider.Slider</componentClass>
+	<componentType>org.primefaces.component.Slider</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SliderRenderer</rendererType>
+	<rendererClass>org.primefaces.component.slider.SliderRenderer</rendererClass>
+	<parent>javax.faces.component.UIOutput</parent>
+	<attributes>
+		&output_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Id of the component that the slider will be used for.</description>
+		</attribute>
+		<attribute>
+			<name>display</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Id of the component to display the slider value.</description>
+		</attribute>
+		<attribute>
+			<name>minValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Minimum value of the slider</description>
+		</attribute>
+		<attribute>
+			<name>maxValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>100</defaultValue>
+			<description>Maximum value of the slider</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the main container of panel.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the main container of panel.</description>
+		</attribute>
+		<attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Boolean value to set an animation when slider background is clicked, default is true</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>horizontal</defaultValue>
+			<description>Specifies the type of the slider, valid values are "horizontal" and "vertical".</description>
+		</attribute>
+		<attribute>
+			<name>step</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Defines the amount of each step.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Disables or enables slider.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/plugins/ui/jquery.ui.slider.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/slider/slider.js</name>
+		</resource>
+	</resources>
+</component>

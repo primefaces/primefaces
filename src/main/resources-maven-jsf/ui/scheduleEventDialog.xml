@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>scheduleEventDialog</tag>
+	<tagClass>org.primefaces.component.schedule.ScheduleEventDialogTag</tagClass>
+	<componentClass>org.primefaces.component.schedule.ScheduleEventDialog</componentClass>
+	<componentType>org.primefaces.component.ScheduleEventDialog</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ScheduleEventDialogRenderer</rendererType>
+	<rendererClass>org.primefaces.component.schedule.ScheduleEventDialogRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Header text</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/container/assets/skins/sam/container.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/container/container-min.js</name>
+		</resource>
+	</resources>
+</component>

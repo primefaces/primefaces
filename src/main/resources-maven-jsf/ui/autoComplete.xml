@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>autoComplete</tag>
+	<tagClass>org.primefaces.component.autocomplete.AutoCompleteTag</tagClass>
+	<componentHandlerClass>org.primefaces.component.autocomplete.AutoCompleteHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.autocomplete.AutoComplete</componentClass>
+	<componentType>org.primefaces.component.AutoComplete</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.AutoCompleteRenderer</rendererType>
+	<rendererClass>org.primefaces.component.autocomplete.AutoCompleteRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AjaxComponent</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>completeMethod</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.util.List completeMethod(java.lang.String)</method-signature>
+			<description>Method to be called to fetch the suggestions</description>
+		</attribute>
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Variable name of the iterator.</description>
+		</attribute>
+		<attribute>
+			<name>itemLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Label of the item.</description>
+		</attribute>
+		<attribute>
+			<name>itemValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<description>Value of the item.</description>
+		</attribute>
+		<attribute>
+			<name>maxResults</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>10</defaultValue>
+			<description>Maximum number of results to be displayed.</description>
+		</attribute>
+		<attribute>
+			<name>minQueryLength</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Number of characters to be typed before starting to query.</description>
+		</attribute>
+		<attribute>
+			<name>queryDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+			<description>Delay to wait in milliseconds before sending each query to the server.</description>
+		</attribute>
+		<attribute>
+			<name>forceSelection</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>When enabled, autocomplete only accepts values from the suggestion list.</description>
+		</attribute>
+		<attribute>
+			<name>selectListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void selectListener(org.primefaces.event.SelectEvent)</method-signature>
+			<description>Server side listener to invoke when a suggested item is selected.</description>
+		</attribute>
+		<attribute>
+			<name>onSelectUpdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Component(s) to update with ajax after a suggested item is selected.</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript event handler to be called before ajax request to load items begins.</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript event handler to be called after ajax request to load items completed.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Disables the calendar.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/plugins/ui/jquery.ui.autocomplete.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>	
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/autocomplete/autocomplete.js</name>
+		</resource>
+	</resources>
+</component>

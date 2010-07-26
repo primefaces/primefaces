@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>spreadsheet</tag>
+	<tagClass>org.primefaces.component.spreadsheet.SpreadsheetTag</tagClass>
+	<componentClass>org.primefaces.component.spreadsheet.Spreadsheet</componentClass>
+	<componentType>org.primefaces.component.Spreadsheet</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SpreadsheetRenderer</rendererType>
+	<rendererClass>org.primefaces.component.spreadsheet.SpreadsheetRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Title text of the spreadsheet</description>
+		</attribute>
+		<attribute>
+			<name>editable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Defines if display is editable or readonly</description>
+		</attribute>
+		<attribute>
+			<name>columnWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+			<description>Global setting to define common width for each column in pixels</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/sheet/jquery.sheet.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/sheet/jquery.sheet.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/sheet/sheet.js</name>
+		</resource>
+	</resources>
+</component>

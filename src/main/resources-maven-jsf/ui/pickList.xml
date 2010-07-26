@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>pickList</tag>
+	<tagClass>org.primefaces.component.picklist.PickListTag</tagClass>
+	<componentClass>org.primefaces.component.picklist.PickList</componentClass>
+	<componentType>org.primefaces.component.PickList</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.PickListRenderer</rendererType>
+	<rendererClass>org.primefaces.component.picklist.PickListRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Variable name of the iterator.</description>
+		</attribute>
+		<attribute>
+			<name>itemLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Label of the item.</description>
+		</attribute>
+		<attribute>
+			<name>itemValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<description>Value of the item.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the main container of picklist.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the main container of picklist.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/picklist/picklist.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/picklist/picklist.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,97 @@
+.ui-treetable {
+	border-collapse: separate;
+	border-spacing: 0;
+	margin: 0;
+	padding: 0;
+	border-bottom-style: none !important;
+}
+
+.ui-treetable thead {
+	border-spacing: 0;
+}
+
+.ui-treetable th {
+	margin:0;
+	padding:0;
+	text-decoration:none;
+    vertical-align:bottom;
+}
+
+.ui-treetable thead th.ui-state-default {
+	border-style:none solid solid none;
+}
+			
+.ui-treetable thead th.ui-treetable-last,
+.ui-treetable tbody td.ui-treetable-last {
+	border-right-style: none;
+}
+
+.ui-treetable-header {
+	white-space: nowrap;
+	margin: 0;
+	padding: 4px 10px;
+}
+
+.ui-treetable-header-label {
+	position:relative;
+}
+
+.ui-treetable td {
+	padding: 0.3em 1.5em;
+	margin:0;
+    text-align:left;
+}
+
+.ui-treetable .ui-treetable-data td {
+	border-bottom-color:inherit;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-right-color:inherit;
+	border-right-style:solid;
+	border-right-width:1px;
+}
+
+.ui-treetable-selected {
+	border:1px solid #FFFFFF;
+}
+
+.ui-treetable-selected  td {
+	background-color:#426FD9;
+	color:#FFFFFF;
+}
+
+.ui-treetable tr td .expander {
+	background-position: left center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding: 0;
+	zoom: 1; /* IE7 Hack */
+}
+
+.ui-treetable tr.collapsed td .expander {
+	background-image: url(../images/toggle-expand-dark.png);
+}
+
+.ui-treetable tr.expanded td .expander {
+	background-image: url(../images/toggle-collapse-dark.png);
+}
+
+.ui-treetable tr.selected,.ui-treetable tr.accept {
+	background-color: #3875d7;
+	color: #fff;
+}
+
+.ui-treetable tr.collapsed.selected td .expander,.ui-treetable tr.collapsed.accept td .expander
+	{
+	background-image: url(../images/toggle-expand-light.png);
+}
+
+.ui-treetable tr.expanded.selected td .expander,.ui-treetable tr.expanded.accept td .expander
+	{
+	background-image: url(../images/toggle-collapse-light.png);
+}
+
+.ui-treetable .ui-draggable-dragging {
+	color: #000;
+	z-index: 1;
+}

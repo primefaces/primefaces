@@ -1,0 +1,287 @@
+/* Controls styling */
+.jSheetControls_loc, .jSheetControls_fx
+{
+	border-width: 0px ! important;
+	background: none ! important;
+}
+
+.jSheetControls_formula
+{
+	width: 99%;
+    height: 17px;
+}
+
+.jSheetLog
+{
+	height: 100px;
+	width: 100%;
+	overflow-y: scroll;
+	position: relative;
+}
+
+.jSheetControls, .jSheetControls table
+{
+	padding: 0px ! important;
+	border: none ! important;
+	width: 100%; 
+	margin: 0px; 
+}
+
+.jSheetMenu
+{
+	cursor: pointer;
+	background-color: transparent ! important;
+	padding: 0px ! important;
+	margin: 0px ! important;
+	border: none ! important;
+}
+
+.jSheetMenu *
+{
+	color: inherit ! important;
+	background-color: inherit ! important;
+}
+.menu
+{
+	display: none;
+}
+#titleHolder
+{
+	padding-left: 10px;
+}
+.jSheetUI
+{
+	width: inherit ! important;
+	border-color: inherit ! important;
+}
+.jSheetTabContainer
+{
+	vertical-align: bottom;
+	text-align: left ! important;
+}
+.jSheetTabContainer span
+{
+	
+	padding: 2px 5px 0 5px ! important;
+	cursor: pointer;
+}
+.jSheetTabContainer *, .menuDiv *
+{
+	font-size: 1em ! important;
+}
+
+.tableControl
+{
+	border-collapse: collapse ! important;
+	border: none ! important;
+	margin: none ! important;
+	padding: none ! important;
+	position: absolute ! important;
+}
+
+/* Sheet styling */
+.jSheet
+{
+	position: relative ! important;
+	margin-top: -1px ! important;
+	margin-left: -1px ! important;
+    table-layout: fixed;
+    empty-cells: show;
+	background-image: none ! important;
+	font-family: arial, serif;
+	overflow: hidden;
+	height: auto ! important;
+	border-spacing: 0px ! important;
+	border-width: 1px ! important;
+	margin-bottom: 20px ! important;
+}
+.jSheet tbody
+{
+	background-color: transparent;
+	color: inherit ! important;
+	border-color: inherit ! important;
+}
+
+.jSheet tr {
+	border-color: inherit ! important;
+	padding: 0px ! important;
+	border-style: solid ! important;
+	background-color: transparent;
+	-moz-border-radius: 0px 0px 0px 0px;
+	color:  inherit ! important;
+	border-width: 0px ! important;
+}
+.jSheet td {
+	border-width: 1px ! important;
+	border-color: inherit;
+	padding: 0px ! important;
+	border-style: solid ! important;
+	-moz-border-radius: 0px 0px 0px 0px;
+	overflow: hidden ! important;
+    text-overflow: ellipsis ! important;
+    white-space: nowrap ! important;
+	margin: 0px ! important;
+	padding: 0px ! important;
+	font-size: 1em ! important;
+	height: inherit ! important;
+	color:  inherit;
+	position: relative;
+	min-width: 25px ! important;
+}
+
+.jSheet colgroup col
+{
+	border: none ! important;
+}
+
+/* Containers styleing*/
+.jSheetBarCorner
+{
+	cursor: pointer;
+	border-width: 1px ! important;
+}
+
+.jSheetBarCornerParent
+{
+	border: none ! important;
+}
+
+.jSheetBarTopParent
+{
+    position: relative ! important;
+	background-image: none ! important;
+	vertical-align: middle;
+	overflow: hidden ! important;
+	cursor: pointer;
+	overflow: hidden ! important;
+}
+
+.jSheetBarLeftParent
+{
+    position: relative ! important;
+	background-image: none ! important;
+	vertical-align: middle;
+	overflow: hidden ! important;
+	cursor: pointer;
+	overflow: hidden ! important;
+}
+
+.jSheetEditPane
+{
+    overflow: auto ! important;
+	background-image: none ! important;
+	border-width: 0px;
+	position: relative ! important;
+}
+/* Bar item styling */
+
+.jSheetBarTop
+{
+    position: relative ! important;
+	border-width: 0px ! important;
+	min-width: 100000px;
+}
+
+.jSheetBarLeft
+{
+	position: relative ! important;
+	border-width: 0px ! important;
+	min-height: 100000px;
+}
+.jSheetBarLeft div
+{
+	text-align: center;
+	font-size: .8em;
+	height: inherit;
+	border-left: none ! important;
+	border-right: none ! important;
+	position: relative ! important;
+	vertical-align: middle ! important;
+	min-width: 14px ! important;
+}
+.jSheetBarTop div
+{
+	text-align: center ! important;
+	font-size: .8em;
+	float: left;
+	display:block;
+	height: inherit ! important;
+	padding-top: 2px;
+	overflow: hidden;
+	border-top: none ! important;
+	border-bottom: none ! important;
+	min-width: 25px ! important;
+}
+
+.jSheetControls img
+{
+	border: none;
+}
+
+.safeImg
+{
+	display: inline;
+}
+
+.jSheetInPlaceEdit
+{
+	position: absolute;
+}
+
+.colorPickers *
+{
+	display: inline-block;
+	width: 16px ! important;
+	height: 16px ! important;
+	background-color: transparent ! important;
+}
+
+.jSheetFullScreen
+{
+	top: 5px;
+	left: 5px;
+	position: fixed;
+	top: expression(eval(document.body.scrollTop + 15) + "px");
+	left: expression(eval(document.body.scrollLeft) + "px");
+}
+
+.jSheetFullScreenTabContainer
+{
+	bottom: 10px;
+	left: 10px;
+	position: fixed;
+	top: expression(eval(document.body.scrollTop + 15) + "px");
+	left: expression(eval(document.body.scrollLeft) + "px");
+}
+
+/* Cell styler classes */
+.styleBold
+{ font-weight: bold; }
+.styleItalics	
+{ font-style: italic; }
+.styleUnderline	
+{ text-decoration: underline; }
+.styleLineThrough
+{ text-decoration: line-through;}
+.styleLeft		
+{ text-align: left; }
+.styleRight		
+{ text-align: right; }
+.styleCenter	
+{ text-align: center; }
+.styleTop		
+{ vertical-align: top; }
+.styleMiddle	
+{ vertical-align: middle; }
+.styleBottom	
+{ vertical-align: bottom; }
+.styleUpper 		
+{ text-transform: uppercase; }
+.styleCapital 	
+{ text-transform: capitalize; }
+.styleLower 		
+{ text-transform: lowercase; }
+.styleHidden 	
+{ display: none; }
+.styleWrap
+{ word-wrap: break-word; }
