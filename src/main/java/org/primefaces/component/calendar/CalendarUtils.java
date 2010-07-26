@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,26 +27,66 @@ import javax.faces.context.FacesContext;
 public class CalendarUtils {
 
 	public static String getValueAsString(FacesContext facesContext, Calendar calendar) {
-		Object submittedValue = calendar.getSubmittedValue();
-		if(submittedValue != null) {
-			return submittedValue.toString();
-		}
-		
 		Object value = calendar.getValue();
-		if(value == null) {
+		
+		//Delegate to user supplied converter if defined
+		if(calendar.getConverter() != null)
+			return calendar.getConverter().getAsString(facesContext, calendar, value);
+			
+		if(value == null)
 			return null;
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.getPattern(), calendar.calculateLocale(facesContext));
+		dateFormat.setTimeZone(calendar.calculateTimeZone());
+		
+		if(calendar.getSelection().equalsIgnoreCase("single")) {
+			return dateFormat.format(value);
+		} else if(calendar.getSelection().equalsIgnoreCase("multiple")) {
+			Date[] dates = (Date[]) calendar.getValue();
+			StringBuffer datesAsString = new StringBuffer();
+			
+			for (int i = 0; i < dates.length; i++) {
+				if(i == 0)
+					datesAsString.append(dateFormat.format(dates[i]));
+				else {
+					datesAsString.append(",");
+					datesAsString.append(dateFormat.format(dates[i]));
+				}
+			}
+			
+			return datesAsString.toString();
 		} else {
-			//first ask the converter
-			if(calendar.getConverter() != null) {
-				return calendar.getConverter().getAsString(facesContext, calendar, value);
+			throw new IllegalArgumentException("Calendar '" + calendar.getClientId(facesContext) + "' has an invalid selection type. Must be either 'single' or 'multiple'");
+		}
+	}
+		
+	public static String getPageDate(Calendar calendar) {
+		Object pagedate = calendar.getPagedate();
+		Object value = calendar.getValue();
+		boolean multiple = calendar.getSelection().equalsIgnoreCase("multiple");
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yyyy", calendar.calculateLocale(FacesContext.getCurrentInstance())); 
+		dateFormat.setTimeZone(calendar.calculateTimeZone());
+		
+		if(pagedate != null) {
+			if(pagedate instanceof String) {
+				return (String) pagedate;
+			} else if(pagedate instanceof Date) {
+				return dateFormat.format((Date) pagedate);
+			} else {
+				throw new FacesException("PageDate could be either String or java.util.Date");
 			}
-			//Use built-in converter
-			else {
-				SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.getPattern(), calendar.calculateLocale(facesContext));
-				dateFormat.setTimeZone(calendar.calculateTimeZone());
+		} else if(value != null) {
+			Date dateToDisplay;
+			
+			if(multiple)
+				dateToDisplay = ((Date[]) value)[0];
+			else 
+				dateToDisplay = (Date) value;
 				
-				return dateFormat.format(value);
-			}
+			return dateFormat.format(dateToDisplay);
+		} else {
+			return null;
 		}
 	}
 	
@@ -66,30 +106,27 @@ public class CalendarUtils {
 			throw new FacesException("Date could be either String or java.util.Date");
 		}
 	}
+	
+	public static String getPatternDelimeter(Calendar calendar) {
+		String pattern = calendar.getPattern();
 		
-	/**
-	 * Converts a java date pattern to a jquery date pattern
-	 * 
-	 * @param pattern Pattern to be converted
-	 * @return converted pattern
-	 */
-	public static String convertPattern(String pattern) {
-		if(pattern == null)
-			return null;
-		else {
-			//year
-			pattern = pattern.replaceAll("yy", "y");
+		return pattern.split("[A-Za-z]+")[1];
+	}
+	
+	public static int getDateFieldPosition(Calendar calendar, String delimiter, String fieldPrefix) {
+		String pattern = calendar.getPattern();
+		
+		//Special character
+		if(delimiter.equals("."))
+			delimiter = "\\.";
+		
+		String[] dateFields = pattern.split(delimiter);
 			
-			//month
-			if(pattern.indexOf("MMM") != -1)
-				pattern = pattern.replaceAll("MMM", "M");
-			else
-				pattern = pattern.replaceAll("M", "m");
-			
-			//day of week
-			pattern = pattern.replaceAll("EEE", "D");
-			
-			return pattern;
+		for (int i = 0; i < dateFields.length; i++) {
+			if(dateFields[i].startsWith(fieldPrefix))
+				return i + 1;							//widget uses 1 instead of 0 as first position
 		}
+			
+		return -1;
 	}
 }

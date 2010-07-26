@@ -12,11 +12,7 @@
 	<rendererType>org.primefaces.component.PollRenderer</rendererType>
 	<rendererClass>org.primefaces.component.poll.PollRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
+	<ajaxSource>true</ajaxSource>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;

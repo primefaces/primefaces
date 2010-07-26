@@ -10,16 +10,15 @@
 	<componentType>org.primefaces.component.MenuItem</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-		<interface>
-			<name>java.io.Serializable</name>
-		</interface>
-	</interfaces>
+	<ajaxSource>true</ajaxSource>
 	<attributes>
 		&command_component_attributes;
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Label to be displayed</description>
+		</attribute>
 		<attribute>
 			<name>url</name>
 			<required>false</required>

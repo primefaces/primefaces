@@ -39,8 +39,6 @@ public class GrowlRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("jQuery(function(){");
 
 		Iterator<FacesMessage> messages = growl.isGlobalOnly() ? facesContext.getMessages(null) : facesContext.getMessages();
 		
@@ -69,12 +67,10 @@ public class GrowlRenderer extends CoreRenderer {
 			
 			if(growl.getLife() != 6000) writer.write(",time:" + growl.getLife());
 			
-			writer.write("});");	
+			writer.write("});\n");	
 			
 			message.rendered();
 		}
-		
-		writer.write("});");
 		
 		writer.endElement("script");
 	}

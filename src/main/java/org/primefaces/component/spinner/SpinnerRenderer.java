@@ -42,37 +42,40 @@ public class SpinnerRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Spinner spinner = (Spinner) component;
 		
-		//IE8 Standards mode fix
-		facesContext.getResponseWriter().write("<!--[if IE 8.0]><style type=\"text/css\">.ui-spinner {border:1px solid transparent;}</style><![endif]-->");
-		
 		encodeMarkup(facesContext, spinner);
 		encodeScript(facesContext, spinner);
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Spinner spinner) throws IOException {
+	private void encodeScript(FacesContext facesContext, Spinner spinner) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = spinner.getClientId(facesContext);
+		int fractionDigits = calculateFractionDigits(spinner);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(function(){");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).spinner({");
-		writer.write("step:" + spinner.getStepFactor());
-		
-		if(spinner.getMin() != Double.MIN_VALUE) writer.write(",min:" + spinner.getMin());
-		if(spinner.getMax() != Double.MAX_VALUE) writer.write(",max:" + spinner.getMax());
-		if(spinner.getWidth() != Integer.MIN_VALUE) writer.write(",width:" + spinner.getWidth());
-		if(spinner.getShowOn() != null) writer.write(",showOn:'" + spinner.getShowOn() + "'");
-		if(spinner.getPrefix() != null) writer.write(",prefix:'" + spinner.getPrefix() + "'");
-		if(spinner.getSuffix() != null) writer.write(",suffix:'" + spinner.getSuffix() + "'");
-		
-		writer.write("});});");
+		writer.write("stepping:" + spinner.getStepFactor());
+		if(fractionDigits != -1) {
+			writer.write(",decimals:" + fractionDigits);
+		}
+		writer.write("});\n");
 		
 		writer.endElement("script");
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, Spinner spinner) throws IOException {
+	private int calculateFractionDigits(Spinner spinner) {
+		double stepping = spinner.getStepFactor();
+		if(stepping != 1) {
+			String[] steppingFormat = String.valueOf(stepping).split("\\.");
+			
+			return steppingFormat[1].length();
+		}
+		
+		return -1;
+	}
+	
+	private void encodeMarkup(FacesContext facesContext, Spinner spinner) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = spinner.getClientId(facesContext);
 		

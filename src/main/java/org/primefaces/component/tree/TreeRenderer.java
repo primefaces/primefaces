@@ -36,6 +36,7 @@ import org.primefaces.model.TreeNodeEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.RendererUtils;
 
 public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 	
@@ -77,35 +78,22 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 			}
 		}
 		
-		//Selection
 		if(params.containsKey(selectionParam)) {
 			String selectedNodesValue = params.get(selectionParam);
-			boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
 			
-			if(selectedNodesValue.equals("")) {
-				if(isSingle)
-					tree.setSelection(null);
-				else
-					tree.setSelection(new TreeNode[0]);
-			}
+			if(selectedNodesValue.equals(""))
+				tree.setSelection(new TreeNode[0]);
 			else {
 				String[] selectedRowKeys = selectedNodesValue.split(",");
+				TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
 				TreeModel model = new TreeModel((TreeNode) tree.getValue());
 				
-				if(isSingle) {
-					TreeNode selectedNode = treeExplorer.findTreeNode(selectedRowKeys[0], model);
-					tree.setSelection(selectedNode);
-					
-				} else {
-					TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
-
-					for(int i = 0 ; i < selectedRowKeys.length; i++) {
-						selectedNodes[i] = treeExplorer.findTreeNode(selectedRowKeys[i], model);
-						model.setRowIndex(-1);	//reset
-					}
-					
-					tree.setSelection(selectedNodes);
+				for(int i = 0 ; i < selectedRowKeys.length; i++) {
+					selectedNodes[i] = treeExplorer.findTreeNode(selectedRowKeys[i], model);
+					model.setRowIndex(-1);	//reset
 				}
+				
+				tree.setSelection(selectedNodes);
 			}
 		}
 	}
@@ -124,7 +112,6 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
 		response.setContentType("text/xml");
 		
-		writer.write("<?xml version=\"1.0\" encoding=\"" + response.getCharacterEncoding() + "\"?>");
 		writer.write("<nodes>");
 		
 		for(Iterator<TreeNode> iterator = currentNode.getChildren().iterator(); iterator.hasNext();) {
@@ -135,9 +122,9 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 			writer.write("<node>");
 			
 				writer.write("<content>");
-				writer.startCDATA();
+				RendererUtils.startCDATA(facesContext);
 				renderChildren(facesContext, uiTreeNode);
-				writer.endCDATA();
+				RendererUtils.endCDATA(facesContext);
 				writer.write("</content>");
 				
 				writer.write("<rowKey>" + rowKey + "." + rowIndex + "</rowKey>");
@@ -190,34 +177,28 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 					writer.write(",");
 			}
 		}
-		writer.write("],{");
+		writer.write("],{\n");
 		
 		//Config
 		writer.write("dynamic:" + tree.isDynamic());
-		writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
-		writer.write(",formId:'" + formClientId + "'");
-		writer.write(",cache:" + tree.isCache());
 		
-		//Selection
-		if(tree.getSelectionMode() != null) {
-			writer.write(",selectionMode:'" + tree.getSelectionMode() + "'");
+		if(tree.isDynamic()) {
+			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
+			writer.write(",formId:'" + formClientId + "'");
+			writer.write(",cache:" + tree.isCache());
+			if(tree.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, tree, tree.getUpdate()) + "'");
+			if(tree.getOnselectStart() != null) writer.write(",onselectStart:function(){" + tree.getOnselectStart() + ";}");
+			if(tree.getOnselectComplete() != null) writer.write(",onselectComplete:function(){" + tree.getOnselectComplete() + ";}");
+		}
+		if(tree.getOnNodeClick() != null)
+			writer.write(",onNodeClick:" + tree.getOnNodeClick());
+		if(tree.hasSelection()) {
+			writer.write(",hasSelection:true");
 			writer.write(",propagateHighlightDown:" + tree.isPropagateSelectionDown());
 			writer.write(",propagateHighlightUp:" + tree.isPropagateSelectionUp());
-			
-			if(tree.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, tree, tree.getUpdate()) + "'");
-			if(tree.getOnselectStart() != null) writer.write(",onselectStart:function(xhr){" + tree.getOnselectStart() + ";}");
-			if(tree.getOnselectComplete() != null) writer.write(",onselectComplete:function(xhr,status,args){" + tree.getOnselectComplete() + ";}");
 		}
 		
-		if(tree.getNodeSelectListener() != null) writer.write(",hasSelectListener:true");
-		if(tree.getNodeExpandListener() != null) writer.write(",hasExpandListener:true");
-		if(tree.getNodeCollapseListener() != null) writer.write(",hasCollapseListener:true");
-		
-		if(tree.getOnNodeClick() != null) {
-			writer.write(",onNodeClick:" + tree.getOnNodeClick());
-		}
-		
-		writer.write("});\n");
+		writer.write("\n});\n");
 		
 		//Animations
 		if(tree.getExpandAnim() != null)
@@ -279,7 +260,6 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 	protected void encodeMarkup(FacesContext facesContext, Tree tree) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = tree.getClientId(facesContext);
-		boolean selectionEnabled = tree.getSelectionMode() != null;
 		
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
@@ -288,13 +268,10 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId + "_container", null);
-		if(selectionEnabled) {
-			String selectionClass = tree.getSelectionMode().equalsIgnoreCase("checkbox") ? "ygtv-checkbox" : "ygtv-highlight";
-			writer.writeAttribute("class", selectionClass, null);
-		}
+		if(tree.hasSelection()) writer.writeAttribute("class", "ygtv-checkbox", null);
 		writer.endElement("div");
 		
-		if(selectionEnabled) {
+		if(tree.hasSelection()) {
 			writer.startElement("input", null);
 			writer.writeAttribute("id", clientId + "_selection", null);
 			writer.writeAttribute("name", clientId + "_selection", null);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import javax.servlet.ServletResponse;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.RendererUtils;
 
 public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 	
@@ -36,9 +37,8 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 		TabView tabView = (TabView) component;
 		String activeIndexValue = params.get(tabView.getClientId(facesContext) + "_activeIndex");
 		
-		if(!isValueEmpty(activeIndexValue)) {
+		if(!isValueEmpty(activeIndexValue))
 			tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
-		}
 	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -62,19 +62,19 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 			
 			//Tab content
 			writer.write("<tabContent>");
-			writer.startCDATA();
+			RendererUtils.startCDATA(facesContext);
 			renderChildren(facesContext, activeTab);
-			writer.endCDATA();
+			RendererUtils.endCDATA(facesContext);
 			writer.write("</tabContent>");
 	
 			//State
 			writer.write("<state>");
-			writer.startCDATA();
+			RendererUtils.startCDATA(facesContext);
 			
 			StateManager stateManager = facesContext.getApplication().getStateManager();
 			stateManager.writeState(facesContext, stateManager.saveView(facesContext));
 			
-			writer.endCDATA();
+			RendererUtils.endCDATA(facesContext);
 			writer.write("</state>");
 			
 			writer.write("</partialResponse>");
@@ -93,34 +93,25 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-	    writer.write(tabViewVar + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
-	    
-	    writer.write("selected:" + tabView.getActiveIndex());
+	    writer.write(tabViewVar + " = new PrimeFaces.widget.TabView('" + clientId + "',");
+	    writer.write("{");
 	    
 	    if(tabView.isDynamic()) {
-	    	UIComponent form = ComponentUtils.findParentForm(facesContext, tabView);
-	    	if(form == null) {
-		  	    throw new FacesException("TabView " + clientId + " must be nested inside a form when dynamic content loading is enabled");
-	    	}
-		  	    
-	    	writer.write(",dynamic:true");
+	    	writer.write("dynamic:true");
 	    	writer.write(",url:'" + getActionURL(facesContext) + "'");
-	    	writer.write(",formId:'" + form.getClientId(facesContext) + "'");
 	  	    writer.write(",cache:" + tabView.isCache());
 	  	    
+	  	    UIComponent form = ComponentUtils.findParentForm(facesContext, tabView);
+	  	    if(form == null)
+	  	    	throw new FacesException("TabView " + clientId + " must be nested inside a form when dynamic content loading is enabled");
+	  	    
+	  	    writer.write(",formId:'" + form.getClientId(facesContext) + "'");
 	    } else {
-	    	writer.write(",dynamic:false");
+	    	writer.write("dynamic:false");
 	    }
-	    
-	    if(tabView.isCollapsible()) writer.write(",collapsible:true");
-	    if(tabView.getEvent() != null) writer.write(",event:'" + tabView.getEvent() + "'");
-	    if(tabView.getEffect() != null) {
-	    	writer.write(",fx: {");
-	    	writer.write(tabView.getEffect() +":'toggle'");
-	    	writer.write(",duration:'" + tabView.getEffectDuration() + "'");
-	    	writer.write("}");
-	    }
-	    
+	    if(tabView.getOrientation() != null) writer.write(",orientation:'" + tabView.getOrientation() + "'");
+	    if(tabView.isContentTransition()) writer.write(",contentTransition:" + tabView.isContentTransition());
+	  
 	    writer.write("});");
 	    
 	    writer.endElement("script");
@@ -133,6 +124,7 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.startElement("div", tabView);
 		writer.writeAttribute("id", clientId , null);
+		writer.writeAttribute("class", "yui-navset", null);
 		
 		encodeHeaders(facesContext, tabView, activeIndex);
 		encodeContents(facesContext, tabView, activeIndex);
@@ -158,6 +150,7 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("ul", null);
+		writer.writeAttribute("class", "yui-nav", null);
 		
 		for(int i = 0; i < tabView.getChildren().size(); i++) {
 			UIComponent kid = tabView.getChildren().get(i);
@@ -166,6 +159,10 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 				Tab tab = (Tab) kid;
 				
 				writer.startElement("li", null);
+				
+				if(i == activeTabIndex) {
+					writer.writeAttribute("class", "selected", null);
+				}
 				
 				writer.startElement("a", null);
 				writer.writeAttribute("href", "#" + tab.getClientId(facesContext), null);
@@ -183,6 +180,9 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 	
 	private void encodeContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "yui-content", null);
 		
 		for(int i = 0; i < tabView.getChildren().size(); i++) {
 			UIComponent kid = tabView.getChildren().get(i);
@@ -202,6 +202,8 @@ public class TabViewRenderer extends CoreRenderer implements PartialRenderer {
 				writer.endElement("div");
 			}
 		}
+		
+		writer.endElement("div");
 	}
 
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

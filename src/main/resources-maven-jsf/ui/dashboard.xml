@@ -42,28 +42,19 @@
 			<method-signature>void reorderListener(org.primefaces.event.DashboardReorderEvent)</method-signature>
 			<description>A server side listener to invoke when dashboard widgets are reordered.</description>
 		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of the main container of dashboard.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the main container of dashboard.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
 			<name>/primefaces/dashboard/dashboard.css</name>
 		</resource>
 		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>/jquery/plugins/ui/jquery.ui.custom.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>

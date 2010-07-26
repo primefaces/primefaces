@@ -17,7 +17,7 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 
-public class CroppedImage implements Serializable {
+public class CroppedImage implements Serializable{
 	
 	private String originalFilename;
 	

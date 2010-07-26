@@ -12,11 +12,7 @@
 	<rendererType>org.primefaces.touch.component.RowItemRenderer</rendererType>
 	<rendererClass>org.primefaces.touch.component.rowitem.RowItemRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
+	<ajaxSource>true</ajaxSource>
 	<attributes>
 		&command_component_attributes;
 		<attribute>

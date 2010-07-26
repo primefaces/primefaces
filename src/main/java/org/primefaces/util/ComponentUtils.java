@@ -268,8 +268,4 @@ public class ComponentUtils {
 	    }
 	    return result;
 	}
-	
-	public static boolean isLiteralText(UIComponent component) {
-		return component.getFamily().equalsIgnoreCase("facelets.LiteralText");
-	}
 }

@@ -15,27 +15,113 @@
  */
 package org.primefaces.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface TreeNode {
+public class TreeNode {
+	
+	public static final String DEFAULT_TYPE = "default";
+	
+	private String type;
+	
+	private Object data;
+	
+	private List<TreeNode> children;
+	
+	private TreeNode parent;
+	
+	private boolean expanded;
+	
+	@Deprecated
+	public TreeNode(Object data) {
+		this.type = DEFAULT_TYPE;
+		this.data = data;
+		children = new ArrayList<TreeNode>();
+	}
+
+	public TreeNode(Object data, TreeNode parent) {
+		this.type = DEFAULT_TYPE;
+		this.data = data;
+		children = new ArrayList<TreeNode>();
+		this.parent = parent;
+		if(this.parent != null)
+			this.parent.getChildren().add(this);
+	}
+	
+	public TreeNode(String type, Object data, TreeNode parent) {
+		this.type = type;
+		this.data = data;
+		children = new ArrayList<TreeNode>();
+		this.parent = parent;
+		if(this.parent != null)
+			this.parent.getChildren().add(this);
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public Object getData() {
+		return data;
+	}
+	
+	public void setData(Object data) {
+		this.data = data;
+	}
+	
+	public List<TreeNode> getChildren() {
+		return children;
+	}
+	
+	public void setChildren(List<TreeNode> children) {
+		this.children = children;
+	}
+	
+	public TreeNode getParent() {
+		return parent;
+	}
+	
+	public void setParent(TreeNode parent) {
+		this.parent = parent;
+	}
+	
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
 		
-	public String getType();
+		if(parent != null) {
+			parent.setExpanded(expanded);
+		}
+	}
 
-	public Object getData();
-	
-	public List<TreeNode> getChildren();
-	
-	public TreeNode getParent();
-	
-	public void setParent(TreeNode treeNode);
+	public void addChild(TreeNode treeNode) {
+		treeNode.setParent(this);
+		children.add(treeNode);
+	}
 
-	public boolean isExpanded();
+	public int getChildCount() {
+		return children.size();
+	}
 	
-	public void setExpanded(boolean expanded);
+	public boolean isLeaf() {
+		if(children == null)
+			return true;
+		
+		return children.size() == 0;
+	}
 
-	public void addChild(TreeNode treeNode);
-
-	public int getChildCount();
-	
-	public boolean isLeaf();	
+	@Override
+	public String toString() {
+		if(data != null)
+			return data.toString();
+		else
+			return super.toString();
+	}	
 }

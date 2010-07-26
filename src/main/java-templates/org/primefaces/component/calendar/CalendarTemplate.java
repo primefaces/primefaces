@@ -1,8 +1,6 @@
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.DateSelectEvent;
 
-	public static String POPUP_ICON = "/primefaces/calendar/calendar_icon.png";
-
 	private java.util.Locale appropriateLocale;
 	private java.util.TimeZone appropriateTimeZone;
 	
@@ -10,13 +8,8 @@ import org.primefaces.event.DateSelectEvent;
 		if(appropriateLocale == null) {
 			Object userLocale = getLocale();
 			if(userLocale != null) {
-				if(userLocale instanceof String) {
-					String[] tokens = ((String) userLocale).split("_");
-					if(tokens.length == 1)
-						appropriateLocale = new java.util.Locale(tokens[0], "");
-					else
-						appropriateLocale = new java.util.Locale(tokens[0], tokens[1]);
-				}
+				if(userLocale instanceof String)
+					appropriateLocale = new java.util.Locale((String) userLocale, "");
 				else if(userLocale instanceof java.util.Locale)
 					appropriateLocale = (java.util.Locale) userLocale;
 				else

@@ -80,27 +80,22 @@ public class DashboardRenderer extends CoreRenderer {
 		encodeScript(facesContext, dashboard);
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Dashboard dashboard) throws IOException {
+	private void encodeMarkup(FacesContext facesContext, Dashboard dashboard) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dashboard.getClientId(facesContext);
 		
 		writer.startElement("div", dashboard);
 		writer.writeAttribute("id", clientId, "id");
-		String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
-		writer.writeAttribute("class", styleClass, "styleClass");
-		if(dashboard.getStyle() != null)  writer.writeAttribute("style", dashboard.getStyle(), "style");
 		
 		DashboardModel model = dashboard.getModel();
 		if(model != null) {
 			for(DashboardColumn column : model.getColumns()) {
 				writer.startElement("div", null);
-				writer.writeAttribute("class", Dashboard.COLUMN_CLASS, null);
+				writer.writeAttribute("class", "pf-dashboard-column", null);
 				
 				for(String widgetId : column.getWidgets()) {
 					Panel widget = findWidget(widgetId, dashboard);
-					
-					if(widget != null)
-						renderChild(facesContext, widget);
+					renderChild(facesContext, widget);
 				}
 				
 				writer.endElement("div");
@@ -110,7 +105,7 @@ public class DashboardRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Dashboard dashboard) throws IOException {
+	private void encodeScript(FacesContext facesContext, Dashboard dashboard) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dashboard.getClientId(facesContext);
 		String widgetVar = createUniqueWidgetVar(facesContext, dashboard);

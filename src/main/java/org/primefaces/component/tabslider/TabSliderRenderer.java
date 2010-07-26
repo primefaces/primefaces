@@ -17,7 +17,6 @@ package org.primefaces.component.tabslider;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,12 +27,8 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class TabSliderRenderer extends CoreRenderer {
 	
-	private static final Logger logger = Logger.getLogger(TabSliderRenderer.class.getName());
-	
 	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		logger.info("TabSlider is deprecated, use Carousel instead");
-		
 		TabSlider slider = (TabSlider) component;
 		
 		encodeMarkup(facesContext, slider);

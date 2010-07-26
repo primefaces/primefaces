@@ -58,7 +58,7 @@ public class ResourceServlet extends HttpServlet {
 	private void initMimeTypes() {
 		mimeTypes = new HashMap<String, String>();
 		mimeTypes.put("css", "text/css");
-		mimeTypes.put("js", "text/javascript");
+		mimeTypes.put("js", "text/js");
 		mimeTypes.put("jpg", "image/jpeg");
 		mimeTypes.put("jpeg", "image/jpeg");
 		mimeTypes.put("png", "image/png");

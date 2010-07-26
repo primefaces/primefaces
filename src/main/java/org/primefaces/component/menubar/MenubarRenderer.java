@@ -33,10 +33,6 @@ public class MenubarRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		Menubar menubar = (Menubar) component;
 		
-		if(menubar.shouldBuildFromModel()) {
-			menubar.buildMenuFromModel();
-		}
-		
 		encodeMarkup(facesContext, menubar);
 		encodeScript(facesContext, menubar);
 	}
@@ -77,24 +73,28 @@ public class MenubarRenderer extends CoreRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-menubar ui-widget ui-widget-content", null);
+		writer.writeAttribute("class", "yuimenubar", null);
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "bd", null);
 		
 		writer.startElement("ul", null);
-		writer.writeAttribute("class", "ui-state-default", null);
+		writer.writeAttribute("class", "first-of-type", null);
 		
+		boolean firstSubmenu = true;
 		for(UIComponent child : menubar.getChildren()) {
 			Submenu submenu = (Submenu) child;
 			
 			if(submenu.isRendered()) {
+				String styleClass = firstSubmenu ? "yuimenubaritem first-of-type" : "yuimenubaritem";
 				writer.startElement("li", null);
-				writer.writeAttribute("class", "ui-menubar-item" , null);
+				writer.writeAttribute("class", styleClass , null);
 				
 				encodeSubmenu(facesContext, submenu);
 				
 				writer.endElement("li");
+				
+				firstSubmenu = false;
 			}
 		}
 		
@@ -107,9 +107,8 @@ public class MenubarRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		UIComponent labelFacet = submenu.getFacet("label");
 		String clientId = submenu.getClientId(facesContext);
-		boolean isMenubarItem = submenu.getParent() instanceof Menubar;
 
-		String labelStyleClass = isMenubarItem ? "ui-menubar-item-label" : "ui-menu-item-label";
+		String labelStyleClass = submenu.getParent() instanceof Menubar ? "yuimenubaritemlabel" : "yuimenuitemlabel";
 		
 		if(labelFacet == null) {
 			String href = submenu.getChildCount() > 0 ? "#" + clientId : "#";
@@ -129,16 +128,10 @@ public class MenubarRenderer extends CoreRenderer {
 			encodeMenuItem(facesContext, (MenuItem) labelFacet, labelStyleClass);
 		}
 		
-		if(!isMenubarItem) {
-			writer.startElement("span", null);
-			writer.writeAttribute("class", "ui-menu-item-submenu-icon ui-icon ui-icon-triangle-1-e", null);
-			writer.endElement("span");
-		}
-		
 		if(submenu.getChildCount() > 0) {
 			writer.startElement("div", null);
 			writer.writeAttribute("id", clientId, null);
-			writer.writeAttribute("class", "ui-menu ui-widget ui-widget-content ui-corner-all", null);
+			writer.writeAttribute("class", "yuimenu", null);
 			
 			writer.startElement("div", null);
 			writer.writeAttribute("class", "bd", null);
@@ -155,7 +148,7 @@ public class MenubarRenderer extends CoreRenderer {
 	protected void encodeMenuItem(FacesContext facesContext, MenuItem menuItem, String labelStyleClass) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
-		if(menuItem.shouldRenderChildren()) {
+		if(menuItem.getChildCount() > 0) {
 			renderChildren(facesContext, menuItem);
 		} else {
 			String clientId = menuItem.getClientId(facesContext);
@@ -195,6 +188,8 @@ public class MenubarRenderer extends CoreRenderer {
 				writer.writeAttribute("onclick", command, null);
 			}
 			
+			//Label is deprecated
+			if(menuItem.getLabel() != null) writer.write(menuItem.getLabel());
 			if(menuItem.getValue() != null) writer.write((String) menuItem.getValue());
 			
 			if(menuItem.getHelpText() != null) {
@@ -216,11 +211,11 @@ public class MenubarRenderer extends CoreRenderer {
 			
 			if(child.isRendered()) {
 				writer.startElement("li", null);
-				writer.writeAttribute("class", "ui-menu-item ui-corner-all", null);
+				writer.writeAttribute("class", "yuimenuitem", null);
 				
 				if(child instanceof MenuItem) {
 					MenuItem menuItem = (MenuItem) child;
-					encodeMenuItem(facesContext, menuItem, "ui-menu-item-label ui-corner-all");
+					encodeMenuItem(facesContext, menuItem, "yuimenuitemlabel");
 				} else if(child instanceof Submenu) {
 					Submenu childSubmenu = (Submenu) child;
 					encodeSubmenu(facesContext, childSubmenu);

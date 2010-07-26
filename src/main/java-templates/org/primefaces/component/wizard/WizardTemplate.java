@@ -8,6 +8,7 @@ import org.primefaces.event.FlowEvent;
 			//If flow goes back, skip to rendering
 			if(isBackRequest(facesContext)) {
 				facesContext.renderResponse();
+				return;
 			} else {
 				getStepToProcess(facesContext).processDecodes(facesContext);
 			}
@@ -35,7 +36,7 @@ import org.primefaces.event.FlowEvent;
 	
 	public Tab getStepToProcess(FacesContext facesContext) {
 		if(tabToProcess == null) {
-			String currentStepId = facesContext.getExternalContext().getRequestParameterMap().get(getClientId(facesContext) + "_currentStep");
+			String currentStepId = facesContext.getExternalContext().getRequestParameterMap().get(getClientId(facesContext) + "_currentStepId");
 			
 			for(javax.faces.component.UIComponent child : getChildren()) {
 				if(child.getId().equals(currentStepId)) {

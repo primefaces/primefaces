@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,12 +124,15 @@ public class PanelRenderer extends CoreRenderer {
 		
 		String styleClass = panel.getStyleClass() != null ? Panel.PANEL_CLASS + " " + panel.getStyleClass() : Panel.PANEL_CLASS;
 		writer.writeAttribute("class", styleClass, "styleClass");
-		if(panel.getStyle() != null) 
+		
+		if(panel.getStyle() != null) {
 			writer.writeAttribute("style", panel.getStyle(), "style");
+		}
 		
 		encodeHeader(facesContext, panel);
 		encodeContent(facesContext, panel);
 		encodeFooter(facesContext, panel);
+		encodePanelControls(facesContext, panel);
 
 		if(panel.isToggleable())
 			encodeStateHolder(facesContext, panel, clientId + "_collapsed", String.valueOf(panel.isCollapsed()));
@@ -147,55 +150,50 @@ public class PanelRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
+	protected void encodePanelControls(FacesContext context, Panel panel) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		
+		writer.startElement("span", null);
+		writer.writeAttribute("class", Panel.PANEL_HEADER_CONTROLS_CLASS, null);
+		
+		if(panel.isClosable())
+			encodeCloser(context, panel);
+		
+		if(panel.isToggleable())
+			encodeToggler(context, panel);
+		
+		if(panel.getOptionsMenu() != null)
+			encodeOptionsControl(context, panel);
+		
+		writer.endElement("span");
+	}
+
 	protected void encodeHeader(FacesContext facesContext, Panel panel) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String widgetVar = createUniqueWidgetVar(facesContext, panel);
 		UIComponent header = panel.getFacet("header");
 		String headerText = panel.getHeader();
-		String clientId = panel.getClientId(facesContext);
 		
 		if(headerText == null && header == null)
 			return;
 		
 		writer.startElement("div", null);
-		writer.writeAttribute("id", panel.getClientId(facesContext) + "_header", null);
-		writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
-		
-		//Title
-		writer.startElement("span", null);
-		writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
+		writer.writeAttribute("id", panel.getClientId(facesContext) + "_hd", null);
+		writer.writeAttribute("class", Panel.PANEL_HEADER_CLASS, null);
 				
 		if(header != null)
 			renderChild(facesContext, header);
 		else if(headerText != null)
 			writer.write(headerText);
 		
-		writer.endElement("span");
-		
-		//Options
-		if(panel.isClosable()) {
-			encodeIcon(facesContext, panel, "ui-icon-closethick", widgetVar + ".close()", clientId + "_closer");
-		}
-		
-		if(panel.isToggleable()) {
-			String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-			encodeIcon(facesContext, panel, icon, widgetVar + ".toggle()", clientId + "_toggler");
-		}
-
-		if(panel.getOptionsMenu() != null) {
-			String menuVar = createUniqueWidgetVar(facesContext, panel.getOptionsMenu());
-			encodeIcon(facesContext, panel, "ui-icon-gear", menuVar + ".show()", clientId + "_menu");
-		}
-			
 		writer.endElement("div");
 	}
 	
-	protected void encodeContent(FacesContext facesContext, Panel panel) throws IOException {
+	protected void encodeContent(FacesContext facesContext, Panel panel) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("div", null);
-		writer.writeAttribute("id", panel.getClientId(facesContext) + "_content", null);
-		writer.writeAttribute("class", Panel.PANEL_CONTENT_CLASS, null);
+		writer.writeAttribute("id", panel.getClientId(facesContext) + "_bd", null);
+		writer.writeAttribute("class", Panel.PANEL_BODY_CLASS, null);
 		if(panel.isCollapsed()) {
 			writer.writeAttribute("style", "display:none", null);
 		}
@@ -205,44 +203,50 @@ public class PanelRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeFooter(FacesContext facesContext, Panel panel) throws IOException {
+	protected void encodeFooter(FacesContext facesContext, Panel panel) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		UIComponent footer = panel.getFacet("footer");
 		String footerText = panel.getFooter();
 		
-		if(footer != null || footerText != null) {
-			writer.startElement("div", null);
-			writer.writeAttribute("id", panel.getClientId(facesContext) + "_footer", null);
-			writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
-			
-			if(footer != null)
-				renderChild(facesContext, footer);
-			else if(footerText != null)
-				writer.write(footerText);
-			
-			writer.endElement("div");
-		}
+		if(footerText == null && footer == null)
+			return;
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("id", panel.getClientId(facesContext) + "_ft", null);
+		writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
+		
+		if(footer != null)
+			renderChild(facesContext, footer);
+		if(footerText != null)
+			writer.write(footerText);
+		
+		writer.endElement("div");
 	}
 	
-	protected void encodeIcon(FacesContext facesContext, Panel panel, String iconClass, String onclick, String id) throws IOException {
+	protected void encodeToggler(FacesContext facesContext, Panel panel) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String hover = "jQuery(this).toggleClass('ui-state-hover')";
+		String clientId = panel.getClientId(facesContext);
+		String var = createUniqueWidgetVar(facesContext, panel);
 		
-		writer.startElement("a", null);
-		writer.writeAttribute("href", "javascript:void(0)", null);
-		writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
-		writer.writeAttribute("onmouseover", hover, null);
-		writer.writeAttribute("onmouseout", hover, null);
+		String styleClass = panel.isCollapsed() ? Panel.PANEL_TOGGLER_COLLAPSED_CLASS : Panel.PANEL_TOGGLER_EXPANDED_CLASS;
 		
 		writer.startElement("span", null);
-		if(id != null) {
-			writer.writeAttribute("id", id, null);
-		}
-		writer.writeAttribute("class", "ui-icon " + iconClass, null);
-		writer.writeAttribute("onclick", onclick, null);
+		writer.writeAttribute("id", clientId + "_toggler", null);
+		writer.writeAttribute("class", styleClass, null);
+		writer.writeAttribute("onclick", var + ".toggle();", null);		
 		writer.endElement("span");
+	}
+	
+	protected void encodeCloser(FacesContext facesContext, Panel panel) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = panel.getClientId(facesContext);
+		String var = createUniqueWidgetVar(facesContext, panel);
 		
-		writer.endElement("a");
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId + "_closer", null);
+		writer.writeAttribute("class", Panel.PANEL_CLOSER_CLASS, null);
+		writer.writeAttribute("onclick", var + ".close();", null);		
+		writer.endElement("span");
 	}
 	
 	protected void encodeOptionsControl(FacesContext facesContext, Panel panel) throws IOException {
@@ -255,8 +259,8 @@ public class PanelRenderer extends CoreRenderer {
 		writer.writeAttribute("class", "pf-panel-options", null);
 		writer.writeAttribute("onclick", menuVar + ".show()", null);		
 		writer.endElement("span");
+		
 	}
-	
 	protected void encodeStateHolder(FacesContext facesContext, Panel panel, String name, String value) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		

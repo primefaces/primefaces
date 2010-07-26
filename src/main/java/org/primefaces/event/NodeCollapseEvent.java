@@ -3,7 +3,6 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.model.TreeNode;
 
@@ -32,10 +31,5 @@ public class NodeCollapseEvent extends FacesEvent {
 
 	public void setTreeNode(TreeNode treeNode) {
 		this.treeNode = treeNode;
-	}
-	
-	@Override
-	public PhaseId getPhaseId() {
-		return PhaseId.INVOKE_APPLICATION;
 	}
 }

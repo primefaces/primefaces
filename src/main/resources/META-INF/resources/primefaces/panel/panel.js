@@ -1,7 +1,7 @@
 PrimeFaces.widget.Panel = function(id, cfg) {
 	this.id = id;
 	this.jqId = PrimeFaces.escapeClientId(id);
-	this.bodySelector = this.jqId + "_content";
+	this.bodySelector = this.jqId + "_bd";
 	this.togglerSelector = this.jqId + "_toggler";
 	this.toggleStateHolder = this.jqId + "_collapsed";
 	this.visibleStateHolder = this.jqId + "_visible";
@@ -15,12 +15,12 @@ PrimeFaces.widget.Panel = function(id, cfg) {
 PrimeFaces.widget.Panel.prototype.toggle = function() {
 	
 	if(this.cfg.collapsed) {
-		jQuery(this.togglerSelector).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
+		jQuery(this.togglerSelector).addClass('pf-panel-toggler-expanded').removeClass('pf-panel-toggler-collapsed');
 		this.cfg.collapsed = false;
 		jQuery(this.toggleStateHolder).val(false);
 	}
 	else {
-		jQuery(this.togglerSelector).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
+		jQuery(this.togglerSelector).addClass('pf-panel-toggler-collapsed').removeClass('pf-panel-toggler-expanded');
 		this.cfg.collapsed = true;
 		jQuery(this.toggleStateHolder).val(true);
 	}

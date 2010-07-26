@@ -6,7 +6,6 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
 	this.cfg.placeholder = this.PLACEHOLDER_CLASS;
 	this.cfg.forcePlaceholderSize = true;
 	this.cfg.revert=true;
-	this.jqSelector = this.jqId + " " + this.COLUMN_CLASS;
 	
 	this.cfg.update= function(e, ui) {
 		if(this === ui.item.parent()[0]) {
@@ -33,9 +32,9 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
 		}
 	};
 	
-	jQuery(this.jqSelector).sortable(this.cfg);
+	jQuery(this.COLUMN_CLASS).sortable(this.cfg);
 }
 
-PrimeFaces.widget.Dashboard.prototype.COLUMN_CLASS = '.ui-dashboard-column';
+PrimeFaces.widget.Dashboard.prototype.COLUMN_CLASS = '.pf-dashboard-column';
 
-PrimeFaces.widget.Dashboard.prototype.PLACEHOLDER_CLASS = 'ui-state-hover';
+PrimeFaces.widget.Dashboard.prototype.PLACEHOLDER_CLASS = 'pf-dashboard-placeholder';

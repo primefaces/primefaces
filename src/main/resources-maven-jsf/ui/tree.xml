@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -120,7 +116,7 @@
 		<attribute>
 			<name>selection</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
+			<type>org.primefaces.model.TreeNode[]</type>
 			<description>
 				A TreeNode array that would be populated with the selected nodes.
 			</description>
@@ -150,12 +146,6 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<description>Specifies if selection will be propagated down to the children of clicked node.</description>
-		</attribute>
-		<attribute>
-			<name>selectionMode</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Specifies the selection mode, valid options are "single", "multiple" and "checkbox".</description>
 		</attribute>
 	</attributes>
 	<resources>

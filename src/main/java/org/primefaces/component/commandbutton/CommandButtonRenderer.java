@@ -18,6 +18,7 @@ package org.primefaces.component.commandbutton;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.FacesException;
@@ -27,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.component.confirmdialog.ConfirmDialog;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -35,88 +37,97 @@ import org.primefaces.util.HTML;
 public class CommandButtonRenderer extends CoreRenderer {
 
 	public void decode(FacesContext facesContext, UIComponent component) {		
-		String param = component.getClientId(facesContext);
-		
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param)) {
+		String param = component.getClientId(facesContext) + "_submit";
+
+		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param))
 			component.queueEvent(new ActionEvent(component));
-		}
 	}
 
 	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		CommandButton button = (CommandButton) component;
 		
-		//myfaces fix
+		//myfaces bug fix
 		if(button.getType() == null)
 			button.setType("submit");
 		
 		encodeMarkup(facesContext, button);
 		encodeScript(facesContext, button);
 	}
+
+	private void encodeScript(FacesContext facesContext, CommandButton button) throws IOException {
+		ConfirmDialog confirmDialog = getConfirmation(button);
+		
+		if(confirmDialog != null) {
+			ResponseWriter writer = facesContext.getResponseWriter();
+			String clientId = button.getClientId(facesContext);
+			String confirmVar = createUniqueWidgetVar(facesContext, button);
 	
-	protected void encodeMarkup(FacesContext facesContext, CommandButton button) throws IOException {
+			writer.startElement("script", button);
+			writer.writeAttribute("type", "text/javascript", null);
+			
+			String confirmDialogCFGVar = confirmVar + "_cfg";
+			writeConfirmDialogCFGVariable(facesContext, confirmDialog, confirmDialogCFGVar);
+			
+			writer.write(confirmVar + " = new YAHOO.widget.SimpleDialog('" + clientId + "_confirmation', " + confirmDialogCFGVar + ");\n");
+			writer.write(confirmVar + ".render();");
+	
+			writer.endElement("script");
+		}
+	}
+	
+	private void encodeMarkup(FacesContext facesContext, CommandButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
-		String type = button.getType();
+		ConfirmDialog confirmDialog = getConfirmation(button);
+		String confirmVar = createUniqueWidgetVar(facesContext, button);
+		String buttonId = confirmDialog == null ? clientId + "_submit" : clientId + "_proxy";
 
-		writer.startElement("button", button);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("name", clientId, "name");
-		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass() , "styleClass");
-
-		String onclick = button.getOnclick();
-		if(!type.equals("reset") && !type.equals("button")) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, button);
-			if(form == null) {
-				throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
-			}
-			
-			String formClientId = form.getClientId(facesContext);		
-			String request = button.isAjax() ? buildAjaxRequest(facesContext, button, formClientId, clientId) : getNonAjaxRequest(facesContext, button, formClientId);
-			onclick = button.getOnclick() != null ? button.getOnclick() + ";" + request : request;
+		UIComponent form = ComponentUtils.findParentForm(facesContext, button);
+		if(form == null) {
+			throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
 		}
 		
-		if(onclick != null) {
-			writer.writeAttribute("onclick", onclick, "onclick");
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId, null);
+
+		writer.startElement("input", button);
+		writer.writeAttribute("id", buttonId, "id");
+		writer.writeAttribute("name", buttonId, "name");
+		
+		if(button.getValue() != null) writer.writeAttribute("value", button.getValue(), "name");
+		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass(), null);
+		if(confirmDialog != null) writer.writeAttribute("onclick", confirmVar + ".show();return false;", null);
+		
+		if(button.getType().equals("image")) {
+			writer.writeAttribute("src", getResourceURL(facesContext, button.getImage()), null);
+		}
+		
+		String onclick = null;
+		
+		if(!button.getType().equals("reset")) {
+			String formClientId = form.getClientId(facesContext);		
+			String request = button.isAjax() ? buildAjaxRequest(facesContext, button, formClientId, clientId + "_submit") : getNonAjaxRequest(facesContext, button, formClientId);
+			
+			onclick = button.getOnclick() != null ? button.getOnclick() + ";" + request : request;
+				
+			if(confirmDialog == null)
+				writer.writeAttribute("onclick", onclick, "onclick");
+			else
+				onclick = confirmVar + ".hide();" + onclick;
 		}
 		
 		renderPassThruAttributes(facesContext, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
-		
-		if(button.getValue() != null) {
-			writer.write(button.getValue().toString());
-		} else if(button.getImage() != null) {
-			writer.write("pf-button");
-		}
 			
-		writer.endElement("button");
+		writer.endElement("input");
+		
+		if(confirmDialog != null)
+			encodeConfirmDialogMarkup(facesContext, button, confirmDialog, onclick, confirmVar);
+		
+		writer.endElement("span");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, CommandButton button) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = button.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, button);
-		String type = button.getType();
-		boolean hasValue = (button.getValue() != null);
-		
-		writer.startElement("script", button);
-		writer.writeAttribute("type", "text/javascript", null);
-
-		writer.write(widgetVar + " = new PrimeFaces.widget.CommandButton('" + clientId + "', {");
-		
-		if(type.equals("image") || button.getImage() != null) {
-			writer.write("text:" + hasValue);
-			writer.write(",icons:{");
-			writer.write("primary:'" + button.getImage() + "'");
-			writer.write("}");
-		} 
-		
-		writer.write("});");
-		
-		writer.endElement("script");
-	}
-
-	
-	protected String getNonAjaxRequest(FacesContext facesContext, CommandButton button, String formClientId) {
+	private String getNonAjaxRequest(FacesContext facesContext, CommandButton button, String formClientId) {
 		String clientId = button.getClientId(facesContext);
 		Map<String,Object> params = new HashMap<String, Object>();
 		boolean isPartialProcess = button.getProcess() != null;
@@ -158,5 +169,87 @@ public class CommandButtonRenderer extends CoreRenderer {
 		} else {
 			return null;
 		}
+	}
+	
+	protected void encodeConfirmDialogMarkup(FacesContext facesContext, CommandButton button, ConfirmDialog confirmDialog, String onclick, String confirmVar) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = button.getClientId(facesContext);
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_confirmation", null);
+		
+		//header
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "hd", null);
+		if(confirmDialog.getHeader() != null)
+			writer.write(confirmDialog.getHeader());
+		
+		writer.endElement("div");
+		
+		//body
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "bd", null);
+		
+		if(confirmDialog.getMessage() != null)
+			writer.write(confirmDialog.getMessage());
+
+		writer.endElement("div");
+		
+		//footer
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "ft", null);
+
+		encodeConfirmButtonMarkup(facesContext, null, clientId + "_submit", confirmDialog.getYesLabel(), onclick);
+		encodeConfirmButtonMarkup(facesContext, null, clientId + "_noButton", confirmDialog.getNoLabel(), confirmVar + ".hide();return false;");
+		
+		writer.endElement("div");
+		
+		writer.endElement("div");
+	}
+	
+	protected void encodeConfirmButtonMarkup(FacesContext facesContext, CommandButton button, String id, String label, String onclick) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.startElement("input", null);
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+		writer.writeAttribute("type", "submit", null);
+		
+		if(label != null) writer.writeAttribute("value", label, null);
+		if(onclick != null) writer.writeAttribute("onclick", onclick, null);
+		
+		writer.endElement("input");
+	}
+	
+	private void writeConfirmDialogCFGVariable(FacesContext facesContext, ConfirmDialog dialog, String cfgVariable) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.write("var " + cfgVariable + " = {\n");
+		writer.write("visible: false");
+		writer.write(",icon: YAHOO.widget.SimpleDialog.ICON_" + dialog.getSeverity().toUpperCase());
+		if(dialog.getWidth() != null) writer.write(",width:'" + dialog.getWidth() + "'");
+		if(dialog.getHeight() != null) writer.write(",height:'" + dialog.getHeight() + "'");
+		if(!dialog.isDraggable()) writer.write(",draggable: false");
+		if(dialog.getUnderlay() != null && !dialog.getUnderlay().equalsIgnoreCase("shadow")) writer.write(",underlay: '" + dialog.getUnderlay() + "'");
+		if(dialog.isFixedCenter()) writer.write(",fixedcenter: true");
+		if(!dialog.isClose()) writer.write(",close: false");
+		if(dialog.isConstrainToViewport()) writer.write(",constraintoviewport: true");
+		if(dialog.getX() != -1) writer.write(",x:" + dialog.getX());
+		if(dialog.getY() != -1) writer.write(",y:" + dialog.getY());
+		if(dialog.isModal()) writer.write(",modal: true");
+		if(dialog.getEffect() != null) writer.write(",effect:{effect:YAHOO.widget.ContainerEffect." + dialog.getEffect().toUpperCase() + ", duration: " + dialog.getEffectDuration() + "}");
+		
+		writer.write("};\n");
+	}
+	
+	private ConfirmDialog getConfirmation(CommandButton button) {
+		List<UIComponent> kids = button.getChildren();
+		
+		for(UIComponent kid : kids) {
+			if(kid instanceof ConfirmDialog)
+				return (ConfirmDialog) kid;
+		}
+		
+		return null;
 	}
 }

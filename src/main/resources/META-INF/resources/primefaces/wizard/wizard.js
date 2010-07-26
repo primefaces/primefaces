@@ -1,58 +1,56 @@
-PrimeFaces.widget.Wizard = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.Wizard = function(clientId, cfg) {
+	this.id = clientId;
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(this.id);
-	this.content = this.jqId + '_content';
-	this.backNav = this.jqId + '_back';
-	this.nextNav = this.jqId + '_next';
-	this.currentStep = this.cfg.initialStep;
-	var currentStepIndex = this.getStepIndex(this.currentStep);
+	this.cfg.back = '';
+	this.cfg.next = '';
+	this.formId = PrimeFaces.escapeClientId(this.cfg.formId);
+	this.setupEffect();
 
-	/*
-	 * Navigation controls
-	 */
-	jQuery(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
-	jQuery(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
-
-	jQuery(this.backNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
-	jQuery(this.nextNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
+	jQuery(this.formId).formwizard(this.cfg,{},{});
 	
-	if(currentStepIndex == 0)
-		jQuery(this.backNav).hide();
-	else if(currentStepIndex == this.cfg.steps.length - 1)
-		jQuery(this.nextNav).hide();
+	if(this.cfg.step == undefined) {
+		this.hideBackNav();
+	} else {
+		this.show(this.cfg.step);
+		if(this.getStepIndex(this.cfg.step) == this.getStepLength() - 1)
+			this.hideNextNav();
+	}
 }
 
 PrimeFaces.widget.Wizard.prototype.back = function() {
-	var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) - 1];
+	var currentStepIndex = this.getStepIndex(this.getState().currentStep),
+	stepIndexToGo = currentStepIndex - 1;
+	stepIdToGo = this.cfg.steps[stepIndexToGo];
 	
-	this.loadStep(stepToGo, true);
+	this.loadStep(stepIdToGo, stepIndexToGo, true);
 }
 
 PrimeFaces.widget.Wizard.prototype.next = function() {
-	var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) + 1];
+	var currentStepIndex = this.getStepIndex(this.getState().currentStep),
+	stepIndexToGo = currentStepIndex + 1;
+	stepIdToGo = this.cfg.steps[stepIndexToGo];
 	
-	this.loadStep(stepToGo, false);
+	this.loadStep(stepIdToGo, stepIndexToGo, false);
 }
 
-PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
-	var requestParams = jQuery(PrimeFaces.escapeClientId(this.cfg.formId)).serialize(),
-	_self = this,
+PrimeFaces.widget.Wizard.prototype.loadStep = function(stepId, stepIndex, isBack) {
+	var requestParams = jQuery(this.formId).serialize(),
+	scope = this,
 	params = {};
 	
 	params[PrimeFaces.PARTIAL_SOURCE_PARAM] = this.id;
 	params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.id;
 	params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
+	params[this.id + '_currentStepId'] = this.getState().currentStep;
+	params[this.id + '_stepIdToGo'] = stepId;
 	params[this.id + '_wizardRequest'] = true;
-	params[this.id + '_currentStep'] = this.currentStep;
-	params[this.id + '_stepToGo'] = stepToGo;
 	
 	if(isBack) {
 		params[this.id + '_backRequest'] = true;
 	}
 	
 	requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params); 
-		
+	
 	jQuery.ajax({
 		url: this.cfg.url,
 		type: "POST",
@@ -64,40 +62,62 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 			content = xmlDoc.getElementsByTagName("content")[0].firstChild.data,
 			state = xmlDoc.getElementsByTagName("state")[0].firstChild.data,
 			success = xmlDoc.getElementsByTagName("success")[0].firstChild.data;
-			_self.currentStep = xmlDoc.getElementsByTagName("current-step")[0].firstChild.data;
 
 			PrimeFaces.ajax.AjaxUtils.updateState(state);
 			
 			if(success == 'true') {
-				//update content
-				if(_self.cfg.effect) {
-					jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-						jQuery(_self.content).html(content);
-						jQuery(_self.content).fadeIn();
-					});
-				} else {
-					jQuery(_self.content).html(content);
-				}
+				jQuery('#' + stepId).html(content);
 				
-				//update navigation controls
-				var currentStepIndex = _self.getStepIndex(_self.currentStep);
-				if(currentStepIndex == _self.cfg.steps.length - 1) {
-					_self.hideNextNav();
-					_self.showBackNav();
-				} else if(currentStepIndex == 0) {
-					_self.hideBackNav();
-					_self.showNextNav();
-				} else {
-					_self.showBackNav();
-					_self.showNextNav();
-				}
+				scope.show(stepId);
 				
+				if(isBack) {
+					if(stepIndex == (scope.getStepLength() - 2))
+						scope.showNextNav();
+					else if(stepIndex == 0)
+						scope.hideBackNav();
+					
+					if(scope.cfg.onback)
+						scope.cfg.onback.call(scope);
+				} else {
+					if(stepIndex == (scope.getStepLength() - 1))
+						scope.hideNextNav();
+					else if(stepIndex == 1)
+						scope.showBackNav();
+					
+					if(scope.cfg.onnext)
+						scope.cfg.onnext.call(scope);
+				}
 			} else {
-				//update content
-				jQuery(_self.content).html(content);
+				jQuery('#' + scope.getState().currentStep).html(content);
 			}
 		}
 	});
+}
+
+PrimeFaces.widget.Wizard.prototype.setupEffect = function() {
+	if(this.cfg.effect && this.cfg.effect != 'fade') {
+		if(this.cfg.effect == 'slide') {
+			this.cfg.inAnimation = 'slideDown';
+			this.cfg.outAnimation = 'slideUp';
+		} else if(this.cfg.effect == 'both') {
+			this.cfg.inAnimation = 'show';
+			this.cfg.outAnimation = 'hide';
+		} else {
+			alert('Invalid effect type:' + this.cfg.effect + ' for wizard ' + this.id);
+		}
+	}
+}
+
+PrimeFaces.widget.Wizard.prototype.handleWizardResponse = function(responseXML) {
+	return jQuery(this.formId).formwizard('state');
+}
+
+PrimeFaces.widget.Wizard.prototype.getState = function() {
+	return jQuery(this.formId).formwizard('state');
+}
+
+PrimeFaces.widget.Wizard.prototype.show = function(step) {
+	jQuery(this.formId).formwizard('show', step);
 }
 
 PrimeFaces.widget.Wizard.prototype.getStepIndex = function(step) {
@@ -109,18 +129,22 @@ PrimeFaces.widget.Wizard.prototype.getStepIndex = function(step) {
 	return -1;
 }
 
+PrimeFaces.widget.Wizard.prototype.getStepLength = function() {
+	return this.cfg.steps.length;
+}
+
 PrimeFaces.widget.Wizard.prototype.showNextNav = function() {
-	jQuery(this.nextNav).fadeIn();
+	jQuery(PrimeFaces.escapeClientId(this.cfg.nextNav)).fadeIn();
 }
 
 PrimeFaces.widget.Wizard.prototype.hideNextNav = function() {
-	jQuery(this.nextNav).fadeOut();
+	jQuery(PrimeFaces.escapeClientId(this.cfg.nextNav)).fadeOut();
 }
 
 PrimeFaces.widget.Wizard.prototype.showBackNav = function() {
-	jQuery(this.backNav).fadeIn();
+	jQuery(PrimeFaces.escapeClientId(this.cfg.backNav)).fadeIn();
 }
 
 PrimeFaces.widget.Wizard.prototype.hideBackNav = function() {
-	jQuery(this.backNav).fadeOut();
+	jQuery(PrimeFaces.escapeClientId(this.cfg.backNav)).fadeOut();
 }

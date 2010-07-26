@@ -23,20 +23,20 @@ public class TreeNodeTest {
 	
 	@Test
 	public void shouldAddChildNodes() {
-		TreeNode node = new DefaultTreeNode("Parent", null);
+		TreeNode node = new TreeNode("Parent", null);
 		
-		new DefaultTreeNode("Child1", node);
-		new DefaultTreeNode("Child2", node);
+		new TreeNode("Child1", node);
+		new TreeNode("Child2", node);
 		
 		assertEquals(2, node.getChildCount());
 	}
 	
 	@Test
 	public void shouldHaveParent() {		
-		TreeNode root = new DefaultTreeNode("Parent", null);
+		TreeNode root = new TreeNode("Parent", null);
 		
-		TreeNode child1 = new DefaultTreeNode("Child1", root);
-		TreeNode child11 = new DefaultTreeNode("Child11", child1);
+		TreeNode child1 = new TreeNode("Child1", root);
+		TreeNode child11 = new TreeNode("Child11", child1);
 		
 		assertEquals(root, child1.getParent());
 		assertEquals(child1, child11.getParent());
@@ -44,10 +44,10 @@ public class TreeNodeTest {
 	
 	@Test
 	public void whenAChildIsExpandedParentSubtreeShouldBeExpandedAsWell() {		
-		TreeNode root = new DefaultTreeNode("Parent", null);
+		TreeNode root = new TreeNode("Parent", null);
 		
-		TreeNode child1 = new DefaultTreeNode("Child1", root);
-		TreeNode child11 = new DefaultTreeNode("Child11", child1);
+		TreeNode child1 = new TreeNode("Child1", root);
+		TreeNode child11 = new TreeNode("Child11", child1);
 		
 		child11.setExpanded(true);
 		assertTrue(child1.isExpanded());

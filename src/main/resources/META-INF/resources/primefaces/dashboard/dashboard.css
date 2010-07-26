@@ -1,4 +1,9 @@
-.ui-dashboard-column {
+.pf-dashboard-column {
 	float: left;
 	padding-bottom: 100px;
+}
+	
+.pf-dashboard-placeholder { 
+	border: 5px dotted orange;
+	visibility: visible !important;
 }
