@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>stackedColumnChart</tag>
+	<tagClass>org.primefaces.component.chart.stackedcolumn.StackedColumnChartTag</tagClass>
+	<componentHandlerClass>org.primefaces.component.chart.ChartHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.chart.stackedcolumn.StackedColumnChart</componentClass>
+	<componentType>org.primefaces.component.chart.StackedColumnChart</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.chart.StackedColumnChartRenderer</rendererType>
+	<rendererClass>org.primefaces.component.chart.stackedcolumn.StackedColumnChartRenderer</rendererClass>
+	<parent>org.primefaces.component.chart.UIChart</parent>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AjaxComponent</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>widgetVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Javascript variable name of the wrapped yui widget 
+			</description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Data to be displayed on the chart</description>
+		</attribute>
+		<attribute>
+			<name>var</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<literal>true</literal>
+			<description>Name of the data iterator</description>
+		</attribute>
+		<attribute>
+			<name>xfield</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<description>Field for the x axis</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Style to apply to chart container element.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Javascript object that represents the chart style</description>
+		</attribute>
+		<attribute>
+			<name>wmode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				wmode property of the flash object.
+			</description>
+		</attribute>
+		<attribute>
+			<name>live</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>When a chart is live, the data is refreshed based on the refreshInterval</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Javascript event to be called when ajax request for item select event is completed.
+			</description>
+		</attribute>
+		<attribute>
+			<name>refreshInterval</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>3000</defaultValue>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Refresh period of a live chart data in milliseconds</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Client side id of the component(s) to be updated after async partial submit request.
+			</description>
+		</attribute>
+		<attribute>
+			<name>itemSelectListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
+			<description>Method expression to listen chart series item select events</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>500px</defaultValue>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Width of the chart</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>350px</defaultValue>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Height of the chart</description>
+		</attribute>
+		<attribute>
+			<name>minY</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+			<description>
+				Minimum boundary value of y axis.
+			</description>
+		</attribute>
+		<attribute>
+			<name>maxY</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+			<description>
+				Maximum boundary value of y axis.
+			</description>
+		</attribute>
+		<attribute>
+			<name>dataTipFunction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>Javascript function name to customize the data tips.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/datasource/datasource-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/swf/swf-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/charts/charts-min.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/charts/charts.js</name>
+		</resource>
+	</resources>
+</component>

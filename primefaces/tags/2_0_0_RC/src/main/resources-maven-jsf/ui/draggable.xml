@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>draggable</tag>
+	<tagClass>org.primefaces.component.dnd.DraggableTag</tagClass>
+	<componentClass>org.primefaces.component.dnd.Draggable</componentClass>
+	<componentType>org.primefaces.component.Draggable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.DraggableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.dnd.DraggableRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>proxy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Uses a proxy element for dragging.</description>
+		</attribute>
+		<attribute>
+			<name>dragOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Disabled dropping, just for movement.</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after async partial submit request.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/dnd/dragdrop.js</name>
+		</resource>
+	</resources>
+</component>

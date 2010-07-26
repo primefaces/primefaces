@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+]>
+<component>
+	<tag>sheet</tag>
+	<tagClass>org.primefaces.component.spreadsheet.SheetTag</tagClass>
+	<componentClass>org.primefaces.component.spreadsheet.Sheet</componentClass>
+	<componentType>org.primefaces.component.Sheet</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIData</parent>
+	<attributes>
+		&data_component_attributes;
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Title text of the sheet</description>
+		</attribute>
+	</attributes>
+</component>

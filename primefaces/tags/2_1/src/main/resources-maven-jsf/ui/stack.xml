@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>stack</tag>
+	<tagClass>org.primefaces.component.stack.StackTag</tagClass>
+	<componentClass>org.primefaces.component.stack.Stack</componentClass>
+	<componentType>org.primefaces.component.Stack</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.StackRenderer</rendererType>
+	<rendererClass>org.primefaces.component.stack.StackRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+			<description>
+				An org.primefaces.model.MenuModel instance to build menu dynamically.
+			</description>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				An optional image to contain stacked items.
+			</description>
+		</attribute>
+		<attribute>
+			<name>openSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+			<description>
+				Speed of animation when opening the stack.
+			</description>
+		</attribute>
+		<attribute>
+			<name>closeSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+			<description>
+				Speed of animation when opening the stack.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/stack/assets/stack.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/stack/stack.js</name>
+		</resource>
+	</resources>
+</component>

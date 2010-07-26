@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
+]>
+<component>
+	<tag>rowItem</tag>
+	<tagClass>org.primefaces.touch.component.rowitem.RowItemTag</tagClass>
+	<componentClass>org.primefaces.touch.component.rowitem.RowItem</componentClass>
+	<componentType>org.primefaces.touch.RowItem</componentType>
+	<componentFamily>org.primefaces.touch</componentFamily>
+	<rendererType>org.primefaces.touch.component.RowItemRenderer</rendererType>
+	<rendererClass>org.primefaces.touch.component.rowitem.RowItemRenderer</rendererClass>
+	<parent>javax.faces.component.UICommand</parent>
+	<attributes>
+		&command_component_attributes;
+		<attribute>
+			<name>view</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Id of the view to be displayed when this item is clicked.</description>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Optional URL of the item to be used for external navigation.
+			</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after async partial submit request.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+	</resources>
+</component>

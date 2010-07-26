@@ -1,0 +1,73 @@
+.ui-datatable table {
+	padding:0;
+	margin:0;
+}
+
+.ui-datatable th .ui-datatable-liner {
+    white-space:nowrap;
+    float:left;
+}
+
+.ui-datatable-liner {
+    margin:0;
+    padding:0;
+    padding:4px 10px 4px 10px; /* cell padding */
+}
+
+th .ui-datatable-label {
+    position:relative;
+}
+
+.ui-datatable table thead th.ui-state-default {
+	border-style:none solid solid none;
+}
+
+.ui-datatable .ui-datatable-data td {
+	border-bottom-color:inherit;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-right-color:inherit;
+	border-right-style:solid;
+	border-right-width:1px;
+}
+
+.ui-datatable table thead th.ui-datatable-last,
+.ui-datatable .ui-datatable-data td.ui-datatable-last {
+	border-right-style: none;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-datatable-last td {
+	border-bottom-style: none;
+}
+
+.ui-datatable table {
+	border-collapse:separate;
+	*border-collapse:collapse;
+	border-spacing:0;
+} 
+
+.ui-datatable thead {
+	border-spacing:0;
+}
+
+.ui-datatable-sortable {
+	cursor:pointer;
+}
+
+.ui-datatable-hidden {
+	display: none;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-state-hover,
+.ui-datatable .ui-datatable-data tr.ui-state-active {
+	font-weight: normal;
+	border-style: solid;
+	cursor: pointer;
+}
+
+.ui-datatable .ui-datatable-data td.ui-state-hover,
+.ui-datatable .ui-datatable-data td.ui-state-active {
+	font-weight: normal;
+	border-style: none solid solid none;
+	cursor: pointer;
+}

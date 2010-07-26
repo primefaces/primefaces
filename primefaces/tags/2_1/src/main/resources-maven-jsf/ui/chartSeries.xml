@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+]>
+<component>
+	<tag>chartSeries</tag>
+	<tagClass>org.primefaces.component.chart.series.ChartSeriesTag</tagClass>
+	<componentClass>org.primefaces.component.chart.series.ChartSeries</componentClass>
+	<componentType>org.primefaces.component.chart.ChartSeries</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIOutput</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&output_component_attributes;
+		<attribute>
+			<name>label</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>Name of series</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript object that represents the series style</description>
+		</attribute>
+	</attributes>
+</component>

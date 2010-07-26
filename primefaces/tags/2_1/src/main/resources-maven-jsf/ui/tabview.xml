@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>tabView</tag>
+	<tagClass>org.primefaces.component.tabview.TabViewTag</tagClass>
+	<componentClass>org.primefaces.component.tabview.TabView</componentClass>
+	<componentType>org.primefaces.component.TabView</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TabViewRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AjaxComponent</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>activeIndex</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Index of the active tab</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Applies a transition effect during changing the tabs. Valid values are 'opacity', 'height' and 'width'.</description>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
+			<description>Defines the duration of effect</description>
+		</attribute>
+		<attribute>
+			<name>dynamic</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Specifies the toggleMode, dynamic setting fetches it's content with ajax on tab switch.</description>
+		</attribute>
+		<attribute>
+			<name>cache</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab
+			does not communicate with server. If caching is turned off, tab contents are refetched from server each time tab is clicked. This setting is true by default.</description>
+		</attribute>
+		<attribute>
+			<name>collapsible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>An active tab can be collapsed onclick when collapsible option is enabled</description>
+		</attribute>
+		<attribute>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Event to use when selecting a tab</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/plugins/ui/jquery.ui.tabs.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>	
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/tabview/tabview.js</name>
+		</resource>
+	</resources>
+</component>

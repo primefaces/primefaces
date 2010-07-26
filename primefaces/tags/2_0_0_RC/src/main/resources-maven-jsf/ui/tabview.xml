@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>tabView</tag>
+	<tagClass>org.primefaces.component.tabview.TabViewTag</tagClass>
+	<componentClass>org.primefaces.component.tabview.TabView</componentClass>
+	<componentType>org.primefaces.component.TabView</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TabViewRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<ajaxComponent>true</ajaxComponent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>activeIndex</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Index of the active tab</description>
+		</attribute>
+		<attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>top</defaultValue>
+			<description>Defines how the tabs should oriented, valid values are top|bottom|left|right</description>
+		</attribute>
+		<attribute>
+			<name>contentTransition</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Applies a transition effect during changing the tabs, default value is false</description>
+		</attribute>
+		<attribute>
+			<name>toggleMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>client</defaultValue>
+			<description>Specifies the toggleMode, valid values are "client"(default) or "async"</description>
+		</attribute>
+		<attribute>
+			<name>cache</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab
+			does not communicate with server. If caching is turned off, tab contents are refetched from server each time tab is clicked. This setting is true by default.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/tabview/assets/skins/sam/tabview.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
+		<resource>
+			<name>/yui/tabview/tabview-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/tabview/tabview.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,282 @@
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.8.0r4
+*/
+.ui-layout-loading {
+    visibility: hidden;
+}
+
+body.ui-layout {
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.ui-layout-doc {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.ui-layout-unit {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    margin: 0;
+    float: none;
+    z-index: 0;
+    /*overflow: hidden;*/
+}
+
+.ui-layout-unit-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.ui-layout-unit-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.ui-layout-unit-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ui-layout-unit-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.ui-layout-unit-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.ui-layout div.ui-layout-hd {
+    position: absolute;
+    top: 0;
+    left: 0;
+    zoom: 1;
+    width: 100%;
+    /*overflow: hidden;*/
+}
+.ui-layout div.ui-layout-bd {
+    position: absolute;
+    top: 0;
+    left: 0;
+    zoom: 1;
+    width: 100%;
+    /*overflow: hidden;*/
+}
+.ui-layout .ui-layout-noscroll div.ui-layout-bd {
+    overflow: hidden;
+}
+.ui-layout .ui-layout-scroll div.ui-layout-bd {
+    overflow: auto;
+}
+.ui-layout div.ui-layout-ft {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    zoom: 1;
+    /*overflow: hidden;*/
+}
+
+.ui-layout .ui-layout-unit div.ui-layout-hd h2 {
+    text-align: left;
+}
+
+.ui-layout .ui-layout-unit div.ui-layout-hd .collapse {
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    font-size: 0;
+}
+
+.ui-layout .ui-layout-unit div.ui-layout-hd .close {
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    font-size: 0;
+}
+.ui-layout .ui-layout-unit div.ui-layout-hd .collapse-close {
+    right: 20px;
+}
+
+.ui-layout .ui-layout-clip {
+    position: absolute;
+    height: 20px;
+    display: none;
+}
+
+.ui-layout .ui-layout-clip .collapse {
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    font-size: 0px;
+}
+
+.ui-layout .ui-layout-wrap {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+}
+
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.8.0r4
+*/
+/* Remove the dotted border on the resize proxy */
+.ui-layout .yui-resize-proxy {
+    border: none;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+}
+/* During resize, hide the handles */
+.ui-layout .yui-resize-resizing .yui-resize-handle {
+    /*visibility: hidden;*/
+    display: none;
+    zoom: 1;
+}
+/* Style the div inside the resize proxy */
+.ui-layout .yui-resize-proxy div {
+    position: absolute;
+    border: 1px solid #808080;
+    background-color: #EDF5FF;
+}
+/* Set the color of the Active resize handle */
+.ui-layout .yui-resize .yui-resize-handle-active {
+    zoom: 1;
+}
+/* Styles for the left handle */
+.ui-layout .yui-resize-proxy .ui-layout-handle-l {
+    width: 5px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    zoom: 1;
+}
+/* Styles for the right handle */
+.ui-layout .yui-resize-proxy .ui-layout-handle-r {
+    width: 5px;
+    top: 0;
+    right: 0;
+    height: 100%;
+    position: absolute;
+    zoom: 1;
+}
+/* Styles for the bottom handle */
+.ui-layout .yui-resize-proxy .ui-layout-handle-b {
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+}
+/* Styles for the top handle */
+ui-layout .yui-resize-proxy .ui-layout-handle-t {
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 5px;
+}
+
+/* Style the text in the header */
+.ui-layout .ui-layout-unit div.ui-layout-hd h2 {
+    padding: 3px;
+    margin: 0;
+    font-size: 100%;
+}
+/* Style the body */
+.ui-layout .ui-layout-unit div.ui-layout-bd {
+    text-align: left;
+}
+
+/* Style the Clip */
+.ui-layout .ui-layout-clip {
+    position: absolute;
+    height: 20px;
+    display: none;
+}
+/* Style the footer */
+.ui-layout div.ui-layout-ft {
+    border-top: none;
+    *border-top-width: 0;
+}
+
+/* Remove the color from the resize handle */
+.ui-layout-unit .yui-resize-handle {
+    background-color: transparent;
+    zoom: 1;
+}
+/* Reposition the handles */
+.ui-layout-unit .yui-resize-handle-r {
+    right: 0;
+    top: 0;
+    background-image: none;
+    zoom: 1;
+}
+.ui-layout-unit .yui-resize-handle-l {
+    left: 0;
+    top: 0;
+    background-image: none;
+    zoom: 1;
+}
+.ui-layout-unit .yui-resize-handle-b {
+    right: 0;
+    bottom: 0;
+    background-image: none;
+}
+.ui-layout-unit .yui-resize-handle-t {
+    right: 0;
+    top: 0;
+    background-image: none;
+}
+/* Add the gripper */
+.ui-layout-unit .yui-resize-handle-r .ui-layout-resize-knob,
+.ui-layout-unit .yui-resize-handle-l .ui-layout-resize-knob {
+    position: absolute;
+    height: 16px;
+    width: 6px;
+    top: 45%;
+    left: 0px;
+    display: block;
+    background: transparent url('layout_sprite.png') no-repeat 0 -5px;
+}
+/* Add the gripper */
+.ui-layout-unit .yui-resize-handle-t .ui-layout-resize-knob,
+.ui-layout-unit .yui-resize-handle-b .ui-layout-resize-knob {
+    position: absolute;
+    height: 6px;
+    width: 16px;
+    left: 45%;
+    background: transparent url('layout_sprite.png') no-repeat -20px 0;
+    zoom: 1;
+}
+
+.ui-layout .yui-resize .yui-resize-handle {
+    background-color: transparent;
+}
+.ui-layout.yui-resize .yui-resize-handle-active {
+    background-color: transparent;
+}

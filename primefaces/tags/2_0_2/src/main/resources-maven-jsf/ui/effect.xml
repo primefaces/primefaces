@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>effect</tag>
+	<tagClass>org.primefaces.component.effect.EffectTag</tagClass>
+	<componentClass>org.primefaces.component.effect.Effect</componentClass>
+	<componentType>org.primefaces.component.Effect</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.EffectRenderer</rendererType>
+	<rendererClass>org.primefaces.component.effect.EffectRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>event</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>Dom event to attach the event that executes the animation</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>Specifies the name of the animation</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Optional, the component that is animated.</description>
+		</attribute>
+		<attribute>
+			<name>speed</name>
+			<required>false</required>
+			<defaultValue>1000</defaultValue>
+			<type>java.lang.Integer</type>
+			<description>Speed of the animation in ms</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/effects/effects.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+	</resources>
+</component>

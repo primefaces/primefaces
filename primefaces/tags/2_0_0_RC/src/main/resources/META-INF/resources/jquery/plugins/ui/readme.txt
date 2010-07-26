@@ -1,0 +1,1 @@
+jquery.ui.custom.js contains jquery ui modules except widgets

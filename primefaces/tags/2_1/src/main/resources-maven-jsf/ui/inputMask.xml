@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+]>
+<component>
+	<tag>inputMask</tag>
+	<tagClass>org.primefaces.component.inputmask.InputMaskTag</tagClass>
+	<componentClass>org.primefaces.component.inputmask.InputMask</componentClass>
+	<componentType>org.primefaces.component.InputMask</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InputMaskRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inputmask.InputMaskRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlInputText</parent>
+	<attributes>
+		&input_component_attributes;
+		&html_input_text_attributes;
+		<attribute>
+			<name>mask</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description><![CDATA[Masked input for seperating input texts with given pattern.<br/>These mask definitions can be used: <ul><li>a - Represents an alpha character (A-Z,a-z)</li><li> 9 - Represents a numeric character (0-9)</li><li>* - Represents an alphanumeric character (A-Z,a-z,0-9)</li></ul>]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>placeHolder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Seperator and placeholder in input.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/inputmask/maskedinput.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+	</resources>
+</component>

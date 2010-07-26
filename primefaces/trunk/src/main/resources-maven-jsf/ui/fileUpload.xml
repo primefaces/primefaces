@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>fileUpload</tag>
+	<tagClass>org.primefaces.component.fileupload.FileUploadTag</tagClass>
+	<componentHandlerClass>org.primefaces.component.fileupload.FileUploadHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.fileupload.FileUpload</componentClass>
+	<componentType>org.primefaces.component.FileUpload</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.FileUploadRenderer</rendererType>
+	<rendererClass>org.primefaces.component.fileupload.FileUploadRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after file upload completes.
+			</description>
+		</attribute>
+		<attribute>
+			<name>fileUploadListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void fileUploadListener(org.primefaces.event.FileUploadEvent)</method-signature>
+			<description>
+				Method expression to listen file upload events.
+			</description>
+		</attribute>
+		<attribute>
+			<name>multiple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Allows for multiple file uploads, default is set to false.
+			</description>
+		</attribute>
+		<attribute>
+			<name>auto</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				When set to true selecting a file starts the upload implicitly.
+			</description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Label of the browse button, default is 'Browse'.
+			</description>
+		</attribute>
+		<attribute>
+			<name>image</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Image for the browse button.
+			</description>
+		</attribute>
+		<attribute>
+			<name>cancelImage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Image for the cancel icon.
+			</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Width of the browse button.
+			</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Height of the browse button.
+			</description>
+		</attribute>
+		<attribute>
+			<name>allowTypes</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				File extensions that can be accepted, use a comma seperated list for more than one.
+			</description>
+		</attribute>
+		<attribute>
+			<name>description</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Label to desribe what types of files can be selected.
+			</description>
+		</attribute>
+		<attribute>
+			<name>sizeLimit</name>
+			<required>false</required>
+			<type>java.lang.Long</type>
+			<defaultValue>java.lang.Long.MAX_VALUE</defaultValue>
+			<description>
+				Number of maximum bytes that is allowed for a file size.
+			</description>
+		</attribute>
+		<attribute>
+			<name>wmode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				wmode property of the flash object.
+			</description>
+		</attribute>
+		<attribute>
+			<name>customUI</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>When customUI is turned on, upload and cancel controls won't be rendered and page authors can create their own ui using client side api.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the main container of fileUpload.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the main container of fileUpload.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/plugins/uploadify/uploadify.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/cookie/cookie-min.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/uploadify/swfobject.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/uploadify/jquery.uploadify.v2.1.0.min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/uploader/uploader.js</name>
+		</resource>
+	</resources>
+</component>

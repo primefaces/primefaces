@@ -1,0 +1,5 @@
+	<lifecycle>
+		<phase-listener>org.primefaces.application.PostRestoreViewHandler</phase-listener>
+		<phase-listener>org.primefaces.application.PrimeFacesPhaseListener</phase-listener>
+		<phase-listener>org.primefaces.application.DynamicContentStreamer</phase-listener>
+	</lifecycle>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>accordionPanel</tag>
+	<tagClass>org.primefaces.component.accordionpanel.AccordionPanelTag</tagClass>
+	<componentClass>org.primefaces.component.accordionpanel.AccordionPanel</componentClass>
+	<componentType>org.primefaces.component.AccordionPanel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
+	<rendererClass>org.primefaces.component.accordionpanel.AccordionPanelRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>activeIndex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Index of the active tab, use a comma seperated list for multiple tabs.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the root container of accordion panel</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the root container of accordion panel</description>
+		</attribute>
+		<attribute>
+			<name>multiple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Enables activation of multiple tabs.</description>
+		</attribute>
+		<attribute>
+			<name>speed</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>0.5</defaultValue>
+			<description>Animation speed in seconds.</description>
+		</attribute>
+		<attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Controls animation, set to false to turn of animation.</description>
+		</attribute>
+		<attribute>
+			<name>hover</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Enabled toggling on hover.</description>
+		</attribute>
+		<attribute>
+			<name>hoverDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>500</defaultValue>
+			<description>Time to wait in terms of ms to toggle when a panel is hovered.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/accordion/assets/skins/sam/accordionview.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/accordion/accordionview-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/accordion/accordion.js</name>
+		</resource>
+	</resources>
+</component>

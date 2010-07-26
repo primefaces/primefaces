@@ -1,0 +1,16 @@
+.pf-wizard {
+	margin:0;
+	padding:0;
+}
+
+.pf-wizard-content {
+	
+}
+
+.pf-wizard-navbar {
+	text-align: right;
+}
+
+.pf-wizard-nav-back, .pf-wizard-nav-next {
+	cursor: pointer;
+}

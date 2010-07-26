@@ -1,0 +1,3 @@
+By Chris Coyier: http://css-tricks.com
+with major improvements by Doug Neiner: http://pixelgraphics.us/
+based on work by Remy Sharp: http://jqueryfordesigners.com/

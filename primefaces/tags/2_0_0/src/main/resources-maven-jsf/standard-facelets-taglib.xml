@@ -1,0 +1,26 @@
+	<tag>
+		<tag-name>dataExporter</tag-name>
+		<handler-class>
+			org.primefaces.component.export.DataExporterTagHandler
+		</handler-class>
+	</tag>
+	
+	<tag>
+		<tag-name>fileDownload</tag-name>
+		<handler-class>
+			org.primefaces.component.filedownload.FileDownloadTagHandler
+		</handler-class>
+	</tag>
+	
+	<tag>
+		<tag-name>collector</tag-name>
+		<handler-class>
+			org.primefaces.component.collector.CollectorTagHandler
+		</handler-class>
+	</tag>
+	
+	<function>
+		<function-name>component</function-name>
+		<function-class>org.primefaces.util.ComponentUtils</function-class>
+		<function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
+	</function>

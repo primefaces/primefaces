@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>themeSwitcher</tag>
+	<tagClass>org.primefaces.component.themeswitcher.ThemeSwitcherTag</tagClass>
+	<componentClass>org.primefaces.component.themeswitcher.ThemeSwitcher</componentClass>
+	<componentType>org.primefaces.component.ThemeSwitcher</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ThemeSwitcherRenderer</rendererType>
+	<rendererClass>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Name of initial theme to load</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>150</defaultValue>
+			<description>Width of the switcher menu</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>200</defaultValue>
+			<description>Height of the switcher menu</description>
+		</attribute>
+		<attribute>
+			<name>buttonHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>14</defaultValue>
+			<description>Height of switcher button</description>
+		</attribute>
+		<attribute>
+			<name>initialText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Text of switcher button.</description>
+		</attribute>
+		<attribute>
+			<name>buttonPreText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Text that precedes the theme name.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/themeswitcher/themeswitcher.js</name>
+		</resource>	
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+	</resources>
+</component>

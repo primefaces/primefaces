@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
+]>
+<component>
+	<tag>menuitem</tag>
+	<tagClass>org.primefaces.component.menuitem.MenuItemTag</tagClass>
+	<componentClass>org.primefaces.component.menuitem.MenuItem</componentClass>
+	<componentType>org.primefaces.component.MenuItem</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UICommand</parent>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AjaxSource</name>
+		</interface>
+		<interface>
+			<name>java.io.Serializable</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&command_component_attributes;
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>URL that will be navigated to when the menu item is selected</description>
+		</attribute>
+		<attribute>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Target element of the menuitem's anchor element</description>
+		</attribute>
+		<attribute>
+			<name>helpText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Help text of the menuitem</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the menuitem label</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the menuitem label</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript onclick event handler for menuitem.</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after ajax request.
+			</description>
+		</attribute>
+		<attribute>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Comma seperated list of clientIds that will be processed partially in JSF lifecycle instead of the whole component tree.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event handler to be called before ajax request begins.
+			</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event handler to be called when ajax request is completed.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event handler to be called when ajax request fails.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onsuccess</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event handler to be called when ajax request succeeds.
+			</description>
+		</attribute>
+		<attribute>
+			<name>global</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>
+				Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
+			</description>
+		</attribute>
+		<attribute>
+			<name>async</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				When set to true, ajax requests will not be queued.
+			</description>
+		</attribute>
+		<attribute>
+			<name>ajax</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>
+				Specifies the submit mode, when set to true(default), submit would be made with Ajax.
+			</description>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Path of the meuitem image.
+			</description>
+		</attribute>
+	</attributes>
+</component>

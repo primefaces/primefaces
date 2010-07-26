@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>menuitem</tag>
+	<tagClass>org.primefaces.component.menuitem.MenuItemTag</tagClass>
+	<componentClass>org.primefaces.component.menuitem.MenuItem</componentClass>
+	<componentType>org.primefaces.component.MenuItem</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>label</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>Menuitem label to be displayed</description>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>URL that will be navigated to when the menu item is selected</description>
+		</attribute>
+		<attribute>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Target element of the submenu's anchor element</description>
+		</attribute>
+		<attribute>
+			<name>helpText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Help text of the menuitem</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the menuitem label</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the menuitem label</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>onclick event for menuitem.</description>
+		</attribute>
+	</attributes>
+</component>

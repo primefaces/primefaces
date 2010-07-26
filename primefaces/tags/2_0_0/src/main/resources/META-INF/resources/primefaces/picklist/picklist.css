@@ -1,0 +1,8 @@
+.pf-picklist-control {
+	text-align:center;
+	margin-bottom:2px;
+}
+
+.pf-picklist-source, .pf-picklist-target {
+	width:100px;
+}

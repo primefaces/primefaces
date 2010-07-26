@@ -1,0 +1,8 @@
+Gritter for jQuery
+http://www.boedesign.com/
+
+Copyright (c) 2009 Jordan Boesch
+Dual licensed under the MIT and GPL licenses.
+
+Date: December 1, 2009
+Version: 1.6

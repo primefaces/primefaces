@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+	<tag>switch</tag>
+	<tagClass>org.primefaces.touch.component.inputswitch.InputSwitchTag</tagClass>
+	<componentClass>org.primefaces.touch.component.inputswitch.InputSwitch</componentClass>
+	<componentType>org.primefaces.touch.InputSwitch</componentType>
+	<componentFamily>org.primefaces.touch</componentFamily>
+	<rendererType>org.primefaces.touch.component.InputSwitchRenderer</rendererType>
+	<rendererClass>org.primefaces.touch.component.inputswitch.InputSwitchRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+	<attributes>
+		&input_component_attributes;
+	</attributes>
+</component>

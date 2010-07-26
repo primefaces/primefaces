@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>linkButton</tag>
+	<tagClass>org.primefaces.component.linkbutton.LinkButtonTag</tagClass>
+	<componentClass>org.primefaces.component.linkbutton.LinkButton</componentClass>
+	<componentType>org.primefaces.component.LinkButton</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.LinkButtonRenderer</rendererType>
+	<rendererClass>org.primefaces.component.linkbutton.LinkButtonRenderer</rendererClass>
+	<parent>javax.faces.component.UIOutput</parent>
+	<attributes>
+		&output_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>href</name>
+			<type>java.lang.String</type>
+			<description>
+				Href value to navigate
+			</description>
+		</attribute>
+		<attribute>
+			<name>target</name>
+			<type>java.lang.String</type>
+			<description>
+				String specifying the target for the button.
+			</description>
+		</attribute>
+		<attribute>
+			<name>image</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Image of the button.
+			</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Style to apply to the button element.
+			</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Style class to apply to the button element.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onblur dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onchange dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onclick dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 ondblclick dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onfocus dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onkeydown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onkeydown dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onkeypress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onkeypress dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onkeyup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onkeyup dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onmousedown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onmousedown dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onmousemove</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onmousemove dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onmouseout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onmouseout dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onmouseover</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onmouseover dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onmouseup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onmouseup dom event handler
+			</description>
+		</attribute>
+		<attribute>
+			<name>onselect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				 onselect dom event handler
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>	
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/button/button.js</name>
+		</resource>
+	</resources>
+</component>

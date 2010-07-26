@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+]>
+<component>
+	<tag>hotkey</tag>
+	<tagClass>org.primefaces.component.hotkey.HotkeyTag</tagClass>
+	<componentClass>org.primefaces.component.hotkey.Hotkey</componentClass>
+	<componentType>org.primefaces.component.Hotkey</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.HotkeyRenderer</rendererType>
+	<rendererClass>org.primefaces.component.hotkey.HotkeyRenderer</rendererClass>
+	<parent>javax.faces.component.UICommand</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>actionListener</name>
+			<required>false</required>
+			<type>javax.faces.event.ActionListener</type>
+			<method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>action</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Object action()</method-signature>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>immediate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>bind</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>The key binding.</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after async partial submit request.
+			</description>
+		</attribute>
+		<attribute>
+			<name>handler</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>The javascript event which will be performed when there is a event with the specific </description>
+		</attribute>
+		<attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Flag for partial process, when set to true, parent form will be submitted but only the component the ajax event is attached to will be processed by JSF.</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event to be called before ajax request begins.
+			</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event to be called when ajax request is completed.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/hotkey/jquery.hotkeys-0.7.9.min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>idleMonitor</tag>
+	<tagClass>org.primefaces.component.idlemonitor.IdleMonitorTag</tagClass>
+	<componentHandlerClass>org.primefaces.component.idlemonitor.IdleMonitorHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.idlemonitor.IdleMonitor</componentClass>
+	<componentType>org.primefaces.component.IdleMonitor</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.IdleMonitorRenderer</rendererType>
+	<rendererClass>org.primefaces.component.idlemonitor.IdleMonitorRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>timeout</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300000</defaultValue>
+			<description>Time to wait until deciding if the user is idle in terms of milliseconds</description>
+		</attribute>
+		<attribute>
+			<name>onidle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript function to execute when user goes idle</description>
+		</attribute>
+		<attribute>
+			<name>onactive</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript function to execute when user goes active</description>
+		</attribute>
+		<attribute>
+			<name>idleListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void idleListener(org.primefaces.event.IdleEvent)</method-signature>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after async partial submit request.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/idletimer/idletimer.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/idlemonitor/idlemonitor.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,78 @@
+.pf-panel {
+	border-color:#808080;
+	border-style:solid;
+	border-width:1px 0;
+	position: relative;
+}
+
+.pf-panel-hd, .pf-panel-bd, .pf-panel-ft {
+	border-color:#808080;
+	border-style:solid;
+	border-width:0 1px;
+	margin:0 -1px;
+}
+
+.pf-panel-hd {
+	background: transparent url(../../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;
+	color:#000000;
+	font-size:93%;
+	font-weight:bold;
+	line-height:2;
+	padding:0 10px;
+	border-bottom:1px solid #CCCCCC;
+}
+
+.pf-panel-bd {
+	padding:10px;
+}
+
+.pf-panel-bd, .pf-panel-ft {
+	background-color:#F2F2F2;
+}
+
+.pf-panel-ft {
+	border-top:1px solid #808080;
+	font-size:77%;
+	padding:5px 10px;
+}
+
+.pf-panel-hd-controls {
+	cursor:pointer;
+	right:6px;
+	top:6px;
+	position:absolute;
+	overflow:hidden;
+}
+
+.pf-panel-toggler-expanded, .pf-panel-toggler-collapsed, .pf-panel-closer, .pf-panel-options {
+	display:block;
+	float:right;
+	margin-left:3px;
+}
+
+.pf-panel-closer {
+	width:25px;
+	height:15px;
+}
+
+.pf-panel-toggler-expanded {
+	width:14px;
+	height:14px;
+	background: url(../../yui/assets/skins/sam/sprite.png) no-repeat 0 -400px;
+}
+
+.pf-panel-toggler-collapsed {
+	width:14px;
+	height:14px;
+	background: url(../../yui/assets/skins/sam/sprite.png) no-repeat 0 -350px;
+}
+
+.pf-panel-closer {
+	background: url(../../yui/assets/skins/sam/sprite.png) no-repeat 0 -300px;
+}
+
+.pf-panel-options {
+	width:16px;
+	height:16px;
+	background: url(menu.png) no-repeat;
+}

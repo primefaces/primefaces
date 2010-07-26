@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>carousel</tag>
+	<tagClass>org.primefaces.component.carousel.CarouselTag</tagClass>
+	<componentClass>org.primefaces.component.carousel.Carousel</componentClass>
+	<componentType>org.primefaces.component.Carousel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.CarouselRenderer</rendererType>
+	<rendererClass>org.primefaces.component.carousel.CarouselRenderer</rendererClass>
+	<parent>javax.faces.component.UIData</parent>
+	<attributes>
+		&data_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>scrollIncrement</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Number of items to scroll</description>
+		</attribute>
+		<attribute>
+			<name>circular</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>When true, enables continous scrolling, default is false</description>
+		</attribute>
+		<attribute>
+			<name>vertical</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Set vertical orientation, default is false</description>
+		</attribute>
+		<attribute>
+			<name>autoPlayInterval</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Set this time in milli-seconds to have the Carousel scroll the elements automatically</description>
+		</attribute>
+		<attribute>
+			<name>revealAmount</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>The percentage of the item to be revealed on each side of the Carousel</description>
+		</attribute>
+		<attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>When enabled scrolling is animated, animation is turned on by default</description>
+		</attribute>
+		<attribute>
+			<name>speed</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>0.5</defaultValue>
+			<description>Sets the speed of the scrolling animation, default is 0.5</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Sets the animation effect</description>
+		</attribute>
+		<attribute>
+			<name>pagerPrefix</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Prefix text of the pager dropdown</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>itemStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of each item container.</description>
+		</attribute>
+		<attribute>
+			<name>itemStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of each item container.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/carousel/carousel.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/carousel/carousel.js</name>
+		</resource>
+	</resources>
+</component>

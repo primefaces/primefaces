@@ -1,0 +1,17 @@
+<!ELEMENT component (tag,tagClass,componentClass,componentType,componentFamily,rendererType?,rendererClass?,parent,attributes)>
+<!ELEMENT tagman (#PCDATA)>
+<!ELEMENT tagClass (#PCDATA)>
+<!ELEMENT componentClass (#PCDATA)>
+<!ELEMENT componentType (#PCDATA)>
+<!ELEMENT componentFamily (#PCDATA)>
+<!ELEMENT rendererType (#PCDATA)>
+<!ELEMENT rendererClass (#PCDATA)>
+<!ELEMENT parent (#PCDATA)>
+<!ELEMENT attributes (attribute*)>
+<!ELEMENT attribute (name,required,type,ignoreInComponent?,defaultValue?,description?)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT required (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT ignoreInComponent (#PCDATA)>
+<!ELEMENT defaultValue (#PCDATA)>
+<!ELEMENT description (#PCDATA)>

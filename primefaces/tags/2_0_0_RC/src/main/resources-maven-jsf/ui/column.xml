@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>column</tag>
+	<tagClass>org.primefaces.component.column.ColumnTag</tagClass>
+	<componentClass>org.primefaces.component.column.Column</componentClass>
+	<componentType>org.primefaces.component.Column</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIColumn</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>sortBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<description>Property to be used when sorting this column either on client side or server side with ajax.</description>
+		</attribute>
+		<attribute>
+			<name>resizable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Boolean to make the column width resizable, default is false</description>
+		</attribute>
+		<attribute>
+			<name>filter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>When set to true, places a data filter to the column header</description>
+		</attribute>
+		<attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Type of the selection column; 'multiple' or 'single'. Multiple places checkboxes and Single places radio buttons inside this column.
+			</description>
+		</attribute>
+		<attribute>
+			<name>parser</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Type of parser used to identify the type of data presented in the column.
+			</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+			<description>
+				Width of column in pixelsm.
+			</description>
+		</attribute>
+	</attributes>
+</component>

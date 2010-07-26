@@ -1,0 +1,120 @@
+	<tag>
+		<name>dataExporter</name>
+		<tag-class>org.primefaces.component.export.DataExporterTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Server side of the datatable to be exported</description>
+			<name>target</name>
+			<required>true</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>Type of the format, could be xls, pdf, xls, xml</description>
+			<name>type</name>
+			<required>true</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>Name of the exported file</description>
+			<name>fileName</name>
+			<required>true</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>Boolean for only exporting the current displayed page</description>
+			<name>pageOnly</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.Boolean</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>Comma seperated list of columns to be neglected</description>
+			<name>excludeColumns</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>Character encoding to use in exporting the document.</description>
+			<name>encoding</name>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Pre hook to manipulate exported document.]]></description>
+			<name>preProcessor</name>
+			<required>false</required>
+			<deferred-method>
+				<method-signature>void preProcessor(java.lang.Object)</method-signature>
+			</deferred-method>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Post hook to manipulate exported document.]]></description>
+			<name>postProcessor</name>
+			<required>false</required>
+			<deferred-method>
+				<method-signature>void postProcessor(java.lang.Object)</method-signature>
+			</deferred-method>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>collector</name>
+		<tag-class>org.primefaces.component.collector.CollectorTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Value to used in collection operation.</description>
+			<name>value</name>
+			<required>true</required>
+			<deferred-value>
+				<type>java.lang.Object</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>A collection to add the value.</description>
+			<name>addTo</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.Object</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>A collection to remove the value from.</description>
+			<name>removeFrom</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.Object</type>
+			</deferred-value>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>fileDownload</name>
+		<tag-class>org.primefaces.component.filedownload.FileDownloadTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description></description>
+			<name>value</name>
+			<required>true</required>
+			<deferred-value>
+				<type>java.lang.Object</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<description>Sets the content-disposition header .</description>
+			<name>contentDisposition</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+	</tag>

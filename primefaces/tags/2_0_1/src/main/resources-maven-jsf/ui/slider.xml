@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>slider</tag>
+	<tagClass>org.primefaces.component.slider.SliderTag</tagClass>
+	<componentClass>org.primefaces.component.slider.Slider</componentClass>
+	<componentType>org.primefaces.component.Slider</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SliderRenderer</rendererType>
+	<rendererClass>org.primefaces.component.slider.SliderRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Id of the component that the slider will be used for</description>
+		</attribute>
+		<attribute>
+			<name>minValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<description>Minimum value of the slider</description>
+		</attribute>
+		<attribute>
+			<name>maxValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<description>Maximum value of the slider</description>
+		</attribute>
+		<attribute>
+			<name>thumbImage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Image of the slider thumb</description>
+		</attribute>
+		<attribute>
+			<name>tickMarks</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Fixed pixel increments that the slider will move in</description>
+		</attribute>
+		<attribute>
+			<name>size</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>200</defaultValue>
+			<description>size of the background image of slider, this must be changed when the background image is changed</description>
+		</attribute>
+		<attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Boolean value to set an animation when slider background is clicked, default is true</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>horizontal</defaultValue>
+			<description>horizontal|vertical, Specifies the type of the slider</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/slider/assets/skins/sam/slider.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/slider/slider-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/slider/slider.js</name>
+		</resource>
+	</resources>
+</component>

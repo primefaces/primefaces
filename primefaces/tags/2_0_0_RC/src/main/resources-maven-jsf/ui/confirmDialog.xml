@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+<!ENTITY container_component_attributes			SYSTEM "../entities/container_attributes.xml">
+<!ENTITY panel_component_attributes				SYSTEM "../entities/panel_component_attributes.xml">
+]>
+<component>
+	<tag>confirmDialog</tag>
+	<tagClass>org.primefaces.component.confirmdialog.ConfirmDialogTag</tagClass>
+	<componentClass>org.primefaces.component.confirmdialog.ConfirmDialog</componentClass>
+	<componentType>org.primefaces.component.ConfirmDialog</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIPanel</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>message</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+			<description>The text displayed in the dialog</description>
+		</attribute>
+		<attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>The text displayed in the dialog's header part</description>
+		</attribute>
+		<attribute>
+			<name>yesLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Yes</defaultValue>
+			<description>The text displayed for the yes button</description>
+		</attribute>
+		<attribute>
+			<name>noLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>No</defaultValue>
+			<description>The text displayed for the no button</description>
+		</attribute>
+		<attribute>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>warn</defaultValue>
+			<description>help|info|warn|tip|alarm|block type icons for to display in the dialog</description>
+		</attribute>
+		<attribute>
+			<name>close</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Displays a "close" icon in the header</description>
+		</attribute>
+		<attribute>
+			<name>draggable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>
+				Boolean value whether to allow the user to drag the Panel using
+				its header
+			</description>
+		</attribute>
+		<attribute>
+			<name>underlay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>shadow</defaultValue>
+			<description>
+				Specifies the type of underlay to display under the Panel.
+				Possible values: none|shadow|matte
+			</description>
+		</attribute>
+		<attribute>
+			<name>modal</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Boolean value that specifies whether the document should be
+				shielded with a partially transparent mask to require the user
+				to close the Panel before being able to activate any elements in
+				the document.
+			</description>
+		</attribute>
+		<attribute>
+			<name>visible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Sets the element's "display" style property to either
+				"block"(true) or "none" (false)
+			</description>
+		</attribute>
+		<attribute>
+			<name>constrainToViewport</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Boolean value to keep the tooltip panel inside the confines of
+				the size of viewport
+			</description>
+		</attribute>
+		<attribute>
+			<name>x</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>-1</defaultValue>
+			<description>Sets the element's "left" style property</description>
+		</attribute>
+		<attribute>
+			<name>y</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>-1</defaultValue>
+			<description>Sets the element's "top" style property</description>
+		</attribute>
+		<attribute>
+			<name>fixedCenter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Boolean value that specifies whether the component should be
+				automatically centered in the viewport on window scroll and
+				resize
+			</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Width of the element in pixels</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Height of the element in pixels</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Effect to be displayed when showing and hiding the dialog, valid values are FADE or SLIDE</description>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>1</defaultValue>
+			<description>Duration of effect in seconds</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/button/assets/skins/sam/button.css</name>
+		</resource>
+		<resource>
+			<name>/yui/container/assets/skins/sam/container.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/container/container-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/button/button-min.js</name>
+		</resource>
+	</resources>
+</component>

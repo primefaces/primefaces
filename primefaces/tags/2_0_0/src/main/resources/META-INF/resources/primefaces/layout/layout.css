@@ -1,0 +1,25 @@
+.pf-layout-resizer {
+	background: #DDDDDD;
+	border:	none;
+}
+
+.pf-layout-toggler {
+	background: #AAAAAA;
+}
+
+.pf-layout-pane {
+	padding: 10px;
+	background:	#FFFFFF;
+	border:	1px solid #BBBBBB;
+	overflow: auto;
+}
+
+.pf-layout-header {
+	background:#80ADE5;
+	border-bottom:1px solid #777777;
+	font-weight:bold;
+	overflow:hidden;
+	padding: 4px;
+	position:relative;
+	text-align:center;
+}

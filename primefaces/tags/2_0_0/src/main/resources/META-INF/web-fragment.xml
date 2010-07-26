@@ -1,0 +1,13 @@
+<web-fragment>
+	<name>PrimeFaces</name>
+	
+    <servlet>
+		<servlet-name>PrimeFaces Resource Servlet</servlet-name>
+		<servlet-class>org.primefaces.resource.ResourceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PrimeFaces Resource Servlet</servlet-name>
+		<url-pattern>/primefaces_resource/*</url-pattern>
+	</servlet-mapping>
+	
+</web-fragment>

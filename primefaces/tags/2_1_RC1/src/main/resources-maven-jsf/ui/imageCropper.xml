@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>imageCropper</tag>
+	<tagClass>org.primefaces.component.imagecropper.ImageCropperTag</tagClass>
+	<componentClass>org.primefaces.component.imagecropper.ImageCropper</componentClass>
+	<componentType>org.primefaces.component.ImageCropper</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ImageCropperRenderer</rendererType>
+	<rendererClass>org.primefaces.component.imagecropper.ImageCropperRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>image</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Path of the image to be cropped
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/resize/assets/skins/sam/resize.css</name>
+		</resource>
+		<resource>
+			<name>/yui/imagecropper/assets/skins/sam/imagecropper.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/resize/resize-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/imagecropper/imagecropper-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/imagecropper/imagecropper.js</name>
+		</resource>
+	</resources>
+</component>

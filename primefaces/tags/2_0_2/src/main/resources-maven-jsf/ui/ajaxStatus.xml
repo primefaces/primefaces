@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>ajaxStatus</tag>
+	<tagClass>org.primefaces.component.ajaxstatus.AjaxStatusTag</tagClass>
+	<componentClass>org.primefaces.component.ajaxstatus.AjaxStatus</componentClass>
+	<componentType>org.primefaces.component.AjaxStatus</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.AjaxStatusRenderer</rendererType>
+	<rendererClass>org.primefaces.component.ajaxstatus.AjaxStatusRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>widgetVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Javascript variable name of the client side widget variable.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event listener to called after an ajax request starts.
+			</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event listener to be called when an ajax request is completed.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onprestart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event listener to be called before an ajax request is started.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onsuccess</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event listener to be called when an ajax request returns success.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event listener to be called when an ajax request returns error.
+			</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Style of the parent element containing the facets.
+			</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Style of the parent element containing the facets.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/ajaxstatus/ajaxstatus.js</name>
+		</resource>
+	</resources>
+</component>

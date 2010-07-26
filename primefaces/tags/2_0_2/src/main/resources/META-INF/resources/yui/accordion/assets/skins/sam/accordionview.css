@@ -1,0 +1,113 @@
+.yui-skin-sam .yui-accordionview div.yui-accordion-content {
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+.yui-skin-sam .hidden {
+	visibility: hidden;
+	position: absolute;
+}
+
+.yui-skin-sam .almosthidden {
+	position: absolute;
+	left: -9999px;
+	z-index: -10;
+}
+
+.yui-skin-sam .yui-accordionview {
+	font-family:arial,helvetica,clean,sans-serif;
+	font-size:13px;
+	font-size-adjust:none;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.231;
+	border-bottom: 1px #A3A3A3 solid;
+	margin:0;
+	padding:0;
+}
+
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel {
+	display: inline;
+}
+
+.yui-skin-sam ul.yui-accordionview ul.yui-accordionview {
+    zoom: 1;
+}
+
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel a.yui-accordion-toggle {
+	display: block;
+	border: 1px #A3A3A3 solid;
+	border-bottom: none;
+	padding: 0.3em;
+	height: 1.5em;
+	padding-left: 0.5em;
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+	background: url(../../../../assets/skins/sam/sprite.png) repeat-x;
+	background-position: 0 -1500px;
+	position: relative;
+	cursor: pointer;
+}
+
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel a.yui-accordion-toggle:hover {
+	background-position: 0 -1300px;
+}
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel a.yui-accordion-toggle.active {
+	background-position: 0 -1400px;
+	border-color: #243356;
+	border-bottom: 1px #243356 solid;
+	color: #fff;
+}
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel a.yui-accordion-toggle.active:hover {
+	background-position: 0 -1400px;
+}
+
+.yui-skin-sam .yui-accordion-toggle .indicator {
+	display: block;
+	width: 14px;
+	height: 14px;
+	background: url(../../../../assets/skins/sam/sprite.png) 0 -350px;
+	position: absolute;
+	right: 0.5em;
+	top: 25%;
+}
+.yui-skin-sam .yui-accordion-toggle.active .indicator {
+	background: url(../../../../assets/skins/sam/sprite.png) 0 -400px;
+}
+
+.yui-skin-sam .yui-accordion-content {
+	border-left: 1px #A3A3A3 solid;
+	border-right: 1px #A3A3A3 solid;
+	background: #EDF5FF;
+    _zoom: 1;
+}
+
+.yui-skin-sam ul.submenu {
+	background: #fff;
+}
+
+.yui-skin-sam ul.submenu li a {
+	display: block;
+	height: 1.5em;
+	line-height: 1.5em;
+	padding: 0.3em;
+	padding-left: 0.5em;
+	text-decoration: none;
+	color: #000;
+}
+.yui-skin-sam ul.submenu li a:hover {
+	background: #b3d4ff;
+}
+.yui-skin-sam ul.submenu li a:visited, .yui-skin-sam .yui-accordionview li.yui-accordion-panel a.link:visited {
+	color: #777;
+}
+
+
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel a.yui-accordion-toggle:focus {
+	text-decoration: none;
+}
+.yui-skin-sam .yui-accordionview li.yui-accordion-panel a.yui-accordion-toggle.activepanel {
+	text-decoration: none;
+}

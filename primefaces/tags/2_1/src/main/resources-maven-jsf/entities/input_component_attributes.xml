@@ -1,0 +1,72 @@
+&output_component_attributes;
+<attribute>
+	<name>immediate</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Boolean value that specifies the lifecycle phase the
+		valueChangeEvents should be processed, when true the events will
+		be fired at "apply request values", if immediate is set to
+		false, valueChangeEvents are fired in "process validations"
+		phase. Default is false
+	</description>
+</attribute>
+<attribute>
+	<name>required</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Boolean value that makes the component required, default value
+		is false
+	</description>
+</attribute>
+<attribute>
+	<name>validator</name>
+	<required>false</required>
+	<type>javax.faces.validator.Validator</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		A method binding EL expression that refers to a method for
+		validating the input
+	</description>
+</attribute>
+<attribute>
+	<name>valueChangeListener</name>
+	<required>false</required>
+	<type>javax.faces.event.ValueChangeListener</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
+	<description>
+		A method binding EL expression that refers to a method for
+		handling a value change event
+	</description>
+</attribute>
+<attribute>
+	<name>requiredMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Message to be displayed when required field validation fails
+	</description>
+</attribute>
+<attribute>
+	<name>converterMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Message to be displayed when conversion fails
+	</description>
+</attribute>
+<attribute>
+	<name>validatorMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Message to be displayed when validation fails
+	</description>
+</attribute>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
+]>
+<component>
+	<tag>remoteCommand</tag>
+	<tagClass>org.primefaces.component.remotecommand.RemoteCommandTag</tagClass>
+	<componentClass>org.primefaces.component.remotecommand.RemoteCommand</componentClass>
+	<componentType>org.primefaces.component.RemoteCommand</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.RemoteCommandRenderer</rendererType>
+	<rendererClass>org.primefaces.component.remotecommand.RemoteCommandRenderer</rendererClass>
+	<parent>javax.faces.component.UICommand</parent>
+	<attributes>
+		&command_component_attributes;
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Name of the command.
+			</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Client side id of the component(s) to be updated after async partial submit request.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event to be called before ajax request begins.
+			</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event to be called when ajax request is completed.
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY container_component_attributes			SYSTEM "../entities/container_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>menubar</tag>
+	<tagClass>org.primefaces.component.menubar.MenubarTag</tagClass>
+	<componentClass>org.primefaces.component.menubar.Menubar</componentClass>
+	<componentType>org.primefaces.component.Menubar</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.MenubarRenderer</rendererType>
+	<rendererClass>org.primefaces.component.menubar.MenubarRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+			<description>
+				An org.primefaces.model.MenuModel instance to build menu dynamically.
+			</description>
+		</attribute>
+		<attribute>
+			<name>autoSubmenuDisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				When set to true, submenus are displayed on mouseover of a menuitem.
+			</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>FADE</defaultValue>
+			<description>
+				Sets the effect for the menu display, default value is "FADE". Possible values are "FADE", "SLIDE", "NONE". Use "NONE" to disable animation at all.
+			</description>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>0.25</defaultValue>
+			<description>
+				Sets the effect for the menu display
+			</description>
+		</attribute>
+		<attribute>
+			<name>zindex</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+			<description>zindex property to control overlapping with other elements</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/menu/menu.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/container/container-min.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/menu/menu.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+	</resources>
+</component>

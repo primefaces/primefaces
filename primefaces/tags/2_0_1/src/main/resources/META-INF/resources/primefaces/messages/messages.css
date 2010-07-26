@@ -1,0 +1,85 @@
+.pf-messages-info, .pf-messages-warn, .pf-messages-error, .pf-messages-fatal {
+    border: 1px solid;
+	margin: 10px 0px;
+	padding:10px 10px 10px 10px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;	
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}
+
+.pf-messages-info, .pf-message-info {
+	color: #00529B;
+	background-color: #BDE5F8;
+}
+
+.pf-messages-info-icon, .pf-messages-warn-icon, .pf-messages-error-icon, .pf-messages-fatal-icon {
+	background-repeat: no-repeat;
+	height:24px;
+	width:24px;
+	display:block;
+	float:left;
+	margin:0;
+	padding:0;
+	position: relative;
+	top:-4px;
+}
+
+.pf-messages-info-icon {
+	background-image: url('info.png');
+}
+
+.pf-messages-info-summary, .pf-messages-warn-summary, .pf-messages-error-summary, .pf-messages-fatal-summary, 
+.pf-message-info-summary, .pf-message-warn-summary, .pf-message-error-summary, .pf-message-fatal-summary
+{
+	margin-left:10px;
+	font-weight:bold;
+}
+
+.pf-messages-info-detail, .pf-messages-warn-detail, .pf-messages-error-detail, .pf-messages-fatal-detail,
+.pf-message-info-detail, .pf-message-warn-detail, .pf-message-error-detail, .pf-message-fatal-detail {
+	margin-left:5px;
+}
+
+.pf-messages-warn, .pf-message-warn {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
+
+.pf-messages-warn-icon {
+	background-image: url('warn.png');
+}
+
+.pf-messages-error, .pf-message-error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+
+.pf-messages-error-icon {
+   background-image: url('error.png');
+}
+
+.pf-messages-fatal, .pf-message-fatal {
+    color: #000000;
+    background-color: #CC0000;
+}
+
+.pf-messages-fatal-icon {
+   background-image: url('fatal.png');
+}
+
+.pf-messages ul {
+	margin: 0 0 0 25px;
+	padding:0;
+	list-style-type:none;
+}
+
+.pf-message-info, .pf-message-error, .pf-message-warn, .pf-message-fatal {
+	border: 1px solid;
+	margin: 0px 5px;
+	padding:2px 5px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;	
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+} 

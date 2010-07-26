@@ -1,0 +1,10 @@
+	<managed-bean>
+		<managed-bean-name>primeFacesResourceHolder</managed-bean-name>
+		<managed-bean-class>org.primefaces.resource.ResourceHolderImpl</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
+	<lifecycle>
+		<phase-listener>org.primefaces.application.PrimeFacesPhaseListener</phase-listener>
+		<phase-listener>org.primefaces.application.lifecycle.DynamicImageStreamer</phase-listener>
+	</lifecycle>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>resources</tag>
+	<tagClass>org.primefaces.component.resources.ResourcesTag</tagClass>
+	<componentClass>org.primefaces.component.resources.Resources</componentClass>
+	<componentType>org.primefaces.component.Resources</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ResourcesRenderer</rendererType>
+	<rendererClass>org.primefaces.component.resources.ResourcesRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_ui_component_attributes;
+		<attribute>
+			<name>exclude</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Comma seperated list of resources to exclude.</description>
+		</attribute>
+	</attributes>
+</component>

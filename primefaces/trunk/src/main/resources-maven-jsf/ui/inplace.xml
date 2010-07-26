@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>inplace</tag>
+	<tagClass>org.primefaces.component.inplace.InplaceTag</tagClass>
+	<componentClass>org.primefaces.component.inplace.Inplace</componentClass>
+	<componentType>org.primefaces.component.Inplace</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InplaceRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inplace.InplaceRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Label to be displayed in display mode.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+			<description>Effect to be used when displaying the hidden content.</description>
+		</attribute>
+		<attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
+			<description>Speed of the effect.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Prevents the hidden content to be shown.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/inplace/inplace.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/inplace/inplace.js</name>
+		</resource>
+	</resources>
+</component>

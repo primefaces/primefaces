@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>colorPicker</tag>
+	<tagClass>org.primefaces.component.colorpicker.ColorPickerTag</tagClass>
+	<componentClass>org.primefaces.component.colorpicker.ColorPicker</componentClass>
+	<componentType>org.primefaces.component.ColorPicker</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>corg.primefaces.component.ColorPickerRenderer</rendererType>
+	<rendererClass>org.primefaces.component.colorpicker.ColorPickerRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Choose a color</defaultValue>
+			<description>Header text for the color picker title.</description>
+		</attribute>
+		<attribute>
+			<name>showControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Sets visibility of whole set of controls.</description>
+		</attribute>
+		<attribute>
+			<name>showHexControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Sets visibility of hex controls.</description>
+		</attribute>
+		<attribute>
+			<name>showHexSummary</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Sets visibility of hex summary.</description>
+		</attribute>
+		<attribute>
+			<name>showHsvControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Sets visibility of hsv controls.</description>
+		</attribute>
+		<attribute>
+			<name>showRGBControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Sets visibility of rgb controls.</description>
+		</attribute>
+		<attribute>
+			<name>showWebSafe</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Sets visibility of web safe controls.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/jquery/plugins/ui/jquery.ui.dialog.css</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+		</resource>
+		<resource>
+			<name>/yui/slider/assets/skins/sam/slider.css</name>
+		</resource>
+		<resource>
+			<name>/yui/colorpicker/assets/skins/sam/colorpicker.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/slider/slider-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/colorpicker/colorpicker-min.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>	
+		<resource>
+			<name>/primefaces/core/core.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/button/button.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/colorpicker/colorpicker.js</name>
+		</resource>
+	</resources>
+</component>

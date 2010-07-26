@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>droppable</tag>
+	<tagClass>org.primefaces.component.dnd.DroppableTag</tagClass>
+	<componentHandlerClass>org.primefaces.component.dnd.DroppableHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.dnd.Droppable</componentClass>
+	<componentType>org.primefaces.component.Droppable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.DroppableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.dnd.DroppableRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>dropListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void dropListener(org.primefaces.event.dnd.DragDropEvent)</method-signature>
+			<description>A server side listener to process a DragDrop event</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/dnd/dragdrop.js</name>
+		</resource>
+		<resource>
+			<name>/primefaces/ajax/ajax.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
+		</resource>
+	</resources>
+</component>
