@@ -32,7 +32,6 @@ public class ProgressBarHandler extends ComponentHandler {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
 		
 		metaRuleset.addRule(new MethodRule("completeListener", null, new Class<?>[0]));
-		metaRuleset.addRule(new MethodRule("cancelListener", null, new Class<?>[0]));
 		
 		return metaRuleset;  
 	} 

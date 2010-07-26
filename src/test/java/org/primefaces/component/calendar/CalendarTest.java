@@ -17,6 +17,8 @@ package org.primefaces.component.calendar;
 
 import static org.junit.Assert.*;
 
+import java.util.Locale;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +38,7 @@ public class CalendarTest {
 	}
 	
 	@Test
-	public void dateAsStringShouldBeNullIfValueIsNull() {
+	public void dateAsStringIsNullIfValueIsNull() {
 		Calendar calendar = new Calendar();
 		String dateAsString = CalendarUtils.getValueAsString(null, calendar);
 		
@@ -44,12 +46,12 @@ public class CalendarTest {
 	}
 	
 	@Test
-	public void dateAsStringShouldBeSubmittedValueIfExists() {
+	public void pagedateCanBeOverridenByUser() {
 		Calendar calendar = new Calendar();
-		calendar.setSubmittedValue("05.07.2010");
-		String dateAsString = CalendarUtils.getValueAsString(null, calendar);
+		calendar.setLocale(Locale.ENGLISH);
+		calendar.setPagedate("01/2009");
 		
-		assertEquals("05.07.2010", dateAsString);
+		assertEquals("01/2009", CalendarUtils.getPageDate(calendar));
 	}
 	
 	@Test
@@ -61,26 +63,5 @@ public class CalendarTest {
 		
 		convertedValue = renderer.getConvertedValue(null, calendar, "  ");
 		assertNull(convertedValue);
-	}
-	
-	@Test
-	public void shouldConvertPattern() {
-		String pattern = "dd.MM.yyyy";
-		assertEquals("dd.mm.yy", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd/MM/yy";
-		assertEquals("dd/mm/y", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "d, MMM, yyyy";
-		assertEquals("d, M, yy", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd-MMMMMM-yyyy";
-		assertEquals("dd-MM-yy", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd-MM-yyyy EEE";
-		assertEquals("dd-mm-yy D", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd-MM-yyyy EEEEEE";
-		assertEquals("dd-mm-yy DD", CalendarUtils.convertPattern(pattern));
 	}
 }

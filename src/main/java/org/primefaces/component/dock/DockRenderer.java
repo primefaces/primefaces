@@ -33,7 +33,7 @@ public class DockRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Dock dock = (Dock) component;
 		
-		if(dock.shouldBuildFromModel()) {
+		if(dock.isDynamic() && !isPostBack()) {
 			dock.buildMenuFromModel();
 		}
 		
@@ -160,7 +160,8 @@ public class DockRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("span", null);
-
+		//Label is deprecated
+		if(menuitem.getLabel() != null) writer.write(menuitem.getLabel());
 		if(menuitem.getValue() != null) writer.write((String) menuitem.getValue());
 		
 		writer.endElement("span");

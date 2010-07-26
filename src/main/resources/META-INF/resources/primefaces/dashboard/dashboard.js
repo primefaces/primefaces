@@ -36,6 +36,6 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
 	jQuery(this.jqSelector).sortable(this.cfg);
 }
 
-PrimeFaces.widget.Dashboard.prototype.COLUMN_CLASS = '.ui-dashboard-column';
+PrimeFaces.widget.Dashboard.prototype.COLUMN_CLASS = '.pf-dashboard-column';
 
-PrimeFaces.widget.Dashboard.prototype.PLACEHOLDER_CLASS = 'ui-state-hover';
+PrimeFaces.widget.Dashboard.prototype.PLACEHOLDER_CLASS = 'pf-dashboard-placeholder';

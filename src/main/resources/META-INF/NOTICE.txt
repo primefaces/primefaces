@@ -29,7 +29,6 @@ This product includes software developed by Chris Coyier (http://css-tricks.com/
 This product includes software developed by Todd Northrop (http://jquery-watermark.googlecode.com/)
 This product includes software developed by catchmyframe.com (http://www.catchmyfame.com)
 This product includes software developed by Brant Burnett (http://github.com/btburnett3/jquery.ui.spinner)
-This product includes software developed by Robert Plummer (http://www.visop-dev.com/jquerysheet.html)
 
 
 

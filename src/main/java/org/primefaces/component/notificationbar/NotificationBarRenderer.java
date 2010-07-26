@@ -34,7 +34,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 	
 	private void encodeMarkup(FacesContext facesContext, NotificationBar bar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String styleClass = bar.getStyleClass() == null ? "ui-notificationbar" : "ui-notificationbar " + bar.getStyleClass();
+		String styleClass = bar.getStyleClass() == null ? "pf-notificationbar" : "pf-notificationbar " + bar.getStyleClass();
 		String var = createUniqueWidgetVar(facesContext, bar);
 		UIComponent close = bar.getFacet("close");
 		
@@ -45,7 +45,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 		
 		if(close != null) {
 			writer.startElement("span", null);
-			writer.writeAttribute("class", "ui-notificationbar-close", null);
+			writer.writeAttribute("class", "pf-notificationbar-close", null);
 			writer.writeAttribute("onclick", var + ".hide()", null);
 			renderChild(facesContext, close);
 			writer.endElement("span");

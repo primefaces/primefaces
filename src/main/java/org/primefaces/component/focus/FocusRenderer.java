@@ -47,7 +47,7 @@ public class FocusRenderer extends CoreRenderer {
 		
 		//Dummy markup for ajax update
 		writer.startElement("span", focus);
-		writer.writeAttribute("id", focus.getClientId(facesContext), "id");
+		writer.writeAttribute("id", focus, "id");
 		writer.endElement("span");
 		
 		writer.startElement("script", focus);
@@ -71,7 +71,7 @@ public class FocusRenderer extends CoreRenderer {
 		}
 		String clientId = forComponent.getClientId(facesContext);
 		
-		writer.write("jQuery(function(){");
+		writer.write("jQuery(document).ready(function(){");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
 		writer.write("});");
 	}
@@ -82,14 +82,10 @@ public class FocusRenderer extends CoreRenderer {
 		if(isPostBack()){
 			String clientId = findFirstInvalidClientId(facesContext, focus);
 			
-			if(clientId != null) {
-				writer.write("setTimeout(function() {"); 
+			if(clientId != null)
 				writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
-				writer.write("}, 500);");
-			}
-			
 		} else {
-			writer.write("jQuery(function(){");
+			writer.write("jQuery(document).ready(function(){");
 			String selector = Focus.INPUT_SELECTOR;
 			
 			if(focus.getContext() != null) {

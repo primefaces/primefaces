@@ -79,9 +79,14 @@ public class ContextMenuRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeMenuitems(FacesContext facesContext, ContextMenu menu, String var) throws IOException {
+		UIComponent form = ComponentUtils.findParentForm(facesContext, menu);
+		if(form == null) {
+			throw new FacesException("ContextMenu : '" + menu.getClientId(facesContext) + "' must be inside a form element");
+		}
+		String formClientId = form.getClientId(facesContext);
+		
 		ResponseWriter writer = facesContext.getResponseWriter();
 		boolean firstMenuitem = true;
-		UIComponent form = ComponentUtils.findParentForm(facesContext, menu);
 		
 		writer.write(var + ".addItems([");
 		
@@ -104,11 +109,6 @@ public class ContextMenuRenderer extends CoreRenderer {
 					if(item.getTarget() != null) writer.write(",target:'"+ item.getTarget() + "'");
 					if(onclick != null) writer.write(",onclick:{fn:function() {" + onclick + "}}");
 				} else {
-					if(form == null) {
-						throw new FacesException("ContextMenu : '" + menu.getClientId(facesContext) + "' must be inside a form element");
-					}
-					String formClientId = form.getClientId(facesContext);
-					
 					String command = item.isAjax() ? buildAjaxRequest(facesContext, item, formClientId, menuItemClientId) : buildNonAjaxRequest(facesContext, item, formClientId, menuItemClientId);
 					command = onclick == null ? command : onclick + ";" + command;
 					

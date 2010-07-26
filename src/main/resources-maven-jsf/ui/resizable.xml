@@ -100,7 +100,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/resize/assets/skins/sam/resize.css</name>
+			<name>/yui/assets/skins/sam/resize.css</name>
 		</resource>
 		<resource>
 			<name>/yui/utilities/utilities.js</name>
@@ -111,7 +111,7 @@
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
-		<resource>
+			<resource>
 			<name>/primefaces/core/core.js</name>
 		</resource>
 	</resources>

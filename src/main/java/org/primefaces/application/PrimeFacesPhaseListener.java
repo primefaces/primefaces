@@ -45,6 +45,7 @@ import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.RendererUtils;
 
 public class PrimeFacesPhaseListener implements PhaseListener {
 	
@@ -167,12 +168,12 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.write("<state>");
-		writer.startCDATA();
+		RendererUtils.startCDATA(facesContext);
 		
 		StateManager stateManager = facesContext.getApplication().getStateManager();
 		stateManager.writeState(facesContext, stateManager.saveView(facesContext));
 		
-		writer.endCDATA();
+		RendererUtils.endCDATA(facesContext);
 		writer.write("</state>");
 	}
 
@@ -241,11 +242,13 @@ public class PrimeFacesPhaseListener implements PhaseListener {
 				writer.write("<component>");
 				writer.write("<id>" + clientId + "</id>");
 				writer.write("<output>");
-				writer.startCDATA();
+				
+				RendererUtils.startCDATA(facesContext);
 				
 				component.encodeAll(facesContext);
 					
-				writer.endCDATA();
+				RendererUtils.endCDATA(facesContext);
+				
 				writer.write("</output>");
 				writer.write("</component>");
 			} catch(Exception e) {

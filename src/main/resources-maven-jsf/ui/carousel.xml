@@ -17,6 +17,13 @@
 		&data_component_attributes;
 		&widget_var_attribute;
 		<attribute>
+			<name>selectedItem</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+			<description>Index of the selected item</description>
+		</attribute>
+		<attribute>
 			<name>scrollIncrement</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -77,40 +84,16 @@
 			<type>java.lang.String</type>
 			<description>Prefix text of the pager dropdown</description>
 		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of the main container.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style class of the main container.</description>
-		</attribute>
-		<attribute>
-			<name>itemStyle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of each item container.</description>
-		</attribute>
-		<attribute>
-			<name>itemStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Style of each item container.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/carousel/carousel.css</name>
+			<name>/yui/carousel/assets/skins/sam/carousel.css</name>
 		</resource>
 		<resource>
 			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/carousel/carousel-min.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>

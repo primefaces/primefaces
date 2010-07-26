@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
@@ -84,14 +83,10 @@ public class CoreRenderer extends Renderer {
 		return facesContext.getExternalContext().encodeResourceURL(actionURL);
 	}
 	
-	protected String getResourceURL(FacesContext facesContext, String value) {
-		if(value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-			return value;
-		} else {
-			String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
-			
-			return facesContext.getExternalContext().encodeResourceURL(url);
-		}
+	protected String getResourceURL(FacesContext facesContext, String url) {
+		String resourceURL = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, url);
+		
+		return facesContext.getExternalContext().encodeResourceURL(resourceURL);
 	}
 	
 	public boolean isPostback(FacesContext facesContext) {

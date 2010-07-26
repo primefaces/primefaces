@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.ScheduleRenderer</rendererType>
 	<rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
@@ -58,6 +54,15 @@
 			<type>java.lang.Object</type>
 			<description>
 				The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date.
+			</description>
+		</attribute>
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Enables/disables use of jQuery UI themes.
 			</description>
 		</attribute>
 		<attribute>
@@ -119,7 +124,7 @@
 			<name>dateSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void dateSelectListener(org.primefaces.event.DateSelectEvent)</method-signature>
+			<method-signature>void dateSelectListener(org.primefaces.event.ScheduleDateSelectEvent)</method-signature>
 			<description>A server side listener to invoke when a date is selected.</description>
 		</attribute>
 		<attribute>
@@ -231,6 +236,9 @@
 	</attributes>
 	<resources>
 		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
 			<name>/jquery/plugins/fullcalendar/fullcalendar.css</name>
 		</resource>
 		<resource>
@@ -240,7 +248,7 @@
 			<name>/jquery/plugins/fullcalendar/fullcalendar.min.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>/jquery/plugins/ui/jquery.ui.custom.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>

@@ -1,51 +1,35 @@
 PrimeFaces.widget.ColorPicker = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
-	this.jqDialog = this.jqId + '_dialog';
-	this.jqButton = this.jqId + '_button';
+	this.overlay = new YAHOO.widget.Panel(this.id + "_overlay", {visible:false, draggable:false, close:true, width:'405px'});
+	this.cfg.container = this.overlay;
 	
-	//Create picker
-	PrimeFaces.widget.ColorPicker.superclass.constructor.call(this, id + "_cpContainer", this.cfg);
+	PrimeFaces.widget.ColorPicker.superclass.constructor.call(this, id + "_container", this.cfg);
 	this.on('rgbChange', this.selectColor);
 	
-	if(this.cfg.initialValue) {
-		this.setValue(this.cfg.initialValue, false);
-	}
+	this.overlay.render();
 	
-	this.setupUIControls();
+	this.button = new YAHOO.widget.Button(this.id + "_button");
+	this.button.addListener('click', this.toggleColorPicker, {}, this);
+	
 }
 
-YAHOO.lang.extend(PrimeFaces.widget.ColorPicker, YAHOO.widget.ColorPicker, {
-	selectColor : function(event) {
-		var color = event.newValue,
-		value = color[0] + "," + color[1] + "," + color[2];
-	
-		document.getElementById(this.id + "_input").value = value;
-		jQuery(this.jqId + '_livePreview').css('backgroundColor', 'rgb(' + value + ')'); 
-	},
-	
-	setupUIControls : function() {
-		//Dialog
-		jQuery(this.jqDialog).dialog({autoOpen:false, resizable:false, draggable:false,  height:230, width:400});
+YAHOO.lang.extend(PrimeFaces.widget.ColorPicker, YAHOO.widget.ColorPicker,
+	{
+		selectColor : function(event) {
+			var color = event.newValue;
+			var value = color[0] + "," + color[1] + "," + color[2];
 		
-		//Button
-		var cp = this;
-		jQuery(this.jqButton).button().click(function() {
-			if(jQuery(cp.jqDialog).dialog('isOpen'))
-				jQuery(cp.jqDialog).dialog('close');
+			document.getElementById(this.id + "_input").value = value;
+			YAHOO.util.Dom.setStyle(this.id + "_currentColorDisplay", "backgroundColor", "rgb(" + value + ")"); 
+		},
+
+		toggleColorPicker : function(event) {
+			var visible = this.overlay.cfg.getProperty("visible"); 
+		
+			if(visible)
+				this.overlay.hide();
 			else
-				jQuery(cp.jqDialog).dialog('open');
-			
-			jQuery(cp.jqDialog).parent().position({
-				of: jQuery(this),
-				my: 'left top',
-				at: 'left bottom'
-			});
-		});
-		//firefox focus fix
-		jQuery(this.jqButton).mouseout(function() {
-			jQuery(this).removeClass('ui-state-focus');
-		});
-	}
+				this.overlay.show();
+		}
 });

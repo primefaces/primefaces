@@ -1,2 +1,2 @@
 
-	public final static String INPUT_SELECTOR = ":not(:submit):not(:button):input:visible:enabled:first";
+	public final static String INPUT_SELECTOR = ":input:not(:submit):visible:enabled:first";

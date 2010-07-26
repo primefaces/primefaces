@@ -28,7 +28,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.event.PhaseId;
 import javax.servlet.ServletResponse;
 
 import org.primefaces.event.SelectEvent;
@@ -71,7 +70,8 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 		
 		List results = (List) me.invoke(facesContext.getELContext(), new Object[]{query});
 		writer.write("{");
-		writer.write("\"results\" : [");
+		writer.write("\"ResultSet\" : {");
+		writer.write("\"Result\" : [");
 		
 		for(Iterator iterator = results.iterator(); iterator.hasNext();) {
 			Object result = iterator.next();
@@ -79,7 +79,7 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 			if(result != null) {
 				
 				if(var == null) {
-					writer.write("{\"label\":\"" + escapeQuotes((String) result) + "\"}");
+					writer.write("{\"value\":\"" + escapeQuotes((String) result) + "\"}");
 				} else {
 					facesContext.getExternalContext().getRequestMap().put(var, result);
 					String itemLabel = escapeQuotes(autoComplete.getItemLabel());
@@ -87,7 +87,7 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 				
 					writer.write("{");
 					writer.write("\"label\":\"" + itemLabel + "\"");
-					writer.write(",\"data\":\"" + itemValue + "\"");
+					writer.write(",\"value\":\"" + itemValue + "\"");
 					writer.write("}");
 				}
 				
@@ -102,6 +102,7 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 		
 		writer.write("]");
 		writer.write("}");
+		writer.write("}");
 	}
 	
 	private String escapeQuotes(String value) {
@@ -111,12 +112,12 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 			return value.replaceAll("\"", "\\\\\"");
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, AutoComplete ac) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, AutoComplete autoComplete) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = ac.getClientId(facesContext);
-		Object value = ac.getValue();
+		String clientId = autoComplete.getClientId(facesContext);
+		Object value = autoComplete.getValue();
 		
-		writer.startElement("span", null);
+		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		
 		writer.startElement("input", null);
@@ -124,41 +125,41 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 		writer.writeAttribute("name", clientId + "_input", null);
 		writer.writeAttribute("type", "text", null);
 		if(value != null) {
-			if(ac.getVar() == null) {
-				writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, ac) , null);
+			if(autoComplete.getVar() == null) {
+				writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, autoComplete) , null);
 			} else {
-				facesContext.getExternalContext().getRequestMap().put(ac.getVar(), value);
-				writer.writeAttribute("value", ac.getItemLabel() , null);
+				facesContext.getExternalContext().getRequestMap().put(autoComplete.getVar(), value);
+				writer.writeAttribute("value", autoComplete.getItemLabel() , null);
 			}
 		}
-		if(ac.isDisabled()) {
-			writer.writeAttribute("disabled", "disabled", null);
-		}
-		
 		writer.endElement("input");
 		
-		if(ac.getVar() != null) {
+		if(autoComplete.getVar() != null) {
 			writer.startElement("input", null);
 			writer.writeAttribute("id", clientId + "_hinput", null);
 			writer.writeAttribute("name", clientId + "_hinput", null);
 			writer.writeAttribute("type", "hidden", null);
 			if(value != null) {
-				writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, ac, ac.getItemValue()), null);
+				writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, autoComplete, autoComplete.getItemValue()), null);
 			}
 			writer.endElement("input");
 			
-			facesContext.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
+			facesContext.getExternalContext().getRequestMap().remove(autoComplete.getVar());	//clean
 		}
-				
-		writer.endElement("span");
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_container", null);
+		writer.endElement("div");
+		
+		writer.endElement("div");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, AutoComplete ac) throws IOException {
+	protected void encodeScript(FacesContext facesContext, AutoComplete autoComplete) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = ac.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, ac);
+		String clientId = autoComplete.getClientId(facesContext);
+		String var = createUniqueWidgetVar(facesContext, autoComplete);
 		
-		UIComponent form = ComponentUtils.findParentForm(facesContext, ac);
+		UIComponent form = ComponentUtils.findParentForm(facesContext, autoComplete);
 		if(form == null) {
 			throw new FacesException("AutoComplete : \"" + clientId + "\" must be inside a form");
 		}
@@ -166,35 +167,40 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function(){");
-		
 		writer.write(var + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
 		writer.write("url:'" + getActionURL(facesContext) + "'");
 		writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-		writer.write(",pojo:" + (ac.getVar() != null));
-		writer.write(",maxResults:" + ac.getMaxResults());
 		
-		//Configuration
-		if(ac.getMinQueryLength() != 1) writer.write(",minLength:" + ac.getMinQueryLength());
-		if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());
-		if(ac.isDisabled()) writer.write(",disabled:true");
-		if(ac.isForceSelection()) writer.write(",forceSelection:true");
-		
-		//Instant ajax selection
-		if(ac.getSelectListener() != null) {
-			writer.write(",ajaxSelect:true");
-			
-			if(ac.getOnSelectUpdate() != null) {
-				writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, ac, ac.getOnSelectUpdate()) + "'");
-			}
+		//JSON schema
+		if(autoComplete.getVar() == null) {
+			writer.write(",fields:[\"value\"]");
+		}
+		else {
+			writer.write(",fields:[\"label\", \"value\"]");
+			writer.write(",pojo:true");
 		}
 		
-		//Client side callbacks
-		if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
-		if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
+		//Instant ajax selection
+		if(autoComplete.getSelectListener() != null || autoComplete.getOnSelectUpdate() != null) {
+			writer.write(",ajaxSelect:true");
+			writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, autoComplete, autoComplete.getOnSelectUpdate()) + "'");
+		}
 		
-		writer.write("});});");
+		writer.write("});\n");
 
+		//General options
+		if(autoComplete.isAnimHoriz()) writer.write(var + ".animHoriz = true;\n");
+		if(!autoComplete.isAnimVert()) writer.write(var + ".animVert = false;\n");
+		if(autoComplete.getAnimSpeed() != 0.3) writer.write(var + ".animSpeed = " + autoComplete.getAnimSpeed() + ";\n");
+		if(autoComplete.getMaxResults() != 10) writer.write(var + ".maxResultsDisplayed = " + autoComplete.getMaxResults() + ";\n");
+		if(autoComplete.getMinQueryLength() != 1) writer.write(var + ".minQueryLength = " + autoComplete.getMinQueryLength() + ";\n");
+		if(autoComplete.getQueryDelay() != 0.2) writer.write(var + ".queryDelay = " + autoComplete.getQueryDelay() + ";\n");
+		if(!autoComplete.isAutoHighlight()) writer.write(var + ".autoHighlight = false;\n");
+		if(autoComplete.isUseShadow()) writer.write(var + ".useShadow = true;\n");
+		if(autoComplete.isTypeAhead()) writer.write(var + ".typeAhead = true;\n");
+		if(autoComplete.getTypeAheadDelay() != 0.5) writer.write(var + ".typeAheadDelay = " + autoComplete.getTypeAheadDelay() + ";\n");
+		if(autoComplete.isForceSelection()) writer.write(var + ".forceSelection=true;\n");
+		
 		writer.endElement("script");
 	}
 	
@@ -223,9 +229,7 @@ public class AutoCompleteRenderer extends CoreRenderer implements PartialRendere
 		
 		//Queue ajax select event
 		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(autoComplete.getClientId(facesContext) + "_ajaxSelect")) {
-			SelectEvent selectEvent = new SelectEvent(autoComplete, value);
-			selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);	
-			autoComplete.queueEvent(selectEvent);
+			autoComplete.queueEvent(new SelectEvent(autoComplete, value));
 		}
 		
 		return value;

@@ -60,9 +60,6 @@ public class CaptchaRenderer extends CoreRenderer {
 		writer.write("var RecaptchaOptions = {");
 		writer.write("theme:\"" + captcha.getTheme() + "\"");
 		writer.write(",lang:\"" + captcha.getLanguage() + "\"");
-		if(captcha.getTabindex() != 0) {
-			writer.write(",tabIndex:" + captcha.getTabindex());
-		}
 		writer.write("};");
 		writer.endElement("script");
 		

@@ -1,5 +1,4 @@
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import java.util.Map;
 import javax.faces.event.ActionEvent;
 
@@ -10,18 +9,4 @@ import javax.faces.event.ActionEvent;
 		if(params.containsKey(clientId)) {
 			this.queueEvent(new ActionEvent(this));
 		}
-	}
-	
-	public boolean shouldRenderChildren() {
-		if(getChildCount() == 0)
-			return false;
-		else {
-			for(UIComponent child : getChildren()) {
-				if(! (child instanceof UIParameter) ) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
 	}

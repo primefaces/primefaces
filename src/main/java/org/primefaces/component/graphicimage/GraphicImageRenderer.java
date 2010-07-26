@@ -77,7 +77,7 @@ public class GraphicImageRenderer extends CoreRenderer {
 		}
 		
 		//Add caching if needed
-		if(!image.isCache()) {
+		if(image.isCache()) {
 			src += src.contains("?") ? "&" : "?";
 			
 			src = src + "primefaces_image=" + UUID.randomUUID().toString();

@@ -169,7 +169,6 @@ public class ScheduleRenderer extends CoreRenderer implements PartialRenderer {
 		writer.write(",language:'"+ schedule.calculateLocale(facesContext).getLanguage() + "'");
 		writer.write(",formId:'" + form.getClientId(facesContext) + "'");
 		writer.write(",url:'" + getActionURL(facesContext) + "'");
-		writer.write(",theme:true");
 		
 		if(schedule.isEditable()) {
 			writer.write(",editable:true");
@@ -209,6 +208,7 @@ public class ScheduleRenderer extends CoreRenderer implements PartialRenderer {
 		if(schedule.getMinTime() != null) writer.write(",minTime:'" + schedule.getMinTime() + "'");
 		if(schedule.getMaxTime() != null) writer.write(",maxTime:'" + schedule.getMaxTime() + "'");
 		if(schedule.getAspectRatio() != null) writer.write(",aspectRatio: '"+ schedule.getAspectRatio() + "'");
+		if(schedule.isTheme()) writer.write(",theme:true");
 		if(!schedule.isShowWeekends()) writer.write(",weekends:false");
 		if(!schedule.isDraggable()) writer.write(",disableDragging:true");
 		if(!schedule.isResizable()) writer.write(",disableResizing:true");

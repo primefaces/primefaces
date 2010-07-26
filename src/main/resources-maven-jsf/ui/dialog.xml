@@ -23,6 +23,19 @@
 			<description>Header text</description>
 		</attribute>
 		<attribute>
+			<name>footer</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Footer text</description>
+		</attribute>
+		<attribute>
+			<name>close</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Displays a "close" icon on the header</description>
+		</attribute>
+		<attribute>
 			<name>draggable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
@@ -35,9 +48,19 @@
 			<name>resizable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+			<defaultValue>false</defaultValue>
 			<description>
 				Makes the dialog resizable.
+			</description>
+		</attribute>
+		<attribute>
+			<name>underlay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>shadow</defaultValue>
+			<description>
+				Specifies the type of underlay to display under the Panel.
+				Possible values: none|shadow|matte
 			</description>
 		</attribute>
 		<attribute>
@@ -58,43 +81,96 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<description>
-				When set to true, dialog is visible by default.
+				Sets the element's "display" style property to either
+				"block"(true) or "none" (false)
+			</description>
+		</attribute>
+		<attribute>
+			<name>constrainToViewport</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Boolean value to keep the tooltip panel inside the confines of
+				the size of viewport
+			</description>
+		</attribute>
+		<attribute>
+			<name>x</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>-1</defaultValue>
+			<description>Sets the element's "left" style property</description>
+		</attribute>
+		<attribute>
+			<name>y</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>-1</defaultValue>
+			<description>Sets the element's "top" style property</description>
+		</attribute>
+		<attribute>
+			<name>fixedCenter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>
+				Boolean value that specifies whether the component should be
+				automatically centered in the viewport on window scroll and
+				resize
 			</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>300</defaultValue>
+			<type>java.lang.String</type>
 			<description>Width of the element in pixels</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+			<type>java.lang.String</type>
 			<description>Height of the element in pixels</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Effect to be displayed when showing and hiding the dialog, valid values are FADE or SLIDE</description>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>1.0</defaultValue>
+			<description>Duration of effect in seconds</description>
 		</attribute>
 		<attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>1000</defaultValue>
+			<defaultValue>-1</defaultValue>
 			<description>zindex property to control overlapping with other elements</description>
 		</attribute>
 		<attribute>
 			<name>minWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>150</defaultValue>
+			<defaultValue>Integer.MIN_VALUE</defaultValue>
 			<description>Minimum width of a resizable dialog.</description>
 		</attribute>
 		<attribute>
 			<name>minHeight</name>
 			<required>false</required>
+			<defaultValue>Integer.MIN_VALUE</defaultValue>
 			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
 			<description>Minimum height of resizable dialog.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the main container of dialog.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
@@ -116,51 +192,33 @@
 			<description>Id(s) of components to update after ajax closeListener is processed and dialog is closed</description>
 		</attribute>
 		<attribute>
-			<name>showEffect</name>
+			<name>context</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Effect to use when showing the dialog</description>
-		</attribute>
-		<attribute>
-			<name>hideEffect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Effect to use when hiding the dialog</description>
-		</attribute>
-		<attribute>
-			<name>position</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Defines where the dialog should be displayed</description>
-		</attribute>
-		<attribute>
-			<name>closeOnEscape</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Defines if dialog should be closed when escape key is pressed</description>
-		</attribute>
-		<attribute>
-			<name>closable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Defines if close icon should be displayed or not</description>
+			<description>
+				Arguments for context sensitive positioning.
+			</description>
 		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.dialog.css</name>
+			<name>/yui/assets/skins/sam/resize.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.resizable.css</name>
+			<name>/yui/container/assets/skins/sam/container.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>/yui/resize/resize-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/container/container-min.js</name>
+		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>
 		</resource>

@@ -32,7 +32,7 @@ public class StackRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Stack stack = (Stack) component;
 		
-		if(stack.shouldBuildFromModel()) {
+		if(stack.isDynamic() && !isPostBack()) {
 			stack.buildMenuFromModel();
 		}
 		
@@ -117,6 +117,7 @@ public class StackRenderer extends CoreRenderer {
 			//Label
 			writer.startElement("span", null);
 			
+			if(menuitem.getLabel() != null) writer.write(menuitem.getLabel());
 			if(menuitem.getValue() != null) writer.write((String) menuitem.getValue());
 			
 			writer.endElement("span");

@@ -2,7 +2,6 @@ import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIColumn;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.el.ValueExpression;
@@ -88,14 +87,14 @@ import java.io.Serializable;
 		return facesContext.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(facesContext) + "_ajaxData");
 	}
 	
-	private List<String> selected= new ArrayList<String>();
+	private List<Integer> selectedRowIndexes = new ArrayList<Integer>();
 	
-	public List<String> getSelected() {
-		return selected;
+	public List<Integer> getSelectedRowIndexes() {
+		return selectedRowIndexes;
 	}
 	
-	public void setSelected(List<String> selected) {
-		this.selected = selected;
+	public void setSelectedRowIndexes(List<Integer> selectedRowIndexes) {
+		this.selectedRowIndexes = selectedRowIndexes;
 	}
 	
 	public boolean isSelectionEnabled() {
@@ -103,27 +102,13 @@ import java.io.Serializable;
 	}
 	
 	public boolean isSingleSelectionMode() {
-		String selectionMode = this.getSelectionMode();
-		
-		if(selectionMode != null)
-			return selectionMode.equals("single") || selectionMode.equals("singlecell");
-		else
-			return false;
+		return (this.getSelectionMode() != null && this.getSelectionMode().equals("single"));
 	}
 	
-	public boolean isCellSelection() {
-		String selectionMode = this.getSelectionMode();
-		
-		if(selectionMode != null)
-			return selectionMode.indexOf("cell") != -1;
-		else
-			return false;
-	}
-	
-	public String getSelectedAsString() {
+	public String getSelectedRowIndexesAsString() {
 		StringBuffer buffer = new StringBuffer();
-		for(Iterator<String> iter = selected.iterator();iter.hasNext();) {
-			buffer.append(iter.next());
+		for(Iterator<Integer> iter = selectedRowIndexes.iterator();iter.hasNext();) {
+			buffer.append(String.valueOf(iter.next()));
 			
 			if(iter.hasNext())
 				buffer.append(",");
@@ -131,17 +116,6 @@ import java.io.Serializable;
 		
 		return buffer.toString();
 	}
-	
-    public UIColumn getColumnByClientId(String clientId) {
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
-    	
-    	for(UIComponent kid : getChildren()) {
-    		if(kid.getClientId(facesContext).equals(clientId))
-    			return (UIColumn) kid;
-    	}
-    	
-    	return null;
-    }
 	
 	@Override
     public void restoreState(FacesContext context, Object state) {

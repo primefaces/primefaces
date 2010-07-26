@@ -75,7 +75,7 @@ public class DraggableRenderer extends CoreRenderer {
 				throw new FacesException("Cannot find dashboard \"" + dashboard + "\" in view");
 			}
 			
-			writer.write(",connectToSortable:'" + ComponentUtils.escapeJQueryId(db.getClientId(facesContext)) + " .ui-dashboard-column'");
+			writer.write(",connectToSortable:'" + ComponentUtils.escapeJQueryId(db.getClientId(facesContext)) + " .pf-dashboard-column'");
 		}
 
 		writer.write("});");

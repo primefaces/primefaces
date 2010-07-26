@@ -45,6 +45,7 @@ public class PDFExporter extends Exporter {
 	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
 		try {
 	        Document document = new Document(PageSize.A4.rotate());
+	        document.setPageSize(PageSize.A4);
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        PdfWriter.getInstance(document, baos);
 	        document.open();

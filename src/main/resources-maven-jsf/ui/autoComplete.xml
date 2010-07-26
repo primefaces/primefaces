@@ -15,11 +15,7 @@
 	<rendererType>org.primefaces.component.AutoCompleteRenderer</rendererType>
 	<rendererClass>org.primefaces.component.autocomplete.AutoCompleteRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<ajaxComponent>true</ajaxComponent>
 	<attributes>
 		&input_component_attributes;
 		&widget_var_attribute;
@@ -49,6 +45,27 @@
 			<description>Value of the item.</description>
 		</attribute>
 		<attribute>
+			<name>animHoriz</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Specifies horizontal animation.</description>
+		</attribute>
+		<attribute>
+			<name>animVert</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>Specifies vertical animation.</description>
+		</attribute>
+		<attribute>
+			<name>animSpeed</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>0.3</defaultValue>
+			<description>Speed of the animation in seconds, default value is 0.3 seconds.</description>
+		</attribute>
+		<attribute>
 			<name>maxResults</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -65,9 +82,37 @@
 		<attribute>
 			<name>queryDelay</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>300</defaultValue>
-			<description>Delay to wait in milliseconds before sending each query to the server.</description>
+			<type>java.lang.Double</type>
+			<defaultValue>0.2</defaultValue>
+			<description>Delay to wait in seconds before sending each query to the server.</description>
+		</attribute>
+		<attribute>
+			<name>autoHighlight</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+			<description>When suggested items are listed, first item is highlighted automatically. This feature can be controlled with autoHighlight attribute.</description>
+		</attribute>
+		<attribute>
+			<name>useShadow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Shadow is displayed under the results list when set to true, default is false.</description>
+		</attribute>
+		<attribute>
+			<name>typeAhead</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Updates the input field with the first query result, default is false.</description>
+		</attribute>
+		<attribute>
+			<name>typeAheadDelay</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>0.5</defaultValue>
+			<description>Delay before updating the input field with the first query result if typeAhead is set to true.</description>
 		</attribute>
 		<attribute>
 			<name>forceSelection</name>
@@ -89,36 +134,23 @@
 			<type>java.lang.String</type>
 			<description>Component(s) to update with ajax after a suggested item is selected.</description>
 		</attribute>
-		<attribute>
-			<name>onstart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Javascript event handler to be called before ajax request to load items begins.</description>
-		</attribute>
-		<attribute>
-			<name>oncomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Javascript event handler to be called after ajax request to load items completed.</description>
-		</attribute>
-		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Disables the calendar.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.autocomplete.css</name>
+			<name>/yui/autocomplete/assets/skins/sam/autocomplete.css</name>
+		</resource>
+		<resource>
+			<name>/yui/utilities/utilities.js</name>
+		</resource>
+		<resource>
+			<name>/yui/datasource/datasource-min.js</name>
+		</resource>
+		<resource>
+			<name>/yui/autocomplete/autocomplete-min.js</name>
 		</resource>
 		<resource>
 			<name>/jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
 		<resource>
 			<name>/primefaces/core/core.js</name>
 		</resource>

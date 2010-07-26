@@ -1,12 +1,15 @@
 import org.primefaces.component.menu.Menu;
 import javax.faces.component.UIComponent;
 
-	public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
-	public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-corner-all ui-helper-clearfix";
-	public static final String PANEL_TITLE_CLASS = "ui-panel-title";
-	public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
-	public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
-	public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
+	public static final String PANEL_CLASS = "pf-panel";
+	public static final String PANEL_HEADER_CLASS = "pf-panel-hd";
+	public static final String PANEL_HEADER_CONTROLS_CLASS = "pf-panel-hd-controls";
+	public static final String PANEL_BODY_CLASS = "pf-panel-bd";
+	public static final String PANEL_FOOTER_CLASS = "pf-panel-ft";
+	public static final String PANEL_CLOSER_CLASS = "pf-panel-closer";
+	public static final String PANEL_TOGGLER_EXPANDED_CLASS = "pf-panel-toggler-expanded";
+	public static final String PANEL_TOGGLER_COLLAPSED_CLASS = "pf-panel-toggler-collapsed";
+	public static final String PANEL_OPTIONS_CLASS = "pf-panel-options";
 	
 	public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);

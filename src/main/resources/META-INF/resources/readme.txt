@@ -12,6 +12,7 @@ resource is updated.
 	font-size: 100%;
 }
 
+
 * Add to datatable.css
 th.yui-dt-hidden, td.yui-dt-hidden {
 	display: none;

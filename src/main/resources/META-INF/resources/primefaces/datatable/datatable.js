@@ -1,28 +1,19 @@
 PrimeFaces.widget.DataTable = function(clientId, columnDef, dataSource, cfg) {
 	this.clientId = clientId;
-	this.selectParam = this.clientId + "_selected";
+	this.rowSelectParam = this.clientId + "_selectedRows";
 	this.pageParam = this.clientId + "_page";
-	
-	YAHOO.widget.DataTable.CLASS_DATATABLE = "ui-datatable ui-widget";
-	YAHOO.widget.DataTable.CLASS_LINER = "ui-datatable-liner";
-	YAHOO.widget.DataTable.CLASS_LABEL = "ui-datatable-label";
-	YAHOO.widget.DataTable.CLASS_DATA = "ui-datatable-data";
-	YAHOO.widget.DataTable.CLASS_DATA = "ui-datatable-data";
-	YAHOO.widget.DataTable.CLASS_EVEN = "ui-datatable-even ui-widget-content";
-	YAHOO.widget.DataTable.CLASS_ODD = "ui-datatable-odd ui-widget-content";
-	YAHOO.widget.DataTable.CLASS_LAST = "ui-datatable-last";
-	YAHOO.widget.DataTable.CLASS_FIRST = "ui-datatable-first";
-	YAHOO.widget.DataTable.CLASS_SORTABLE = "ui-datatable-sortable";
-	YAHOO.widget.DataTable.CLASS_ASC = "ui-datatable-asc";
-	YAHOO.widget.DataTable.CLASS_DESC = "ui-datatable-desc";
-	YAHOO.widget.DataTable.CLASS_HIDDEN = "ui-datatable-hidden";
-	YAHOO.widget.DataTable.CLASS_HIGHLIGHTED = "ui-state-hover";
-	YAHOO.widget.DataTable.CLASS_SELECTED = "ui-state-active";
 	
 	PrimeFaces.widget.DataTable.superclass.constructor.call(this, clientId + "_container", columnDef, dataSource, cfg);
 	
-	jQuery('.ui-datatable table').addClass('ui-widget-content');
-	jQuery('.ui-datatable table thead tr th').addClass('ui-state-default');
+	this.initialize(clientId);
+}
+
+PrimeFaces.widget.ScrollingDataTable = function(clientId, columnDef, dataSource, cfg) {
+	this.clientId = clientId;
+	this.rowSelectParam = this.clientId + "_selectedRows";
+	this.pageParam = this.clientId + "_page";
+	
+	PrimeFaces.widget.ScrollingDataTable.superclass.constructor.call(this, clientId + "_container", columnDef, dataSource, cfg);
 	
 	this.initialize(clientId);
 }
@@ -30,8 +21,8 @@ PrimeFaces.widget.DataTable = function(clientId, columnDef, dataSource, cfg) {
 PrimeFaces.widget.DataTableExtensions = {
 
 	initialize : function(clientId) {
-		//Row selection
-		if(this.isRowSelectionEnabled()) {
+		//Row selection handlers
+		if(this.configs.selectionMode) {
 			this.subscribe("rowMouseoverEvent", this.onEventHighlightRow);
 	        this.subscribe("rowMouseoutEvent", this.onEventUnhighlightRow);
 	        this.subscribe('rowSelectEvent', this.onRowSelect);
@@ -42,16 +33,6 @@ PrimeFaces.widget.DataTableExtensions = {
 	        	this.subscribe("rowDblclickEvent", this.handleRowClickEvent);
 	        else
 	        	this.subscribe("rowClickEvent", this.handleRowClickEvent);
-		}
-		
-		//Cell selection
-		if(this.isCellSelectionEnabled()) {
-			this.subscribe("cellClickEvent", this.onEventSelectCell);
-			this.subscribe("cellMouseoverEvent", this.onEventHighlightCell);
-			this.subscribe("cellMouseoutEvent", this.onEventUnhighlightCell);
-			this.subscribe("cellSelectEvent", this.onCellSelect);
-			this.subscribe("cellUnselectEvent", this.onCellUnselect);
-			this.subscribe("unselectAllCellsEvent", this.onUnselectAllCells);
 		}
 		
 		//Initialize filters
@@ -93,17 +74,8 @@ PrimeFaces.widget.DataTableExtensions = {
 	sortColumn : function(sortColumn, sDir) {
 		// Get sort direction
         var sortDir = sDir || this.getColumnSortDir(sortColumn),
-        desc = (sortDir == YAHOO.widget.DataTable.CLASS_DESC) ? true : false,
-        iconDir = desc ? 's' : 'n',
-        th = jQuery(sortColumn.getThEl());
-
-		jQuery(this.getTheadEl()).find('tr th span.ui-icon').remove();
-		
-		if(th.children('span.ui-icon').size() == 0)
-			th.append('<span class="ui-icon ui-icon-triangle-1-' + iconDir + '" style="float:right"></span>');
-		else
-			th.children('span.ui-icon').replaceWith('<span class="ui-icon ui-icon-triangle-1-' + iconDir + '" style="float:right"></span>');
-        			
+        desc = (sortDir == YAHOO.widget.DataTable.CLASS_DESC) ? true : false;
+        
         // Save for generic sort
         PrimeFaces.widget.DataTableUtils.sortColumn = sortColumn;
                     
@@ -304,11 +276,13 @@ PrimeFaces.widget.DataTableExtensions = {
 		var rowIndex = args.record.getData('rowIndex');
 		
 		if(this.isSelectionModeSingle())
-			this.selected[0] = rowIndex;
-		else if(this.selected.length == 0 || this.getSelectedIndexPosition(rowIndex) == -1)
-			this.selected.push(rowIndex);		
+			this.selectedRowIndexes[0] = rowIndex;
+		else {
+			if(this.selectedRowIndexes.length == 0 || this.getRowIndexPosition(rowIndex) == -1)
+				this.selectedRowIndexes.push(rowIndex);		
+		}
 		
-		document.getElementById(this.selectParam).value = this.selected.join(',');
+		document.getElementById(this.rowSelectParam).value = this.selectedRowIndexes.join(',');
 		
 		if(this.configs.update) {
 			this.doInstantRowSelectionRequest();
@@ -317,20 +291,20 @@ PrimeFaces.widget.DataTableExtensions = {
 	
 	onRowUnselect : function(args) {
 		var rowIndex = args.record.getData('rowIndex'),
-		position = this.getSelectedIndexPosition(rowIndex);
+		position = this.getRowIndexPosition(rowIndex);
 		
-		this.selected.splice(position, 1);
+		this.selectedRowIndexes.splice(position, 1);
 
-		document.getElementById(this.selectParam).value = this.selected.join(',');
+		document.getElementById(this.rowSelectParam).value = this.selectedRowIndexes.join(',');
 	},
 	
 	onUnselectAllRows : function() {
 		this.clearSelections();
 	},
 	
-	getSelectedIndexPosition : function(data) {
-		for(var i=0; i < this.selected.length; i++) {
-			if(data == this.selected) {
+	getRowIndexPosition : function(rowIndex) {
+		for(var i=0; i < this.selectedRowIndexes.length; i++) {
+			if(rowIndex == this.selectedRowIndexes) {
 				return i;
 			}
 		}
@@ -349,8 +323,10 @@ PrimeFaces.widget.DataTableExtensions = {
 			eventTarget = event.target;
 		}
 		
-		if(eventTarget.className === "ui-datatable-liner") {
+		if(eventTarget.className === "yui-dt-liner") {
 			this.onEventSelectRow(args);
+		} else {
+			YAHOO.util.Event.stopEvent(event);
 		}
 	},
 	
@@ -367,36 +343,6 @@ PrimeFaces.widget.DataTableExtensions = {
 			requestConfig.oncomplete = this.configs.onselectComplete;
 		
 		PrimeFaces.ajax.AjaxRequest(this.configs.url, requestConfig, params);
-	},
-	
-	onCellSelect : function(args) {
-		var rowIndex = args.record.getData('rowIndex'),
-		columnKey = args.column.getKey(),
-		cellInfo = rowIndex + '#' + columnKey;
-		
-		if(columnKey != 'rowIndex') {
-			if(this.isSelectionModeSingle())
-				this.selected[0] = cellInfo;
-			else
-				this.selected.push(cellInfo);
-				
-			document.getElementById(this.selectParam).value = this.selected.join(',');
-		}
-	},
-	
-	onCellUnselect : function(args) {
-		var rowIndex = args.record.getData('rowIndex'),
-		columnKey = args.column.getKey(),
-		cellInfo = rowIndex + '#' + columnKey,
-		position = this.getSelectedIndexPosition(cellInfo);
-		
-		this.selected.splice(position, 1);
-
-		document.getElementById(this.selectParam).value = this.selected.join(',');
-	},
-	
-	onUnselectAllCells : function() {
-		this.clearSelections();
 	},
 	
 	hasFilter : function() {
@@ -443,38 +389,25 @@ PrimeFaces.widget.DataTableExtensions = {
 		}
 		
 		//Initialize preselection on page load
-		if(!this.selected) {
-			var selectedState = document.getElementById(this.selectParam).value;
-			this.selected = selectedState === '' ? [] : selectedState.split(',');
+		if(!this.selectedRowIndexes) {
+			var rowIndexState = document.getElementById(this.rowSelectParam).value;
+			this.selectedRowIndexes = rowIndexState === '' ? [] : rowIndexState.split(',');
 		}
 	
 		var recordSet = this.getRecordSet();
 		
-		for(var i=0; i < this.selected.length; i++) {
-			var selected = this.selected[i];
+		for(var i=0; i < this.selectedRowIndexes.length; i++) {
+			var selectedRowIndex = this.selectedRowIndexes[i];
 			
 			for(var j=0; j < recordSet.getLength(); j++) {
-				var rec = recordSet.getRecord(j);
+				var record = recordSet.getRecord(j);
 				
-				if(this.isCellSelectionEnabled()) {
-					var cellInfo = selected.split('#');
-					
-					if(rec && cellInfo[0] == rec.getData('rowIndex')) {
-						var col = this.getColumn(cellInfo[1]),
-						tdEl = this.getTdEl({record:rec, column:col});
-						
-						YAHOO.util.Dom.addClass(tdEl, YAHOO.widget.DataTable.CLASS_SELECTED);
-					}
-					
-				} else {
-					if(rec && selected == rec.getData('rowIndex')) {
-						var el = YAHOO.util.Dom.get(rec.getId());
-						if(el) {
-							YAHOO.util.Dom.addClass(el, YAHOO.widget.DataTable.CLASS_SELECTED);
-			            }
-					}
+				if(record && selectedRowIndex == record.getData('rowIndex')) {
+					var el = YAHOO.util.Dom.get(record.getId());
+					if(el) {
+						YAHOO.util.Dom.addClass(el, YAHOO.widget.DataTable.CLASS_SELECTED);
+		            }
 				}
-				
 			}
 		}
 	},
@@ -516,24 +449,16 @@ PrimeFaces.widget.DataTableExtensions = {
 	},
 	
 	clearSelections : function() {
-		this.selected = [];
-		document.getElementById(this.selectParam).value = "";
+		this.selectedRowIndexes = [];
+		document.getElementById(this.rowSelectParam).value = "";
 	},
 	
 	isSelectionEnabled : function() {
 		return this.configs.selectionMode ? true : false;
 	},
 	
-	isRowSelectionEnabled : function() {
-		return this.configs.selectionMode && this.configs.selectionMode.indexOf('cell') == -1;
-	},
-	
-	isCellSelectionEnabled : function() {
-		return this.configs.selectionMode && this.configs.selectionMode.indexOf('cell') != -1;
-	},
-	
 	isSelectionModeSingle : function() {
-		return (this.configs.selectionMode == 'single' || this.configs.selectionMode == 'singlecell');
+		return (this.configs.selectionMode == 'single');
 	},
 	
 	isDynamic : function() {
@@ -543,43 +468,6 @@ PrimeFaces.widget.DataTableExtensions = {
 	resetPageState : function() {
 		document.getElementById(this.pageParam).value = 1;
 		this.get('paginator').setPage(1, true);
-	},
-	
-	_getTrTemplateEl : function (oRecord, index) {
-	    // Template is already available
-	    if(this._elTrTemplate) {
-	        return this._elTrTemplate;
-	    }
-	    // Template needs to be created
-	    else {
-	        var d   = document,
-	            tr  = d.createElement('tr'),
-	            td  = d.createElement('td'),
-	            div = d.createElement('div');
-	    
-	        // Append the liner element
-	        td.appendChild(div);
-
-	        // Create TD elements into DOCUMENT FRAGMENT
-	        var df = document.createDocumentFragment(),
-	            allKeys = this._oColumnSet.keys,
-	            elTd;
-
-	        // Set state for each TD;
-	        var aAddClasses;
-	        for(var i=0, keysLen=allKeys.length; i<keysLen; i++) {
-	            // Clone the TD template
-	            elTd = td.cloneNode(true);
-
-	            // Format the base TD
-	            elTd = this._formatTdEl(allKeys[i], elTd, i, (i===keysLen-2));
-	                        
-	            df.appendChild(elTd);
-	        }
-	        tr.appendChild(df);
-	        this._elTrTemplate = tr;
-	        return tr;
-	    }   
 	}
 };
 
@@ -622,3 +510,5 @@ PrimeFaces.widget.DataTableUtils = {
 };
 
 YAHOO.lang.extend(PrimeFaces.widget.DataTable, YAHOO.widget.DataTable, PrimeFaces.widget.DataTableExtensions);
+
+YAHOO.lang.extend(PrimeFaces.widget.ScrollingDataTable, YAHOO.widget.ScrollingDataTable, PrimeFaces.widget.DataTableExtensions);

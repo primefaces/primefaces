@@ -13,11 +13,7 @@
 	<rendererType>org.primefaces.component.HotkeyRenderer</rendererType>
 	<rendererClass>org.primefaces.component.hotkey.HotkeyRenderer</rendererClass>
 	<parent>javax.faces.component.UICommand</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
+	<ajaxSource>true</ajaxSource>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>

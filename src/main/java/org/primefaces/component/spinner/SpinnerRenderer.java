@@ -42,9 +42,6 @@ public class SpinnerRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Spinner spinner = (Spinner) component;
 		
-		//IE8 Standards mode fix
-		facesContext.getResponseWriter().write("<!--[if IE 8.0]><style type=\"text/css\">.ui-spinner {border:1px solid transparent;}</style><![endif]-->");
-		
 		encodeMarkup(facesContext, spinner);
 		encodeScript(facesContext, spinner);
 	}

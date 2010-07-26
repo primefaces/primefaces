@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class LinkButtonRenderer extends CoreRenderer {
@@ -37,43 +38,43 @@ public class LinkButtonRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
 		
-		writer.startElement("button", button);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("name", clientId, "name");
-		if(button.getStyleClass() != null) 
-			writer.writeAttribute("class", button.getStyleClass() , "styleClass");
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("class", "yui-button yui-link-button", null);
 		
-		renderPassThruAttributes(facesContext, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+		writer.startElement("span", null);
+		writer.writeAttribute("class", "first-child", null);
 		
-		writer.writeAttribute("onclick", "window.location='" + button.getHref() + "'", null);
+		writer.startElement("a", button);
+		writer.writeAttribute("href", getResourceURL(facesContext, button.getHref()), null);
+		if(button.getStyle() != null)
+			writer.writeAttribute("style", button.getStyle(), null);
+		if(button.getStyleClass() != null)
+			writer.writeAttribute("class", button.getStyleClass(), null);
 		
-		if(button.getValue() != null) {
-			writer.write(button.getValue().toString());
-		}
-			
-		writer.endElement("button");
+		if(button.getTarget() != null) writer.writeAttribute("target", button.getTarget(), null);
+		
+		String value = ComponentUtils.getStringValueToRender(facesContext, button);
+		if(value != null)
+			writer.write(value);
+		
+		writer.endElement("a");
+		
+		writer.endElement("span");
+		writer.endElement("span");
 	}
 
 	protected void encodeScript(FacesContext facesContext, LinkButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, button);
-		boolean hasValue = (button.getValue() != null);
+		String buttonVar = createUniqueWidgetVar(facesContext, button);
 		
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
+	
+		writer.write(buttonVar + " = new YAHOO.widget.Button(\"" + clientId  + "\");");
+		renderPassThruAttributes(facesContext, button, buttonVar, HTML.BUTTON_EVENTS);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.LinkButton('" + clientId + "', {");
-		
-		if(button.getImage() != null) {
-			writer.write("text:" + hasValue);
-			writer.write(",icons:{");
-			writer.write("primary:'" + button.getImage() + "'");
-			writer.write("}");
-		} 
-		
-		writer.write("});");
-		
 		writer.endElement("script");
 	}
 }

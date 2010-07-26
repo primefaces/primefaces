@@ -16,11 +16,7 @@
 	<rendererType>org.primefaces.component.CommandLinkRenderer</rendererType>
 	<rendererClass>org.primefaces.component.commandlink.CommandLinkRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlCommandLink</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxSource</name>
-		</interface>
-	</interfaces>
+	<ajaxSource>true</ajaxSource>
 	<attributes>
 		&command_component_attributes;
 		<attribute>

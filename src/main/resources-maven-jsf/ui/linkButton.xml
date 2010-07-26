@@ -31,14 +31,6 @@
 			</description>
 		</attribute>
 		<attribute>
-			<name>image</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Image of the button.
-			</description>
-		</attribute>
-		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -183,19 +175,16 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+			<name>/yui/button/assets/skins/sam/button.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>/yui/button/button-min.js</name>
+		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/button/button.js</name>
 		</resource>
 	</resources>
 </component>

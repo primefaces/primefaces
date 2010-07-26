@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -35,158 +34,228 @@ import org.primefaces.util.ComponentUtils;
 
 public class CalendarRenderer extends CoreRenderer{
 	
+	public static String DEFAULT_POPUP_ICON = "/primefaces/calendar/calendar_icon.png";
+	
 	public void decode(FacesContext facesContext, UIComponent component) {
 		Calendar calendar = (Calendar) component;
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		String param = calendar.getClientId(facesContext) + "_input";
+		String clientId = calendar.getClientId(facesContext);
 		
-		if(params.containsKey(param)) {
-			calendar.setSubmittedValue(params.get(param));
-		}
+		String submittedValue = facesContext.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+		
+		calendar.setSubmittedValue(submittedValue);
 	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Calendar calendar = (Calendar) component;
-		String value = CalendarUtils.getValueAsString(facesContext, calendar);
 		
-		encodeMarkup(facesContext, calendar, value);
-		encodeScript(facesContext, calendar, value);
+		encodeMarkup(facesContext, calendar);
+		encodeScript(facesContext, calendar);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, Calendar calendar, String value) throws IOException{
+	protected void encodeScript(FacesContext facesContext, Calendar calendar) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = calendar.getClientId(facesContext);
-		String inputId = clientId + "_input";
+		String calendarVar = createUniqueWidgetVar(facesContext, calendar);
+		String popupVar = null;
+		boolean isPopup = calendar.isPopup();
+		
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+				
+		if(isPopup) {
+			popupVar = calendarVar + "_popup";
+			writer.write(popupVar + " = new YAHOO.widget.Overlay('" + clientId + "_popupContainer', {visible: false, context:['" + clientId + "_popupButton','tl','bl']});");
+			writer.write(popupVar + ".render();\n");
+		}
+		
+		if(calendar.getPages() > 1)
+			writer.write(calendarVar + " = new PrimeFaces.widget.CalendarGroup('" + clientId + "','" + clientId + "_container',");
+		else
+			writer.write(calendarVar + " = new PrimeFaces.widget.Calendar('" + clientId + "','" + clientId + "_container',");
+		
+		encodeConfig(facesContext, calendar, calendarVar);
+		
+		writer.endElement("script");
+	}
+	
+	protected void encodeConfig(FacesContext facesContext, Calendar calendar, String calendarVar) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String valueAsString = CalendarUtils.getValueAsString(facesContext, calendar);
+		String pagedate = CalendarUtils.getPageDate(calendar);
+		String maxdate = CalendarUtils.getDateAsString(calendar, calendar.getMaxdate());
+		String mindate = CalendarUtils.getDateAsString(calendar, calendar.getMindate());
+
+		writer.write("{language:'" + calendar.calculateLocale(facesContext).getLanguage() + "'");
+		
+		if(calendar.getPages() != -1) writer.write(",pages:" + calendar.getPages());
+		if(pagedate != null) writer.write(",pagedate:'" + pagedate + "'");
+		if(maxdate != null) writer.write(",maxdate:'" + maxdate + "'");
+		if(mindate != null) writer.write(",mindate:'" + mindate + "'");
+		if(calendar.isNavigator()) writer.write(",navigator:true");
+		if(calendar.getSelection().equals("multiple")) writer.write(",multi_select:true");
+		if(calendar.isClose()) writer.write(",close:true");
+		if(calendar.getTitle() != null) writer.write(",title:'" + escapeText(calendar.getTitle()) + "'");
+		if(!calendar.isShowWeekdays()) writer.write(",show_weekdays:false");
+		if(calendar.getMonthFormat() != null) writer.write(",locale_months:'" + calendar.getMonthFormat() + "'");
+		if(calendar.getWeekdayFormat() != null) writer.write(",locale_weekdays:'" + calendar.getWeekdayFormat() + "'");
+		if(calendar.getStartWeekday() != 0) writer.write(",start_weekday:" + calendar.getStartWeekday());
+		if(calendar.isShowWeekHeader()) writer.write(",show_week_header:true");
+		if(calendar.isShowWeekFooter()) writer.write(",show_week_footer:true");
+		if(calendar.isPopup()) writer.write(",popup:" + calendarVar + "_popup");
+		
+		String delimiter = CalendarUtils.getPatternDelimeter(calendar);
+		writer.write(",date_delim:'" + delimiter + "'");
+		writer.write(",year_pos:" + CalendarUtils.getDateFieldPosition(calendar, delimiter, "y"));
+		writer.write(",month_pos:" + CalendarUtils.getDateFieldPosition(calendar, delimiter, "M"));
+		writer.write(",day_pos:" + CalendarUtils.getDateFieldPosition(calendar, delimiter, "d"));
+		
+		//Ajax selection
+		if(calendar.getSelectListener() != null) {
+			writer.write(",hasSelectListener:true");
+			
+			UIComponent form = ComponentUtils.findParentForm(facesContext, calendar);
+			if(form == null)
+				throw new FacesException("Calendar \"" + calendar.getClientId(facesContext) + "\" must be enclosed with a form when using ajax selection.");
+			
+			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
+			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
+			
+			if(calendar.getOnSelectUpdate() != null)
+				writer.write(",onselectUpdate:'" + ComponentUtils.findClientIds(facesContext, calendar, calendar.getOnSelectUpdate()) + "'");	
+		}
+		
+		writer.write("});\n");
+		
+		if(valueAsString != null) {
+			writer.write(calendarVar + ".cfg.setProperty('selected', '" + valueAsString + "');\n");
+		}
+	}
+
+	protected void encodeMarkup(FacesContext facesContext, Calendar calendar) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = calendar.getClientId(facesContext);
 		
 		writer.startElement("span", calendar);
 		writer.writeAttribute("id", clientId, null);
 		if(calendar.getStyle() != null) writer.writeAttribute("style", calendar.getStyle(), null);
 		if(calendar.getStyleClass() != null) writer.writeAttribute("class", calendar.getStyleClass(), null);
 		
-		//popup container
-		if(!calendar.isPopup()) {
-			writer.startElement("div", null);
-			writer.writeAttribute("id", clientId + "_inline", null);
-			writer.endElement("div");
-		}
-		
-		//input
-		String type = calendar.isPopup() ? "text" : "hidden";
-		
-		writer.startElement("input", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
-		writer.writeAttribute("type", type, null);
-		
-		if(value != null)
-			writer.writeAttribute("value", value, null);
+		encodeInputField(facesContext, calendar, clientId);
 		
 		if(calendar.isPopup()) {
-			if(calendar.getInputStyle() != null) writer.writeAttribute("style", calendar.getInputStyle(), null);
-			if(calendar.getInputStyleClass() != null) writer.writeAttribute("class", calendar.getInputStyleClass(), null);
-			if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
-			if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+			encodePopupButtonMarkup(facesContext,calendar);
+			encodePopupContainer(facesContext, clientId);
 		}
-
-		writer.endElement("input");
+		else {
+			encodeCalendarContainer(facesContext, clientId);
+		}
 		
 		writer.endElement("span");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Calendar calendar, String value) throws IOException{
+	protected void encodePopupContainer(FacesContext facesContext, String clientId) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = calendar.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, calendar);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_popupContainer", null);
 		
-		writer.write("jQuery(function(){");
+		encodeCalendarContainer(facesContext, clientId);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Calendar('" + clientId + "', {");
-		
-		writer.write("popup:" + calendar.isPopup());
-		writer.write(",locale:'" + calendar.calculateLocale(facesContext).toString() + "'");
-		
-		if(value != null) writer.write(",defaultDate:'" + value + "'");
-		if(calendar.getPattern() != null) writer.write(",dateFormat:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
-		if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
-		if(calendar.getMindate() != null) writer.write(",minDate:'" +CalendarUtils.getDateAsString(calendar, calendar.getMindate() + "'"));
-		if(calendar.getMaxdate() != null) writer.write(",maxDate:'" +CalendarUtils.getDateAsString(calendar, calendar.getMaxdate() + "'"));
-		if(calendar.isShowButtonPanel()) writer.write(",showButtonPanel:true");
-		if(calendar.isShowWeek()) writer.write(",showWeek:true");
-		if(calendar.isDisabled()) writer.write(",disabled:true");
-		
-		if(calendar.isNavigator()) {
-			writer.write(",changeMonth:true");
-			writer.write(",changeYear:true");
-		}
-		
-		if(calendar.getEffect() != null) {
-			writer.write(",showAnim:'" + calendar.getEffect() + "'");
-			writer.write(",duration:'" + calendar.getEffectDuration() + "'");
-		}
-		
-		String showOn = calendar.getShowOn();
-		if(showOn != null) {
-			writer.write(",showOn:'" + showOn + "'");
-			
-			if(showOn.equalsIgnoreCase("button")) {
-				String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(facesContext, calendar.getPopupIcon()) : ResourceUtils.getResourceURL(facesContext, Calendar.POPUP_ICON);
-				writer.write(",buttonImage:'" + iconSrc + "'");
-				writer.write(",buttonImageOnly:" + calendar.isPopupIconOnly());
-			}
-		}
-		
-		if(calendar.isShowOtherMonths()) {
-			writer.write(",showOtherMonths:true");
-			writer.write(",selectOtherMonths:" + calendar.isSelectOtherMonths());
-		}
-		
-		if(calendar.getSelectListener() != null) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, calendar);
-			if(form == null)
-				throw new FacesException("Calendar \"" + calendar.getClientId(facesContext) + "\" must be enclosed with a form when using ajax selection.");
-			
-			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-			writer.write(",url:'" + getActionURL(facesContext) + "'");
-			writer.write(",hasSelectListener:true");
-			
-			if(calendar.getOnSelectUpdate() != null)
-				writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, calendar, calendar.getOnSelectUpdate()) + "'");	
-		}
-		
-		writer.write("});});");
-		
-		writer.endElement("script");
+		writer.endElement("div");
 	}
 	
+	protected void encodeCalendarContainer(FacesContext facesContext, String clientId) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_container" , null);
+		writer.endElement("div");
+	}
+	
+	protected void encodeInputField(FacesContext facesContext, Calendar calendar, String clientId) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String valueAsString = CalendarUtils.getValueAsString(facesContext, calendar);
+		String inputId = clientId + "_input";
+		
+		writer.startElement("input", null);
+		writer.writeAttribute("id", inputId, null);
+		writer.writeAttribute("name", inputId, null);
+		
+		if(calendar.isPopup()) {
+			writer.writeAttribute("type", "text", null);
+			
+			String style = "vertical-align:middle;";
+			if(calendar.getInputStyle() != null)
+				style = style + calendar.getInputStyle();
+			
+			writer.writeAttribute("style", style, null);
+			
+			if(calendar.getInputStyleClass() != null) writer.writeAttribute("class", calendar.getInputStyleClass(), null);
+		}
+		else
+			writer.writeAttribute("type", "hidden", null);
+			
+		writer.writeAttribute("value", valueAsString, null);
+		writer.writeAttribute("readonly", calendar.isReadOnlyInputText(), null);
+		writer.endElement("input");
+	}
+
+	protected void encodePopupButtonMarkup(FacesContext facesContext, Calendar calendar) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = calendar.getClientId(facesContext);
+		String iconId = clientId + "_popupButton";
+		String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(facesContext, calendar.getPopupIcon()) : ResourceUtils.getResourceURL(facesContext, DEFAULT_POPUP_ICON);
+		
+		writer.startElement("img", null);
+		writer.writeAttribute("id", iconId, null);
+		writer.writeAttribute("name", iconId, null);
+		writer.writeAttribute("src", iconSrc , null);
+		writer.writeAttribute("style", "vertical-align:middle;cursor:pointer;margin:0;padding:0;", null);
+		writer.endElement("img");
+	}
+
 	public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object value) throws ConverterException {
 		Calendar calendar = (Calendar) component;
 		String submittedValue = (String) value;
-		
-		if(isValueBlank(submittedValue))
-			return null;
 		
 		//Delegate to user supplied converter if defined
 		if(calendar.getConverter() != null) {
 			return calendar.getConverter().getAsObject(facesContext, calendar, submittedValue);
 		}
 
-		try {
-			Date convertedValue;
-			Locale locale = calendar.calculateLocale(facesContext);
-			SimpleDateFormat format = new SimpleDateFormat(calendar.getPattern(), locale);
-			format.setTimeZone(calendar.calculateTimeZone());
-			
-			convertedValue = format.parse(submittedValue);
-			
-			calendar.queueEvent(new DateSelectEvent(calendar, convertedValue));		//Queue a date select event for any listeners
-			
-			return convertedValue;
+		if(isValueBlank(submittedValue))
+			return null;
 
+		Locale locale = calendar.calculateLocale(facesContext);
+		SimpleDateFormat format = new SimpleDateFormat(calendar.getPattern(), locale);
+		format.setTimeZone(calendar.calculateTimeZone());
+
+		try {
+			if(calendar.getSelection().equalsIgnoreCase("single")) {
+				Date convertedValue;
+				
+				convertedValue = format.parse(submittedValue);
+				
+				calendar.queueEvent(new DateSelectEvent(calendar, convertedValue));		//Queue a date select event for any listeners
+				
+				return convertedValue;
+			}
+			else if(calendar.getSelection().equalsIgnoreCase("multiple")) {
+				String[] datesAsString = (submittedValue).split(",");
+				
+				Date[] dates = new Date[datesAsString.length];			
+				
+				for (int i = 0; i < datesAsString.length; i++) {
+					dates[i] = format.parse(datesAsString[i]);
+				}
+				
+				return dates;
+			} else
+				throw new IllegalArgumentException("Selection mode: " + calendar.getSelection() + " is not valid, use either 'single' or 'multiple'");
+		
 		} catch (ParseException e) {
 			throw new ConverterException(e);
 		}
+		
 	}
 }

@@ -31,7 +31,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		BreadCrumb breadCrumb = (BreadCrumb) component;
 		
-		if(breadCrumb.shouldBuildFromModel()) {
+		if(breadCrumb.isDynamic() && !isPostBack()) {
 			breadCrumb.buildMenuFromModel();
 		}
 
@@ -47,7 +47,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).jBreadCrumb({");
-		writer.write("overlayClass:'ui-breadcrumb-chevron'");
+		writer.write("overlayClass:'pf-breadCrumb-chevron'");
 		
 		if(!breadCrumb.isPreview()) {
 			int childCount = breadCrumb.getChildCount();
@@ -71,8 +71,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 	private void encodeMarkup(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = breadCrumb.getClientId(facesContext);
-		String defaultStyleClass = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-corner-all";
-		String styleClass = breadCrumb.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + " " + breadCrumb.getStyleClass();
+		String styleClass = breadCrumb.getStyleClass() == null ? "pf-breadCrumb pf-module" : "pf-breadCrumb pf-module " + breadCrumb.getStyleClass();
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -100,7 +99,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 	protected void encodeMenuItem(FacesContext facesContext, MenuItem menuItem) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
-		if(menuItem.shouldRenderChildren()) {
+		if(menuItem.getChildCount() > 0) {
 			renderChildren(facesContext, menuItem);
 		} else {
 			String clientId = menuItem.getClientId(facesContext);
@@ -131,6 +130,8 @@ public class BreadCrumbRenderer extends CoreRenderer {
 				writer.writeAttribute("onclick", command, null);
 			}
 			
+			//Label is deprecated
+			if(menuItem.getLabel() != null) writer.write(menuItem.getLabel());
 			if(menuItem.getValue() != null) writer.write((String) menuItem.getValue());
 			
 			writer.endElement("a");

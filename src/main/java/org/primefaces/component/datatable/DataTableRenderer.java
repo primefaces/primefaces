@@ -26,20 +26,18 @@ import java.util.Map;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.StateManager;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletResponse;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.model.BeanPropertyComparator;
-import org.primefaces.model.Cell;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.RendererUtils;
 
 public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 
@@ -60,7 +58,7 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		} else if(isAjaxPageRequest) {
 			decodeAjaxPageRequest(facesContext, dataTable);
 		} else if(dataTable.isSelectionEnabled()) {
-			decodeSelection(facesContext, dataTable);
+			decodeRowSelections(facesContext, dataTable);
 		}
 	}
 	
@@ -138,32 +136,33 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		dataTable.setPage(1);
 	}
 
-	protected void decodeSelection(FacesContext facesContext, DataTable dataTable) {
+	protected void decodeRowSelections(FacesContext facesContext, DataTable dataTable) {
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
 		String clientId = dataTable.getClientId(facesContext);
-		String rowSelectParam = clientId + "_selected";
+		String rowSelectParam = clientId + "_selectedRows";
 		
-		String rowSelectParamValue = params.get(rowSelectParam);
+		if(params.containsKey(rowSelectParam)) {
+			String rowSelectParamValue = params.get(rowSelectParam);
+					
+			if(dataTable.isSingleSelectionMode())
+				decodeSingleSelection(dataTable, rowSelectParamValue);
+			else
+				decodeMultipleSelection(dataTable, rowSelectParamValue);
 				
-		if(dataTable.isSingleSelectionMode())
-			decodeSingleSelection(dataTable, rowSelectParamValue);
-		else
-			decodeMultipleSelection(dataTable, rowSelectParamValue);
 			
-		dataTable.setRowIndex(-1);	//clean	
+			dataTable.setRowIndex(-1);	//clean	
+		}
 	}
 	
 	protected void decodeSingleSelection(DataTable dataTable, String rowSelectParamValue) {
 		if(isValueBlank(rowSelectParamValue)) {
 			dataTable.setSelection(null);
-		} else {
-			if(dataTable.isCellSelection()) {
-				dataTable.setSelection(buildCell(dataTable, rowSelectParamValue));
-			} else {
-				dataTable.setRowIndex(Integer.parseInt(rowSelectParamValue));
-				Object data = dataTable.getRowData();
-				dataTable.setSelection(data);
-			}
+		}
+		else {
+			dataTable.setRowIndex(Integer.parseInt(rowSelectParamValue));
+			Object data = dataTable.getRowData();
+			
+			dataTable.setSelection(data);
 		}
 	}
 	
@@ -174,50 +173,17 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 			Object data = Array.newInstance(clazz.getComponentType(), 0);
 			dataTable.setSelection(data);
 		} else {
-			if(dataTable.isCellSelection()) {
-				String[] cellInfos = rowSelectParamValue.split(",");
-				Cell[] cells = new Cell[cellInfos.length];
-				
-				for(int i = 0; i < cellInfos.length; i++) {
-					cells[i] = buildCell(dataTable, cellInfos[i]);
-					dataTable.setRowIndex(-1);	//clean
-				}
-				
-				dataTable.setSelection(cells);
-			} else {
-				String[] rowSelectValues = rowSelectParamValue.split(",");
-				Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
-				
-				for(int i = 0; i < rowSelectValues.length; i++) {
-					dataTable.setRowIndex(Integer.parseInt(rowSelectValues[i]));
+			String[] rowSelectValues = rowSelectParamValue.split(",");
+			Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
+			
+			for(int i = 0; i < rowSelectValues.length; i++) {
+				dataTable.setRowIndex(Integer.parseInt(rowSelectValues[i]));
 
-					Array.set(data, i, dataTable.getRowData());
-				}
-				
-				dataTable.setSelection(data);
+				Array.set(data, i, dataTable.getRowData());
 			}
+			
+			dataTable.setSelection(data);
 		}
-	}
-	
-	protected Cell buildCell(DataTable dataTable, String value) {
-		String[] cellInfo = value.split("#");
-		
-		//Column
-		UIColumn column = dataTable.getColumnByClientId(cellInfo[1]);
-		String columnId = cellInfo[1];
-		
-		//RowData
-		dataTable.setRowIndex(Integer.parseInt(cellInfo[0]));
-		Object rowData = dataTable.getRowData();
-		
-		//Cell value
-		Object cellValue = null;
-		UIComponent columnChild = column.getChildren().get(0);
-		if(columnChild instanceof ValueHolder) {
-			cellValue = ((ValueHolder) columnChild).getValue();
-		}
-		
-		return new Cell(rowData, columnId, cellValue);
 	}
 
 	public void encodePartially(FacesContext facesContext, UIComponent component) throws IOException {
@@ -232,9 +198,9 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		
 		//Data
 		writer.write("<table>");
-		writer.startCDATA();
+			RendererUtils.startCDATA(facesContext);
 			encodeTable(facesContext, dataTable);
-		writer.endCDATA();
+			RendererUtils.endCDATA(facesContext);
 		writer.write("</table>");
 		
 		//Total records
@@ -244,10 +210,10 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		
 		//State
 		writer.write("<state>");
-		writer.startCDATA();
+		RendererUtils.startCDATA(facesContext);
 			StateManager stateManager = facesContext.getApplication().getStateManager();
 			stateManager.writeState(facesContext, stateManager.saveView(facesContext));
-		writer.endCDATA();
+			RendererUtils.endCDATA(facesContext);
 		writer.write("</state>");
 
 		writer.write("</data-response>");
@@ -302,19 +268,12 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		writer.write(datasourceVar + ".responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;\n");
 		writer.write(datasourceVar + ".responseSchema = {fields:[");
 		
-		boolean firstWritten = false;
-		for(UIComponent kid : dataTable.getChildren()) {
-			if(kid.isRendered() && kid instanceof Column) {
-				if(firstWritten)
-					writer.write(",");
-				else
-					firstWritten=true;
-				
-				writer.write("{key:'" + kid.getClientId(facesContext) + "'}");
-			}
-		}
+		writer.write("{key:'rowIndex'}");
 		
-		writer.write(",{key:'rowIndex'}");
+		for(UIComponent kid : dataTable.getChildren()) {
+			if(kid.isRendered() && kid instanceof Column)
+				writer.write(",{key:'" + kid.getClientId(facesContext) + "'}");
+		}
 		
 		writer.write("]");
 		
@@ -326,18 +285,16 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 	protected String encodeColumnDefinition(FacesContext facesContext, DataTable dataTable, String datatableVar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String columnDefVar = datatableVar + "_columnDef";
-		boolean firstWritten = false;
 		
 		writer.write("var " + columnDefVar + " = [");
-				
+		
+		writer.write("{key:'rowIndex', hidden:true}");
+		
 		for(UIComponent kid : dataTable.getChildren()) {
 			if(kid.isRendered() && kid instanceof Column) {
 				Column column = (Column) kid;
 				
-				if(firstWritten)
-					writer.write(",");
-				else
-					firstWritten=true;
+				writer.write(",");
 				
 				writer.write("{key:'" + column.getClientId(facesContext)  + "'");
 				
@@ -346,11 +303,9 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 				writer.write(",label:'");
 				if(header != null) {
 					if(ComponentUtils.isLiteralText(header)) {
-						String literalText = header.toString().trim();
-						ValueExpression ve = facesContext.getApplication().getExpressionFactory().createValueExpression(facesContext.getELContext(), literalText, Object.class);
-						Object value = ve.getValue(facesContext.getELContext());
-						if(value != null) {
-							writer.write(value.toString());
+						String textValue = header.toString();
+						if(textValue != null) {
+							writer.write(textValue.trim());
 						}
 					} else {						
 						renderChild(facesContext, column.getFacet("header"));
@@ -384,9 +339,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 				writer.write("}");
 			}
 		}
-		
-		writer.write(",{key:'rowIndex', hidden:true}");
-		
 		writer.write("];\n");
 		
 		return columnDefVar;
@@ -397,7 +349,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		String clientId = dataTable.getClientId(facesContext);
 		String formClientId = null;
 		String url = getActionURL(facesContext);
-		String selectionMode = dataTable.getSelectionMode();
 		
 		if(dataTable.isDynamic() || dataTable.getUpdate() != null) {
 			UIComponent form = ComponentUtils.findParentForm(facesContext, dataTable);
@@ -432,8 +383,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 			if(dataTable.getPreviousPageLinkLabel() != null) writer.write(",previousPageLinkLabel:'" + dataTable.getPreviousPageLinkLabel() + "'");
 			if(dataTable.getNextPageLinkLabel() != null) writer.write(",nextPageLinkLabel:'" + dataTable.getNextPageLinkLabel() + "'");
 			if(dataTable.getLastPageLinkLabel() != null) writer.write(",lastPageLinkLabel:'" + dataTable.getLastPageLinkLabel() + "'");
-			if(dataTable.getCurrentPageReportTemplate() != null) writer.write(",pageReportTemplate:'" + dataTable.getCurrentPageReportTemplate() + "'");
-			if(!dataTable.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
 			
 			String paginatorPosition = dataTable.getPaginatorPosition();
 			String paginatorContainer = null;
@@ -453,8 +402,8 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		if(dataTable.getSortAscMessage() != null) writer.write(",MSG_SORTASC : '" + dataTable.getSortAscMessage() + "'");
 		if(dataTable.getSortDescMessage() != null) writer.write(",MSG_SORTDESC : '" + dataTable.getSortDescMessage() + "'");
 		
-		if(selectionMode != null) {
-			String mode = selectionMode.equals("multiple") ? "standard" : selectionMode;
+		if(dataTable.getSelectionMode() != null) {
+			String mode = dataTable.getSelectionMode().equals("multiple") ? "standard" : "single";
 			writer.write(",selectionMode:'" + mode + "'");
 			
 			if(dataTable.isDblClickSelect()) writer.write(",dblClickSelect:true");
@@ -462,8 +411,8 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 			if(dataTable.getUpdate() != null) {
 				writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, dataTable.getParent(), dataTable.getUpdate()) + "'");
 				
-				if(dataTable.getOnselectStart() != null) writer.write(",onselectStart:function(xhr){" + dataTable.getOnselectStart() + ";}");
-				if(dataTable.getOnselectComplete() != null) writer.write(",onselectComplete:function(xhr, status, args){" + dataTable.getOnselectComplete() + ";}");
+				if(dataTable.getOnselectStart() != null) writer.write(",onselectStart:function(){" + dataTable.getOnselectStart() + ";}");
+				if(dataTable.getOnselectComplete() != null) writer.write(",onselectComplete:function(){" + dataTable.getOnselectComplete() + ";}");
 				
 				if(!dataTable.isDynamic()) {
 					writer.write(",formId:'" + formClientId + "'");
@@ -497,7 +446,7 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		}
 		
 		if(dataTable.isSelectionEnabled()) {
-			encodeHiddenInput(facesContext, clientId + "_selected", dataTable.getSelectedAsString());
+			encodeHiddenInput(facesContext, clientId + "_selectedRows", dataTable.getSelectedRowIndexesAsString());
 		}
 		
 		if(dataTable.isPaginator() && !dataTable.isDynamic()) {
@@ -548,7 +497,8 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		String clientId = dataTable.getClientId(facesContext);
 		Object selection = dataTable.getSelection();
 		boolean selectionEnabled = dataTable.isSelectionEnabled() && selection != null;
-		
+		boolean isSingleSelection = dataTable.isSingleSelectionMode();
+
 		if(dataTable.isLazy() && dataTable.getValue() instanceof LazyDataModel<?>) {
 			dataTable.loadLazyData();
 		}
@@ -567,17 +517,22 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 			if(!dataTable.isRowAvailable())
 				continue;
 			
-			//Preselection
-			if(selectionEnabled) {
-				handlePreselection(dataTable, selection);
+			// Selection
+			if(selectionEnabled && isSelected(dataTable.getRowData(), selection, isSingleSelection)) {
+				dataTable.getSelectedRowIndexes().add(dataTable.getRowIndex());
 			}
 			
-			//Row index var
+			// Row index var
 			if(dataTable.getRowIndexVar() != null) {
 				facesContext.getExternalContext().getRequestMap().put(dataTable.getRowIndexVar(), i);
 			}
 			
 			writer.startElement("tr", null);
+			
+			//rowIndex
+			writer.startElement("td", null);
+			writer.write(String.valueOf(dataTable.getRowIndex()));
+			writer.endElement("td");
 			
 			for(Iterator<UIComponent> iterator = dataTable.getChildren().iterator(); iterator.hasNext();) {
 				UIComponent kid = iterator.next();
@@ -590,11 +545,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 					writer.endElement("td");
 				}
 			}
-			
-			//rowIndex
-			writer.startElement("td", null);
-			writer.write(String.valueOf(dataTable.getRowIndex()));
-			writer.endElement("td");
 			
 			writer.endElement("tr");
 		}
@@ -610,67 +560,17 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		writer.endElement("table");
 	}
 	
-	protected void handlePreselection(DataTable dataTable, Object selection) {
-		Object rowData = dataTable.getRowData();
-		boolean isSingleSelection = dataTable.isSingleSelectionMode();
-		boolean isCellSelection = dataTable.isCellSelection();
-		
-		if(isCellSelection) {
-			String columnId = isCellSelected(rowData, selection, isSingleSelection);
-			
-			if(columnId != null) {
-				//Multiple cells in a row
-				if(columnId.contains(",")) {
-					String[] columnIds = columnId.split(",");
-					
-					for(String cid : columnIds)
-						dataTable.getSelected().add(dataTable.getRowIndex() + "#" + cid);
-				}
-				//Single cell in a row
-				else {
-					dataTable.getSelected().add(dataTable.getRowIndex() + "#" + columnId);
-				}
-			}
-				
-		} else if(isRowSelected(dataTable.getRowData(), selection, isSingleSelection)) {
-			dataTable.getSelected().add(String.valueOf(dataTable.getRowIndex()));
-		}
-	}
-	
-	protected boolean isRowSelected(Object rowData, Object selection, boolean single) {
+	protected boolean isSelected(Object data, Object selection, boolean single) {
 		if(single) {
-			return rowData.equals(selection);
+			return data.equals(selection);
 		} else {
 			Object[] rows = (Object[]) selection;
 			for(Object row : rows) {
-				if(rowData.equals(row))
+				if(data.equals(row))
 					return true;
 			}
 			
 			return false;
-		}
-	}
-	
-	protected String isCellSelected(Object rowData, Object selection, boolean single) {
-		if(single) {
-			Cell cell = (Cell) selection;
-			if(rowData.equals(cell.getRowData()))
-				return cell.getColumnId();
-			else
-				return null;
-			
-		} else {
-			StringBuffer buffer = new StringBuffer();
-			Cell[] cells = (Cell[]) selection;
-			
-			for(Cell cell : cells) {
-				if(rowData.equals(cell.getRowData())) {
-					buffer.append(cell.getColumnId());
-					buffer.append(",");
-				}
-			}
-		
-			return buffer.length() > 0 ? buffer.toString() : null;
 		}
 	}
 	
@@ -679,7 +579,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", id, null);
-		writer.writeAttribute("class", "ui-paginator ui-widget-header ui-corner-all", null);
 		writer.endElement("div");
 	}
 	

@@ -18,9 +18,8 @@
 		<attribute>
 			<name>activeIndex</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-			<description>Index of the active tab.</description>
+			<type>java.lang.String</type>
+			<description>Index of the active tab, use a comma seperated list for multiple tabs.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -35,57 +34,51 @@
 			<description>Style class of the root container of accordion panel</description>
 		</attribute>
 		<attribute>
-			<name>disabled</name>
+			<name>multiple</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Disables or enables accordion</description>
+			<description>Enables activation of multiple tabs.</description>
 		</attribute>
 		<attribute>
-			<name>effect</name>
+			<name>speed</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>slide</defaultValue>
-			<description>Effect to use when toggling the content</description>
+			<type>java.lang.Double</type>
+			<defaultValue>0.5</defaultValue>
+			<description>Animation speed in seconds.</description>
 		</attribute>
 		<attribute>
-			<name>autoHeight</name>
+			<name>animate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>When enabled, highest content is used as the reference. Provides more consistent animations.</description>
+			<description>Controls animation, set to false to turn of animation.</description>
 		</attribute>
 		<attribute>
-			<name>collapsible</name>
+			<name>hover</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Defines if accordion can be collapsed all together.</description>
+			<description>Enabled toggling on hover.</description>
 		</attribute>
 		<attribute>
-			<name>fillSpace</name>
+			<name>hoverDelay</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>When enabled, accordion fills the height of it's parent.</description>
-		</attribute>
-		<attribute>
-			<name>event</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Specifies the event to use to toggle a tab.</description>
+			<type>java.lang.Integer</type>
+			<defaultValue>500</defaultValue>
+			<description>Time to wait in terms of ms to toggle when a panel is hovered.</description>
 		</attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.accordion.css</name>
+			<name>/yui/accordion/assets/skins/sam/accordionview.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>/yui/accordion/accordionview-min.js</name>
+		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>
 		</resource>

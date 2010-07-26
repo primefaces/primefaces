@@ -1,6 +1,9 @@
-jQuery(document).ready(function() {
-	jQuery('body').addClass('yui-skin-sam');
-});
+YAHOO.util.Event.onDOMReady(
+	function() {
+		if(!YAHOO.util.Dom.hasClass(document.body, "yui-skin-sam"))
+			YAHOO.util.Dom.addClass(document.body, "yui-skin-sam");
+	}
+);
 
 PrimeFaces = {
 
@@ -95,13 +98,10 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
 		dataType : "xml",
 		data : requestParams,
 		success : function(data, status, xhr) {
-			if(cfg.onsuccess) {
-				var value = cfg.onsuccess(data, status, xhr, this.args);
-				if(value === false)
-					return;
-			}
-		
 			PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+			if(cfg.onsuccess) {
+				cfg.onsuccess(data, status, xhr, this.args);
+			}
 		},
 		complete : function(xhr, status) {
 			if(cfg.oncomplete) {
@@ -154,7 +154,7 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
 		
 		var args = {};
 		for(var j=0; j < callbackParams.length; j++) {
-			var jsonObj = jQuery.parseJSON(callbackParams[j].firstChild.data);
+			var jsonObj = YAHOO.lang.JSON.parse(callbackParams[j].firstChild.data);
 			
 			for(var paramName in jsonObj) {
 				if(paramName)

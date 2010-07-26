@@ -36,10 +36,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/menu/menu.css</name>
-		</resource>
-		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>/yui/menu/assets/skins/sam/menu.css</name>
 		</resource>
 		<resource>
 			<name>/yui/utilities/utilities.js</name>
@@ -48,7 +45,10 @@
 			<name>/yui/container/container-min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/menu/menu.js</name>
+			<name>/yui/menu/menu-min.js</name>
+		</resource>
+		<resource>
+			<name>/jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>/primefaces/core/core.js</name>

@@ -31,43 +31,15 @@ public class MenuButtonRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		MenuButton button = (MenuButton) component;
 		
-		if(button.shouldBuildFromModel()) {
+		if(button.isDynamic() && !isPostBack()) {
 			button.buildMenuFromModel();
 		}
 		
 		encodeMarkup(facesContext, button);
 		encodeScript(facesContext, button);
 	}
-	
-	protected void encodeMarkup(FacesContext facesContext, MenuButton button) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = button.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, button);
-		String buttonId = clientId + "_button";
-		
-		writer.startElement("span", button);
-		writer.writeAttribute("id", clientId, "id");	
-		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass(), "class");
-		if(button.getStyle() != null) writer.writeAttribute("style", button.getStyle(), "style");
-		
-		writer.startElement("button", null);
-		writer.writeAttribute("id", buttonId, null);
-		writer.writeAttribute("name", buttonId, null);
-		writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("onclick", widgetVar + ".showMenu()", null);
-		if(button.getValue() != null) {
-			writer.write(button.getValue());
-		}
-		writer.endElement("button");
-		
-		writer.startElement("span", button);
-		writer.writeAttribute("id", clientId + "_menuContainer", "id");
-		writer.endElement("span");
-		
-		writer.endElement("span");
-	}
 
-	protected void encodeScript(FacesContext facesContext, MenuButton button) throws IOException {
+	private void encodeScript(FacesContext facesContext, MenuButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
 		String var = createUniqueWidgetVar(facesContext, button);
@@ -84,45 +56,76 @@ public class MenuButtonRenderer extends CoreRenderer {
 
 		writer.write(var + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
 		
-		boolean firstItem = true;
-		writer.write("items:[");
+		boolean firstFn = true;
+		writer.write("commands:[");
 		for(UIComponent child : button.getChildren()) {
 			if(child instanceof MenuItem && child.isRendered()) {
-				MenuItem item = (MenuItem) child;
-				String itemClientId = item.getClientId(facesContext);
+				MenuItem menuItem = (MenuItem) child;
+				String menuItemClientId = menuItem.getClientId(facesContext);
+				String command = null;
 				
-				if(!firstItem)
-					writer.write(",");
-				else
-					firstItem = false;
-				
-				writer.write("{text:'" + item.getValue() + "'");
-				
-				if(item.getUrl() != null) {
-					writer.write(",url:'" + getResourceURL(facesContext, item.getUrl()) + "'");
+				if(menuItem.getUrl() != null) {
+					command = "window.location.href = '" + menuItem.getUrl() + "'";
 				} else {
-					String onclick = item.isAjax() ? buildAjaxRequest(facesContext, item, formClientId, itemClientId) : buildNonAjaxRequest(facesContext, item, formClientId, itemClientId);
-					if(item.getOnclick() != null) {
-						onclick = item.getOnclick() + ";" + onclick;
-					}
-						
-					writer.write(",onclick:{fn:function() {" + onclick + "}}");
+					command = menuItem.isAjax() ? buildAjaxRequest(facesContext, menuItem, formClientId, menuItemClientId) : buildNonAjaxRequest(facesContext, menuItem, formClientId, menuItemClientId);
 				}
 				
-				writer.write("}");
+				if(!firstFn) {
+					writer.write(",");
+				} else {
+					firstFn = false;
+				}
+				
+				writer.write("function() {" + command + "}");
 			}
 		}
 		writer.write("]");
-		
-		if(button.isDisabled()) {
-			writer.write(",disabled:true");
-		}
 
  		writer.write("});");
 		
 		writer.endElement("script");
 	}
 	
+	private void encodeMarkup(FacesContext facesContext, MenuButton button) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = button.getClientId(facesContext);
+		String inputId = clientId + "_input";
+		String selectId = clientId + "_select";
+		
+		writer.startElement("span", button);
+		writer.writeAttribute("id", clientId, "id");
+		String style = button.getStyle() != null ? "display:none;" + button.getStyle() : "display:none;";
+		
+		writer.writeAttribute("style", style, "style");
+		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass(), "class");
+		
+		writer.startElement("input", null);
+		writer.writeAttribute("id", inputId, null);
+		writer.writeAttribute("name", inputId, null);
+		writer.writeAttribute("type", "button", null);
+		writer.writeAttribute("value", button.getValue(), null);
+		writer.endElement("input");
+		
+		writer.startElement("select", null);
+		writer.writeAttribute("id", selectId, null);
+		writer.writeAttribute("name", selectId, null);
+		
+		for(UIComponent kid : button.getChildren()) {
+			if(kid instanceof MenuItem && kid.isRendered()) {
+				MenuItem menuItem = (MenuItem) kid;
+				
+				writer.startElement("option", null);
+				writer.writeAttribute("value", menuItem.getClientId(facesContext), null);
+				writer.write((String) menuItem.getValue());
+				writer.endElement("option");
+			}
+		}
+		
+		writer.endElement("select");
+		
+		writer.endElement("span");
+	}
+
 	@Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Rendering happens on encodeEnd
