@@ -73,8 +73,6 @@ public class DialogRenderer extends CoreRenderer {
 		if(dialog.getMinWidth() != 150) writer.write(",minWidth:" + dialog.getMinWidth());
 		if(dialog.getShowEffect() != null) writer.write(",show:'" + dialog.getShowEffect() + "'");
 		if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
-		if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
-		if(!dialog.isClosable()) writer.write(",closable:false");
 		
 		//Position
 		String position = dialog.getPosition();	

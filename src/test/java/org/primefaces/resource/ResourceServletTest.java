@@ -49,7 +49,7 @@ public class ResourceServletTest {
 		String version = ResourceUtils.VERSION_INFO;
 		
 		assertEquals("text/css", rs.getResourceContentType("/myapp/primefaces_resource" + version + "/yui/button/button.css"));
-		assertEquals("text/javascript", rs.getResourceContentType("/myapp/primefaces_resource" + version + "/yui/button/button.js"));
+		assertEquals("text/js", rs.getResourceContentType("/myapp/primefaces_resource" + version + "/yui/button/button.js"));
 		assertEquals("image/png", rs.getResourceContentType("/myapp/primefaces_resource" + version + "/yui/calendar/calendar.png"));
 	}
 }

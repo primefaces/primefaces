@@ -47,39 +47,43 @@ public class CalendarRenderer extends CoreRenderer{
 
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Calendar calendar = (Calendar) component;
-		String value = CalendarUtils.getValueAsString(facesContext, calendar);
 		
-		encodeMarkup(facesContext, calendar, value);
-		encodeScript(facesContext, calendar, value);
+		encodeMarkup(facesContext, calendar);
+		encodeScript(facesContext, calendar);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, Calendar calendar, String value) throws IOException{
+	protected void encodeMarkup(FacesContext facesContext, Calendar calendar) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = calendar.getClientId(facesContext);
-		String inputId = clientId + "_input";
 		
 		writer.startElement("span", calendar);
 		writer.writeAttribute("id", clientId, null);
 		if(calendar.getStyle() != null) writer.writeAttribute("style", calendar.getStyle(), null);
 		if(calendar.getStyleClass() != null) writer.writeAttribute("class", calendar.getStyleClass(), null);
 		
-		//popup container
 		if(!calendar.isPopup()) {
 			writer.startElement("div", null);
 			writer.writeAttribute("id", clientId + "_inline", null);
 			writer.endElement("div");
 		}
 		
-		//input
+		encodeInputField(facesContext, calendar);
+		
+		writer.endElement("span");
+	}
+	
+	protected void encodeInputField(FacesContext facesContext, Calendar calendar) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = calendar.getClientId(facesContext);
+		String inputId = clientId + "_input";
+		String value = CalendarUtils.getValueAsString(facesContext, calendar);
 		String type = calendar.isPopup() ? "text" : "hidden";
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", type, null);
-		
-		if(value != null)
-			writer.writeAttribute("value", value, null);
+		writer.writeAttribute("value", value, null);
 		
 		if(calendar.isPopup()) {
 			if(calendar.getInputStyle() != null) writer.writeAttribute("style", calendar.getInputStyle(), null);
@@ -89,11 +93,9 @@ public class CalendarRenderer extends CoreRenderer{
 		}
 
 		writer.endElement("input");
-		
-		writer.endElement("span");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Calendar calendar, String value) throws IOException{
+	protected void encodeScript(FacesContext facesContext, Calendar calendar) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = calendar.getClientId(facesContext);
 		String widgetVar = createUniqueWidgetVar(facesContext, calendar);
@@ -108,7 +110,6 @@ public class CalendarRenderer extends CoreRenderer{
 		writer.write("popup:" + calendar.isPopup());
 		writer.write(",locale:'" + calendar.calculateLocale(facesContext).toString() + "'");
 		
-		if(value != null) writer.write(",defaultDate:'" + value + "'");
 		if(calendar.getPattern() != null) writer.write(",dateFormat:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
 		if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
 		if(calendar.getMindate() != null) writer.write(",minDate:'" +CalendarUtils.getDateAsString(calendar, calendar.getMindate() + "'"));
@@ -165,20 +166,20 @@ public class CalendarRenderer extends CoreRenderer{
 		Calendar calendar = (Calendar) component;
 		String submittedValue = (String) value;
 		
-		if(isValueBlank(submittedValue))
-			return null;
-		
 		//Delegate to user supplied converter if defined
 		if(calendar.getConverter() != null) {
 			return calendar.getConverter().getAsObject(facesContext, calendar, submittedValue);
 		}
 
+		if(isValueBlank(submittedValue))
+			return null;
+
+		Locale locale = calendar.calculateLocale(facesContext);
+		SimpleDateFormat format = new SimpleDateFormat(calendar.getPattern(), locale);
+		format.setTimeZone(calendar.calculateTimeZone());
+
 		try {
 			Date convertedValue;
-			Locale locale = calendar.calculateLocale(facesContext);
-			SimpleDateFormat format = new SimpleDateFormat(calendar.getPattern(), locale);
-			format.setTimeZone(calendar.calculateTimeZone());
-			
 			convertedValue = format.parse(submittedValue);
 			
 			calendar.queueEvent(new DateSelectEvent(calendar, convertedValue));		//Queue a date select event for any listeners

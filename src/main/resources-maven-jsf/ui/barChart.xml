@@ -197,6 +197,9 @@
 			<name>/yui/datasource/datasource-min.js</name>
 		</resource>
 		<resource>
+			<name>/yui/json/json-min.js</name>
+		</resource>
+		<resource>
 			<name>/yui/swf/swf-min.js</name>
 		</resource>
 		<resource>

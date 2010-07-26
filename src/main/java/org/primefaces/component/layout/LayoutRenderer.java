@@ -123,21 +123,18 @@ public class LayoutRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeAjaxEventListeners(FacesContext facesContext, Layout layout) throws IOException {
-		encodeAjaxEventListener(facesContext, layout, "onToggleUpdate", layout.getOnToggleUpdate(), "ajaxToggle", "onToggleComplete", layout.getOnToggleComplete());
-		encodeAjaxEventListener(facesContext, layout, "onCloseUpdate", layout.getOnCloseUpdate(), "ajaxClose",  "onCloseComplete", layout.getOnCloseComplete());
-		encodeAjaxEventListener(facesContext, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize", "onResizeComplete", layout.getOnResizeComplete());
+		encodeAjaxEventListener(facesContext, layout, "onToggleUpdate", layout.getOnToggleUpdate(), "ajaxToggle");
+		encodeAjaxEventListener(facesContext, layout, "onCloseUpdate", layout.getOnCloseUpdate(), "ajaxClose");
+		encodeAjaxEventListener(facesContext, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize");
 	}
 	
-	protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam, String callbackName, String callback) throws IOException {
+	protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 
 		writer.write("," + ajaxEventParam + ":true");
 		
 		if(update != null)
 			writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(facesContext, layout, update)  + "'");
-		
-		if(callback != null)
-			writer.write("," + callbackName + ":function(xhr, status, args) {" + callback + ";}");
 	}
 	
 	protected void encodeUnits(FacesContext facesContext, Layout layout) throws IOException {

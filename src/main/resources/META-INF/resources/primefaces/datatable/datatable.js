@@ -543,43 +543,6 @@ PrimeFaces.widget.DataTableExtensions = {
 	resetPageState : function() {
 		document.getElementById(this.pageParam).value = 1;
 		this.get('paginator').setPage(1, true);
-	},
-	
-	_getTrTemplateEl : function (oRecord, index) {
-	    // Template is already available
-	    if(this._elTrTemplate) {
-	        return this._elTrTemplate;
-	    }
-	    // Template needs to be created
-	    else {
-	        var d   = document,
-	            tr  = d.createElement('tr'),
-	            td  = d.createElement('td'),
-	            div = d.createElement('div');
-	    
-	        // Append the liner element
-	        td.appendChild(div);
-
-	        // Create TD elements into DOCUMENT FRAGMENT
-	        var df = document.createDocumentFragment(),
-	            allKeys = this._oColumnSet.keys,
-	            elTd;
-
-	        // Set state for each TD;
-	        var aAddClasses;
-	        for(var i=0, keysLen=allKeys.length; i<keysLen; i++) {
-	            // Clone the TD template
-	            elTd = td.cloneNode(true);
-
-	            // Format the base TD
-	            elTd = this._formatTdEl(allKeys[i], elTd, i, (i===keysLen-2));
-	                        
-	            df.appendChild(elTd);
-	        }
-	        tr.appendChild(df);
-	        this._elTrTemplate = tr;
-	        return tr;
-	    }   
 	}
 };
 

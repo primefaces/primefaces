@@ -173,15 +173,10 @@ public class PanelRenderer extends CoreRenderer {
 		writer.endElement("span");
 		
 		//Options
-		if(panel.isClosable()) {
+		if(panel.isClosable()) 
 			encodeIcon(facesContext, panel, "ui-icon-closethick", widgetVar + ".close()", clientId + "_closer");
-		}
-		
-		if(panel.isToggleable()) {
-			String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-			encodeIcon(facesContext, panel, icon, widgetVar + ".toggle()", clientId + "_toggler");
-		}
-
+		if(panel.isToggleable()) 
+			encodeIcon(facesContext, panel, "ui-icon-minusthick", widgetVar + ".toggle()", clientId + "_toggler");
 		if(panel.getOptionsMenu() != null) {
 			String menuVar = createUniqueWidgetVar(facesContext, panel.getOptionsMenu());
 			encodeIcon(facesContext, panel, "ui-icon-gear", menuVar + ".show()", clientId + "_menu");

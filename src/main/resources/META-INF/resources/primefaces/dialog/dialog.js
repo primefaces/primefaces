@@ -8,10 +8,6 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
 	if(this.cfg.ajaxClose) {
 		jQuery(this.jqId).bind('dialogclose', {dialog: this}, this.triggerCloseEvent);
 	}
-	
-	if(this.cfg.closable == false) {
-		jQuery(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
-	}
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {

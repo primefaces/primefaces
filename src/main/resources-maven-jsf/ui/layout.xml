@@ -92,24 +92,6 @@
 			<type>java.lang.String</type>
 			<description>Id(s) of components to update after ajax resizelistener is processed and unit is resized</description>
 		</attribute>
-		<attribute>
-			<name>onResizeComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Client side callback to invoke after resizeListener is invoked.</description>
-		</attribute>
-		<attribute>
-			<name>onCloseComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Client side callback to invoke after closeListener is invoked.</description>
-		</attribute>
-		<attribute>
-			<name>onToggleComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Client side callback to invoke after toggleListener is invoked.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>

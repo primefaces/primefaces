@@ -302,19 +302,12 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 		writer.write(datasourceVar + ".responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;\n");
 		writer.write(datasourceVar + ".responseSchema = {fields:[");
 		
-		boolean firstWritten = false;
-		for(UIComponent kid : dataTable.getChildren()) {
-			if(kid.isRendered() && kid instanceof Column) {
-				if(firstWritten)
-					writer.write(",");
-				else
-					firstWritten=true;
-				
-				writer.write("{key:'" + kid.getClientId(facesContext) + "'}");
-			}
-		}
+		writer.write("{key:'rowIndex'}");
 		
-		writer.write(",{key:'rowIndex'}");
+		for(UIComponent kid : dataTable.getChildren()) {
+			if(kid.isRendered() && kid instanceof Column)
+				writer.write(",{key:'" + kid.getClientId(facesContext) + "'}");
+		}
 		
 		writer.write("]");
 		
@@ -326,18 +319,16 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 	protected String encodeColumnDefinition(FacesContext facesContext, DataTable dataTable, String datatableVar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String columnDefVar = datatableVar + "_columnDef";
-		boolean firstWritten = false;
 		
 		writer.write("var " + columnDefVar + " = [");
-				
+		
+		writer.write("{key:'rowIndex', hidden:true}");
+		
 		for(UIComponent kid : dataTable.getChildren()) {
 			if(kid.isRendered() && kid instanceof Column) {
 				Column column = (Column) kid;
 				
-				if(firstWritten)
-					writer.write(",");
-				else
-					firstWritten=true;
+				writer.write(",");
 				
 				writer.write("{key:'" + column.getClientId(facesContext)  + "'");
 				
@@ -384,9 +375,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 				writer.write("}");
 			}
 		}
-		
-		writer.write(",{key:'rowIndex', hidden:true}");
-		
 		writer.write("];\n");
 		
 		return columnDefVar;
@@ -579,6 +567,11 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 			
 			writer.startElement("tr", null);
 			
+			//rowIndex
+			writer.startElement("td", null);
+			writer.write(String.valueOf(dataTable.getRowIndex()));
+			writer.endElement("td");
+			
 			for(Iterator<UIComponent> iterator = dataTable.getChildren().iterator(); iterator.hasNext();) {
 				UIComponent kid = iterator.next();
 				
@@ -590,11 +583,6 @@ public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
 					writer.endElement("td");
 				}
 			}
-			
-			//rowIndex
-			writer.startElement("td", null);
-			writer.write(String.valueOf(dataTable.getRowIndex()));
-			writer.endElement("td");
 			
 			writer.endElement("tr");
 		}

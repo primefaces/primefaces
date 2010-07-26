@@ -119,7 +119,7 @@
 			<name>dateSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void dateSelectListener(org.primefaces.event.DateSelectEvent)</method-signature>
+			<method-signature>void dateSelectListener(org.primefaces.event.ScheduleDateSelectEvent)</method-signature>
 			<description>A server side listener to invoke when a date is selected.</description>
 		</attribute>
 		<attribute>

@@ -83,14 +83,12 @@
 			<name>overlaySelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void overlaySelectListener(org.primefaces.event.map.OverlaySelectEvent)</method-signature>
 			<description>Server side listener to invoke when an overlay is selected with ajax.</description>
 		</attribute>
 		<attribute>
 			<name>stateChangeListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void stateChangeListener(org.primefaces.event.map.StateChangeEvent)</method-signature>
 			<description>Server side listener to invoke when map state is changed.</description>
 		</attribute>
 		<attribute>
@@ -103,7 +101,6 @@
 			<name>pointSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void pointSelectListener(org.primefaces.event.map.PointSelectEvent)</method-signature>
 			<description>Server side listener to invoke when a point in map is selected.</description>
 		</attribute>
 		<attribute>
@@ -116,7 +113,6 @@
 			<name>markerDragListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
-			<method-signature>void markerDragListener(org.primefaces.event.map.MarkerDragEvent)</method-signature>
 			<description>Server side listener to invoke when a marker is dragged.</description>
 		</attribute>
 		<attribute>

@@ -8,14 +8,8 @@ PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
 	
 	jQuery(this.jqId).dialog(this.cfg);
 	
-	//Setup button pane
 	var buttons = this.jqId + '_buttons';
 	jQuery(buttons).appendTo(jQuery(buttons).parent().parent()).addClass('ui-dialog-buttonpane ui-widget-content ui-helper-clearfix');
-	
-	//Close icon
-	if(this.cfg.closable == false) {
-		jQuery(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
-	}
 
 }
 

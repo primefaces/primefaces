@@ -45,9 +45,6 @@ public class MessagesRenderer extends CoreRenderer {
 			FacesMessage message = allMessages.next();
 			FacesMessage.Severity severity = message.getSeverity();
 			
-			if(message.isRendered() && !uiMessages.isRedisplay())
-				continue;
-			
 			if(severity.equals(FacesMessage.SEVERITY_INFO)) messages.get("info").add(message);
 			else if(severity.equals(FacesMessage.SEVERITY_WARN)) messages.get("warn").add(message);
 			else if(severity.equals(FacesMessage.SEVERITY_ERROR)) messages.get("error").add(message);

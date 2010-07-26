@@ -34,13 +34,6 @@
 			<defaultValue>false</defaultValue>
 			<description>When true, only facesmessages with no clientIds are displayed.</description>
 		</attribute>
-		<attribute>
-			<name>redisplay</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-			<description>Defines if already rendered messages should be rendered.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>

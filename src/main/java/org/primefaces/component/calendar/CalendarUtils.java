@@ -27,27 +27,19 @@ import javax.faces.context.FacesContext;
 public class CalendarUtils {
 
 	public static String getValueAsString(FacesContext facesContext, Calendar calendar) {
-		Object submittedValue = calendar.getSubmittedValue();
-		if(submittedValue != null) {
-			return submittedValue.toString();
-		}
-		
 		Object value = calendar.getValue();
-		if(value == null) {
+		
+		//Delegate to user supplied converter if defined
+		if(calendar.getConverter() != null)
+			return calendar.getConverter().getAsString(facesContext, calendar, value);
+			
+		if(value == null)
 			return null;
-		} else {
-			//first ask the converter
-			if(calendar.getConverter() != null) {
-				return calendar.getConverter().getAsString(facesContext, calendar, value);
-			}
-			//Use built-in converter
-			else {
-				SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.getPattern(), calendar.calculateLocale(facesContext));
-				dateFormat.setTimeZone(calendar.calculateTimeZone());
-				
-				return dateFormat.format(value);
-			}
-		}
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.getPattern(), calendar.calculateLocale(facesContext));
+		dateFormat.setTimeZone(calendar.calculateTimeZone());
+		
+		return dateFormat.format(value);
 	}
 	
 	public static String getDateAsString(Calendar calendar, Object date) {		

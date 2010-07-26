@@ -36,20 +36,11 @@ public class CalendarTest {
 	}
 	
 	@Test
-	public void dateAsStringShouldBeNullIfValueIsNull() {
+	public void dateAsStringIsNullIfValueIsNull() {
 		Calendar calendar = new Calendar();
 		String dateAsString = CalendarUtils.getValueAsString(null, calendar);
 		
 		assertEquals(null, dateAsString);
-	}
-	
-	@Test
-	public void dateAsStringShouldBeSubmittedValueIfExists() {
-		Calendar calendar = new Calendar();
-		calendar.setSubmittedValue("05.07.2010");
-		String dateAsString = CalendarUtils.getValueAsString(null, calendar);
-		
-		assertEquals("05.07.2010", dateAsString);
 	}
 	
 	@Test
@@ -61,26 +52,5 @@ public class CalendarTest {
 		
 		convertedValue = renderer.getConvertedValue(null, calendar, "  ");
 		assertNull(convertedValue);
-	}
-	
-	@Test
-	public void shouldConvertPattern() {
-		String pattern = "dd.MM.yyyy";
-		assertEquals("dd.mm.yy", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd/MM/yy";
-		assertEquals("dd/mm/y", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "d, MMM, yyyy";
-		assertEquals("d, M, yy", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd-MMMMMM-yyyy";
-		assertEquals("dd-MM-yy", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd-MM-yyyy EEE";
-		assertEquals("dd-mm-yy D", CalendarUtils.convertPattern(pattern));
-		
-		pattern = "dd-MM-yyyy EEEEEE";
-		assertEquals("dd-mm-yy DD", CalendarUtils.convertPattern(pattern));
 	}
 }

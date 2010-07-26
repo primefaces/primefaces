@@ -2361,12 +2361,7 @@ YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
 			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.onToggleUpdate;
 		}
 		
-		var options = {};
-		if(this.cfg.onToggleComplete) {
-			options.oncomplete = this.cfg.onToggleComplete;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+		PrimeFaces.ajax.AjaxRequest(this.cfg.url, {}, params);
 	},
 
 	handleClose : function(e, args) {
@@ -2379,12 +2374,7 @@ YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
 			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.onCloseUpdate;
 		}
 		
-		var options = {};
-		if(this.cfg.onCloseComplete) {
-			options.oncomplete = this.cfg.onCloseComplete;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+		PrimeFaces.ajax.AjaxRequest(this.cfg.url, {}, params);
 	},
 	
 	handleResize : function(e, args) {
@@ -2399,12 +2389,7 @@ YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
 			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.onResizeUpdate;
 		}
 		
-		var options = {};
-		if(this.cfg.onResizeComplete) {
-			options.oncomplete = this.cfg.onResizeComplete;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+		PrimeFaces.ajax.AjaxRequest(this.cfg.url, {}, params);
 	},
 	
 	setState : function() {
