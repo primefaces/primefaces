@@ -21,5 +21,5 @@ PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.collapseAll = function() {
-    jQuery(this.jqAcco).accordion('activate', 'false');
+    jQuery(this.jqAcco).accordion('activate', false);
 }
