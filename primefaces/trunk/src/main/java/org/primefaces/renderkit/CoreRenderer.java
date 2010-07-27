@@ -225,53 +225,59 @@ public class CoreRenderer extends Renderer {
 		UIComponent component = (UIComponent) source;
 		
 		StringBuilder req = new StringBuilder();
-		req.append("PrimeFaces.ajax.AjaxRequest('");
-		req.append(getActionURL(facesContext));
-		req.append("',{");
-		req.append("formId:'");
-		req.append(formId);
-		req.append("'");
-		
-		if(source.isAsync()) req.append(",async:true");
-		
-		//source
-		if(source.getOnstart() != null) req.append(",onstart:function(xhr){" + source.getOnstart() + ";}");
-		if(source.getOnerror() != null) req.append(",onerror:function(xhr, status, error){" + source.getOnerror() + ";}");
-		if(source.getOnsuccess() != null) req.append(",onsuccess:function(data, status, xhr, args){" + source.getOnsuccess() + ";}"); 
-		if(source.getOncomplete() != null) req.append(",oncomplete:function(xhr, status, args){" + source.getOncomplete() + ";}");
+		req.append("PrimeFaces.ajax.AjaxRequest(");
 
-		req.append(",global:" + source.isGlobal());
-		
-		req.append("},{");
-		
-		req.append("'" + decodeParam + "'");
-		req.append(":");
-		req.append("'" + decodeParam + "'");
-		
-		if(source.getUpdate() != null) {
-			req.append(",'" + Constants.PARTIAL_UPDATE_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, component, source.getUpdate()) + "'");
+                //url
+                req.append("'").append(getActionURL(facesContext)).append("'");
+
+                //options
+		req.append(",{formId:'").append(formId).append("'");
+                req.append(",async:").append(source.isAsync());
+                req.append(",global:").append(source.isGlobal());
+
+                //source
+                req.append(",source:'").append(decodeParam).append("'");
+
+                //process
+                String process = source.getProcess() != null ? ComponentUtils.findClientIds(facesContext, component, source.getProcess()) : "@all";
+                req.append(",process:'").append(process).append("'");
+
+                //update
+                if(source.getUpdate() != null) {
+                    req.append(",update:'").append(ComponentUtils.findClientIds(facesContext, component, source.getUpdate())).append("'");
 		}
-		
-		if(source.getProcess() != null) {
-			req.append(",'" + Constants.PARTIAL_PROCESS_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, component, source.getProcess()) + "'");
-		}
-		
+	
+		//callbacks
+		if(source.getOnstart() != null) req.append(",onstart:function(xhr){").append(source.getOnstart()).append(";}");
+		if(source.getOnerror() != null) req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
+		if(source.getOnsuccess() != null) req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
+		if(source.getOncomplete() != null) req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
+
+                req.append("}");
+
+                //params
+                boolean firstParam = true, hasParam = false;
 		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter parameter = (UIParameter) child;
-				
-				req.append(",");
-				req.append("'" + parameter.getName() + "'");
-				req.append(":");
-				req.append("'" + parameter.getValue() + "'");
-			}
-		}
+                    if(child instanceof UIParameter) {
+                        UIParameter parameter = (UIParameter) child;
+                        hasParam = true;
+
+                        if(firstParam) {
+                            firstParam = false;
+                            req.append(",{");
+                        }
+                        else {
+                            req.append(",");
+                        }
+
+                        req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
+                    }
+
+                    if(hasParam)
+                        req.append("}");
+                }
 		
-		req.append("});");
-		
-		req.append("return false;");
+		req.append(");return false;");
 		
 		return req.toString();
 	}

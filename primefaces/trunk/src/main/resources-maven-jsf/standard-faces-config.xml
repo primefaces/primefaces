@@ -1,10 +1,9 @@
 	<lifecycle>
-		<phase-listener>org.primefaces.application.PostRestoreViewHandler</phase-listener>
-		<phase-listener>org.primefaces.application.PrimeFacesPhaseListener</phase-listener>
-		<phase-listener>org.primefaces.application.DynamicContentStreamer</phase-listener>
+            <phase-listener>org.primefaces.application.DynamicContentStreamer</phase-listener>
 	</lifecycle>
-	
-	<factory>
-		<external-context-factory>org.primefaces.context.PrimeExternalContextFactory</external-context-factory>
-	</factory>
-	
+
+        <factory>
+            <partial-view-context-factory>
+                org.primefaces.context.PrimePartialViewContextFactory
+            </partial-view-context-factory>
+        </factory>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,8 @@ package org.primefaces.util;
 
 public class Constants {
 
-	public static final String PARTIAL_REQUEST_PARAM = "primefacesPartialRequest";
-	public static final String PARTIAL_UPDATE_PARAM = "primefacesPartialUpdate";
-	public static final String PARTIAL_PROCESS_PARAM = "primefacesPartialProcess";
-	public static final String PARTIAL_SOURCE_PARAM = "primefacesPartialSource";
-	
+    public static final String PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
+    public static final String PARTIAL_UPDATE_PARAM = "javax.faces.partial.render";
+    public static final String PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
+    public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
 }
