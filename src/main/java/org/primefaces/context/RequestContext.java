@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,44 +15,44 @@
  */
 package org.primefaces.context;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public abstract class RequestContext {
-	
-	private static ThreadLocal<RequestContext> instance = new ThreadLocal<RequestContext>() {
 
-		@Override
-		protected RequestContext initialValue() {
-			return null;
-		}
-		
-	};
-	
-	public static RequestContext getCurrentInstance() {
-		return instance.get();
-	}
-	
-	protected static void setCurrentInstance(RequestContext requestContext) {
-        if(requestContext == null)
-            instance.remove();
-        else
-            instance.set(requestContext);
+    private static ThreadLocal<RequestContext> instance = new ThreadLocal<RequestContext>() {
+
+        @Override
+        protected RequestContext initialValue() {
+            return null;
+        }
+    };
+
+    public static RequestContext getCurrentInstance() {
+        return instance.get();
     }
-	
-	public abstract boolean isAjaxRequest();
-	
-	public abstract void release();
-	
-	public abstract void addCallbackParam(String name, Object value);
-	
-	public abstract Map<String,Object> getCallbackParams();
-	
-	public abstract void addPartialUpdateTarget(String name);
-	
-	public abstract List<String> getPartialUpdateTargets();
-	
-	public abstract String getAjaxRedirectUrl();
-	
-	public abstract void setAjaxRedirectUrl(String url);
+
+    protected static void setCurrentInstance(RequestContext requestContext) {
+        if (requestContext == null) {
+            instance.remove();
+        } else {
+            instance.set(requestContext);
+        }
+    }
+
+    @Deprecated
+    public abstract boolean isAjaxRequest();
+
+    public abstract void release();
+
+    public abstract void addCallbackParam(String name, Object value);
+
+    public abstract Map<String, Object> getCallbackParams();
+
+    public abstract void addPartialUpdateTarget(String name);
+
+    public abstract void addPartialUpdateTargets(Collection<String> collection);
+
+    public abstract List<String> getPartialUpdateTargets();
 }
