@@ -5,6 +5,9 @@ import org.primefaces.event.FlowEvent;
 
 	public void processDecodes(FacesContext facesContext) {
 		if(isWizardRequest(facesContext)) {
+                        String currentStep = facesContext.getExternalContext().getRequestParameterMap().get(getClientId(facesContext) + "_currentStep");
+                        setStep(currentStep);
+
 			//If flow goes back, skip to rendering
 			if(isBackRequest(facesContext)) {
 				facesContext.renderResponse();
@@ -35,10 +38,10 @@ import org.primefaces.event.FlowEvent;
 	
 	public Tab getStepToProcess(FacesContext facesContext) {
 		if(tabToProcess == null) {
-			String currentStepId = facesContext.getExternalContext().getRequestParameterMap().get(getClientId(facesContext) + "_currentStep");
+			String currentStep = getStep();
 			
 			for(javax.faces.component.UIComponent child : getChildren()) {
-				if(child.getId().equals(currentStepId)) {
+				if(child.getId().equals(currentStep)) {
 					tabToProcess = (Tab) child;
 					
 					break;
@@ -49,10 +52,10 @@ import org.primefaces.event.FlowEvent;
 		return tabToProcess;
 	}
 	
-	private boolean isWizardRequest(FacesContext facesContext) {
+	public boolean isWizardRequest(FacesContext facesContext) {
 		return facesContext.getExternalContext().getRequestParameterMap().containsKey(getClientId(facesContext) + "_wizardRequest");
 	}
 	
-	private boolean isBackRequest(FacesContext facesContext) {
+	public boolean isBackRequest(FacesContext facesContext) {
 		return facesContext.getExternalContext().getRequestParameterMap().containsKey(getClientId(facesContext) + "_backRequest");
 	}
