@@ -54,7 +54,7 @@ PrimeFaces.ajax.AjaxUtils = {
     },
 	
     serialize: function(params) {
-        var serializedParams;
+        var serializedParams = '';
 		
         for(var param in params) {
             serializedParams = serializedParams + "&" + param + "=" + params[param];
@@ -71,7 +71,7 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
         var jqForm = PrimeFaces.escapeClientId(cfg.formId),
         requestParams = jQuery(jqForm).serialize();
     } else {
-        requestParams = PrimeFaces.View_State + "=" + PrimeFaces.ajax.AjaxUtils.encodeViewState();
+        requestParams = PrimeFaces.VIEW_STATE + "=" + PrimeFaces.ajax.AjaxUtils.encodeViewState();
     }
 
     //partial ajax
