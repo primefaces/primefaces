@@ -1,54 +1,73 @@
 PrimeFaces.widget.DataGrid = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.content = this.jqId + '_content';
 	
-	if(this.cfg.paginator) {
-		this.setupPaginator();
-	}
+    if(this.cfg.paginator) {
+        this.setupPaginator();
+    }
 }
 
 PrimeFaces.widget.DataGrid.prototype.setupPaginator = function() {
-	this.cfg.paginator.subscribe('changeRequest', this.handlePagination, null, this);
-	this.cfg.paginator.render();
+    var paginator = this.getPaginator();
+
+    paginator.subscribe('changeRequest', this.handlePagination, null, this);
+    paginator.render();
 }
 
 PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
-	var params = {};
-	params[PrimeFaces.PARTIAL_SOURCE_PARAM] = this.id;
-	params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-	params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.id;
-	params[this.id + "_ajaxPaging"] = true;
-	params[this.id + "_first"] = newState.recordOffset;
-	params[this.id + "_rows"] = newState.rowsPerPage;
-	params[this.id + "_page"] = newState.page;
+    var params = {};
+    params[this.id + "_ajaxPaging"] = true;
+    params[this.id + "_first"] = newState.recordOffset;
+    params[this.id + "_rows"] = newState.rowsPerPage;
+    params[this.id + "_page"] = newState.page;
+    
+    var _self = this;
 
-	var requestParams = jQuery(PrimeFaces.escapeClientId(this.cfg.formId)).serialize();
-	requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params);
-	
-	var dg = this;
-	jQuery.ajax({url: this.cfg.url,
-			  	type: "POST",
-			  	cache: false,
-			  	dataType: "xml",
-			  	data: requestParams,
-			  	success: function(responseXML) {
-					var xmlDoc = responseXML.documentElement,
-					table = xmlDoc.getElementsByTagName("table")[0].firstChild.data,
-					state = xmlDoc.getElementsByTagName("state")[0].firstChild.data,
-					tableId = PrimeFaces.escapeClientId(dg.id + "_table");
-					
-					PrimeFaces.ajax.AjaxUtils.updateState(state);
-					
-					if(dg.cfg.effect) {
-						jQuery(tableId).fadeOut(dg.cfg.effectSpeed, function() {
-							jQuery(tableId).replaceWith(table);
-							jQuery(tableId).fadeIn(dg.cfg.effectSpeed);
-						});
-					} else {
-						jQuery(tableId).replaceWith(table);
-					}
-					
-					dg.cfg.paginator.setState(newState);
-				}
-			});
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url,
+            {
+                source: this.id,
+                update: this.id,
+                process: this.id,
+                formId: this.cfg.formId,
+                onsuccess: function(responseXML) {
+                    var xmlDoc = responseXML.documentElement,
+                    updates = xmlDoc.getElementsByTagName("update");
+
+                    for(var i=0; i < updates.length; i++) {
+                        var id = updates[i].attributes.getNamedItem("id").nodeValue,
+                        data = updates[i].firstChild.data;
+
+                        if(id == PrimeFaces.VIEW_STATE) {
+                            PrimeFaces.ajax.AjaxUtils.updateState(data);
+                        }
+                        else if(id == _self.id){
+
+                            if(_self.cfg.effect) {
+                                var _data = data;
+                                jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
+                                    jQuery(_self.content).html(_data);
+                                    jQuery(_self.content).fadeIn(_self.cfg.effectSpeed);
+                                });
+                            } else {
+                                jQuery(_self.content).html(data);
+                            }
+
+                            _self.getPaginator().setState(newState);
+                            
+                        }
+                        else {
+                            jQuery(PrimeFaces.escapeClientId(id)).replaceWith(data);
+                        }
+                    }
+
+                    return false;
+                }
+            },
+            params);
+}
+
+PrimeFaces.widget.DataGrid.prototype.getPaginator = function() {
+    return this.cfg.paginator;
 }
