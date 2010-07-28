@@ -20,240 +20,200 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.FacesException;
-import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.ServletResponse;
 
 import org.primefaces.component.tabview.Tab;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class WizardRenderer extends CoreRenderer implements PartialRenderer {
+public class WizardRenderer extends CoreRenderer {
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		Wizard wizard = (Wizard) component;
-			
-		encodeMarkup(facesContext, wizard);
-		encodeScript(facesContext, wizard);
-	}
-	
-	public void encodePartially(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		Wizard wizard = (Wizard) component;
-		String clientId = wizard.getClientId(facesContext);
-		String stepToDisplay = null;
-		boolean success = isStepValid(facesContext, wizard);
-		
-		String currentStep = params.get(clientId + "_currentStep");
-		String newStep = params.get(clientId + "_stepToGo");
+    @Override
+    public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
+        Wizard wizard = (Wizard) component;
 
-		/**
-		 * Decide which step do display
-		 */
-		if(success) {
-			if(wizard.getFlowListener() != null) {
-				FlowEvent flowEvent = new FlowEvent(wizard, currentStep, newStep);
-				Object outcome = wizard.getFlowListener().invoke(facesContext.getELContext(), new Object[]{flowEvent});
-				stepToDisplay = (String) outcome;
-			} else {
-				stepToDisplay = newStep;
-			}
-		} else {
-			stepToDisplay = currentStep;
-		}
+        if(wizard.isWizardRequest(fc)) {
+            Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+            String stepToDisplay = null;
+            String clientId = wizard.getClientId(fc);
+            String currentStep = wizard.getStep();
+            String stepToGo = params.get(clientId + "_stepToGo");
+            
+            if (fc.isValidationFailed()) {
+                stepToDisplay = currentStep;
+ 
+            } else {
+                if (wizard.getFlowListener() != null) {
+                    FlowEvent flowEvent = new FlowEvent(wizard, currentStep, stepToGo);
+                    Object outcome = wizard.getFlowListener().invoke(fc.getELContext(), new Object[]{flowEvent});
+                    stepToDisplay = (String) outcome;
+                } else {
+                    stepToDisplay = stepToGo;
+                }
+            }
 
-		wizard.setStep(stepToDisplay);
-		
-		UIComponent tabToDisplay = null;
-		for(UIComponent child : wizard.getChildren()) {
-			if(child.getId().equals(stepToDisplay))
-				tabToDisplay = child;
-		}
-		
-		ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
-		response.setContentType("text/xml");
-		
-		writer.write("<?xml version=\"1.0\" encoding=\"" + response.getCharacterEncoding() + "\"?>");
-		writer.write("<wizard-response>");
-		
-			writer.write("<content>");
-			writer.startCDATA();
-				renderChild(facesContext, tabToDisplay);
-			writer.endCDATA();
-			writer.write("</content>");
-			
-			writer.write("<success>");
-			writer.write(String.valueOf(success));
-			writer.write("</success>");
-			
-			writer.write("<current-step>");
-			writer.write(stepToDisplay);
-			writer.write("</current-step>");
-			
-			writer.write("<state>");
-			writer.startCDATA();
-			StateManager stateManager = facesContext.getApplication().getStateManager();
-			stateManager.writeState(facesContext, stateManager.saveView(facesContext));
-			writer.endCDATA();
-			writer.write("</state>");
-			
-		writer.write("</wizard-response>");
-	}
+            wizard.setStep(stepToDisplay);
 
-	private void encodeScript(FacesContext facesContext, Wizard wizard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = wizard.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, wizard);
-		
-		UIComponent form = ComponentUtils.findParentForm(facesContext, wizard);
-		if(form == null) {
-			throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
-		}
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+            UIComponent tabToDisplay = null;
+            for (UIComponent child : wizard.getChildren()) {
+                if (child.getId().equals(stepToDisplay)) {
+                    tabToDisplay = child;
+                }
+            }
 
-		writer.write(var + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
-		writer.write("formId:'" + form.getClientId(facesContext) + "'");
-		writer.write(",url:'" + getActionURL(facesContext) + "'");
-		
-		if(wizard.getOnback() != null) writer.write(",onback:" + wizard.getOnback());
-		if(wizard.getOnnext() != null) writer.write(",onnext:" + wizard.getOnnext());
-				
-		//all steps
-		writer.write(",steps:[");
-		boolean firstStep = true;
-		String defaultStep = null;
-		for(Iterator<UIComponent> children = wizard.getChildren().iterator(); children.hasNext();) {
-			UIComponent child = children.next();
+            tabToDisplay.encodeAll(fc);
 
-			if(child instanceof Tab && child.isRendered()) {
-				Tab tab = (Tab) child;
-				if(defaultStep == null)
-					defaultStep = tab.getId();
-				
-				if(!firstStep)
-					writer.write(",");
-				else
-					firstStep = false;
-				
-				writer.write("'" + tab.getId() + "'");
-			}
-		}
-		writer.write("]");
-		
-		//current step
-		if(wizard.getStep() == null) {
-			wizard.setStep(defaultStep);
-		}
+            RequestContext.getCurrentInstance().addCallbackParam("currentStep", wizard.getStep());
+            
+        } else {
+            encodeMarkup(fc, wizard);
+            encodeScript(fc, wizard);
+        }
+    }
 
-		writer.write(",initialStep:'" + wizard.getStep() + "'");
-		
-		if(wizard.isEffect()) {
-			writer.write(",effect:true");
-			writer.write(",effectSpeed:'" + wizard.getEffectSpeed() + "'");
-		}
-						
-		writer.write("});");
+    private void encodeScript(FacesContext facesContext, Wizard wizard) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = wizard.getClientId(facesContext);
+        String var = createUniqueWidgetVar(facesContext, wizard);
 
-		writer.endElement("script");
-	}
-	
-	private void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = wizard.getClientId(facesContext);
-		String styleClass = wizard.getStyleClass() == null ? "ui-wizard" : "ui-wizard " + wizard.getStyleClass(); 
-		
-		writer.startElement("div", wizard);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", styleClass, "styleClass");
-		if(wizard.getStyle() != null) 
-			writer.writeAttribute("style", wizard.getStyle(), "style");
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_content", "id");
-		writer.writeAttribute("class", "ui-wizard-content", null);
-		
-		encodeCurrentStep(facesContext, wizard);
-		
-		writer.endElement("div");
-		
-		if(wizard.isShowNavBar()) {
-			encodeNavigators(facesContext, wizard);
-		}
-		
-		writer.endElement("div");
-	}
+        UIComponent form = ComponentUtils.findParentForm(facesContext, wizard);
+        if (form == null) {
+            throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
+        }
 
-	protected void encodeCurrentStep(FacesContext facesContext, Wizard wizard) throws IOException {
-		for(UIComponent child : wizard.getChildren()) {
-			if(child instanceof Tab && child.isRendered()) {
-				Tab tab = (Tab) child;
-				
-				if((wizard.getStep() == null || tab.getId().equals(wizard.getStep()))) {
-					renderChildren(facesContext, tab);
-					
-					break;
-				}
-			}
-		}
-	}
-	
-	protected void encodeNavigators(FacesContext facesContext, Wizard wizard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = wizard.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, wizard);
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
-		
-		encodeNavigator(facesContext, wizard, clientId + "_back", var + ".back()", wizard.getBackLabel(), "ui-wizard-nav-back");
-		encodeNavigator(facesContext, wizard, clientId + "_next", var + ".next()", wizard.getNextLabel(), "ui-wizard-nav-next");
-		
-		writer.endElement("div");
-	}
-	
-	protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String onclick, String label, String styleClass) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.startElement("button", null);
-		writer.writeAttribute("id", id, null);
-		writer.writeAttribute("onclick", onclick, null);
-		writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", styleClass, null);
-		writer.write(label);
-		writer.endElement("button");
-	}
-	
-	protected boolean isStepValid(FacesContext facesContext, Wizard wizard) {
-		String wizardClientId = wizard.getClientId(facesContext);
-		boolean valid = true;
-		
-		for(Iterator<String> iterator = facesContext.getClientIdsWithMessages(); iterator.hasNext();) {
-			String clientId = iterator.next();
-			
-			if(clientId.indexOf(wizardClientId) != -1) {
-				valid = false;
-				
-				break;
-			}
-		};
-		
-		return valid;
-	}
-	
-	@Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
-	}
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
 
-	@Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+        writer.write(var + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
+        writer.write("formId:'" + form.getClientId(facesContext) + "'");
+        writer.write(",url:'" + getActionURL(facesContext) + "'");
+
+        if (wizard.getOnback() != null) {
+            writer.write(",onback:function(){" + wizard.getOnback() + "}");
+        }
+        if (wizard.getOnnext() != null) {
+            writer.write(",onnext:function(){" + wizard.getOnnext() + "}");
+        }
+
+        //all steps
+        writer.write(",steps:[");
+        boolean firstStep = true;
+        String defaultStep = null;
+        for (Iterator<UIComponent> children = wizard.getChildren().iterator(); children.hasNext();) {
+            UIComponent child = children.next();
+
+            if (child instanceof Tab && child.isRendered()) {
+                Tab tab = (Tab) child;
+                if (defaultStep == null) {
+                    defaultStep = tab.getId();
+                }
+
+                if (!firstStep) {
+                    writer.write(",");
+                } else {
+                    firstStep = false;
+                }
+
+                writer.write("'" + tab.getId() + "'");
+            }
+        }
+        writer.write("]");
+
+        //current step
+        if (wizard.getStep() == null) {
+            wizard.setStep(defaultStep);
+        }
+
+        writer.write(",initialStep:'" + wizard.getStep() + "'");
+
+        if (wizard.isEffect()) {
+            writer.write(",effect:true");
+            writer.write(",effectSpeed:'" + wizard.getEffectSpeed() + "'");
+        }
+
+        writer.write("});");
+
+        writer.endElement("script");
+    }
+
+    private void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = wizard.getClientId(facesContext);
+        String styleClass = wizard.getStyleClass() == null ? "ui-wizard" : "ui-wizard " + wizard.getStyleClass();
+
+        writer.startElement("div", wizard);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if (wizard.getStyle() != null) {
+            writer.writeAttribute("style", wizard.getStyle(), "style");
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_content", "id");
+        writer.writeAttribute("class", "ui-wizard-content", null);
+
+        encodeCurrentStep(facesContext, wizard);
+
+        writer.endElement("div");
+
+        if (wizard.isShowNavBar()) {
+            encodeNavigators(facesContext, wizard);
+        }
+
+        writer.endElement("div");
+    }
+
+    protected void encodeCurrentStep(FacesContext facesContext, Wizard wizard) throws IOException {
+        for (UIComponent child : wizard.getChildren()) {
+            if (child instanceof Tab && child.isRendered()) {
+                Tab tab = (Tab) child;
+
+                if ((wizard.getStep() == null || tab.getId().equals(wizard.getStep()))) {
+                    tab.encodeAll(facesContext);
+
+                    break;
+                }
+            }
+        }
+    }
+
+    protected void encodeNavigators(FacesContext facesContext, Wizard wizard) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = wizard.getClientId(facesContext);
+        String var = createUniqueWidgetVar(facesContext, wizard);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
+
+        encodeNavigator(facesContext, wizard, clientId + "_back", var + ".back()", wizard.getBackLabel(), "ui-wizard-nav-back");
+        encodeNavigator(facesContext, wizard, clientId + "_next", var + ".next()", wizard.getNextLabel(), "ui-wizard-nav-next");
+
+        writer.endElement("div");
+    }
+
+    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String onclick, String label, String styleClass) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement("button", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("onclick", onclick, null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", styleClass, null);
+        writer.write(label);
+        writer.endElement("button");
+    }
+
+    @Override
+    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }
