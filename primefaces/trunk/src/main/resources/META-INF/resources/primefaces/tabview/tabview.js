@@ -19,40 +19,49 @@ PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     shouldLoad = _self.cfg.dynamic && !_self.isLoaded(panel);
 	
     jQuery(_self.activeIndexHolder).val(ui.index);
-	
-    if(shouldLoad) {
+
+     if(shouldLoad) {
         var params = {};
-        params[PrimeFaces.PARTIAL_SOURCE_PARAM] = _self.id;
-        params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-        params[PrimeFaces.PARTIAL_PROCESS_PARAM] = _self.id;
-		
-        var requestParams = jQuery(PrimeFaces.escapeClientId(_self.cfg.formId)).serialize();
-        requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params);
-		
-        jQuery.ajax({
-            url: _self.cfg.url,
-            type: "POST",
-            cache: false,
-            dataType: "xml",
-            data: requestParams,
-            success: function(responseXML) {
-                var xmlDoc = responseXML.documentElement,
-                content = xmlDoc.getElementsByTagName("tabContent")[0].firstChild.data,
-                state = xmlDoc.getElementsByTagName("state")[0].firstChild.data;
-						
-                PrimeFaces.ajax.AjaxUtils.updateState(state);
-						
-                jQuery(panel).html(content);
-						
-                if(_self.cfg.cache) {
-                    _self.markAsLoaded(panel);
-                }
-            },
-            failure: function() {
-                alert('Error in loading dynamic tab content');
-            }
-        });
-    }
+        params[_self.id + '_dynamicTabRequest'] = true;
+
+        PrimeFaces.ajax.AjaxRequest(
+                    _self.cfg.url, 
+                    {
+                        source: _self.id,
+                        process: _self.id,
+                        update: _self.id,
+                        formId:_self.cfg.formId,
+                        onsuccess: function(responseXML) {
+                            var xmlDoc = responseXML.documentElement,
+                            updates = xmlDoc.getElementsByTagName("update");
+
+                            for(var i=0; i < updates.length; i++) {
+                                var id = updates[i].attributes.getNamedItem("id").nodeValue,
+                                content = updates[i].firstChild.data;
+
+                                if(id == PrimeFaces.VIEW_STATE) {
+                                    PrimeFaces.ajax.AjaxUtils.updateState(content);
+                                }
+                                else if(id == _self.id){
+                                    jQuery(panel).html(content);
+
+                                     if(_self.cfg.cache) {
+                                        _self.markAsLoaded(panel);
+                                    }
+                                }
+                                else {
+                                    jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                                }
+                            }
+
+                            return false;
+                        },
+                        error: function() {
+                            alert('Error in loading dynamic tab content');
+                        }
+                    },
+                    params);
+     }
 }
 
 PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {
