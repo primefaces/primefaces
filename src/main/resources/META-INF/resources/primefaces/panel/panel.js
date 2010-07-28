@@ -1,92 +1,98 @@
 PrimeFaces.widget.Panel = function(id, cfg) {
-	this.id = id;
-	this.jqId = PrimeFaces.escapeClientId(id);
-	this.bodySelector = this.jqId + "_content";
-	this.togglerSelector = this.jqId + "_toggler";
-	this.toggleStateHolder = this.jqId + "_collapsed";
-	this.visibleStateHolder = this.jqId + "_visible";
-	this.cfg = cfg;
+    this.id = id;
+    this.jqId = PrimeFaces.escapeClientId(id);
+    this.cfg = cfg;
 	
-	if(!this.cfg.visible) {
-		jQuery(this.jqId).css('display','none');
-	}
+    if(!this.cfg.visible) {
+        jQuery(this.jqId).css('display','none');
+    }
 }
 
 PrimeFaces.widget.Panel.prototype.toggle = function() {
+    var togglerIcon = this.jqId + '_toggler',
+    toggleStateHolder = this.jqId + '_collapsed',
+    content = this.jqId + " .ui-panel-content";
+    
+    if(this.cfg.collapsed) {
+        jQuery(togglerIcon).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
+        this.cfg.collapsed = false;
+        jQuery(toggleStateHolder).val(false);
+    }
+    else {
+        jQuery(togglerIcon).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
+        this.cfg.collapsed = true;
+        jQuery(toggleStateHolder).val(true);
+    }
 	
-	if(this.cfg.collapsed) {
-		jQuery(this.togglerSelector).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
-		this.cfg.collapsed = false;
-		jQuery(this.toggleStateHolder).val(false);
-	}
-	else {
-		jQuery(this.togglerSelector).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
-		this.cfg.collapsed = true;
-		jQuery(this.toggleStateHolder).val(true);
-	}
-	
-	var scope = this;
-	jQuery(this.bodySelector).slideToggle(this.cfg.toggleSpeed, 
-			function() {
-				if(scope.cfg.ajaxToggle) {
-					var params = {};
-					params[scope.id + "_toggled"] = true;
-					params[scope.id + "_collapsed"] = scope.cfg.collapsed;
-					params[PrimeFaces.PARTIAL_PROCESS_PARAM] = scope.id;
-					
-					if(scope.cfg.onToggleUpdate) {
-						params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.onToggleUpdate;
-					}
-					
-					PrimeFaces.ajax.AjaxRequest(
-								scope.cfg.url,{
-							}, 
-							params);
-				}
-			});
+    var _self = this;
+
+    jQuery(content).slideToggle(this.cfg.toggleSpeed,
+        function() {
+            if(_self.cfg.ajaxToggle) {
+                var options = {
+                    source: _self.id,
+                    process: _self.id
+                };
+
+                if(_self.cfg.onToggleUpdate) {
+                   options.update = _self.cfg.onToggleUpdate;
+                }
+                
+                var params = {};
+                params[_self.id + "_ajaxToggle"] = true;
+                params[_self.id + "_collapsed"] = _self.cfg.collapsed;
+				
+                PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+                
+            }
+        });
 }
 
 PrimeFaces.widget.Panel.prototype.close = function() {
-	var scope = this;
-	
-	if(this.cfg.onCloseStart) {
-		this.cfg.onCloseStart.call();
-	}
-	
-	if(this.cfg.ajaxClose) {
-		jQuery(this.jqId).fadeOut(this.cfg.closeSpeed, 
-				function() {
-					var params = {};
-					params[scope.id + "_closed"] = true;
-					params[PrimeFaces.PARTIAL_PROCESS_PARAM] = scope.id;
-					
-					if(scope.cfg.onCloseUpdate) {
-						params[PrimeFaces.PARTIAL_UPDATE_PARAM] = scope.cfg.onCloseUpdate;
-					}
-					
-					PrimeFaces.ajax.AjaxRequest(
-								scope.cfg.url, {
-								oncomplete: function() {
-									if(scope.cfg.onCloseComplete) {
-										scope.cfg.onCloseComplete.call();
-									}
-								}
-							}, 
-							params);
-		});
-	} else {
-		jQuery(this.jqId).fadeOut(this.cfg.closeSpeed, function() {
-			if(scope.cfg.onCloseComplete) {
-				scope.cfg.onCloseComplete.call();
-			}
-		});
-	}
-	
-	jQuery(this.visibleStateHolder).val(false);
+    jQuery(this.jqId + "_visible").val(false);
+
+    if(this.cfg.onCloseStart) {
+        this.cfg.onCloseStart.call();
+    }
+
+    var _self = this;
+
+    if(this.cfg.ajaxClose) {
+        jQuery(this.jqId).fadeOut(this.cfg.closeSpeed,
+            function() {
+                var options = {
+                    source: _self.id,
+                    process: _self.id
+                };
+
+                if(_self.cfg.onCloseUpdate) {
+                   options.update = _self.cfg.onCloseUpdate;
+                }
+
+                if(_self.cfg.onCloseComplete) {
+                    options.oncomplete = function() {
+                        _self.cfg.onCloseComplete.call();
+                    };
+                }
+
+                var params = {};
+                params[_self.id + "_ajaxClose"] = true;
+
+                PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+                
+            });
+    } else {
+
+        jQuery(this.jqId).fadeOut(this.cfg.closeSpeed, function() {
+            if(scope.cfg.onCloseComplete) {
+                scope.cfg.onCloseComplete.call();
+            }
+        });
+    }
 }
 
 PrimeFaces.widget.Panel.prototype.show = function() {
-	jQuery(this.jqId).fadeIn(this.cfg.closeSpeed);
+    jQuery(this.jqId).fadeIn(this.cfg.closeSpeed);
 	
-	jQuery(this.visibleStateHolder).val(true);
+    jQuery(this.visibleStateHolder).val(true);
 }
