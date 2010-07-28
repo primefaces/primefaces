@@ -28,47 +28,52 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class IdleMonitorRenderer extends CoreRenderer {
-	
-	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
-		IdleMonitor monitor = (IdleMonitor) component;
 
-		if(params.containsKey(monitor.getClientId(facesContext)))
-			monitor.queueEvent(new IdleEvent(monitor));
-	}
+    @Override
+    public void decode(FacesContext facesContext, UIComponent component) {
+        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        IdleMonitor monitor = (IdleMonitor) component;
 
-	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		IdleMonitor monitor = (IdleMonitor) component;
-		String clientId = monitor.getClientId(facesContext);
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("new PrimeFaces.widget.IdleMonitor('" +clientId + "', {");
-		writer.write("timeout:" + monitor.getTimeout());
-		
-		if(monitor.getIdleListener() != null) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, monitor);
-			
-			if(form == null)
-				throw new FacesException("UIAjax:" + clientId + " needs to be enclosed in a form when using an idleListener");
-		
-			writer.write(",hasIdleListener:true");
-			writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
-			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-			writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, monitor, monitor.getUpdate()) + "'");
-		}
-		
-		if(monitor.getOnidle() != null)
-			writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
-		if(monitor.getOnactive() != null) 
-			writer.write(",onactive: function() {" + monitor.getOnactive() + ";}");
-			
-		writer.write("});\n");
-		
-		writer.endElement("script");
-	}
+        if (params.containsKey(monitor.getClientId(facesContext))) {
+            monitor.queueEvent(new IdleEvent(monitor));
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        IdleMonitor monitor = (IdleMonitor) component;
+        String clientId = monitor.getClientId();
+        String widgetVar = createUniqueWidgetVar(facesContext, monitor);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write(widgetVar + " = new PrimeFaces.widget.IdleMonitor('" + clientId + "', {");
+        writer.write("timeout:" + monitor.getTimeout());
+
+        if (monitor.getIdleListener() != null) {
+            UIComponent form = ComponentUtils.findParentForm(facesContext, monitor);
+
+            if (form == null) {
+                throw new FacesException("IdleMonitor:\"" + clientId + "\" needs to be enclosed in a form when using an idleListener");
+            }
+
+            writer.write(",hasIdleListener:true");
+            writer.write(",url:'" + getActionURL(facesContext) + "'");
+            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
+            writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, monitor, monitor.getUpdate()) + "'");
+        }
+
+        if (monitor.getOnidle() != null) {
+            writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
+        }
+        if (monitor.getOnactive() != null) {
+            writer.write(",onactive: function() {" + monitor.getOnactive() + ";}");
+        }
+
+        writer.write("});");
+
+        writer.endElement("script");
+    }
 }
