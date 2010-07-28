@@ -37,31 +37,29 @@ public class RatingRenderer extends CoreRenderer {
         Rating rating = (Rating) component;
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = rating.getClientId();
-        String valueParam = clientId + "_input";
+        String value = params.get(clientId + "_input");
         boolean isAjaxRating = params.containsKey(clientId + "_ajaxRating");
 
-        if(params.containsKey(valueParam)) {
-            String value = params.get(clientId + "_input");
-
+        if(value != null) {
             rating.setSubmittedValue(value);
+        }
 
-            if(isAjaxRating) {
-                RateEvent rateEvent;
+        if(isAjaxRating) {
+            RateEvent rateEvent;
 
-                if (isValueBlank(value)) {
-                    rateEvent = new RateEvent(rating, null);
-                } else {
-                    rateEvent = new RateEvent(rating, Double.valueOf(value));
-                }
-
-                if (rating.isImmediate()) {
-                    rateEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-                } else {
-                    rateEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-                }
-
-                rating.queueEvent(rateEvent);
+            if (isValueBlank(value)) {
+                rateEvent = new RateEvent(rating, null);
+            } else {
+                rateEvent = new RateEvent(rating, Double.valueOf(value));
             }
+
+            if (rating.isImmediate()) {
+                rateEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            } else {
+                rateEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+
+            rating.queueEvent(rateEvent);
         }
     }
 
