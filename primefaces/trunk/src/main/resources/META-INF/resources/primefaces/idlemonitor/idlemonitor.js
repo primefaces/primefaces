@@ -21,10 +21,7 @@ PrimeFaces.widget.IdleMonitor = function(id, cfg) {
                 options.update = _self.cfg.update;
             }
 
-            var params = {};
-            params[_self.id] = _self.id;
-
-            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options);
         }
     });
 	
