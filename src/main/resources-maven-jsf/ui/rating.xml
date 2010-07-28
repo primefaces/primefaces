@@ -6,69 +6,61 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>rating</tag>
-	<tagClass>org.primefaces.component.rating.RatingTag</tagClass>
-	<componentHandlerClass>org.primefaces.component.rating.RatingHandler</componentHandlerClass>
-	<componentClass>org.primefaces.component.rating.Rating</componentClass>
-	<componentType>org.primefaces.component.Rating</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.RatingRenderer</rendererType>
-	<rendererClass>org.primefaces.component.rating.RatingRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
-	<attributes>
-		&input_component_attributes;
-		<attribute>
-			<name>stars</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>5</defaultValue>
-			<description>
-				Number of stars to display.
-			</description>
-		</attribute>
-		<attribute>
-			<name>rateListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void rateListener(org.primefaces.event.RateEvent)</method-signature>
-			<description>A server side listener to process a RateEvent</description>
-		</attribute>
-		<attribute>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>
-				Client side id of the component(s) to be updated after async partial submit request.
-			</description>
-		</attribute>
-		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>
-				Disables the user interaction, used for displaying the value only.
-			</description>
-		</attribute>
-	</attributes>
-	<resources>
-		<resource>
-			<name>/yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
-			<name>/jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>/jquery/plugins/rating/jquery.rating.css</name>
-		</resource>
-		<resource>
-			<name>/jquery/plugins/rating/jquery.rating.pack.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/core/core.js</name>
-		</resource>
-		<resource>
-			<name>/primefaces/rating/rating.js</name>
-		</resource>
-	</resources>
+    <tag>rating</tag>
+    <tagClass>org.primefaces.component.rating.RatingTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.rating.RatingHandler</componentHandlerClass>
+    <componentClass>org.primefaces.component.rating.Rating</componentClass>
+    <componentType>org.primefaces.component.Rating</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.RatingRenderer</rendererType>
+    <rendererClass>org.primefaces.component.rating.RatingRenderer</rendererClass>
+    <parent>javax.faces.component.UIInput</parent>
+    <attributes>
+	&input_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>stars</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>5</defaultValue>
+            <description>Number of stars to display.</description>
+        </attribute>
+        <attribute>
+            <name>rateListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void rateListener(org.primefaces.event.RateEvent)</method-signature>
+            <description>A server side listener to process a RateEvent</description>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side id of the component(s) to be updated after async partial submit request.</description>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables the user interaction, used for displaying the value only.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>/jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>/jquery/plugins/rating/jquery.rating.css</name>
+        </resource>
+        <resource>
+            <name>/jquery/plugins/rating/jquery.rating.pack.js</name>
+        </resource>
+        <resource>
+            <name>/primefaces/core/core.js</name>
+        </resource>
+        <resource>
+            <name>/primefaces/rating/rating.js</name>
+        </resource>
+    </resources>
 </component>
