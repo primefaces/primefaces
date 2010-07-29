@@ -207,6 +207,7 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("div", null);
+        writer.writeAttribute("id", panel.getClientId() + "_content", null);
         writer.writeAttribute("class", Panel.PANEL_CONTENT_CLASS, null);
         if (panel.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
