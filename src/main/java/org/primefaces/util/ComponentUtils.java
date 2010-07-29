@@ -221,7 +221,7 @@ public class ComponentUtils {
 		
 		for(int i = 0; i < ids.length; i++) {
 			if(i != 0)
-				buffer.append(",");
+				buffer.append(" ");
 			
 			String id = ids[i].trim();
 			
