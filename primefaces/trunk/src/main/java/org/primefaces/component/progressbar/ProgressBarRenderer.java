@@ -28,84 +28,99 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class ProgressBarRenderer extends CoreRenderer {
-	
-	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		ProgressBar progressBar = (ProgressBar) component;
-		String clientId = progressBar.getClientId(facesContext);
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		
-		if(params.containsKey(clientId + "_cancel")) {
-			progressBar.getValueExpression("value").setValue(facesContext.getELContext(), 0);
-			
-			if(progressBar.getCancelListener() != null)
-				progressBar.getCancelListener().invoke(facesContext.getELContext(), null);
-			
-		} else if(params.containsKey(clientId + "_complete")){
-			if(progressBar.getCompleteListener() != null)
-				progressBar.getCompleteListener().invoke(facesContext.getELContext(), null);
 
-		} else {
-			RequestContext.getCurrentInstance().addCallbackParam(progressBar.getClientId(facesContext) + "_value", progressBar.getValue());
-		}
-	}
+    @Override
+    public void decode(FacesContext facesContext, UIComponent component) {
+        ProgressBar progressBar = (ProgressBar) component;
+        String clientId = progressBar.getClientId(facesContext);
+        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 
-	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ProgressBar progressBar = (ProgressBar) component;
-		
-		encodeMarkup(facesContext, progressBar);
-		encodeScript(facesContext, progressBar);
-	}
+        if(params.containsKey(clientId)) {
+            if (params.containsKey(clientId + "_cancel")) {
+                progressBar.getValueExpression("value").setValue(facesContext.getELContext(), 0);
 
-	protected void encodeMarkup(FacesContext facesContext, ProgressBar progressBar) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.startElement("div", progressBar);
-		writer.writeAttribute("id", progressBar.getClientId(facesContext), "id");
-		
-		if(progressBar.getStyle() != null) writer.writeAttribute("style", progressBar.getStyle(), "style");
-		if(progressBar.getStyleClass() != null) writer.writeAttribute("class", progressBar.getStyleClass(), "styleClass");
-		
-		writer.endElement("div");
-	}
+                if (progressBar.getCancelListener() != null) {
+                    progressBar.getCancelListener().invoke(facesContext.getELContext(), null);
+                }
 
-	protected void encodeScript(FacesContext facesContext, ProgressBar progressBar) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = progressBar.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, progressBar);
-		
-		writer.startElement("script", progressBar);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write(var + " = new PrimeFaces.widget.ProgressBar('" + clientId + "', {");
-		writer.write("value:" + progressBar.getValue());
-		
-		if(progressBar.isAjax()) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, progressBar);
-			if(form == null) {
-				throw new FacesException("ProgressBar \"" + clientId + "\" must be enclosed with a form in ajax mode.");
-			}
-			
-			writer.write(",ajax:true");
-			writer.write(",interval:" + progressBar.getInterval());
-			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-			writer.write(",url:'" + getActionURL(facesContext) + "'");
-			
-			if(progressBar.getOnCompleteUpdate() != null)
-				writer.write(",onCompleteUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCompleteUpdate()) + "'");
-		
-			if(progressBar.getOnCompleteUpdate() != null)
-				writer.write(",onCancelUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCancelUpdate()) + "'");
-			
-		} else {
-			writer.write(",ajax:false");
-		}
-		
-		if(progressBar.isDisabled()) writer.write(",disabled:true");
-		
- 		writer.write("});");
-		
-		writer.endElement("script");
-	}
+            } else if (params.containsKey(clientId + "_complete")) {
+                if (progressBar.getCompleteListener() != null) {
+                    progressBar.getCompleteListener().invoke(facesContext.getELContext(), null);
+                }
+
+            } else {
+                RequestContext.getCurrentInstance().addCallbackParam(progressBar.getClientId(facesContext) + "_value", progressBar.getValue());
+
+            }
+
+            FacesContext.getCurrentInstance().renderResponse();
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        ProgressBar progressBar = (ProgressBar) component;
+
+        encodeMarkup(facesContext, progressBar);
+        encodeScript(facesContext, progressBar);
+    }
+
+    protected void encodeMarkup(FacesContext facesContext, ProgressBar progressBar) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement("div", progressBar);
+        writer.writeAttribute("id", progressBar.getClientId(facesContext), "id");
+
+        if (progressBar.getStyle() != null) {
+            writer.writeAttribute("style", progressBar.getStyle(), "style");
+        }
+        if (progressBar.getStyleClass() != null) {
+            writer.writeAttribute("class", progressBar.getStyleClass(), "styleClass");
+        }
+
+        writer.endElement("div");
+    }
+
+    protected void encodeScript(FacesContext facesContext, ProgressBar progressBar) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = progressBar.getClientId(facesContext);
+        String var = createUniqueWidgetVar(facesContext, progressBar);
+
+        writer.startElement("script", progressBar);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write(var + " = new PrimeFaces.widget.ProgressBar('" + clientId + "', {");
+        writer.write("value:" + progressBar.getValue());
+
+        if (progressBar.isAjax()) {
+            UIComponent form = ComponentUtils.findParentForm(facesContext, progressBar);
+            if (form == null) {
+                throw new FacesException("ProgressBar \"" + clientId + "\" must be enclosed with a form in ajax mode.");
+            }
+
+            writer.write(",ajax:true");
+            writer.write(",interval:" + progressBar.getInterval());
+            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
+            writer.write(",url:'" + getActionURL(facesContext) + "'");
+
+            if (progressBar.getOnCompleteUpdate() != null) {
+                writer.write(",onCompleteUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCompleteUpdate()) + "'");
+            }
+
+            if (progressBar.getOnCancelUpdate() != null) {
+                writer.write(",onCancelUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCancelUpdate()) + "'");
+            }
+
+        } else {
+            writer.write(",ajax:false");
+        }
+
+        if (progressBar.isDisabled()) {
+            writer.write(",disabled:true");
+        }
+
+        writer.write("});");
+
+        writer.endElement("script");
+    }
 }
