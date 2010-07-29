@@ -11,7 +11,7 @@ PrimeFaces.widget.Panel = function(id, cfg) {
 PrimeFaces.widget.Panel.prototype.toggle = function() {
     var togglerIcon = this.jqId + '_toggler',
     toggleStateHolder = this.jqId + '_collapsed',
-    content = this.jqId + " .ui-panel-content";
+    content = this.jqId + "_content";
     
     if(this.cfg.collapsed) {
         jQuery(togglerIcon).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
