@@ -150,7 +150,7 @@ version: 2.8.0r4
                 Dom.setStyle(this._doc, 'height', h + 'px');
                 Dom.setStyle(this._doc, 'width', w + 'px');
             }
-            this._sizes.doc = { h: h, w: w };
+            this._sizes.doc = {h: h, w: w};
             this._setSides(set);
         },
         /**
@@ -235,7 +235,7 @@ version: 2.8.0r4
                 this._units.center.set('top', this._sizes.top.h);
                 this._units.center.set('left', this._sizes.left.w);
             }
-            this._sizes.center = { h: h, w: w, t: this._sizes.top.h, l: this._sizes.left.w };
+            this._sizes.center = {h: h, w: w, t: this._sizes.top.h, l: this._sizes.left.w};
         },
         /**
         * @method getSizes
@@ -346,9 +346,9 @@ version: 2.8.0r4
 
             var unit = new YAHOO.widget.LayoutUnit(el, unitConfig);
 
-            unit.on('heightChange', this.resize, { unit: unit }, this);
-            unit.on('widthChange', this.resize, { unit: unit }, this);
-            unit.on('gutterChange', this.resize, { unit: unit }, this);
+            unit.on('heightChange', this.resize, {unit: unit}, this);
+            unit.on('widthChange', this.resize, {unit: unit}, this);
+            unit.on('gutterChange', this.resize, {unit: unit}, this);
             this._units[cfg.position] = unit;
 
             if (this._rendered) {
@@ -411,7 +411,7 @@ version: 2.8.0r4
             }
             this._setBodySize(set);
             if (set) {
-                this.fireEvent('resize', { target: this, sizes: this._sizes, event: ev });
+                this.fireEvent('resize', {target: this, sizes: this._sizes, event: ev});
             }
             return this;
         },
@@ -1413,7 +1413,7 @@ version: 2.8.0r4
 		                    this.dataConnection = null;
 		                    Dom.removeClass(this.body, this.LOADING_CLASSNAME);
 		                    this._loading = false;
-							this.fireEvent('loadError', { error: o });
+							this.fireEvent('loadError', {error: o});
 		                },
 		                scope: this,
 		                timeout: this.get('dataTimeout')
@@ -1788,7 +1788,7 @@ version: 2.8.0r4
                             Dom.removeClass(this.body, 'ui-layout-bd-nohd');
                         }
                     }
-                    this.fireEvent('contentChange', { target: 'header' });
+                    this.fireEvent('contentChange', {target: 'header'});
                 }
             });
             /**
@@ -1840,7 +1840,7 @@ version: 2.8.0r4
 
                     this._cleanGrids();
 
-                    this.fireEvent('contentChange', { target: 'body' });
+                    this.fireEvent('contentChange', {target: 'body'});
                 }
             });
 
@@ -1883,7 +1883,7 @@ version: 2.8.0r4
                         }
                         Dom.removeClass(this.body, 'ui-layout-bd-noft');
                     }
-                    this.fireEvent('contentChange', { target: 'footer' });
+                    this.fireEvent('contentChange', {target: 'footer'});
                 }
             });
             /**
@@ -2307,132 +2307,151 @@ YAHOO.register("layout", YAHOO.widget.Layout, {version: "2.8.0r4", build: "2449"
  * PrimeFaces Layout
  */
 PrimeFaces.widget.Layout = function(el, cfg) {
-	PrimeFaces.widget.Layout.superclass.constructor.call(this, el, cfg);
+    PrimeFaces.widget.Layout.superclass.constructor.call(this, el, cfg);
 	
-	if(YAHOO.lang.isString(el)) {
-		this.id = el;
-		this.cfg = cfg;
-	} else {
-		this.id = el.clientId;
-		this.cfg = el;
-	}
+    if(YAHOO.lang.isString(el)) {
+        this.id = el;
+        this.cfg = cfg;
+    } else {
+        this.id = el.clientId;
+        this.cfg = el;
+    }
 	
-	if(this.cfg.closeTitle) YAHOO.widget.LayoutUnit.prototype.STR_CLOSE = this.cfg.closeTitle;
-	if(this.cfg.collapseTitle) YAHOO.widget.LayoutUnit.prototype.STR_COLLAPSE = this.cfg.collapseTitle;
-	if(this.cfg.expandTitle) YAHOO.widget.LayoutUnit.prototype.STR_EXPAND = this.cfg.expandTitle;
+    if(this.cfg.closeTitle) YAHOO.widget.LayoutUnit.prototype.STR_CLOSE = this.cfg.closeTitle;
+    if(this.cfg.collapseTitle) YAHOO.widget.LayoutUnit.prototype.STR_COLLAPSE = this.cfg.collapseTitle;
+    if(this.cfg.expandTitle) YAHOO.widget.LayoutUnit.prototype.STR_EXPAND = this.cfg.expandTitle;
 	
-	this.render();
-	this.setState();
-	this.setupEventHandlers();
+    this.render();
+    this.setState();
+    this.setupEventHandlers();
 }
 
 YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
 {
-	setupEventHandlers : function() {
-		for(var unitName in this.getUnits()) {
-			if(unitName != undefined) {
-				var unit = this.getUnitByPosition(unitName);
+    setupEventHandlers : function() {
+        for(var unitName in this.getUnits()) {
+            if(unitName != undefined) {
+                var unit = this.getUnitByPosition(unitName);
 				
-				if(this.cfg.ajaxToggle) {
-					unit.subscribe('collapse', this.handleToggle, {layoutUnit:unit, collapsed: true}, this);
-					unit.subscribe('expand', this.handleToggle, {layoutUnit:unit, collapsed: false}, this);
-				}
+                if(this.cfg.ajaxToggle) {
+                    unit.subscribe('collapse', this.handleToggle, {
+                        layoutUnit:unit,
+                        collapsed: true
+                    }, this);
+                    unit.subscribe('expand', this.handleToggle, {
+                        layoutUnit:unit,
+                        collapsed: false
+                    }, this);
+                }
 				
-				if(this.cfg.ajaxClose) {
-					unit.subscribe('close', this.handleClose, {layoutUnit:unit}, this);
-				}
+                if(this.cfg.ajaxClose) {
+                    unit.subscribe('close', this.handleClose, {
+                        layoutUnit:unit
+                    }, this);
+                }
 				
-				if(this.cfg.ajaxResize) {
-					unit.subscribe('endResize', this.handleResize, {layoutUnit:unit}, this);
-				}
-			}
+                if(this.cfg.ajaxResize) {
+                    unit.subscribe('endResize', this.handleResize, {
+                        layoutUnit:unit
+                    }, this);
+                }
+            }
 			
-		}
-	},
+        }
+    },
 	
-	handleToggle : function(e, args) {
-		var params = {};
-		params[this.id + "_toggled"] = true;
-		params[this.id + "_collapsed"] = args.collapsed;
-		params[this.id + "_unit"] = args.layoutUnit.get('position');
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.id;
-		
-		if(this.cfg.onToggleUpdate) {
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.onToggleUpdate;
-		}
-		
-		var options = {};
-		if(this.cfg.onToggleComplete) {
-			options.oncomplete = this.cfg.onToggleComplete;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
-	},
+    handleToggle : function(e, args) {
+        var options = {
+            source: this.id,
+            process: this.id
+        };
 
-	handleClose : function(e, args) {
-		var params = {};
-		params[this.id + "_closed"] = true;
-		params[this.id + "_unit"] = args.layoutUnit.get('position');
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.id;
-		
-		if(this.cfg.onCloseUpdate) {
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.onCloseUpdate;
-		}
-		
-		var options = {};
-		if(this.cfg.onCloseComplete) {
-			options.oncomplete = this.cfg.onCloseComplete;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
-	},
+        if(this.cfg.onToggleUpdate) {
+            options.update = this.cfg.onToggleUpdate;
+        }
+
+        if(this.cfg.onToggleComplete) {
+            options.oncomplete = this.cfg.onToggleComplete;
+        }
+
+        var params = {};
+        params[this.id + "_toggled"] = true;
+        params[this.id + "_collapsed"] = args.collapsed;
+        params[this.id + "_unit"] = args.layoutUnit.get('position');
+
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    },
+
+    handleClose : function(e, args) {
+        var options = {
+            source: this.id,
+            process: this.id
+        };
+
+        if(this.cfg.onCloseUpdate) {
+            options.update = this.cfg.onCloseUpdate;
+        }
+
+        if(this.cfg.onCloseComplete) {
+            options.oncomplete = this.cfg.onCloseComplete;
+        }
+        
+        var params = {};
+        params[this.id + "_closed"] = true;
+        params[this.id + "_unit"] = args.layoutUnit.get('position');
 	
-	handleResize : function(e, args) {
-		var params = {};
-		params[this.id + "_resized"] = true;
-		params[this.id + "_unit"] = args.layoutUnit.get('position');
-		params[this.id + "_unitWidth"] = args.layoutUnit.getSizes().wrap.w;
-		params[this.id + "_unitHeight"] = args.layoutUnit.getSizes().wrap.h;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = this.id;
-		
-		if(this.cfg.onResizeUpdate) {
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.onResizeUpdate;
-		}
-		
-		var options = {};
-		if(this.cfg.onResizeComplete) {
-			options.oncomplete = this.cfg.onResizeComplete;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
-	},
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    },
 	
-	setState : function() {
-		for(var unitName in this.getUnits()) {
-			if(unitName != undefined) {
-				var unit = this.getUnitByPosition(unitName),
-				unitConfig = this.getUnitConfig(unitName);
+    handleResize : function(e, args) {
+        var options = {
+            source: this.id,
+            process: this.id
+        };
+
+        if(this.cfg.onResizeUpdate) {
+            options.update = this.cfg.onResizeUpdate;
+        }
+
+        if(this.cfg.onResizeComplete) {
+            options.oncomplete = this.cfg.onResizeComplete;
+        }
+        
+        var params = {};
+        params[this.id + "_resized"] = true;
+        params[this.id + "_unit"] = args.layoutUnit.get('position');
+        params[this.id + "_unitWidth"] = args.layoutUnit.getSizes().wrap.w;
+        params[this.id + "_unitHeight"] = args.layoutUnit.getSizes().wrap.h;
+        
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    },
+	
+    setState : function() {
+        for(var unitName in this.getUnits()) {
+            if(unitName != undefined) {
+                var unit = this.getUnitByPosition(unitName),
+                unitConfig = this.getUnitConfig(unitName);
 				
-				if(!unitConfig.visible)
-					unit.close();
-				if(unitConfig.collapsed)
-					unit.collapse();
-			}
-		}
-	},
+                if(!unitConfig.visible)
+                    unit.close();
+                if(unitConfig.collapsed)
+                    unit.collapse();
+            }
+        }
+    },
 	
-	getUnits : function() {
-		return this._units;
-	},
+    getUnits : function() {
+        return this._units;
+    },
 	
-	getUnitConfig : function(position) {
-		for(var i=0; i < this.cfg.units.length; i++) {
-			var unitConfig = this.cfg.units[i];
+    getUnitConfig : function(position) {
+        for(var i=0; i < this.cfg.units.length; i++) {
+            var unitConfig = this.cfg.units[i];
 			
-			if(unitConfig.position === position)
-				return unitConfig;
-		}
+            if(unitConfig.position === position)
+                return unitConfig;
+        }
 		
-		return null;
-	}
+        return null;
+    }
 });
