@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
@@ -32,7 +30,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.resource.ResourceUtils;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 public class CoreRenderer extends Renderer {
 	
@@ -282,7 +279,7 @@ public class CoreRenderer extends Renderer {
                 req.append("}");
         }
 
-        req.append(");return false;");
+        req.append(");");
 
         return req.toString();
     }
