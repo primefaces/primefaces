@@ -70,7 +70,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 			}
 			
 			String formClientId = form.getClientId(facesContext);		
-			String request = button.isAjax() ? buildAjaxRequest(facesContext, button, formClientId, clientId) : buildNonAjaxRequest(facesContext, button, formClientId);
+			String request = button.isAjax() ? buildAjaxRequest(facesContext, button, formClientId, clientId) + "return false;" : buildNonAjaxRequest(facesContext, button, formClientId);
 			onclick = onclick != null ? onclick + ";" + request : request;
 		}
 		

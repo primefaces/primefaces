@@ -25,10 +25,10 @@ import javax.faces.event.ActionEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 public class UIAjaxRenderer extends CoreRenderer {
 
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		UIAjax ajax = (UIAjax) component;
 		String clientId = ajax.getClientId(facesContext);
@@ -37,73 +37,20 @@ public class UIAjaxRenderer extends CoreRenderer {
 			ajax.queueEvent(new ActionEvent(ajax));
 		}
 	}
-	
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+
+    @Override
+	public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
 		UIAjax uiajax = (UIAjax) component;
 		UIComponent parent = uiajax.getParent();
+		String clientId = uiajax.getClientId(fc);
+		UIComponent form = ComponentUtils.findParentForm(fc, uiajax);
 		
-		String formClientId = null;
-		String clientId = uiajax.getClientId(facesContext);
-		UIComponent form = ComponentUtils.findParentForm(facesContext, uiajax);
-		
-		if(form != null)
-			formClientId = ComponentUtils.findParentForm(facesContext, uiajax).getClientId(facesContext);
-		else
+		if(form == null) {
 			throw new FacesException("UIAjax:" + clientId + " needs to be enclosed in a form");
+        }
 		
-		String ajaxRequest = createAjaxRequest(facesContext, uiajax, formClientId, clientId);
+		String request = buildAjaxRequest(fc, uiajax, form.getClientId(fc), clientId);
 
-		ComponentUtils.decorateAttribute(parent, "on" + uiajax.getEvent(), ajaxRequest);
-	}
-	
-	protected String createAjaxRequest(FacesContext facesContext, UIAjax uiajax, String formId, String decodeParam) {	
-		StringBuilder req = new StringBuilder();
-		req.append("PrimeFaces.ajax.AjaxRequest('");
-		req.append(getActionURL(facesContext));
-		req.append("',{");
-		req.append("formId:'");
-		req.append(formId);
-		req.append("'");
-		
-		if(uiajax.isAsync()) req.append(",async:true");
-		
-		//source
-		if(uiajax.getOnstart() != null) req.append(",onstart:function(xhr){" + uiajax.getOnstart() + ";}");
-		if(uiajax.getOnerror() != null) req.append(",onerror:function(xhr, status, error){" + uiajax.getOnerror() + ";}");
-		if(uiajax.getOnsuccess() != null) req.append(",onsuccess:function(data, status, xhr, args){" + uiajax.getOnsuccess() + ";}"); 
-		if(uiajax.getOncomplete() != null) req.append(",oncomplete:function(xhr, status, args){" + uiajax.getOncomplete() + ";}");
-
-		req.append(",global:" + uiajax.isGlobal());
-		
-		req.append("},{");
-		
-		req.append("'" + decodeParam + "'");
-		req.append(":");
-		req.append("'" + decodeParam + "'");
-		
-		if(uiajax.getUpdate() != null) {
-			req.append(",'" + Constants.PARTIAL_UPDATE_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, uiajax.getParent(), uiajax.getUpdate()) + "'");
-		}
-		
-		if(uiajax.getProcess() != null) {
-			req.append(",'" + Constants.PARTIAL_PROCESS_PARAM + "':");
-			req.append("'" + ComponentUtils.findClientIds(facesContext, uiajax.getParent(), uiajax.getProcess()) + "'");
-		}
-		
-		for(UIComponent child : uiajax.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter parameter = (UIParameter) child;
-				
-				req.append(",");
-				req.append("'" + parameter.getName() + "'");
-				req.append(":");
-				req.append("'" + parameter.getValue() + "'");
-			}
-		}
-		
-		req.append("});");
-		
-		return req.toString();
+		ComponentUtils.decorateAttribute(parent, "on" + uiajax.getEvent(), request);
 	}
 }
