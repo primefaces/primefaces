@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
 
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 		Hotkey hotkey = (Hotkey) component;
@@ -38,6 +39,7 @@ public class HotkeyRenderer extends CoreRenderer {
 		}
 	}
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Hotkey hotkey = (Hotkey) component;
@@ -45,7 +47,8 @@ public class HotkeyRenderer extends CoreRenderer {
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
+
+        writer.write("jQuery(function() {");
 		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
 	
 		if(hotkey.getHandler() == null) {
@@ -56,11 +59,12 @@ public class HotkeyRenderer extends CoreRenderer {
 			}
 			
 			writer.write(buildAjaxRequest(facesContext, hotkey, form.getClientId(facesContext), clientId));
+
 		} else {
 			writer.write(hotkey.getHandler() + ";");
 		}
 
-		writer.write("});");
+		writer.write("});});");
 		writer.endElement("script");
 	}
 }
