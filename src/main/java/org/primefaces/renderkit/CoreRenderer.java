@@ -25,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
@@ -221,103 +222,107 @@ public class CoreRenderer extends Renderer {
 		return value.trim().equals("");
 	}
 	
-	protected String buildAjaxRequest(FacesContext facesContext, AjaxSource source, String formId, String decodeParam) {	
-		UIComponent component = (UIComponent) source;
-		
-		StringBuilder req = new StringBuilder();
-		req.append("PrimeFaces.ajax.AjaxRequest(");
+	   protected String buildAjaxRequest(FacesContext facesContext, AjaxSource source, String formId, String decodeParam) {
+        UIComponent component = (UIComponent) source;
 
-                //url
-                req.append("'").append(getActionURL(facesContext)).append("'");
+        StringBuilder req = new StringBuilder();
+        req.append("PrimeFaces.ajax.AjaxRequest(");
 
-                //options
-		req.append(",{formId:'").append(formId).append("'");
-                req.append(",async:").append(source.isAsync());
-                req.append(",global:").append(source.isGlobal());
+        //url
+        req.append("'").append(getActionURL(facesContext)).append("'");
 
-                //source
-                req.append(",source:'").append(decodeParam).append("'");
+        //options
+        req.append(",{formId:'").append(formId).append("'");
+        req.append(",async:").append(source.isAsync());
+        req.append(",global:").append(source.isGlobal());
 
-                //process
-                String process = source.getProcess() != null ? ComponentUtils.findClientIds(facesContext, component, source.getProcess()) : "@all";
-                req.append(",process:'").append(process).append("'");
+        //source
+        req.append(",source:'").append(decodeParam).append("'");
 
-                //update
-                if(source.getUpdate() != null) {
-                    req.append(",update:'").append(ComponentUtils.findClientIds(facesContext, component, source.getUpdate())).append("'");
-		}
-	
-		//callbacks
-		if(source.getOnstart() != null) req.append(",onstart:function(xhr){").append(source.getOnstart()).append(";}");
-		if(source.getOnerror() != null) req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
-		if(source.getOnsuccess() != null) req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
-		if(source.getOncomplete() != null) req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
+        //process
+        String process = source.getProcess() != null ? ComponentUtils.findClientIds(facesContext, component, source.getProcess()) : "@all";
+        req.append(",process:'").append(process).append("'");
 
-                req.append("}");
+        //update
+        if (source.getUpdate() != null) {
+            req.append(",update:'").append(ComponentUtils.findClientIds(facesContext, component, source.getUpdate())).append("'");
+        }
 
-                //params
-                boolean firstParam = true, hasParam = false;
-		for(UIComponent child : component.getChildren()) {
-                    if(child instanceof UIParameter) {
-                        UIParameter parameter = (UIParameter) child;
-                        hasParam = true;
+        //callbacks
+        if (source.getOnstart() != null)
+            req.append(",onstart:function(xhr){").append(source.getOnstart()).append(";}");
+        if (source.getOnerror() != null)
+            req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
+        if (source.getOnsuccess() != null)
+            req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
+        if (source.getOncomplete() != null)
+            req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
 
-                        if(firstParam) {
-                            firstParam = false;
-                            req.append(",{");
-                        }
-                        else {
-                            req.append(",");
-                        }
+        req.append("}");
 
-                        req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
-                    }
+        //params
+        boolean firstParam = true, hasParam = false;
 
-                    if(hasParam)
-                        req.append("}");
+        for (UIComponent child : component.getChildren()) {
+            if (child instanceof UIParameter) {
+                UIParameter parameter = (UIParameter) child;
+                hasParam = true;
+
+                if (firstParam) {
+                    firstParam = false;
+                    req.append(",{");
+                } else {
+                    req.append(",");
                 }
-		
-		req.append(");return false;");
-		
-		return req.toString();
-	}
+
+                req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
+            }
+
+            if (hasParam)
+                req.append("}");
+        }
+
+        req.append(");return false;");
+
+        return req.toString();
+    }
 	
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
-		Map<String,Object> params = new HashMap<String, Object>();
 		String process = (String) component.getAttributes().get("process");
 		boolean isPartialProcess = process != null;
+        StringBuilder request = new StringBuilder();
+
+        request.append("PrimeFaces").append(addSubmitParam(formId, decodeParam, decodeParam));
 		
 		for(UIComponent child : component.getChildren()) {
 			if(child instanceof UIParameter) {
-				UIParameter parameter = (UIParameter) child;
-				params.put(parameter.getName(), parameter.getValue());
+                UIParameter param = (UIParameter) child;
+
+                request.append(addSubmitParam(formId, param.getName(), (String) param.getValue()));
 			}
 		}
-		
-		StringBuffer request = new StringBuffer();
-		request.append("PrimeFaces.addSubmitParam('" + formId + "', {'" + decodeParam + "':'" + decodeParam + "'");
-		
-		if(!params.isEmpty() || isPartialProcess) {
-			if(isPartialProcess) {
-				request.append("," + Constants.PARTIAL_PROCESS_PARAM + ":'" + ComponentUtils.findClientIds(facesContext, component, process) + "'");
-			}
-			
-			if(!params.isEmpty()) {
-				for(Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext();) {
-					String paramName = iterator.next();
-					Object paramValue = (Object) params.get(paramName);
-					String toSend = paramValue != null ? paramValue.toString() : "";
-					
-					request.append(",'" + paramName + "':'" + toSend + "'");
-				}
-			}
-		}
-		
-		request.append("});");
-		request.append("jQuery(PrimeFaces.escapeClientId('" + formId + "')).submit();");
+
+        if(isPartialProcess) {
+            request.append(addSubmitParam(formId, PartialViewContext.PARTIAL_EXECUTE_PARAM_NAME, ComponentUtils.findClientIds(facesContext, component, process)));
+        }
+
+		request.append(".submit('").append(formId).append("')");
 		
 		return request.toString();
 	}
+
+    protected String addSubmitParam(String parent, String name, String value) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(".addSubmitParam('")
+                    .append(parent).append("','")
+                    .append(name)
+                    .append("','")
+                    .append(value)
+                    .append("')");
+
+        return builder.toString();
+    }
 	
 	protected String escapeText(String value) {
 		return value == null ? "" : value.replaceAll("'", "\\\\'");

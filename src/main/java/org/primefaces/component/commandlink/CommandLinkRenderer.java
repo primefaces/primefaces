@@ -30,6 +30,7 @@ import org.primefaces.util.HTML;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {	
 		String param = component.getClientId();
 
@@ -38,6 +39,7 @@ public class CommandLinkRenderer extends CoreRenderer {
 		}
 	}
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		CommandLink link = (CommandLink) component;
@@ -79,11 +81,13 @@ public class CommandLinkRenderer extends CoreRenderer {
 			writer.endElement("span");
 		}
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}

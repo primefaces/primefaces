@@ -16,6 +16,7 @@
 package org.primefaces.context;
 
 import java.util.Collection;
+import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
@@ -56,12 +57,18 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public Collection<String> getRenderIds() {
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
-        if (requestContext.getPartialUpdateTargets().isEmpty()) {
+        if (requestContext == null || requestContext.getPartialUpdateTargets().isEmpty()) {
             return getWrapped().getRenderIds();
         } else {
             requestContext.addPartialUpdateTargets(getWrapped().getRenderIds());
 
             return requestContext.getPartialUpdateTargets();
         }
+    }
+
+    @Override
+    public boolean isPartialRequest() {
+        return super.isPartialRequest() ||
+                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(PARTIAL_EXECUTE_PARAM_NAME);
     }
 }
