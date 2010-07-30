@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,36 +27,38 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
-	
-	public void decode(FacesContext facesContext, UIComponent component) {
-		RemoteCommand command = (RemoteCommand) component;
-		
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(facesContext))) {
-			command.queueEvent(new ActionEvent(command));
-		}
-	}
-	
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		RemoteCommand command = (RemoteCommand) component;
-		String clientId = command.getClientId(facesContext);
-		UIComponent form = ComponentUtils.findParentForm(facesContext, command);
-		
-		if(form == null) {
-			throw new FacesException("Remote Command '" + command.getName() + "' must be enclosed inside a form component.");
-		}
-		
-		String formClientId = form.getClientId(facesContext);
-		
-		writer.startElement("script", command);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write(command.getName() + " = function() {");
-		
-		writer.write(buildAjaxRequest(facesContext, command, formClientId, clientId));
-		
-		writer.write("}");
 
-		writer.endElement("script");
-	}
+    @Override
+    public void decode(FacesContext facesContext, UIComponent component) {
+        RemoteCommand command = (RemoteCommand) component;
+
+        if (facesContext.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(facesContext))) {
+            command.queueEvent(new ActionEvent(command));
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        RemoteCommand command = (RemoteCommand) component;
+        String clientId = command.getClientId(facesContext);
+        UIComponent form = ComponentUtils.findParentForm(facesContext, command);
+
+        if (form == null) {
+            throw new FacesException("Remote Command '" + command.getName() + "' must be enclosed inside a form component.");
+        }
+
+        String formClientId = form.getClientId(facesContext);
+
+        writer.startElement("script", command);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write(command.getName() + " = function() {");
+
+        writer.write(buildAjaxRequest(facesContext, command, formClientId, clientId));
+
+        writer.write("}");
+
+        writer.endElement("script");
+    }
 }
