@@ -1,39 +1,41 @@
 PrimeFaces.widget.Draggable = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+    this.id = id;
+    this.cfg = cfg;
 	
-	jQuery(PrimeFaces.escapeClientId(this.cfg.target)).draggable(this.cfg);
+    jQuery(PrimeFaces.escapeClientId(this.cfg.target)).draggable(this.cfg);
 }
 
 PrimeFaces.widget.Droppable = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+    this.id = id;
+    this.cfg = cfg;
 	
-	this.setupDropHandler();
+    this.setupDropHandler();
 	
-	jQuery(PrimeFaces.escapeClientId(this.cfg.target)).droppable(this.cfg);
+    jQuery(PrimeFaces.escapeClientId(this.cfg.target)).droppable(this.cfg);
 }
 
 PrimeFaces.widget.Droppable.prototype.setupDropHandler = function() {
-	var droppable = this;
+    var _self = this;
 	
-	this.cfg.drop = function(event, ui) {
-		if(droppable.cfg.onDrop) {
-			droppable.cfg.onDrop.call(this, event, ui);
-		}
+    this.cfg.drop = function(event, ui) {
+        if(_self.cfg.onDrop) {
+            _self.cfg.onDrop.call(this, event, ui);
+        }
+
+        var options = {
+            source: _self.id,
+            process: _self.id,
+            formId: _self.cfg.formId
+        };
+
+        if(_self.cfg.onDropUpdate) {
+            options.update = _self.cfg.onDropUpdate;
+        }
+	
+        var params = {};
+        params[_self.id + "_dragId"] = ui.draggable.attr('id');
+        params[_self.id + "_dropId"] = _self.cfg.target;
 		
-		var params = {};
-		params[droppable.id] = droppable.id;
-		params[PrimeFaces.PARTIAL_PROCESS_PARAM] = droppable.id;
-		params[droppable.id + "_dragId"] = ui.draggable.attr('id');
-		params[droppable.id + "_dropId"] = droppable.cfg.target;
-		
-		if(droppable.cfg.onDropUpdate) {
-			params[PrimeFaces.PARTIAL_UPDATE_PARAM] = droppable.cfg.onDropUpdate;
-		}
-		
-		PrimeFaces.ajax.AjaxRequest(droppable.cfg.url, {
-			formId: droppable.cfg.formId
-		}, params);
-	};
+        PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+    };
 }
