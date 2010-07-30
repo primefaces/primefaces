@@ -20,19 +20,24 @@ PrimeFaces = {
         jQuery.watermark.showAll();
     },
 	
-    addSubmitParam : function(parent, params) {
-        var escapedId = this.escapeClientId(parent);
-		
-        for(var param in params) {
-            if(jQuery(escapedId).children("input[name=\"" + param + "\"]").length == 0)
-                jQuery(escapedId).append("<input type=\"hidden\" name=\"" + param + "\" value=\"" + params[param] + "\"/>");
-        }
+    addSubmitParam : function(parent, name, value) {
+        jQuery(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
+	
+        return this;
+    },
+
+    submit : function(formId) {
+        jQuery(this.escapeClientId(formId)).submit();
     },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
+
     PARTIAL_UPDATE_PARAM : "javax.faces.partial.render",
+
     PARTIAL_PROCESS_PARAM : "javax.faces.partial.execute",
+
     PARTIAL_SOURCE_PARAM : "javax.faces.source",
+    
     VIEW_STATE : "javax.faces.ViewState"
 };
 
