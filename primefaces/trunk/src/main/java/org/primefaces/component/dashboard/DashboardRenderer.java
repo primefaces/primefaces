@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,6 +120,7 @@ public class DashboardRenderer extends CoreRenderer {
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
 		writer.write("url:'" + getActionURL(facesContext) + "'");
+        
 		if(dashboard.isDisabled()) writer.write(",disabled:true");
 		if(dashboard.getOnReorderUpdate() != null) writer.write(",onReorderUpdate:'" + ComponentUtils.findClientIds(facesContext, dashboard, dashboard.getOnReorderUpdate()) + "'");
 		
@@ -139,10 +140,12 @@ public class DashboardRenderer extends CoreRenderer {
 		return null;
 	}
 
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Rendering happens on encodeEnd
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
