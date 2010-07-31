@@ -1,14 +1,12 @@
 import java.util.Iterator;
 import javax.faces.component.UIComponent;
 import org.primefaces.component.schedule.Schedule;
-import org.primefaces.component.schedule.ScheduleEventDialog;
 import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 
 	private java.util.Locale appropriateLocale;
-	private ScheduleEventDialog eventDialog;
 	
 	java.util.Locale calculateLocale(FacesContext facesContext) {
 		if(appropriateLocale == null) {
@@ -42,30 +40,4 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 		if (me != null) {
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
-	}
-	
-	public ScheduleEventDialog getEventDialog() {
-		if(eventDialog == null) {
-			for(Iterator<UIComponent> iterator = getChildren().iterator(); iterator.hasNext();) {
-				UIComponent kid = iterator.next();
-				if(kid instanceof ScheduleEventDialog) {
-					eventDialog = (ScheduleEventDialog) kid;
-				}
-			}
-		}
-		
-		return eventDialog;	
-	}
-	
-	public void processDecodes(FacesContext facesContext) {
-		if(isScheduleRequest(facesContext)) {
-			decode(facesContext);
-			facesContext.renderResponse();
-		} else {
-			super.processDecodes(facesContext);
-		}
-    }
-	
-	private boolean isScheduleRequest(FacesContext facesContext) {
-		return facesContext.getExternalContext().getRequestParameterMap().containsKey(getClientId(facesContext));
 	}
