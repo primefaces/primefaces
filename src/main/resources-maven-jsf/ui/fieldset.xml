@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>fieldset</tag>
+	<tagClass>org.primefaces.component.fieldset.FieldsetTag</tagClass>
+	<componentClass>org.primefaces.component.fieldset.Fieldset</componentClass>
+	<componentType>org.primefaces.component.Fieldset</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.FieldsetRenderer</rendererType>
+	<rendererClass>org.primefaces.component.fieldset.FieldsetRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>legend</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Text of legend</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style of the root container of accordion panel</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the root container of accordion panel</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>/primefaces/fieldset/fieldset.css</name>
+		</resource>
+	</resources>
+</component>
