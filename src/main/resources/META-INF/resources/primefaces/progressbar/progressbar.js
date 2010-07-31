@@ -52,9 +52,10 @@ PrimeFaces.widget.ProgressBar.prototype.fireCompleteEvent = function() {
         async: true
     };
 
-    if(this.cfg.onCompleteUpdate) {
+    if(this.cfg.onCompleteUpdate)
         options.update = this.cfg.onCompleteUpdate;
-    }
+    if(this.cfg.oncomplete)
+        options.oncomplete = this.cfg.oncomplete;
 
     var params = {};
     params[this.id + '_complete'] = true;
