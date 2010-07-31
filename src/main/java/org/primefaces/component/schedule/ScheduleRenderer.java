@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.ServletResponse;
 
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -35,18 +34,19 @@ import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class ScheduleRenderer extends CoreRenderer implements PartialRenderer {
-	
+public class ScheduleRenderer extends CoreRenderer {
+
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		Schedule schedule = (Schedule) component;
 		ScheduleModel model = (ScheduleModel) schedule.getValue();
 		String clientId = schedule.getClientId(facesContext);
 		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 
-		if(params.containsKey(schedule.getClientId(facesContext))) {
+		if(params.containsKey(clientId + "_ajaxEvent")) {
+            
 			String selectedEventParam = clientId + "_selectedEventId";
 			String selectedDateParam = clientId + "_selectedDate";
 			String changedEventParam = clientId + "_changedEventId";
@@ -90,15 +90,19 @@ public class ScheduleRenderer extends CoreRenderer implements PartialRenderer {
 		}
 	}
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    @Override
+	public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
 		Schedule schedule = (Schedule) component;
-		
-		encodeMarkup(facesContext, schedule);
-		encodeScript(facesContext, schedule);
+
+        if(fc.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(fc))) {
+            encodeEvents(fc, schedule);
+        } else {
+            encodeMarkup(fc, schedule);
+            encodeScript(fc, schedule);
+        }
 	}
 	
-	public void encodePartially(FacesContext facesContext, UIComponent component) throws IOException {
-		Schedule schedule = (Schedule) component;
+	protected void encodeEvents(FacesContext facesContext, Schedule schedule) throws IOException {
 		String clientId = schedule.getClientId(facesContext);
 		ScheduleModel model = (ScheduleModel) schedule.getValue();
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -119,10 +123,8 @@ public class ScheduleRenderer extends CoreRenderer implements PartialRenderer {
 	}
 	
 	protected void encodeEventsAsJSON(FacesContext facesContext, ScheduleModel model) throws IOException {
-		ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
-		response.setContentType("application/json");
 		ResponseWriter writer = facesContext.getResponseWriter();
-		
+
 		writer.write("{");
 		writer.write("\"events\" : [");
 		
