@@ -6,13 +6,25 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
 	this.cfg.placeholder = this.PLACEHOLDER_CLASS;
 	this.cfg.forcePlaceholderSize = true;
 	this.cfg.revert=true;
-	this.jqSelector = this.jqId + " " + this.COLUMN_CLASS;
+	this.jq = this.jqId + " " + this.COLUMN_CLASS;
+
+    var _self = this;
 	
 	this.cfg.update= function(e, ui) {
 		if(this === ui.item.parent()[0]) {
-			var itemIndex = ui.item.parent().children().filter(':not(script):visible').index(ui.item);
+			var itemIndex = ui.item.parent().children().filter(':not(script):visible').index(ui.item),
 			receiverColumnIndex =  ui.item.parent().parent().children().index(ui.item.parent());
-			
+
+            var options = {
+                source: _self.id,
+                process: _self.id
+            };
+
+            if(cfg.onReorderUpdate) {
+				options.update = _self.cfg.onReorderUpdate;
+			}
+
+
 			var params = {};
 			params[id + "_reordered"] = true;
 			params[id + "_widgetId"] = ui.item.attr('id');
@@ -21,19 +33,13 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
 			
 			if(ui.sender) {
 				params[id + "_senderColumnIndex"] = ui.sender.parent().children().index(ui.sender);
-			}
-
-			params[PrimeFaces.PARTIAL_PROCESS_PARAM] = id;
+            }
 			
-			if(cfg.onReorderUpdate) {
-				params[PrimeFaces.PARTIAL_UPDATE_PARAM] = cfg.onReorderUpdate;
-			}
-			
-			PrimeFaces.ajax.AjaxRequest(cfg.url,{}, params);
+			PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
 		}
 	};
 	
-	jQuery(this.jqSelector).sortable(this.cfg);
+	jQuery(this.jq).sortable(this.cfg);
 }
 
 PrimeFaces.widget.Dashboard.prototype.COLUMN_CLASS = '.ui-dashboard-column';
