@@ -56,6 +56,12 @@
             <type>java.lang.String</type>
             <description>Style class of the main container of progressBar.</description>
         </attribute>
+         <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when process is completed and any completeListener is processed.</description>
+        </attribute>
         <attribute>
             <name>onCompleteUpdate</name>
             <required>false</required>
