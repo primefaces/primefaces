@@ -155,6 +155,30 @@
 			<type>java.lang.String</type>
 			<description>Id(s) of components to update with ajax after an event is resized</description>
 		</attribute>
+        <attribute>
+			<name>onEventSelectStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript callback to execute before an ajax event to fetch an event begins</description>
+		</attribute>
+        <attribute>
+			<name>onEventSelectComplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript callback to execute after an ajax event to fetch an event completes</description>
+		</attribute>
+        <attribute>
+			<name>onDateSelectStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript callback to execute before an ajax event to select a day begins</description>
+		</attribute>
+        <attribute>
+			<name>onDateSelectComplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Javascript callback to execute after an ajax event to select a day completes</description>
+		</attribute>
 		<attribute>
 			<name>showHeader</name>
 			<required>false</required>

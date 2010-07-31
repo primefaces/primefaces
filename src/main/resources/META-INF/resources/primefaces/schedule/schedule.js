@@ -9,9 +9,6 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	if(this.cfg.language)
 	    this.applyLocale();
 	
-	if(this.cfg.hasEventDialog) 
-		this.createEventDialog();
-
 	if(this.cfg.editable)
 		this.setupEventHandlers();
 	
@@ -32,69 +29,71 @@ PrimeFaces.widget.Schedule.prototype.applyLocale = function() {
 }
 
 PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
-	var options = {
-        source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
-    },
-    _self = this;
-
-    var params = {};
-    params[this.id + '_ajaxEvent'] = true;
-
+    var _self = this;
+    
 	this.cfg.dayClick = function(dayDate, allDay, jsEvent, view) {
+        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
+        params = {};
+        params[_self.id + '_ajaxEvent'] = true;
 		params[_self.id + '_selectedDate'] = dayDate.getTime();
 		
 		if(_self.cfg.onDateSelectUpdate)
             options.update = _self.cfg.onDateSelectUpdate;
-		else if(_self.cfg.hasEventDialog)
-            options.update = _self.cfg.dialogClientId;
-				
-		if(_self.cfg.hasEventDialog && _self.cfg.onDateSelectUpdate == undefined) {
-			options.oncomplete = function() {
-				_self.dialog.show();
-			};
-		}
+
+        if(_self.cfg.onDateSelectStart)
+            _self.cfg.onDateSelectStart.call(_self, dayDate, allDay, jsEvent, view);
+
+        if(_self.cfg.onDateSelectComplete)
+            options.oncomplete = _self.cfg.onDateSelectComplete;
 		
 		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
 	}
 
 	this.cfg.eventClick = function(calEvent, jsEvent, view) {
+        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
+        params = {};
+        params[_self.id + '_ajaxEvent'] = true;
 		params[_self.id + '_selectedEventId'] = calEvent.id;
 		
 		if(_self.cfg.onEventSelectUpdate)
             options.update = _self.cfg.onEventSelectUpdate;
-		else if(_self.cfg.hasEventDialog)
-            options.update = _self.cfg.dialogClientId;
-		
-		if(_self.cfg.hasEventDialog && _self.cfg.onEventSelectUpdate == undefined) {
-			options.oncomplete = function() {
-				_self.dialog.show();
-			};
-		}
+
+        if(_self.cfg.onEventSelectStart)
+            _self.cfg.onEventSelectStart.call(_self, calEvent, jsEvent, view);
+
+        if(_self.cfg.onEventSelectComplete)
+            options.oncomplete = _self.cfg.onEventSelectComplete;
 		
 		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
 	}
 	
 	this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
+        params = {};
+        params[_self.id + '_ajaxEvent'] = true;
 		params[_self.id + '_changedEventId'] = calEvent.id;
 		params[_self.id + '_dayDelta'] = dayDelta;
 		params[_self.id + '_minuteDelta'] = minuteDelta;
 		
-		if(_self.cfg.onEventMoveUpdate)
+		if(_self.cfg.onEventMoveUpdate) {
 			options.update = _self.cfg.onEventMoveUpdate;
+        }
 		
 		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
 	}
 	
 	this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
+        params = {};
+        params[_self.id + '_ajaxEvent'] = true;
 		params[_self.id + '_changedEventId'] = calEvent.id;
 		params[_self.id + '_dayDelta'] = dayDelta;
 		params[_self.id + '_minuteDelta'] = minuteDelta;
 		params[_self.id + '_resized'] = true;
 		
-		if(_self.cfg.onEventResizeUpdate)
+		if(_self.cfg.onEventResizeUpdate) {
 			options.update = _self.cfg.onEventResizeUpdate;
+        }
 		
 		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
 	}
@@ -110,7 +109,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
             update: _self.id,
             formId: _self.cfg.formId,
             onsuccess: function(responseXML) {
-                 var xmlDoc = responseXML.documentElement,
+                var xmlDoc = responseXML.documentElement,
                 updates = xmlDoc.getElementsByTagName("update");
 
                 for(var i=0; i < updates.length; i++) {
@@ -149,12 +148,6 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
 
 PrimeFaces.widget.Schedule.prototype.update = function() {
 	jQuery(this.jq).fullCalendar('refetchEvents');
-	this.dialog.hide();
-}
-
-PrimeFaces.widget.Schedule.prototype.createEventDialog = function() {
-	this.dialog = new YAHOO.widget.Panel(this.clientId + "_dialogContainer", {fixedcenter:true, visible:false, zindex:1000});
-	this.dialog.render();
 }
 
 PrimeFaces.widget.ScheduleResourceBundle = {

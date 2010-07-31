@@ -153,7 +153,6 @@ public class ScheduleRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = schedule.getClientId(facesContext);
 		String scheduleVar = createUniqueWidgetVar(facesContext, schedule);
-		ScheduleEventDialog dialog = schedule.getEventDialog();
 		UIComponent form = ComponentUtils.findParentForm(facesContext, schedule);
 		if(form == null) {
 			throw new FacesException("Schedule: '" + clientId + "' must be inside a form");
@@ -180,14 +179,14 @@ public class ScheduleRenderer extends CoreRenderer {
 			if(schedule.getOnDateSelectUpdate() != null) writer.write(",onDateSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnDateSelectUpdate()) + "'");
 			if(schedule.getOnEventMoveUpdate() != null) writer.write(",onEventMoveUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnEventMoveUpdate()) + "'");
 			if(schedule.getOnEventResizeUpdate() != null) writer.write(",onEventResizeUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnEventResizeUpdate()) + "'");
-		
-		}
-		
-		if(dialog != null) {
-			writer.write(",hasEventDialog:true");
-			writer.write(",dialogClientId:'" + dialog.getClientId(facesContext) + "'");
-		}
 
+            //client side callbacks
+            if(schedule.getOnEventSelectStart() != null) writer.write(",onEventSelectStart: function(xhr) {" + schedule.getOnEventSelectStart() + "}");
+            if(schedule.getOnEventSelectComplete() != null) writer.write(",onEventSelectComplete: function(xhr, status, args) {" + schedule.getOnEventSelectComplete() + "}");
+            if(schedule.getOnDateSelectStart() != null) writer.write(",onDateSelectStart: function(xhr) {" + schedule.getOnDateSelectStart() + "}");
+            if(schedule.getOnDateSelectComplete() != null) writer.write(",onDateSelectComplete: function(xhr, status, args) {" + schedule.getOnDateSelectComplete() + "}");
+		}
+	
 		if(schedule.getInitialDate() != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime((Date) schedule.getInitialDate());
@@ -224,7 +223,6 @@ public class ScheduleRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext facesContext, Schedule schedule) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = schedule.getClientId(facesContext);
-		ScheduleEventDialog dialog = schedule.getEventDialog();
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -235,41 +233,15 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId + "_container", null);
 		writer.endElement("div");
 		
-		if(dialog != null) {
-			encodeDialogMarkup(facesContext, schedule, dialog);
-		}
-		
 		writer.endElement("div");
 	}
 	
-	protected void encodeDialogMarkup(FacesContext facesContext, Schedule schedule, ScheduleEventDialog dialog) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = schedule.getClientId(facesContext);
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_dialogContainer", null);
-		
-		if(dialog.getHeader() != null) {
-			writer.startElement("div", null);
-			writer.writeAttribute("class", "hd", null);
-			writer.write(dialog.getHeader());
-			writer.endElement("div");
-		}
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("class", "bd", null);
-		
-		renderChild(facesContext, dialog);
-		
-		writer.endElement("div");
-		
-		writer.endElement("div");
-	}
-	
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
