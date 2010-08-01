@@ -21,25 +21,37 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.chart.series.ChartSeries;
-import org.primefaces.resource.ResourceUtils;
-import org.primefaces.util.ComponentUtils;
 
 public class CartesianChartRenderer extends BaseChartRenderer {
 
     @Override
-	protected void encodeScript(FacesContext fc, UIChart uiChart) throws IOException {
-		ResponseWriter writer = fc.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
+		CartesianChart chart = (CartesianChart) component;
+
+        if(chart.isLiveDataRequest(context)) {
+            String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
+            List<ChartSeries> series = getSeries(chart);
+
+            encodeData(context, chart, categoryFieldName, series, false);;
+        } else {
+            encodeResources(context);
+            encodeMarkup(context, chart);
+            encodeScript(context, chart);
+        }
+	}
+
+	protected void encodeScript(FacesContext context, UIChart uiChart) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
         CartesianChart chart = (CartesianChart) uiChart;
-		String clientId = chart.getClientId(fc);
+		String clientId = chart.getClientId(context);
 		String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
 		List<ChartSeries> series = getSeries(chart);
-        String widgetVar = createUniqueWidgetVar(fc, chart);
+        String widgetVar = createUniqueWidgetVar(context, chart);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -48,8 +60,15 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 
 		writer.write(widgetVar + " = new " + chart.getChartWidget() + "('" + clientId + "', {");
 
-		writer.write(chart.getCategoryAxis() + ":'" + categoryFieldName + "'");
-		writer.write(",expressInstall:'" + ResourceUtils.getResourceURL(fc,"/yui/assets/expressinstall.swf") + "'");
+        encodeCommonConfig(context, chart);
+
+        encodeAxises(context, chart, clientId, categoryFieldName);
+
+        encodeData(context, chart, categoryFieldName, series, false);
+
+		encodeSeries(context, chart, series);
+
+        writer.write("," + chart.getCategoryAxis() + ":'" + categoryFieldName + "'");
 
         writer.write(",fields:['" + categoryFieldName + "'");
         for (ChartSeries axis : series) {
@@ -57,46 +76,22 @@ public class CartesianChartRenderer extends BaseChartRenderer {
         }
         writer.write("]");
 
-		if(chart.getWmode() != null) {
-			writer.write(",wmode:'" + chart.getWmode() + "'");
-        }
-		if(chart.getStyle() != null) {
-			writer.write(",style:" + chart.getStyle() + "");
-		}
-		if(chart.getDataTipFunction() != null) {
-			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
-		}
-
-        if(chart.getItemSelectListener() != null) {
-            UIComponent form = ComponentUtils.findParentForm(fc, chart);
-            if(form == null) {
-                throw new FacesException("Chart: '" + clientId + "' must be inside a form element");
-            }
-
-            writer.write(",ajaxItemSelect: true");
-            writer.write(",url:'" + getActionURL(fc) + "'");
-            writer.write(",formId:'" + form.getClientId(fc) + "'");
-
-            if(chart.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(fc, chart, chart.getUpdate()) + "'");
-            if(chart.getOncomplete() != null) writer.write(",oncomplete: function() {" + chart.getOncomplete() + ";}");
-        }
-
-        encodeAxises(fc, chart, clientId, categoryFieldName);
-
-        encodeLocalData(fc, chart, categoryFieldName, series);
-
-		encodeSeries(fc, chart, series);
-
 		writer.write("});});");
 
 		writer.endElement("script");
 	}
 
-	protected void encodeLocalData(FacesContext facesContext, CartesianChart chart, String xfieldName, List<ChartSeries> series) throws IOException {
+	protected void encodeData(FacesContext facesContext, CartesianChart chart, String xfieldName, List<ChartSeries> series, boolean remote) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
         String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
 
-		writer.write(",data: [" );
+        if(remote) {
+            writer.write("{");
+        } else {
+            writer.write(",");
+        }
+
+		writer.write("\"data\": [" );
 
 		Collection<?> value = (Collection<?>) chart.getValue();
 		for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
@@ -104,13 +99,13 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 
 			String categoryFieldValue = chart.getValueExpression(chart.getCategoryField()).getValue(facesContext.getELContext()).toString();	//TODO: Use converter if any
 
-			writer.write("{" + categoryFieldName + ":'" + categoryFieldValue + "'");
+			writer.write("{\"" + categoryFieldName + "\":" + categoryFieldValue);
 
 			for (ChartSeries axis : series) {
 				ValueExpression ve = axis.getValueExpression("value");
 				String fieldName = getFieldName(axis.getValueExpression("value"));
 
-				writer.write("," + fieldName + ":" + ve.getValue(facesContext.getELContext()).toString());	//TODO: Use converter if any
+				writer.write(",\"" + fieldName + "\":" + ve.getValue(facesContext.getELContext()).toString());	//TODO: Use converter if any
 			}
 
 			writer.write("}");
@@ -120,6 +115,10 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		}
 
 		writer.write("]");
+
+        if(remote) {
+            writer.write("}");
+        }
 	}
 
 	private void encodeSeries(FacesContext facesContext, CartesianChart chart, List<ChartSeries> series) throws IOException {

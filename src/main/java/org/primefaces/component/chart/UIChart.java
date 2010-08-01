@@ -154,6 +154,10 @@ public abstract class UIChart extends UIComponentBase {
 		getStateHelper().put(PropertyKeys.dataTipFunction, _dataTipFunction);
 	}
 
+    public boolean isLiveDataRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dataPoll");
+    }
+
     @Override
 	public void broadcast(FacesEvent event) throws AbortProcessingException {
 		super.broadcast(event);

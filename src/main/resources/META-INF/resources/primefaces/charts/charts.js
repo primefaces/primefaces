@@ -46,6 +46,65 @@ PrimeFaces.widget.ChartExtensions = {
         if(this.cfg.labelFunctionX) this.cfg.xAxis.labelFunction = this.cfg.labelFunctionX;
         if(this.cfg.labelFunctionY) this.cfg.yAxis.labelFunction = this.cfg.labelFunctionY;
     }
+
+    ,startDataPoll : function() {
+        var _self = this;
+        this.dataPoll = setInterval(function() {_self.update();}, this.cfg.refreshInterval);
+    }
+
+    ,stopDataPoll : function() {
+        clearInterval(this.dataPoll);
+    }
+
+    ,update : function() {
+        var _self = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            formId: this.cfg.formId,
+            onsuccess: function(responseXML) {
+                var xmlDoc = responseXML.documentElement,
+                updates = xmlDoc.getElementsByTagName("update");
+
+                for(var i=0; i < updates.length; i++) {
+                    var id = updates[i].attributes.getNamedItem("id").nodeValue,
+                    content = updates[i].firstChild.data;
+
+                    if(id == PrimeFaces.VIEW_STATE) {
+                        PrimeFaces.ajax.AjaxUtils.updateState(content);
+                    }
+                    else if(id == _self.id){
+                        var data = {
+                            results: jQuery.parseJSON(content).data
+                        };
+
+                        _self._loadDataHandler(null, data);
+                    }
+                    else {
+                        jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    }
+                }
+
+                return false;
+            }
+        };
+
+        var params = {};
+        params[this.id + '_dataPoll'] = true;
+
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    },
+
+    init : function() {
+        if(this.cfg.ajaxItemSelect) {
+            this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
+        }
+
+        if(this.cfg.live) {
+            this.startDataPoll();
+        }
+    }
 };
 
 PrimeFaces.widget.PieChart = function(id, cfg) {
@@ -56,9 +115,8 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     
     PrimeFaces.widget.PieChart.superclass.constructor.call(this, this.id, datasource, this.cfg);
 
-    if(this.cfg.ajaxItemSelect) {
-        this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
-    }
+    this.init();
+    
 }
 
 PrimeFaces.widget.LineChart = function(id, cfg) {
@@ -71,9 +129,7 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
 
     PrimeFaces.widget.LineChart.superclass.constructor.call(this, this.id, datasource, this.cfg);
 
-    if(this.cfg.ajaxItemSelect) {
-        this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
-    }
+    this.init();
 }
 
 PrimeFaces.widget.ColumnChart = function(id, cfg) {
@@ -86,9 +142,7 @@ PrimeFaces.widget.ColumnChart = function(id, cfg) {
 
     PrimeFaces.widget.ColumnChart.superclass.constructor.call(this, this.id, datasource, this.cfg);
 
-    if(this.cfg.ajaxItemSelect) {
-        this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
-    }
+    this.init();
 }
 
 PrimeFaces.widget.StackedColumnChart = function(id, cfg) {
@@ -103,9 +157,7 @@ PrimeFaces.widget.StackedColumnChart = function(id, cfg) {
 
     PrimeFaces.widget.StackedColumnChart.superclass.constructor.call(this, this.id, datasource, this.cfg);
 
-    if(this.cfg.ajaxItemSelect) {
-        this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
-    }
+    this.init();
 }
 
 PrimeFaces.widget.BarChart = function(id, cfg) {
@@ -118,9 +170,7 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
 
     PrimeFaces.widget.BarChart.superclass.constructor.call(this, this.id, datasource, this.cfg);
 
-    if(this.cfg.ajaxItemSelect) {
-        this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
-    }
+    this.init();
 }
 
 PrimeFaces.widget.StackedBarChart = function(id, cfg) {
@@ -135,9 +185,7 @@ PrimeFaces.widget.StackedBarChart = function(id, cfg) {
 
     PrimeFaces.widget.StackedBarChart.superclass.constructor.call(this, this.id, datasource, this.cfg);
 
-    if(this.cfg.ajaxItemSelect) {
-        this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
-    }
+    this.init();
 }
 
 YAHOO.lang.extend(PrimeFaces.widget.PieChart, YAHOO.widget.PieChart, PrimeFaces.widget.ChartExtensions);
