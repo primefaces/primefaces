@@ -12,12 +12,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.chart.ColumnChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.column.ColumnChartRenderer</rendererClass>
-	<parent>org.primefaces.component.chart.UIChart</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<parent>org.primefaces.component.chart.CartesianChart</parent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
@@ -48,6 +43,7 @@
 			<name>xfield</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>Field for the x axis</description>
 		</attribute>
 		<attribute>
@@ -136,6 +132,7 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Minimum boundary value of y axis.
 			</description>
@@ -145,6 +142,7 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Maximum boundary value of y axis.
 			</description>
@@ -153,6 +151,7 @@
 			<name>titleX</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Title of the x-axis.
 			</description>
@@ -161,6 +160,7 @@
 			<name>titleY</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Title of the y-axis.
 			</description>
@@ -169,6 +169,7 @@
 			<name>labelFunctionX</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Javascript function to format x-axis labels.
 			</description>
@@ -177,6 +178,7 @@
 			<name>labelFunctionY</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Javascript function to format y-axis labels.
 			</description>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -33,19 +34,20 @@ import org.primefaces.util.ComponentUtils;
 
 public class BaseChartRenderer extends CoreRenderer {
 	
-	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		String clientId = component.getClientId(facesContext);
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
+    @Override
+	public void decode(FacesContext fc, UIComponent component) {
+		String clientId = component.getClientId(fc);
+		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
 
-		if(params.containsKey(clientId)) {
-			int seriesIndex = Integer.parseInt(params.get("seriesIndex"));
-			int itemIndex = Integer.parseInt(params.get("itemIndex"));
-			
+		if(params.containsKey(clientId + "_ajaxItemSelect")) {
+			int seriesIndex = Integer.parseInt(params.get(clientId + "_seriesIndex"));
+			int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
+
 			component.queueEvent(new ItemSelectEvent(component, itemIndex, seriesIndex));
-		}
+        }
 	}
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		UIChart chart = (UIChart) component;
 		
@@ -56,10 +58,6 @@ public class BaseChartRenderer extends CoreRenderer {
 	
 	/**
 	 * Each chart renderer should override this method
-	 * 
-	 * @param facesContext
-	 * @param chart
-	 * @throws IOException
 	 */
 	protected void encodeScript(FacesContext facesContext, UIChart chart) throws IOException {
 		
@@ -131,26 +129,30 @@ public class BaseChartRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeItemSelectEvent(FacesContext facesContext, UIChart chart) throws IOException {		
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = chart.getClientId(facesContext);
-		String formClientId = ComponentUtils.findParentForm(facesContext, chart).getClientId(facesContext);
-	
-		writer.write(getChartVar(chart) + ".subscribe('itemClickEvent', PrimeFaces.widget.ChartUtils.itemSelectHandler, {clientId:'" + clientId + "'");
-		writer.write(",url:'" + getActionURL(facesContext) + "'");
-		writer.write(",formId:'" + formClientId + "'");
-		writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, chart, chart.getUpdate()) + "'");
+	protected void encodeItemSelectEvent(FacesContext context, UIChart chart) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
-		if(chart.getOncomplete() != null)
-			writer.write(",oncomplete: function() {" + chart.getOncomplete() + ";}");
-		
-		writer.write("});");
+		if(chart.getItemSelectListener() != null) {
+            UIComponent form = ComponentUtils.findParentForm(context, chart);
+            if(form == null) {
+                throw new FacesException("Chart: '" + chart.getClientId(context) + "' must be inside a form element");
+            }
+
+            writer.write(",ajaxItemSelect: true");
+            writer.write(",url:'" + getActionURL(context) + "'");
+            writer.write(",formId:'" + form.getClientId(context) + "'");
+
+            if(chart.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, chart, chart.getUpdate()) + "'");
+            if(chart.getOncomplete() != null) writer.write(",oncomplete: function() {" + chart.getOncomplete() + ";}");
+        }
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}

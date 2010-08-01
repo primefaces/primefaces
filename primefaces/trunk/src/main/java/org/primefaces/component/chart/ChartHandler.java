@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ public class ChartHandler extends ComponentHandler {
 	public ChartHandler(ComponentConfig config) {
 		super(config);
 	}
-	
+
+    @Override
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
