@@ -12,12 +12,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.chart.StackedBarChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.stackedbar.StackedBarChartRenderer</rendererClass>
-	<parent>org.primefaces.component.chart.UIChart</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
+	<parent>org.primefaces.component.chart.bar.BarChart</parent>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
@@ -48,6 +43,7 @@
 			<name>yfield</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>Field for the y axis</description>
 		</attribute>
 		<attribute>
@@ -136,6 +132,7 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Minimum boundary value of x axis.
 			</description>
@@ -145,8 +142,45 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
 			<description>
 				Maximum boundary value of x axis.
+			</description>
+		</attribute>
+        <attribute>
+			<name>titleX</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Title of the x-axis.
+			</description>
+		</attribute>
+		<attribute>
+			<name>titleY</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Title of the y-axis.
+			</description>
+		</attribute>
+		<attribute>
+			<name>labelFunctionX</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Javascript function to format x-axis labels.
+			</description>
+		</attribute>
+		<attribute>
+			<name>labelFunctionY</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+			<description>
+				Javascript function to format y-axis labels.
 			</description>
 		</attribute>
 		<attribute>
