@@ -46,23 +46,7 @@ public class BaseChartRenderer extends CoreRenderer {
 			component.queueEvent(new ItemSelectEvent(component, itemIndex, seriesIndex));
         }
 	}
-
-    @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
-		UIChart chart = (UIChart) component;
-		
-		encodeResources(facesContext);
-		encodeMarkup(facesContext, chart);
-		encodeScript(facesContext, chart);
-	}
-	
-	/**
-	 * Each chart renderer should override this method
-	 */
-	protected void encodeScript(FacesContext facesContext, UIChart chart) throws IOException {
-		
-	}
-	
+    	
 	protected List<ChartSeries> getSeries(UIChart chart) {
 		List<UIComponent> children = chart.getChildren();
 		List<ChartSeries> series = new ArrayList<ChartSeries>();
@@ -73,22 +57,6 @@ public class BaseChartRenderer extends CoreRenderer {
 		}
 		
 		return series;
-	}
-	
-	protected String getChartVar(UIChart chart) {
-		return createUniqueWidgetVar(FacesContext.getCurrentInstance(), chart);
-	}
-	
-	protected String getDataSourceVar(UIChart chart) {
-		return getChartVar(chart) + "_dataSource";
-	}
-	
-	protected String getLocalDataVar(UIChart chart) {
-		return getChartVar(chart) + "_data";
-	}
-	
-	protected String getSeriesDefVar(UIChart chart) {
-		return getChartVar(chart) + "_seriesDef";
 	}
 	
 	protected String getFieldName(ValueExpression fieldExpression) {
@@ -129,24 +97,44 @@ public class BaseChartRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeItemSelectEvent(FacesContext context, UIChart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		if(chart.getItemSelectListener() != null) {
+    protected void encodeCommonConfig(FacesContext context, UIChart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.write("expressInstall:'" + ResourceUtils.getResourceURL(context,"/yui/assets/expressinstall.swf") + "'");
+
+        if(chart.getWmode() != null) {
+			writer.write(",wmode:'" + chart.getWmode() + "'");
+        }
+		if(chart.getStyle() != null) {
+			writer.write(",style:" + chart.getStyle() + "");
+		}
+		if(chart.getDataTipFunction() != null) {
+			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
+		}
+
+        if(chart.isLive() || chart.getItemSelectListener() != null) {
             UIComponent form = ComponentUtils.findParentForm(context, chart);
             if(form == null) {
                 throw new FacesException("Chart: '" + chart.getClientId(context) + "' must be inside a form element");
             }
 
-            writer.write(",ajaxItemSelect: true");
             writer.write(",url:'" + getActionURL(context) + "'");
             writer.write(",formId:'" + form.getClientId(context) + "'");
+        }
 
+        if(chart.isLive()) {
+            writer.write(",live:true");
+            writer.write(",refreshInterval:" + chart.getRefreshInterval());
+        }
+
+        if(chart.getItemSelectListener() != null) {
+            writer.write(",ajaxItemSelect: true");
+            
             if(chart.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, chart, chart.getUpdate()) + "'");
             if(chart.getOncomplete() != null) writer.write(",oncomplete: function() {" + chart.getOncomplete() + ";}");
         }
-	}
-
+    }
+    
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing

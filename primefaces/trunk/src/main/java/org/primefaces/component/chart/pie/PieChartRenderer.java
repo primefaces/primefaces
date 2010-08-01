@@ -18,6 +18,8 @@ package org.primefaces.component.chart.pie;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -25,10 +27,26 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
 import org.primefaces.resource.ResourceUtils;
+import org.primefaces.util.ComponentUtils;
 
 public class PieChartRenderer extends BaseChartRenderer {
 
-	@Override
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
+		UIChart chart = (UIChart) component;
+
+        if(chart.isLiveDataRequest(context)) {
+            String categoryFieldName = getFieldName(chart.getValueExpression("categoryField"));
+            String dataFieldName = getFieldName(chart.getValueExpression("dataField"));
+
+            encodeData(context, chart, categoryFieldName, dataFieldName, true);
+        } else {
+            encodeResources(context);
+            encodeMarkup(context, chart);
+            encodeScript(context, chart);
+        }
+	}
+
 	protected void encodeScript(FacesContext context, UIChart uichart) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		PieChart chart = (PieChart) uichart;
@@ -45,36 +63,32 @@ public class PieChartRenderer extends BaseChartRenderer {
 
         writer.write(widgetVar + " = new PrimeFaces.widget.PieChart('" + clientId + "', {");
 
-        writer.write("categoryField:'" + categoryFieldName + "'");
-		writer.write(",dataField:'" + dataFieldName + "'");
-		writer.write(",expressInstall:'" + ResourceUtils.getResourceURL(context,"/yui/assets/expressinstall.swf") + "'");
+        encodeCommonConfig(context, chart);
+        
+        encodeData(context, chart, categoryFieldName, dataFieldName, false);
 
-        if(chart.getWmode() != null) {
-			writer.write(",wmode:'" + chart.getWmode() + "'");
-        }
-		if(chart.getStyle() != null) {
-			writer.write(",style:" + chart.getStyle() + "");
-		}
+        writer.write(",categoryField:'" + categoryFieldName + "'");
+		writer.write(",dataField:'" + dataFieldName + "'");
+
 		if(chart.getSeriesStyle() != null) {
 			writer.write(",series: [{ style: " + chart.getSeriesStyle() + " }]");
 		}
-		if(chart.getDataTipFunction() != null) {
-			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
-		}
-
-        encodeLocalData(context, chart, categoryFieldName, dataFieldName);
-
-        encodeItemSelectEvent(context, chart);
-		
+        
 		writer.write("})});");
 
 		writer.endElement("script");
 	}
-	
-	protected void encodeLocalData(FacesContext facesContext, UIChart chart, String categoryFieldName, String dataFieldName) throws IOException {
+
+	protected void encodeData(FacesContext facesContext, UIChart chart, String categoryFieldName, String dataFieldName, boolean remote) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.write(",data: [" );
+
+        if(remote) {
+            writer.write("{");
+        } else {
+            writer.write(",");
+        }
+
+		writer.write("\"data\": [" );
 		
 		Collection<?> value = (Collection<?>) chart.getValue();
 		for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
@@ -83,12 +97,16 @@ public class PieChartRenderer extends BaseChartRenderer {
 			String categoryFieldValue = chart.getValueExpression("categoryField").getValue(facesContext.getELContext()).toString();
 			String dataFieldValue = chart.getValueExpression("dataField").getValue(facesContext.getELContext()).toString();
 			
-			writer.write("{" + categoryFieldName + ":'" + categoryFieldValue + "'," + dataFieldName + ":" + dataFieldValue + "}");
+			writer.write("{\"" + categoryFieldName + "\":\"" + categoryFieldValue + "\",\"" + dataFieldName + "\":" + dataFieldValue + "}");
 			
 			if(iterator.hasNext())
 				writer.write(",");
 		}
-		
-		writer.write("]");
+
+        writer.write("]");
+
+        if(remote) {
+            writer.write("}");
+        }
 	}
 }
