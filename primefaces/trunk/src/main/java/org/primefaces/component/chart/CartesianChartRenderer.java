@@ -37,7 +37,7 @@ public class CartesianChartRenderer extends BaseChartRenderer {
             String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
             List<ChartSeries> series = getSeries(chart);
 
-            encodeData(context, chart, categoryFieldName, series, false);;
+            encodeData(context, chart, categoryFieldName, series, true);;
         } else {
             encodeResources(context);
             encodeMarkup(context, chart);
@@ -99,7 +99,7 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 
 			String categoryFieldValue = chart.getValueExpression(chart.getCategoryField()).getValue(facesContext.getELContext()).toString();	//TODO: Use converter if any
 
-			writer.write("{\"" + categoryFieldName + "\":" + categoryFieldValue);
+			writer.write("{\"" + categoryFieldName + "\":\"" + categoryFieldValue + "\"");
 
 			for (ChartSeries axis : series) {
 				ValueExpression ve = axis.getValueExpression("value");

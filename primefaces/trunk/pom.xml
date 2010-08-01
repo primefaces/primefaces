@@ -108,9 +108,10 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-      		
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xslt-maven-plugin</artifactId>
@@ -164,7 +165,7 @@
                     </execution>
                 </executions>
             </plugin>
-			
+
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
@@ -220,9 +221,16 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
         </plugins>
-		
+
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -230,32 +238,9 @@
                 <version>1.0-alpha-6</version>
             </extension>
         </extensions>
-    	
+
     </build>
-	
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <sourcepath>${basedir}/src/main/java;${basedir}/target/maven-jsf-plugin/main/java</sourcepath>
-                </configuration>
-            </plugin>
-	      
-            <plugin>
-                <groupId>net.sourceforge.maven-taglib</groupId>
-                <artifactId>maven-taglib-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir>
-                    <tldDocDir>${basedir}/target/site/tlddocs</tldDocDir>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
-	
+
     <repositories>
         <repository>
             <id>prime-repo</id>
@@ -273,7 +258,7 @@
             <url>http://repository.jboss.org/maven2</url>
         </repository>
     </repositories>
-	
+
     <pluginRepositories>
         <pluginRepository>
             <id>prime-repo</id>
@@ -291,7 +276,7 @@
             <url>http://repository.codehaus.org</url>
         </pluginRepository>
     </pluginRepositories>
-	
+
     <distributionManagement>
         <repository>
             <id>prime-repo</id>
@@ -300,7 +285,7 @@
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
-	
+
     <profiles>
         <profile>
             <id>release</id>
@@ -320,7 +305,7 @@
                             </execution>
                         </executions>
                     </plugin>
-			 
+
                     <plugin>
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -346,5 +331,7 @@
             </build>
         </profile>
     </profiles>
-	
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>
