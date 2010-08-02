@@ -15,11 +15,13 @@
  */
 package org.primefaces.context;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import java.util.Collection;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
+import org.primefaces.util.Constants;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
@@ -68,7 +70,15 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public boolean isPartialRequest() {
-        return super.isPartialRequest() ||
+        return wrapped.isPartialRequest() ||
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(PARTIAL_EXECUTE_PARAM_NAME);
     }
+
+    @Override
+    public boolean isAjaxRequest() {
+        return wrapped.isAjaxRequest() ||
+                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(Constants.PARTIAL_REQUEST_PARAM);
+    }
+
+
 }

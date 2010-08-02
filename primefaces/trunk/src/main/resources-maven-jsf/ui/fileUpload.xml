@@ -161,9 +161,6 @@
 			<name>/jquery/plugins/uploadify/swfobject.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/uploadify/jquery.uploadify.v2.1.0.min.js</name>
-		</resource>
-		<resource>
 			<name>/primefaces/core/core.js</name>
 		</resource>
 		<resource>
