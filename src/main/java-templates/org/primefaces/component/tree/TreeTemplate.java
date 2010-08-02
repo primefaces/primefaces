@@ -58,3 +58,7 @@ import org.primefaces.model.TreeNode;
 	public boolean hasAjaxListener() {
 		return getNodeSelectListener() != null || getNodeExpandListener() != null || getNodeCollapseListener() != null;
 	}
+
+    public boolean isNodeLoadRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicLoad");
+	}
