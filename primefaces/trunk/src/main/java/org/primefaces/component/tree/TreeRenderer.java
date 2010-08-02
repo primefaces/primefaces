@@ -34,17 +34,17 @@ import org.primefaces.model.TreeModel;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class TreeRenderer extends CoreRenderer implements PartialRenderer {
+public class TreeRenderer extends CoreRenderer {
 	
 	private TreeExplorer treeExplorer;
 	
 	public TreeRenderer() {
 		treeExplorer = new TreeExplorerImpl();
 	}
-	
+
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		Tree tree = (Tree) component;
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -109,57 +109,62 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 			}
 		}
 	}
-	
-	public void encodePartially(FacesContext facesContext, UIComponent component) throws IOException {
+
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;
+
+        if(tree.isNodeLoadRequest(context)) {
+            encodeDynamicNodes(context, tree);
+        } else {
+            encodeMarkup(context, tree);
+            encodeScript(context, tree);
+        }
+	}
+	
+	public void encodeDynamicNodes(FacesContext facesContext, Tree tree) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
 		String clientId = tree.getClientId(facesContext);
 		TreeNode root = (TreeNode) tree.getValue();
-		
 		String rowKey = params.get(clientId + "_rowKey");
+        
 		TreeNode currentNode = treeExplorer.findTreeNode(rowKey, new TreeModel(root));
 		int rowIndex = 0;
-		
-		ServletResponse response = (ServletResponse) facesContext.getExternalContext().getResponse();
-		response.setContentType("text/xml");
-		
-		writer.write("<?xml version=\"1.0\" encoding=\"" + response.getCharacterEncoding() + "\"?>");
-		writer.write("<nodes>");
+
+        //TODO: maybe we should send html instead of json?
+		writer.write("{\"nodes\":[");
 		
 		for(Iterator<TreeNode> iterator = currentNode.getChildren().iterator(); iterator.hasNext();) {
 			TreeNode child = iterator.next();
 			UITreeNode uiTreeNode = tree.getUITreeNodeByType(child.getType());
 			
 			facesContext.getExternalContext().getRequestMap().put(tree.getVar(), child.getData());
-			writer.write("<node>");
+			writer.write("{");
 			
-				writer.write("<content>");
-				writer.startCDATA();
+				writer.write("\"html\":\"");
 				renderChildren(facesContext, uiTreeNode);
-				writer.endCDATA();
-				writer.write("</content>");
+				writer.write("\"");
 				
-				writer.write("<rowKey>" + rowKey + "." + rowIndex + "</rowKey>");
-				writer.write("<isLeaf>" + child.isLeaf() + "</isLeaf>");
+				writer.write(",\"rowKey\":\"" + rowKey + "." + rowIndex + "\"");
+				writer.write(",\"isLeaf\":" + child.isLeaf());
+                
 				if(uiTreeNode.getStyleClass() != null) {
-					writer.write("<contentClass>" + uiTreeNode.getStyleClass() + "</contentClass>");
+					writer.write(",\"contentStyle\":\"" + uiTreeNode.getStyleClass() + "\"");
 				}
-			writer.write("</node>");
+                
+			writer.write("}");
 			
 			rowIndex ++;
 			
 			facesContext.getExternalContext().getRequestMap().remove(tree.getVar());
-		}
-		
-		writer.write("</nodes>");
-	}
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		Tree tree = (Tree) component;
-		
-		encodeMarkup(facesContext, tree);
-		encodeScript(facesContext, tree);
+            if(iterator.hasNext()) {
+                writer.write(",");
+            }
+		}
+
+        writer.write("]}");
 	}
 	
 	protected void encodeScript(FacesContext facesContext, Tree tree) throws IOException {
@@ -179,7 +184,7 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
 		//Nodes
-		writer.write(treeVar + " = new PrimeFaces.widget.TreeView('" + clientId + "', [\n");
+		writer.write(treeVar + " = new PrimeFaces.widget.TreeView('" + clientId + "', [");
 		if(root != null) {
 			int rowIndex = 0;
 			for(Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
@@ -194,7 +199,7 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		
 		//Config
 		writer.write("dynamic:" + tree.isDynamic());
-		writer.write(",actionURL:'" + getActionURL(facesContext) + "'");
+		writer.write(",url:'" + getActionURL(facesContext) + "'");
 		writer.write(",formId:'" + formClientId + "'");
 		writer.write(",cache:" + tree.isCache());
 		
@@ -304,11 +309,13 @@ public class TreeRenderer extends CoreRenderer implements PartialRenderer {
 		
 		writer.endElement("div");
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}

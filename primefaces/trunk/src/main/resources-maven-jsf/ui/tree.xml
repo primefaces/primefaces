@@ -13,11 +13,6 @@
 	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
