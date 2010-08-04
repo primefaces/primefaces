@@ -193,25 +193,25 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/yui/datasource/datasource-min.js</name>
+			<name>yui/datasource/datasource-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/swf/swf-min.js</name>
+			<name>yui/swf/swf-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/charts/charts-min.js</name>
+			<name>yui/charts/charts-min.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/charts/charts.js</name>
+			<name>charts/charts.js</name>
 		</resource>
 	</resources>
 </component>

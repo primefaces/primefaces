@@ -183,19 +183,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+			<name>jquery/plugins/ui/jquery.ui.button.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>	
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/button/button.js</name>
+			<name>button/button.js</name>
 		</resource>
 	</resources>
 </component>

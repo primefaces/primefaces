@@ -72,19 +72,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/notificationbar/notificationbar.css</name>
+			<name>notificationbar/notificationbar.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/notificationbar/notificationbar.js</name>
+			<name>notificationbar/notificationbar.js</name>
 		</resource>
 	</resources>
 </component>

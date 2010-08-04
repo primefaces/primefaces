@@ -50,19 +50,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/picklist/picklist.css</name>
+			<name>picklist/picklist.css</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/picklist/picklist.js</name>
+			<name>picklist/picklist.js</name>
 		</resource>
 	</resources>
 </component>

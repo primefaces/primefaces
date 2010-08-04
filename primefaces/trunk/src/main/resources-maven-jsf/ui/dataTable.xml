@@ -13,11 +13,6 @@
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
 	<rendererClass>org.primefaces.component.datatable.DataTableRenderer</rendererClass>
 	<parent>javax.faces.component.UIData</parent>
-	<interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AjaxComponent</name>
-		</interface>
-	</interfaces>
 	<attributes>
 		&data_component_attributes;
 		&widget_var_attribute;
@@ -261,31 +256,31 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/paginator/paginator.css</name>
+			<name>paginator/paginator.css</name>
 		</resource>
 		<resource>
-			<name>/primefaces/datatable/datatable.css</name>
+			<name>datatable/datatable.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/yui/datasource/datasource-min.js</name>
+			<name>yui/datasource/datasource-min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/paginator/paginator.js</name>
+			<name>paginator/paginator.js</name>
 		</resource>
 		<resource>
-			<name>/yui/datatable/datatable-min.js</name>
+			<name>yui/datatable/datatable-min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/datatable/datatable.js</name>
+			<name>datatable/datatable.js</name>
 		</resource>
 	</resources>
 </component>

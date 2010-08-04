@@ -38,10 +38,9 @@ import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.Cell;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.PartialRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class DataTableRenderer extends CoreRenderer implements PartialRenderer {
+public class DataTableRenderer extends CoreRenderer {
 
 	@Override
 	public void decode(FacesContext facesContext, UIComponent component) {

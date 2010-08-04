@@ -122,13 +122,13 @@
     </attributes>
     <resources>
         <resource>
-            <name>/jquery/jquery.js</name>
+            <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>/primefaces/hotkey/jquery.hotkeys.js</name>
+            <name>hotkey/jquery.hotkeys.js</name>
         </resource>
         <resource>
-            <name>/primefaces/core/core.js</name>
+            <name>core/core.js</name>
         </resource>
     </resources>
 </component>

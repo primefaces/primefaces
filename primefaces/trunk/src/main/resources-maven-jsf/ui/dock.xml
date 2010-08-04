@@ -59,22 +59,22 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/dock/assets/dock.css</name>
+			<name>dock/assets/dock.css</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/dock/interface.js</name>
+			<name>jquery/plugins/dock/interface.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/dock/dock.js</name>
+			<name>dock/dock.js</name>
 		</resource>
 	</resources>
 </component>

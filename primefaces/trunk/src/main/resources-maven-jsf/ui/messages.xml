@@ -44,7 +44,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/messages/messages.css</name>
+			<name>messages/messages.css</name>
 		</resource>
 	</resources>
 </component>

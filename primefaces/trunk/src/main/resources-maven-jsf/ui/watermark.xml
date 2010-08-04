@@ -36,16 +36,16 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/watermark/watermark.css</name>
+			<name>watermark/watermark.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/watermark/watermark.min.js</name>
+			<name>jquery/plugins/watermark/watermark.min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 	</resources>
 </component>

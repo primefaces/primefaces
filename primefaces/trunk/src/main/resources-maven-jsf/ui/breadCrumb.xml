@@ -87,16 +87,16 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/breadcrumb/breadcrumb.css</name>
+			<name>breadcrumb/breadcrumb.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/breadcrumb/breadcrumb.js</name>
+			<name>breadcrumb/breadcrumb.js</name>
 		</resource>
 	</resources>
 </component>

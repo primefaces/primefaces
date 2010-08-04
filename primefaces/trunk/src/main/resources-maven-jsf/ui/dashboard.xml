@@ -57,19 +57,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/dashboard/dashboard.css</name>
+			<name>dashboard/dashboard.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/dashboard/dashboard.js</name>
+			<name>dashboard/dashboard.js</name>
 		</resource>
 	</resources>
 </component>

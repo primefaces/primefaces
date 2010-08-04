@@ -91,19 +91,19 @@
     </attributes>
     <resources>
         <resource>
-            <name>/jquery/plugins/ui/jquery.ui.progressbar.css</name>
+            <name>jquery/plugins/ui/jquery.ui.progressbar.css</name>
         </resource>
         <resource>
-            <name>/jquery/jquery.js</name>
+            <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+            <name>jquery/plugins/ui/jquery-ui.custom.js</name>
         </resource>
         <resource>
-            <name>/primefaces/core/core.js</name>
+            <name>core/core.js</name>
         </resource>
         <resource>
-            <name>/primefaces/progressbar/progressbar.js</name>
+            <name>progressbar/progressbar.js</name>
         </resource>
     </resources>
 </component>

@@ -61,46 +61,46 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/menu/assets/skins/sam/menu.css</name>
+			<name>yui/menu/assets/skins/sam/menu.css</name>
 		</resource>
 		<resource>
-			<name>/yui/button/assets/skins/sam/button.css</name>
+			<name>yui/button/assets/skins/sam/button.css</name>
 		</resource>
 		<resource>
-			<name>/yui/resize/assets/skins/sam/resize.css</name>
+			<name>yui/resize/assets/skins/sam/resize.css</name>
 		</resource>
 		<resource>
-			<name>/yui/container/assets/skins/sam/container.css</name>
+			<name>yui/container/assets/skins/sam/container.css</name>
 		</resource>
 		<resource>
-			<name>/yui/editor/assets/skins/sam/editor.css</name>
+			<name>yui/editor/assets/skins/sam/editor.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/yui/container/container-min.js</name>
+			<name>yui/container/container-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/menu/menu-min.js</name>
+			<name>yui/menu/menu-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/button/button-min.js</name>
+			<name>yui/button/button-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/editor/editor-min.js</name>
+			<name>yui/editor/editor-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/resize/resize-min.js</name>
+			<name>yui/resize/resize-min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/editor/editor.js</name>
+			<name>editor/editor.js</name>
 		</resource>
 	</resources>
 </component>

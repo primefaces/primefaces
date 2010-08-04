@@ -104,19 +104,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/carousel/carousel.css</name>
+			<name>carousel/carousel.css</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/carousel/carousel.js</name>
+			<name>carousel/carousel.js</name>
 		</resource>
 	</resources>
 </component>

@@ -28,25 +28,25 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/resize/assets/skins/sam/resize.css</name>
+			<name>yui/resize/assets/skins/sam/resize.css</name>
 		</resource>
 		<resource>
-			<name>/yui/imagecropper/assets/skins/sam/imagecropper.css</name>
+			<name>yui/imagecropper/assets/skins/sam/imagecropper.css</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/yui/resize/resize-min.js</name>
+			<name>yui/resize/resize-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/imagecropper/imagecropper-min.js</name>
+			<name>yui/imagecropper/imagecropper-min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/imagecropper/imagecropper.js</name>
+			<name>imagecropper/imagecropper.js</name>
 		</resource>
 	</resources>
 </component>

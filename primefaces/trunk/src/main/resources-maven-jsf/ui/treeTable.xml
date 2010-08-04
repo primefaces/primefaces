@@ -45,19 +45,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/treetable/style/treetable.css</name>
+			<name>treetable/style/treetable.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/treetable/treetable.js</name>
+			<name>treetable/treetable.js</name>
 		</resource>
 	</resources>
 </component>

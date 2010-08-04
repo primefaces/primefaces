@@ -69,40 +69,40 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.dialog.css</name>
+			<name>jquery/plugins/ui/jquery.ui.dialog.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.button.css</name>
+			<name>jquery/plugins/ui/jquery.ui.button.css</name>
 		</resource>
 		<resource>
-			<name>/yui/slider/assets/skins/sam/slider.css</name>
+			<name>yui/slider/assets/skins/sam/slider.css</name>
 		</resource>
 		<resource>
-			<name>/yui/colorpicker/assets/skins/sam/colorpicker.css</name>
+			<name>yui/colorpicker/assets/skins/sam/colorpicker.css</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/yui/slider/slider-min.js</name>
+			<name>yui/slider/slider-min.js</name>
 		</resource>
 		<resource>
-			<name>/yui/colorpicker/colorpicker-min.js</name>
+			<name>yui/colorpicker/colorpicker-min.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>	
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/button/button.js</name>
+			<name>button/button.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/colorpicker/colorpicker.js</name>
+			<name>colorpicker/colorpicker.js</name>
 		</resource>
 	</resources>
 </component>

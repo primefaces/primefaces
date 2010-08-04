@@ -59,16 +59,16 @@
 	</attributes>
 	<resources>
         <resource>
-			<name>/primefaces/terminal/terminal.css</name>
+			<name>terminal/terminal.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/terminal/terminal.js</name>
+			<name>terminal/terminal.js</name>
 		</resource>
 	</resources>
 </component>

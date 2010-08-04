@@ -117,19 +117,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/ui/jquery.ui.dialog.css</name>
+			<name>jquery/plugins/ui/jquery.ui.dialog.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>	
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/confirmdialog/confirmdialog.js</name>
+			<name>confirmdialog/confirmdialog.js</name>
 		</resource>
 	</resources>
 </component>

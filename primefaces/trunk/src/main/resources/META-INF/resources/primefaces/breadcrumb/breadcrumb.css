@@ -51,7 +51,7 @@
 	margin: 0px 6px 0px 0;
 	padding: 0px 10px 0px 0;
 	font-size: .9167em;
-	background: url(Chevron.gif) no-repeat 100% 0;
+	background: url("#{resource['primefaces:breadcrumb/Chevron.gif']}") no-repeat 100% 0;
 }
 .ui-breadcrumb ul li div.ui-breadcrumb-chevron
 {
@@ -92,7 +92,7 @@
 .ui-breadcrumb-chevron
 {
 	display: none;
-	background: url(Chevron.gif) no-repeat 100% 0;
+	background: url("#{resource['primefaces:breadcrumb/Chevron.gif']}") no-repeat 100% 0;
 	width: 13px;
 	height: 20px;
 }
