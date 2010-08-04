@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.ListIterator;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -24,40 +25,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import org.primefaces.resource.ResourceUtils;
-
-/**
- * Temporary Custom HeadRenderer to fix an issue with Mojarra-2.0.2 that causes queued resources to be rendered after
- * resources defined by page author making it hard to override default styles of components for skinning
- */
 public class HeadRenderer extends Renderer {
 
 	@Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    public void encodeBegin(FacesContext fc, UIComponent component) throws IOException {
+        ResponseWriter writer = fc.getResponseWriter();
         writer.startElement("head", component);
         
         //Skin
-        String skin = context.getExternalContext().getInitParameter("primefaces.skin");
-        if(skin == null) {
-        	skin = "sam";	//default
+        String skinName = fc.getExternalContext().getInitParameter("primefaces.skin");
+        if(skinName == null) {
+        	fc.getViewRoot().addComponentResource(fc, createDefaultSkinResource(fc), "head");
         }
-        
-        if(!skin.equalsIgnoreCase("none")) {
-        	String path = "/skins/" + skin + "/skin.css";
-        	writer.startElement("link", null);
-    		writer.writeAttribute("rel", "stylesheet", null);
-    		writer.writeAttribute("type", "text/css", null);
-    		writer.writeAttribute("href", ResourceUtils.getResourceURL(context, path), null);
-    		writer.endElement("link");
-        }
-        
+
         //Resources
-        UIViewRoot viewRoot = context.getViewRoot();
-        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
+        UIViewRoot viewRoot = fc.getViewRoot();
+        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(fc, "head")).listIterator();
         while (iter.hasNext()) {
-            UIComponent resource = (UIComponent)iter.next();
-            resource.encodeAll(context);
+            UIComponent resource = (UIComponent) iter.next();
+            resource.encodeAll(fc);
         }
     }
 
@@ -67,9 +53,21 @@ public class HeadRenderer extends Renderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
+        ResponseWriter writer = fc.getResponseWriter();
        
         writer.endElement("head");
+    }
+
+     private UIComponent createDefaultSkinResource(FacesContext fc) {
+        UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
+        resource.setRendererType("javax.faces.resource.Stylesheet");
+        
+        Map<String, Object> attrs = resource.getAttributes();
+        attrs.put("name", "/skins/sam/skin.css");
+        attrs.put("library", "primefaces");
+        attrs.put("target", "head");
+       
+        return resource;
     }
 }
