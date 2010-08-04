@@ -52,19 +52,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/stack/assets/stack.css</name>
+			<name>stack/assets/stack.css</name>
 		</resource>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/stack/stack.js</name>
+			<name>stack/stack.js</name>
 		</resource>
 	</resources>
 </component>

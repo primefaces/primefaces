@@ -76,16 +76,16 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/primefaces/growl/assets/growl.css</name>
+			<name>growl/assets/growl.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/growl/growl.js</name>
+			<name>growl/growl.js</name>
 		</resource>
 	</resources>
 </component>

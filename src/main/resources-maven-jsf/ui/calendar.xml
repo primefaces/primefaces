@@ -187,22 +187,22 @@
     </attributes>
     <resources>
         <resource>
-            <name>/jquery/plugins/ui/jquery.ui.datepicker.css</name>
+            <name>jquery/plugins/ui/jquery.ui.datepicker.css</name>
         </resource>
         <resource>
-            <name>/jquery/jquery.js</name>
+            <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+            <name>jquery/plugins/ui/jquery-ui.custom.js</name>
         </resource>
         <resource>
-            <name>/primefaces/core/core.js</name>
+            <name>core/core.js</name>
         </resource>
         <resource>
-            <name>/primefaces/calendar/calendar.js</name>
+            <name>calendar/calendar.js</name>
         </resource>
         <resource>
-            <name>/primefaces/calendar/calendar_i18n.js</name>
+            <name>calendar/calendar_i18n.js</name>
         </resource>
     </resources>
 </component>

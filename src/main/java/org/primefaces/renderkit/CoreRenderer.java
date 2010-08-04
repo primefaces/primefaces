@@ -18,6 +18,7 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -82,16 +83,22 @@ public class CoreRenderer extends Renderer {
 		return facesContext.getExternalContext().encodeResourceURL(actionURL);
 	}
 	
-	protected String getResourceURL(FacesContext facesContext, String value) {
-		if(value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-			return value;
-		} else {
-			String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
-			
-			return facesContext.getExternalContext().encodeResourceURL(url);
-		}
+    protected String getResourceURL(FacesContext facesContext, String value) {
+        if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+            return value;
+        } else {
+            String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
+
+            return facesContext.getExternalContext().encodeResourceURL(url);
+        }
+    }
+    
+    protected String getResourceRequestPath(FacesContext facesContext, String resourceName) {
+		Resource resource = facesContext.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
+
+        return resource.getRequestPath();
 	}
-	
+    	
 	public boolean isPostback(FacesContext facesContext) {
 		return facesContext.getRenderKit().getResponseStateManager().isPostback(facesContext);
 	}

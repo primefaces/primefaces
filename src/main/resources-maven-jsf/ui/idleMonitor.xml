@@ -52,16 +52,16 @@
     </attributes>
     <resources>
         <resource>
-            <name>/jquery/jquery.js</name>
+            <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>/jquery/plugins/idletimer/idletimer.js</name>
+            <name>jquery/plugins/idletimer/idletimer.js</name>
         </resource>
         <resource>
-            <name>/primefaces/core/core.js</name>
+            <name>core/core.js</name>
         </resource>
         <resource>
-            <name>/primefaces/idlemonitor/idlemonitor.js</name>
+            <name>idlemonitor/idlemonitor.js</name>
         </resource>
     </resources>
 </component>

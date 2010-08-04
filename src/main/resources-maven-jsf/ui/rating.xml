@@ -48,19 +48,19 @@
     </attributes>
     <resources>
         <resource>
-            <name>/jquery/jquery.js</name>
+            <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>/jquery/plugins/rating/jquery.rating.css</name>
+            <name>jquery/plugins/rating/jquery.rating.css</name>
         </resource>
         <resource>
-            <name>/jquery/plugins/rating/jquery.rating.pack.js</name>
+            <name>jquery/plugins/rating/jquery.rating.pack.js</name>
         </resource>
         <resource>
-            <name>/primefaces/core/core.js</name>
+            <name>core/core.js</name>
         </resource>
         <resource>
-            <name>/primefaces/rating/rating.js</name>
+            <name>rating/rating.js</name>
         </resource>
     </resources>
 </component>

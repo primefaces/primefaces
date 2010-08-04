@@ -116,19 +116,19 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/yui/utilities/utilities.js</name>
+			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/tooltip/jquery.qtip-1.0.min.js</name>
+			<name>jquery/plugins/tooltip/jquery.qtip-1.0.min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/tooltip/tooltip.js</name>
+			<name>tooltip/tooltip.js</name>
 		</resource>
 	</resources>
 </component>

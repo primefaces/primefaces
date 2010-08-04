@@ -250,22 +250,22 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/plugins/fullcalendar/fullcalendar.css</name>
+			<name>jquery/plugins/fullcalendar/fullcalendar.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>
         <resource>
-			<name>/jquery/plugins/fullcalendar/fullcalendar.min.js</name>
+			<name>jquery/plugins/fullcalendar/fullcalendar.min.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/schedule/schedule.js</name>
+			<name>schedule/schedule.js</name>
 		</resource>
 	</resources>
 </component>

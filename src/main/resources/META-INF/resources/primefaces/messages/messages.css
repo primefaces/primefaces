@@ -22,7 +22,7 @@
 }
 
 .ui-messages-info-icon {
-	background-image: url('info.png');
+	background-image: url("#{resource['primefaces:messages/info.png']}");
 }
 
 .ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, 
@@ -43,7 +43,7 @@
 }
 
 .ui-messages-warn-icon {
-	background-image: url('warn.png');
+	background-image: url("#{resource['primefaces:messages/warn.png']}");
 }
 
 .ui-messages-error, .ui-message-error {
@@ -52,7 +52,7 @@
 }
 
 .ui-messages-error-icon {
-   background-image: url('error.png');
+   background-image: url("#{resource['primefaces:messages/error.png']}");
 }
 
 .ui-messages-fatal, .ui-message-fatal {
@@ -61,7 +61,7 @@
 }
 
 .ui-messages-fatal-icon {
-   background-image: url('fatal.png');
+   background-image: url("#{resource['primefaces:messages/fatal.png']}");
 }
 
 .ui-messages ul {

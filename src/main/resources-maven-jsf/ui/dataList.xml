@@ -135,22 +135,22 @@
     </attributes>
     <resources>
         <resource>
-            <name>/primefaces/paginator/paginator.css</name>
+            <name>paginator/paginator.css</name>
         </resource>
         <resource>
-            <name>/jquery/jquery.js</name>
+            <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>/yui/utilities/utilities.js</name>
+            <name>yui/utilities/utilities.js</name>
         </resource>
         <resource>
-            <name>/primefaces/paginator/paginator.js</name>
+            <name>paginator/paginator.js</name>
         </resource>
         <resource>
-            <name>/primefaces/core/core.js</name>
+            <name>core/core.js</name>
         </resource>
         <resource>
-            <name>/primefaces/datalist/datalist.js</name>
+            <name>datalist/datalist.js</name>
         </resource>
     </resources>
 </component>

@@ -28,6 +28,7 @@ import org.primefaces.resource.ResourceUtils;
 
 public class GrowlRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Growl growl = (Growl) component;
@@ -79,17 +80,19 @@ public class GrowlRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 	
-	private String getImage(FacesContext facesContext, Growl growl, FacesMessage message) {
-		if(message.getSeverity() == null)
+	protected String getImage(FacesContext facesContext, Growl growl, FacesMessage message) {
+        FacesMessage.Severity severity = message.getSeverity();
+        
+		if(severity == null)
 			return "";
-		else if(message.getSeverity().equals(FacesMessage.SEVERITY_INFO))
-			return growl.getInfoIcon() != null ? getResourceURL(facesContext, growl.getInfoIcon()) : ResourceUtils.getResourceURL(facesContext, Growl.INFO_ICON);
-		else if(message.getSeverity().equals(FacesMessage.SEVERITY_ERROR))
-			return growl.getErrorIcon() != null ? getResourceURL(facesContext, growl.getErrorIcon()) : ResourceUtils.getResourceURL(facesContext, Growl.ERROR_ICON);
-		else if(message.getSeverity().equals(FacesMessage.SEVERITY_WARN))
-			return growl.getWarnIcon() != null ? getResourceURL(facesContext, growl.getWarnIcon()) : ResourceUtils.getResourceURL(facesContext, Growl.WARN_ICON);
-		else if(message.getSeverity().equals(FacesMessage.SEVERITY_FATAL))
-			return growl.getFatalIcon() != null ? getResourceURL(facesContext, growl.getFatalIcon()) : ResourceUtils.getResourceURL(facesContext, Growl.FATAL_ICON);
+		else if(severity.equals(FacesMessage.SEVERITY_INFO))
+			return growl.getInfoIcon() != null ? getResourceURL(facesContext, growl.getInfoIcon()) : getResourceRequestPath(facesContext, Growl.INFO_ICON);
+		else if(severity.equals(FacesMessage.SEVERITY_ERROR))
+			return growl.getErrorIcon() != null ? getResourceURL(facesContext, growl.getErrorIcon()) : getResourceRequestPath(facesContext, Growl.ERROR_ICON);
+		else if(severity.equals(FacesMessage.SEVERITY_WARN))
+			return growl.getWarnIcon() != null ? getResourceURL(facesContext, growl.getWarnIcon()) : getResourceRequestPath(facesContext, Growl.WARN_ICON);
+		else if(severity.equals(FacesMessage.SEVERITY_FATAL))
+			return growl.getFatalIcon() != null ? getResourceURL(facesContext, growl.getFatalIcon()) : getResourceRequestPath(facesContext, Growl.FATAL_ICON);
 		else
 			return "";
 	}

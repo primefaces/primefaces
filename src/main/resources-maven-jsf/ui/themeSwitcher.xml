@@ -56,13 +56,13 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/themeswitcher/themeswitcher.js</name>
+			<name>jquery/plugins/themeswitcher/themeswitcher.js</name>
 		</resource>	
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 	</resources>
 </component>
