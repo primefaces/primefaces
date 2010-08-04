@@ -2,8 +2,8 @@
             <phase-listener>org.primefaces.application.DynamicContentStreamer</phase-listener>
 	</lifecycle>
 
-        <factory>
-            <partial-view-context-factory>
-                org.primefaces.context.PrimePartialViewContextFactory
-            </partial-view-context-factory>
-        </factory>
+    <factory>
+        <partial-view-context-factory>
+            org.primefaces.context.PrimePartialViewContextFactory
+        </partial-view-context-factory>
+    </factory>
