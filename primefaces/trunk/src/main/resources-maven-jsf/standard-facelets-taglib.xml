@@ -60,3 +60,11 @@
 			org.primefaces.component.collector.CollectorTagHandler
 		</handler-class>
 	</tag>
+
+    <tag>
+        <tag-name>ajax</tag-name>
+        <behavior>
+            <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+            <handler-class>org.primefaces.component.behavior.ajax.AjaxBehaviorHandler</handler-class>
+        </behavior>
+    </tag>

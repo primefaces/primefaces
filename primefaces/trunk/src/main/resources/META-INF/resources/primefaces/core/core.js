@@ -37,7 +37,9 @@ PrimeFaces = {
     PARTIAL_PROCESS_PARAM : "javax.faces.partial.execute",
 
     PARTIAL_SOURCE_PARAM : "javax.faces.source",
-    
+
+    BEHAVIOR_EVENT_PARAM : "javax.faces.behavior.event",
+
     VIEW_STATE : "javax.faces.ViewState"
 };
 
@@ -84,7 +86,6 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
 
     //source
     requestParams = requestParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
-    requestParams = requestParams + "&" + cfg.source + "=" + cfg.source;
 
     //process
     if(cfg.process) {
@@ -96,6 +97,13 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
         requestParams = requestParams + "&" + PrimeFaces.PARTIAL_UPDATE_PARAM + "=" + cfg.update;
     }
 
+    //behavior event
+    if(cfg.event) {
+        requestParams = requestParams + "&" + PrimeFaces.BEHAVIOR_EVENT_PARAM + "=" + cfg.event;
+    } else {
+        requestParams = requestParams + "&" + cfg.source + "=" + cfg.source;
+    }
+    
     //params
     if(params) {
         requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params);
