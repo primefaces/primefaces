@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadRenderer extends CoreRenderer {
-	
+
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		FileUpload fileUpload = (FileUpload) component;
 		MultipartRequest multipartRequest = getMultiPartRequestInChain(facesContext);
@@ -66,6 +67,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		return null;
 	}
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		FileUpload fileUpload = (FileUpload) component;
 		
@@ -73,13 +75,13 @@ public class FileUploadRenderer extends CoreRenderer {
 		encodeScript(facesContext, fileUpload);
 	}
 
-	private void encodeScript(FacesContext facesContext, FileUpload fileUpload) throws IOException {
+	protected void encodeScript(FacesContext facesContext, FileUpload fileUpload) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = fileUpload.getClientId(facesContext);
 		String inputFileId = fileUpload.getInputFileId(facesContext);
 		String actionURL = getActionURL(facesContext);
 		String uploadVar = createUniqueWidgetVar(facesContext, fileUpload);
-		String cancelImg = fileUpload.getCancelImage() == null ? ResourceUtils.getResourceURL(facesContext, "/jquery/plugins/uploadify/cancel.png") : getResourceURL(facesContext, fileUpload.getCancelImage());
+		String cancelImg = fileUpload.getCancelImage() == null ? getResourceRequestPath(facesContext, "jquery/plugins/uploadify/cancel.png") : getResourceURL(facesContext, fileUpload.getCancelImage());
 		
 		UIComponent parentForm = ComponentUtils.findParentForm(facesContext, fileUpload);
 		if(parentForm == null) {
@@ -92,7 +94,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		
 		writer.write("jQuery(function() {");
 		writer.write(uploadVar + " = new PrimeFaces.widget.Uploader('" + clientId + "', {");
-		writer.write("uploader:'" + ResourceUtils.getResourceURL(facesContext, "/jquery/plugins/uploadify/uploadify.swf") + "'");
+		writer.write("uploader:'" + getResourceRequestPath(facesContext, "jquery/plugins/uploadify/uploadify.swf") + "'");
 		writer.write(",script:'" + actionURL + "'");
 		writer.write(",cancelImg:'" + cancelImg + "'");
 		writer.write(",formId:'" + formClientId + "'");
@@ -116,7 +118,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
-	private void encodeMarkup(FacesContext facesContext, FileUpload fileUpload) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, FileUpload fileUpload) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = fileUpload.getClientId(facesContext);
 		String inputFileId = fileUpload.getInputFileId(facesContext);
