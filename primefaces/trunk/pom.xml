@@ -321,9 +321,10 @@
                             <nosuffix>true</nosuffix>
                             <linebreakpos>-1</linebreakpos>
                             <excludes>
+                                <exclude>**/*.css</exclude>
                                 <exclude>**/jquery/**</exclude>
                                 <exclude>**/yui/**</exclude>
-                                <exclude>**/primefaces/calendar/calendar_i18n.js</exclude>
+                                <exclude>**/calendar/calendar_i18n.js</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
