@@ -80,7 +80,7 @@ public class BaseChartRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.write("YAHOO.widget.Chart.SWFURL = '" + ResourceUtils.getResourceURL(facesContext, "/yui/charts/assets/charts.swf") + "'");
+        writer.write("YAHOO.widget.Chart.SWFURL = '" + getResourceRequestPath(facesContext, "yui/charts/assets/charts.swf") + "'");
 		writer.endElement("script");
 	}
 	
