@@ -7,7 +7,7 @@
 .pf-dock-container-top {
 	position: absolute;
 	height: 50px;
-	background: url(dock-bg-top.gif);
+	background: url("#{resource['primefaces:dock/assets/dock-bg-top.gif']}");
 	padding-left: 20px;
 }
 a.pf-dock-item-top {
@@ -40,7 +40,7 @@ a.pf-dock-item-top {
 .pf-dock-container-bottom {
 	position: absolute;
 	height: 50px;
-	background: url(dock-bg-bottom.gif);
+	background: url("#{resource['primefaces:dock/assets/dock-bg-bottom.gif']}");
 	padding-left: 20px;
 }
 a.pf-dock-item-bottom {

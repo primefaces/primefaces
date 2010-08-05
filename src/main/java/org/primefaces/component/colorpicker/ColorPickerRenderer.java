@@ -25,13 +25,13 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 
 public class ColorPickerRenderer extends CoreRenderer {
 
-	private final static String DEFAULT_PICKER_THUMB = "/yui/colorpicker/assets/picker_thumb.png";
-	private final static String DEFAULT_HUE_THUMB = "/yui/colorpicker/assets/hue_thumb.png";
+	private final static String DEFAULT_PICKER_THUMB = "yui/colorpicker/assets/picker_thumb.png";
+	private final static String DEFAULT_HUE_THUMB = "yui/colorpicker/assets/hue_thumb.png";
 
+    @Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		ColorPicker colorPicker = (ColorPicker) component;
 		String paramName = colorPicker.getClientId(facesContext) + "_input";
@@ -44,6 +44,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		}
 	}
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ColorPicker colorPicker = (ColorPicker) component;
 
@@ -126,8 +127,8 @@ public class ColorPickerRenderer extends CoreRenderer {
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.ColorPicker('" + clientId + "', {");
 		writer.write("images: {");
-		writer.write("PICKER_THUMB:'" + ResourceUtils.getResourceURL(facesContext, DEFAULT_PICKER_THUMB) + "'");
-		writer.write(",HUE_THUMB:'" + ResourceUtils.getResourceURL(facesContext, DEFAULT_HUE_THUMB) + "'");
+		writer.write("PICKER_THUMB:'" + getResourceRequestPath(facesContext, DEFAULT_PICKER_THUMB) + "'");
+		writer.write(",HUE_THUMB:'" + getResourceRequestPath(facesContext, DEFAULT_HUE_THUMB) + "'");
 		writer.write("}");
 		
 		if(value != null) writer.write(",initialValue:[" + value + "]");
@@ -143,6 +144,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
+    @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		try {
 			String submittedValue = (String) value;
