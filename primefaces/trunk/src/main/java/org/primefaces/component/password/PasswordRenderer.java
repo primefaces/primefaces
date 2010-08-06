@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class PasswordRenderer extends CoreRenderer {
 		encodeScript(facesContext, password);
 	}
 	
-	private void encodeScript(FacesContext facesContext, Password password) throws IOException {
+	protected void encodeScript(FacesContext facesContext, Password password) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = password.getClientId(facesContext);
 		String var = createUniqueWidgetVar(facesContext, password);
@@ -70,7 +70,7 @@ public class PasswordRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
-	private void encodeMarkup(FacesContext facesContext, Password password) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, Password password) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = password.getClientId(facesContext);
 		
