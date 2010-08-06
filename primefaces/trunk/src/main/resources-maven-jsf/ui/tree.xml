@@ -155,13 +155,10 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/treeview/assets/skins/sam/treeview.css</name>
+			<name>treeview/treeview.css</name>
 		</resource>
 		<resource>
 			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
-			<name>yui/treeview/treeview-min.js</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
