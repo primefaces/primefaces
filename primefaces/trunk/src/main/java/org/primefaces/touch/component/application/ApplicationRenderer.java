@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.primefaces.touch.component.application;
 
 import java.io.IOException;
 import java.util.ListIterator;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,27 +26,24 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class ApplicationRenderer extends CoreRenderer {
 	
-	private static final Logger logger = Logger.getLogger(ApplicationRenderer.class.getName());
-
-	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    @Override
+	public void encodeBegin(FacesContext fc, UIComponent component) throws IOException {
+		ResponseWriter writer = fc.getResponseWriter();
 		Application application = (Application) component;
-		
-		String themeRelativePath = "/jquery/plugins/jqtouch/themes/" + application.getTheme();
-		//String themeRealPath = ResourceUtils.getResourceURL(facesContext, themeRelativePath);
+		String themePath = "touch/themes/" + application.getTheme() + "/theme.min.css";
 		
 		writer.startElement("html", null);
 		
 		writer.startElement("head", null);
 		
-		//renderCSSDependency(facesContext, "/jquery/plugins/jqtouch/jqtouch.min.css");
-		//renderCSSDependency(facesContext, themeRelativePath + "/theme.min.css");
+		renderTheme(fc, themePath);
 		
-		ListIterator<UIComponent> iter = (facesContext.getViewRoot().getComponentResources(facesContext, "head")).listIterator();
-		while(iter.hasNext()) {
-			UIComponent resource = (UIComponent)iter.next();
-			resource.encodeAll(facesContext);
-		}
+        //Resources
+        ListIterator<UIComponent> iter = (fc.getViewRoot().getComponentResources(fc, "head")).listIterator();
+        while (iter.hasNext()) {
+            UIComponent resource = (UIComponent) iter.next();
+            resource.encodeAll(fc);
+        }
 	
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -55,27 +51,37 @@ public class ApplicationRenderer extends CoreRenderer {
 		writer.write("TouchFaces = new PrimeFaces.touch.Application({");
 		//writer.write("themePath:'" + themeRealPath + "'");
 		if(application.getIcon() != null)
-			writer.write(",icon:'" + getResourceURL(facesContext, application.getIcon()) + "'");
+			writer.write("icon:'" + getResourceURL(fc, application.getIcon()) + "'");
 		
-		writer.write("});\n");
+		writer.write("});");
 		
 		writer.endElement("script");
 		
 		UIComponent meta = application.getFacet("meta");
 		if(meta != null) {
-			renderChild(facesContext, meta);
+			renderChild(fc, meta);
 		}
 		
 		writer.endElement("head");
 		
 		writer.startElement("body", null);
 	}
-	
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+
+    @Override
+	public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
+		ResponseWriter writer = fc.getResponseWriter();
 				
 		writer.endElement("body");
-		writer.write("\n");
 		writer.endElement("html");
 	}
+
+    protected void renderTheme(FacesContext fc, String cssPath) throws IOException{
+        ResponseWriter writer = fc.getResponseWriter();
+
+        writer.startElement("link", null);
+        writer.writeAttribute("rel", "stylesheet", null);
+        writer.writeAttribute("type", "text/css", null);
+        writer.writeAttribute("href", getResourceRequestPath(fc, cssPath), null);
+        writer.endElement("link");
+    }
 }

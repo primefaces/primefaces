@@ -29,23 +29,23 @@
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>/yui/utilities/utilities.js</name>
+        <resource>
+			<name>touch/jqtouch.min.css</name>
 		</resource>
 		<resource>
-			<name>/jquery/jquery.js</name>
+			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/jqtouch/jqtouch.min.js</name>
+			<name>touch/jqtouch.min.js</name>
 		</resource>
 		<resource>
-			<name>/jquery/plugins/jqtouch/jqtouch.transitions.js</name>
+			<name>touch/jqtouch.transitions.js</name>
 		</resource>
 		<resource>
-			<name>/primefaces/core/core.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>/touch/touchfaces.js</name>
+			<name>touch/touchfaces.js</name>
 		</resource>
 	</resources>
 </component>
