@@ -48,13 +48,10 @@
     </attributes>
     <resources>
         <resource>
+            <name>rating/rating.css</name>
+        </resource>
+        <resource>
             <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-            <name>jquery/plugins/rating/jquery.rating.css</name>
-        </resource>
-        <resource>
-            <name>jquery/plugins/rating/jquery.rating.pack.js</name>
         </resource>
         <resource>
             <name>core/core.js</name>
