@@ -261,7 +261,7 @@ ui-layout .yui-resize-proxy .ui-layout-handle-t {
     top: 45%;
     left: 0px;
     display: block;
-    background: transparent url('layout_sprite.png') no-repeat 0 -5px;
+    background: transparent url("#{resource['primefaces:layout/layout_sprite.png']}") no-repeat 0 -5px;
 }
 /* Add the gripper */
 .ui-layout-unit .yui-resize-handle-t .ui-layout-resize-knob,
@@ -270,7 +270,7 @@ ui-layout .yui-resize-proxy .ui-layout-handle-t {
     height: 6px;
     width: 16px;
     left: 45%;
-    background: transparent url('layout_sprite.png') no-repeat -20px 0;
+    background: transparent url("#{resource['primefaces:layout/layout_sprite.png']}") no-repeat -20px 0;
     zoom: 1;
 }
 
