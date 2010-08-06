@@ -24,7 +24,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class DockRenderer extends CoreRenderer {
@@ -47,7 +46,7 @@ public class DockRenderer extends CoreRenderer {
 		//IE specific style class
 		ResponseWriter responseWriter = context.getResponseWriter();
 		responseWriter.write("<!--[if lt IE 7]>\n<style type=\"text/css\">\n");
-		responseWriter.write(".pf-dock img { behavior: url('" + ResourceUtils.getResourceURL(context, "/primefaces/dock/assets/iepngfix.htc") + "');}");
+		responseWriter.write(".pf-dock img { behavior: url('" + getResourceRequestPath(context, "/primefaces/dock/assets/iepngfix.htc") + "');}");
 		responseWriter.write("</style><![endif]-->");
 	}
 

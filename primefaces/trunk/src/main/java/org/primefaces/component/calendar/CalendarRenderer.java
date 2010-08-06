@@ -30,7 +30,6 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class CalendarRenderer extends CoreRenderer {
@@ -163,7 +162,7 @@ public class CalendarRenderer extends CoreRenderer {
             writer.write(",showOn:'" + showOn + "'");
 
             if (showOn.equalsIgnoreCase("button")) {
-                String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(facesContext, calendar.getPopupIcon()) : ResourceUtils.getResourceURL(facesContext, Calendar.POPUP_ICON);
+                String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(facesContext, calendar.getPopupIcon()) : getResourceRequestPath(facesContext, Calendar.POPUP_ICON);
                 writer.write(",buttonImage:'" + iconSrc + "'");
                 writer.write(",buttonImageOnly:" + calendar.isPopupIconOnly());
             }

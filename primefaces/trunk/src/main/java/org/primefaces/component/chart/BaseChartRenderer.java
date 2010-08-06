@@ -29,7 +29,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.series.ChartSeries;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class BaseChartRenderer extends CoreRenderer {
@@ -100,7 +99,7 @@ public class BaseChartRenderer extends CoreRenderer {
     protected void encodeCommonConfig(FacesContext context, UIChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("expressInstall:'" + ResourceUtils.getResourceURL(context,"/yui/assets/expressinstall.swf") + "'");
+        writer.write("expressInstall:'" + getResourceRequestPath(context,"yui/assets/expressinstall.swf") + "'");
 
         if(chart.getWmode() != null) {
 			writer.write(",wmode:'" + chart.getWmode() + "'");

@@ -26,7 +26,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
-import org.primefaces.resource.ResourceUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class PieChartRenderer extends BaseChartRenderer {

@@ -29,31 +29,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.resource.ResourceUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class CoreRenderer extends Renderer {
 	
 	private final static String WIDGET_VAR_PREFIX = "widget_";
-	
-	protected void renderScriptDependency(FacesContext facesContext, String scriptPath) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		writer.writeAttribute("src", ResourceUtils.getResourceURL(facesContext, scriptPath), null);
-		writer.endElement("script");
-	}
-	
-	protected void renderCSSDependency(FacesContext facesContext, String cssPath) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.startElement("link", null);
-		writer.writeAttribute("rel", "stylesheet", null);
-		writer.writeAttribute("type", "text/css", null);
-		writer.writeAttribute("href", ResourceUtils.getResourceURL(facesContext, cssPath), null);
-		writer.endElement("link");
-	}
 	
 	protected void renderChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		for (Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
