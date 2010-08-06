@@ -1,13 +1,12 @@
-if(PrimeFaces == undefined) var PrimeFaces = {};
 if(PrimeFaces.touch == undefined) PrimeFaces.touch = {};
 
 PrimeFaces.touch.Application = function(config) {
 	this.cfg = config;
-	this.cfg.preloadImages = [
+	/*this.cfg.preloadImages = [
 		                         config.themePath + '/img/grayButton.png',
 		                         config.themePath + '/img/whiteButton.png',
 		                         config.themePath + '/img/loading.gif'
-	                         ];
+	                         ];*/
 	
 	this.cfg.slideSelector = '#touchfaces_primefaces';
 	
