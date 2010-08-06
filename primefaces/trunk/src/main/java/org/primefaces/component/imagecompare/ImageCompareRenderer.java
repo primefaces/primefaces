@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 
 public class ImageCompareRenderer extends CoreRenderer {
 	
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ImageCompare compare = (ImageCompare) component;
 		
@@ -33,21 +33,23 @@ public class ImageCompareRenderer extends CoreRenderer {
 		encodeScript(facesContext, compare);
 	}
 	
-	private void encodeScript(FacesContext facesContext, ImageCompare compare) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = compare.getClientId(facesContext);
+	protected void encodeScript(FacesContext fc, ImageCompare compare) throws IOException {
+		ResponseWriter writer = fc.getResponseWriter();
+		String clientId = compare.getClientId(fc);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).beforeAfter({");
-		writer.write("imagePath:'" + ResourceUtils.getResourceURL(facesContext, "/jquery/plugins/imagecompare/")  + "'");
+		writer.write("handle:'" + getResourceRequestPath(fc, "imagecompare/handle.gif") + "'");
+        writer.write(",lt:'" + getResourceRequestPath(fc, "imagecompare/lt-small.png") + "'");
+        writer.write(",rt:'" + getResourceRequestPath(fc, "imagecompare/rt-small.png") + "'");
 		writer.write(",showFullLinks : false");
 		writer.write("});");
 		writer.endElement("script");
 	}
 	
-	private void encodeMarkup(FacesContext facesContext, ImageCompare compare) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, ImageCompare compare) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		writer.startElement("div", compare);

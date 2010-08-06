@@ -52,16 +52,13 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/imagecompare/jquery.beforeafter.min.js</name>
+			<name>imagecompare/imagecompare.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
