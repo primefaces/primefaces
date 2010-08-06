@@ -24,7 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 
 public class ApplicationRenderer extends CoreRenderer {
 	
@@ -35,14 +34,14 @@ public class ApplicationRenderer extends CoreRenderer {
 		Application application = (Application) component;
 		
 		String themeRelativePath = "/jquery/plugins/jqtouch/themes/" + application.getTheme();
-		String themeRealPath = ResourceUtils.getResourceURL(facesContext, themeRelativePath);
+		//String themeRealPath = ResourceUtils.getResourceURL(facesContext, themeRelativePath);
 		
 		writer.startElement("html", null);
 		
 		writer.startElement("head", null);
 		
-		renderCSSDependency(facesContext, "/jquery/plugins/jqtouch/jqtouch.min.css");
-		renderCSSDependency(facesContext, themeRelativePath + "/theme.min.css");
+		//renderCSSDependency(facesContext, "/jquery/plugins/jqtouch/jqtouch.min.css");
+		//renderCSSDependency(facesContext, themeRelativePath + "/theme.min.css");
 		
 		ListIterator<UIComponent> iter = (facesContext.getViewRoot().getComponentResources(facesContext, "head")).listIterator();
 		while(iter.hasNext()) {
@@ -54,7 +53,7 @@ public class ApplicationRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("TouchFaces = new PrimeFaces.touch.Application({");
-		writer.write("themePath:'" + themeRealPath + "'");
+		//writer.write("themePath:'" + themeRealPath + "'");
 		if(application.getIcon() != null)
 			writer.write(",icon:'" + getResourceURL(facesContext, application.getIcon()) + "'");
 		

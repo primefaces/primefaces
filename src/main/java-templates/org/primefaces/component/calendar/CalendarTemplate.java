@@ -1,7 +1,7 @@
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.DateSelectEvent;
 
-	public static String POPUP_ICON = "/primefaces/calendar/calendar_icon.png";
+	public static String POPUP_ICON = "calendar/calendar_icon.png";
 
 	private java.util.Locale appropriateLocale;
 	private java.util.TimeZone appropriateTimeZone;

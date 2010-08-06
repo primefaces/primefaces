@@ -24,7 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.resource.ResourceUtils;
 
 public class GrowlRenderer extends CoreRenderer {
 
