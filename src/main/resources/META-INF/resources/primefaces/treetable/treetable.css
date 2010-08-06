@@ -69,11 +69,11 @@
 }
 
 .ui-treetable tr.collapsed td .expander {
-	background-image: url(../images/toggle-expand-dark.png);
+	background-image: url("#{resource['primefaces:treetable/images/toggle-expand-dark.png']}");
 }
 
 .ui-treetable tr.expanded td .expander {
-	background-image: url(../images/toggle-collapse-dark.png);
+	background-image: url("#{resource['primefaces:treetable/images/toggle-collapse-dark.png']}");
 }
 
 .ui-treetable tr.selected,.ui-treetable tr.accept {
@@ -83,12 +83,12 @@
 
 .ui-treetable tr.collapsed.selected td .expander,.ui-treetable tr.collapsed.accept td .expander
 	{
-	background-image: url(../images/toggle-expand-light.png);
+	background-image: url("#{resource['primefaces:treetable/images/toggle-expand-light.png']}");
 }
 
 .ui-treetable tr.expanded.selected td .expander,.ui-treetable tr.expanded.accept td .expander
 	{
-	background-image: url(../images/toggle-collapse-light.png);
+	background-image: url("#{resource['primefaces:treetable/images/toggle-collapse-light.png']}");
 }
 
 .ui-treetable .ui-draggable-dragging {

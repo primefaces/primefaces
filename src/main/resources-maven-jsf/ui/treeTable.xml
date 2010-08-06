@@ -45,13 +45,10 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>treetable/style/treetable.css</name>
+			<name>treetable/treetable.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
