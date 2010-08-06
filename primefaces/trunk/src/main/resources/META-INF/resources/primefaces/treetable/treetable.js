@@ -218,6 +218,9 @@
   };
 })(jQuery);
 
+/**
+ * PrimeFaces TreeTable
+ */
 PrimeFaces.widget.TreeTable = function(id, cfg) {
 	this.id = id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
