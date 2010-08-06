@@ -42,15 +42,12 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/effects/effects.js</name>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
 		</resource>
-		<resource>
+        <resource>
 			<name>core/core.js</name>
 		</resource>
 	</resources>
