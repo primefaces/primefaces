@@ -7,6 +7,7 @@
 	<tag>fieldset</tag>
 	<tagClass>org.primefaces.component.fieldset.FieldsetTag</tagClass>
 	<componentClass>org.primefaces.component.fieldset.Fieldset</componentClass>
+    <componentHandlerClass>org.primefaces.component.fieldset.FieldsetHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Fieldset</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.FieldsetRenderer</rendererType>
@@ -14,6 +15,7 @@
 	<parent>javax.faces.component.UIPanel</parent>
 	<attributes>
 		&standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
 			<name>legend</name>
 			<required>false</required>
@@ -32,10 +34,59 @@
 			<type>java.lang.String</type>
 			<description>Style class of the root container of accordion panel</description>
 		</attribute>
+         <attribute>
+            <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Makes the panel toggleable, places a toggle icon for user interaction</description>
+        </attribute>
+        <attribute>
+            <name>toggleSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1000</defaultValue>
+            <description>Durating of toggling in milliseconds. Default is 1000.</description>
+        </attribute>
+        <attribute>
+            <name>onToggleUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id(s) of components to update after ajax toggleListener is processed and panel is toggled</description>
+        </attribute>
+        <attribute>
+            <name>toggleListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
+            <description>A server side listener to process a CloseEvent</description>
+        </attribute>
+        <attribute>
+            <name>collapsed</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Renders a toggleable fieldset as collapsed by default.</description>
+        </attribute>
+        <attribute>
+            <name>onToggleStart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute before toggling begins</description>
+        </attribute>
+        <attribute>
+            <name>onToggleComplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute after toggling completes</description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
 			<name>fieldset/fieldset.css</name>
+		</resource>
+        <resource>
+			<name>fieldset/fieldset.js</name>
 		</resource>
 	</resources>
 </component>
