@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class EffectRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Effect effect = (Effect) component;
@@ -47,13 +48,16 @@ public class EffectRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
+		writer.write("jQuery(function() {");
+
 		if(effect.getEvent().equals("load")) {
 			writer.write(animation);
 		} else {
-			writer.write("YAHOO.util.Event.addListener('" + parentClientId + "', '" + effect.getEvent() + "', " +
-					"function(e) {" + animation + "});\n");
+            writer.write("jQuery(PrimeFaces.escapeClientId('" + parentClientId + "'))");
+            writer.write(".bind('" + effect.getEvent() + "', function() {" + animation + "});");
 		}
+
+        writer.write("});");
 		
 		writer.endElement("script");
 	}
