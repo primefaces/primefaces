@@ -316,10 +316,12 @@ public class GMapRenderer extends CoreRenderer {
 		writer.write("]");
 	}
 
+    @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
