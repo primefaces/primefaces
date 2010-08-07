@@ -71,10 +71,7 @@ PrimeFaces.widget.ChartExtensions = {
                     var id = updates[i].attributes.getNamedItem("id").nodeValue,
                     content = updates[i].firstChild.data;
 
-                    if(id == PrimeFaces.VIEW_STATE) {
-                        PrimeFaces.ajax.AjaxUtils.updateState(content);
-                    }
-                    else if(id == _self.id){
+                    if(id == _self.id){
                         var data = {
                             results: jQuery.parseJSON(content).data
                         };
@@ -82,7 +79,7 @@ PrimeFaces.widget.ChartExtensions = {
                         _self._loadDataHandler(null, data);
                     }
                     else {
-                        jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
                     }
                 }
 

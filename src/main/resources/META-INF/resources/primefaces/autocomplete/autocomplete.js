@@ -8,15 +8,19 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.setupDataSource();
 		
     jQuery(this.jq).autocomplete(this.cfg);
-	
-    jQuery(this.jq).bind('autocompleteselect', {ac: this}, this.onSelect);
+
+    var _self = this;
+
+    //Item select handler
+    jQuery(this.jq).bind('autocompleteselect', function(event, ui) {
+        _self.onItemSelect(event, ui);
+    });
 	
     if(this.cfg.forceSelection) {
         this.setupForceSelection();
     }
 
     //update hidden field value in pojo mode
-    var _self = this;
     if(this.cfg.pojo) {
         jQuery(this.jq).keyup(function() {
             jQuery(_self.jqh).val(jQuery(this).val());
@@ -46,10 +50,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
                     var id = updates[i].attributes.getNamedItem("id").nodeValue,
                     data = updates[i].firstChild.data;
 
-                    if(id == PrimeFaces.VIEW_STATE) {
-                        PrimeFaces.ajax.AjaxUtils.updateState(data);
-                    }
-                    else if(id == _self.id){
+                    if(id == _self.id){
                         var results = jQuery.parseJSON(data).results;
 
                         //complete callback
@@ -68,10 +69,9 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
                         }
 
                         response(results);
-                       
-                    }
-                    else {
-                        jQuery(PrimeFaces.escapeClientId(id)).replaceWith(data);
+
+                    } else {
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, data, this.ajaxContext);
                     }
                 }
 
@@ -87,30 +87,28 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
     };
 }
 
-PrimeFaces.widget.AutoComplete.prototype.onSelect = function(event, ui) {
-    var _self = event.data.ac;
-	
-    if(_self.cfg.pojo)
-        jQuery(_self.jqh).val(ui.item.data);
+PrimeFaces.widget.AutoComplete.prototype.onItemSelect = function(event, ui) {
+    if(this.cfg.pojo)
+        jQuery(this.jqh).val(ui.item.data);
     else
-        jQuery(_self.jq).val(ui.item.label);
+        jQuery(this.jq).val(ui.item.label);
 	
     //Fire instant selection event
-    if(_self.cfg.ajaxSelect) {
+    if(this.cfg.ajaxSelect) {
         var options = {
-            source: _self.id,
-            process: _self.id,
-            formId: _self.cfg.formId
+            source: this.id,
+            process: this.id,
+            formId: this.cfg.formId
         };
 
-        if(_self.cfg.onSelectUpdate) {
-            options.update = _self.cfg.onSelectUpdate;
+        if(this.cfg.onSelectUpdate) {
+            options.update = this.cfg.onSelectUpdate;
         }
         
         var params = {};
-        params[_self.id + "_ajaxSelect"] = true;
+        params[this.id + "_ajaxSelect"] = true;
 
-        PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
     }
 }
 
