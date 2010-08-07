@@ -56,7 +56,7 @@ PrimeFaces.ajax.AjaxUtils = {
         return encodedViewState;
     },
 	
-    updateState: function(context, value) {
+    updateState: function(value, context) {
         if(context.form) {
             var viewstate = jQuery(context.form).children('#javax\\.faces\\.ViewState').get(0);
 
@@ -81,6 +81,15 @@ PrimeFaces.ajax.AjaxUtils = {
         }
 		
         return serializedParams;
+    },
+
+    updateElement: function(id, content, context) {
+        if(id == PrimeFaces.VIEW_STATE) {
+            PrimeFaces.ajax.AjaxUtils.updateState(content, context);
+        }
+        else {
+            jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+        }
     }
 };
 
@@ -184,12 +193,7 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
             var id = updates[i].attributes.getNamedItem("id").nodeValue,
             content = updates[i].firstChild.data;
 
-            if(id == PrimeFaces.VIEW_STATE) {
-                PrimeFaces.ajax.AjaxUtils.updateState(this.ajaxContext, content);
-            }
-            else {
-                jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
-            }
+            PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
         }
     }
 
