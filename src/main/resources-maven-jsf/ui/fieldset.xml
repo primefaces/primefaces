@@ -45,14 +45,14 @@
             <name>toggleSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1000</defaultValue>
-            <description>Durating of toggling in milliseconds. Default is 1000.</description>
+            <defaultValue>500</defaultValue>
+            <description>Duration of toggling in milliseconds.</description>
         </attribute>
         <attribute>
             <name>onToggleUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax toggleListener is processed and panel is toggled</description>
+            <description>Component(s) to update after ajax toggleListener is processed and panel is toggled</description>
         </attribute>
         <attribute>
             <name>toggleListener</name>
