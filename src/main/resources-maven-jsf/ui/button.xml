@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>button</tag>
+	<tagClass>org.primefaces.component.button.ButtonTag</tagClass>
+	<componentClass>org.primefaces.component.button.Button</componentClass>
+	<componentType>org.primefaces.component.Button</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ButtonRenderer</rendererType>
+	<rendererClass>org.primefaces.component.button.ButtonRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlOutcomeTargetButton</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>href</name>
+			<type>java.lang.String</type>
+			<description>
+				Href value to navigate
+			</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/plugins/ui/jquery.ui.button.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+		<resource>
+			<name>button/button.js</name>
+		</resource>
+	</resources>
+</component>

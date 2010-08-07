@@ -16,6 +16,7 @@ PrimeFaces.widget.CommandButton = function(id, cfg) {
 
 /* 
  * LinkButton
+ * @deprecated
  */
 PrimeFaces.widget.LinkButton = function(id, cfg) {
 	this.id = id;
@@ -24,6 +25,19 @@ PrimeFaces.widget.LinkButton = function(id, cfg) {
 	
 	jQuery(this.jqId).button(this.cfg);
 }
+
+/*
+ * Button
+ * @deprecated
+ */
+PrimeFaces.widget.Button = function(id, cfg) {
+	this.id = id;
+	this.cfg = cfg;
+	this.jqId = PrimeFaces.escapeClientId(id);
+
+	jQuery(this.jqId).button(this.cfg);
+}
+
 
 /* 
  * MenuButton
