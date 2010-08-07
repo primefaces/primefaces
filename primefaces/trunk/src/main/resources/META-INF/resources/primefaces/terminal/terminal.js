@@ -147,7 +147,7 @@
       // Set up some markup in the element
       // required for terminal emulation
       element.addClass( settings.TERMINAL_CLASS ).addClass( settings.THEME_CLASS_PREFIX + settings.DEFAULT_THEME );
-      if( settings.WIDTH && settings.HEIGHT ) element.css( { width: settings.WIDTH, height: settings.HEIGHT } )
+      if( settings.WIDTH && settings.HEIGHT ) element.css( {width: settings.WIDTH, height: settings.HEIGHT} )
       element.html( '' ).append( '<div>' + settings.WELCOME_MESSAGE + '</div>' );
 
       element.append( '<div class="' + settings.CONTENT_CLASS + '"></div>' );
@@ -178,14 +178,11 @@
                             var id = updates[i].attributes.getNamedItem("id").nodeValue,
                             content = updates[i].firstChild.data;
 
-                            if(id == PrimeFaces.VIEW_STATE) {
-                                PrimeFaces.ajax.AjaxUtils.updateState(content);
-                            }
-                            else if(id == options.id){
+                            if(id == options.id){
                                 update_content(settings.PS1, tokens.join(' '), content);
                             }
                             else {
-                                jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
                             }
                         }
 
@@ -208,7 +205,7 @@
 
       // Curson always needs to be on the prompt
       input.focus();
-      element.click( function() { input.focus(); } );
+      element.click( function() {input.focus();} );
 
 
       /**
@@ -300,7 +297,7 @@
 
           if( typeof key === 'function' ) {
               data = key( tokens );
-              if( data ) { update_content( get_current_prompt(), value, data ) }
+              if( data ) {update_content( get_current_prompt(), value, data )}
           } else if( typeof key === 'string' ) {
             var to_send = { };
             to_send[ settings.AJAX_PARAM ] = tokens.join( ' ' );
@@ -324,7 +321,7 @@
            if( cdispatch.EXIT_HOOK ) {
              _dispatch( cdispatch.EXIT_HOOK, tokens );
            } else {
-             _dispatch( function() { return '<b></b>' }, tokens );
+             _dispatch( function() {return '<b></b>'}, tokens );
            }
 
           // Clear temporary values
@@ -353,7 +350,7 @@
               _dispatch( cdispatch.START_HOOK, tokens );
             } else {
               // A stupid Hack
-              _dispatch( function() { return '<b></b>' }, tokens );
+              _dispatch( function() {return '<b></b>'}, tokens );
             }
           } else {
             _dispatch( dispatch[ key ], tokens );

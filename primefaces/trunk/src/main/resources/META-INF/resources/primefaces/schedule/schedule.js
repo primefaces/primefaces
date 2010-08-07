@@ -116,10 +116,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                     var id = updates[i].attributes.getNamedItem("id").nodeValue,
                     data = updates[i].firstChild.data;
 
-                    if(id == PrimeFaces.VIEW_STATE) {
-                        PrimeFaces.ajax.AjaxUtils.updateState(data);
-                    }
-                    else if(id == _self.id){
+                    if(id == _self.id){
                         var events = jQuery.parseJSON(data).events;
 
                         for(var j=0; j < events.length; j++) {
@@ -130,7 +127,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                         callback(events);
                     }
                     else {
-                        jQuery(PrimeFaces.escapeClientId(id)).replaceWith(data);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, data, this.ajaxContext);
                     }
                 }
 

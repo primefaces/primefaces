@@ -89,10 +89,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                     var id = updates[i].attributes.getNamedItem("id").nodeValue,
                     content = updates[i].firstChild.data;
 
-                    if(id == PrimeFaces.VIEW_STATE) {
-                        PrimeFaces.ajax.AjaxUtils.updateState(content);
-                    }
-                    else if(id == _self.id){
+                    if(id == _self.id){
                         if(!args.validationFailed) {
                             //update content
                             if(_self.cfg.effect) {
@@ -100,7 +97,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                                 jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
                                     jQuery(_self.content).html(_content);
                                     jQuery(_self.content).fadeIn();
-                                    
+
                                 });
                             } else {
                                 jQuery(_self.content).html(content);
@@ -126,7 +123,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 
                     }
                     else {
-                        jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
                     }
                 }
 

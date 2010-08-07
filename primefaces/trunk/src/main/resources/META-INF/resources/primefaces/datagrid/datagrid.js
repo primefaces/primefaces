@@ -37,28 +37,25 @@ PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
 
                     for(var i=0; i < updates.length; i++) {
                         var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                        data = updates[i].firstChild.data;
+                        content = updates[i].firstChild.data;
 
-                        if(id == PrimeFaces.VIEW_STATE) {
-                            PrimeFaces.ajax.AjaxUtils.updateState(data);
-                        }
-                        else if(id == _self.id){
+                        if(id == _self.id){
 
                             if(_self.cfg.effect) {
-                                var _data = data;
+                                var _data = content;
                                 jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
                                     jQuery(_self.content).html(_data);
                                     jQuery(_self.content).fadeIn(_self.cfg.effectSpeed);
                                 });
                             } else {
-                                jQuery(_self.content).html(data);
+                                jQuery(_self.content).html(content);
                             }
 
                             _self.getPaginator().setState(newState);
-                            
+
                         }
                         else {
-                            jQuery(PrimeFaces.escapeClientId(id)).replaceWith(data);
+                            PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
                         }
                     }
 

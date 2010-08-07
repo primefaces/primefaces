@@ -147,10 +147,7 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
                     var id = updates[i].attributes.getNamedItem("id").nodeValue,
                     content = updates[i].firstChild.data;
 
-                    if(id == PrimeFaces.VIEW_STATE) {
-                        PrimeFaces.ajax.AjaxUtils.updateState(content);
-                    }
-                    else if(id == _self.id){
+                    if(id == _self.id){
                         var nodes = jQuery.parseJSON(content).nodes;
 
                         for(var n in nodes) {
@@ -159,7 +156,7 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
                         }
                     }
                     else {
-                        jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
                     }
                 }
 
