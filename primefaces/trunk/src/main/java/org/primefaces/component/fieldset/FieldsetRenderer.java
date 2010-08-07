@@ -58,10 +58,11 @@ public class FieldsetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
         boolean toggleable = fieldset.isToggleable();
-        String styleClass = "ui-fieldset ui-widget ui-widget-content ui-corner-all";
-
-        if(toggleable) styleClass = styleClass + " ui-fieldset-toggleable";
-        if(fieldset.getStyleClass() != null) styleClass = styleClass + " " + fieldset.getStyleClass();
+        
+        String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
+        if(fieldset.getStyleClass() != null) {
+            styleClass = styleClass + " " + fieldset.getStyleClass();
+        }
 
         writer.startElement("fieldset", fieldset);
         writer.writeAttribute("id", clientId, "id");
@@ -86,7 +87,7 @@ public class FieldsetRenderer extends CoreRenderer {
         String clientId = fieldset.getClientId(context);
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-fieldset-content", null);
+        writer.writeAttribute("class", Fieldset.CONTENT_CLASS, null);
         if(fieldset.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
@@ -133,7 +134,7 @@ public class FieldsetRenderer extends CoreRenderer {
         
         if(legendText != null || legend != null) {
             writer.startElement("legend", null);
-            writer.writeAttribute("class", "ui-fieldset-legend ui-corner-all ui-state-default", null);
+            writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
             if (legend != null)
                 legend.encodeAll(context);
@@ -141,10 +142,10 @@ public class FieldsetRenderer extends CoreRenderer {
                 writer.write(fieldset.getLegend());
 
             if(fieldset.isToggleable()) {
-                String togglerClass = fieldset.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
+                String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
                 
                 writer.startElement("span", null);
-                writer.writeAttribute("class", "ui-fieldset-toggler ui-icon " + togglerClass, null);
+                writer.writeAttribute("class", Fieldset.TOGGLER_CLASS + " " + togglerClass, null);
                 writer.endElement("span");
             }
 

@@ -13,7 +13,7 @@ PrimeFaces.widget.Fieldset = function(id, cfg) {
         this.toggler = this.jqId + ' .ui-fieldset-toggler';
         this.stateHolder = this.jqId + '_collapsed';
 
-        //Clickable legend state
+        //Add clickable legend state behavior
         jQuery(this.legend).click(function() {_self.toggle();})
                            .mouseover(function() {jQuery(this).toggleClass('ui-state-hover');})
                            .mouseout(function() {jQuery(this).toggleClass('ui-state-hover');})
@@ -26,16 +26,8 @@ PrimeFaces.widget.Fieldset = function(id, cfg) {
  * Toggles the content
  */
 PrimeFaces.widget.Fieldset.prototype.toggle = function() {
-    if(this.cfg.collapsed) {
-        jQuery(this.toggler).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
-        this.cfg.collapsed = false;
-        jQuery(this.stateHolder).val(false);
-    }
-    else {
-        jQuery(this.toggler).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
-        this.cfg.collapsed = true;
-        jQuery(this.stateHolder).val(true);
-    }
+
+    this.updateToggleState(this.cfg.collapsed);
 
     var _self = this;
     jQuery(this.content).slideToggle(this.cfg.toggleSpeed,
@@ -64,4 +56,17 @@ PrimeFaces.widget.Fieldset.prototype.fireToggleEvent = function() {
     params[this.id + "_collapsed"] = this.cfg.collapsed;
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
+/**
+ * Updates the visual toggler state and saves state
+ */
+PrimeFaces.widget.Fieldset.prototype.updateToggleState = function(collapsed) {
+    if(collapsed)
+        jQuery(this.toggler).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
+    else
+        jQuery(this.toggler).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
+
+    this.cfg.collapsed = !collapsed;
+    jQuery(this.stateHolder).val(!collapsed);
 }
