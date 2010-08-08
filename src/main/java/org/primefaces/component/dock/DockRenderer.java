@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class DockRenderer extends CoreRenderer {
 		//IE specific style class
 		ResponseWriter responseWriter = context.getResponseWriter();
 		responseWriter.write("<!--[if lt IE 7]>\n<style type=\"text/css\">\n");
-		responseWriter.write(".pf-dock img { behavior: url('" + getResourceRequestPath(context, "/primefaces/dock/assets/iepngfix.htc") + "');}");
+		responseWriter.write(".pf-dock img { behavior: url('" + getResourceRequestPath(context, "dock/assets/iepngfix.htc") + "');}");
 		responseWriter.write("</style><![endif]-->");
 	}
 
