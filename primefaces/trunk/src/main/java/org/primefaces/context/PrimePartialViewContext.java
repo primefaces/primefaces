@@ -15,7 +15,6 @@
  */
 package org.primefaces.context;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import java.util.Collection;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
