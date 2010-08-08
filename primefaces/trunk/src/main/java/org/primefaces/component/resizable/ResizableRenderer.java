@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,87 +16,107 @@
 package org.primefaces.component.resizable;
 
 import java.io.IOException;
+import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.event.ResizeEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class ResizableRenderer extends CoreRenderer {
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        Resizable resizable = (Resizable) component;
+        String clientId = resizable.getClientId(context);
+
+        if(params.containsKey(clientId + "_ajaxResize")) {
+            int width = Integer.parseInt(params.get(clientId + "_width"));
+            int height = Integer.parseInt(params.get(clientId + "_height"));
+            
+            resizable.queueEvent(new ResizeEvent(resizable, width, height));
+        }
+    }
+
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		Resizable resizable = (Resizable) component;
-		String resizableVar = createUniqueWidgetVar(facesContext, component);
-		String parentClientId = resizable.getParent().getClientId(facesContext);
+        String clientId = resizable.getClientId(context);
+		String widgetVar = createUniqueWidgetVar(context, component);
+		String target = findTarget(context, resizable);
 
 		writer.startElement("script", resizable);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(document).ready(function(){");
+		writer.write("jQuery(function(){");
 		
-		writer.write(resizableVar + " = new YAHOO.util.Resize('"+ parentClientId + "',{");
-		writer.write("proxy:" + resizable.isProxy());
+		writer.write(widgetVar + " = new PrimeFaces.widget.Resizable('"+ clientId + "',{");
+
+        writer.write("target:'" + target + "'");
+
+        //Boundaries
+        if(resizable.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + resizable.getMinWidth());
+        if(resizable.getMaxWidth() != Integer.MAX_VALUE) writer.write(",maxWidth:" + resizable.getMaxWidth());
+        if(resizable.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + resizable.getMinHeight());
+        if(resizable.getMaxHeight() != Integer.MAX_VALUE) writer.write(",maxHeight:" + resizable.getMaxHeight());
+
+        //Animation
+        if(resizable.isAnimate()) {
+            writer.write(",animate:true");
+            writer.write(",animateEasing:'" + resizable.getEffect() + "'");
+            writer.write(",animateDuration:'" + resizable.getEffectDuration() + "'");
+        }
+
+        //Config
+        if(resizable.isProxy()) writer.write(",helper:'ui-resizable-helper'");
+        if(resizable.getHandles() != null) writer.write(",handles:'" + resizable.getHandles() + "'");
+        if(resizable.getGrid() != 1) writer.write(",grid:" + resizable.getGrid());
+        if(resizable.isAspectRatio()) writer.write(",aspectRatio:true");
+        if(resizable.isGhost()) writer.write(",ghost:true");
+        if(resizable.isContainment()) writer.write(",containment:PrimeFaces.escapeClientId('" + resizable.getParent().getClientId(context) +"')");
+
+        //Client side resize callback
+        if(resizable.getOnResize() != null) {
+            writer.write(",onResize:function(event, ui) {" + resizable.getOnResize() + "}");
+        }
+
+        //Ajax resize
+        if(resizable.getResizeListener() != null) {
+            UIComponent form = ComponentUtils.findParentForm(context, resizable);
+            if (form == null) {
+                throw new FacesException("Resizable '" + resizable.getClientId(context) + "' must be inside a form");
+            }
+
+            writer.write(",url:'" + getActionURL(context) + "'");
+            writer.write(",ajaxResize:true");
+            writer.write(",formID:'" + form.getClientId(context) + "'");
+
+            if(resizable.getOnResizeUpdate() != null)
+                writer.write(",onResizeUpdate:'" + ComponentUtils.findClientIds(context, resizable, resizable.getOnResizeUpdate()) + "'");
+        }
 		
-		if(resizable.isStatus()) writer.write(",status:" + resizable.isStatus());
-		if(resizable.isKnobHandles()) writer.write(",knobHandles: true");
-		if(resizable.isGhost()) writer.write(",ghost: true");
-		
-		if(resizable.isAnimate())
-			encodeAnimation(facesContext, resizable);
-		
-		if(resizable.getHandles() != null)
-			encodeHandles(facesContext, resizable);
-		
-		encodeBoundaries(facesContext, resizable);
-		
-		writer.write("});});\n");
+		writer.write("});});");
 		
 		writer.endElement("script");
 	}
-	
-	private void encodeBoundaries(FacesContext facesContext, Resizable resizable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String[] passThruBoundaries = new String[]{"maxHeight", "maxWidth", "minHeight", "minWidth"};
-		
-		for(String boundaryAttribute : passThruBoundaries) {
-			Object value = resizable.getAttributes().get(boundaryAttribute);
-			if(shouldRenderAttribute(value))
-				writer.write("," + boundaryAttribute + ":" + value.toString());
-		}
-	}
-	
-	private void encodeAnimation(FacesContext facesContext, Resizable resizable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.write(",animate:true");
-		writer.write(",animateDuration:" + resizable.getAnimateDuration());
-		writer.write(",animateEasing:YAHOO.util.Easing." + resizable.getEffect());
-	}
-	
-	private void encodeHandles(FacesContext facesContext, Resizable resizable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		if(resizable.getHandles().equals("all"))
-			writer.write(",handles:\"all\"");
-		else
-			writer.write(",handles:" + convertHandlesToJSArray(resizable.getHandles()) + "");
-	}
 
-	private String convertHandlesToJSArray(String value) {
-		String[] tokens = value.split(",");
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[");
-		
-		for(String s : tokens) {
-			buffer.append("\"");
-			buffer.append(s);
-			buffer.append("\"");
-		}
-		
-		buffer.append("]");
-		
-		return buffer.toString();
-	}
+    protected String findTarget(FacesContext context, Resizable resizable) {
+        String _for = resizable.getFor();
+
+        if (_for != null) {
+            UIComponent component = resizable.findComponent(_for);
+            if (component == null)
+                throw new FacesException("Cannot find component \"" + _for + "\" in view.");
+            else
+                return component.getClientId(context);
+        } else {
+            return resizable.getParent().getClientId(context);
+        }
+    }
 }

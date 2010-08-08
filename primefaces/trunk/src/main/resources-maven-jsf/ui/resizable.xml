@@ -7,6 +7,7 @@
 	<tag>resizable</tag>
 	<tagClass>org.primefaces.component.resizable.ResizableTag</tagClass>
 	<componentClass>org.primefaces.component.resizable.Resizable</componentClass>
+    <componentHandlerClass>org.primefaces.component.resizable.ResizableHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Resizable</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.ResizableRenderer</rendererType>
@@ -15,6 +16,19 @@
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
+        <attribute>
+            <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id of the component to add draggable behavior</description>
+        </attribute>
+        <attribute>
+			<name>aspectRatio</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>When enabled, keeps the aspectRatio during resizing.</description>
+		</attribute>
 		<attribute>
 			<name>proxy</name>
 			<required>false</required>
@@ -23,17 +37,10 @@
 			<description>Makes the resizable use a proxy</description>
 		</attribute>
 		<attribute>
-			<name>status</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Shows the height and width of the resizing component</description>
-		</attribute>
-		<attribute>
 			<name>handles</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Handles to use, any combination of 't', 'b', 'r', 'l', 'bl', 'br', 'tl', 'tr' is valid, shortcut "all" enables all handlers.</description>
+			<description>Handles to use.</description>
 		</attribute>
 		<attribute>
 			<name>ghost</name>
@@ -41,13 +48,6 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<description>Displays a ghost effect.</description>
-		</attribute>
-		<attribute>
-			<name>knobHandles</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<description>Displays smaller handles</description>
 		</attribute>
 		<attribute>
 			<name>animate</name>
@@ -60,26 +60,27 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Animation effect.</description>
+            <defaultValue>swing</defaultValue>
+			<description>Animation effect type.</description>
 		</attribute>
 		<attribute>
-			<name>animateDuration</name>
+			<name>effectDuration</name>
 			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>0.75</defaultValue>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
 			<description>Duration of the animation.</description>
 		</attribute>
 		<attribute>
 			<name>maxWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>Integer.MIN_VALUE</defaultValue>
+			<defaultValue>Integer.MAX_VALUE</defaultValue>
 			<description>Maximum width of the resizable</description>
 		</attribute>
 		<attribute>
 			<name>maxHeight</name>
 			<required>false</required>
-			<defaultValue>Integer.MIN_VALUE</defaultValue>
+			<defaultValue>Integer.MAX_VALUE</defaultValue>
 			<type>java.lang.Integer</type>
 			<description>Maximum height of the resizable</description>
 		</attribute>
@@ -97,22 +98,55 @@
 			<type>java.lang.Integer</type>
 			<description>Minimum height of the resizable</description>
 		</attribute>
+        <attribute>
+			<name>containment</name>
+			<required>false</required>
+			<defaultValue>false</defaultValue>
+			<type>java.lang.Boolean</type>
+			<description>When enabled, parent becomes the boundary.</description>
+		</attribute>
+        <attribute>
+			<name>grid</name>
+			<required>false</required>
+			<defaultValue>1</defaultValue>
+			<type>java.lang.Integer</type>
+			<description>Defines the offset of pixels to resize.</description>
+		</attribute>
+         <attribute>
+            <name>onResizeUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to update with ajax after target is resized</description>
+        </attribute>
+        <attribute>
+            <name>resizeListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void resizeListener(org.primefaces.event.ResizeEvent)</method-signature>
+            <description>A server side listener to process a Resize event</description>
+        </attribute>
+        <attribute>
+            <name>onResize</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript event handler to invoke when resize completes.</description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/resize/assets/skins/sam/resize.css</name>
-		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
-			<name>yui/resize/resize-min.js</name>
+			<name>jquery/plugins/ui/jquery.ui.resizable.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
+        <resource>
+			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
+		</resource>
 		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>resizable/resizable.js</name>
 		</resource>
 	</resources>
 </component>
