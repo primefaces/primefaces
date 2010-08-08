@@ -28,7 +28,6 @@ PrimeFaces.widget.LinkButton = function(id, cfg) {
 
 /*
  * Button
- * @deprecated
  */
 PrimeFaces.widget.Button = function(id, cfg) {
 	this.id = id;

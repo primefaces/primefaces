@@ -16,10 +16,10 @@
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
 		<attribute>
-			<name>href</name>
+			<name>fragment</name>
 			<type>java.lang.String</type>
 			<description>
-				Href value to navigate
+				Identifier of page fragment when target page is rendered.
 			</description>
 		</attribute>
 	</attributes>
