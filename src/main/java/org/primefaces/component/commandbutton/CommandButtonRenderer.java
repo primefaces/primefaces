@@ -83,7 +83,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		if(button.getValue() != null) {
 			writer.write(button.getValue().toString());
 		} else if(button.getImage() != null) {
-			writer.write("pf-button");
+			writer.write("ui-button");
 		}
 			
 		writer.endElement("button");
