@@ -23,6 +23,8 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.FacesBehavior;
@@ -31,6 +33,10 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
 
+@ResourceDependencies({
+	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
+	@ResourceDependency(library="primefaces", name="core/core.js")
+})
 @FacesBehavior("org.primefaces.component.AjaxBehavior")
 public class AjaxBehavior extends ClientBehaviorBase {
 
@@ -185,7 +191,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
         if(listener != null) {
             try {
                 listener.invoke(eLContext, new Object[]{event});
-            } catch(MethodNotFoundException exception) {
+            } catch(IllegalArgumentException exception) {
                 listener.invoke(eLContext, new Object[0]);
             }
         }
@@ -195,7 +201,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
         else if(actionListener != null) {
             try {
                 actionListener.invoke(eLContext, new Object[]{new ActionEvent(event.getComponent())});
-            } catch(MethodNotFoundException exception) {
+            } catch(IllegalArgumentException exception) {
                 actionListener.invoke(eLContext, new Object[0]);
             }
         }
