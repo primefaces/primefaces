@@ -117,8 +117,8 @@
             <name>toggleListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
-            <method-signature>void toggleListener(org.primefaces.event.CloseEvent)</method-signature>
-            <description>A server side listener to process a CloseEvent</description>
+            <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
+            <description>A server side listener to process a ToggleEvent</description>
         </attribute>
     </attributes>
     <resources>
