@@ -114,7 +114,6 @@ public class CommandButtonRenderer extends CoreRenderer {
 	}
 
 	protected String buildNonAjaxRequest(FacesContext facesContext, CommandButton button, String formId) {
-		boolean isPartialProcess = button.getProcess() != null;
         boolean hasParam = false;
         StringBuilder request = new StringBuilder();
         
@@ -131,13 +130,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 			}
 		}
 
-        if(isPartialProcess) {
-            if(!hasParam) {
-                request.append("PrimeFaces");
-            }
-
-            request.append(addSubmitParam(formId, PartialViewContext.PARTIAL_EXECUTE_PARAM_NAME, ComponentUtils.findClientIds(facesContext, button, button.getProcess())));
-        }
+        request.append(";");
 
 		return request.toString();
 	}
