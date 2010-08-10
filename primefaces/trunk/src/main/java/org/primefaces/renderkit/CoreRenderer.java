@@ -273,7 +273,6 @@ public class CoreRenderer extends Renderer {
 	
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
 		String process = (String) component.getAttributes().get("process");
-		boolean isPartialProcess = process != null;
         StringBuilder request = new StringBuilder();
 
         request.append("PrimeFaces").append(addSubmitParam(formId, decodeParam, decodeParam));
@@ -286,11 +285,7 @@ public class CoreRenderer extends Renderer {
 			}
 		}
 
-        if(isPartialProcess) {
-            request.append(addSubmitParam(formId, PartialViewContext.PARTIAL_EXECUTE_PARAM_NAME, ComponentUtils.findClientIds(facesContext, component, process)));
-        }
-
-		request.append(".submit('").append(formId).append("')");
+		request.append(".submit('").append(formId).append("');");
 		
 		return request.toString();
 	}
