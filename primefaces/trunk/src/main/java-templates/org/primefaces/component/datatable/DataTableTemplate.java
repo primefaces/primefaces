@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.faces.component.UIComponent;
 import java.util.Map;
+import java.util.Iterator;
+import java.util.HashMap;
 /*import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
@@ -165,6 +167,7 @@ import java.io.Serializable;
     public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
     public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
+    public static final String COLUMN_FILTER_CLASS = "ui-column-filter";
 
     public List<Column> columns;
 
@@ -219,3 +222,23 @@ import java.io.Serializable;
     public boolean isAjaxRequest(FacesContext context) {
         return isPaginationRequest(context) || isSortRequest(context) || isFilterRequest(context);
     }
+
+    private Map<String,ValueExpression> filterMap;
+
+	public Map<String,ValueExpression> getFilterMap() {
+		if(filterMap == null) {
+			filterMap = new HashMap<String,ValueExpression>();
+
+			for(Column column : getColumns()) {
+                if(column.getValueExpression("filterBy") != null) {
+                    filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column.getValueExpression("filterBy"));
+                }
+			}
+		}
+
+		return filterMap;
+	}
+
+	public boolean hasFilter() {
+		return getFilterMap().size() > 0;
+	}
