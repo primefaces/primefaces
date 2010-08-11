@@ -36,3 +36,18 @@
     border-right-width:1px;
     padding:4px 10px 4px 10px;
 }
+
+.ui-datatable .ui-paginator {
+    margin:0px;
+    border-top:0px none;
+    text-align: center;
+    padding:2px;
+}
+
+.ui-datatable .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-sortable-column-icon {
+    float:right;
+}
