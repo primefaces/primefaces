@@ -242,3 +242,26 @@ import java.io.Serializable;
 	public boolean hasFilter() {
 		return getFilterMap().size() > 0;
 	}
+
+    public boolean isSelectionEnabled() {
+		return this.getSelectionMode() != null;
+	}
+
+    public boolean isSingleSelectionMode() {
+		String selectionMode = this.getSelectionMode();
+
+		if(selectionMode != null)
+			return selectionMode.equals("single") || selectionMode.equals("singlecell");
+		else
+			return false;
+	}
+
+    public void processUpdates(FacesContext isAjaxDataRequest) {
+		super.processUpdates(isAjaxDataRequest);
+
+        ValueExpression selectionVE = this.getValueExpression("selection");
+        if(selectionVE != null) {
+            selectionVE.setValue(getFacesContext().getELContext(), this.getSelection());
+            this.setSelection(null);
+        }
+	}

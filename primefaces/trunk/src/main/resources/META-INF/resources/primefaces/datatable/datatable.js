@@ -1,16 +1,32 @@
+/**
+ * PrimeFaces DataTable Widget
+ */
 PrimeFaces.widget.DataTable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.data = this.jqId + '_data';
+    this.tbody = this.jqId + '_data';
 
+    //Paginator
     if(this.cfg.paginator) {
         this.setupPaginator();
     }
 
-    this.setupSortableColumns();
+    //Sort events
+    this.setupSortEvents();
+
+    //Selection events
+    if(this.cfg.selectionMode) {
+        this.selectionHolder = this.jqId + '_selection';
+        this.selection = [];
+    
+        this.setupSelectionEvents();
+    }
 }
 
+/**
+ * Binds the change event listener and renders the paginator
+ */
 PrimeFaces.widget.DataTable.prototype.setupPaginator = function() {
     var paginator = this.getPaginator();
 
@@ -18,7 +34,10 @@ PrimeFaces.widget.DataTable.prototype.setupPaginator = function() {
     paginator.render();
 }
 
-PrimeFaces.widget.DataTable.prototype.setupSortableColumns = function() {
+/**
+ * Applies events related to sorting in a non-obstrusive way
+ */
+PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
     var _self = this;
     
     jQuery(this.jqId + ' th.ui-sortable-column').
@@ -59,6 +78,36 @@ PrimeFaces.widget.DataTable.prototype.setupSortableColumns = function() {
         });
 }
 
+/**
+ * Applies events related to sorting in a non-obstrusive way
+ */
+PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
+    var _self = this;
+    
+    jQuery(this.jqId + ' .ui-datatable-data tr')
+            .css('cursor', 'pointer')
+            .mouseover(function() {
+                var row = jQuery(this);
+
+                if(!row.hasClass('ui-selected')) {
+                    row.addClass('ui-state-highlight');
+                }
+
+            }).mouseout(function() {
+                var row = jQuery(this);
+
+                if(!row.hasClass('ui-selected')) {
+                    row.removeClass('ui-state-highlight');
+                }
+
+            }).click(function(event) {
+                _self.selectRow(this);
+            });
+}
+
+/**
+ * Ajax pagination
+ */
 PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     var options = {
         source: this.id,
@@ -77,9 +126,13 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                jQuery(_self.data).replaceWith(content);
+                jQuery(_self.tbody).replaceWith(content);
 
                 _self.getPaginator().setState(newState);
+
+                if(_self.cfg.selectionMode) {
+                    _self.setupSelectionEvents();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -98,6 +151,9 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
+/**
+ * Ajax sort
+ */
 PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
     var options = {
         source: this.id,
@@ -116,7 +172,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                jQuery(_self.data).replaceWith(content);
+                jQuery(_self.tbody).replaceWith(content);
 
                 //reset paginator
                 var paginator = _self.getPaginator();
@@ -140,6 +196,9 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
+/**
+ * Ajax filter
+ */
 PrimeFaces.widget.DataTable.prototype.filter = function() {
     var options = {
         source: this.id,
@@ -173,7 +232,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                jQuery(_self.data).replaceWith(content);
+                jQuery(_self.tbody).replaceWith(content);
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -189,6 +248,40 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
+/**
+ * Row select handler
+ */
+PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
+    var rowId = jQuery(row).addClass('ui-selected').attr('id').split('_row_')[1];
+
+    //clear previous selections
+    if(this.isSingleSelection()) { 
+        jQuery(row).siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+        this.selection = [];
+    }
+
+    this.selection.push(rowId);
+
+    this.writeSelections();
+}
+
+/**
+ * Returns the paginator instance if any defined
+ */
 PrimeFaces.widget.DataTable.prototype.getPaginator = function() {
     return this.cfg.paginator;
+}
+
+/**
+ * Writes selected row ids to state holder
+ */
+PrimeFaces.widget.DataTable.prototype.writeSelections = function() {
+    jQuery(this.selectionHolder).val(this.selection.join(','));
+}
+
+/**
+ * Returns type of selection
+ */
+PrimeFaces.widget.DataTable.prototype.isSingleSelection = function() {
+    return this.cfg.selectionMode == 'single';
 }
