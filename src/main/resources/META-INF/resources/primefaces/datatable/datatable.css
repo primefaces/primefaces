@@ -1,73 +1,38 @@
 .ui-datatable table {
-	padding:0;
-	margin:0;
+	border-collapse:collapse;
+    width:100%;
 }
 
-.ui-datatable th .ui-datatable-liner {
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer {
+    text-align:center;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-datatable .ui-datatable-header {
+    border-bottom: 0px none;
+}
+
+.ui-datatable .ui-datatable-footer {
+    border-top: 0px none;
+}
+
+.ui-datatable th {
+    text-align:center;
     white-space:nowrap;
-    float:left;
+    padding:4px 10px 4px 10px;
 }
 
-.ui-datatable-liner {
-    margin:0;
-    padding:0;
-    padding:4px 10px 4px 10px; /* cell padding */
-}
-
-th .ui-datatable-label {
-    position:relative;
-}
-
-.ui-datatable table thead th.ui-state-default {
-	border-style:none solid solid none;
+.ui-datatable-data {
+    
 }
 
 .ui-datatable .ui-datatable-data td {
-	border-bottom-color:inherit;
-	border-bottom-style:solid;
-	border-bottom-width:1px;
-	border-right-color:inherit;
-	border-right-style:solid;
-	border-right-width:1px;
-}
-
-.ui-datatable table thead th.ui-datatable-last,
-.ui-datatable .ui-datatable-data td.ui-datatable-last {
-	border-right-style: none;
-}
-
-.ui-datatable .ui-datatable-data tr.ui-datatable-last td {
-	border-bottom-style: none;
-}
-
-.ui-datatable table {
-	border-collapse:separate;
-	*border-collapse:collapse;
-	border-spacing:0;
-} 
-
-.ui-datatable thead {
-	border-spacing:0;
-}
-
-.ui-datatable-sortable {
-	cursor:pointer;
-}
-
-.ui-datatable-hidden {
-	display: none;
-}
-
-.ui-datatable .ui-datatable-data tr.ui-state-hover,
-.ui-datatable .ui-datatable-data tr.ui-state-active {
-	font-weight: normal;
-	border-style: solid;
-	cursor: pointer;
-}
-
-.ui-datatable .ui-datatable-data td.ui-state-hover,
-.ui-datatable .ui-datatable-data td.ui-state-active {
-	font-weight: normal;
-	border-style: none solid solid none;
-	cursor: pointer;
+    border-bottom-color:inherit;
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-right-color:inherit;
+    border-right-style:solid;
+    border-right-width:1px;
+    padding:4px 10px 4px 10px;
 }

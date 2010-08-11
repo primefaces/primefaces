@@ -253,6 +253,12 @@
 			<defaultValue>10</defaultValue>
 			<description>Number of pageLinks to display when paginator is enabled, defaults to 10.</description>
 		</attribute>
+        <attribute>
+			<name>caption</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Caption content.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
@@ -268,13 +274,7 @@
 			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>yui/datasource/datasource-min.js</name>
-		</resource>
-		<resource>
 			<name>paginator/paginator.js</name>
-		</resource>
-		<resource>
-			<name>yui/datatable/datatable-min.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

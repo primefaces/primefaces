@@ -1,4 +1,8 @@
-import java.util.Iterator;
+import org.primefaces.component.column.Column;
+import java.util.List;
+import java.util.ArrayList;
+import javax.faces.component.UIComponent;
+/*import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -150,4 +154,27 @@ import java.io.Serializable;
         if(getStateHelper().get("value") == null) {
         	getStateHelper().put("value", new ArrayList());
         }
+    }*/
+
+    public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
+    public static final String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String DATA_CLASS = "ui-datatable-data";
+    public static final String ROW_CLASS = "ui-widget-content";
+    public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-tl ui-corner-tr";
+    public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
+
+    public List<Column> columns;
+
+    public List<Column> getColumns() {
+        if(columns == null) {
+            columns = new ArrayList<Column>();
+
+            for(UIComponent child : this.getChildren()) {
+                if(child.isRendered() && child instanceof Column) {
+                    columns.add((Column) child);
+                }
+            }
+        }
+
+        return columns;
     }
