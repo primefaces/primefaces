@@ -28,15 +28,19 @@ PrimeFaces.widget.DataTable.prototype.setupSortableColumns = function() {
         .mouseout(function(){
             jQuery(this).toggleClass('ui-state-hover');}
         )
-        .click(function() {
+        .click(function(event) {
+            if(event.target.tagName == 'INPUT') {
+                return;
+            }
+
             var columnId = jQuery(this).attr('id');
             //Reset previous sorted columns
             jQuery(this).siblings().removeClass('ui-state-active').
-                children('ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                children('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
 
             //Update sort state
             jQuery(this).addClass('ui-state-active');
-            var sortIcon = jQuery(this).children('ui-sortable-column-icon');
+            var sortIcon = jQuery(this).children('.ui-sortable-column-icon');
             
             if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
@@ -52,7 +56,6 @@ PrimeFaces.widget.DataTable.prototype.setupSortableColumns = function() {
 
                 _self.sort(columnId, true);
             }
-            
         });
 }
 
