@@ -47,7 +47,9 @@ public class DataTableRenderer extends CoreRenderer {
             decodeSortRequest(context, table, clientId, params);
         } else if(table.isFilterRequest(context)) {
             decodeFilterRequest(context, table, clientId, params);
-        }
+        } else if(table.isSelectionEnabled()) {
+			decodeSelection(context, table, clientId, params);
+		}
 	}
 
     protected void decodePageRequest(FacesContext facesContext, DataTable dataTable, String clientId, Map<String,String> params) {
@@ -125,6 +127,60 @@ public class DataTableRenderer extends CoreRenderer {
         }
 	}
 
+    protected void decodeSelection(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
+		String selection = params.get(clientId + "_selection");
+
+		if(table.isSingleSelectionMode())
+			decodeSingleSelection(table, selection);
+		/*else
+			decodeMultipleSelection(table, rowSelectParamValue);
+        */
+		table.setRowIndex(-1);	//clean
+	}
+
+    protected void decodeSingleSelection(DataTable table, String selection) {
+		if(isValueBlank(selection)) {
+			table.setSelection(null);
+		} else {
+            table.setRowIndex(Integer.parseInt(selection));
+            Object data = table.getRowData();
+            
+            table.setSelection(data);
+		}
+	}
+	/*
+	protected void decodeMultipleSelection(DataTable dataTable, String rowSelectParamValue) {
+		Class<?> clazz = dataTable.getValueExpression("selection").getType(FacesContext.getCurrentInstance().getELContext());
+
+		if(isValueBlank(rowSelectParamValue)) {
+			Object data = Array.newInstance(clazz.getComponentType(), 0);
+			dataTable.setSelection(data);
+		} else {
+			if(dataTable.isCellSelection()) {
+				String[] cellInfos = rowSelectParamValue.split(",");
+				Cell[] cells = new Cell[cellInfos.length];
+
+				for(int i = 0; i < cellInfos.length; i++) {
+					cells[i] = buildCell(dataTable, cellInfos[i]);
+					dataTable.setRowIndex(-1);	//clean
+				}
+
+				dataTable.setSelection(cells);
+			} else {
+				String[] rowSelectValues = rowSelectParamValue.split(",");
+				Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
+
+				for(int i = 0; i < rowSelectValues.length; i++) {
+					dataTable.setRowIndex(Integer.parseInt(rowSelectValues[i]));
+
+					Array.set(data, i, dataTable.getRowData());
+				}
+
+				dataTable.setSelection(data);
+			}
+		}
+	}*/
+
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
@@ -141,6 +197,7 @@ public class DataTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
 		String widgetVar = createUniqueWidgetVar(context, table);
+        String selectionMode = table.getSelectionMode();
 		
 		writer.startElement("script", table);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -158,6 +215,11 @@ public class DataTableRenderer extends CoreRenderer {
         //Pagination
         if(table.isPaginator()) {
             encodePaginatorConfig(context, table);
+        }
+
+        //Selection
+        if(selectionMode != null) {
+            writer.write(",selectionMode:'" + selectionMode + "'");
         }
 
         writer.write("});");
@@ -190,6 +252,10 @@ public class DataTableRenderer extends CoreRenderer {
         }
         
         encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
+
+        if(table.isSelectionEnabled()) {
+            encodeSelectionHolder(context, table);
+        }
 
         writer.endElement("div");
 	}
@@ -258,9 +324,10 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodeTbody(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
+        String clientId = table.getClientId(context);
 
         writer.startElement("tbody", null);
-        writer.writeAttribute("id", table.getClientId(context) + "_data", null);
+        writer.writeAttribute("id", clientId + "_data", null);
         writer.writeAttribute("class", DataTable.DATA_CLASS, null);
 
 		int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
@@ -277,6 +344,7 @@ public class DataTableRenderer extends CoreRenderer {
 			}
 
 			writer.startElement("tr", null);
+            writer.writeAttribute("id", clientId + "_row_" + i, null);
             writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
 			for(Column column : table.getColumns()) {
@@ -343,6 +411,17 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.endElement("div");
     }
+
+    protected void encodeSelectionHolder(FacesContext context, DataTable table) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        String id = table.getClientId(context) + "_selection";
+
+		writer.startElement("input", null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+		writer.endElement("input");
+	}
 	
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

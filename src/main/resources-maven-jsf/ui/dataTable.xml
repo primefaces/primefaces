@@ -108,7 +108,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>
-				Type for row click selection, can be 'multiple', 'single', 'cellblock', 'cellrange' and 'singlecell';
+				Type for row click selection, can be 'multiple' and 'single'.
 			</description>
 		</attribute>
 		<attribute>
@@ -116,7 +116,7 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
 			<description>
-				An object array that'll be used to assign the selected data.
+				Reference that'll be used to assign the selected data.
 			</description>
 		</attribute>
 		<attribute>
@@ -199,7 +199,15 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>
-				Client side id of the component(s) to be updated after ajax row selection.
+				Component(s) to be updated after ajax row selection. Deprecated use onRowSelectUpdate instead.
+			</description>
+		</attribute>
+        <attribute>
+			<name>onRowSelectUpdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Component(s) to be updated after ajax row selection.
 			</description>
 		</attribute>
 		<attribute>
