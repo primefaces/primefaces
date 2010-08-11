@@ -16,14 +16,19 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
+import org.primefaces.model.BeanPropertyComparator;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class DataTableRenderer extends CoreRenderer {
 
@@ -32,18 +37,57 @@ public class DataTableRenderer extends CoreRenderer {
 		DataTable table = (DataTable) component;
 		String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-		boolean isAjaxFilterRequest = params.containsKey(clientId + "_ajaxFilter");
-		boolean isAjaxSortRequest = params.containsKey(clientId + "_ajaxSort");
-		boolean isAjaxPageRequest = params.containsKey(clientId + "_ajaxPage");
-		
+
+        if(table.isPaginationRequest(context)) {
+            decodePageRequest(context, table, clientId, params);
+        } else if(table.isSortRequest(context)) {
+            decodeSortRequest(context, table);
+        }
+	}
+
+    protected void decodePageRequest(FacesContext facesContext, DataTable dataTable, String clientId, Map<String,String> params) {
+		String firstParam = params.get(clientId + "_first");
+		String rowsParam = params.get(clientId + "_rows");
+		String pageParam = params.get(clientId + "_page");
+
+		dataTable.setFirst(Integer.valueOf(firstParam));
+		dataTable.setRows(Integer.valueOf(rowsParam));
+		dataTable.setPage(Integer.valueOf(pageParam));
+	}
+
+	protected void decodeSortRequest(FacesContext context, DataTable table) {
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		String clientId = table.getClientId(context);
+		String sortKey = params.get(clientId + "_sortKey");
+		boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
+        Column sortColumn = null;
+        
+        for(Column column : table.getColumns()) {
+            if(column.getClientId(context).equals(sortKey)) {
+                sortColumn = column;
+                break;
+            }
+        }
+
+        List list = (List) table.getValue();
+		Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
+		table.setValue(list);
+
+		//Reset paginator
+		table.setFirst(0);
+		table.setPage(1);
 	}
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
-		
-		encodeMarkup(context, table);
-		encodeScript(context, table);
+
+        if(table.isAjaxRequest(context)) {
+            encodeTbody(context, table);
+        } else {
+            encodeMarkup(context, table);
+            encodeScript(context, table);
+        }
 	}
 	
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
@@ -56,11 +100,24 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.write(widgetVar + " = new PrimeFaces.widget.DataTable('" + clientId + "',{");
 
+        //Connection
+        UIComponent form = ComponentUtils.findParentForm(context, table);
+        if(form == null) {
+            throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
+        }
+        writer.write("url:'" + getActionURL(context) + "'");
+        writer.write(",formId:'" + form.getClientId(context) + "'");
+
+        //Pagination
+        if(table.isPaginator()) {
+            encodePaginatorConfig(context, table);
+        }
+
         writer.write("});");
 
 		writer.endElement("script");
 	}
-	
+
 	protected void encodeMarkup(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
@@ -74,14 +131,18 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, clientId);
         }
 
-        encodeFacet(context, table, table.getFacet("header"), DataTable.HEADER_CLASS);
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
 
         writer.startElement("table", null);
         encodeThead(context, table);
         encodeTbody(context, table);
         writer.endElement("table");
+
+        if(table.isPaginator()) {
+            encodePaginatorMarkup(context, table);
+        }
         
-        encodeFacet(context, table, table.getFacet("footer"), DataTable.FOOTER_CLASS);
+        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
 
         writer.endElement("div");
 	}
@@ -94,13 +155,24 @@ public class DataTableRenderer extends CoreRenderer {
 
         //Header
         for(Column column : table.getColumns()) {
+            boolean sortable = column.getValueExpression("sortBy") != null;
+            String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
+
             writer.startElement("th", null);
-            writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
+            writer.writeAttribute("id", column.getClientId(context), null);
+            writer.writeAttribute("class", columnClass, null);
+            
+            if(sortable) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", DataTable.SORTABLE_COLUMN_ICON_CLASS, null);
+                writer.endElement("span");
+            }
 
             UIComponent header = column.getFacet("header");
             if(header != null) {
                 header.encodeAll(context);
             }
+
             writer.endElement("th");
         }
 
@@ -113,6 +185,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
 
         writer.startElement("tbody", null);
+        writer.writeAttribute("id", table.getClientId(context) + "_data", null);
         writer.writeAttribute("class", DataTable.DATA_CLASS, null);
 
 		int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
@@ -160,6 +233,39 @@ public class DataTableRenderer extends CoreRenderer {
 
         facet.encodeAll(context);
 
+        writer.endElement("div");
+    }
+
+    protected void encodePaginatorConfig(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = table.getClientId(context);
+
+        writer.write(",paginator:new YAHOO.widget.Paginator({");
+        writer.write("rowsPerPage:" + table.getRows());
+        writer.write(",totalRecords:" + table.getRowCount());
+        writer.write(",initialPage:" + table.getPage());
+        writer.write(",containers:['" + clientId + "_paginator']");
+
+        if(table.getPageLinks() != 10) writer.write(",pageLinks:" + table.getPageLinks());
+        if(table.getPaginatorTemplate() != null) writer.write(",template:'" + table.getPaginatorTemplate() + "'");
+        if(table.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + table.getRowsPerPageTemplate() + "]");
+        if(table.getCurrentPageReportTemplate() != null)writer.write(",pageReportTemplate:'" + table.getCurrentPageReportTemplate() + "'");
+        if(!table.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
+
+        writer.write("})");
+    }
+
+    protected void encodePaginatorMarkup(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = table.getClientId(context);
+        String styleClass = "ui-paginator ui-widget-header";
+        if(table.getFooter() == null) {
+            styleClass = styleClass + " ui-corner-bl ui-corner-br";
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_paginator", null);
+        writer.writeAttribute("class", styleClass, null);
         writer.endElement("div");
     }
 	

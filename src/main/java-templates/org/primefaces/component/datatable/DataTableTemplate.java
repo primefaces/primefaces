@@ -2,6 +2,7 @@ import org.primefaces.component.column.Column;
 import java.util.List;
 import java.util.ArrayList;
 import javax.faces.component.UIComponent;
+import java.util.Map;
 /*import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
@@ -162,6 +163,8 @@ import java.io.Serializable;
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-tl ui-corner-tr";
     public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
+    public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
+    public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
 
     public List<Column> columns;
 
@@ -177,4 +180,42 @@ import java.io.Serializable;
         }
 
         return columns;
+    }
+
+    private Boolean pageRequest = null;
+    private Boolean sortRequest = null;
+    private Boolean filterRequest = null;
+
+    public boolean isPaginationRequest(FacesContext context) {
+        if(pageRequest == null) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+
+            pageRequest = params.containsKey(this.getClientId(context) + "_paging");
+        }
+
+        return pageRequest;
+    }
+
+    public boolean isSortRequest(FacesContext context) {
+        if(sortRequest == null) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+
+            sortRequest = params.containsKey(this.getClientId(context) + "_sorting");
+        }
+
+        return sortRequest;
+    }
+
+    public boolean isFilterRequest(FacesContext context) {
+        if(filterRequest == null) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+
+            filterRequest = params.containsKey(this.getClientId(context) + "_filtering");
+        }
+
+        return filterRequest;
+    }
+
+    public boolean isAjaxRequest(FacesContext context) {
+        return isPaginationRequest(context) || isSortRequest(context) || isFilterRequest(context);
     }

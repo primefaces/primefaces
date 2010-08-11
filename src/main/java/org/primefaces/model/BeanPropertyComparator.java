@@ -31,7 +31,7 @@ public class BeanPropertyComparator implements Comparator {
 
 	private Column column;
 	
-	private String order;
+	private boolean asc;
 	
 	private String var;
 	
@@ -41,10 +41,10 @@ public class BeanPropertyComparator implements Comparator {
 	
 	private Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
 	
-	public BeanPropertyComparator(Column column, String var, String order) {
+	public BeanPropertyComparator(Column column, String var, boolean asc) {
 		this.column = column;
 		this.var = var;
-		this.order = order;
+		this.asc = asc;
 		this.sortByExpression = column.getValueExpression("sortBy");
 		this.sortFunction = column.getSortFunction();
 	}
@@ -72,7 +72,7 @@ public class BeanPropertyComparator implements Comparator {
 				result = (Integer) sortFunction.invoke(facesContext.getELContext(), new Object[]{value1, value2});
 			}
 			
-			return order.equals("asc") ? result : -1 * result;
+			return asc ? result : -1 * result;
 			
 		} catch (Exception e) {
 			logger.severe("Error in sorting");
