@@ -119,7 +119,10 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                 jQuery(_self.data).replaceWith(content);
 
                 //reset paginator
-                _self.getPaginator().setPage(1, true);
+                var paginator = _self.getPaginator();
+                if(paginator) {
+                   paginator.setPage(1, true);
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -148,14 +151,20 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
     var _self = this;
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update"),
-        extensions = xmlDoc.getElementsByTagName("extension"),
-        totalRecords = _self.getPaginator().getTotalRecords();
+        updates = xmlDoc.getElementsByTagName("update");
 
-        for(var i=0; i < extensions.length; i++) {
+        var paginator = _self.getPaginator();
+        if(paginator) {
+            var extensions = xmlDoc.getElementsByTagName("extension"),
+            totalRecords = _self.getPaginator().getTotalRecords();
 
-            if(extensions[i].attributes.getNamedItem("primefacesCallbackParam").nodeValue == 'totalRecords') {
-                totalRecords = jQuery.parseJSON(extensions[i].firstChild.data).totalRecords;
+            for(var i=0; i < extensions.length; i++) {
+                if(extensions[i].attributes.getNamedItem("primefacesCallbackParam").nodeValue == 'totalRecords') {
+                    totalRecords = jQuery.parseJSON(extensions[i].firstChild.data).totalRecords;
+
+                    paginator.setPage(1);
+                    paginator.setTotalRecords(totalRecords, true);
+                }
             }
         }
 
@@ -165,9 +174,6 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
             if(id == _self.id){
                 jQuery(_self.data).replaceWith(content);
-
-                //reset paginator
-                _self.getPaginator().setTotalRecords(totalRecords, true);
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);

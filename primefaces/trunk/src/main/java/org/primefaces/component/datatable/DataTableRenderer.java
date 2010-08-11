@@ -120,7 +120,9 @@ public class DataTableRenderer extends CoreRenderer {
 		table.setPage(1);
 
         //Metadata for callback
-        RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
+        if(table.isPaginator()) {
+            RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
+        }
 	}
 
     @Override
