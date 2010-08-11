@@ -32,11 +32,11 @@ PrimeFaces.widget.DataTable.prototype.setupSortableColumns = function() {
             var columnId = jQuery(this).attr('id');
             //Reset previous sorted columns
             jQuery(this).siblings().removeClass('ui-state-active').
-                children('span.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                children('ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
 
             //Update sort state
             jQuery(this).addClass('ui-state-active');
-            var sortIcon = jQuery(this).children('span.ui-sortable-column-icon');
+            var sortIcon = jQuery(this).children('ui-sortable-column-icon');
             
             if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
@@ -130,6 +130,52 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
     params[this.id + "_sorting"] = true;
     params[this.id + "_sortKey"] = columnId;
     params[this.id + "_sortDir"] = asc;
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
+PrimeFaces.widget.DataTable.prototype.filter = function() {
+    var options = {
+        source: this.id,
+        update: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+
+    var _self = this;
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement,
+        updates = xmlDoc.getElementsByTagName("update"),
+        extensions = xmlDoc.getElementsByTagName("extension"),
+        totalRecords = _self.getPaginator().getTotalRecords();
+
+        for(var i=0; i < extensions.length; i++) {
+
+            if(extensions[i].attributes.getNamedItem("primefacesCallbackParam").nodeValue == 'totalRecords') {
+                totalRecords = jQuery.parseJSON(extensions[i].firstChild.data).totalRecords;
+            }
+        }
+
+        for(i=0; i < updates.length; i++) {
+            var id = updates[i].attributes.getNamedItem("id").nodeValue,
+            content = updates[i].firstChild.data;
+
+            if(id == _self.id){
+                jQuery(_self.data).replaceWith(content);
+
+                //reset paginator
+                _self.getPaginator().setTotalRecords(totalRecords, true);
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+            }
+        }
+
+        return false;
+    };
+
+    var params = {};
+    params[this.id + "_filtering"] = true;
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }

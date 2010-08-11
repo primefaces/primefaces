@@ -51,3 +51,9 @@
 .ui-datatable .ui-sortable-column-icon {
     float:right;
 }
+
+.ui-datatable .ui-column-filter {
+    display: block;
+    width:100px;
+    margin:auto;
+}
