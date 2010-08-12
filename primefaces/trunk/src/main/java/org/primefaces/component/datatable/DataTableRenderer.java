@@ -21,14 +21,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.lang.reflect.Array;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.BeanPropertyComparator;
 
 import org.primefaces.renderkit.CoreRenderer;
@@ -135,6 +138,16 @@ public class DataTableRenderer extends CoreRenderer {
 			decodeSingleSelection(table, selection);
 		else
 			decodeMultipleSelection(table, selection);
+
+        table.setRowIndex(-1);	//clean
+
+        if(table.isInstantSelectionRequest(context)) {
+            int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
+            table.setRowIndex(selectedRowIndex);
+            SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
+            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            table.queueEvent(selectEvent);
+        }
         
 		table.setRowIndex(-1);	//clean
 	}
@@ -210,6 +223,17 @@ public class DataTableRenderer extends CoreRenderer {
         //Selection
         if(selectionMode != null) {
             writer.write(",selectionMode:'" + selectionMode + "'");
+
+            //update is deprecated and used for backward compatibility
+            String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
+
+            if(table.getRowSelectListener() != null || onRowSelectUpdate != null) {
+                writer.write(",instantSelect:true");
+
+                if(onRowSelectUpdate != null) {
+                    writer.write(",onRowSelectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), onRowSelectUpdate) + "'");
+                }
+            }
         }
 
         writer.write("});");

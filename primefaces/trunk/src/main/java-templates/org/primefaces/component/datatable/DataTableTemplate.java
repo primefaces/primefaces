@@ -223,6 +223,10 @@ import java.io.Serializable;
         return isPaginationRequest(context) || isSortRequest(context) || isFilterRequest(context);
     }
 
+    public boolean isInstantSelectionRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelectedRowIndex");
+    }
+
     private Map<String,ValueExpression> filterMap;
 
 	public Map<String,ValueExpression> getFilterMap() {
@@ -274,3 +278,14 @@ import java.io.Serializable;
     public void setEmptySelected(boolean emptySelected) {
         this.emptySelected = emptySelected;
     }
+
+    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+		super.broadcast(event);
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		MethodExpression me = getRowSelectListener();
+
+		if (me != null && event instanceof org.primefaces.event.SelectEvent) {
+			me.invoke(facesContext.getELContext(), new Object[] {event});
+		}
+	}
