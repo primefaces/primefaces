@@ -8,6 +8,7 @@
 	<tag>dataTable</tag>
 	<tagClass>org.primefaces.component.datatable.DataTableTag</tagClass>
 	<componentClass>org.primefaces.component.datatable.DataTable</componentClass>
+    <componentHandlerClass>org.primefaces.component.datatable.DataTableHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.DataTable</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
@@ -210,6 +211,12 @@
 				Component(s) to be updated after ajax row selection.
 			</description>
 		</attribute>
+        <attribute>
+            <name>rowSelectListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
+        </attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
@@ -227,11 +234,27 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>
-				Javascript event handler to be called before ajax request for instant ajax row selection request begins.
+				Javascript event handler to be called before ajax request for instant ajax row selection request begins. Deprecated use onRowSelectStart instead.
 			</description>
 		</attribute>
 		<attribute>
 			<name>onselectComplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event handler to be called after ajax request for instant ajax row selection request is completed. Deprecated use onRowSelectComplete instead.
+			</description>
+		</attribute>
+        <attribute>
+			<name>onRowSelectStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Javascript event handler to be called before ajax request for instant ajax row selection request begins.
+			</description>
+		</attribute>
+		<attribute>
+			<name>onRowSelectComplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>

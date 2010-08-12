@@ -276,8 +276,6 @@ PrimeFaces.widget.DataTable.prototype.onRowClick = function(rowElement) {
     else {
        this.selectRow(row);
     }
-
-    this.writeSelections();
 }
 
 PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
@@ -292,6 +290,13 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
     //add to selection
     row.addClass('ui-selected');
     this.selection.push(rowId);
+
+    //save state
+    this.writeSelections();
+
+    if(this.cfg.instantSelect) {
+        this.fireRowSelectEvent(rowId);
+    }
 }
 
 PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
@@ -304,6 +309,26 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
     this.selection = jQuery.grep(this.selection, function(r) {
         return r != rowId;
     });
+
+    //save state
+    this.writeSelections();
+}
+
+PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+
+    if(this.cfg.onRowSelectUpdate) {
+        options.update = this.cfg.onRowSelectUpdate;
+    }
+
+    var params = {};
+    params[this.id + '_instantSelectedRowIndex'] = rowId;
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
 /**
