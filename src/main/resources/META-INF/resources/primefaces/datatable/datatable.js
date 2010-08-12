@@ -102,7 +102,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 }
 
             }).click(function(event) {
-                _self.selectRow(this);
+                _self.onRowClick(this);
             });
 }
 
@@ -263,19 +263,47 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
 /**
  * Row select handler
+ *
+ * - Unselects a row if it's already selected
+ * - For single selection, clears previous selection
  */
-PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
-    var rowId = jQuery(row).addClass('ui-selected').attr('id').split('_row_')[1];
+PrimeFaces.widget.DataTable.prototype.onRowClick = function(rowElement) {
+    var row = jQuery(rowElement);
 
-    //clear previous selections
-    if(this.isSingleSelection()) { 
-        jQuery(row).siblings('.ui-state-highlight').removeClass('ui-selected ui-state-highlight');
+    if(row.hasClass('ui-selected')) {
+        this.unselectRow(row);
+    }
+    else {
+       this.selectRow(row);
+    }
+
+    this.writeSelections();
+}
+
+PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
+    var rowId = row.attr('id').split('_row_')[1];
+
+    //unselect previous selection
+    if(this.isSingleSelection()) {
+        row.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight'); 
         this.selection = [];
     }
 
+    //add to selection
+    row.addClass('ui-selected');
     this.selection.push(rowId);
+}
 
-    this.writeSelections();
+PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
+    var rowId = row.attr('id').split('_row_')[1];
+
+    //remove visual style
+    row.removeClass('ui-selected ui-state-highlight');
+
+    //remove from selection
+    this.selection = jQuery.grep(this.selection, function(r) {
+        return r != rowId;
+    });
 }
 
 /**

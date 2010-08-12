@@ -256,12 +256,21 @@ import java.io.Serializable;
 			return false;
 	}
 
-    public void processUpdates(FacesContext isAjaxDataRequest) {
-		super.processUpdates(isAjaxDataRequest);
+    private boolean emptySelected = false;
+
+    public void processUpdates(FacesContext context) {
+		super.processUpdates(context);
 
         ValueExpression selectionVE = this.getValueExpression("selection");
         if(selectionVE != null) {
-            selectionVE.setValue(getFacesContext().getELContext(), this.getSelection());
+            Object value = emptySelected ? null : this.getSelection();
+
+            selectionVE.setValue(getFacesContext().getELContext(), value);
+
             this.setSelection(null);
         }
 	}
+
+    public void setEmptySelected(boolean emptySelected) {
+        this.emptySelected = emptySelected;
+    }

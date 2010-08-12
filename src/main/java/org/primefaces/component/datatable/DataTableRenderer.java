@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.lang.reflect.Array;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 
@@ -132,15 +133,16 @@ public class DataTableRenderer extends CoreRenderer {
 
 		if(table.isSingleSelectionMode())
 			decodeSingleSelection(table, selection);
-		/*else
-			decodeMultipleSelection(table, rowSelectParamValue);
-        */
+		else
+			decodeMultipleSelection(table, selection);
+        
 		table.setRowIndex(-1);	//clean
 	}
 
     protected void decodeSingleSelection(DataTable table, String selection) {
 		if(isValueBlank(selection)) {
 			table.setSelection(null);
+            table.setEmptySelected(true);
 		} else {
             table.setRowIndex(Integer.parseInt(selection));
             Object data = table.getRowData();
@@ -148,38 +150,26 @@ public class DataTableRenderer extends CoreRenderer {
             table.setSelection(data);
 		}
 	}
-	/*
-	protected void decodeMultipleSelection(DataTable dataTable, String rowSelectParamValue) {
-		Class<?> clazz = dataTable.getValueExpression("selection").getType(FacesContext.getCurrentInstance().getELContext());
+	
+	protected void decodeMultipleSelection(DataTable table, String selection) {
+		Class<?> clazz = table.getValueExpression("selection").getType(FacesContext.getCurrentInstance().getELContext());
 
-		if(isValueBlank(rowSelectParamValue)) {
+		if(isValueBlank(selection)) {
 			Object data = Array.newInstance(clazz.getComponentType(), 0);
-			dataTable.setSelection(data);
+			table.setSelection(data);
 		} else {
-			if(dataTable.isCellSelection()) {
-				String[] cellInfos = rowSelectParamValue.split(",");
-				Cell[] cells = new Cell[cellInfos.length];
+            String[] rowSelectValues = selection.split(",");
+            Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
 
-				for(int i = 0; i < cellInfos.length; i++) {
-					cells[i] = buildCell(dataTable, cellInfos[i]);
-					dataTable.setRowIndex(-1);	//clean
-				}
+            for(int i = 0; i < rowSelectValues.length; i++) {
+                table.setRowIndex(Integer.parseInt(rowSelectValues[i]));
 
-				dataTable.setSelection(cells);
-			} else {
-				String[] rowSelectValues = rowSelectParamValue.split(",");
-				Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
+                Array.set(data, i, table.getRowData());
+            }
 
-				for(int i = 0; i < rowSelectValues.length; i++) {
-					dataTable.setRowIndex(Integer.parseInt(rowSelectValues[i]));
-
-					Array.set(data, i, dataTable.getRowData());
-				}
-
-				dataTable.setSelection(data);
-			}
+            table.setSelection(data);
 		}
-	}*/
+	}
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
