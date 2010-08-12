@@ -83,7 +83,8 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
  * Applies events related to sorting in a non-obstrusive way
  */
 PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
-    var _self = this;
+    var _self = this,
+    selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
     
     jQuery(this.jqId + ' .ui-datatable-data tr')
             .css('cursor', 'pointer')
@@ -101,7 +102,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                     row.removeClass('ui-state-highlight');
                 }
 
-            }).click(function(event) {
+            }).bind(selectEvent, function(event) {
                 _self.onRowClick(this);
             });
 }

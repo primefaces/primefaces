@@ -406,6 +406,10 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
 
+        if(table.isDblClickSelect()) {
+            writer.write(",dblclickSelect:true");
+        }
+
         //update is deprecated and used for backward compatibility
         String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
 
