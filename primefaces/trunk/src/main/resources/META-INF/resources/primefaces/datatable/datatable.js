@@ -48,6 +48,7 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
             jQuery(this).toggleClass('ui-state-hover');}
         )
         .click(function(event) {
+            //Check if filter triggered this column header event
             if(event.target.tagName == 'INPUT') {
                 return;
             }
@@ -130,6 +131,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
 
                 _self.getPaginator().setState(newState);
 
+                //apply selection events
                 if(_self.cfg.selectionMode) {
                     _self.setupSelectionEvents();
                 }
@@ -179,6 +181,11 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                 if(paginator) {
                    paginator.setPage(1, true);
                 }
+
+                //apply selection events
+                if(_self.cfg.selectionMode) {
+                    _self.setupSelectionEvents();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -221,6 +228,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
                 if(extensions[i].attributes.getNamedItem("primefacesCallbackParam").nodeValue == 'totalRecords') {
                     totalRecords = jQuery.parseJSON(extensions[i].firstChild.data).totalRecords;
 
+                    //Reset paginator state
                     paginator.setPage(1);
                     paginator.setTotalRecords(totalRecords, true);
                 }
@@ -233,6 +241,11 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
             if(id == _self.id){
                 jQuery(_self.tbody).replaceWith(content);
+
+                //apply selection events
+                if(_self.cfg.selectionMode) {
+                    _self.setupSelectionEvents();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -256,7 +269,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
 
     //clear previous selections
     if(this.isSingleSelection()) { 
-        jQuery(row).siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+        jQuery(row).siblings('.ui-state-highlight').removeClass('ui-selected ui-state-highlight');
         this.selection = [];
     }
 
@@ -284,4 +297,13 @@ PrimeFaces.widget.DataTable.prototype.writeSelections = function() {
  */
 PrimeFaces.widget.DataTable.prototype.isSingleSelection = function() {
     return this.cfg.selectionMode == 'single';
+}
+
+/**
+ * Clears the selection state
+ */
+PrimeFaces.widget.DataTable.prototype.clearSelection = function() {
+    this.selection = [];
+    
+    jQuery(this.selectionHolder).val('');
 }
