@@ -215,7 +215,7 @@
             <name>rowSelectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
-            <method-signature>void rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
+            <method-signature>java.lang.String rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
         </attribute>
 		<attribute>
 			<name>style</name>

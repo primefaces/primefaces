@@ -324,7 +324,12 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
     if(this.cfg.onRowSelectUpdate) {
         options.update = this.cfg.onRowSelectUpdate;
     }
-
+    
+    if(this.cfg.onRowSelectStart) 
+        options.onstart = this.cfg.onRowSelectStart;
+    if(this.cfg.onRowSelectComplete)
+        options.oncomplete = this.cfg.onRowSelectComplete;
+    
     var params = {};
     params[this.id + '_instantSelectedRowIndex'] = rowId;
 
