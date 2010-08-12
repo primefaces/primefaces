@@ -2,6 +2,7 @@ import org.primefaces.component.column.Column;
 import java.util.List;
 import java.util.ArrayList;
 import javax.faces.component.UIComponent;
+import javax.faces.application.NavigationHandler;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -282,10 +283,16 @@ import java.io.Serializable;
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesContext context = FacesContext.getCurrentInstance();
 		MethodExpression me = getRowSelectListener();
 
 		if (me != null && event instanceof org.primefaces.event.SelectEvent) {
-			me.invoke(facesContext.getELContext(), new Object[] {event});
+			String outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
+
+            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+
+            navHandler.handleNavigation(context, null, outcome);
+
+            context.renderResponse();
 		}
 	}

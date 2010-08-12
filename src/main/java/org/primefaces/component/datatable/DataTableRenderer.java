@@ -221,19 +221,8 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         //Selection
-        if(selectionMode != null) {
-            writer.write(",selectionMode:'" + selectionMode + "'");
-
-            //update is deprecated and used for backward compatibility
-            String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
-
-            if(table.getRowSelectListener() != null || onRowSelectUpdate != null) {
-                writer.write(",instantSelect:true");
-
-                if(onRowSelectUpdate != null) {
-                    writer.write(",onRowSelectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), onRowSelectUpdate) + "'");
-                }
-            }
+        if(table.isSelectionEnabled()) {
+            encodeSelectionConfig(context, table);
         }
 
         writer.write("});");
@@ -410,6 +399,29 @@ public class DataTableRenderer extends CoreRenderer {
         if(!table.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
 
         writer.write("})");
+    }
+
+    protected void encodeSelectionConfig(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
+
+        //update is deprecated and used for backward compatibility
+        String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
+
+        if(table.getRowSelectListener() != null || onRowSelectUpdate != null) {
+            writer.write(",instantSelect:true");
+
+            if(onRowSelectUpdate != null) {
+                writer.write(",onRowSelectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), onRowSelectUpdate) + "'");
+            }
+
+            //onselectstart and onselectcomplete are deprecated but still here for backward compatibility for some time
+            if(table.getOnselectStart() != null) writer.write(",onRowSelectStart:function(xhr) {" + table.getOnselectStart() + "}");
+            if(table.getOnselectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnselectComplete() + "}");
+            if(table.getOnRowSelectStart() != null) writer.write(",onRowSelectStart:function(xhr) {" + table.getOnRowSelectStart() + "}");
+            if(table.getOnRowSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnRowSelectComplete() + "}");
+        }
     }
 
     protected void encodePaginatorMarkup(FacesContext context, DataTable table) throws IOException {

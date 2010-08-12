@@ -33,7 +33,7 @@ public class DataTableHandler extends ComponentHandler {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type);
 		Class[] eventClasses = new Class[]{SelectEvent.class};
 
-		metaRuleset.addRule(new MethodRule("rowSelectListener", null, eventClasses));
+		metaRuleset.addRule(new MethodRule("rowSelectListener", String.class, eventClasses));
 
 		return metaRuleset;
 	}
