@@ -17,7 +17,7 @@
     border-top: 0px none;
 }
 
-.ui-datatable th {
+.ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
     padding:4px 10px 4px 10px;

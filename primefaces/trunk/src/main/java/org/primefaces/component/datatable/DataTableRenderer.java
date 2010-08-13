@@ -271,6 +271,11 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement("table", null);
         encodeThead(context, table);
         encodeTbody(context, table);
+
+        if(table.hasFooterColumn()) {
+            encodeTFoot(context, table);
+        }
+
         writer.endElement("table");
 
         if(table.isPaginator()) {
@@ -434,6 +439,31 @@ public class DataTableRenderer extends CoreRenderer {
 		if(rowIndexVar != null) {
 			context.getExternalContext().getRequestMap().remove(rowIndexVar);
 		}
+    }
+
+    protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("tfoot", null);
+        writer.startElement("tr", null);
+
+        for(Column column : table.getColumns()) {
+               UIComponent facet = column.getFacet("footer");
+               String text = column.getFooterText();
+
+               writer.startElement("td", null);
+               writer.writeAttribute("class", DataTable.COLUMN_FOOTER_CLASS, null);
+
+               if(facet != null)
+                   facet.encodeAll(context);
+               else if(text != null)
+                   writer.write(text);
+
+               writer.endElement("td");
+        }
+
+        writer.endElement("tr");
+        writer.endElement("tfoot");
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
