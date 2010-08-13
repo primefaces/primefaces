@@ -28,12 +28,8 @@
 }
 
 .ui-datatable .ui-datatable-data td {
-    border-bottom-color:inherit;
-    border-bottom-style:solid;
-    border-bottom-width:1px;
+    border-right:1px solid;
     border-right-color:inherit;
-    border-right-style:solid;
-    border-right-width:1px;
     padding:4px 10px 4px 10px;
 }
 
@@ -58,6 +54,18 @@
     margin:auto;
 }
 
-.ui-datatable .ui-selected {
-    
+.ui-datatable .ui-expanded-row {
+    border-bottom:0px none;
+}
+
+.ui-datatable .ui-expanded-row-content {
+    border-top:0px none;
+}
+
+.ui-datatable .ui-row-expander {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-expansion-column {
+    width: 16px;
 }

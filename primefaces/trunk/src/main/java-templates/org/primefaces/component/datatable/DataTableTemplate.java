@@ -170,6 +170,10 @@ import java.io.Serializable;
     public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String COLUMN_FILTER_CLASS = "ui-column-filter";
+    public static final String EXPANDED_ROW_CLASS = "ui-expanded-row";
+    public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
+    public static final String ROW_EXPANDER_CLASS = "ui-row-expander";
+    public static final String EXPANSION_COLUMN_CLASS = "ui-expansion-column";
 
     public List<Column> columns;
 
@@ -221,7 +225,7 @@ import java.io.Serializable;
         return filterRequest;
     }
 
-    public boolean isAjaxRequest(FacesContext context) {
+    public boolean isDataManipulationRequest(FacesContext context) {
         return isPaginationRequest(context) || isSortRequest(context) || isFilterRequest(context);
     }
 
@@ -231,6 +235,10 @@ import java.io.Serializable;
 
     public boolean isInstantUnselectionRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantUnselectedRowIndex");
+    }
+
+    public boolean isRowExpansionRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowExpansion");
     }
 
     private Map<String,ValueExpression> filterMap;

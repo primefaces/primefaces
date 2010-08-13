@@ -103,5 +103,12 @@
 			<type>java.lang.String</type>
 			<description>Label of column header, shortcut for header facet.</description>
 		</attribute>
+        <attribute>
+			<name>expansion</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+			<description>Defines a row expansion column.</description>
+		</attribute>
 	</attributes>
 </component>
