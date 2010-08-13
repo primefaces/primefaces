@@ -229,6 +229,10 @@ import java.io.Serializable;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelectedRowIndex");
     }
 
+    public boolean isInstantUnselectionRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantUnselectedRowIndex");
+    }
+
     private Map<String,ValueExpression> filterMap;
 
 	public Map<String,ValueExpression> getFilterMap() {
@@ -285,17 +289,26 @@ import java.io.Serializable;
 		super.broadcast(event);
 
 		FacesContext context = FacesContext.getCurrentInstance();
-		MethodExpression me = getRowSelectListener();
+        String outcome = null;
+        MethodExpression me = null;
+		
+		if(event instanceof org.primefaces.event.SelectEvent) {
+            me = getRowSelectListener();
+        } else if(event instanceof org.primefaces.event.UnselectEvent) {
+            me = getRowUnselectListener();
+        }
 
-		if (me != null && event instanceof org.primefaces.event.SelectEvent) {
-			String outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
+        if(me != null) {
+            outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
+        }
 
+        if(outcome != null) {
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
 
             navHandler.handleNavigation(context, null, outcome);
 
             context.renderResponse();
-		}
+        }
 	}
 
     public ColumnGroup getColumnGroup() {

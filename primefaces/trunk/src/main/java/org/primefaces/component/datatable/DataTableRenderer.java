@@ -33,6 +33,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.BeanPropertyComparator;
 
 import org.primefaces.renderkit.CoreRenderer;
@@ -142,12 +143,20 @@ public class DataTableRenderer extends CoreRenderer {
 
         table.setRowIndex(-1);	//clean
 
+        //Instant selection and unselection
         if(table.isInstantSelectionRequest(context)) {
             int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
             table.setRowIndex(selectedRowIndex);
             SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
             selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
             table.queueEvent(selectEvent);
+        }
+        else if(table.isInstantUnselectionRequest(context)) {
+            int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
+            table.setRowIndex(unselectedRowIndex);
+            UnselectEvent unselectEvent = new UnselectEvent(table, table.getRowData());
+            unselectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            table.queueEvent(unselectEvent);
         }
         
 		table.setRowIndex(-1);	//clean
@@ -463,6 +472,14 @@ public class DataTableRenderer extends CoreRenderer {
             if(table.getOnselectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnselectComplete() + "}");
             if(table.getOnRowSelectStart() != null) writer.write(",onRowSelectStart:function(xhr) {" + table.getOnRowSelectStart() + "}");
             if(table.getOnRowSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnRowSelectComplete() + "}");
+        }
+
+        if(table.getRowSelectListener() != null) {
+            writer.write(",instantUnselect:true");
+            
+            if(table.getOnRowUnselectUpdate() != null) {
+                writer.write(",onRowUnselectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), table.getOnRowUnselectUpdate()) + "'");
+            }
         }
     }
 
