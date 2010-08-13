@@ -104,6 +104,12 @@
 			<description>Label of column header, shortcut for header facet.</description>
 		</attribute>
         <attribute>
+			<name>footerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Label of column footer shortcut for footer facet.</description>
+		</attribute>
+        <attribute>
 			<name>expansion</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
