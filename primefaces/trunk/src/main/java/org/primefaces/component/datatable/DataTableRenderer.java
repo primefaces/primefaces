@@ -327,8 +327,11 @@ public class DataTableRenderer extends CoreRenderer {
 
         //Header content
         UIComponent header = column.getFacet("header");
+        String headerText = column.getHeaderText();
         if(header != null) {
             header.encodeAll(context);
+        } else if(headerText != null) {
+            writer.write(headerText);
         }
 
         //Filter
