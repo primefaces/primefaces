@@ -217,6 +217,20 @@
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.String rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
         </attribute>
+        <attribute>
+            <name>rowUnselectListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.lang.String rowUnselectListener(org.primefaces.event.UnselectEvent)</method-signature>
+        </attribute>
+        <attribute>
+			<name>onRowUnselectUpdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Component(s) to be updated after ajax row unselection.
+			</description>
+		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>

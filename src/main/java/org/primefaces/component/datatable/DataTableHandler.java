@@ -20,6 +20,7 @@ import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.facelets.MethodRule;
 
 public class DataTableHandler extends ComponentHandler {
@@ -31,9 +32,9 @@ public class DataTableHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type);
-		Class[] eventClasses = new Class[]{SelectEvent.class};
 
-		metaRuleset.addRule(new MethodRule("rowSelectListener", String.class, eventClasses));
+		metaRuleset.addRule(new MethodRule("rowSelectListener", String.class, new Class[]{SelectEvent.class}));
+        metaRuleset.addRule(new MethodRule("rowUnselectListener", String.class, new Class[]{UnselectEvent.class}));
 
 		return metaRuleset;
 	}

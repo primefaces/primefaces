@@ -313,8 +313,15 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
 
     //save state
     this.writeSelections();
+
+    if(this.cfg.instantUnselect) {
+        this.fireRowUnselectEvent(rowId);
+    }
 }
 
+/**
+ *  Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
+ */
 PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
     var options = {
         source: this.id,
@@ -333,6 +340,26 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
     
     var params = {};
     params[this.id + '_instantSelectedRowIndex'] = rowId;
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
+/**
+ *  Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
+ */
+PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+
+    if(this.cfg.onRowUnselectUpdate) {
+        options.update = this.cfg.onRowUnselectUpdate;
+    }
+
+    var params = {};
+    params[this.id + '_instantUnselectedRowIndex'] = rowId;
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
