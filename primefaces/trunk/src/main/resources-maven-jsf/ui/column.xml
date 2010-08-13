@@ -83,5 +83,19 @@
 			<defaultValue>keyup</defaultValue>
 			<description>Style class of the input text filter.</description>
 		</attribute>
+        <attribute>
+			<name>rowpan</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Row span value.</description>
+		</attribute>
+        <attribute>
+			<name>colspan</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+			<description>Column span value.</description>
+		</attribute>
 	</attributes>
 </component>

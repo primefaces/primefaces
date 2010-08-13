@@ -1,4 +1,5 @@
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import java.util.List;
 import java.util.ArrayList;
 import javax.faces.component.UIComponent;
@@ -296,3 +297,12 @@ import java.io.Serializable;
             context.renderResponse();
 		}
 	}
+
+    public ColumnGroup getColumnGroup() {
+        for(UIComponent child : this.getChildren()) {
+            if(child instanceof ColumnGroup)
+                return (ColumnGroup) child;
+        }
+
+        return null;
+    }

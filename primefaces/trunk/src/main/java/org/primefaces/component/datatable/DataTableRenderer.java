@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.lang.reflect.Array;
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 
@@ -30,6 +29,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.BeanPropertyComparator;
@@ -263,65 +264,99 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("div");
 	}
 
+    /**
+     * Render column headers either in single row or nested if a columnGroup is defined
+     */
     protected void encodeThead(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String widgetVar = createUniqueWidgetVar(context, table);
+        ColumnGroup group = table.getColumnGroup();
 
         writer.startElement("thead", null);
-        writer.startElement("tr", null);
 
-        //Header
-        for(Column column : table.getColumns()) {
-            String clientId = column.getClientId(context);
-            boolean isSortable = column.getValueExpression("sortBy") != null;
-            boolean hasFilter = column.getValueExpression("filterBy") != null;
-            String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
+        if(group != null) {
 
-            writer.startElement("th", null);
-            writer.writeAttribute("id", column.getClientId(context), null);
-            writer.writeAttribute("class", columnClass, null);
+            for(UIComponent child : group.getChildren()) {
+                if(child.isRendered() && child instanceof HeaderRow) {
+                    HeaderRow headerRow = (HeaderRow) child;
 
-            //Sort icon
-            if(isSortable) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", DataTable.SORTABLE_COLUMN_ICON_CLASS, null);
-                writer.endElement("span");
+                    writer.startElement("tr", null);
+
+                    for(UIComponent headerRowChild : headerRow.getChildren()) {
+                        if(headerRowChild.isRendered() && headerRowChild instanceof Column) {
+                            encodeColumnHeader(context, table, (Column) headerRowChild);
+                        }
+                    }
+
+                    writer.endElement("tr");
+                }
             }
 
-            //Header content
-            UIComponent header = column.getFacet("header");
-            if(header != null) {
-                header.encodeAll(context);
+        } else {
+            writer.startElement("tr", null);
+
+            for(Column column : table.getColumns()) {
+                encodeColumnHeader(context, table, column);
             }
 
-            //Filter
-            if(hasFilter) {
-                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-                String filterId = clientId + "_filter";
-                String filterStyleClass = column.getFilterStyleClass();
-                filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
-                
-                String filterEvent = "on" + column.getFilterEvent();
-                String filterFunction = widgetVar + ".filter()";
-                String filterValue = params.containsKey(clientId) ? params.get(clientId) : "";
-                
-                writer.startElement("input", null);
-                writer.writeAttribute("id", filterId, null);
-                writer.writeAttribute("name", filterId, null);
-                writer.writeAttribute("class", filterStyleClass, null);
-                writer.writeAttribute("value", filterValue , null);
-                writer.writeAttribute(filterEvent, filterFunction , null);
+            writer.endElement("tr");
+        }
+        
+        writer.endElement("thead");
+    }
 
-                if(column.getFilterStyle() != null) writer.writeAttribute("style", column.getFilterStyle(), null);
+    protected void encodeColumnHeader(FacesContext context, DataTable table, Column column) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = column.getClientId(context);
+        boolean isSortable = column.getValueExpression("sortBy") != null;
+        boolean hasFilter = column.getValueExpression("filterBy") != null;
+        String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
+        String widgetVar = createUniqueWidgetVar(context, table);
 
-                writer.endElement("input");
-            }
+        writer.startElement("th", null);
+        writer.writeAttribute("id", column.getClientId(context), null);
+        writer.writeAttribute("class", columnClass, null);
+        if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
+        if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
-            writer.endElement("th");
+        //Sort icon
+        if(isSortable) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.SORTABLE_COLUMN_ICON_CLASS, null);
+            writer.endElement("span");
         }
 
-        writer.endElement("tr");
-        writer.endElement("thead");
+        //Header content
+        UIComponent header = column.getFacet("header");
+        if(header != null) {
+            header.encodeAll(context);
+        }
+
+        //Filter
+        if(hasFilter) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String filterId = clientId + "_filter";
+            String filterStyleClass = column.getFilterStyleClass();
+            filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+
+            String filterEvent = "on" + column.getFilterEvent();
+            String filterFunction = widgetVar + ".filter()";
+            String filterValue = params.containsKey(clientId) ? params.get(clientId) : "";
+
+            writer.startElement("input", null);
+            writer.writeAttribute("id", filterId, null);
+            writer.writeAttribute("name", filterId, null);
+            writer.writeAttribute("class", filterStyleClass, null);
+            writer.writeAttribute("value", filterValue , null);
+            writer.writeAttribute(filterEvent, filterFunction , null);
+
+            if(column.getFilterStyle() != null) {
+                writer.writeAttribute("style", column.getFilterStyle(), null);
+            }
+
+            writer.endElement("input");
+        }
+
+        writer.endElement("th");
     }
 
     protected void encodeTbody(FacesContext context, DataTable table) throws IOException {

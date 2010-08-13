@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>columnGroup</tag>
+	<tagClass>org.primefaces.component.columngroup.ColumnGroupTag</tagClass>
+	<componentClass>org.primefaces.component.columngroup.ColumnGroup</componentClass>
+	<componentType>org.primefaces.component.ColumnGroup</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>
