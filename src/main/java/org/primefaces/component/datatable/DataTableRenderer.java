@@ -144,7 +144,14 @@ public class DataTableRenderer extends CoreRenderer {
         table.setRowIndex(-1);	//clean
 
         //Instant selection and unselection
-        if(table.isInstantSelectionRequest(context)) {
+        queueInstantSelectionEvent(context, table, clientId, params);
+        
+		table.setRowIndex(-1);	//clean
+	}
+
+    protected void queueInstantSelectionEvent(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
+
+		if(table.isInstantSelectionRequest(context)) {
             int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
             table.setRowIndex(selectedRowIndex);
             SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
@@ -158,8 +165,6 @@ public class DataTableRenderer extends CoreRenderer {
             unselectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
             table.queueEvent(unselectEvent);
         }
-        
-		table.setRowIndex(-1);	//clean
 	}
 
     protected void decodeSingleSelection(DataTable table, String selection) {
@@ -198,9 +203,13 @@ public class DataTableRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
 
-        if(table.isAjaxRequest(context)) {
+        if(table.isDataManipulationRequest(context)) {
             encodeTbody(context, table);
-        } else {
+        } 
+        else if(table.isRowExpansionRequest(context)) {
+            encodeRowExpansion(context, table);
+        }
+        else {
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
@@ -210,7 +219,6 @@ public class DataTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
 		String widgetVar = createUniqueWidgetVar(context, table);
-        String selectionMode = table.getSelectionMode();
 		
 		writer.startElement("script", table);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -233,6 +241,11 @@ public class DataTableRenderer extends CoreRenderer {
         //Selection
         if(table.isSelectionEnabled()) {
             encodeSelectionConfig(context, table);
+        }
+
+        //Row expansion
+        if(table.getFacet("expansion") != null) {
+            writer.write(",expansion:true");
         }
 
         writer.write("});");
@@ -399,7 +412,15 @@ public class DataTableRenderer extends CoreRenderer {
 
 			for(Column column : table.getColumns()) {
                 writer.startElement("td", null);
-                column.encodeAll(context);
+
+                if(column.isExpansion()) {
+                    writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
+                    encodeRowExpander(context, table);
+                }
+                else {
+                    column.encodeAll(context);
+                }
+
                 writer.endElement("td");
 			}
 
@@ -517,4 +538,35 @@ public class DataTableRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+
+    protected void encodeRowExpander(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.ROW_EXPANDER_CLASS + " ui-icon ui-icon-circle-triangle-e", null);
+        writer.endElement("span");
+    }
+
+    protected void encodeRowExpansion(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        int expandedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowId"));
+
+        table.setRowIndex(expandedRowId);
+
+        writer.startElement("tr", null);
+        writer.writeAttribute("style", "display:none", null);
+        writer.writeAttribute("class", DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content", null);
+
+        writer.startElement("td", null);
+        writer.writeAttribute("colspan", table.getColumns().size(), null);
+
+        table.getFacet("expansion").encodeAll(context);
+
+        writer.endElement("td");
+
+        writer.endElement("tr");
+
+        table.setRowIndex(-1);
+    }
 }

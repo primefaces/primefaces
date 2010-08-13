@@ -22,6 +22,10 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     
         this.setupSelectionEvents();
     }
+
+    if(this.cfg.expansion) {
+        this.setupExpansionEvents();
+    }
 }
 
 /**
@@ -106,6 +110,19 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 _self.onRowClick(this);
             });
 }
+
+/**
+ * Applies events related to row expansion in a non-obstrusive way
+ */
+PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
+    var _self = this;
+
+    jQuery(this.jqId + ' tbody tr td span.ui-row-expander')
+            .click(function(event) {
+                _self.toggleExpansion(this);
+            });
+}
+
 
 /**
  * Ajax pagination
@@ -360,6 +377,67 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
 
     var params = {};
     params[this.id + '_instantUnselectedRowIndex'] = rowId;
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
+/**
+ * Expands a row to display detail content
+ */
+PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
+    var expander = jQuery(expanderElement),
+    row = expander.parent().parent(),
+    expanded = row.hasClass('ui-expanded-row');
+
+    if(expanded) {
+        expander.removeClass('ui-icon-circle-triangle-s');
+        row.removeClass('ui-expanded-row');
+        row.next().fadeOut(function() {
+           jQuery(this).remove();
+        });
+    }
+    else {
+        expander.addClass('ui-icon-circle-triangle-s');
+        row.addClass('ui-expanded-row');
+
+        this.loadExpandedRowContent(row);
+    }
+    
+}
+
+PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        update: this.id,
+        formId: this.cfg.formId
+    },
+    rowId = row.attr('id').split('_row_')[1],
+    _self = this;
+
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement,
+        updates = xmlDoc.getElementsByTagName("update");
+
+        for(var i=0; i < updates.length; i++) {
+            var id = updates[i].attributes.getNamedItem("id").nodeValue,
+            content = updates[i].firstChild.data;
+
+            if(id == _self.id){
+                row.after(content);
+                row.next().fadeIn();
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+            }
+        }
+
+        return false;
+    };
+
+    var params = {};
+    params[this.id + '_rowExpansion'] = true;
+    params[this.id + '_expandedRowId'] = rowId;
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
