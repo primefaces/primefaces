@@ -42,6 +42,14 @@
 				Width of column in pixels.
 			</description>
 		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>
+				Style of the column.
+			</description>
+		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>

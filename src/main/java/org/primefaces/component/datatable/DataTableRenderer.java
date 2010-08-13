@@ -336,12 +336,19 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = column.getClientId(context);
         boolean isSortable = column.getValueExpression("sortBy") != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
-        String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         String widgetVar = createUniqueWidgetVar(context, table);
+        
+        String style = column.getStyle();
+        String styleClass = column.getStyleClass();
+        String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
+        if(styleClass != null) {
+            columnClass = columnClass + " " + styleClass;
+        }
 
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
+        if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
@@ -415,14 +422,24 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute("id", clientId + "_row_" + i, null);
             writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
+
 			for(Column column : table.getColumns()) {
                 writer.startElement("td", null);
-
+                if(column.getStyle() != null) {
+                    writer.writeAttribute("style", column.getStyle(), null);
+                }
+                
                 if(column.isExpansion()) {
                     writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
+                    
                     encodeRowExpander(context, table);
                 }
                 else {
+                    
+                    if(column.getStyleClass() != null) {
+                        writer.writeAttribute("class", column.getStyleClass(), null);
+                    }
+
                     column.encodeAll(context);
                 }
 
