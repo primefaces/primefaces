@@ -97,5 +97,11 @@
 			<defaultValue>1</defaultValue>
 			<description>Column span value.</description>
 		</attribute>
+        <attribute>
+			<name>headerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Label of column header, shortcut for header facet.</description>
+		</attribute>
 	</attributes>
 </component>
