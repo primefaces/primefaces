@@ -1,4 +1,5 @@
 import org.primefaces.component.tabview.Tab;
+import javax.el.ValueExpression;
 
     public boolean isTabChangeRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_tabChange");
@@ -56,4 +57,14 @@ import org.primefaces.component.tabview.Tab;
         if(!isSelfRequest(context)) {
             super.processUpdates(context);
         }
+
+        ValueExpression expr = this.getValueExpression("activeIndex");
+        if(expr != null) {
+            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+            resetActiveIndex();
+        }
+    }
+
+    protected void resetActiveIndex() {
+		getStateHelper().remove(PropertyKeys.activeIndex);
     }
