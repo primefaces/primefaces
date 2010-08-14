@@ -1,3 +1,4 @@
+import org.primefaces.component.tabview.Tab;
 
     public boolean isTabChangeRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_tabChange");
@@ -17,3 +18,14 @@
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
+
+    public Tab findTabToLoad(FacesContext context) {
+        String newTabId = context.getExternalContext().getRequestParameterMap().get(this.getClientId(context) + "_newTab");
+        
+        for(UIComponent component : getChildren()) {
+            if(component.getClientId().equals(newTabId))
+                return (Tab) component;
+        }
+
+        return null;
+    }

@@ -32,17 +32,17 @@ import org.primefaces.util.ComponentUtils;
 public class TabViewRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+    public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
-        String activeIndexValue = params.get(tabView.getClientId(facesContext) + "_activeIndex");
+        String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
 
         if(!isValueEmpty(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
         }
 
-        if(tabView.isTabChangeRequest(facesContext)) {
-            TabChangeEvent changeEvent = new TabChangeEvent(tabView, tabView.getActiveIndex());
+        if(tabView.isTabChangeRequest(context)) {
+            TabChangeEvent changeEvent = new TabChangeEvent(tabView, tabView.findTabToLoad(context));
             changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
 
             tabView.queueEvent(changeEvent);
@@ -50,16 +50,17 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
 
-        if(tabView.isContentLoadRequest(facesContext)) {
-            Tab tabToLoad = (Tab) tabView.getChildren().get(tabView.getActiveIndex());
-            tabToLoad.encodeAll(facesContext);
+        if(tabView.isContentLoadRequest(context)) {
+            Tab tabToLoad = (Tab) tabView.findTabToLoad(context);
+            
+            tabToLoad.encodeAll(context);
         } else {
-            encodeMarkup(facesContext, tabView);
-            encodeScript(facesContext, tabView);
+            encodeMarkup(context, tabView);
+            encodeScript(context, tabView);
         }
     }
 

@@ -42,7 +42,7 @@ PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
         this.loadDynamicTab(panel);
     }
     else if(this.cfg.ajaxTabChange) {
-        this.fireAjaxTabChangeEvent();
+        this.fireAjaxTabChangeEvent(panel);
     }
 }
 
@@ -86,6 +86,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
+    params[this.id + '_newTab'] = panel.id;
 
     if(this.cfg.ajaxTabChange) {
         params[this.id + '_tabChange'] = true;
@@ -110,6 +111,7 @@ PrimeFaces.widget.TabView.prototype.fireAjaxTabChangeEvent = function(panel) {
 
     var params = {};
     params[this.id + '_tabChange'] = true;
+    params[this.id + '_newTab'] = panel.id;
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
