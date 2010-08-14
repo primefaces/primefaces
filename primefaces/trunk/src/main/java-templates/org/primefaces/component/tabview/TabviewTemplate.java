@@ -1,18 +1,19 @@
-import java.util.Map;
-import org.primefaces.util.Constants;
 
-	/**
-	 * Process only tabview if it's a tabswitch request
-	 */
-	public void processDecodes(FacesContext facesContext) {
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
-		String ajaxSourceValue = params.get(Constants.PARTIAL_SOURCE_PARAM);
-		
-		//TabSwitch Request
-		if(ajaxSourceValue != null && ajaxSourceValue.equals(getClientId(facesContext))) {
-			 decode(facesContext);
-			 facesContext.renderResponse();
-		} else {
-			super.processDecodes(facesContext);
+    public boolean isTabChangeRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_tabChange");
+    }
+
+    public boolean isContentLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
+    }
+    
+	public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+		super.broadcast(event);
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		MethodExpression me = getTabChangeListener();
+
+		if(me != null && event instanceof org.primefaces.event.TabChangeEvent) {
+			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
