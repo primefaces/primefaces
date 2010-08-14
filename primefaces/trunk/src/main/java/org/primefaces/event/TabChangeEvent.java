@@ -18,14 +18,15 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+import org.primefaces.component.tabview.Tab;
 
 public class TabChangeEvent extends FacesEvent {
 
-    private int index;
+    private Tab tab;
 
-	public TabChangeEvent(UIComponent uiComponent, int index) {
+	public TabChangeEvent(UIComponent uiComponent, Tab tab) {
 		super(uiComponent);
-        this.index = index;
+        this.tab = tab;
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class TabChangeEvent extends FacesEvent {
 		throw new UnsupportedOperationException();
 	}
 
-    public int getIndex() {
-        return index;
+    public Tab getTab() {
+        return tab;
     }
 }
