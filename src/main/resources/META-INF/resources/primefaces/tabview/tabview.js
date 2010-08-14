@@ -1,3 +1,6 @@
+/**
+ * PrimeFaces TabView Widget
+ */
 PrimeFaces.widget.TabView = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
@@ -6,6 +9,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
 	
     jQuery(this.jqId).tabs(this.cfg);
 
+    //tab change handler
     var _self = this;
     jQuery(this.jqId).bind('tabsselect', function(event, ui) {
         _self.onTabSelect(event, ui);
@@ -16,50 +20,98 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     }
 }
 
+/**
+ * Tab change handler
+ *
+ * - Saves the activeIndex and loads content if necessary for dynamic tabs
+ * - Fires an ajax tabChangeEvent if there is one on server side
+ */
 PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     var panel = ui.panel,
     shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
-	
+
+    //Call user onTabChange callback
+    if(this.cfg.onTabChange) {
+        this.cfg.onTabChange.call(this, event, ui);
+    }
+
+    //Write state
     jQuery(this.activeIndexHolder).val(ui.index);
 
     if(shouldLoad) {
-        var _self = this,
-        options = {
-            source: this.id,
-            process: this.id,
-            update: this.id,
-            formId:this.cfg.formId
-        };
+        this.loadDynamicTab(panel);
+    }
+    else if(this.cfg.ajaxTabChange) {
+        this.fireAjaxTabChangeEvent();
+    }
+}
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = responseXML.documentElement,
-            updates = xmlDoc.getElementsByTagName("update");
+/**
+ * Loads tab contents with ajax
+ */
+PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
+    var _self = this,
+    options = {
+        source: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
 
-            for(var i=0; i < updates.length; i++) {
-                var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                content = updates[i].firstChild.data;
+    options.update = this.cfg.ajaxTabChange ? this.id + ' ' + this.cfg.onTabChangeUpdate : this.id;
 
-                if(id == _self.id){
-                    jQuery(panel).html(content);
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement,
+        updates = xmlDoc.getElementsByTagName("update");
 
-                    if(_self.cfg.cache) {
-                        _self.markAsLoaded(panel);
-                    }
+        for(var i=0; i < updates.length; i++) {
+            var id = updates[i].attributes.getNamedItem("id").nodeValue,
+            content = updates[i].firstChild.data;
+
+            if(id == _self.id){
+                jQuery(panel).html(content);
+
+                if(_self.cfg.cache) {
+                    _self.markAsLoaded(panel);
                 }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
-                }
-
+                
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
             }
 
-            return false;
-        };
-        
-        var params = {};
-        params[this.id + '_dynamicTabRequest'] = true;
+        }
 
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        return false;
+    };
+
+    var params = {};
+    params[this.id + '_contentLoad'] = true;
+
+    if(this.cfg.ajaxTabChange) {
+        params[this.id + '_tabChange'] = true;
     }
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
+/**
+ * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
+ */
+PrimeFaces.widget.TabView.prototype.fireAjaxTabChangeEvent = function(panel) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+
+    if(this.cfg.onTabChangeUpdate) {
+        options.update = this.cfg.onTabChangeUpdate;
+    }
+
+    var params = {};
+    params[this.id + '_tabChange'] = true;
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
 PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {

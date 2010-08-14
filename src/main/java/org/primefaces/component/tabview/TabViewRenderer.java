@@ -17,32 +17,44 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.el.MethodExpression;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
+import org.primefaces.event.TabChangeEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class TabViewRenderer extends CoreRenderer {
 
+    @Override
     public void decode(FacesContext facesContext, UIComponent component) {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
         String activeIndexValue = params.get(tabView.getClientId(facesContext) + "_activeIndex");
 
-        if (!isValueEmpty(activeIndexValue)) {
+        if(!isValueEmpty(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
+        }
+
+        if(tabView.isTabChangeRequest(facesContext)) {
+            TabChangeEvent changeEvent = new TabChangeEvent(tabView, tabView.getActiveIndex());
+            changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+
+            tabView.queueEvent(changeEvent);
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
 
-        if (params.containsKey(tabView.getClientId() + "_dynamicTabRequest")) {
+        if(tabView.isContentLoadRequest(facesContext)) {
             Tab tabToLoad = (Tab) tabView.getChildren().get(tabView.getActiveIndex());
             tabToLoad.encodeAll(facesContext);
         } else {
@@ -51,10 +63,11 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
-    private void encodeScript(FacesContext facesContext, TabView tabView) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = tabView.getClientId(facesContext);
-        String tabViewVar = createUniqueWidgetVar(facesContext, tabView);
+    protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = tabView.getClientId(context);
+        String tabViewVar = createUniqueWidgetVar(context, tabView);
+        MethodExpression tabChangeListener = tabView.getTabChangeListener();
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -64,28 +77,34 @@ public class TabViewRenderer extends CoreRenderer {
         writer.write("selected:" + tabView.getActiveIndex());
         writer.write(",dynamic:" + tabView.isDynamic());
 
-        if (tabView.isDynamic()) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, tabView);
+        if(tabView.isDynamic() || tabChangeListener != null) {
+            UIComponent form = ComponentUtils.findParentForm(context, tabView);
             if (form == null) {
                 throw new FacesException("TabView " + clientId + " must be nested inside a form when dynamic content loading is enabled");
             }
 
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
-            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
+            writer.write(",url:'" + getActionURL(context) + "'");
+            writer.write(",formId:'" + form.getClientId(context) + "'");
             writer.write(",cache:" + tabView.isCache());
         }
 
-        if (tabView.isCollapsible()) {
-            writer.write(",collapsible:true");
-        }
-        if (tabView.getEvent() != null) {
-            writer.write(",event:'" + tabView.getEvent() + "'");
-        }
-        if (tabView.getEffect() != null) {
+        if(tabView.isCollapsible()) writer.write(",collapsible:true");
+        if(tabView.getEvent() != null) writer.write(",event:'" + tabView.getEvent() + "'");
+        if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + tabView.getOnTabChange() + "}");
+
+        if(tabView.getEffect() != null) {
             writer.write(",fx: {");
             writer.write(tabView.getEffect() + ":'toggle'");
             writer.write(",duration:'" + tabView.getEffectDuration() + "'");
             writer.write("}");
+        }
+
+        if(tabChangeListener != null) {
+            writer.write(",ajaxTabChange:true");
+
+            if(tabView.getOnTabChangeUpdate() != null) {
+                writer.write(",onTabChangeUpdate:'" + ComponentUtils.findClientIds(context, tabView, tabView.getOnTabChangeUpdate()) + "'");
+            }
         }
 
         writer.write("});");
@@ -93,7 +112,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    private void encodeMarkup(FacesContext facesContext, TabView tabView) throws IOException {
+    protected void encodeMarkup(FacesContext facesContext, TabView tabView) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = tabView.getClientId(facesContext);
         int activeIndex = tabView.getActiveIndex();
@@ -109,7 +128,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    private void encodeActiveIndexHolder(FacesContext facesContext, TabView tabView) throws IOException {
+    protected void encodeActiveIndexHolder(FacesContext facesContext, TabView tabView) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String paramName = tabView.getClientId(facesContext) + "_activeIndex";
 
@@ -121,7 +140,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("input");
     }
 
-    private void encodeHeaders(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
+    protected void encodeHeaders(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("ul", null);
@@ -146,7 +165,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
 
-    private void encodeContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
+    protected void encodeContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         for (int i = 0; i < tabView.getChildren().size(); i++) {
@@ -170,10 +189,12 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
+    @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        //Do nothing
+        //Rendering happens on encodeEnd
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
