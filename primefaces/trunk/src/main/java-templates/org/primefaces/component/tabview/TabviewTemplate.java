@@ -7,6 +7,10 @@ import org.primefaces.component.tabview.Tab;
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
     }
+
+    private boolean isSelfRequest(FacesContext context) {
+        return isTabChangeRequest(context) || isContentLoadRequest(context);
+    }
     
 	public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
@@ -28,4 +32,28 @@ import org.primefaces.component.tabview.Tab;
         }
 
         return null;
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if(isSelfRequest(context)) {
+            this.decode(context);
+        }
+        else {
+            super.processDecodes(context);
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        if(!isSelfRequest(context)) {
+            super.processValidators(context);
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if(!isSelfRequest(context)) {
+            super.processUpdates(context);
+        }
     }
