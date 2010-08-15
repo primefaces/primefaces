@@ -84,6 +84,18 @@
             <type>java.lang.String</type>
             <description>Client side callback to invoke when active tab changes.</description>
         </attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Inline style of the main tabview container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class of the main tabview container.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

@@ -120,6 +120,8 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
+        if(tabView.getStyle() != null) writer.writeAttribute("style", tabView.getStyle(), "style");
+        if(tabView.getStyleClass() != null) writer.writeAttribute("class", tabView.getStyleClass(), "styleClass");
 
         encodeHeaders(facesContext, tabView, activeIndex);
         encodeContents(facesContext, tabView, activeIndex);
