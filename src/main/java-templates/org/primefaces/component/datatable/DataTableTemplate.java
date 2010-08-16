@@ -1,4 +1,5 @@
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.columngroup.ColumnGroup;
 import java.util.List;
 import java.util.ArrayList;
@@ -343,4 +344,18 @@ import java.io.Serializable;
         }
 
         return false;
+    }
+
+    private Columns dynamicColumns = null;
+
+    public Columns getDynamicColumns() {
+        if(dynamicColumns == null) {
+            for(UIComponent kid : getChildren()) {
+                if(kid instanceof Columns) {
+                    dynamicColumns = (Columns) kid;
+                }
+            }
+        }
+
+        return dynamicColumns;
     }

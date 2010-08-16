@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.lang.reflect.Array;
+import java.util.Collection;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 
@@ -30,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -272,7 +274,6 @@ public class DataTableRenderer extends CoreRenderer {
         encodeThead(context, table);
         encodeTbody(context, table);
         encodeTFoot(context, table);
-
         writer.endElement("table");
 
         if(table.isPaginator()) {
@@ -410,10 +411,34 @@ public class DataTableRenderer extends CoreRenderer {
             }
 
         } else {
+            Columns dynamicColumns = table.getDynamicColumns();
+
             writer.startElement("tr", null);
 
-            for(Column column : table.getColumns()) {
-                encodeColumnHeader(context, table, column);
+            if(dynamicColumns == null) {
+                for(Column column : table.getColumns()) {
+                    encodeColumnHeader(context, table, column);
+                }
+                
+            } else {
+                Collection columnCollection = (Collection) dynamicColumns.getValue();
+                String columnVar = dynamicColumns.getVar();
+                
+                for(Object column : columnCollection) {
+                    context.getExternalContext().getRequestMap().put(columnVar, column);
+                    UIComponent header = dynamicColumns.getFacet("header");
+
+                    writer.startElement("th", null);
+                    writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
+
+                    if(header != null) {
+                        header.encodeAll(context);
+                    }
+
+                    writer.endElement("th");
+                }
+
+                context.getExternalContext().getRequestMap().remove(columnVar);
             }
 
             writer.endElement("tr");
@@ -426,7 +451,8 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
-
+        Columns dynamicColumns = table.getDynamicColumns();
+        
         writer.startElement("tbody", null);
         writer.writeAttribute("id", clientId + "_data", null);
         writer.writeAttribute("class", DataTable.DATA_CLASS, null);
@@ -449,28 +475,53 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
 
-			for(Column column : table.getColumns()) {
-                writer.startElement("td", null);
-                if(column.getStyle() != null) {
-                    writer.writeAttribute("style", column.getStyle(), null);
-                }
-                
-                if(column.isExpansion()) {
-                    writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
-                    
-                    encodeRowExpander(context, table);
-                }
-                else {
-                    
-                    if(column.getStyleClass() != null) {
-                        writer.writeAttribute("class", column.getStyleClass(), null);
+            if(dynamicColumns == null) {
+
+                for(Column column : table.getColumns()) {
+                    writer.startElement("td", null);
+                    if(column.getStyle() != null) {
+                        writer.writeAttribute("style", column.getStyle(), null);
                     }
 
-                    column.encodeAll(context);
+                    if(column.isExpansion()) {
+                        writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
+
+                        encodeRowExpander(context, table);
+                    }
+                    else {
+
+                        if(column.getStyleClass() != null) {
+                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        }
+
+                        column.encodeAll(context);
+                    }
+
+                    writer.endElement("td");
                 }
 
-                writer.endElement("td");
-			}
+            } else {
+
+                Collection columnCollection = (Collection) dynamicColumns.getValue();
+                String columnVar = dynamicColumns.getVar();
+                String columnIndexVar = dynamicColumns.getColumnIndexVar();
+                int colIndex = 0;
+
+                for(Object column : columnCollection) {
+                    context.getExternalContext().getRequestMap().put(columnVar, column);
+                    context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
+                    UIComponent header = dynamicColumns.getFacet("header");
+
+                    writer.startElement("td", null);
+                    dynamicColumns.encodeAll(context);
+                    writer.endElement("th");
+
+                    colIndex++;
+                }
+
+                context.getExternalContext().getRequestMap().remove(columnVar);
+                context.getExternalContext().getRequestMap().remove(columnIndexVar);
+            }
 
 			writer.endElement("tr");
 		}
