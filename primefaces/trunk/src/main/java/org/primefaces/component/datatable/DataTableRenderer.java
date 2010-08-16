@@ -514,7 +514,7 @@ public class DataTableRenderer extends CoreRenderer {
 
                     writer.startElement("td", null);
                     dynamicColumns.encodeAll(context);
-                    writer.endElement("th");
+                    writer.endElement("td");
 
                     colIndex++;
                 }
