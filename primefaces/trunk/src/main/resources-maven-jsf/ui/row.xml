@@ -3,10 +3,10 @@
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
 ]>
 <component>
-	<tag>headerRow</tag>
-	<tagClass>org.primefaces.component.headerrow.HeaderRowTag</tagClass>
-	<componentClass>org.primefaces.component.headerrow.HeaderRow</componentClass>
-	<componentType>org.primefaces.component.HeaderRow</componentType>
+	<tag>row</tag>
+	<tagClass>org.primefaces.component.row.RowTag</tagClass>
+	<componentClass>org.primefaces.component.row.Row</componentClass>
+	<componentType>org.primefaces.component.Row</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIComponentBase</parent>
 	<attributes>

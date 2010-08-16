@@ -320,10 +320,17 @@ import java.io.Serializable;
         }
 	}
 
-    public ColumnGroup getColumnGroup() {
+    public ColumnGroup getColumnGroup(String target) {
         for(UIComponent child : this.getChildren()) {
-            if(child instanceof ColumnGroup)
-                return (ColumnGroup) child;
+            if(child instanceof ColumnGroup) {
+                ColumnGroup colGroup = (ColumnGroup) child;
+                String type = colGroup.getType();
+
+                if(type != null && type.equals(target)) {
+                    return colGroup;
+                }
+
+            }
         }
 
         return null;
