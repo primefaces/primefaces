@@ -30,7 +30,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -271,10 +271,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement("table", null);
         encodeThead(context, table);
         encodeTbody(context, table);
-
-        if(table.hasFooterColumn()) {
-            encodeTFoot(context, table);
-        }
+        encodeTFoot(context, table);
 
         writer.endElement("table");
 
@@ -290,46 +287,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.endElement("div");
 	}
-
-    /**
-     * Render column headers either in single row or nested if a columnGroup is defined
-     */
-    protected void encodeThead(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        ColumnGroup group = table.getColumnGroup();
-
-        writer.startElement("thead", null);
-
-        if(group != null) {
-
-            for(UIComponent child : group.getChildren()) {
-                if(child.isRendered() && child instanceof HeaderRow) {
-                    HeaderRow headerRow = (HeaderRow) child;
-
-                    writer.startElement("tr", null);
-
-                    for(UIComponent headerRowChild : headerRow.getChildren()) {
-                        if(headerRowChild.isRendered() && headerRowChild instanceof Column) {
-                            encodeColumnHeader(context, table, (Column) headerRowChild);
-                        }
-                    }
-
-                    writer.endElement("tr");
-                }
-            }
-
-        } else {
-            writer.startElement("tr", null);
-
-            for(Column column : table.getColumns()) {
-                encodeColumnHeader(context, table, column);
-            }
-
-            writer.endElement("tr");
-        }
-        
-        writer.endElement("thead");
-    }
 
     protected void encodeColumnHeader(FacesContext context, DataTable table, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -366,6 +323,8 @@ public class DataTableRenderer extends CoreRenderer {
             header.encodeAll(context);
         } else if(headerText != null) {
             writer.write(headerText);
+        } else {
+            renderChildren(context, header);
         }
 
         //Filter
@@ -394,6 +353,73 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.endElement("th");
+    }
+
+    protected void encodeColumnFooter(FacesContext context, DataTable table, Column column) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        String style = column.getStyle();
+        String styleClass = column.getStyleClass();
+        String footerClass = styleClass != null ? DataTable.COLUMN_FOOTER_CLASS + " " + styleClass : DataTable.COLUMN_FOOTER_CLASS;
+
+        writer.startElement("td", null);
+        writer.writeAttribute("class", footerClass, null);
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
+        if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+
+        //Header content
+        UIComponent facet = column.getFacet("footer");
+        String text = column.getFooterText();
+        if(facet != null) {
+            facet.encodeAll(context);
+        } else if(text != null) {
+            writer.write(text);
+        } else {
+            renderChildren(context, column);
+        }
+
+        writer.endElement("td");
+    }
+
+    /**
+     * Render column headers either in single row or nested if a columnGroup is defined
+     */
+    protected void encodeThead(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        ColumnGroup group = table.getColumnGroup("header");
+
+        writer.startElement("thead", null);
+
+        if(group != null) {
+
+            for(UIComponent child : group.getChildren()) {
+                if(child.isRendered() && child instanceof Row) {
+                    Row headerRow = (Row) child;
+
+                    writer.startElement("tr", null);
+
+                    for(UIComponent headerRowChild : headerRow.getChildren()) {
+                        if(headerRowChild.isRendered() && headerRowChild instanceof Column) {
+                            encodeColumnHeader(context, table, (Column) headerRowChild);
+                        }
+                    }
+
+                    writer.endElement("tr");
+                }
+            }
+
+        } else {
+            writer.startElement("tr", null);
+
+            for(Column column : table.getColumns()) {
+                encodeColumnHeader(context, table, column);
+            }
+
+            writer.endElement("tr");
+        }
+
+        writer.endElement("thead");
     }
 
     protected void encodeTbody(FacesContext context, DataTable table) throws IOException {
@@ -460,26 +486,43 @@ public class DataTableRenderer extends CoreRenderer {
 
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        ColumnGroup group = table.getColumnGroup("footer");
+        boolean shouldRender = table.hasFooterColumn() || group != null;
+
+        if(!shouldRender)
+            return;
 
         writer.startElement("tfoot", null);
-        writer.startElement("tr", null);
 
-        for(Column column : table.getColumns()) {
-               UIComponent facet = column.getFacet("footer");
-               String text = column.getFooterText();
+        if(group != null) {
 
-               writer.startElement("td", null);
-               writer.writeAttribute("class", DataTable.COLUMN_FOOTER_CLASS, null);
+            for(UIComponent child : group.getChildren()) {
+                if(child.isRendered() && child instanceof Row) {
+                    Row footerRow = (Row) child;
 
-               if(facet != null)
-                   facet.encodeAll(context);
-               else if(text != null)
-                   writer.write(text);
+                    writer.startElement("tr", null);
 
-               writer.endElement("td");
+                    for(UIComponent footerRowChild : footerRow.getChildren()) {
+                        if(footerRowChild.isRendered() && footerRowChild instanceof Column) {
+                            encodeColumnFooter(context, table, (Column) footerRowChild);
+                        }
+                    }
+
+                    writer.endElement("tr");
+                }
+            }
+
         }
+        else {
+            writer.startElement("tr", null);
 
-        writer.endElement("tr");
+            for(Column column : table.getColumns()) {
+                encodeColumnFooter(context, table, column);
+            }
+
+            writer.endElement("tr");
+        }
+        
         writer.endElement("tfoot");
     }
 
