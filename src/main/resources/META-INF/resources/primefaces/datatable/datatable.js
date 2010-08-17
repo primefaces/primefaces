@@ -461,30 +461,56 @@ PrimeFaces.widget.DataTable.prototype.showEditors = function(element) {
  * Saves the edited row
  */
 PrimeFaces.widget.DataTable.prototype.saveRowEdit = function(element) {
-    var options = {
-        source: this.id,
-        process: this.id,
-        update: this.id,
-        formId: this.cfg.formId
-    };
-
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options);
+    this.doRowEditRequest(element, 'save');
 }
 
 /**
  * Cancels row editing
  */
 PrimeFaces.widget.DataTable.prototype.cancelRowEdit = function(element) {
-    jQuery(element).parents('tr').removeClass('ui-state-highlight').children('td.ui-editable-cell').each(function() {
-       var column = jQuery(this);
+    this.doRowEditRequest(element, 'cancel');
+}
 
-       column.children().show();
-       column.children('span.ui-cell-editor').hide();
+/**
+ * Sends an ajax request to handle row save or edit
+ */
+PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, action) {
+    var row = jQuery(element).parents('tr').get(0),
+    options = {
+        source: this.id,
+        update: this.id,
+        formId: this.cfg.formId
+    },
+    _self = this;
 
-       jQuery(element).hide();
-       jQuery(element).siblings().hide();
-       jQuery(element).siblings('.ui-icon-pencil').show();
-    });
+    if(action === 'save') {
+        options.process = this.id;
+    }
+
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement,
+        updates = xmlDoc.getElementsByTagName("update");
+
+        for(var i=0; i < updates.length; i++) {
+            var id = updates[i].attributes.getNamedItem("id").nodeValue,
+            content = updates[i].firstChild.data;
+
+            if(id == _self.id){
+                jQuery(row).replaceWith(content);
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+            }
+        }
+
+        return false;
+    };
+
+    var params = {};
+    params[this.id + '_rowEdit'] = true;
+    params[this.id + '_editedRowId'] = row.id.split('_row_')[1];
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
 
