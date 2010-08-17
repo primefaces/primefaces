@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class NotificationBarRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		NotificationBar bar = (NotificationBar) component;
 		
@@ -32,10 +33,9 @@ public class NotificationBarRenderer extends CoreRenderer {
 		encodeScript(facesContext, bar);
 	}
 	
-	private void encodeMarkup(FacesContext facesContext, NotificationBar bar) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, NotificationBar bar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String styleClass = bar.getStyleClass() == null ? "ui-notificationbar" : "ui-notificationbar " + bar.getStyleClass();
-		String var = createUniqueWidgetVar(facesContext, bar);
 		UIComponent close = bar.getFacet("close");
 		
 		writer.startElement("div", bar);
@@ -46,7 +46,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 		if(close != null) {
 			writer.startElement("span", null);
 			writer.writeAttribute("class", "ui-notificationbar-close", null);
-			writer.writeAttribute("onclick", var + ".hide()", null);
+			writer.writeAttribute("onclick", bar.resolveWidgetVar() + ".hide()", null);
 			renderChild(facesContext, close);
 			writer.endElement("span");
 		}
@@ -59,14 +59,13 @@ public class NotificationBarRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, NotificationBar bar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = bar.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, bar);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(document).ready(function(){");
 
-		writer.write(var + " = new PrimeFaces.widget.NotificationBar('" + clientId + "',{");
+		writer.write(bar.resolveWidgetVar() + " = new PrimeFaces.widget.NotificationBar('" + clientId + "',{");
 		writer.write("position:'" + bar.getPosition() + "'");
 		writer.write(",effect:'" + bar.getEffect() + "'");
 		writer.write(",effectSpeed:'" + bar.getEffectSpeed() + "'");

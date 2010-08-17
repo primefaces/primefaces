@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
-<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
-<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
-<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
-<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
 	<tag>resource</tag>

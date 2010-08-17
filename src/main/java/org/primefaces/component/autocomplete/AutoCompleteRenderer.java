@@ -160,7 +160,6 @@ public class AutoCompleteRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, AutoComplete ac) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = ac.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, ac);
 
         UIComponent form = ComponentUtils.findParentForm(facesContext, ac);
         if (form == null) {
@@ -172,7 +171,7 @@ public class AutoCompleteRenderer extends CoreRenderer {
 
         writer.write("jQuery(function(){");
 
-        writer.write(var + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
+        writer.write(ac.resolveWidgetVar() + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
         writer.write("url:'" + getActionURL(facesContext) + "'");
         writer.write(",formId:'" + form.getClientId(facesContext) + "'");
         writer.write(",pojo:" + (ac.getVar() != null));

@@ -110,14 +110,13 @@ public class CalendarRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, Calendar calendar, String value) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = calendar.getClientId(facesContext);
-        String widgetVar = createUniqueWidgetVar(facesContext, calendar);
-
+       
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("jQuery(function(){");
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.Calendar('" + clientId + "', {");
+        writer.write(calendar.resolveWidgetVar() + " = new PrimeFaces.widget.Calendar('" + clientId + "', {");
 
         writer.write("popup:" + calendar.isPopup());
         writer.write(",locale:'" + calendar.calculateLocale(facesContext).toString() + "'");

@@ -22,13 +22,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class ContextMenuRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ContextMenu menu = (ContextMenu) component;
 		
@@ -38,19 +38,19 @@ public class ContextMenuRenderer extends CoreRenderer {
 
 	protected void encodeScript(FacesContext facesContext, ContextMenu menu) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String var = createUniqueWidgetVar(facesContext, menu);
+		String widgetVar = menu.resolveWidgetVar();
 		String clientId = menu.getClientId(facesContext);
 		String trigger = findTrigger(facesContext, menu);
 		
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(var + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',");
+		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',");
 		writer.write("{trigger:" + trigger + "});");
 		
-		encodeMenuitems(facesContext, menu, var);
+		encodeMenuitems(facesContext, menu, widgetVar);
 		
-		writer.write(var + ".render(document.body);");
+		writer.write(widgetVar + ".render(document.body);");
 		
 		writer.endElement("script");
 	}
@@ -65,10 +65,7 @@ public class ContextMenuRenderer extends CoreRenderer {
 			if(forComponent == null)
 				throw new FacesException("Cannot find component '" + _for + "' in view.");
 			else {
-				if(forComponent instanceof DataTable)
-					return createUniqueWidgetVar(facesContext, forComponent) + ".getTbodyEl()";
-				else
-					return "'" +  forComponent.getClientId(facesContext) + "'";
+                return "'" +  forComponent.getClientId(facesContext) + "'";
 			}
 		}
 		else {
@@ -78,12 +75,12 @@ public class ContextMenuRenderer extends CoreRenderer {
 		return trigger;
 	}
 	
-	protected void encodeMenuitems(FacesContext facesContext, ContextMenu menu, String var) throws IOException {
+	protected void encodeMenuitems(FacesContext facesContext, ContextMenu menu, String widgetVar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		boolean firstMenuitem = true;
 		UIComponent form = ComponentUtils.findParentForm(facesContext, menu);
 		
-		writer.write(var + ".addItems([");
+		writer.write(widgetVar + ".addItems([");
 		
 		for(UIComponent child : menu.getChildren()) {
 			if(child instanceof MenuItem && child.isRendered()) {

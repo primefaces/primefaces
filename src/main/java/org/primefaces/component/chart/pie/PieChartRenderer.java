@@ -18,7 +18,6 @@ package org.primefaces.component.chart.pie;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
@@ -26,7 +25,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
-import org.primefaces.util.ComponentUtils;
 
 public class PieChartRenderer extends BaseChartRenderer {
 
@@ -50,7 +48,6 @@ public class PieChartRenderer extends BaseChartRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		PieChart chart = (PieChart) uichart;
 		String clientId = chart.getClientId(context);
-        String widgetVar = createUniqueWidgetVar(context, chart);
 		
 		String categoryFieldName = getFieldName(chart.getValueExpression("categoryField"));
 		String dataFieldName = getFieldName(chart.getValueExpression("dataField"));
@@ -60,7 +57,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 		
 		writer.write("jQuery(function(){");
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.PieChart('" + clientId + "', {");
+        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', {");
 
         encodeCommonConfig(context, chart);
         

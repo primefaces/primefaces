@@ -49,12 +49,12 @@ public class CarouselRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, Carousel carousel) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = carousel.getClientId(facesContext);
-		String carouselVar = createUniqueWidgetVar(facesContext, carousel);
+		String widgetVar = carousel.resolveWidgetVar();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(carouselVar + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
+		writer.write(widgetVar + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
 		writer.write("isCircular:" + carousel.isCircular());
 		
 		if(carousel.getFirst() != 0) writer.write(",firstVisible:" + carousel.getFirst());
@@ -77,7 +77,7 @@ public class CarouselRenderer extends CoreRenderer {
 		writer.write("});");
 		
 		if(carousel.isCircular() && carousel.getAutoPlayInterval() != 0) {
-			writer.write(carouselVar + ".startAutoPlay();");
+			writer.write(widgetVar + ".startAutoPlay();");
 		}		
 		
 		writer.endElement("script");

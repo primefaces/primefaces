@@ -32,7 +32,6 @@ public class DraggableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         Draggable draggable = (Draggable) component;
-        String var = createUniqueWidgetVar(facesContext, draggable);
         String clientId = draggable.getClientId(facesContext);
         String target = findTarget(facesContext, draggable);
         String dashboard = draggable.getDashboard();
@@ -42,7 +41,7 @@ public class DraggableRenderer extends CoreRenderer {
 
         writer.write("jQuery(function() {");
 
-        writer.write(var + " = new PrimeFaces.widget.Draggable('" + clientId + "',");
+        writer.write(draggable.resolveWidgetVar() + " = new PrimeFaces.widget.Draggable('" + clientId + "',");
 
         writer.write("{");
         writer.write("target:'" + target + "'");

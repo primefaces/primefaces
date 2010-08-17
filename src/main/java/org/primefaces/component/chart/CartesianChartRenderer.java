@@ -51,14 +51,13 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		String clientId = chart.getClientId(context);
 		String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
 		List<ChartSeries> series = getSeries(chart);
-        String widgetVar = createUniqueWidgetVar(context, chart);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write("jQuery(function(){");
 
-		writer.write(widgetVar + " = new " + chart.getChartWidget() + "('" + clientId + "', {");
+		writer.write(chart.resolveWidgetVar() + " = new " + chart.getChartWidget() + "('" + clientId + "', {");
 
         encodeCommonConfig(context, chart);
 

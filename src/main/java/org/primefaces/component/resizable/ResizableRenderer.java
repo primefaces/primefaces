@@ -48,7 +48,6 @@ public class ResizableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Resizable resizable = (Resizable) component;
         String clientId = resizable.getClientId(context);
-		String widgetVar = createUniqueWidgetVar(context, component);
 		String target = findTarget(context, resizable);
 
 		writer.startElement("script", resizable);
@@ -56,7 +55,7 @@ public class ResizableRenderer extends CoreRenderer {
 
 		writer.write("jQuery(function(){");
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Resizable('"+ clientId + "',{");
+		writer.write(resizable.resolveWidgetVar() + " = new PrimeFaces.widget.Resizable('"+ clientId + "',{");
 
         writer.write("target:'" + target + "'");
 

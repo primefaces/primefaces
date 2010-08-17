@@ -43,12 +43,11 @@ public class StackRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Stack stack) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = stack.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, stack);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.Stack('" + clientId + "', {");
+		writer.write(stack.resolveWidgetVar() + " = new PrimeFaces.widget.Stack('" + clientId + "', {");
 		writer.write("openSpeed:" + stack.getOpenSpeed());
 		writer.write(",closeSpeed:" + stack.getCloseSpeed());
 		writer.write("});");

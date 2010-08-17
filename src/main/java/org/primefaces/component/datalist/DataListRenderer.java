@@ -28,6 +28,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class DataListRenderer extends CoreRenderer {
 
+    @Override
     public void decode(FacesContext facesContext, UIComponent component) {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
@@ -41,6 +42,7 @@ public class DataListRenderer extends CoreRenderer {
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
@@ -88,12 +90,11 @@ public class DataListRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, DataList list) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = list.getClientId();
-        String widgetVar = createUniqueWidgetVar(facesContext, list);
-
+        
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.DataList('" + clientId + "',{");
+        writer.write(list.resolveWidgetVar() + " = new PrimeFaces.widget.DataList('" + clientId + "',{");
         if (list.isPaginator()) {
             UIComponent form = ComponentUtils.findParentForm(facesContext, list);
             if (form == null) {

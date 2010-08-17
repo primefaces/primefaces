@@ -47,14 +47,13 @@ public class PasswordRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Password password) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = password.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, password);
-		
+
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(document).ready(function(){");
 
-		writer.write(var + " = new PrimeFaces.widget.Password('" + clientId + "', {");
+		writer.write(password.resolveWidgetVar() + " = new PrimeFaces.widget.Password('" + clientId + "', {");
 		
 		writer.write("length:" + password.getMinLength());
 		if(password.isInline()) writer.write(",flat:true");

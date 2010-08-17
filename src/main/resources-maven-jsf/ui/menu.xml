@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
-<!ENTITY container_component_attributes			SYSTEM "../entities/container_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -13,6 +12,11 @@
 	<rendererType>org.primefaces.component.MenuRenderer</rendererType>
 	<rendererClass>org.primefaces.component.menu.MenuRenderer</rendererClass>
 	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;

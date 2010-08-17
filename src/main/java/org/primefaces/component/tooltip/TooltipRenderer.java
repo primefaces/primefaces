@@ -38,7 +38,6 @@ public class TooltipRenderer extends CoreRenderer {
 
 	protected void encodeScript(FacesContext facesContext, Tooltip tooltip) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String var = createUniqueWidgetVar(facesContext, tooltip);
 		boolean global = tooltip.isGlobal();
 		String owner = getOwner(facesContext, tooltip);
 		
@@ -50,7 +49,7 @@ public class TooltipRenderer extends CoreRenderer {
 		else
 			writer.write("jQuery(function() {");
 			
-		writer.write(var + " = new PrimeFaces.widget.Tooltip({");
+		writer.write(tooltip.resolveWidgetVar() + " = new PrimeFaces.widget.Tooltip({");
 		writer.write("global:" + global);
 		if(!global) {
 			writer.write(",forComponent:'" + owner + "'");

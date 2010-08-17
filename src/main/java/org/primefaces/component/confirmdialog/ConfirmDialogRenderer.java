@@ -69,12 +69,11 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, ConfirmDialog dialog) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dialog.getClientId();
-		String var = createUniqueWidgetVar(facesContext, dialog);
 		
 		writer.startElement("script", dialog);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(var + " = new PrimeFaces.widget.ConfirmDialog('" + clientId + "', {");
+		writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.ConfirmDialog('" + clientId + "', {");
 		
 		writer.write("minHeight:0");
 		

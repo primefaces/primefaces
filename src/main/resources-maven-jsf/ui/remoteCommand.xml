@@ -18,13 +18,13 @@
         </interface>
     </interfaces>
     <attributes>
-	&command_component_attributes;
+        &command_component_attributes;
         <attribute>
             <name>name</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Name of the command.
+                Name of the command.
             </description>
         </attribute>
         <attribute>
@@ -32,7 +32,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Client side id of the component(s) to be updated after async partial submit request.
+                Client side id of the component(s) to be updated after async partial submit request.
             </description>
         </attribute>
         <attribute>
@@ -40,7 +40,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Comma seperated list of clientIds that will be processed partially in JSF lifecycle instead of the whole component tree.
+                Comma seperated list of clientIds that will be processed partially in JSF lifecycle instead of the whole component tree.
             </description>
         </attribute>
         <attribute>
@@ -48,7 +48,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Javascript event handler to be called before ajax request begins.
+                Javascript event handler to be called before ajax request begins.
             </description>
         </attribute>
         <attribute>
@@ -56,7 +56,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Javascript event handler to be called when ajax request is completed.
+                Javascript event handler to be called when ajax request is completed.
             </description>
         </attribute>
         <attribute>
@@ -64,7 +64,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Javascript event handler to be called when ajax request fails.
+                Javascript event handler to be called when ajax request fails.
             </description>
         </attribute>
         <attribute>
@@ -72,7 +72,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>
-		Javascript event handler to be called when ajax request succeeds.
+                Javascript event handler to be called when ajax request succeeds.
             </description>
         </attribute>
         <attribute>
@@ -81,7 +81,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>
-		Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
+                Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
             </description>
         </attribute>
         <attribute>
@@ -90,7 +90,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>
-		When set to true, ajax requests will not be queued.
+                When set to true, ajax requests will not be queued.
             </description>
         </attribute>
     </attributes>

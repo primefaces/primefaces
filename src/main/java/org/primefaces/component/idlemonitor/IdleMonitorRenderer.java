@@ -44,12 +44,11 @@ public class IdleMonitorRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         IdleMonitor monitor = (IdleMonitor) component;
         String clientId = monitor.getClientId();
-        String widgetVar = createUniqueWidgetVar(facesContext, monitor);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.IdleMonitor('" + clientId + "', {");
+        writer.write(monitor.resolveWidgetVar() + " = new PrimeFaces.widget.IdleMonitor('" + clientId + "', {");
         writer.write("timeout:" + monitor.getTimeout());
 
         if (monitor.getIdleListener() != null) {

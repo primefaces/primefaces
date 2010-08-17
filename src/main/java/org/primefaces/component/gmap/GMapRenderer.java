@@ -106,12 +106,11 @@ public class GMapRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, GMap map) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = map.getClientId();
-		String widgetVar = createUniqueWidgetVar(facesContext, map);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.GMap('" + clientId + "',{");
+		writer.write(map.resolveWidgetVar() + " = new PrimeFaces.widget.GMap('" + clientId + "',{");
 		
 		//Required configuration
 		writer.write("mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());

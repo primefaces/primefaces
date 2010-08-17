@@ -88,7 +88,6 @@ public class DataGridRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, DataGrid grid) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = grid.getClientId();
-        String widgetVar = createUniqueWidgetVar(facesContext, grid);
 
         UIComponent form = ComponentUtils.findParentForm(facesContext, grid);
         if (form == null) {
@@ -98,7 +97,7 @@ public class DataGridRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.DataGrid('" + clientId + "',{");
+        writer.write(grid.resolveWidgetVar() + " = new PrimeFaces.widget.DataGrid('" + clientId + "',{");
         writer.write("url:'" + getActionURL(facesContext) + "'");
         writer.write(",formId:'" + form.getClientId() + "'");
 

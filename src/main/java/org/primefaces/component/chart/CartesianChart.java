@@ -120,4 +120,6 @@ public abstract class CartesianChart extends UIChart {
     protected abstract String getNumericAxis();
 
     protected abstract String getChartWidget();
+
+    protected abstract String resolveWidgetVar();
 }

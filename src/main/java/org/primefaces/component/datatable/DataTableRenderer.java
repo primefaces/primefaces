@@ -223,12 +223,11 @@ public class DataTableRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
-		String widgetVar = createUniqueWidgetVar(context, table);
-		
+
 		writer.startElement("script", table);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.DataTable('" + clientId + "',{");
+        writer.write(table.resolveWidgetVar() + " = new PrimeFaces.widget.DataTable('" + clientId + "',{");
 
         //Connection
         UIComponent form = ComponentUtils.findParentForm(context, table);
@@ -297,7 +296,7 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = column.getClientId(context);
         boolean isSortable = column.getValueExpression("sortBy") != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
-        String widgetVar = createUniqueWidgetVar(context, table);
+        String widgetVar = table.resolveWidgetVar();
         
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
@@ -717,7 +716,7 @@ public class DataTableRenderer extends CoreRenderer {
 
     protected void encodeRowEditor(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String widgetVar = createUniqueWidgetVar(context, table);
+        String widgetVar = table.resolveWidgetVar();
 
         writer.startElement("span", null);
         writer.writeAttribute("class", DataTable.ROW_EDITOR_CLASS, null);

@@ -37,15 +37,15 @@ public class PushRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, Push push) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = push.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, push);
 		String channel = CometContext.CHANNEL_PATH + push.getChannel();
+        String widgetVar = push.resolveWidgetVar();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {\n");
-		writer.write(var + " = new PrimeFaces.widget.Subscriber('" + clientId + "', {");
-		writer.write("channel:'" + getResourceURL(facesContext, channel) + "?widget=" + var + "'");
+		writer.write(widgetVar + " = new PrimeFaces.widget.Subscriber('" + clientId + "', {");
+		writer.write("channel:'" + getResourceURL(facesContext, channel) + "?widget=" + widgetVar + "'");
 		writer.write(",onpublish:" + push.getOnpublish());
 		writer.write("});});");
 		

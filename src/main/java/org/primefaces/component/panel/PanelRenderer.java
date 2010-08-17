@@ -31,6 +31,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class PanelRenderer extends CoreRenderer {
 
+    @Override
     public void decode(FacesContext facesContext, UIComponent component) {
         Panel panel = (Panel) component;
         String clientId = panel.getClientId(facesContext);
@@ -66,6 +67,7 @@ public class PanelRenderer extends CoreRenderer {
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         Panel panel = (Panel) component;
 
@@ -76,12 +78,11 @@ public class PanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, Panel panel) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = panel.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, panel);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(var + " = new PrimeFaces.widget.Panel('" + clientId + "', {");
+        writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.Panel('" + clientId + "', {");
         writer.write("visible:" + panel.isVisible());
 
         if (panel.isToggleable()) {
@@ -160,7 +161,7 @@ public class PanelRenderer extends CoreRenderer {
 
     protected void encodeHeader(FacesContext facesContext, Panel panel) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String widgetVar = createUniqueWidgetVar(facesContext, panel);
+        String widgetVar = panel.resolveWidgetVar();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(facesContext);
@@ -196,7 +197,7 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         if (panel.getOptionsMenu() != null) {
-            String menuVar = createUniqueWidgetVar(facesContext, panel.getOptionsMenu());
+            String menuVar = panel.getOptionsMenu().resolveWidgetVar();
             encodeIcon(facesContext, panel, "ui-icon-gear", menuVar + ".show()", clientId + "_menu");
         }
 
@@ -259,18 +260,6 @@ public class PanelRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
-    protected void encodeOptionsControl(FacesContext facesContext, Panel panel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = panel.getClientId(facesContext);
-        String menuVar = createUniqueWidgetVar(facesContext, panel.getOptionsMenu());
-
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId + "_menu", null);
-        writer.writeAttribute("class", "pf-panel-options", null);
-        writer.writeAttribute("onclick", menuVar + ".show()", null);
-        writer.endElement("span");
-    }
-
     protected void encodeStateHolder(FacesContext facesContext, Panel panel, String name, String value) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -282,10 +271,12 @@ public class PanelRenderer extends CoreRenderer {
         writer.endElement("input");
     }
 
+    @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
         //Do nothing
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

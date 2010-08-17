@@ -67,13 +67,12 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
-        String tabViewVar = createUniqueWidgetVar(context, tabView);
         MethodExpression tabChangeListener = tabView.getTabChangeListener();
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(tabViewVar + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
+        writer.write(tabView.resolveWidgetVar() + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
 
         writer.write("selected:" + tabView.getActiveIndex());
         writer.write(",dynamic:" + tabView.isDynamic());

@@ -100,12 +100,11 @@ public class FieldsetRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
-        String widgetVar = createUniqueWidgetVar(context, fieldset);
         
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(widgetVar + " = new PrimeFaces.widget.Fieldset('" + clientId + "', {");
+        writer.write(fieldset.resolveWidgetVar() + " = new PrimeFaces.widget.Fieldset('" + clientId + "', {");
 
         if(fieldset.isToggleable()) {
             writer.write("toggleable:true");

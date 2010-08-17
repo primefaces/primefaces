@@ -28,7 +28,8 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class TreeTableRenderer extends CoreRenderer {
-		
+
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		TreeTable treeTable = (TreeTable) component;
 		
@@ -39,13 +40,12 @@ public class TreeTableRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, TreeTable treeTable) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = treeTable.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, treeTable);
 		String initialState = treeTable.isExpanded() ? "expanded" : "collapsed";
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
+		writer.write(treeTable.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
 		writer.write("initialState:'" + initialState + "'");
 		
 		if(treeTable.isReadOnly()) {

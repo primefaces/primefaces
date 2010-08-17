@@ -69,7 +69,6 @@ public class LightBoxRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		LightBox lightBox = (LightBox) component;
-		String widgetVar = createUniqueWidgetVar(facesContext, lightBox);
 		String clientId = lightBox.getClientId(facesContext);
 		
 		if(lightBox.getFacet("inline") != null) {
@@ -91,7 +90,7 @@ public class LightBoxRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("var lightBoxTarget = PrimeFaces.escapeClientId('" + clientId + "')" + " + ' a';\n");
-		writer.write(widgetVar + " = jQuery(lightBoxTarget).colorbox({");
+		writer.write(lightBox.resolveWidgetVar() + " = jQuery(lightBoxTarget).colorbox({");
 		writer.write("transition:'" + lightBox.getTransition() + "'");
 		encodeCFG(facesContext, lightBox);
 		writer.write("});");

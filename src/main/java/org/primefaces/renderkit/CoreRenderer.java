@@ -24,7 +24,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
@@ -32,8 +31,6 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.util.ComponentUtils;
 
 public class CoreRenderer extends Renderer {
-	
-	private final static String WIDGET_VAR_PREFIX = "widget_";
 	
 	protected void renderChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		for (Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
@@ -128,32 +125,6 @@ public class CoreRenderer extends Renderer {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * Generates a unique javascript variable name if component has a client side widget.
-	 * Portlet namespaces are considered if externalcontext is a portlet environment. Algorith works as follows.
-	 *
-	 * If there's a user provided widgetVar, it's returned without further processing.
-	 * ":"s in client id is replace with underscore since ":" is invalid for js variable names.
-	 * WIDGET_VAR_SUFFIX is added to the formatted client id.
-	 * 
-	 * Finally variable name is encoded with ExternalContext.encodeNamespace to make sure it's also unique in a portal
-	 *  
-	 * @param facesContext
-	 * @param component
-	 * 
-	 * @return
-	 */
-	protected String createUniqueWidgetVar(FacesContext facesContext, UIComponent component) {
-		String widgetVar = (String) component.getAttributes().get("widgetVar");
-		if(widgetVar != null)
-			return widgetVar;
-		
-		String regex = "-|" + UINamingContainer.getSeparatorChar(facesContext);
-		String formattedClientId = component.getClientId(facesContext).replaceAll(regex, "_");
-		
-		return WIDGET_VAR_PREFIX + facesContext.getExternalContext().encodeNamespace(formattedClientId);
 	}
 	
     protected boolean shouldRenderAttribute(Object value) {

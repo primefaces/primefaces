@@ -13,6 +13,11 @@
 	<rendererType>org.primefaces.component.TooltipRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tooltip.TooltipRenderer</rendererClass>
 	<parent>javax.faces.component.UIOutput</parent>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&output_component_attributes;
 		&widget_var_attribute;
