@@ -206,7 +206,7 @@ public class CoreRenderer extends Renderer {
 		return value.trim().equals("");
 	}
 	
-	   protected String buildAjaxRequest(FacesContext facesContext, AjaxSource source, String formId, String decodeParam) {
+    protected String buildAjaxRequest(FacesContext facesContext, AjaxSource source, String formId, String decodeParam) {
         UIComponent component = (UIComponent) source;
 
         StringBuilder req = new StringBuilder();
@@ -228,18 +228,18 @@ public class CoreRenderer extends Renderer {
         req.append(",process:'").append(process).append("'");
 
         //update
-        if (source.getUpdate() != null) {
+        if(source.getUpdate() != null) {
             req.append(",update:'").append(ComponentUtils.findClientIds(facesContext, component, source.getUpdate())).append("'");
         }
 
         //callbacks
-        if (source.getOnstart() != null)
+        if(source.getOnstart() != null)
             req.append(",onstart:function(xhr){").append(source.getOnstart()).append(";}");
-        if (source.getOnerror() != null)
+        if(source.getOnerror() != null)
             req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
-        if (source.getOnsuccess() != null)
+        if(source.getOnsuccess() != null)
             req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
-        if (source.getOncomplete() != null)
+        if(source.getOncomplete() != null)
             req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
 
         req.append("}");
@@ -247,12 +247,12 @@ public class CoreRenderer extends Renderer {
         //params
         boolean firstParam = true, hasParam = false;
 
-        for (UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter) {
+        for(UIComponent child : component.getChildren()) {
+            if(child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
                 hasParam = true;
 
-                if (firstParam) {
+                if(firstParam) {
                     firstParam = false;
                     req.append(",{");
                 } else {
@@ -261,9 +261,10 @@ public class CoreRenderer extends Renderer {
 
                 req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
             }
+        }
 
-            if (hasParam)
-                req.append("}");
+        if(hasParam) {
+            req.append("}");
         }
 
         req.append(");");
