@@ -69,3 +69,20 @@
 .ui-datatable .ui-expansion-column {
     width: 16px;
 }
+
+.ui-datatable .ui-cell-editor {
+    display:none;
+}
+
+.ui-datatable .ui-row-editor-column {
+
+}
+
+.ui-datatable .ui-row-editor {
+    
+}
+
+.ui-datatable .ui-row-editor span {
+    cursor:pointer;
+    float:left;
+}

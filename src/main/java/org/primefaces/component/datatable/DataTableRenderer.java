@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -474,7 +475,6 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute("id", clientId + "_row_" + i, null);
             writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
-
             if(dynamicColumns == null) {
 
                 for(Column column : table.getColumns()) {
@@ -488,13 +488,30 @@ public class DataTableRenderer extends CoreRenderer {
 
                         encodeRowExpander(context, table);
                     }
+                    else if(column.isEditor()) {
+                        writer.writeAttribute("class", DataTable.ROW_EDITOR_COLUMN_CLASS, null);
+
+                        encodeRowEditor(context, table);
+                    }
                     else {
-
-                        if(column.getStyleClass() != null) {
-                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        CellEditor editor = column.getCellEditor();
+                        if(editor != null) {
+                            writer.writeAttribute("class", DataTable.EDITABLE_CELL_CLASS, null);
                         }
+                       
+                        writer.startElement("span", null);
+                        if(editor == null) {
+                            column.encodeAll(context);
+                        } else {
+                            for(UIComponent columnChild : column.getChildren()) {
+                                if(!(columnChild instanceof CellEditor)) {
+                                    columnChild.encodeAll(context);
+                                }
+                            }
+                        }
+                        writer.endElement("span");
 
-                        column.encodeAll(context);
+                        editor.encodeAll(context);
                     }
 
                     writer.endElement("td");
@@ -513,7 +530,9 @@ public class DataTableRenderer extends CoreRenderer {
                     UIComponent header = dynamicColumns.getFacet("header");
 
                     writer.startElement("td", null);
+                    writer.startElement("span", null);
                     dynamicColumns.encodeAll(context);
+                    writer.endElement("span");
                     writer.endElement("td");
 
                     colIndex++;
@@ -688,6 +707,33 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
+    protected void encodeRowEditor(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String widgetVar = createUniqueWidgetVar(context, table);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.ROW_EDITOR_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
+        writer.writeAttribute("onclick", widgetVar + ".showEditors(this)", null);
+        writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-check", null);
+        writer.writeAttribute("style", "display:none", null);
+        writer.writeAttribute("onclick", widgetVar + ".saveRowEdit(this)", null);
+        writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+        writer.writeAttribute("style", "display:none", null);
+        writer.writeAttribute("onclick", widgetVar + ".cancelRowEdit(this)", null);
+        writer.endElement("span");
+
+        writer.endElement("span");
+    }
+
     protected void encodeRowExpansion(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -710,4 +756,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         table.setRowIndex(-1);
     }
+
+    
 }
