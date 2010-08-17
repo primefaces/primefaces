@@ -327,8 +327,6 @@ public class DataTableRenderer extends CoreRenderer {
             header.encodeAll(context);
         } else if(headerText != null) {
             writer.write(headerText);
-        } else {
-            renderChildren(context, header);
         }
 
         //Filter
