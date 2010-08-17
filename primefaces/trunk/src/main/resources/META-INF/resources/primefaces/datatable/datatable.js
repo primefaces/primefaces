@@ -443,6 +443,52 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
 }
 
 /**
+ * Displays in-cell editors for given row
+ */
+PrimeFaces.widget.DataTable.prototype.showEditors = function(element) {
+    jQuery(element).parents('tr').addClass('ui-state-highlight').children('td.ui-editable-cell').each(function() {
+       var column = jQuery(this);
+
+       column.children().hide();
+       column.children('span.ui-cell-editor').show();
+
+       jQuery(element).hide();
+       jQuery(element).siblings().show();
+    });
+}
+
+/**
+ * Saves the edited row
+ */
+PrimeFaces.widget.DataTable.prototype.saveRowEdit = function(element) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        update: this.id,
+        formId: this.cfg.formId
+    };
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options);
+}
+
+/**
+ * Cancels row editing
+ */
+PrimeFaces.widget.DataTable.prototype.cancelRowEdit = function(element) {
+    jQuery(element).parents('tr').removeClass('ui-state-highlight').children('td.ui-editable-cell').each(function() {
+       var column = jQuery(this);
+
+       column.children().show();
+       column.children('span.ui-cell-editor').hide();
+
+       jQuery(element).hide();
+       jQuery(element).siblings().hide();
+       jQuery(element).siblings('.ui-icon-pencil').show();
+    });
+}
+
+
+/**
  * Returns the paginator instance if any defined
  */
 PrimeFaces.widget.DataTable.prototype.getPaginator = function() {

@@ -124,5 +124,12 @@
             <defaultValue>false</defaultValue>
 			<description>Defines a row expansion column.</description>
 		</attribute>
+        <attribute>
+			<name>editor</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+			<description>Defines a row editor column.</description>
+		</attribute>
 	</attributes>
 </component>

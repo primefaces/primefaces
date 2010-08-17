@@ -176,6 +176,10 @@ import java.io.Serializable;
     public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
     public static final String ROW_EXPANDER_CLASS = "ui-row-expander";
     public static final String EXPANSION_COLUMN_CLASS = "ui-expansion-column";
+    public static final String EDITABLE_CELL_CLASS = "ui-editable-cell";
+    public static final String CELL_EDITOR_CLASS = "ui-cell-editor";
+    public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
+    public static final String ROW_EDITOR_CLASS = "ui-row-editor";
 
     public List<Column> columns;
 
