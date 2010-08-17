@@ -528,7 +528,9 @@ public class DataTableRenderer extends CoreRenderer {
                     }
                     writer.endElement("span");
 
-                    editor.encodeAll(context);
+                    if(editor != null) {
+                        editor.encodeAll(context);
+                    }
                 }
 
                 writer.endElement("td");
