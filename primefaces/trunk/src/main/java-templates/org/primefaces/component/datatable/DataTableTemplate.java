@@ -247,6 +247,10 @@ import java.io.Serializable;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowExpansion");
     }
 
+    public boolean isRowEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEdit");
+    }
+
     private Map<String,ValueExpression> filterMap;
 
 	public Map<String,ValueExpression> getFilterMap() {

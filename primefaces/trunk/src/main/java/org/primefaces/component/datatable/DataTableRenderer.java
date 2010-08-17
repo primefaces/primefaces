@@ -212,7 +212,9 @@ public class DataTableRenderer extends CoreRenderer {
         else if(table.isRowExpansionRequest(context)) {
             encodeRowExpansion(context, table);
         }
-        else {
+        else if(table.isRowEditRequest(context)) {
+            encodeEditedRow(context, table);
+        } else {
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
@@ -463,86 +465,11 @@ public class DataTableRenderer extends CoreRenderer {
 
 		for(int i = first; i < (first + rowCountToRender); i++) {
 			table.setRowIndex(i);
-			if(!table.isRowAvailable())
+			if(!table.isRowAvailable()) {
 				continue;
-
-			//Row index var
-			if(rowIndexVar != null) {
-				context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-			}
-
-			writer.startElement("tr", null);
-            writer.writeAttribute("id", clientId + "_row_" + i, null);
-            writer.writeAttribute("class", DataTable.ROW_CLASS, null);
-
-            if(dynamicColumns == null) {
-
-                for(Column column : table.getColumns()) {
-                    writer.startElement("td", null);
-                    if(column.getStyle() != null) {
-                        writer.writeAttribute("style", column.getStyle(), null);
-                    }
-
-                    if(column.isExpansion()) {
-                        writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
-
-                        encodeRowExpander(context, table);
-                    }
-                    else if(column.isEditor()) {
-                        writer.writeAttribute("class", DataTable.ROW_EDITOR_COLUMN_CLASS, null);
-
-                        encodeRowEditor(context, table);
-                    }
-                    else {
-                        CellEditor editor = column.getCellEditor();
-                        if(editor != null) {
-                            writer.writeAttribute("class", DataTable.EDITABLE_CELL_CLASS, null);
-                        }
-                       
-                        writer.startElement("span", null);
-                        if(editor == null) {
-                            column.encodeAll(context);
-                        } else {
-                            for(UIComponent columnChild : column.getChildren()) {
-                                if(!(columnChild instanceof CellEditor)) {
-                                    columnChild.encodeAll(context);
-                                }
-                            }
-                        }
-                        writer.endElement("span");
-
-                        editor.encodeAll(context);
-                    }
-
-                    writer.endElement("td");
-                }
-
-            } else {
-
-                Collection columnCollection = (Collection) dynamicColumns.getValue();
-                String columnVar = dynamicColumns.getVar();
-                String columnIndexVar = dynamicColumns.getColumnIndexVar();
-                int colIndex = 0;
-
-                for(Object column : columnCollection) {
-                    context.getExternalContext().getRequestMap().put(columnVar, column);
-                    context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
-                    UIComponent header = dynamicColumns.getFacet("header");
-
-                    writer.startElement("td", null);
-                    writer.startElement("span", null);
-                    dynamicColumns.encodeAll(context);
-                    writer.endElement("span");
-                    writer.endElement("td");
-
-                    colIndex++;
-                }
-
-                context.getExternalContext().getRequestMap().remove(columnVar);
-                context.getExternalContext().getRequestMap().remove(columnIndexVar);
             }
 
-			writer.endElement("tr");
+            encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns);
 		}
 
         writer.endElement("tbody");
@@ -552,6 +479,87 @@ public class DataTableRenderer extends CoreRenderer {
 		if(rowIndexVar != null) {
 			context.getExternalContext().getRequestMap().remove(rowIndexVar);
 		}
+    }
+
+    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, Columns dynamicColumns) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        //Row index var
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+        }
+
+        writer.startElement("tr", null);
+        writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
+        writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+
+        if(dynamicColumns == null) {
+
+            for(Column column : table.getColumns()) {
+                writer.startElement("td", null);
+                if(column.getStyle() != null) {
+                    writer.writeAttribute("style", column.getStyle(), null);
+                }
+
+                if(column.isExpansion()) {
+                    writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
+
+                    encodeRowExpander(context, table);
+                }
+                else if(column.isEditor()) {
+                    writer.writeAttribute("class", DataTable.ROW_EDITOR_COLUMN_CLASS, null);
+
+                    encodeRowEditor(context, table);
+                }
+                else {
+                    CellEditor editor = column.getCellEditor();
+                    if(editor != null) {
+                        writer.writeAttribute("class", DataTable.EDITABLE_CELL_CLASS, null);
+                    }
+
+                    writer.startElement("span", null);
+                    if(editor == null) {
+                        column.encodeAll(context);
+                    } else {
+                        for(UIComponent columnChild : column.getChildren()) {
+                            if(!(columnChild instanceof CellEditor)) {
+                                columnChild.encodeAll(context);
+                            }
+                        }
+                    }
+                    writer.endElement("span");
+
+                    editor.encodeAll(context);
+                }
+
+                writer.endElement("td");
+            }
+
+        } else {
+
+            Collection columnCollection = (Collection) dynamicColumns.getValue();
+            String columnVar = dynamicColumns.getVar();
+            String columnIndexVar = dynamicColumns.getColumnIndexVar();
+            int colIndex = 0;
+
+            for(Object column : columnCollection) {
+                context.getExternalContext().getRequestMap().put(columnVar, column);
+                context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
+                UIComponent header = dynamicColumns.getFacet("header");
+
+                writer.startElement("td", null);
+                writer.startElement("span", null);
+                dynamicColumns.encodeAll(context);
+                writer.endElement("span");
+                writer.endElement("td");
+
+                colIndex++;
+            }
+
+            context.getExternalContext().getRequestMap().remove(columnVar);
+            context.getExternalContext().getRequestMap().remove(columnIndexVar);
+        }
+
+        writer.endElement("tr");
     }
 
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
@@ -757,5 +765,13 @@ public class DataTableRenderer extends CoreRenderer {
         table.setRowIndex(-1);
     }
 
-    
+    protected void encodeEditedRow(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowId"));
+
+        table.setRowIndex(editedRowId);
+
+        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getDynamicColumns());
+    }
 }
