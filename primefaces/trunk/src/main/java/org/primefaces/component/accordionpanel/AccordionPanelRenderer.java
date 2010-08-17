@@ -71,12 +71,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = acco.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, acco);
-		
+ 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
+		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
 		writer.write("active:" + acco.getActiveIndex());
 		writer.write(",animated:'" + acco.getEffect() + "'");
 		

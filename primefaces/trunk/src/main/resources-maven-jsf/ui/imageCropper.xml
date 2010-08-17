@@ -14,6 +14,11 @@
 	<rendererType>org.primefaces.component.ImageCropperRenderer</rendererType>
 	<rendererClass>org.primefaces.component.imagecropper.ImageCropperRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&input_component_attributes;
 		&widget_var_attribute;

@@ -14,6 +14,11 @@
 	<rendererType>corg.primefaces.component.ColorPickerRenderer</rendererType>
 	<rendererClass>org.primefaces.component.colorpicker.ColorPickerRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&input_component_attributes;
 		&widget_var_attribute;

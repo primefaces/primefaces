@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class AjaxStatusRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		AjaxStatus status = (AjaxStatus) component;
 
@@ -35,23 +36,23 @@ public class AjaxStatusRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, AjaxStatus status) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = status.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, status);
+		String widgetVar = status.resolveWidgetVar();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(var + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');\n");
+		writer.write(widgetVar + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');\n");
 		
-		encodeCallback(facesContext, status, var, "ajaxSend", "onprestart", "prestart");
-		encodeCallback(facesContext, status, var, "ajaxStart", "onstart", "start");
-		encodeCallback(facesContext, status, var, "ajaxError", "onerror", "error");
-		encodeCallback(facesContext, status, var, "ajaxSuccess", "onsuccess", "success");
-		encodeCallback(facesContext, status, var, "ajaxComplete", "oncomplete", "complete");
+		encodeCallback(facesContext, status, widgetVar, "ajaxSend", "onprestart", "prestart");
+		encodeCallback(facesContext, status, widgetVar, "ajaxStart", "onstart", "start");
+		encodeCallback(facesContext, status, widgetVar, "ajaxError", "onerror", "error");
+		encodeCallback(facesContext, status, widgetVar, "ajaxSuccess", "onsuccess", "success");
+		encodeCallback(facesContext, status, widgetVar, "ajaxComplete", "oncomplete", "complete");
 
 		writer.endElement("script");
 	}
 	
-	private void encodeCallback(FacesContext facesContext, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {
+	protected void encodeCallback(FacesContext facesContext, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = status.getClientId(facesContext);
 		String fn = (String) status.getAttributes().get(callback);

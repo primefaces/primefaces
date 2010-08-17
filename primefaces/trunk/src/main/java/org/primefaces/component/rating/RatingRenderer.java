@@ -74,12 +74,11 @@ public class RatingRenderer extends CoreRenderer {
     private void encodeScript(FacesContext facesContext, Rating rating) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = rating.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, rating);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(var + " = new PrimeFaces.widget.Rating('" + clientId + "'");
+        writer.write(rating.resolveWidgetVar() + " = new PrimeFaces.widget.Rating('" + clientId + "'");
         writer.write(",{");
         if (rating.getRateListener() != null) {
             UIComponent form = ComponentUtils.findParentForm(facesContext, rating);

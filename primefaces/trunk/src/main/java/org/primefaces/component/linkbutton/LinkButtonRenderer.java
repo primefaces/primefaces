@@ -57,13 +57,12 @@ public class LinkButtonRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, LinkButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, button);
 		boolean hasValue = (button.getValue() != null);
 		
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.LinkButton('" + clientId + "', {");
+		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.LinkButton('" + clientId + "', {");
 		
 		if(button.getImage() != null) {
 			writer.write("text:" + hasValue);

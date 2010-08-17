@@ -52,12 +52,11 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, Dialog dialog) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = dialog.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, dialog);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(var + " = new PrimeFaces.widget.Dialog('" + clientId + "',");
+        writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.Dialog('" + clientId + "',");
 
         writer.write("{");
         writer.write("autoOpen:" + dialog.isVisible());

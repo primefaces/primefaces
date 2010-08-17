@@ -91,14 +91,13 @@ public class CommandButtonRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, CommandButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, button);
 		String type = button.getType();
 		boolean hasValue = (button.getValue() != null);
 		
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.CommandButton('" + clientId + "', {");
+		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.CommandButton('" + clientId + "', {");
 		
 		if(type.equals("image") || button.getImage() != null) {
 			writer.write("text:" + hasValue);

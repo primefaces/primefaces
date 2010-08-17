@@ -51,7 +51,6 @@ public class SliderRenderer extends CoreRenderer{
 	protected void encodeScript(FacesContext facesContext, Slider slider) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = slider.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, slider);
 		String input = getTarget(facesContext, slider, slider.getFor());
 		String output = getTarget(facesContext, slider, slider.getDisplay());
 		
@@ -64,7 +63,7 @@ public class SliderRenderer extends CoreRenderer{
 		writer.startElement("script", slider);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.Slider('" + clientId + "', {"); 
+		writer.write(slider.resolveWidgetVar() + " = new PrimeFaces.widget.Slider('" + clientId + "', {");
 		writer.write("value:" + value);
 		writer.write(",input:'" + input + "'");
 		writer.write(",min:" + slider.getMinValue());

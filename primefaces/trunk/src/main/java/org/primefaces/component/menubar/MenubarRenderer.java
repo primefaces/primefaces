@@ -44,12 +44,12 @@ public class MenubarRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Menubar menubar) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = menubar.getClientId(facesContext);
-		String menubarVar = createUniqueWidgetVar(facesContext, menubar);
+		String widgetVar = menubar.resolveWidgetVar();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(menubarVar + " = new YAHOO.widget.MenuBar('" + clientId + "',{");
+		writer.write(widgetVar + " = new YAHOO.widget.MenuBar('" + clientId + "',{");
 		
 		writer.write("autosubmenudisplay:" + menubar.isAutoSubmenuDisplay());
 		
@@ -66,7 +66,7 @@ public class MenubarRenderer extends CoreRenderer {
 		
 		writer.write("})\n;");
 	
-		writer.write(menubarVar + ".render();\n");
+		writer.write(widgetVar + ".render();\n");
 
 		writer.endElement("script");	
 	}

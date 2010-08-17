@@ -171,8 +171,8 @@ public class TreeRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = tree.getClientId(facesContext);
 		String formClientId = null;
-		String treeVar = createUniqueWidgetVar(facesContext, tree);
 		TreeNode root = (TreeNode) tree.getValue();
+        String widgetVar = tree.resolveWidgetVar();
 		
 		UIComponent parentForm = ComponentUtils.findParentForm(facesContext, tree);
 		if(parentForm != null)
@@ -184,7 +184,7 @@ public class TreeRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
 		//Nodes
-		writer.write(treeVar + " = new PrimeFaces.widget.TreeView('" + clientId + "', [");
+		writer.write(widgetVar + " = new PrimeFaces.widget.TreeView('" + clientId + "', [");
 		if(root != null) {
 			int rowIndex = 0;
 			for(Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
@@ -226,11 +226,11 @@ public class TreeRenderer extends CoreRenderer {
 		
 		//Animations
 		if(tree.getExpandAnim() != null)
-			writer.write(treeVar + ".setExpandAnim(YAHOO.widget.TVAnim." + tree.getExpandAnim() + ");\n");
+			writer.write(widgetVar + ".setExpandAnim(YAHOO.widget.TVAnim." + tree.getExpandAnim() + ");\n");
 		if(tree.getCollapseAnim() != null)
-			writer.write(treeVar + ".setCollapseAnim(YAHOO.widget.TVAnim." + tree.getCollapseAnim() + ");\n");
+			writer.write(widgetVar + ".setCollapseAnim(YAHOO.widget.TVAnim." + tree.getCollapseAnim() + ");\n");
 		
-		writer.write(treeVar + ".render();\n");
+		writer.write(widgetVar + ".render();\n");
 
 		writer.endElement("script");
 	}

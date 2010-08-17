@@ -61,14 +61,13 @@ public class SpreadsheetRenderer extends CoreRenderer {
 
 	protected void encodeScript(FacesContext facesContext, Spreadsheet ss) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String widgetVar = createUniqueWidgetVar(facesContext, ss);
 		String clientId = ss.getClientId(facesContext);
 	
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {");
-		writer.write(widgetVar + " = new PrimeFaces.widget.Spreadsheet('" + clientId + "', {");
+		writer.write(ss.resolveWidgetVar() + " = new PrimeFaces.widget.Spreadsheet('" + clientId + "', {");
 		writer.write("editable:" + ss.isEditable());
 		if(ss.getTitle() != null) writer.write(",title:'" + ss.getTitle() + "'");
 		if(ss.getColumnWidth() != Integer.MIN_VALUE) writer.write(",newColumnWidth:" + ss.getColumnWidth());

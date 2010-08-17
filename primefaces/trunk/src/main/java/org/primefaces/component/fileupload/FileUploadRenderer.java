@@ -79,7 +79,6 @@ public class FileUploadRenderer extends CoreRenderer {
 		String clientId = fileUpload.getClientId(facesContext);
 		String inputFileId = fileUpload.getInputFileId(facesContext);
 		String actionURL = getActionURL(facesContext);
-		String uploadVar = createUniqueWidgetVar(facesContext, fileUpload);
 		String cancelImg = fileUpload.getCancelImage() == null ? getResourceRequestPath(facesContext, "jquery/plugins/uploadify/cancel.png") : getResourceURL(facesContext, fileUpload.getCancelImage());
 		
 		UIComponent parentForm = ComponentUtils.findParentForm(facesContext, fileUpload);
@@ -92,7 +91,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {");
-		writer.write(uploadVar + " = new PrimeFaces.widget.Uploader('" + clientId + "', {");
+		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.Uploader('" + clientId + "', {");
 		writer.write("uploader:'" + getResourceRequestPath(facesContext, "jquery/plugins/uploadify/uploadify.swf") + "'");
 		writer.write(",script:'" + actionURL + "'");
 		writer.write(",cancelImg:'" + cancelImg + "'");
@@ -121,7 +120,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = fileUpload.getClientId(facesContext);
 		String inputFileId = fileUpload.getInputFileId(facesContext);
-		String uploadVar = createUniqueWidgetVar(facesContext, fileUpload);
+		String widgetVar = fileUpload.resolveWidgetVar();
 		
 		writer.startElement("span", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
@@ -138,7 +137,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
 			writer.startElement("a", null);
 			writer.writeAttribute("href", "javascript:void(0)", null);
-			writer.writeAttribute("onclick", uploadVar + ".upload()", null);
+			writer.writeAttribute("onclick", widgetVar + ".upload()", null);
 			writer.write("Upload");
 			writer.endElement("a");
 			
@@ -146,7 +145,7 @@ public class FileUploadRenderer extends CoreRenderer {
 			
 			writer.startElement("a", null);
 			writer.writeAttribute("href", "javascript:void(0)", null);
-			writer.writeAttribute("onclick", uploadVar + ".clear()", null);
+			writer.writeAttribute("onclick", widgetVar + ".clear()", null);
 			writer.write("Clear");
 			writer.endElement("a");
 		}

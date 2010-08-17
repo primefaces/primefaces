@@ -41,7 +41,6 @@ public class PollRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         Poll poll = (Poll) component;
-        String pollVar = createUniqueWidgetVar(facesContext, poll);
         String clientId = poll.getClientId(facesContext);
         UIComponent form = ComponentUtils.findParentForm(facesContext, poll);
         if (form == null) {
@@ -53,7 +52,7 @@ public class PollRenderer extends CoreRenderer {
 
         writer.write("jQuery(function() {");
 
-        writer.write(pollVar + "= new PrimeFaces.widget.Poll('" + clientId + "', {");
+        writer.write(poll.resolveWidgetVar() + "= new PrimeFaces.widget.Poll('" + clientId + "', {");
         writer.write("frequency:" + poll.getInterval());
         writer.write(",autoStart:" + poll.isAutoStart());
         writer.write(",fn: function() {");

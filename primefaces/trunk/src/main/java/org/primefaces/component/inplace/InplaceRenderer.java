@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class InplaceRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Inplace inplace = (Inplace) component;
 		
@@ -33,7 +34,7 @@ public class InplaceRenderer extends CoreRenderer {
 		encodeScript(facesContext, inplace);
 	}
 
-	private void encodeMarkup(FacesContext facesContext, Inplace inplace) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, Inplace inplace) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = inplace.getClientId(facesContext);
 		String displayClass = inplace.isDisabled() ? "pf-inplace-display-disabled" : "pf-inplace-display";
@@ -59,7 +60,7 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.endElement("span");
 	}
 	
-	private String getLabelToRender(FacesContext facesContext, Inplace inplace) {
+	protected String getLabelToRender(FacesContext facesContext, Inplace inplace) {
 		if(inplace.getLabel() != null) {
 			return inplace.getLabel();
 		} else {
@@ -67,26 +68,27 @@ public class InplaceRenderer extends CoreRenderer {
 		}
 	}
 
-	private void encodeScript(FacesContext facesContext, Inplace inplace) throws IOException {
+	protected void encodeScript(FacesContext facesContext, Inplace inplace) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = inplace.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, inplace);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(var + " = new PrimeFaces.widget.Inplace('" + clientId + "', {");
+		writer.write(inplace.resolveWidgetVar() + " = new PrimeFaces.widget.Inplace('" + clientId + "', {");
 		writer.write("effect:'" + inplace.getEffect() + "'");
 		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
 		if(inplace.isDisabled()) writer.write(",disabled:true");
 		writer.write("});");
 		writer.endElement("script");
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}

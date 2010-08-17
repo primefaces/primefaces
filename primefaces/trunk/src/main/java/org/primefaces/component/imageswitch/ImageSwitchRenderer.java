@@ -44,13 +44,12 @@ public class ImageSwitchRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, ImageSwitch imageSwitch) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = imageSwitch.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, imageSwitch);
 		String imageId = clientId.replaceAll(String.valueOf(UINamingContainer.getSeparatorChar(facesContext)), "_") + "_img";
 			
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.ImageSwitch('" + imageId + "',{");
+		writer.write(imageSwitch.resolveWidgetVar() + " = new PrimeFaces.widget.ImageSwitch('" + imageId + "',{");
 		writer.write("effect:'" + imageSwitch.getEffect() + "'");
 		writer.write(",speed:" + imageSwitch.getSpeed());
 		writer.write(",slideshowSpeed:" + imageSwitch.getSlideshowSpeed());

@@ -51,12 +51,11 @@ public class TerminalRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Terminal terminal) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = terminal.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, terminal);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
         
-		writer.write(var + " = new PrimeFaces.widget.Terminal('" + clientId + "', {");
+		writer.write(terminal.resolveWidgetVar() + " = new PrimeFaces.widget.Terminal('" + clientId + "', {");
 		writer.write("PS1:'" + terminal.getPrompt() + "'");
 		writer.write(",id:'" + clientId + "'");
 		writer.write(",url:'" + getActionURL(facesContext) + "'");

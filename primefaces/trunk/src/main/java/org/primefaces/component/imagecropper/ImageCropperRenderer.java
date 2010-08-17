@@ -49,13 +49,13 @@ public class ImageCropperRenderer extends CoreRenderer {
 
 	private void encodeScript(FacesContext facesContext, ImageCropper cropper) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String cropperVar = createUniqueWidgetVar(facesContext, cropper);
+		String widgetVar = cropper.resolveWidgetVar();
 		String clientId = cropper.getClientId(facesContext);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);		
 		writer.write("YAHOO.util.Event.addListener(window, 'load', function() {\n");
-		writer.write(cropperVar + " = new YAHOO.widget.ImageCropper('" + getImageId(clientId) + "'");
+		writer.write(widgetVar + " = new YAHOO.widget.ImageCropper('" + getImageId(clientId) + "'");
 
 		if(cropper.getValue() != null) {
 			writer.write(",{");
@@ -67,7 +67,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 		}
 		writer.write(");\n");
 
-		writer.write(cropperVar + ".on('moveEvent', PrimeFaces.widget.ImageCropperUtils.attachedCroppedArea, {hiddenFieldId:\"" + getCoordsHolder(clientId) + "\"});\n");
+		writer.write(widgetVar + ".on('moveEvent', PrimeFaces.widget.ImageCropperUtils.attachedCroppedArea, {hiddenFieldId:\"" + getCoordsHolder(clientId) + "\"});\n");
 
 		writer.write("});\n");
 

@@ -119,13 +119,12 @@ public class ColorPickerRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		String clientId = colorPicker.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, colorPicker);
 		String value = getValueAsString(facesContext,colorPicker);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.ColorPicker('" + clientId + "', {");
+		writer.write(colorPicker.resolveWidgetVar() + " = new PrimeFaces.widget.ColorPicker('" + clientId + "', {");
 		writer.write("images: {");
 		writer.write("PICKER_THUMB:'" + getResourceRequestPath(facesContext, DEFAULT_PICKER_THUMB) + "'");
 		writer.write(",HUE_THUMB:'" + getResourceRequestPath(facesContext, DEFAULT_HUE_THUMB) + "'");

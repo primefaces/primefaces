@@ -66,13 +66,12 @@ public class ButtonRenderer extends CoreRenderer {
     public void encodeScript(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
-		String widgetVar = createUniqueWidgetVar(context, button);
 		boolean hasValue = (button.getValue() != null);
 
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.Button('" + clientId + "', {");
+		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.Button('" + clientId + "', {");
 
 		if(button.getImage() != null) {
 			writer.write("text:" + hasValue);

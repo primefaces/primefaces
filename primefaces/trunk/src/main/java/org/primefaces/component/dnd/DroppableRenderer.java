@@ -47,7 +47,6 @@ public class DroppableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         Droppable droppable = (Droppable) component;
-        String var = createUniqueWidgetVar(facesContext, droppable);
         String target = findTarget(facesContext, droppable).getClientId(facesContext);
         String clientId = droppable.getClientId(facesContext);
         String onDropUpdate = droppable.getOnDropUpdate();
@@ -55,7 +54,7 @@ public class DroppableRenderer extends CoreRenderer {
         writer.startElement("script", droppable);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(var + " = new PrimeFaces.widget.Droppable('" + clientId + "', {");
+        writer.write(droppable.resolveWidgetVar() + " = new PrimeFaces.widget.Droppable('" + clientId + "', {");
         writer.write("target:'" + target + "'");
 
         if (droppable.isDisabled())

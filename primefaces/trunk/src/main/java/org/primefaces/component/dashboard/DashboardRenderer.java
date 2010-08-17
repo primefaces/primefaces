@@ -113,12 +113,11 @@ public class DashboardRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Dashboard dashboard) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dashboard.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, dashboard);
-		
+        
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
+		writer.write(dashboard.resolveWidgetVar() + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
 		writer.write("url:'" + getActionURL(facesContext) + "'");
         
 		if(dashboard.isDisabled()) writer.write(",disabled:true");

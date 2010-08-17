@@ -47,12 +47,11 @@ public class KeyboardRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, Keyboard keyboard) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = keyboard.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, keyboard);
-		
+
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(var + " = new PrimeFaces.widget.Keyboard('" + clientId + "', {");
+		writer.write(keyboard.resolveWidgetVar() + " = new PrimeFaces.widget.Keyboard('" + clientId + "', {");
 		writer.write("showOn:'" + keyboard.getShowMode() + "'");
 		writer.write(",showAnim:'" + keyboard.getEffect() + "'");
 		

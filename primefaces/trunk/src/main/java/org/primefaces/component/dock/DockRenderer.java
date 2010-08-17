@@ -54,14 +54,13 @@ public class DockRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dock.getClientId(facesContext);
 		String position = dock.getPosition();
-		String widgetVar = createUniqueWidgetVar(facesContext, dock);
 		
 		String containerClass = ".pf-dock-container-" + position;
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Dock('" + clientId + "', {");
+		writer.write("new PrimeFaces.widget.Dock('" + clientId + "', {");
 		writer.write("maxWidth: " + dock.getMaxWidth());
 		writer.write(",items: 'a'");
 		writer.write(",itemsText: 'span'");

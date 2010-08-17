@@ -105,15 +105,15 @@ public class LayoutRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, Layout layout) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = layout.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, layout);
+        String widgetVar = layout.resolveWidgetVar();
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         if (layout.isFullPage()) {
-            writer.write(var + " = new PrimeFaces.widget.Layout({");
+            writer.write(widgetVar + " = new PrimeFaces.widget.Layout({");
         } else {
-            writer.write(var + " = new PrimeFaces.widget.Layout('" + clientId + "', {");
+            writer.write(widgetVar + " = new PrimeFaces.widget.Layout('" + clientId + "', {");
         }
 
         encodeUnits(facesContext, layout);

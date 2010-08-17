@@ -44,12 +44,12 @@ public class MenuRenderer extends CoreRenderer{
 	protected void encodeScript(FacesContext facesContext, Menu menu) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = menu.getClientId(facesContext);
-		String menuVar = createUniqueWidgetVar(facesContext, menu);
+        String widgetVar = menu.resolveWidgetVar();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(menuVar + " = new YAHOO.widget.Menu('" + clientId + "', {");
+		writer.write(widgetVar + " = new YAHOO.widget.Menu('" + clientId + "', {");
 		
 		if(menu.getPosition().equalsIgnoreCase("static")) {
 			writer.write("position:'static'");
@@ -83,7 +83,7 @@ public class MenuRenderer extends CoreRenderer{
 		
 		writer.write("});\n");
 		
-		writer.write(menuVar + ".render();\n");
+		writer.write(widgetVar + ".render();\n");
 		
 		writer.endElement("script");	
 	}

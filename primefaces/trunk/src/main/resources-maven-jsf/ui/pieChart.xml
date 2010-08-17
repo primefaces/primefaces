@@ -13,17 +13,14 @@
 	<rendererType>org.primefaces.component.chart.PieChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.pie.PieChartRenderer</rendererClass>
 	<parent>org.primefaces.component.chart.UIChart</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
-        <attribute>
-			<name>widgetVar</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-			<description>
-				Javascript variable name of the wrapped yui widget
-			</description>
-		</attribute>
+        &widget_var_attribute;
 		<attribute>
 			<name>value</name>
 			<required>true</required>

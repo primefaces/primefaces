@@ -78,7 +78,6 @@ public class WizardRenderer extends CoreRenderer {
     private void encodeScript(FacesContext facesContext, Wizard wizard) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = wizard.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, wizard);
 
         UIComponent form = ComponentUtils.findParentForm(facesContext, wizard);
         if (form == null) {
@@ -88,7 +87,7 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(var + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
+        writer.write(wizard.resolveWidgetVar() + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
         writer.write("formId:'" + form.getClientId(facesContext) + "'");
         writer.write(",url:'" + getActionURL(facesContext) + "'");
 
@@ -184,13 +183,13 @@ public class WizardRenderer extends CoreRenderer {
     protected void encodeNavigators(FacesContext facesContext, Wizard wizard) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = wizard.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, wizard);
+        String widgetVar = wizard.resolveWidgetVar();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
 
-        encodeNavigator(facesContext, wizard, clientId + "_back", var + ".back()", wizard.getBackLabel(), "ui-wizard-nav-back");
-        encodeNavigator(facesContext, wizard, clientId + "_next", var + ".next()", wizard.getNextLabel(), "ui-wizard-nav-next");
+        encodeNavigator(facesContext, wizard, clientId + "_back", widgetVar + ".back()", wizard.getBackLabel(), "ui-wizard-nav-back");
+        encodeNavigator(facesContext, wizard, clientId + "_next", widgetVar + ".next()", wizard.getNextLabel(), "ui-wizard-nav-next");
 
         writer.endElement("div");
     }

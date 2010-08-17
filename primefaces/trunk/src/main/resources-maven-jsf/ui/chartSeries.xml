@@ -11,7 +11,6 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIOutput</parent>
 	<attributes>
-		&standard_uicomponent_attributes;
 		&output_component_attributes;
 		<attribute>
 			<name>label</name>

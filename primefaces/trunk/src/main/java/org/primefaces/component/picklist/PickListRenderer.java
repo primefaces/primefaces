@@ -55,12 +55,11 @@ public class PickListRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, PickList pickList) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = pickList.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, pickList);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.PickList('" + clientId + "', {});");		
+		writer.write(pickList.resolveWidgetVar() + " = new PrimeFaces.widget.PickList('" + clientId + "', {});");
 		
 		writer.endElement("script");
 	}
@@ -69,7 +68,7 @@ public class PickListRenderer extends CoreRenderer {
 	private void encodeMarkup(FacesContext facesContext, PickList pickList) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = pickList.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, pickList);
+		String widgetVar = pickList.resolveWidgetVar();
 		DualListModel model = (DualListModel) pickList.getValue();
 		
 		writer.startElement("table", pickList);

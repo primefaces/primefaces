@@ -152,7 +152,6 @@ public class ScheduleRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Schedule schedule) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = schedule.getClientId(facesContext);
-		String scheduleVar = createUniqueWidgetVar(facesContext, schedule);
 		UIComponent form = ComponentUtils.findParentForm(facesContext, schedule);
 		if(form == null) {
 			throw new FacesException("Schedule: '" + clientId + "' must be inside a form");
@@ -163,7 +162,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		
 		writer.write("jQuery(function() {");
 
-		writer.write(scheduleVar + " = new PrimeFaces.widget.Schedule('" + clientId +"'");
+		writer.write(schedule.resolveWidgetVar() + " = new PrimeFaces.widget.Schedule('" + clientId +"'");
 		writer.write(",{");
 		
 		writer.write("defaultView:'"+ schedule.getView() + "'");

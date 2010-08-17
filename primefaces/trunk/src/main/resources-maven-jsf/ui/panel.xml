@@ -13,6 +13,11 @@
     <rendererType>org.primefaces.component.PanelRenderer</rendererType>
     <rendererClass>org.primefaces.component.panel.PanelRenderer</rendererClass>
     <parent>javax.faces.component.UIPanel</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;

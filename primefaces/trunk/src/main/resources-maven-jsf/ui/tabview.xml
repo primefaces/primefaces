@@ -13,9 +13,14 @@
     <rendererType>org.primefaces.component.TabViewRenderer</rendererType>
     <rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
     <attributes>
-	&standard_uicomponent_attributes;
-	&widget_var_attribute;
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>activeIndex</name>
             <required>false</required>

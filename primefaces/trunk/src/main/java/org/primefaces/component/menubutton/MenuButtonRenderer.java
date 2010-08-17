@@ -42,7 +42,6 @@ public class MenuButtonRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext facesContext, MenuButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
-		String widgetVar = createUniqueWidgetVar(facesContext, button);
 		String buttonId = clientId + "_button";
 		
 		writer.startElement("span", button);
@@ -54,7 +53,7 @@ public class MenuButtonRenderer extends CoreRenderer {
 		writer.writeAttribute("id", buttonId, null);
 		writer.writeAttribute("name", buttonId, null);
 		writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("onclick", widgetVar + ".showMenu()", null);
+		writer.writeAttribute("onclick", button.resolveWidgetVar() + ".showMenu()", null);
 		if(button.getValue() != null) {
 			writer.write(button.getValue());
 		}
@@ -70,7 +69,6 @@ public class MenuButtonRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, MenuButton button) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = button.getClientId(facesContext);
-		String var = createUniqueWidgetVar(facesContext, button);
 		
 		UIComponent form = ComponentUtils.findParentForm(facesContext, button);
 		if(form == null) {
@@ -82,7 +80,7 @@ public class MenuButtonRenderer extends CoreRenderer {
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(var + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
+		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
 		
 		boolean firstItem = true;
 		writer.write("items:[");

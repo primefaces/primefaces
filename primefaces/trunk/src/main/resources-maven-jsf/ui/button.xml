@@ -12,6 +12,11 @@
 	<rendererType>org.primefaces.component.ButtonRenderer</rendererType>
 	<rendererClass>org.primefaces.component.button.ButtonRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlOutcomeTargetButton</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;

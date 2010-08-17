@@ -84,12 +84,11 @@ public class ProgressBarRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext facesContext, ProgressBar progressBar) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = progressBar.getClientId(facesContext);
-        String var = createUniqueWidgetVar(facesContext, progressBar);
 
         writer.startElement("script", progressBar);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(var + " = new PrimeFaces.widget.ProgressBar('" + clientId + "', {");
+        writer.write(progressBar.resolveWidgetVar() + " = new PrimeFaces.widget.ProgressBar('" + clientId + "', {");
         writer.write("value:" + progressBar.getValue());
 
         if (progressBar.isAjax()) {
