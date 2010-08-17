@@ -31,6 +31,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.api.Widget;
 
 public class ComponentUtils {
 	
@@ -267,6 +268,19 @@ public class ComponentUtils {
 	      }
 	    }
 	    return result;
+	}
+
+    public static String getWidgetVar(String id) {
+	    UIComponent component = findComponent(FacesContext.getCurrentInstance().getViewRoot(), id);
+
+        if(component == null) {
+            throw new FacesException("Cannot find component " + id + " in view.");
+        } else if(component instanceof Widget) {
+            return ((Widget) component).resolveWidgetVar();
+        } else {
+            throw new FacesException("Component with id " + id + " is not a Widget");
+        }
+
 	}
 	
 	public static boolean isLiteralText(UIComponent component) {

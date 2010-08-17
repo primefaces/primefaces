@@ -3,6 +3,12 @@
 		<function-class>org.primefaces.util.ComponentUtils</function-class>
 		<function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
 	</function>
+
+    <function>
+		<function-name>widgetVar</function-name>
+		<function-class>org.primefaces.util.ComponentUtils</function-class>
+		<function-signature>java.lang.String getWidgetVar(java.lang.String)</function-signature>
+	</function>
 	
 	<function>
 		<function-name>ifGranted</function-name>
