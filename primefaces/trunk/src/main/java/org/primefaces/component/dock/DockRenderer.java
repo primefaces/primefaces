@@ -60,7 +60,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("new PrimeFaces.widget.Dock('" + clientId + "', {");
+		writer.write(dock.resolveWidgetVar() +" = new PrimeFaces.widget.Dock('" + clientId + "', {");
 		writer.write("maxWidth: " + dock.getMaxWidth());
 		writer.write(",items: 'a'");
 		writer.write(",itemsText: 'span'");
