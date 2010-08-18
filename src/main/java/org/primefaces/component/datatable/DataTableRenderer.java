@@ -214,7 +214,11 @@ public class DataTableRenderer extends CoreRenderer {
         }
         else if(table.isRowEditRequest(context)) {
             encodeEditedRow(context, table);
-        } else {
+        }
+        else if(table.isScrollingRequest(context)) {
+            encodeLiveRows(context, table);
+        }
+        else {
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
@@ -250,6 +254,17 @@ public class DataTableRenderer extends CoreRenderer {
         //Row expansion
         if(table.getFacet("expansion") != null) {
             writer.write(",expansion:true");
+        }
+
+        if(table.isScrollable()) {
+            writer.write(",scrollable:true");
+            writer.write(",liveScroll:" + table.isLiveScroll());
+            writer.write(",scrollStep:" + table.getRows());
+            writer.write(",scrollLimit:" + table.getRowCount());
+
+            if(table.getHeight() != Integer.MIN_VALUE) {
+                writer.write(",height:" + table.getHeight());
+            }
         }
 
         writer.write("});");
@@ -461,11 +476,6 @@ public class DataTableRenderer extends CoreRenderer {
 		int first = table.getFirst();
 
 		for(int i = first; i < (first + rowCountToRender); i++) {
-			table.setRowIndex(i);
-			if(!table.isRowAvailable()) {
-				continue;
-            }
-
             encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns);
 		}
 
@@ -479,6 +489,11 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, Columns dynamicColumns) throws IOException {
+        table.setRowIndex(rowIndex);
+        if(!table.isRowAvailable()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         //Row index var
         if(rowIndexVar != null) {
@@ -772,5 +787,15 @@ public class DataTableRenderer extends CoreRenderer {
         table.setRowIndex(editedRowId);
 
         encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getDynamicColumns());
+    }
+
+    private void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
+
+        for(int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
+            encodeRow(context, table, table.getClientId(context), i, table.getRowIndexVar(), table.getDynamicColumns());
+        }
     }
 }

@@ -251,6 +251,10 @@ import java.io.Serializable;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEdit");
     }
 
+    public boolean isScrollingRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
+    }
+
     private Map<String,ValueExpression> filterMap;
 
 	public Map<String,ValueExpression> getFilterMap() {
