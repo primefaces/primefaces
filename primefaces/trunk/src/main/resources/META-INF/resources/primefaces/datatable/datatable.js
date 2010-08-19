@@ -301,7 +301,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 /**
  * Ajax filter
  */
-PrimeFaces.widget.DataTable.prototype.filter = function() {
+PrimeFaces.widget.DataTable.prototype.filter = function(element) {
     var options = {
         source: this.id,
         update: this.id,
@@ -352,6 +352,10 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
     var params = {};
     params[this.id + "_filtering"] = true;
+
+    if(element) {
+        params[this.id + "_globalFilter"] = jQuery(element).val();
+    }
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }

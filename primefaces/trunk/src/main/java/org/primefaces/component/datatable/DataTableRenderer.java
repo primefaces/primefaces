@@ -87,7 +87,7 @@ public class DataTableRenderer extends CoreRenderer {
 		Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
 		table.setValue(list);
 
-		//Reset paginator
+		//Reset state
 		table.setFirst(0);
 		table.setPage(1);
 	}
@@ -97,38 +97,74 @@ public class DataTableRenderer extends CoreRenderer {
 		List filteredData = new ArrayList();
 		table.setValue(null);	//Always work with user data
 
-		for(int i = 0; i < table.getRowCount(); i++) {
-			table.setRowIndex(i);
-			boolean shouldAdd = true;
+        if(table.isGlobalFilterRequest(context)) {
+            String globalFilter = context.getExternalContext().getRequestParameterMap().get(clientId + "_globalFilter");
 
-			for(String filterName : filterMap.keySet()) {
-				Column column = filterMap.get(filterName);
-				String filterValue = params.get(filterName);
-                String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
+            for(int i = 0; i < table.getRowCount(); i++) {
+                table.setRowIndex(i);
+                boolean shouldAdd = false;
 
-				if(isValueBlank(filterValue)) {
-					shouldAdd = true;
-				}
-				else if(columnValue == null) {
-					shouldAdd = false;
-					break;
-				}
-                else if(!column.getFilterConstraint().applies(columnValue.toLowerCase(), filterValue.toLowerCase())) {
-					shouldAdd = false;
-					break;
-				}
-			}
+                for(String filterName : filterMap.keySet()) {
+                    Column column = filterMap.get(filterName);
+                    String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
 
-			if(shouldAdd) {
-				filteredData.add(table.getRowData());
+                    if(isValueBlank(globalFilter)) {
+                        shouldAdd = true;
+                        break;
+                    }
+                    else if(columnValue == null) {
+                        shouldAdd = false;
+                        continue;
+                    }
+                    else if(columnValue.toLowerCase().contains(globalFilter)) {
+                        shouldAdd = true;
+                        break;
+                    }
+                }
+
+                if(shouldAdd) {
+                    filteredData.add(table.getRowData());
+                }
             }
-		}
+
+        }
+        else {
+
+            for(int i = 0; i < table.getRowCount(); i++) {
+                table.setRowIndex(i);
+                boolean shouldAdd = true;
+
+                for(String filterName : filterMap.keySet()) {
+                    Column column = filterMap.get(filterName);
+                    String filterValue = params.get(filterName);
+                    String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
+
+                    if(isValueBlank(filterValue)) {
+                        shouldAdd = true;
+                    }
+                    else if(columnValue == null) {
+                        shouldAdd = false;
+                        break;
+                    }
+                    else if(!column.getFilterConstraint().applies(columnValue.toLowerCase(), filterValue.toLowerCase())) {
+                        shouldAdd = false;
+                        break;
+                    }
+                }
+
+                if(shouldAdd) {
+                    filteredData.add(table.getRowData());
+                }
+            }
+            
+        }
+		
 
 		table.setRowIndex(-1);	//cleanup
 
 		table.setValue(filteredData);
 
-		//Reset paginator
+		//Reset state
 		table.setFirst(0);
 		table.setPage(1);
 
