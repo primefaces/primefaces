@@ -44,10 +44,6 @@ import org.primefaces.util.ComponentUtils;
 
 public class DataTableRenderer extends CoreRenderer {
 
-    public DataTableRenderer() {
-        System.out.println("Test");
-    }
-
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		DataTable table = (DataTable) component;
