@@ -255,15 +255,15 @@ import java.io.Serializable;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
     }
 
-    private Map<String,ValueExpression> filterMap;
+    private Map<String,Column> filterMap;
 
-	public Map<String,ValueExpression> getFilterMap() {
+	public Map<String,Column> getFilterMap() {
 		if(filterMap == null) {
-			filterMap = new HashMap<String,ValueExpression>();
+			filterMap = new HashMap<String,Column>();
 
 			for(Column column : getColumns()) {
                 if(column.getValueExpression("filterBy") != null) {
-                    filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column.getValueExpression("filterBy"));
+                    filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
                 }
 			}
 		}
