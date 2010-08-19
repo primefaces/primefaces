@@ -231,6 +231,10 @@ import java.io.Serializable;
         return filterRequest;
     }
 
+    public boolean isGlobalFilterRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_globalFilter");
+    }
+
     public boolean isDataManipulationRequest(FacesContext context) {
         return isPaginationRequest(context) || isSortRequest(context) || isFilterRequest(context);
     }
