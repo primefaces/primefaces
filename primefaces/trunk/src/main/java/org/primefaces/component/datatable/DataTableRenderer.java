@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+import javax.faces.model.SelectItem;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -311,7 +312,6 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = column.getClientId(context);
         boolean isSortable = column.getValueExpression("sortBy") != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
-        String widgetVar = table.resolveWidgetVar();
         
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
@@ -321,7 +321,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.startElement("th", null);
-        writer.writeAttribute("id", column.getClientId(context), null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
@@ -345,14 +345,25 @@ public class DataTableRenderer extends CoreRenderer {
 
         //Filter
         if(hasFilter) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-            String filterId = clientId + "_filter";
-            String filterStyleClass = column.getFilterStyleClass();
-            filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+            encodeFilter(context, table, column);
+        }
 
+        writer.endElement("th");
+    }
+
+    protected void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ResponseWriter writer = context.getResponseWriter();
+
+        String widgetVar = table.resolveWidgetVar(); 
+        String filterId = column.getClientId(context) + "_filter";
+        String filterFunction = widgetVar + ".filter()";
+        String filterStyleClass = column.getFilterStyleClass();
+        filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+
+        if(column.getValueExpression("filterOptions") == null) {
             String filterEvent = "on" + column.getFilterEvent();
-            String filterFunction = widgetVar + ".filter()";
-            String filterValue = params.containsKey(clientId) ? params.get(clientId) : "";
+            String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
 
             writer.startElement("input", null);
             writer.writeAttribute("id", filterId, null);
@@ -366,9 +377,27 @@ public class DataTableRenderer extends CoreRenderer {
             }
 
             writer.endElement("input");
+            
         }
+        else {
+            writer.startElement("select", null);
+            writer.writeAttribute("id", filterId, null);
+            writer.writeAttribute("name", filterId, null);
+            writer.writeAttribute("class", filterStyleClass, null);
+            writer.writeAttribute("onchange", filterFunction, null);
 
-        writer.endElement("th");
+            SelectItem[] itemsArray = (SelectItem[]) column.getFilterOptions();
+
+            for(SelectItem item : itemsArray) {
+                writer.startElement("option", null);
+                writer.writeAttribute("value", item.getValue(), null);
+                writer.write(item.getLabel());
+                writer.endElement("option");
+            }
+
+            writer.endElement("select");
+        }
+        
     }
 
     protected void encodeColumnFooter(FacesContext context, DataTable table, Column column) throws IOException {
