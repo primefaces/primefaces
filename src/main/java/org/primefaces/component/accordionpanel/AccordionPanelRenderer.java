@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,14 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	@Override
 	public void decode(FacesContext facesContext, UIComponent component) {
 		AccordionPanel accordionPanel = (AccordionPanel) component;
-		String activeIndexParam = accordionPanel.getClientId(facesContext) + "_active";
 		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        String activeIndex = params.get(accordionPanel.getClientId(facesContext) + "_active");
 		
-		if(params.containsKey(activeIndexParam)) {
-			accordionPanel.setActiveIndex(Integer.valueOf(params.get(activeIndexParam)));
+		if(activeIndex != null) {
+            if(activeIndex.equals("false"))         //collapsed all
+                accordionPanel.setActiveIndex(-1);
+            else
+                accordionPanel.setActiveIndex(Integer.valueOf(activeIndex));
 		}
 	}
 
@@ -71,12 +74,13 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = acco.getClientId(facesContext);
+        int activeIndex = acco.getActiveIndex();
  		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
-		writer.write("active:" + acco.getActiveIndex());
+		writer.write("active:" + (activeIndex == -1 ? false : activeIndex));
 		writer.write(",animated:'" + acco.getEffect() + "'");
 		
 		if(acco.getEvent() != null) writer.write(",event:'" + acco.getEvent() + "'");
