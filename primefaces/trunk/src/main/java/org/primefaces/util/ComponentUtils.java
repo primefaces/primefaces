@@ -35,8 +35,6 @@ import org.primefaces.component.api.Widget;
 
 public class ComponentUtils {
 	
-	private static String TRINIDAD_FORM_FAMILY = "org.apache.myfaces.trinidad.Form";
-	
 	/**
 	 * Algorithm works as follows;
 	 * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
@@ -130,12 +128,10 @@ public class ComponentUtils {
 		UIComponent parent = component.getParent();
 		
 		while(parent != null) {
-			if(parent instanceof UIForm)
+			if(parent instanceof UIForm) {
 				return parent;
-			
-			if(parent.getFamily().equals(TRINIDAD_FORM_FAMILY))
-				return parent;
-			
+            }
+		
 			parent = parent.getParent();
 		}
 		
