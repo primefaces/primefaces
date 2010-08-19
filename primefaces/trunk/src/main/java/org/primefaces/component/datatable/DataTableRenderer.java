@@ -533,6 +533,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         Columns dynamicColumns = table.getDynamicColumns();
+        String emptyMessage = table.getEmptyMessage();
         
         writer.startElement("tbody", null);
         writer.writeAttribute("id", clientId + "_data", null);
@@ -541,10 +542,22 @@ public class DataTableRenderer extends CoreRenderer {
 		int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
 		int first = table.getFirst();
 
-		for(int i = first; i < (first + rowCountToRender); i++) {
-            encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns);
-		}
-
+        if(rowCountToRender != 0) {
+            for(int i = first; i < (first + rowCountToRender); i++) {
+                encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns);
+            }
+        }
+        else if(emptyMessage != null){
+            //Empty message
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+            writer.startElement("td", null);
+            writer.writeAttribute("colspan", table.getColumns().size(), null);
+            writer.write(emptyMessage);
+            writer.endElement("td");
+            writer.endElement("tr");
+        }
+		
         writer.endElement("tbody");
 
 		//Cleanup
