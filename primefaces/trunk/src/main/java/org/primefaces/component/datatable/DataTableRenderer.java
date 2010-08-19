@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.lang.reflect.Array;
 import java.util.Collection;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
@@ -44,6 +43,10 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class DataTableRenderer extends CoreRenderer {
+
+    public DataTableRenderer() {
+        System.out.println("Test");
+    }
 
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -94,7 +97,7 @@ public class DataTableRenderer extends CoreRenderer {
 	}
 
 	protected void decodeFilterRequest(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-		Map<String,ValueExpression> filterMap = table.getFilterMap();
+		Map<String,Column> filterMap = table.getFilterMap();
 		List filteredData = new ArrayList();
 		table.setValue(null);	//Always work with user data
 
@@ -103,8 +106,9 @@ public class DataTableRenderer extends CoreRenderer {
 			boolean shouldAdd = true;
 
 			for(String filterName : filterMap.keySet()) {
-				Object columnValue = filterMap.get(filterName).getValue(context.getELContext());
+				Column column = filterMap.get(filterName);
 				String filterValue = params.get(filterName);
+                String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
 
 				if(isValueBlank(filterValue)) {
 					shouldAdd = true;
@@ -112,7 +116,8 @@ public class DataTableRenderer extends CoreRenderer {
 				else if(columnValue == null) {
 					shouldAdd = false;
 					break;
-				} else if(!String.valueOf(columnValue).toLowerCase().startsWith(filterValue.toLowerCase())) {
+				}
+                else if(!column.getFilterConstraint().applies(columnValue.toLowerCase(), filterValue.toLowerCase())) {
 					shouldAdd = false;
 					break;
 				}

@@ -98,6 +98,13 @@
 			<description>Options for filter dropdown.</description>
 		</attribute>
         <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>startsWith</defaultValue>
+			<description>Defines filtering match mode, valid values are 'startsWith', 'endsWidth', 'contains' or 'exact'.</description>
+		</attribute>
+        <attribute>
 			<name>rowpan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
