@@ -92,6 +92,12 @@
 			<description>Style class of the input text filter.</description>
 		</attribute>
         <attribute>
+			<name>filterOptions</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<description>Options for filter dropdown.</description>
+		</attribute>
+        <attribute>
 			<name>rowpan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
