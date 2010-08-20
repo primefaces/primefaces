@@ -7,6 +7,7 @@
 	<tag>accordionPanel</tag>
 	<tagClass>org.primefaces.component.accordionpanel.AccordionPanelTag</tagClass>
 	<componentClass>org.primefaces.component.accordionpanel.AccordionPanel</componentClass>
+    <componentHandlerClass>org.primefaces.component.accordionpanel.AccordionPanelHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.AccordionPanel</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
@@ -80,6 +81,41 @@
 			<type>java.lang.String</type>
 			<description>Specifies the event to use to toggle a tab.</description>
 		</attribute>
+        <attribute>
+            <name>tabChangeListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void tabChangeListener(org.primefaces.event.TabChangeEvent)</method-signature>
+            <description>Server side listener to invoke when a tab has changed.</description>
+        </attribute>
+        <attribute>
+            <name>onTabChangeUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to update after tabChangeListener is invoked.</description>
+        </attribute>
+        <attribute>
+            <name>onTabChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to invoke when active tab changes.</description>
+        </attribute>
+        <attribute>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Specifies the toggleMode, dynamic setting fetches it's content with ajax on tab switch.</description>
+        </attribute>
+        <attribute>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab
+			does not communicate with server. If caching is turned off, tab contents are refetched from server each time tab is clicked. This setting is true by default.
+            </description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
