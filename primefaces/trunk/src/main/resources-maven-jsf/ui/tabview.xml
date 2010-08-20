@@ -74,7 +74,7 @@
             <name>tabChangeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
-            <method-signature>void idleListener(org.primefaces.event.TabChangeEvent)</method-signature>
+            <method-signature>void tabChangeListener(org.primefaces.event.TabChangeEvent)</method-signature>
             <description>Server side listener to invoke when a tab has changed.</description>
         </attribute>
         <attribute>

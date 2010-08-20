@@ -16,43 +16,61 @@
 package org.primefaces.component.accordionpanel;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.component.tabview.Tab;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		AccordionPanel accordionPanel = (AccordionPanel) component;
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-        String activeIndex = params.get(accordionPanel.getClientId(facesContext) + "_active");
+	public void decode(FacesContext context, UIComponent component) {
+		AccordionPanel acco = (AccordionPanel) component;
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String activeIndex = params.get(acco.getClientId(context) + "_active");
 		
 		if(activeIndex != null) {
             if(activeIndex.equals("false"))         //collapsed all
-                accordionPanel.setActiveIndex(-1);
+                acco.setActiveIndex(-1);
             else
-                accordionPanel.setActiveIndex(Integer.valueOf(activeIndex));
+                acco.setActiveIndex(Integer.valueOf(activeIndex));
 		}
+
+        if(acco.isTabChangeRequest(context)) {
+            TabChangeEvent changeEvent = new TabChangeEvent(acco, acco.findTabToLoad(context));
+            changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+
+            acco.queueEvent(changeEvent);
+        }
 	}
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		AccordionPanel accordionPanel = (AccordionPanel) component;
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		AccordionPanel acco = (AccordionPanel) component;
+
+        if(acco.isContentLoadRequest(context)) {
+            Tab tabToLoad = (Tab) acco.findTabToLoad(context);
+
+            tabToLoad.encodeAll(context);
+        }else {
+            encodeMarkup(context, acco);
+            encodeScript(context, acco);
+        }
 		
-		encodeMarkup(facesContext, accordionPanel);
-		encodeScript(facesContext, accordionPanel);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = accordionPanel.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, AccordionPanel accordionPanel) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = accordionPanel.getClientId(context);
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -62,25 +80,27 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_acco", null);
 		
-		encodeTabs(facesContext, accordionPanel);
+		encodeTabs(context, accordionPanel);
 		
 		writer.endElement("div");
 		
-		encodeStateHolder(facesContext, accordionPanel);
+		encodeStateHolder(context, accordionPanel);
 		
 		writer.endElement("div");
 	}
 
-	protected void encodeScript(FacesContext facesContext, AccordionPanel acco) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = acco.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = acco.getClientId(context);
         int activeIndex = acco.getActiveIndex();
+        boolean hasTabChangeListener = acco.getTabChangeListener() != null;
  		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
 		writer.write("active:" + (activeIndex == -1 ? false : activeIndex));
+        writer.write(",dynamic:" + acco.isDynamic());
 		writer.write(",animated:'" + acco.getEffect() + "'");
 		
 		if(acco.getEvent() != null) writer.write(",event:'" + acco.getEvent() + "'");
@@ -88,15 +108,35 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		if(acco.isCollapsible()) writer.write(",collapsible:true");
 		if(acco.isFillSpace()) writer.write(",fillSpace:true");
 		if(acco.isDisabled()) writer.write(",disabled:true");
+        if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
+
+        if(acco.isDynamic() || hasTabChangeListener) {
+            UIComponent form = ComponentUtils.findParentForm(context, acco);
+            if (form == null) {
+                throw new FacesException("AccordionPanel " + clientId + " must be nested inside a form when dynamic content loading is enabled");
+            }
+
+            writer.write(",url:'" + getActionURL(context) + "'");
+            writer.write(",formId:'" + form.getClientId(context) + "'");
+            writer.write(",cache:" + acco.isCache());
+        }
+
+        if(hasTabChangeListener) {
+            writer.write(",ajaxTabChange:true");
+
+            if(acco.getOnTabChangeUpdate() != null) {
+                writer.write(",onTabChangeUpdate:'" + ComponentUtils.findClientIds(context, acco, acco.getOnTabChangeUpdate()) + "'");
+            }
+        }
 		
 		writer.write("});");
 		
 		writer.endElement("script");
 	}
 
-	protected void encodeStateHolder(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = accordionPanel.getClientId(facesContext);
+	protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = accordionPanel.getClientId(context);
 		String stateHolderId = clientId + "_active"; 
 		
 		writer.startElement("input", null);
@@ -107,11 +147,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		writer.endElement("input");
 	}
 	
-	protected void encodeTabs(FacesContext facesContext, AccordionPanel accordionPanel) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        int activeIndex = acco.getActiveIndex();
 		
-		for(Iterator<UIComponent> kids = accordionPanel.getChildren().iterator(); kids.hasNext();) {
-			UIComponent kid = (UIComponent) kids.next();
+		for(int i=0; i < acco.getChildCount(); i++) {
+			UIComponent kid = acco.getChildren().get(i);
 			
 			if(kid.isRendered() && kid instanceof Tab) {
 				Tab tab = (Tab) kid;
@@ -128,16 +169,27 @@ public class AccordionPanelRenderer extends CoreRenderer {
 				
 				//content
 				writer.startElement("div", null);
-				renderChild(facesContext, tab);
+                writer.writeAttribute("id", kid.getClientId(context), null);
+
+                if(acco.isDynamic()) {
+                    if(i == activeIndex)
+                        tab.encodeAll(context);
+                }
+                else {
+                    tab.encodeAll(context);
+                }
+                
 				writer.endElement("div");
 			}
 		}
 	}
 
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    @Override
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
