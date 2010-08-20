@@ -25,6 +25,7 @@ import java.util.Collection;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
@@ -97,68 +98,46 @@ public class DataTableRenderer extends CoreRenderer {
 		List filteredData = new ArrayList();
 		table.setValue(null);	//Always work with user data
 
-        if(table.isGlobalFilterRequest(context)) {
-            String globalFilter = context.getExternalContext().getRequestParameterMap().get(clientId + "_globalFilter");
-
-            for(int i = 0; i < table.getRowCount(); i++) {
-                table.setRowIndex(i);
-                boolean shouldAdd = false;
-
-                for(String filterName : filterMap.keySet()) {
-                    Column column = filterMap.get(filterName);
-                    String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
-
-                    if(isValueBlank(globalFilter)) {
-                        shouldAdd = true;
-                        break;
-                    }
-                    else if(columnValue == null) {
-                        shouldAdd = false;
-                        continue;
-                    }
-                    else if(columnValue.toLowerCase().contains(globalFilter)) {
-                        shouldAdd = true;
-                        break;
-                    }
-                }
-
-                if(shouldAdd) {
-                    filteredData.add(table.getRowData());
-                }
-            }
-
+        String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
+        boolean hasGlobalFilter = !isValueBlank(globalFilter);
+        if(hasGlobalFilter) {
+            globalFilter = globalFilter.toLowerCase();
         }
-        else {
 
-            for(int i = 0; i < table.getRowCount(); i++) {
-                table.setRowIndex(i);
-                boolean shouldAdd = true;
+        for(int i = 0; i < table.getRowCount(); i++) {
+            table.setRowIndex(i);
+            boolean localMatch = true;
+            boolean globalMatch = false;
 
-                for(String filterName : filterMap.keySet()) {
-                    Column column = filterMap.get(filterName);
-                    String filterValue = params.get(filterName);
-                    String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
+            for(String filterName : filterMap.keySet()) {
+                Column column = filterMap.get(filterName);
+                String columnFilter = params.get(filterName).toLowerCase();
+                String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
 
-                    if(isValueBlank(filterValue)) {
-                        shouldAdd = true;
-                    }
-                    else if(columnValue == null) {
-                        shouldAdd = false;
-                        break;
-                    }
-                    else if(!column.getFilterConstraint().applies(columnValue.toLowerCase(), filterValue.toLowerCase())) {
-                        shouldAdd = false;
-                        break;
-                    }
+                if(hasGlobalFilter && !globalMatch) {
+                    if(columnValue != null && columnValue.toLowerCase().contains(globalFilter))
+                        globalMatch = true;
                 }
 
-                if(shouldAdd) {
-                    filteredData.add(table.getRowData());
+                if(isValueBlank(columnFilter)) {
+                    localMatch = true;
                 }
+                else if(columnValue == null || !column.getFilterConstraint().applies(columnValue.toLowerCase(), columnFilter)) {
+                    localMatch = false;
+                    break;
+                }
+
             }
             
+            boolean matches = localMatch;
+            if(hasGlobalFilter) {
+                matches = localMatch && globalMatch;
+            }
+
+            if(matches) {
+                filteredData.add(table.getRowData());
+            }
         }
-		
 
 		table.setRowIndex(-1);	//cleanup
 
