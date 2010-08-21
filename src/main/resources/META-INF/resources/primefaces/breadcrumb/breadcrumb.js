@@ -123,10 +123,9 @@
                 jQuery(listElement).append(jQuery('<div class="' + _options.overlayClass + '"></div>').css(
                 {
                     display: 'block'
-                })).css(
-                {
-                    background: 'none'
-                });
+                }))
+                .addClass('preview');
+
                 if (isIE6OrLess()) 
                 {
                     fixPNG(jQuery(listElement).find('.' + _options.overlayClass).css(
