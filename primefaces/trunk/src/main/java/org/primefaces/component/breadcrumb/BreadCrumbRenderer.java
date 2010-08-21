@@ -16,6 +16,7 @@
 package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -28,6 +29,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class BreadCrumbRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		BreadCrumb breadCrumb = (BreadCrumb) component;
 		
@@ -39,7 +41,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		encodeScript(facesContext, breadCrumb);
 	}
 
-	private void encodeScript(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
+	protected void encodeScript(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = breadCrumb.getClientId(facesContext);
 
@@ -47,7 +49,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).jBreadCrumb({");
-		writer.write("overlayClass:'ui-breadcrumb-chevron'");
+		writer.write("overlayClass:'ui-breadcrumb-chevron-overlay ui-icon ui-icon-triangle-1-e'");
 		
 		if(!breadCrumb.isPreview()) {
 			int childCount = breadCrumb.getChildCount();
@@ -68,7 +70,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
-	private void encodeMarkup(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
+	protected void encodeMarkup(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = breadCrumb.getClientId(facesContext);
 		String defaultStyleClass = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-corner-all";
@@ -81,12 +83,20 @@ public class BreadCrumbRenderer extends CoreRenderer {
 
 		writer.startElement("ul", null);
 
-		for(UIComponent child : breadCrumb.getChildren()) {
-			if(child.isRendered() && child instanceof MenuItem) {
+        for(Iterator<UIComponent> iterator = breadCrumb.getChildren().iterator(); iterator.hasNext();) {
+            
+            UIComponent child = iterator.next();
 
+			if(child.isRendered() && child instanceof MenuItem) {
 				writer.startElement("li", null);
 
 				encodeMenuItem(facesContext, (MenuItem) child);
+
+                if(iterator.hasNext()) {
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", "ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e", null);
+                    writer.endElement("span");
+                }
 
 				writer.endElement("li");
 			}
@@ -137,10 +147,12 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		}
 	}
 
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		// Do nothing
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
