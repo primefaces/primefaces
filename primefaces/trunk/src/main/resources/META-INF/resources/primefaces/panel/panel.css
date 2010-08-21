@@ -8,7 +8,6 @@
 }
 
 .ui-panel .ui-panel-title {
-	float: left;
 	margin: 0.1em 16px 0.2em 0;
 }
 
@@ -20,6 +19,7 @@
 .ui-panel .ui-panel-titlebar-icon:hover,
 .ui-panel .ui-panel-titlebar-icon:focus {
 	margin-left:0.2em;
+    margin-top:-0.2em;
 }
 
 .ui-panel .ui-panel-content {
