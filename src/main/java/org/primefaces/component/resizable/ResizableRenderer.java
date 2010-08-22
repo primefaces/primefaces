@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.event.ResizeEvent;
@@ -48,16 +49,21 @@ public class ResizableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Resizable resizable = (Resizable) component;
         String clientId = resizable.getClientId(context);
-		String target = findTarget(context, resizable);
+		UIComponent target = findTarget(context, resizable);
+        String targetId = target.getClientId(context);
 
 		writer.startElement("script", resizable);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(function(){");
+        //If it is an image wait until the image is loaded
+        if(target instanceof UIGraphic)
+            writer.write("jQuery(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
+        else
+            writer.write("jQuery(function(){");
 		
 		writer.write(resizable.resolveWidgetVar() + " = new PrimeFaces.widget.Resizable('"+ clientId + "',{");
 
-        writer.write("target:'" + target + "'");
+        writer.write("target:'" + targetId + "'");
 
         //Boundaries
         if(resizable.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + resizable.getMinWidth());
@@ -105,7 +111,7 @@ public class ResizableRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
-    protected String findTarget(FacesContext context, Resizable resizable) {
+    protected UIComponent findTarget(FacesContext context, Resizable resizable) {
         String _for = resizable.getFor();
 
         if (_for != null) {
@@ -113,9 +119,9 @@ public class ResizableRenderer extends CoreRenderer {
             if (component == null)
                 throw new FacesException("Cannot find component \"" + _for + "\" in view.");
             else
-                return component.getClientId(context);
+                return component;
         } else {
-            return resizable.getParent().getClientId(context);
+            return resizable.getParent();
         }
     }
 }
