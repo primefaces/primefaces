@@ -436,8 +436,6 @@ public class DataTableRenderer extends CoreRenderer {
             facet.encodeAll(context);
         } else if(text != null) {
             writer.write(text);
-        } else {
-            renderChildren(context, column);
         }
 
         writer.endElement("td");
