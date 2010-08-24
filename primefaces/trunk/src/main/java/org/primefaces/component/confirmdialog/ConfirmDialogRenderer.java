@@ -26,16 +26,18 @@ import org.primefaces.renderkit.CoreRenderer;
 public class ConfirmDialogRenderer extends CoreRenderer {
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ConfirmDialog dialog = (ConfirmDialog) component;
 		
-		encodeMarkup(facesContext, dialog);
-		encodeScript(facesContext, dialog);
+		encodeMarkup(context, dialog);
+		encodeScript(context, dialog);
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, ConfirmDialog dialog) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = dialog.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, ConfirmDialog dialog) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = dialog.getClientId(context);
+        String messageText = dialog.getMessage();
+        UIComponent messageFacet = dialog.getFacet("message");
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId , null);
@@ -51,8 +53,11 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		writer.writeAttribute("style", "float: left; margin: 0pt 7px 20px 0pt;", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-" + dialog.getSeverity(), null);
 		writer.endElement("span");
-		
-		if(dialog.getMessage() != null) {
+
+        if(messageFacet != null) {
+            messageFacet.encodeAll(context);
+        }
+        else if(dialog.getMessage() != null) {
 			writer.write(dialog.getMessage());
 		}
 		writer.endElement("p");
@@ -60,14 +65,14 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		//buttons
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_buttons", null);
-		renderChildren(facesContext, dialog);
+		renderChildren(context, dialog);
 		writer.endElement("div");
 		
 		writer.endElement("div");
 	}
 
-	protected void encodeScript(FacesContext facesContext, ConfirmDialog dialog) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
 		
 		writer.startElement("script", dialog);
@@ -101,11 +106,13 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 
 		writer.endElement("script");
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
