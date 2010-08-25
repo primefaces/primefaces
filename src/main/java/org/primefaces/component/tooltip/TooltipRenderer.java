@@ -67,7 +67,11 @@ public class TooltipRenderer extends CoreRenderer {
 		writer.write(",hide:{when:{event:'" + tooltip.getHideEvent()+"'}, delay:" + tooltip.getHideDelay() + ", effect:{length:" + tooltip.getHideEffectLength() + ", type: '"+tooltip.getHideEffect() + "'}}");
 	
 		//Position
-		writer.write(",position: {corner:{");
+		writer.write(",position: {");
+        String container = owner == null ? "document.body" : "jQuery(PrimeFaces.escapeClientId('" + owner +"')).parent()";
+
+        writer.write("container:" + container);
+        writer.write(",cornter:{");
 		writer.write("target:'" + tooltip.getTargetPosition() + "'");
 		writer.write(",tooltip:'" + tooltip.getPosition() + "'");
 		writer.write("}}");
