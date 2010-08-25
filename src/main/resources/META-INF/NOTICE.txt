@@ -30,7 +30,7 @@ This product includes software developed by Todd Northrop (http://jquery-waterma
 This product includes software developed by catchmyframe.com (http://www.catchmyfame.com)
 This product includes software developed by Brant Burnett (http://github.com/btburnett3/jquery.ui.spinner)
 This product includes software developed by Robert Plummer (http://www.visop-dev.com/jquerysheet.html)
-
+This product includes software developed by Kelly Hallman (http://deepliquid.com/content/Jcrop.html)
 
 
 
