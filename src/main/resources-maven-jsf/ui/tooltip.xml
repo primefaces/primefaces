@@ -68,7 +68,7 @@
 			<name>showEffectLength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>100</defaultValue>
+			<defaultValue>500</defaultValue>
 			<description>Duration to display the show effect</description>
 		</attribute>
 		<attribute>
@@ -96,7 +96,7 @@
 			<name>hideEffectLength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>100</defaultValue>
+			<defaultValue>500</defaultValue>
 			<description>Duration to display the hide effect</description>
 		</attribute>
 		<attribute>
@@ -121,13 +121,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>jquery/plugins/tooltip/jquery.qtip-1.0.min.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

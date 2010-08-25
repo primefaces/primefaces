@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class TooltipRenderer extends CoreRenderer {
 
-	private static String [] definedStyles = new String[]{"cream","dark","green","light","red","blue"};
-	
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Tooltip tooltip = (Tooltip) component;
 		
@@ -39,18 +37,16 @@ public class TooltipRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Tooltip tooltip) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		boolean global = tooltip.isGlobal();
-		String owner = getOwner(facesContext, tooltip);
+		String owner = getTarget(facesContext, tooltip);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		if(!global)
-			writer.write("PrimeFaces.onContentReady('" + owner + "', function() {");
-		else
-			writer.write("jQuery(function() {");
+        writer.write("jQuery(function() {");
 			
 		writer.write(tooltip.resolveWidgetVar() + " = new PrimeFaces.widget.Tooltip({");
 		writer.write("global:" + global);
+        
 		if(!global) {
 			writer.write(",forComponent:'" + owner + "'");
 			writer.write(",content:'");
@@ -71,17 +67,10 @@ public class TooltipRenderer extends CoreRenderer {
         String container = owner == null ? "document.body" : "jQuery(PrimeFaces.escapeClientId('" + owner +"')).parent()";
 
         writer.write("container:" + container);
-        writer.write(",cornter:{");
+        writer.write(",corner:{");
 		writer.write("target:'" + tooltip.getTargetPosition() + "'");
 		writer.write(",tooltip:'" + tooltip.getPosition() + "'");
 		writer.write("}}");
-
-		//Style
-		String style = tooltip.getStyle();
-		if(ArrayUtils.contains(definedStyles, style))
-			writer.write(",style:{name:'" + style + "'}");
-		else
-			writer.write(",style:" + style  + "\n");
 		
 		writer.write("});");	
 		
@@ -90,15 +79,7 @@ public class TooltipRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 	
-	/**
-	 * Find the element to attach the tooltip.
-	 * If tooltip is global, this method returns null, otherwise algorithm looks at for, forElement and parent in order
-	 * 
-	 * @param facesContext	FacesContext instance
-	 * @param tooltip		Tooltip component
-	 * @return				ClientId of the element to receive the tooltip
-	 */
-	protected String getOwner(FacesContext facesContext, Tooltip tooltip) {
+	protected String getTarget(FacesContext facesContext, Tooltip tooltip) {
 		if(tooltip.isGlobal())
 			return null;
 		else {
