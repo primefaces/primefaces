@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -32,122 +33,138 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ImageCropperRenderer extends CoreRenderer {
-	
-	public void decode(FacesContext facesContext, UIComponent component) {
-		String clientId = component.getClientId(facesContext);
-		String submittedValue = facesContext.getExternalContext().getRequestParameterMap().get(getCoordsHolder(clientId));
-		
-		((ImageCropper) component).setSubmittedValue(submittedValue);
+
+    @Override
+	public void decode(FacesContext context, UIComponent component) {
+        ImageCropper cropper = (ImageCropper) component;
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String coordsParam = cropper.getClientId(context) + "_coords";
+
+        if(params.containsKey(coordsParam)) {
+            cropper.setSubmittedValue(params.get(coordsParam));
+        }
 	}
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ImageCropper cropper = (ImageCropper) component;
 
-		encodeScript(facesContext, cropper);
-		encodeMarkup(facesContext, cropper);
+        encodeMarkup(context, cropper);
+		encodeScript(context, cropper);
 	}
 
-	private void encodeScript(FacesContext facesContext, ImageCropper cropper) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
 		String widgetVar = cropper.resolveWidgetVar();
-		String clientId = cropper.getClientId(facesContext);
+		String clientId = cropper.getClientId(context);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);		
-		writer.write("YAHOO.util.Event.addListener(window, 'load', function() {\n");
-		writer.write(widgetVar + " = new YAHOO.widget.ImageCropper('" + getImageId(clientId) + "'");
 
+        writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
+
+		writer.write(widgetVar + " = new PrimeFaces.widget.ImageCropper('" + clientId + "', {");
+
+        writer.write("image:'" + clientId + "_image'");
+        
+        if(cropper.getMinSize() != null) writer.write(",minSize:[" + cropper.getMinSize() + "]");
+        if(cropper.getMaxSize() != null) writer.write(",maxSize:[" + cropper.getMaxSize() + "]");
+        if(cropper.getBackgroundColor() != null) writer.write(",bgColor:'" + cropper.getBackgroundColor() + "'");
+        if(cropper.getBackgroundOpacity() != 0.6) writer.write(",bgOpacity:" + cropper.getBackgroundOpacity());
+        if(cropper.getAspectRatio() != Double.MIN_VALUE) writer.write("aspectRatio:" + cropper.getAspectRatio());
+
+        //Initial crop area
 		if(cropper.getValue() != null) {
-			writer.write(",{");
-			CroppedImage croppedImage = (CroppedImage) cropper.getValue();
-			writer.write("initialXY:[" + croppedImage.getLeft() + "," + croppedImage.getTop() + "]");
-			writer.write(",initWidth:" + croppedImage.getWidth());
-			writer.write(",initHeight:" + croppedImage.getHeight());
-			writer.write("}");
-		}
-		writer.write(");\n");
+            CroppedImage croppedImage = (CroppedImage) cropper.getValue();
+            
+            int x = croppedImage.getLeft();
+            int y = croppedImage.getTop();
+            int x2 = x + croppedImage.getWidth();
+            int y2 = y + croppedImage.getHeight();
 
-		writer.write(widgetVar + ".on('moveEvent', PrimeFaces.widget.ImageCropperUtils.attachedCroppedArea, {hiddenFieldId:\"" + getCoordsHolder(clientId) + "\"});\n");
+			writer.write(",setSelect:[" + x +  "," + y + "," + x2 + "," + y2 + "]");
 
-		writer.write("});\n");
+		} else if(cropper.getInitialCoords() != null) {
+            writer.write(",setSelect:[" + cropper.getInitialCoords() + "]");
+        }
+
+        
+		writer.write("});});");
 
 		writer.endElement("script");
 	}
 	
-	private void encodeMarkup(FacesContext facesContext, ImageCropper cropper) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = cropper.getClientId(facesContext);
-		String coordsHolder = getCoordsHolder(clientId);
+	protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = cropper.getClientId(context);
+		String coordsHolderId = clientId + "_coords";
 		
 		writer.startElement("div", cropper);
 		writer.writeAttribute("id", clientId, null);
 		
-		renderImage(facesContext, cropper, clientId);
+		renderImage(context, cropper, clientId);
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", coordsHolder, null);
-		writer.writeAttribute("name", coordsHolder, null);
-		writer.writeAttribute("value", "", null);
+		writer.writeAttribute("id", coordsHolderId, null);
+		writer.writeAttribute("name", coordsHolderId, null);
 		writer.endElement("input");
 		
 		writer.endElement("div");
 	}
-	
-	public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException {
-		if(submittedValue.equals(""))
-			return null;
-		
+
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        String coords = (String) submittedValue;
+        if(isValueBlank(coords)) {
+            return null;
+        }
+        
 		ImageCropper cropper = (ImageCropper) component;
-		String[] cropCoords = ((String)submittedValue).split("_");
+		String[] cropCoords = coords.split("_");
 		String format = getFormat(cropper.getImage());
 		
-		int y = Integer.parseInt(cropCoords[0]);
-		int x = Integer.parseInt(cropCoords[1]);
+		int x = Integer.parseInt(cropCoords[0]);
+		int y = Integer.parseInt(cropCoords[1]);
 		int w = Integer.parseInt(cropCoords[2]);
 		int h = Integer.parseInt(cropCoords[3]);
 		
 		try {
-			BufferedImage outputImage = getSourceImage(facesContext, cropper);
+			BufferedImage outputImage = getSourceImage(context, cropper);
 			BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
 			
 			ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
 	        ImageIO.write(cropped, format, croppedOutImage);
 	        
 	        return new CroppedImage(cropper.getImage(), croppedOutImage.toByteArray(), x, y, w, h);
+            
 		} catch (IOException e) {
 			throw new ConverterException(e);
 		}
 	}
 
-	private void renderImage(FacesContext facesContext, ImageCropper cropper, String clientId) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
+	private void renderImage(FacesContext context, ImageCropper cropper, String clientId) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+        String alt = cropper.getAlt() == null ? "" : cropper.getAlt();
+
 		writer.startElement("img", null);
-		writer.writeAttribute("id", getImageId(clientId), null);
-		writer.writeAttribute("src", getResourceURL(facesContext, cropper.getImage()), null);
+		writer.writeAttribute("id", clientId + "_image", null);
+        writer.writeAttribute("alt", alt, null);
+		writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
 		writer.endElement("img");
 	}
 	
-	private String getFormat(String path) {
+	protected String getFormat(String path) {
 		String[] pathTokens = path.split("\\.");
 		
 		return pathTokens[pathTokens.length -1];
 	}
-	
-	private String getCoordsHolder(String clientId) {
-		return clientId + "_coords";
-	}
-	
-	private String getImageId(String clientId) {
-		return clientId + "_image";
-	}
-	
-	private boolean isExternalImage(ImageCropper cropper) {
+		
+	protected boolean isExternalImage(ImageCropper cropper) {
 		return cropper.getImage().startsWith("http");
 	}
 	
-	private BufferedImage getSourceImage(FacesContext facesContext, ImageCropper cropper) throws IOException {
+	private BufferedImage getSourceImage(FacesContext context, ImageCropper cropper) throws IOException {
 		 BufferedImage outputImage = null;
 		 boolean isExternal = isExternalImage(cropper);
 		 
@@ -157,7 +174,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 			 outputImage =  ImageIO.read(url);
 		 }
 		 else {
-			ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+			ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
 			String imagePath = servletContext.getRealPath("") + cropper.getImage();
 			
 			outputImage = ImageIO.read(new File(imagePath));
