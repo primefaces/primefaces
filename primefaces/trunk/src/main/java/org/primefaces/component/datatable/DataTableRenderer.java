@@ -551,6 +551,9 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        String rowStyleClass = table.getRowStyleClass();
+        rowStyleClass = rowStyleClass == null ? DataTable.ROW_CLASS : DataTable.ROW_CLASS + " " + rowStyleClass;
+
         //Row index var
         if(rowIndexVar != null) {
             context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
@@ -558,7 +561,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement("tr", null);
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
-        writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+        writer.writeAttribute("class", rowStyleClass, null);
 
         if(dynamicColumns == null) {
 
