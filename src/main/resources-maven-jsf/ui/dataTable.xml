@@ -166,6 +166,7 @@
 			<name>emptyMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>No records found.</defaultValue>
 			<description>
 				Message to be shown when there're no records to display.
 			</description>
