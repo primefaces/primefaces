@@ -312,6 +312,12 @@
 			<defaultValue>false</defaultValue>
 			<description>Enables loading of data during scrolling.</description>
 		</attribute>
+        <attribute>
+			<name>rowStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Style class for rows.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
