@@ -72,7 +72,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                 for(var i=0; i < extensions.length; i++) {
                     var extension = extensions[i];
 
-                    if(extension.hasAttribute('primefacesCallbackParam')) {
+                    if(extension.getAttributeNode('primefacesCallbackParam')) {
                         var jsonObj = jQuery.parseJSON(extension.firstChild.data);
 
                         for(var paramName in jsonObj) {
