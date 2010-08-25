@@ -57,7 +57,7 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
         )
         .click(function(event) {
             //Check if filter triggered this column header event
-            if(event.target.tagName == 'INPUT') {
+            if(event.target.tagName != 'TH') {
                 return;
             }
 
@@ -111,7 +111,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 }
 
             }).bind(selectEvent, function(event) {
-                _self.onRowClick(this);
+                _self.onRowClick(event, this);
             });
 }
 
@@ -363,7 +363,13 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
  * - Unselects a row if it's already selected
  * - For single selection, clears previous selection
  */
-PrimeFaces.widget.DataTable.prototype.onRowClick = function(rowElement) {
+PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
+    
+    //Check if rowclick triggered this event not an element in row content
+    if(event.target.tagName != 'TD') {
+        return;
+    }
+
     var row = jQuery(rowElement);
 
     if(row.hasClass('ui-selected')) {

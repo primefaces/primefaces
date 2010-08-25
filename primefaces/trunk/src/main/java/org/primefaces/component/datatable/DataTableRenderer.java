@@ -16,34 +16,30 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.lang.reflect.Array;
 import java.util.Collection;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
-import org.primefaces.model.BeanPropertyComparator;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class DataTableRenderer extends CoreRenderer {
+
+    private DataHelper dataHelper;
+
+    public DataTableRenderer() {
+        dataHelper = new DataHelper();
+    }
 
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -52,173 +48,16 @@ public class DataTableRenderer extends CoreRenderer {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
         if(table.isPaginationRequest(context)) {
-            decodePageRequest(context, table, clientId, params);
+            dataHelper.decodePageRequest(context, table, clientId, params);
         } else if(table.isSortRequest(context)) {
-            decodeSortRequest(context, table, clientId, params);
+            dataHelper.decodeSortRequest(context, table, clientId, params);
         } else if(table.isFilterRequest(context)) {
-            decodeFilterRequest(context, table, clientId, params);
+            dataHelper.decodeFilterRequest(context, table, clientId, params);
         } else if(table.isSelectionEnabled()) {
-			decodeSelection(context, table, clientId, params);
+			dataHelper.decodeSelection(context, table, clientId, params);
 		}
 	}
-
-    protected void decodePageRequest(FacesContext facesContext, DataTable dataTable, String clientId, Map<String,String> params) {
-		String firstParam = params.get(clientId + "_first");
-		String rowsParam = params.get(clientId + "_rows");
-		String pageParam = params.get(clientId + "_page");
-
-		dataTable.setFirst(Integer.valueOf(firstParam));
-		dataTable.setRows(Integer.valueOf(rowsParam));
-		dataTable.setPage(Integer.valueOf(pageParam));
-	}
-
-	protected void decodeSortRequest(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-		String sortKey = params.get(clientId + "_sortKey");
-		boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
-        Column sortColumn = null;
-        
-        for(Column column : table.getColumns()) {
-            if(column.getClientId(context).equals(sortKey)) {
-                sortColumn = column;
-                break;
-            }
-        }
-
-        List list = (List) table.getValue();
-		Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
-		table.setValue(list);
-
-		//Reset state
-		table.setFirst(0);
-		table.setPage(1);
-	}
-
-	protected void decodeFilterRequest(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-		Map<String,Column> filterMap = table.getFilterMap();
-		List filteredData = new ArrayList();
-		table.setValue(null);	//Always work with user data
-
-        String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
-        boolean hasGlobalFilter = !isValueBlank(globalFilter);
-        if(hasGlobalFilter) {
-            globalFilter = globalFilter.toLowerCase();
-        }
-
-        for(int i = 0; i < table.getRowCount(); i++) {
-            table.setRowIndex(i);
-            boolean localMatch = true;
-            boolean globalMatch = false;
-
-            for(String filterName : filterMap.keySet()) {
-                Column column = filterMap.get(filterName);
-                String columnFilter = params.get(filterName).toLowerCase();
-                String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
-
-                if(hasGlobalFilter && !globalMatch) {
-                    if(columnValue != null && columnValue.toLowerCase().contains(globalFilter))
-                        globalMatch = true;
-                }
-
-                if(isValueBlank(columnFilter)) {
-                    localMatch = true;
-                }
-                else if(columnValue == null || !column.getFilterConstraint().applies(columnValue.toLowerCase(), columnFilter)) {
-                    localMatch = false;
-                    break;
-                }
-
-            }
-            
-            boolean matches = localMatch;
-            if(hasGlobalFilter) {
-                matches = localMatch && globalMatch;
-            }
-
-            if(matches) {
-                filteredData.add(table.getRowData());
-            }
-        }
-
-		table.setRowIndex(-1);	//cleanup
-
-		table.setValue(filteredData);
-
-		//Reset state
-		table.setFirst(0);
-		table.setPage(1);
-
-        //Metadata for callback
-        if(table.isPaginator()) {
-            RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
-        }
-	}
-
-    protected void decodeSelection(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-		String selection = params.get(clientId + "_selection");
-
-		if(table.isSingleSelectionMode())
-			decodeSingleSelection(table, selection);
-		else
-			decodeMultipleSelection(table, selection);
-
-        table.setRowIndex(-1);	//clean
-
-        //Instant selection and unselection
-        queueInstantSelectionEvent(context, table, clientId, params);
-        
-		table.setRowIndex(-1);	//clean
-	}
-
-    protected void queueInstantSelectionEvent(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-
-		if(table.isInstantSelectionRequest(context)) {
-            int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
-            table.setRowIndex(selectedRowIndex);
-            SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
-            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            table.queueEvent(selectEvent);
-        }
-        else if(table.isInstantUnselectionRequest(context)) {
-            int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
-            table.setRowIndex(unselectedRowIndex);
-            UnselectEvent unselectEvent = new UnselectEvent(table, table.getRowData());
-            unselectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            table.queueEvent(unselectEvent);
-        }
-	}
-
-    protected void decodeSingleSelection(DataTable table, String selection) {
-		if(isValueBlank(selection)) {
-			table.setSelection(null);
-            table.setEmptySelected(true);
-		} else {
-            table.setRowIndex(Integer.parseInt(selection));
-            Object data = table.getRowData();
-            
-            table.setSelection(data);
-		}
-	}
-	
-	protected void decodeMultipleSelection(DataTable table, String selection) {
-		Class<?> clazz = table.getValueExpression("selection").getType(FacesContext.getCurrentInstance().getELContext());
-
-		if(isValueBlank(selection)) {
-			Object data = Array.newInstance(clazz.getComponentType(), 0);
-			table.setSelection(data);
-		} else {
-            String[] rowSelectValues = selection.split(",");
-            Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
-
-            for(int i = 0; i < rowSelectValues.length; i++) {
-                table.setRowIndex(Integer.parseInt(rowSelectValues[i]));
-
-                Array.set(data, i, table.getRowData());
-            }
-
-            table.setSelection(data);
-		}
-	}
-
+    
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
@@ -839,7 +678,6 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     protected void encodeEditedRow(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowId"));
 
@@ -849,7 +687,6 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     private void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
 
