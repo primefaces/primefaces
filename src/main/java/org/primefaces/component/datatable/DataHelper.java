@@ -42,6 +42,10 @@ class DataHelper {
 		table.setFirst(Integer.valueOf(firstParam));
 		table.setRows(Integer.valueOf(rowsParam));
 		table.setPage(Integer.valueOf(pageParam));
+
+        if(table.isLazy()) {
+            table.loadLazy(table.getFirst(), table.getRows());
+        }
 	}
 
     void decodeSortRequest(FacesContext context, DataTable table) {

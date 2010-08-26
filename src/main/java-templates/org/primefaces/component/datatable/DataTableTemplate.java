@@ -385,3 +385,16 @@ import java.io.Serializable;
 
         model.setWrappedData(data);
     }
+
+    public void clearLazyCache() {
+        LazyDataModel model = (LazyDataModel) getDataModel();
+        model.setWrappedData(null);
+    }
+
+    public boolean initiallyLoaded() {
+        return (java.lang.Boolean) getStateHelper().eval("initiallyLoaded", false);
+    }
+
+    public void markAsLoaded() {
+        getStateHelper().put("initiallyLoaded", true);
+    }
