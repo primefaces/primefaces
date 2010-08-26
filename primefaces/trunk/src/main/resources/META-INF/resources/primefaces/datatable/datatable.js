@@ -56,8 +56,8 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
             jQuery(this).toggleClass('ui-state-hover');}
         )
         .click(function(event) {
-            //Check if filter triggered this column header event
-            if(event.target.tagName != 'TH') {
+
+            if(jQuery(event.target).is(':not(th,span)')) {
                 return;
             }
 
@@ -366,18 +366,17 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
     
     //Check if rowclick triggered this event not an element in row content
-    if(event.target.tagName != 'TD') {
-        return;
-    }
+    if(jQuery(event.target).is('td,span')) {
+        
+        var row = jQuery(rowElement);
 
-    var row = jQuery(rowElement);
-
-    if(row.hasClass('ui-selected')) {
-        this.unselectRow(row);
+        if(row.hasClass('ui-selected'))
+            this.unselectRow(row);
+        else
+           this.selectRow(row);
+       
     }
-    else {
-       this.selectRow(row);
-    }
+    
 }
 
 PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
