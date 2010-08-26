@@ -31,17 +31,23 @@ import org.primefaces.model.BeanPropertyComparator;
 
 class DataHelper {
 
-    void decodePageRequest(FacesContext facesContext, DataTable dataTable, String clientId, Map<String,String> params) {
+    void decodePageRequest(FacesContext context, DataTable table) {
+        String clientId = table.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        
 		String firstParam = params.get(clientId + "_first");
 		String rowsParam = params.get(clientId + "_rows");
 		String pageParam = params.get(clientId + "_page");
 
-		dataTable.setFirst(Integer.valueOf(firstParam));
-		dataTable.setRows(Integer.valueOf(rowsParam));
-		dataTable.setPage(Integer.valueOf(pageParam));
+		table.setFirst(Integer.valueOf(firstParam));
+		table.setRows(Integer.valueOf(rowsParam));
+		table.setPage(Integer.valueOf(pageParam));
 	}
 
-    void decodeSortRequest(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
+    void decodeSortRequest(FacesContext context, DataTable table) {
+        String clientId = table.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        
 		String sortKey = params.get(clientId + "_sortKey");
 		boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
         Column sortColumn = null;
@@ -55,14 +61,16 @@ class DataHelper {
 
         List list = (List) table.getValue();
 		Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
-		table.setValue(list);
 
 		//Reset state
 		table.setFirst(0);
 		table.setPage(1);
 	}
 
-    void decodeFilterRequest(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
+    void decodeFilterRequest(FacesContext context, DataTable table) {
+        String clientId = table.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        
 		Map<String,Column> filterMap = table.getFilterMap();
 		List filteredData = new ArrayList();
 		table.setValue(null);	//Always work with user data
@@ -129,7 +137,10 @@ class DataHelper {
 		return value.trim().equals("");
 	}
 
-    void decodeSelection(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
+    void decodeSelection(FacesContext context, DataTable table) {
+        String clientId = table.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        
 		String selection = params.get(clientId + "_selection");
 
 		if(table.isSingleSelectionMode())

@@ -8,6 +8,7 @@ import javax.faces.application.NavigationHandler;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.HashMap;
+import org.primefaces.model.LazyDataModel;
 /*import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
@@ -374,4 +375,13 @@ import java.io.Serializable;
         }
 
         return dynamicColumns;
+    }
+
+    public void loadLazy(int first, int rows) {
+        LazyDataModel model = (LazyDataModel) getDataModel();
+        model.setPageSize(rows);
+
+        List<?> data = model.load(first, rows);
+
+        model.setWrappedData(data);
     }
