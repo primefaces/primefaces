@@ -357,8 +357,10 @@ public class DataTableRenderer extends CoreRenderer {
 		int first = table.getFirst();
         int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
 
-        if(table.isLazy()) {
+        //Load lazy data initially for lazy datatable
+        if(table.isLazy() && !table.initiallyLoaded()) {
             table.loadLazy(first, rows);
+            table.markAsLoaded();
         }
 
         if(rowCountToRender != 0) {

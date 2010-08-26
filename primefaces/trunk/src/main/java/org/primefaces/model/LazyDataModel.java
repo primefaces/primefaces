@@ -55,6 +55,10 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 	public Object getRowData() {
         return data.get(rowIndex);
 	}
+
+    public int getRowIndex() {
+        return this.rowIndex;
+    }
     
     public void setRowIndex(int rowIndex) {
         this.rowIndex = (rowIndex % pageSize);
