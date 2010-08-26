@@ -86,3 +86,7 @@
     cursor:pointer;
     float:left;
 }
+
+.ui-datatable tr.ui-state-highlight {
+    cursor: pointer;
+}

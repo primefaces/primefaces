@@ -96,21 +96,23 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
     
     jQuery(this.jqId + ' .ui-datatable-data tr')
             .css('cursor', 'pointer')
-            .mouseover(function() {
+            .live('mouseover', function() {
                 var row = jQuery(this);
 
                 if(!row.hasClass('ui-selected')) {
                     row.addClass('ui-state-highlight');
                 }
 
-            }).mouseout(function() {
+            })
+            .live('mouseout', function() {
                 var row = jQuery(this);
 
                 if(!row.hasClass('ui-selected')) {
                     row.removeClass('ui-state-highlight');
                 }
 
-            }).bind(selectEvent, function(event) {
+            })
+            .live(selectEvent, function(event) {
                 _self.onRowClick(event, this);
             });
 }
@@ -122,7 +124,7 @@ PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
     var _self = this;
 
     jQuery(this.jqId + ' tbody tr td span.ui-row-expander')
-            .click(function(event) {
+            .live('click', function(event) {
                 _self.toggleExpansion(this);
             });
 }
@@ -225,11 +227,6 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 jQuery(_self.tbody).replaceWith(content);
 
                 _self.getPaginator().setState(newState);
-
-                //apply selection events
-                if(_self.cfg.selectionMode) {
-                    _self.setupSelectionEvents();
-                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -277,10 +274,6 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                    paginator.setPage(1, true);
                 }
 
-                //apply selection events
-                if(_self.cfg.selectionMode) {
-                    _self.setupSelectionEvents();
-                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
@@ -336,11 +329,6 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
             if(id == _self.id){
                 jQuery(_self.tbody).replaceWith(content);
-
-                //apply selection events
-                if(_self.cfg.selectionMode) {
-                    _self.setupSelectionEvents();
-                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
