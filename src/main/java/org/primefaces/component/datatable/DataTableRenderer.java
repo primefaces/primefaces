@@ -44,17 +44,15 @@ public class DataTableRenderer extends CoreRenderer {
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		DataTable table = (DataTable) component;
-		String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
         if(table.isPaginationRequest(context)) {
-            dataHelper.decodePageRequest(context, table, clientId, params);
+            dataHelper.decodePageRequest(context, table);
         } else if(table.isSortRequest(context)) {
-            dataHelper.decodeSortRequest(context, table, clientId, params);
+            dataHelper.decodeSortRequest(context, table);
         } else if(table.isFilterRequest(context)) {
-            dataHelper.decodeFilterRequest(context, table, clientId, params);
+            dataHelper.decodeFilterRequest(context, table);
         } else if(table.isSelectionEnabled()) {
-			dataHelper.decodeSelection(context, table, clientId, params);
+			dataHelper.decodeSelection(context, table);
 		}
 	}
     
@@ -350,13 +348,18 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
         Columns dynamicColumns = table.getDynamicColumns();
         String emptyMessage = table.getEmptyMessage();
-        
+      
         writer.startElement("tbody", null);
         writer.writeAttribute("id", clientId + "_data", null);
         writer.writeAttribute("class", DataTable.DATA_CLASS, null);
 
-		int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
+        int rows = table.getRows();
 		int first = table.getFirst();
+        int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
+
+        if(table.isLazy()) {
+            table.loadLazy(first, rows);
+        }
 
         if(rowCountToRender != 0) {
             for(int i = first; i < (first + rowCountToRender); i++) {

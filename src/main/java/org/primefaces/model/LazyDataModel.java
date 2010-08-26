@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,63 +28,43 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 
 	private int rowIndex = -1;
 
-	private int totalNumRows;
+	private int rowCount;
 
 	private int pageSize;
 
-	private List<T> list;
+    private int first;
+
+	private List<T> data;
 
 	public LazyDataModel() {
 		super();
 	}
-
-	public LazyDataModel(int totalNumRows) {
-		super();
-		
-		this.totalNumRows = totalNumRows;
-	}
 	
-	public abstract List<T> fetchLazyData(int first, int pageSize);
-
 	public boolean isRowAvailable() {
-		if (list == null)
-			return false;
+		if(data == null) {
+            return false;
+        }
 
-		int rowIndex = getRowIndex();
-		if (rowIndex >= 0 && rowIndex < list.size())
-			return true;
-		else
-			return false;
+		return rowIndex >= 0 && rowIndex < data.size();
 	}
 
 	public int getRowCount() {
-		return totalNumRows;
+		return rowCount;
 	}
 
 	public Object getRowData() {
-		if (list == null)
-			return null;
-		else if (!isRowAvailable())
-			throw new IllegalArgumentException();
-		else {
-			int dataIndex = getRowIndex();
-			
-			return list.get(dataIndex);
-		}
+        return data.get(rowIndex);
 	}
-
-	public int getRowIndex() {
-		return (rowIndex % pageSize);
-	}
-	public void setRowIndex(int rowIndex) {
-		this.rowIndex = rowIndex;
-	}
+    
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = (rowIndex % pageSize);
+    }
 
 	public Object getWrappedData() {
-		return list;
+		return data;
 	}
 	public void setWrappedData(Object list) {
-		this.list = (List) list;
+		this.data = (List) list;
 	}
 	
 	public int getPageSize() {
@@ -93,4 +73,19 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
+    public int getFirst() {
+        return first;
+    }
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public List<T> load(int first, int pageSize) {
+        throw new RuntimeException("Needs to be overriden");
+    }
 }
