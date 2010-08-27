@@ -377,11 +377,11 @@ import java.io.Serializable;
         return dynamicColumns;
     }
 
-    public void loadLazy(int first, int rows) {
+    public void loadLazyData() {
         LazyDataModel model = (LazyDataModel) getDataModel();
-        model.setPageSize(rows);
+        model.setPageSize(getRows());
 
-        List<?> data = model.load(first, rows);
+        List<?> data = model.load(getFirst(), getRows(), getSortField(), getSortOrder(), getFilters());
 
         model.setWrappedData(data);
     }
@@ -397,4 +397,28 @@ import java.io.Serializable;
 
     public void markAsLoaded() {
         getStateHelper().put("initiallyLoaded", true);
+    }
+
+    public String getSortField() {
+        return (String) getStateHelper().eval("sortField", null);
+    }
+
+    public void setSortField(String sortField) {
+        getStateHelper().put("sortField", sortField);
+    }
+
+    public boolean getSortOrder() {
+        return (Boolean) getStateHelper().eval("sortOrder", true);
+    }
+
+    public void setSortOrder(boolean sortOrder) {
+        getStateHelper().put("sortOrder", sortOrder);
+    }
+
+    public Map<String,String> getFilters() {
+        return (Map<String,String>) getStateHelper().eval("filters", null);
+    }
+
+    public void setFilters(Map<String,String> filters) {
+        getStateHelper().put("filters", filters);
     }

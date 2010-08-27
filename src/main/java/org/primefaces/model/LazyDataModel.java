@@ -17,12 +17,12 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.model.DataModel;
 
 /**
  * Custom lazy loading DataModel to deal with huge datasets
- * 
  */
 public abstract class LazyDataModel<T> extends DataModel implements Serializable {
 
@@ -31,8 +31,6 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 	private int rowCount;
 
 	private int pageSize;
-
-    private int first;
 
 	private List<T> data;
 
@@ -78,18 +76,11 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 		this.pageSize = pageSize;
 	}
 
-    public int getFirst() {
-        return first;
-    }
-    public void setFirst(int first) {
-        this.first = first;
-    }
-
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize) {
+    public List<T> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String,String> filters) {
         throw new RuntimeException("Needs to be overriden");
     }
 }

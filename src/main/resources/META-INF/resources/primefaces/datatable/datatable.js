@@ -148,7 +148,7 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
                 scrollHeight = viewport.attr('scrollHeight'),
                 viewportHeight = viewport.attr('clientHeight');
 
-                if(scrollTop >= (scrollHeight - (viewportHeight + 20))) {
+                if(scrollTop >= (scrollHeight - (viewportHeight))) {
                     _self.loadLiveRows();
                 }
             }
