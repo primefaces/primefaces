@@ -44,7 +44,7 @@ class DataHelper {
 		table.setPage(Integer.valueOf(pageParam));
 
         if(table.isLazy()) {
-            table.loadLazy(table.getFirst(), table.getRows());
+            table.loadLazyData();
         }
 	}
 
@@ -63,12 +63,23 @@ class DataHelper {
             }
         }
 
-        List list = (List) table.getValue();
-		Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
-
-		//Reset state
+        //Reset state
 		table.setFirst(0);
 		table.setPage(1);
+
+        if(table.isLazy()) {
+            String sortExpression = sortColumn.getValueExpression("sortBy").getExpressionString();
+            sortExpression = sortExpression.substring(2, sortExpression.length() - 1);      //Remove #{}
+            table.setSortField(sortExpression.substring(sortExpression.indexOf(".") + 1));    //Remove var
+            table.setSortOrder(asc);
+
+            table.loadLazyData();
+
+        } else {
+            List list = (List) table.getValue();
+            Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
+        }
+
 	}
 
     void decodeFilterRequest(FacesContext context, DataTable table) {

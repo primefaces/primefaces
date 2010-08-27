@@ -359,7 +359,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         //Load lazy data initially for lazy datatable
         if(table.isLazy() && !table.initiallyLoaded()) {
-            table.loadLazy(first, rows);
+            table.loadLazyData();
             table.markAsLoaded();
         }
 
