@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>galleria</tag>
+	<tagClass>org.primefaces.component.galleria.GalleriaTag</tagClass>
+	<componentClass>org.primefaces.component.galleria.Galleria</componentClass>
+	<componentType>org.primefaces.component.Galleria</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.GalleriaRenderer</rendererType>
+	<rendererClass>org.primefaces.component.galleria.GalleriaRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Effect to use when switching images.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>galleria/galleria.classic.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>galleria/galleria.js</name>
+		</resource>
+        <resource>
+			<name>galleria/galleria.classic.js</name>
+		</resource>
+	</resources>
+</component>
