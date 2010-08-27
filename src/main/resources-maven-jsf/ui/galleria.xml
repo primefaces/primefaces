@@ -20,6 +20,18 @@
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
+         <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+        </attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>

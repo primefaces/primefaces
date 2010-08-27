@@ -26,9 +26,13 @@ public class GalleriaRenderer extends CoreRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        Galleria galleria = (Galleria) component;
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", component.getClientId(context), null);
+        writer.writeAttribute("id", galleria.getClientId(context), null);
+
+        if(galleria.getStyleClass() !=  null) writer.writeAttribute("Class", galleria.getStyleClass(), "styleClass");
+        if(galleria.getStyle() !=  null) writer.writeAttribute("style", galleria.getStyle(), "style");
     }
 
     @Override
