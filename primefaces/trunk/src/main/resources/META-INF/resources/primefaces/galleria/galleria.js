@@ -121,7 +121,7 @@ var Base = Class.extend({
             this.wait(function() {
                 return !!document.body;
             }, function() {
-                var testElem = this.create('div', 'galleria-container galleria-stage');
+                var testElem = this.create('div', 'ui-ui-galleria-container ui-galleria-stage');
                 this.moveOut(testElem);
                 document.body.appendChild(testElem);
                 var getStyles = this.proxy(function() {
@@ -329,7 +329,7 @@ var Base = Class.extend({
 var Picture = Base.extend({
     __constructor : function(order) {
         this.image = null;
-        this.elem = this.create('div', 'galleria-image');
+        this.elem = this.create('div', 'ui-galleria-image');
         this.setStyle( this.elem, {
             overflow: 'hidden',
             position: 'relative' // for IE Standards mode
@@ -912,7 +912,7 @@ var G = window.Galleria = Base.extend({
         elems = elems.split(' ');
         
         this.loop(elems, function(blueprint) {
-            this.dom[ blueprint ] = this.create('div', 'galleria-' + blueprint);
+            this.dom[ blueprint ] = this.create('div', 'ui-galleria-' + blueprint);
         });
         
         this.target = this.dom.target = options.target.nodeName ? 
@@ -1195,7 +1195,7 @@ var G = window.Galleria = Base.extend({
                 }
             } else if (o.thumbnails == 'empty') {
                 thumb = {
-                    elem:  this.create('div','galleria-image'),
+                    elem:  this.create('div','ui-galleria-image'),
                     image: this.create('span','img')
                 };
                 thumb.elem.appendChild(thumb.image);
@@ -1339,7 +1339,7 @@ var G = window.Galleria = Base.extend({
                 h = Math.max(h, this.height(thumb.elem));
             }
         });
-        this.toggleClass(this.get('thumbnails-container'), 'galleria-carousel', w > this.stageWidth);
+        this.toggleClass(this.get('thumbnails-container'), 'ui-galleria-carousel', w > this.stageWidth);
         this.setStyle(this.get('thumbnails-list'), {
             overflow:'hidden',
             position: 'relative' // for IE Standards mode
@@ -1443,7 +1443,7 @@ var G = window.Galleria = Base.extend({
     },
     addElement : function() {
         this.loop(arguments, function(b) {
-            this.dom[b] = this.create('div', 'galleria-' + b );
+            this.dom[b] = this.create('div', 'ui-galleria-' + b );
         });
         return this;
     },
@@ -2134,5 +2134,16 @@ PrimeFaces.widget.Galleria = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
 
-    jQuery(this.jqId).galleria();
+    this.cfg.show_imagenav = false;
+
+    jQuery(this.jqId).galleria(this.cfg);
+
+    this.applyTheme();
+}
+
+PrimeFaces.widget.Galleria.prototype.applyTheme = function() {
+    jQuery(this.jqId).children('.ui-galleria-container').addClass('ui-widget ui-widget-content ui-corner-all');
+
+    jQuery(this.jqId + ' .ui-galleria-thumb-nav-right').addClass('ui-icon ui-icon-circle-triangle-e');
+    jQuery(this.jqId + ' .ui-galleria-thumb-nav-left').addClass('ui-icon ui-icon-circle-triangle-w');
 }
