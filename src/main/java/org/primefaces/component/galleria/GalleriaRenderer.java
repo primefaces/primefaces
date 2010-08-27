@@ -44,6 +44,9 @@ public class GalleriaRenderer extends CoreRenderer {
 
 		writer.write(galleria.resolveWidgetVar() + " = new PrimeFaces.widget.Galleria('" + clientId + "',{");
 
+        writer.write("transition:'" + galleria.getEffect() + "'");
+        writer.write(",transition_speed:" + galleria.getEffectSpeed());
+
         writer.write("});");
         
         writer.endElement("script");
