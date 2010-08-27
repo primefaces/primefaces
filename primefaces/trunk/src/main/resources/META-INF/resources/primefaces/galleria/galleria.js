@@ -2146,4 +2146,5 @@ PrimeFaces.widget.Galleria.prototype.applyTheme = function() {
 
     jQuery(this.jqId + ' .ui-galleria-thumb-nav-right').addClass('ui-icon ui-icon-circle-triangle-e');
     jQuery(this.jqId + ' .ui-galleria-thumb-nav-left').addClass('ui-icon ui-icon-circle-triangle-w');
+    jQuery(this.jqId + ' .ui-galleria-info-text').addClass('ui-widget-content ui-corner-all');
 }

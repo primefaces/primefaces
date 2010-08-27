@@ -24,6 +24,9 @@ Galleria.addTheme({
         this.append({
             'info' : ['info-link','info-close']
         });
+
+        $(this.dom['info-link']).addClass('ui-icon ui-icon-info');
+        $(this.dom['info-close']).addClass('ui-icon ui-icon-close').hide();
         
         this.$('loader').show().fadeTo(200, .4);
         this.$('counter').show().fadeTo(200, .4);
