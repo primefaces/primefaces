@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.HashMap;
 import org.primefaces.model.LazyDataModel;
+import java.lang.StringBuilder;
 /*import java.util.Iterator;
 import org.primefaces.model.LazyDataModel;
 import javax.el.ValueExpression;
@@ -421,4 +422,26 @@ import java.io.Serializable;
 
     public void setFilters(Map<String,String> filters) {
         getStateHelper().put("filters", filters);
+    }
+
+    private List<Integer> selectedRowIndexes = new ArrayList<Integer>();
+
+    public void addSelectedRowIndex(Integer rowIndex) {
+        selectedRowIndexes.add(rowIndex);
+    }
+
+    public List<Integer> getSelectedRowIndexes() {
+        return selectedRowIndexes;
+    }
+
+    public String getSelectedRowIndexesAsString() {
+        StringBuilder sb = new StringBuilder();
+        for(Iterator<Integer> iter = selectedRowIndexes.iterator(); iter.hasNext();) {
+            sb.append(iter.next());
+
+            if(iter.hasNext())
+                sb.append(",");
+        }
+
+        return sb.toString();
     }
