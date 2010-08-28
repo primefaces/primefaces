@@ -51,7 +51,9 @@ public class DataTableRenderer extends CoreRenderer {
             dataHelper.decodeSortRequest(context, table);
         } else if(table.isFilterRequest(context)) {
             dataHelper.decodeFilterRequest(context, table);
-        } else if(table.isSelectionEnabled()) {
+        }
+
+        if(table.isSelectionEnabled()) {
 			dataHelper.decodeSelection(context, table);
 		}
 	}

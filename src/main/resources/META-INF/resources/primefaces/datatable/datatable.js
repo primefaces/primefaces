@@ -251,6 +251,10 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
  * Ajax sort
  */
 PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
+    if(this.isSelectionEnabled()) {
+        this.clearSelection();
+    }
+    
     var options = {
         source: this.id,
         update: this.id,
@@ -297,6 +301,10 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
  * Ajax filter
  */
 PrimeFaces.widget.DataTable.prototype.filter = function() {
+    if(this.isSelectionEnabled()) {
+        this.clearSelection();
+    }
+    
     var options = {
         source: this.id,
         update: this.id,
@@ -615,6 +623,13 @@ PrimeFaces.widget.DataTable.prototype.clearSelection = function() {
     this.selection = [];
     
     jQuery(this.selectionHolder).val('');
+}
+
+/**
+ * Returns true|false if selection is enabled|disabled
+ */
+PrimeFaces.widget.DataTable.prototype.isSelectionEnabled = function() {
+    return this.cfg.selectionMode != undefined;
 }
 
 /*
