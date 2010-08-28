@@ -235,6 +235,7 @@ class DataHelper {
 		if(isValueBlank(selection)) {
 			Object data = Array.newInstance(clazz.getComponentType(), 0);
 			table.setSelection(data);
+            
 		} else {
             String[] rowSelectValues = selection.split(",");
             Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
