@@ -171,17 +171,18 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = column.getClientId(context);
         boolean isSortable = column.getValueExpression("sortBy") != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
+        String selectionMode = column.getSelectionMode();
         
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
-        if(styleClass != null) {
-            columnClass = columnClass + " " + styleClass;
-        }
+        columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
+        columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
 
         writer.startElement("th", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
+        
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
@@ -196,11 +197,23 @@ public class DataTableRenderer extends CoreRenderer {
         //Header content
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
-        if(header != null) {
-            header.encodeAll(context);
-        } else if(headerText != null) {
-            writer.write(headerText);
+
+        if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
+            writer.startElement("input", header);
+            writer.writeAttribute("type", "checkbox", null);
+            writer.writeAttribute("name", clientId + "_checkAll", null);
+            writer.writeAttribute("onclick", table.resolveWidgetVar() + ".toggleCheckAll(this)", null);
+            writer.endElement("input");
         }
+        else {
+            if(header != null) {
+                header.encodeAll(context);
+            } else if(headerText != null) {
+                writer.write(headerText);
+            }
+        }
+
+        
 
         //Filter
         if(hasFilter) {

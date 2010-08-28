@@ -525,6 +525,38 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(element) 
 }
 
 /**
+ * Selects all rows with checkbox
+ */
+PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
+    var checkbox = jQuery(element),
+    checked = checkbox.attr('checked');
+
+    if(checked) {
+        jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', true);
+
+        if(this.getPaginator() != null) {
+            for(var i=0; i < this.getPaginator().getTotalRecords(); i++) {
+                this.selection.push(i);
+            }
+
+        } else {
+            jQuery(this.jqId + ' .ui-datatable-data tr').each(function() {
+                this.selection.push(jQuery(this).attr('id').split('_row_')[1]);
+            });
+        }
+
+        //save state
+        this.writeSelections();
+
+    }
+    else {
+        jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', false);
+
+        this.clearSelection();
+    }
+}
+
+/**
  * Expands a row to display detail content
  */
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
