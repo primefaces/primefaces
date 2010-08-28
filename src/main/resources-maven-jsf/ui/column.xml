@@ -144,5 +144,11 @@
             <defaultValue>false</defaultValue>
 			<description>Defines a row editor column.</description>
 		</attribute>
+        <attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Defines a selection column, valid values are single or multiple.</description>
+		</attribute>
 	</attributes>
 </component>

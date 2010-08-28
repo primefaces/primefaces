@@ -16,12 +16,12 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     this.setupSortEvents();
 
     //Selection events
-    if(this.cfg.selectionMode) {
+    if(this.cfg.selectionMode || this.cfg.columnSelectionMode) {
         this.selectionHolder = this.jqId + '_selection';
 
         var preselection = jQuery(this.selectionHolder).val();
         this.selection = preselection == "" ? [] : preselection.split(',');
-    
+
         this.setupSelectionEvents();
     }
 
@@ -90,13 +90,16 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
 }
 
 /**
- * Applies events related to sorting in a non-obstrusive way
+ * Applies events related to selection in a non-obstrusive way
  */
 PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
-    var _self = this,
-    selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
-    
-    jQuery(this.jqId + ' .ui-datatable-data tr')
+    var _self = this;
+
+    //Row mouseover, mouseout, click
+    if(this.cfg.selectionMode) {
+        var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
+
+        jQuery(this.jqId + ' .ui-datatable-data tr')
             .css('cursor', 'pointer')
             .live('mouseover', function() {
                 var row = jQuery(this);
@@ -117,6 +120,26 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
             .live(selectEvent, function(event) {
                 _self.onRowClick(event, this);
             });
+            
+    }
+    //Radio/Checkbox based rowselection
+    else if(this.cfg.columnSelectionMode) {
+        
+        if(this.cfg.columnSelectionMode == 'single') {
+            jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:radio').
+                live('click', function() {
+                    _self.selectRowWithRadio(this);
+                });
+        }
+        else {
+            jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:checkbox').
+                live('click', function() {
+                    _self.selectRowWithCheckbox(this);
+                });
+        }
+    }
+
+    
 }
 
 /**
@@ -463,6 +486,45 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
 }
 
 /**
+ *  Selects the corresping row of a radio based column selection
+ */
+PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(radio) {
+    var row = jQuery(radio).parent().parent(),
+    rowId = row.attr('id').split('_row_')[1];
+
+    this.selection = [];
+    this.selection.push(rowId);
+
+    //save state
+    this.writeSelections();
+}
+
+/**
+ *  Selects the corresping row of a checkbox based column selection
+ */
+PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(element) {
+    var checkbox = jQuery(element),
+    row = checkbox.parent().parent(),
+    rowId = row.attr('id').split('_row_')[1],
+    checked = checkbox.attr('checked');
+
+    if(checked) {
+        //add to selection
+        this.selection.push(rowId);
+
+    } else {
+        //remove from selection
+        this.selection = jQuery.grep(this.selection, function(r) {
+            return r != rowId;
+        });
+        
+    }
+
+    //save state
+    this.writeSelections();
+}
+
+/**
  * Expands a row to display detail content
  */
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
@@ -629,7 +691,7 @@ PrimeFaces.widget.DataTable.prototype.clearSelection = function() {
  * Returns true|false if selection is enabled|disabled
  */
 PrimeFaces.widget.DataTable.prototype.isSelectionEnabled = function() {
-    return this.cfg.selectionMode != undefined;
+    return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
 }
 
 /*

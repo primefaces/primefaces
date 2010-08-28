@@ -103,8 +103,12 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         //Selection
-        if(table.isSelectionEnabled()) {
+        if(table.isRowSelectionEnabled()) {
             encodeSelectionConfig(context, table);
+        }
+
+        if(table.isColumnSelectionEnabled()) {
+            writer.write(",columnSelectionMode:'" + table.getColumnSelectionMode() + "'");
         }
 
         //Row expansion
@@ -351,6 +355,8 @@ public class DataTableRenderer extends CoreRenderer {
         Columns dynamicColumns = table.getDynamicColumns();
         String emptyMessage = table.getEmptyMessage();
         String selectionMode = table.getSelectionMode();
+        String columnSelectionMode = table.getColumnSelectionMode();
+        String selMode = selectionMode != null ? selectionMode : columnSelectionMode != null ? columnSelectionMode : null;
         Object selection = table.getSelection();
 
         //Load lazy data initially
@@ -369,7 +375,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(rowCountToRender != 0) {
             for(int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns, selectionMode, selection);
+                encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns, selMode, selection);
             }
         }
         else if(emptyMessage != null){
@@ -405,7 +411,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowStyleClass = table.getRowStyleClass();
         rowStyleClass = rowStyleClass == null ? DataTable.ROW_CLASS : DataTable.ROW_CLASS + " " + rowStyleClass;
 
-        if(selected) {
+        if(selected && table.getSelectionMode() != null) {
             rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
         }
 
@@ -435,6 +441,11 @@ public class DataTableRenderer extends CoreRenderer {
                     writer.writeAttribute("class", DataTable.ROW_EDITOR_COLUMN_CLASS, null);
 
                     encodeRowEditor(context, table);
+                }
+                else if(column.getSelectionMode() != null) {
+                    writer.writeAttribute("class", DataTable.SELECTION_COLUMN_CLASS, null);
+
+                    encodeColumnSelection(context, table, clientId, column, selected);
                 }
                 else {
                     CellEditor editor = column.getCellEditor();
@@ -720,6 +731,35 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("tr");
 
         table.setRowIndex(-1);
+    }
+
+    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, Column column, boolean selected) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String selectionMode = column.getSelectionMode();
+        String name = clientId + "_selection";
+
+        if(selectionMode.equalsIgnoreCase("single")) {
+            writer.startElement("input", null);
+            writer.writeAttribute("type", "radio", null);
+            writer.writeAttribute("name", name + "_radio", null);
+            if(selected) {
+                writer.writeAttribute("checked", "checked", null);
+            }
+            writer.endElement("input");
+            
+        } else if(selectionMode.equalsIgnoreCase("multiple")) {
+            writer.startElement("input", null);
+            writer.writeAttribute("type", "checkbox", null);
+            writer.writeAttribute("name", name + "_checkbox", null);
+            if(selected) {
+                writer.writeAttribute("checked", "checked", null);
+            }
+            writer.endElement("input");
+
+        } else {
+            throw new FacesException("Invalid column selection mode:" + selectionMode);
+        }
+
     }
 
     protected void encodeEditedRow(FacesContext context, DataTable table) throws IOException {

@@ -67,7 +67,7 @@
 }
 
 .ui-datatable .ui-expansion-column {
-    width: 16px;
+    width: 20px;
 }
 
 .ui-datatable .ui-cell-editor {
@@ -89,4 +89,8 @@
 
 .ui-datatable tr.ui-state-highlight {
     cursor: pointer;
+}
+
+.ui-datatable .ui-selection-column {
+    width: 20px;
 }

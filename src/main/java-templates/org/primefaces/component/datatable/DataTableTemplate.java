@@ -182,6 +182,7 @@ import java.io.Serializable;
     public static final String CELL_EDITOR_CLASS = "ui-cell-editor";
     public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
     public static final String ROW_EDITOR_CLASS = "ui-row-editor";
+    public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
 
     public List<Column> columns;
 
@@ -281,17 +282,39 @@ import java.io.Serializable;
 		return getFilterMap().size() > 0;
 	}
 
+    public boolean isRowSelectionEnabled() {
+        return this.getSelectionMode() != null;
+	}
+
+    public boolean isColumnSelectionEnabled() {
+        return getColumnSelectionMode() != null;
+	}
+
+    public String getColumnSelectionMode() {
+        for(Column column : getColumns()) {
+            String selectionMode = column.getSelectionMode();
+            if(selectionMode != null) {
+                return selectionMode;
+            }
+        }
+
+		return null;
+	}
+
     public boolean isSelectionEnabled() {
-		return this.getSelectionMode() != null;
+        return this.isRowSelectionEnabled() || isColumnSelectionEnabled();
 	}
 
     public boolean isSingleSelectionMode() {
 		String selectionMode = this.getSelectionMode();
+        String columnSelectionMode = this.getColumnSelectionMode();
 
 		if(selectionMode != null)
-			return selectionMode.equals("single") || selectionMode.equals("singlecell");
-		else
-			return false;
+			return selectionMode.equalsIgnoreCase("single");
+		else if(columnSelectionMode != null)
+			return columnSelectionMode.equalsIgnoreCase("single");
+        else
+            return false;
 	}
 
     private boolean emptySelected = false;
