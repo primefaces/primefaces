@@ -18,7 +18,9 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     //Selection events
     if(this.cfg.selectionMode) {
         this.selectionHolder = this.jqId + '_selection';
-        this.selection = [];
+
+        var preselection = jQuery(this.selectionHolder).val();
+        this.selection = preselection == "" ? [] : preselection.split(',');
     
         this.setupSelectionEvents();
     }

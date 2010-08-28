@@ -348,6 +348,8 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
         Columns dynamicColumns = table.getDynamicColumns();
         String emptyMessage = table.getEmptyMessage();
+        String selectionMode = table.getSelectionMode();
+        Object selection = table.getSelection();
 
         //Load lazy data initially
         if(table.isLazy() && !table.initiallyLoaded()) {
@@ -361,11 +363,11 @@ public class DataTableRenderer extends CoreRenderer {
 
         int rows = table.getRows();
 		int first = table.getFirst();
-        int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
+        int rowCountToRender = rows == 0 ? table.getRowCount() : rows;
 
         if(rowCountToRender != 0) {
             for(int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns);
+                encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns, selectionMode, selection);
             }
         }
         else if(emptyMessage != null){
@@ -388,15 +390,22 @@ public class DataTableRenderer extends CoreRenderer {
 		}
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, Columns dynamicColumns) throws IOException {
+    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, Columns dynamicColumns, String selectionMode, Object selection) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
             return;
         }
 
+        //Preselection
+        boolean selected = handlePreselection(table, rowIndex, selectionMode, selection);
+
         ResponseWriter writer = context.getResponseWriter();
         String rowStyleClass = table.getRowStyleClass();
         rowStyleClass = rowStyleClass == null ? DataTable.ROW_CLASS : DataTable.ROW_CLASS + " " + rowStyleClass;
+
+        if(selected) {
+            rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
+        }
 
         //Row index var
         if(rowIndexVar != null) {
@@ -521,6 +530,34 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("tfoot");
     }
 
+    protected boolean handlePreselection(DataTable table, int rowIndex, String selectionMode, Object selection) {
+        boolean selected = false;
+        
+        if(selectionMode != null && selection != null) {
+
+            if(selectionMode.equals("single")) {
+                if(selection != null && selection.equals(table.getRowData())) {
+                    table.addSelectedRowIndex(rowIndex);
+                    selected = true;
+                }
+            }
+            else if(selectionMode.equals("multiple")) {
+                Object[] selections = (Object[]) selection;
+
+                for(int i = 0; i < selections.length; i++) {
+                    if(selections[i].equals(table.getRowData())) {
+                        table.addSelectedRowIndex(rowIndex);
+                        selected = true;
+                        break;
+                    }
+                }
+            }
+            
+        }
+
+        return selected;
+    }
+
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
         if(facet == null)
             return;
@@ -611,6 +648,7 @@ public class DataTableRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
+        writer.writeAttribute("value", table.getSelectedRowIndexesAsString(), null);
 		writer.endElement("input");
 	}
 	
@@ -688,15 +726,20 @@ public class DataTableRenderer extends CoreRenderer {
 
         table.setRowIndex(editedRowId);
 
-        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getDynamicColumns());
+        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getDynamicColumns(), table.getSelectionMode(), table.getSelection());
     }
 
     private void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
+        String clientId = table.getClientId(context);
+        String rowIndexVar = table.getRowIndexVar();
+        Columns columns = table.getDynamicColumns();
+        String selectionMode = table.getSelectionMode();
+        Object selection = table.getSelection();
 
         for(int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
-            encodeRow(context, table, table.getClientId(context), i, table.getRowIndexVar(), table.getDynamicColumns());
+            encodeRow(context, table, clientId, i, rowIndexVar, columns, selectionMode, selection);
         }
     }
 }
