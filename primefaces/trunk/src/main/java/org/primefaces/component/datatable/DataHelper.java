@@ -18,8 +18,10 @@ package org.primefaces.component.datatable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.el.ValueExpression;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -68,81 +70,107 @@ class DataHelper {
 		table.setPage(1);
 
         if(table.isLazy()) {
-            String sortExpression = sortColumn.getValueExpression("sortBy").getExpressionString();
-            sortExpression = sortExpression.substring(2, sortExpression.length() - 1);      //Remove #{}
-            table.setSortField(sortExpression.substring(sortExpression.indexOf(".") + 1));    //Remove var
+            table.setSortField(resolveField(sortColumn.getValueExpression("sortBy")));
             table.setSortOrder(asc);
 
             table.loadLazyData();
-
+            
         } else {
             List list = (List) table.getValue();
             Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
-        }
-
+        }        
 	}
 
     void decodeFilterRequest(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        
-		Map<String,Column> filterMap = table.getFilterMap();
-		List filteredData = new ArrayList();
-		table.setValue(null);	//Always work with user data
 
-        String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
-        boolean hasGlobalFilter = !isValueBlank(globalFilter);
-        if(hasGlobalFilter) {
-            globalFilter = globalFilter.toLowerCase();
-        }
+        //Reset state
+        table.setFirst(0);
+        table.setPage(1);
 
-        for(int i = 0; i < table.getRowCount(); i++) {
-            table.setRowIndex(i);
-            boolean localMatch = true;
-            boolean globalMatch = false;
+        if(table.isLazy()) {
+            Map<String,String> filters = new HashMap<String, String>();
+            Map<String,Column> filterMap = table.getFilterMap();
 
             for(String filterName : filterMap.keySet()) {
                 Column column = filterMap.get(filterName);
-                String columnFilter = params.get(filterName).toLowerCase();
-                String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
+                String filterValue = params.get(filterName).toLowerCase();
 
-                if(hasGlobalFilter && !globalMatch) {
-                    if(columnValue != null && columnValue.toLowerCase().contains(globalFilter))
-                        globalMatch = true;
+                if(!isValueBlank(filterValue)) {
+                    String filterField = resolveField(column.getValueExpression("filterBy"));
+                    
+                    filters.put(filterField, filterValue);
                 }
-
-                if(isValueBlank(columnFilter)) {
-                    localMatch = true;
-                }
-                else if(columnValue == null || !column.getFilterConstraint().applies(columnValue.toLowerCase(), columnFilter)) {
-                    localMatch = false;
-                    break;
-                }
-
             }
 
-            boolean matches = localMatch;
+            table.setFilters(filters);
+
+            table.loadLazyData();
+
+            //Metadata for callback
+            if(table.isPaginator()) {
+                RequestContext.getCurrentInstance().addCallbackParam("totalRecords", table.getRowCount());
+            }
+            
+        }
+        else {
+            Map<String,Column> filterMap = table.getFilterMap();
+            List filteredData = new ArrayList();
+            table.setValue(null);	//Always work with user data
+
+            String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
+            boolean hasGlobalFilter = !isValueBlank(globalFilter);
             if(hasGlobalFilter) {
-                matches = localMatch && globalMatch;
+                globalFilter = globalFilter.toLowerCase();
             }
 
-            if(matches) {
-                filteredData.add(table.getRowData());
+            for(int i = 0; i < table.getRowCount(); i++) {
+                table.setRowIndex(i);
+                boolean localMatch = true;
+                boolean globalMatch = false;
+
+                for(String filterName : filterMap.keySet()) {
+                    Column column = filterMap.get(filterName);
+                    String columnFilter = params.get(filterName).toLowerCase();
+                    String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
+
+                    if(hasGlobalFilter && !globalMatch) {
+                        if(columnValue != null && columnValue.toLowerCase().contains(globalFilter))
+                            globalMatch = true;
+                    }
+
+                    if(isValueBlank(columnFilter)) {
+                        localMatch = true;
+                    }
+                    else if(columnValue == null || !column.getFilterConstraint().applies(columnValue.toLowerCase(), columnFilter)) {
+                        localMatch = false;
+                        break;
+                    }
+
+                }
+
+                boolean matches = localMatch;
+                if(hasGlobalFilter) {
+                    matches = localMatch && globalMatch;
+                }
+
+                if(matches) {
+                    filteredData.add(table.getRowData());
+                }
             }
+
+            table.setRowIndex(-1);	//cleanup
+
+            table.setValue(filteredData);
+
+            //Metadata for callback
+            if(table.isPaginator()) {
+                RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
+            }
+
         }
 
-		table.setRowIndex(-1);	//cleanup
-
-		table.setValue(filteredData);
-
-		//Reset state
-		table.setFirst(0);
-		table.setPage(1);
-
-        //Metadata for callback
-        if(table.isPaginator()) {
-            RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
-        }
 	}
 
     public boolean isValueBlank(String value) {
@@ -220,4 +248,11 @@ class DataHelper {
             table.setSelection(data);
 		}
 	}
+
+    String resolveField(ValueExpression expression) {
+        String expressionString = expression.getExpressionString();
+        expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
+        
+        return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+    }
 }

@@ -80,7 +80,5 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String,String> filters) {
-        throw new RuntimeException("Needs to be overriden");
-    }
+    public abstract List<T> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String,String> filters);
 }

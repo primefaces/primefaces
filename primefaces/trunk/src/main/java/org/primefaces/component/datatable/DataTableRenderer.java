@@ -348,6 +348,12 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
         Columns dynamicColumns = table.getDynamicColumns();
         String emptyMessage = table.getEmptyMessage();
+
+        //Load lazy data initially
+        if(table.isLazy() && !table.initiallyLoaded()) {
+            table.loadLazyData();
+            table.markAsLoaded();
+        }
       
         writer.startElement("tbody", null);
         writer.writeAttribute("id", clientId + "_data", null);
@@ -356,12 +362,6 @@ public class DataTableRenderer extends CoreRenderer {
         int rows = table.getRows();
 		int first = table.getFirst();
         int rowCountToRender = table.getRows() == 0 ? table.getRowCount() : table.getRows();
-
-        //Load lazy data initially for lazy datatable
-        if(table.isLazy() && !table.initiallyLoaded()) {
-            table.loadLazyData();
-            table.markAsLoaded();
-        }
 
         if(rowCountToRender != 0) {
             for(int i = first; i < (first + rowCountToRender); i++) {

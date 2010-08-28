@@ -416,7 +416,7 @@ import java.io.Serializable;
     }
 
     public Map<String,String> getFilters() {
-        return (Map<String,String>) getStateHelper().eval("filters", null);
+        return (Map<String,String>) getStateHelper().eval("filters", new HashMap<String,String>());
     }
 
     public void setFilters(Map<String,String> filters) {
