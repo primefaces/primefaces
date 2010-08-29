@@ -171,9 +171,6 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>jquery/plugins/lightbox/assets/skins/dark/colorbox.css</name>
 		</resource>
 		<resource>
