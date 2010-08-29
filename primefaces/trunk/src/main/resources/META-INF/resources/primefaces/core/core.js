@@ -29,6 +29,21 @@ PrimeFaces = {
     submit : function(formId) {
         jQuery(this.escapeClientId(formId)).submit();
     },
+
+    attachBehaviors : function(element, behaviors) {
+        for(var event in behaviors) {
+            var domEvent = event,
+            handlers = behaviors[domEvent];
+
+            for(var i in handlers) {
+                var handler = handlers[i];
+
+                element.bind(domEvent, function(e) {
+                    handler.call(this, e);
+                });
+            }
+        }
+    },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 

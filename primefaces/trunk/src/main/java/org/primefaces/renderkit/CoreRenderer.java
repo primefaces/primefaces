@@ -16,13 +16,19 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -278,4 +284,52 @@ public class CoreRenderer extends Renderer {
 	protected String escapeText(String value) {
 		return value == null ? "" : value.replaceAll("'", "\\\\'");
 	}
+
+    /**
+     * Non-obstrusive way to apply client behaviors.
+     * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
+     */
+    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //ClientBehaviors
+        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
+
+        if(!behaviorEvents.isEmpty()) {
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+            writer.write(",behaviors:{");
+
+            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
+                String event = eventIterator.next();
+                String domEvent = event;
+
+                if(event.equalsIgnoreCase("valueChange"))       //editable value holders
+                    domEvent = "change";
+                else if(event.equalsIgnoreCase("action"))       //commands
+                    domEvent = "click";
+
+                writer.write(domEvent + ":");
+
+                writer.write("[");
+                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
+                    ClientBehavior behavior = behaviorIter.next();
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, null, params);
+
+                    writer.write("function(event){" + behavior.getScript(cbc) + ";}");
+
+                    if(behaviorIter.hasNext()) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("]");
+
+                if(eventIterator.hasNext()) {
+                    writer.write(",");
+                }
+            }
+
+            writer.write("}");
+        }
+    }
 }
