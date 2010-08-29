@@ -46,6 +46,7 @@ public class ButtonRenderer extends CoreRenderer {
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, "name");
+        writer.writeAttribute("type", "button", null);
 		if(button.getStyleClass() != null) {
 			writer.writeAttribute("class", button.getStyleClass() , "styleClass");
         }
