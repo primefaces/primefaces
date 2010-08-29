@@ -32,24 +32,6 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
     jQuery(this.jqId).spinner(this.cfg);
 
     if(this.cfg.behaviors) {
-        this.attachBehaviors();
-    }
-}
-
-/*
- * PrimeFaces Spinner widget
- */
-PrimeFaces.widget.Spinner.prototype.attachBehaviors = function() {
-    for(var event in this.cfg.behaviors) {
-        var domEvent = event,
-        handlers = this.cfg.behaviors[domEvent];
-
-        for(var i in handlers) {
-            var handler = handlers[i];
-            
-            jQuery(this.jqId).bind(domEvent, function(e) {
-                handler.call(this, e);
-            });
-        }
+        PrimeFaces.attachBehaviors(jQuery(this.jqId), this.cfg.behaviors);
     }
 }
