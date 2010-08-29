@@ -10,7 +10,7 @@
 </attribute>
 <attribute>
 	<name>var</name>
-	<required>true</required>
+	<required>false</required>
 	<type>java.lang.String</type>
 	<ignoreInComponent>true</ignoreInComponent>
 	<literal>true</literal>
