@@ -33,9 +33,8 @@ public class DataGridRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         DataGrid grid = (DataGrid) component;
         String clientId = grid.getClientId();
-        boolean isAjaxPaging = params.containsKey(clientId + "_ajaxPaging");
 
-        if(isAjaxPaging) {
+        if(grid.isPagingRequest(context)) {
             grid.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             grid.setRows(Integer.valueOf(params.get(clientId + "_rows")));
             grid.setPage(Integer.valueOf(params.get(clientId + "_page")));
@@ -46,9 +45,8 @@ public class DataGridRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataGrid grid = (DataGrid) component;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        boolean isAjaxPaging = params.containsKey(grid.getClientId() + "_ajaxPaging");
 
-        if(isAjaxPaging) {
+        if(grid.isPagingRequest(context)) {
             encodeTable(context, grid);
         } else {
             encodeMarkup(context, grid);
