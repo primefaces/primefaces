@@ -26,6 +26,11 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
             jQuery(_self.jqh).val(jQuery(this).val());
         });
     }
+
+    //behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(jQuery(this.jq), this.cfg.behaviors);
+    }
 }
 
 PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
