@@ -75,9 +75,6 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>notificationbar/notificationbar.css</name>
 		</resource>
 		<resource>

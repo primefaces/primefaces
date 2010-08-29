@@ -111,9 +111,6 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
