@@ -98,6 +98,7 @@ public class HTML {
 	public static String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
 		"accesskey",
 		"alt",
+        "autocomplete",
 		"dir",
 		"disabled",
 		"lang",

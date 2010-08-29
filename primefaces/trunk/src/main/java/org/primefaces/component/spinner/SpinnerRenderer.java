@@ -87,6 +87,9 @@ public class SpinnerRenderer extends CoreRenderer {
 		}
 		
 		renderPassThruAttributes(facesContext, spinner, HTML.INPUT_TEXT_ATTRS);
+
+        System.out.println("Default:" + spinner.getDefaultEventName());
+        System.out.println("Events:" + spinner.getEventNames());
 		
 		writer.endElement("input");
 	}

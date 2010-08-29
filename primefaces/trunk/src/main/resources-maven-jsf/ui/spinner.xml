@@ -14,7 +14,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.SpinnerRenderer</rendererType>
 	<rendererClass>org.primefaces.component.spinner.SpinnerRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
+	<parent>javax.faces.component.html.HtmlInputText</parent>
      <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>

@@ -20,6 +20,15 @@
 	</description>
 </attribute>
 <attribute>
+	<name>autocomplete</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Html autocomplete attribute of the input text
+	</description>
+</attribute>
+<attribute>
 	<name>dir</name>
 	<required></required>
 	<type>java.lang.String</type>
@@ -35,6 +44,15 @@
 	<ignoreInComponent>true</ignoreInComponent>
 	<description>
 		Html disabled attribute of the input text
+	</description>
+</attribute>
+<attribute>
+	<name>label</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<description>
+		Localized name of the component
 	</description>
 </attribute>
 <attribute>

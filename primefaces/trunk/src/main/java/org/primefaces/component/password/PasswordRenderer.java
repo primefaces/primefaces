@@ -77,7 +77,6 @@ public class PasswordRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "password", null);
-		writer.writeAttribute("autocomplete", password.isAutocomplete(), "autocomplete");
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(facesContext, password);
 		if(valueToRender != null) {
