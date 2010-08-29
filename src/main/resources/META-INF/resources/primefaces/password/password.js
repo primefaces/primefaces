@@ -36,12 +36,16 @@ PrimeFaces.widget.Password = function(id, cfg) {
 	
 	if(cfg.flat) {
 		if(!cfg.onShow)
-			cfg.onShow = function(input, container){ container.slideDown(); };
+			cfg.onShow = function(input, container){container.slideDown();};
 		if(!cfg.onHide)
-			cfg.onHide = function(input, container){ container.slideUp(); };
+			cfg.onHide = function(input, container){container.slideUp();};
 		
-		cfg.onComplete = function(input, container){ container.hide(); };
+		cfg.onComplete = function(input, container){container.hide();};
 	}
 	
 	jQuery(this.jqId).jpassword(this.cfg);
+
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(jQuery(this.jqId), this.cfg.behaviors);
+    }
 }
