@@ -99,14 +99,14 @@
             <name>wizard/wizard.css</name>
         </resource>
         <resource>
-            <name>jquery/plugins/ui/jquery.ui.button.css</name>
-        </resource>
-        <resource>
-            <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-            <name>jquery/plugins/ui/jquery-ui.custom.js</name>
-        </resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
         <resource>
             <name>core/core.js</name>
         </resource>

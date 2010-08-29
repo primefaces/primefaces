@@ -49,7 +49,7 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>sheet/jquery.sheet.js</name>
