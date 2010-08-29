@@ -110,17 +110,14 @@
 		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>keyboard/keyboard.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/ui-jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>jquery/plugins/keyboard/keypad.css</name>
-		</resource>
-		<resource>
-			<name>jquery/plugins/keyboard/keypad.min.js</name>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

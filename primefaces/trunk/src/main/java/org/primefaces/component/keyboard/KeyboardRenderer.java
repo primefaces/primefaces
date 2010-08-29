@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.primefaces.component.keyboard;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,25 +29,27 @@ import org.primefaces.util.HTML;
 public class KeyboardRenderer extends CoreRenderer {
 	
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		Keyboard keyboard = (Keyboard) component;
-		String clientId = keyboard.getClientId(facesContext);
-		
-		String submittedValue = (String) facesContext.getExternalContext().getRequestParameterMap().get(clientId);
-		keyboard.setSubmittedValue(submittedValue);
+		String clientId = keyboard.getClientId(context);
+
+        if(params.containsKey(clientId)) {
+            keyboard.setSubmittedValue((String) params.get(clientId));
+        }
 	}
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Keyboard keyboard = (Keyboard) component;
 		
-		encodeMarkup(facesContext, keyboard);
-		encodeScript(facesContext, keyboard);
+		encodeMarkup(context, keyboard);
+		encodeScript(context, keyboard);
 	}
 	
-	private void encodeScript(FacesContext facesContext, Keyboard keyboard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = keyboard.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Keyboard keyboard) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = keyboard.getClientId(context);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -56,7 +59,7 @@ public class KeyboardRenderer extends CoreRenderer {
 		writer.write(",showAnim:'" + keyboard.getEffect() + "'");
 		
 		if(keyboard.isButtonImageOnly()) writer.write(",buttonImageOnly:true");
-		if(keyboard.getButtonImage() != null) writer.write(",buttonImage:'" + getResourceURL(facesContext, keyboard.getButtonImage()) + "'");
+		if(keyboard.getButtonImage() != null) writer.write(",buttonImage:'" + getResourceURL(context, keyboard.getButtonImage()) + "'");
 		if(keyboard.getEffectDuration() != null) writer.write(",duration:'" + keyboard.getEffectDuration() + "'");
 		if(!keyboard.isKeypadOnly()) {
 			writer.write(",keypadOnly:false");
@@ -71,23 +74,25 @@ public class KeyboardRenderer extends CoreRenderer {
 		if(keyboard.getBackspaceLabel() != null) writer.write(",backText:'" + keyboard.getBackspaceLabel() + "'");
 		if(keyboard.getClearLabel() != null) writer.write(",clearText:'" + keyboard.getClearLabel() + "'");
 		if(keyboard.getCloseLabel() != null) writer.write(",closeText:'" + keyboard.getCloseLabel() + "'");
+
+        encodeClientBehaviors(context, keyboard);
 	
 		writer.write("});");
 		
 		writer.endElement("script");
 	}
 
-	private void encodeMarkup(FacesContext facesContext, Keyboard keyboard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = keyboard.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, Keyboard keyboard) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = keyboard.getClientId(context);
 		String type = keyboard.isPassword() ? "password" : "text";
 		
 		writer.startElement("input", keyboard);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", type, null);
-		writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, keyboard), null);
-		renderPassThruAttributes(facesContext, keyboard, HTML.INPUT_TEXT_ATTRS);
+		writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, keyboard), null);
+		renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
 		writer.endElement("input");		
 	}
 }
