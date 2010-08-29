@@ -33,6 +33,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public class AutoCompleteRenderer extends CoreRenderer {
 
@@ -43,7 +44,7 @@ public class AutoCompleteRenderer extends CoreRenderer {
         String clientId = autoComplete.getClientId(facesContext);
         String valueParam = autoComplete.getVar() == null ? clientId + "_input" : clientId + "_hinput";
 
-        if (params.containsKey(valueParam)) {
+        if(params.containsKey(valueParam)) {
             autoComplete.setSubmittedValue(params.get(valueParam));
         }
     }
@@ -114,9 +115,9 @@ public class AutoCompleteRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeMarkup(FacesContext facesContext, AutoComplete ac) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = ac.getClientId(facesContext);
+    protected void encodeMarkup(FacesContext context, AutoComplete ac) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = ac.getClientId(context);
         Object value = ac.getValue();
 
         writer.startElement("span", null);
@@ -128,15 +129,15 @@ public class AutoCompleteRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         if (value != null) {
             if (ac.getVar() == null) {
-                writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, ac), null);
+                writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac), null);
             } else {
-                facesContext.getExternalContext().getRequestMap().put(ac.getVar(), value);
+                context.getExternalContext().getRequestMap().put(ac.getVar(), value);
                 writer.writeAttribute("value", ac.getItemLabel(), null);
             }
         }
-        if (ac.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
+
+        renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
+
 
         writer.endElement("input");
 
@@ -147,11 +148,11 @@ public class AutoCompleteRenderer extends CoreRenderer {
             writer.writeAttribute("name", clientId + "_hinput", null);
             writer.writeAttribute("type", "hidden", null);
             if (value != null) {
-                writer.writeAttribute("value", ComponentUtils.getStringValueToRender(facesContext, ac, ac.getItemValue()), null);
+                writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue()), null);
             }
             writer.endElement("input");
 
-            facesContext.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
+            context.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
         }
 
         writer.endElement("span");
@@ -178,18 +179,10 @@ public class AutoCompleteRenderer extends CoreRenderer {
         writer.write(",maxResults:" + ac.getMaxResults());
 
         //Configuration
-        if (ac.getMinQueryLength() != 1) {
-            writer.write(",minLength:" + ac.getMinQueryLength());
-        }
-        if (ac.getQueryDelay() != 300) {
-            writer.write(",delay:" + ac.getQueryDelay());
-        }
-        if (ac.isDisabled()) {
-            writer.write(",disabled:true");
-        }
-        if (ac.isForceSelection()) {
-            writer.write(",forceSelection:true");
-        }
+        if(ac.getMinQueryLength() != 1) writer.write(",minLength:" + ac.getMinQueryLength());
+        if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());
+        if(ac.isDisabled()) writer.write(",disabled:true");
+        if(ac.isForceSelection()) writer.write(",forceSelection:true");
 
         //Instant ajax selection
         if (ac.getSelectListener() != null) {
@@ -201,12 +194,10 @@ public class AutoCompleteRenderer extends CoreRenderer {
         }
 
         //Client side callbacks
-        if (ac.getOnstart() != null) {
-            writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
-        }
-        if (ac.getOncomplete() != null) {
-            writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
-        }
+        if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
+        if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
+
+        encodeClientBehaviors(facesContext, ac);
 
         writer.write("});});");
 

@@ -3,6 +3,7 @@
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
 <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
 <!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -14,7 +15,7 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.AutoCompleteRenderer</rendererType>
     <rendererClass>org.primefaces.component.autocomplete.AutoCompleteRenderer</rendererClass>
-    <parent>javax.faces.component.UIInput</parent>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -22,6 +23,7 @@
 	</interfaces>
     <attributes>
         &input_component_attributes;
+        &html_input_text_attributes;
         &widget_var_attribute;
         <attribute>
             <name>completeMethod</name>
@@ -100,13 +102,6 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>Javascript event handler to be called after ajax request to load items completed.</description>
-        </attribute>
-        <attribute>
-            <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Disables the calendar.</description>
         </attribute>
     </attributes>
     <resources>
