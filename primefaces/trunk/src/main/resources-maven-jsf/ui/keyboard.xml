@@ -117,7 +117,7 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/effects/effects.js</name>
+			<name>jquery/ui-jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>jquery/plugins/keyboard/keypad.css</name>

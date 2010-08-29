@@ -122,14 +122,14 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>jquery/plugins/ui/jquery.ui.dialog.css</name>
+			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
 		<resource>
 			<name>core/core.js</name>
 		</resource>
