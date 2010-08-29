@@ -16,8 +16,14 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -30,35 +36,37 @@ import org.primefaces.util.HTML;
 public class SpinnerRenderer extends CoreRenderer {
 
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
 		Spinner spinner = (Spinner) component;
-		String clientId = spinner.getClientId(facesContext);
+		String clientId = spinner.getClientId(context);
 		
-		String submittedValue = (String) facesContext.getExternalContext().getRequestParameterMap().get(clientId);
+		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 		spinner.setSubmittedValue(submittedValue);
 	}
 	
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Spinner spinner = (Spinner) component;
 		
 		//IE8 Standards mode fix
-		facesContext.getResponseWriter().write("<!--[if IE 8.0]><style type=\"text/css\">.ui-spinner {border:1px solid transparent;}</style><![endif]-->");
+		context.getResponseWriter().write("<!--[if IE 8.0]><style type=\"text/css\">.ui-spinner {border:1px solid transparent;}</style><![endif]-->");
 		
-		encodeMarkup(facesContext, spinner);
-		encodeScript(facesContext, spinner);
+		encodeMarkup(context, spinner);
+		encodeScript(context, spinner);
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Spinner spinner) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = spinner.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = spinner.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write("jQuery(function(){");
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).spinner({");
-		writer.write("step:" + spinner.getStepFactor());
+
+		writer.write(spinner.resolveWidgetVar() + " = new PrimeFaces.widget.Spinner('" + clientId + "',{");
+
+        writer.write("step:" + spinner.getStepFactor());
 		
 		if(spinner.getMin() != Double.MIN_VALUE) writer.write(",min:" + spinner.getMin());
 		if(spinner.getMax() != Double.MAX_VALUE) writer.write(",max:" + spinner.getMax());
@@ -66,7 +74,45 @@ public class SpinnerRenderer extends CoreRenderer {
 		if(spinner.getShowOn() != null) writer.write(",showOn:'" + spinner.getShowOn() + "'");
 		if(spinner.getPrefix() != null) writer.write(",prefix:'" + spinner.getPrefix() + "'");
 		if(spinner.getSuffix() != null) writer.write(",suffix:'" + spinner.getSuffix() + "'");
-		
+
+        //ClientBehaviors
+        Map<String,List<ClientBehavior>> behaviorEvents = spinner.getClientBehaviors();
+
+        if(!behaviorEvents.isEmpty()) {
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+            
+            writer.write(",behaviors:{");
+
+            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
+                String event = eventIterator.next();
+                String domEvent = event;
+                
+                if(event.equals(spinner.getDefaultEventName()))
+                    domEvent = "change";
+                
+                writer.write(domEvent + ":");
+
+                writer.write("[");
+                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
+                    ClientBehavior behavior = behaviorIter.next();
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, spinner, event, null, params);
+
+                    writer.write("function(event){" + behavior.getScript(cbc) + ";}");
+
+                    if(behaviorIter.hasNext()) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("]");
+
+                if(eventIterator.hasNext()) {
+                    writer.write(",");
+                }
+            }
+
+            writer.write("}");
+        }
+ 		
 		writer.write("});});");
 		
 		writer.endElement("script");
@@ -87,9 +133,6 @@ public class SpinnerRenderer extends CoreRenderer {
 		}
 		
 		renderPassThruAttributes(facesContext, spinner, HTML.INPUT_TEXT_ATTRS);
-
-        System.out.println("Default:" + spinner.getDefaultEventName());
-        System.out.println("Events:" + spinner.getEventNames());
 		
 		writer.endElement("input");
 	}

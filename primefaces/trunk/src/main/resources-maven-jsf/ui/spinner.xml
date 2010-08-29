@@ -23,6 +23,7 @@
 	<attributes>
 		&input_component_attributes;
 		&html_input_text_attributes;
+        &widget_var_attribute;
 		<attribute>
 			<name>stepFactor</name>
 			<required>false</required>
@@ -72,7 +73,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>jquery/plugins/spinner/ui.spinner.css</name>
+			<name>spinner/spinner.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -81,10 +82,10 @@
 			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/spinner/ui.spinner.min.js</name>
-		</resource>
-		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>spinner/spinner.js</name>
 		</resource>
 	</resources>
 </component>
