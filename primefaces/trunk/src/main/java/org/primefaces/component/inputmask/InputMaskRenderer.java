@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,54 +30,59 @@ import org.primefaces.util.HTML;
 public class InputMaskRenderer extends CoreRenderer {
 	
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
 		InputMask inputMask = (InputMask) component;
-		String clientId = inputMask.getClientId(facesContext);
+		String clientId = inputMask.getClientId(context);
 		
-		String submittedValue = (String) facesContext.getExternalContext().getRequestParameterMap().get(clientId);
+		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 		inputMask.setSubmittedValue(submittedValue);
 	}
 	
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		InputMask inputMask = (InputMask) component;
 		
-		encodeMarkup(facesContext, inputMask);
-		encodeScript(facesContext, inputMask);
+		encodeMarkup(context, inputMask);
+		encodeScript(context, inputMask);
 	}
 	
-	private void encodeScript(FacesContext facesContext, InputMask inputMask) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = inputMask.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = inputMask.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).mask('"+inputMask.getMask()+"'");
-		
-		if(inputMask.getPlaceHolder()!=null)
-			writer.write(",{placeholder:'"+inputMask.getPlaceHolder()+"'}");
+        writer.write(inputMask.resolveWidgetVar() + " = new PrimeFaces.widget.InputMask('" + clientId + "', {");
 
-		writer.write(");");
+        writer.write("mask:'" + inputMask.getMask() + "'");
+
+        if(inputMask.getPlaceHolder()!=null) {
+			writer.write(",placeholder:'" + inputMask.getPlaceHolder() + "'");
+        }
+
+        encodeClientBehaviors(context, inputMask);
+
+		writer.write("});");
 	
 		writer.endElement("script");
 	}
 	
-	private void encodeMarkup(FacesContext facesContext, InputMask inputMask) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = inputMask.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = inputMask.getClientId(context);
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "text", null);
 		
-		String valueToRender = ComponentUtils.getStringValueToRender(facesContext, inputMask);
+		String valueToRender = ComponentUtils.getStringValueToRender(context, inputMask);
 		if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 		
-		renderPassThruAttributes(facesContext, inputMask, HTML.INPUT_TEXT_ATTRS);
+		renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS);
 		
 		if(inputMask.getStyleClass() != null) {
 			writer.writeAttribute("class", inputMask.getStyleClass(), "styleClass");
@@ -87,22 +92,22 @@ public class InputMaskRenderer extends CoreRenderer {
 	}
 
 	@Override
-	public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException {
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
 		InputMask inputMask = (InputMask) component;
 		String value = (String) submittedValue;
 		Converter converter = inputMask.getConverter();
 		
 		//first ask the converter
 		if(converter != null) {
-			return converter.getAsObject(facesContext, inputMask, value);
+			return converter.getAsObject(context, inputMask, value);
 		}
 		//Try to guess
 		else {
-			Class<?> valueType = inputMask.getValueExpression("value").getType(facesContext.getELContext());
-			Converter converterForType = facesContext.getApplication().createConverter(valueType);
+			Class<?> valueType = inputMask.getValueExpression("value").getType(context.getELContext());
+			Converter converterForType = context.getApplication().createConverter(valueType);
 			
 			if(converterForType != null) {
-				return converterForType.getAsObject(facesContext, inputMask, value);
+				return converterForType.getAsObject(context, inputMask, value);
 			}
 		}
 		

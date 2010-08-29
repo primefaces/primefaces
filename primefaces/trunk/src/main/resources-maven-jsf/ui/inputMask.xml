@@ -4,6 +4,7 @@
 <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
 <!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
 <!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
 	<tag>inputMask</tag>
@@ -14,15 +15,20 @@
 	<rendererType>org.primefaces.component.InputMaskRenderer</rendererType>
 	<rendererClass>org.primefaces.component.inputmask.InputMaskRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&input_component_attributes;
 		&html_input_text_attributes;
+        &widget_var_attribute;
 		<attribute>
 			<name>mask</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description><![CDATA[Masked input for seperating input texts with given pattern.<br/>These mask definitions can be used: <ul><li>a - Represents an alpha character (A-Z,a-z)</li><li> 9 - Represents a numeric character (0-9)</li><li>* - Represents an alphanumeric character (A-Z,a-z,0-9)</li></ul>]]>
-			</description>
+			<description>Mask value</description>
 		</attribute>
 		<attribute>
 			<name>placeHolder</name>
@@ -36,10 +42,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/inputmask/maskedinput.js</name>
-		</resource>
-		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>inputmask/inputmask.js</name>
 		</resource>
 	</resources>
 </component>
