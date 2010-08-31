@@ -3,6 +3,7 @@
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
 <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
 <!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -14,7 +15,7 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.CalendarRenderer</rendererType>
     <rendererClass>org.primefaces.component.calendar.CalendarRenderer</rendererClass>
-    <parent>javax.faces.component.UIInput</parent>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -22,18 +23,19 @@
 	</interfaces>
     <attributes>
         &input_component_attributes;
+        &html_input_text_attributes;
         &widget_var_attribute;
         <attribute>
             <name>mindate</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Sets calendar's minimum visible date. Can be java.lang.String or java.util.Date. If String, mindate will be parsed with the format "MM/dd/yyyy". </description>
+            <description>Sets calendar's minimum visible date. Can be java.lang.String or java.util.Date.</description>
         </attribute>
         <attribute>
             <name>maxdate</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Sets calendar's maximum visible date. Can be java.lang.String or java.util.Date. If String, maxdate will be parsed with the format "MM/dd/yyyy". </description>
+            <description>Sets calendar's maximum visible date. Can be java.lang.String or java.util.Date.</description>
         </attribute>
         <attribute>
             <name>pages</name>
@@ -41,13 +43,6 @@
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
             <description>Enables multiple page rendering if more than 1, default value is 1.</description>
-        </attribute>
-        <attribute>
-            <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Disables the calendar.</description>
         </attribute>
         <attribute>
             <name>mode</name>
@@ -117,18 +112,6 @@
             <type>javax.el.MethodExpression</type>
             <method-signature>void selectListener()</method-signature>
             <description>A server side listener to invoke instantly with ajax when a date is completed</description>
-        </attribute>
-        <attribute>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Style of the main container of calendar.</description>
-        </attribute>
-        <attribute>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Style class of the main container of calendar.</description>
         </attribute>
         <attribute>
             <name>inputStyle</name>
