@@ -61,12 +61,8 @@ public class CalendarRenderer extends CoreRenderer {
 
         writer.startElement("span", calendar);
         writer.writeAttribute("id", clientId, null);
-        if (calendar.getStyle() != null) {
-            writer.writeAttribute("style", calendar.getStyle(), null);
-        }
-        if (calendar.getStyleClass() != null) {
-            writer.writeAttribute("class", calendar.getStyleClass(), null);
-        }
+        if(calendar.getStyle() != null) writer.writeAttribute("style", calendar.getStyle(), null);
+        if(calendar.getStyleClass() != null) writer.writeAttribute("class", calendar.getStyleClass(), null);
 
         //popup container
         if(!calendar.isPopup()) {
@@ -92,6 +88,8 @@ public class CalendarRenderer extends CoreRenderer {
             if(calendar.getInputStyleClass() != null) writer.writeAttribute("class", calendar.getInputStyleClass(), null);
             if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+
+            renderPassThruAttributes(context, calendar, Calendar.INPUT_TEXT_ATTRS);
         }
 
         writer.endElement("input");
