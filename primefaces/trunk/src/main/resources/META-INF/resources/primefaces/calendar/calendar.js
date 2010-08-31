@@ -10,6 +10,10 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     if(!this.cfg.disabled) {
         jQuery(this.jq).datepicker(this.cfg);
     }
+
+    if(this.cfg.behaviors && this.cfg.popup) {
+        PrimeFaces.attachBehaviors(jQuery(this.jq), this.cfg.behaviors);
+    }
 }
 
 PrimeFaces.widget.Calendar.prototype.configureLocale = function() {

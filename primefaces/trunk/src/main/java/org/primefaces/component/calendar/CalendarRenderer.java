@@ -162,6 +162,8 @@ public class CalendarRenderer extends CoreRenderer {
             }
         }
 
+        encodeClientBehaviors(context, calendar);
+
         writer.write("});});");
 
         writer.endElement("script");
