@@ -45,6 +45,7 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
 	
             PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options);
         }
+
     }
 }
 
