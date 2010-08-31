@@ -224,12 +224,14 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.String rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
+            <description>Server side listener to invoke when a row is selected in instant selection mode.</description>
         </attribute>
         <attribute>
             <name>rowUnselectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.String rowUnselectListener(org.primefaces.event.UnselectEvent)</method-signature>
+            <description>Server side listener to invoke when a row is unselected in instant selection mode.</description>
         </attribute>
         <attribute>
 			<name>onRowUnselectUpdate</name>

@@ -45,6 +45,7 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void idleListener(org.primefaces.event.IdleEvent)</method-signature>
+            <description>Server side listener to invoke when user goes idle.</description>
         </attribute>
         <attribute>
             <name>update</name>
