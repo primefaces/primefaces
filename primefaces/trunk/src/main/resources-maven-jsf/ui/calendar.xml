@@ -189,6 +189,12 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, days belonging to other months become selectable.</description>
         </attribute>
+        <attribute>
+            <name>yearRange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Year range to display in navigator.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

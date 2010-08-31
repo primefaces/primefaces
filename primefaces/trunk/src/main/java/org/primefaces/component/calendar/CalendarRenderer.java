@@ -121,6 +121,7 @@ public class CalendarRenderer extends CoreRenderer {
         if(calendar.isShowButtonPanel()) writer.write(",showButtonPanel:true");
         if(calendar.isShowWeek()) writer.write(",showWeek:true");
         if(calendar.isDisabled()) writer.write(",disabled:true");
+        if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
 
         if(calendar.isNavigator()) {
             writer.write(",changeMonth:true");
