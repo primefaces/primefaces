@@ -47,3 +47,19 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
         }
     }
 }
+
+PrimeFaces.widget.Calendar.prototype.setDate = function(date) {
+    jQuery(this.jq).datepicker('setDate', date);
+}
+
+PrimeFaces.widget.Calendar.prototype.getDate = function() {
+    return jQuery(this.jq).datepicker('getDate');
+}
+
+PrimeFaces.widget.Calendar.prototype.enable = function() {
+    jQuery(this.jq).datepicker('enable');
+}
+
+PrimeFaces.widget.Calendar.prototype.disable = function() {
+    jQuery(this.jq).datepicker('disable');
+}
