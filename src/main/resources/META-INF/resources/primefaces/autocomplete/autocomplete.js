@@ -22,8 +22,10 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
 
     //update hidden field value in pojo mode
     if(this.cfg.pojo) {
-        jQuery(this.jq).keyup(function() {
-            jQuery(_self.jqh).val(jQuery(this).val());
+        jQuery(this.jq).keyup(function(e) {
+            if(e.keyCode != 13) {
+                jQuery(_self.jqh).val(jQuery(this).val());
+            }
         });
     }
 
