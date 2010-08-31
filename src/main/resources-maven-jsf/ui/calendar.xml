@@ -149,6 +149,7 @@
             <name>showOn</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <defaultValue>focus</defaultValue>
             <description>Specifies the event to display the overlay in popup mode, valid values are "focus", "button" and "both".</description>
         </attribute>
         <attribute>

@@ -132,14 +132,12 @@ public class CalendarRenderer extends CoreRenderer {
         }
 
         String showOn = calendar.getShowOn();
-        if(showOn != null) {
-            writer.write(",showOn:'" + showOn + "'");
+        if(!showOn.equalsIgnoreCase("focus")) {
+            String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(context, calendar.getPopupIcon()) : getResourceRequestPath(context, Calendar.POPUP_ICON);
 
-            if(showOn.equalsIgnoreCase("button")) {
-                String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(context, calendar.getPopupIcon()) : getResourceRequestPath(context, Calendar.POPUP_ICON);
-                writer.write(",buttonImage:'" + iconSrc + "'");
-                writer.write(",buttonImageOnly:" + calendar.isPopupIconOnly());
-            }
+            writer.write(",showOn:'" + showOn + "'");
+            writer.write(",buttonImage:'" + iconSrc + "'");
+            writer.write(",buttonImageOnly:" + calendar.isPopupIconOnly());
         }
 
         if(calendar.isShowOtherMonths()) {
