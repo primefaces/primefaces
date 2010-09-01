@@ -76,7 +76,7 @@
 		_item_count: 0,
 		_is_setup: 0,
 		_tpl_close: '<div class="ui-growl-icon-close ui-icon ui-icon-closethick"></div>',
-		_tpl_item: '<div id="gritter-item-[[number]]" class="ui-growl-item-container ui-widget-header ui-corner-all [[item_class]]" style="display:none"><div class="ui-growl-item">[[image]]<div class="[[class_name]]"><span class="ui-growl-title">[[username]]</span><p>[[text]]</p></div><div style="clear:both"></div></div></div>',
+		_tpl_item: '<div id="gritter-item-[[number]]" class="ui-growl-item-container ui-widget-content ui-corner-all [[item_class]]" style="display:none"><div class="ui-growl-item">[[image]]<div class="[[class_name]]"><span class="ui-growl-title">[[username]]</span><p>[[text]]</p></div><div style="clear:both"></div></div></div>',
 		_tpl_wrap: '<div class="ui-growl ui-widget"></div>',
 	    
 		/**
