@@ -445,12 +445,7 @@ public class DataTableRenderer extends CoreRenderer {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                if(column.isExpansion()) {
-                    writer.writeAttribute("class", DataTable.EXPANSION_COLUMN_CLASS, null);
-
-                    encodeRowExpander(context, table);
-                }
-                else if(column.isEditor()) {
+                if(column.isEditor()) {
                     writer.writeAttribute("class", DataTable.ROW_EDITOR_COLUMN_CLASS, null);
 
                     encodeRowEditor(context, table);
@@ -687,14 +682,6 @@ public class DataTableRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
-
-    protected void encodeRowExpander(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.ROW_EXPANDER_CLASS + " ui-icon ui-icon-circle-triangle-e", null);
-        writer.endElement("span");
-    }
 
     protected void encodeRowEditor(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();

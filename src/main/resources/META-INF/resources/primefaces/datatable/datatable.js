@@ -148,8 +148,8 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
 PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
     var _self = this;
 
-    jQuery(this.jqId + ' tbody tr td span.ui-row-expander')
-            .live('click', function(event) {
+    jQuery(this.jqId + ' tbody tr td span.ui-row-toggler')
+            .live('click', function() {
                 _self.toggleExpansion(this);
             });
 }
@@ -561,7 +561,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
  */
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
     var expander = jQuery(expanderElement),
-    row = expander.parent().parent(),
+    row = expander.parent().parent().parent(),
     expanded = row.hasClass('ui-expanded-row');
 
     if(expanded) {
