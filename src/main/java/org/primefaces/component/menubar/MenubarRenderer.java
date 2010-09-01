@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -126,7 +127,11 @@ public class MenubarRenderer extends CoreRenderer {
 			
 			writer.endElement("a");
 		} else {
-			encodeMenuItem(facesContext, (MenuItem) labelFacet, labelStyleClass);
+            if(labelFacet instanceof UIPanel) {
+                encodeMenuItem(facesContext, (MenuItem) labelFacet.getChildren().get(0), labelStyleClass);
+            } else {
+                encodeMenuItem(facesContext, (MenuItem) labelFacet, labelStyleClass);
+            }
 		}
 		
 		if(!isMenubarItem) {
