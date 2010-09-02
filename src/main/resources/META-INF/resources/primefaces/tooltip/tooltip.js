@@ -35,16 +35,16 @@ PrimeFaces.widget.Tooltip = function(cfg) {
 /*
  * ThemeRoller integration for qtip
  */
+jQuery.fn.qtip.styles['defaults'].background=undefined;
+jQuery.fn.qtip.styles['defaults'].color=undefined;
+jQuery.fn.qtip.styles['defaults'].tip.background=undefined;
+jQuery.fn.qtip.styles['defaults'].title.background=undefined;
+jQuery.fn.qtip.styles['defaults'].title.fontWeight = undefined;
+
 PrimeFaces.widget.Tooltip.prototype.ThemeRoller = {
-	background: null,
-    color: null,
     border: {
-        width: null,
+        width: 0,
         radius: 0
-    },
-    title: {
-        'background': null,
-        'fontWeight': null
     },
     classes: {
         tooltip: 'ui-tooltip ui-widget',
