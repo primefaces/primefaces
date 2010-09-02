@@ -147,3 +147,7 @@ PrimeFaces.widget.TabView.prototype.remove = function(index) {
 PrimeFaces.widget.TabView.prototype.getLength = function() {
     return jQuery(this.jqId).tabs('length');
 }
+
+PrimeFaces.widget.TabView.prototype.getActiveIndex = function() {
+    return jQuery(this.jqId).tabs('option', 'selected');
+}
