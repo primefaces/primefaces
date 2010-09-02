@@ -52,6 +52,13 @@
 			<type>java.lang.String</type>
 			<description>Style class of the main container of picklist.</description>
 		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description>Disables or enables picklist</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
