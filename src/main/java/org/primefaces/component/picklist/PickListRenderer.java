@@ -118,6 +118,8 @@ public class PickListRenderer extends CoreRenderer {
 		
 		writer.startElement("button", null);
 		writer.writeAttribute("type", "push", null);
+		if( pickList.isDisabled() )
+			writer.writeAttribute("disabled",pickList.isDisabled() , "disabled");
 		writer.writeAttribute("style", "width:35px;", null);
 		writer.writeAttribute("onclick", widgetVar + "." + fn + "();return false;", null);
 		writer.write(label);
@@ -148,6 +150,8 @@ public class PickListRenderer extends CoreRenderer {
 		
 		writer.startElement("select", null);
 		writer.writeAttribute("id", listId, "id");
+		if( pickList.isDisabled() )
+			writer.writeAttribute("disabled", pickList.isDisabled(), "disabled");
 		writer.writeAttribute("name", listId, "id");
 		writer.writeAttribute("class", styleClass, null);
 		writer.writeAttribute("multiple", "multiple", null);
