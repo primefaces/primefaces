@@ -90,13 +90,17 @@ public class SpinnerRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "text", null);
-		
+
 		String valueToRender = ComponentUtils.getStringValueToRender(facesContext, spinner);
 		if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 		
 		renderPassThruAttributes(facesContext, spinner, HTML.INPUT_TEXT_ATTRS);
+
+        if(spinner.getStyleClass() != null) {
+            writer.writeAttribute("class", spinner.getStyleClass(), "styleClass");
+        }
 		
 		writer.endElement("input");
 	}
