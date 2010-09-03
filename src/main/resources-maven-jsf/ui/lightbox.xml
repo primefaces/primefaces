@@ -171,16 +171,16 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>jquery/plugins/lightbox/assets/skins/dark/colorbox.css</name>
+			<name>lightbox/lightbox.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/lightbox/colorbox.js</name>
-		</resource>
-		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>lightbox/lightbox.js</name>
 		</resource>
 	</resources>
 </component>
