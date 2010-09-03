@@ -110,7 +110,7 @@ jQuery.fn.themeswitcher = function(settings){
 		}
 	)
 	.find('.jquery-ui-themeswitcher-icon').css({
-		float: 'right',
+		'float': 'right',
 		width: '16px',
 		height: '16px',
 		background: 'url(http://jqueryui.com/themeroller/themeswitchertool/images/icon_color_arrow.gif) 50% 50% no-repeat'
@@ -118,7 +118,7 @@ jQuery.fn.themeswitcher = function(settings){
 	//pane css
 	switcherpane.css({
 		position: 'absolute',
-		float: 'left',
+		'float': 'left',
 		fontFamily: 'Trebuchet MS, Verdana, sans-serif',
 		fontSize: '12px',
 		background: '#000',
@@ -163,22 +163,22 @@ jQuery.fn.themeswitcher = function(settings){
 		border: '1px solid #111',
 		'-moz-border-radius': '4px',
 		clear: 'left',
-		float: 'left'
+		'float': 'left'
 	}).end()
 	.find('a').css({
 		color: '#aaa',
 		textDecoration: 'none',
-		float: 'left',
+		'float': 'left',
 		width: '100%',
 		outline: '0'
 	}).end()
 	.find('img').css({
-		float: 'left',
+		'float': 'left',
 		border: '1px solid #333',
 		margin: '0 2px'
 	}).end()
 	.find('.themeName').css({
-		float: 'left',
+		'float': 'left',
 		margin: '3px 0'
 	}).end();
 
