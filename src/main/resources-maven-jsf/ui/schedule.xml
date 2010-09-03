@@ -255,16 +255,13 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>jquery/plugins/fullcalendar/fullcalendar.css</name>
+			<name>schedule/schedule.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-        <resource>
-			<name>jquery/plugins/fullcalendar/fullcalendar.min.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
