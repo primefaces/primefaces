@@ -42,10 +42,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/watermark/watermark.min.js</name>
-		</resource>
-		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>watermark/watermark.js</name>
 		</resource>
 	</resources>
 </component>

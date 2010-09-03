@@ -151,10 +151,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>jquery/plugins/uploadify/uploadify.css</name>
-		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
+			<name>fileupload/fileupload.css</name>
 		</resource>
 		<resource>
 			<name>yui/cookie/cookie-min.js</name>
@@ -163,13 +160,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/uploadify/swfobject.js</name>
-		</resource>
-		<resource>
 			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>uploader/uploader.js</name>
+			<name>fileupload/fileupload.js</name>
 		</resource>
 	</resources>
 </component>
