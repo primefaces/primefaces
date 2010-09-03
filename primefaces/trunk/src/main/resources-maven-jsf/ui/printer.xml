@@ -26,10 +26,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/jqprint/jquery.jqprint.0.3.js</name>
-		</resource>
-		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>printer/printer.js</name>
 		</resource>
 	</resources>
 </component>
