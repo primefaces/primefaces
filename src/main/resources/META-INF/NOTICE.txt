@@ -1,7 +1,3 @@
-------------------------------------------------------------------------
-See the file LICENSE.txt
-See licenses for accompanying products in the "/licenses" subdirectory.
-------------------------------------------------------------------------
 This product includes software developed by YAHOO! (http://developer.yahoo.com/yui)
 This product includes software developed by John Resig (http://http://jquery.com)
 This product includes software developed by jQuery UI (http://jqueryui.com)

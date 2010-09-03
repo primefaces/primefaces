@@ -1,3 +1,0 @@
-Copyright (c) 2009 Hieu Pham - http://www.hieu.co.uk
-COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)
-http://www.opensource.org/licenses/cddl1.php
