@@ -59,10 +59,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/themeswitcher/themeswitcher.js</name>
-		</resource>	
-		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>themeswitcher/themeswitcher.js</name>
 		</resource>
 	</resources>
 </component>
