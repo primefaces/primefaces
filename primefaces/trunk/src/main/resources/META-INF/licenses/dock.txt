@@ -1,2 +1,0 @@
-Copyright (c) 2006 Stefan Petre
-Dual licensed under the MIT and GPL licenses.
