@@ -79,7 +79,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		String clientId = fileUpload.getClientId(facesContext);
 		String inputFileId = fileUpload.getInputFileId(facesContext);
 		String actionURL = getActionURL(facesContext);
-		String cancelImg = fileUpload.getCancelImage() == null ? getResourceRequestPath(facesContext, "jquery/plugins/uploadify/cancel.png") : getResourceURL(facesContext, fileUpload.getCancelImage());
+		String cancelImg = fileUpload.getCancelImage() == null ? getResourceRequestPath(facesContext, "fileupload/cancel.png") : getResourceURL(facesContext, fileUpload.getCancelImage());
 		
 		UIComponent parentForm = ComponentUtils.findParentForm(facesContext, fileUpload);
 		if(parentForm == null) {
@@ -92,7 +92,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		
 		writer.write("jQuery(function() {");
 		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.Uploader('" + clientId + "', {");
-		writer.write("uploader:'" + getResourceRequestPath(facesContext, "jquery/plugins/uploadify/uploadify.swf") + "'");
+		writer.write("uploader:'" + getResourceRequestPath(facesContext, "fileupload/uploadify.swf") + "'");
 		writer.write(",script:'" + actionURL + "'");
 		writer.write(",cancelImg:'" + cancelImg + "'");
 		writer.write(",formId:'" + formClientId + "'");
