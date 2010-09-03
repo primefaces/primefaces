@@ -61,9 +61,6 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>jquery/plugins/idletimer/idletimer.js</name>
-        </resource>
-        <resource>
             <name>core/core.js</name>
         </resource>
         <resource>
