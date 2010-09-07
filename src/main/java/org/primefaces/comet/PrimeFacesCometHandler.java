@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
+import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +82,7 @@ public class PrimeFacesCometHandler implements AtmosphereHandler {
 			//Complete forwarded PrimeFaces ajax request
 			LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
 			Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-			//new PrimeFacesPhaseListener().beforePhase(new PhaseEvent(FacesContext.getCurrentInstance(), PhaseId.RENDER_RESPONSE, lifecycle));
+            lifecycle.render(FacesContext.getCurrentInstance());
 		}
 	}
 
