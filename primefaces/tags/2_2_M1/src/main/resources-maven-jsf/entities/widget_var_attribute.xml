@@ -1,0 +1,9 @@
+<attribute>
+	<name>widgetVar</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>false</ignoreInComponent>
+	<description>
+		Javascript variable name of the wrapped yui widget 
+	</description>
+</attribute>

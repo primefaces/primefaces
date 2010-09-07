@@ -1,0 +1,26 @@
+.ui-wizard {
+	margin:0;
+	padding:0;
+}
+
+.ui-wizard-content {
+	
+}
+
+.ui-wizard-navbar {
+	text-align: right;
+	margin-top: 5px;
+}
+
+.ui-wizard-nav-back, 
+.ui-wizard-nav-next {
+	cursor: pointer;
+}
+
+.ui-wizard-nav-back {
+	float:left;
+}
+
+.ui-wizard-nav-next {
+	float:right;
+}
