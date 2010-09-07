@@ -72,7 +72,7 @@ PrimeFaces.ajax.AjaxUtils = {
     },
 	
     updateState: function(value, context) {
-        if(context.form) {
+        if(context && context.form) {
             var viewstate = jQuery(context.form).children('#javax\\.faces\\.ViewState').get(0);
 
             if(viewstate) {
