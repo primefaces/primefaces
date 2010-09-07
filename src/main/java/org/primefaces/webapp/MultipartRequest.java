@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 public class MultipartRequest extends HttpServletRequestWrapper {
 
 	private static final Logger logger = Logger.getLogger(MultipartRequest.class.getName());
@@ -110,7 +111,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 	public Enumeration getParameterNames() {
 		Set<String> paramNames = new LinkedHashSet<String>();
 		paramNames.addAll(formParams.keySet());
-		paramNames.addAll(formParams.keySet());
+		paramNames.addAll(fileParams.keySet());
 		
 		return Collections.enumeration(paramNames);
 	}
@@ -138,4 +139,13 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 			return null;
 		}	
 	}
+
+    //Workaround to mimic ajax request since flash does not allow custom request headers
+    @Override
+    public String getHeader(String name) {
+        if(name != null && name.equalsIgnoreCase("Faces-Request"))
+            return "partial/ajax";
+        else
+            return ((HttpServletRequest) getRequest()).getHeader(name);
+    }
 }
