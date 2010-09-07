@@ -33,26 +33,29 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void endDocument() throws IOException {
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.addCallbackParam("validationFailed", FacesContext.getCurrentInstance().isValidationFailed());
-        Map<String, Object> params = requestContext.getCallbackParams();
+        
+        if(requestContext != null) {
+            requestContext.addCallbackParam("validationFailed", FacesContext.getCurrentInstance().isValidationFailed());
+            Map<String, Object> params = requestContext.getCallbackParams();
 
-        try {
-            for (String paramName : params.keySet()) {
-                Map<String, String> callbackParamExtension = new HashMap<String, String>();
-                callbackParamExtension.put("primefacesCallbackParam", paramName);
+            try {
+                for (String paramName : params.keySet()) {
+                    Map<String, String> callbackParamExtension = new HashMap<String, String>();
+                    callbackParamExtension.put("primefacesCallbackParam", paramName);
 
-                startExtension(callbackParamExtension);
+                    startExtension(callbackParamExtension);
 
-                Object paramValue = params.get(paramName);
-                String json = isBean(paramValue) ? "{\"" + paramName + "\":" + new JSONObject(paramValue).toString() + "}" : new JSONObject().put(paramName, paramValue).toString();
-                write(json);
+                    Object paramValue = params.get(paramName);
+                    String json = isBean(paramValue) ? "{\"" + paramName + "\":" + new JSONObject(paramValue).toString() + "}" : new JSONObject().put(paramName, paramValue).toString();
+                    write(json);
 
-                endExtension();
+                    endExtension();
+                }
+            } catch (Exception exception) {
+                throw new AbortProcessingException(exception);
+            } finally {
+                requestContext.release();
             }
-        } catch (Exception exception) {
-            throw new AbortProcessingException(exception);
-        } finally {
-            requestContext.release();
         }
             
         super.endDocument();
