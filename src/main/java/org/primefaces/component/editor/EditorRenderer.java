@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,25 @@
 package org.primefaces.component.editor;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class EditorRenderer extends CoreRenderer{
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
 		Editor editor = (Editor) component;
-		String paramKey = getInputId(editor.getClientId(facesContext));
-		
-		String submittedValue = facesContext.getExternalContext().getRequestParameterMap().get(paramKey);
-		editor.setSubmittedValue(submittedValue);
+        String clientId = editor.getClientId(context);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+
+        if(params.containsKey(clientId)) {
+            editor.setSubmittedValue(params.get(clientId));
+        }
 	}
 
     @Override
@@ -45,87 +47,42 @@ public class EditorRenderer extends CoreRenderer{
 
 	protected void encodeMarkup(FacesContext facesContext, Editor editor) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
-		
 		String clientId = editor.getClientId(facesContext);
-		String inputId = getInputId(clientId);
-		String value = ComponentUtils.getStringValueToRender(facesContext, editor);
-		
+        String value = (String) editor.getValue();
+        
 		writer.startElement("div", editor);
 		writer.writeAttribute("id", clientId , null);
-		
-		writer.startElement("textarea", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
-		if(value != null)
-			writer.write(value);
 
-		writer.endElement("textarea");
-
-		if(editor.isResizable())
-			encodeSizeStateHolder(facesContext, editor, clientId);
+        if(value != null) {
+            writer.write(value);
+        }
 
 		writer.endElement("div");
 	}
 	
-	private void encodeSizeStateHolder(FacesContext facesContext, Editor editor, String clientId) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String size = editor.getWidth() + "," + editor.getHeight();
-
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", getSizeStateHolderId(clientId), null);
-		writer.writeAttribute("name", getSizeStateHolderId(clientId), null);
-		writer.writeAttribute("value", size, null);
-		writer.endElement("input");
-	}
-	
-	private void restoreSize(FacesContext facesContext, Editor editor, String clientId) {
-		String newSize = facesContext.getExternalContext().getRequestParameterMap().get(getSizeStateHolderId(clientId));
-		
-		if(newSize != null) {
-			String boundaries[] = newSize.split(",");
-			
-			editor.setWidth(boundaries[0].trim());
-			editor.setHeight(boundaries[1].trim());
-		}
-	}
-
 	private void encodeScript(FacesContext facesContext, Editor editor) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = editor.getClientId(facesContext);
 		String widgetVar = editor.resolveWidgetVar();
-		restoreSize(facesContext, editor, clientId);
 		
 		writer.startElement("script", editor);
 		writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write("jQuery(function() {");
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + getInputId(clientId) + "',{");
-		writer.write("width:'" + editor.getWidth() + "'");
-		writer.write(",height:'" + editor.getHeight() + "'");
-		writer.write(",handleSubmit: true");
-		
-		if(editor.isResizable()) {
-			writer.write(",resizable: true");
-			writer.write(",widthHeightController: '" + getSizeStateHolderId(clientId) + "'");
-			writer.write(",dompath: true");
-		}
-		
-		if(editor.isDisabled()) writer.write(",disabled:true");
-		if(editor.getLanguage() != null) writer.write(",language:'" + editor.getLanguage() + "'");
-		if(editor.getTitle() != null) writer.write(",title:'" + editor.getTitle() + "'");
-		
-		writer.write("});\n");
-		
-		writer.write(widgetVar + ".render();\n");
+		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + clientId + "',{");
+
+        if(editor.getToolbarTemplate() != null)
+            writer.write(",toolbarTemplate:[" + editor.getToolbarTemplate() + "]");
+        else
+            writer.write("toolbar:'" + editor.getToolbar() + "'");
+
+        if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
+        if(editor.getStyleClass() != null) writer.write(",cssClass:'" + editor.getStyleClass() + "'");
+        if(!editor.isSource()) writer.write(",allowSource:false");
+
+		writer.write("});});");
 		
 		writer.endElement("script");
-	}
-	
-	private String getSizeStateHolderId(String clientId) {
-		return clientId.replaceAll(":", "_") + "_size";
-	}
-	
-	private String getInputId(String clientId) {
-		return clientId + ":input";
 	}
 }
