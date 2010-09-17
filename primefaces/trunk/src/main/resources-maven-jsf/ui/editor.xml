@@ -42,13 +42,6 @@
 			<type>java.lang.String</type>
 			<description>Style class of editor.</description>
 		</attribute>
-        <attribute>
-			<name>source</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-			<description>Displays source tab to edit in HTML.</description>
-		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
