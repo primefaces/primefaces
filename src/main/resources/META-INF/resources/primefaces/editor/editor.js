@@ -8372,6 +8372,7 @@ elRTE.prototype.ui.prototype.buttons.tbrowrm = function(rte, name) {
 PrimeFaces.widget.Editor = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
+    this.cfg.allowSource = false;
 
     if(this.cfg.toolbarTemplate) {
         elRTE.prototype.options.panels.customPanel = this.cfg.toolbarTemplate;
