@@ -8373,6 +8373,13 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
 
+    if(this.cfg.toolbarTemplate) {
+        elRTE.prototype.options.panels.customPanel = this.cfg.toolbarTemplate;
+        elRTE.prototype.options.toolbars.customToolbar = ['customPanel'];
+
+        this.cfg.toolbar = 'customToolbar';
+    }
+
     this.editor = new elRTE(document.getElementById(id), this.cfg);
 }
 

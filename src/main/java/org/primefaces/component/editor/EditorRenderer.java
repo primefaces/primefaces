@@ -73,7 +73,7 @@ public class EditorRenderer extends CoreRenderer{
 		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + clientId + "',{");
 
         if(editor.getToolbarTemplate() != null)
-            writer.write(",toolbarTemplate:[" + editor.getToolbarTemplate() + "]");
+            writer.write("toolbarTemplate:[" + editor.getToolbarTemplate() + "]");
         else
             writer.write("toolbar:'" + editor.getToolbar() + "'");
 
