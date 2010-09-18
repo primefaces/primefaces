@@ -1177,7 +1177,7 @@ elRTE = function(target, opts) {
 	});
 	this.doc.open();
 	var s = this.filter.wysiwyg(content)
-	this.doc.write(self.options.doctype+html+'</head><body>'+(s)+'</body></html>');
+	this.doc.write(self.options.doctype+html+'</head><body><br />'+(s)+'</body></html>');
 	this.doc.close();
 
 	/* make iframe editable */
