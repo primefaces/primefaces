@@ -73,3 +73,15 @@ PrimeFaces.widget.MenuButton.prototype.hide = function() {
 PrimeFaces.widget.MenuButton.prototype.getMenu = function() {
 	return this.menu;
 }
+
+/*
+ * CheckButton
+ */
+PrimeFaces.widget.CheckButton = function(id, cfg) {
+	this.id = id;
+	this.cfg = cfg;
+	this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = this.jqId + '_input';
+
+	jQuery(this.jq).button(this.cfg);
+}
