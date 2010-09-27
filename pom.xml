@@ -185,9 +185,7 @@
                             <standardTLD>src/main/resources-maven-jsf/standard-tld.xml</standardTLD>
                         </configuration>
                         <goals>
-                            <goal>generate-tld</goal>
                             <goal>generate-components</goal>
-                            <goal>generate-tags</goal>
                             <goal>generate-facelets-taglib</goal>
                         </goals>
                     </execution>
@@ -201,9 +199,7 @@
                             <componentConfigsDir>target/resources-maven-jsf/touch</componentConfigsDir>
                         </configuration>
                         <goals>
-                            <goal>generate-tld</goal>
                             <goal>generate-components</goal>
-                            <goal>generate-tags</goal>
                             <goal>generate-facelets-taglib</goal>
                         </goals>
                     </execution>
