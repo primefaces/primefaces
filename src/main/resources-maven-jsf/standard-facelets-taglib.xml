@@ -40,7 +40,7 @@
 		<function-signature>java.lang.String remoteUser()</function-signature>
 	</function>
 	
-		<function>
+    <function>
 		<function-name>userPrincipal</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.security.Principal userPrincipal()</function-signature>
@@ -51,6 +51,54 @@
 		<handler-class>
 			org.primefaces.component.export.DataExporterTagHandler
 		</handler-class>
+        <attribute>
+			<description></description>
+			<name>target</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>fileName</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>pageOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>excludeColumns</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>preProcessor</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>postProcessor</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>encoding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</tag>
 	
 	<tag>
@@ -58,6 +106,18 @@
 		<handler-class>
 			org.primefaces.component.filedownload.FileDownloadTagHandler
 		</handler-class>
+        <attribute>
+			<description></description>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>contentDisposition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</tag>
 	
 	<tag>
@@ -65,6 +125,24 @@
 		<handler-class>
 			org.primefaces.component.collector.CollectorTagHandler
 		</handler-class>
+        <attribute>
+			<description></description>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>addTo</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>removeFrom</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
 	</tag>
 
     <tag>
@@ -73,4 +151,76 @@
             <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
             <handler-class>org.primefaces.component.behavior.ajax.AjaxBehaviorHandler</handler-class>
         </behavior>
+		<attribute>
+			<description></description>
+			<name>listener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>immediate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>async</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>onsuccess</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>global</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+        <attribute>
+			<description></description>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
     </tag>
