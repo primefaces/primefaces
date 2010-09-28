@@ -321,6 +321,13 @@
 			<type>java.lang.String</type>
 			<description>Style class for rows.</description>
 		</attribute>
+        <attribute>
+            <name>rowEditListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void rowEditListener(org.primefaces.event.RowEditEvent)</method-signature>
+            <description>Server side listener to invoke when a cell is edited.</description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>

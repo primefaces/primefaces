@@ -346,6 +346,8 @@ import java.io.Serializable;
             me = getRowSelectListener();
         } else if(event instanceof org.primefaces.event.UnselectEvent) {
             me = getRowUnselectListener();
+        } else if(event instanceof org.primefaces.event.RowEditEvent) {
+            me = getRowEditListener();
         }
 
         if(me != null) {
