@@ -56,6 +56,9 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isSelectionEnabled()) {
 			dataHelper.decodeSelection(context, table);
 		}
+        if(table.isRowEditRequest(context)) {
+			dataHelper.decodeRowEditRequest(context, table);
+		}
 	}
     
     @Override

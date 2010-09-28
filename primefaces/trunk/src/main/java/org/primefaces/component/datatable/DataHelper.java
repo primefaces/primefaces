@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.BeanPropertyComparator;
@@ -255,5 +256,16 @@ class DataHelper {
         expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
         
         return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+    }
+
+    void decodeRowEditRequest(FacesContext context, DataTable table) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowId"));
+
+        table.setRowIndex(editedRowId);
+
+        table.queueEvent(new RowEditEvent(table, table.getRowData()));
+
+        table.setRowIndex(-1);  //cleanup
     }
 }

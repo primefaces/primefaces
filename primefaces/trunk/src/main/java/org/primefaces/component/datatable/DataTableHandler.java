@@ -18,6 +18,7 @@ package org.primefaces.component.datatable;
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
+import org.primefaces.event.RowEditEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -35,6 +36,7 @@ public class DataTableHandler extends ComponentHandler {
 
 		metaRuleset.addRule(new MethodRule("rowSelectListener", String.class, new Class[]{SelectEvent.class}));
         metaRuleset.addRule(new MethodRule("rowUnselectListener", String.class, new Class[]{UnselectEvent.class}));
+        metaRuleset.addRule(new MethodRule("rowEditListener", String.class, new Class[]{RowEditEvent.class}));
 
 		return metaRuleset;
 	}
