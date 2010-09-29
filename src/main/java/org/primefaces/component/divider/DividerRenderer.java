@@ -27,12 +27,19 @@ public class DividerRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Divider divider = (Divider) component;
         ResponseWriter writer = context.getResponseWriter();
+        String style = divider.getStyle();
+        String styleClass = divider.getStyleClass();
+        styleClass = styleClass == null ? "ui-divider" : "ui-divider " + styleClass;
+        String type = "ui-icon-grip-" + divider.getType() + "-vertical";
 
         writer.startElement("span", divider);
-        writer.writeAttribute("class", "ui-divider", null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         writer.startElement("span", divider);
-        writer.writeAttribute("class", "ui-icon ui-icon-grip-dotted-vertical", null);
+        writer.writeAttribute("class", "ui-icon " + type, null);
         writer.endElement("span");
         
         writer.endElement("span");
