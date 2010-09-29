@@ -7,6 +7,7 @@
     <tag>poll</tag>
     <tagClass>org.primefaces.component.poll.PollTag</tagClass>
     <componentClass>org.primefaces.component.poll.Poll</componentClass>
+    <componentHandlerClass>org.primefaces.component.poll.PollHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Poll</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.PollRenderer</rendererType>
@@ -37,6 +38,13 @@
             <description>
 		Component(s) to be update after async partial submit request.
             </description>
+        </attribute>
+        <attribute>
+            <name>listener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void listener()</method-signature>
+            <description>Method expression to invoke periodically.</description>
         </attribute>
         <attribute>
             <name>actionListener</name>
