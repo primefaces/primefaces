@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+<f:view contentType="text/html">
+<h:head>
+	<title>
+		PrimeFaces on GAE
+	</title>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/ui-darkness/skin.css" />
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<style type="text/css">
+		
+		.themeMenu {
+			overflow: auto;
+			height:300px;
+			width:200px;
+		}
+		
+		body {
+			font-size:12px !important;
+		}
+	</style>
+</h:head>
+
+<h:body>
+
+	<p:growl id="msg" showDetail="true"/>
+		
+	<p:layout fullPage="true">
+	
+		<p:layoutUnit id="top" position="top" resizable="true" height="150" minHeight="100" maxHeight="175">
+			<h:outputText value="PRIMEFACES on Google AppEngine" style="font-size:36px;position:absolute;top:50px;left:100px;"/>
+		</p:layoutUnit>
+		
+		<p:layoutUnit id="bottom" position="bottom" height="50" zindex="0" scrollable="null" style="text-align:center">
+			Also see <h:outputLink value="http://primefaces-rocks.appspot.com">http://primefaces-rocks.appspot.com</h:outputLink>	
+		</p:layoutUnit>
+		
+		<p:layoutUnit id="left" position="left" width="300" resizable="true" closable="true" collapsible="true" header="Options" minWidth="200">
+			<p:accordionPanel activeIndex="0" autoHeight="false">
+				<p:tab title="Menu 1">
+					<p:calendar mode="inline" close="false" navigator="none"/>
+				</p:tab>
+				
+				<p:tab title="Menu 2">
+					<h:outputText value="Menu 2 Content" />
+				</p:tab>
+				
+				<p:tab title="Menu 3">
+					<h:outputText value="Menu 3 Content" />
+				</p:tab>
+			</p:accordionPanel>
+		</p:layoutUnit>
+		
+		<p:layoutUnit id="right" position="right" width="200" header="Favorites" resizable="true" closable="true" collapsible="true">
+		
+			<p:themeSwitcher />
+		
+			<p:lightBox transition="fade" style="text-align:center;margin-top:20px;">
+   				<h:outputLink value="#{request.contextPath}/images/nature1.jpg" title="Nature 1" style="margin-bottom:5px;">
+   					<h:graphicImage value="/images/nature1_small.jpg"/>
+   				</h:outputLink>
+   				
+   				<h:outputLink value="#{request.contextPath}/images/nature2.jpg" title="Nature 2" style="margin-bottom:2px;">
+   					<h:graphicImage value="/images/nature2_small.jpg"/>
+   				</h:outputLink>
+   				
+   				<h:outputLink value="#{request.contextPath}/images/nature3.jpg" title="Nature 3" style="margin-bottom:2px;">
+   					<h:graphicImage value="/images/nature3_small.jpg"/>
+   				</h:outputLink>
+   				
+   				<h:outputLink value="#{request.contextPath}/images/nature4.jpg" title="Nature 4" style="margin-bottom:2px;">
+   					<h:graphicImage value="/images/nature4_small.jpg"/>
+   				</h:outputLink>
+   			</p:lightBox>
+       	
+		</p:layoutUnit>
+		
+		<p:layoutUnit id="center" position="center" style="text-align:center;" scrollable="true">
+			<h:form>
+				<p:tabView>					
+					
+					<p:tab title="Location">
+						<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:600px;height:400px" />
+					</p:tab>
+					
+				</p:tabView>
+			</h:form>
+		</p:layoutUnit>
+		
+	</p:layout>
+	
+</h:body>
+
+</f:view>
+</html>
+
+	
