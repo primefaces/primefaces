@@ -154,9 +154,6 @@
 			<name>fileupload/fileupload.css</name>
 		</resource>
 		<resource>
-			<name>yui/cookie/cookie-min.js</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>

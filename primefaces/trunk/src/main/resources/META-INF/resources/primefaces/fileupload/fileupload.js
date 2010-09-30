@@ -316,7 +316,7 @@ PrimeFaces.widget.Uploader.prototype.createPostParams = function() {
 		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.update;
 	}
 
-	var jsessionid = YAHOO.util.Cookie.get("JSESSIONID");
+	var jsessionid = PrimeFaces.getCookie("JSESSIONID");
 	if(this.cfg.script.indexOf('jsessionid') == -1) {
 		this.cfg.script = this.cfg.script + ";jsessionid=" + jsessionid;
 	}
