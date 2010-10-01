@@ -18,6 +18,7 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+import javax.faces.event.PhaseId;
 
 public class RowEditEvent extends FacesEvent {
 
@@ -40,5 +41,10 @@ public class RowEditEvent extends FacesEvent {
 
     public Object getObject() {
         return object;
+    }
+
+    @Override
+    public PhaseId getPhaseId() {
+        return PhaseId.INVOKE_APPLICATION;
     }
 }
