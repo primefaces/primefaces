@@ -156,7 +156,7 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
                         }
                     }
                     else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
                     }
                 }
 

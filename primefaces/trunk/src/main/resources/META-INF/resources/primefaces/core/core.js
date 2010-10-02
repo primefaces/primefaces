@@ -87,21 +87,19 @@ PrimeFaces.ajax.AjaxUtils = {
         return encodedViewState;
     },
 	
-    updateState: function(value, context) {
-        if(context && context.form) {
-            var viewstate = jQuery(context.form).children('#javax\\.faces\\.ViewState').get(0);
+    updateState: function(value) {
+        jQuery("form").each(function() {
+            var form = $(this),
+            formViewState = form.children("input[name='javax.faces.ViewState']").get(0);
 
-            if(viewstate) {
-                jQuery(viewstate).val(value);
+            if(formViewState) {
+                jQuery(formViewState).val(value);
             }
-            else {
-                jQuery(context.form).append('<input type="hidden" name="' + PrimeFaces.VIEW_STATE + '" id="' + PrimeFaces.VIEW_STATE +'" value="' + value + '" autocomplete="off"></input>');
+            else
+            {
+                form.append('<input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="' + value + '" autocomplete="off" />');
             }
-        
-        }
-        else {
-            jQuery('#javax\\.faces\\.ViewState').val(value);
-        }
+        });
     },
 	
     serialize: function(params) {
@@ -114,9 +112,9 @@ PrimeFaces.ajax.AjaxUtils = {
         return serializedParams;
     },
 
-    updateElement: function(id, content, context) {
+    updateElement: function(id, content) {
         if(id == PrimeFaces.VIEW_STATE) {
-            PrimeFaces.ajax.AjaxUtils.updateState(content, context);
+            PrimeFaces.ajax.AjaxUtils.updateState(content);
         }
         else {
             jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
@@ -125,14 +123,11 @@ PrimeFaces.ajax.AjaxUtils = {
 };
 
 PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
-    var requestParams = null,
-    context = {};
+    var requestParams = null;
 
     if(cfg.formId) {
         var jqForm = PrimeFaces.escapeClientId(cfg.formId),
         requestParams = jQuery(jqForm).serialize();
-        
-        context.form = jqForm;
     } else {
         requestParams = PrimeFaces.VIEW_STATE + "=" + PrimeFaces.ajax.AjaxUtils.encodeViewState();
     }
@@ -171,7 +166,6 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
         cache : false,
         dataType : "xml",
         data : requestParams,
-        ajaxContext: context,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
 
@@ -224,7 +218,7 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
             var id = updates[i].attributes.getNamedItem("id").nodeValue,
             content = updates[i].firstChild.data;
 
-            PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+            PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
         }
     }
 
