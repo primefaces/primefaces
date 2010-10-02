@@ -79,7 +79,7 @@ PrimeFaces.widget.ChartExtensions = {
                         _self._loadDataHandler(null, data);
                     }
                     else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
                     }
                 }
 

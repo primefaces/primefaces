@@ -148,7 +148,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                         callback(events);
                     }
                     else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement(id, data, this.ajaxContext);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
                     }
                 }
 

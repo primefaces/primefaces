@@ -123,7 +123,7 @@ PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overla
                     _self.openWindow(overlay);
                 }
                 else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
                 }
             }
 

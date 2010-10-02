@@ -182,7 +182,7 @@
                                 update_content(settings.PS1, tokens.join(' '), content);
                             }
                             else {
-                                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
                             }
                         }
 

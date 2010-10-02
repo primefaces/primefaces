@@ -78,7 +78,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
                         response(results);
 
                     } else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement(id, data, this.ajaxContext);
+                        PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
                     }
                 }
 
