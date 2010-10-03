@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.primefaces.component.picklist;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,15 +33,15 @@ import org.primefaces.util.ComponentUtils;
 public class PickListRenderer extends CoreRenderer {
 	
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
 		PickList pickList = (PickList) component;
-		String clientId = pickList.getClientId(facesContext);
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
+		String clientId = pickList.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		
-		String sourceKey = clientId + "_sourceList";
-		String targetKey = clientId + "_targetList";
-		if(params.containsKey(sourceKey) && params.containsKey(targetKey)) {
-			pickList.setSubmittedValue(new String[]{params.get(sourceKey), params.get(targetKey)});
+		String sourceParam = clientId + "_source";
+		String targetParam = clientId + "_target";
+		if(params.containsKey(sourceParam) && params.containsKey(targetParam)) {
+			pickList.setSubmittedValue(new String[]{params.get(sourceParam), params.get(targetParam)});
 		}
 	}
 	
@@ -51,8 +52,49 @@ public class PickListRenderer extends CoreRenderer {
 		encodeMarkup(facesContext, pickList);
 		encodeScript(facesContext, pickList);
 	}
+
+    protected void encodeMarkup(FacesContext context, PickList pickList) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = pickList.getClientId(context);
+		DualListModel model = (DualListModel) pickList.getValue();
+        String styleClass = pickList.getStyleClass();
+        styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
+
+		writer.startElement("table", pickList);
+		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, null);
+		if(pickList.getStyle() != null) {
+            writer.writeAttribute("style", pickList.getStyle(), null);
+        }
+
+		writer.startElement("tbody", null);
+		writer.startElement("tr", null);
+
+		//Source List
+		writer.startElement("td", null);
+		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource());
+		writer.endElement("td");
+
+		//Buttons
+		writer.startElement("td", null);
+        encodeButton(context, pickList, "Add", PickList.ADD_BUTTON_CLASS);
+        encodeButton(context, pickList, "Add All", PickList.ADD_ALL_BUTTON_CLASS);
+        encodeButton(context, pickList, "Remove", PickList.REMOVE_BUTTON_CLASS);
+        encodeButton(context, pickList, "Remove All", PickList.REMOVE_ALL_BUTTON_CLASS);
+		writer.endElement("td");
+
+		//Target List
+		writer.startElement("td", null);
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget());
+		writer.endElement("td");
+
+		writer.endElement("tr");
+		writer.endElement("tbody");
+
+		writer.endElement("table");
+	}
 	
-	private void encodeScript(FacesContext facesContext, PickList pickList) throws IOException {
+	protected void encodeScript(FacesContext facesContext, PickList pickList) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = pickList.getClientId(facesContext);
 		
@@ -64,139 +106,66 @@ public class PickListRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void encodeMarkup(FacesContext facesContext, PickList pickList) throws IOException {
+	protected void encodeButton(FacesContext facesContext, PickList pickList, String label, String styleClass) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = pickList.getClientId(facesContext);
-		String widgetVar = pickList.resolveWidgetVar();
-		DualListModel model = (DualListModel) pickList.getValue();
-		
-		writer.startElement("table", pickList);
-		writer.writeAttribute("id", clientId, "id");
-		if(pickList.getStyle() != null) writer.writeAttribute("style", pickList.getStyle(), null);
-		if(pickList.getStyleClass() != null) writer.writeAttribute("class", pickList.getStyleClass(), null);
-		
-		writer.startElement("tbody", null);
-		writer.startElement("tr", null);
-		
-		//Source
-		writer.startElement("td", null);
-		encodeList(facesContext, pickList, clientId + "_source", widgetVar, "ui-picklist-source", model.getSource());
-		writer.endElement("td");
-		
-		//Controls
-		writer.startElement("td", null);
-		if(pickList.getFacetCount() > 0) {
-			encodeFacet(facesContext, pickList, widgetVar, "add");
-			encodeFacet(facesContext, pickList, widgetVar, "addAll");
-			encodeFacet(facesContext, pickList, widgetVar, "remove");
-			encodeFacet(facesContext, pickList, widgetVar, "removeAll");
-		} else {
-			encodeDefaultControl(facesContext, pickList, widgetVar, "&gt;", "add");
-			encodeDefaultControl(facesContext, pickList, widgetVar, "&gt;&gt;", "addAll");
-			encodeDefaultControl(facesContext, pickList, widgetVar, "&lt;", "remove");
-			encodeDefaultControl(facesContext, pickList, widgetVar, "&lt;&lt;", "removeAll");
-		}
-		writer.endElement("td");
-		
-		//Target
-		writer.startElement("td", null);
-		encodeList(facesContext, pickList, clientId + "_target", widgetVar, "ui-picklist-target", model.getTarget());
-		writer.endElement("td");
-		
-		writer.endElement("tr");
-		writer.endElement("tbody");
-		
-		writer.endElement("table");
-	}
-	
-	private void encodeDefaultControl(FacesContext facesContext, PickList pickList, String widgetVar, String label, String fn) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-
-		writer.startElement("div", null);
-		writer.writeAttribute("class", "ui-picklist-control", null);
-		
-		writer.startElement("button", null);
-		writer.writeAttribute("type", "push", null);
-		if( pickList.isDisabled() )
-			writer.writeAttribute("disabled",pickList.isDisabled() , "disabled");
-		writer.writeAttribute("style", "width:35px;", null);
-		writer.writeAttribute("onclick", widgetVar + "." + fn + "();return false;", null);
-		writer.write(label);
-		writer.endElement("button");
-		
-		writer.endElement("div");
-	}
-	
-	private void encodeFacet(FacesContext facesContext, PickList pickList, String widgetVar, String facet) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		UIComponent control = pickList.getFacet(facet);
-		
-		if(control != null) {
-			writer.startElement("div", null);
-			writer.writeAttribute("class", "ui-picklist-control", null);
-			
-			ComponentUtils.decorateAttribute(control, "onclick", widgetVar + "." + facet + "();return false;");
-			renderChild(facesContext, control);
-			
-			writer.endElement("div");
-		}	
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void encodeList(FacesContext facesContext, PickList  pickList, String listId, String widgetVar, String styleClass, List model) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String method = styleClass.equals("ui-picklist-source") ? ".add();" : ".remove();";
-		
-		writer.startElement("select", null);
-		writer.writeAttribute("id", listId, "id");
-		if( pickList.isDisabled() )
-			writer.writeAttribute("disabled", pickList.isDisabled(), "disabled");
-		writer.writeAttribute("name", listId, "id");
+        
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
 		writer.writeAttribute("class", styleClass, null);
-		writer.writeAttribute("multiple", "multiple", null);
-		writer.writeAttribute("ondblclick", widgetVar + method, null);
+        writer.write(label);
+        writer.endElement("button");
+	}
+	
+	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 
-		String state = encodeOptions(facesContext, pickList, model);
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", styleClass, null);
+
+        String values = encodeOptions(context, pickList, model);
+
+        writer.endElement("ul");
 		
-		writer.endElement("select");
-		
-		encodeListStateHolder(facesContext, listId + "List", state);
+		encodeListStateHolder(context, listId, values);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private String encodeOptions(FacesContext facesContext, PickList pickList, List model) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected String encodeOptions(FacesContext context, PickList pickList, List model) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		String var = pickList.getVar();
 		Converter converter = pickList.getConverter();
 		
-		StringBuffer state = new StringBuffer();
-		for(Object item : model) {
-			facesContext.getExternalContext().getRequestMap().put(var, item);
-			String value = converter != null ? converter.getAsString(facesContext, pickList, pickList.getItemValue()) : (String) pickList.getItemValue();
+		StringBuilder state = new StringBuilder();
+        for(Iterator it = model.iterator(); it.hasNext();) {
+            Object item = it.next();
+			context.getExternalContext().getRequestMap().put(var, item);
+			String value = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : (String) pickList.getItemValue();
 			
-			writer.startElement("option", null);
-			writer.writeAttribute("value", value, null);
+			writer.startElement("li", null);
+            writer.writeAttribute("class", PickList.ITEM_CLASS, null);
 			writer.write(pickList.getItemLabel());
-			writer.endElement("option");
+			writer.endElement("li");
 			
 			state.append(value);
-			state.append(";");
+
+            if(it.hasNext()) {
+                state.append(",");
+            }
 		}
 		
-		facesContext.getExternalContext().getRequestMap().remove(var);
+		context.getExternalContext().getRequestMap().remove(var);
 		
 		return state.toString();
 	}
 	
-	private void encodeListStateHolder(FacesContext facesContext, String clientId, String value) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeListStateHolder(FacesContext context, String clientId, String values) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("value", value, null);
+		writer.writeAttribute("value", values, null);
 		writer.endElement("input");
 	}
 	
@@ -205,8 +174,8 @@ public class PickListRenderer extends CoreRenderer {
 	public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException {
 		PickList pickList = (PickList) component;
 		String[] value = (String[]) submittedValue;
-		String[] sourceList = value[0].split(";");
-		String[] targetList = value[1].split(";");
+		String[] sourceList = value[0].split(",");
+		String[] targetList = value[1].split(",");
 		DualListModel model = new DualListModel();
 		
 		doConvertValue(facesContext, pickList, sourceList, model.getSource());
@@ -216,7 +185,7 @@ public class PickListRenderer extends CoreRenderer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void doConvertValue(FacesContext facesContext, PickList pickList, String[] values, List model) {
+	protected void doConvertValue(FacesContext facesContext, PickList pickList, String[] values, List model) {
 		Converter converter = pickList.getConverter();
 		
 		for(String value : values) {

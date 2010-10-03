@@ -1,9 +1,22 @@
-.ui-picklist-control {
-	text-align:center;
-	margin-bottom:2px;
+.ui-picklist .ui-picklist-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow:auto;
+    height:200px;
+    width:200px;
 }
 
-.ui-picklist-source, 
-.ui-picklist-target {
-	width:100px;
+.ui-picklist .ui-picklist-list li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+}
+
+.ui-picklist .ui-picklist-button {
+    display:block;
+    width:125px;
+}
+
+.ui-picklist .ui-picklist-item {
+    cursor:pointer;
 }
