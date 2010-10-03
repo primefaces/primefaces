@@ -33,9 +33,9 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		encodeScript(context, status);
 	}
 
-	protected void encodeScript(FacesContext facesContext, AjaxStatus status) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = status.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = status.getClientId(context);
 		String widgetVar = status.resolveWidgetVar();
 		
 		writer.startElement("script", null);
@@ -43,29 +43,29 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');\n");
 		
-		encodeCallback(facesContext, status, widgetVar, "ajaxSend", "onprestart", "prestart");
-		encodeCallback(facesContext, status, widgetVar, "ajaxStart", "onstart", "start");
-		encodeCallback(facesContext, status, widgetVar, "ajaxError", "onerror", "error");
-		encodeCallback(facesContext, status, widgetVar, "ajaxSuccess", "onsuccess", "success");
-		encodeCallback(facesContext, status, widgetVar, "ajaxComplete", "oncomplete", "complete");
+		encodeCallback(context, status, widgetVar, "ajaxSend", "onprestart", "prestart");
+		encodeCallback(context, status, widgetVar, "ajaxStart", "onstart", "start");
+		encodeCallback(context, status, widgetVar, "ajaxError", "onerror", "error");
+		encodeCallback(context, status, widgetVar, "ajaxSuccess", "onsuccess", "success");
+		encodeCallback(context, status, widgetVar, "ajaxComplete", "oncomplete", "complete");
 
 		writer.endElement("script");
 	}
 	
-	protected void encodeCallback(FacesContext facesContext, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = status.getClientId(facesContext);
+	protected void encodeCallback(FacesContext context, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = status.getClientId(context);
 		String fn = (String) status.getAttributes().get(callback);
 		
 		if(fn != null)
-			writer.write(var + ".bindCallback('" + event + "',function(){" + fn + "});\n");
+			writer.write(var + ".bindCallback('" + event + "',function(){" + fn + "});");
 		else if(status.getFacet(facetName) != null)
-			writer.write(var + ".bindFacet('" + event + "', '" + clientId + "_" + facetName + "');\n");
+			writer.write(var + ".bindFacet('" + event + "', '" + facetName + "');");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, AjaxStatus status) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = status.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, AjaxStatus status) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = status.getClientId(context);
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -75,17 +75,32 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		
 		for(String facetName : AjaxStatus.FACETS) {
 			UIComponent facet = status.getFacet(facetName);
-			if(facet != null) {
-				writer.startElement("div", null);
-				writer.writeAttribute("id", clientId + "_" + facetName, null);
-				writer.writeAttribute("style", "display:none", null);
-				
-				renderChild(facesContext, facet);	
-				
-				writer.endElement("div");
-			}
+
+            if(facet != null) {
+                encodeFacet(context, clientId, facet, facetName, true);
+            }
 		}
+
+        //Default facet
+        UIComponent defaultFacet = status.getFacet("default");
+        if(defaultFacet != null) {
+            encodeFacet(context, clientId, defaultFacet, "default", false);
+        }
 		
 		writer.endElement("div");
 	}
+
+    protected void encodeFacet(FacesContext facesContext, String clientId, UIComponent facet, String facetName, boolean hidden) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_" + facetName, null);
+        if(hidden) {
+            writer.writeAttribute("style", "display:none", null);
+        }
+
+        renderChild(facesContext, facet);
+
+        writer.endElement("div");
+    }
 }
