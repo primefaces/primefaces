@@ -38,7 +38,7 @@
     childPrefix: "child-of-",
     clickableNodeNames: false,
     expandable: true,
-    indent: 19,
+    indent: 10,
     initialState: "collapsed",
     treeColumn: 0
   };
@@ -176,7 +176,7 @@
         });
         
         if(options.expandable) {
-          cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
+          cell.prepend('<span style="margin-left: -10px; padding-left: 19px" class="expander"></span>');
           $(cell[0].firstChild).click(function() { node.toggleBranch(); });
           
           if(options.clickableNodeNames) {

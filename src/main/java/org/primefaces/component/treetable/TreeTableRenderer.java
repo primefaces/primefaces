@@ -87,13 +87,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
 				writer.startElement("th", null);
 				writer.writeAttribute("class", columnStyleClass, null);
-					
-				writer.startElement("div", null);
-				writer.writeAttribute("class", TreeTable.HEADER_CLASS, null);
-				
-				writer.startElement("span", null);
-				writer.writeAttribute("class", TreeTable.HEADER_LABEL_CLASS, null);
-				
+									
 				UIComponent header = column.getFacet("header");
 				if(header != null) {
 					if(ComponentUtils.isLiteralText(header))
@@ -102,8 +96,6 @@ public class TreeTableRenderer extends CoreRenderer {
 						header.encodeAll(facesContext);
 				}
 				
-				writer.endElement("span");
-				writer.endElement("div");
 				writer.endElement("th");
 			}
 		}
