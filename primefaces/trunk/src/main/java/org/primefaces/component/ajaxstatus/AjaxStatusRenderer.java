@@ -41,13 +41,13 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');\n");
+		writer.write(widgetVar + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');");
 		
-		encodeCallback(context, status, widgetVar, "ajaxSend", "onprestart", "prestart");
-		encodeCallback(context, status, widgetVar, "ajaxStart", "onstart", "start");
-		encodeCallback(context, status, widgetVar, "ajaxError", "onerror", "error");
-		encodeCallback(context, status, widgetVar, "ajaxSuccess", "onsuccess", "success");
-		encodeCallback(context, status, widgetVar, "ajaxComplete", "oncomplete", "complete");
+		encodeCallback(context, status, widgetVar, "ajaxSend", "onprestart", AjaxStatus.PRESTART_FACET);
+		encodeCallback(context, status, widgetVar, "ajaxStart", "onstart", AjaxStatus.START_FACET);
+		encodeCallback(context, status, widgetVar, "ajaxError", "onerror", AjaxStatus.ERROR_FACET);
+		encodeCallback(context, status, widgetVar, "ajaxSuccess", "onsuccess", AjaxStatus.SUCCESS_FACET);
+		encodeCallback(context, status, widgetVar, "ajaxComplete", "oncomplete", AjaxStatus.COMPLETE_FACET);
 
 		writer.endElement("script");
 	}
@@ -82,9 +82,9 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		}
 
         //Default facet
-        UIComponent defaultFacet = status.getFacet("default");
+        UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT_FACET);
         if(defaultFacet != null) {
-            encodeFacet(context, clientId, defaultFacet, "default", false);
+            encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT_FACET, false);
         }
 		
 		writer.endElement("div");
