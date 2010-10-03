@@ -1,54 +1,18 @@
 .ui-treetable {
-	border-collapse: separate;
-	border-spacing: 0;
-	margin: 0;
-	padding: 0;
-	border-bottom-style: none !important;
-}
-
-.ui-treetable thead {
-	border-spacing: 0;
+	border-collapse:collapse;
+    width:100%;
 }
 
 .ui-treetable th {
-	margin:0;
-	padding:0;
-	text-decoration:none;
-    vertical-align:bottom;
-}
-
-.ui-treetable thead th.ui-state-default {
-	border-style:none solid solid none;
-}
-			
-.ui-treetable thead th.ui-treetable-last,
-.ui-treetable tbody td.ui-treetable-last {
-	border-right-style: none;
-}
-
-.ui-treetable-header {
-	white-space: nowrap;
-	margin: 0;
-	padding: 4px 10px;
-}
-
-.ui-treetable-header-label {
-	position:relative;
-}
-
-.ui-treetable td {
-	padding: 0.3em 1.5em;
-	margin:0;
-    text-align:left;
+    text-align:center;
+    white-space:nowrap;
+    padding:4px 10px 4px 10px;
 }
 
 .ui-treetable .ui-treetable-data td {
-	border-bottom-color:inherit;
-	border-bottom-style:solid;
-	border-bottom-width:1px;
-	border-right-color:inherit;
-	border-right-style:solid;
-	border-right-width:1px;
+    border-right:1px solid;
+    border-right-color:inherit;
+    padding:4px 10px 4px 10px;
 }
 
 .ui-treetable-selected {
