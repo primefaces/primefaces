@@ -67,6 +67,9 @@
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
+        <resource>
+			<name>jquery/jquery-ui.js</name>
+		</resource>
 		<resource>
 			<name>core/core.js</name>
 		</resource>
