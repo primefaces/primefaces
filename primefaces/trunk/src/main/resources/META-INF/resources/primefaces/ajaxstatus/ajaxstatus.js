@@ -1,12 +1,14 @@
-PrimeFaces.widget.AjaxStatus = function(clientId) {
-	this.clientId = PrimeFaces.escapeClientId(clientId);
+PrimeFaces.widget.AjaxStatus = function(id) {
+    this.id = id;
+	this.jqId = PrimeFaces.escapeClientId(this.id);
 }
 
 PrimeFaces.widget.AjaxStatus.prototype.bindFacet = function(eventName, facetToShow) {
-	jQuery(this.clientId).bind(eventName, function() {
-		jQuery(this).children().hide();
+    var _self = this;
+	jQuery(document).bind(eventName, function() {
+		jQuery(_self.jqId).children().hide();
 	
-		jQuery(PrimeFaces.escapeClientId(facetToShow)).show();
+		jQuery(_self.jqId + '_' + facetToShow).show();
 	});
 }
 
