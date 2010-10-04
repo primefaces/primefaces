@@ -71,7 +71,12 @@ public class PickListRenderer extends CoreRenderer {
 
 		//Source List
 		writer.startElement("td", null);
-		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource());
+        UIComponent sourceCaption = pickList.getFacet("sourceCaption");
+        boolean hasSourceCaption = sourceCaption != null;
+        if(hasSourceCaption) {
+            encodeCaption(context, sourceCaption);
+        }
+		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), hasSourceCaption);
 		writer.endElement("td");
 
 		//Buttons
@@ -84,7 +89,12 @@ public class PickListRenderer extends CoreRenderer {
 
 		//Target List
 		writer.startElement("td", null);
-		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget());
+        UIComponent targetCaption = pickList.getFacet("targetCaption");
+        boolean hasTargetCaption = targetCaption != null;
+        if(hasTargetCaption) {
+            encodeCaption(context, targetCaption);
+        }
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), hasTargetCaption);
 		writer.endElement("td");
 
 		writer.endElement("tr");
@@ -109,6 +119,15 @@ public class PickListRenderer extends CoreRenderer {
 		
 		writer.endElement("script");
 	}
+
+    protected void encodeCaption(FacesContext context, UIComponent caption) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", PickList.CAPTION_CLASS, null);
+        caption.encodeAll(context);
+        writer.endElement("div");
+    }
 	
 	protected void encodeButton(FacesContext facesContext, PickList pickList, String label, String styleClass) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
@@ -120,8 +139,11 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("button");
 	}
 	
-	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model) throws IOException {
+	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, boolean hasCaption) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        if(hasCaption) {
+            styleClass += " ui-corner-bl ui-corner-br";
+        }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
