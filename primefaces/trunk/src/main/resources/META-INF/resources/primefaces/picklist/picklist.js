@@ -11,26 +11,32 @@ PrimeFaces.widget.PickList = function(id, cfg) {
     //Buttons
     this.setupButtons();
 
-    //Sortable lists
-    var _self = this;
-    jQuery(this.jqId + ' ul').sortable({
-       connectWith:'.ui-picklist-list',
-       revert:true,
-       receive: function(event, ui) {
-           _self.handleReceive(event, ui);
-       }
-    });
+    if(this.cfg.disabled) {
+        jQuery(this.jqId + ' .ui-picklist-item').addClass('ui-state-disabled');
+        jQuery(this.jqId + ' button').attr('disabled', 'disabled').addClass('ui-state-disabled');
+    }
+    else {
+        //Sortable lists
+        var _self = this;
+        jQuery(this.jqId + ' ul').sortable({
+           connectWith:'.ui-picklist-list',
+           revert:true,
+           receive: function(event, ui) {
+               _self.handleReceive(event, ui);
+           }
+        });
 
-     //Selection
-     jQuery(this.jqId + ' .ui-picklist-item').mousedown(function() {
-        jQuery(this).toggleClass('ui-state-highlight');
-     });
+         //Selection
+         jQuery(this.jqId + ' .ui-picklist-item').mousedown(function() {
+            jQuery(this).toggleClass('ui-state-highlight');
+         });
 
-     //Pojo support
-     if(this.cfg.pojo) {
-         this.parseItemValues(this.sourceState, jQuery(this.jqId + ' .ui-picklist-source'));
-         this.parseItemValues(this.targetState, jQuery(this.jqId + ' .ui-picklist-target'));
-     }
+         //Pojo support
+         if(this.cfg.pojo) {
+             this.parseItemValues(this.sourceState, jQuery(this.jqId + ' .ui-picklist-source'));
+             this.parseItemValues(this.targetState, jQuery(this.jqId + ' .ui-picklist-target'));
+         }
+    }
 }
 
 /**
