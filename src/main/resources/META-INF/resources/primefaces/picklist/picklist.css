@@ -8,13 +8,17 @@
 }
 
 .ui-picklist .ui-picklist-list li {
-    margin: 0 5px 5px 5px;
-    padding: 5px;
+    margin: 1px;
+    padding: 2px;
 }
 
 .ui-picklist .ui-picklist-button {
     display:block;
-    width:125px;
+    margin-bottom:0.3em;
+}
+
+.ui-picklist .ui-picklist-button.ui-button-text-icon-primary {
+    width:100%;
 }
 
 .ui-picklist .ui-picklist-item {
