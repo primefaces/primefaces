@@ -28,7 +28,6 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class PickListRenderer extends CoreRenderer {
 	
@@ -101,7 +100,12 @@ public class PickListRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(pickList.resolveWidgetVar() + " = new PrimeFaces.widget.PickList('" + clientId + "', {});");
+		writer.write(pickList.resolveWidgetVar() + " = new PrimeFaces.widget.PickList('" + clientId + "', {");
+        writer.write("pojo:" + (pickList.getConverter() != null));
+        writer.write(",effect:'" + pickList.getEffect() + "'");
+        writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
+        writer.write(",iconOnly:" + pickList.isIconOnly());
+        writer.write("});");
 		
 		writer.endElement("script");
 	}

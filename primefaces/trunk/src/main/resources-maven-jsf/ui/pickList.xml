@@ -59,6 +59,27 @@
 			<defaultValue>false</defaultValue>
 			<description>Disables or enables picklist</description>
 		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fast</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>iconOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
