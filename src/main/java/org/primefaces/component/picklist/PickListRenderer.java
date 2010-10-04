@@ -115,6 +115,9 @@ public class PickListRenderer extends CoreRenderer {
         writer.write(",effect:'" + pickList.getEffect() + "'");
         writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
         writer.write(",iconOnly:" + pickList.isIconOnly());
+
+        if(pickList.isDisabled()) writer.write(",disabled:true");
+
         writer.write("});");
 		
 		writer.endElement("script");
@@ -141,9 +144,7 @@ public class PickListRenderer extends CoreRenderer {
 	
 	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, boolean hasCaption) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        if(hasCaption) {
-            styleClass += " ui-corner-bl ui-corner-br";
-        }
+        styleClass += hasCaption ? " ui-corner-bl ui-corner-br" : " ui-corner-all";
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
