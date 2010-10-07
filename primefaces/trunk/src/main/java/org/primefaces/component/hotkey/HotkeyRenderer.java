@@ -61,10 +61,11 @@ public class HotkeyRenderer extends CoreRenderer {
 			writer.write(buildAjaxRequest(facesContext, hotkey, form.getClientId(facesContext), clientId));
 
 		} else {
-			writer.write(hotkey.getHandler() + ";");
+			writer.write(hotkey.getHandler());
 		}
 
-		writer.write("});});");
+		writer.write(";return false;});});");
+        
 		writer.endElement("script");
 	}
 }
