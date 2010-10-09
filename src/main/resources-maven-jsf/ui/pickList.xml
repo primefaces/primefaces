@@ -98,7 +98,7 @@
 			<name>removeLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>remove</defaultValue>
+			<defaultValue>Remove</defaultValue>
 			<description></description>
 		</attribute>
         <attribute>
