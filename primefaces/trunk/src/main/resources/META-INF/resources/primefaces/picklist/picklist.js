@@ -19,8 +19,8 @@ PrimeFaces.widget.PickList = function(id, cfg) {
         //Sortable lists
         var _self = this;
         jQuery(this.jqId + ' ul').sortable({
-           connectWith:'.ui-picklist-list',
-           revert:true,
+           connectWith: this.jqId + ' .ui-picklist-list',
+           revert: true,
            receive: function(event, ui) {
                _self.handleReceive(event, ui);
            }
