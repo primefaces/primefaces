@@ -80,6 +80,34 @@
 			<defaultValue>false</defaultValue>
 			<description></description>
 		</attribute>
+        <attribute>
+			<name>addLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Add</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>addAllLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Add All</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>removeLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>remove</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>removeAllLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Remove All</defaultValue>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

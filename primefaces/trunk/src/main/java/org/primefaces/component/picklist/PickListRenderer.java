@@ -81,10 +81,10 @@ public class PickListRenderer extends CoreRenderer {
 
 		//Buttons
 		writer.startElement("td", null);
-        encodeButton(context, pickList, "Add", PickList.ADD_BUTTON_CLASS);
-        encodeButton(context, pickList, "Add All", PickList.ADD_ALL_BUTTON_CLASS);
-        encodeButton(context, pickList, "Remove", PickList.REMOVE_BUTTON_CLASS);
-        encodeButton(context, pickList, "Remove All", PickList.REMOVE_ALL_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS);
 		writer.endElement("td");
 
 		//Target List
