@@ -46,7 +46,11 @@ public class ContextMenuRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',");
-		writer.write("{trigger:" + trigger + "});");
+		writer.write("{trigger:" + trigger);
+
+        if(menu.getZindex() != Integer.MAX_VALUE) writer.write(",zIndex:" + menu.getZindex());
+
+        writer.write("});");
 		
 		encodeMenuitems(facesContext, menu, widgetVar);
 		
