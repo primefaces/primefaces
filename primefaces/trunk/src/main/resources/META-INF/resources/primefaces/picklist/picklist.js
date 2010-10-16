@@ -29,9 +29,19 @@ PrimeFaces.widget.PickList = function(id, cfg) {
             }
         });
 
-        //Visual selection
-        jQuery(this.jqId + ' li.ui-picklist-item').mousedown(function() {
+        //Visual selection and Double click transfer
+        jQuery(this.jqId + ' li.ui-picklist-item')
+        .click(function() {
             jQuery(this).toggleClass('ui-state-highlight');
+        }).dblclick(function() {
+            jQuery(this).addClass('ui-state-highlight');
+
+            jQuery(this).hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                if(jQuery(this).parent().hasClass('ui-picklist-source'))
+                    _self.transfer(this, _self.targetList);
+                else
+                    _self.transfer(this, _self.sourceList);
+            });
         });
 
         //Pojo support
