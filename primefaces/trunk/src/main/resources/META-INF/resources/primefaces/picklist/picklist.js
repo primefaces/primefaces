@@ -100,7 +100,6 @@ PrimeFaces.widget.PickList.prototype.add = function() {
 PrimeFaces.widget.PickList.prototype.addAll = function() {
     var _self = this;
 
-
     this.sourceList.children('li.ui-picklist-item').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
         _self.transfer(this, _self.targetList);
     });
@@ -134,9 +133,9 @@ PrimeFaces.widget.PickList.prototype.saveState = function() {
 }
 
 PrimeFaces.widget.PickList.prototype.transfer = function(element, to) {
-    jQuery(element).removeClass('ui-state-highlight').appendTo(to).show(this.cfg.effect, {}, this.cfg.effectSpeed);
-    
-    this.saveState();
+    var _self = this;
+
+    jQuery(element).removeClass('ui-state-highlight').appendTo(to).show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {_self.saveState();});
 }
 
 PrimeFaces.widget.PickList.prototype.saveListState = function(list, holder) {
