@@ -24,8 +24,8 @@ PrimeFaces.widget.PickList = function(id, cfg) {
         jQuery(this.jqId + ' ul').sortable({
             connectWith: this.jqId + ' .ui-picklist-list',
             revert: true,
-            receive: function(event, ui) {
-                _self.handleReceive(event, ui);
+            update: function(event, ui) {
+                _self.onUpdate(event, ui);
             }
         });
 
@@ -121,7 +121,7 @@ PrimeFaces.widget.PickList.prototype.removeAll = function() {
     });
 }
 
-PrimeFaces.widget.PickList.prototype.handleReceive = function(event, ui) {
+PrimeFaces.widget.PickList.prototype.onUpdate = function(event, ui) {
     ui.item.removeClass('ui-state-highlight');
 
     this.saveState();
