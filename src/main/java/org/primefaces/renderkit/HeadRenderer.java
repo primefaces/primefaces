@@ -74,7 +74,7 @@ public class HeadRenderer extends Renderer {
         resource.setRendererType("javax.faces.resource.Stylesheet");
         
         Map<String, Object> attrs = resource.getAttributes();
-        attrs.put("name", "/skins/sam/skin.css");
+        attrs.put("name", "skins/sam/skin.css");
         attrs.put("library", "primefaces");
         attrs.put("target", "head");
        
