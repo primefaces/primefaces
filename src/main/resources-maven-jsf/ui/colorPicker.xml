@@ -73,11 +73,8 @@
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>jquery/plugins/ui/jquery.ui.dialog.css</name>
-		</resource>
-		<resource>
-			<name>jquery/plugins/ui/jquery.ui.button.css</name>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
 		<resource>
 			<name>yui/slider/assets/skins/sam/slider.css</name>
@@ -98,13 +95,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/plugins/ui/jquery-ui.custom.js</name>
-		</resource>	
-		<resource>
-			<name>core/core.js</name>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
-			<name>button/button.js</name>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
 			<name>colorpicker/colorpicker.js</name>
