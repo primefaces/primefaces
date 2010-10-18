@@ -42,5 +42,11 @@
 			<defaultValue>0</defaultValue>
 			<description>TabIndex value of the captcha</description>
 		</attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description></description>
+		</attribute>
 	</attributes>
 </component>

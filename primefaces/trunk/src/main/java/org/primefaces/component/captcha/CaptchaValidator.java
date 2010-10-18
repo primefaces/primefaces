@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import javax.faces.FacesException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -34,10 +35,7 @@ import org.primefaces.util.MessageFactory;
 
 public class CaptchaValidator implements Validator {
 
-	public final static String INVALID_MESSAGE_ID = "org.primefaces.component.captcha.CaptchaValidator.INVALID";
-	private final static String PRIVATE_KEY_PARAM = "org.primefaces.component.captcha.PRIVATE_KEY";
-	
-	public void validate(FacesContext facesContext, UIComponent component, Object value) throws ValidatorException {
+	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String result = null;
 		Verification verification = (Verification) value;
 
@@ -48,7 +46,7 @@ public class CaptchaValidator implements Validator {
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			String postBody = createPostParameters(facesContext, verification);
+			String postBody = createPostParameters(context, verification);
 			
 			OutputStream out = conn.getOutputStream();
 			out.write(postBody.getBytes());
@@ -66,10 +64,10 @@ public class CaptchaValidator implements Validator {
 		
 		if(isValid == false) {
 			Object[] params = new Object[2];
-			params[0] = MessageFactory.getLabel(facesContext, component);
+			params[0] = MessageFactory.getLabel(context, component);
 			params[1] = verification.getAnswer();
 			
-			throw new ValidatorException(MessageFactory.getMessage(INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params));
+			throw new ValidatorException(MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params));
 		}
 	}
 	
@@ -77,13 +75,17 @@ public class CaptchaValidator implements Validator {
 		String challenge = verification.getChallenge();
 		String answer = verification.getAnswer();
 		String remoteAddress = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRemoteAddr();
-		String privateKey = facesContext.getExternalContext().getInitParameter(PRIVATE_KEY_PARAM);
+		String privateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
 
-		StringBuffer postParams = new StringBuffer();
-		postParams.append("privatekey=" + URLEncoder.encode(privateKey, "UTF-8"));
-		postParams.append("&remoteip=" + URLEncoder.encode(remoteAddress, "UTF-8"));
-		postParams.append("&challenge=" + URLEncoder.encode(challenge, "UTF-8"));
-		postParams.append("&response=" + URLEncoder.encode(answer, "UTF-8"));
+        if(privateKey == null) {
+            throw new FacesException("Private Captcha Key is not defined using primefaces.PRIVATE_CAPTCHA_KEY context-param");
+        }
+
+		StringBuilder postParams = new StringBuilder();
+		postParams.append("privatekey=").append(URLEncoder.encode(privateKey, "UTF-8"));
+		postParams.append("&remoteip=").append(URLEncoder.encode(remoteAddress, "UTF-8"));
+		postParams.append("&challenge=").append(URLEncoder.encode(challenge, "UTF-8"));
+		postParams.append("&response=").append(URLEncoder.encode(answer, "UTF-8"));
 	
 		return postParams.toString();
 	}
