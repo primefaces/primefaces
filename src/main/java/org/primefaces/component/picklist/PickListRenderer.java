@@ -69,6 +69,17 @@ public class PickListRenderer extends CoreRenderer {
 		writer.startElement("tbody", null);
 		writer.startElement("tr", null);
 
+        //Target List Reorder Buttons
+        if(pickList.isShowSourceControls()) {
+            writer.startElement("td", null);
+            writer.writeAttribute("class", PickList.SOURCE_CONTROLS, null);
+            encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS);
+            encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS);
+            encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS);
+            encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS);
+            writer.endElement("td");
+        }
+
 		//Source List
 		writer.startElement("td", null);
         UIComponent sourceCaption = pickList.getFacet("sourceCaption");
@@ -97,6 +108,17 @@ public class PickListRenderer extends CoreRenderer {
 		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), hasTargetCaption);
 		writer.endElement("td");
 
+        //Target List Reorder Buttons
+        if(pickList.isShowTargetControls()) {
+            writer.startElement("td", null);
+            writer.writeAttribute("class", PickList.TARGET_CONTROLS, null);
+            encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS);
+            encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS);
+            encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS);
+            encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS);
+            writer.endElement("td");
+        }
+
 		writer.endElement("tr");
 		writer.endElement("tbody");
 
@@ -115,7 +137,9 @@ public class PickListRenderer extends CoreRenderer {
         writer.write(",effect:'" + pickList.getEffect() + "'");
         writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
         writer.write(",iconOnly:" + pickList.isIconOnly());
-
+        
+        if(pickList.isShowSourceControls()) writer.write(",showSourceControls:true");
+        if(pickList.isShowTargetControls()) writer.write(",showTargetControls:true");
         if(pickList.isDisabled()) writer.write(",disabled:true");
 
         writer.write("});");

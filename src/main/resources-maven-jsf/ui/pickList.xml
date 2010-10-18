@@ -108,6 +108,48 @@
 			<defaultValue>Remove All</defaultValue>
 			<description></description>
 		</attribute>
+        <attribute>
+			<name>moveUpLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Up</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>moveTopLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Top</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>moveDownLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Down</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>moveBottomLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Bottom</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>showSourceControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>showTargetControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
