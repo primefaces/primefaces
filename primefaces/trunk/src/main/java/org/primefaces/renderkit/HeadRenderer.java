@@ -18,6 +18,7 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -27,23 +28,32 @@ import javax.faces.render.Renderer;
 
 public class HeadRenderer extends Renderer {
 
+    private final static Logger logger = Logger.getLogger(HeadRenderer.class.getName());
+
 	@Override
-    public void encodeBegin(FacesContext fc, UIComponent component) throws IOException {
-        ResponseWriter writer = fc.getResponseWriter();
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
         
         //Skin
-        String skinName = fc.getExternalContext().getInitParameter("primefaces.skin");
-        if(skinName == null) {
-        	fc.getViewRoot().addComponentResource(fc, createDefaultSkinResource(fc), "head");
+        String newParam = context.getExternalContext().getInitParameter("primefaces.SKIN");
+        String oldParam = context.getExternalContext().getInitParameter("primefaces.skin");
+
+        if(oldParam != null) {
+            logger.info("primefaces.skin context-param is deprecated use primefaces.SKIN instead");
+        }
+
+        //Add default skin resource if user does not provide custom skin
+        if(newParam == null && oldParam == null) {
+            context.getViewRoot().addComponentResource(context, createDefaultSkinResource(context), "head");
         }
 
         //Resources
-        UIViewRoot viewRoot = fc.getViewRoot();
-        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(fc, "head")).listIterator();
+        UIViewRoot viewRoot = context.getViewRoot();
+        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
         while (iter.hasNext()) {
             UIComponent resource = (UIComponent) iter.next();
-            resource.encodeAll(fc);
+            resource.encodeAll(context);
         }
     }
 
@@ -53,13 +63,13 @@ public class HeadRenderer extends Renderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
-        ResponseWriter writer = fc.getResponseWriter();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
        
         writer.endElement("head");
     }
 
-     private UIComponent createDefaultSkinResource(FacesContext fc) {
+    private UIComponent createDefaultSkinResource(FacesContext fc) {
         UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
         resource.setRendererType("javax.faces.resource.Stylesheet");
         
