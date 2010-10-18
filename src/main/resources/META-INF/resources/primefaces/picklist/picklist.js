@@ -80,6 +80,8 @@ PrimeFaces.widget.PickList.prototype.add = function() {
     var _self = this;
 
     this.sourceList.children('li.ui-picklist-item.ui-state-highlight').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+        _self.fireOnTransferEvent(this, _self.sourceList, _self.targetList);
+
         _self.transfer(this, _self.targetList);
     });
 }
@@ -88,6 +90,8 @@ PrimeFaces.widget.PickList.prototype.addAll = function() {
     var _self = this;
 
     this.sourceList.children('li.ui-picklist-item').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+        _self.fireOnTransferEvent(this, _self.sourceList, _self.targetList);
+        
         _self.transfer(this, _self.targetList);
     });
 }
@@ -96,6 +100,8 @@ PrimeFaces.widget.PickList.prototype.remove = function() {
     var _self = this;
 
     this.targetList.children('li.ui-picklist-item.ui-state-highlight').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+        _self.fireOnTransferEvent(this, _self.targetList, _self.sourceList);
+
         _self.transfer(this, _self.sourceList);
     });
 }
@@ -104,6 +110,8 @@ PrimeFaces.widget.PickList.prototype.removeAll = function() {
     var _self = this;
     
     this.targetList.children('li.ui-picklist-item').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+        _self.fireOnTransferEvent(this, _self.targetList, _self.sourceList);
+        
         _self.transfer(this, _self.sourceList);
     });
 }
@@ -215,5 +223,20 @@ PrimeFaces.widget.PickList.prototype.parseItemValues = function(state, list) {
 
     for(var i in itemValues) {
         jQuery(itemElements.get(i)).data('itemValue', itemValues[i]);
+    }
+}
+
+/**
+ * Invokes client side onchange callback if defined
+ */
+PrimeFaces.widget.PickList.prototype.fireOnTransferEvent = function(item, from, to) {
+
+    if(this.cfg.onTransfer) {
+        var obj = {};
+        obj.item = item;
+        obj.from = from;
+        obj.to = to;
+
+        this.cfg.onTransfer.call(this, obj);
     }
 }

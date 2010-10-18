@@ -150,6 +150,12 @@
 			<defaultValue>false</defaultValue>
 			<description></description>
 		</attribute>
+        <attribute>
+			<name>onTransfer</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
