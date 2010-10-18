@@ -128,6 +128,11 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
     jQuery(this.jqId).tabs('select', index);
 }
 
+//Backward compatibility
+PrimeFaces.widget.TabView.prototype.selectTab = function(index) {
+    jQuery(this.jqId).tabs('select', index);
+}
+
 PrimeFaces.widget.TabView.prototype.disable = function(index) {
     jQuery(this.jqId).tabs('disable', index);
 }
