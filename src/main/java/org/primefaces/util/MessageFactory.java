@@ -111,13 +111,11 @@ public class MessageFactory {
 	}
 	
 	public static Object getLabel(FacesContext facesContext, UIComponent component) {
-		String label = null;
-		ValueExpression ve = component.getValueExpression("label");
-		
-		if(ve != null)
-			label = (String) ve.getValue(facesContext.getELContext());
-		else
+		String label = (String) component.getAttributes().get("label");
+
+		if(label == null) {
 			label = component.getClientId(facesContext);
+        }
 		
 		return label;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.component.captcha;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,17 +26,16 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class CaptchaRenderer extends CoreRenderer {
+
+    private static final Logger logger = Logger.getLogger(CaptchaRenderer.class.getName());
 	
 	private final static String CHALLENGE_FIELD = "recaptcha_challenge_field";
 	private final static String RESPONSE_FIELD = "recaptcha_response_field";
 
-	/**
-	 * Decodes the answer to the captcha challenge.
-	 * If answer parameter is
-	 */
-	public void decode(FacesContext facesContext, UIComponent component) {
+    @Override
+	public void decode(FacesContext context, UIComponent component) {
 		Captcha captcha = (Captcha) component;
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
 		String challenge = params.get(CHALLENGE_FIELD);
 		String answer = params.get(RESPONSE_FIELD);
@@ -48,15 +48,17 @@ public class CaptchaRenderer extends CoreRenderer {
 		}
 	}
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		Captcha captcha = (Captcha) component;
 		captcha.setRequired(true);
 		
-		String publicKey = captcha.getPublicKey();
+		String publicKey = getPublicKey(context, captcha);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
+        
 		writer.write("var RecaptchaOptions = {");
 		writer.write("theme:\"" + captcha.getTheme() + "\"");
 		writer.write(",lang:\"" + captcha.getLanguage() + "\"");
@@ -75,7 +77,6 @@ public class CaptchaRenderer extends CoreRenderer {
 		writer.startElement("iframe", null);
 		writer.writeAttribute("src", "http://api.recaptcha.net/noscript?k=" + publicKey, null);
 		writer.endElement("iframe");
-		writer.write("<br />");
 		
 		writer.startElement("textarea", null);
 		writer.writeAttribute("id", CHALLENGE_FIELD, null);
@@ -93,4 +94,16 @@ public class CaptchaRenderer extends CoreRenderer {
 		
 		writer.endElement("noscript");
 	}
+
+    protected String getPublicKey(FacesContext context, Captcha captcha) {
+        String key = captcha.getPublicKey();
+        
+        if(key != null) {
+            logger.warning("PublicKey definition on captcha is deprecated, use primefaces.PUBLIC_CAPTCHA_KEY context-param instead");
+
+            return key;
+        } else {
+            return context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
+        }
+    }
 }
