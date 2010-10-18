@@ -83,8 +83,9 @@ public class FocusRenderer extends CoreRenderer {
 			String clientId = findFirstInvalidClientId(facesContext, focus);
 			
 			if(clientId != null) {
-				writer.write("setTimeout(function() {"); 
-				writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
+				writer.write("setTimeout(function() {");
+                writer.write("var focusTarget = PrimeFaces.escapeClientId('" + clientId + "');");
+				writer.write("jQuery(focusTarget + ',' + focusTarget + ' input').focus();");
 				writer.write("}, 500);");
 			}
 			
