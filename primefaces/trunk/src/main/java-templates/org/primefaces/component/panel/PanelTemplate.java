@@ -33,9 +33,14 @@ import javax.faces.component.UIComponent;
 	public Menu  getOptionsMenu() {
 		if(optionsMenu == null) {
 			UIComponent optionsFacet = getFacet("options");
-			if(optionsFacet != null)
-				optionsMenu = (Menu) optionsFacet;
+			if(optionsFacet != null) {
+                if(optionsFacet instanceof Menu)
+                    optionsMenu = (Menu) optionsFacet;
+                else
+                    optionsMenu = (Menu) optionsFacet.getChildren().get(0);
+            }
+
 		}
-		
+
 		return optionsMenu;
 	}
