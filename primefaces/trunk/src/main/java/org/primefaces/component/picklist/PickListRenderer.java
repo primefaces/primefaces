@@ -141,6 +141,7 @@ public class PickListRenderer extends CoreRenderer {
         if(pickList.isShowSourceControls()) writer.write(",showSourceControls:true");
         if(pickList.isShowTargetControls()) writer.write(",showTargetControls:true");
         if(pickList.isDisabled()) writer.write(",disabled:true");
+        if(pickList.getOnTransfer() != null) writer.write((",onTransfer:function(e) {" + pickList.getOnTransfer() + ";}"));
 
         writer.write("});");
 		
