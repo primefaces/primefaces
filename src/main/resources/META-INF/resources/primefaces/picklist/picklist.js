@@ -111,29 +111,32 @@ PrimeFaces.widget.PickList.prototype.removeAll = function() {
 PrimeFaces.widget.PickList.prototype.moveUp = function(list) {
     var _self = this;
 
-    list.children('.ui-state-highlight').removeClass('ui-state-highlight').each(function() {
+    list.children('.ui-state-highlight').each(function() {
         var item = jQuery(this);
 
-        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                _self.saveState();
+        if(!item.is(':first-child')) {
+            item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                    _self.saveState();
+                });
             });
-        });
-
+        }
     });
 }
 
 PrimeFaces.widget.PickList.prototype.moveTop = function(list) {
     var _self = this;
 
-    list.children('.ui-state-highlight').removeClass('ui-state-highlight').each(function() {
+    list.children('.ui-state-highlight').each(function() {
         var item = jQuery(this);
 
-        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
-                _self.saveState();
+        if(!item.is(':first-child')) {
+            item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
+                    _self.saveState();
+                });
             });
-        });
+        }
 
     });
 }
@@ -141,14 +144,16 @@ PrimeFaces.widget.PickList.prototype.moveTop = function(list) {
 PrimeFaces.widget.PickList.prototype.moveDown = function(list) {
     var _self = this;
 
-    list.children('.ui-state-highlight').removeClass('ui-state-highlight').each(function() {
+    list.children('.ui-state-highlight').each(function() {
         var item = jQuery(this);
 
-        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                _self.saveState();
+        if(!item.is(':last-child')) {
+            item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                    _self.saveState();
+                });
             });
-        });
+        }
 
     });
 }
@@ -156,14 +161,16 @@ PrimeFaces.widget.PickList.prototype.moveDown = function(list) {
 PrimeFaces.widget.PickList.prototype.moveBottom = function(list) {
     var _self = this;
 
-    list.children('.ui-state-highlight').removeClass('ui-state-highlight').each(function() {
+    list.children('.ui-state-highlight').each(function() {
         var item = jQuery(this);
 
-        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                _self.saveState();
-            });  
-        });
+        if(!item.is(':last-child')) {
+            item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                    _self.saveState();
+                });
+            });
+        }
 
     });
 }
