@@ -774,3 +774,14 @@
 	$(publicMethod.init);
 
 }(jQuery, this));
+
+/**
+ * PrimeFaces LightBox Widget
+ */
+PrimeFaces.widget.LightBox = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(id);
+
+    jQuery(this.jqId + ' a').colorbox(this.cfg);
+}

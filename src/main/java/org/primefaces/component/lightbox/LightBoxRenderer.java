@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,75 +26,78 @@ import org.primefaces.renderkit.CoreRenderer;
 public class LightBoxRenderer extends CoreRenderer {
 
 	@Override
-	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		LightBox lightBox = (LightBox) component;
-		String clientId = lightBox.getClientId(facesContext);
+	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		LightBox lb = (LightBox) component;
+		String clientId = lb.getClientId(context);
 		
-		writer.startElement("div", lightBox);
-		writer.writeAttribute("id", clientId, "id");
-		
-		if(lightBox.getStyle() != null) writer.writeAttribute("style", lightBox.getStyle(), null);
-		if(lightBox.getStyleClass() != null) writer.writeAttribute("class", lightBox.getStyleClass(), null);
-	}
-	
-	private void encodeCFG(FacesContext facesContext, LightBox lightBox) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = lightBox.getClientId(facesContext);
-		
-		if(lightBox.getSpeed() != 350) writer.write(",speed:" + lightBox.getSpeed());
-		if(lightBox.getWidth() != null) writer.write(",width:'" + lightBox.getWidth() + "'");
-		if(lightBox.getHeight() != null) writer.write(",height:'" + lightBox.getHeight() + "'");
-		if(lightBox.isIframe()) writer.write(",iframe:true");
-		if(lightBox.getFacet("inline") != null) {
-			writer.write(",inline:true");
-			writer.write(",href:'#" + clientId + "_inline'");
-		}
-		if(lightBox.getOpacity() != 0.85) writer.write(",opacity:" + lightBox.getOpacity());
-		if(lightBox.isVisible()) writer.write(",open:true");
-		if(lightBox.isSlideshow()) {
-			writer.write(",slideshow:true");
-			writer.write(",slideshowSpeed:" + lightBox.getSlideshowSpeed());
-			
-			if(lightBox.getSlideshowStartText() != null) writer.write(",slideshowStart:'" + lightBox.getSlideshowStartText() + "'");
-			if(lightBox.getSlideshowStopText() != null) writer.write(",slideshowStop:'" + lightBox.getSlideshowStopText() + "'");
-			if(!lightBox.isSlideshowAuto()) writer.write(",slideshowAuto:false");
-		}
-		if(!lightBox.isOverlayClose()) writer.write(",overlayClose:false");
-		if(lightBox.getCurrentTemplate() != null) writer.write(",current:'" + lightBox.getCurrentTemplate() + "'");
-		if(lightBox.isGroup()) writer.write(",rel:'" + clientId + "'");
+		writer.startElement("div", lb);
+        writer.writeAttribute("id", clientId, "id");
+
+        if(lb.getStyle() != null) writer.writeAttribute("style", lb.getStyle(), null);
+        if(lb.getStyleClass() != null) writer.writeAttribute("class", lb.getStyleClass(), null);
 	}
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		LightBox lightBox = (LightBox) component;
-		String clientId = lightBox.getClientId(facesContext);
-		
-		if(lightBox.getFacet("inline") != null) {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		LightBox lb = (LightBox) component;
+        UIComponent inline = lb.getFacet("inline");
+
+		if(inline != null) {
 			writer.startElement("div", null);
 			writer.writeAttribute("style", "display:none", null);
 			
 			writer.startElement("div", null);
-			writer.writeAttribute("id", clientId + "_inline", null);
+			writer.writeAttribute("id", lb.getClientId(context) + "_inline", null);
 			
-			renderChild(facesContext, lightBox.getFacet("inline"));
+			inline.encodeAll(context);
 			
 			writer.endElement("div");
 			writer.endElement("div");
 		}
 		
 		writer.endElement("div");
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("var lightBoxTarget = PrimeFaces.escapeClientId('" + clientId + "')" + " + ' a';\n");
-		writer.write(lightBox.resolveWidgetVar() + " = jQuery(lightBoxTarget).colorbox({");
-		writer.write("transition:'" + lightBox.getTransition() + "'");
-		encodeCFG(facesContext, lightBox);
-		writer.write("});");
-		
-		writer.endElement("script");
+
+        encodeScript(context, component);
 	}
+
+	public void encodeScript(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        LightBox lb = (LightBox) component;
+		String clientId = lb.getClientId(context);
+        
+        writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write(lb.resolveWidgetVar() + " = new PrimeFaces.widget.LightBox('" + clientId + "', {");
+
+		writer.write("transition:'" + lb.getTransition() + "'");
+
+        if(lb.getSpeed() != 350) writer.write(",speed:" + lb.getSpeed());
+		if(lb.getWidth() != null) writer.write(",width:'" + lb.getWidth() + "'");
+		if(lb.getHeight() != null) writer.write(",height:'" + lb.getHeight() + "'");
+		if(lb.isIframe()) writer.write(",iframe:true");
+		if(lb.getFacet("inline") != null) {
+			writer.write(",inline:true");
+			writer.write(",href:'#" + clientId + "_inline'");
+		}
+		if(lb.getOpacity() != 0.85) writer.write(",opacity:" + lb.getOpacity());
+		if(lb.isVisible()) writer.write(",open:true");
+		if(lb.isSlideshow()) {
+			writer.write(",slideshow:true");
+			writer.write(",slideshowSpeed:" + lb.getSlideshowSpeed());
+
+			if(lb.getSlideshowStartText() != null) writer.write(",slideshowStart:'" + lb.getSlideshowStartText() + "'");
+			if(lb.getSlideshowStopText() != null) writer.write(",slideshowStop:'" + lb.getSlideshowStopText() + "'");
+			if(!lb.isSlideshowAuto()) writer.write(",slideshowAuto:false");
+		}
+		if(!lb.isOverlayClose()) writer.write(",overlayClose:false");
+		if(lb.getCurrentTemplate() != null) writer.write(",current:'" + lb.getCurrentTemplate() + "'");
+		if(lb.isGroup()) writer.write(",rel:'" + clientId + "'");
+
+		writer.write("});");
+
+		writer.endElement("script");
+    }
 }
