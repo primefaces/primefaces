@@ -89,7 +89,7 @@ PrimeFaces.ajax.AjaxUtils = {
 	
     updateState: function(value) {
         jQuery("form").each(function() {
-            var form = $(this),
+            var form = jQuery(this),
             formViewState = form.children("input[name='javax.faces.ViewState']").get(0);
 
             if(formViewState) {
