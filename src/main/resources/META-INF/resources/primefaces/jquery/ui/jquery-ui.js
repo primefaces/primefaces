@@ -5789,7 +5789,7 @@ $.widget("ui.dialog", {
 			titleId = $.ui.dialog.getTitleId(self.element),
 
 			uiDialog = (self.uiDialog = $('<div></div>'))
-				.appendTo(document.body)
+				.appendTo(this.element.parent())
 				.hide()
 				.addClass(uiDialogClasses + options.dialogClass)
 				.css({
@@ -6008,9 +6008,7 @@ $.widget("ui.dialog", {
 			uiDialog = self.uiDialog;
 
 		self.overlay = options.modal ? new $.ui.dialog.overlay(self) : null;
-		if (uiDialog.next().length) {
-			uiDialog.appendTo('body');
-		}
+
 		self._size();
 		self._position(options.position);
 		uiDialog.show(options.show);
