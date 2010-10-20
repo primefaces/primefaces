@@ -141,7 +141,7 @@ a { outline: none; }
 }
 
 .el-dialogform .spinner {
-	background:url(../images/loading.gif) 50% 50% no-repeat;
+	background:url("#{resource['primefaces:editor/images/loading.gif']}") 50% 50% no-repeat;
 	text-align:center;
 	width:150px;
 	height:50px;
@@ -251,12 +251,12 @@ a { outline: none; }
 
 .elrte-swf-placeholder {
 	width:1px;
-	background: url('../images/swf.png') 0 0 no-repeat;
+	background: url("#{resource['primefaces:editor/images/swf.png']}") 0 0 no-repeat;
 }
 
 /* style to detect images url */
 /*.el-rte */
-.elrtetesturl { color:red; background-image:url(../images/pixel.gif);}
+.elrtetesturl { color:red; background-image:url("#{resource['primefaces:editor/images/pixel.gif']}");}
 
 /* панель инструментов */
 .el-rte .toolbar {  background-color:#eee; padding:3px 7px 2px 7px; border:1px solid #ccc; white-space:normal; }
@@ -275,7 +275,7 @@ a { outline: none; }
 	margin:0;
 	list-style:none;
 	padding:0 2px 0 5px;
-	background: url('../images/elrte-toolbar.png') -934px -2px no-repeat;
+	background: url("#{resource['primefaces:editor/images/elrte-toolbar.png']}") -934px -2px no-repeat;
 }
 /* первая панель кнопок */
 .el-rte .toolbar ul.first {
@@ -294,7 +294,7 @@ a { outline: none; }
     *display: inline;
 	margin:1px 1px;
 	padding:0; /* Joomla 1.6 compat */
-	background:url('../images/elrte-toolbar.png') no-repeat;
+	background:url("#{resource['primefaces:editor/images/elrte-toolbar.png']}") no-repeat;
 	border:1px solid #ccc;
 }
 /* активная и подсвеченная и неактивная кнопка */
@@ -504,7 +504,7 @@ a { outline: none; }
 	height:46px;
 	float:left;
 	margin:.5em 1em;
-	background:url('../images/elrte-toolbar.png') -880px -7px no-repeat;
+	background:url("#{resource['primefaces:editor/images/elrte-toolbar.png']}") -880px -7px no-repeat;
 }
 .elrte-ver { font-size:.9em; padding-left:.7em;}
 .elrte-copy { font-size:.9em; padding-left:.3em;}
