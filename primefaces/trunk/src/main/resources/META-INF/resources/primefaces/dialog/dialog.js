@@ -1,3 +1,6 @@
+/**
+ * PrimeFaces Dialog Widget
+ */
 PrimeFaces.widget.Dialog = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
@@ -5,11 +8,17 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.jq = $PF(this.jqId);
 	
     this.jq.dialog(this.cfg);
-	
+
+    var _self = this;
+
+    //Close handler to invoke remote closeListener
     if(this.cfg.ajaxClose) {
-        this.jq.bind('dialogclose', { dialog: this }, this.handleClose);
+        this.jq.bind('dialogclose', function(event, ui) {
+            _self.onClose(event, ui);
+        });
     }
-	
+
+    //Hide close icon if dialog is not closable
     if(this.cfg.closable == false) {
         this.jq.parent().find('.ui-dialog-titlebar-close').hide();
     }
@@ -23,20 +32,21 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
     this.jq.dialog('close');
 }
 
-PrimeFaces.widget.Dialog.prototype.handleClose = function(event, ui) {
-    var _self = event.data.dialog;
-
+/**
+ * Fires an ajax request to invoke a closeListener passing a CloseEvent
+ */
+PrimeFaces.widget.Dialog.prototype.onClose = function(event, ui) {
     var options = {
-        source: _self.id,
-        process: _self.id
+        source: this.id,
+        process: this.id
     }
     
-    if(_self.cfg.onCloseUpdate) {
-        options.update = _self.cfg.onCloseUpdate;
+    if(this.cfg.onCloseUpdate) {
+        options.update = this.cfg.onCloseUpdate;
     }
 
     var params = {};
-    params[_self.id + "_ajaxClose"] = true;
+    params[this.id + "_ajaxClose"] = true;
 	
-    PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
