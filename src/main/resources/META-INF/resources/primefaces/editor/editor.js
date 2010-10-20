@@ -8661,6 +8661,8 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     }
 
     this.editor = new elRTE(document.getElementById(id), this.cfg);
+    
+    $PF('.el-rte .panel-save').hide();
 }
 
 PrimeFaces.widget.Editor.prototype.saveHTML = function() {
