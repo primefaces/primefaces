@@ -783,5 +783,5 @@ PrimeFaces.widget.LightBox = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
 
-    jQuery(this.jqId + ' a').colorbox(this.cfg);
+    $PF(this.jqId + ' a').colorbox(this.cfg);
 }
