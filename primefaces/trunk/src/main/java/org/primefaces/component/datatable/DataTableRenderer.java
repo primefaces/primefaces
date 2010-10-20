@@ -261,7 +261,7 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute("class", filterStyleClass, null);
             writer.writeAttribute("onchange", filterFunction, null);
 
-            SelectItem[] itemsArray = (SelectItem[]) column.getFilterOptions();
+            SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
 
             for(SelectItem item : itemsArray) {
                 writer.startElement("option", null);
@@ -273,6 +273,18 @@ public class DataTableRenderer extends CoreRenderer {
             writer.endElement("select");
         }
         
+    }
+
+    protected SelectItem[] getFilterOptions(Column column) {
+        Object options = column.getFilterOptions();
+        
+        if(options instanceof SelectItem[]) {
+            return (SelectItem[]) options;
+        } else if(options instanceof Collection<?>) {
+            return ((Collection<SelectItem>) column.getFilterOptions()).toArray(new SelectItem[] {});
+        } else {
+            throw new FacesException("Filter options for column " + column.getClientId() + " should be a SelectItem array or collection");
+        }
     }
 
     protected void encodeColumnFooter(FacesContext context, DataTable table, Column column) throws IOException {
