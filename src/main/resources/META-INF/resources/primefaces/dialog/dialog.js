@@ -2,24 +2,25 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $PF(this.jqId);
 	
-    jQuery(this.jqId).dialog(this.cfg);
+    this.jq.dialog(this.cfg);
 	
     if(this.cfg.ajaxClose) {
-        jQuery(this.jqId).bind('dialogclose', { dialog: this }, this.handleClose);
+        this.jq.bind('dialogclose', { dialog: this }, this.handleClose);
     }
 	
     if(this.cfg.closable == false) {
-        jQuery(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
+        this.jq.parent().find('.ui-dialog-titlebar-close').hide();
     }
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
-    jQuery(this.jqId).dialog('open');
+    this.jq.dialog('open');
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {
-    jQuery(this.jqId).dialog('close');
+    this.jq.dialog('close');
 }
 
 PrimeFaces.widget.Dialog.prototype.handleClose = function(event, ui) {
