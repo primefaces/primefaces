@@ -414,7 +414,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
     }
 
     //add to selection
-    row.addClass('ui-selected');
+    row.addClass('ui-state-highlight ui-selected');
     this.selection.push(rowId);
 
     //save state
