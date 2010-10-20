@@ -184,7 +184,7 @@ function elDialogForm(o) {
 	this.ul     = null;
 	this.tabs   = {};
 	this._table = null;
-	this.dialog = jQuery('<div />').addClass(this.opts['class']).dialog(this.opts.dialog);
+	this.dialog = jQuery('<div />').appendTo(document.body).addClass(this.opts['class']).dialog(this.opts.dialog);
 	this.message = jQuery('<div class="el-dialogform-message rounded-5" />').hide().appendTo(this.dialog);
 	this.error   = jQuery('<div class="el-dialogform-error rounded-5" />').hide().appendTo(this.dialog);
 	this.spinner = jQuery('<div class="spinner" />').hide().appendTo(this.dialog);
@@ -8663,6 +8663,8 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     this.editor = new elRTE(document.getElementById(id), this.cfg);
     
     $PF('.el-rte .panel-save').hide();
+    $PF('.el-rte .smiley').hide();
+    $PF('.el-rte .about').hide();
 }
 
 PrimeFaces.widget.Editor.prototype.saveHTML = function() {
