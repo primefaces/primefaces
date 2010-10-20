@@ -1,6 +1,6 @@
 /*!
  * elRTE WYSIWYG HTML-editor
- * Version 1.0 (2010-08-25)
+ * Version 1.1 (2010-09-20)
  * http://elrte.org
  *
  * Copyright 2010, Studio 42 Ltd.
@@ -173,13 +173,18 @@ function elDialogForm(o) {
 	};
 
 	this.opts = jQuery.extend(true, defaults, o, {dialog : { autoOpen : false, close : function() { self.close(); } }});
+
+	if (this.opts.rtl) {
+		this.opts['class'] += ' el-dialogform-rtl';
+	}
+
 	if (o && o.dialog && o.dialog.buttons && typeof(o.dialog.buttons) == 'object') {
 		this.opts.dialog.buttons = o.dialog.buttons;
 	}
 	this.ul     = null;
 	this.tabs   = {};
 	this._table = null;
-	this.dialog = jQuery('<div />').appendTo(document.body).addClass(this.opts['class']).dialog(this.opts.dialog);
+	this.dialog = jQuery('<div />').addClass(this.opts['class']).dialog(this.opts.dialog);
 	this.message = jQuery('<div class="el-dialogform-message rounded-5" />').hide().appendTo(this.dialog);
 	this.error   = jQuery('<div class="el-dialogform-error rounded-5" />').hide().appendTo(this.dialog);
 	this.spinner = jQuery('<div class="spinner" />').hide().appendTo(this.dialog);
@@ -1068,7 +1073,7 @@ function elDialogForm(o) {
 		value     : null,
 		src       : {},
 		select    : function(v) {  window.console &&  window.console.log && window.console.log('selected: '+v); },
-		maxHeight : 310
+		maxHeight : 410
 	}
 
 })(jQuery);
@@ -1095,13 +1100,19 @@ elRTE = function(target, opts) {
 		return alert('elRTE: argument "target" is not DOM Element');
 	}
 	var self     = this, html;
-	this.version = '1.0';
-	this.build   = '2010-08-25';
+	this.version = '1.1';
+	this.build   = '2010-09-20';
 	this.options = $.extend(true, {}, this.options, opts);
 	this.browser = $.browser;
 	this.target  = $(target);
 
+	this.lang      = (''+this.options.lang).toLowerCase();
+	this._i18n     = new eli18n({textdomain : 'rte', messages : { rte : this.i18Messages[this.lang] || {}} });
+	this.rtl = !!(/^(ar|fa|he)$/.test(this.lang) && this.i18Messages[this.lang]);
 
+	if (this.rtl) {
+		this.options.cssClass += ' el-rte-rtl';
+	}
 	this.toolbar   = $('<div class="toolbar"/>');
 	this.iframe    = document.createElement('iframe');
 	// this.source    = $('<textarea />').hide();
@@ -1114,10 +1125,35 @@ elRTE = function(target, opts) {
 	this.$doc    = null;
 	this.window  = null;
 
-	this.utils     = new this.utils(this);
-	this.dom       = new this.dom(this);
-	this._i18n     = new eli18n({textdomain : 'rte', messages : { rte : this.i18Messages[this.options.lang] || {}} });
-	this.filter    = new this.filter(this)
+	this.utils  = new this.utils(this);
+	this.dom    = new this.dom(this);
+	this.filter = new this.filter(this)
+
+	/**
+	 * Sync iframes/textareas height with workzone height
+	 *
+	 * @return void
+	 */
+	this.updateHeight = function() {
+		self.workzone.add(self.iframe).add(self.source).height(self.workzone.height());
+	}
+
+	/**
+	 * Turn editor resizable on/off if allowed
+	 *
+	 * @param  Boolean
+	 * @return void
+	 **/
+	this.resizable = function(r) {
+		var self = this;
+		if (this.options.resizable && $.fn.resizable) {
+			if (r) {
+				this.editor.resizable({handles : 'se', alsoResize : this.workzone, minWidth :300, minHeight : 200 }).bind('resize', self.updateHeight);
+			} else {
+				this.editor.resizable('destroy').unbind('resize', self.updateHeight);
+			}
+		}
+	}
 
 	/* attach editor to document */
 	this.editor.insertAfter(target);
@@ -1131,7 +1167,7 @@ elRTE = function(target, opts) {
 		this.source = $('<textarea />').insertAfter(this.iframe).hide();
 		content = this.target.hide().html();
 	}
-	this.source.attr('name', this.target.attr('id')||this.target.attr('name'));
+	this.source.attr('name', this.target.attr('name')||this.target.attr('id'));
 	content = $.trim(content);
 	if (!content) {
 		content = ' ';
@@ -1176,8 +1212,9 @@ elRTE = function(target, opts) {
 		html += '<link rel="stylesheet" type="text/css" href="'+this+'" />';
 	});
 	this.doc.open();
-	var s = this.filter.wysiwyg(content)
-	this.doc.write(self.options.doctype+html+'</head><body><br />'+(s)+'</body></html>');
+	var s = this.filter.wysiwyg(content),
+		cl = this.rtl ? ' class="el-rte-rtl"' : '';
+	this.doc.write(self.options.doctype+html+'</head><body'+cl+'>'+(s)+'</body></html>');
 	this.doc.close();
 
 	/* make iframe editable */
@@ -1191,13 +1228,13 @@ elRTE = function(target, opts) {
 
 	if (this.options.height>0) {
 		this.workzone.height(this.options.height);
-		$(this.iframe).height(this.options.height);
-		this.source.height(this.options.height);
-	}
 
+	}
+	this.updateHeight();
+	this.resizable(true);
 	this.window.focus();
 
-	this.history = new this.history(this)
+	this.history = new this.history(this);
 
 	/* init selection object */
 	this.selection = new this.selection(this);
@@ -1211,9 +1248,31 @@ elRTE = function(target, opts) {
 		self.beforeSave();
 	});
 
+	// on tab press - insert \t and prevent move focus
+	this.source.bind('keydown', function(e) {
+		if (e.keyCode == 9) {
+			e.preventDefault();
+
+			if ($.browser.msie) {
+				var r = document.selection.createRange();
+				r.text = "\t"+r.text;
+				this.focus();
+			} else {
+				var before = this.value.substr(0, this.selectionStart),
+					after = this.value.substr(this.selectionEnd);
+				this.value = before+"\t"+after;
+				this.setSelectionRange(before.length+1, before.length+1);
+			}
+		}
+	});
+
 	/* update buttons on click and keyup */
 	this.$doc.bind('mouseup', function() {
 		self.ui.update();
+	})
+	.bind('dragstart', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
 	})
 	.bind('keyup', function(e) {
 		if ((e.keyCode >= 8 && e.keyCode <= 13) || (e.keyCode>=32 && e.keyCode<= 40) || e.keyCode == 46 || (e.keyCode >=96 && e.keyCode <= 111)) {
@@ -1241,7 +1300,6 @@ elRTE = function(target, opts) {
 	this.lastKey = null;
 
 	this.$doc.bind('keydown', function(e) {
-		//@todo shortcuts
 		if ((e.keyCode>=48 && e.keyCode <=57) || e.keyCode==61 || e.keyCode == 109 || (e.keyCode>=65 && e.keyCode<=90) || e.keyCode==188 ||e.keyCode==190 || e.keyCode==191 || (e.keyCode>=219 && e.keyCode<=222)) {
 			if (!self.typing) {
 				self.history.add(true);
@@ -1273,7 +1331,7 @@ elRTE = function(target, opts) {
 			self.typing = true;
 			self.lastKey = null;
 			n.appendChild(r);
-			self.selection.insertNode(n);
+			self.selection.deleteContents().insertNode(n);
 			self.selection.select(r);
 			setTimeout(function() {
 				if (n.parentNode) {
@@ -1322,8 +1380,12 @@ elRTE = function(target, opts) {
 			$(self.doc.body).find('.elrte-webkit-hl').removeClass('elrte-webkit-hl');
 		})
 	}
+
+	// this.resizable(true)
 	this.window.focus();
 	// this.log(this.editor.parents('form').find('[name="el-select"]'))
+
+
 }
 
 /**
@@ -1904,14 +1966,18 @@ elRTE.prototype.dom = function(rte) {
 	 * @return DOMElement
 	 **/
 	this.wrap = function(n, w) {
-		n = n.length ? n : [n];
+		n = $.isArray(n) ? n : [n];
 		w = w.nodeName ? w : this.create(w);
-		w = n[0].parentNode.insertBefore(w, n[0]);
-		$(n).each(function() {
-			if (this!=w) {
-				w.appendChild(this);
-			}
-		})
+
+		if (n[0] && n[0].nodeType && n[0].parentNode) {
+			w = n[0].parentNode.insertBefore(w, n[0]);
+			$(n).each(function() {
+				if (this!=w) {
+					w.appendChild(this);
+				}
+			});
+		}
+
 		return w;
 	}
 
@@ -2158,6 +2224,7 @@ elRTE.prototype.dom = function(rte) {
 		this.embRegExp = /<(embed)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*>/gi;
 		// param tag regexp
 		this.paramRegExp = /<(param)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*>/gi;
+		this.vimeoRegExp = /<(iframe)\s+([^>]*src\s*=\s*"http:\/\/[^"]+vimeo\.com\/\w+[^>]*)>([\s\S]*?)<\/iframe>/gi;
 		// yandex maps regexp
 		this.yMapsRegExp = /<div\s+([^>]*id\s*=\s*('|")?YMapsID[^>]*)>/gi;
 		// google maps regexp
@@ -2166,6 +2233,9 @@ elRTE.prototype.dom = function(rte) {
 		this.videoHostRegExp = /^(http:\/\/[\w\.]*)?(youtube|vimeo|rutube).*/i;
 		// elrte services classes regexp
 		this.serviceClassRegExp = /<(\w+)([^>]*class\s*=\s*"[^>]*elrte-[^>]*)>\s*(<\/\1>)?/gi;
+		this.pagebreakRegExp = /<(\w+)([^>]*style\s*=\s*"[^>]*page-break[^>]*)>\s*(<\/\1>)?/gi;
+
+		this.pbRegExp = new RegExp('<!-- pagebreak -->', 'gi');
 		// allowed tags
 		this.allowTags = rte.options.allowTags.length ? rte.utils.makeObject(rte.options.allowTags) : null;
 		// denied tags
@@ -2203,23 +2273,13 @@ elRTE.prototype.dom = function(rte) {
 		 * @return String
 		 **/
 		this.proccess = function(chain, html) {
-			// this.rte.log('filter: '+chain)
-			// var r = new RegExp('\uFEFF', 'gi')
-			// if (r.test(html)) {
-			// 	this.rte.log('found')
-			// 	html = html.replace(r, '')
-			// }
-			// this.rte.log(html)
 			// remove whitespace at the begin and end
-			// this.rte.log('before '+chain+': '+html)
 			html = $.trim(html).replace(/^\s*(&nbsp;)+/gi, '').replace(/(&nbsp;|<br[^>]*>)+\s*$/gi, '');
 			// pass html through chain
 			$.each(this._chains[chain]||[], function() {
 				html = this.call(self, html);
 			});
-			// this.rte.log('after:'+html)
-			// this.rte.log(this.scripts)
-			return html.replace(/\t/g, '  ').replace(/\r/g, '').replace(/\s*\n\s*\n+/g, "\n");
+			return html.replace(/\t/g, '  ').replace(/\r/g, '').replace(/\s*\n\s*\n+/g, "\n")+'  ';
 		}
 
 		/**
@@ -2705,8 +2765,12 @@ elRTE.prototype.dom = function(rte) {
 					return '<div '+self.serializeAttrs(a)+'>';
 				})
 				.replace(this.gMapsRegExp, function(t, a) {
+					var id = 'gmaps'+Math.random().toString().substring(2), w, h;
 					a = self.parseAttrs(a);
-					return '<div class="elrte-google-maps elrte-protected" rel="'+self.rte.utils.encode(JSON.stringify(a))+'" style="width:'+(parseInt(a.width||a.style.width||100))+'px;height:'+(parseInt(a.height||a.style.height||100))+'px"></div>';
+					w = parseInt(a.width||a.style.width||100);
+					h = parseInt(a.height||a.style.height||100);
+					self.scripts[id] = t;
+					return '<img src="'+self.url+'pixel.gif" class="elrte-google-maps elrte-protected" id="'+id+'" style="width:'+w+'px;height:'+h+'px">';
 				})
 				.replace(this.objRegExp, function(t, a, c) {
 					var m = c.match(self.embRegExp),
@@ -2729,7 +2793,6 @@ elRTE.prototype.dom = function(rte) {
 							o.embed.width == '1' && delete o.embed.width;
 							o.embed.height == '1' && delete o.embed.height;
 						}
-						// self.rte.log(t)
 						return img(o, i.type);
 					}
 					return t;
@@ -2740,11 +2803,22 @@ elRTE.prototype.dom = function(rte) {
 					// ie bug with empty attrs
 					a.width == '1' && delete a.width;
 					a.height == '1' && delete a.height;
-					self.rte.log(a)
 					return i ? img({ embed : a }, i.type) : t;
 				})
-				.replace(/<\/(embed|param)>/gi, '');
-			// alert(html)
+				.replace(this.vimeoRegExp, function(t, n, a) {
+					a = self.parseAttrs(a);
+					delete a.frameborder;
+					a.width == '1' && delete a.width;
+					a.height == '1' && delete a.height;
+					a.type = 'application/x-shockwave-flash';
+					return img({ embed : a }, 'application/x-shockwave-flash');
+				})
+				.replace(/<\/(embed|param)>/gi, '')
+				.replace(this.pbRegExp, function() {
+					return '<img src="'+self.url+'pixel.gif" class="elrte-protected elrte-pagebreak">';
+				});
+
+
 			n = $('<div>'+html+'</div>');
 			// remove empty spans and merge nested spans
 			n.find('span:not([id]):not([class])').each(function() {
@@ -2770,13 +2844,42 @@ elRTE.prototype.dom = function(rte) {
 				}
 			});
 
+
+
 			if (!this.rte.options.allowTextNodes) {
-				// wrap text nodes with p
-				n.contents().filter(function() {
-					return this.nodeType == 3 && $.trim(this.nodeValue);
-				}).wrap('<p/>');
+				// wrap inline nodes with p
+				var dom = this.rte.dom,
+					nodes = [],
+					w = [];
+
+				if ($.browser.msie) {
+					for (var i = 0; i<n[0].childNodes.length; i++) {
+						nodes.push(n[0].childNodes[i])
+					}
+				} else {
+					nodes = Array.prototype.slice.call(n[0].childNodes);
+				}
+
+
+				function wrap() {
+					if (w.length && dom.filter(w, 'notEmpty').length) {
+						dom.wrap(w, document.createElement('p'));
+					}
+					w = [];
+				}
+				$.each(nodes, function(i, n) {
+					if (dom.is(n, 'block')) {
+						wrap();
+					} else {
+						if (w.length && n.previousSibling != w[w.length-1]) {
+							wrap();
+						}
+						w.push(n);
+					}
+				});
+				wrap();
 			}
-			// alert(n[0].innerHTML)
+
 			return n.html();
 		},
 		/**
@@ -2824,13 +2927,19 @@ elRTE.prototype.dom = function(rte) {
 						j.obj && (o = '<object '+self.serializeAttrs(j.obj)+">\n"+o+"\n</object>\n");
 						return o||t;
 					} else if (a['class']['elrte-google-maps']) {
-						return '<iframe '+self.serializeAttrs(JSONparse(self.rte.utils.decode(a.rel)))+'></iframe>';
-						// return '<iframe '+self.serializeAttrs($.parseJSON(self.rte.utils.decode(a.rel)))+'></iframe>';
+						var t = '';
+						if (self.scripts[a.id]) {
+							t = self.scripts[a.id];
+							delete self.scripts[a.id]
+						}
+						return t;
+					} else if (a['class']['elrte-pagebreak']) {
+						return '<!-- pagebreak -->';
 					}
 					$.each(a['class'], function(n) {
 						/^elrte-\w+/i.test(n) && delete(a['class'][n]);
 					});
-					return '<'+n+' '+self.serializeAttrs(a)+'>'+e;
+					return '<'+n+' '+self.serializeAttrs(a)+'>'+(e||'');
 
 				});
 
@@ -2961,6 +3070,7 @@ elRTE.prototype.options   = {
 	cssClass        : 'el-rte',
 	cssfiles        : [],
 	height          : null,
+	resizable       : true,
 	lang            : 'en',
 	toolbar         : 'normal',
 	absoluteURLs    : true,
@@ -2988,6 +3098,7 @@ elRTE.prototype.options   = {
 	replace : [],
 	/* user restore rules */
 	restore : [],
+	pagebreak : '<div style="page-break-after: always;"></div>', //'<!-- pagebreak -->',
 	buttons         : {
 		'save'                : 'Save',
 		'copy'                : 'Copy',
@@ -3027,6 +3138,8 @@ elRTE.prototype.options   = {
 		'unlink'              : 'Delete link',
 		'anchor'              : 'Bookmark',
 		'image'               : 'Image',
+		'pagebreak'           : 'Page break',
+		'smiley'              : 'Smiley',
 		'flash'               : 'Flash',
 		'table'               : 'Table',
 		'tablerm'             : 'Delete table',
@@ -3057,7 +3170,7 @@ elRTE.prototype.options   = {
 		indent     : ['outdent', 'indent'],
 		format     : ['formatblock', 'fontsize', 'fontname'],
 		lists      : ['insertorderedlist', 'insertunorderedlist'],
-		elements   : ['horizontalrule', 'blockquote', 'div', 'stopfloat', 'css', 'nbsp'],
+		elements   : ['horizontalrule', 'blockquote', 'div', 'stopfloat', 'css', 'nbsp', 'smiley', 'pagebreak'],
 		direction  : ['ltr', 'rtl'],
 		links      : ['link', 'unlink', 'anchor'],
 		images     : ['image'],
@@ -3308,6 +3421,13 @@ elRTE.prototype.selection = function(rte) {
 		return this;
 	}
 
+	this.deleteContents = function() {
+		if (!$.browser.msie) {
+			this.getRangeAt().deleteContents();
+		}
+		return this;
+	}
+
 	/**
 	 * Вставляет ноду в текущее выделение
 	 *
@@ -3503,7 +3623,6 @@ elRTE.prototype.selection = function(rte) {
 	this.getNode = function() {
 		if (!node) {
 			node = this.rte.dom.findCommonAncestor(this.getStart(), this.getEnd());
-			// self.rte.log(node)
 		}
 		return node;
 	}
@@ -3926,16 +4045,40 @@ elRTE.prototype.ui.prototype.update = function(cleanCache) {
 	cleanCache && this.rte.selection.cleanCache();
 	var n    = this.rte.selection.getNode(),
 		p    = this.rte.dom.parents(n, '*'),
-		path = '';
-	if (p.length) {
-		$.each(p.reverse(), function() {
-			path += ' &raquo; '+ this.nodeName.toLowerCase();
-		});
+		rtl = this.rte.rtl,
+		sep  = rtl ? ' &laquo; ' : ' &raquo; ',
+		path = '', name, i;
+
+	function _name(n) {
+		var name = n.nodeName.toLowerCase();
+		n = $(n)
+		if (name == 'img') {
+			if (n.hasClass('elrte-media')) {
+				name = 'media';
+			} else if (n.hasClass('elrte-google-maps')) {
+				name = 'google map';
+			} else if (n.hasClass('elrte-yandex-maps')) {
+				name = 'yandex map';
+			} else if (n.hasClass('elrte-pagebreak')) {
+				name = 'pagebreak';
+			}
+		}
+		return name;
 	}
+
 	if (n && n.nodeType == 1 && n.nodeName != 'BODY') {
-		path += ' &raquo; '+ n.nodeName.toLowerCase();
+		p.unshift(n);
 	}
-	this.rte.statusbar.html(path)
+
+	if (!rtl) {
+		p = p.reverse();
+	}
+
+	for (i=0; i < p.length; i++) {
+		path += (i>0 ? sep : '')+_name(p[i]);
+	}
+
+	this.rte.statusbar.html(path);
 	$.each(this._buttons, function() {
 		this.update();
 	});
@@ -4229,7 +4372,7 @@ elRTE.prototype.utils = function(rte) {
 		var st = {}, a = this.rte.options.allowBrowsersSpecStyles, t, n, v;
 
 		if (typeof(s) == 'string' && s.length) {
-			$.each(s.split(';'), function() {
+			$.each(s.replace(/&quot;/gi, "'").split(';'), function() {
 				t = this.toString().split(':');
 				if (t[0] && t[1]) {
 					n = $.trim(t[0]).toLowerCase();
@@ -4381,6 +4524,10 @@ elRTE.prototype.utils = function(rte) {
 	this.color2Hex = function(c) {
 		var m;
 
+		if (c.indexOf('#') === 0) {
+			return c;
+		}
+
 		c = c||'';
 		function hex(s) {
 			s = parseInt(s).toString(16);
@@ -4393,7 +4540,7 @@ elRTE.prototype.utils = function(rte) {
 		if ((m = c.match(this.rgbRegExp))) {
 			return '#'+hex(m[1])+hex(m[2])+hex(m[3]);
 		}
-		return c;
+		return '';
 	}
 
 
@@ -4740,9 +4887,10 @@ elRTE.prototype.w3cRange = function(rte) {
 			var opts, d, txt;
 
 			opts = {
+				rtl : rte.rtl,
 				submit : function(e, d) {  d.close(); },
 				dialog : {
-					width : 510,
+					width : 560,
 					title : this.rte.i18n('About this software'),
 					buttons     : {
 						Ok : function() { $(this).dialog('destroy'); }
@@ -4752,6 +4900,8 @@ elRTE.prototype.w3cRange = function(rte) {
 
 			txt = '<div class="elrte-logo"></div><h3>'+this.rte.i18n('About elRTE')+'</h3><br clear="all"/>'
 				+'<div class="elrte-ver">'+this.rte.i18n('Version')+': '+this.rte.version+' ('+this.rte.build+')</div>'
+				+'<div class="elrte-ver">jQuery: '+$('<div/>').jquery+'</div>'
+				+'<div class="elrte-ver">jQueryUI: '+$.ui.version+'</div>'
 				+'<div class="elrte-ver">'+this.rte.i18n('Licence')+': BSD Licence</div>'
 				+'<p>'
 				+this.rte.i18n('elRTE is an open-source JavaScript based WYSIWYG HTML-editor.')+'<br/>'
@@ -4763,14 +4913,25 @@ elRTE.prototype.w3cRange = function(rte) {
 				+'<tr><td>Dmitry (dio) Levashov &lt;dio@std42.ru&gt;</td><td>'+this.rte.i18n('Chief developer')+'</td></tr>'
 				+'<tr><td>Troex Nevelin &lt;troex@fury.scancode.ru&gt;</td><td>'+this.rte.i18n('Developer, tech support')+'</td></tr>'
 				+'<tr><td>Valentin Razumnyh &lt;content@std42.ru&gt;</td><td>'+this.rte.i18n('Interface designer')+'</td></tr>'
+				+'<tr><td>Evgeny eSabbath &lt;sabbath.codemg@gmail.com&gt;</td><td>'+this.rte.i18n('Developer')+'</td></tr>'
+				+'<tr><td>Andrzej Borowicz &lt;eltre@borowicz.info&gt;</td><td>'+this.rte.i18n('Polish localization')+'</td></tr>'
+				+'<tr><td>Artem Vasiliev</td><td>'+this.rte.i18n('Ukranian localization')+'</td></tr>'
+				+'<tr><td>Francois Mazerolle &lt;fmaz008@gmail.com&gt;</td><td>'+this.rte.i18n('French localization')+'</td></tr>'
+				+'<tr><td>Kurt Aerts</td><td>'+this.rte.i18n('Dutch localization')+'</td></tr>'
+				+'<tr><td>Michal Marek &lt;fmich.marek@gmail.com&gt;</td><td>'+this.rte.i18n('Czech localization')+'</td></tr>'
 				+'<tr><td>Ricardo Obregón &lt;robregonm@gmail.com&gt;</td><td>'+this.rte.i18n('Spanish localization')+'</td></tr>'
+				+'<tr><td>Saleh Souzanchi &lt;saleh.souzanchi@gmail.com&gt;</td><td>'+this.rte.i18n('Persian (farsi) localization')+'</td></tr>'
+				+'<tr><td>Tawfek Daghistani &lt;tawfekov@gmail.com&gt;</td><td>'+this.rte.i18n('Arabic localization')+', '+this.rte.i18n('RTL support')+'</td></tr>'
+				+'<tr><td>Tad &lt;tad0616@gmail.com&gt;</td><td>'+this.rte.i18n('Traditional Chinese localization')+'</td></tr>'
 				+'<tr><td>Tomoaki Yoshida &lt;info@yoshida-studio.jp&gt;</td><td>'+this.rte.i18n('Japanese localization')+'</td></tr>'
 				+'<tr><td>Uldis Plotiņš &lt;uldis.plotins@gmail.com&gt;</td><td>'+this.rte.i18n('Latvian localization')+'</td></tr>'
 				+'<tr><td>Vasiliy Razumnyh &lt;rvn@std42.ru&gt;</td><td>'+this.rte.i18n('German localization')+'</td></tr>'
-				+'<tr><td>Артем Васильев</td><td>'+this.rte.i18n('Ukranian localization')+'</td></tr>'
+				+'<tr><td>Viktor Tamas &lt;tamas.viktor@totalstudio.hu&gt;</td><td>'+this.rte.i18n('Hungarian localization')+'</td></tr>'
+				+'<tr><td>Ugo Punzolo, &lt;sadraczerouno@gmail.com&gt;</td><td>'+this.rte.i18n('Italian localization')+'</td></tr>'
 				+'</table>'
 				+'<div class="elrte-copy">Copyright &copy; 2009-2010, <a href="http://www.std42.ru">Studio 42 LTD</a></div>'
-				+'<div class="elrte-copy">'+this.rte.i18n('For more information about this software visit the')+' <a href="http://www.elrte.org">'+this.rte.i18n('elRTE website')+'.</a></div>';
+				+'<div class="elrte-copy">'+this.rte.i18n('For more information about this software visit the')+' <a href="http://elrte.org">'+this.rte.i18n('elRTE website')+'.</a></div>'
+				+'<div class="elrte-copy">Twitter: <a href="http://twitter.com/elrte_elfinder">elrte_elfinder</a></div>';
 
 			d = new elDialogForm(opts);
 			d.append(txt);
@@ -4800,6 +4961,7 @@ elRTE.prototype.ui.prototype.buttons.anchor = function(rte, name) {
 
 	this.command = function() {
 		var opts = {
+			rtl : this.rte.rtl,
 			submit : function(e, d) { e.stopPropagation(); e.preventDefault(); d.close(); self.set();  },
 			dialog : {
 				title : this.rte.i18n('Bookmark')
@@ -5268,6 +5430,7 @@ elRTE.prototype.ui.prototype.buttons.elfinder = function(rte, name) {
 
 
 			var opts = {
+				rtl : this.rte.rtl,
 				submit : function(e, d) { e.stopPropagation(); e.preventDefault(); self.set(); d.close(); },
 				dialog : {
 					width    : 580,
@@ -5507,7 +5670,7 @@ elRTE.prototype.ui.prototype.buttons.elfinder = function(rte, name) {
 		this.update = function() {
 			this.domElem.removeClass('disabled');
 			var n = this.rte.selection.getNode();
-			this.domElem.toggleClass('active', n.nodeName == 'IMG' && $(n).hasClass('elrte-media'))
+			this.domElem.toggleClass('active', n && n.nodeName == 'IMG' && $(n).hasClass('elrte-media'))
 
 		}
 
@@ -5647,11 +5810,7 @@ elRTE.prototype.ui.prototype.buttons.forecolor = function(rte, name) {
 		change  : function(c) { self.set(c) }
 	}
 
-	this.defaultColor = this.rte.utils.rgb2hex( $(this.rte.doc.body).css(this.name=='forecolor' ? 'color' : 'background-color') );
-	if (this.defaultColor == 'transparent') {
-		this.defaultColor = this.name == 'forecolor' ? '#000000' : '#ffffff';
-		// alert(this.defaultColor)
-	}
+	this.defaultColor = this.name == 'forecolor' ? '#000000' : '#ffffff';
 	this.picker       = this.domElem.elColorPicker(opts);
 	this.indicator    = $('<div />').addClass('color-indicator').prependTo(this.domElem);
 
@@ -5679,20 +5838,7 @@ elRTE.prototype.ui.prototype.buttons.forecolor = function(rte, name) {
 	this.update = function() {
 		this.domElem.removeClass('disabled');
 		var n = this.rte.selection.getNode();
-		if (n.nodeType != 1) {
-			n = n.parentNode;
-		}
-		var v = $(n).css(this.name == 'forecolor' ? 'color' : 'background-color');
-
-		if (!v || v=='transparent') {
-			v = this.defaultColor;
-
-		} else {
-			v = this.rte.utils.rgb2hex(v);
-		}
-		this.picker.val(v)
-		// this.picker.val(!v || v=='transparent' ? this.defaultColor : this.rte.utils.rgb2hex(v));
-		// this.picker.val(v && v!='transparent' ? this.rte.utils.rgb2hex(v): this.defaultColor);
+		this.picker.val(this.rte.utils.rgb2hex($(n.nodeType != 1 ? n.parentNode : n).css(this.name == 'forecolor' ? 'color' : 'background-color'))||this.defaultColor)
 	}
 }
 
@@ -5816,37 +5962,75 @@ elRTE.prototype.ui.prototype.buttons.formatblock = function(rte, name) {
  **/
 (function($) {
 elRTE.prototype.ui.prototype.buttons.fullscreen = function(rte, name) {
+	var self     = this;
 	this.constructor.prototype.constructor.call(this, rte, name);
 	this.active  = true;
-	this.parents = [];
+	this.editor = rte.editor;
+	this.wz = rte.workzone;
 	this.height  = 0;
-	var self     = this;
+	this.delta = 0;
+	this._class = 'el-fullscreen';
+
+	setTimeout(function() {
+		self.height  = self.wz.height();
+		self.delta   = self.editor.outerHeight()-self.height;
+	}, 50);
+
+
+	/**
+	 * Update editor height on window resize in fullscreen view
+	 *
+	 **/
+	function resize() {
+		self.wz.height($(window).height()-self.delta);
+		self.rte.updateHeight();
+	}
 
 	this.command = function() {
+		var w = $(window),
+			e = this.editor,
+			p = e.parents().filter(function(i, n) { return  !/^(html|body)$/i.test(n.nodeName) && $(n).css('position') == 'relative'; }),
+			wz = this.wz,
+			c = this._class,
+			f = e.hasClass(c),
+			rte = this.rte,
+			s = this.rte.selection,
+			m = $.browser.mozilla,
+			b, h;
 
-		if (this.rte.editor.hasClass('el-fullscreen')) {
-			for (var i=0; i < this.parents.length; i++) {
-				$(this.parents[i]).css('position', 'relative');
-			};
-			this.parents = [];
-			this.rte.editor.removeClass('el-fullscreen');
-			this.rte.workzone.add(this.rte.iframe).height(this.height);
+		function save() {
+			if (m) {
+				b = s.getBookmark();
+			}
+		}
+
+		function restore() {
+			if (m) {
+				self.wz.children().toggle();
+				self.rte.source.focus();
+				self.wz.children().toggle();
+				s.moveToBookmark(b);
+			}
+		}
+
+		save();
+		p.css('position', f ? 'relative' : 'static');
+
+		if (f) {
+			e.removeClass(c);
+			wz.height(this.height);
+			w.unbind('resize', resize);
 			this.domElem.removeClass('active');
 		} else {
-			this.parents = [];
-			var p = this.rte.editor.parents().each(function() {
-
-				if (this.nodeName != 'BODY' && this.name != 'HTML' && $(this).css('position') == 'relative') {
-					self.parents.push(this);
-					$(this).css('position', 'static');
-				}
-			});
-			this.height = this.rte.workzone.height();
-			this.rte.editor.addClass('el-fullscreen');
-			var h = parseInt(this.rte.editor.height() - this.rte.toolbar.height() - this.rte.statusbar.height() - this.rte.tabsbar.height() - 17);
-			h>0 && this.rte.workzone.add(this.rte.iframe).height(h);
+			e.addClass(c).removeAttr('style');
+			wz.height(w.height() - this.delta).css('width', '100%');
+			w.bind('resize', resize);
 			this.domElem.addClass('active');
 		}
+		rte.updateHeight();
+		rte.resizable(f);
+		restore();
+
 	}
 
 	this.update = function() {
@@ -5898,6 +6082,7 @@ elRTE.prototype.ui.prototype.buttons.horizontalrule = function(rte, name) {
 		this.src.style.val(this.rte.dom.attr(this.hr, 'style'));
 
 		var opts = {
+			rtl : this.rte.rtl,
 			submit : function(e, d) { e.stopPropagation(); e.preventDefault(); self.set(); d.close(); },
 			dialog : {
 				title : this.rte.i18n('Horizontal rule')
@@ -6050,6 +6235,7 @@ elRTE.prototype.ui.prototype.buttons.image = function(rte, name) {
 		}
 
 		var opts = {
+			rtl : this.rte.rtl,
 			submit : function(e, d) { e.stopPropagation(); e.preventDefault(); self.set(); d.close(); },
 			dialog : {
 				width    : 570,
@@ -6589,6 +6775,7 @@ elRTE.prototype.ui.prototype.buttons.link = function(rte, name) {
 		}
 
 		opts = {
+			rtl : this.rte.rtl,
 			submit : function(e, d) { e.stopPropagation(); e.preventDefault(); self.set(); d.close(); },
 			tabs : { show : function(e, ui) { if (ui.index==3) { self.updateOnclick(); } } },
 			close : function() {self.rte.browser.msie && self.rte.selection.restoreIERange(); },
@@ -6964,7 +7151,27 @@ elRTE.prototype.ui.prototype.buttons.outdent = function(rte, name) {
 }
 
 })(jQuery);
-/**
+(function($) {
+	elRTE.prototype.ui.prototype.buttons.pagebreak = function(rte, name) {
+		this.constructor.prototype.constructor.call(this, rte, name);
+
+		// prevent resize
+		$(this.rte.doc.body).bind('mousedown', function(e) {
+			if ($(e.target).hasClass('elrte-pagebreak')) {
+				e.preventDefault();
+			}
+		})
+
+		this.command = function() {
+			this.rte.selection.insertHtml('<img src="'+this.rte.filter.url+'pixel.gif" class="elrte-protected elrte-pagebreak"/>', false);
+		}
+
+		this.update = function() {
+			this.domElem.removeClass('disabled');
+		}
+	}
+
+})(jQuery);/**
  * @class button - insert formatted text (open dialog window)
  *
  * @param  elRTE  rte   объект-редактор
@@ -7101,6 +7308,77 @@ elRTE.prototype.ui.prototype.buttons.save = function(rte, name) {
 	}
 
 	this.update = function() { }
+}
+})(jQuery);
+/**
+ * @class button - insert smiley (open dialog window)
+ *
+ * @param  elRTE  rte   объект-редактор
+ * @param  String name  название кнопки
+ *
+ * @author:    eSabbath
+ *
+ **/
+(function($) {
+elRTE.prototype.ui.prototype.buttons.smiley = function(rte, name) {
+	this.constructor.prototype.constructor.call(this, rte, name);
+	var self = this;
+	this.img = null;
+	this.url = this.rte.filter.url+'smileys/';
+	this.smileys = {
+		'smile' : 'smile.png',
+		'happy' : 'happy.png',
+		'tongue' : 'tongue.png',
+		'surprised' : 'surprised.png',
+		'waii' : 'waii.png',
+		'wink' : 'wink.png',
+		'evilgrin' : 'evilgrin.png',
+		'grin' : 'grin.png',
+
+
+		'unhappy' : 'unhappy.png'
+	};
+	this.width = 120;
+
+	this.command = function() {
+		var self = this, url = this.url, d, opts, img;
+
+		this.rte.browser.msie && this.rte.selection.saveIERange();
+
+		opts = {
+			dialog : {
+				height  : 120,
+				width   : this.width,
+				title   : this.rte.i18n('Smiley'),
+				buttons : {}
+			}
+		}
+		d = new elDialogForm(opts);
+		$.each(this.smileys, function(name, img) {
+			d.append($('<img src="'+url+img+'" title="'+name+'" id="'+name+'" class="el-rte-smiley"/>').click(function() { self.set(this.id, d);	}));
+		});
+		d.open();
+	}
+
+	this.update = function() {
+		this.domElem.removeClass('disabled');
+		this.domElem.removeClass('active');
+	}
+
+	this.set = function(s, d) {
+		this.rte.browser.msie && this.rte.selection.restoreIERange();
+		if (this.smileys[s]) {
+			this.img = $(this.rte.doc.createElement('img'));
+			this.img.attr({
+				src    : this.url + this.smileys[s],
+				title  : s,
+				alt    : s
+			});
+			this.rte.selection.insertNode(this.img.get(0));
+			this.rte.ui.update();
+		}
+		d.close();
+	}
 }
 })(jQuery);
 /**
@@ -7321,6 +7599,7 @@ elRTE.prototype.ui.prototype.buttons.table = function(rte, name) {
 		this.src.main.bgimg.val(bgimg!='none' ? bgimg : '');
 
 		var opts = {
+			rtl : this.rte.rtl,
 			submit : function(e, d) { e.stopPropagation(); e.preventDefault(); self.set(); d.close(); },
 			dialog : {
 				width : 530,
@@ -7646,10 +7925,10 @@ elRTE.prototype.ui.prototype.buttons.tbcellprops = function(rte, name) {
 		this.src.main.apply.val('');
 
 		var opts = {
+			rtl : this.rte.rtl,
 			submit : function(e, d) { e.stopPropagation(); e.preventDefault(); self.set(); d.close(); },
 			dialog : {
-				width : 490,
-				// width : 'auto',
+				width : 520,
 				title : this.rte.i18n('Table cell properties')
 			}
 		}

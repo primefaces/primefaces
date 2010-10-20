@@ -1,6 +1,6 @@
 /*!
  * elRTE WYSIWYG HTML-editor
- * Version 1.0 (2010-08-25)
+ * Version 1.1 (2010-09-20)
  * http://elrte.org
  *
  * Copyright 2010, Studio 42 Ltd.
@@ -89,7 +89,17 @@ a { outline: none; }
 /* dialog container */
 .ui-widget .el-dialogform {
 	padding:5px 3px;
+
 }
+
+.ui-widget .el-dialogform-rtl {
+	direction: rtl;
+}
+
+.ui-widget .el-dialogform-rtl .ui-tabs-nav li {
+	float:right;
+}
+
 .el-dialogform div.tab:hover { background:transparent; }
 .ui-dialog .ui-dialog-title, .ui-dialog .ui-dialog-content {
 	font-size:.9em;
@@ -131,7 +141,7 @@ a { outline: none; }
 }
 
 .el-dialogform .spinner {
-	background:url("#{resource['primefaces:editor/images/loading.gif']}") 50% 50% no-repeat;
+	background:url(../images/loading.gif) 50% 50% no-repeat;
 	text-align:center;
 	width:150px;
 	height:50px;
@@ -199,6 +209,7 @@ a { outline: none; }
 	overflow:auto;
 	background:#fff;
 	z-index:1000;
+/*	height:1610px*/
 }
 /* drop-down list item */
 .el-select .list div {
@@ -226,29 +237,35 @@ a { outline: none; }
 /*  контейнер */
 .el-rte {
 	font-family: Trebuchet MS, Verdana, Geneva,sans-serif;
+/*	border:1px solid #aaa;*/
 }
 .el-rte.el-fullscreen {
 	position:absolute;
-	width:100%;
-	height:100%;
+	width:99%;
+/*	height:100%;*/
 	top:0;
 	left:0;
-	z-index:101;
+	margin:0;
+/*	z-index:101;*/
 }
 
 .elrte-swf-placeholder {
 	width:1px;
-	background: url("#{resource['primefaces:editor/images/swf.png']}") 0 0 no-repeat;
+	background: url('../images/swf.png') 0 0 no-repeat;
 }
 
 /* style to detect images url */
 /*.el-rte */
-.elrtetesturl { color:red; background-image:url("#{resource['primefaces:editor/images/pixel.gif']}");}
+.elrtetesturl { color:red; background-image:url(../images/pixel.gif);}
 
 /* панель инструментов */
 .el-rte .toolbar {  background-color:#eee; padding:3px 7px 2px 7px; border:1px solid #ccc; white-space:normal; }
+
+.el-rte-rtl .toolbar { direction: rtl; }
+
 /* панель кнопок */
 .el-rte .toolbar ul {
+	position:relative;
 	display:inline-block;
 	display: -moz-inline-stack;
     display: inline-block;
@@ -258,7 +275,7 @@ a { outline: none; }
 	margin:0;
 	list-style:none;
 	padding:0 2px 0 5px;
-	background: url("#{resource['primefaces:editor/images/elrte-toolbar.png']}") -934px -2px no-repeat;
+	background: url('../images/elrte-toolbar.png') -934px -2px no-repeat;
 }
 /* первая панель кнопок */
 .el-rte .toolbar ul.first {
@@ -277,7 +294,7 @@ a { outline: none; }
     *display: inline;
 	margin:1px 1px;
 	padding:0; /* Joomla 1.6 compat */
-	background:url("#{resource['primefaces:editor/images/elrte-toolbar.png']}") no-repeat;
+	background:url('../images/elrte-toolbar.png') no-repeat;
 	border:1px solid #ccc;
 }
 /* активная и подсвеченная и неактивная кнопка */
@@ -344,14 +361,15 @@ a { outline: none; }
 .el-rte .toolbar ul li.elfinder            {background-position:-436px -2px}
 .el-rte .toolbar ul li.ltr                 {background-position:-855px -27px}
 .el-rte .toolbar ul li.rtl                 {background-position:-855px -3px}
+.el-rte .toolbar ul li.pagebreak           {background-position:-711px -28px}
 
 
 /* рабочая зона (обертка над iframe) */
-.el-rte .workzone { border:1px solid #eee; border-top:none; height:400px; }
+.el-rte .workzone { border:1px solid #eee; border-top:none; height:400px;}
 .el-rte.small .workzone { min-height:250px; }
 
 /* source code */
-.el-rte textarea  { width:100%;  height:100%; border:none; zoom:1; outline:none;}
+.el-rte textarea  { width:100%;  height:100%;  border:none; zoom:1; outline:none;}
 .el-rte.small textarea  { min-height:250px;}
 /* редактор */
 .el-rte iframe    {
@@ -376,8 +394,14 @@ a { outline: none; }
 	border-top:1px solid #ccc;
 	border-top:none;
 }
+
+.el-rte-rtl .statusbar {
+	direction:rtl;
+/*	text-align:right;*/
+}
+
 /* табы */
-.el-rte .tabsbar { display: block; margin-bottom:.7em; }
+.el-rte .tabsbar { display: block;  }
 .el-rte .tabsbar .tab {
 	float:left;
 	margin-right:2px;
@@ -392,7 +416,7 @@ a { outline: none; }
 	cursor: default;
 }
 .el-rte .tabsbar div.active { background: #eee; color:#444; }
-
+.el-rte-rtl .tabsbar .tab  { float:right; }
 
 /* выпадающие меню */
 /* container for elselect */
@@ -431,6 +455,9 @@ a { outline: none; }
 	height:4px;
 	margin:16px 0 2px 2px;
 	background-color: #000;
+}
+.el-rte-rtl .toolbar ul li div.color-indicator {
+	margin:16px 2px 2px 0;
 }
 /* colors palette */
 .el-palette { top:20px; }
@@ -477,7 +504,7 @@ a { outline: none; }
 	height:46px;
 	float:left;
 	margin:.5em 1em;
-	background:url("#{resource['primefaces:editor/images/elrte-toolbar.png']}") -880px -7px no-repeat;
+	background:url('../images/elrte-toolbar.png') -880px -7px no-repeat;
 }
 .elrte-ver { font-size:.9em; padding-left:.7em;}
 .elrte-copy { font-size:.9em; padding-left:.3em;}
@@ -492,3 +519,5 @@ table.elrte-authors td { border-bottom:1px solid #eee;}
 .el-paddinginput        { display: block; white-space: nowrap; }
 .el-paddinginput input  { margin :0 1px 0 0; border:1px solid #ccc; }
 .el-paddinginput select { padding:0; }
+
+.el-rte-smiley { margin:5px; }
