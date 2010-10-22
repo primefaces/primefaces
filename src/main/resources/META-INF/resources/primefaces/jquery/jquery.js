@@ -6883,4 +6883,4 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 })(window);
 
 //PrimeFaces uses jQuery in no conflict mode
-var $PF = jQuery.noConflict();
+jQuery.noConflict();
