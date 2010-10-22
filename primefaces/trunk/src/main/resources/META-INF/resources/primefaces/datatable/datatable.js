@@ -32,6 +32,11 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     if(this.cfg.scrollable) {
         this.setupScrolling();
     }
+
+    var rowEditors = this.getRowEditors();
+    if(rowEditors.length > 0) {
+        this.setupCellEditorEvents(rowEditors);
+    }
 }
 
 /**
@@ -728,6 +733,32 @@ PrimeFaces.widget.DataTable.prototype.clearSelection = function() {
  */
 PrimeFaces.widget.DataTable.prototype.isSelectionEnabled = function() {
     return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
+}
+
+/**
+ * Returns true|false if datatable has incell editors
+ */
+PrimeFaces.widget.DataTable.prototype.getRowEditors = function() {
+    return jQuery(this.jqId + ' tbody tr td span.ui-row-editor');
+}
+
+/**
+ * Binds cell editor events non-obstrusively
+ */
+PrimeFaces.widget.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
+    var _self = this;
+    
+    rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
+        _self.showEditors(this);
+    });
+
+    rowEditors.find('.ui-icon-check').die().live('click', function() {
+        _self.saveRowEdit(this);
+    });
+
+    rowEditors.find('.ui-icon-close').die().live('click', function() {
+        _self.cancelRowEdit(this);
+    });
 }
 
 /*
