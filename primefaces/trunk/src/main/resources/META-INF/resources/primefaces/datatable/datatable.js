@@ -752,11 +752,11 @@ PrimeFaces.widget.DataTable.prototype.setupCellEditorEvents = function(rowEditor
         _self.showEditors(this);
     });
 
-    rowEditors.find('.ui-icon-check').die().live('click', function() {
+    rowEditors.find('span.ui-icon-check').die().live('click', function() {
         _self.saveRowEdit(this);
     });
 
-    rowEditors.find('.ui-icon-close').die().live('click', function() {
+    rowEditors.find('span.ui-icon-close').die().live('click', function() {
         _self.cancelRowEdit(this);
     });
 }
