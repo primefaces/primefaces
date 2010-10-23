@@ -29,6 +29,7 @@ public class CellEditorRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("span", null);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_CLASS, null);
     }
 

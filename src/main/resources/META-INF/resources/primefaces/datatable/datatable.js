@@ -263,7 +263,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 _self.getPaginator().setState(newState);
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
 
@@ -314,7 +314,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
 
@@ -373,7 +373,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
                 jQuery(_self.tbody).replaceWith(content);
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
 
@@ -612,7 +612,7 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
                 row.next().fadeIn();
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
 
@@ -656,10 +656,10 @@ PrimeFaces.widget.DataTable.prototype.cancelRowEdit = function(element) {
 }
 
 /**
- * Sends an ajax request to handle row save or edit
+ * Sends an ajax request to handle row save or cancel
  */
 PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, action) {
-    var row = jQuery(element).parents('tr').get(0),
+    var row = jQuery(jQuery(element).parents('tr').get(0)),
     options = {
         source: this.id,
         update: this.id,
@@ -668,7 +668,12 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     _self = this;
 
     if(action === 'save') {
-        options.process = this.id;
+        var editorsToProcess = new Array();
+        row.find('span.ui-cell-editor').each(function() {
+           editorsToProcess.push(jQuery(this).attr('id'));
+        });
+
+        options.process = editorsToProcess.join(' ');
     }
 
     options.onsuccess = function(responseXML) {
@@ -680,10 +685,10 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                jQuery(row).replaceWith(content);
+                row.replaceWith(content);
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content, this.ajaxContext);
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
 
@@ -692,7 +697,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
 
     var params = {};
     params[this.id + '_rowEdit'] = true;
-    params[this.id + '_editedRowId'] = row.id.split('_row_')[1];
+    params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
