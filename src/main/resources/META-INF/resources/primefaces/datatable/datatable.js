@@ -668,24 +668,49 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     _self = this;
 
     if(action === 'save') {
+        //Only process cell editors of current row
         var editorsToProcess = new Array();
         row.find('span.ui-cell-editor').each(function() {
            editorsToProcess.push(jQuery(this).attr('id'));
         });
 
         options.process = editorsToProcess.join(' ');
+
+        //Additional components to update after row edit request
+        if(this.cfg.onRowEditUpdate) {
+            options.update += ' ' + this.cfg.onRowEditUpdate;
+        }
     }
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
+        updates = xmlDoc.getElementsByTagName("update"),
+        extensions = xmlDoc.getElementsByTagName("extension");
+
+        this.args = {};
+        for(i=0; i < extensions.length; i++) {
+            var extension = extensions[i];
+
+            if(extension.getAttributeNode('primefacesCallbackParam')) {
+                var jsonObj = jQuery.parseJSON(extension.firstChild.data);
+
+                for(var paramName in jsonObj) {
+                    if(paramName)
+                        this.args[paramName] = jsonObj[paramName];
+                }
+            }
+        }
 
         for(var i=0; i < updates.length; i++) {
             var id = updates[i].attributes.getNamedItem("id").nodeValue,
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                row.replaceWith(content);
+                if(this.args.validationFailed) {
+                    row.addClass('ui-state-error');
+                } else {
+                    row.replaceWith(content);
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);

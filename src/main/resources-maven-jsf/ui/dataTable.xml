@@ -328,6 +328,12 @@
             <method-signature>void rowEditListener(org.primefaces.event.RowEditEvent)</method-signature>
             <description>Server side listener to invoke when a cell is edited.</description>
         </attribute>
+        <attribute>
+			<name>onRowEditUpdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
