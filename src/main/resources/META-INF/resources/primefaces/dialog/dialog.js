@@ -6,10 +6,13 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId);
-	
-    this.jq.dialog(this.cfg);
-
     var _self = this;
+
+    //Remove scripts to prevent duplicate widget issues
+    this.jq.find("script").remove();
+
+    //Create the dialog
+    this.jq.dialog(this.cfg);
 
     //Close handler to invoke remote closeListener
     if(this.cfg.ajaxClose) {
@@ -22,6 +25,8 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     if(this.cfg.closable == false) {
         this.jq.parent().find('.ui-dialog-titlebar-close').hide();
     }
+
+
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
