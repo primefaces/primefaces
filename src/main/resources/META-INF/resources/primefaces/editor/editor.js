@@ -8662,9 +8662,9 @@ PrimeFaces.widget.Editor = function(id, cfg) {
 
     this.editor = new elRTE(document.getElementById(id), this.cfg);
     
-    $PF('.el-rte .panel-save').hide();
-    $PF('.el-rte .smiley').hide();
-    $PF('.el-rte .about').hide();
+    jQuery('.el-rte .panel-save').hide();
+    jQuery('.el-rte .smiley').hide();
+    jQuery('.el-rte .about').hide();
 }
 
 PrimeFaces.widget.Editor.prototype.saveHTML = function() {
