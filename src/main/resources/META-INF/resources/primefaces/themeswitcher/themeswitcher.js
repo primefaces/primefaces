@@ -248,3 +248,14 @@ jQuery.cookie = function(name, value, options) {
         return cookieValue;
     }
 };
+
+/**
+ * PrimeFaces ThemeSwitcher Widget
+ */
+PrimeFaces.widget.ThemeSwitcher = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jq = jQuery(PrimeFaces.escapeClientId(id));
+
+    this.jq.themeswitcher(this.cfg);
+}
