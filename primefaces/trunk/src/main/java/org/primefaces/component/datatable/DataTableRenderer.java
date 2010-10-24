@@ -130,6 +130,10 @@ public class DataTableRenderer extends CoreRenderer {
             }
         }
 
+        if(table.getOnRowEditUpdate() != null) {
+            writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
+        }
+
         writer.write("});");
 
 		writer.endElement("script");
