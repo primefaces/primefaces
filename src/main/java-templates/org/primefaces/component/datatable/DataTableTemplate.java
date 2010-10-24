@@ -309,7 +309,7 @@ import java.io.Serializable;
         String columnSelectionMode = this.getColumnSelectionMode();
 
 		if(selectionMode != null)
-			return selectionMode.equalsIgnoreCase("single");
+			return selectionMode.equalsIgnoreCase("single") || selectionMode.equalsIgnoreCase("singlecell");
 		else if(columnSelectionMode != null)
 			return columnSelectionMode.equalsIgnoreCase("single");
         else
@@ -469,3 +469,12 @@ import java.io.Serializable;
 
         return sb.toString();
     }
+
+    public boolean isCellSelection() {
+		String selectionMode = this.getSelectionMode();
+
+		if(selectionMode != null)
+			return selectionMode.indexOf("cell") != -1;
+		else
+			return false;
+	}

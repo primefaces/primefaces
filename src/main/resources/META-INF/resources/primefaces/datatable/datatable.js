@@ -102,29 +102,33 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
 
     //Row mouseover, mouseout, click
     if(this.cfg.selectionMode) {
-        var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
+        var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
+        selector = this.isCellSelectionEnabled() ? this.jqId + ' tbody tr td' : this.jqId + ' tbody tr';
 
-        jQuery(this.jqId + ' .ui-datatable-data tr')
+        jQuery(selector)
             .css('cursor', 'pointer')
             .die()
             .live('mouseover', function() {
-                var row = jQuery(this);
+                var element = jQuery(this);
 
-                if(!row.hasClass('ui-selected')) {
-                    row.addClass('ui-state-highlight');
+                if(!element.hasClass('ui-selected')) {
+                    element.addClass('ui-state-highlight');
                 }
 
             })
             .live('mouseout', function() {
-                var row = jQuery(this);
+                var element = jQuery(this);
 
-                if(!row.hasClass('ui-selected')) {
-                    row.removeClass('ui-state-highlight');
+                if(!element.hasClass('ui-selected')) {
+                    element.removeClass('ui-state-highlight');
                 }
 
             })
             .live(selectEvent, function(event) {
-                _self.onRowClick(event, this);
+                if(this.nodeName == 'TR')
+                    _self.onRowClick(event, this);
+                else
+                    _self.onCellClick(event, this);
             });
             
     }
@@ -566,6 +570,61 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 }
 
 /**
+ * Cell select handler
+ *
+ * - Unselects a cell if it's already selected
+ * - For single cell selection, clears previous selection
+ */
+PrimeFaces.widget.DataTable.prototype.onCellClick = function(event, cellElement) {
+
+    //Check if rowclick triggered this event not an element in row content
+    if(jQuery(event.target).is('td,span')) {
+
+        var cell = jQuery(cellElement);
+
+        if(cell.hasClass('ui-selected'))
+            this.unselectCell(cell);
+        else
+           this.selectCell(cell);
+    }
+}
+
+PrimeFaces.widget.DataTable.prototype.selectCell = function(cell) {
+    var rowId = cell.parent().attr('id').split('_row_')[1],
+    columnIndex = cell.index();
+
+    //unselect previous selection
+    if(this.cfg.selectionMode === 'singlecell') {
+        jQuery(this.jqId + ' tbody td').removeClass('ui-selected ui-state-highlight');
+        this.selection = [];
+    }
+
+    //add to selection
+    cell.addClass('ui-state-highlight ui-selected');
+    this.selection.push(rowId + '#' + columnIndex);
+
+    //save state
+    this.writeSelections();
+}
+
+PrimeFaces.widget.DataTable.prototype.unselectCell = function(cell) {
+    var rowId = cell.parent().attr('id').split('_row_')[1],
+    columnIndex = cell.index(),
+    cellId = rowId + '#' + columnIndex;
+
+    //remove visual style
+    cell.removeClass('ui-selected ui-state-highlight');
+
+    //remove from selection
+    this.selection = jQuery.grep(this.selection, function(c) {
+        return c != cellId;
+    });
+
+    //save state
+    this.writeSelections();
+}
+
+/**
  * Expands a row to display detail content
  */
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
@@ -763,6 +822,13 @@ PrimeFaces.widget.DataTable.prototype.clearSelection = function() {
  */
 PrimeFaces.widget.DataTable.prototype.isSelectionEnabled = function() {
     return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
+}
+
+/**
+ * Returns true|false if selection is enabled|disabled
+ */
+PrimeFaces.widget.DataTable.prototype.isCellSelectionEnabled = function() {
+    return this.cfg.selectionMode === 'singlecell' || this.cfg.selectionMode === 'multiplecell';
 }
 
 /**
