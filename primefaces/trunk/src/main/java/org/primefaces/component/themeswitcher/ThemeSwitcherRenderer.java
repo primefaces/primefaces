@@ -24,31 +24,32 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ThemeSwitcherRenderer extends CoreRenderer {
-	
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ThemeSwitcher ts = (ThemeSwitcher) component;
 		
-		encodeMarkup(facesContext, ts);
-		encodeScript(facesContext, ts);
+		encodeMarkup(context, ts);
+		encodeScript(context, ts);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, ThemeSwitcher ts) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeMarkup(FacesContext context, ThemeSwitcher ts) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("div", ts);
-		writer.writeAttribute("id", ts.getClientId(facesContext), null);
+		writer.writeAttribute("id", ts.getClientId(context), null);
 		writer.endElement("div");
 	}
 
-	protected void encodeScript(FacesContext facesContext, ThemeSwitcher ts) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeScript(FacesContext context, ThemeSwitcher ts) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function(){");
 		
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + ts.getClientId(facesContext) + "')).themeswitcher({");
+		writer.write(ts.resolveWidgetVar() + " = PrimeFaces.widget.ThemeSwitcher('" + ts.getClientId(context) + "', {");
 		
 		writer.write("width:" + ts.getWidth());
 		writer.write(",height:" + ts.getHeight());
@@ -59,6 +60,7 @@ public class ThemeSwitcherRenderer extends CoreRenderer {
 		if(ts.getTheme() != null) writer.write(",loadTheme:'" + ts.getTheme() + "'");
 		
 		writer.write("});});");
+        
 		writer.endElement("script");
 	}
 }
