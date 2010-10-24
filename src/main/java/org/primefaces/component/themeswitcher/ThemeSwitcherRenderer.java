@@ -58,6 +58,7 @@ public class ThemeSwitcherRenderer extends CoreRenderer {
 		if(ts.getButtonPreText() != null) writer.write(",buttonPreText:'" + ts.getButtonPreText() + "'");
 		if(ts.getInitialText() != null) writer.write(",initialText:'" + ts.getInitialText() + "'");
 		if(ts.getTheme() != null) writer.write(",loadTheme:'" + ts.getTheme() + "'");
+        if(ts.getOnSelect() != null) writer.write(",onSelect: function() {" + ts.getOnSelect() + ";}");
 		
 		writer.write("});});");
         

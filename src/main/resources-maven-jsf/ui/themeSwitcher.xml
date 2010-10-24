@@ -59,6 +59,12 @@
 			<type>java.lang.String</type>
 			<description>Text that precedes the theme name.</description>
 		</attribute>
+        <attribute>
+			<name>onSelect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
