@@ -8652,6 +8652,12 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.cfg.allowSource = false;
+    this.jq = jQuery(PrimeFaces.escapeClientId(id));
+
+    //Check if already created for target element
+    if(this.jq.data('primefaces_widget')) {
+        return;
+    }
 
     if(this.cfg.toolbarTemplate) {
         elRTE.prototype.options.panels.customPanel = this.cfg.toolbarTemplate;
@@ -8661,6 +8667,8 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     }
 
     this.editor = new elRTE(document.getElementById(id), this.cfg);
+
+    this.jq.data('primefaces_widget', true);
     
     jQuery('.el-rte .panel-save').hide();
     jQuery('.el-rte .smiley').hide();
