@@ -657,7 +657,7 @@ public class DataTableRenderer extends CoreRenderer {
             if(table.getOnRowSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnRowSelectComplete() + "}");
         }
 
-        if(table.getRowSelectListener() != null) {
+        if(table.getRowUnselectListener() != null) {
             writer.write(",instantUnselect:true");
             
             if(table.getOnRowUnselectUpdate() != null) {
