@@ -724,11 +724,14 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
         update: this.id,
         formId: this.cfg.formId
     },
-    _self = this;
+    _self = this,
+    rowEditorId = row.find('span.ui-row-editor').attr('id');
 
     if(action === 'save') {
         //Only process cell editors of current row
         var editorsToProcess = new Array();
+        editorsToProcess.push(rowEditorId);
+
         row.find('span.ui-cell-editor').each(function() {
            editorsToProcess.push(jQuery(this).attr('id'));
         });
@@ -765,9 +768,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                if(this.args.validationFailed) {
-                    row.addClass('ui-state-error');
-                } else {
+                if(!this.args.validationFailed) {
                     row.replaceWith(content);
                 }
             }
@@ -780,6 +781,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     };
 
     var params = {};
+    params[rowEditorId] = rowEditorId;
     params[this.id + '_rowEdit'] = true;
     params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
 
