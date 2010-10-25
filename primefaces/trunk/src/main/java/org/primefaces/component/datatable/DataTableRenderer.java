@@ -56,9 +56,6 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isSelectionEnabled()) {
 			dataHelper.decodeSelection(context, table);
 		}
-        if(table.isRowEditRequest(context)) {
-			dataHelper.decodeRowEditRequest(context, table);
-		}
 	}
     
     @Override
@@ -464,12 +461,7 @@ public class DataTableRenderer extends CoreRenderer {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                if(column.isEditor()) {
-                    writer.writeAttribute("class", DataTable.ROW_EDITOR_COLUMN_CLASS, null);
-
-                    encodeRowEditor(context, table);
-                }
-                else if(column.getSelectionMode() != null) {
+                if(column.getSelectionMode() != null) {
                     writer.writeAttribute("class", DataTable.SELECTION_COLUMN_CLASS, null);
 
                     encodeColumnSelection(context, table, clientId, column, selected);
