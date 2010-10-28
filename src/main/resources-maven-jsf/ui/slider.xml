@@ -7,6 +7,7 @@
 <component>
 	<tag>slider</tag>
 	<tagClass>org.primefaces.component.slider.SliderTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.slider.SliderHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.slider.Slider</componentClass>
 	<componentType>org.primefaces.component.Slider</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
@@ -87,6 +88,37 @@
 			<defaultValue>false</defaultValue>
 			<description>Disables or enables slider.</description>
 		</attribute>
+        <attribute>
+			<name>onSlideStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description></description>
+		</attribute>
+         <attribute>
+			<name>onSlide</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description></description>
+		</attribute>
+        <attribute>
+			<name>onSlideEnd</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description></description>
+		</attribute>
+        <attribute>
+            <name>slideEndListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void slideEndListener(org.primefaces.event.SlideEndEvent)</method-signature>
+            <description></description>
+        </attribute>
+        <attribute>
+            <name>onSlideEndUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description></description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
