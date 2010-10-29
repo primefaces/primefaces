@@ -94,18 +94,18 @@ public class SliderRenderer extends CoreRenderer{
 
         //Ajax Slider configuration
         MethodExpression me = slider.getSlideEndListener();
+        String onSlideEndUpdate = slider.getOnSlideEndUpdate();
 
-        if(me != null) {
+        if(me != null || onSlideEndUpdate != null) {
             UIComponent form = ComponentUtils.findParentForm(context, slider);
             if(form == null) {
-                throw new FacesException("Slider: '" + clientId + "' needs to be enclosed in a form when using a slideEndListener");
+                throw new FacesException("Slider: '" + clientId + "' needs to be enclosed in a form when ajax mode is enabled");
             }
 
             writer.write(",ajaxSlide:true");
             writer.write(",formId:'" + form.getClientId(context) + "'");
             writer.write(",url:'" + getActionURL(context) + "'");
             
-            String onSlideEndUpdate = slider.getOnSlideEndUpdate();
             if(onSlideEndUpdate != null)
                 writer.write(",onSlideEndUpdate:'" + ComponentUtils.findClientIds(context, slider, onSlideEndUpdate) + "'");
         }
