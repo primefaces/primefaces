@@ -1,16 +1,23 @@
+/**
+ * PrimeFaces ConfirmDialog Widget
+ */
 PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
-	
+    this.jqId = PrimeFaces.escapeClientId(id);
+	this.jq = jQuery(this.jqId);
 	this.cfg.resizable = false;
 	this.cfg.autoOpen = false;
-	
-	jQuery(this.jqId).dialog(this.cfg);
+
+    //Remove scripts to prevent duplicate widget issues
+    this.jq.find("script").remove();
+
+    //Create dialog
+	this.jq.dialog(this.cfg);
 	
 	//Setup button pane
-	var buttons = this.jqId + '_buttons';
-	jQuery(buttons).appendTo(jQuery(buttons).parent().parent()).addClass('ui-dialog-buttonpane ui-widget-content ui-helper-clearfix');
+	var buttons = jQuery(this.jqId + '_buttons');
+	buttons.appendTo(buttons.parent().parent()).addClass('ui-dialog-buttonpane ui-widget-content ui-helper-clearfix');
 	
 	//Close icon
 	if(this.cfg.closable == false) {
@@ -20,9 +27,9 @@ PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
 }
 
 PrimeFaces.widget.ConfirmDialog.prototype.show = function() {
-	jQuery(this.jqId).dialog('open');	
+	this.jq.dialog('open');
 }
 
 PrimeFaces.widget.ConfirmDialog.prototype.hide = function() {
-	jQuery(this.jqId).dialog('close');
+	this.jq.dialog('close');
 }
