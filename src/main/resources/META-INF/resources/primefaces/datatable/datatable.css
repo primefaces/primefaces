@@ -66,7 +66,7 @@
     cursor: pointer;
 }
 
-.ui-datatable .ui-cell-editor {
+.ui-datatable .ui-cell-editor-input {
     display:none;
 }
 

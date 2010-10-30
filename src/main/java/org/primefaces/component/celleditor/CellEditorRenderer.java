@@ -25,18 +25,35 @@ import org.primefaces.renderkit.CoreRenderer;
 public class CellEditorRenderer extends CoreRenderer {
 
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        CellEditor editor = (CellEditor) component;
         
         writer.startElement("span", null);
         writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.CELL_EDITOR_OUTPUT_CLASS, null);
+        editor.getFacet("output").encodeAll(context);
+        writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
+        editor.getFacet("input").encodeAll(context);
+        writer.endElement("span");
+
+        writer.endElement("span");
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
-        writer.endElement("span");
-    }
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+		//Rendering happens on encodeEnd
+	}
+
+    @Override
+	public boolean getRendersChildren() {
+		return true;
+	}
+
 }

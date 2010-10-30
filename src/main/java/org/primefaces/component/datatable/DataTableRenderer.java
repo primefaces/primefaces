@@ -471,28 +471,15 @@ public class DataTableRenderer extends CoreRenderer {
                     encodeColumnSelection(context, table, clientId, column, selected);
                 }
                 else {
-                    //TODO: CellEditor made the cell rendering process a bit complex, think about an alternative.
                     CellEditor editor = column.getCellEditor();
                     if(editor != null)
-                        columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_CELL_CLASS : DataTable.EDITABLE_CELL_CLASS + " " + columnStyleClass;
+                        columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_COLUMN_CLASS : DataTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
                     
                     if(columnStyleClass != null)
                         writer.writeAttribute("class", columnStyleClass, null);
 
-                    writer.startElement("span", null);
-                    if(editor == null) {
-                        column.encodeAll(context);
-                    } else {
-                        for(UIComponent columnChild : column.getChildren()) {
-                            if(!(columnChild instanceof CellEditor))
-                                columnChild.encodeAll(context);
-                        }
-                    }
-                    writer.endElement("span");
 
-                    if(editor != null) {
-                        editor.encodeAll(context);
-                    }
+                    column.encodeAll(context);
                 }
 
                 writer.endElement("td");
