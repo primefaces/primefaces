@@ -24,7 +24,6 @@ import java.util.Map;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -250,7 +249,6 @@ public class CoreRenderer extends Renderer {
     }
 	
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
-		String process = (String) component.getAttributes().get("process");
         StringBuilder request = new StringBuilder();
 
         request.append("PrimeFaces").append(addSubmitParam(formId, decodeParam, decodeParam));
