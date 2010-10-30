@@ -1,6 +1,7 @@
 import org.primefaces.model.filter.*;
 import org.primefaces.component.celleditor.CellEditor;
 import javax.faces.component.UIComponent;
+import org.primefaces.component.datatable.DataTable;
 
     private CellEditor cellEditor = null;
 

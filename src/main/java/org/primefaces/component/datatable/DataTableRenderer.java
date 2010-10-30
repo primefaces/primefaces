@@ -15,12 +15,10 @@
  */
 package org.primefaces.component.datatable;
 
-import com.sun.j3d.utils.behaviors.vp.WandViewBehavior.ResetViewListener;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
 import javax.faces.FacesException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -30,7 +28,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -462,29 +459,33 @@ public class DataTableRenderer extends CoreRenderer {
 
             for(Column column : table.getColumns()) {
                 writer.startElement("td", null);
-                if(column.getStyle() != null) {
+                String columnStyleClass = column.getStyleClass();
+
+                if(column.getStyle() != null)
                     writer.writeAttribute("style", column.getStyle(), null);
-                }
 
                 if(column.getSelectionMode() != null) {
-                    writer.writeAttribute("class", DataTable.SELECTION_COLUMN_CLASS, null);
+                    columnStyleClass = columnStyleClass == null ? DataTable.SELECTION_COLUMN_CLASS : DataTable.SELECTION_COLUMN_CLASS + " " + columnStyleClass;
+                    writer.writeAttribute("class", columnStyleClass, null);
 
                     encodeColumnSelection(context, table, clientId, column, selected);
                 }
                 else {
+                    //TODO: CellEditor made the cell rendering process a bit complex, think about an alternative.
                     CellEditor editor = column.getCellEditor();
-                    if(editor != null) {
-                        writer.writeAttribute("class", DataTable.EDITABLE_CELL_CLASS, null);
-                    }
+                    if(editor != null)
+                        columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_CELL_CLASS : DataTable.EDITABLE_CELL_CLASS + " " + columnStyleClass;
+                    
+                    if(columnStyleClass != null)
+                        writer.writeAttribute("class", columnStyleClass, null);
 
                     writer.startElement("span", null);
                     if(editor == null) {
                         column.encodeAll(context);
                     } else {
                         for(UIComponent columnChild : column.getChildren()) {
-                            if(!(columnChild instanceof CellEditor)) {
+                            if(!(columnChild instanceof CellEditor))
                                 columnChild.encodeAll(context);
-                            }
                         }
                     }
                     writer.endElement("span");
