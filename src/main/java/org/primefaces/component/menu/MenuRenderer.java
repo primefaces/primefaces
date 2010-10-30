@@ -30,6 +30,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class MenuRenderer extends CoreRenderer{
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Menu menu = (Menu) component;
 		
@@ -50,7 +51,7 @@ public class MenuRenderer extends CoreRenderer{
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write(widgetVar + " = new YAHOO.widget.Menu('" + clientId + "', {");
-		
+
 		if(menu.getPosition().equalsIgnoreCase("static")) {
 			writer.write("position:'static'");
 		}
@@ -82,8 +83,11 @@ public class MenuRenderer extends CoreRenderer{
 		}
 		
 		writer.write("});\n");
-		
-		writer.write(widgetVar + ".render();\n");
+
+        if(menu.isAppendToBody())
+            writer.write(widgetVar + ".render(document.body);");
+        else
+            writer.write(widgetVar + ".render();");
 		
 		writer.endElement("script");	
 	}

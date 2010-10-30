@@ -190,6 +190,13 @@
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
 			<description>zindex property to control overlapping with other elements</description>
 		</attribute>
+        <attribute>
+			<name>appendToBody</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
