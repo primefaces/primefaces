@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class MenubarRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		Menubar menubar = (Menubar) component;
 		
@@ -50,7 +51,7 @@ public class MenubarRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new YAHOO.widget.MenuBar('" + clientId + "',{");
+		writer.write(widgetVar + " = new PrimeFaces.widget.MenuBar('" + clientId + "',{");
 		
 		writer.write("autosubmenudisplay:" + menubar.isAutoSubmenuDisplay());
 		
@@ -65,9 +66,9 @@ public class MenubarRenderer extends CoreRenderer {
 		
 		if(menubar.getZindex() != Integer.MAX_VALUE) writer.write(",zIndex:" + menubar.getZindex());
 		
-		writer.write("})\n;");
+		writer.write("});");
 	
-		writer.write(widgetVar + ".render();\n");
+		writer.write(widgetVar + ".render();");
 
 		writer.endElement("script");	
 	}
