@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,10 @@ public class SeparatorRenderer extends CoreRenderer{
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
-		
-		final String defaultStyleClass = "ui-separator ui-widget-header";
-		
 		Separator separator = (Separator) component;
 		ResponseWriter writer = context.getResponseWriter();
-		String styleClass = separator.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + separator.getStyleClass();
+		String styleClass = separator.getStyleClass();
+        styleClass = styleClass == null ? Separator.DEFAULT_STYLE_CLASS : Separator.DEFAULT_STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("hr", separator);
 		writer.writeAttribute("id", separator.getClientId(context), "id");
