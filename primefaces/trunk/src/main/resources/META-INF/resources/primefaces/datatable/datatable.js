@@ -689,11 +689,11 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
  * Displays in-cell editors for given row
  */
 PrimeFaces.widget.DataTable.prototype.showEditors = function(element) {
-    jQuery(element).parents('tr').addClass('ui-state-highlight').children('td.ui-editable-cell').each(function() {
+    jQuery(element).parents('tr').addClass('ui-state-highlight').children('td.ui-editable-column').each(function() {
        var column = jQuery(this);
 
-       column.children().hide();
-       column.children('span.ui-cell-editor').show();
+       column.find('span.ui-cell-editor-output').hide();
+       column.find('span.ui-cell-editor-input').show();
 
        jQuery(element).hide();
        jQuery(element).siblings().show();
