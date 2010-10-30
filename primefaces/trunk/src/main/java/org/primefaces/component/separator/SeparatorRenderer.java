@@ -28,7 +28,7 @@ public class SeparatorRenderer extends CoreRenderer{
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		
-		final String defaultStyleClass = "ui-separator ui-widget-default";
+		final String defaultStyleClass = "ui-separator ui-widget-header";
 		
 		Separator separator = (Separator) component;
 		ResponseWriter writer = context.getResponseWriter();
