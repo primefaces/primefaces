@@ -859,6 +859,25 @@ PrimeFaces.widget.DataTable.prototype.setupCellEditorEvents = function(rowEditor
     });
 }
 
+/**
+ * Clears table filters and then update the datatable
+ */
+PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
+    jQuery(this.jqId + ' thead th .ui-column-filter').val('');
+    
+    var options = {
+        source: this.id,
+        update: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+    
+    var params = {};
+    params[this.id + "_clearFilters"] = true;
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
 /*
 
 Copyright (c) 2009 Dimas Begunoff, http://www.farinspace.com
