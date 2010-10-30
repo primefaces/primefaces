@@ -45,10 +45,16 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
+    this.menuId = this.id + '_menu'
 	
 	this.cfg.icons = {primary: 'ui-icon-triangle-1-s'};
 
 	jQuery(this.jqId + "_button").button(this.cfg);
+
+    var manager = YAHOO.widget.MenuManager;
+    if(manager.getMenu(this.menuId)) {
+        manager.removeMenuWithId(this.menuId);
+    }
 	
 	this.menu = new YAHOO.widget.Menu(id + '_menu', {
 		itemData : this.cfg.items,

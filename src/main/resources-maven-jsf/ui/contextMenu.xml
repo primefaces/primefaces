@@ -57,16 +57,10 @@
 			<name>yui/utilities/utilities.js</name>
 		</resource>
 		<resource>
-			<name>yui/container/container.js</name>
-		</resource>
-		<resource>
 			<name>menu/menu.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>contextmenu/contextmenu.js</name>
 		</resource>
 	</resources>
 </component>
