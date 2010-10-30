@@ -50,7 +50,7 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
 
 	jQuery(this.jqId + "_button").button(this.cfg);
 	
-	this.menu = new YAHOO.widget.Menu(id + "_menu", {
+	this.menu = new YAHOO.widget.Menu(id + '_menu', {
 		itemData : this.cfg.items,
 		context: [id + '_button', 'tl', 'bl', ['beforeShow', 'windowResize']],
 		effect: {
@@ -58,8 +58,11 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
 			duration: 0.25
 		}
 	});
-	
-	this.menu.render(id + "_menuContainer");
+
+    if(this.cfg.appendToBody)
+        this.menu.render(document.body);
+    else
+        this.menu.render(this.id + '_menuContainer');
 }
 
 PrimeFaces.widget.MenuButton.prototype.showMenu = function() {

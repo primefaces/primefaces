@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class MenuButtonRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		MenuButton button = (MenuButton) component;
 		
@@ -59,9 +60,11 @@ public class MenuButtonRenderer extends CoreRenderer {
 		}
 		writer.endElement("button");
 		
-		writer.startElement("span", button);
-		writer.writeAttribute("id", clientId + "_menuContainer", "id");
-		writer.endElement("span");
+        if(!button.isAppendToBody()) {
+            writer.startElement("span", button);
+            writer.writeAttribute("id", clientId + "_menuContainer", null);
+            writer.endElement("span");
+        }
 		
 		writer.endElement("span");
 	}
@@ -115,6 +118,10 @@ public class MenuButtonRenderer extends CoreRenderer {
 		if(button.isDisabled()) {
 			writer.write(",disabled:true");
 		}
+
+        if(button.isAppendToBody()) {
+            writer.write(",appendToBody:true");
+        }
 
  		writer.write("});");
 		
