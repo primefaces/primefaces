@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.datatable;
 
+import com.sun.j3d.utils.behaviors.vp.WandViewBehavior.ResetViewListener;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
@@ -51,6 +52,10 @@ public class DataTableRenderer extends CoreRenderer {
             dataHelper.decodeSortRequest(context, table);
         } else if(table.isFilterRequest(context)) {
             dataHelper.decodeFilterRequest(context, table);
+        } else if(table.isClearFiltersRequest(context)) {
+            table.resetValue();
+            context.renderResponse();
+            return;
         }
 
         if(table.isSelectionEnabled()) {
