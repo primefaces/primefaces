@@ -18893,8 +18893,8 @@ toString: function() {
 YAHOO.register("menu", YAHOO.widget.Menu, {version: "2.8.0r4", build: "2449"});
 
 /**
-* PrimeFaces MenuWidget
-*/
+ * PrimeFaces Menu Widget
+ */
 PrimeFaces.widget.Menu = function(id, cfg) {
     var manager = YAHOO.widget.MenuManager;
     if(manager.getMenu(id)) {
@@ -18909,6 +18909,9 @@ YAHOO.lang.extend(PrimeFaces.widget.Menu, YAHOO.widget.Menu,
 
 });
 
+/**
+ * PrimeFaces ContextMenu Widget
+ */
 PrimeFaces.widget.ContextMenu = function(id, cfg) {
     var manager = YAHOO.widget.MenuManager;
     if(manager.getMenu(id)) {
@@ -18919,6 +18922,23 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 }
 
 YAHOO.lang.extend(PrimeFaces.widget.ContextMenu, YAHOO.widget.ContextMenu,
+{
+
+});
+
+/**
+ * PrimeFaces Menubar Widget
+ */
+PrimeFaces.widget.MenuBar = function(id, cfg) {
+    var manager = YAHOO.widget.MenuManager;
+    if(manager.getMenu(id)) {
+        manager.removeMenuWithId(id);
+    }
+
+	PrimeFaces.widget.MenuBar.superclass.constructor.call(this, id, cfg);
+}
+
+YAHOO.lang.extend(PrimeFaces.widget.MenuBar, YAHOO.widget.MenuBar,
 {
 
 });
