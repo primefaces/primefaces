@@ -65,11 +65,11 @@ public class SliderRenderer extends CoreRenderer{
 	protected void encodeScript(FacesContext context, Slider slider) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = slider.getClientId(context);
-		String input = getTarget(context, slider, slider.getFor());
-		String output = getTarget(context, slider, slider.getDisplay());
+		UIComponent input = getTarget(context, slider, slider.getFor());
+		UIComponent output = getTarget(context, slider, slider.getDisplay());
 		
 		int value = 0;
-		String stringValue = ComponentUtils.getStringValueToRender(context, slider);
+		String stringValue = ComponentUtils.getStringValueToRender(context, input);
 		if(!isValueBlank(stringValue)) {
 			value = Integer.parseInt(stringValue);
 		}
@@ -79,7 +79,7 @@ public class SliderRenderer extends CoreRenderer{
 
 		writer.write(slider.resolveWidgetVar() + " = new PrimeFaces.widget.Slider('" + clientId + "', {");
 		writer.write("value:" + value);
-		writer.write(",input:'" + input + "'");
+		writer.write(",input:'" + input.getClientId(context) + "'");
 		writer.write(",min:" + slider.getMinValue());
 		writer.write(",max:" + slider.getMaxValue());
 		writer.write(",animate:" + slider.isAnimate());
@@ -87,7 +87,7 @@ public class SliderRenderer extends CoreRenderer{
 		writer.write(",orientation:'" + slider.getType() + "'");
 		
 		if(slider.isDisabled()) writer.write(",disabled:true");
-		if(output != null) writer.write(",output:'" + output + "'");
+		if(output != null) writer.write(",output:'" + output.getClientId(context) + "'");
         if(slider.getOnSlideStart() != null) writer.write(",onSlideStart:function(event, ui) {" + slider.getOnSlideStart() + "}");
         if(slider.getOnSlide() != null) writer.write(",onSlide:function(event, ui) {" + slider.getOnSlide() + "}");
         if(slider.getOnSlideEnd() != null) writer.write(",onSlideEnd:function(event, ui) {" + slider.getOnSlideEnd() + "}");
@@ -115,7 +115,7 @@ public class SliderRenderer extends CoreRenderer{
 		writer.endElement("script");
 	}
 	
-	protected String getTarget(FacesContext context, Slider slider, String target) {
+	protected UIComponent getTarget(FacesContext context, Slider slider, String target) {
 		if(target == null) {
 			return null;
 		} else {
@@ -124,7 +124,7 @@ public class SliderRenderer extends CoreRenderer{
                 throw new FacesException("Cannot find slider target component '" + target + "' in view");
             }
 			
-			return targetComponent.getClientId(context);
+			return targetComponent;
 		}
 	}
 }

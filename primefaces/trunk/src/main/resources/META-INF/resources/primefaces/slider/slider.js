@@ -48,21 +48,23 @@ PrimeFaces.widget.Slider.prototype.onSlideEnd = function(event, ui) {
         this.cfg.onSlideEnd.call(this, event, ui);
     }
 
-    var options = {
-        source : this.id,
-        process: this.id + ' ' + this.cfg.input,
-        formId: this.cfg.formId
-    };
+    if(this.cfg.ajaxSlide) {
+        var options = {
+            source : this.id,
+            process: this.id + ' ' + this.cfg.input,
+            formId: this.cfg.formId
+        };
 
-    if(this.cfg.onSlideEndUpdate) {
-        options.update = this.cfg.onSlideEndUpdate;
+        if(this.cfg.onSlideEndUpdate) {
+            options.update = this.cfg.onSlideEndUpdate;
+        }
+
+        var params = {};
+        params[this.id + '_ajaxSlide'] = true;
+        params[this.id + '_ajaxSlideValue'] = ui.value;
+
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
     }
-
-    var params = {};
-    params[this.id + '_ajaxSlide'] = true;
-    params[this.id + '_ajaxSlideValue'] = ui.value;
-
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
 
 PrimeFaces.widget.Slider.prototype.getValue = function() {
