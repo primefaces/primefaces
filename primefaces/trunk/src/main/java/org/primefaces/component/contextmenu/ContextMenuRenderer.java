@@ -132,11 +132,13 @@ public class ContextMenuRenderer extends CoreRenderer {
 		
 		writer.endElement("div");
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Rendering happens on encodeEnd
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
