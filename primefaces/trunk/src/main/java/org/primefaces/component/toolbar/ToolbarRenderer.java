@@ -24,7 +24,7 @@ import org.primefaces.renderkit.CoreRenderer;
 public class ToolbarRenderer extends CoreRenderer {
 
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
         ResponseWriter writer = context.getResponseWriter();
         String style = toolbar.getStyle();
@@ -34,13 +34,38 @@ public class ToolbarRenderer extends CoreRenderer {
         writer.startElement("div", toolbar);
         writer.writeAttribute("id", toolbar.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if(style != null)
             writer.writeAttribute("style", style, null);
+
+        for(UIComponent child : toolbar.getChildren()) {
+            if(child instanceof ToolbarGroup) {
+                ToolbarGroup group = (ToolbarGroup) child;
+                String defaultGroupClass = "ui-toolbar-group-" + group.getAlign();
+                String groupClass = group.getStyleClass();
+                String groupStyle = group.getStyle();
+                groupClass = groupClass == null ? defaultGroupClass : defaultGroupClass + " " + groupClass;
+                
+                writer.startElement("div", null);
+                writer.writeAttribute("class", groupClass, style);
+                if(groupStyle != null)
+                    writer.writeAttribute("style", groupStyle, null);
+
+                group.encodeAll(context);
+
+                writer.endElement("div");
+            }
         }
+
+        writer.endElement("div");
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        context.getResponseWriter().endElement("div");
-    }
+    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+		//Do nothing
+	}
+
+    @Override
+	public boolean getRendersChildren() {
+		return true;
+	}
 }
