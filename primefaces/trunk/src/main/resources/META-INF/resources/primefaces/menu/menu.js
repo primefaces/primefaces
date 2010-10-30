@@ -9644,6 +9644,7 @@ version: 2.8.0r4
     
                 var sId,
                     aItems,
+                    sMenus,
                     i;
         
                 if (p_oMenu) {
@@ -9667,6 +9668,13 @@ version: 2.8.0r4
                             }
                             while (i--);
 
+                        }
+                        
+                        sMenus = p_oMenu.getSubmenus();
+
+                        // Unregister submenus
+                        for(var x in sMenus) {
+                            this.removeMenu(sMenus[x]);
                         }
 
 
