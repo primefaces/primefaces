@@ -14,6 +14,13 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     jQuery(this.jqId).bind('tabsselect', function(event, ui) {
         _self.onTabSelect(event, ui);
     });
+
+    //tab show handler
+    if(this.cfg.onTabShow) {
+        jQuery(this.jqId).bind('tabsshow', function(event, ui) {
+            _self.cfg.onTabShow.call(_self, event, ui);
+        });
+    }
 	
     if(this.cfg.dynamic) {
         this.markAsLoaded(jQuery(this.jqId).children('div').get(this.cfg.selected));

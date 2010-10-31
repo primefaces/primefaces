@@ -91,6 +91,7 @@ public class TabViewRenderer extends CoreRenderer {
         if(tabView.isCollapsible()) writer.write(",collapsible:true");
         if(tabView.getEvent() != null) writer.write(",event:'" + tabView.getEvent() + "'");
         if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + tabView.getOnTabChange() + "}");
+        if(tabView.getOnTabShow() != null) writer.write(",onTabShow:function(event, ui) {" + tabView.getOnTabShow() + "}");
 
         if(tabView.getEffect() != null) {
             writer.write(",fx: {");
