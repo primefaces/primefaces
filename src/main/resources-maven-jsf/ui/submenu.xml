@@ -20,19 +20,16 @@
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Label of the submenu header</description>
 		</attribute>
 		<attribute>
 			<name>labelStyle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the submenu label</description>
 		</attribute>
 		<attribute>
 			<name>labelStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the submenu label</description>
 		</attribute>
 	</attributes>
 </component>

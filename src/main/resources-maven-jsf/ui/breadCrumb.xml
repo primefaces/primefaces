@@ -17,70 +17,58 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
-			<description>
-				An org.primefaces.model.MenuModel instance to build menu dynamically.
-			</description>
 		</attribute>
 		<attribute>
 			<name>expandedEndItems</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
-			<description>Number of expanded menuitems at end.</description>
 		</attribute>
 		<attribute>
 			<name>expandedBeginningItems</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
-			<description>Number of expanded menuitems at beginning.</description>
 		</attribute>
 		<attribute>
 			<name>expandEffectDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>800</defaultValue>
-			<description>Expand effect duration in milliseconds.</description>
 		</attribute>
 		<attribute>
 			<name>collapseEffectDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>500</defaultValue>
-			<description>Collapse effect duration in milliseconds.</description>
 		</attribute>
 		<attribute>
 			<name>initialCollapseEffectDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>600</defaultValue>
-			<description>Initial collapse effect duration in milliseconds.</description>
 		</attribute>
 		<attribute>
 			<name>previewWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>5</defaultValue>
-			<description>Preview width of a collapsed menuitem.</description>
 		</attribute>
 		<attribute>
 			<name>preview</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies preview mode, when set to false menuitems will not collapse.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container element.</description>
 		</attribute>
 	</attributes>
 	<resources>

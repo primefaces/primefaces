@@ -25,105 +25,89 @@
             <name>header</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Header text of the panel</description>
         </attribute>
         <attribute>
             <name>footer</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Footer text of the panel</description>
         </attribute>
         <attribute>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Makes the panel toggleable, places a toggle icon for user interaction</description>
         </attribute>
         <attribute>
             <name>toggleSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1000</defaultValue>
-            <description>Durating of toggling in milliseconds. Default is 1000.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style of the main container of panel.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the main container of panel.</description>
         </attribute>
         <attribute>
             <name>collapsed</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Renders a toggleable panel as collapsed by default.</description>
         </attribute>
         <attribute>
             <name>closable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Makes the panel closable, places a close icon for user interaction</description>
         </attribute>
         <attribute>
             <name>closeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void closeListener(org.primefaces.event.CloseEvent)</method-signature>
-            <description>A server side listener to process a CloseEvent</description>
         </attribute>
         <attribute>
             <name>onCloseUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax closeListener is processed and panel is closed</description>
         </attribute>
         <attribute>
             <name>onCloseStart</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Javascript event handler to be triggered before a panel is closed</description>
         </attribute>
         <attribute>
             <name>onCloseComplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Javascript event handler to be triggered after a panel is closed</description>
         </attribute>
         <attribute>
             <name>closeSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1000</defaultValue>
-            <description>Durating of closing in milliseconds. Default is 1000.</description>
         </attribute>
         <attribute>
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Specifies visibility of panel.</description>
         </attribute>
         <attribute>
             <name>onToggleUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax toggleListener is processed and panel is toggled</description>
         </attribute>
         <attribute>
             <name>toggleListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
-            <description>A server side listener to process a ToggleEvent</description>
         </attribute>
     </attributes>
     <resources>

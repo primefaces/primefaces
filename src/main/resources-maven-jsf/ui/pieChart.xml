@@ -26,7 +26,6 @@
 			<required>true</required>
 			<type>java.lang.Object</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Data to be displayed on the chart</description>
 		</attribute>
 		<attribute>
 			<name>var</name>
@@ -34,48 +33,39 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 			<literal>true</literal>
-			<description>Name of the data iterator</description>
 		</attribute>
 		<attribute>
 			<name>categoryField</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>Pie category field</description>
 		</attribute>
 		<attribute>
 			<name>dataField</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>Pie category date field</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Style class to apply to chart container element.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Javascript object that represents the chart style</description>
 		</attribute>
 		<attribute>
 			<name>seriesStyle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Javascript object that represents the chart series style</description>
 		</attribute>
 		<attribute>
 			<name>wmode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>
-				wmode property of the flash object.
-			</description>
 		</attribute>
 		<attribute>
 			<name>live</name>

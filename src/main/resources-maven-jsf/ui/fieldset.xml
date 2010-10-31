@@ -25,65 +25,55 @@
 			<name>legend</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Text of legend</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the root container of accordion panel</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the root container of accordion panel</description>
 		</attribute>
          <attribute>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Makes the panel toggleable, places a toggle icon for user interaction</description>
         </attribute>
         <attribute>
             <name>toggleSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>500</defaultValue>
-            <description>Duration of toggling in milliseconds.</description>
         </attribute>
         <attribute>
             <name>onToggleUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Component(s) to update after ajax toggleListener is processed and panel is toggled</description>
         </attribute>
         <attribute>
             <name>toggleListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
-            <description>A server side listener to process a CloseEvent</description>
         </attribute>
         <attribute>
             <name>collapsed</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Renders a toggleable fieldset as collapsed by default.</description>
         </attribute>
         <attribute>
             <name>onToggleStart</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to execute before toggling begins</description>
         </attribute>
         <attribute>
             <name>onToggleComplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to execute after toggling completes</description>
         </attribute>
 	</attributes>
 	<resources>

@@ -16,7 +16,6 @@
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Title text of the sheet</description>
 		</attribute>
 	</attributes>
 </component>

@@ -25,39 +25,33 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.DashboardModel</type>
-			<description>Dashboard model representing the layout of the UI</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Disables changing of layout</description>
 		</attribute>
 		<attribute>
 			<name>onReorderUpdate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id(s) of components to update after ajax reorder event is processed</description>
 		</attribute>
 		<attribute>
 			<name>reorderListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>void reorderListener(org.primefaces.event.DashboardReorderEvent)</method-signature>
-			<description>A server side listener to invoke when dashboard widgets are reordered.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of dashboard.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container of dashboard.</description>
 		</attribute>
 	</attributes>
 	<resources>

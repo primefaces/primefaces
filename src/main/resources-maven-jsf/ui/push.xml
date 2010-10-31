@@ -24,17 +24,11 @@
 			<name>channel</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>
-				Unique channel name of the connection between subscriber and the server.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onpublish</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler that is process when the server publishes data.
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

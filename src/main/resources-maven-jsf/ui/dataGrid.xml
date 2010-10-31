@@ -26,110 +26,93 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>3</defaultValue>
-            <description>Number of columns to display</description>
         </attribute>
         <attribute>
             <name>paginator</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Enables paginator, default value is false</description>
         </attribute>
         <attribute>
             <name>paginatorTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Template for the paginator layout, default value is "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"</description>
         </attribute>
         <attribute>
             <name>rowsPerPageTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Template for the rowsPerPage dropdown</description>
         </attribute>
         <attribute>
             <name>currentPageReportTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Template for the {currentPageReport} UI.</description>
         </attribute>
         <attribute>
             <name>pageLinks</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
-            <description>Number of pageLinks to display when paginator is enabled, defaults to 10 at most.</description>
         </attribute>
         <attribute>
             <name>firstPageLinkLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Label of the first link paginator</description>
         </attribute>
         <attribute>
             <name>previousPageLinkLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Label of the previous link paginator</description>
         </attribute>
         <attribute>
             <name>nextPageLinkLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Label of the next link paginator </description>
         </attribute>
         <attribute>
             <name>lastPageLinkLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Label of the last link paginator</description>
         </attribute>
         <attribute>
             <name>paginatorPosition</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>both</defaultValue>
-            <description>Position of the paginator, valid values are "both","top","bottom".</description>
         </attribute>
         <attribute>
             <name>paginatorAlwaysVisible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Defines if paginator should be hidden when number of rows displayed is less than paginator rowsPerPage option.</description>
         </attribute>
         <attribute>
             <name>page</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
-            <description>Index of the current page, first page is 1.</description>
         </attribute>
         <attribute>
             <name>effect</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Enabled fade effect during pagination.</description>
         </attribute>
         <attribute>
             <name>effectSpeed</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>normal</defaultValue>
-            <description>Speed of the fade effect during pagination.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style of the main container of datagrid.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the main container of datagrid.</description>
         </attribute>
     </attributes>
     <resources>

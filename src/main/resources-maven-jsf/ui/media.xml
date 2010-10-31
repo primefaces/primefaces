@@ -18,49 +18,31 @@
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>
-				 URL referring to the media to be played.
-			</description>
 		</attribute>
 		<attribute>
 			<name>player</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Type of the player.
-			</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Width of the element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Height of the element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style of the element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style class of the element.
-			</description>
 		</attribute>
 	</attributes>
 </component>

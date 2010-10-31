@@ -26,135 +26,115 @@
 			<name>var</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Variable name of the iterator.</description>
 		</attribute>
 		<attribute>
 			<name>itemLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Label of the item.</description>
 		</attribute>
 		<attribute>
 			<name>itemValue</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>Value of the item.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of picklist.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container of picklist.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Disables or enables picklist</description>
 		</attribute>
         <attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fast</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>iconOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>addLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Add</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>addAllLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Add All</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>removeLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Remove</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>removeAllLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Remove All</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>moveUpLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Move Up</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>moveTopLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Move Top</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>moveDownLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Move Down</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>moveBottomLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Move Bottom</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>showSourceControls</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>showTargetControls</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>onTransfer</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
 	</attributes>
 	<resources>

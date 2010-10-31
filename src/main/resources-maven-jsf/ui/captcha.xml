@@ -19,34 +19,29 @@
 			<name>publicKey</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Public recaptcha key for a specific domain</description>
 		</attribute>
 		<attribute>
 			<name>theme</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>red</defaultValue>
-			<description>Theme of the captcha, valid values are "red","white","blackglass", "clean" and "custom"</description>
 		</attribute>
 		<attribute>
 			<name>language</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>en</defaultValue>
-			<description>Key of the supported languages, default is "en"</description>
 		</attribute>
 		<attribute>
 			<name>tabindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
-			<description>TabIndex value of the captcha</description>
 		</attribute>
         <attribute>
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
 	</attributes>
 </component>

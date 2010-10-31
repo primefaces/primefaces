@@ -26,67 +26,43 @@
 			<name>image</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Path of the image to be cropped
-			</description>
 		</attribute>
         <attribute>
 			<name>alt</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Html alt attribute for image
-			</description>
 		</attribute>
         <attribute>
 			<name>aspectRatio</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
             <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
-			<description>
-				Aspect ratio of crop area
-			</description>
 		</attribute>
         <attribute>
 			<name>minSize</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Minimum crop area size
-			</description>
 		</attribute>
         <attribute>
 			<name>maxSize</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Maximum crop area size
-			</description>
 		</attribute>
         <attribute>
 			<name>backgroundColor</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Color of background container
-			</description>
 		</attribute>
         <attribute>
 			<name>backgroundOpacity</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
             <defaultValue>0.6</defaultValue>
-			<description>
-				Opacity of background container
-			</description>
 		</attribute>
         <attribute>
 			<name>initialCoords</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Initial crop coordinates
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

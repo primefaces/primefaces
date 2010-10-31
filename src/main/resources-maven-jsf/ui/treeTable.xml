@@ -25,27 +25,23 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>readOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>When readOnly, treeTable is rendered as expanded and expand/collapse is disabled</description>
 		</attribute>
 		<attribute>
 			<name>expanded</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Rendered treeTable as expanded by defaul</description>
 		</attribute>
 	</attributes>
 	<resources>

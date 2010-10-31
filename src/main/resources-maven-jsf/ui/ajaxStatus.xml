@@ -24,57 +24,36 @@
 			<name>onstart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event listener to called after an ajax request starts.
-			</description>
 		</attribute>
 		<attribute>
 			<name>oncomplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event listener to be called when an ajax request is completed.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onprestart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event listener to be called before an ajax request is started.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onsuccess</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event listener to be called when an ajax request returns success.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onerror</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event listener to be called when an ajax request returns error.
-			</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Style of the parent element containing the facets.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Style of the parent element containing the facets.
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

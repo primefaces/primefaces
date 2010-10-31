@@ -17,14 +17,12 @@
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Optional title of the row group.</description>
 		</attribute>
 		<attribute>
 			<name>display</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>rounded</defaultValue>
-			<description>Display type of the rowgroup.</description>
 		</attribute>
 	</attributes>
 </component>

@@ -26,98 +26,83 @@
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the component that the slider will be used for.</description>
 		</attribute>
 		<attribute>
 			<name>display</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the component to display the slider value.</description>
 		</attribute>
 		<attribute>
 			<name>minValue</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
-			<description>Minimum value of the slider</description>
 		</attribute>
 		<attribute>
 			<name>maxValue</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>100</defaultValue>
-			<description>Maximum value of the slider</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>animate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Boolean value to set an animation when slider background is clicked, default is true</description>
 		</attribute>
 		<attribute>
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>horizontal</defaultValue>
-			<description>Specifies the type of the slider, valid values are "horizontal" and "vertical".</description>
 		</attribute>
 		<attribute>
 			<name>step</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
-			<description>Defines the amount of each step.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Disables or enables slider.</description>
 		</attribute>
         <attribute>
 			<name>onSlideStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description></description>
 		</attribute>
          <attribute>
 			<name>onSlide</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description></description>
 		</attribute>
         <attribute>
 			<name>onSlideEnd</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description></description>
 		</attribute>
         <attribute>
             <name>slideEndListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void slideEndListener(org.primefaces.event.SlideEndEvent)</method-signature>
-            <description></description>
         </attribute>
         <attribute>
             <name>onSlideEndUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description></description>
         </attribute>
 	</attributes>
 	<resources>

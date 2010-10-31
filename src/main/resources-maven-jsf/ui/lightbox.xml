@@ -26,147 +26,96 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style of the container element, not the overlay container.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style class of container element, not the overlay container.
-			</description>
 		</attribute>
 		<attribute>
 			<name>transition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>elastic</defaultValue>
-			<description>
-				 Name of the transition effect. Valid values are 'elastic','fade' and 'none'. Defaults to 'elastic'.
-			</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>350</defaultValue>
-			<description>
-				 Speed of the transition effect in milliseconds.
-			</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Width of the overlay.
-			</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				  Height of the overlay.
-			</description>
 		</attribute>
 		<attribute>
 			<name>iframe</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				  Specifies an iframe to display an external url in overlay. Turned off by default.
-			</description>
 		</attribute>
 		<attribute>
 			<name>opacity</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>0.85</defaultValue>
-			<description>
-				  Level of overlay opacity between 0 and 1.
-			</description>
 		</attribute>
 		<attribute>
 			<name>visible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				  Displays lightbox without requiring any user interaction by default.
-			</description>
 		</attribute>
 		<attribute>
 			<name>slideshow</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				  Displays lightbox without requiring any user interaction by default.
-			</description>
 		</attribute>
 		<attribute>
 			<name>slideshowSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>2500</defaultValue>
-			<description>
-				  Speed for slideshow in milliseconds.
-			</description>
 		</attribute>
 		<attribute>
 			<name>slideshowStartText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				  Label of slideshow start text.
-			</description>
 		</attribute>
 		<attribute>
 			<name>slideshowStopText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				   Label of slideshow stop text.
-			</description>
 		</attribute>
 		<attribute>
 			<name>slideshowAuto</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>
-				   Starts slideshow automatically.
-			</description>
 		</attribute>
 		<attribute>
 			<name>currentTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Text template for current image display like "1 of 3". Default is "{current} of {total}".
-			</description>
 		</attribute>
 		<attribute>
 			<name>overlayClose</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>
-				  When true clicking outside of overlay will close lightbox.
-			</description>
 		</attribute>
 		<attribute>
 			<name>group</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>
-				Defines grouping, by default children belong to same group and switching is enabled.
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

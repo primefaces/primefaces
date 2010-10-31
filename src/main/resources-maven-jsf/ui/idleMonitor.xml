@@ -26,34 +26,27 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>300000</defaultValue>
-            <description>Time to wait until deciding if the user is idle in terms of milliseconds</description>
         </attribute>
         <attribute>
             <name>onidle</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Javascript function to execute when user goes idle</description>
         </attribute>
         <attribute>
             <name>onactive</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Javascript function to execute when user goes active</description>
         </attribute>
         <attribute>
             <name>idleListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void idleListener(org.primefaces.event.IdleEvent)</method-signature>
-            <description>Server side listener to invoke when user goes idle.</description>
         </attribute>
         <attribute>
             <name>update</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Component identifier(s) to be updated after async partial submit request.
-            </description>
         </attribute>
     </attributes>
     <resources>

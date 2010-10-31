@@ -17,7 +17,6 @@
 			<name>name</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Path of the resource to be exluded.</description>
 		</attribute>
 	</attributes>
 </component>

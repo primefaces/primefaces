@@ -28,46 +28,39 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>complete</defaultValue>
-			<description>Type of toolbar, predefined values are 'tiny','compact','normal','complete'(default) and 'maxi'.</description>
 		</attribute>
         <attribute>
 			<name>toolbarTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Template to create a custom toolbar.</description>
 		</attribute>
         <attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of editor.</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-			<description>Height of the editor in pixels</description>
 		</attribute>
 		<attribute>
 			<name>language</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Language of the texts displayed on editor, default is English(en).</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Disables the editor.</description>
 		</attribute>
         <attribute>
 			<name>lazy</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description></description>
 		</attribute>
 	</attributes>
 	<resources>

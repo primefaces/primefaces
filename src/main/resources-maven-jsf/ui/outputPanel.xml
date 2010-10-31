@@ -17,20 +17,17 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the panel</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>StyleClass of the panel</description>
 		</attribute>
 		<attribute>
 			<name>layout</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>inline</defaultValue>
-			<description>Layout of the panel, valid values are 'inline'(span) and 'block'(div).</description>
 		</attribute>
 	</attributes>
 </component>

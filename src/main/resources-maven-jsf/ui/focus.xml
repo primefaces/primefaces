@@ -17,20 +17,17 @@
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Optionally specifies the exact component to set focus.</description>
 		</attribute>
 		<attribute>
 			<name>context</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>The root component to start first input search. Default is whole document.</description>
 		</attribute>
 		<attribute>
 			<name>minSeverity</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>error</defaultValue>
-			<description>Minimum severity level to be used when finding the first invalid component, default is 'error'. Valid values are 'info','warn','error' and 'fatal'.</description>
 		</attribute>
 	</attributes>
 	<resources>

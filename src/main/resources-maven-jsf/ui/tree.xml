@@ -25,137 +25,109 @@
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>TreeNode instance to model the tree</description>
 		</attribute>
 		<attribute>
 			<name>var</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Name of the request-scoped variable that'll be used as the holder of each treenode data</description>
 		</attribute>
 		<attribute>
 			<name>dynamic</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Dynamic trees use ajax to load nodes and non-dynamic setting creates a pure client side tree.</description>
 		</attribute>
 		<attribute>
 			<name>cache</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Specifies node caching for nodes loaded with ajax. When set to true(default), re-expanding a collapsed node will not do an ajax request.</description>
 		</attribute>
 		<attribute>
 			<name>expandAnim</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Animation to be displayed on node expand, valid values are "FADE_IN" or "FADE_OUT"</description>
 		</attribute>
 		<attribute>
 			<name>collapseAnim</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Animation to be displayed on node collapse, valid values are "FADE_IN" or "FADE_OUT"</description>
 		</attribute>
 		<attribute>
 			<name>nodeSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>void nodeSelectListener(org.primefaces.event.NodeSelectEvent)</method-signature>
-			<description>Method expression to listen node select events</description>
 		</attribute>
 		<attribute>
 			<name>nodeExpandListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>void nodeExpandListener(org.primefaces.event.NodeExpandEvent)</method-signature>
-			<description>Method expression to listen node expand events</description>
 		</attribute>
 		<attribute>
 			<name>nodeCollapseListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>void nodeCollapseListener(org.primefaces.event.NodeCollapseEvent)</method-signature>
-			<description>Method expression to listen node collapse events</description>
 		</attribute>
 		<attribute>
 			<name>onNodeClick</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Event handler to execute when a tree node is clicked</description>
 		</attribute>
 		<attribute>
 			<name>expanded</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Determines if all nodes of the tree should be expanded initially.</description>
 		</attribute>
 		<attribute>
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Client side id of the component(s) to be updated after async partial submit request triggered by a node click.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onselectStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called before ajax request for ajax node selection request begins.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onselectComplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called after ajax request for node selection request is completed.
-			</description>
 		</attribute>
 		<attribute>
 			<name>selection</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>
-				A TreeNode array that would be populated with the selected nodes.
-			</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>propagateSelectionUp</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies if selection will be propagated up to the parents of clicked node.</description>
 		</attribute>
 		<attribute>
 			<name>propagateSelectionDown</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies if selection will be propagated down to the children of clicked node.</description>
 		</attribute>
 		<attribute>
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Specifies the selection mode, valid options are "single", "multiple" and "checkbox".</description>
 		</attribute>
 	</attributes>
 	<resources>

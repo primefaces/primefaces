@@ -24,178 +24,123 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
-			<description>
-				An org.primefaces.model.MenuModel instance to build menu dynamically.
-			</description>
 		</attribute>
 		<attribute>
 			<name>visible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				Sets the menu's visibility, true by default
-			</description>
 		</attribute>
 		<attribute>
 			<name>x</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Sets the element's "left" style property. Only applies to "dynamic" menus</description>
 		</attribute>
 		<attribute>
 			<name>y</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Sets the element's "top" style property. Only applies to "dynamic" menus.</description>
 		</attribute>
 		<attribute>
 			<name>fixedCenter</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description> Boolean value that specifies whether the component
-				should be automatically centered in the viewport on window scroll and resize. Only applies to "dynamic" menus.</description>
 		</attribute>
 		<attribute>
 			<name>constraintToViewport</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>
-				Boolean indicating if the Menu will try to remain inside the boundaries of the size of viewport. Only applies to "dynamic" menus.
-			</description>
 		</attribute>
 		<attribute>
 			<name>position</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>static</defaultValue>
-			<description>
-				Sets the way menu is placed on the page, when "static" menu is displayed in the normal flow, when set to "dynamic" menu is not on the normal flow
-				allowing overlaying. Default value is "static".
-			</description>
 		</attribute>
 		<attribute>
 			<name>clickToHide</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>
-				Sets the behavior when outside of the menu is clicked, default is false. Only applies to "dynamic" menus
-			</description>
 		</attribute>
 		<attribute>
 			<name>keepOpen</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				Sets the behavior when menu is clicked, default is true. Only applies to "dynamic" menus.
-			</description>
 		</attribute>
 		<attribute>
 			<name>tiered</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				Sets the tiered mode, when set to true menu will be rendered in different tiers, default is false. Only applies to "dynamic" menus.
-			</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>FADE</defaultValue>
-			<description>
-				Sets the effect for the menu display, default value is FADE. Possible values are "FADE", "SLIDE", "NONE". Use "NONE" to disable animation at all.
-			</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>0.25</defaultValue>
-			<description>
-				Sets the effect for the menu display
-			</description>
 		</attribute>
 		<attribute>
 			<name>autoSubmenuDisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>
-				When set to true, submenus are displayed on mouseover of a menuitem.
-			</description>
 		</attribute>
 		<attribute>
 			<name>showDelay</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>250</defaultValue>
-			<description>
-				Sets the duration in milliseconds before a submenu is displayed. Only applies to "dynamic" menus.
-			</description>
 		</attribute>
 		<attribute>
 			<name>hideDelay</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
-			<description>
-				Sets the duration in milliseconds before a menu is hidden Only applies to "dynamic" menus.
-			</description>
 		</attribute>
 		<attribute>
 			<name>submenuHideDelay</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>250</defaultValue>
-			<description>
-				Sets the duration in milliseconds before a submenu is hidden. Only applies to "dynamic" menus.
-			</description>
 		</attribute>
 		<attribute>
 			<name>context</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Arguments for context sensitive positioning.
-			</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Style of the main container element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Style class of the main container element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-			<description>zindex property to control overlapping with other elements</description>
 		</attribute>
         <attribute>
 			<name>appendToBody</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description></description>
 		</attribute>
 	</attributes>
 	<resources>

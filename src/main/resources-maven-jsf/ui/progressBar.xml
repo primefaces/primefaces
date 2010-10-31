@@ -26,72 +26,61 @@
             <required>false</required>
             <defaultValue>0</defaultValue>
             <type>java.lang.Integer</type>
-            <description>Value of the progressbar.</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <defaultValue>false</defaultValue>
             <type>java.lang.Boolean</type>
-            <description>Disables or enables progressbar.</description>
         </attribute>
         <attribute>
             <name>ajax</name>
             <required>false</required>
             <defaultValue>false</defaultValue>
             <type>java.lang.Boolean</type>
-            <description>Specifies the mode of progressBar, in ajax mode progress value is retrieved from a backing bean. Defaults to false which is pure client side progressBar.</description>
         </attribute>
         <attribute>
             <name>interval</name>
             <required>false</required>
             <defaultValue>3000</defaultValue>
             <type>java.lang.Integer</type>
-            <description>Interval in seconds to do periodic requests in ajax mode.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style of the main container of progressBar.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the main container of progressBar.</description>
         </attribute>
          <attribute>
             <name>oncomplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to execute when process is completed and any completeListener is processed.</description>
         </attribute>
         <attribute>
             <name>onCompleteUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies the component(s) to update with ajax after progress is completed.</description>
         </attribute>
         <attribute>
             <name>completeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void completeListener()</method-signature>
-            <description>A server side listener to invoke when progress is completed</description>
         </attribute>
         <attribute>
             <name>onCancelUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies the component(s) to update with ajax after progress is cancelled.</description>
         </attribute>
         <attribute>
             <name>cancelListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void completeListener()</method-signature>
-            <description>A server side listener to invoke when progress is cancelled</description>
         </attribute>
     </attributes>
     <resources>

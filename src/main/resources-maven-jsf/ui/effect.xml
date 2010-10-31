@@ -17,26 +17,22 @@
 			<name>event</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Dom event to attach the event that executes the animation</description>
 		</attribute>
 		<attribute>
 			<name>type</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Specifies the name of the animation</description>
 		</attribute>
 		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Optional, the component that is animated.</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<defaultValue>1000</defaultValue>
 			<type>java.lang.Integer</type>
-			<description>Speed of the animation in ms</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -24,7 +24,6 @@
             <type>javax.faces.event.ActionListener</type>
             <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
             <ignoreInComponent>true</ignoreInComponent>
-            <description>ActionListener method expression.</description>
         </attribute>
         <attribute>
             <name>action</name>
@@ -32,7 +31,6 @@
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.Object action()</method-signature>
             <ignoreInComponent>true</ignoreInComponent>
-            <description>Action method expression or literal text defining a navigation outcome</description>
         </attribute>
         <attribute>
             <name>immediate</name>
@@ -40,85 +38,58 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <ignoreInComponent>true</ignoreInComponent>
-            <description>Immediate flag to define the lifecycle phase to execute actions</description>
         </attribute>
         <attribute>
             <name>bind</name>
             <required>true</required>
             <type>java.lang.String</type>
-            <description>The key binding.</description>
         </attribute>
         <attribute>
             <name>update</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Component(s) to update partially.
-            </description>
         </attribute>
         <attribute>
             <name>process</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Component(s) to process partially.
-            </description>
         </attribute>
         <attribute>
             <name>handler</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>The javascript event which will be performed when there is a event with the specific </description>
         </attribute>
         <attribute>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Javascript event handler to be called before ajax request begins.
-            </description>
         </attribute>
         <attribute>
             <name>oncomplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Javascript event handler to be called when ajax request is completed.
-            </description>
         </attribute>
         <attribute>
             <name>onerror</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Javascript event handler to be called when ajax request fails.
-            </description>
         </attribute>
         <attribute>
             <name>onsuccess</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>
-		Javascript event handler to be called when ajax request succeeds.
-            </description>
         </attribute>
         <attribute>
             <name>global</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>
-		Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
-            </description>
         </attribute>
         <attribute>
             <name>async</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>
-		When set to true, ajax requests will not be queued.
-            </description>
         </attribute>
     </attributes>
     <resources>

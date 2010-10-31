@@ -25,123 +25,104 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Uses a proxy element for dragging.</description>
         </attribute>
         <attribute>
             <name>dragOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Disabled dropping, just for movement.</description>
         </attribute>
         <attribute>
             <name>for</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id of the component to add draggable behavior</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Disables or enables dragging</description>
         </attribute>
         <attribute>
             <name>axis</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies drag axis, possible values are x and y</description>
         </attribute>
         <attribute>
             <name>containment</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Constrains dragging within the boundaries of containment element</description>
         </attribute>
         <attribute>
             <name>helper</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Helper element to display when dragging</description>
         </attribute>
         <attribute>
             <name>revert</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Reverts draggable to it's original position when not dropped onto a droppable</description>
         </attribute>
         <attribute>
             <name>snap</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Draggable will snap to edge of the near elements</description>
         </attribute>
         <attribute>
             <name>snapMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Draggable will snap to edge of the near elements</description>
         </attribute>
         <attribute>
             <name>snapTolerance</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>20</defaultValue>
-            <description>Distance from the snap element in pixels to trigger snap</description>
         </attribute>
         <attribute>
             <name>zindex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>-1</defaultValue>
-            <description>zindex to apply during dragging</description>
         </attribute>
         <attribute>
             <name>handle</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies a handle for draggable</description>
         </attribute>
         <attribute>
             <name>opacity</name>
             <required>false</required>
             <type>java.lang.Double</type>
             <defaultValue>1.0</defaultValue>
-            <description>Defines the opacity of helper</description>
         </attribute>
         <attribute>
             <name>stack</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>In stack mode, draggables overlap is controlled automatically, dragged item always overlays other draggables.</description>
         </attribute>
         <attribute>
             <name>grid</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Dragging happens in every x and y pixels in a grid.</description>
         </attribute>
         <attribute>
             <name>scope</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Scope key to match draggables and droppables.</description>
         </attribute>
         <attribute>
             <name>cursor</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>crosshair</defaultValue>
-            <description>CSS cursor during dragging.</description>
         </attribute>
         <attribute>
             <name>dashboard</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id of the dashboard to connect draggable to.</description>
         </attribute>
     </attributes>
     <resources>

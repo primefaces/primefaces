@@ -16,9 +16,6 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-			<description>
-				Max width of the info window.
-			</description>
 		</attribute>
 	</attributes>
 </component>

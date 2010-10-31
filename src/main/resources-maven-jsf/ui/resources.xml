@@ -17,7 +17,6 @@
 			<name>exclude</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Comma seperated list of resources to exclude.</description>
 		</attribute>
 	</attributes>
 </component>

@@ -18,27 +18,23 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies if the summary of the FacesMessage should be displayed.</description>
 		</attribute>
 		<attribute>
 			<name>showDetail</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Specifies if the detail of the FacesMessage should be displayed.</description>
 		</attribute>
 		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the component whose messages to display.</description>
 		</attribute>
 		<attribute>
 			<name>redisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Defines if already rendered messages should be rendered.</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -24,46 +24,39 @@
 			<name>theme</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Name of initial theme to load</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>150</defaultValue>
-			<description>Width of the switcher menu</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>200</defaultValue>
-			<description>Height of the switcher menu</description>
 		</attribute>
 		<attribute>
 			<name>buttonHeight</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>14</defaultValue>
-			<description>Height of switcher button</description>
 		</attribute>
 		<attribute>
 			<name>initialText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Text of switcher button.</description>
 		</attribute>
 		<attribute>
 			<name>buttonPreText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Text that precedes the theme name.</description>
 		</attribute>
         <attribute>
 			<name>onSelect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
 	</attributes>
 	<resources>
