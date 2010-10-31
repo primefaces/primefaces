@@ -408,9 +408,10 @@ public class DataTableRenderer extends CoreRenderer {
 
         int rows = table.getRows();
 		int first = table.getFirst();
-        int rowCountToRender = rows == 0 ? table.getRowCount() : rows;
+        int rowCount = table.getRowCount();
+        int rowCountToRender = rows == 0 ? rowCount : rows;
 
-        if(rowCountToRender != 0) {
+        if(rowCount > 0) {
             for(int i = first; i < (first + rowCountToRender); i++) {
                 encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns, selMode, selection);
             }
