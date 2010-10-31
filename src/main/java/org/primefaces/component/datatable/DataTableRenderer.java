@@ -143,6 +143,8 @@ public class DataTableRenderer extends CoreRenderer {
 		String clientId = table.getClientId(context);
         String containerClass = table.getStyleClass() != null ? DataTable.CONTAINER_CLASS + " " + table.getStyleClass() : DataTable.CONTAINER_CLASS;
         String style = null;
+        boolean hasPaginator = table.isPaginator();
+        String paginatorPosition = table.getPaginatorPosition();
 
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
@@ -153,14 +155,18 @@ public class DataTableRenderer extends CoreRenderer {
 
         encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
 
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, table, "top");
+        }
+
         writer.startElement("table", null);
         encodeThead(context, table);
         encodeTbody(context, table);
         encodeTFoot(context, table);
         writer.endElement("table");
 
-        if(table.isPaginator()) {
-            encodePaginatorMarkup(context, table);
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+            encodePaginatorMarkup(context, table, "bottom");
         }
         
         encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
@@ -600,12 +606,18 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodePaginatorConfig(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
+        String paginatorPosition = table.getPaginatorPosition();
+        String paginatorContainers = null;
+        if(paginatorPosition.equalsIgnoreCase("both"))
+            paginatorContainers = "'" + clientId + "_paginatortop','" + clientId + "_paginatorbottom'";
+        else
+            paginatorContainers = "'" + clientId + "_paginator" + paginatorPosition + "'";
 
         writer.write(",paginator:new YAHOO.widget.Paginator({");
         writer.write("rowsPerPage:" + table.getRows());
         writer.write(",totalRecords:" + table.getRowCount());
         writer.write(",initialPage:" + table.getPage());
-        writer.write(",containers:['" + clientId + "_paginator']");
+        writer.write(",containers:[" + paginatorContainers + "]");
 
         if(table.getPageLinks() != 10) writer.write(",pageLinks:" + table.getPageLinks());
         if(table.getPaginatorTemplate() != null) writer.write(",template:'" + table.getPaginatorTemplate() + "'");
@@ -651,16 +663,19 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodePaginatorMarkup(FacesContext context, DataTable table) throws IOException {
+    protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
-        String styleClass = "ui-paginator ui-widget-header";
-        if(table.getFooter() == null) {
-            styleClass = styleClass + " ui-corner-bl ui-corner-br";
-        }
+        
+        String styleClass = "ui-paginator ui-paginator-" + position + " ui-widget-header";
 
+        if(!position.equals("top") && table.getFooter() == null)
+            styleClass = styleClass + " ui-corner-bl ui-corner-br";
+        else if(!position.equals("bottom") && table.getHeader() == null)
+            styleClass = styleClass + " ui-corner-tl ui-corner-tr";
+        
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + "_paginator", null);
+        writer.writeAttribute("id", clientId + "_paginator" + position, null);
         writer.writeAttribute("class", styleClass, null);
         writer.endElement("div");
     }
