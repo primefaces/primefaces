@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,6 +94,10 @@ public class DialogRenderer extends CoreRenderer {
                 writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(facesContext, dialog, dialog.getOnCloseUpdate()) + "'");
             }
         }
+
+        //Client side callbacks
+        if(dialog.getOnShow() != null) writer.write(",onShow:function(event, ui) {" + dialog.getOnShow() + "}");
+        if(dialog.getOnHide() != null) writer.write(",onHide:function(event, ui) {" + dialog.getOnHide() + "}");
 
         writer.write("});");
 
