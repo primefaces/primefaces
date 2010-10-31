@@ -151,7 +151,7 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setPosition("dynamic");
-            optionsMenu.setContext("'" + clientId + "_menu','tl','bl'");
+            optionsMenu.setContext("'" + clientId + "_menu','tl','bl',['beforeShow','windowResize']");
 
             optionsMenu.encodeAll(facesContext);
         }
