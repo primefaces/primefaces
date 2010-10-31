@@ -80,6 +80,7 @@ public class EditorRenderer extends CoreRenderer{
         if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
         if(editor.getStyleClass() != null) writer.write(",cssClass:'" + editor.getStyleClass() + "'");
         if(editor.getLanguage() != null) writer.write(",lang:'" + editor.getLanguage() + "'");
+        if(editor.isLazy()) writer.write(",lazy:true");
 
 		writer.write("});});");
 		
