@@ -17,142 +17,121 @@
 			<name>position</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Position of the unit, can be "top","bottom","center","left","right".</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Width of the unit in pixels, applies to left and right units.</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Height of the unit in pixels, applies to top and bottom units.</description>
 		</attribute>
 		<attribute>
 			<name>resizable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Makes the unit resizable.</description>
 		</attribute>
 		<attribute>
 			<name>closable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Makes the unit closable.</description>
 		</attribute>
 		<attribute>
 			<name>collapsible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Makes the unit collapsible.</description>
 		</attribute>
 		<attribute>
 			<name>scrollable</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Makes the unit closable.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style to apply to container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style to apply to container element.</description>
 		</attribute>
 		<attribute>
 			<name>header</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Text for header.</description>
 		</attribute>
 		<attribute>
 			<name>footer</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Footer for header.</description>
 		</attribute>
 		<attribute>
 			<name>minWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Minimum width boundary in resizing.</description>
 		</attribute>
 		<attribute>
 			<name>maxWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Maximum width boundary in resizing.</description>
 		</attribute>
 		<attribute>
 			<name>minHeight</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Minimum Maximum height boundary in resizing. boundary in resizing.</description>
 		</attribute>
 		<attribute>
 			<name>maxHeight</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Maximum height boundary in resizing.</description>
 		</attribute>
 		<attribute>
 			<name>gutter</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>4px</defaultValue>
-			<description>Gutter of the layout unit.</description>
 		</attribute>
 		<attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>zindex property to control overlapping with other elements</description>
 		</attribute>
 		<attribute>
 			<name>visible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Specifies visibility of unit.</description>
 		</attribute>
 		<attribute>
 			<name>collapsed</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Specifies toggle status of unit.</description>
 		</attribute>
 		<attribute>
 			<name>proxyResize</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Defines the resize preview mode.</description>
 		</attribute>
 		<attribute>
 			<name>collapseSize</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>-1</defaultValue>
-			<description>Size of the unit when collapsed.</description>
 		</attribute>
 	</attributes>
 </component>

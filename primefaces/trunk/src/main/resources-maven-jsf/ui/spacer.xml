@@ -17,31 +17,26 @@
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
 	</attributes>
 </component>

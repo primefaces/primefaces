@@ -24,28 +24,24 @@
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Label to be displayed in display mode.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
-			<description>Effect to be used when displaying the hidden content.</description>
 		</attribute>
 		<attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>normal</defaultValue>
-			<description>Speed of the effect.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Prevents the hidden content to be shown.</description>
 		</attribute>
 	</attributes>
 	<resources>

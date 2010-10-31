@@ -26,94 +26,79 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Specifies if the layout will be created for whole page.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style to apply to container element. This is only applicable for element based layouts.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style to apply to container element. This is only applicable for element based layouts.</description>
         </attribute>
         <attribute>
             <name>closeTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Title label for the close button of closable units.</description>
         </attribute>
         <attribute>
             <name>collapseTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Title label for the collapse button of collapsible units.</description>
         </attribute>
         <attribute>
             <name>expandTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Title label for the expande button of collapsible units.</description>
         </attribute>
         <attribute>
             <name>closeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void closeListener(org.primefaces.event.CloseEvent)</method-signature>
-            <description>A server side listener to process a CloseEvent</description>
         </attribute>
         <attribute>
             <name>onCloseUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax closeListener is processed and unit is closed</description>
         </attribute>
         <attribute>
             <name>toggleListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
-            <description>A server side listener to process a ToggleEvent</description>
         </attribute>
         <attribute>
             <name>onToggleUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax toggleListener is processed and unit is toggled</description>
         </attribute>
         <attribute>
             <name>resizeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void resizeListener(org.primefaces.event.ResizeEvent)</method-signature>
-            <description>A server side listener to process a ResizeEvent</description>
         </attribute>
         <attribute>
             <name>onResizeUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax resizelistener is processed and unit is resized</description>
         </attribute>
         <attribute>
             <name>onResizeComplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to invoke after resizeListener is invoked.</description>
         </attribute>
         <attribute>
             <name>onCloseComplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to invoke after closeListener is invoked.</description>
         </attribute>
         <attribute>
             <name>onToggleComplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to invoke after toggleListener is invoked.</description>
         </attribute>
     </attributes>
     <resources>

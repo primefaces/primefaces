@@ -28,27 +28,23 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>5</defaultValue>
-            <description>Number of stars to display.</description>
         </attribute>
         <attribute>
             <name>rateListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void rateListener(org.primefaces.event.RateEvent)</method-signature>
-            <description>A server side listener to process a RateEvent</description>
         </attribute>
         <attribute>
             <name>update</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side id of the component(s) to be updated after async partial submit request.</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Disables the user interaction, used for displaying the value only.</description>
         </attribute>
     </attributes>
     <resources>

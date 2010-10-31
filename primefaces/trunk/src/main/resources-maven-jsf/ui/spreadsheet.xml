@@ -24,21 +24,18 @@
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Title text of the spreadsheet</description>
 		</attribute>
 		<attribute>
 			<name>editable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Defines if display is editable or readonly</description>
 		</attribute>
 		<attribute>
 			<name>columnWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-			<description>Global setting to define common width for each column in pixels</description>
 		</attribute>
 	</attributes>
 	<resources>

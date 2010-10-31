@@ -28,13 +28,11 @@
 			<name>mask</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Mask value</description>
 		</attribute>
 		<attribute>
 			<name>placeHolder</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Seperator and placeholder in input.</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -27,312 +27,221 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Enables paginator, default value is false</description>
 		</attribute>
 		<attribute>
 			<name>paginatorTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Template for the paginator layout, default value is "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"</description>
 		</attribute>
 		<attribute>
 			<name>rowsPerPageTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Template for the rowsPerPage dropdown, default value is "25,50,100"</description>
 		</attribute>
 		<attribute>
 			<name>currentPageReportTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Template for the {currentPageReport} UI.</description>
 		</attribute>
 		<attribute>
 			<name>paginatorAlwaysVisible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Defines if paginator should be hidden when number of rows displayed is less than paginator rowsPerPage option.</description>
 		</attribute>
 		<attribute>
 			<name>scrollable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Controls scrolling, default value is false</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-			<description>
-				Width of a datatable
-			</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-			<description>
-				Height of a datatable
-			</description>
 		</attribute>
 		<attribute>
 			<name>firstPageLinkLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Label of the first link paginator
-			</description>
 		</attribute>
 		<attribute>
 			<name>previousPageLinkLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Label of the previous link paginator
-			</description>
 		</attribute>
 		<attribute>
 			<name>nextPageLinkLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Label of the next link paginator
-			</description>
 		</attribute>
 		<attribute>
 			<name>lastPageLinkLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Label of the last link paginator
-			</description>
 		</attribute>
 		<attribute>
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Type for row click selection, can be 'multiple' and 'single'.
-			</description>
 		</attribute>
 		<attribute>
 			<name>selection</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>
-				Reference that'll be used to assign the selected data.
-			</description>
 		</attribute>
 		<attribute>
 			<name>dynamic</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				When set to true sorting and paging will be done on server via ajax, default is false meaning sorting-paging is done on client side.
-			</description>
 		</attribute>
 		<attribute>
 			<name>lazy</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				Controls lazy loading.
-			</description>
 		</attribute>
 		<attribute>
 			<name>rowIndexVar</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Variable name referring to the rowIndex being processed.
-			</description>
 		</attribute>
 		<attribute>
 			<name>paginatorPosition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>both</defaultValue>
-			<description>
-				Position of the paginator, valid values are "both","top","bottom".
-			</description>
 		</attribute>
 		<attribute>
 			<name>emptyMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>No records found.</defaultValue>
-			<description>
-				Message to be shown when there're no records to display.
-			</description>
 		</attribute>
 		<attribute>
 			<name>errorMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Message to be shown when there's an error loading the data.
-			</description>
 		</attribute>
 		<attribute>
 			<name>loadingMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Message to be shown when loading the data with ajax.
-			</description>
 		</attribute>
 		<attribute>
 			<name>sortAscMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Message to be shown to sort a column data in ascending order.
-			</description>
 		</attribute>
 		<attribute>
 			<name>sortDescMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Message to be shown to sort a column data in descending order.
-			</description>
 		</attribute>
 		<attribute>
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Component(s) to be updated after ajax row selection. Deprecated use onRowSelectUpdate instead.
-			</description>
 		</attribute>
         <attribute>
 			<name>onRowSelectUpdate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Component(s) to be updated after ajax row selection.
-			</description>
 		</attribute>
         <attribute>
             <name>rowSelectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.String rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
-            <description>Server side listener to invoke when a row is selected in instant selection mode.</description>
         </attribute>
         <attribute>
             <name>rowUnselectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.String rowUnselectListener(org.primefaces.event.UnselectEvent)</method-signature>
-            <description>Server side listener to invoke when a row is unselected in instant selection mode.</description>
         </attribute>
         <attribute>
 			<name>onRowUnselectUpdate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Component(s) to be updated after ajax row unselection.
-			</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container element of table.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>StyleClass of the main container element of table.</description>
 		</attribute>
 		<attribute>
 			<name>onselectStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called before ajax request for instant ajax row selection request begins. Deprecated use onRowSelectStart instead.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onselectComplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called after ajax request for instant ajax row selection request is completed. Deprecated use onRowSelectComplete instead.
-			</description>
 		</attribute>
         <attribute>
 			<name>onRowSelectStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called before ajax request for instant ajax row selection request begins.
-			</description>
 		</attribute>
 		<attribute>
 			<name>onRowSelectComplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Javascript event handler to be called after ajax request for instant ajax row selection request is completed.
-			</description>
 		</attribute>
 		<attribute>
 			<name>dblClickSelect</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				By default single click triggers row selection feature, setting dblClickSelect enabled double click requirement for row selection.
-			</description>
 		</attribute>
 		<attribute>
 			<name>page</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
-			<description>Index of the current page, first page is 1.</description>
 		</attribute>
 		<attribute>
 			<name>pageLinks</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>10</defaultValue>
-			<description>Number of pageLinks to display when paginator is enabled, defaults to 10.</description>
 		</attribute>
         <attribute>
 			<name>liveScroll</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Enables loading of data during scrolling.</description>
 		</attribute>
         <attribute>
 			<name>rowStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class for rows.</description>
 		</attribute>
         <attribute>
             <name>rowEditListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void rowEditListener(org.primefaces.event.RowEditEvent)</method-signature>
-            <description>Server side listener to invoke when a cell is edited.</description>
         </attribute>
         <attribute>
 			<name>onRowEditUpdate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description></description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -19,13 +19,11 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>default</defaultValue>
-			<description>Theme of the application, 'default' or 'dark'.</description>
 		</attribute>
 		<attribute>
 			<name>icon</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Icon for the application, this icon is used when the app is added to homescreen.</description>
 		</attribute>
 	</attributes>
 	<resources>

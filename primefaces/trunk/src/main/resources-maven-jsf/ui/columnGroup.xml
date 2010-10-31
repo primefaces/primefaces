@@ -15,7 +15,6 @@
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Location of the columnGroup, valid values are header or footer.</description>
 		</attribute>
 	</attributes>
 </component>

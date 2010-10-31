@@ -26,86 +26,71 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
-            <description>Index of the active tab</description>
         </attribute>
         <attribute>
             <name>effect</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Applies a transition effect during changing the tabs. Valid values are 'opacity', 'height' and 'width'.</description>
         </attribute>
         <attribute>
             <name>effectDuration</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>normal</defaultValue>
-            <description>Defines the duration of effect</description>
         </attribute>
         <attribute>
             <name>dynamic</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Specifies the toggleMode, dynamic setting fetches it's content with ajax on tab switch.</description>
         </attribute>
         <attribute>
             <name>cache</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab
-			does not communicate with server. If caching is turned off, tab contents are refetched from server each time tab is clicked. This setting is true by default.
-            </description>
         </attribute>
         <attribute>
             <name>collapsible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>An active tab can be collapsed onclick when collapsible option is enabled</description>
         </attribute>
         <attribute>
             <name>event</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Event to use when selecting a tab</description>
         </attribute>
         <attribute>
             <name>tabChangeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void tabChangeListener(org.primefaces.event.TabChangeEvent)</method-signature>
-            <description>Server side listener to invoke when a tab has changed.</description>
         </attribute>
         <attribute>
             <name>onTabChangeUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Component(s) to update after tabChangeListener is invoked.</description>
         </attribute>
         <attribute>
             <name>onTabChange</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to invoke when active tab changes.</description>
         </attribute>
         <attribute>
             <name>onTabShow</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description></description>
         </attribute>
         <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Inline style of the main tabview container.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main tabview container.</description>
 		</attribute>
     </attributes>
     <resources>

@@ -24,44 +24,36 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
-			<description>
-				An org.primefaces.model.MenuModel instance to build menu dynamically.
-			</description>
 		</attribute>
 		<attribute>
 			<name>position</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>bottom</defaultValue>
-			<description>Position of the panel: top | bottom.</description>
 		</attribute>
 		<attribute>
 			<name>itemWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>40</defaultValue>
-			<description>Initial width of the items in pixels.</description>
 		</attribute>
 		<attribute>
 			<name>maxWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>50</defaultValue>
-			<description>Maximum width of the items in pixels.</description>
 		</attribute>
 		<attribute>
 			<name>proximity</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>90</defaultValue>
-			<description>Distance when will items start to enlarge.</description>
 		</attribute>
 		<attribute>
 			<name>halign</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>center</defaultValue>
-			<description>Horizontal alignment of doc.</description>
 		</attribute>
 	</attributes>
 	<resources>

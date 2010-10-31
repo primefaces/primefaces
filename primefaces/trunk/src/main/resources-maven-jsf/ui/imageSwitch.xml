@@ -26,42 +26,27 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style of the container element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style class of container element.
-			</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>
-				Effect to be used for switching
-			</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<description>
-				Transition speed in terms of milliseconds.
-			</description>
 			<defaultValue>500</defaultValue>
 		</attribute>
 		<attribute>
 			<name>slideshowSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<description>
-				Slideshow speed in terms of milliseconds
-			</description>
 			<defaultValue>3000</defaultValue>
 		</attribute>
 		<attribute>
@@ -69,7 +54,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Starts slideshow automatically</description>
 		</attribute>
 	</attributes>
 	<resources>

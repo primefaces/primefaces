@@ -26,97 +26,82 @@
 			<required>false</required>`
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Makes tooltip global which uses title attributes of elements in page to create
-			the tooltip.</description>
 		</attribute>
 		<attribute>
 			<name>targetPosition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>bottomRight</defaultValue>
-			<description>The corner of the target element by which to position the tooltip by.</description>
 		</attribute>
 		<attribute>
 			<name>position</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>topLeft</defaultValue>
-			<description>The corner of the tooltip to position in relation to the above targets corner.</description>
 		</attribute>
 		<attribute>
 			<name>showEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>mouseover</defaultValue>
-			<description>The mouse event that the tooltip will be displayed, default is mouseover.</description>
 		</attribute>
 		<attribute>
 			<name>showDelay</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>140</defaultValue>
-			<description>The delay time of the tooltip display in milliseconds</description>
 		</attribute>
 		<attribute>
 			<name>showEffect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
-			<description>The show effect of the tooltip</description>
 		</attribute>
 		<attribute>
 			<name>showEffectLength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>500</defaultValue>
-			<description>Duration to display the show effect</description>
 		</attribute>
 		<attribute>
 			<name>hideEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>mouseout</defaultValue>
-			<description>The mouse event that the tooltip will be closed, default is mouseout.</description>
 		</attribute>
 		<attribute>
 			<name>hideDelay</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
-			<description>The delay time of the tooltip hide in milliseconds</description>
 		</attribute>
 		<attribute>
 			<name>hideEffect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
-			<description>The hide effect of the tooltip</description>
 		</attribute>
 		<attribute>
 			<name>hideEffectLength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>500</defaultValue>
-			<description>Duration to display the hide effect</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>blue</defaultValue>
-			<description>Style of the tooltip, default is blue.</description>
 		</attribute>
 		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the component to attach the tooltip</description>
 		</attribute>
 		<attribute>
 			<name>forElement</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the html element to attach the tooltip</description>
 		</attribute>
 	</attributes>
 	<resources>

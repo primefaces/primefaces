@@ -27,49 +27,42 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Choose a color</defaultValue>
-			<description>Header text for the color picker title.</description>
 		</attribute>
 		<attribute>
 			<name>showControls</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Sets visibility of whole set of controls.</description>
 		</attribute>
 		<attribute>
 			<name>showHexControls</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Sets visibility of hex controls.</description>
 		</attribute>
 		<attribute>
 			<name>showHexSummary</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Sets visibility of hex summary.</description>
 		</attribute>
 		<attribute>
 			<name>showHsvControls</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Sets visibility of hsv controls.</description>
 		</attribute>
 		<attribute>
 			<name>showRGBControls</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Sets visibility of rgb controls.</description>
 		</attribute>
 		<attribute>
 			<name>showWebSafe</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-			<description>Sets visibility of web safe controls.</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -15,26 +15,22 @@
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Label of the item.</description>
 		</attribute>
 		<attribute>
 			<name>view</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the view to be displayed when this control is clicked.</description>
 		</attribute>
 		<attribute>
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>back</defaultValue>
-			<description>Display type of the control, 'button' or 'back'.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Effect of the animation that'll be used when displaying the new view.</description>
 		</attribute>
 	</attributes>
 </component>

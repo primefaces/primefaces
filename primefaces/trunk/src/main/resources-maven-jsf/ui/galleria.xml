@@ -24,27 +24,23 @@
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style of the main container.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the main container.</description>
         </attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>fade</defaultValue>
-			<description>Effect to use when switching images.</description>
 		</attribute>
         <attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>700</defaultValue>
-			<description>Effect speed to apply when switching images.</description>
 		</attribute>
 	</attributes>
 	<resources>

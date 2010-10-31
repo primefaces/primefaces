@@ -24,53 +24,35 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style of the container element, not the overlay container.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				 Style class of container element, not the overlay container.
-			</description>
 		</attribute>
 		<attribute>
 			<name>position</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>top</defaultValue>
-			<description>
-				 Position of the bar, "bottom" or "top".
-			</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
-			<description>
-				 Name of the effect, valid values are "slide", "fade" and "none".
-			</description>
 		</attribute>
 		<attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>normal</defaultValue>
-			<description>
-				 Speed of the effect. "slow", "normal" or "fast";
-			</description>
 		</attribute>
 		<attribute>
 			<name>autoDisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				 When set to true, notification bar will be displayed when page is loaded.
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -18,7 +18,6 @@
 			<name>target</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Server side id of a JSF component to print.</description>
 		</attribute>
 	</attributes>
 	<resources>

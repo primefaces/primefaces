@@ -17,7 +17,6 @@
 			<name>title</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Title of the tab</description>
 		</attribute>
 	</attributes>
 </component>

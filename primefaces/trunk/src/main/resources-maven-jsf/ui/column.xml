@@ -16,125 +16,99 @@
 			<name>sortBy</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>Property to be used when sorting this column either on client side or server side with ajax.</description>
 		</attribute>
 		<attribute>
 			<name>resizable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>Boolean to make the column width resizable, default is false</description>
 		</attribute>
 		<attribute>
 			<name>parser</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Type of parser used to identify the type of data presented in the column.
-			</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-			<description>
-				Width of column in pixels.
-			</description>
 		</attribute>
         <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Style of the column.
-			</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Style class of the column.
-			</description>
 		</attribute>
 		<attribute>
 			<name>sortFunction</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
-			<description>Custom pluggable sort function, for dynamic data it refers to a methodexpression and for non-dynamic data it must be a javascript method.</description>
 		</attribute>
 		<attribute>
 			<name>filterBy</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
 			<defaultValue>false</defaultValue>
-			<description>Property to be used when sorting this column either on client side or server side with ajax.</description>
 		</attribute>
 		<attribute>
 			<name>filterStyle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the input text filter.</description>
 		</attribute>
 		<attribute>
 			<name>filterStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the input text filter.</description>
 		</attribute>
 		<attribute>
 			<name>filterEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>keyup</defaultValue>
-			<description>Style class of the input text filter.</description>
 		</attribute>
         <attribute>
 			<name>filterOptions</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<description>Options for filter dropdown.</description>
 		</attribute>
         <attribute>
 			<name>filterMatchMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>startsWith</defaultValue>
-			<description>Defines filtering match mode, valid values are 'startsWith', 'endsWidth', 'contains' or 'exact'.</description>
 		</attribute>
         <attribute>
 			<name>rowpan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
-			<description>Row span value.</description>
 		</attribute>
         <attribute>
 			<name>colspan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
-			<description>Column span value.</description>
 		</attribute>
         <attribute>
 			<name>headerText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Label of column header, shortcut for header facet.</description>
 		</attribute>
         <attribute>
 			<name>footerText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Label of column footer shortcut for footer facet.</description>
 		</attribute>
         <attribute>
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Defines a selection column, valid values are single or multiple.</description>
 		</attribute>
 	</attributes>
 </component>

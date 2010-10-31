@@ -24,43 +24,30 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
-			<description>
-				An org.primefaces.model.MenuModel instance to build menu dynamically.
-			</description>
 		</attribute>
 		<attribute>
 			<name>autoSubmenuDisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-			<description>
-				When set to true, submenus are displayed on mouseover of a menuitem.
-			</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>FADE</defaultValue>
-			<description>
-				Sets the effect for the menu display, default value is "FADE". Possible values are "FADE", "SLIDE", "NONE". Use "NONE" to disable animation at all.
-			</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>0.25</defaultValue>
-			<description>
-				Sets the effect for the menu display
-			</description>
 		</attribute>
 		<attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-			<description>zindex property to control overlapping with other elements</description>
 		</attribute>
 	</attributes>
 	<resources>

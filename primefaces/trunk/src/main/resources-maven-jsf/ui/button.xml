@@ -23,9 +23,6 @@
 		<attribute>
 			<name>fragment</name>
 			<type>java.lang.String</type>
-			<description>
-				Identifier of page fragment when target page is rendered.
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -16,13 +16,11 @@
 			<name>label</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-			<description>Name of series</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Javascript object that represents the series style</description>
 		</attribute>
 	</attributes>
 </component>

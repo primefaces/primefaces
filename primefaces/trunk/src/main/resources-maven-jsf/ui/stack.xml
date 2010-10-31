@@ -24,35 +24,23 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
-			<description>
-				An org.primefaces.model.MenuModel instance to build menu dynamically.
-			</description>
 		</attribute>
 		<attribute>
 			<name>icon</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				An optional image to contain stacked items.
-			</description>
 		</attribute>
 		<attribute>
 			<name>openSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>300</defaultValue>
-			<description>
-				Speed of animation when opening the stack.
-			</description>
 		</attribute>
 		<attribute>
 			<name>closeSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>300</defaultValue>
-			<description>
-				Speed of animation when opening the stack.
-			</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -25,144 +25,113 @@
             <name>header</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Header text</description>
         </attribute>
         <attribute>
             <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>
-		Boolean value whether to allow the user to drag the Panel using its header.
-            </description>
         </attribute>
         <attribute>
             <name>resizable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>
-		Makes the dialog resizable.
-            </description>
         </attribute>
         <attribute>
             <name>modal</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>
-                Boolean value that specifies whether the document should be
-                shielded with a partially transparent mask to require the user
-                to close the Panel before being able to activate any elements in
-                the document.
-            </description>
         </attribute>
         <attribute>
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>
-		When set to true, dialog is visible by default.
-            </description>
         </attribute>
         <attribute>
             <name>width</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>300</defaultValue>
-            <description>Width of the element in pixels</description>
         </attribute>
         <attribute>
             <name>height</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Height of the element in pixels</description>
         </attribute>
         <attribute>
             <name>zindex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1000</defaultValue>
-            <description>zindex property to control overlapping with other elements</description>
         </attribute>
         <attribute>
             <name>minWidth</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>150</defaultValue>
-            <description>Minimum width of a resizable dialog.</description>
         </attribute>
         <attribute>
             <name>minHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
-            <description>Minimum height of resizable dialog.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the main container of dialog.</description>
         </attribute>
         <attribute>
             <name>closeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void closeListener(org.primefaces.event.CloseEvent)</method-signature>
-            <description>A server side listener to process a CloseEvent</description>
         </attribute>
         <attribute>
             <name>onCloseUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Id(s) of components to update after ajax closeListener is processed and dialog is closed</description>
         </attribute>
         <attribute>
             <name>showEffect</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Effect to use when showing the dialog</description>
         </attribute>
         <attribute>
             <name>hideEffect</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Effect to use when hiding the dialog</description>
         </attribute>
         <attribute>
             <name>position</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Defines where the dialog should be displayed</description>
         </attribute>
         <attribute>
             <name>closeOnEscape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Defines if dialog should be closed when escape key is pressed</description>
         </attribute>
         <attribute>
             <name>closable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Defines if close icon should be displayed or not</description>
         </attribute>
         <attribute>
             <name>onShow</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description></description>
         </attribute>
         <attribute>
             <name>onHide</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description></description>
         </attribute>
     </attributes>
     <resources>

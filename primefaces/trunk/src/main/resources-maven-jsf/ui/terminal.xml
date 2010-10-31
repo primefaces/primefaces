@@ -25,41 +25,28 @@
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Width of the terminal.
-			</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Height of the terminal.
-			</description>
 		</attribute>
 		<attribute>
 			<name>welcomeMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>
-				Welcome message to be displayed on initial terminal load.
-			</description>
 		</attribute>
 		<attribute>
 			<name>prompt</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>prime $</defaultValue>
-			<description>
-				Primary prompt text.
-			</description>
 		</attribute>
 		<attribute>
 			<name>commandHandler</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>java.lang.String commandHandler(java.lang.String, java.lang.String[])</method-signature>
-			<description>Method to be called with arguments to process a command</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -24,26 +24,22 @@
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Id of the component to attach the context menu.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style of the main container of panel.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Style class of the main container of panel.</description>
 		</attribute>
         <attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-			<description>zindex property to control overlapping with other elements</description>
 		</attribute>
 	</attributes>
 	<resources>

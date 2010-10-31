@@ -30,78 +30,66 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>java.util.List completeMethod(java.lang.String)</method-signature>
-            <description>Method to be called to fetch the suggestions</description>
         </attribute>
         <attribute>
             <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Variable name of the iterator.</description>
         </attribute>
         <attribute>
             <name>itemLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Label of the item.</description>
         </attribute>
         <attribute>
             <name>itemValue</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Value of the item.</description>
         </attribute>
         <attribute>
             <name>maxResults</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
-            <description>Maximum number of results to be displayed.</description>
         </attribute>
         <attribute>
             <name>minQueryLength</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
-            <description>Number of characters to be typed before starting to query.</description>
         </attribute>
         <attribute>
             <name>queryDelay</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>300</defaultValue>
-            <description>Delay to wait in milliseconds before sending each query to the server.</description>
         </attribute>
         <attribute>
             <name>forceSelection</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>When enabled, autocomplete only accepts values from the suggestion list.</description>
         </attribute>
         <attribute>
             <name>selectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void selectListener(org.primefaces.event.SelectEvent)</method-signature>
-            <description>Server side listener to invoke when a suggested item is selected.</description>
         </attribute>
         <attribute>
             <name>onSelectUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Component(s) to update with ajax after a suggested item is selected.</description>
         </attribute>
         <attribute>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Javascript event handler to be called before ajax request to load items begins.</description>
         </attribute>
         <attribute>
             <name>oncomplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Javascript event handler to be called after ajax request to load items completed.</description>
         </attribute>
     </attributes>
     <resources>

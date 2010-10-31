@@ -29,155 +29,129 @@
             <name>mindate</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Sets calendar's minimum visible date. Can be java.lang.String or java.util.Date.</description>
         </attribute>
         <attribute>
             <name>maxdate</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Sets calendar's maximum visible date. Can be java.lang.String or java.util.Date.</description>
         </attribute>
         <attribute>
             <name>pages</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
-            <description>Enables multiple page rendering if more than 1, default value is 1.</description>
         </attribute>
         <attribute>
             <name>mode</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>popup</defaultValue>
-            <description>
-                inline|popup, Defines how the calendar will be displayed; "inline" only displays a calendar,
-                "popup" displays an input text and a popup button
-            </description>
         </attribute>
         <attribute>
             <name>pattern</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>MM/dd/yyyy</defaultValue>
-            <description>DateFormat pattern, default is "MM/dd/yyyy"</description>
         </attribute>
         <attribute>
             <name>locale</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Locale for localization and date conversion, can be String or a java.util.Locale instance.</description>
         </attribute>
         <attribute>
             <name>popupIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Icon of the popup button</description>
         </attribute>
         <attribute>
             <name>popupIconOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>When enabled, popup icon is rendered without the button.</description>
         </attribute>
         <attribute>
             <name>navigator</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Enables month/year navigator</description>
         </attribute>
         <attribute>
             <name>timeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
         </attribute>
         <attribute>
             <name>readOnlyInputText</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Makes input text of a popup calendar readonly.</description>
         </attribute>
         <attribute>
             <name>onSelectUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies the components to update with ajax when a date is selected.</description>
         </attribute>
         <attribute>
             <name>selectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void selectListener()</method-signature>
-            <description>A server side listener to invoke instantly with ajax when a date is completed</description>
         </attribute>
         <attribute>
             <name>inputStyle</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style of the input text of popup display.</description>
         </attribute>
         <attribute>
             <name>inputStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the input text of popup display.</description>
         </attribute>
         <attribute>
             <name>showButtonPanel</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Specifies the visibility of button panel that contains today and done buttons.</description>
         </attribute>
         <attribute>
             <name>effect</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies the effect to use when displaying and hiding the calendar.</description>
         </attribute>
         <attribute>
             <name>effectDuration</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>normal</defaultValue>
-            <description>Specifies the speed of the display effect used.</description>
         </attribute>
         <attribute>
             <name>showOn</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>focus</defaultValue>
-            <description>Specifies the event to display the overlay in popup mode, valid values are "focus", "button" and "both".</description>
         </attribute>
         <attribute>
             <name>showWeek</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>When enabled, week number of year is displayed next to each week.</description>
         </attribute>
         <attribute>
             <name>showOtherMonths</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>When enabled, days belonging to other months are displayed.</description>
         </attribute>
         <attribute>
             <name>selectOtherMonths</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>When enabled, days belonging to other months become selectable.</description>
         </attribute>
         <attribute>
             <name>yearRange</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Year range to display in navigator.</description>
         </attribute>
     </attributes>
     <resources>
