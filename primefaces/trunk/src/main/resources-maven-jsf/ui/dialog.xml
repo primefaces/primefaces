@@ -152,6 +152,18 @@
             <defaultValue>true</defaultValue>
             <description>Defines if close icon should be displayed or not</description>
         </attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description></description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description></description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
