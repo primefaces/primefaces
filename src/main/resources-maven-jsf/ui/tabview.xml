@@ -90,6 +90,12 @@
             <description>Client side callback to invoke when active tab changes.</description>
         </attribute>
         <attribute>
+            <name>onTabShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description></description>
+        </attribute>
+        <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
