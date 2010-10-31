@@ -1,16 +1,16 @@
 /* top */
-.pf-dock-top, .pf-dock-bottom {
+.ui-dock-top, .ui-dock-bottom {
 	position: relative; 
 	height: 50px; 
 	text-align: center;
 }
-.pf-dock-container-top {
-	position: absolute;
+.ui-dock-container-top {
+	position: fixed;
 	height: 50px;
 	background: url("#{resource['primefaces:dock/assets/dock-bg-top.gif']}");
 	padding-left: 20px;
 }
-a.pf-dock-item-top {
+a.ui-dock-item-top {
 	display: block;
 	width: 40px;
 	color: #000;
@@ -20,30 +20,30 @@ a.pf-dock-item-top {
 	text-decoration: none;
 	font: bold 12px Arial, Helvetica, sans-serif;
 }
-.pf-dock-item-top img {
+.ui-dock-item-top img {
 	border: none; 
 	margin: 5px 10px 0px; 
 	width: 100%; 
 }
-.pf-dock-item-top span {
+.ui-dock-item-top span {
 	display: none; 
 	padding-left: 20px;
 }
 
 /* bottom */
-.pf-dock-bottom {
+.ui-dock-bottom {
 	width: 100%;
 	bottom: 0px;
 	position: absolute;
 	left: 0px;
 }
-.pf-dock-container-bottom {
-	position: absolute;
+.ui-dock-container-bottom {
+	position: fixed;
 	height: 50px;
 	background: url("#{resource['primefaces:dock/assets/dock-bg-bottom.gif']}");
 	padding-left: 20px;
 }
-a.pf-dock-item-bottom {
+a.ui-dock-item-bottom {
 	display: block; 
 	font: bold 12px Arial, Helvetica, sans-serif;
 	width: 40px; 
@@ -53,11 +53,11 @@ a.pf-dock-item-bottom {
 	text-align: center;
 	text-decoration: none;
 }
-.pf-dock-item-bottom span {
+.ui-dock-item-bottom span {
 	display: none;
 	padding-left: 20px;
 }
-.pf-dock-item-bottom img {
+.ui-dock-item-bottom img {
 	border: none; 
 	margin: 5px 10px 0px; 
 	width: 100%; 
