@@ -629,7 +629,7 @@ PrimeFaces.widget.DataTable.prototype.unselectCell = function(cell) {
  */
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
     var expander = jQuery(expanderElement),
-    row = expander.parent().parent().parent(),
+    row = expander.parent().parent(),
     expanded = row.hasClass('ui-expanded-row');
 
     if(expanded) {
