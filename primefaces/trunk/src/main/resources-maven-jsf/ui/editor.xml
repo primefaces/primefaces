@@ -62,6 +62,13 @@
 			<defaultValue>false</defaultValue>
 			<description>Disables the editor.</description>
 		</attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+			<description></description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

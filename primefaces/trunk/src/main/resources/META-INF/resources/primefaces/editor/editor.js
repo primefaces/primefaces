@@ -8661,8 +8661,15 @@ PrimeFaces.widget.Editor = function(id, cfg) {
         this.cfg.toolbar = 'customToolbar';
     }
 
-    this.editor = new elRTE(document.getElementById(id), this.cfg);
+    if(!this.cfg.lazy) {
+        this.init();
+    }
     
+}
+
+PrimeFaces.widget.Editor.prototype.init = function() {
+    this.editor = new elRTE(document.getElementById(this.id), this.cfg);
+
     jQuery('.el-rte .panel-save').hide();
     jQuery('.el-rte .smiley').hide();
     jQuery('.el-rte .about').hide();
