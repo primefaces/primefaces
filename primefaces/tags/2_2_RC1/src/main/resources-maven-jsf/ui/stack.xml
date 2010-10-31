@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>stack</tag>
+	<tagClass>org.primefaces.component.stack.StackTag</tagClass>
+	<componentClass>org.primefaces.component.stack.Stack</componentClass>
+	<componentType>org.primefaces.component.Stack</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.StackRenderer</rendererType>
+	<rendererClass>org.primefaces.component.stack.StackRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>openSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+		</attribute>
+		<attribute>
+			<name>closeSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>stack/assets/stack.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+		<resource>
+			<name>stack/stack.js</name>
+		</resource>
+	</resources>
+</component>

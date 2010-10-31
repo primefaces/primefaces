@@ -1,0 +1,32 @@
+.ui-picklist .ui-picklist-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow:auto;
+    height:200px;
+    width:200px;
+}
+
+.ui-picklist .ui-picklist-list li {
+    margin: 1px;
+    padding: 2px;
+}
+
+.ui-picklist .ui-picklist-button {
+    display:block;
+    margin-bottom:0.3em;
+}
+
+.ui-picklist .ui-picklist-button.ui-button-text-icon-primary {
+    width:100%;
+}
+
+.ui-picklist .ui-picklist-item {
+    cursor:pointer;
+}
+
+.ui-picklist .ui-picklist-caption {
+    text-align: center;
+    padding:4px 10px 4px 10px;
+    border-bottom:0px none;
+}

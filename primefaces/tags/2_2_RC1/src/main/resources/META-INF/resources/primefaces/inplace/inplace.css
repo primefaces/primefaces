@@ -1,0 +1,15 @@
+.pf-inplace-highlight {
+	background-color: #FFFFBA;
+}
+
+.pf-inplace-display {
+	cursor: pointer;
+}
+
+.pf-inplace-display-disabled {
+	cursor: default;
+}
+
+.pf-inplace-content {
+	display: none;
+}
