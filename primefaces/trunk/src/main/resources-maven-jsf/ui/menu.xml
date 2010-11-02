@@ -153,11 +153,11 @@
 		<resource>
 			<name>yui/utilities/utilities.js</name>
 		</resource>
-		<resource>
-			<name>menu/menu.js</name>
+        <resource>
+			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>core/core.js</name>
+			<name>menu/menu.js</name>
 		</resource>
 	</resources>
 </component>
