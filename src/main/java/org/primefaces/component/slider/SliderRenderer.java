@@ -67,18 +67,12 @@ public class SliderRenderer extends CoreRenderer{
 		String clientId = slider.getClientId(context);
 		UIComponent input = getTarget(context, slider, slider.getFor());
 		UIComponent output = getTarget(context, slider, slider.getDisplay());
-		
-		int value = 0;
-		String stringValue = ComponentUtils.getStringValueToRender(context, input);
-		if(!isValueBlank(stringValue)) {
-			value = Integer.parseInt(stringValue);
-		}
-		
+
 		writer.startElement("script", slider);
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write(slider.resolveWidgetVar() + " = new PrimeFaces.widget.Slider('" + clientId + "', {");
-		writer.write("value:" + value);
+		writer.write("value:" + ComponentUtils.getStringValueToRender(context, input));
 		writer.write(",input:'" + input.getClientId(context) + "'");
 		writer.write(",min:" + slider.getMinValue());
 		writer.write(",max:" + slider.getMaxValue());
