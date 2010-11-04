@@ -77,6 +77,12 @@
         </attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>core/core.js</name>
+		</resource>
 		<resource>
 			<name>fieldset/fieldset.css</name>
 		</resource>
