@@ -141,11 +141,14 @@
 		<resource>
 			<name>picklist/picklist.css</name>
 		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>jquery/jquery-ui.js</name>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
