@@ -2,17 +2,17 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = this.jqId + '_input';
-    this.jqh = this.jqId + '_hinput';
+    this.jq = jQuery(this.jqId + '_input');
+    this.jqh = jQuery(this.jqId + '_hinput');
 	
     this.setupDataSource();
 		
-    jQuery(this.jq).autocomplete(this.cfg);
+    this.jq.autocomplete(this.cfg);
 
     var _self = this;
 
     //Item select handler
-    jQuery(this.jq).bind('autocompleteselect', function(event, ui) {
+    this.jq.bind('autocompleteselect', function(event, ui) {
         _self.onItemSelect(event, ui);
     });
 	
@@ -22,7 +22,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
 
     //update hidden field value in pojo mode
     if(this.cfg.pojo) {
-        jQuery(this.jq).keyup(function(e) {
+        this.jq.keyup(function(e) {
             if(e.keyCode != 13) {
                 jQuery(_self.jqh).val(jQuery(this).val());
             }
@@ -31,7 +31,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
 
     //behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(jQuery(this.jq), this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
 }
 
@@ -96,9 +96,9 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
 
 PrimeFaces.widget.AutoComplete.prototype.onItemSelect = function(event, ui) {
     if(this.cfg.pojo)
-        jQuery(this.jqh).val(ui.item.data);
+        this.jqh.val(ui.item.data);
     else
-        jQuery(this.jq).val(ui.item.label);
+        this.jq.val(ui.item.label);
 	
     //Fire instant selection event
     if(this.cfg.ajaxSelect) {
@@ -122,7 +122,7 @@ PrimeFaces.widget.AutoComplete.prototype.onItemSelect = function(event, ui) {
 PrimeFaces.widget.AutoComplete.prototype.setupForceSelection = function() {
     var _self = this;
 	
-    jQuery(this.jq).blur(function() {
+    this.jq.blur(function() {
         var value = jQuery(this).val(),
         valid = false;
 		
@@ -139,4 +139,28 @@ PrimeFaces.widget.AutoComplete.prototype.setupForceSelection = function() {
             jQuery(this).val('');
         }
     });
+}
+
+PrimeFaces.widget.AutoComplete.prototype.disable = function() {
+    this.jq.addClass('ui-state-disabled').attr('disabled', 'disabled').autocomplete('disable');
+}
+
+PrimeFaces.widget.AutoComplete.prototype.enable = function() {
+    this.jq.removeClass('ui-state-disabled').removeAttr('disabled').autocomplete('enable');
+}
+
+PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
+    this.jq.autocomplete('search', value);
+}
+
+PrimeFaces.widget.AutoComplete.prototype.close = function() {
+    this.jq.autocomplete('close');
+}
+
+PrimeFaces.widget.AutoComplete.prototype.deactivate = function() {
+    this.jq.autocomplete('disable');
+}
+
+PrimeFaces.widget.AutoComplete.prototype.activate = function() {
+    this.jq.autocomplete('enable');
 }
