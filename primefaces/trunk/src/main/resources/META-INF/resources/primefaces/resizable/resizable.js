@@ -31,8 +31,8 @@ PrimeFaces.widget.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) 
 
     var params = {};
     params[this.id + '_ajaxResize'] = true;
-    params[this.id + '_width'] = ui.size.width;
-    params[this.id + '_height'] = ui.size.height;
-
+    params[this.id + '_width'] = ui.helper.width();
+    params[this.id + '_height'] = ui.helper.height();
+    
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
