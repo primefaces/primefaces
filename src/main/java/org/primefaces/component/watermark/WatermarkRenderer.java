@@ -27,10 +27,11 @@ import org.primefaces.util.ComponentUtils;
 
 public class WatermarkRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		Watermark watermark = (Watermark) component;
-		String target = null;
+		StringBuilder target = new StringBuilder();
 		
 		if(watermark.getFor() != null) {
 			String _for = watermark.getFor();	
@@ -38,10 +39,12 @@ public class WatermarkRenderer extends CoreRenderer {
 			if(forComponent == null) {
 				throw new FacesException("Cannot find component \"" + _for + "\" in view.");
 			}
-			target = ComponentUtils.escapeJQueryId(forComponent.getClientId(context));
+			String jqId = ComponentUtils.escapeJQueryId(forComponent.getClientId(context));
+
+            target.append(jqId).append(",").append(jqId).append(" input:text");
 			
 		} else if(watermark.getForElement() != null) {
-			target = watermark.getForElement();
+			target.append(watermark.getForElement());
 		} else {
 			throw new FacesException("Either for or forElement options must be used to define a watermark");
 		}
@@ -50,7 +53,7 @@ public class WatermarkRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {");
-		writer.write("jQuery('" + target + "').watermark('" + watermark.getValue() + "', {className:'ui-watermark'});");
+		writer.write("jQuery('" + target.toString() + "').watermark('" + watermark.getValue() + "', {className:'ui-watermark'});");
 		writer.write("});");
 		
 		writer.endElement("script");
