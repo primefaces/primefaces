@@ -20,14 +20,16 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.json.JSONObject;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
-    public PrimePartialResponseWriter(ResponseWriter writer) {
+    private PartialResponseWriter wrapped;
+
+    public PrimePartialResponseWriter(PartialResponseWriter writer) {
         super(writer);
+        wrapped = (PartialResponseWriter) writer;
     }
 
     @Override
@@ -58,15 +60,90 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             }
         }
             
-        super.endDocument();
+        wrapped.endDocument();
     }
 
-     private boolean isBean(Object value) {
-        if (value == null) {
+    @Override
+    public void delete(String targetId) throws IOException {
+        wrapped.delete(targetId);
+    }
+
+    @Override
+    public void endError() throws IOException {
+        wrapped.endError();
+    }
+
+    @Override
+    public void endEval() throws IOException {
+        wrapped.endEval();
+    }
+
+    @Override
+    public void endExtension() throws IOException {
+        wrapped.endExtension();
+    }
+
+    @Override
+    public void endInsert() throws IOException {
+        wrapped.endInsert();
+    }
+
+    @Override
+    public void endUpdate() throws IOException {
+        wrapped.endUpdate();
+    }
+
+    @Override
+    public void redirect(String url) throws IOException {
+        wrapped.redirect(url);
+    }
+
+    @Override
+    public void startDocument() throws IOException {
+        wrapped.startDocument();
+    }
+
+    @Override
+    public void startError(String errorName) throws IOException {
+        wrapped.startError(errorName);
+    }
+
+    @Override
+    public void startEval() throws IOException {
+        wrapped.startEval();
+    }
+
+    @Override
+    public void startExtension(Map<String, String> attributes) throws IOException {
+        wrapped.startExtension(attributes);
+    }
+
+    @Override
+    public void startInsertAfter(String targetId) throws IOException {
+        wrapped.startInsertAfter(targetId);
+    }
+
+    @Override
+    public void startInsertBefore(String targetId) throws IOException {
+        wrapped.startInsertBefore(targetId);
+    }
+
+    @Override
+    public void startUpdate(String targetId) throws IOException {
+        wrapped.startUpdate(targetId);
+    }
+
+    @Override
+    public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
+        wrapped.updateAttributes(targetId, attributes);
+    }
+
+    private boolean isBean(Object value) {
+        if(value == null) {
             return false;
         }
 
-        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
+        if(value instanceof Boolean || value instanceof String || value instanceof Number) {
             return false;
         }
 
