@@ -56,6 +56,8 @@ public class DialogRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("jQuery(function() {");
+
         writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.Dialog('" + clientId + "',");
 
         writer.write("{");
@@ -99,7 +101,7 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getOnShow() != null) writer.write(",onShow:function(event, ui) {" + dialog.getOnShow() + "}");
         if(dialog.getOnHide() != null) writer.write(",onHide:function(event, ui) {" + dialog.getOnHide() + "}");
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }
@@ -111,6 +113,7 @@ public class DialogRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "display:none", null);
         if (headerText != null) {
             writer.writeAttribute("title", headerText, null);
         }
