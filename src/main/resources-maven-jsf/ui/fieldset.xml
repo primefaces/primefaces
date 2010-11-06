@@ -65,16 +65,6 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
-        <attribute>
-            <name>onToggleStart</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>onToggleComplete</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
 	</attributes>
 	<resources>
         <resource>
