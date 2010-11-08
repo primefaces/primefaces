@@ -342,3 +342,8 @@ import java.lang.StringBuilder;
     public void resetValue() {
         setValue(null);
     }
+
+    public void resetPagination() {
+        setFirst(0);
+        setPage(1);
+    }
