@@ -111,13 +111,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
 
         if(acco.isDynamic() || hasTabChangeListener) {
-            UIComponent form = ComponentUtils.findParentForm(context, acco);
-            if (form == null) {
-                throw new FacesException("AccordionPanel " + clientId + " must be nested inside a form when dynamic content loading is enabled");
-            }
-
             writer.write(",url:'" + getActionURL(context) + "'");
-            writer.write(",formId:'" + form.getClientId(context) + "'");
             writer.write(",cache:" + acco.isCache());
         }
 

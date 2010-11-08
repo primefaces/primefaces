@@ -5,20 +5,20 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jqAcco = this.jqId + '_acco';
-    this.stateHolder = this.jqId + '_active';
-	
-    jQuery(this.jqAcco).accordion(this.cfg);
+    this.jq = jQuery(this.jqId + '_acco');
+    this.stateHolder = jQuery(this.jqId + '_active');
+    var _self = this;
+
+    //Create accordion
+    this.jq.accordion(this.cfg);
 
     if(this.cfg.dynamic) {
-        this.markAsLoaded(jQuery(this.jqAcco).children('div').get(this.cfg.active));
+        this.markAsLoaded(this.jq.children('div').get(this.cfg.active));
     }
-
-    var _self = this;
-    jQuery(this.jqAcco).bind('accordionchangestart', function(event, ui) {
+    
+    this.jq.bind('accordionchangestart', function(event, ui) {
         _self.onTabChange(event, ui);
     });
-
 }
 
 /**
@@ -34,7 +34,7 @@ PrimeFaces.widget.AccordionPanel.prototype.onTabChange = function(event, ui) {
     }
 
     //Write state
-    jQuery(this.stateHolder).val(ui.options.active);
+    this.stateHolder.val(ui.options.active);
 
     if(shouldLoad) {
         this.loadDynamicTab(panel);
@@ -51,8 +51,7 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
     var _self = this,
     options = {
         source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
+        process: this.id
     };
 
     options.update = this.cfg.ajaxTabChange ? this.id + ' ' + this.cfg.onTabChangeUpdate : this.id;
@@ -99,8 +98,7 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
 PrimeFaces.widget.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     var options = {
         source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
+        process: this.id
     };
 
     if(this.cfg.onTabChangeUpdate) {
@@ -123,9 +121,9 @@ PrimeFaces.widget.AccordionPanel.prototype.isLoaded = function(panel) {
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
-    jQuery(this.jqAcco).accordion('activate', index);
+    this.jq.accordion('activate', index);
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.collapseAll = function() {
-    jQuery(this.jqAcco).accordion('activate', false);
+    this.jq.accordion('activate', false);
 }
