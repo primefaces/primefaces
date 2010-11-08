@@ -18,6 +18,7 @@ package org.primefaces.component.captcha;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,6 +56,10 @@ public class CaptchaRenderer extends CoreRenderer {
 		captcha.setRequired(true);
 		
 		String publicKey = getPublicKey(context, captcha);
+
+        if(publicKey == null) {
+            throw new FacesException("Cannot find public key for catpcha, use primefaces.PUBLIC_CAPTCHA_KEY context-param to define one");
+        }
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);

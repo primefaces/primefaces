@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.primefaces.component.captcha;
 
 import java.io.Serializable;
 
-public class Verification implements Serializable {
+class Verification implements Serializable {
 
 	private String challenge;
 	private String answer;
@@ -34,14 +34,8 @@ public class Verification implements Serializable {
 	public String getChallenge() {
 		return challenge;
 	}
-	public void setChallenge(String challenge) {
-		this.challenge = challenge;
-	}
 	
 	public String getAnswer() {
 		return answer;
-	}
-	public void setAnswer(String answer) {
-		this.answer = answer;
 	}
 }
