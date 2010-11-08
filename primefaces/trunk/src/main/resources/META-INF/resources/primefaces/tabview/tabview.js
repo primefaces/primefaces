@@ -6,7 +6,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId);
-    this.activeIndexHolder = jQuery(this.jqId + '_activeIndex');
+    this.stateHolder = jQuery(this.jqId + '_activeIndex');
     var _self = this;
 
     //Create tabs
@@ -45,7 +45,7 @@ PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     }
 
     //Write state
-    jQuery(this.activeIndexHolder).val(ui.index);
+    this.stateHolder.val(ui.index);
 
     if(shouldLoad) {
         this.loadDynamicTab(panel);
