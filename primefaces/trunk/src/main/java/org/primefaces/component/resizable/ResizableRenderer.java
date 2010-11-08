@@ -86,10 +86,10 @@ public class ResizableRenderer extends CoreRenderer {
         if(resizable.isGhost()) writer.write(",ghost:true");
         if(resizable.isContainment()) writer.write(",containment:PrimeFaces.escapeClientId('" + resizable.getParent().getClientId(context) +"')");
 
-        //Client side resize callback
-        if(resizable.getOnResize() != null) {
-            writer.write(",onResize:function(event, ui) {" + resizable.getOnResize() + "}");
-        }
+        //Client side callbacks
+        if(resizable.getOnStart() != null) writer.write(",onStart:function(event, ui) {" + resizable.getOnStart() + "}");
+        if(resizable.getOnResize() != null) writer.write(",onResize:function(event, ui) {" + resizable.getOnResize() + "}");
+        if(resizable.getOnStop() != null) writer.write(",onStop:function(event, ui) {" + resizable.getOnStop() + "}");
 
         //Ajax resize
         if(resizable.getResizeListener() != null) {

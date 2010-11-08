@@ -11,9 +11,10 @@
 <!ELEMENT interfaces (interface)>
 <!ELEMENT interface (name)>
 <!ELEMENT attributes (attribute*)>
-<!ELEMENT attribute (name,required,type,method-signature?,ignoreInComponent?,defaultValue?,description?)>
+<!ELEMENT attribute (name,required,defaultValue?,type,method-signature?,ignoreInComponent?,defaultValue?,description?)>
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT required (#PCDATA)>
+<!ELEMENT defaultValue (#PCDATA)>
 <!ELEMENT type (#PCDATA)>
 <!ELEMENT method-signature (#PCDATA)>
 <!ELEMENT ignoreInComponent (#PCDATA)>

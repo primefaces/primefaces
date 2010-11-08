@@ -3,19 +3,29 @@ PrimeFaces.widget.Resizable = function(id, cfg) {
     this.cfg = cfg;
     this.target = PrimeFaces.escapeClientId(this.cfg.target);
 
-    //resize handler
     var _self = this;
     this.cfg.stop = function(event, ui) {
-        if(_self.cfg.onResize) {
-            _self.cfg.onResize.call(_self, event, ui);
-        }
-
         if(_self.cfg.ajaxResize) {
             _self.fireAjaxResizeEvent(event, ui);
+        }
+        
+        if(_self.cfg.onStop) {
+            _self.cfg.onStop.call(_self, event, ui);
+        }
+    }
+    this.cfg.start = function(event, ui) {
+        if(_self.cfg.onStart) {
+            _self.cfg.onStart.call(_self, event, ui);
+        }
+    }
+    this.cfg.resize = function(event, ui) {
+        if(_self.cfg.onResize) {
+            _self.cfg.onResize.call(_self, event, ui);
         }
     }
 
     jQuery(this.target).resizable(this.cfg);
+    
 }
 
 PrimeFaces.widget.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
