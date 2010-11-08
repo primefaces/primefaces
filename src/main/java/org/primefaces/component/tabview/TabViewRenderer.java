@@ -78,13 +78,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.write(",dynamic:" + tabView.isDynamic());
 
         if(tabView.isDynamic() || tabChangeListener != null) {
-            UIComponent form = ComponentUtils.findParentForm(context, tabView);
-            if (form == null) {
-                throw new FacesException("TabView " + clientId + " must be nested inside a form when dynamic content loading is enabled");
-            }
-
             writer.write(",url:'" + getActionURL(context) + "'");
-            writer.write(",formId:'" + form.getClientId(context) + "'");
             writer.write(",cache:" + tabView.isCache());
         }
 
