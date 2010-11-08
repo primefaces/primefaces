@@ -17,7 +17,6 @@ package org.primefaces.component.accordionpanel;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -74,16 +73,14 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		if(accordionPanel.getStyle() != null) writer.writeAttribute("style", accordionPanel.getStyle(), null);
-		if(accordionPanel.getStyleClass() != null) writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_acco", null);
-		
+        
+		if(accordionPanel.getStyle() != null)
+            writer.writeAttribute("style", accordionPanel.getStyle(), null);
+		if(accordionPanel.getStyleClass() != null)
+            writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
+	
 		encodeTabs(context, accordionPanel);
-		
-		writer.endElement("div");
-		
+        
 		encodeStateHolder(context, accordionPanel);
 		
 		writer.endElement("div");
