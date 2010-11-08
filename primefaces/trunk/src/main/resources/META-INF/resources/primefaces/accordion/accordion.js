@@ -5,7 +5,7 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = jQuery(this.jqId + '_acco');
+    this.jq = jQuery(this.jqId);
     this.stateHolder = jQuery(this.jqId + '_active');
     var _self = this;
 
