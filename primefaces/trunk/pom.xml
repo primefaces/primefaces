@@ -163,7 +163,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.1.5</version>
+                <version>1.1.6-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>generate-ui</id>
@@ -181,6 +181,7 @@
                         <goals>
                             <goal>generate-components</goal>
                             <goal>generate-facelets-taglib</goal>
+                            <goal>generate-tld</goal>
                         </goals>
                     </execution>
                     <execution>
@@ -195,6 +196,7 @@
                         <goals>
                             <goal>generate-components</goal>
                             <goal>generate-facelets-taglib</goal>
+                            <goal>generate-tld</goal>
                         </goals>
                     </execution>
                     <execution>

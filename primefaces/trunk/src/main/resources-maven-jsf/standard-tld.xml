@@ -3,7 +3,7 @@
 		<tag-class>org.primefaces.component.export.DataExporterTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>Server side of the datatable to be exported</description>
+			<description></description>
 			<name>target</name>
 			<required>true</required>
 			<deferred-value>
@@ -11,7 +11,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Type of the format, could be xls, pdf, xls, xml</description>
+			<description></description>
 			<name>type</name>
 			<required>true</required>
 			<deferred-value>
@@ -19,7 +19,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Name of the exported file</description>
+			<description></description>
 			<name>fileName</name>
 			<required>true</required>
 			<deferred-value>
@@ -27,7 +27,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Boolean for only exporting the current displayed page</description>
+			<description></description>
 			<name>pageOnly</name>
 			<required>false</required>
 			<deferred-value>
@@ -35,7 +35,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Comma seperated list of columns to be neglected</description>
+			<description></description>
 			<name>excludeColumns</name>
 			<required>false</required>
 			<deferred-value>
@@ -43,14 +43,14 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Character encoding to use in exporting the document.</description>
+			<description></description>
 			<name>encoding</name>
 			<deferred-value>
 				<type>java.lang.String</type>
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description><![CDATA[Pre hook to manipulate exported document.]]></description>
+			<description></description>
 			<name>preProcessor</name>
 			<required>false</required>
 			<deferred-method>
@@ -58,7 +58,7 @@
 			</deferred-method>
 		</attribute>
 		<attribute>
-			<description><![CDATA[Post hook to manipulate exported document.]]></description>
+			<description></description>
 			<name>postProcessor</name>
 			<required>false</required>
 			<deferred-method>
@@ -72,7 +72,7 @@
 		<tag-class>org.primefaces.component.collector.CollectorTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>Value to used in collection operation.</description>
+			<description></description>
 			<name>value</name>
 			<required>true</required>
 			<deferred-value>
@@ -80,7 +80,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>A collection to add the value.</description>
+			<description></description>
 			<name>addTo</name>
 			<required>false</required>
 			<deferred-value>
@@ -88,7 +88,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>A collection to remove the value from.</description>
+			<description></description>
 			<name>removeFrom</name>
 			<required>false</required>
 			<deferred-value>
@@ -110,7 +110,7 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
-			<description>Sets the content-disposition header .</description>
+			<description></description>
 			<name>contentDisposition</name>
 			<required>false</required>
 			<deferred-value>
