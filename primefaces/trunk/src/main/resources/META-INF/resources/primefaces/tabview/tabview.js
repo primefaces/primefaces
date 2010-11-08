@@ -5,25 +5,27 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.activeIndexHolder = this.jqId + '_activeIndex';
-	
-    jQuery(this.jqId).tabs(this.cfg);
+    this.jq = jQuery(this.jqId);
+    this.activeIndexHolder = jQuery(this.jqId + '_activeIndex');
+    var _self = this;
+
+    //Create tabs
+    this.jq.tabs(this.cfg);
 
     //tab change handler
-    var _self = this;
-    jQuery(this.jqId).bind('tabsselect', function(event, ui) {
+    this.jq.bind('tabsselect', function(event, ui) {
         _self.onTabSelect(event, ui);
     });
 
     //tab show handler
     if(this.cfg.onTabShow) {
-        jQuery(this.jqId).bind('tabsshow', function(event, ui) {
+        this.jq.bind('tabsshow', function(event, ui) {
             _self.cfg.onTabShow.call(_self, event, ui);
         });
     }
 	
     if(this.cfg.dynamic) {
-        this.markAsLoaded(jQuery(this.jqId).children('div').get(this.cfg.selected));
+        this.markAsLoaded(this.jq.children('div').get(this.cfg.selected));
     }
 }
 
@@ -60,8 +62,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
     var _self = this,
     options = {
         source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
+        process: this.id
     };
 
     options.update = this.cfg.ajaxTabChange ? this.id + ' ' + this.cfg.onTabChangeUpdate : this.id;
@@ -108,8 +109,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
 PrimeFaces.widget.TabView.prototype.fireAjaxTabChangeEvent = function(panel) {
     var options = {
         source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
+        process: this.id
     };
 
     if(this.cfg.onTabChangeUpdate) {
@@ -132,34 +132,34 @@ PrimeFaces.widget.TabView.prototype.isLoaded = function(panel) {
 }
 
 PrimeFaces.widget.TabView.prototype.select = function(index) {
-    jQuery(this.jqId).tabs('select', index);
+    this.jq.tabs('select', index);
 }
 
 //Backward compatibility
 PrimeFaces.widget.TabView.prototype.selectTab = function(index) {
-    jQuery(this.jqId).tabs('select', index);
+    this.jq.tabs('select', index);
 }
 
 PrimeFaces.widget.TabView.prototype.disable = function(index) {
-    jQuery(this.jqId).tabs('disable', index);
+    this.jq.tabs('disable', index);
 }
 
 PrimeFaces.widget.TabView.prototype.enable = function(index) {
-    jQuery(this.jqId).tabs('enable', index);
+    this.jq.tabs('enable', index);
 }
 
 PrimeFaces.widget.TabView.prototype.add = function(url, label, index) {
-    jQuery(this.jqId).tabs('add', url, label, index);
+    this.jq.tabs('add', url, label, index);
 }
 
 PrimeFaces.widget.TabView.prototype.remove = function(index) {
-    jQuery(this.jqId).tabs('remove', index);
+    this.jq.tabs('remove', index);
 }
 
 PrimeFaces.widget.TabView.prototype.getLength = function() {
-    return jQuery(this.jqId).tabs('length');
+    return this.jq.tabs('length');
 }
 
 PrimeFaces.widget.TabView.prototype.getActiveIndex = function() {
-    return jQuery(this.jqId).tabs('option', 'selected');
+    return this.jq.tabs('option', 'selected');
 }
