@@ -442,6 +442,11 @@ public class DataTableRenderer extends CoreRenderer {
             return;
         }
 
+        //Row index var
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+        }
+
         //Preselection
         boolean selected = handlePreselection(table, rowIndex, selectionMode, selection);
 
@@ -451,11 +456,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(selected && table.getSelectionMode() != null) {
             rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
-        }
-
-        //Row index var
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
         }
 
         writer.startElement("tr", null);
@@ -515,6 +515,11 @@ public class DataTableRenderer extends CoreRenderer {
 
             context.getExternalContext().getRequestMap().remove(columnVar);
             context.getExternalContext().getRequestMap().remove(columnIndexVar);
+        }
+
+        //Row index var
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
         }
 
         writer.endElement("tr");
