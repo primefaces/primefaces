@@ -54,6 +54,7 @@ public class CaptchaRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Captcha captcha = (Captcha) component;
 		captcha.setRequired(true);
+        String protocol = captcha.isSecure() ? "https" : "http";
 		
 		String publicKey = getPublicKey(context, captcha);
 
@@ -75,12 +76,12 @@ public class CaptchaRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.writeAttribute("src", "http://api.recaptcha.net/challenge?k=" + publicKey, null);
+		writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/challenge?k=" + publicKey, null);
 		writer.endElement("script");
 		
 		writer.startElement("noscript", null);
 		writer.startElement("iframe", null);
-		writer.writeAttribute("src", "http://api.recaptcha.net/noscript?k=" + publicKey, null);
+		writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/noscript?k=" + publicKey, null);
 		writer.endElement("iframe");
 		
 		writer.startElement("textarea", null);
