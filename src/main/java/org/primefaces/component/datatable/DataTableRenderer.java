@@ -196,7 +196,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", columnClass, null);
         
         if(style != null) writer.writeAttribute("style", style, null);
-        if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
+        if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
         //Sort icon
@@ -306,7 +306,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement("td", null);
         writer.writeAttribute("class", footerClass, null);
         if(style != null) writer.writeAttribute("style", style, null);
-        if(column.getRowpan() != 1) writer.writeAttribute("rowspan", column.getRowpan(), null);
+        if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
         //Header content

@@ -84,7 +84,7 @@
             <defaultValue>startsWith</defaultValue>
 		</attribute>
         <attribute>
-			<name>rowpan</name>
+			<name>rowspan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
