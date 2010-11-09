@@ -10,3 +10,21 @@ import java.util.LinkedHashMap;
     public Map<String,Number> getData() {
         return data;
     }
+
+    public ChartSeries(String label) {
+        setLabel(label);
+    }
+
+    private String key;
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        if(this.key == null) {
+            this.key = this.getId();
+        }
+        
+        return this.key;
+    }

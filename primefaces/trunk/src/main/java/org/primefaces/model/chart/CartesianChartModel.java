@@ -32,6 +32,8 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     }
 
     public void addSeries(ChartSeries chartSeries) {
+        chartSeries.setKey("series_" + series.size() + 1);
+        
         series.add(chartSeries);
 
         for(Iterator<String> iter = chartSeries.getData().keySet().iterator(); iter.hasNext();) {
