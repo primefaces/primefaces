@@ -16,8 +16,6 @@
 package org.primefaces.component.chart;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.el.ValueExpression;
@@ -26,7 +24,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.chart.series.ChartSeries;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -45,19 +42,7 @@ public class BaseChartRenderer extends CoreRenderer {
 			component.queueEvent(new ItemSelectEvent(component, itemIndex, seriesIndex));
         }
 	}
-    	
-	protected List<ChartSeries> getSeries(UIChart chart) {
-		List<UIComponent> children = chart.getChildren();
-		List<ChartSeries> series = new ArrayList<ChartSeries>();
-		
-		for (UIComponent component : children) {
-			if(component instanceof ChartSeries && component.isRendered())
-				series.add((ChartSeries) component);	
-		}
-		
-		return series;
-	}
-	
+
 	protected String getFieldName(ValueExpression fieldExpression) {
         if(fieldExpression == null) {
             return null;
