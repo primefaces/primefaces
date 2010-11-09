@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -36,11 +35,9 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		CartesianChart chart = (CartesianChart) component;
 
         if(chart.isLiveDataRequest(context)) {
-            String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
-            List<ChartSeries> series = getSeries(chart);
-
-            encodeData(context, chart, series, true);
-        } else {
+            encodeData(context, chart, getSeries(chart), true);
+        }
+        else {
             encodeResources(context);
             encodeMarkup(context, chart);
             encodeScript(context, chart);
@@ -52,7 +49,6 @@ public class CartesianChartRenderer extends BaseChartRenderer {
         CartesianChart chart = (CartesianChart) uiChart;
 		String clientId = chart.getClientId(context);
 		List<ChartSeries> series = getSeries(chart);
-        boolean hasModel = chart.hasModel();
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -74,8 +70,8 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		writer.endElement("script");
 	}
 
-	protected void encodeData(FacesContext facesContext, CartesianChart chart, List<ChartSeries> series, boolean remote) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeData(FacesContext context, CartesianChart chart, List<ChartSeries> series, boolean remote) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 
         if(remote) {
             writer.write("{");
@@ -108,16 +104,16 @@ public class CartesianChartRenderer extends BaseChartRenderer {
         else {
             Collection<?> value = (Collection<?>) chart.getValue();
             for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
-                facesContext.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
+                context.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
 
-                String categoryFieldValue = chart.getValueExpression(chart.getCategoryField()).getValue(facesContext.getELContext()).toString();
+                Object categoryFieldValue = chart.getValueExpression(chart.getCategoryField()).getValue(context.getELContext());
 
                 writer.write("{\"category\":\"" + categoryFieldValue + "\"");
 
                 for(ChartSeries chartSeries : series) {
-                    ValueExpression ve = chartSeries.getValueExpression("value");
+                    Object seriesValue = chartSeries.getValueExpression("value").getValue(context.getELContext());
 
-                    writer.write(",\"" + chartSeries.getId() + "\":" + ve.getValue(facesContext.getELContext()).toString());
+                    writer.write(",\"" + chartSeries.getId() + "\":" + seriesValue);
                 }
 
                 writer.write("}");
@@ -158,8 +154,8 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		writer.write("]");
 	}
 
-	protected void encodeAxises(FacesContext facesContext, CartesianChart chart, String clientId) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeAxises(FacesContext context, CartesianChart chart, String clientId) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 
         if(shouldRenderAttribute(chart.getMinY()))
 			writer.write(",minY: " + chart.getMinY());
