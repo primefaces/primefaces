@@ -114,8 +114,8 @@ public class CalendarRenderer extends CoreRenderer {
         if(!isValueBlank(value)) writer.write(",defaultDate:'" + value + "'");
         if(calendar.getPattern() != null) writer.write(",dateFormat:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
         if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
-        if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMindate() + "'"));
-        if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMaxdate() + "'"));
+        if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMindate()) + "'");
+        if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMaxdate()) + "'");
         if(calendar.isShowButtonPanel()) writer.write(",showButtonPanel:true");
         if(calendar.isShowWeek()) writer.write(",showWeek:true");
         if(calendar.isDisabled()) writer.write(",disabled:true");
