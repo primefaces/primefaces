@@ -59,6 +59,10 @@ public class BaseChartRenderer extends CoreRenderer {
 	}
 	
 	protected String getFieldName(ValueExpression fieldExpression) {
+        if(fieldExpression == null) {
+            return null;
+        }
+        
 		String expressionString = fieldExpression.getExpressionString();
 		String expressionContent = expressionString.substring(2, expressionString.length() - 1);
 		int firstIndex = expressionContent.indexOf("[");

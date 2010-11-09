@@ -26,6 +26,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.chart.series.ChartSeries;
+import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.ChartModel;
 
 public class CartesianChartRenderer extends BaseChartRenderer {
 
@@ -67,22 +69,35 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 
 		encodeSeries(context, chart, series);
 
-        writer.write("," + chart.getCategoryAxis() + ":'" + categoryFieldName + "'");
+        if(chart.hasModel()) {
+            writer.write("," + chart.getCategoryAxis() + ":'category'");
+            
+            CartesianChartModel model = (CartesianChartModel) chart.getModel();
 
-        writer.write(",fields:['" + categoryFieldName + "'");
-        for (ChartSeries axis : series) {
-			writer.write(",'" + getFieldName(axis.getValueExpression("value")) + "'");
+            writer.write(",fields:['category'");
+            for(int i=0; i < model.getAllSeries().size(); i++) {
+                writer.write(",'series_" + i + "'");
+            }
+            writer.write("]");
         }
-        writer.write("]");
+        else {
+            writer.write("," + chart.getCategoryAxis() + ":'" + categoryFieldName + "'");
+            
+            writer.write(",fields:['" + categoryFieldName + "'");
+            for (ChartSeries axis : series) {
+                writer.write(",'" + getFieldName(axis.getValueExpression("value")) + "'");
+            }
+            writer.write("]");
+        }
+        
 
 		writer.write("});});");
 
 		writer.endElement("script");
 	}
 
-	protected void encodeData(FacesContext facesContext, CartesianChart chart, String xfieldName, List<ChartSeries> series, boolean remote) throws IOException {
+	protected void encodeData(FacesContext facesContext, CartesianChart chart, String categoryFieldName, List<ChartSeries> series, boolean remote) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-        String categoryFieldName = getFieldName(chart.getValueExpression(chart.getCategoryField()));
 
         if(remote) {
             writer.write("{");
@@ -92,26 +107,50 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 
 		writer.write("\"data\": [" );
 
-		Collection<?> value = (Collection<?>) chart.getValue();
-		for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
-			facesContext.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
+        if(chart.hasModel()) {
+            CartesianChartModel model = (CartesianChartModel) chart.getModel();
 
-			String categoryFieldValue = chart.getValueExpression(chart.getCategoryField()).getValue(facesContext.getELContext()).toString();	//TODO: Use converter if any
+            for(Iterator<String> iter = model.getCategoryFields().iterator(); iter.hasNext();) {
+                String categoryField = iter.next();
 
-			writer.write("{\"" + categoryFieldName + "\":\"" + categoryFieldValue + "\"");
+                writer.write("{\"category\":\"" + categoryField + "\"");
 
-			for (ChartSeries axis : series) {
-				ValueExpression ve = axis.getValueExpression("value");
-				String fieldName = getFieldName(axis.getValueExpression("value"));
+                for(int i = 0; i < model.getAllSeries().size(); i++) {
+                    ChartSeries chartSeries = model.getAllSeries().get(i);
 
-				writer.write(",\"" + fieldName + "\":" + ve.getValue(facesContext.getELContext()).toString());	//TODO: Use converter if any
-			}
+                    writer.write(",\"series_" + i + "\":\"" + chartSeries.getData().get(categoryField) + "\"");
+                }
 
-			writer.write("}");
+                writer.write("}");
 
-			if(iterator.hasNext())
-				writer.write(",");
-		}
+                if(iter.hasNext()) {
+                    writer.write(",");
+                }
+            }
+
+        }
+        else {
+            Collection<?> value = (Collection<?>) chart.getValue();
+            for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
+                facesContext.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
+
+                String categoryFieldValue = chart.getValueExpression(chart.getCategoryField()).getValue(facesContext.getELContext()).toString();	//TODO: Use converter if any
+
+                writer.write("{\"" + categoryFieldName + "\":\"" + categoryFieldValue + "\"");
+
+                for (ChartSeries axis : series) {
+                    ValueExpression ve = axis.getValueExpression("value");
+                    String fieldName = getFieldName(axis.getValueExpression("value"));
+
+                    writer.write(",\"" + fieldName + "\":" + ve.getValue(facesContext.getELContext()).toString());	//TODO: Use converter if any
+                }
+
+                writer.write("}");
+
+                if(iterator.hasNext())
+                    writer.write(",");
+            }
+        }
 
 		writer.write("]");
 
@@ -124,21 +163,38 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 
 		writer.write(",series : [");
-		for (Iterator<ChartSeries> it = series.iterator(); it.hasNext();) {
-            ChartSeries currentSeries = it.next();
+        
+        if(chart.hasModel()) {
+            CartesianChartModel model = (CartesianChartModel) chart.getModel();
 
-			String fieldName = getFieldName(currentSeries.getValueExpression("value"));
-			writer.write("{displayName:'" + currentSeries.getLabel() + "', " + chart.getNumericAxis() + ":'" + fieldName + "'");
+            for(int i = 0; i < model.getAllSeries().size(); i++) {
+                ChartSeries currentSeries = model.getAllSeries().get(i);
 
-			if(currentSeries.getStyle() != null) {
-				writer.write(",style:" + currentSeries.getStyle());
-			}
+                writer.write("{displayName:'" + currentSeries.getLabel() + "', " + chart.getNumericAxis() + ":'series_" + i + "'}");
 
-			writer.write("}");
+                if(i != (model.getAllSeries().size() - 1)) {
+                    writer.write(",");
+                }
+            }
 
-			if(it.hasNext())
-				writer.write(",");
-		}
+        } else {
+            for (Iterator<ChartSeries> it = series.iterator(); it.hasNext();) {
+                ChartSeries currentSeries = it.next();
+
+                String fieldName = getFieldName(currentSeries.getValueExpression("value"));
+                writer.write("{displayName:'" + currentSeries.getLabel() + "', " + chart.getNumericAxis() + ":'" + fieldName + "'");
+
+                if(currentSeries.getStyle() != null) {
+                    writer.write(",style:" + currentSeries.getStyle());
+                }
+
+                writer.write("}");
+
+                if(it.hasNext())
+                    writer.write(",");
+            }
+        }
+
 		writer.write("]");
 	}
 
