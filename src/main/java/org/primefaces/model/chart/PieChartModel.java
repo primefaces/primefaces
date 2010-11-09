@@ -20,11 +20,16 @@ import java.util.Map;
 
 public class PieChartModel extends ChartModel {
 
-    private Map<String,Number> data = new HashMap<String, Number>();
+    private Map<String,Number> data;
 
     public PieChartModel() {
+        data = new HashMap<String, Number>();
     }
 
+    public PieChartModel(Map<String, Number> data) {
+        this.data = data;
+    }
+    
     public Map<String, Number> getData() {
         return data;
     }
