@@ -22,6 +22,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.ItemSelectEvent;
+import org.primefaces.model.chart.ChartModel;
 
 public abstract class UIChart extends UIComponentBase {
 
@@ -39,7 +40,8 @@ public abstract class UIChart extends UIComponentBase {
         ,wmode
         ,width
         ,height
-        ,dataTipFunction;
+        ,dataTipFunction
+        ,model;
 
 		String toString;
 
@@ -158,6 +160,13 @@ public abstract class UIChart extends UIComponentBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dataPoll");
     }
 
+    public ChartModel getModel() {
+		return (ChartModel) getStateHelper().eval(PropertyKeys.model, null);
+	}
+	public void setModel(ChartModel _value) {
+		getStateHelper().put(PropertyKeys.model, _value);
+	}
+
     @Override
 	public void broadcast(FacesEvent event) throws AbortProcessingException {
 		super.broadcast(event);
@@ -171,4 +180,8 @@ public abstract class UIChart extends UIComponentBase {
 				me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
+
+    public boolean hasModel() {
+        return getValueExpression("model") != null;
+    }
 }

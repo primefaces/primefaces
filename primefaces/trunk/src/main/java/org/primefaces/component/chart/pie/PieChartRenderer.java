@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
+import org.primefaces.model.chart.PieChartModel;
 
 public class PieChartRenderer extends BaseChartRenderer {
 
@@ -63,8 +64,14 @@ public class PieChartRenderer extends BaseChartRenderer {
         
         encodeData(context, chart, categoryFieldName, dataFieldName, false);
 
-        writer.write(",categoryField:'" + categoryFieldName + "'");
-		writer.write(",dataField:'" + dataFieldName + "'");
+        if(chart.hasModel()) {
+            writer.write(",categoryField:'category'");
+            writer.write(",dataField:'data'");
+        }
+        else {
+            writer.write(",categoryField:'" + categoryFieldName + "'");
+            writer.write(",dataField:'" + dataFieldName + "'");
+        }
 
 		if(chart.getSeriesStyle() != null) {
 			writer.write(",series: [{ style: " + chart.getSeriesStyle() + " }]");
@@ -85,19 +92,34 @@ public class PieChartRenderer extends BaseChartRenderer {
         }
 
 		writer.write("\"data\": [" );
-		
-		Collection<?> value = (Collection<?>) chart.getValue();
-		for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
-			facesContext.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
-			
-			String categoryFieldValue = chart.getValueExpression("categoryField").getValue(facesContext.getELContext()).toString();
-			String dataFieldValue = chart.getValueExpression("dataField").getValue(facesContext.getELContext()).toString();
-			
-			writer.write("{\"" + categoryFieldName + "\":\"" + categoryFieldValue + "\",\"" + dataFieldName + "\":" + dataFieldValue + "}");
-			
-			if(iterator.hasNext())
-				writer.write(",");
-		}
+
+        if(chart.hasModel()) {
+            PieChartModel model = (PieChartModel) chart.getModel();
+
+            for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
+                String category = it.next();
+
+                writer.write("{\"category\":\"" + category + "\",\"data\":" + model.getData().get(category) + "}");
+
+                if(it.hasNext())
+                    writer.write(",");
+                
+            }
+        }
+        else {
+            Collection<?> value = (Collection<?>) chart.getValue();
+            for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
+                facesContext.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
+
+                String categoryFieldValue = chart.getValueExpression("categoryField").getValue(facesContext.getELContext()).toString();
+                String dataFieldValue = chart.getValueExpression("dataField").getValue(facesContext.getELContext()).toString();
+
+                writer.write("{\"" + categoryFieldName + "\":\"" + categoryFieldValue + "\",\"" + dataFieldName + "\":" + dataFieldValue + "}");
+
+                if(iterator.hasNext())
+                    writer.write(",");
+            }
+        }
 
         writer.write("]");
 
