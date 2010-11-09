@@ -54,6 +54,7 @@ public class HeadRenderer extends Renderer {
         while (iter.hasNext()) {
             UIComponent resource = (UIComponent) iter.next();
             resource.encodeAll(context);
+            writer.write("\n");
         }
     }
 
