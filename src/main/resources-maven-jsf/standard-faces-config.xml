@@ -1,5 +1,5 @@
 	<lifecycle>
-            <phase-listener>org.primefaces.application.DynamicContentStreamer</phase-listener>
+        <phase-listener>org.primefaces.application.DynamicContentStreamer</phase-listener>
 	</lifecycle>
 
     <factory>
@@ -7,3 +7,7 @@
             org.primefaces.context.PrimePartialViewContextFactory
         </partial-view-context-factory>
     </factory>
+
+    <application>
+        <resource-handler>org.primefaces.examples.PrimeResourceHandler</resource-handler>
+    </application>
