@@ -55,10 +55,6 @@ public class BaseChartRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
-        if(!chart.hasModel()) {
-            logger.warning("Declarative charts are deprecated, use a chart model instead.");
-        }
-
 		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("div", null);

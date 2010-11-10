@@ -23,13 +23,13 @@
 		&widget_var_attribute;
 		<attribute>
 			<name>value</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Object</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
 			<name>var</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 			<literal>true</literal>
@@ -147,6 +147,12 @@
 			<name>dataTipFunction</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.chart.ChartModel</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 	</attributes>
