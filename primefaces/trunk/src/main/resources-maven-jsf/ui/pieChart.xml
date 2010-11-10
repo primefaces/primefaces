@@ -23,13 +23,13 @@
         &widget_var_attribute;
 		<attribute>
 			<name>value</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Object</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
 			<name>var</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 			<literal>true</literal>
@@ -73,7 +73,7 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>When a chart is live, the data is refreshed based on the refreshInterval</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>refreshInterval</name>
@@ -81,25 +81,21 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>3000</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Refresh period of a live chart data in milliseconds</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>
-				Client side id of the component(s) to be updated after async partial submit request.
-			</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>oncomplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>
-				Javascript event to be called when ajax request for item select event is completed.
-			</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>itemSelectListener</name>
@@ -107,7 +103,7 @@
 			<type>javax.el.MethodExpression</type>
 			<ignoreInComponent>true</ignoreInComponent>
 			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
-			<description>Method expression to listen chart series item select events</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>width</name>
@@ -115,7 +111,7 @@
 			<type>java.lang.String</type>
 			<defaultValue>500px</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Width of the chart</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>height</name>
@@ -123,14 +119,21 @@
 			<type>java.lang.String</type>
 			<defaultValue>350px</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Height of the chart</description>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>dataTipFunction</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description>Javascript function name to customize the data tips.</description>
+			<description></description>
+		</attribute>
+        <attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.chart.ChartModel</type>
+			<ignoreInComponent>true</ignoreInComponent>
+			<description></description>
 		</attribute>
 	</attributes>
 	<resources>
