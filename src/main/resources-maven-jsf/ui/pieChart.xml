@@ -73,7 +73,6 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>refreshInterval</name>
@@ -81,21 +80,18 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>3000</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>oncomplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>itemSelectListener</name>
@@ -103,7 +99,6 @@
 			<type>javax.el.MethodExpression</type>
 			<ignoreInComponent>true</ignoreInComponent>
 			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>width</name>
@@ -111,7 +106,6 @@
 			<type>java.lang.String</type>
 			<defaultValue>500px</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>height</name>
@@ -119,21 +113,18 @@
 			<type>java.lang.String</type>
 			<defaultValue>350px</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 		<attribute>
 			<name>dataTipFunction</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
         <attribute>
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.chart.ChartModel</type>
 			<ignoreInComponent>true</ignoreInComponent>
-			<description></description>
 		</attribute>
 	</attributes>
 	<resources>
