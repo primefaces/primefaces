@@ -37,6 +37,6 @@ public class PrimeResource extends ResourceWrapper {
 
     @Override
     public String getRequestPath() {
-        return super.getRequestPath() + "&amp;=" + PrimeResourceHandler.VERSION;
+        return super.getRequestPath() + "&amp;v=" + PrimeResourceHandler.VERSION;
     }
 }

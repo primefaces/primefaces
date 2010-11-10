@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2010 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,24 +29,28 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class MessageRenderer extends CoreRenderer {
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Message uiMessage = (Message) component;
 		UIComponent target = uiMessage.findComponent(uiMessage.getFor());
+        String display = uiMessage.getDisplay();
+        boolean iconOnly = display.equals("icon");
+        
 		if(target == null) {
 			throw new FacesException("Cannot find component \"" + uiMessage.getFor() + "\" in view.");
 		}
 			
 		Iterator<FacesMessage> msgs = facesContext.getMessages(target.getClientId(facesContext));
 
-		writer.startElement("span", uiMessage);
+		writer.startElement("div", uiMessage);
 		writer.writeAttribute("id", uiMessage.getClientId(facesContext), null);
 		
 		if(msgs.hasNext()) {
 			FacesMessage msg = msgs.next();
 			
 			if(msg.isRendered() && !uiMessage.isRedisplay()) {
-				writer.endElement("span");
+				writer.endElement("div");
 				return;
 				
 			} else {
@@ -57,25 +61,45 @@ public class MessageRenderer extends CoreRenderer {
 				else if(severity.equals(FacesMessage.SEVERITY_INFO)) severityKey = "info";
 				else if(severity.equals(FacesMessage.SEVERITY_WARN)) severityKey = "warn";
 				else if(severity.equals(FacesMessage.SEVERITY_FATAL))  severityKey = "fatal";
+
+                String styleClass = "ui-message-" + severityKey + " ui-widget ui-corner-all";
+                if(iconOnly) {
+                    styleClass = styleClass + " ui-message-icon-only ui-helper-clearfix";
+                }
 					
-				writer.writeAttribute("class", "ui-message-" + severityKey + " ui-widget ui-corner-all", null);
-				
-				if(uiMessage.isShowSummary())
-					encodeMessageText(writer, msg.getSummary(), severityKey + "-summary");
-				if(uiMessage.isShowDetail())
-					encodeMessageText(writer, msg.getDetail(), severityKey + "-detail");
+				writer.writeAttribute("class",styleClass , null);
+
+                if(!display.equals("text")) {
+                    encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
+                }
+
+                if(!iconOnly) {
+                    if(uiMessage.isShowSummary())
+                        encodeText(writer, msg.getSummary(), severityKey + "-summary");
+                    if(uiMessage.isShowDetail())
+                        encodeText(writer, msg.getDetail(), severityKey + "-detail");
+                }
 					
 				msg.rendered();
 			}
 		}
 		
-		writer.endElement("span");
+		writer.endElement("div");
 	}
 	
-	private void encodeMessageText(ResponseWriter writer, String text, String severity) throws IOException {
+	protected void encodeText(ResponseWriter writer, String text, String severity) throws IOException {
 		writer.startElement("span", null);
 		writer.writeAttribute("class", "ui-message-" + severity, null);
 		writer.write(text);
+		writer.endElement("span");
+	}
+
+    protected void encodeIcon(ResponseWriter writer, String severity, String title, boolean iconOnly) throws IOException {
+		writer.startElement("span", null);
+		writer.writeAttribute("class", "ui-message-" + severity + "-icon", null);
+        if(iconOnly) {
+            writer.writeAttribute("title", title, null);
+        }
 		writer.endElement("span");
 	}
 }
