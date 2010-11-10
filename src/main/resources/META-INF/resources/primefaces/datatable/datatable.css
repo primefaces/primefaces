@@ -97,3 +97,7 @@
 .ui-datatable .ui-selection-column {
     width: 20px;
 }
+
+.ui-datatable-odd, .ui-datatable-even {
+    
+}

@@ -451,11 +451,16 @@ public class DataTableRenderer extends CoreRenderer {
         boolean selected = handlePreselection(table, rowIndex, selectionMode, selection);
 
         ResponseWriter writer = context.getResponseWriter();
-        String rowStyleClass = table.getRowStyleClass();
-        rowStyleClass = rowStyleClass == null ? DataTable.ROW_CLASS : DataTable.ROW_CLASS + " " + rowStyleClass;
 
+        String userRowStyleClass = table.getRowStyleClass();
+        String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
+        
         if(selected && table.getSelectionMode() != null) {
             rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
+        }
+
+        if(userRowStyleClass != null) {
+            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
         }
 
         writer.startElement("tr", null);
