@@ -9,5 +9,5 @@
     </factory>
 
     <application>
-        <resource-handler>org.primefaces.examples.PrimeResourceHandler</resource-handler>
+        <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
     </application>
