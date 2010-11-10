@@ -36,6 +36,12 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
 		</attribute>
+        <attribute>
+			<name>display</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>both</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
