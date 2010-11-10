@@ -38,7 +38,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName) {
         Resource resource = super.createResource(resourceName, libraryName);
 
-        if(libraryName.equalsIgnoreCase("primefaces")) {
+        if(resource != null && libraryName.equalsIgnoreCase("primefaces")) {
             return new PrimeResource(resource);
         }
         else {
