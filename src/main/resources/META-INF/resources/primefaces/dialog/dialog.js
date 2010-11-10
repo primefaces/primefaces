@@ -15,10 +15,10 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.jq.dialog(this.cfg);
 
     //Close handler
-    this.jq.bind('dialogclose', function(event, ui) { _self.onHide(event, ui); });
+    this.jq.bind('dialogclose', function(event, ui) {_self.onHide(event, ui);});
 
     //Open handler
-    this.jq.bind('dialogopen', function(event, ui) { _self.onShow(event, ui); });
+    this.jq.bind('dialogopen', function(event, ui) {_self.onShow(event, ui);});
 
     //Hide close icon if dialog is not closable
     if(this.cfg.closable == false) {
@@ -28,7 +28,9 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     //Id reset and dom location
     this.jq.removeAttr('id').parent().attr('id', this.id);
 
-    
+    if(this.cfg.appendToBody) {
+        this.jq.parent().appendTo(document.body);
+    }
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
