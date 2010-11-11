@@ -140,17 +140,17 @@
   UNSELECTABLE     = "unselectable",
 
   // Class name constants
-  MAIN_CLASS       = "cleditorMain",    // main containing div
-  TOOLBAR_CLASS    = "cleditorToolbar", // toolbar div inside main div
-  GROUP_CLASS      = "cleditorGroup",   // group divs inside the toolbar div
-  BUTTON_CLASS     = "cleditorButton",  // button divs inside group div
-  DISABLED_CLASS   = "cleditorDisabled",// disabled button divs
-  DIVIDER_CLASS    = "cleditorDivider", // divider divs inside group div
-  POPUP_CLASS      = "cleditorPopup",   // popup divs inside body
-  LIST_CLASS       = "cleditorList",    // list popup divs inside body
-  COLOR_CLASS      = "cleditorColor",   // color popup div inside body
-  PROMPT_CLASS     = "cleditorPrompt",  // prompt popup divs inside body
-  MSG_CLASS        = "cleditorMsg",     // message popup div inside body
+  MAIN_CLASS       = "ui-editor",    // main containing div
+  TOOLBAR_CLASS    = "ui-editor-toolbar", // toolbar div inside main div
+  GROUP_CLASS      = "ui-editor-group",   // group divs inside the toolbar div
+  BUTTON_CLASS     = "ui-editor-button",  // button divs inside group div
+  DISABLED_CLASS   = "ui-editor-disabled",// disabled button divs
+  DIVIDER_CLASS    = "ui-editor-divider", // divider divs inside group div
+  POPUP_CLASS      = "ui-editor-popup",   // popup divs inside body
+  LIST_CLASS       = "ui-editor-list",    // list popup divs inside body
+  COLOR_CLASS      = "ui-editor-color",   // color popup div inside body
+  PROMPT_CLASS     = "ui-editor-prompt",  // prompt popup divs inside body
+  MSG_CLASS        = "ui-editor-message", // message popup div inside body
 
   // Test for ie
   ie = $.browser.msie,
