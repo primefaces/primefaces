@@ -24,18 +24,7 @@
 		&input_component_attributes;
 		&widget_var_attribute;
         <attribute>
-			<name>toolbar</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>complete</defaultValue>
-		</attribute>
-        <attribute>
-			<name>toolbarTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>styleClass</name>
+			<name>controls</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -45,10 +34,11 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
 		</attribute>
-		<attribute>
-			<name>language</name>
+        <attribute>
+			<name>width</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
