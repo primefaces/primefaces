@@ -50,14 +50,15 @@ public class EditorRenderer extends CoreRenderer{
 		String clientId = editor.getClientId(facesContext);
         String value = (String) editor.getValue();
         
-		writer.startElement("div", editor);
+		writer.startElement("textarea", editor);
 		writer.writeAttribute("id", clientId , null);
+        writer.writeAttribute("name", clientId , null);
 
         if(value != null) {
             writer.write(value);
         }
 
-		writer.endElement("div");
+		writer.endElement("textarea");
 	}
 	
 	private void encodeScript(FacesContext facesContext, Editor editor) throws IOException{
@@ -71,16 +72,6 @@ public class EditorRenderer extends CoreRenderer{
         writer.write("jQuery(function() {");
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + clientId + "',{");
-
-        if(editor.getToolbarTemplate() != null)
-            writer.write("toolbarTemplate:[" + editor.getToolbarTemplate() + "]");
-        else
-            writer.write("toolbar:'" + editor.getToolbar() + "'");
-
-        if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
-        if(editor.getStyleClass() != null) writer.write(",cssClass:'" + editor.getStyleClass() + "'");
-        if(editor.getLanguage() != null) writer.write(",lang:'" + editor.getLanguage() + "'");
-        if(editor.isLazy()) writer.write(",lazy:true");
 
 		writer.write("});});");
 		
