@@ -73,6 +73,13 @@ public class EditorRenderer extends CoreRenderer{
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + clientId + "',{");
 
+        writer.write("lazy:" + editor.isLazy());
+
+        if(editor.getControls() != null) writer.write(",controls:'" + editor.getControls() + "'");
+        if(editor.getWidth() != Integer.MIN_VALUE) writer.write(",width:" + editor.getWidth());
+        if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getWidth());
+        if(editor.isDisabled()) writer.write(",disabled:true");
+
 		writer.write("});});");
 		
 		writer.endElement("script");

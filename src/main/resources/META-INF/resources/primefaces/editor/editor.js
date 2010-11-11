@@ -1139,13 +1139,38 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     this.cfg = cfg;
     this.jq = jQuery(PrimeFaces.escapeClientId(id));
 
-    this.jq.cleditor();
+    if(!this.cfg.lazy) {
+        this.init();
+    }
 }
 
 PrimeFaces.widget.Editor.prototype.init = function() {
-    
+    if(!this.initialized) {
+        this.editor = this.jq.cleditor(this.cfg)[0];
+        this.initialized = true;
+
+        if(this.cfg.disabled) {
+            this.disable();
+        }
+    }
 }
 
 PrimeFaces.widget.Editor.prototype.saveHTML = function() {
-    
+    this.editor.updateTextArea();
+}
+
+PrimeFaces.widget.Editor.prototype.clear = function() {
+    this.editor.clear();
+}
+
+PrimeFaces.widget.Editor.prototype.enable = function() {
+    this.editor.disable(false);
+}
+
+PrimeFaces.widget.Editor.prototype.disable = function() {
+    this.editor.disable(true);
+}
+
+PrimeFaces.widget.Editor.prototype.focus = function() {
+    this.editor.focus();
 }
