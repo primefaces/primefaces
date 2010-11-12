@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UINamingContainer;
