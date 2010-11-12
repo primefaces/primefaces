@@ -17,6 +17,7 @@ package org.primefaces.component.chart;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
@@ -55,7 +56,12 @@ public class BaseChartRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
+        if(!chart.hasModel()) {
+            logger.log(Level.INFO, "Chart \"{0}\" has no ChartModel, declarative way of creating charts is deprecated, use a ChartModel instead.", chart.getClientId(context));
+        }
+
 		ResponseWriter writer = context.getResponseWriter();
+
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", chart.getClientId(context), null);
