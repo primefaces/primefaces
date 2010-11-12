@@ -17,23 +17,6 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
-		<attribute>
-			<name>resizable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>parser</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-		</attribute>
         <attribute>
 			<name>style</name>
 			<required>false</required>
