@@ -19,7 +19,10 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -30,25 +33,43 @@ import org.primefaces.util.ComponentUtils;
 public class DroppableRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+    public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Droppable droppable = (Droppable) component;
-        String clientId = droppable.getClientId(facesContext);
+        String clientId = droppable.getClientId(context);
+        String datasourceId = droppable.getDatasource();
 
-        if (params.containsKey(clientId)) {
+        if(params.containsKey(clientId)) {
             String dragId = params.get(clientId + "_dragId");
             String dropId = params.get(clientId + "_dropId");
+            DragDropEvent event = null;
 
-            droppable.queueEvent(new DragDropEvent(droppable, dragId, dropId));
+            if(datasourceId != null) {
+                UIData datasource = findDatasource(context, droppable, datasourceId);
+                String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
+                int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
+                datasource.setRowIndex(rowIndex);
+                Object data = datasource.getRowData();
+                datasource.setRowIndex(-1);
+
+                event = new DragDropEvent(droppable, dragId, dropId, data);
+
+            }
+            else {
+                event = new DragDropEvent(droppable, dragId, dropId);
+            }
+            
+
+            droppable.queueEvent(event);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Droppable droppable = (Droppable) component;
-        String target = findTarget(facesContext, droppable).getClientId(facesContext);
-        String clientId = droppable.getClientId(facesContext);
+        String target = findTarget(context, droppable).getClientId(context);
+        String clientId = droppable.getClientId(context);
         String onDropUpdate = droppable.getOnDropUpdate();
 
         writer.startElement("script", droppable);
@@ -57,33 +78,25 @@ public class DroppableRenderer extends CoreRenderer {
         writer.write(droppable.resolveWidgetVar() + " = new PrimeFaces.widget.Droppable('" + clientId + "', {");
         writer.write("target:'" + target + "'");
 
-        if (droppable.isDisabled())
-            writer.write(",disabled:true");
-        if (droppable.getHoverStyleClass() != null)
-            writer.write(",hoverClass:'" + droppable.getHoverStyleClass() + "'");
-        if (droppable.getActiveStyleClass() != null)
-            writer.write(",activeClass:'" + droppable.getActiveStyleClass() + "'");
-        if (droppable.getOnDrop() != null)
-            writer.write(",onDrop:" + droppable.getOnDrop());
-        if (droppable.getAccept() != null)
-            writer.write(",accept:'" + droppable.getAccept() + "'");
-        if (droppable.getScope() != null)
-            writer.write(",scope:'" + droppable.getScope() + "'");
-        if (droppable.getTolerance() != null)
-            writer.write(",tolerance:'" + droppable.getTolerance() + "'");
-
-        if (droppable.getDropListener() != null && onDropUpdate != null) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, droppable);
+        if(droppable.isDisabled()) writer.write(",disabled:true");
+        if(droppable.getHoverStyleClass() != null) writer.write(",hoverClass:'" + droppable.getHoverStyleClass() + "'");
+        if(droppable.getActiveStyleClass() != null) writer.write(",activeClass:'" + droppable.getActiveStyleClass() + "'");
+        if(droppable.getOnDrop() != null) writer.write(",onDrop:" + droppable.getOnDrop());
+        if(droppable.getAccept() != null) writer.write(",accept:'" + droppable.getAccept() + "'");
+        if(droppable.getScope() != null) writer.write(",scope:'" + droppable.getScope() + "'");
+        if(droppable.getTolerance() != null) writer.write(",tolerance:'" + droppable.getTolerance() + "'");
+        if(droppable.getDropListener() != null && onDropUpdate != null) {
+            UIComponent form = ComponentUtils.findParentForm(context, droppable);
             if (form == null) {
                 throw new FacesException("Droppable: '" + clientId + "' must be inside a form");
             }
 
             writer.write(",ajaxDrop:true");
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
-            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
+            writer.write(",url:'" + getActionURL(context) + "'");
+            writer.write(",formId:'" + form.getClientId(context) + "'");
 
             if (onDropUpdate != null)
-                writer.write(",onDropUpdate:'" + ComponentUtils.findClientIds(facesContext, droppable, onDropUpdate) + "'");
+                writer.write(",onDropUpdate:'" + ComponentUtils.findClientIds(context, droppable, onDropUpdate) + "'");
         }
 
         writer.write("});");
@@ -94,7 +107,7 @@ public class DroppableRenderer extends CoreRenderer {
     protected UIComponent findTarget(FacesContext facesContext, Droppable droppable) {
         String _for = droppable.getFor();
 
-        if (_for != null) {
+        if(_for != null) {
             UIComponent component = droppable.findComponent(_for);
             if (component == null)
                 throw new FacesException("Cannot find component \"" + _for + "\" in view.");
@@ -103,5 +116,14 @@ public class DroppableRenderer extends CoreRenderer {
         } else {
             return droppable.getParent();
         }
+    }
+
+    protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
+        UIComponent datasource = droppable.findComponent(datasourceId);
+        
+        if(datasource == null)
+            throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
+        else
+            return (UIData) datasource;
     }
 }
