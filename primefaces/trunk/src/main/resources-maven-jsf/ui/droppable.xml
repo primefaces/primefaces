@@ -73,6 +73,11 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <name>datasource</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </attributes>
     <resources>
         <resource>

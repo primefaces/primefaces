@@ -9,11 +9,20 @@ public class DragDropEvent extends FacesEvent {
 	private String dragId;
 
 	private String dropId;
+
+    private Object data;
 	
 	public DragDropEvent(UIComponent component, String dragId, String dropId) {
 		super(component);
 		this.dragId = dragId;
 		this.dropId = dropId;
+	}
+
+    public DragDropEvent(UIComponent component, String dragId, String dropId, Object data) {
+		super(component);
+		this.dragId = dragId;
+		this.dropId = dropId;
+        this.data = data;
 	}
 
 	@Override
@@ -33,4 +42,9 @@ public class DragDropEvent extends FacesEvent {
 	public String getDropId() {
 		return dropId;
 	}
+
+    public Object getData() {
+        return data;
+    }
+
 }
