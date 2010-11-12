@@ -48,7 +48,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
             source: _self.id,
             process: _self.id,
             update: _self.id,
-            formId: _self.cfg.id,
+            formId: _self.cfg.formId,
             onsuccess: function(responseXML) {
                 var xmlDoc = responseXML.documentElement,
                 updates = xmlDoc.getElementsByTagName("update");
