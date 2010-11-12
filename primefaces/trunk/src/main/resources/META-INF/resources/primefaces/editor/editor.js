@@ -1174,3 +1174,15 @@ PrimeFaces.widget.Editor.prototype.disable = function() {
 PrimeFaces.widget.Editor.prototype.focus = function() {
     this.editor.focus();
 }
+
+PrimeFaces.widget.Editor.prototype.selectAll = function() {
+    this.editor.select();
+}
+
+PrimeFaces.widget.Editor.prototype.getSelectedHtml = function() {
+    return this.editor.selectedHTML();
+}
+
+PrimeFaces.widget.Editor.prototype.getSelectedText = function() {
+    return this.editor.selectedText();
+}
