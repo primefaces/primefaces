@@ -10,7 +10,6 @@ import org.primefaces.util.ArrayUtils;
 		"alt",
         "autocomplete",
 		"dir",
-		"disabled",
 		"lang",
 		"maxlength",
 		"size",
