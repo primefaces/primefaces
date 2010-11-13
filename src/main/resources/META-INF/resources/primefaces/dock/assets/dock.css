@@ -7,7 +7,6 @@
 .ui-dock-container-top {
 	position: fixed;
 	height: 50px;
-	background: url("#{resource['primefaces:dock/assets/dock-bg-top.gif']}");
 	padding-left: 20px;
 }
 a.ui-dock-item-top {
@@ -40,7 +39,6 @@ a.ui-dock-item-top {
 .ui-dock-container-bottom {
 	position: fixed;
 	height: 50px;
-	background: url("#{resource['primefaces:dock/assets/dock-bg-bottom.gif']}");
 	padding-left: 20px;
 }
 a.ui-dock-item-bottom {

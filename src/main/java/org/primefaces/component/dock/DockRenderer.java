@@ -60,7 +60,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(dock.resolveWidgetVar() +" = new PrimeFaces.widget.Dock('" + clientId + "', {");
+		writer.write(dock.resolveWidgetVar() + " = new PrimeFaces.widget.Dock('" + clientId + "', {");
 		writer.write("maxWidth: " + dock.getMaxWidth());
 		writer.write(",items: 'a'");
 		writer.write(",itemsText: 'span'");
@@ -68,7 +68,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.write(",itemWidth: " + dock.getItemWidth());
 		writer.write(",proximity: " + dock.getProximity());
 		writer.write(",halign: '" + dock.getHalign() + "'");
-		writer.write("});\n");
+		writer.write("});");
 
 		writer.endElement("script");
 	}
@@ -80,10 +80,10 @@ public class DockRenderer extends CoreRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-dock-" + position, "styleClass");
+		writer.writeAttribute("class", "ui-dock-" + position + " ui-widget", "styleClass");
 	
 		writer.startElement("div", null);
-		writer.writeAttribute("class", "ui-dock-container-" + position, null);
+		writer.writeAttribute("class", "ui-dock-container-" + position + " ui-widget-header", null);
 		
 		encodeMenuItems(facesContext, dock);
 		
