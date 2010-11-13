@@ -1179,7 +1179,7 @@ PrimeFaces.widget.Editor.prototype.selectAll = function() {
     this.editor.select();
 }
 
-PrimeFaces.widget.Editor.prototype.getSelectedHtml = function() {
+PrimeFaces.widget.Editor.prototype.getSelectedHTML = function() {
     return this.editor.selectedHTML();
 }
 
