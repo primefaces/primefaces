@@ -12,12 +12,10 @@
 a.ui-dock-item-top {
 	display: block;
 	width: 40px;
-	color: #000;
 	position: absolute;
 	top: 0px;
 	text-align: center;
 	text-decoration: none;
-	font: bold 12px Arial, Helvetica, sans-serif;
 }
 .ui-dock-item-top img {
 	border: none; 
@@ -43,9 +41,7 @@ a.ui-dock-item-top {
 }
 a.ui-dock-item-bottom {
 	display: block; 
-	font: bold 12px Arial, Helvetica, sans-serif;
-	width: 40px; 
-	color: #000; 
+	width: 40px;  
 	bottom: 0px; 
 	position: absolute;
 	text-align: center;
