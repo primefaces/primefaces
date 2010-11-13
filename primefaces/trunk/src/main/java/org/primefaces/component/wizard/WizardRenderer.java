@@ -75,7 +75,7 @@ public class WizardRenderer extends CoreRenderer {
         }
     }
 
-    private void encodeScript(FacesContext facesContext, Wizard wizard) throws IOException {
+    protected void encodeScript(FacesContext facesContext, Wizard wizard) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = wizard.getClientId(facesContext);
 
@@ -91,10 +91,13 @@ public class WizardRenderer extends CoreRenderer {
         writer.write("formId:'" + form.getClientId(facesContext) + "'");
         writer.write(",url:'" + getActionURL(facesContext) + "'");
 
-        if (wizard.getOnback() != null) {
+        writer.write(",showStepStatus:" + wizard.isShowStepStatus());
+        writer.write(",showNavBar:" + wizard.isShowNavBar());
+
+        if(wizard.getOnback() != null) {
             writer.write(",onback:function(){" + wizard.getOnback() + "}");
         }
-        if (wizard.getOnnext() != null) {
+        if(wizard.getOnnext() != null) {
             writer.write(",onnext:function(){" + wizard.getOnnext() + "}");
         }
 
@@ -139,27 +142,25 @@ public class WizardRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    private void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {
+    protected void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = wizard.getClientId(facesContext);
-        String styleClass = wizard.getStyleClass() == null ? "ui-wizard" : "ui-wizard " + wizard.getStyleClass();
+        String styleClass = wizard.getStyleClass() == null ? "ui-wizard ui-widget" : "ui-wizard ui-widget " + wizard.getStyleClass();
 
         writer.startElement("div", wizard);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (wizard.getStyle() != null) {
+        if(wizard.getStyle() != null) {
             writer.writeAttribute("style", wizard.getStyle(), "style");
         }
 
-        writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + "_content", "id");
-        writer.writeAttribute("class", "ui-wizard-content", null);
+        if(wizard.isShowStepStatus()) {
+            encodeStepStatus(facesContext, wizard);
+        }
+        
+        encodeContent(facesContext, wizard);
 
-        encodeCurrentStep(facesContext, wizard);
-
-        writer.endElement("div");
-
-        if (wizard.isShowNavBar()) {
+        if(wizard.isShowNavBar()) {
             encodeNavigators(facesContext, wizard);
         }
 
@@ -192,6 +193,49 @@ public class WizardRenderer extends CoreRenderer {
         encodeNavigator(facesContext, wizard, clientId + "_next", widgetVar + ".next()", wizard.getNextLabel(), "ui-wizard-nav-next");
 
         writer.endElement("div");
+    }
+
+    protected void encodeContent(FacesContext facesContext, Wizard wizard) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = wizard.getClientId(facesContext);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_content", "id");
+        writer.writeAttribute("class", "ui-wizard-content", null);
+
+        encodeCurrentStep(facesContext, wizard);
+
+        writer.endElement("div");
+    }
+
+    protected void encodeStepStatus(FacesContext context, Wizard wizard) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String currentStep = wizard.getStep();
+        boolean currentFound = false;
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix", null);
+
+        for(UIComponent child : wizard.getChildren()) {
+            if(child instanceof Tab && child.isRendered()) {
+                Tab tab = (Tab) child;
+                String styleClass = "ui-wizard-step-title ui-state-default";
+
+                if((!currentFound) && (currentStep == null || tab.getId().equals(currentStep))) {
+                    styleClass += " ui-state-hover";
+                    currentFound = true;
+                }
+
+                styleClass += " ui-corner-all";
+
+                writer.startElement("li", null);
+                writer.writeAttribute("class", styleClass, null);
+                writer.write(tab.getTitle());
+                writer.endElement("li");
+            }
+        }
+
+        writer.endElement("ul");
     }
 
     protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String onclick, String label, String styleClass) throws IOException {

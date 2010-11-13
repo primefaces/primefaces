@@ -5,22 +5,28 @@ PrimeFaces.widget.Wizard = function(id, cfg) {
     this.content = this.jqId + '_content';
     this.backNav = this.jqId + '_back';
     this.nextNav = this.jqId + '_next';
+    
     this.currentStep = this.cfg.initialStep;
     var currentStepIndex = this.getStepIndex(this.currentStep);
 
-    /*
-     * Navigation controls
-     */
-    jQuery(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
-    jQuery(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
+    //Step controls
+    if(this.cfg.showStepStatus) {
+        this.stepControls = jQuery(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
+    }
 
-    jQuery(this.backNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
-    jQuery(this.nextNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
-	
-    if(currentStepIndex == 0)
-        jQuery(this.backNav).hide();
-    else if(currentStepIndex == this.cfg.steps.length - 1)
-        jQuery(this.nextNav).hide();
+    //Navigation controls
+    if(this.cfg.showNavBar) {
+        jQuery(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
+        jQuery(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
+
+        jQuery(this.backNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
+        jQuery(this.nextNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
+
+        if(currentStepIndex == 0)
+            jQuery(this.backNav).hide();
+        else if(currentStepIndex == this.cfg.steps.length - 1)
+            jQuery(this.nextNav).hide();
+    }
 }
 
 PrimeFaces.widget.Wizard.prototype.back = function() {
@@ -84,7 +90,6 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 
                 _self.currentStep = args.currentStep;
 
-
                 for(i=0; i < updates.length; i++) {
                     var id = updates[i].attributes.getNamedItem("id").nodeValue,
                     content = updates[i].firstChild.data;
@@ -105,17 +110,26 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 
                             //update navigation controls
                             var currentStepIndex = _self.getStepIndex(_self.currentStep);
-                            if(currentStepIndex == _self.cfg.steps.length - 1) {
-                                _self.hideNextNav();
-                                _self.showBackNav();
-                            } else if(currentStepIndex == 0) {
-                                _self.hideBackNav();
-                                _self.showNextNav();
-                            } else {
-                                _self.showBackNav();
-                                _self.showNextNav();
+
+                            if(_self.cfg.showStepStatus) {
+                                 if(currentStepIndex == _self.cfg.steps.length - 1) {
+                                    _self.hideNextNav();
+                                    _self.showBackNav();
+                                } else if(currentStepIndex == 0) {
+                                    _self.hideBackNav();
+                                    _self.showNextNav();
+                                } else {
+                                    _self.showBackNav();
+                                    _self.showNextNav();
+                                }
+
                             }
 
+                            if(_self.cfg.showNavBar) {
+                                _self.stepControls.removeClass('ui-state-hover');
+                                jQuery(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
+                            }
+                            
                         } else {
                             //update content
                             jQuery(_self.content).html(content);
