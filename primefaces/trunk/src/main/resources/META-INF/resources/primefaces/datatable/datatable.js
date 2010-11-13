@@ -400,7 +400,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
     
     //Check if rowclick triggered this event not an element in row content
-    if(jQuery(event.target).is('td')) {
+    if(jQuery(event.target).is('td,span')) {
         
         var row = jQuery(rowElement);
 
@@ -578,7 +578,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 PrimeFaces.widget.DataTable.prototype.onCellClick = function(event, cellElement) {
 
     //Check if rowclick triggered this event not an element in row content
-    if(jQuery(event.target).is('td')) {
+    if(jQuery(event.target).is('td,span')) {
 
         var cell = jQuery(cellElement);
 
