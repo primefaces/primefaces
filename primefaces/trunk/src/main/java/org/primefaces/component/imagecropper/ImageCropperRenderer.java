@@ -71,7 +71,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         if(cropper.getMaxSize() != null) writer.write(",maxSize:[" + cropper.getMaxSize() + "]");
         if(cropper.getBackgroundColor() != null) writer.write(",bgColor:'" + cropper.getBackgroundColor() + "'");
         if(cropper.getBackgroundOpacity() != 0.6) writer.write(",bgOpacity:" + cropper.getBackgroundOpacity());
-        if(cropper.getAspectRatio() != Double.MIN_VALUE) writer.write("aspectRatio:" + cropper.getAspectRatio());
+        if(cropper.getAspectRatio() != Double.MIN_VALUE) writer.write(",aspectRatio:" + cropper.getAspectRatio());
 
         //Initial crop area
 		if(cropper.getValue() != null) {
