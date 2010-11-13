@@ -929,8 +929,7 @@ PrimeFaces.widget.KeyboardUtils = {
 		shift : jQuery.keypad.SHIFT,
 		spacebar : jQuery.keypad.SPACE_BAR,
 		space : jQuery.keypad.SPACE,
-		halfspace : jQuery.keypad.HALF_SPACE,
-		
+		halfspace : jQuery.keypad.HALF_SPACE	
 	},
 
 	getPresetLayout : function(name) {
