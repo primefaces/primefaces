@@ -11,6 +11,9 @@
  * PrimeFace Dock Widget
  */
 PrimeFaces.widget.Dock = function(id, cfg) {
-	var elId = PrimeFaces.escapeClientId(id);
-	jQuery(elId).Fisheye(cfg);
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(id);
+ 
+	jQuery(this.jqId).Fisheye(this.cfg);
 }
