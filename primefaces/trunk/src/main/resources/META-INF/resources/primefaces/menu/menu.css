@@ -118,3 +118,7 @@
     border: 0 none;
     padding: 4px 24px;
 }
+
+.ui-widget-content .ui-menu-item a.ui-menu-item-label {
+    color:inherit;
+}
