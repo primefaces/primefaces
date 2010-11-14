@@ -18,7 +18,7 @@
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #d3d3d3/*{borderColorDefault}*/; background:url("#{resource['primefaces:skins/sam/images/sprite.png']}") repeat-x scroll 0 0 #D8D8D8; font-weight: normal/*{fwDefault}*/; color: #000000/*{fcDefault}*/; }
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #d3d3d3/*{borderColorDefault}*/; background:url("#{resource['primefaces:skins/sam/images/ui-default.png']}") repeat-x scroll 0 0 #D8D8D8; font-weight: normal/*{fwDefault}*/; color: #000000/*{fcDefault}*/; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #555555/*{fcDefault}*/; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #d3d3d3/*{borderColorHover}*/; background: #bfdaff url("#{resource['primefaces:skins/sam/images/sprite.png']}") repeat-x left -1300px; font-weight: normal/*{fwDefault}*/; color: #212121/*{fcHover}*/; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #212121/*{fcHover}*/; text-decoration: none; }
