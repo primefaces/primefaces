@@ -65,10 +65,10 @@ public class MenubarRenderer extends CoreRenderer {
 		}
 		
 		if(menubar.getZindex() != Integer.MAX_VALUE) writer.write(",zIndex:" + menubar.getZindex());
+
+        if(menubar.isAppendToBody()) writer.write(",appendToBody:true");
 		
 		writer.write("});");
-	
-		writer.write(widgetVar + ".render();");
 
 		writer.endElement("script");	
 	}
