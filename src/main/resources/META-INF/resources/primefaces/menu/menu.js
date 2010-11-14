@@ -18936,6 +18936,12 @@ PrimeFaces.widget.MenuBar = function(id, cfg) {
     }
 
 	PrimeFaces.widget.MenuBar.superclass.constructor.call(this, id, cfg);
+
+    this.render();
+
+    if(cfg.appendToBody) {
+        jQuery(PrimeFaces.escapeClientId(id)).find('.ui-menu').appendTo(document.body);
+    }
 }
 
 YAHOO.lang.extend(PrimeFaces.widget.MenuBar, YAHOO.widget.MenuBar,
