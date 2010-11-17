@@ -116,6 +116,7 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.write(inplace.resolveWidgetVar() + " = new PrimeFaces.widget.Inplace('" + clientId + "', {");
 		writer.write("effect:'" + inplace.getEffect() + "'");
 		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
+        writer.write(",event:'" + inplace.getEvent() + "'");
         
 		if(inplace.isDisabled()) writer.write(",disabled:true");
         if(inplace.isEditor()) {
