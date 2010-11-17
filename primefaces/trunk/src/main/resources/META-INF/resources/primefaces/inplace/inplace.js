@@ -51,3 +51,11 @@ PrimeFaces.widget.Inplace.prototype.toggle = function(elToShow, elToHide) {
             elToShow.show();
     }
 }
+
+PrimeFaces.widget.Inplace.prototype.getDisplay = function() {
+    return this.display;
+}
+
+PrimeFaces.widget.Inplace.prototype.getContent = function() {
+    return this.content;
+}
