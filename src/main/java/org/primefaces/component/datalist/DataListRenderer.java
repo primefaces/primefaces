@@ -123,18 +123,6 @@ public class DataListRenderer extends CoreRenderer {
             if (list.getRowsPerPageTemplate() != null) {
                 writer.write(",rowsPerPageOptions : [" + list.getRowsPerPageTemplate() + "]");
             }
-            if (list.getFirstPageLinkLabel() != null) {
-                writer.write(",firstPageLinkLabel:'" + list.getFirstPageLinkLabel() + "'");
-            }
-            if (list.getPreviousPageLinkLabel() != null) {
-                writer.write(",previousPageLinkLabel:'" + list.getPreviousPageLinkLabel() + "'");
-            }
-            if (list.getNextPageLinkLabel() != null) {
-                writer.write(",nextPageLinkLabel:'" + list.getNextPageLinkLabel() + "'");
-            }
-            if (list.getLastPageLinkLabel() != null) {
-                writer.write(",lastPageLinkLabel:'" + list.getLastPageLinkLabel() + "'");
-            }
             if (list.getCurrentPageReportTemplate() != null) {
                 writer.write(",pageReportTemplate:'" + list.getCurrentPageReportTemplate() + "'");
             }
