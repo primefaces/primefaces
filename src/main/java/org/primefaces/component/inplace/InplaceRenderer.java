@@ -16,6 +16,7 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,7 +26,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class InplaceRenderer extends CoreRenderer {
-
+    
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Inplace inplace = (Inplace) component;
@@ -37,11 +38,16 @@ public class InplaceRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inplace.getClientId(context);
+        
 		String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
         String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
         boolean disabled = inplace.isDisabled();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
+        
+        boolean validationFailed = context.isValidationFailed();
+        String displayStyle = validationFailed ? "none" : "inline";
+        String contentStyle = validationFailed ? "inline" : "none";
 
         //container
 		writer.startElement("span", inplace);
@@ -55,6 +61,7 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_display", "id");
 		writer.writeAttribute("class", displayClass, null);
+        writer.writeAttribute("style", "display:" + displayStyle, null);
 		writer.write(getLabelToRender(context, inplace));
 		writer.endElement("span");
 
@@ -63,7 +70,14 @@ public class InplaceRenderer extends CoreRenderer {
 			writer.startElement("span", null);
 			writer.writeAttribute("id", clientId + "_content", "id");
 			writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
+            writer.writeAttribute("style", "display:" + contentStyle, null);
+            
 			renderChildren(context, inplace);
+
+            if(inplace.isEditor()) {
+                encodeEditor(context, inplace);
+            }
+
 			writer.endElement("span");
 		}
 		
@@ -71,10 +85,25 @@ public class InplaceRenderer extends CoreRenderer {
 	}
 	
 	protected String getLabelToRender(FacesContext context, Inplace inplace) {
-		if(inplace.getLabel() != null)
-			return inplace.getLabel();
-		else
-			return ComponentUtils.getStringValueToRender(context, inplace.getChildren().get(0));
+        String label = inplace.getLabel();
+        String emptyLabel = inplace.getEmptyLabel();
+
+		if(label != null) {
+			return label;
+        }
+		else {
+            String value = ComponentUtils.getStringValueToRender(context, inplace.getChildren().get(0));
+
+            if(value == null || isValueBlank(value)) {
+                if(emptyLabel != null)
+                    return emptyLabel;
+                else
+                    return "";
+            }
+            else {
+                return value;
+            }
+        }
 	}
 
 	protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
@@ -89,10 +118,48 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
         
 		if(inplace.isDisabled()) writer.write(",disabled:true");
+        if(inplace.isEditor()) {
+            UIComponent form = ComponentUtils.findParentForm(context, inplace);
+            if (form == null) {
+                throw new FacesException("Inplace : \"" + inplace.getClientId(context) + "\" must be inside a form element");
+            }
+            
+            writer.write(",editor:true");
+            writer.write(",url:'" + getActionURL(context) + "'");
+            writer.write(",formId:'" + form.getClientId(context) + "'");
+
+            String onEditUpdate = inplace.getOnEditUpdate();
+            if(onEditUpdate != null) {
+                writer.write(",onEditUpdate:'" + ComponentUtils.findClientIds(context, inplace, onEditUpdate) + "'");
+            }
+        }
 
 		writer.write("});");
 		writer.endElement("script");
 	}
+
+    protected void encodeEditor(FacesContext context, Inplace inplace) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", inplace.getClientId(context) + "_editor", null);
+        writer.writeAttribute("class", Inplace.EDITOR_CLASS, null);
+
+        encodeButton(context, inplace, inplace.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS);
+        encodeButton(context, inplace, inplace.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS);
+
+        writer.endElement("span");
+    }
+    
+    protected void encodeButton(FacesContext context, Inplace inplace, String label, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+		writer.writeAttribute("class", styleClass, null);
+        writer.write(label);
+        writer.endElement("button");
+    }
 
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
