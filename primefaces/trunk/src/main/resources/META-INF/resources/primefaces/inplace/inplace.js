@@ -11,7 +11,8 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
     var _self = this;
 	
 	if(!this.cfg.disabled) {
-		this.display.click(function(){
+        
+		this.display.bind(this.cfg.event, function(){
             _self.show();
         });
         
