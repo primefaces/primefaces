@@ -25,6 +25,11 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<name>emptyLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
@@ -55,13 +60,42 @@
 			<type>java.lang.String</type>
 			<defaultValue>false</defaultValue>
 		</attribute>
+        <attribute>
+			<name>editor</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>saveLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Save</defaultValue>
+		</attribute>
+        <attribute>
+			<name>cancelLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Cancel</defaultValue>
+		</attribute>
+        <attribute>
+			<name>onEditUpdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
 			<name>inplace/inplace.css</name>
 		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
+		</resource>
+         <resource>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

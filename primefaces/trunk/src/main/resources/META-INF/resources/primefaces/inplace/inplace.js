@@ -10,7 +10,7 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
 
     var _self = this;
 	
-	if(!cfg.disabled) {
+	if(!this.cfg.disabled) {
 		this.display.click(function(){
             _self.show();
         });
@@ -20,7 +20,16 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
         }).mouseout(function(){
             jQuery(this).toggleClass("ui-state-highlight");
         });
+
+        if(this.cfg.editor) {
+            this.editor = jQuery(this.jqId + '_editor');
+
+            this.editor.children('.ui-inplace-save').button({icons: {primary: "ui-icon-check"},text:false}).click(function() {_self.save();});
+            this.editor.children('.ui-inplace-cancel').button({icons: {primary: "ui-icon-close"},text:false}).click(function() {_self.cancel();});
+        }
 	}
+
+    
 }
 
 PrimeFaces.widget.Inplace.prototype.show = function() {
@@ -58,4 +67,30 @@ PrimeFaces.widget.Inplace.prototype.getDisplay = function() {
 
 PrimeFaces.widget.Inplace.prototype.getContent = function() {
     return this.content;
+}
+
+PrimeFaces.widget.Inplace.prototype.save = function() {
+    this.doAjaxInplaceRequest(this.id, this.cfg.onEditUpdate);
+}
+
+PrimeFaces.widget.Inplace.prototype.cancel = function() {
+    this.doAjaxInplaceRequest();
+}
+
+PrimeFaces.widget.Inplace.prototype.doAjaxInplaceRequest = function(process, update) {
+    var options = {
+        source: this.id,
+        update:this.id,
+        formId: this.cfg.formId
+    };
+
+    if(process) {
+        options.process = process;
+    }
+
+    if(update) {
+        options.update = options.update + ' ' + update;
+    }
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options);
 }
