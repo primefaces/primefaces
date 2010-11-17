@@ -1,15 +1,3 @@
-.pf-inplace-highlight {
-	background-color: #FFFFBA;
-}
-
-.pf-inplace-display {
-	cursor: pointer;
-}
-
-.pf-inplace-display-disabled {
-	cursor: default;
-}
-
-.pf-inplace-content {
-	display: none;
-}
+.ui-inplace .ui-inplace-display {cursor: pointer;border:0px none !important;}
+.ui-inplace .ui-inplace-disabled {cursor: default;}
+.ui-inplace .ui-inplace-content {display: none;}

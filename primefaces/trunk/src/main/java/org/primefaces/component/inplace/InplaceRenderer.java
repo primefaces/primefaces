@@ -27,50 +27,59 @@ import org.primefaces.util.ComponentUtils;
 public class InplaceRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Inplace inplace = (Inplace) component;
 		
-		encodeMarkup(facesContext, inplace);
-		encodeScript(facesContext, inplace);
+		encodeMarkup(context, inplace);
+		encodeScript(context, inplace);
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Inplace inplace) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = inplace.getClientId(facesContext);
-		String displayClass = inplace.isDisabled() ? "pf-inplace-display-disabled" : "pf-inplace-display";
-		
+	protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = inplace.getClientId(context);
+		String userStyleClass = inplace.getStyleClass();
+        String userStyle = inplace.getStyle();
+        String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
+        boolean disabled = inplace.isDisabled();
+        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
+
+        //container
 		writer.startElement("span", inplace);
 		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", "pf-inplace", "id");
-		
+		writer.writeAttribute("class", styleClass, "id");
+        if(userStyle != null) {
+            writer.writeAttribute("style", userStyle, "id");
+        }
+
+        //display
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_display", "id");
 		writer.writeAttribute("class", displayClass, null);
-		writer.write(getLabelToRender(facesContext, inplace));
+		writer.write(getLabelToRender(context, inplace));
 		writer.endElement("span");
-		
+
+        //content
 		if(!inplace.isDisabled()) {	
 			writer.startElement("span", null);
 			writer.writeAttribute("id", clientId + "_content", "id");
-			writer.writeAttribute("class", "pf-inplace-content", null);
-			renderChildren(facesContext, inplace);
+			writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
+			renderChildren(context, inplace);
 			writer.endElement("span");
 		}
 		
 		writer.endElement("span");
 	}
 	
-	protected String getLabelToRender(FacesContext facesContext, Inplace inplace) {
-		if(inplace.getLabel() != null) {
+	protected String getLabelToRender(FacesContext context, Inplace inplace) {
+		if(inplace.getLabel() != null)
 			return inplace.getLabel();
-		} else {
-			return ComponentUtils.getStringValueToRender(facesContext, inplace.getChildren().get(0));
-		}
+		else
+			return ComponentUtils.getStringValueToRender(context, inplace.getChildren().get(0));
 	}
 
-	protected void encodeScript(FacesContext facesContext, Inplace inplace) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = inplace.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = inplace.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -78,7 +87,9 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.write(inplace.resolveWidgetVar() + " = new PrimeFaces.widget.Inplace('" + clientId + "', {");
 		writer.write("effect:'" + inplace.getEffect() + "'");
 		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
+        
 		if(inplace.isDisabled()) writer.write(",disabled:true");
+
 		writer.write("});");
 		writer.endElement("script");
 	}
