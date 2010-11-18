@@ -68,26 +68,6 @@
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
 		</attribute>
 		<attribute>
-			<name>firstPageLinkLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>previousPageLinkLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>nextPageLinkLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>lastPageLinkLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
