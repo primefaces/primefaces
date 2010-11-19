@@ -103,7 +103,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
     //Row mouseover, mouseout, click
     if(this.cfg.selectionMode) {
         var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
-        selector = this.isCellSelectionEnabled() ? this.jqId + ' tbody tr td' : this.jqId + ' tbody tr';
+        selector = this.isCellSelectionEnabled() ? this.jqId + ' tbody.ui-datatable-data tr td' : this.jqId + ' tbody.ui-datatable-data tr';
 
         jQuery(selector)
             .css('cursor', 'pointer')
@@ -136,14 +136,14 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
     else if(this.cfg.columnSelectionMode) {
         
         if(this.cfg.columnSelectionMode == 'single') {
-            jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:radio')
+            jQuery(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:radio')
                 .die()
                 .live('click', function() {
                     _self.selectRowWithRadio(this);
                 });
         }
         else {
-            jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:checkbox')
+            jQuery(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox')
                 .die()
                 .live('click', function() {
                     _self.selectRowWithCheckbox(this);
@@ -160,7 +160,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
 PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
     var _self = this;
 
-    jQuery(this.jqId + ' tbody tr td span.ui-row-toggler')
+    jQuery(this.jqId + ' tbody.ui-datatable-data tr td span.ui-row-toggler')
             .die()
             .live('click', function() {
                 _self.toggleExpansion(this);
@@ -545,7 +545,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
     checked = checkbox.attr('checked');
 
     if(checked) {
-        jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', true);
+        jQuery(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', true);
 
         if(this.getPaginator() != null) {
             for(var i=0; i < this.getPaginator().getTotalRecords(); i++) {
@@ -553,7 +553,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
             }
 
         } else {
-            jQuery(this.jqId + ' .ui-datatable-data tr').each(function() {
+            jQuery(this.jqId + ' tbody.ui-datatable-data tr').each(function() {
                 this.selection.push(jQuery(this).attr('id').split('_row_')[1]);
             });
         }
@@ -563,7 +563,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 
     }
     else {
-        jQuery(this.jqId + ' .ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', false);
+        jQuery(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', false);
 
         this.clearSelection();
     }
@@ -595,7 +595,7 @@ PrimeFaces.widget.DataTable.prototype.selectCell = function(cell) {
 
     //unselect previous selection
     if(this.cfg.selectionMode === 'singlecell') {
-        jQuery(this.jqId + ' tbody td').removeClass('ui-selected ui-state-highlight');
+        jQuery(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-highlight');
         this.selection = [];
     }
 
@@ -837,7 +837,7 @@ PrimeFaces.widget.DataTable.prototype.isCellSelectionEnabled = function() {
  * Returns true|false if datatable has incell editors
  */
 PrimeFaces.widget.DataTable.prototype.getRowEditors = function() {
-    return jQuery(this.jqId + ' tbody tr td span.ui-row-editor');
+    return jQuery(this.jqId + ' tbody.ui-datatable-data tr td span.ui-row-editor');
 }
 
 /**

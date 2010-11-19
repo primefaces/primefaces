@@ -395,23 +395,26 @@ public class DataTableRenderer extends CoreRenderer {
         String columnSelectionMode = table.getColumnSelectionMode();
         String selMode = selectionMode != null ? selectionMode : columnSelectionMode != null ? columnSelectionMode : null;
         Object selection = table.getSelection();
+        
+        int rows = table.getRows();
+		int first = table.getFirst();
+        int rowCount = table.getRowCount();
+        int rowCountToRender = rows == 0 ? rowCount : rows;
+        boolean hasData = rowCount > 0;
 
         //Load lazy data initially
         if(table.isLazy() && !table.initiallyLoaded()) {
             table.loadLazyData();
             table.markAsLoaded();
         }
+
+        String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
       
         writer.startElement("tbody", null);
         writer.writeAttribute("id", clientId + "_data", null);
-        writer.writeAttribute("class", DataTable.DATA_CLASS, null);
+        writer.writeAttribute("class", tbodyClass, null);
 
-        int rows = table.getRows();
-		int first = table.getFirst();
-        int rowCount = table.getRowCount();
-        int rowCountToRender = rows == 0 ? rowCount : rows;
-
-        if(rowCount > 0) {
+        if(hasData) {
             for(int i = first; i < (first + rowCountToRender); i++) {
                 encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns, selMode, selection);
             }
@@ -420,10 +423,12 @@ public class DataTableRenderer extends CoreRenderer {
             //Empty message
             writer.startElement("tr", null);
             writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumns().size(), null);
             writer.write(emptyMessage);
             writer.endElement("td");
+            
             writer.endElement("tr");
         }
 		
