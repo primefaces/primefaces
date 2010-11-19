@@ -15,6 +15,7 @@ import java.lang.StringBuilder;
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
     public static final String COLUMN_FOOTER_CLASS = "ui-state-default";
     public static final String DATA_CLASS = "ui-datatable-data";
+    public static final String EMPTY_DATA_CLASS = "ui-datatable-data-empty";
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-tl ui-corner-tr";
     public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
