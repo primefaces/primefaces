@@ -43,23 +43,35 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-		<attribute>
+        <attribute>
+			<name>pageLinks</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>10</defaultValue>
+		</attribute>
+         <attribute>
+			<name>paginatorPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>both</defaultValue>
+		</attribute>
+         <attribute>
 			<name>paginatorAlwaysVisible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+		</attribute>
+        <attribute>
+			<name>page</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
 		</attribute>
 		<attribute>
 			<name>scrollable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
 		</attribute>
 		<attribute>
 			<name>height</name>
@@ -95,36 +107,10 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<name>paginatorPosition</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>both</defaultValue>
-		</attribute>
-		<attribute>
 			<name>emptyMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>No records found.</defaultValue>
-		</attribute>
-		<attribute>
-			<name>errorMessage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>loadingMessage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>sortAscMessage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>sortDescMessage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>update</name>
@@ -188,18 +174,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>page</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-		</attribute>
-		<attribute>
-			<name>pageLinks</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>10</defaultValue>
 		</attribute>
         <attribute>
 			<name>liveScroll</name>
