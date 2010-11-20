@@ -5,13 +5,22 @@ PrimeFaces.widget.CommandButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = jQuery(this.jqId);
 	
-	jQuery(this.jqId).button(this.cfg);
+	this.jq.button(this.cfg);
 	
 	//firefox focus fix
-	jQuery(this.jqId).mouseout(function() {
+	this.jq.mouseout(function() {
 		jQuery(this).removeClass('ui-state-focus');
 	});
+}
+
+PrimeFaces.widget.CommandButton.prototype.disable = function() {
+    this.jq.button('disable');
+}
+
+PrimeFaces.widget.CommandButton.prototype.enable = function() {
+    this.jq.button('enable');
 }
 
 /* 
