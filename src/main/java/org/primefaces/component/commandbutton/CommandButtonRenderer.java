@@ -129,7 +129,7 @@ public class CommandButtonRenderer extends CoreRenderer {
                     hasParam = true;
                 }
 
-                request.append(addSubmitParam(formId, param.getName(), (String) param.getValue()));
+                request.append(addSubmitParam(formId, param.getName(), String.valueOf(param.getValue())));
 			}
 		}
 

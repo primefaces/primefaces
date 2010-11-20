@@ -257,7 +257,7 @@ public class CoreRenderer extends Renderer {
 			if(child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
-                request.append(addSubmitParam(formId, param.getName(), (String) param.getValue()));
+                request.append(addSubmitParam(formId, param.getName(), String.valueOf(param.getValue())));
 			}
 		}
 
