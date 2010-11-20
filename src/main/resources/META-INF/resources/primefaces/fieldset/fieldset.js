@@ -5,20 +5,23 @@ PrimeFaces.widget.Fieldset = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.legend = this.jqId + ' .ui-fieldset-legend';
+    this.jq = jQuery(this.jqId);
+    this.legend = this.jq.children('.ui-fieldset-legend');
 
     var _self = this;
     if(this.cfg.toggleable) {
-        this.content = this.jqId + ' .ui-fieldset-content';
-        this.toggler = this.jqId + ' .ui-fieldset-toggler';
-        this.stateHolder = this.jqId + '_collapsed';
+        
+        this.content = this.jq.children('.ui-fieldset-content');
+        this.toggler = this.legend.children('.ui-fieldset-toggler');
+        this.stateHolder = jQuery(this.jqId + '_collapsed');
 
         //Add clickable legend state behavior
-        jQuery(this.legend).click(function() {_self.toggle();})
-                           .mouseover(function() {jQuery(this).toggleClass('ui-state-hover');})
-                           .mouseout(function() {jQuery(this).toggleClass('ui-state-hover');})
-                           .mousedown(function() {jQuery(this).toggleClass('ui-state-active');})
-                           .mouseup(function() {jQuery(this).toggleClass('ui-state-active');})
+        var _legend = this.legend;
+        this.legend.click(function() {_self.toggle();})
+                           .mouseover(function() {_legend.toggleClass('ui-state-hover');})
+                           .mouseout(function() {_legend.toggleClass('ui-state-hover');})
+                           .mousedown(function() {_legend.toggleClass('ui-state-active');})
+                           .mouseup(function() {_legend.toggleClass('ui-state-active');})
     }
 }
 
@@ -30,7 +33,7 @@ PrimeFaces.widget.Fieldset.prototype.toggle = function() {
     this.updateToggleState(this.cfg.collapsed);
 
     var _self = this;
-    jQuery(this.content).slideToggle(this.cfg.toggleSpeed,
+    this.content.slideToggle(this.cfg.toggleSpeed,
         function() {
             if(_self.cfg.ajaxToggle) {
                 _self.fireToggleEvent();
@@ -63,10 +66,11 @@ PrimeFaces.widget.Fieldset.prototype.fireToggleEvent = function() {
  */
 PrimeFaces.widget.Fieldset.prototype.updateToggleState = function(collapsed) {
     if(collapsed)
-        jQuery(this.toggler).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
+        this.toggler.removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
     else
-        jQuery(this.toggler).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
+        this.toggler.removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
 
     this.cfg.collapsed = !collapsed;
-    jQuery(this.stateHolder).val(!collapsed);
+    
+    this.stateHolder.val(!collapsed);
 }
