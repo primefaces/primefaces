@@ -31,7 +31,12 @@ import org.primefaces.util.HTML;
 public class CommandLinkRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {	
+	public void decode(FacesContext facesContext, UIComponent component) {
+        CommandLink link = (CommandLink) component;
+        if(link.isDisabled()) {
+            return;
+        }
+        
 		String param = component.getClientId();
 
 		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param)) {

@@ -31,7 +31,12 @@ import org.primefaces.util.HTML;
 public class CommandButtonRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {		
+	public void decode(FacesContext facesContext, UIComponent component) {
+        CommandButton button = (CommandButton) component;
+        if(button.isDisabled()) {
+            return;
+        }
+        
 		String param = component.getClientId(facesContext);
 		
 		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param)) {
