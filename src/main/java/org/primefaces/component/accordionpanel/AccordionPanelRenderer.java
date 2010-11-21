@@ -73,16 +73,18 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-        
-		if(accordionPanel.getStyle() != null)
-            writer.writeAttribute("style", accordionPanel.getStyle(), null);
-		if(accordionPanel.getStyleClass() != null)
-            writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
-	
+		if(accordionPanel.getStyle() != null) writer.writeAttribute("style", accordionPanel.getStyle(), null);
+		if(accordionPanel.getStyleClass() != null) writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
+
+        writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_acco", null);
+
 		encodeTabs(context, accordionPanel);
-        
-		encodeStateHolder(context, accordionPanel);
-		
+  
+        writer.endElement("div");
+
+        encodeStateHolder(context, accordionPanel);
+
 		writer.endElement("div");
 	}
 
