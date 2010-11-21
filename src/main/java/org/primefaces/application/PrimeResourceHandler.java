@@ -21,7 +21,7 @@ import javax.faces.application.ResourceHandlerWrapper;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
-    public final static String VERSION = "2.2.RC2-SNAPSHOT";
+    public final static String VERSION = "2.2-SNAPSHOT";
     public final static String LIBRARY = "primefaces";
 
     private ResourceHandler wrapped;
