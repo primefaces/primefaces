@@ -40,7 +40,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>sheet/jquery.sheet.css</name>
+			<name>sheet/sheet.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -48,10 +48,7 @@
 		<resource>
 			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
-		<resource>
-			<name>sheet/jquery.sheet.js</name>
-		</resource>
-		<resource>
+        <resource>
 			<name>core/core.js</name>
 		</resource>
 		<resource>

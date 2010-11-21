@@ -51,6 +51,7 @@ public class SpreadsheetRenderer extends CoreRenderer {
 		
 		writer.startElement("div", ss);
 		writer.writeAttribute("id", clientId + "_datatransports", "id");
+        writer.writeAttribute("style", "display:none", null);
 		for(UIComponent component : ss.getChildren()) {
 			encodeSheet(facesContext, (Sheet) component, false);
 		}
@@ -67,8 +68,10 @@ public class SpreadsheetRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {");
+
 		writer.write(ss.resolveWidgetVar() + " = new PrimeFaces.widget.Spreadsheet('" + clientId + "', {");
 		writer.write("editable:" + ss.isEditable());
+        
 		if(ss.getTitle() != null) writer.write(",title:'" + ss.getTitle() + "'");
 		if(ss.getColumnWidth() != Integer.MIN_VALUE) writer.write(",newColumnWidth:" + ss.getColumnWidth());
 		
@@ -79,15 +82,13 @@ public class SpreadsheetRenderer extends CoreRenderer {
 	
 	protected void encodeSheet(FacesContext facesContext, Sheet sheet, boolean datasource) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = sheet.getClientId(facesContext);
-		String tableId = datasource ? clientId + "_datasource" : clientId + "_datatransport";
 		int first = sheet.getFirst();
 		int rowCount = sheet.getRowCount();
 		
 		writer.startElement("table", sheet);
-		writer.writeAttribute("id", tableId, "id");
-		if(!datasource) writer.writeAttribute("style", "display:none", null);
-		if(sheet.getTitle() != null) writer.writeAttribute("title", sheet.getTitle(), null);
+		if(sheet.getTitle() != null) {
+            writer.writeAttribute("title", sheet.getTitle(), null);
+        }
 		
 		writer.startElement("tbody", null);
 		
@@ -118,11 +119,13 @@ public class SpreadsheetRenderer extends CoreRenderer {
 		
 		sheet.setRowIndex(-1);		//cleanup
 	}
-	
+
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do Nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
