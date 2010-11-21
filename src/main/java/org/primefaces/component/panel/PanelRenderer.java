@@ -85,11 +85,12 @@ public class PanelRenderer extends CoreRenderer {
         writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.Panel('" + clientId + "', {");
         writer.write("visible:" + panel.isVisible());
 
-        if (panel.isToggleable()) {
+        if(panel.isToggleable()) {
+            writer.write(",toggleable:true");
             writer.write(",toggleSpeed:" + panel.getToggleSpeed());
             writer.write(",collapsed:" + panel.isCollapsed());
 
-            if (panel.getToggleListener() != null) {
+            if(panel.getToggleListener() != null) {
                 writer.write(",ajaxToggle:true");
 
                 if (panel.getOnToggleUpdate() != null) {
@@ -99,7 +100,9 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         if (panel.isClosable()) {
+            writer.write(",closable:true");
             writer.write(",closeSpeed:" + panel.getCloseSpeed());
+
             if (panel.getOnCloseStart() != null) {
                 writer.write(",onCloseStart:" + panel.getOnCloseStart());
             }

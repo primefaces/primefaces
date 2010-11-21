@@ -1,7 +1,20 @@
+/**
+ * PrimeFaces Panel Widget
+ */
 PrimeFaces.widget.Panel = function(id, cfg) {
     this.id = id;
-    this.jqId = PrimeFaces.escapeClientId(id);
     this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(id);
+
+    if(this.cfg.toggleable) {
+        this.toggler = jQuery(this.jqId + '_toggler');
+        this.toggleStateHolder = jQuery(this.jqId + '_collapsed');
+        this.content = jQuery(this.jqId + '_content');
+    }
+
+    if(this.cfg.closable) {
+        this.visibleStateHolder = jQuery(this.jqId + "_visible");
+    }
 	
     if(!this.cfg.visible) {
         jQuery(this.jqId).css('display','none');
@@ -9,24 +22,20 @@ PrimeFaces.widget.Panel = function(id, cfg) {
 }
 
 PrimeFaces.widget.Panel.prototype.toggle = function() {
-    var togglerIcon = this.jqId + '_toggler',
-    toggleStateHolder = this.jqId + '_collapsed',
-    content = this.jqId + "_content";
-    
     if(this.cfg.collapsed) {
-        jQuery(togglerIcon).removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
+        this.toggler.removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
         this.cfg.collapsed = false;
-        jQuery(toggleStateHolder).val(false);
+        this.toggleStateHolder.val(false);
     }
     else {
-        jQuery(togglerIcon).removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
+        this.toggler.removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
         this.cfg.collapsed = true;
-        jQuery(toggleStateHolder).val(true);
+        this.toggleStateHolder.val(true);
     }
 	
     var _self = this;
 
-    jQuery(content).slideToggle(this.cfg.toggleSpeed,
+    this.content.slideToggle(this.cfg.toggleSpeed,
         function() {
             if(_self.cfg.ajaxToggle) {
                 var options = {
@@ -49,7 +58,7 @@ PrimeFaces.widget.Panel.prototype.toggle = function() {
 }
 
 PrimeFaces.widget.Panel.prototype.close = function() {
-    jQuery(this.jqId + "_visible").val(false);
+    this.visibleStateHolder.val(false);
 
     if(this.cfg.onCloseStart) {
         this.cfg.onCloseStart.call();
@@ -84,8 +93,8 @@ PrimeFaces.widget.Panel.prototype.close = function() {
     } else {
 
         jQuery(this.jqId).fadeOut(this.cfg.closeSpeed, function() {
-            if(scope.cfg.onCloseComplete) {
-                scope.cfg.onCloseComplete.call();
+            if(_self.cfg.onCloseComplete) {
+                _self.cfg.onCloseComplete.call();
             }
         });
     }
@@ -94,5 +103,5 @@ PrimeFaces.widget.Panel.prototype.close = function() {
 PrimeFaces.widget.Panel.prototype.show = function() {
     jQuery(this.jqId).fadeIn(this.cfg.closeSpeed);
 	
-    jQuery(this.visibleStateHolder).val(true);
+    this.visibleStateHolder.val(true);
 }
