@@ -71,20 +71,26 @@ public class RatingRenderer extends CoreRenderer {
     private void encodeScript(FacesContext facesContext, Rating rating) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = rating.getClientId(facesContext);
+        boolean hasRateListener = rating.getRateListener() != null;
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(rating.resolveWidgetVar() + " = new PrimeFaces.widget.Rating('" + clientId + "'");
         writer.write(",{");
-        if (rating.getRateListener() != null) {
+
+        writer.write("hasRateListener:" + hasRateListener);
+
+        if(rating.getOnRate() != null) writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");
+        
+        if(hasRateListener) {
             UIComponent form = ComponentUtils.findParentForm(facesContext, rating);
 
             if (form == null) {
                 throw new FacesException("Rating:\"" + clientId + "\" needs to be enclosed in a form when using a rateListener");
             }
 
-            writer.write("hasRateListener:true");
+            ;
             writer.write(",formId:'" + form.getClientId(facesContext) + "'");
             writer.write(",url:'" + getActionURL(facesContext) + "'");
 
@@ -92,6 +98,7 @@ public class RatingRenderer extends CoreRenderer {
                 writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, rating, rating.getUpdate()) + "'");
             }
         }
+        
         writer.write("});");
 
         writer.endElement("script");
@@ -100,24 +107,18 @@ public class RatingRenderer extends CoreRenderer {
     private void encodeMarkup(FacesContext facesContext, Rating rating) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = rating.getClientId(facesContext);
-        Object value = rating.getValue();
+        Double value = (Double) rating.getValue();
 
-        if (value != null && !(value instanceof Double)) {
-            throw new FacesException("Value of rating component with id \"" + clientId + "\" value must be of type java.lang.Double");
-        }
-
-        Double ratingValue = (Double) value;
         writer.startElement("span", rating);
         writer.writeAttribute("id", clientId, "id");
 
-        for (int i = 1; i <= rating.getStars(); i++) {
+        for(int i = 1; i <= rating.getStars(); i++) {
             writer.startElement("input", null);
             writer.writeAttribute("name", clientId + "_input", null);
             writer.writeAttribute("type", "radio", null);
             writer.writeAttribute("value", i, null);
-            writer.writeAttribute("class", "ui-rating-star", null);
 
-            if (ratingValue != null && ratingValue.intValue() == i) {
+            if(value != null && value.intValue() == i) {
                 writer.writeAttribute("checked", "checked", null);
             }
 
