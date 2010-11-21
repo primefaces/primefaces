@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>tableView</tag>
+	<tagClass>org.primefaces.touch.component.tableview.TableViewTag</tagClass>
+	<componentClass>org.primefaces.touch.component.tableview.TableView</componentClass>
+	<componentType>org.primefaces.touch.TableView</componentType>
+	<componentFamily>org.primefaces.touch</componentFamily>
+	<rendererType>org.primefaces.touch.component.TableViewRenderer</rendererType>
+	<rendererClass>org.primefaces.touch.component.tableview.TableViewRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>
