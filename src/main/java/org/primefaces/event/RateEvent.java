@@ -6,13 +6,13 @@ import javax.faces.event.FacesListener;
 
 public class RateEvent extends FacesEvent {
 
-	private Double rating;
+	private double rating;
 
 	public RateEvent(UIComponent component) {
 		super(component);
 	}
 	
-	public RateEvent(UIComponent component, Double rating) {
+	public RateEvent(UIComponent component, double rating) {
 		super(component);
 		this.rating = rating;
 	}
@@ -27,11 +27,11 @@ public class RateEvent extends FacesEvent {
 		throw new UnsupportedOperationException();
 	}
 	
-	public Double getRating() {
+	public double getRating() {
 		return rating;
 	}
 
-	public void setRating(Double rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 }

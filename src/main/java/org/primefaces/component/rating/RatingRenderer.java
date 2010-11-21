@@ -38,26 +38,23 @@ public class RatingRenderer extends CoreRenderer {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = rating.getClientId();
         String value = params.get(clientId + "_input");
+        String submittedValue = value == null ? "0" : value;
         boolean isAjaxRating = params.containsKey(clientId + "_ajaxRating");
 
-        if(value != null) {
-            rating.setSubmittedValue(value);
-        }
+        rating.setSubmittedValue(submittedValue);
 
         if(isAjaxRating) {
             RateEvent rateEvent;
 
-            if (isValueBlank(value)) {
-                rateEvent = new RateEvent(rating, null);
-            } else {
+            if(isValueBlank(value))
+                rateEvent = new RateEvent(rating, 0D);
+            else
                 rateEvent = new RateEvent(rating, Double.valueOf(value));
-            }
 
-            if (rating.isImmediate()) {
+            if(rating.isImmediate())
                 rateEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            } else {
+            else
                 rateEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
 
             rating.queueEvent(rateEvent);
         }
