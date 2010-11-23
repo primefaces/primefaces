@@ -350,3 +350,16 @@ import java.lang.StringBuilder;
         setFirst(0);
         setPage(1);
     }
+
+    public void calculatePage() {
+        int rows = this.getRows();
+        int currentPage = this.getPage();
+        int numberOfPages = (int) Math.ceil(this.getRowCount() * 1d / rows);
+
+        if(currentPage > numberOfPages) {
+            currentPage = numberOfPages;
+
+            this.setPage(currentPage);
+            this.setFirst((currentPage-1) * rows);
+        }
+    }
