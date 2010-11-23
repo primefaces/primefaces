@@ -146,11 +146,15 @@ public class DataTableRenderer extends CoreRenderer {
         boolean hasPaginator = table.isPaginator();
         String paginatorPosition = table.getPaginatorPosition();
 
+        if(hasPaginator) {
+            table.calculatePage();
+        }
+
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", containerClass, clientId);
+        writer.writeAttribute("class", containerClass, "styleClass");
         if((style = table.getStyle()) != null) {
-            writer.writeAttribute("style", style, clientId);
+            writer.writeAttribute("style", style, "style");
         }
 
         encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
