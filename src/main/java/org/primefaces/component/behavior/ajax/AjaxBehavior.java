@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -190,9 +191,9 @@ public class AjaxBehavior extends ClientBehaviorBase {
         //Backward compatible implementation of listener invocation
         if(listener != null) {
             try {
+                listener.invoke(eLContext, new Object[]{});
+            } catch(MethodNotFoundException mnfe) {
                 listener.invoke(eLContext, new Object[]{event});
-            } catch(IllegalArgumentException exception) {
-                listener.invoke(eLContext, new Object[0]);
             }
         }
         else if(action != null) {
@@ -201,7 +202,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
         else if(actionListener != null) {
             try {
                 actionListener.invoke(eLContext, new Object[]{new ActionEvent(event.getComponent())});
-            } catch(IllegalArgumentException exception) {
+            } catch(IllegalArgumentException iae) {
                 actionListener.invoke(eLContext, new Object[0]);
             }
         }

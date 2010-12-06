@@ -356,7 +356,7 @@ import java.lang.StringBuilder;
         int currentPage = this.getPage();
         int numberOfPages = (int) Math.ceil(this.getRowCount() * 1d / rows);
 
-        if(currentPage > numberOfPages) {
+        if(currentPage > numberOfPages && numberOfPages > 0) {
             currentPage = numberOfPages;
 
             this.setPage(currentPage);
