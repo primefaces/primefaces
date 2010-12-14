@@ -163,7 +163,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.1.6</version>
+                <version>1.1.7-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>generate-ui</id>
