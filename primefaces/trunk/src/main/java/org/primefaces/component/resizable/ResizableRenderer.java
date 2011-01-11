@@ -79,7 +79,7 @@ public class ResizableRenderer extends CoreRenderer {
         }
 
         //Config
-        if(resizable.isProxy()) writer.write(",helper:'ui-resizable-helper'");
+        if(resizable.isProxy()) writer.write(",helper:'ui-resizable-proxy'");
         if(resizable.getHandles() != null) writer.write(",handles:'" + resizable.getHandles() + "'");
         if(resizable.getGrid() != 1) writer.write(",grid:" + resizable.getGrid());
         if(resizable.isAspectRatio()) writer.write(",aspectRatio:true");
