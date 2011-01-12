@@ -3,7 +3,7 @@ PrimeFaces.widget.Stack = function(id, cfg) {
 	openSpeed = cfg.openSpeed,
 	closeSpeed = cfg.closeSpeed;
 	
-	jQuery(elId + '.pf-stack>img').toggle(function(){
+	jQuery(elId + '.ui-stack>img').toggle(function(){
 		var vertical = 0;
 		var horizontal = 0;
 		var el=jQuery(this);

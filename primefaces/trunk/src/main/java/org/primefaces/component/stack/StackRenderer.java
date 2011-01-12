@@ -61,7 +61,7 @@ public class StackRenderer extends CoreRenderer {
 		
 		writer.startElement("div", stack);
 		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", "pf-stack", null);
+		writer.writeAttribute("class", "ui-stack", null);
 		
 		writer.startElement("img", null);
 		writer.writeAttribute("src", getResourceURL(facesContext, stack.getIcon()), null);
