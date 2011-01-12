@@ -88,12 +88,6 @@
 			<defaultValue>500</defaultValue>
 		</attribute>
 		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>blue</defaultValue>
-		</attribute>
-		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
