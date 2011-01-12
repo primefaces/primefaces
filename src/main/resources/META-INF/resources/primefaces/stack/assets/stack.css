@@ -1,10 +1,10 @@
-.pf-stack { position: fixed; bottom: 28px; right: 40px; }
-.pf-stack > img { position: relative; cursor: pointer; padding-top: 35px; z-index: 2; }
-.pf-stack ul { list-style: none; position: absolute; top: 5px; cursor: pointer; z-index: 1; margin: 0; padding: 0;}
-.pf-stack ul li { position: absolute; }
-.pf-stack ul li img { border: 0; }
-.pf-stack ul li span { display: none; }
-.pf-stack .openStack li span { 
+.ui-stack { position: fixed; bottom: 28px; right: 40px; }
+.ui-stack > img { position: relative; cursor: pointer; padding-top: 35px; z-index: 2; }
+.ui-stack ul { list-style: none; position: absolute; top: 5px; cursor: pointer; z-index: 1; margin: 0; padding: 0;}
+.ui-stack ul li { position: absolute; }
+.ui-stack ul li img { border: 0; }
+.ui-stack ul li span { display: none; }
+.ui-stack .openStack li span {
 	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
 	display:block;
 	height: 14px;
@@ -26,6 +26,6 @@
 }
 
 /* IE Fixes */
-.pf-stack { _position: absolute; }
-.pf-stack ul { _z-index:-1; _top:-15px; }
-.pf-stack ul li { *right:5px; }
+.ui-stack { _position: absolute; }
+.ui-stack ul { _z-index:-1; _top:-15px; }
+.ui-stack ul li { *right:5px; }
