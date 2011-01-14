@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,6 @@ package org.primefaces.application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
 
-/**
- *
- * @author jagatai
- */
 public class PrimeResource extends ResourceWrapper {
 
     private Resource resource;
@@ -38,5 +34,40 @@ public class PrimeResource extends ResourceWrapper {
     @Override
     public String getRequestPath() {
         return super.getRequestPath() + "&amp;v=" + PrimeResourceHandler.VERSION;
+    }
+
+    @Override
+    public String getContentType() {
+        return getWrapped().getContentType();
+    }
+
+    @Override
+    public String getLibraryName() {
+        return getWrapped().getLibraryName();
+    }
+
+    @Override
+    public String getResourceName() {
+        return getWrapped().getResourceName();
+    }
+
+    @Override
+    public void setContentType(String contentType) {
+        getWrapped().setContentType(contentType);
+    }
+
+    @Override
+    public void setLibraryName(String libraryName) {
+        getWrapped().setLibraryName(libraryName);
+    }
+
+    @Override
+    public void setResourceName(String resourceName) {
+        getWrapped().setResourceName(resourceName);
+    }
+
+    @Override
+    public String toString() {
+        return getWrapped().toString();
     }
 }
