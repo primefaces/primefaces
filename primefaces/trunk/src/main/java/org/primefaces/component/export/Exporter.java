@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,27 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 import org.primefaces.component.datatable.DataTable;
 
 public abstract class Exporter {
+
+    public abstract void export(FacesContext facesContext, DataTable table,
+			String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,
+			String encodingType, MethodExpression preProcessor,
+			MethodExpression postProcessor) throws IOException;
+
 	
-	public List<UIColumn> getColumnsToExport(UIData table, int[] excludedColumns) {
+	protected List<UIColumn> getColumnsToExport(UIData table, int[] excludedColumns) {
         List<UIColumn> allColumns = new ArrayList<UIColumn>();
         List<UIColumn> columnsToExport = new ArrayList<UIColumn>();
         
@@ -53,8 +64,67 @@ public abstract class Exporter {
 		}
     }
 
-	public abstract void export(FacesContext facesContext, DataTable table,
-			String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,
-			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+    protected String exportValue(FacesContext context, UIComponent component) {
+
+        if(component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
+            HtmlCommandLink link = (HtmlCommandLink) component;
+            Object value = link.getValue();
+
+            if(value != null) {
+                return String.valueOf(value);
+            } else {
+                //export first value holder
+                for(UIComponent child : link.getChildren()) {
+                    if(child instanceof ValueHolder) {
+                        return exportValue(context, child);
+                    }
+                }
+
+                return null;
+            }
+        }
+        else if(component instanceof ValueHolder) {
+
+			if(component instanceof EditableValueHolder) {
+				Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
+				if (submittedValue != null) {
+					return submittedValue.toString();
+				}
+			}
+
+			ValueHolder valueHolder = (ValueHolder) component;
+			Object value = valueHolder.getValue();
+			if(value == null)
+				return "";
+
+			//first ask the converter
+			if(valueHolder.getConverter() != null) {
+				return valueHolder.getConverter().getAsString(context, component, value);
+			}
+			//Try to guess
+			else {
+				ValueExpression expr = component.getValueExpression("value");
+				if(expr != null) {
+					Class<?> valueType = expr.getType(context.getELContext());
+					if(valueType != null) {
+						Converter converterForType = context.getApplication().createConverter(valueType);
+
+						if(converterForType != null)
+							return converterForType.getAsString(context, component, value);
+					}
+				}
+			}
+
+			//No converter found just return the value as string
+			return value.toString();
+		} else {
+			//This would get the plain texts on UIInstructions when using Facelets
+			String value = component.toString();
+
+			if(value != null)
+				return value.trim();
+			else
+				return "";
+		}
+    }
 }

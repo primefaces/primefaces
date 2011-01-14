@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
 
 public class ExcelExporter extends Exporter {
 
+    @Override
 	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
     	HSSFWorkbook wb = new HSSFWorkbook();
     	HSSFSheet sheet = wb.createSheet();
@@ -83,25 +83,25 @@ public class ExcelExporter extends Exporter {
 
     private void addColumnValue(HSSFRow rowHeader, UIComponent component, int index) {
         HSSFCell cell = rowHeader.createCell(index);
-        String value = component == null ? "" : ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
         cell.setCellValue(new HSSFRichTextString(value));
     }
     
     private void addColumnValue(HSSFRow rowHeader, List<UIComponent> components, int index) {
         HSSFCell cell = rowHeader.createCell(index);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         
         for(UIComponent component : components) {
         	if(component.isRendered()) {
-                String value = ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+                String value = exportValue(FacesContext.getCurrentInstance(), component);
                 
                 if(value != null)
-                	buffer.append(value);
+                	builder.append(value);
             }
 		}  
         
-        cell.setCellValue(new HSSFRichTextString(buffer.toString()));
+        cell.setCellValue(new HSSFRichTextString(builder.toString()));
     }
     
     private void writeExcelToResponse(HttpServletResponse response, HSSFWorkbook generatedExcel, String filename) throws IOException {
