@@ -111,7 +111,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                             //update navigation controls
                             var currentStepIndex = _self.getStepIndex(_self.currentStep);
 
-                            if(_self.cfg.showStepStatus) {
+                            if(_self.cfg.showNavBar) {
                                  if(currentStepIndex == _self.cfg.steps.length - 1) {
                                     _self.hideNextNav();
                                     _self.showBackNav();
@@ -125,7 +125,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 
                             }
 
-                            if(_self.cfg.showNavBar) {
+                            if(_self.cfg.showStepStatus) {
                                 _self.stepControls.removeClass('ui-state-hover');
                                 jQuery(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
                             }
