@@ -224,3 +224,8 @@ PrimeFaces.widget.GMap.prototype.addOverlays = function(overlays) {
 		}
 	}
 }
+
+PrimeFaces.widget.GMap.prototype.checkResize = function() {
+    google.maps.event.trigger(this.map, 'resize');
+    this.map.setZoom(this.map.getZoom());
+}
