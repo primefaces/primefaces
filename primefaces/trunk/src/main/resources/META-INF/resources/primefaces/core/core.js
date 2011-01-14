@@ -123,6 +123,13 @@ PrimeFaces.ajax.AjaxUtils = {
 };
 
 PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
+    if(cfg.onstart) {
+       var retVal = cfg.onstart.call(this);
+       if(retVal == false) {
+           return;  //cancel request
+       }
+    }
+    
     var requestParams = null;
 
     if(cfg.formId) {
@@ -168,10 +175,6 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
         data : requestParams,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-
-           if(cfg.onstart) {
-               cfg.onstart.call(this, xhr);
-           }
         },
         success : function(data, status, xhr) {
             if(cfg.onsuccess) {
