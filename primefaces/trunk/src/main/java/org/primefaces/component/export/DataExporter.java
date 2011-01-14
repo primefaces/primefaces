@@ -73,8 +73,9 @@ public class DataExporter implements ActionListener, StateHolder {
 			encodingType = (String) encoding.getValue(elContext);
 
 		int[] excludedColumnIndexes = null;
-		if(excludeColumns != null)
+		if(excludeColumns != null) {
 			excludedColumnIndexes = resolveExcludedColumnIndexes((String) excludeColumns.getValue(elContext));
+        }
 		
 		boolean isPageOnly = false;
 		if(pageOnly != null) {
@@ -99,13 +100,19 @@ public class DataExporter implements ActionListener, StateHolder {
 	}
 
 	private int[] resolveExcludedColumnIndexes(String columnsToExclude) {
-		String[] columnIndexesAsString = columnsToExclude.split(",");
-		int[] indexes = new int[columnIndexesAsString.length];
-		
-		for(int i=0; i < indexes.length; i++) 
-			indexes[i] = Integer.parseInt(columnIndexesAsString[i].trim());
-		
-		return indexes;
+        if(columnsToExclude == null || columnsToExclude.equals("")) {
+            return null;
+        }
+        else {
+            String[] columnIndexesAsString = columnsToExclude.split(",");
+            int[] indexes = new int[columnIndexesAsString.length];
+
+            for(int i=0; i < indexes.length; i++) {
+                indexes[i] = Integer.parseInt(columnIndexesAsString[i].trim());
+            }
+
+            return indexes;
+        }
 	}
 
 	public boolean isTransient() {
