@@ -92,6 +92,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
 		if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
 		if(!dialog.isClosable()) writer.write(",closable:false");
+        if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
 		
 		//Position
 		String position = dialog.getPosition();	

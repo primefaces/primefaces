@@ -24,6 +24,10 @@ PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
 		jQuery(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
 	}
 
+    if(this.cfg.appendToBody) {
+        this.jq.parent().appendTo(document.body);
+    }
+
 }
 
 PrimeFaces.widget.ConfirmDialog.prototype.show = function() {
