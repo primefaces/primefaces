@@ -81,17 +81,20 @@ PrimeFaces.widget.Inplace.prototype.cancel = function() {
 PrimeFaces.widget.Inplace.prototype.doAjaxInplaceRequest = function(process, update) {
     var options = {
         source: this.id,
-        update:this.id,
+        update: this.id,
         formId: this.cfg.formId
     };
 
+    var params = {};
+
     if(process) {
         options.process = process;
+        params[this.id + '_save'] = true;
     }
 
     if(update) {
         options.update = options.update + ' ' + update;
     }
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options);
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
