@@ -351,6 +351,11 @@ import java.lang.StringBuilder;
         setPage(1);
     }
 
+    public void reset() {
+        resetValue();
+        resetPagination();
+    }
+
     public void calculatePage() {
         int rows = this.getRows();
         int currentPage = this.getPage();
