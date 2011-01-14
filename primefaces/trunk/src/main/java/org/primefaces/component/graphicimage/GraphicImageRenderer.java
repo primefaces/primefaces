@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,36 +31,41 @@ import org.primefaces.util.HTML;
 
 public class GraphicImageRenderer extends CoreRenderer {
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		GraphicImage image = (GraphicImage) component;
-		String clientId = image.getClientId(facesContext);
-		String imageSrc = image.getValue() == null ? "" : getImageSrc(facesContext, image);
+		String clientId = image.getClientId(context);
+		String imageSrc = image.getValue() == null ? "" : getImageSrc(context, image);
 		
 		writer.startElement("img", image);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("src", imageSrc, null);
 		
-		if(image.getAlt() == null) writer.writeAttribute("alt", "", null);	//xhtml
+		if(image.getAlt() == null) writer.writeAttribute("alt", "", null);
 		if(image.getStyleClass() != null) writer.writeAttribute("class", image.getStyleClass(), "styleClass");
 		
-		renderPassThruAttributes(facesContext, image, HTML.IMG_ATTRS);
+		renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
 
 		writer.endElement("img");
 	}
 	
-	protected String getImageSrc(FacesContext facesContext, GraphicImage image) {
+	protected String getImageSrc(FacesContext context, GraphicImage image) {
 		String src = null;
 		Object value = image.getValue();
 
 		//Create url for dynamic or static image
 		if(value instanceof StreamedContent) {
 			ValueExpression valueVE = image.getValueExpression("value");
-			String veString = valueVE.getExpressionString();
-			String expressionParamValue = veString.substring(2, veString.length() - 1);
-			
-			StringBuilder builder = new StringBuilder(getActionURL(facesContext));
-			builder.append("?").append(DynamicContentStreamer.DYNAMIC_CONTENT_PARAM).append("=").append(expressionParamValue);
+			String expressionString = valueVE.getExpressionString();
+			String expressionParamValue = expressionString.substring(2, expressionString.length() - 1);
+
+            String actionURL = getActionURL(context);
+            StringBuilder builder = new StringBuilder();
+            
+            char queryChar = actionURL.contains("?") ? '&' : '?';
+
+            builder.append(actionURL).append(queryChar).append(DynamicContentStreamer.DYNAMIC_CONTENT_PARAM).append("=").append(expressionParamValue);
 			
 			for(UIComponent kid : image.getChildren()) {
 				if(kid instanceof UIParameter) {
@@ -73,7 +78,7 @@ public class GraphicImageRenderer extends CoreRenderer {
 			src = builder.toString();
 		}
 		else {
-	        src = getResourceURL(facesContext, (String) value);
+	        src = getResourceURL(context, (String) value);
 		}
 		
 		//Add caching if needed
