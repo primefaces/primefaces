@@ -210,7 +210,7 @@ public class CoreRenderer extends Renderer {
 
         //callbacks
         if(source.getOnstart() != null)
-            req.append(",onstart:function(xhr){").append(source.getOnstart()).append(";}");
+            req.append(",onstart:function(){").append(source.getOnstart()).append(";}");
         if(source.getOnerror() != null)
             req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
         if(source.getOnsuccess() != null)
