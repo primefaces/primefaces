@@ -649,6 +649,11 @@ PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement
 }
 
 PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
+
+    if(this.cfg.onExpandStart) {
+        this.cfg.onExpandStart.call(this, row);
+    }
+
     var options = {
         source: this.id,
         process: this.id,

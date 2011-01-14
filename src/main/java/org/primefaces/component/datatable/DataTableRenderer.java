@@ -116,6 +116,9 @@ public class DataTableRenderer extends CoreRenderer {
         //Row expansion
         if(table.getFacet("expansion") != null) {
             writer.write(",expansion:true");
+            if(table.getOnExpandStart() != null) {
+                writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
+            }
         }
 
         if(table.isScrollable()) {
