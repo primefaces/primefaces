@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
 
 public class XMLExporter extends Exporter {
 
+    @Override
 	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
     	
@@ -94,7 +94,7 @@ public class XMLExporter extends Exporter {
             	UIComponent header = ((UIColumn) child).getHeader();
             	
             	if(header != null && header.isRendered()) {
-            		String value = ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), header);
+            		String value = exportValue(FacesContext.getCurrentInstance(), header);
             		
             		headers.add(value);
             	} else {
@@ -106,19 +106,19 @@ public class XMLExporter extends Exporter {
 	}
 	
 	private void addColumnValue(PrintWriter writer, List<UIComponent> components, String header) throws IOException {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		String tag = header.toLowerCase();
 		writer.write("\t\t<" + tag + ">");
 
 		for(UIComponent component : components) {
 			if(component.isRendered()) {
-				String value = ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
-				buffer.append(value);
+				builder.append(value);
 			}
 		}
 
-		writer.write(buffer.toString());
+		writer.write(builder.toString());
 		
 		writer.write("</" + tag + ">\n");
 	}

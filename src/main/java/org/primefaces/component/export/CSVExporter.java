@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
 
 public class CSVExporter extends Exporter {
 
+    @Override
 	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
 		OutputStream os = response.getOutputStream();
@@ -94,23 +94,22 @@ public class CSVExporter extends Exporter {
     }
 	
 	private void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
-		String value = component == null ? "" : ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
             
         writer.write("\"" + value + "\"");
 	}
 	
 	private void addColumnValue(PrintWriter writer, List<UIComponent> components) throws IOException {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		
 		for(UIComponent component : components) {
 			if(component.isRendered()) {
-				String value = ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
-				buffer.append(value);
+				builder.append(value);
 			}
 		}
 		
-		writer.write("\"" + buffer.toString() + "\"");
-       
+		writer.write("\"" + builder.toString() + "\"");
 	}
 }

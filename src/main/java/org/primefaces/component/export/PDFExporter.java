@@ -28,7 +28,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -105,24 +104,24 @@ public class PDFExporter extends Exporter {
 	}
 
     private void addColumnValue(PdfPTable pdfTable, UIComponent component, int index, Font font) {
-    	String value = component == null ? "" : ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+    	String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
             
         pdfTable.addCell(new Paragraph(value, font));
     }
     
     private void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, int index, Font font) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         
         for(UIComponent component : components) {
         	if(component.isRendered() ) {
-        		String value = ComponentUtils.getStringValueToRender(FacesContext.getCurrentInstance(), component);
+        		String value = exportValue(FacesContext.getCurrentInstance(), component);
                 
                 if(value != null)
-                	buffer.append(value);
+                	builder.append(value);
             }
 		}  
         
-        pdfTable.addCell(new Paragraph(buffer.toString(), font));
+        pdfTable.addCell(new Paragraph(builder.toString(), font));
     }
     
     private void writePDFToResponse(HttpServletResponse response, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     
@@ -137,20 +136,4 @@ public class PDFExporter extends Exporter {
         baos.writeTo(out);
         out.flush();
     }
-  
-    public UIComponent findComponentById(FacesContext context, UIComponent root, String id) {
-		UIComponent component = null;
-		
-		for (int i = 0; i < root.getChildCount() && component == null; i++) {
-			UIComponent child = (UIComponent) root.getChildren().get(i);
-			component = findComponentById(context, child, id);
-		}
-
-		if (root.getId() != null) {
-			if (component == null && root.getId().equals(id)) {
-				component = root;
-			}
-		}
-		return component;
-	}
 }
