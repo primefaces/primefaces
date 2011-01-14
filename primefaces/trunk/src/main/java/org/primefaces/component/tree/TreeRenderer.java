@@ -210,7 +210,7 @@ public class TreeRenderer extends CoreRenderer {
 			writer.write(",propagateHighlightUp:" + tree.isPropagateSelectionUp());
 			
 			if(tree.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, tree, tree.getUpdate()) + "'");
-			if(tree.getOnselectStart() != null) writer.write(",onselectStart:function(xhr){" + tree.getOnselectStart() + ";}");
+			if(tree.getOnselectStart() != null) writer.write(",onselectStart:function(){" + tree.getOnselectStart() + ";}");
 			if(tree.getOnselectComplete() != null) writer.write(",onselectComplete:function(xhr,status,args){" + tree.getOnselectComplete() + ";}");
 		}
 		

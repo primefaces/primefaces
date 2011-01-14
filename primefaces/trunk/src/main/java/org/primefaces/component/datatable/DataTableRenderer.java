@@ -671,9 +671,9 @@ public class DataTableRenderer extends CoreRenderer {
             }
 
             //onselectstart and onselectcomplete are deprecated but still here for backward compatibility for some time
-            if(table.getOnselectStart() != null) writer.write(",onRowSelectStart:function(xhr) {" + table.getOnselectStart() + "}");
+            if(table.getOnselectStart() != null) writer.write(",onRowSelectStart:function() {" + table.getOnselectStart() + "}");
             if(table.getOnselectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnselectComplete() + "}");
-            if(table.getOnRowSelectStart() != null) writer.write(",onRowSelectStart:function(xhr) {" + table.getOnRowSelectStart() + "}");
+            if(table.getOnRowSelectStart() != null) writer.write(",onRowSelectStart:function() {" + table.getOnRowSelectStart() + "}");
             if(table.getOnRowSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnRowSelectComplete() + "}");
         }
 
