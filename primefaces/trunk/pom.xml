@@ -181,7 +181,6 @@
                         <goals>
                             <goal>generate-components</goal>
                             <goal>generate-facelets-taglib</goal>
-                            <goal>generate-tld</goal>
                         </goals>
                     </execution>
                     <execution>
@@ -196,7 +195,6 @@
                         <goals>
                             <goal>generate-components</goal>
                             <goal>generate-facelets-taglib</goal>
-                            <goal>generate-tld</goal>
                         </goals>
                     </execution>
                     <execution>
