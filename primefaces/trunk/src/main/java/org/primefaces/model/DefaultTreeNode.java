@@ -32,6 +32,8 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	private TreeNode parent;
 	
 	private boolean expanded;
+
+    private boolean selected;
 	
 	public DefaultTreeNode() {}
 
@@ -97,6 +99,14 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		}
 	}
 
+    public boolean isSelected() {
+        return this.selected;
+    }
+
+    public void setSelected(boolean value) {
+        this.selected = value;
+    }
+    
 	public void addChild(TreeNode treeNode) {
 		treeNode.setParent(this);
 		children.add(treeNode);
