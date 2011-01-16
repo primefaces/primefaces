@@ -33,7 +33,9 @@ PrimeFaces.widget.TreeView = function(id, definition, config) {
 		
 		if(this.cfg.selectionMode === 'single') {
 			this.singleNodeHighlight = true;
-		}		
+		}
+
+        this.prehighlightSelectedNodes();
 	}
 	
 	if(this.cfg.dynamic) {
@@ -176,5 +178,15 @@ YAHOO.lang.extend(PrimeFaces.widget.TreeView, YAHOO.widget.TreeView,
 	
 	isSelectionEnabled : function() {
 		return this.cfg.selectionMode != undefined;
-	}
+	},
+
+    prehighlightSelectedNodes : function() {
+        var selectedNodes = this.getNodesByProperty('selected', true);
+
+        if(selectedNodes != null) {
+            for(var i = 0; i < selectedNodes.length; i++) {
+                selectedNodes[i].highlight();
+            }
+        }
+    }
 });

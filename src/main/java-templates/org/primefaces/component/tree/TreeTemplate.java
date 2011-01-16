@@ -47,9 +47,35 @@ import org.primefaces.model.TreeNode;
 	
 	public void processUpdates(FacesContext context) {
 		super.processUpdates(context);
-		Object selection = this.getSelection();
-		
-		if(selection != null) {
+        
+        String selectionMode = this.getSelectionMode();
+
+        if(selectionMode != null) {
+
+            Object selection = this.getLocalSelectedNodes();
+            Object previousSelection = this.getValueExpression("selection").getValue(context.getELContext());
+
+            if(selectionMode.equals("single")) {
+                if(previousSelection != null)
+                    ((TreeNode) previousSelection).setSelected(false);
+                if(selection != null)
+                    ((TreeNode) selection).setSelected(true);
+            } 
+            else {
+                TreeNode[] previousSelections = (TreeNode[]) previousSelection;
+                TreeNode[] selections = (TreeNode[]) selection;
+
+                if(previousSelections != null) {
+                    for(TreeNode node : previousSelections)
+                        node.setSelected(false);
+                }
+
+                if(selections != null) {
+                    for(TreeNode node : selections)
+                        node.setSelected(true);
+                }
+            }
+
 			this.getValueExpression("selection").setValue(context.getELContext(), selection);
 			setSelection(null);
 		}
@@ -62,3 +88,7 @@ import org.primefaces.model.TreeNode;
     public boolean isNodeLoadRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicLoad");
 	}
+
+    public Object getLocalSelectedNodes() {
+        return getStateHelper().get(PropertyKeys.selection);
+    }

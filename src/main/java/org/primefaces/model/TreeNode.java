@@ -37,5 +37,9 @@ public interface TreeNode {
 
 	public int getChildCount();
 	
-	public boolean isLeaf();	
+	public boolean isLeaf();
+
+    public boolean isSelected();
+
+    public void setSelected(boolean value);
 }

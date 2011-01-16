@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.ServletResponse;
 
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
@@ -255,6 +254,7 @@ public class TreeRenderer extends CoreRenderer {
 		
 		if(node.isLeaf()) writer.write(",isLeaf:true");
 		if(uiTreeNode.getStyleClass() != null) writer.write(",contentStyle:'" + uiTreeNode.getStyleClass() + "'");
+        if(node.isSelected()) writer.write(",selected:true");
 		
 		if(node.isExpanded()) {
 			writer.write(",expanded:true");
