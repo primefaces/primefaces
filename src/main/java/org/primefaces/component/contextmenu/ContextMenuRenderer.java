@@ -83,7 +83,8 @@ public class ContextMenuRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		boolean firstMenuitem = true;
 		UIComponent form = ComponentUtils.findParentForm(facesContext, menu);
-		
+
+        writer.write(widgetVar + ".clearContent();");
 		writer.write(widgetVar + ".addItems([");
 		
 		for(UIComponent child : menu.getChildren()) {
