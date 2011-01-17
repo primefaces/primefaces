@@ -25,6 +25,61 @@
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
 		</attribute>
+        <attribute>
+			<name>trigger</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>my</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>at</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>static</defaultValue>
+		</attribute>
+        <attribute>
+			<name>tiered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>FADE</defaultValue>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>0.25</defaultValue>
+		</attribute>
+        <attribute>
+			<name>autoSubmenuDisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 		<attribute>
 			<name>visible</name>
 			<required>false</required>
@@ -56,12 +111,6 @@
 			<defaultValue>true</defaultValue>
 		</attribute>
 		<attribute>
-			<name>position</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>static</defaultValue>
-		</attribute>
-		<attribute>
 			<name>clickToHide</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
@@ -72,30 +121,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>tiered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>FADE</defaultValue>
-		</attribute>
-		<attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>0.25</defaultValue>
-		</attribute>
-		<attribute>
-			<name>autoSubmenuDisplay</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
 		</attribute>
 		<attribute>
 			<name>showDelay</name>
@@ -121,16 +146,6 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -144,20 +159,20 @@
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>menu/menu.css</name>
+        <resource>
+			<name>wijmo/wijmo.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
         <resource>
 			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>menu/menu.js</name>
+			<name>wijmo/wijmo.js</name>
 		</resource>
 	</resources>
 </component>

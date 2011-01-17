@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,244 +31,189 @@ import org.primefaces.util.ComponentUtils;
 public class MenuRenderer extends CoreRenderer{
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		Menu menu = (Menu) component;
-		
+
 		if(menu.shouldBuildFromModel()) {
 			menu.buildMenuFromModel();
 		}
-		
-		encodeMarkup(facesContext, menu);
-		encodeScript(facesContext, menu);
+
+		encodeMarkup(context, menu);
+		encodeScript(context, menu);
 	}
 
-	protected void encodeScript(FacesContext facesContext, Menu menu) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = menu.getClientId(facesContext);
-        String widgetVar = menu.resolveWidgetVar();
-		
+	protected void encodeScript(FacesContext context, Menu menu) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = menu.getClientId(context);
+		String widgetVar = menu.resolveWidgetVar();
+        String position = menu.getPosition();
+
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.Menu('" + clientId + "', {");
+		writer.write(widgetVar + " = new PrimeFaces.widget.Menu('" + clientId + "',{");
 
-		if(menu.getPosition().equalsIgnoreCase("static")) {
-			writer.write("position:'static'");
-		}
-		else if(menu.getPosition().equalsIgnoreCase("dynamic")) {
-			writer.write("position:'dynamic'");
-			if(menu.isVisible()) writer.write(",visible:true");
-			if(!menu.isClickToHide()) writer.write(",clicktohide:false");
-			if(menu.isKeepOpen()) writer.write(",keepopen:true");
-			if(menu.getX() != -1) writer.write(",x:" + menu.getX());
-			if(menu.getY() != -1) writer.write(",y:" + menu.getY());
-			if(menu.isFixedCenter()) writer.write(",fixedcenter:true");
-			if(!menu.isConstraintToViewport()) writer.write(",constrainttoviewport:false");
-			if(menu.getShowDelay() != 250) writer.write(",showdelay:" + menu.getShowDelay());
-			if(menu.getHideDelay() != 0) writer.write(",hidedelay:" + menu.getHideDelay());
-			if(menu.getSubmenuHideDelay() != 250) writer.write(",submenuhidedelay:" + menu.getSubmenuHideDelay());
-			if(menu.getContext() != null) writer.write(",context:[" + menu.getContext() + "]");
-			if(menu.getZindex() != Integer.MAX_VALUE) writer.write(",zIndex:" + menu.getZindex());
-		}
-		
-		if(menu.isAutoSubmenuDisplay() == false) writer.write(",autosubmenudisplay:false");
-		
-		if(!menu.getEffect().equals("NONE")) {
-			writer.write(",effect: {effect: YAHOO.widget.ContainerEffect." + menu.getEffect());
-			
-			if(menu.getEffectDuration() != 0.25)
-				writer.write(",duration:" + menu.getEffectDuration() + "}");
-			else
-				writer.write(",duration: 0.25}");
-		}
-		
-		writer.write("});");
+        writer.write("position:'" + menu.getPosition() + "'");
 
-        if(menu.isAppendToBody())
-            writer.write(widgetVar + ".render(document.body);");
-        else
-            writer.write(widgetVar + ".render();");
-		
-		writer.endElement("script");	
+        if(position.equalsIgnoreCase("dynamic")) {
+           writer.write(",my:'" + menu.getMy() + "'");
+           writer.write(",at:'" + menu.getAt() + "'");
+
+           UIComponent trigger = menu.findComponent(menu.getTrigger());
+           if(trigger == null) {
+               throw new FacesException("Cannot find component " + menu.getTrigger() + " in view.");
+           }
+
+           writer.write(",trigger:'" + trigger.getClientId(context) + "'");
+        }
+
+        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
+        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
+
+        writer.write("});");
+
+		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Menu menu) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = menu.getClientId(facesContext);
-		String defaultStyleClass = "ui-menu ui-widget ui-widget-content ui-corner-all";
-		String styleClass = menu.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + " " + menu.getStyleClass(); 
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", styleClass, null);
-		if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), null);
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("class", "bd", null);
-		
-		if(menu.isTiered())
-			renderTieredMenu(facesContext, menu);
-		else
-			encodeRegularMenu(facesContext, menu);
-		
-		writer.endElement("div");
-				
-		writer.endElement("div");
-	}
-	
-	protected void renderTieredMenu(FacesContext facesContext, Menu menu) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
+	protected void encodeMarkup(FacesContext context, Menu menu) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = menu.getClientId(context);
+        boolean tiered = menu.isTiered();
+
 		writer.startElement("ul", null);
-		
+		writer.writeAttribute("id", clientId, null);
+
 		for(UIComponent child : menu.getChildren()) {
-			encodeTieredSubmenu(facesContext, (Submenu) child);
+			Submenu submenu = (Submenu) child;
+
+			if(submenu.isRendered()) {
+                if(tiered) {
+                    writer.startElement("li", null);
+                    encodeTieredSubmenu(context, submenu);
+                    writer.endElement("li");
+                }
+                else {
+                    encodeNontieredSubmenu(context, submenu);
+                }
+			}
 		}
-		
+
 		writer.endElement("ul");
 	}
 
-	protected void encodeRegularMenu(FacesContext facesContext, Menu menu) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		for(UIComponent child : menu.getChildren()) {
-			Submenu submenu = (Submenu) child;
-			
-			if(submenu.isRendered()) {
-				
-				//Submenu label
-				if(submenu.getLabel() != null) {
-					writer.startElement("div", null);
-					String defaultLabelClass = "ui-submenu-label ui-widget-header ui-corner-all";
-					String styleClass = submenu.getLabelStyleClass() == null ? defaultLabelClass : defaultLabelClass + " " + submenu.getLabelStyleClass(); 
-					writer.writeAttribute("class", styleClass, null);
-						
-					if(submenu.getLabelStyle() != null)
-						writer.writeAttribute("style", submenu.getLabelStyle(), null);
-			
-					writer.write(submenu.getLabel());
-						
-					writer.endElement("div");
-				}
-					
-				//Submenu content
-				writer.startElement("ul", null);
-				encodeSubmenuItems(facesContext, submenu);
-				writer.endElement("ul");
-			}		
-		}	
-	}
-	
-	protected void encodeTieredSubmenu(FacesContext facesContext, Submenu submenu) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = submenu.getClientId(facesContext);
-		String defaultLabelStyleClass= "ui-menu-item-label";
-		String labelStyleClass = submenu.getLabelStyleClass() == null ? defaultLabelStyleClass : defaultLabelStyleClass + " " + submenu.getLabelStyleClass();
-		
-		writer.startElement("li", null);
-		writer.writeAttribute("class", "ui-menu-item ui-corner-all", null);
-		
-			writer.startElement("a", null);
-			writer.writeAttribute("href", "#" + clientId, null);
-			writer.writeAttribute("class", labelStyleClass, null);
-			
-			if(submenu.getLabel() != null)
-				writer.write(submenu.getLabel());
-			
-			writer.endElement("a");
-			
-			writer.startElement("span", null);
-			writer.writeAttribute("class", "ui-menu-item-submenu-icon ui-icon ui-icon-triangle-1-e", null);
-			writer.endElement("span");
-			
-			writer.startElement("div", null);
-			writer.writeAttribute("id", clientId, null);
-			writer.writeAttribute("class", "ui-menu ui-widget ui-widget-content ui-corner-all", null);
-			
-				writer.startElement("div", null);
-				writer.writeAttribute("class", "bd", null);
-			
-					writer.startElement("ul", null);
-					
-					encodeSubmenuItems(facesContext, submenu);
-					
-					writer.endElement("ul");
-			
-					writer.endElement("div");
-			
-			writer.endElement("div");
-		
-		writer.endElement("li");
-	}
+    protected void encodeNontieredSubmenu(FacesContext context, Submenu submenu) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String label = submenu.getLabel();
 
-	protected void encodeSubmenuItems(FacesContext facesContext, Submenu submenu) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
+        //title
+        writer.startElement("li", null);
+        writer.startElement("h3", null);
+        if(label != null) {
+            writer.write(label);
+        }
+        writer.endElement("h3");
+        writer.endElement("li");
+
 		
-		for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
-			UIComponent child = (UIComponent) iterator.next();
+        //menuitems
+		if(submenu.getChildCount() > 0) {
 			
-			if(child instanceof MenuItem && child.isRendered()) {
-				MenuItem menuItem = (MenuItem) child;
-				String menuItemClientId = menuItem.getClientId(facesContext);
-				String defaultLabelStyleClass= "ui-menu-item-label";
-				String labelStyleClass = menuItem.getStyleClass() == null ? defaultLabelStyleClass : defaultLabelStyleClass + " " + menuItem.getStyleClass();
-				String icon = menuItem.getIcon() != null ? "background:url(" + getResourceURL(facesContext, menuItem.getIcon()) + ") no-repeat 1%;" : null;
-				String style = menuItem.getStyle();
-				
-				if(style != null && icon != null)
-					style =  icon + style;
-				else if(style == null && icon != null)
-					style = icon;
-				
-				writer.startElement("li", null);
-				writer.writeAttribute("class", "ui-menu-item ui-corner-all", null);
-				
-				if(menuItem.shouldRenderChildren()) {
-					renderChildren(facesContext, menuItem);
-					
-				} else {
-					writer.startElement("a", null);
-					writer.writeAttribute("id", menuItemClientId, null);
-					writer.writeAttribute("class", labelStyleClass, null);
-					if(style != null) writer.writeAttribute("style", style, null);
-					
-					if(menuItem.getUrl() != null) {
-						writer.writeAttribute("href", getResourceURL(facesContext, menuItem.getUrl()), null);
-						if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-						if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-						
-					} else {
-						writer.writeAttribute("href", "javascript:void(0)", null);
-						
-						UIComponent form = ComponentUtils.findParentForm(facesContext, submenu);
-						if(form == null) {
-							throw new FacesException("Menu must be inside a form element");
-						}
-						
-						String formClientId = form.getClientId(facesContext);
-						String command = menuItem.isAjax() ? buildAjaxRequest(facesContext, menuItem, formClientId, menuItemClientId) : buildNonAjaxRequest(facesContext, menuItem, formClientId, menuItemClientId);
-						
-						command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-						
-						writer.writeAttribute("onclick", command, null);
-					}
-					
-					if(menuItem.getValue() != null) writer.write((String) menuItem.getValue());
-					
-					writer.endElement("a");
-				}
-				
-				writer.endElement("li");
-			} else if(child instanceof Submenu && child.isRendered()) {				
-				encodeTieredSubmenu(facesContext, (Submenu) child);
-			}
+            for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
+                UIComponent child = (UIComponent) iterator.next();
+
+                if(child.isRendered() && child instanceof MenuItem) {
+                    writer.startElement("li", null);
+                    encodeMenuItem(context, (MenuItem) child);
+                    writer.endElement("li");
+                }
+            }
 		}
 	}
-	
+
+	protected void encodeTieredSubmenu(FacesContext context, Submenu submenu) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		UIComponent labelFacet = submenu.getFacet("label");
+
+        //title
+		if(labelFacet == null) {
+			writer.startElement("a", null);
+			writer.writeAttribute("href", "#", null);
+
+			if(submenu.getLabel() != null)
+                writer.write(submenu.getLabel());
+
+			writer.endElement("a");
+		} else {
+            encodeMenuItem(context, (MenuItem) labelFacet);
+		}
+
+        //submenus and menuitems
+		if(submenu.getChildCount() > 0) {
+			writer.startElement("ul", null);
+
+			for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
+                UIComponent child = (UIComponent) iterator.next();
+
+                if(child.isRendered()) {
+
+                    writer.startElement("li", null);
+                    if(child instanceof MenuItem) {
+                        encodeMenuItem(context, (MenuItem) child);
+                    } else if(child instanceof Submenu) {
+                        encodeTieredSubmenu(context, (Submenu) child);
+                    }
+                    writer.endElement("li");
+
+                }
+            }
+
+			writer.endElement("ul");
+		}
+	}
+
+	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+		String clientId = menuItem.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+
+		if(menuItem.shouldRenderChildren()) {
+			renderChildren(context, menuItem);
+		}
+        else {
+            writer.startElement("a", null);
+
+			if(menuItem.getUrl() != null) {
+				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
+				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+			} else {
+				writer.writeAttribute("href", "javascript:void(0)", null);
+
+				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+				if(form == null) {
+					throw new FacesException("Menu must be inside a form element");
+				}
+
+				String formClientId = form.getClientId(context);
+				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, formClientId, clientId) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+
+				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
+
+				writer.writeAttribute("onclick", command, null);
+			}
+
+			if(menuItem.getValue() != null)
+                writer.write((String) menuItem.getValue());
+
+            writer.endElement("a");
+		}
+	}
+
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
