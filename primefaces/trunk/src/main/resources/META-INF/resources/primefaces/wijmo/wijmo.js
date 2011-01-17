@@ -3940,6 +3940,12 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
     }
 
     this.jq.wijmenu(this.cfg);
+
+    if(this.cfg.style)
+        this.jq.parent().parent().attr('style', this.cfg.style);
+
+    if(this.cfg.styleClass)
+        this.jq.parent().parent().addClass(this.cfg.styleClass);
 }
 
 /**
