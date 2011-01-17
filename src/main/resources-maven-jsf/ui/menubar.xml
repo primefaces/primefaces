@@ -35,25 +35,13 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>FADE</defaultValue>
+			<defaultValue>slide</defaultValue>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>0.25</defaultValue>
-		</attribute>
-		<attribute>
-			<name>zindex</name>
-			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-		</attribute>
-        <attribute>
-			<name>appendToBody</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+			<defaultValue>400</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>

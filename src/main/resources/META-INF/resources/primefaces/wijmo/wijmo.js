@@ -3931,7 +3931,13 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 PrimeFaces.widget.Menubar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jq = jQuery(PrimeFaces.escapeClientId(this.id));
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId);
 
-    this.jq.wijmenu();
+    if(!this.cfg.autoSubmenuDisplay) {
+        this.cfg.trigger = this.jqId + ' li';
+        this.cfg.triggerEvent = 'click';
+    }
+
+    this.jq.wijmenu(this.cfg);
 }
