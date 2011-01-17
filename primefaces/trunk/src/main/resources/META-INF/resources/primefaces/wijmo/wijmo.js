@@ -4003,3 +4003,49 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
         this.jqbutton.button('disable');
     }
 }
+
+/*
+ * PrimeFaces ContextMenu Widget
+ */
+PrimeFaces.widget.ContextMenu = function(id, cfg) {
+	this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId);
+
+    //mouse tracking
+    if(!PrimeFaces.widget.ContextMenu.mouseTracking) {
+        PrimeFaces.widget.ContextMenu.mouseTracking = true;
+        
+        jQuery(document).mousemove(function(e){
+            PrimeFaces.widget.ContextMenu.pageX = e.pageX;
+            PrimeFaces.widget.ContextMenu.pageY = e.pageY;
+        });
+    }
+
+    //configuration
+    this.cfg.orientation = 'vertical';
+    this.cfg.triggerEvent = 'rtclick';
+    this.cfg.trigger = typeof this.cfg.target == 'string' ? PrimeFaces.escapeClientId(this.cfg.target) : this.cfg.target;
+
+    this.cfg.position = {
+            my: 'left top'
+            ,using: function(to) {
+                jQuery(this).css({
+                    top: PrimeFaces.widget.ContextMenu.pageY,
+                    left: PrimeFaces.widget.ContextMenu.pageX
+                });
+            }
+        }
+
+    this.jq.wijmenu(this.cfg);
+
+    this.element = this.jq.parent().parent();   //main container element
+    this.element.css('z-index', this.cfg.zindex);
+
+    if(this.cfg.style)
+        this.element.attr('style', this.cfg.style);
+
+    if(this.cfg.styleClass)
+        this.element.addClass(this.cfg.styleClass);
+}

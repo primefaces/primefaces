@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,17 +44,17 @@ public class ContextMenuRenderer extends CoreRenderer {
 		
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
-		
+
+        writer.write("jQuery(function() {");
+        
 		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',");
-		writer.write("{trigger:" + trigger);
+		writer.write("{target:" + trigger);
+        writer.write(",zindex:" + menu.getZindex());
 
-        if(menu.getZindex() != Integer.MAX_VALUE) writer.write(",zIndex:" + menu.getZindex());
+        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
+        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
 
-        writer.write("});");
-		
-		encodeMenuitems(facesContext, menu, widgetVar);
-		
-		writer.write(widgetVar + ".render(document.body);");
+        writer.write("});});");
 		
 		writer.endElement("script");
 	}
@@ -78,60 +78,62 @@ public class ContextMenuRenderer extends CoreRenderer {
 		
 		return trigger;
 	}
-	
-	protected void encodeMenuitems(FacesContext facesContext, ContextMenu menu, String widgetVar) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		boolean firstMenuitem = true;
-		UIComponent form = ComponentUtils.findParentForm(facesContext, menu);
-
-        writer.write(widgetVar + ".clearContent();");
-		writer.write(widgetVar + ".addItems([");
 		
+    protected void encodeMarkup(FacesContext context, ContextMenu menu) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = menu.getClientId(context);
+
+		writer.startElement("ul", null);
+		writer.writeAttribute("id", clientId, null);
+
 		for(UIComponent child : menu.getChildren()) {
-			if(child instanceof MenuItem && child.isRendered()) {
-				MenuItem item = (MenuItem) child;
-				String menuItemClientId = item.getClientId(facesContext);
-				String onclick = item.getOnclick();
-				
-				if(!firstMenuitem)
-					writer.write(",");
-				else
-					firstMenuitem = false;
-				
-				writer.write("{");
-				writer.write("text:'" + (String) item.getValue() + "'");
-				
-				if(item.getUrl() != null) {
-					writer.write(",url:'" + getResourceURL(facesContext, item.getUrl() + "'"));
-					if(item.getTarget() != null) writer.write(",target:'"+ item.getTarget() + "'");
-					if(onclick != null) writer.write(",onclick:{fn:function() {" + onclick + "}}");
-				} else {
-					if(form == null) {
-						throw new FacesException("ContextMenu : '" + menu.getClientId(facesContext) + "' must be inside a form element");
-					}
-					String formClientId = form.getClientId(facesContext);
-					
-					String command = item.isAjax() ? buildAjaxRequest(facesContext, item, formClientId, menuItemClientId) : buildNonAjaxRequest(facesContext, item, formClientId, menuItemClientId);
-					command = onclick == null ? command : onclick + ";" + command;
-					
-					writer.write(",onclick:{fn: function() {" + command + "}}");
-				}
-				
-				writer.write("}");
+			MenuItem item = (MenuItem) child;
+
+			if(item.isRendered()) {
+                writer.startElement("li", null);
+                encodeMenuItem(context, item);
+                writer.endElement("li");
 			}
 		}
-		writer.write("]);");
+
+		writer.endElement("ul");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, ContextMenu menu) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.startElement("div", menu);
-		writer.writeAttribute("id", menu.getClientId(facesContext), "id");
-		if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), "style");
-		if(menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyle(), "styleClass");
-		
-		writer.endElement("div");
+    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+		String clientId = menuItem.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+
+		if(menuItem.shouldRenderChildren()) {
+			renderChildren(context, menuItem);
+		}
+        else {
+            writer.startElement("a", null);
+
+			if(menuItem.getUrl() != null) {
+				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
+				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+			} else {
+				writer.writeAttribute("href", "javascript:void(0)", null);
+
+				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+				if(form == null) {
+					throw new FacesException("Menu must be inside a form element");
+				}
+
+				String formClientId = form.getClientId(context);
+				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, formClientId, clientId) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+
+				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
+
+				writer.writeAttribute("onclick", command, null);
+			}
+
+			if(menuItem.getValue() != null)
+                writer.write((String) menuItem.getValue());
+
+            writer.endElement("a");
+		}
 	}
 
     @Override
