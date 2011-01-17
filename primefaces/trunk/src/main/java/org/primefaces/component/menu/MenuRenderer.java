@@ -54,17 +54,17 @@ public class MenuRenderer extends CoreRenderer{
 		writer.write(widgetVar + " = new PrimeFaces.widget.Menu('" + clientId + "',{");
 
         writer.write("position:'" + menu.getPosition() + "'");
+        writer.write(",zindex:" + menu.getZindex());
 
         if(position.equalsIgnoreCase("dynamic")) {
            writer.write(",my:'" + menu.getMy() + "'");
            writer.write(",at:'" + menu.getAt() + "'");
 
-           UIComponent trigger = menu.findComponent(menu.getTrigger());
-           if(trigger == null) {
-               throw new FacesException("Cannot find component " + menu.getTrigger() + " in view.");
-           }
-
-           writer.write(",trigger:'" + trigger.getClientId(context) + "'");
+            UIComponent trigger = menu.findComponent(menu.getTrigger());
+            if(trigger != null)
+                writer.write(",trigger:'" + trigger.getClientId(context) + "'");
+            else
+                writer.write(",trigger:'" + menu.getTrigger() + "'");
         }
 
         if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
