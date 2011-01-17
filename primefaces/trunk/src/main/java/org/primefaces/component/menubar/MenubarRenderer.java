@@ -67,7 +67,10 @@ public class MenubarRenderer extends CoreRenderer {
 		
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId, null);
-		
+
+        if(menubar.getStyleClass() != null) writer.writeAttribute("class", menubar.getStyleClass(), null);
+        if(menubar.getStyle() != null) writer.writeAttribute("style", menubar.getStyle(), null);
+
 		for(UIComponent child : menubar.getChildren()) {
 			Submenu submenu = (Submenu) child;
 			
