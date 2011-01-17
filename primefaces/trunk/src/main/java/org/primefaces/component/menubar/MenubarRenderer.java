@@ -51,6 +51,10 @@ public class MenubarRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write(widgetVar + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");
+
+        writer.write("autoSubmenuDisplay:" + menubar.isAutoSubmenuDisplay());
+
+        if(menubar.getEffectDuration() != 400) writer.write(",duration:" + menubar.getEffectDuration() + "");
 		
         writer.write("});");
 
