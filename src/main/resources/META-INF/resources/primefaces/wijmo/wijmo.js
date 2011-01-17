@@ -3941,3 +3941,32 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
 
     this.jq.wijmenu(this.cfg);
 }
+
+/**
+ * PrimeFaces Menubar Widget
+ */
+PrimeFaces.widget.Menu = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId);
+
+    this.cfg.orientation = 'vertical';
+
+    if(this.cfg.position == 'dynamic') {
+        this.cfg.position = {
+            my: this.cfg.my
+            ,at: this.cfg.at
+        }
+
+        this.cfg.trigger = PrimeFaces.escapeClientId(this.cfg.trigger);
+    }
+
+    this.jq.wijmenu(this.cfg);
+
+    if(this.cfg.style)
+        this.jq.parent().parent().attr('style', this.cfg.style);
+
+    if(this.cfg.styleClass)
+        this.jq.parent().parent().addClass(this.cfg.styleClass);
+}
