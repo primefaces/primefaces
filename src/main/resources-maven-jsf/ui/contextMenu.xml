@@ -39,24 +39,24 @@
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+			<defaultValue>1</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>menu/menu.css</name>
+        <resource>
+			<name>wijmo/wijmo.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
         <resource>
 			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>menu/menu.js</name>
+			<name>wijmo/wijmo.js</name>
 		</resource>
 	</resources>
 </component>
