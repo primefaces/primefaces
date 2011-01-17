@@ -143,7 +143,10 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
     requestParams = requestParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
 
     //source
-    requestParams = requestParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
+    if(typeof cfg.source == 'string')
+        requestParams = requestParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
+    else
+        requestParams = requestParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source.id;
 
     //process
     if(cfg.process) {

@@ -73,7 +73,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         req.append(",global:").append(ajaxBehavior.isGlobal());
 
         //source
-        req.append(",source:'").append(clientId).append("'");
+        req.append(",source:this");
 
         //process
         String process = ajaxBehavior.getProcess() != null ? ComponentUtils.findClientIds(fc, component, ajaxBehavior.getProcess()) : clientId;
