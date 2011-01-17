@@ -3984,6 +3984,8 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
+    this.jqbutton = jQuery(this.jqId + '_button');
+    this.jqMenu = jQuery(this.jqId + '_menu');
   
     //menu options
     this.cfg.trigger = this.jqId + '_button';
@@ -3994,6 +3996,10 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
     };
 
     //crete button and menu
-    this.jqbutton = jQuery(this.jqId + '_button').button({icons:{primary:'ui-icon-triangle-1-s'}});
-    this.jqMenu = jQuery(this.jqId + '_menu').wijmenu(this.cfg);
+    this.jqbutton.button({icons:{primary:'ui-icon-triangle-1-s'}});
+    this.jqMenu.wijmenu(this.cfg);
+
+    if(this.cfg.disabled) {
+        this.jqbutton.button('disable');
+    }
 }
