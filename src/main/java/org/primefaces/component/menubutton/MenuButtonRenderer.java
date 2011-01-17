@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,103 +29,119 @@ import org.primefaces.util.ComponentUtils;
 public class MenuButtonRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		MenuButton button = (MenuButton) component;
 		
 		if(button.shouldBuildFromModel()) {
 			button.buildMenuFromModel();
 		}
 		
-		encodeMarkup(facesContext, button);
-		encodeScript(facesContext, button);
+		encodeMarkup(context, button);
+		encodeScript(context, button);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, MenuButton button) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = button.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, MenuButton button) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = button.getClientId(context);
 		String buttonId = clientId + "_button";
+        String menuId = clientId + "_menu";
 		
 		writer.startElement("span", button);
-		writer.writeAttribute("id", clientId, "id");	
+		writer.writeAttribute("id", clientId, "id");
+        
 		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass(), "class");
 		if(button.getStyle() != null) writer.writeAttribute("style", button.getStyle(), "style");
-		
+
+        //button
 		writer.startElement("button", null);
 		writer.writeAttribute("id", buttonId, null);
 		writer.writeAttribute("name", buttonId, null);
 		writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("onclick", button.resolveWidgetVar() + ".showMenu()", null);
 		if(button.getValue() != null) {
 			writer.write(button.getValue());
 		}
 		writer.endElement("button");
-		
-        if(!button.isAppendToBody()) {
-            writer.startElement("span", button);
-            writer.writeAttribute("id", clientId + "_menuContainer", null);
-            writer.endElement("span");
-        }
+
+        //menu
+        writer.startElement("ul", null);
+		writer.writeAttribute("id", menuId, null);
+
+		for(UIComponent child : button.getChildren()) {
+			MenuItem item = (MenuItem) child;
+
+			if(item.isRendered()) {
+                writer.startElement("li", item);
+                encodeMenuItem(context, item);
+                writer.endElement("li");
+			}
+		}
+
+		writer.endElement("ul");
 		
 		writer.endElement("span");
 	}
 
-	protected void encodeScript(FacesContext facesContext, MenuButton button) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = button.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, MenuButton button) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = button.getClientId(context);
 		
-		UIComponent form = ComponentUtils.findParentForm(facesContext, button);
+		UIComponent form = ComponentUtils.findParentForm(context, button);
 		if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}
 		
-		String formClientId = form.getClientId(facesContext);
+		String formClientId = form.getClientId(context);
 		
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
-		
-		boolean firstItem = true;
-		writer.write("items:[");
-		for(UIComponent child : button.getChildren()) {
-			if(child instanceof MenuItem && child.isRendered()) {
-				MenuItem item = (MenuItem) child;
-				String itemClientId = item.getClientId(facesContext);
-				
-				if(!firstItem)
-					writer.write(",");
-				else
-					firstItem = false;
-				
-				writer.write("{text:'" + item.getValue() + "'");
-				
-				if(item.getUrl() != null) {
-					writer.write(",url:'" + getResourceURL(facesContext, item.getUrl()) + "'");
-				} else {
-					String onclick = item.isAjax() ? buildAjaxRequest(facesContext, item, formClientId, itemClientId) : buildNonAjaxRequest(facesContext, item, formClientId, itemClientId);
-					if(item.getOnclick() != null) {
-						onclick = item.getOnclick() + ";" + onclick;
-					}
-						
-					writer.write(",onclick:{fn:function() {" + onclick + "}}");
-				}
-				
-				writer.write("}");
-			}
-		}
-		writer.write("]");
-		
-		if(button.isDisabled()) {
-			writer.write(",disabled:true");
-		}
 
-        if(button.isAppendToBody()) {
-            writer.write(",appendToBody:true");
-        }
+        if(button.isDisabled()) {
+			writer.write("disabled:true");
+		}
 
  		writer.write("});");
 		
 		writer.endElement("script");
+	}
+
+    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+		String clientId = menuItem.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+
+		if(menuItem.shouldRenderChildren()) {
+			renderChildren(context, menuItem);
+		}
+        else {
+            writer.startElement("a", null);
+
+			if(menuItem.getUrl() != null) {
+				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
+				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+                
+			} else {
+				writer.writeAttribute("href", "javascript:void(0)", null);
+
+				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+				if(form == null) {
+					throw new FacesException("Menu must be inside a form element");
+				}
+
+				String formClientId = form.getClientId(context);
+				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, formClientId, clientId) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+
+				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
+
+				writer.writeAttribute("onclick", command, null);
+			}
+
+			if(menuItem.getValue() != null)
+                writer.write((String) menuItem.getValue());
+
+            writer.endElement("a");
+		}
 	}
 	
 	@Override

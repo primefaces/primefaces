@@ -3976,3 +3976,24 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     if(this.cfg.styleClass)
         this.jq.parent().parent().addClass(this.cfg.styleClass);
 }
+
+/*
+ * PrimeFaces MenuButton Widget
+ */
+PrimeFaces.widget.MenuButton = function(id, cfg) {
+	this.id = id;
+	this.cfg = cfg;
+	this.jqId = PrimeFaces.escapeClientId(id);
+  
+    //menu options
+    this.cfg.trigger = this.jqId + '_button';
+    this.cfg.orientation = 'vertical';
+    this.cfg.position = {
+        my: 'left top'
+        ,at: 'left bottom'
+    };
+
+    //crete button and menu
+    this.jqbutton = jQuery(this.jqId + '_button').button({icons:{primary:'ui-icon-triangle-1-s'}});
+    this.jqMenu = jQuery(this.jqId + '_menu').wijmenu(this.cfg);
+}
