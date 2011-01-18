@@ -17,6 +17,7 @@ package org.primefaces.component.menubar;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -29,6 +30,8 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class MenubarRenderer extends CoreRenderer {
+
+    private final static Logger logger = Logger.getLogger(MenubarRenderer.class.getName());
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
@@ -67,25 +70,38 @@ public class MenubarRenderer extends CoreRenderer {
 		writer.endElement("script");	
 	}
 
-	protected void encodeMarkup(FacesContext context, Menubar menubar) throws IOException{
+	protected void encodeMarkup(FacesContext context, Menubar menubar) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = menubar.getClientId(context);
 		
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId, null);
 
-		for(UIComponent child : menubar.getChildren()) {
-			Submenu submenu = (Submenu) child;
-			
-			if(submenu.isRendered()) {
-                writer.startElement("li", null);
-				encodeSubmenu(context, submenu);
-                writer.endElement("li");
-			}
-		}
+		encodeMenuContent(context, menubar);
 		
 		writer.endElement("ul");
 	}
+
+    protected void encodeMenuContent(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
+            UIComponent child = (UIComponent) iterator.next();
+
+            if(child.isRendered()) {
+
+                writer.startElement("li", null);
+
+                if(child instanceof MenuItem) {
+                    encodeMenuItem(context, (MenuItem) child);
+                } else if(child instanceof Submenu) {
+                    encodeSubmenu(context, (Submenu) child);
+                }
+                
+                writer.endElement("li");
+            }
+        }
+    }
 	
 	protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
@@ -98,9 +114,6 @@ public class MenubarRenderer extends CoreRenderer {
             
 			writer.startElement("a", null);
 			writer.writeAttribute("href", "javascript:void(0)", null);
-
-            if(submenu.getLabelStyle() != null) writer.writeAttribute("style", submenu.getLabelStyle(), null);
-            if(submenu.getLabelStyleClass() != null) writer.writeAttribute("class", submenu.getLabelStyleClass(), null);
 
             if(icon != null) {
                 writer.startElement("span", null);
@@ -116,7 +129,10 @@ public class MenubarRenderer extends CoreRenderer {
             }
 			
 			writer.endElement("a");
-		} else {
+		}
+        else {
+            //backwards compatibility
+            logger.info("label facet of a menubar item is deprecated, use a menuitem instead instead of a submenu.");
             encodeMenuItem(context, (MenuItem) labelFacet);
 		}
 
@@ -124,21 +140,7 @@ public class MenubarRenderer extends CoreRenderer {
 		if(submenu.getChildCount() > 0) {
 			writer.startElement("ul", null);
 			
-			for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
-                UIComponent child = (UIComponent) iterator.next();
-
-                if(child.isRendered()) {
-
-                    writer.startElement("li", null);
-                    if(child instanceof MenuItem) {
-                        encodeMenuItem(context, (MenuItem) child);
-                    } else if(child instanceof Submenu) {
-                        encodeSubmenu(context, (Submenu) child);
-                    }
-                    writer.endElement("li");
-                    
-                }
-            }
+			encodeMenuContent(context, submenu);
 			
 			writer.endElement("ul");
 		}
