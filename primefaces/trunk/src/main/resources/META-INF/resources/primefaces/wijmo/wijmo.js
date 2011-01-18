@@ -4022,6 +4022,8 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
     if(this.cfg.disabled) {
         this.jqbutton.button('disable');
     }
+
+    this.jqMenu.parent().parent().css('z-index', this.cfg.zindex);
 }
 
 /*
