@@ -60,6 +60,8 @@ public class MenuRenderer extends CoreRenderer{
 
         if(type.equalsIgnoreCase("sliding")) {
             writer.write(",mode:'" + menu.getType() + "'");
+            writer.write(",backLinkText:'" + menu.getBackLabel() + "'");
+            writer.write(",maxHeight:" + menu.getMaxHeight());
         }
 
         if(menu.getEffectDuration() != 400) {
