@@ -90,14 +90,30 @@ public class MenubarRenderer extends CoreRenderer {
 	protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		UIComponent labelFacet = submenu.getFacet("label");
+        String icon = submenu.getIcon();
 
         //title
-		if(labelFacet == null) {			
+		if(labelFacet == null) {
+            String label = submenu.getLabel();
+            
 			writer.startElement("a", null);
 			writer.writeAttribute("href", "javascript:void(0)", null);
-			
-			if(submenu.getLabel() != null)
+
+            if(submenu.getLabelStyle() != null) writer.writeAttribute("style", submenu.getLabelStyle(), null);
+            if(submenu.getLabelStyleClass() != null) writer.writeAttribute("class", submenu.getLabelStyleClass(), null);
+
+            if(icon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+                writer.endElement("span");
+            }
+
+            if(label != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", "wijmo-wijmenu-text", null);
                 writer.write(submenu.getLabel());
+                writer.endElement("span");
+            }
 			
 			writer.endElement("a");
 		} else {
@@ -131,6 +147,7 @@ public class MenubarRenderer extends CoreRenderer {
 	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
 		String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
+        String icon = menuItem.getIcon();
 		
 		if(menuItem.shouldRenderChildren()) {
 			renderChildren(context, menuItem);
@@ -157,9 +174,19 @@ public class MenubarRenderer extends CoreRenderer {
 				
 				writer.writeAttribute("onclick", command, null);
 			}
+
+            if(icon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+                writer.endElement("span");
+            }
 			
-			if(menuItem.getValue() != null)
+			if(menuItem.getValue() != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class",  "wijmo-wijmenu-text", null);
                 writer.write((String) menuItem.getValue());
+                writer.endElement("span");
+            }
 			
             writer.endElement("a");
 		}
