@@ -92,76 +92,17 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
 		</attribute>
-		<attribute>
-			<name>visible</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>x</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-		</attribute>
-		<attribute>
-			<name>y</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-		</attribute>
-		<attribute>
-			<name>fixedCenter</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>constraintToViewport</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-		</attribute>
-		<attribute>
-			<name>clickToHide</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-		</attribute>
-		<attribute>
-			<name>keepOpen</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>showDelay</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>250</defaultValue>
-		</attribute>
-		<attribute>
-			<name>hideDelay</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-		</attribute>
-		<attribute>
-			<name>submenuHideDelay</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>250</defaultValue>
-		</attribute>
-		<attribute>
-			<name>context</name>
+        <attribute>
+			<name>backLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>Back</defaultValue>
 		</attribute>
         <attribute>
-			<name>appendToBody</name>
+			<name>maxHeight</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+			<type>java.lang.Integer</type>
+            <defaultValue>200</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
