@@ -47,6 +47,7 @@ public class MenuRenderer extends CoreRenderer{
 		String clientId = menu.getClientId(context);
 		String widgetVar = menu.resolveWidgetVar();
         String position = menu.getPosition();
+        String type = menu.getType();
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -56,6 +57,10 @@ public class MenuRenderer extends CoreRenderer{
         writer.write("position:'" + menu.getPosition() + "'");
         writer.write(",zindex:" + menu.getZindex());
         writer.write(",animated:'" + menu.getEffect() + "'");
+
+        if(type.equalsIgnoreCase("sliding")) {
+            writer.write(",mode:'" + menu.getType() + "'");
+        }
 
         if(menu.getEffectDuration() != 400) {
             writer.write(",showDuration:" + menu.getEffectDuration());
@@ -84,7 +89,7 @@ public class MenuRenderer extends CoreRenderer{
 	protected void encodeMarkup(FacesContext context, Menu menu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = menu.getClientId(context);
-        boolean tiered = menu.isTiered();
+        boolean tiered = menu.isTiered() || !menu.getType().equalsIgnoreCase("plain");
 
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId, null);
