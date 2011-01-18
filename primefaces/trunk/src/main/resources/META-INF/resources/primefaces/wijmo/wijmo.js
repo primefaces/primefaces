@@ -3920,7 +3920,24 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						height: 'hide'
 					}, options).attr("aria-hidden", true);
 				}
-			}
+			},
+
+            fade: function (options, addtions) {
+                options = $.extend({
+                    duration: 400,
+                    easing: "swing"
+                }, options, addtions);
+                if (options.show) {
+                    options.context.stop(true, true).animate({
+                        opacity: 'show'
+                    }, options).attr("aria-hidden", false);
+                }
+                else {
+                    options.context.stop(true, true).animate({
+                        opacity: "hide"
+                    }, options).attr("aria-hidden", true);
+                }
+            }
 		}
 	});
 } (jQuery));
