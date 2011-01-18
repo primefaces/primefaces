@@ -94,7 +94,7 @@ public class MenubarRenderer extends CoreRenderer {
         //title
 		if(labelFacet == null) {			
 			writer.startElement("a", null);
-			writer.writeAttribute("href", "#", null);
+			writer.writeAttribute("href", "javascript:void(0)", null);
 			
 			if(submenu.getLabel() != null)
                 writer.write(submenu.getLabel());
