@@ -12,6 +12,11 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
         this.cfg.triggerEvent = 'click';
     }
 
+    var _self = this;
+    this.cfg.select = function(event, ui) {
+        _self.jq.wijmenu('deactivate');
+    };
+
     this.jq.wijmenu(this.cfg);
 
     if(this.cfg.style)
@@ -41,6 +46,11 @@ PrimeFaces.widget.Menu = function(id, cfg) {
         this.cfg.trigger = PrimeFaces.escapeClientId(this.cfg.trigger);
     }
 
+    var _self = this;
+    this.cfg.select = function(event, ui) {
+        _self.jq.wijmenu('deactivate');
+    };
+
     this.jq.wijmenu(this.cfg);
 
     this.element = this.jq.parent().parent();   //main container element
@@ -69,6 +79,11 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
     this.cfg.position = {
         my: 'left top'
         ,at: 'left bottom'
+    };
+
+    var _self = this;
+    this.cfg.select = function(event, ui) {
+        _self.jqMenu.wijmenu('deactivate');
     };
 
     //crete button and menu
@@ -115,6 +130,11 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
                 });
             }
         }
+
+    var _self = this;
+    this.cfg.select = function(event, ui) {
+        _self.jq.wijmenu('deactivate');
+    };
 
     this.jq.wijmenu(this.cfg);
 
