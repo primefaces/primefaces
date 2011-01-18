@@ -31,7 +31,7 @@ import org.primefaces.util.ComponentUtils;
 public class MenuRenderer extends CoreRenderer{
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Menu menu = (Menu) component;
 
 		if(menu.shouldBuildFromModel()) {
@@ -42,7 +42,7 @@ public class MenuRenderer extends CoreRenderer{
 		encodeScript(context, menu);
 	}
 
-	protected void encodeScript(FacesContext context, Menu menu) throws IOException{
+	protected void encodeScript(FacesContext context, Menu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = menu.getClientId(context);
 		String widgetVar = menu.resolveWidgetVar();
@@ -59,7 +59,7 @@ public class MenuRenderer extends CoreRenderer{
         writer.write(",animated:'" + menu.getEffect() + "'");
 
         if(type.equalsIgnoreCase("sliding")) {
-            writer.write(",mode:'" + menu.getType() + "'");
+            writer.write(",mode:'sliding'");
             writer.write(",backLinkText:'" + menu.getBackLabel() + "'");
             writer.write(",maxHeight:" + menu.getMaxHeight());
         }
@@ -88,7 +88,7 @@ public class MenuRenderer extends CoreRenderer{
 		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext context, Menu menu) throws IOException{
+	protected void encodeMarkup(FacesContext context, Menu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = menu.getClientId(context);
         boolean tiered = menu.isTiered() || !menu.getType().equalsIgnoreCase("plain");
@@ -96,89 +96,66 @@ public class MenuRenderer extends CoreRenderer{
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId, null);
 
-		for(UIComponent child : menu.getChildren()) {
-			Submenu submenu = (Submenu) child;
-
-			if(submenu.isRendered()) {
-                if(tiered) {
-                    writer.startElement("li", null);
-                    encodeTieredSubmenu(context, submenu);
-                    writer.endElement("li");
-                }
-                else {
-                    encodeNontieredSubmenu(context, submenu);
-                }
-			}
-		}
+        if(tiered) {
+            encodeTieredMenuContent(context, menu);
+        }
+        else {
+            encodePlainMenuContent(context, menu);
+        }
 
 		writer.endElement("ul");
 	}
 
-    protected void encodeNontieredSubmenu(FacesContext context, Submenu submenu) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-		String label = submenu.getLabel();
+    protected void encodeTieredMenuContent(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
-        //title
-        writer.startElement("li", null);
-        writer.startElement("h3", null);
-        if(label != null) {
-            writer.write(label);
-        }
-        writer.endElement("h3");
-        writer.endElement("li");
+        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
+            UIComponent child = (UIComponent) iterator.next();
 
-		
-        //menuitems
-		if(submenu.getChildCount() > 0) {
-			
-            for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
-                UIComponent child = (UIComponent) iterator.next();
+            if(child.isRendered()) {
 
-                if(child.isRendered() && child instanceof MenuItem) {
-                    writer.startElement("li", null);
+                writer.startElement("li", null);
+
+                if(child instanceof MenuItem) {
                     encodeMenuItem(context, (MenuItem) child);
-                    writer.endElement("li");
+                } else if(child instanceof Submenu) {
+                    encodeTieredSubmenu(context, (Submenu) child);
                 }
+
+                writer.endElement("li");
             }
-		}
-	}
+        }
+    }
 
 	protected void encodeTieredSubmenu(FacesContext context, Submenu submenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
-		UIComponent labelFacet = submenu.getFacet("label");
+        String icon = submenu.getIcon();
+        String label = submenu.getLabel();
 
         //title
-		if(labelFacet == null) {
-			writer.startElement("a", null);
-			writer.writeAttribute("href", "javascript:void(0)", null);
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "javascript:void(0)", null);
 
-			if(submenu.getLabel() != null)
-                writer.write(submenu.getLabel());
+        if(icon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+            writer.endElement("span");
+        }
 
-			writer.endElement("a");
-		} else {
-            encodeMenuItem(context, (MenuItem) labelFacet);
-		}
+        if(label != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "wijmo-wijmenu-text", null);
+            writer.write(submenu.getLabel());
+            writer.endElement("span");
+        }
+
+        writer.endElement("a");
 
         //submenus and menuitems
 		if(submenu.getChildCount() > 0) {
 			writer.startElement("ul", null);
 
-			for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
-                UIComponent child = (UIComponent) iterator.next();
-
-                if(child.isRendered()) {
-
-                    writer.startElement("li", null);
-                    if(child instanceof MenuItem) {
-                        encodeMenuItem(context, (MenuItem) child);
-                    } else if(child instanceof Submenu) {
-                        encodeTieredSubmenu(context, (Submenu) child);
-                    }
-                    writer.endElement("li");
-
-                }
-            }
+			encodeTieredMenuContent(context, submenu);
 
 			writer.endElement("ul");
 		}
@@ -187,6 +164,7 @@ public class MenuRenderer extends CoreRenderer{
 	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
 		String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
+        String icon = menuItem.getIcon();
 
 		if(menuItem.shouldRenderChildren()) {
 			renderChildren(context, menuItem);
@@ -203,7 +181,7 @@ public class MenuRenderer extends CoreRenderer{
 
 				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 				if(form == null) {
-					throw new FacesException("Menu must be inside a form element");
+					throw new FacesException("Menubar must be inside a form element");
 				}
 
 				String formClientId = form.getClientId(context);
@@ -214,15 +192,61 @@ public class MenuRenderer extends CoreRenderer{
 				writer.writeAttribute("onclick", command, null);
 			}
 
-			if(menuItem.getValue() != null)
+            if(icon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+                writer.endElement("span");
+            }
+
+			if(menuItem.getValue() != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class",  "wijmo-wijmenu-text", null);
                 writer.write((String) menuItem.getValue());
+                writer.endElement("span");
+            }
 
             writer.endElement("a");
 		}
 	}
 
+    protected void encodePlainMenuContent(FacesContext context, UIComponent component) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+
+        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
+            UIComponent child = (UIComponent) iterator.next();
+
+            if(child.isRendered()) {
+
+                if(child instanceof MenuItem) {
+                    writer.startElement("li", null);
+                    encodeMenuItem(context, (MenuItem) child);
+                    writer.endElement("li");
+                } else if(child instanceof Submenu) {
+                    encodePlainSubmenu(context, (Submenu) child);
+                }
+                
+            }
+        }
+    }
+
+    protected void encodePlainSubmenu(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = submenu.getLabel();
+
+        //title
+        writer.startElement("li", null);
+        writer.startElement("h3", null);
+        if(label != null) {
+            writer.write(label);
+        }
+        writer.endElement("h3");
+        writer.endElement("li");
+
+        encodePlainMenuContent(context, submenu);
+	}
+
     @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
