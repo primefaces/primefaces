@@ -97,8 +97,15 @@ public class MenuButtonRenderer extends CoreRenderer {
 
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
 
+        writer.write("animated:'" + button.getEffect() + "'");
+
+        if(button.getEffectDuration() != 400) {
+            writer.write(",showDuration:" + button.getEffectDuration());
+            writer.write(",hideDuration:" + button.getEffectDuration());
+        }
+
         if(button.isDisabled()) {
-			writer.write("disabled:true");
+			writer.write(",disabled:true");
 		}
 
  		writer.write("});");

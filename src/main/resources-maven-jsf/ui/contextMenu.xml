@@ -41,6 +41,18 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
 		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>400</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

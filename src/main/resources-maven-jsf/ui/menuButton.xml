@@ -46,11 +46,17 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 		</attribute>
-         <attribute>
-			<name>appendToBody</name>
+        <attribute>
+			<name>effect</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>400</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
