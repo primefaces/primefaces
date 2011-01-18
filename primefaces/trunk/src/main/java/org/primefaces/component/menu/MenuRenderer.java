@@ -55,6 +55,12 @@ public class MenuRenderer extends CoreRenderer{
 
         writer.write("position:'" + menu.getPosition() + "'");
         writer.write(",zindex:" + menu.getZindex());
+        writer.write(",animated:'" + menu.getEffect() + "'");
+
+        if(menu.getEffectDuration() != 400) {
+            writer.write(",showDuration:" + menu.getEffectDuration());
+            writer.write(",hideDuration:" + menu.getEffectDuration());
+        }
 
         if(position.equalsIgnoreCase("dynamic")) {
            writer.write(",my:'" + menu.getMy() + "'");

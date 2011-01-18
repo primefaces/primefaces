@@ -51,6 +51,13 @@ public class ContextMenuRenderer extends CoreRenderer {
 		writer.write("{target:" + trigger);
         writer.write(",zindex:" + menu.getZindex());
 
+        writer.write(",animated:'" + menu.getEffect() + "'");
+
+        if(menu.getEffectDuration() != 400) {
+            writer.write(",showDuration:" + menu.getEffectDuration());
+            writer.write(",hideDuration:" + menu.getEffectDuration());
+        }
+
         if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
         if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
 

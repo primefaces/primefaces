@@ -56,13 +56,13 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>FADE</defaultValue>
+			<defaultValue>fade</defaultValue>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>0.25</defaultValue>
+			<type>java.lang.Integer</type>
+			<defaultValue>400</defaultValue>
 		</attribute>
         <attribute>
 			<name>autoSubmenuDisplay</name>
