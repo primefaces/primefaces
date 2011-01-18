@@ -35,7 +35,7 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>slide</defaultValue>
+			<defaultValue>fade</defaultValue>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
