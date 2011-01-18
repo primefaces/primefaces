@@ -109,6 +109,7 @@ public class ContextMenuRenderer extends CoreRenderer {
     protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
 		String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
+        String icon = menuItem.getIcon();
 
 		if(menuItem.shouldRenderChildren()) {
 			renderChildren(context, menuItem);
@@ -125,7 +126,7 @@ public class ContextMenuRenderer extends CoreRenderer {
 
 				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 				if(form == null) {
-					throw new FacesException("Menu must be inside a form element");
+					throw new FacesException("Menubar must be inside a form element");
 				}
 
 				String formClientId = form.getClientId(context);
@@ -136,8 +137,18 @@ public class ContextMenuRenderer extends CoreRenderer {
 				writer.writeAttribute("onclick", command, null);
 			}
 
-			if(menuItem.getValue() != null)
+            if(icon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+                writer.endElement("span");
+            }
+
+			if(menuItem.getValue() != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class",  "wijmo-wijmenu-text", null);
                 writer.write((String) menuItem.getValue());
+                writer.endElement("span");
+            }
 
             writer.endElement("a");
 		}
