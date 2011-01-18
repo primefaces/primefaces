@@ -3510,7 +3510,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						if (o.backLink) {
 							if (footer.find('a').size() === 0) {
 								footer.show();
-								$('<a href="#"><span class="ui-icon ui-icon-triangle' +
+								$('<a href="javascript:void(0)"><span class="ui-icon ui-icon-triangle' +
 								'-1-w"></span> <span>' + o.backLinkText + '</span></a>')
 									.appendTo(footer)
 									.click(function () { // ----- show the previous menu

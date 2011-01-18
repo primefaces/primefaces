@@ -51,6 +51,11 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 
     if(this.cfg.styleClass)
         this.element.addClass(this.cfg.styleClass);
+
+    //remove # in back link
+    if(this.cfg.mode) {
+        jQuery('.wij-menu-footer a').attr('href','javascript:void(0)');
+    }
 }
 
 /*
