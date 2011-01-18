@@ -76,10 +76,13 @@
 			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
         <resource>
+			<name>wijmo/wijmo.js</name>
+		</resource>
+        <resource>
 			<name>core/core.js</name>
 		</resource>
-		<resource>
-			<name>wijmo/wijmo.js</name>
+        <resource>
+			<name>menu/menu.js</name>
 		</resource>
 	</resources>
 </component>
