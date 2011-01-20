@@ -21,27 +21,17 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.BaseMenuRenderer;
 
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class MenuButtonRenderer extends CoreRenderer {
+public class MenuButtonRenderer extends BaseMenuRenderer {
 
-    @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
-		MenuButton button = (MenuButton) component;
-		
-		if(button.shouldBuildFromModel()) {
-			button.buildMenuFromModel();
-		}
-		
-		encodeMarkup(context, button);
-		encodeScript(context, button);
-	}
-	
-	protected void encodeMarkup(FacesContext context, MenuButton button) throws IOException {
+   protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
 		String buttonId = clientId + "_button";
         String menuId = clientId + "_menu";
@@ -81,8 +71,9 @@ public class MenuButtonRenderer extends CoreRenderer {
 		writer.endElement("span");
 	}
 
-	protected void encodeScript(FacesContext context, MenuButton button) throws IOException {
+	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
 		
 		UIComponent form = ComponentUtils.findParentForm(context, button);
@@ -113,62 +104,4 @@ public class MenuButtonRenderer extends CoreRenderer {
 		
 		writer.endElement("script");
 	}
-
-    	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		String clientId = menuItem.getClientId(context);
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = menuItem.getIcon();
-
-		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, menuItem);
-		}
-        else {
-            writer.startElement("a", null);
-
-			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-			} else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
-
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Menubar must be inside a form element");
-				}
-
-				String formClientId = form.getClientId(context);
-				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, formClientId, clientId) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
-
-				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-
-				writer.writeAttribute("onclick", command, null);
-			}
-
-            if(icon != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
-                writer.endElement("span");
-            }
-
-			if(menuItem.getValue() != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class",  "wijmo-wijmenu-text", null);
-                writer.write((String) menuItem.getValue());
-                writer.endElement("span");
-            }
-
-            writer.endElement("a");
-		}
-	}
-	
-	@Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true;
-	}	
 }

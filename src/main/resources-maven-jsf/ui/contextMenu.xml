@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.ContextMenuRenderer</rendererType>
 	<rendererClass>org.primefaces.component.contextmenu.ContextMenuRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -52,6 +52,11 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>400</defaultValue>
+		</attribute>
+        <attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
 		</attribute>
 	</attributes>
 	<resources>
