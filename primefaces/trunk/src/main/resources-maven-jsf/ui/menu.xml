@@ -71,12 +71,6 @@
 			<defaultValue>400</defaultValue>
 		</attribute>
         <attribute>
-			<name>autoSubmenuDisplay</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-		</attribute>
-        <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
