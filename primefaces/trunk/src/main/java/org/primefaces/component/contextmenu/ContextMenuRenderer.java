@@ -21,26 +21,19 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.BaseMenuRenderer;
 
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
-public class ContextMenuRenderer extends CoreRenderer {
+public class ContextMenuRenderer extends BaseMenuRenderer {
 
-    @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ContextMenu menu = (ContextMenu) component;
-		
-		encodeMarkup(facesContext, menu);
-		encodeScript(facesContext, menu);
-	}
-
-	protected void encodeScript(FacesContext facesContext, ContextMenu menu) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        ContextMenu menu = (ContextMenu) abstractMenu;
 		String widgetVar = menu.resolveWidgetVar();
-		String clientId = menu.getClientId(facesContext);
-		String trigger = findTrigger(facesContext, menu);
+		String clientId = menu.getClientId(context);
+		String trigger = findTrigger(context, menu);
 		
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -63,35 +56,16 @@ public class ContextMenuRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 	
-	protected String findTrigger(FacesContext facesContext, ContextMenu menu) {
-		String trigger = null;
-		String _for = menu.getFor();
-		
-		if(_for != null) {
-			UIComponent forComponent = menu.findComponent(_for);
-			
-			if(forComponent == null)
-				throw new FacesException("Cannot find component '" + _for + "' in view.");
-			else {
-                return "'" +  forComponent.getClientId(facesContext) + "'";
-			}
-		}
-		else {
-			trigger = "document";
-		}
-		
-		return trigger;
-	}
-		
-    protected void encodeMarkup(FacesContext context, ContextMenu menu) throws IOException{
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
+        ContextMenu menu = (ContextMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
 
         writer.startElement("span", menu);
 		writer.writeAttribute("id", clientId, "id");
 
-        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
-        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
+        if(menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), "styleClass");
+        if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), "style");
 
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId + "_menu", null);
@@ -111,61 +85,23 @@ public class ContextMenuRenderer extends CoreRenderer {
         writer.endElement("span");
 	}
 
-    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		String clientId = menuItem.getClientId(context);
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = menuItem.getIcon();
+    protected String findTrigger(FacesContext context, ContextMenu menu) {
+		String trigger = null;
+		String _for = menu.getFor();
 
-		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, menuItem);
-		}
-        else {
-            writer.startElement("a", null);
+		if(_for != null) {
+			UIComponent forComponent = menu.findComponent(_for);
 
-			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-			} else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
-
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Menubar must be inside a form element");
-				}
-
-				String formClientId = form.getClientId(context);
-				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, formClientId, clientId) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
-
-				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-
-				writer.writeAttribute("onclick", command, null);
+			if(forComponent == null)
+				throw new FacesException("Cannot find component '" + _for + "' in view.");
+			else {
+                return "'" +  forComponent.getClientId(context) + "'";
 			}
-
-            if(icon != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
-                writer.endElement("span");
-            }
-
-			if(menuItem.getValue() != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class",  "wijmo-wijmenu-text", null);
-                writer.write((String) menuItem.getValue());
-                writer.endElement("span");
-            }
-
-            writer.endElement("a");
 		}
-	}
+		else {
+			trigger = "document";
+		}
 
-    @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
-	}
-
-    @Override
-	public boolean getRendersChildren() {
-		return true;
+		return trigger;
 	}
 }
