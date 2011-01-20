@@ -80,9 +80,6 @@ public class MenuRenderer extends CoreRenderer{
                 writer.write(",trigger:'" + menu.getTrigger() + "'");
         }
 
-        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
-        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
-
         writer.write("});");
 
 		writer.endElement("script");
@@ -95,6 +92,9 @@ public class MenuRenderer extends CoreRenderer{
 
         writer.startElement("span", menu);
 		writer.writeAttribute("id", clientId, "id");
+
+        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
+        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
 
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId + "_menu", null);
