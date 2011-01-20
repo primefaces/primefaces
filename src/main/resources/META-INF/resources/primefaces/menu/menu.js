@@ -98,7 +98,7 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 	this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
+    this.jq = jQuery(this.jqId + '_menu');
 
     //mouse tracking
     if(!PrimeFaces.widget.ContextMenu.mouseTracking) {

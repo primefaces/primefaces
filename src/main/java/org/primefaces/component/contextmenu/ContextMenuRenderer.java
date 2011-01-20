@@ -90,8 +90,11 @@ public class ContextMenuRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = menu.getClientId(context);
 
+        writer.startElement("span", menu);
+		writer.writeAttribute("id", clientId, "id");
+
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("id", clientId + "_menu", null);
 
 		for(UIComponent child : menu.getChildren()) {
 			MenuItem item = (MenuItem) child;
@@ -104,6 +107,8 @@ public class ContextMenuRenderer extends CoreRenderer {
 		}
 
 		writer.endElement("ul");
+
+        writer.endElement("span");
 	}
 
     protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
