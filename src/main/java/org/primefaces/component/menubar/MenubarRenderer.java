@@ -62,8 +62,6 @@ public class MenubarRenderer extends CoreRenderer {
             writer.write(",showDuration:" + menubar.getEffectDuration());
             writer.write(",hideDuration:" + menubar.getEffectDuration());
         }
-        if(menubar.getStyleClass() != null) writer.write(",styleClass:'" + menubar.getStyleClass() + "'");
-        if(menubar.getStyle() != null) writer.write(",style:'" + menubar.getStyle() + "'");
 		
         writer.write("});");
 
@@ -73,13 +71,21 @@ public class MenubarRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, Menubar menubar) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = menubar.getClientId(context);
+
+        writer.startElement("div", menubar);
+        writer.writeAttribute("id", clientId, null);
+        
+        if(menubar.getStyleClass() != null) writer.write(",styleClass:'" + menubar.getStyleClass() + "'");
+        if(menubar.getStyle() != null) writer.write(",style:'" + menubar.getStyle() + "'");
 		
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("id", clientId + "_menu", null);
 
 		encodeMenuContent(context, menubar);
 		
 		writer.endElement("ul");
+
+        writer.endElement("div");
 	}
 
     protected void encodeMenuContent(FacesContext context, UIComponent component) throws IOException {
