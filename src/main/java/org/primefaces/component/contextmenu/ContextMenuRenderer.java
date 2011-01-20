@@ -51,6 +51,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
             writer.write(",hideDuration:" + menu.getEffectDuration());
         }
 
+        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
+        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
+
         writer.write("});});");
 		
 		writer.endElement("script");
@@ -63,9 +66,6 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("span", menu);
 		writer.writeAttribute("id", clientId, "id");
-
-        if(menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), "styleClass");
-        if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), "style");
 
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId + "_menu", null);

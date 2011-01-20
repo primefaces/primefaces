@@ -18,6 +18,11 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
     };
 
     this.jq.wijmenu(this.cfg);
+
+    if(this.cfg.style)
+        this.jq.parent().parent().attr('style', this.cfg.style);
+    if(this.cfg.styleClass)
+        this.jq.parent().parent().addClass(this.cfg.styleClass);
 }
 
 /**
@@ -49,6 +54,11 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 
     this.element = this.jq.parent().parent();       //overlay element
     this.element.css('z-index', this.cfg.zindex);
+
+    if(this.cfg.style)
+        this.element.attr('style', this.cfg.style);
+    if(this.cfg.styleClass)
+        this.element.addClass(this.cfg.styleClass);
 }
 
 /*
@@ -128,4 +138,9 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 
     this.element = this.jq.parent().parent();   //overlay element
     this.element.css('z-index', this.cfg.zindex);
+
+    if(this.cfg.style)
+        this.element.attr('style', this.cfg.style);
+    if(this.cfg.styleClass)
+        this.element.addClass(this.cfg.styleClass);
 }
