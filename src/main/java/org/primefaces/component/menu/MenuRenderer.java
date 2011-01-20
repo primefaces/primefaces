@@ -93,8 +93,11 @@ public class MenuRenderer extends CoreRenderer{
 		String clientId = menu.getClientId(context);
         boolean tiered = menu.isTiered() || !menu.getType().equalsIgnoreCase("plain");
 
+        writer.startElement("span", menu);
+		writer.writeAttribute("id", clientId, "id");
+
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("id", clientId + "_menu", null);
 
         if(tiered) {
             encodeTieredMenuContent(context, menu);
@@ -104,6 +107,8 @@ public class MenuRenderer extends CoreRenderer{
         }
 
 		writer.endElement("ul");
+
+        writer.endElement("span");
 	}
 
     protected void encodeTieredMenuContent(FacesContext context, UIComponent component) throws IOException {
