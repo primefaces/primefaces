@@ -47,14 +47,8 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 
     this.jq.wijmenu(this.cfg);
 
-    this.element = this.jq.parent().parent();   //main container element
+    this.element = this.jq.parent().parent();       //overlay element
     this.element.css('z-index', this.cfg.zindex);
-
-    if(this.cfg.style)
-        this.element.attr('style', this.cfg.style);
-
-    if(this.cfg.styleClass)
-        this.element.addClass(this.cfg.styleClass);
 }
 
 /*
@@ -88,7 +82,7 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
         this.jqbutton.button('disable');
     }
 
-    this.jqMenu.parent().parent().css('z-index', this.cfg.zindex);
+    this.jqMenu.parent().parent().css('z-index', this.cfg.zindex);      //overlay element
 }
 
 /*
@@ -132,12 +126,6 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 
     this.jq.wijmenu(this.cfg);
 
-    this.element = this.jq.parent().parent();   //main container element
+    this.element = this.jq.parent().parent();   //overlay element
     this.element.css('z-index', this.cfg.zindex);
-
-    if(this.cfg.style)
-        this.element.attr('style', this.cfg.style);
-
-    if(this.cfg.styleClass)
-        this.element.addClass(this.cfg.styleClass);
 }
