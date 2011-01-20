@@ -50,6 +50,9 @@ public class MenubarRenderer extends BaseMenuRenderer {
             writer.write(",showDuration:" + menubar.getEffectDuration());
             writer.write(",hideDuration:" + menubar.getEffectDuration());
         }
+
+        if(menubar.getStyleClass() != null) writer.write(",styleClass:'" + menubar.getStyleClass() + "'");
+        if(menubar.getStyle() != null) writer.write(",style:'" + menubar.getStyle() + "'");
 		
         writer.write("});");
 
@@ -63,10 +66,7 @@ public class MenubarRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", menubar);
         writer.writeAttribute("id", clientId, null);
-        
-        if(menubar.getStyleClass() != null) writer.writeAttribute("class", menubar.getStyleClass(), "styleClass");
-        if(menubar.getStyle() != null) writer.writeAttribute("style", menubar.getStyle(), "style");
-		
+
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId + "_menu", null);
 
