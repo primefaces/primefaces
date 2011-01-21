@@ -9,20 +9,20 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.stateHolder = jQuery(this.jqId + '_activeIndex');
     var _self = this;
 
-    //Create tabs
-    this.jq.tabs(this.cfg);
-
     //tab change handler
-    this.jq.bind('tabsselect', function(event, ui) {
+    this.cfg.select = function(event, ui) {
         _self.onTabSelect(event, ui);
-    });
+    };
 
     //tab show handler
     if(this.cfg.onTabShow) {
-        this.jq.bind('tabsshow', function(event, ui) {
+        this.cfg.show = function(event, ui) {
             _self.cfg.onTabShow.call(_self, event, ui);
-        });
+        };
     }
+
+    //Create tabs
+    this.jq.tabs(this.cfg);
 	
     if(this.cfg.dynamic && this.cfg.cache) {
         this.markAsLoaded(this.jq.children('div').get(this.cfg.selected));
