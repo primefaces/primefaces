@@ -316,10 +316,39 @@ PrimeFaces.widget.Uploader.prototype.createPostParams = function() {
 		params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.update;
 	}
 
-	var jsessionid = PrimeFaces.getCookie("JSESSIONID");
-	if(this.cfg.script.indexOf('jsessionid') == -1) {
-		this.cfg.script = this.cfg.script + ";jsessionid=" + jsessionid;
-	}
+    //session handling
+	var jsessionid = this.cfg.jsessionid,
+    url = this.cfg.script,
+    hasSessionId = url.indexOf('jsessionid') != -1,
+    paramIndex = url.indexOf('?'),
+    hasParam = paramIndex != -1;
+
+    if(hasParam) {
+        var plainUrl = url.substring(0, paramIndex),
+        urlParamsString = url.substring(paramIndex + 1, url.length);
+
+        if(!hasSessionId) {
+            url = plainUrl + ';jsessionid=' + jsessionid + '?' + urlParamsString;
+        }
+
+        //add get params as post params
+        var urlParams = urlParamsString.split('&');
+        for(var i in urlParams) {
+            var paramTokens = urlParams[i].split('='),
+            paramName = paramTokens[0],
+            paramValue = paramTokens[1];
+
+            params[paramName] = paramValue;
+        }
+
+    }
+    else {
+        if(!hasSessionId) {
+            url = url + ';jsessionid=' + jsessionid;
+        }
+    }
+
+    this.cfg.script = url;
 
 	return params;
 }
