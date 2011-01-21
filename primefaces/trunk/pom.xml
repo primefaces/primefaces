@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
-            <version>1.4.8</version>
+            <version>2.1.7</version>
             <scope>provided</scope>
         </dependency>
 		
