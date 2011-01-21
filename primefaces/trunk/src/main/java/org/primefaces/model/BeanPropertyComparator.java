@@ -39,7 +39,7 @@ public class BeanPropertyComparator implements Comparator {
 	
 	private MethodExpression sortFunction;
 	
-	private Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
+	private final static Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
 	
 	public BeanPropertyComparator(Column column, String var, boolean asc) {
 		this.column = column;
