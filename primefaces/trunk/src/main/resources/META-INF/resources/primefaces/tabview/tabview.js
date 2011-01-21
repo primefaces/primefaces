@@ -24,7 +24,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
         });
     }
 	
-    if(this.cfg.dynamic) {
+    if(this.cfg.dynamic && this.cfg.cache) {
         this.markAsLoaded(this.jq.children('div').get(this.cfg.selected));
     }
 }
