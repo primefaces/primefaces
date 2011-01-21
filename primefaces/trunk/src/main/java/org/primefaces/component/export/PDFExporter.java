@@ -33,7 +33,6 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -43,14 +42,17 @@ public class PDFExporter extends Exporter {
 	@Override
 	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
 		try {
-	        Document document = new Document(PageSize.A4.rotate());
+	        Document document = new Document();
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        PdfWriter.getInstance(document, baos);
-	        document.open();
 	        
 	        if(preProcessor != null) {
 	    		preProcessor.invoke(facesContext.getELContext(), new Object[]{document});
 	    	}
+
+            if(!document.isOpen()) {
+                document.open();
+            }
 	        
 			PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType);
 	    	document.add(pdfTable);
