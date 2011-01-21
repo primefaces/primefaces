@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -144,6 +145,7 @@ public class DynamicContentStreamer implements PhaseListener {
 		
 		response.setStatus(200);
 		response.getOutputStream().flush();
+        facesContext.setViewRoot(new UIViewRoot());
 		facesContext.responseComplete();
 	}
 	
