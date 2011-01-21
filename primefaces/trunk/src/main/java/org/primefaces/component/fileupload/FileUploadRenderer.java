@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletRequestWrapper;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
@@ -74,25 +75,25 @@ public class FileUploadRenderer extends CoreRenderer {
 		encodeScript(facesContext, fileUpload);
 	}
 
-	protected void encodeScript(FacesContext facesContext, FileUpload fileUpload) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = fileUpload.getClientId(facesContext);
-		String inputFileId = fileUpload.getInputFileId(facesContext);
-		String actionURL = getActionURL(facesContext);
-		String cancelImg = fileUpload.getCancelImage() == null ? getResourceRequestPath(facesContext, "fileupload/cancel.png") : getResourceURL(facesContext, fileUpload.getCancelImage());
+	protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = fileUpload.getClientId(context);
+		String inputFileId = fileUpload.getInputFileId(context);
+		String actionURL = getActionURL(context);
+		String cancelImg = fileUpload.getCancelImage() == null ? getResourceRequestPath(context, "fileupload/cancel.png") : getResourceURL(context, fileUpload.getCancelImage());
 		
-		UIComponent parentForm = ComponentUtils.findParentForm(facesContext, fileUpload);
+		UIComponent parentForm = ComponentUtils.findParentForm(context, fileUpload);
 		if(parentForm == null) {
 			throw new FacesException("FileUpload component:" + clientId + " needs to be enclosed in a form");
 		}
-		String formClientId = parentForm.getClientId(facesContext);
+		String formClientId = parentForm.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("jQuery(function() {");
 		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.Uploader('" + clientId + "', {");
-		writer.write("uploader:'" + getResourceRequestPath(facesContext, "fileupload/uploadify.swf") + "'");
+		writer.write("uploader:'" + getResourceRequestPath(context, "fileupload/uploadify.swf") + "'");
 		writer.write(",script:'" + actionURL + "'");
 		writer.write(",cancelImg:'" + cancelImg + "'");
 		writer.write(",formId:'" + formClientId + "'");
@@ -100,9 +101,10 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.write(",multi:" + fileUpload.isMultiple());
 		writer.write(",auto:" + fileUpload.isAuto());
 		writer.write(",inputFileId:'" + inputFileId + "'");
+        writer.write(",jsessionid:'" + ((HttpSession) (context.getExternalContext().getSession(true))).getId() + "'");
 		
-		if(fileUpload.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, fileUpload, fileUpload.getUpdate()) + "'");
-		if(fileUpload.getImage() != null) writer.write(",buttonImg:'" + getResourceURL(facesContext, fileUpload.getImage()) + "'");
+		if(fileUpload.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, fileUpload.getUpdate()) + "'");
+		if(fileUpload.getImage() != null) writer.write(",buttonImg:'" + getResourceURL(context, fileUpload.getImage()) + "'");
 		if(fileUpload.getLabel() != null) writer.write(",buttonText:'" + fileUpload.getLabel() + "'");
 		if(fileUpload.getWidth() != null) writer.write(",width:'" + fileUpload.getWidth() + "'");
 		if(fileUpload.getHeight() != null) writer.write(",height:'" + fileUpload.getWidth() + "'");
