@@ -47,7 +47,7 @@ public class DynamicContentStreamer implements PhaseListener {
 	public static final String CONTENT_TYPE_PARAM = "contentType";
 	public static final String GRAPHIC_TEXT_PARAM = "primefacesGraphicText";
 	
-	private Logger logger = Logger.getLogger(DynamicContentStreamer.class.getName());
+	private final static Logger logger = Logger.getLogger(DynamicContentStreamer.class.getName());
 
 	public void beforePhase(PhaseEvent phaseEvent) {
 		FacesContext facesContext = phaseEvent.getFacesContext();
