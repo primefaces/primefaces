@@ -61,6 +61,9 @@
 	</attributes>
 	<resources>
         <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+        <resource>
 			<name>wijmo/wijmo.css</name>
 		</resource>
 		<resource>
