@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,10 +32,10 @@ import org.primefaces.util.ComponentUtils;
 public class PanelRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         Panel panel = (Panel) component;
-        String clientId = panel.getClientId(facesContext);
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = panel.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         //Restore toggle state
         String collapsedParam = params.get(clientId + "_collapsed");
@@ -65,6 +65,7 @@ public class PanelRenderer extends CoreRenderer {
             }
 
         }
+
     }
 
     @Override
@@ -75,9 +76,9 @@ public class PanelRenderer extends CoreRenderer {
         encodeScript(facesContext, panel);
     }
 
-    protected void encodeScript(FacesContext facesContext, Panel panel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = panel.getClientId(facesContext);
+    protected void encodeScript(FacesContext context, Panel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = panel.getClientId(context);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -85,6 +86,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.Panel('" + clientId + "', {");
         writer.write("visible:" + panel.isVisible());
 
+        //Toggle configuration
         if(panel.isToggleable()) {
             writer.write(",toggleable:true");
             writer.write(",toggleSpeed:" + panel.getToggleSpeed());
@@ -94,12 +96,13 @@ public class PanelRenderer extends CoreRenderer {
                 writer.write(",ajaxToggle:true");
 
                 if (panel.getOnToggleUpdate() != null) {
-                    writer.write(",onToggleUpdate:'" + ComponentUtils.findClientIds(facesContext, panel, panel.getOnToggleUpdate()) + "'");
+                    writer.write(",onToggleUpdate:'" + ComponentUtils.findClientIds(context, panel, panel.getOnToggleUpdate()) + "'");
                 }
             }
         }
 
-        if (panel.isClosable()) {
+        //Toggle configuration
+        if(panel.isClosable()) {
             writer.write(",closable:true");
             writer.write(",closeSpeed:" + panel.getCloseSpeed());
 
@@ -114,22 +117,27 @@ public class PanelRenderer extends CoreRenderer {
                 writer.write(",ajaxClose:true");
 
                 if (panel.getOnCloseUpdate() != null) {
-                    writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(facesContext, panel, panel.getOnCloseUpdate()) + "'");
+                    writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(context, panel, panel.getOnCloseUpdate()) + "'");
                 }
             }
         }
 
-        if (panel.getToggleListener() != null || panel.getCloseListener() != null) {
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
+        if(panel.getToggleListener() != null || panel.getCloseListener() != null) {
+            writer.write(",url:'" + getActionURL(context) + "'");
+        }
+
+        //Options menu configuration
+        if(panel.getOptionsMenu() != null) {
+            writer.write(",hasMenu:true");
         }
 
         writer.write("});");
         writer.endElement("script");
     }
 
-    protected void encodeMarkup(FacesContext facesContext, Panel panel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = panel.getClientId(facesContext);
+    protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = panel.getClientId(context);
         Menu optionsMenu = panel.getOptionsMenu();
 
         writer.startElement("div", null);
@@ -140,16 +148,16 @@ public class PanelRenderer extends CoreRenderer {
             writer.writeAttribute("style", panel.getStyle(), "style");
         }
 
-        encodeHeader(facesContext, panel);
-        encodeContent(facesContext, panel);
-        encodeFooter(facesContext, panel);
+        encodeHeader(context, panel);
+        encodeContent(context, panel);
+        encodeFooter(context, panel);
 
         if (panel.isToggleable()) {
-            encodeStateHolder(facesContext, panel, clientId + "_collapsed", String.valueOf(panel.isCollapsed()));
+            encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(panel.isCollapsed()));
         }
 
         if (panel.isClosable()) {
-            encodeStateHolder(facesContext, panel, clientId + "_visible", String.valueOf(panel.isVisible()));
+            encodeStateHolder(context, panel, clientId + "_visible", String.valueOf(panel.isVisible()));
         }
 
         if (optionsMenu != null) {
@@ -158,52 +166,51 @@ public class PanelRenderer extends CoreRenderer {
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
 
-            optionsMenu.encodeAll(facesContext);
+            optionsMenu.encodeAll(context);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeHeader(FacesContext facesContext, Panel panel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeHeader(FacesContext context, Panel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String widgetVar = panel.resolveWidgetVar();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
-        String clientId = panel.getClientId(facesContext);
+        String clientId = panel.getClientId(context);
 
-        if (headerText == null && header == null) {
+        if(headerText == null && header == null) {
             return;
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", panel.getClientId(facesContext) + "_header", null);
+        writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
 
         //Title
         writer.startElement("span", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
 
-        if (header != null) {
-            renderChild(facesContext, header);
-        } else if (headerText != null) {
+        if(header != null) {
+            renderChild(context, header);
+        } else if(headerText != null) {
             writer.write(headerText);
         }
 
         writer.endElement("span");
 
         //Options
-        if (panel.isClosable()) {
-            encodeIcon(facesContext, panel, "ui-icon-closethick", widgetVar + ".close()", clientId + "_closer");
+        if(panel.isClosable()) {
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer");
         }
 
-        if (panel.isToggleable()) {
+        if(panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(facesContext, panel, icon, widgetVar + ".toggle()", clientId + "_toggler");
+            encodeIcon(context, panel, icon, clientId + "_toggler");
         }
 
-        if (panel.getOptionsMenu() != null) {
-            String menuVar = panel.getOptionsMenu().resolveWidgetVar();
-            encodeIcon(facesContext, panel, "ui-icon-gear", menuVar + ".show()", clientId + "_menu");
+        if(panel.getOptionsMenu() != null) {
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu");
         }
 
         writer.endElement("div");
@@ -244,29 +251,28 @@ public class PanelRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeIcon(FacesContext facesContext, Panel panel, String iconClass, String onclick, String id) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String hover = "jQuery(this).toggleClass('ui-state-hover')";
+    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "javascript:void(0)", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
-        writer.writeAttribute("onmouseover", hover, null);
-        writer.writeAttribute("onmouseout", hover, null);
 
         writer.startElement("span", null);
-        if (id != null) {
+        
+        if(id != null) {
             writer.writeAttribute("id", id, null);
         }
+
         writer.writeAttribute("class", "ui-icon " + iconClass, null);
-        writer.writeAttribute("onclick", onclick, null);
+
         writer.endElement("span");
 
         writer.endElement("a");
     }
 
-    protected void encodeStateHolder(FacesContext facesContext, Panel panel, String name, String value) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeStateHolder(FacesContext context, Panel panel, String name, String value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
@@ -277,7 +283,7 @@ public class PanelRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
     }
 

@@ -10,10 +10,20 @@ PrimeFaces.widget.Panel = function(id, cfg) {
         this.toggler = jQuery(this.jqId + '_toggler');
         this.toggleStateHolder = jQuery(this.jqId + '_collapsed');
         this.content = jQuery(this.jqId + '_content');
+
+        this.setupToggleTrigger();
     }
 
     if(this.cfg.closable) {
         this.visibleStateHolder = jQuery(this.jqId + "_visible");
+
+        this.setupCloseTrigger();
+    }
+
+    if(this.cfg.hasMenu) {
+        this.visibleStateHolder = jQuery(this.jqId + "_visible");
+
+        this.setupMenuTrigger();
     }
 	
     if(!this.cfg.visible) {
@@ -104,4 +114,33 @@ PrimeFaces.widget.Panel.prototype.show = function() {
     jQuery(this.jqId).fadeIn(this.cfg.closeSpeed);
 	
     this.visibleStateHolder.val(true);
+}
+
+PrimeFaces.widget.Panel.prototype.setupToggleTrigger = function() {
+    var _self = this,
+    trigger = this.toggler.parent();
+
+    this.setupTriggerVisuals(trigger);
+    
+    trigger.click(function() {_self.toggle();});
+}
+
+PrimeFaces.widget.Panel.prototype.setupCloseTrigger = function() {
+    var _self = this,
+    trigger = jQuery(this.jqId + '_closer').parent();
+
+    this.setupTriggerVisuals(trigger);
+    
+    trigger.click(function() {_self.close();});
+}
+
+PrimeFaces.widget.Panel.prototype.setupMenuTrigger = function() {
+    var trigger = jQuery(this.jqId + '_menu').parent();
+
+    this.setupTriggerVisuals(trigger);
+}
+
+PrimeFaces.widget.Panel.prototype.setupTriggerVisuals = function(trigger) {
+    trigger.mouseover(function() {jQuery(this).addClass('ui-state-hover');})
+            .mouseout(function() {jQuery(this).removeClass('ui-state-hover');});
 }
