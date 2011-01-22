@@ -36,6 +36,9 @@
 		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>forms/forms.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>

@@ -60,6 +60,21 @@ PrimeFaces = {
         }
         return cookieValue;
     },
+
+    skinInput : function(input) {
+        input.hover(
+            function() {
+                jQuery(this).addClass('ui-state-hover');
+            },
+            function() {
+                jQuery(this).removeClass('ui-state-hover');
+            }
+        ).focus(function() {
+                jQuery(this).addClass('ui-state-focus');
+        }).blur(function() {
+                jQuery(this).removeClass('ui-state-focus');
+        });
+    },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 

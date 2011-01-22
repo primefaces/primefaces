@@ -71,6 +71,8 @@ public class InputMaskRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
+        String styleClass = inputMask.getStyleClass();
+        styleClass = styleClass == null ? InputMask.STYLE_CLASS : InputMask.STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
@@ -84,11 +86,9 @@ public class InputMaskRenderer extends CoreRenderer {
 		
 		renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS);
 		
-		if(inputMask.getStyleClass() != null) {
-			writer.writeAttribute("class", inputMask.getStyleClass(), "styleClass");
-		}
-		
-		writer.endElement("input");
+        writer.writeAttribute("class", styleClass, "styleClass");
+
+        writer.endElement("input");
 	}
 
 	@Override

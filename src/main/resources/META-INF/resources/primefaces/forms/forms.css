@@ -1,0 +1,5 @@
+.ui-inputtext, .ui-inputmask {
+    margin: 0;
+    outline: medium none;
+    padding: 4px;
+}
