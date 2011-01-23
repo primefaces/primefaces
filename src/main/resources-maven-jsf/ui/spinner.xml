@@ -65,6 +65,9 @@
 		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>forms/forms.css</name>
+		</resource>
 		<resource>
 			<name>spinner/spinner.css</name>
 		</resource>
