@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +79,8 @@ public class SpinnerRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext facesContext, Spinner spinner) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = spinner.getClientId(facesContext);
+        String styleClass = spinner.getStyleClass();
+        styleClass = styleClass == null ? Spinner.STYLE_CLASS : Spinner.STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
@@ -92,9 +94,7 @@ public class SpinnerRenderer extends CoreRenderer {
 		
 		renderPassThruAttributes(facesContext, spinner, HTML.INPUT_TEXT_ATTRS);
 
-        if(spinner.getStyleClass() != null) {
-            writer.writeAttribute("class", spinner.getStyleClass(), "styleClass");
-        }
+        writer.writeAttribute("class", styleClass, "styleClass");
 		
 		writer.endElement("input");
 	}
