@@ -1,10 +1,2 @@
-.ui-inputtext, .ui-inputtextarea, .ui-inputmask {
-    margin: 0;
-    outline: medium none;
-    padding: 4px;
-}
-
-.ui-inputtextarea-resizable {
-    display:block;
-    overflow:auto;
-}
+.ui-inputfield {margin: 0;outline: medium none;padding: 4px;}
+.ui-inputtextarea-resizable {display:block;overflow:auto;}
