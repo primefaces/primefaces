@@ -3,6 +3,8 @@ import org.primefaces.event.DateSelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 
+    public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+
 	public static String POPUP_ICON = "calendar/calendar_icon.png";
 
     public static String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {

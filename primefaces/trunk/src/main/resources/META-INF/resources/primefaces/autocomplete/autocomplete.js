@@ -20,7 +20,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
         this.setupForceSelection();
     }
 
-    //update hidden field value in pojo mode
+    //Update hidden field value in pojo mode
     if(this.cfg.pojo) {
         this.jq.keyup(function(e) {
             if(e.keyCode != 13) {
@@ -29,10 +29,13 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
         });
     }
 
-    //behaviors
+    //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+
+    //Visuals
+    PrimeFaces.skinInput(this.jq);
 }
 
 PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {

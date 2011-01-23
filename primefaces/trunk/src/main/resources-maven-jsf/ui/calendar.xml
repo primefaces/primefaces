@@ -156,6 +156,9 @@
     </attributes>
     <resources>
         <resource>
+			<name>forms/forms.css</name>
+		</resource>
+        <resource>
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
 		<resource>

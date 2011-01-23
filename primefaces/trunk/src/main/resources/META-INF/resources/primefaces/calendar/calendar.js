@@ -2,18 +2,27 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
+    this.jqEl = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
+    this.jq = jQuery(this.jqEl);
 	
     this.configureOnSelectHandler();
     this.configureLocale();
 	
     if(!this.cfg.disabled) {
-        jQuery(this.jq).datepicker(this.cfg);
+        this.jq.datepicker(this.cfg);
     }
 
-    if(this.cfg.behaviors && this.cfg.popup) {
-        PrimeFaces.attachBehaviors(jQuery(this.jq), this.cfg.behaviors);
+    if(this.cfg.popup) {
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        }
+
+        //Visuals
+        if(this.cfg.popup) {
+            PrimeFaces.skinInput(this.jq);
+        }
     }
+    
 }
 
 PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
@@ -54,17 +63,17 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
 }
 
 PrimeFaces.widget.Calendar.prototype.setDate = function(date) {
-    jQuery(this.jq).datepicker('setDate', date);
+    this.jq.datepicker('setDate', date);
 }
 
 PrimeFaces.widget.Calendar.prototype.getDate = function() {
-    return jQuery(this.jq).datepicker('getDate');
+    return this.jq.datepicker('getDate');
 }
 
 PrimeFaces.widget.Calendar.prototype.enable = function() {
-    jQuery(this.jq).datepicker('enable');
+    this.jq.datepicker('enable');
 }
 
 PrimeFaces.widget.Calendar.prototype.disable = function() {
-    jQuery(this.jq).datepicker('disable');
+    this.jq.datepicker('disable');
 }

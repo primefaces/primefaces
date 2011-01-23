@@ -119,6 +119,8 @@ public class AutoCompleteRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         Object value = ac.getValue();
+        String styleClass = ac.getStyleClass();
+        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -138,6 +140,7 @@ public class AutoCompleteRenderer extends CoreRenderer {
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
 
+        writer.writeAttribute("class", styleClass, "styleClass");
 
         writer.endElement("input");
 
