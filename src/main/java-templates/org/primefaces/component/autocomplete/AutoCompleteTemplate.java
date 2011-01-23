@@ -1,4 +1,7 @@
-	public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+	
+    public final static String STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+
+    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
 		
 		FacesContext facesContext = FacesContext.getCurrentInstance();

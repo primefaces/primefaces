@@ -84,8 +84,12 @@ public class CalendarRenderer extends CoreRenderer {
         }
 
         if(calendar.isPopup()) {
+            String inputStyleClass = calendar.getInputStyleClass();
+            inputStyleClass = inputStyleClass == null ? Calendar.INPUT_STYLE_CLASS : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+
+            writer.writeAttribute("class", inputStyleClass, null);
+
             if(calendar.getInputStyle() != null) writer.writeAttribute("style", calendar.getInputStyle(), null);
-            if(calendar.getInputStyleClass() != null) writer.writeAttribute("class", calendar.getInputStyleClass(), null);
             if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
