@@ -26,6 +26,12 @@
 	<ignoreInComponent>true</ignoreInComponent>
 </attribute>
 <attribute>
+	<name>label</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
 	<name>lang</name>
 	<required></required>
 	<type>java.lang.String</type>
