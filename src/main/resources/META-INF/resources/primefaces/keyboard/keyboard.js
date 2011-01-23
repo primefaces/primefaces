@@ -890,17 +890,22 @@ PrimeFaces.widget.Keyboard = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = jQuery(this.jqId);
 
 	if(this.cfg.layoutTemplate)
 		this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
 	else
 		this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 	
-	jQuery(this.jqId).keypad(this.cfg);
+	this.jq.keypad(this.cfg);
 
+    //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(jQuery(this.jqId), this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+
+    //Visuals
+    PrimeFaces.skinInput(this.jq);
 }
 
 PrimeFaces.widget.KeyboardUtils = {

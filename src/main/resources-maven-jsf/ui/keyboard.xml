@@ -98,6 +98,9 @@
 	</attributes>
 	<resources>
         <resource>
+			<name>forms/forms.css</name>
+		</resource>
+        <resource>
 			<name>keyboard/keyboard.css</name>
 		</resource>
 		<resource>
