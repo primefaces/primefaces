@@ -655,10 +655,15 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = jQuery(this.jqId);
 
-    jQuery(this.jqId).spinner(this.cfg);
+    this.jq.spinner(this.cfg);
 
+    //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(jQuery(this.jqId), this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+
+    //Visuals
+    PrimeFaces.skinInput(this.jq);
 }
