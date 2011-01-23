@@ -3038,13 +3038,21 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			menucontainer = scrollcontainer.parent();
 			scrollcontainer.addClass("scrollcontainer checkablesupport");
 			menucontainer
-			.addClass("ui-widget ui-widget-header wijmo-wijmenu ui-corner-all")
+			.addClass("ui-widget wijmo-wijmenu ui-corner-all")
 			.addClass("ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
 			//var containerClass = "wijmo-wijmenu-vertical";
 			if (o.orientation === "horizontal" && o.mode === "flyout") {
 				menucontainer.addClass("wijmo-wijmenu-horizontal");
 			}
+
+            /*PrimeFaces extension */
+            if (o.orientation === "horizontal") {
+                menucontainer.addClass("ui-widget-header");
+            } else {
+                menucontainer.addClass("ui-widget-content");
+            }
+
 			domObject = {scrollcontainer: scrollcontainer,
 				menucontainer: menucontainer
 			};
