@@ -86,13 +86,19 @@ public class KeyboardRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = keyboard.getClientId(context);
 		String type = keyboard.isPassword() ? "password" : "text";
+        String styleClass = keyboard.getStyleClass();
+        styleClass = styleClass == null ? Keyboard.STYLE_CLASS : Keyboard.STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("input", keyboard);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", type, null);
+
 		writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, keyboard), null);
+        
 		renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
+        writer.writeAttribute("class", styleClass, "styleClass");
+
 		writer.endElement("input");		
 	}
 }
