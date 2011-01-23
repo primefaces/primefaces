@@ -26,7 +26,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class InputTextRenderer extends CoreRenderer {
-@Override
+
+    @Override
 	public void decode(FacesContext context, UIComponent component) {
 		InputText inputText = (InputText) component;
 		String clientId = inputText.getClientId(context);
