@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,8 @@ public class PasswordRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, Password password) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
+        String styleClass = password.getStyleClass();
+        styleClass = styleClass == null ? Password.STYLE_CLASS : Password.STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("input", password);
 		writer.writeAttribute("id", clientId, "id");
@@ -89,9 +91,7 @@ public class PasswordRenderer extends CoreRenderer {
 		
 		renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS);
 		
-		if(password.getStyleClass() != null) {
-			writer.writeAttribute("class", password.getStyleClass(), "styleClass");
-		}
+        writer.writeAttribute("class", styleClass, "styleClass");
 		
 		writer.endElement("input");		
 	}

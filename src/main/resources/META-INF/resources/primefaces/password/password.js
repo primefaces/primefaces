@@ -28,6 +28,7 @@ PrimeFaces.widget.Password = function(id, cfg) {
 		special: ""
 	};
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = jQuery(this.jqId);
 	
 	if(cfg.promptLabel) cfg.lang.please = cfg.promptLabel;
 	if(cfg.weakLabel) cfg.lang.low = cfg.weakLabel;
@@ -43,9 +44,13 @@ PrimeFaces.widget.Password = function(id, cfg) {
 		cfg.onComplete = function(input, container){container.hide();};
 	}
 	
-	jQuery(this.jqId).jpassword(this.cfg);
+	this.jq.jpassword(this.cfg);
 
+    //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(jQuery(this.jqId), this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+
+    //Visuals
+    PrimeFaces.skinInput(this.jq);
 }
