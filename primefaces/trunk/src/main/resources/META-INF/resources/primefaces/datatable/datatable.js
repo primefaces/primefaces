@@ -560,8 +560,9 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
             }
 
         } else {
+            var _self = this;
             jQuery(this.jqId + ' tbody.ui-datatable-data tr').each(function() {
-                this.selection.push(jQuery(this).attr('id').split('_row_')[1]);
+                _self.selection.push(jQuery(this).attr('id').split('_row_')[1]);
             });
         }
 
