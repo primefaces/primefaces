@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -144,7 +144,9 @@ public class DataTableRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
-        String containerClass = table.getStyleClass() != null ? DataTable.CONTAINER_CLASS + " " + table.getStyleClass() : DataTable.CONTAINER_CLASS;
+        boolean scrollable = table.isScrollable();
+        String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
+        containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
         String style = null;
         boolean hasPaginator = table.isPaginator();
         String paginatorPosition = table.getPaginatorPosition();
@@ -166,11 +168,36 @@ public class DataTableRenderer extends CoreRenderer {
             encodePaginatorMarkup(context, table, "top");
         }
 
-        writer.startElement("table", null);
-        encodeThead(context, table);
-        encodeTbody(context, table);
-        encodeTFoot(context, table);
-        writer.endElement("table");
+        if(scrollable) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
+            writer.startElement("table", null);
+            encodeThead(context, table);
+            writer.endElement("table");
+            writer.endElement("div");
+            
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
+            writer.writeAttribute("style", "height:" + table.getHeight() + "px", null);
+            writer.startElement("table", null);
+            encodeTbody(context, table);
+            writer.endElement("table");
+            writer.endElement("div");
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
+            writer.startElement("table", null);
+            encodeTFoot(context, table);
+            writer.endElement("table");
+            writer.endElement("div");
+
+        } else {
+            writer.startElement("table", null);
+            encodeThead(context, table);
+            encodeTbody(context, table);
+            encodeTFoot(context, table);
+            writer.endElement("table");
+        }
 
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, table, "bottom");
