@@ -97,6 +97,15 @@
     width: 20px;
 }
 
-.ui-datatable-odd, .ui-datatable-even {
-    
+.ui-datatable-odd, .ui-datatable-even {}
+
+.ui-datatable-scrollable {}
+.ui-datatable-scrollable-header {}
+.ui-datatable-scrollable-body {
+    overflow:auto;
+}
+.ui-datatable-scrollable .ui-datatable-scrollable-body table,
+.ui-datatable-scrollable .ui-datatable-scrollable-header table,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
+    width:auto;
 }

@@ -34,6 +34,10 @@ import java.lang.StringBuilder;
     public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
     public static final String EVEN_ROW_CLASS = "ui-datatable-even";
     public static final String ODD_ROW_CLASS = "ui-datatable-odd";
+    public static final String SCROLLABLE_CONTAINER_CLASS = "ui-datatable-scrollable";
+    public static final String SCROLLABLE_HEADER_CLASS = "ui-datatable-scrollable-header";
+    public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
+    public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
 
     public List<Column> columns;
 
