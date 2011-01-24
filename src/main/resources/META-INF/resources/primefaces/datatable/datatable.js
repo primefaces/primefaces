@@ -738,7 +738,8 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
         formId: this.cfg.formId
     },
     _self = this,
-    rowEditorId = row.find('span.ui-row-editor').attr('id');
+    rowEditorId = row.find('span.ui-row-editor').attr('id'),
+    expanded = row.hasClass('ui-expanded-row');
 
     if(action === 'save') {
         //Only process cell editors of current row
@@ -782,6 +783,11 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
 
             if(id == _self.id){
                 if(!this.args.validationFailed) {
+                    //remove row expansion
+                    if(expanded) {
+                       row.next().remove();
+                    }
+
                     row.replaceWith(content);
                 }
             }
