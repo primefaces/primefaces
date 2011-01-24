@@ -370,7 +370,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
                     totalRecords = jQuery.parseJSON(extensions[i].firstChild.data).totalRecords;
 
                     //Reset paginator state
-                    paginator.setPage(1);
+                    paginator.setPage(1, true);
                     paginator.setTotalRecords(totalRecords, true);
                 }
             }
