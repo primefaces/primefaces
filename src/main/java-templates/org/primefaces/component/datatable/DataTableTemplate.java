@@ -185,6 +185,17 @@ import java.lang.StringBuilder;
 
     private boolean emptySelected = false;
 
+    @Override
+    public void processDecodes(FacesContext context) {
+		if(isDataManipulationRequest(context)) {
+            this.decode(context);
+            context.renderResponse();
+        } else {
+            super.processDecodes(context);
+        }
+	}
+
+    @Override
     public void processUpdates(FacesContext context) {
 		super.processUpdates(context);
 
