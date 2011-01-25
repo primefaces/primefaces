@@ -1,6 +1,7 @@
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.rowexpansion.RowExpansion;
 import java.util.List;
 import java.util.ArrayList;
 import javax.faces.component.UIComponent;
@@ -391,3 +392,12 @@ import java.lang.StringBuilder;
 	public void setFiltered(boolean filtered) {
 		getStateHelper().put("filtered", filtered);
 	}
+
+    public RowExpansion getRowExpansion() {
+        for(UIComponent kid : getChildren()) {
+            if(kid instanceof RowExpansion)
+                return (RowExpansion) kid;
+        }
+
+        return null;
+    }

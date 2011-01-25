@@ -114,7 +114,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         //Row expansion
-        if(table.getFacet("expansion") != null) {
+        if(table.getRowExpansion() != null) {
             writer.write(",expansion:true");
             if(table.getOnExpandStart() != null) {
                 writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
@@ -802,7 +802,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement("td", null);
         writer.writeAttribute("colspan", table.getColumns().size(), null);
 
-        table.getFacet("expansion").encodeAll(context);
+        table.getRowExpansion().encodeAll(context);
 
         writer.endElement("td");
 
