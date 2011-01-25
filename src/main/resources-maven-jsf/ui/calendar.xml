@@ -92,6 +92,11 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <name>onSelectProcess</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <name>selectListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
