@@ -48,7 +48,7 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
         if(_self.cfg.hasSelectListener) {
             var options = {
                 source: _self.id,
-                process: _self.id,
+                process: _self.cfg.onSelectProcess,
                 formId: _self.cfg.formId
             };
 

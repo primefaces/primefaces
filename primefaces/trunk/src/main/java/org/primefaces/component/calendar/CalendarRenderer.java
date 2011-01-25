@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,6 +158,11 @@ public class CalendarRenderer extends CoreRenderer {
             writer.write(",formId:'" + form.getClientId(context) + "'");
             writer.write(",url:'" + getActionURL(context) + "'");
             writer.write(",hasSelectListener:true");
+
+            String onSelectProcess = calendar.getOnSelectProcess();
+            onSelectProcess = onSelectProcess == null ? clientId : ComponentUtils.findClientIds(context, calendar, onSelectProcess);
+            
+            writer.write(",onSelectProcess:'" + onSelectProcess + "'");
 
             if(calendar.getOnSelectUpdate() != null) {
                 writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, calendar, calendar.getOnSelectUpdate()) + "'");
