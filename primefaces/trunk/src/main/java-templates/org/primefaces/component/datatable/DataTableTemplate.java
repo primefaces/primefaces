@@ -359,6 +359,7 @@ import java.lang.StringBuilder;
 
     public void resetValue() {
         setValue(null);
+        setFiltered(false);
     }
 
     public void resetPagination() {
@@ -383,3 +384,10 @@ import java.lang.StringBuilder;
             this.setFirst((currentPage-1) * rows);
         }
     }
+
+    public boolean isFiltered() {
+		return (java.lang.Boolean) getStateHelper().eval("filtered", false);
+	}
+	public void setFiltered(boolean filtered) {
+		getStateHelper().put("filtered", filtered);
+	}

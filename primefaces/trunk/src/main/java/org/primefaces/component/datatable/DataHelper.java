@@ -82,6 +82,10 @@ class DataHelper {
         } else {
             List list = (List) table.getValue();
             Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
+
+            if(table.isFiltered()) {
+                table.setValue(list);
+            }
         }        
 	}
 
@@ -167,6 +171,7 @@ class DataHelper {
             table.setRowIndex(-1);	//cleanup
 
             table.setValue(filteredData);
+            table.setFiltered(true);
 
             //Metadata for callback
             if(table.isPaginator()) {
