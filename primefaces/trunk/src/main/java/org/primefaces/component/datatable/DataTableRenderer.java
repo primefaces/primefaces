@@ -169,34 +169,10 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         if(scrollable) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
-            writer.startElement("table", null);
-            encodeThead(context, table);
-            writer.endElement("table");
-            writer.endElement("div");
-            
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-            writer.writeAttribute("style", "height:" + table.getHeight() + "px", null);
-            writer.startElement("table", null);
-            encodeTbody(context, table);
-            writer.endElement("table");
-            writer.endElement("div");
-
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
-            writer.startElement("table", null);
-            encodeTFoot(context, table);
-            writer.endElement("table");
-            writer.endElement("div");
+            encodeScrollableTable(context, table);
 
         } else {
-            writer.startElement("table", null);
-            encodeThead(context, table);
-            encodeTbody(context, table);
-            encodeTFoot(context, table);
-            writer.endElement("table");
+            encodeRegularTable(context, table);
         }
 
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
@@ -211,6 +187,42 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.endElement("div");
 	}
+
+    protected void encodeRegularTable(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("table", null);
+        encodeThead(context, table);
+        encodeTbody(context, table);
+        encodeTFoot(context, table);
+        writer.endElement("table");
+    }
+
+    protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
+        writer.startElement("table", null);
+        encodeThead(context, table);
+        writer.endElement("table");
+        writer.endElement("div");
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
+        writer.writeAttribute("style", "height:" + table.getHeight() + "px", null);
+        writer.startElement("table", null);
+        encodeTbody(context, table);
+        writer.endElement("table");
+        writer.endElement("div");
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
+        writer.startElement("table", null);
+        encodeTFoot(context, table);
+        writer.endElement("table");
+        writer.endElement("div");
+    }
 
     protected void encodeColumnHeader(FacesContext context, DataTable table, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
