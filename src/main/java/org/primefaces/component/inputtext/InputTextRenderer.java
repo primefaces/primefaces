@@ -16,6 +16,7 @@
 package org.primefaces.component.inputtext;
 
 import java.io.IOException;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -97,12 +98,16 @@ public class InputTextRenderer extends CoreRenderer {
 		}
 		//Try to guess
 		else {
-			Class<?> valueType = inputText.getValueExpression("value").getType(context.getELContext());
-			Converter converterForType = context.getApplication().createConverter(valueType);
+            ValueExpression ve = inputText.getValueExpression("value");
+            
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                Converter converterForType = context.getApplication().createConverter(valueType);
 
-			if(converterForType != null) {
-				return converterForType.getAsObject(context, inputText, value);
-			}
+                if(converterForType != null) {
+                    return converterForType.getAsObject(context, inputText, value);
+                }
+            }
 		}
 
 		return value;
