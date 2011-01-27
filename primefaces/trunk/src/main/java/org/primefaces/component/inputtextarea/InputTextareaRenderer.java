@@ -85,7 +85,7 @@ public class InputTextareaRenderer extends CoreRenderer {
 
         String valueToRender = ComponentUtils.getStringValueToRender(context, inputTextarea);
 		if(valueToRender != null) {
-			writer.write(valueToRender);
+			writer.writeText(valueToRender, "value");
 		}
 
         writer.endElement("textarea");
