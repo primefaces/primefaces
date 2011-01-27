@@ -281,6 +281,27 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("th");
     }
 
+    protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String columnVar = columns.getVar();
+
+        for(Object column : (Collection) columns.getValue()) {
+            context.getExternalContext().getRequestMap().put(columnVar, column);
+            UIComponent header = columns.getFacet("header");
+
+            writer.startElement("th", null);
+            writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
+
+            if(header != null) {
+                header.encodeAll(context);
+            }
+
+            writer.endElement("th");
+        }
+
+        context.getExternalContext().getRequestMap().remove(columnVar);
+    }
+
     protected void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
@@ -400,29 +421,10 @@ public class DataTableRenderer extends CoreRenderer {
 
             for(UIComponent kid : table.getChildren()) {
                 if(kid instanceof Column) {
-                    Column column = (Column) kid;
-
-                    encodeColumnHeader(context, table, column);
+                    encodeColumnHeader(context, table, (Column) kid);
                 }
                 else if(kid instanceof Columns) {
-                    Columns columns = (Columns) kid;
-                    String columnVar = columns.getVar();
-
-                    for(Object column : (Collection) columns.getValue()) {
-                        context.getExternalContext().getRequestMap().put(columnVar, column);
-                        UIComponent header = columns.getFacet("header");
-
-                        writer.startElement("th", null);
-                        writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
-
-                        if(header != null) {
-                            header.encodeAll(context);
-                        }
-
-                        writer.endElement("th");
-                    }
-
-                    context.getExternalContext().getRequestMap().remove(columnVar);
+                    encodeColumnsHeader(context, table, (Columns) kid);
                 }
             }
 
@@ -436,7 +438,6 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
-        Columns dynamicColumns = table.getDynamicColumns();
         String emptyMessage = table.getEmptyMessage();
         String selectionMode = table.getSelectionMode();
         String columnSelectionMode = table.getColumnSelectionMode();
@@ -463,7 +464,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(hasData) {
             for(int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, clientId, i, rowIndexVar, dynamicColumns, selMode, selection);
+                encodeRow(context, table, clientId, i, rowIndexVar, selMode, selection);
             }
         }
         else if(emptyMessage != null){
@@ -488,7 +489,7 @@ public class DataTableRenderer extends CoreRenderer {
 		}
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, Columns dynamicColumns, String selectionMode, Object selection) throws IOException {
+    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, String selectionMode, Object selection) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
             return;
@@ -521,56 +522,10 @@ public class DataTableRenderer extends CoreRenderer {
 
         for(UIComponent kid : table.getChildren()) {
             if(kid instanceof Column) {
-                Column column = (Column) kid;
-
-                writer.startElement("td", null);
-                String columnStyleClass = column.getStyleClass();
-
-                if(column.getStyle() != null)
-                    writer.writeAttribute("style", column.getStyle(), null);
-
-                if(column.getSelectionMode() != null) {
-                    columnStyleClass = columnStyleClass == null ? DataTable.SELECTION_COLUMN_CLASS : DataTable.SELECTION_COLUMN_CLASS + " " + columnStyleClass;
-                    writer.writeAttribute("class", columnStyleClass, null);
-
-                    encodeColumnSelection(context, table, clientId, column, selected);
-                }
-                else {
-                    CellEditor editor = column.getCellEditor();
-                    if(editor != null)
-                        columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_COLUMN_CLASS : DataTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
-
-                    if(columnStyleClass != null)
-                        writer.writeAttribute("class", columnStyleClass, null);
-
-
-                    column.encodeAll(context);
-                }
-
-                writer.endElement("td");
+                encodeRegularCell(context, table, (Column) kid, clientId, selected);
             }
             else if(kid instanceof Columns) {
-                Columns columns = (Columns) kid;
-                String columnVar = columns.getVar();
-                String columnIndexVar = columns.getColumnIndexVar();
-                int colIndex = 0;
-
-                for(Object column : (Collection) columns.getValue()) {
-                    context.getExternalContext().getRequestMap().put(columnVar, column);
-                    context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
-                    UIComponent header = columns.getFacet("header");
-
-                    writer.startElement("td", null);
-                    writer.startElement("span", null);
-                    columns.encodeAll(context);
-                    writer.endElement("span");
-                    writer.endElement("td");
-
-                    colIndex++;
-                }
-
-                context.getExternalContext().getRequestMap().remove(columnVar);
-                context.getExternalContext().getRequestMap().remove(columnIndexVar);
+                encodeDynamicCell(context, table, (Columns) kid);
             }
         }
 
@@ -580,6 +535,60 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.endElement("tr");
+    }
+
+    protected void encodeRegularCell(FacesContext context, DataTable table, Column column, String clientId, boolean selected) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("td", null);
+        String columnStyleClass = column.getStyleClass();
+
+        if(column.getStyle() != null)
+            writer.writeAttribute("style", column.getStyle(), null);
+
+        if(column.getSelectionMode() != null) {
+            columnStyleClass = columnStyleClass == null ? DataTable.SELECTION_COLUMN_CLASS : DataTable.SELECTION_COLUMN_CLASS + " " + columnStyleClass;
+            writer.writeAttribute("class", columnStyleClass, null);
+
+            encodeColumnSelection(context, table, clientId, column, selected);
+        }
+        else {
+            CellEditor editor = column.getCellEditor();
+            if(editor != null)
+                columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_COLUMN_CLASS : DataTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+
+            if(columnStyleClass != null)
+                writer.writeAttribute("class", columnStyleClass, null);
+
+
+            column.encodeAll(context);
+        }
+
+        writer.endElement("td");
+    }
+
+    protected void encodeDynamicCell(FacesContext context, DataTable table, Columns columns) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String columnVar = columns.getVar();
+        String columnIndexVar = columns.getColumnIndexVar();
+        int colIndex = 0;
+
+        for(Object column : (Collection) columns.getValue()) {
+            context.getExternalContext().getRequestMap().put(columnVar, column);
+            context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
+            UIComponent header = columns.getFacet("header");
+
+            writer.startElement("td", null);
+            writer.startElement("span", null);
+            columns.encodeAll(context);
+            writer.endElement("span");
+            writer.endElement("td");
+
+            colIndex++;
+        }
+
+        context.getExternalContext().getRequestMap().remove(columnVar);
+        context.getExternalContext().getRequestMap().remove(columnIndexVar);
     }
 
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
@@ -847,7 +856,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         table.setRowIndex(editedRowId);
 
-        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getDynamicColumns(), table.getSelectionMode(), table.getSelection());
+        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getSelectionMode(), table.getSelection());
     }
 
     private void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
@@ -855,12 +864,11 @@ public class DataTableRenderer extends CoreRenderer {
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         String clientId = table.getClientId(context);
         String rowIndexVar = table.getRowIndexVar();
-        Columns columns = table.getDynamicColumns();
         String selectionMode = table.getSelectionMode();
         Object selection = table.getSelection();
 
         for(int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
-            encodeRow(context, table, clientId, i, rowIndexVar, columns, selectionMode, selection);
+            encodeRow(context, table, clientId, i, rowIndexVar, selectionMode, selection);
         }
     }
 }
