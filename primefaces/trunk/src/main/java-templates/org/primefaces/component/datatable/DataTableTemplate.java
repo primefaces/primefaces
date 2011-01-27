@@ -266,21 +266,7 @@ import java.lang.StringBuilder;
 
         return false;
     }
-
-    private Columns dynamicColumns = null;
-
-    public Columns getDynamicColumns() {
-        if(dynamicColumns == null) {
-            for(UIComponent kid : getChildren()) {
-                if(kid instanceof Columns) {
-                    dynamicColumns = (Columns) kid;
-                }
-            }
-        }
-
-        return dynamicColumns;
-    }
-
+    
     public void loadLazyData() {
         LazyDataModel model = (LazyDataModel) getDataModel();
         model.setPageSize(getRows());
