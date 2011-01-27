@@ -395,34 +395,35 @@ public class DataTableRenderer extends CoreRenderer {
             }
 
         } else {
-            Columns dynamicColumns = table.getDynamicColumns();
-
+            
             writer.startElement("tr", null);
 
-            if(dynamicColumns == null) {
-                for(Column column : table.getColumns()) {
+            for(UIComponent kid : table.getChildren()) {
+                if(kid instanceof Column) {
+                    Column column = (Column) kid;
+
                     encodeColumnHeader(context, table, column);
                 }
-                
-            } else {
-                Collection columnCollection = (Collection) dynamicColumns.getValue();
-                String columnVar = dynamicColumns.getVar();
-                
-                for(Object column : columnCollection) {
-                    context.getExternalContext().getRequestMap().put(columnVar, column);
-                    UIComponent header = dynamicColumns.getFacet("header");
+                else if(kid instanceof Columns) {
+                    Columns columns = (Columns) kid;
+                    String columnVar = columns.getVar();
 
-                    writer.startElement("th", null);
-                    writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
+                    for(Object column : (Collection) columns.getValue()) {
+                        context.getExternalContext().getRequestMap().put(columnVar, column);
+                        UIComponent header = columns.getFacet("header");
 
-                    if(header != null) {
-                        header.encodeAll(context);
+                        writer.startElement("th", null);
+                        writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
+
+                        if(header != null) {
+                            header.encodeAll(context);
+                        }
+
+                        writer.endElement("th");
                     }
 
-                    writer.endElement("th");
+                    context.getExternalContext().getRequestMap().remove(columnVar);
                 }
-
-                context.getExternalContext().getRequestMap().remove(columnVar);
             }
 
             writer.endElement("tr");
@@ -518,9 +519,10 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
         writer.writeAttribute("class", rowStyleClass, null);
 
-        if(dynamicColumns == null) {
+        for(UIComponent kid : table.getChildren()) {
+            if(kid instanceof Column) {
+                Column column = (Column) kid;
 
-            for(Column column : table.getColumns()) {
                 writer.startElement("td", null);
                 String columnStyleClass = column.getStyleClass();
 
@@ -537,7 +539,7 @@ public class DataTableRenderer extends CoreRenderer {
                     CellEditor editor = column.getCellEditor();
                     if(editor != null)
                         columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_COLUMN_CLASS : DataTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
-                    
+
                     if(columnStyleClass != null)
                         writer.writeAttribute("class", columnStyleClass, null);
 
@@ -547,30 +549,29 @@ public class DataTableRenderer extends CoreRenderer {
 
                 writer.endElement("td");
             }
+            else if(kid instanceof Columns) {
+                Columns columns = (Columns) kid;
+                String columnVar = columns.getVar();
+                String columnIndexVar = columns.getColumnIndexVar();
+                int colIndex = 0;
 
-        } else {
+                for(Object column : (Collection) columns.getValue()) {
+                    context.getExternalContext().getRequestMap().put(columnVar, column);
+                    context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
+                    UIComponent header = columns.getFacet("header");
 
-            Collection columnCollection = (Collection) dynamicColumns.getValue();
-            String columnVar = dynamicColumns.getVar();
-            String columnIndexVar = dynamicColumns.getColumnIndexVar();
-            int colIndex = 0;
+                    writer.startElement("td", null);
+                    writer.startElement("span", null);
+                    columns.encodeAll(context);
+                    writer.endElement("span");
+                    writer.endElement("td");
 
-            for(Object column : columnCollection) {
-                context.getExternalContext().getRequestMap().put(columnVar, column);
-                context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
-                UIComponent header = dynamicColumns.getFacet("header");
+                    colIndex++;
+                }
 
-                writer.startElement("td", null);
-                writer.startElement("span", null);
-                dynamicColumns.encodeAll(context);
-                writer.endElement("span");
-                writer.endElement("td");
-
-                colIndex++;
+                context.getExternalContext().getRequestMap().remove(columnVar);
+                context.getExternalContext().getRequestMap().remove(columnIndexVar);
             }
-
-            context.getExternalContext().getRequestMap().remove(columnVar);
-            context.getExternalContext().getRequestMap().remove(columnIndexVar);
         }
 
         //Row index var
