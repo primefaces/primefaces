@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,11 @@ import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -34,27 +39,45 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
-        
-        //Skin
-        String newParam = context.getExternalContext().getInitParameter("primefaces.SKIN");
-        String oldParam = context.getExternalContext().getInitParameter("primefaces.skin");
-
-        if(oldParam != null) {
-            logger.info("primefaces.skin context-param is deprecated use primefaces.SKIN instead");
-        }
-
-        //Add default skin resource if user does not provide custom skin
-        if(newParam == null && oldParam == null) {
-            context.getViewRoot().addComponentResource(context, createDefaultSkinResource(context), "head");
-        }
 
         //Resources
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
         while (iter.hasNext()) {
+            writer.write("\n");
             UIComponent resource = (UIComponent) iter.next();
             resource.encodeAll(context);
-            writer.write("\n");
+        }
+        
+        //Theme
+        String theme = null;
+        String oldestThemeParamValue = context.getExternalContext().getInitParameter("primefaces.skin");
+        String oldThemeParamValue = context.getExternalContext().getInitParameter("primefaces.SKIN");
+        String themeParamValue = context.getExternalContext().getInitParameter("primefaces.THEME");
+
+        if(oldestThemeParamValue != null) {
+            logger.info("primefaces.skin is deprecated, use primefaces.THEME instead.");
+
+            theme = oldestThemeParamValue;
+        }
+        else if(oldThemeParamValue != null) {
+            logger.info("primefaces.SKIN is deprecated, use primefaces.THEME instead.");
+            
+            theme = oldThemeParamValue;
+        }
+        else if(themeParamValue != null) {
+            ELContext elContext = context.getELContext();
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
+
+            theme = (String) ve.getValue(elContext);
+        }
+
+        if(theme == null) {
+            encodeTheme(context, "primefaces", "skins/sam/skin.css");
+        }
+        else if(!theme.equalsIgnoreCase("none")) {
+            encodeTheme(context, "primefaces-" + theme, "theme.css");
         }
     }
 
@@ -70,15 +93,34 @@ public class HeadRenderer extends Renderer {
         writer.endElement("head");
     }
 
-    private UIComponent createDefaultSkinResource(FacesContext fc) {
+    private UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
         UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
         resource.setRendererType("javax.faces.resource.Stylesheet");
         
         Map<String, Object> attrs = resource.getAttributes();
-        attrs.put("name", "skins/sam/skin.css");
-        attrs.put("library", "primefaces");
+        attrs.put("name", resourceName);
+        attrs.put("library", library);
         attrs.put("target", "head");
        
         return resource;
+    }
+
+    protected void encodeTheme(FacesContext context, String library, String resource) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.write("\n");
+
+        Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
+        if(themeResource == null) {
+            throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
+        }
+        else {
+            writer.startElement("link", null);
+            writer.writeAttribute("type", "text/css", null);
+            writer.writeAttribute("rel", "stylesheet", null);
+            writer.writeAttribute("href", themeResource.getRequestPath(), null);
+            writer.endElement("link");
+        }
+
+        
     }
 }
