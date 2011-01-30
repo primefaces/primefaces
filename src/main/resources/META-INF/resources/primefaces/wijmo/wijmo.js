@@ -3038,7 +3038,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			menucontainer = scrollcontainer.parent();
 			scrollcontainer.addClass("scrollcontainer checkablesupport");
 			menucontainer
-			.addClass("ui-widget ui-widget-content wijmo-wijmenu uiui-corner-all")
+			.addClass("ui-widget ui-widget-content wijmo-wijmenu ui-corner-all")
 			.addClass("ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
 			//var containerClass = "wijmo-wijmenu-vertical";
