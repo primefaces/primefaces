@@ -144,13 +144,20 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
            return;  //cancel request
        }
     }
-    
-    var requestParams = null;
+
+    var postURL = cfg.actionURL,
+    requestParams = null;
 
     if(cfg.formId) {
-        var jqForm = PrimeFaces.escapeClientId(cfg.formId),
-        requestParams = jQuery(jqForm).serialize();
-    } else {
+        var jqForm = jQuery(PrimeFaces.escapeClientId(cfg.formId)),
+        requestParams = jqForm.serialize(),
+        encodedURLfield = jqForm.children("input[name='javax.faces.encodedURL']");
+
+        if(encodedURLfield.length > 0) {
+            postURL = encodedURLfield.val();
+        }
+    }
+    else {
         requestParams = PrimeFaces.VIEW_STATE + "=" + PrimeFaces.ajax.AjaxUtils.encodeViewState();
     }
 
@@ -186,7 +193,7 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
     }
 	
     var xhrOptions = {
-        url : actionURL,
+        url : postURL,
         type : "POST",
         cache : false,
         dataType : "xml",
