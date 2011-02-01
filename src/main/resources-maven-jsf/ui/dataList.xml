@@ -102,6 +102,9 @@
     </attributes>
     <resources>
         <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+        <resource>
             <name>paginator/paginator.css</name>
         </resource>
         <resource>
