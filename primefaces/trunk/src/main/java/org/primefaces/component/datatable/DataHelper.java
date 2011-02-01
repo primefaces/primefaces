@@ -29,6 +29,8 @@ import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -62,10 +64,26 @@ class DataHelper {
 		boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
         Column sortColumn = null;
 
-        for(Column column : table.getColumns()) {
-            if(column.getClientId(context).equals(sortKey)) {
-                sortColumn = column;
-                break;
+        ColumnGroup group = table.getColumnGroup("header");
+        if(group != null) {
+            outer:
+            for (UIComponent child : group.getChildren()) {
+                Row headerRow = (Row) child;
+                for (UIComponent headerRowChild : headerRow.getChildren()) {
+                    Column column = (Column) headerRowChild;
+                    if (column.getClientId(context).equals(sortKey)) {
+                        sortColumn = column;
+                        break outer;
+                    }
+                }
+            }
+        } else {
+            //single header row
+            for (Column column : table.getColumns()) {
+                if (column.getClientId(context).equals(sortKey)) {
+                    sortColumn = column;
+                    break;
+                }
             }
         }
 

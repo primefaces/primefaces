@@ -2,6 +2,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.component.row.Row;
 import java.util.List;
 import java.util.ArrayList;
 import javax.faces.component.UIComponent;
@@ -131,19 +132,38 @@ import java.lang.StringBuilder;
 
     private Map<String,Column> filterMap;
 
-	public Map<String,Column> getFilterMap() {
-		if(filterMap == null) {
-			filterMap = new HashMap<String,Column>();
+    public Map<String,Column> getFilterMap() {
+      if(filterMap == null) {
+         filterMap = new HashMap<String,Column>();
 
-			for(Column column : getColumns()) {
-                if(column.getValueExpression("filterBy") != null) {
-                    filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
-                }
-			}
-		}
+         ColumnGroup group = getColumnGroup("header");
+         if(group != null) {
+            //column group
+            for(UIComponent child : group.getChildren()) {
+               Row headerRow = (Row) child;
+               
+               if(headerRow.isRendered()) {
+                   for(UIComponent headerRowChild : headerRow.getChildren()) {
+                      Column column= (Column) headerRowChild;
 
-		return filterMap;
-	}
+                      if(column.isRendered() && column.getValueExpression("filterBy") != null) {
+                         filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
+                      }
+                   }
+               }
+            }
+         } else {
+            //single header row
+            for(Column column : getColumns()) {
+               if(column.getValueExpression("filterBy") != null) {
+                  filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
+               }
+            }
+         }
+      }
+
+      return filterMap;
+   }
 
 	public boolean hasFilter() {
 		return getFilterMap().size() > 0;
