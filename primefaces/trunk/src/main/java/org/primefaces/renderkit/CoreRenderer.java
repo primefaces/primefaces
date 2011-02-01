@@ -62,7 +62,7 @@ public class CoreRenderer extends Renderer {
 	protected String getActionURL(FacesContext facesContext) {
 		String actionURL = facesContext.getApplication().getViewHandler().getActionURL(facesContext, facesContext.getViewRoot().getViewId());
 		
-		return facesContext.getExternalContext().encodeResourceURL(actionURL);
+		return facesContext.getExternalContext().encodeActionURL(actionURL);
 	}
 	
     protected String getResourceURL(FacesContext facesContext, String value) {
