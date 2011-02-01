@@ -420,11 +420,13 @@ public class DataTableRenderer extends CoreRenderer {
             writer.startElement("tr", null);
 
             for(UIComponent kid : table.getChildren()) {
-                if(kid instanceof Column) {
-                    encodeColumnHeader(context, table, (Column) kid);
-                }
-                else if(kid instanceof Columns) {
-                    encodeColumnsHeader(context, table, (Columns) kid);
+                if(kid.isRendered()) {
+                    if(kid instanceof Column) {
+                        encodeColumnHeader(context, table, (Column) kid);
+                    }
+                    else if(kid instanceof Columns) {
+                        encodeColumnsHeader(context, table, (Columns) kid);
+                    }
                 }
             }
 
@@ -521,11 +523,13 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", rowStyleClass, null);
 
         for(UIComponent kid : table.getChildren()) {
-            if(kid instanceof Column) {
-                encodeRegularCell(context, table, (Column) kid, clientId, selected);
-            }
-            else if(kid instanceof Columns) {
-                encodeDynamicCell(context, table, (Columns) kid);
+            if(kid.isRendered()) {
+                if(kid instanceof Column) {
+                    encodeRegularCell(context, table, (Column) kid, clientId, selected);
+                }
+                else if(kid instanceof Columns) {
+                    encodeDynamicCell(context, table, (Columns) kid);
+                }
             }
         }
 
