@@ -45,19 +45,21 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(table.isPaginationRequest(context)) {
             dataHelper.decodePageRequest(context, table);
-        } else if(table.isSortRequest(context)) {
+        }
+        else if(table.isSortRequest(context)) {
             dataHelper.decodeSortRequest(context, table);
-        } else if(table.isFilterRequest(context)) {
+        }
+        else if(table.isFilterRequest(context)) {
             dataHelper.decodeFilterRequest(context, table);
-        } else if(table.isClearFiltersRequest(context)) {
+        }
+        else if(table.isSelectionEnabled()) {
+			dataHelper.decodeSelection(context, table);
+		}
+        else if(table.isClearFiltersRequest(context)) {
             table.resetValue();
             context.renderResponse();
             return;
         }
-
-        if(table.isSelectionEnabled()) {
-			dataHelper.decodeSelection(context, table);
-		}
 	}
     
     @Override
