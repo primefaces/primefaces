@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
-public class InputTextRenderer extends CoreRenderer {
+public class InputTextRenderer extends InputRenderer {
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
 		InputText inputText = (InputText) component;
-		String clientId = inputText.getClientId(context);
 
+        if(inputText.isDisabled() || inputText.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, inputText);
+
+		String clientId = inputText.getClientId(context);
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        
 		inputText.setSubmittedValue(submittedValue);
 	}
 
