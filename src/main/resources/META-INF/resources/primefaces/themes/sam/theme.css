@@ -255,8 +255,13 @@
     color: #555555 !important;
 }
 
+.ui-inputfield.ui-state-hover {
+    border-color: #bfdaff !important;
+}
+
 .ui-inputfield.ui-state-focus {
-    -moz-box-shadow: 0px 0px 5px #999999, inset 0 2px 2px #d3d3d3 !important;
-    -webkit-box-shadow: 0px 0px 5px #999999, inset 0 2px 2px #d3d3d3 !important;
-    box-shadow: 0px 0px 5px #999999, inset 0 2px 2px #d3d3d3 !important;
+    -moz-box-shadow: 0px 0px 5px #bfdaff, inset 0 2px 2px #d3d3d3 !important;
+    -webkit-box-shadow: 0px 0px 5px #bfdaff, inset 0 2px 2px #d3d3d3 !important;
+    box-shadow: 0px 0px 5px #bfdaff, inset 0 2px 2px #d3d3d3 !important;
+    border-color: #bfdaff !important;
 }
