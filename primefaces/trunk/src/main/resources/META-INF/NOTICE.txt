@@ -31,6 +31,7 @@ This product includes software developed by David Hellsing (http://galleria.aino
 This product includes software developed by M. Alsup (http://jquery.malsup.com/cycle/)
 This product includes software developed by Chris Landowski, Premium Software, LLC (http://premiumsoftware.net/cleditor/)
 This product includes software developed by ComponentOne, LLC (http://wijmo.com/widgets/license/wijmo-mit-license/)
+This product includes software developed by Wayne Haffenden (http://www.waynehaffenden.com/Blog/jQuery-AutoResizable-Plugin)
 
 
 
