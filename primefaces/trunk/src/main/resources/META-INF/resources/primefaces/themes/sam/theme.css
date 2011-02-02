@@ -245,3 +245,18 @@
 /* Overlays */
 .ui-widget-overlay { background: #aaaaaa/*{bgColorOverlay}*/ url("#{resource['primefaces:themes/sam/images/ui-bg_flat_0_aaaaaa_40x100.png']}")/*{bgImgUrlOverlay}*/ 50%/*{bgOverlayXPos}*/ 50%/*{bgOverlayYPos}*/ repeat-x/*{bgOverlayRepeat}*/; opacity: .3;filter:Alpha(Opacity=30)/*{opacityOverlay}*/; }
 .ui-widget-shadow { margin: -8px/*{offsetTopShadow}*/ 0 0 -8px/*{offsetLeftShadow}*/; padding: 8px/*{thicknessShadow}*/; background: #aaaaaa/*{bgColorShadow}*/ url("#{resource['primefaces:themes/sam/images/ui-bg_flat_0_aaaaaa_40x100.png']}")/*{bgImgUrlShadow}*/ 50%/*{bgShadowXPos}*/ 50%/*{bgShadowYPos}*/ repeat-x/*{bgShadowRepeat}*/; opacity: .3;filter:Alpha(Opacity=30)/*{opacityShadow}*/; -moz-border-radius: 8px/*{cornerRadiusShadow}*/; -webkit-border-radius: 8px/*{cornerRadiusShadow}*/; border-radius: 8px/*{cornerRadiusShadow}*/; }
+
+/* PrimeFaces Extensions */
+.ui-inputfield {
+    background: #fff !important;
+    -moz-box-shadow: inset 0 2px 2px #d3d3d3 !important;
+    -webkit-box-shadow: inset 0 2px 2px #d3d3d3 !important;
+    box-shadow: inset 0 2px 2px #d3d3d3 !important;
+    color: #555555 !important;
+}
+
+.ui-inputfield.ui-state-focus {
+    -moz-box-shadow: 0px 0px 5px #999999, inset 0 2px 2px #d3d3d3 !important;
+    -webkit-box-shadow: 0px 0px 5px #999999, inset 0 2px 2px #d3d3d3 !important;
+    box-shadow: 0px 0px 5px #999999, inset 0 2px 2px #d3d3d3 !important;
+}
