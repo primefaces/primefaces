@@ -82,11 +82,11 @@ public class AutoCompleteRenderer extends CoreRenderer {
             if (result != null) {
 
                 if (var == null) {
-                    writer.write("{\"label\":\"" + escapeQuotes((String) result) + "\"}");
+                    writer.write("{\"label\":\"" + escape((String) result) + "\"}");
                 } else {
                     facesContext.getExternalContext().getRequestMap().put(var, result);
-                    String itemLabel = escapeQuotes(autoComplete.getItemLabel());
-                    String itemValue = escapeQuotes(ComponentUtils.getStringValueToRender(facesContext, autoComplete, autoComplete.getItemValue()));
+                    String itemLabel = escape(autoComplete.getItemLabel());
+                    String itemValue = escape(ComponentUtils.getStringValueToRender(facesContext, autoComplete, autoComplete.getItemValue()));
 
                     writer.write("{");
                     writer.write("\"label\":\"" + itemLabel + "\"");
@@ -107,11 +107,11 @@ public class AutoCompleteRenderer extends CoreRenderer {
         writer.write("]}");
     }
 
-    private String escapeQuotes(String value) {
+    private String escape(String value) {
         if (value == null) {
             return "";
         } else {
-            return value.replaceAll("\"", "\\\\\"");
+            return value.replaceAll("\"", "\\\\\"").replaceAll("\\\\", "\\\\\\\\");
         }
     }
 
