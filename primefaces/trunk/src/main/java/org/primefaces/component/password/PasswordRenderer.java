@@ -21,19 +21,28 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
-public class PasswordRenderer extends CoreRenderer {
+public class PasswordRenderer extends InputRenderer {
 	
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		Password password = (Password) component;
+
+        if(password.isDisabled() || password.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, password);
+
 		String clientId = password.getClientId(context);
-		
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
-		password.setSubmittedValue(submittedValue);
+
+        if(submittedValue != null) {
+            password.setSubmittedValue(submittedValue);
+        }
 	}
 
 	@Override

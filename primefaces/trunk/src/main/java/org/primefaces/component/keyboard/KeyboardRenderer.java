@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,32 @@
 package org.primefaces.component.keyboard;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
-public class KeyboardRenderer extends CoreRenderer {
+public class KeyboardRenderer extends InputRenderer {
 	
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		Keyboard keyboard = (Keyboard) component;
-		String clientId = keyboard.getClientId(context);
 
-        if(params.containsKey(clientId)) {
-            keyboard.setSubmittedValue((String) params.get(clientId));
+        if(keyboard.isDisabled() || keyboard.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, keyboard);
+
+		String clientId = keyboard.getClientId(context);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
+
+        if(submittedValue != null) {
+            keyboard.setSubmittedValue(submittedValue);
         }
 	}
 

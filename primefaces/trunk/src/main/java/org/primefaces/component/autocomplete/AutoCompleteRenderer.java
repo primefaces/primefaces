@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,21 +31,29 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
-public class AutoCompleteRenderer extends CoreRenderer {
+public class AutoCompleteRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
         AutoComplete autoComplete = (AutoComplete) component;
+
+        if(autoComplete.isDisabled() || autoComplete.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(facesContext, autoComplete);
+
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = autoComplete.getClientId(facesContext);
         String valueParam = autoComplete.getVar() == null ? clientId + "_input" : clientId + "_hinput";
+        String submittedValue = params.get(valueParam);
 
-        if(params.containsKey(valueParam)) {
-            autoComplete.setSubmittedValue(params.get(valueParam));
+        if(submittedValue != null) {
+            autoComplete.setSubmittedValue(submittedValue);
         }
     }
 
