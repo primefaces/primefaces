@@ -56,6 +56,7 @@ public class PasswordRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, Password password) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
+        boolean feedback = password.isFeedback();
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -63,17 +64,22 @@ public class PasswordRenderer extends InputRenderer {
 		writer.write("jQuery(function(){");
 
 		writer.write(password.resolveWidgetVar() + " = new PrimeFaces.widget.Password('" + clientId + "', {");
-		
-		writer.write("length:" + password.getMinLength());
-        
-		if(password.isInline()) writer.write(",flat:true");
-		if(password.getLevel() != 1) writer.write(",type: "+password.getLevel());
-		if(password.getPromptLabel() != null) writer.write(",promptLabel:'" + password.getPromptLabel() + "'");
-		if(password.getWeakLabel() != null) writer.write(",weakLabel:'" + password.getWeakLabel() + "'");
-		if(password.getGoodLabel() != null) writer.write(",goodLabel:'" + password.getGoodLabel() + "'");
-		if(password.getStrongLabel() != null) writer.write(",strongLabel:'" + password.getStrongLabel() + "'");
-		if(password.getOnshow() != null) writer.write(",onShow:" + password.getOnshow());
-		if(password.getOnhide() != null) writer.write(",onHide:" + password.getOnhide());
+
+        writer.write("feedback:" + feedback);
+
+        if(feedback) {
+
+            if(password.getMinLength() != 8) writer.write(",length:" + password.getMinLength());
+            if(password.isInline()) writer.write(",flat:true");
+            if(password.getLevel() != 1) writer.write(",type: " + password.getLevel());
+            if(password.getPromptLabel() != null) writer.write(",promptLabel:'" + password.getPromptLabel() + "'");
+            if(password.getWeakLabel() != null) writer.write(",weakLabel:'" + password.getWeakLabel() + "'");
+            if(password.getGoodLabel() != null) writer.write(",goodLabel:'" + password.getGoodLabel() + "'");
+            if(password.getStrongLabel() != null) writer.write(",strongLabel:'" + password.getStrongLabel() + "'");
+            if(password.getOnshow() != null) writer.write(",onShow:" + password.getOnshow());
+            if(password.getOnhide() != null) writer.write(",onHide:" + password.getOnhide());
+            
+        }
 
         encodeClientBehaviors(context, password);
 

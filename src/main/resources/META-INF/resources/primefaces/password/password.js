@@ -19,32 +19,37 @@
 PrimeFaces.widget.Password = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.cfg.lang = {
-		length : "",
-		number: "",
-		uppercase: "",
-		lowercase: "",
-		punctuation: "",
-		special: ""
-	};
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId);
+
+    if(this.cfg.feedback) {
+
+        this.cfg.lang = {
+            length : "",
+            number: "",
+            uppercase: "",
+            lowercase: "",
+            punctuation: "",
+            special: ""
+        };
 	
-	if(cfg.promptLabel) cfg.lang.please = cfg.promptLabel;
-	if(cfg.weakLabel) cfg.lang.low = cfg.weakLabel;
-	if(cfg.goodLabel) cfg.lang.correct = cfg.goodLabel;
-	if(cfg.strongLabel) cfg.lang.high = cfg.strongLabel;
-	
-	if(cfg.flat) {
-		if(!cfg.onShow)
-			cfg.onShow = function(input, container){container.slideDown();};
-		if(!cfg.onHide)
-			cfg.onHide = function(input, container){container.slideUp();};
-		
-		cfg.onComplete = function(input, container){container.hide();};
-	}
-	
-	this.jq.jpassword(this.cfg);
+        if(this.cfg.promptLabel) this.cfg.lang.please = this.cfg.promptLabel;
+        if(this.cfg.weakLabel) this.cfg.lang.low = this.cfg.weakLabel;
+        if(this.cfg.goodLabel) this.cfg.lang.correct = this.cfg.goodLabel;
+        if(this.cfg.strongLabel) this.cfg.lang.high = this.cfg.strongLabel;
+
+        if(this.cfg.flat) {
+            if(!this.cfg.onShow)
+                this.cfg.onShow = function(input, container){container.slideDown();};
+            if(!this.cfg.onHide)
+                this.cfg.onHide = function(input, container){container.slideUp();};
+
+            this.cfg.onComplete = function(input, container){container.hide();};
+        }
+
+        this.jq.jpassword(this.cfg);
+
+    }
 
     //Client Behaviors
     if(this.cfg.behaviors) {
