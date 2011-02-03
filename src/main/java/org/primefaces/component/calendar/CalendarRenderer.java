@@ -20,7 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -29,19 +28,26 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.event.DateSelectEvent;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class CalendarRenderer extends CoreRenderer {
+public class CalendarRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Calendar calendar = (Calendar) component;
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String param = calendar.getClientId(context) + "_input";
 
-        if (params.containsKey(param)) {
-            calendar.setSubmittedValue(params.get(param));
+        if(calendar.isDisabled() || calendar.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, calendar);
+        
+        String param = calendar.getClientId(context) + "_input";
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
+
+        if(submittedValue != null) {
+            calendar.setSubmittedValue(submittedValue);
         }
     }
 

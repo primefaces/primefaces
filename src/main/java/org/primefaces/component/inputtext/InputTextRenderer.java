@@ -40,8 +40,10 @@ public class InputTextRenderer extends InputRenderer {
 
 		String clientId = inputText.getClientId(context);
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
-        
-		inputText.setSubmittedValue(submittedValue);
+
+        if(submittedValue != null) {
+            inputText.setSubmittedValue(submittedValue);
+        }
 	}
 
 	@Override

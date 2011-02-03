@@ -23,19 +23,28 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
-public class InputMaskRenderer extends CoreRenderer {
+public class InputMaskRenderer extends InputRenderer {
 	
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		InputMask inputMask = (InputMask) component;
+
+        if(inputMask.isDisabled() || inputMask.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, inputMask);
+
 		String clientId = inputMask.getClientId(context);
-		
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
-		inputMask.setSubmittedValue(submittedValue);
+
+        if(submittedValue != null) {
+            inputMask.setSubmittedValue(submittedValue);
+        }
 	}
 	
 	@Override

@@ -23,19 +23,28 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
-public class SpinnerRenderer extends CoreRenderer {
+public class SpinnerRenderer extends InputRenderer {
 
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		Spinner spinner = (Spinner) component;
+
+        if(spinner.isDisabled() || spinner.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, spinner);
+
 		String clientId = spinner.getClientId(context);
-		
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
-		spinner.setSubmittedValue(submittedValue);
+
+        if(submittedValue != null) {
+            spinner.setSubmittedValue(submittedValue);
+        }
 	}
 	
 	@Override
