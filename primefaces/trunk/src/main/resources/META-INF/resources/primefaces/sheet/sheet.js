@@ -2644,7 +2644,19 @@ jQuery.sheet = {
 				if (get) {
 					sheetTab = jS.obj.sheet().attr('title');
 					sheetTab = (sheetTab ? sheetTab : 'Spreadsheet ' + (jS.i + 1));
-				} 
+				} else if (s.editable) { //ensure that the sheet is editable, then let them change the sheet's name
+					var newTitle = prompt("What would you like the sheet's title to be?", jS.sheetTab(true));
+					if (!newTitle) { //The user didn't set the new tab name
+						sheetTab = jS.obj.sheet().attr('title');
+						newTitle = (sheetTab ? sheetTab : 'Spreadsheet' + (jS.i + 1));
+					} else {
+						jS.setDirty(true);
+						jS.obj.sheet().attr('title', newTitle);
+						jS.obj.tab().html(newTitle);
+
+						sheetTab = newTitle;
+					}
+				}
 				return sheetTab;
 			},
 			print: function(o) { /* prints a value in a new window
