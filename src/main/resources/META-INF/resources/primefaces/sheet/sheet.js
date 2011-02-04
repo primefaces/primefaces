@@ -66,8 +66,9 @@ jQuery.fn.extend({
 			resizable: 			true,							//bool, makes the $(obj).sheet(); object resizeable, also adds a resizable formula textarea at top of sheet
 			autoFiller: 		false,							//bool, the little guy that hangs out to the bottom right of a selected cell, users can click and drag the value to other cells
 			minSize: 			{rows: 15, cols: 5},			//object - {rows: int, cols: int}, Makes the sheet stay at a certain size when loaded in edit mode, to make modification more productive
-			forceColWidthsOnStartup:true						//bool, makes cell widths load from pre-made colgroup/col objects, use this if you plan on making the col items, makes widths more stable on startup
-		}, settings);
+			forceColWidthsOnStartup:true,						//bool, makes cell widths load from pre-made colgroup/col objects, use this if you plan on making the col items, makes widths more stable on startup
+            editableTabs:       true                            //bool, makes tabs editable
+        }, settings);
 
 		o = settings.parent;
 		if (jQuery.sheet.instance) {
@@ -2644,7 +2645,7 @@ jQuery.sheet = {
 				if (get) {
 					sheetTab = jS.obj.sheet().attr('title');
 					sheetTab = (sheetTab ? sheetTab : 'Spreadsheet ' + (jS.i + 1));
-				} else if (s.editable) { //ensure that the sheet is editable, then let them change the sheet's name
+				} else if (s.editable && s.editableTabs) { //ensure that the sheet is editable, then let them change the sheet's name
 					var newTitle = prompt("What would you like the sheet's title to be?", jS.sheetTab(true));
 					if (!newTitle) { //The user didn't set the new tab name
 						sheetTab = jS.obj.sheet().attr('title');
@@ -4724,6 +4725,7 @@ PrimeFaces.widget.Spreadsheet = function(id, cfg) {
     this.cfg.calcOff = true;
     this.cfg.autoAddCells = false;
     this.cfg.minSize = {rows: 0, cols: 0};
+    this.cfg.editableTabs = false;
 	
 	this.spreadsheet = jQuery(this.jqId + '_datasources').sheet(this.cfg);
 	
