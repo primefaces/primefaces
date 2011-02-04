@@ -27,8 +27,9 @@
 
 .ui-datatable .ui-datatable-data td,
 .ui-datatable .ui-datatable-data-empty td {
-    border-right:1px solid;
-    border-right-color:inherit;
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
     padding:4px 10px 4px 10px;
 }
 
