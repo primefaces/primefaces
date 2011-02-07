@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>selectOneMenu</tag>
+	<tagClass>org.primefaces.component.selectonemenu.SelectOneMenuTag</tagClass>
+	<componentClass>org.primefaces.component.selectonemenu.SelectOneMenu</componentClass>
+	<componentType>org.primefaces.component.SelectOneMenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SelectOneMenuRenderer</rendererType>
+	<rendererClass>org.primefaces.component.selectonemenu.SelectOneMenuRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlSelectOneMenu</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+	</attributes>
+	<resources>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+         <resource>
+			<name>wijmo/wijmo.css</name>
+		</resource>
+        <resource>
+			<name>forms/forms.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
+         <resource>
+			<name>wijmo/wijmo.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>forms/forms.js</name>
+		</resource>
+	</resources>
+</component>
