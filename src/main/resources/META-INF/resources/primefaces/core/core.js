@@ -145,7 +145,7 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
        }
     }
 
-    var postURL = cfg.actionURL,
+    var postURL = actionURL,
     requestParams = null;
 
     if(cfg.formId) {
