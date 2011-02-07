@@ -40,7 +40,7 @@
 .wijmo-wijsuperpanel-templateouterwrapper
 {
     position: relative;
-/*    overflow:auto; */
+    /*    overflow:auto; */
     zoom: 1;
 }
 
@@ -110,255 +110,430 @@
     bottom: 0;
 }
 
+/* Forms */
+.wijmo-wijtextbox
+{
+    outline:none;
+    margin: 0;
+    padding:5px;
+}
+
+.wijmo-wijdropdown
+{
+    display: inline-block;
+    position: relative;
+    width: auto;
+    zoom: 1;
+    *display: inline;
+    width:200px;
+    /*z-index: 101;*/
+}
+
+.wijmo-wijdropdown div.wijmo-dropdown-trigger
+{
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    cursor: pointer;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 3px;
+}
+
+.wijmo-wijdropdown .wijmo-dropdown-trigger .ui-icon
+{
+    margin-top: 3px;
+}
+
+.wijmo-wijdropdown label.wijmo-dropdown-label
+{
+    display: block;
+    padding: 3px 26px 3px 5px;
+    width: auto;
+    border: none;
+}
+
+.wijmo-wijdropdown .wijmo-dropdown
+{
+    position: absolute; height:250px;
+}
+
+.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-list
+{
+    padding: 0.4em;
+    border: 0 none;
+}
+
+.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-item
+{
+    border:1px solid transparent;
+    cursor:pointer;
+    font-weight:normal;
+    margin:1px 0;
+    padding:3px 5px;
+    text-align:left;
+    *border-color: white;
+    *filter: chroma(color=white);
+
+}
+
+/*
+.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-optgroup .wijmo-dropdown-items
+{
+    margin-left: 15%;
+}*/
+
+.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-optgroup .wijmo-dropdown-items li
+{
+    padding-left: 10%;
+}
+
+.wijmo-wijdropdown .wijmo-dropdown .wijmo-optgroup-header
+{
+    font-style: italic;
+}
+.wijmo-checkbox
+{
+    position: relative; /*float: left;*/
+    margin: 3px 0;
+    line-height: 16px;
+    width: 16px;
+}
+.wijmo-checkbox .wijmo-checkbox-inputwrapper
+{
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+.wijmo-checkbox label
+{
+    display: block;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0 0 0 1.4em;
+    outline: none;
+    margin: 0 3px;
+    width: 8em;
+}
+.wijmo-checkbox .wijmo-checkbox-box
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    margin-right: 3px;
+}
+
+.wijmo-checkbox .wijmo-checkbox-relative
+{
+    position: relative;
+    float: left;
+    margin-right: 3px;
+}
+.wijmo-wijradio
+{
+    position: relative; /*float: left;*/
+    margin: 3px 0;
+    width: 16px;
+    line-height: 16px;
+}
+.wijmo-wijradio .wijmo-wijradio-inputwrapper
+{
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+.wijmo-wijradio label
+{
+    display: block;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0 0 0 1.4em;
+    outline: none;
+    margin: 0 3px;
+    width: 8em;
+}
+.wijmo-wijradio .wijmo-wijradio-box
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+.wijmo-wijradio .wijmo-wijradio-relative
+{
+    position: relative;
+    float: left;
+    margin-right: 3px;
+}
+
+/* Menu */
 .wijmo-wijmenu {
-width:150px;
-padding:0.3em;
-position:relative;
+    width:150px;
+    padding:0.3em;
+    position:relative;
 }
 
 .wijmo-wijmenu .wijmo-wijsuperpanel {
-border:none;
-background: inherit;
-padding:0;
+    border:none;
+    background: inherit;
+    padding:0;
 }
 
 .wijmo-wijmenu-list {
-position:static;
+    position:static;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-parent .wijmo-wijmenu-child {
-display:none;
-width:150px;
-padding:0.3em;
+    display:none;
+    width:150px;
+    padding:0.3em;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-parent {
-position:relative;
+    position:relative;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-child {
-position:relative;
-left:150px;
-top:0;
+    position:relative;
+    left:150px;
+    top:0;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-item {
-width:100%;
-float:left;
-clear:both;
-margin:1px 0;
-padding:0;
+    width:100%;
+    float:left;
+    clear:both;
+    margin:1px 0;
+    padding:0;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-list .wijmo-wijmenu-item {
-background:none;
-border:none;
+    background:none;
+    border:none;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-link {
-display:block;
-width:92%;
-outline:none;
-text-decoration:none;
-font-weight:400;
-border:solid 1px transparent;
-float:left;
-line-height:16px;
-padding:0.3em;
+    display:block;
+    width:92%;
+    outline:none;
+    text-decoration:none;
+    font-weight:400;
+    border:solid 1px transparent;
+    float:left;
+    line-height:16px;
+    padding:0.3em;
 }
 
 .wijmo-wijmenu-horizontal {
-width:auto;
+    width:auto;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-item {
-width:auto;
-clear:none;
-margin-right:3px;
+    width:auto;
+    clear:none;
+    margin-right:3px;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-child .wijmo-wijmenu-item {
-width:100%;
+    width:100%;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-child {
-top:25px;
-left:0;
+    top:25px;
+    left:0;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-link {
-width:auto;
-padding:0.4em 0.3em;
+    width:auto;
+    padding:0.4em 0.3em;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-child .wijmo-wijmenu-link {
-width:92%;
+    width:92%;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-list .ui-widget-header {
-clear:both;
-float:left;
-width:98%;
-font-size:12px;
-margin:1px 0;
+    clear:both;
+    float:left;
+    width:98%;
+    font-size:12px;
+    margin:1px 0;
 }
 
 .wijmo-wijmenu-horizontal .ui-widget-header {
-clear:none;
-width:auto;
-margin:0 3px 0 0;
+    clear:none;
+    width:auto;
+    margin:0 3px 0 0;
 }
 
 .wijmo-wijmenu .ui-widget-header h1,.wijmo-wijmenu .ui-widget-header h2,.wijmo-wijmenu .ui-widget-header h3,.wijmo-wijmenu .ui-widget-header h4,.wijmo-wijmenu .ui-widget-header h5,.wijmo-wijmenu .ui-widget-header h6 {
-float:left;
-display:block;
-font-size:1em;
-margin:0 auto;
-padding:0.3em 3%;
+    float:left;
+    display:block;
+    font-size:1em;
+    margin:0 auto;
+    padding:0.3em 3%;
 }
 
 .wijmo-wijmenu-horizontal .ui-widget-header h1,.wijmo-wijmenu-horizontal .ui-widget-header h2,.wijmo-wijmenu-horizontal .ui-widget-header h3,.wijmo-wijmenu-horizontal .ui-widget-header h4,.wijmo-wijmenu-horizontal .ui-widget-header h5,.wijmo-wijmenu-horizontal .ui-widget-header h6 {
-padding:0.4em 0.3em;
+    padding:0.4em 0.3em;
 }
 
 .wijmo-wijmenu a.ui-state-default:link,.wijmo-wijmenu a.ui-state-default:visited,.wijmo-wijmenu a.ui-state-default:hover,.wijmo-wijmenu a.ui-state-default:active,.wijmo-wijmenu a.ui-state-hover:link,.wijmo-wijmenu a.ui-state-hover:visited,.wijmo-wijmenu a.ui-state-hover:hover,.wijmo-wijmenu a.ui-state-hover:active,.wijmo-wijmenu a.ui-state-active:link,.wijmo-wijmenu a.ui-state-active:visited,.wijmo-wijmenu a.ui-state-active:hover,.wijmo-wijmenu a.ui-state-active:active {
-font-weight:400;
-border-style:solid;
+    font-weight:400;
+    border-style:solid;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-child .ui-state-hover {
-font-weight:400;
+    font-weight:400;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-separator {
-clear:both;
-float:left;
-height:1px;
-text-indent:-9999px;
-width:98%;
-margin:1px 0;
-font-size:0;
+    clear:both;
+    float:left;
+    height:1px;
+    text-indent:-9999px;
+    width:98%;
+    margin:1px 0;
+    font-size:0;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-separator {
-height:auto;
-clear:none;
-width:1px;
-text-indent:-9999px;
-margin:0 3px 0 0;
-padding:0.4em 0;
+    height:auto;
+    clear:none;
+    width:1px;
+    text-indent:-9999px;
+    margin:0 3px 0 0;
+    padding:0.4em 0;
 }
 
 .wijmo-wijmenu-horizontal .wijmo-wijmenu-child .wijmo-wijmenu-separator {
-clear:both;
-float:left;
-height:1px;
-text-indent:-9999px;
-width:98%;
-margin:1px 0;
-padding:0;
+    clear:both;
+    float:left;
+    height:1px;
+    text-indent:-9999px;
+    width:98%;
+    margin:1px 0;
+    padding:0;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-group {
-clear:both;
-float:left;
-width:98%;
-margin:3px 0;
-padding:0 0.4em;
+    clear:both;
+    float:left;
+    width:98%;
+    margin:3px 0;
+    padding:0 0.4em;
 }
 
-.wij-menu-ipod {
-width:180px;
+.wijmo-wijmenu-ipod {
+    width:180px;
 }
 
-.wij-menu-container {
-overflow:hidden;
+.wijmo-wijmenu-container {
+    overflow:hidden;
 }
 
-.wij-menu-ipod .wijmo-wijmenu-list {
-background:inherit;
-position:absolute;
-border-width:0;
--webkit-box-shadow:none;
+.wijmo-wijmenu-ipod .wijmo-wijmenu-list {
+    background:inherit;
+    position:absolute;
+    border-width:0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow:none;
 }
 
-.wij-menu-breadcrumb {
-margin:0;
-padding:0;
+.wijmo-wijmenu-breadcrumb {
+    margin:0;
+    padding:0;
 }
 
-.wij-menu-footer {
-margin-top:3px;
+.wijmo-wijmenu-footer {
+    margin-top:3px;
 }
 
-.wij-menu-footer .ui-icon {
-margin:3px 0;
+.wijmo-wijmenu-footer .ui-icon {
+    margin:3px 0;
 }
 
-.wij-menu-header {
-margin-bottom:3px;
+.wijmo-wijmenu-header {
+    margin-bottom:3px;
 }
 
-.wij-menu-breadcrumb li {
-float:left;
-list-style:none;
-font-size:.9em;
-margin:0;
-padding:0 .2em;
+.wijmo-wijmenu-breadcrumb li {
+    float:left;
+    list-style:none;
+    font-size:.9em;
+    margin:0;
+    padding:0 .2em;
 }
 
-.wij-menu-breadcrumb li.wij-menu-prev-list,.wij-menu-breadcrumb li.wij-menu-current-crumb {
-clear:left;
-float:none;
-opacity:1;
+.wijmo-wijmenu-breadcrumb li.wijmo-wijmenu-prev-list,.wijmo-wijmenu-breadcrumb li.wijmo-wijmenu-current-crumb {
+    clear:left;
+    float:none;
+    opacity:1;
 }
 
-.wij-menu-breadcrumb li.wij-menu-current-crumb {
-padding-top:.2em;
+.wijmo-wijmenu-breadcrumb li.wijmo-wijmenu-current-crumb {
+    padding-top:.2em;
 }
 
-.wij-menu-footer a:link,.wij-menu-footer a:visited {
-float:left;
-width:100%;
-text-decoration:none;
+.wijmo-wijmenu-footer a:link,.wijmo-wijmenu-footer a:visited {
+    float:left;
+    width:100%;
+    text-decoration:none;
 }
 
-.wij-menu-footer a span {
-float:left;
-cursor:pointer;
+.wijmo-wijmenu-footer a span {
+    float:left;
+    cursor:pointer;
 }
 
-.wij-menu-breadcrumb .wij-menu-prev-list a:link,.wij-menu-breadcrumb .wij-menu-prev-list a:visited,.wij-menu-breadcrumb .wij-menu-prev-list a:hover,.wij-menu-breadcrumb .wij-menu-prev-list a:active {
-background-image:none;
-text-decoration:none;
+.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:link,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:visited,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:hover,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:active {
+    background-image:none;
+    text-decoration:none;
 }
 
-.wij-menu-breadcrumb .wij-menu-prev-list a {
-float:left;
-padding-right:.4em;
+.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a {
+    float:left;
+    padding-right:.4em;
 }
 
-.wij-menu-breadcrumb .wij-menu-current-crumb a:link,.wij-menu-breadcrumb .wij-menu-current-crumb a:visited,.wij-menu-breadcrumb .wij-menu-current-crumb a:hover,.wij-menu-breadcrumb .wij-menu-current-crumb a:active {
-display:block;
-background-image:none;
-font-size:1.3em;
-text-decoration:none;
+.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-current-crumb a:link,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-current-crumb a:visited,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-current-crumb a:hover,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-current-crumb a:active {
+    display:block;
+    background-image:none;
+    font-size:1.3em;
+    text-decoration:none;
 }
 
-.wijmo-wijmenu .wijmo-wijmenu-parent .ui-icon,.wijmo-wijmenu-horizontal .wijmo-wijmenu-child .ui-icon,.wij-menu-ipod .ui-icon-triangle-1-e {
-float:right;
+.wijmo-wijmenu .wijmo-wijmenu-parent .ui-icon,.wijmo-wijmenu-horizontal .wijmo-wijmenu-child .ui-icon,.wijmo-wijmenu-ipod .ui-icon-triangle-1-e {
+    float:right;
 }
 
-.wijmo-wijmenu .wijmo-wijmenu-item .wijmo-wijmenu-text,.wijmo-wijmenu-horizontal .wijmo-wijmenu-parent .ui-icon,.wij-menu-breadcrumb a,.wij-menu-breadcrumb span,.wij-menu-breadcrumb .wij-menu-prev-list a .ui-icon {
-float:left;
+.wijmo-wijmenu .wijmo-wijmenu-item .wijmo-wijmenu-text,.wijmo-wijmenu-horizontal .wijmo-wijmenu-parent .ui-icon,.wijmo-wijmenu-breadcrumb a,.wijmo-wijmenu-breadcrumb span,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a .ui-icon {
+    float:left;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-link .wijmo-wijmenu-icon-left {
-display:inline-block;
-float:left;
+    display:inline-block;
+    float:left;
 }
 
 .wijmo-wijmenu .wijmo-wijmenu-link .wijmo-wijmenu-icon-right {
-display:inline-block;
-float:right;
+    display:inline-block;
+    float:right;
 }

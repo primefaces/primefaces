@@ -44,12 +44,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.write("{target:" + trigger);
         writer.write(",zindex:" + menu.getZindex());
 
-        writer.write(",animated:'" + menu.getEffect() + "'");
-
-        if(menu.getEffectDuration() != 400) {
-            writer.write(",showDuration:" + menu.getEffectDuration());
-            writer.write(",hideDuration:" + menu.getEffectDuration());
-        }
+        writer.write(",animation:{animated:'" + menu.getEffect() + "',duration:" + menu.getEffectDuration() + "}");
 
         if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
         if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
