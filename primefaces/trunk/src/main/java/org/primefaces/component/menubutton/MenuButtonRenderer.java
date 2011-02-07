@@ -88,13 +88,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
 
-        writer.write("animated:'" + button.getEffect() + "'");
+        writer.write("animation:{animated:'" + button.getEffect() + "',duration:" + button.getEffectDuration() + "}");
         writer.write(",zindex:" + button.getZindex());
-
-        if(button.getEffectDuration() != 400) {
-            writer.write(",showDuration:" + button.getEffectDuration());
-            writer.write(",hideDuration:" + button.getEffectDuration());
-        }
 
         if(button.isDisabled()) {
 			writer.write(",disabled:true");
