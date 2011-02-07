@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>dock</tag>
+	<tagClass>org.primefaces.component.dock.DockTag</tagClass>
+	<componentClass>org.primefaces.component.dock.Dock</componentClass>
+	<componentType>org.primefaces.component.Dock</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.DockRenderer</rendererType>
+	<rendererClass>org.primefaces.component.dock.DockRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+		</attribute>
+		<attribute>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>bottom</defaultValue>
+		</attribute>
+		<attribute>
+			<name>itemWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>40</defaultValue>
+		</attribute>
+		<attribute>
+			<name>maxWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>50</defaultValue>
+		</attribute>
+		<attribute>
+			<name>proximity</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>90</defaultValue>
+		</attribute>
+		<attribute>
+			<name>halign</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>center</defaultValue>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>dock/assets/dock.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+		<resource>
+			<name>dock/dock.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>treeTable</tag>
+	<tagClass>org.primefaces.component.treetable.TreeTableTag</tagClass>
+	<componentClass>org.primefaces.component.treetable.TreeTable</componentClass>
+	<componentType>org.primefaces.component.TreeTable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TreeTableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.treetable.TreeTableRenderer</rendererClass>
+	<parent>javax.faces.component.UIData</parent>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&data_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>readOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+		<attribute>
+			<name>expanded</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>treetable/treetable.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+		<resource>
+			<name>treetable/treetable.js</name>
+		</resource>
+	</resources>
+</component>

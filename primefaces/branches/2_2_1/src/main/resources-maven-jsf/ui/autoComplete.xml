@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>autoComplete</tag>
+    <tagClass>org.primefaces.component.autocomplete.AutoCompleteTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.autocomplete.AutoCompleteHandler</componentHandlerClass>
+    <componentClass>org.primefaces.component.autocomplete.AutoComplete</componentClass>
+    <componentType>org.primefaces.component.AutoComplete</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.AutoCompleteRenderer</rendererType>
+    <rendererClass>org.primefaces.component.autocomplete.AutoCompleteRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>completeMethod</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.util.List completeMethod(java.lang.String)</method-signature>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>itemLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>itemValue</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <name>maxResults</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+        </attribute>
+        <attribute>
+            <name>minQueryLength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+        </attribute>
+        <attribute>
+            <name>queryDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>300</defaultValue>
+        </attribute>
+        <attribute>
+            <name>forceSelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>selectListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void selectListener(org.primefaces.event.SelectEvent)</method-signature>
+        </attribute>
+        <attribute>
+            <name>onSelectUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>onstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>forms/forms.css</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
+        <resource>
+            <name>core/core.js</name>
+        </resource>
+        <resource>
+            <name>autocomplete/autocomplete.js</name>
+        </resource>
+    </resources>
+</component>
