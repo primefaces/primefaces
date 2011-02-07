@@ -60,6 +60,9 @@ public class ScrollPanelRenderer extends CoreRenderer {
 
         writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.ScrollPanel('" + clientId + "',{");
 
+        writer.write("scrollMode:'" + panel.getScrollMode() + "'");
+        writer.write(",easing:'" + panel.getEasing() + "'");
+
         writer.write("});});");
         
         writer.endElement("script");

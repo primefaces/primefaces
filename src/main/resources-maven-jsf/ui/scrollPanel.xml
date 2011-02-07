@@ -30,6 +30,18 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<name>easing</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>easeOutQuad</defaultValue>
+		</attribute>
+        <attribute>
+			<name>scrollMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>scrollbar</defaultValue>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
