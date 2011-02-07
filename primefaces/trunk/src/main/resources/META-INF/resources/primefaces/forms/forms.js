@@ -191,3 +191,15 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
         });
     }
 }
+
+/**
+ * PrimeFaces SelectOneMenu Widget
+ */
+PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId);
+
+    this.jq.wijdropdown(this.cfg);
+}
