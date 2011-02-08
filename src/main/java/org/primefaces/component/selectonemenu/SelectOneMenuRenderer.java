@@ -85,7 +85,11 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         writer.write("effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400) writer.write(",effectDuration:" + menu.getEffectDuration());
+        if(menu.getEffectDuration() != 400) {
+            writer.write(",effectDuration:" + menu.getEffectDuration());
+        }
+
+        encodeClientBehaviors(context, menu);
 
         writer.write("});");
 
