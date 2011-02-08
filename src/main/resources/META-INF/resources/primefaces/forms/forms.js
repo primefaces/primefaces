@@ -248,7 +248,12 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
+    this.jq = jQuery(this.jqId + '_checkbox');
+
+    //Client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+    }
 
     //Create widget
     this.jq.wijcheckbox(this.cfg);
