@@ -18,6 +18,7 @@ package org.primefaces.component.selectonemenu;
 import java.io.IOException;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -122,4 +123,18 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
 		return value;
 	}
+
+    @Override
+    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String formattedValue = formatOptionValue(context, component, converter, value);
+
+        writer.startElement("option", null);
+        writer.writeAttribute("value", formattedValue, null);
+        if(componentValue != null && componentValue.equals(value)) {
+            writer.writeAttribute("selected", "selected", null);
+        }
+        writer.write(label);
+        writer.endElement("option");
+    }
 }

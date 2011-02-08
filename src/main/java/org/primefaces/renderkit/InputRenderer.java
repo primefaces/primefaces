@@ -109,16 +109,7 @@ public class InputRenderer extends CoreRenderer {
 	}
 
     protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String formattedValue = formatOptionValue(context, component, converter, value);
-
-        writer.startElement("option", null);
-        writer.writeAttribute("value", formattedValue, null);
-        if(componentValue != null && componentValue.equals(value)) {
-            writer.writeAttribute("selected", "selected", null);
-        }
-        writer.write(label);
-        writer.endElement("option");
+        throw new UnsupportedOperationException("Select components must implement how an option is rendered");
     }
 
 	protected String formatOptionValue(FacesContext context, UIInput component, Converter converter, Object value) {
