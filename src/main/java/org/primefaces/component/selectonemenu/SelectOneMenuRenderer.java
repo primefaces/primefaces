@@ -35,6 +35,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
             return;
         }
 
+        decodeBehaviors(context, menu);
+
         String clientId = menu.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_menu");
 
@@ -80,6 +82,10 @@ public class SelectOneMenuRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectOneMenu('" + clientId + "',{");
+
+        writer.write("effect:'" + menu.getEffect() + "'");
+        
+        if(menu.getEffectDuration() != 400) writer.write(",effectDuration:" + menu.getEffectDuration());
 
         writer.write("});");
 

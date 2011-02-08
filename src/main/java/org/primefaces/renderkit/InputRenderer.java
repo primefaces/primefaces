@@ -66,12 +66,13 @@ public class InputRenderer extends CoreRenderer {
 
     protected void encodeSelectItems(FacesContext context, UIInput component) throws IOException {
         Object componentValue = component.getValue();
+        Converter converter = getConverter(context, component);
 
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UISelectItem) {
                 UISelectItem uiSelectItem = (UISelectItem) child;
 
-				encodeOption(context, component, componentValue, uiSelectItem.getItemLabel(), uiSelectItem.getItemValue());
+				encodeOption(context, component, componentValue, converter, uiSelectItem.getItemLabel(), uiSelectItem.getItemValue());
 			}
             else if(child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
@@ -79,7 +80,7 @@ public class InputRenderer extends CoreRenderer {
 
                 if(value instanceof SelectItem[]) {
                     for(SelectItem selectItem : (SelectItem[]) value) {
-                        encodeOption(context, component, componentValue, selectItem.getLabel(), selectItem.getValue());
+                        encodeOption(context, component, componentValue, converter, selectItem.getLabel(), selectItem.getValue());
                     }
                 }
                 else if(value instanceof Map) {
@@ -87,7 +88,7 @@ public class InputRenderer extends CoreRenderer {
 
                     for(Iterator it = map.keySet().iterator(); it.hasNext();) {
                         Object key = it.next();
-                        encodeOption(context, component, componentValue, String.valueOf(key), map.get(key));
+                        encodeOption(context, component, componentValue, converter, String.valueOf(key), map.get(key));
                     }
                 }
                 else if(value instanceof Collection) {
@@ -100,16 +101,16 @@ public class InputRenderer extends CoreRenderer {
                         String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
                         Object itemValue = uiSelectItems.getAttributes().get("itemValue");
 
-                        encodeOption(context, component, componentValue, itemLabel, itemValue);
+                        encodeOption(context, component, componentValue, converter, itemLabel, itemValue);
                     }
                 }
 			}
         }
 	}
 
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, String label, Object value) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String formattedValue = formatOptionValue(context, component, value);
+        String formattedValue = formatOptionValue(context, component, converter, value);
 
         writer.startElement("option", null);
         writer.writeAttribute("value", formattedValue, null);
@@ -120,30 +121,30 @@ public class InputRenderer extends CoreRenderer {
         writer.endElement("option");
     }
 
-	public String formatOptionValue(FacesContext context, UIInput component, Object value) {
-		Converter converter = component.getConverter();
-
-		//first ask the converter
-		if(converter != null) {
+	protected String formatOptionValue(FacesContext context, UIInput component, Converter converter, Object value) {
+		if(converter != null)
 			return converter.getAsString(context, component, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = component.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsString(context, component, value);
-                }
-            }
-		}
-
-		if(value == null)
+		else if(value == null)
             return "";
         else
             return value.toString();
 	}
+
+    protected Converter getConverter(FacesContext context, UIInput component) {
+        Converter converter = component.getConverter();
+
+        if(converter != null) {
+            return converter;
+        } else {
+            ValueExpression ve = component.getValueExpression("value");
+
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                
+                return context.getApplication().createConverter(valueType);
+            }
+        }
+
+        return null;
+    }
 }
