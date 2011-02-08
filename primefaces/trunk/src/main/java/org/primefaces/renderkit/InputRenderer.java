@@ -55,7 +55,7 @@ public class InputRenderer extends CoreRenderer {
                String behaviorSource = params.get("javax.faces.source");
                String clientId = component.getClientId();
                
-               if(behaviorSource != null && behaviorSource.equals(clientId)) {
+               if(behaviorSource != null && behaviorSource.startsWith(clientId)) {
                    for (ClientBehavior behavior: behaviorsForEvent) {
                        behavior.decode(context, component);
                    }

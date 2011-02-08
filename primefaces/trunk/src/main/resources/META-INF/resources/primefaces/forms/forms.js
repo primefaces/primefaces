@@ -201,6 +201,7 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId + '_menu');
 
+    //Animations
     if(this.cfg.effect) {
         this.cfg.showingAnimation = {
             effect: this.cfg.effect
@@ -213,5 +214,11 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
         };
     }
 
+    //Client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+    }
+
+    //Create widget
     this.jq.wijdropdown(this.cfg);
 }
