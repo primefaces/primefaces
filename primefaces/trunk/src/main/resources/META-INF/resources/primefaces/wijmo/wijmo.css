@@ -537,3 +537,18 @@
     display:inline-block;
     float:right;
 }
+
+/* PrimeFaces Extensions */
+.wijmo-wijradio-horizontal .wijmo-wijradio {
+    float:left;
+    width:auto;
+    margin:3px 0;
+}
+
+.wijmo-wijradio {
+    margin:4px 0;
+}
+
+.wijmo-wijradio label {
+    width:4em;
+}
