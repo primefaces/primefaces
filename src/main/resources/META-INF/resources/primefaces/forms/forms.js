@@ -222,3 +222,16 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     //Create widget
     this.jq.wijdropdown(this.cfg);
 }
+
+/**
+ * PrimeFaces SelectOneMenu Widget
+ */
+PrimeFaces.widget.SelectOneRadio = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId);
+
+    //Create widget
+    this.jq.find(":input[type='radio']").wijradio(this.cfg);
+}
