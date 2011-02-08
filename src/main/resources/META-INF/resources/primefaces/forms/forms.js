@@ -224,7 +224,7 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
 }
 
 /**
- * PrimeFaces SelectOneMenu Widget
+ * PrimeFaces SelectOneRadio Widget
  */
 PrimeFaces.widget.SelectOneRadio = function(cfg) {
     this.id = cfg.id;
@@ -239,4 +239,17 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
 
     //Create widget
     this.jq.wijradio(this.cfg);
+}
+
+/**
+ * PrimeFaces SelectBooleanCheckbox Widget
+ */
+PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
+    this.id = cfg.id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
+
+    //Create widget
+    this.jq.wijcheckbox(this.cfg);
 }
