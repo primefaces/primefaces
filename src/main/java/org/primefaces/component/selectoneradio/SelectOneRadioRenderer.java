@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.HTML;
 
 public class SelectOneRadioRenderer extends InputRenderer {
 
@@ -77,7 +78,9 @@ public class SelectOneRadioRenderer extends InputRenderer {
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(radio.resolveWidgetVar() + " = new PrimeFaces.widget.SelectOneRadio('" + clientId + "',{");
+        writer.write(radio.resolveWidgetVar() + " = new PrimeFaces.widget.SelectOneRadio({id:'" + clientId + "'");
+
+        encodeClientBehaviors(context, radio);
 
         writer.write("});");
 
@@ -99,6 +102,9 @@ public class SelectOneRadioRenderer extends InputRenderer {
         if(componentValue != null && componentValue.equals(value)) {
             writer.writeAttribute("checked", "checked", null);
         }
+
+        renderPassThruAttributes(context, component, HTML.SELECT_ATTRS);
+
         writer.endElement("input");
 
         writer.startElement("label", null);

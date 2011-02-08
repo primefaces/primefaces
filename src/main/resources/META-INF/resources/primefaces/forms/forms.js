@@ -226,12 +226,17 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
 /**
  * PrimeFaces SelectOneMenu Widget
  */
-PrimeFaces.widget.SelectOneRadio = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.SelectOneRadio = function(cfg) {
+    this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
+    this.jq = jQuery(this.jqId).children(":input[type='radio']");
+
+    //Client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+    }
 
     //Create widget
-    this.jq.find(":input[type='radio']").wijradio(this.cfg);
+    this.jq.wijradio(this.cfg);
 }
