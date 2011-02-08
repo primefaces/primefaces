@@ -16,18 +16,32 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
-import org.primefaces.renderkit.CoreRenderer;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.HTML;
 
-public class SelectOneMenuRenderer extends CoreRenderer {
+public class SelectOneMenuRenderer extends InputRenderer {
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        SelectOneMenu menu = (SelectOneMenu) component;
+
+        if(menu.isDisabled() || menu.isReadonly()) {
+            return;
+        }
+
+        String clientId = menu.getClientId(context);
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_menu");
+
+        if(value != null) {
+            menu.setSubmittedValue(value);
+        }
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -40,14 +54,22 @@ public class SelectOneMenuRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
+        String menuId = clientId + "_menu";
+
+        writer.startElement("span", menu);
+        writer.writeAttribute("id", clientId, "id");
 
         writer.startElement("select", menu);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("id", menuId, "id");
+        writer.writeAttribute("name", menuId, null);
+
+        renderPassThruAttributes(context, menu, HTML.SELECT_ONE_MENU_ATTRS);
 
         encodeSelectItems(context, menu);
 
         writer.endElement("select");
+
+        writer.endElement("span");
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
@@ -64,56 +86,30 @@ public class SelectOneMenuRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeSelectItems(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
- 
-        for(UIComponent child : component.getChildren()) {
-            if(child instanceof UISelectItem) {
-                UISelectItem uiSelectItem = (UISelectItem) child;
-                
-				encodeOption(context, component, uiSelectItem.getItemLabel(), uiSelectItem.getItemValue());
-			}
-            else if(child instanceof UISelectItems) {
-                UISelectItems uiSelectItems = ((UISelectItems) child);
-				Object value = uiSelectItems.getValue();
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		SelectOneMenu menu = (SelectOneMenu) component;
+		String value = (String) submittedValue;
+		Converter converter = menu.getConverter();
 
-                if(value instanceof SelectItem[]) {
-                    for(SelectItem selectItem : (SelectItem[]) value) {
-                        encodeOption(context, component, selectItem.getLabel(), selectItem.getValue());
-                    }
-                } 
-                else if(value instanceof Map) {
-                    Map map = (Map) value;
+		//first ask the converter
+		if(converter != null) {
+			return converter.getAsObject(context, menu, value);
+		}
+		//Try to guess
+		else {
+            ValueExpression ve = menu.getValueExpression("value");
 
-                    for(Iterator it = map.keySet().iterator(); it.hasNext();) {
-                        Object key = it.next();
-                        encodeOption(context, component, String.valueOf(key), map.get(key));
-                    }
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                Converter converterForType = context.getApplication().createConverter(valueType);
+
+                if(converterForType != null) {
+                    return converterForType.getAsObject(context, menu, value);
                 }
-                else if(value instanceof Collection) {
-                    Collection collection = (Collection) value;
-                    String var = (String) uiSelectItems.getAttributes().get("var");
+            }
+		}
 
-                    for (Iterator it = collection.iterator(); it.hasNext();) {
-                        Object object = it.next();
-                        context.getExternalContext().getRequestMap().put(var, object);
-                        String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                        Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-
-                        encodeOption(context, component, itemLabel, itemValue);
-                    }
-                }
-			}
-        }
-
+		return value;
 	}
-
-    protected void encodeOption(FacesContext context, UIComponent component, String label, Object value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("option", null);
-        writer.writeAttribute("value", value, null);
-        writer.write(label);
-        writer.endElement("option");
-    }
 }
