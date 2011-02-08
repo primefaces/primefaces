@@ -79,16 +79,16 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeScript(FacesContext context, SelectBooleanCheckbox menu) throws IOException {
+    protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = menu.getClientId(context);
+        String clientId = checkbox.getClientId(context);
 
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectBooleanCheckbox({id:'" + clientId + "'");
+        writer.write(checkbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectBooleanCheckbox({id:'" + clientId + "'");
         
-        encodeClientBehaviors(context, menu);
+        encodeClientBehaviors(context, checkbox);
 
         writer.write("});");
 
