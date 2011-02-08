@@ -65,7 +65,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.writeAttribute("id", menuId, "id");
         writer.writeAttribute("name", menuId, null);
 
-        renderPassThruAttributes(context, menu, HTML.SELECT_ONE_MENU_ATTRS);
+        renderPassThruAttributes(context, menu, HTML.SELECT_ATTRS);
 
         encodeSelectItems(context, menu);
 

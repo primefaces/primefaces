@@ -110,7 +110,7 @@ public class HTML {
 		"title"
 	};
 
-    public static String[] SELECT_ONE_MENU_ATTRS_WITHOUT_EVENTS = {
+    public static String[] SELECT_ATTRS_WITHOUT_EVENTS = {
 		"accesskey",
 		"dir",
 		"disabled",
@@ -140,5 +140,5 @@ public class HTML {
 
     public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS, TEXTAREA_ATTRS);
 
-    public static final String[] SELECT_ONE_MENU_ATTRS = ArrayUtils.concat(SELECT_ONE_MENU_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+    public static final String[] SELECT_ATTRS = ArrayUtils.concat(SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 }
