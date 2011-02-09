@@ -4787,11 +4787,15 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						self.refresh();
 					}
 				});
-				checkboxElement.click(function () {
+				checkboxElement.click(function (e) {
 					//if (targetLabel.length === 0 || targetLabel.html() === "") {
 					ele.attr("checked", !ele.attr("checked"));
-					//ele.focus().change();
-                    ele.focus();
+					ele.focus();
+
+                    if(e.target.tagName != 'LABEL' && e.target.tagName != 'INPUT') {
+                        ele.change();
+                    }
+
 					self.refresh();
 					//}
 

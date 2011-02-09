@@ -157,13 +157,13 @@ PrimeFaces.widget.InputText = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
+    //Visuals
+    PrimeFaces.skinInput(this.jq);
+
     //Client behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
-
-    //Visuals
-    PrimeFaces.skinInput(this.jq);
 }
 
 /**
@@ -175,11 +175,6 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
-    //Client behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-    }
-
     //Visuals
     PrimeFaces.skinInput(this.jq);
 
@@ -189,6 +184,11 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
             maxHeight: this.cfg.maxHeight
             ,animateDuration: this.cfg.effectDuration
         });
+    }
+
+    //Client behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
 }
 
@@ -214,13 +214,13 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
         };
     }
 
+    //Create widget
+    this.jq.wijdropdown(this.cfg);
+
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
-
-    //Create widget
-    this.jq.wijdropdown(this.cfg);
 }
 
 /**
@@ -232,13 +232,13 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId).children(":input[type='radio']");
 
+    //Create widget
+    this.jq.wijradio(this.cfg);
+
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
-
-    //Create widget
-    this.jq.wijradio(this.cfg);
 }
 
 /**
@@ -248,15 +248,15 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_checkbox');
+    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
+
+    //Create widget
+    this.jq.wijcheckbox(this.cfg);
 
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
-
-    //Create widget
-    this.jq.wijcheckbox(this.cfg);
 }
 
 /**
@@ -268,11 +268,11 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
 
+    //Create widget
+    this.jq.wijcheckbox(this.cfg);
+
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
-
-    //Create widget
-    this.jq.wijcheckbox(this.cfg);
 }
