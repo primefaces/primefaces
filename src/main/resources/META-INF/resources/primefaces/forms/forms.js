@@ -294,7 +294,7 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     options.each(function(i) {
        var option = jQuery(this),
        selected = option.attr('selected'),
-       styleClass = 'ui-selectonelistbox-item ui-corner-all';
+       styleClass = 'ui-selectlistbox-item ui-corner-all';
 
        if(selected) {
            styleClass = styleClass + ' ui-state-active';
