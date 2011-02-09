@@ -16,15 +16,38 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 
 public class SelectManyCheckboxRenderer extends InputRenderer {
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
+
+        if(checkbox.isDisabled() || checkbox.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, checkbox);
+
+        String clientId = checkbox.getClientId(context);
+        String[] values = context.getExternalContext().getRequestParameterValuesMap().get(clientId);
+
+        if(values != null) {
+            checkbox.setSubmittedValue(values);
+        }
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -81,7 +104,8 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", formattedValue, null);
-        if(componentValue != null && componentValue.equals(value)) {
+        
+        if(componentValue != null && ((List) componentValue).contains(value)) {
             writer.writeAttribute("checked", "checked", null);
         }
 
@@ -94,4 +118,25 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         writer.write(label);
         writer.endElement("label");
     }
+
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
+		String[] values = (String[]) submittedValue;
+		Converter converter = getConverter(context, checkbox);
+        List list = null;
+
+        if(converter != null) {
+            list = new ArrayList();
+
+            for(String value : values) {
+                list.add(converter.getAsObject(context, checkbox, value));
+            }
+        }
+        else {
+            list = Arrays.asList(values);
+        }
+
+        return list;
+	}
 }
