@@ -539,16 +539,17 @@
 }
 
 /* PrimeFaces Extensions */
-.wijmo-wijradio-horizontal .wijmo-wijradio {
+.wijmo-wijradio-horizontal .wijmo-wijradio, .wijmo-checkbox-horizontal .wijmo-checkbox {
     float:left;
     width:auto;
     margin:3px 0;
 }
 
-.wijmo-wijradio {
+.wijmo-wijradio, .wijmo-checkbox {
     margin:4px 0;
 }
 
-.wijmo-wijradio label {
+.wijmo-wijradio label, .wijmo-checkbox label {
     width:auto;
+    white-space: nowrap;
 }
