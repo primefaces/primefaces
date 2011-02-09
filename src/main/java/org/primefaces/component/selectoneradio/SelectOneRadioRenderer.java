@@ -16,11 +16,13 @@
 package org.primefaces.component.selectoneradio;
 
 import java.io.IOException;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 
@@ -112,4 +114,31 @@ public class SelectOneRadioRenderer extends InputRenderer {
         writer.write(label);
         writer.endElement("label");
     }
+
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		SelectOneRadio radio = (SelectOneRadio) component;
+		String value = (String) submittedValue;
+		Converter converter = radio.getConverter();
+
+		//first ask the converter
+		if(converter != null) {
+			return converter.getAsObject(context, radio, value);
+		}
+		//Try to guess
+		else {
+            ValueExpression ve = radio.getValueExpression("value");
+
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                Converter converterForType = context.getApplication().createConverter(valueType);
+
+                if(converterForType != null) {
+                    return converterForType.getAsObject(context, radio, value);
+                }
+            }
+		}
+
+		return value;
+	}
 }
