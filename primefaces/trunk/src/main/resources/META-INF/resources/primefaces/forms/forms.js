@@ -260,7 +260,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
 }
 
 /**
- * PrimeFaces SelectBooleanCheckbox Widget
+ * PrimeFaces SelectManyCheckbox Widget
  */
 PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     this.id = cfg.id;
@@ -275,4 +275,58 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+}
+
+/**
+ * PrimeFaces SelectListbox Widget
+ */
+PrimeFaces.widget.SelectListbox = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = jQuery(this.jqId);
+    this.input = jQuery(this.jqId + '_input');
+
+    var listContainer = jQuery(this.jqId).children('ul'),
+    options = jQuery(this.input.attr('options')),
+    _self = this;
+
+    options.each(function(i) {
+       var option = jQuery(this),
+       selected = option.attr('selected'),
+       styleClass = 'ui-selectonelistbox-item ui-corner-all';
+
+       if(selected) {
+           styleClass = styleClass + ' ui-state-active';
+       }
+       
+       listContainer.append('<li class="' + styleClass + '">' + jQuery(this).html() + '</li>');
+    });
+
+    var items = listContainer.children('li');
+
+    items.mouseover(function() {
+        jQuery(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        jQuery(this).removeClass('ui-state-hover');
+    }).click(function() {
+        var element = jQuery(this),
+        option = jQuery(options.get(element.index()));
+
+        if(element.hasClass('ui-state-active')) {
+            element.removeClass('ui-state-active');
+            option.removeAttr('selected');
+        }
+        else {
+            if(_self.cfg.selection == 'single') {
+                items.removeClass('ui-state-active');
+                options.removeAttr('selected');
+            }
+
+            element.addClass('ui-state-active');
+            option.attr('selected', 'selected')
+        }
+    });
+
+    this.jq.wijsuperpanel(this.cfg);
 }
