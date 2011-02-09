@@ -4790,7 +4790,8 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				checkboxElement.click(function () {
 					//if (targetLabel.length === 0 || targetLabel.html() === "") {
 					ele.attr("checked", !ele.attr("checked"));
-					ele.focus().change();
+					//ele.focus().change();
+                    ele.focus();
 					self.refresh();
 					//}
 
