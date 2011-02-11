@@ -3,7 +3,7 @@
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
 <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
 <!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
-<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -26,19 +26,19 @@
         &widget_var_attribute;
         <attribute>
 			<name>autoResize</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
 		</attribute>
         <attribute>
 			<name>maxHeight</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>500</defaultValue>
 		</attribute>
         <attribute>
 			<name>effectDuration</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>200</defaultValue>
 		</attribute>
