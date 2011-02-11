@@ -40,15 +40,6 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
 
-        //Resources
-        UIViewRoot viewRoot = context.getViewRoot();
-        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
-        while (iter.hasNext()) {
-            writer.write("\n");
-            UIComponent resource = (UIComponent) iter.next();
-            resource.encodeAll(context);
-        }
-        
         //Theme
         String theme = null;
         String oldestThemeParamValue = context.getExternalContext().getInitParameter("primefaces.skin");
@@ -78,6 +69,15 @@ public class HeadRenderer extends Renderer {
         }
         else if(!theme.equalsIgnoreCase("none")) {
             encodeTheme(context, "primefaces-" + theme, "theme.css");
+        }
+
+        //Resources
+        UIViewRoot viewRoot = context.getViewRoot();
+        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
+        while (iter.hasNext()) {
+            writer.write("\n");
+            UIComponent resource = (UIComponent) iter.next();
+            resource.encodeAll(context);
         }
     }
 
