@@ -80,7 +80,6 @@ public class LightBoxRenderer extends CoreRenderer {
 		if(lb.isIframe()) writer.write(",iframe:true");
 		if(lb.getFacet("inline") != null) {
 			writer.write(",inline:true");
-			writer.write(",href:'#" + clientId + "_inline'");
 		}
 		if(lb.getOpacity() != 0.85) writer.write(",opacity:" + lb.getOpacity());
 		if(lb.isVisible()) writer.write(",open:true");
