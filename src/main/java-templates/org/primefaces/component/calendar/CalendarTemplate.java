@@ -79,3 +79,9 @@ import org.primefaces.util.ArrayUtils;
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
+
+    public boolean isInstantSelection() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_ajaxSelect");
+    }
