@@ -55,8 +55,11 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
             if(_self.cfg.onSelectUpdate) {
                 options.update = _self.cfg.onSelectUpdate;
             }
+
+            var params = {};
+            params[_self.id + "_ajaxSelect"] = true;
 	
-            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options);
+            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
         }
 
     }

@@ -204,7 +204,7 @@ public class CalendarRenderer extends InputRenderer {
 
             convertedValue = format.parse(submittedValue);
 
-            if(calendar.getSelectListener() != null) {
+            if(calendar.isInstantSelection()) {
                 calendar.queueEvent(new DateSelectEvent(calendar, convertedValue));
             }
             
