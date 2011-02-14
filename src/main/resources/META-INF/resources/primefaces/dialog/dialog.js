@@ -25,9 +25,6 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
         this.jq.parent().find('.ui-dialog-titlebar-close').hide();
     }
 
-    //Id reset and dom location
-    this.jq.removeAttr('id').parent().attr('id', this.id);
-
     if(this.cfg.appendToBody) {
         this.jq.parent().appendTo(document.body);
     }
