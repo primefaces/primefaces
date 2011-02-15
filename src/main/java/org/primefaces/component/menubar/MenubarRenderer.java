@@ -44,8 +44,12 @@ public class MenubarRenderer extends BaseMenuRenderer {
 		writer.write(widgetVar + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");
 
         writer.write("autoSubmenuDisplay:" + menubar.isAutoSubmenuDisplay());
+        writer.write(",animated:'" + menubar.getEffect() + "'");
 
-        writer.write(",animation:{animated:'" + menubar.getEffect() + "',duration:" + menubar.getEffectDuration() + "}");
+        if(menubar.getEffectDuration() != 400) {
+            writer.write(",showDuration:" + menubar.getEffectDuration());
+            writer.write(",hideDuration:" + menubar.getEffectDuration());
+        }
 
         if(menubar.getStyleClass() != null) writer.write(",styleClass:'" + menubar.getStyleClass() + "'");
         if(menubar.getStyle() != null) writer.write(",style:'" + menubar.getStyle() + "'");

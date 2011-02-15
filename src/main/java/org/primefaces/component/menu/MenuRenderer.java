@@ -42,16 +42,19 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         writer.write("position:'" + menu.getPosition() + "'");
         writer.write(",zindex:" + menu.getZindex());
-
-        //animation
-        writer.write(",animation:{animated:'" + menu.getEffect() + "',duration:" + menu.getEffectDuration() + "}");
+        writer.write(",animated:'" + menu.getEffect() + "'");
 
         if(type.equalsIgnoreCase("sliding")) {
             writer.write(",mode:'sliding'");
             writer.write(",backLinkText:'" + menu.getBackLabel() + "'");
             writer.write(",maxHeight:" + menu.getMaxHeight());
         }
-        
+
+        if(menu.getEffectDuration() != 400) {
+            writer.write(",showDuration:" + menu.getEffectDuration());
+            writer.write(",hideDuration:" + menu.getEffectDuration());
+        }
+
         if(position.equalsIgnoreCase("dynamic")) {
            writer.write(",my:'" + menu.getMy() + "'");
            writer.write(",at:'" + menu.getAt() + "'");

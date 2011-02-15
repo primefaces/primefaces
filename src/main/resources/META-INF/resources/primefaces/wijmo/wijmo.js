@@ -1,86 +1,6 @@
-
-/*! Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
- * Licensed under the MIT License (LICENSE.txt).
- *
- * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
- * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
- * Thanks to: Seamus Leahy for adding deltaX and deltaY
- *
- * Version: 3.0.4
- *
- * Requires: 1.2.2+
- */
-
-(function($) {
-
-var types = ['DOMMouseScroll', 'mousewheel'];
-
-$.event.special.mousewheel = {
-    setup: function() {
-        if ( this.addEventListener ) {
-            for ( var i=types.length; i; ) {
-                this.addEventListener( types[--i], handler, false );
-            }
-        } else {
-            this.onmousewheel = handler;
-        }
-    },
-
-    teardown: function() {
-        if ( this.removeEventListener ) {
-            for ( var i=types.length; i; ) {
-                this.removeEventListener( types[--i], handler, false );
-            }
-        } else {
-            this.onmousewheel = null;
-        }
-    }
-};
-
-$.fn.extend({
-    mousewheel: function(fn) {
-        return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
-    },
-
-    unmousewheel: function(fn) {
-        return this.unbind("mousewheel", fn);
-    }
-});
-
-
-function handler(event) {
-    var orgEvent = event || window.event, args = [].slice.call( arguments, 1 ), delta = 0, returnValue = true, deltaX = 0, deltaY = 0;
-    event = $.event.fix(orgEvent);
-    event.type = "mousewheel";
-
-    // Old school scrollwheel delta
-    if ( event.wheelDelta ) { delta = event.wheelDelta/120; }
-    if ( event.detail     ) { delta = -event.detail/3; }
-
-    // New school multidimensional scroll (touchpads) deltas
-    deltaY = delta;
-
-    // Gecko
-    if ( orgEvent.axis !== undefined && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-        deltaY = 0;
-        deltaX = -1*delta;
-    }
-
-    // Webkit
-    if ( orgEvent.wheelDeltaY !== undefined ) { deltaY = orgEvent.wheelDeltaY/120; }
-    if ( orgEvent.wheelDeltaX !== undefined ) { deltaX = -1*orgEvent.wheelDeltaX/120; }
-
-    // Add event and delta to the front of the arguments
-    args.unshift(event, delta, deltaX, deltaY);
-
-    return $.event.handle.apply(this, args);
-}
-
-})(jQuery);
-
 /*
  *
- * Wijmo Library 1.1.2
+ * Wijmo Library 1.0.1
  * http://wijmo.com/
  *
  * Copyright(c) ComponentOne, LLC.  All rights reserved.
@@ -211,63 +131,6 @@ function handler(event) {
 		return null;
 	};
 
-	$.fn.wijshow = function (animation, customAnimations, customAnimationOptions, showing, shown) {
-		var animated = animation.animated || false,
-			duration = animation.duration || 400,
-			easing = animation.easing,
-			option = animation.option || {};
-
-		if (showing && $.isFunction(showing)) {
-			showing.call(this);
-		}
-
-		if (animated) {
-			if ($.effects && $.effects[animated]) {
-				this.show(animated, $.extend(option, { easing: easing }), duration, shown);
-				return;
-			}
-
-			if (customAnimations && customAnimations[animated]) {
-				customAnimations[animated](animation, $.extend(customAnimationOptions, { complete: shown }));
-				return;
-			}
-		}
-
-		this.show();
-		if (shown && $.isFunction(shown)) {
-			shown.call(this);
-		}
-	};
-
-	$.fn.wijhide = function (animation, customAnimations, customAnimationOptions, hidding, hidden) {
-		var animated = animation.animated || false,
-			duration = animation.duration || 400,
-			easing = animation.easing,
-			option = animation.option || {};
-
-		if (hidding && $.isFunction(hidding)) {
-			hidding.call(this);
-		}
-
-		if (animated) {
-			if ($.effects && $.effects[animated]) {
-				this.hide(animated, $.extend(option,
-				{ easing: easing }), duration, hidden);
-				return;
-			}
-			if (customAnimations && customAnimations[animated]) {
-				customAnimations[animated](newAnimations,
-					$.extend(customAnimationOptions, { complete: hidden }));
-				return;
-			}
-		}
-
-		this.hide();
-		if (hidden && $.isFunction(hidden)) {
-			hidden.call(this);
-		}
-	};
-
 	var wijCharValidator = function () { };
 	$.extend(wijCharValidator.prototype, {
 		_UTFPunctuationsString: ' ! \" # % & \' ( ) * , - . / : ; ? @ [ \\ ] { } \u00a1 \u00ab \u00ad \u00b7 \u00bb \u00bf \u037e \u0387 \u055a \u055b \u055c \u055d \u055e \u055f \u0589 \u058a \u05be \u05c0 \u05c3 \u05f3 \u05f4 \u060c \u061b \u061f \u066a \u066b \u066c \u066d \u06d4 \u0700 \u0701 \u0702 \u0703 \u0704 \u0705 \u0706 \u0707 \u0708 \u0709 \u070a \u070b \u070c \u070d \u0964 \u0965 \u0970 \u0df4 \u0e4f \u0e5a \u0e5b \u0f04 \u0f05 \u0f06 \u0f07 \u0f08 \u0f09 \u0f0a \u0f0b \u0f0c \u0f0d \u0f0e \u0f0f \u0f10 \u0f11 \u0f12 \u0f3a \u0f3b \u0f3c \u0f3d \u0f85 \u104a \u104b \u104c \u104d \u104e \u104f \u10fb \u1361 \u1362 \u1363 \u1364 \u1365 \u1366 \u1367 \u1368 \u166d \u166e \u169b \u169c \u16eb \u16ec \u16ed \u17d4 \u17d5 \u17d6 \u17d7 \u17d8 \u17d9 \u17da \u17dc \u1800 \u1801 \u1802 \u1803 \u1804 \u1805 \u1806 \u1807 \u1808 \u1809 \u180a \u2010 \u2011 \u2012 \u2013 \u2014 \u2015 \u2016 \u2017 \u2018 \u2019 \u201a \u201b \u201c \u201d \u201e \u201f \u2020 \u2021 \u2022 \u2023 \u2024 \u2025 \u2026 \u2027 \u2030 \u2031 \u2032 \u2033 \u2034 \u2035 \u2036 \u2037 \u2038 \u2039 \u203a \u203b \u203c \u203d \u203e \u2041 \u2042 \u2043 \u2045 \u2046 \u2048 \u2049 \u204a \u204b \u204c \u204d \u207d \u207e \u208d \u208e \u2329 \u232a \u3001 \u3002 \u3003 \u3008 \u3009 \u300a \u300b \u300c \u300d \u300e \u300f \u3010 \u3011 \u3014 \u3015 \u3016 \u3017 \u3018 \u3019 \u301a \u301b \u301c \u301d \u301e \u301f \u3030 \ufd3e \ufd3f \ufe30 \ufe31 \ufe32 \ufe35 \ufe36 \ufe37 \ufe38 \ufe39 \ufe3a \ufe3b \ufe3c \ufe3d \ufe3e \ufe3f \ufe40 \ufe41 \ufe42 \ufe43 \ufe44 \ufe49 \ufe4a \ufe4b \ufe4c \ufe50 \ufe51 \ufe52 \ufe54 \ufe55 \ufe56 \ufe57 \ufe58 \ufe59 \ufe5a \ufe5b \ufe5c \ufe5d \ufe5e \ufe5f \ufe60 \ufe61 \ufe63 \ufe68 \ufe6a \ufe6b \uff01 \uff02 \uff03 \uff05 \uff06 \uff07 \uff08 \uff09 \uff0a \uff0c \uff0d \uff0e \uff0f \uff1a \uff1b \uff1f \uff20 \uff3b \uff3c \uff3d \uff5b \uff5d \uff61 \uff62 \uff63 \uff64\';this.UTFWhitespacesString_=\'\t \u000b \u000c \u001f   \u00a0 \u1680 \u2000 \u2001 \u2002 \u2003 \u2004 \u2005 \u2006 \u2007 \u2008 \u2009 \u200a \u200b \u2028 \u202f \u3000',
@@ -369,7 +232,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 /*globals window document jQuery */
 /*
  *
- * Wijmo Library 1.1.2
+ * Wijmo Library 1.0.1
  * http://wijmo.com/
  *
  * Copyright(c) ComponentOne, LLC.  All rights reserved.
@@ -1035,10 +898,6 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 		_hasMode: function (scroller, mode) {
 			var modes = scroller.scrollMode.split(",");
-			modes = $.map(modes, function (n) {
-				return $.trim(n);
-			});
-
 			return $.inArray(mode, modes) > -1;
 		},
 
@@ -2586,7 +2445,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 /*
 *
-* Wijmo Library 1.1.2
+* Wijmo Library 1.0.1
 * http://wijmo.com/
 *
 * Copyright(c) ComponentOne, LLC.  All rights reserved.
@@ -2609,166 +2468,177 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 */
 (function ($) {
 	"use strict";
-	var menuitemCss = "wijmo-wijmenu-item";
 	$.widget("wijmo.wijmenu", {
 		options: {
 			/// <summary>
-			/// An jQuery selector which handle to open the menu or submenu.
-			/// Default: "".
-			/// Type: String.
-			/// Remark: If set to the menu item(the li element) then when it is clicked
-			/// (if the triggerEvent set to 'click') show submenu.  If set to a element
-			/// out of the menu, click(if the triggerEvent set to 'click') it, open the
-			/// menu.
-			/// </summary>
+			///An jQuery selector which handle to open the menu or submenu.
+			///Default:"".
+			///Type:String.
+			///Remark:If set to the menu item(the li element) then when it is clicked
+			///(if the triggerEvent set to 'click') show ubmenu.If set to a element out
+			///of the menu ,click(if the triggerEvent set to 'click') it,open the menu.
+			///</summary>
 			trigger: '',
 			/// <summary>
-			/// Specifies the event to show the menu.
-			/// Default: "click".
-			/// Type: String.
-			/// Remark: The value can be seted to 'click', 'mouseenter', 'dbclick',
-			/// 'rtclick'
-			/// </summary>
+			///Specifies the event to show the menu.
+			///Default:"click".
+			///Type:String.
+			///Remark:The value can be seted to 'click','mouseenter','dbclick','rtclick'
+			///</summary>
 			triggerEvent: 'click',
-			/// <summary>
-			/// Location and Orientation of the menu,relative to the button/link userd
+			///<summary>
+			///Location and Orientation of the menu,relative to the button/link userd
 			/// to open it. Configuration for the Position Utility,Of option
-			/// excluded(always configured by widget).  Collision also controls collision
-			/// detection automatically too.
-			/// Default: {}.
-			/// Type: Object.
-			/// </summary>
+			///excluded(always configured by widget).Collision also controls collision
+			///detection automatically too.
+			///Default:{}.
+			///Type:Object.
+			///</summary>
 			position: {},
+			///<summary>
+			///Sets showAnimated and hideAnimated if not specified individually.
+			///Default:"slide".
+			///Type:String.
+			///Remark:Users standard animation setting syntax from other widgets.
+			///</summary>
+			animated: 'slide',
+			///<summary>
+			///Determines the animationn used during show.
+			///Default:"slide".
+			///Type:String.
+			///Remark:This option uses the standard animation setting syntax from
+			/// other widgets.
+			///</summary>
+			showAnimated: null,
 			/// <summary>
-			/// Sets showAnimation and hideAnimation if not specified individually.
-			/// Default: { animated: "slide", duration: 400, easing: null }.
-			/// Type: Object.
-			/// Remark: User's standard animation setting syntax from other widgets.
-			/// </summary>
-			animation: { animated: "slide", duration: 400, easing: null },
-			/// <summary>
-			/// Determine the animation used to show submenu.
-			/// Default: {}.
-			/// Type: Object.
-			/// </summary>
-			showAnimation: {},
-			/// <summary>
-			/// Determine the animation used to hide submenu.
-			/// Default: { animated: "fade", duration: 400, easing: null }.
-			/// Type: Object.
-			/// </summary>
-			hideAnimation: { animated: "fade", duration: 400, easing: null },
-			/// <summary>
-			/// Determine the animation used to slide submenu in sliding mode.
-			/// Default: { duration: 400, easing: null }.
-			/// Type: Object.
-			/// </summary>
-			slidingAnimation: { duration: 400, easing: null },
-			/// <summary>
-			/// Defines the behavior of the submenu whether it is a popup menu or
-			/// an iPod-style navigation list.
-			/// Default:"flyout".
-			/// Type:String.
-			/// Remarks: Possible values are "flyout" or "sliding".
-			/// </summary>
+			///Determines the animation used during hide.
+			///Default:"slide".
+			///Type:String.
+			///Remark:Users standard animation setting syntax from other widgets.
+			///</summary>
+			hideAnimated: null,
+			///<summary>
+			///Determines the speed to show/hide the menu in milliseconds.
+			/// Sets showDuration and hideDuration if they are not specified.
+			///Default:400.
+			///Type:Number.
+			///</summary>
+			duration: 400,
+			///<summary>
+			///Determines the speed to show the menu,in milliseconds.
+			///Default:null.
+			///Type:Number.
+			///</summary>
+			showDuration: null,
+			///<summary>
+			///Determines the speed to hide the menu,in milliseconds.
+			///Default:null.
+			///Type:Number.
+			///</summary>
+			hideDuration: null,
+			///<summary>
+			///Defines the behavior of the submenu whether it is a popup
+			///menu or an iPod-style navigation list.
+			///Default:"flyout".
+			///Type:String.
+			///Remark:The value should be "flyout" or "sliding".
+			///</summary>
 			mode: 'flyout',
-			/// <summary>
-			/// This option specifies a hash value that sets to superpanel options
-			/// when a superpanel is created.
-			/// Default: null.
-			/// Type: Object.
-			/// </summary>
+			///<summary>
+			///This option specifies a hash value that sets to superpanel options
+			///when a superpanel is created.
+			///Default:null.
+			///Type:Object.
+			///</summary>
 			superPanelOptions: null,
-			/// <summary>
-			/// Defines whether the item can be checked.
-			/// Default: false.
-			/// Type: Boolean.
-			/// </summary>
+			///<summary>
+			/// Defines whether items are checkable.
+			///Default:false.
+			///Type:Boolean.
+			///</summary>
 			checkable: false,
-			/// <summary>
-			/// Controls the root menus orientation. All submenus are vertical
-			/// regardless of the orientation of the root menu.
-			/// Default: "horizontal".
-			/// Type: String.
-			/// Remark: The value should be "horizontal" or "vertical".
-			/// </summary>
+			///<summary>
+			///Controls the root menus orientation. All submenus are vertical
+			///regardless of the orientation of the root menu.
+			///Default:"horizontal".
+			///Type:String.
+			///Remark:The value should be "horizontal" or "vertical".
+			///</summary>
 			orientation: 'horizontal',
-			/// <summary>
-			/// Determines the i-Pod-style menu's maximum height.
-			/// Default: 200.
-			/// Type: Number.
-			/// Remark: This option only used in i-pod style menu.  When the menu's
-			/// heiget largger than this value, menu show scroll bar.
-			/// </summary>
+			///<summary>
+			///Determines the i-Pod-style menu's maximum height.
+			///Default:200.
+			///Type:Number.
+			///Remark:This option only used in i-pod style menu. when the menu's heiget
+			///largger than this value,menu show scroll bar.
+			///</summary>
 			maxHeight: 200,
 			/// <summary>
-			/// Determines whether the i-Pod menu shows a back link or a breadcrumb header
+			///Determines whether the i-Pod menu shows a back link or a breadcrumb header
 			/// in the menu.
-			/// Default: true.
-			/// Type: Boolean.
-			/// </summary>
+			///Default:true.
+			///Type:Boolean.
+			///</summary>
 			backLink: true,
-			/// <summary>
-			/// Sets the text of the back link.
-			/// Default: "Back".
-			/// Type: String.
-			/// </summary>
+			///<summary>
+			///Sets the text of the back link.
+			///Default:"Back".
+			///Type:String.
+			///</summary>
 			backLinkText: 'Back',
-			/// <summary>
-			/// Sets the text of the top link.
-			/// Default: "All".
-			/// Type: String.
-			/// </summary>
+			///<summary>
+			///Sets the text of the top link.
+			///Default:"All".
+			///Type:String.
+			///</summary>
 			topLinkText: 'All',
-			/// <summary>
-			/// Sets the top breadcrumb's default Text.
-			/// Default: "Choose an option".
-			/// Type: String.
-			/// </summary>
+			///<summary>
+			///Sets the top breadcrumb's default Text.
+			///Default:"Choose an option".
+			///Type:String.
+			///</summary>
 			crumbDefaultText: 'Choose an option'
 		},
-
-		_preventEvent: function (event) {
-			event.preventDefault();
-			event.stopImmediatePropagation();
-		},
-
 		_create: function () {
-			// Before crete menu items,hide the menu. To avoid show wild uls
+			//before crete menu items,hide the menu. to avoid show wild uls
 			// in the page before init the menu.
-			var self = this,
-				o = self.options, ul, li, ele = self.element,
-				keycode = $.ui.keyCode;
-
-			ele.hide();
+			var self = this, o = self.options, ul, li;
+			self.element.hide();
 			self.cssPre = "wijmo-wijmenu";
 			self.nowIndex = 9999;
-			self.activeItem = null;
+			//			self._setAnimationOptions();
 			self.refresh();
-			ele.attr("tabIndex", 0);
-			ele.bind("keydown.wijmenu", function (event) {
-				if (o.disabled) {
+
+			if (!self.options.input) {
+				self.options.input = self.element.attr("tabIndex", 0);
+			}
+			self.options.input.bind("keydown.wijmenu", function (event) {
+				if (self.options.disabled) {
 					return;
 				}
-				var activeItem = self.activeItem;
+				var activeItem = self.element.data("activeItem");
 				switch (event.keyCode) {
-				case keycode.PAGE_UP:
+				case $.ui.keyCode.PAGE_UP:
 					self.previousPage(event);
-					self._preventEvent(event);
+					event.preventDefault();
+					event.stopImmediatePropagation();
 					break;
-				case keycode.PAGE_DOWN:
+				case $.ui.keyCode.PAGE_DOWN:
 					self.nextPage(event);
-					self._preventEvent(event);
+					event.preventDefault();
+					event.stopImmediatePropagation();
 					break;
-				case keycode.UP:
+				case $.ui.keyCode.UP:
 					self.previous(event);
-					self._preventEvent(event);
+					event.preventDefault();
+					event.stopImmediatePropagation();
 					break;
-				case keycode.DOWN:
+				case $.ui.keyCode.DOWN:
 					self.next(event);
-					self._preventEvent(event);
+					event.preventDefault();
+					event.stopImmediatePropagation();
 					break;
-				case keycode.RIGHT:
+				case $.ui.keyCode.RIGHT:
 					if (activeItem) {
 						ul = $(">ul", activeItem);
 						if (ul.length > 0 && ul.is(":visible")) {
@@ -2776,209 +2646,204 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						}
 					}
 					break;
-				case keycode.LEFT:
+				case $.ui.keyCode.LEFT:
 					ul = activeItem.parent();
 					li = ul.parent();
 					if (li.is("li")) {
 						self.activate(event, li);
 					}
 					break;
-				case keycode.ENTER:
+				case $.ui.keyCode.ENTER:
 					self.select();
 					if (activeItem.length > 0) {
 						if (o.mode === "flyout" && activeItem.has("ul").length > 0) {
 							self._showFlyoutSubmenu(event, activeItem, activeItem
-					.find("ul:first"));
+						.find("ul:first"));
 						}
 						else {
 							activeItem.children(":first").trigger("click");
 						}
 					}
-					self._preventEvent(event);
+					event.preventDefault();
+					event.stopImmediatePropagation();
 					break;
 				}
 			});
 		},
-
 		_destroy: function () {
-			var self = this,
-				o = self.options;
-
-			self[o.mode === "flyout" ? "_killFlyout" : "_killDrilldown"]();
-			self._killmenuItems();
-			self._killtrigger();
-			if (self.element.is("ul")) {
-				self.element.unwrap().unwrap();
+			var o = this.options, self = this;
+			if (o.mode === "flyout") {
+				self._killFlyout();
 			}
 			else {
-				self.element.unwrap();
+				self._killDrilldown();
 			}
+			self._killmenuItems();
+			self._killtrigger();
+			self.element.unwrap().unwrap();
 			self.element.removeData("domObject").removeData("topmenu")
-			.removeData("firstLeftValue");
+			.removeData("activeItem").removeData("firstLeftValue");
 		},
-
 		destroy: function () {
-			/// <summary>
-			/// Removes the wijmenu functionality completely.
-			/// This returns the element back to its pre-init state.
-			/// </summary>
+			/// <summary>Removes the wijmenu functionality completely.
+			/// This returns the element back to its pre-init state.</summary>
 			this._destroy();
 			$.Widget.prototype.destroy.apply(this);
 		},
-
 		activate: function (event, item) {
 			/// <summary>Actives an menu item by deactivating the current item,
-			/// scrolling the new one into view, if necessary,making it the active item,
-			/// and triggering a focus event.
-			/// </summary>
+			///scrolling the new one into view,if necessary,making it the active item,
+			///and triggering a focus event.</summary>
 			/// <param name="event" type="Event">The javascript event.</param>
 			/// <param name="item" type="jQuery object">a menu item to active</param>
-			var self = this,
-				scrollContainer = self.domObject.scrollcontainer,
-				active = item.eq(0);
-
-			self.deactivate(event);
-			if (self.options.mode === "sliding") {
+			var scrollContainer, active;
+			this.deactivate(event);
+			if (this.options.mode === "sliding") {
+				scrollContainer = this.element.data("domObject").scrollcontainer;
 				scrollContainer.wijsuperpanel("scrollChildIntoView", item);
 			}
-			active.children(":first")
+			active = item.eq(0)
+			.children(":first")
 			.addClass("ui-state-focus")
 			.attr("id", "ui-active-menuitem")
 			.end();
-			self.activeItem = active;
-			self._trigger("focus", event, { item: item });
+			this.element.data("activeItem", active);
+			this._trigger("focus", event, {item: item});
 		},
-
 		deactivate: function (event) {
 			/// <summary>Clears the current selection.This method is useful when reopening
-			/// a menu which previously had an item selected.
-			/// </summary>
-			/// <param name="event" type="Event">The javascript event.  </param>
-			var self = this,
-				active = self.activeItem;
-
+			/// a menu which previously had an item selected.</summary>
+			/// <param name="event" type="Event">The javascript event.</param>
+			/// <param name="item" type="jQuery object">a menu item to deactive</param>
+			var active = this.element.data("activeItem");
 			if (!active) {
 				return;
 			}
 			if (!event || event.keyCode !== $.ui.keyCode.RIGHT) {
 				if (active.length > 0) {
-					if (self.options.mode === "flyout" && active.has("ul").length > 0) {
-						self._hideCurrentSubmenu(active);
+					if (this.options.mode === "flyout" && active.has("ul").length > 0) {
+						this._hideCurrentSubmenu(active);
 					}
 				}
 			}
+			//console.log(active);
 			active.children(":first")
 			.removeClass("ui-state-focus")
 			.removeAttr("id");
-			self._trigger("blur");
-			self.activeItem = null;
+			this._trigger("blur");
+			this.element.data("activeItem", null);
 		},
 
 		next: function (event) {
 			/// <summary>Selects the next item based on the active one. Selects the first
 			/// item if none is active or if the last one is active.</summary>
 			/// <param name="event" type="Event">The javascript event.</param>
-			this._move("next", "." + menuitemCss + ":first", event);
+			this._move("next", ".wijmo-wijmenu-item:first", event);
 		},
 
 		previous: function (event) {
 			/// <summary>Selects the previous item based on the active one. Selects the
 			///last item if none is active or if the first one is active.</summary>
 			/// <param name="event" type="Event">The javascript event.</param>
-			this._move("prev", "." + menuitemCss + ":last", event);
+			this._move("prev", ".wijmo-wijmenu-item:last", event);
 		},
 
 		first: function () {
 			/// <summary>Determines whether the active item is the first
 			/// menu item</summary>
 			/// <returns type="Boolean" />
-			var active = this.activeItem;
-			return active && !active.prevAll("." + menuitemCss).length;
+			var active = this.element.data("activeItem");
+			return active && !active.prevAll(".wijmo-wijmenu-item").length;
 		},
 
 		last: function () {
 			/// <summary>Determines whether the active item is the
 			///last menu item</summary>
 			/// <returns type="Boolean" />
-			var active = this.activeItem;
-			return active && !active.nextAll("." + menuitemCss).length;
+			var active = this.element.data("activeItem");
+			return active && !active.nextAll(".wijmo-wijmenu-item").length;
 		},
 
 		nextPage: function (event) {
 			/// <summary>This event is similar to the next event,
 			///but it jumps a whole page.</summary>
 			/// <param name="event" type="Event">The javascript event.</param>
-			var self = this,
-				activeItem = self.activeItem,
-				parent = activeItem.parent(), base, height, result;
-
+			var self = this, activeItem, parent, base, close, height, result;
+			activeItem = self.element.data("activeItem");
+			parent = activeItem.parent();
 			if (self.options.mode === "sliding" && self._hasScroll()) {
+				// TODO merge with no-scroll-else
+				//var activeItem = self.element.data("activeItem");
+				//var parent = activeItem.parent();
 				if (!activeItem || self.last()) {
 					self.activate(event, parent.children(":first"));
 					return;
 				}
 				base = activeItem.offset().top;
-				height = self.options.maxHeight;
+				height = this.options.maxHeight;
 				result = parent.children("li").filter(function () {
-					var node = $(this),
-					close = height - (node.offset().top - base + node.height()),
-					lineheight = node.height();
+					//var close = $(this).offset().top - base - height + $(this).height();
+					close = height - ($(this).offset().top - base + $(this).height());
+					// TODO improve approximation
+					var lineheight = $(this).height();
 					return close < lineheight && close > -lineheight;
 				});
 
 				if (!result.length) {
 					result = parent.children(":last");
 				}
-				self.activate(event, result.last());
+				this.activate(event, result.last());
 			} else {
-				self.activate(event, parent
-				.children(!activeItem || self.last() ? ":first" : ":last"));
+				this.activate(event, parent
+				.children(!activeItem || this.last() ? ":first" : ":last"));
 			}
 		},
-
 		previousPage: function (event) {
 			/// <summary>This event is silimlar to the previous event,
 			///but it jumps a whole page.</summary>
 			/// <param name="event" type="Event">The javascript event.</param>
-			var self = this,
-				activeItem = self.activeItem,
-				parent = activeItem.parent(), base, height, result;
-
-			if (self.options.mode === "sliding" && self._hasScroll()) {
-				if (!activeItem || self.first()) {
-					self.activate(event, parent.children(":last"));
+			var self = this, activeItem = self.element.data("activeItem"),
+			parent, base, height, result, close;
+			parent = activeItem.parent();
+			if (self.options.mode === "sliding" && this._hasScroll()) {
+				// TODO merge with no-scroll-else
+				if (!activeItem || this.first()) {
+					this.activate(event, parent.children(":last"));
 					return;
 				}
 				base = activeItem.offset().top;
-				height = self.options.maxHeight;
+				height = this.options.maxHeight;
 				result = parent.children("li").filter(function () {
-					var node = $(this),
-					close = node.offset().top - base + height - node.height(),
-					lineheight = node.height();
+					close = $(this).offset().top - base + height - $(this).height();
+					// TODO improve approximation
+					var lineheight = $(this).height();
 					return close < lineheight && close > -lineheight;
 				});
+
+				// TODO try to catch this earlier when scrollTop
+				//indicates the last page anyway
 				if (!result.length) {
 					result = parent.children(":first");
 				}
-				self.activate(event, result.first());
+				this.activate(event, result.first());
 			} else {
-				self.activate(event, parent
-				.children(!activeItem || self.first() ? ":last" : ":first"));
+				this.activate(event, parent
+				.children(!activeItem || this.first() ? ":last" : ":first"));
 			}
 		},
-
 		select: function (event) {
 			/// <summary>Selects the active item,triggering the select event for that
 			///item. This event is useful for custom keyboard handling.</summary>
 			/// <param name="event" type="Event">The javascript event.</param>
-			var self = this;
-			self._trigger("select", event, { item: self.activeItem });
-			self._setCheckable();
+			var active = this.element.data("activeItem");
+			this._trigger("select", event, {item: active});
+			this._setCheckable();
 		},
 
 		_setCheckable: function () {
 			if (this.options.checkable) {
-				this.activeItem.children(":first").toggleClass("ui-state-active");
+				var item = this.element.data("activeItem");
+				item.children(":first").toggleClass("ui-state-active");
 			}
 		},
 
@@ -2997,124 +2862,160 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		},
 
 		_set_orientation: function (value) {
-			var self = this,
-				menuContainer = self.domObject.menucontainer;
-
-			menuContainer
-			.removeClass(self.cssPre + "-vertical " + self.cssPre + "-horizontal");
-			if (self.options.mode === "flyout") {
-				menuContainer.addClass(self.cssPre + "-" + value);
-				$(">li:has(ul)", self.rootMenu).each(function () {
-					var cssPre = "ui-icon-triangle-1-",
-					oldCss = value === "horizontal" ? "e" : "s",
-					newCss = value === "horizontal" ? "s" : "e";
-					$(">.wijmo-wijmenu-link", this).find("." + cssPre + oldCss)
-					.removeClass(cssPre + oldCss + " " + cssPre + newCss)
-					.addClass(cssPre + newCss);
+			var self = this, menuContainer = this.element.data("domObject").menucontainer;
+			if (this.options.mode === "flyout") {
+				menuContainer
+				.removeClass(self.cssPre + "-vertical " + self.cssPre + "-horizontal")
+				.addClass("wijmo-wijmenu-" + value);
+				$(">li:has(ul)", this.element).each(function () {
+					if (value === "horizontal") {
+						$(">.wijmo-wijmenu-link", this)
+						.find(".ui-icon-triangle-1-e")
+						.removeClass("ui-icon-triangle-1-e ui-icon-triangle-1-s")
+						.addClass("ui-icon-triangle-1-s");
+					}
+					else {
+						$(">.wijmo-wijmenu-link", this)
+						.find(".ui-icon-triangle-1-s")
+						.removeClass("ui-icon-triangle-1-e ui-icon-triangle-1-s")
+						.addClass("ui-icon-triangle-1-e");
+					}
 				});
 			}
 			else {
 				menuContainer
-				.addClass(self.cssPre + "-vertical");
+				.removeClass("wijmo-wijmenu-vertical wijmo-wijmenu-horizontal")
+				.addClass("wijmo-wijmenu-vertical");
 			}
-		},
-
-		_getTriggerEle: function () {
-			return $(this.options.trigger).filter(function () {
-				return $(this).closest(".wijmo-wijmenu").length === 0;
-			});
 		},
 
 		_set_triggerEvent: function (value) {
-			var self = this,
-				o = self.options,
-				triggerEle = self._getTriggerEle();
-
-			self._killtrigger();
-			o.triggerEvent = value;
+			this._killtrigger();
+			this.options.triggerEvent = value;
+			var triggerEle = $(this.options.trigger).filter(function () {
+				return $(this).closest(".wijmo-wijmenu").length === 0;
+			});
 			if (triggerEle.length > 0) {
-				self._initTrigger(triggerEle);
+				this._initTrigger(triggerEle);
 			}
-			if (o.mode === "flyout") {
-				self._killFlyout();
-				self._flyout();
+			if (this.options.mode === "flyout") {
+				this._killFlyout();
+				this._flyout();
 			}
 		},
 
 		_set_trigger: function (value) {
-			var self = this,
-				o = self.options,
-				triggerEle = self._getTriggerEle();
-
-			self._killtrigger();
-			o.triggerEvent = value;
+			this._killtrigger();
+			this.options.triggerEvent = value;
+			var triggerEle = $(this.options.trigger).filter(function () {
+				return $(this).closest(".wijmo-wijmenu").length === 0;
+			});
 			if (triggerEle.length > 0) {
-				self._initTrigger(triggerEle);
+				this._initTrigger(triggerEle);
 			}
-			if (o.mode === "flyout") {
-				self._killFlyout();
-				self._flyout();
+			if (this.options.mode === "flyout") {
+				this._killFlyout();
+				this._flyout();
 			}
 		},
 
 		_initTrigger: function (triggerEle) {
-			var o = this.options,
-				event = o.triggerEvent,
-				self = this,
-				menuContainer = self.domObject.menucontainer,
-				namespace = ".wijmenu";
-
+			var o = this.options, event = o.triggerEvent, self = this,
+			menuContainer, breadcrumb;
 			if (triggerEle.is("iframe")) {
 				triggerEle = $(triggerEle.get(0).contentWindow.document);
 			}
+			menuContainer = self.element.data("domObject").menucontainer;
 			switch (event) {
 			case "click":
-				triggerEle.bind(event + namespace, function (e) {
+				triggerEle.bind("click.wijmenu", function (e) {
 					if (o.mode !== "popup") {
 						self._displaySubmenu(e, triggerEle, menuContainer);
 					}
 				});
 				break;
 			case "mouseenter":
-				triggerEle.bind(event + namespace, function (e) {
+				triggerEle.bind("mouseenter.wijmenu", function (e) {
 					self._displaySubmenu(e, triggerEle, menuContainer);
 				});
+				//.mouseleave(function (e) {
+				//self._hideSubmenu(menuContainer);
+				//});
 				break;
 			case "dblclick":
-				triggerEle.bind(event + namespace, function (e) {
+				triggerEle.bind("dblclick.wijmenu", function (e) {
 					self._displaySubmenu(e, triggerEle, menuContainer);
 				});
 				break;
 			case "rtclick":
-				triggerEle.bind("contextmenu" + namespace, function (e) {
+				triggerEle.bind("contextmenu.wijmenu", function (e) {
 					self._displaySubmenu(e, triggerEle, menuContainer);
 					e.preventDefault();
 				});
 				break;
 			}
-
+			$(document).bind("click.wijmenudoc", function (e) {
+				if (self.element.data("shown")) {
+					self.element.data("shown", false);
+					return;
+				}
+				///fixed when click the breadcrumb choose item link to show
+				/// the root menu in sliding menu.
+				if ($(e.target).parent().is(".wij-menu-all-lists")) {
+					return;
+				}
+				var obj = $(e.target).closest(".wijmo-wijmenu");
+				if (obj.length === 0) {
+					if (o.mode === "sliding") {
+						breadcrumb = $(".wij-menu-breadcrumb", menuContainer);
+						self._resetDrilldownMenu(breadcrumb);
+					}
+					if (o.mode === "flyout" && event !== "mouseenter") {
+						self._hideAllMenus();
+						return;
+					}
+					self._hideSubmenu(menuContainer);
+				}
+			});
 		},
 
 		_killtrigger: function () {
 			var o = this.options, triggerEle;
-
 			if (o.trigger !== "") {
 				triggerEle = $(o.trigger);
 				if (triggerEle && triggerEle.length > 0) {
 					triggerEle.unbind(".wijmenu");
-					//$(document).unbind("click.wijmenudoc");
+					$(document).unbind("click.wijmenudoc");
 				}
 			}
 		},
 
+		//		_setAnimationOptions: function () {
+		//			var o = this.options, showDuration = o.showDuration,
+		//			hideDuration = o.hideAnimated, showAnimated = o.showAnimated,
+		//			hideAnimated = o.hideAnimated, animated = o.animated,
+		//			duration = o.duration;
+		//			if (showAnimated === null) {
+		//				o.showAnimated = animated;
+		//			}
+		//			if (showDuration === null) {
+		//				o.showDuration = duration;
+		//			}
+		//			if (hideAnimated === null) {
+		//				o.hideAnimated = animated;
+		//			}
+		//			if (hideDuration === null) {
+		//				o.hideDuration = duration;
+		//			}
+		//		},
 		_move: function (direction, edge, event) {
-			var active = this.activeItem, next, parent;
-
+			var active = this.element.data("activeItem"), next, parent;
 			if (!active) {
-				this.activate(event, this.rootMenu.children(edge));
+				this.activate(event, this.element.children(edge));
 				return;
 			}
-			next = $(active)[direction + "All"]("." + menuitemCss).eq(0);
+			next = $(active)[direction + "All"](".wijmo-wijmenu-item").eq(0);
+			//= this.active[direction + "All"](".ui-menu-item").eq(0);
 			parent = active.parent();
 			if (next.length) {
 				this.activate(event, next);
@@ -3122,61 +3023,45 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				this.activate(event, parent.children(edge));
 			}
 		},
-
 		refresh: function () {
 			/// <summary>Renders all non-menu-items as menuitems,called once by _create.
-			/// Call this method whenever adding or replaceing items in the menu via DOM
-			/// operations,for example,via menu.append
-			/// ("<li><a href='#'>new item</a></li>").wijmenu("refresh")</summary>
-			var self = this,
-				ele = self.element,
-				menuCss = "wijmo-wijmenu",
-				o = self.options,
-				scrollcontainer, menucontainer, domObject, triggerEle, breadcrumb,
-				seperatorCss = menuCss + "-separator ui-state-default ui-corner-all",
-				headerCss = "ui-widget-header ui-corner-all",
-				menuItemCss = "ui-widget " + menuitemCss +
-							" ui-state-default ui-corner-all",
-				menuLinkCss = menuCss + "-link ui-corner-all";
-
-			if (self.domObject) {
+			///Call this method whenever adding or replaceing items in the menu via DOM
+			///operations,for example,via menu.append
+			///("<li><a href='#'>new item</a></li>").wijmenu("refresh")</summary>
+			var self = this, o = self.options, scrollcontainer, menucontainer,
+			domObject, items, triggerEle;
+			if (self.element.data("domObject")) {
 				self._destroy();
 			}
-			if (ele.is("ul")) {
-				self.rootMenu = ele;
-				scrollcontainer = ele.wrap("<div></div>").parent();
-				menucontainer = scrollcontainer.wrap("<div></div>").parent();
-			}
-			else if (ele.is("div")) {
-				self.rootMenu = $("ul:first", ele);
-				scrollcontainer = ele;
-				menucontainer = ele.wrap("<div></div>").parent();
-			}
-
-
+			self.element.wrap("<div><div></div></div>");
+			scrollcontainer = self.element.parent();
+			menucontainer = scrollcontainer.parent();
 			scrollcontainer.addClass("scrollcontainer checkablesupport");
-			menucontainer.addClass("ui-widget ui-widget-content " + menuCss +
-				" ui-corner-all ui-helper-clearfix")
+			menucontainer
+			.addClass("ui-widget ui-widget-content wijmo-wijmenu ui-corner-all")
+			.addClass("ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
+			//var containerClass = "wijmo-wijmenu-vertical";
 			if (o.orientation === "horizontal" && o.mode === "flyout") {
-				menucontainer.addClass(menuCss + "-" + o.orientation);
+				menucontainer.addClass("wijmo-wijmenu-horizontal");
 			}
-			domObject = { scrollcontainer: scrollcontainer,
+			domObject = {scrollcontainer: scrollcontainer,
 				menucontainer: menucontainer
 			};
-			self.domObject = domObject;
-			self.rootMenu.data("topmenu", true);
-			if (!self.rootMenu.hasClass(menuCss + "-list ui-helper-reset")) {
-				self.rootMenu.addClass(menuCss + "-list ui-helper-reset");
-			}
-			$("li", self.rootMenu).each(function (i, n) {
-				//var isFirstLevel = $(n).parent().parent().parent().is(".wijmo-wijmenu");
-				var hasSubmenu = $(">ul:first", n).length > 0,
-					li = $(n),
-					icon, link = $(">:first", li);
+			self.element.data("domObject", domObject);
+			self.element.data("topmenu", true);
 
+			items = $("li", self.element);
+			if (!self.element.hasClass("wijmo-wijmenu-list ui-helper-reset")) {
+				self.element.addClass("wijmo-wijmenu-list ui-helper-reset");
+			}
+
+			items.each(function (i, n) {
+				//var isFirstLevel = $(n).parent().parent().parent().is(".wijmo-wijmenu");
+				var hasSubmenu = $(">ul", n).length > 0, li = $(n),
+				icon, link = $(">:first", li);
 				if (link.length === 0) {
-					li.addClass(seperatorCss);
+					li.addClass("wijmo-wijmenu-separator ui-state-default ui-corner-all");
 				}
 				else {
 					li.attr("role", "menuitem");
@@ -3186,11 +3071,12 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						}).bind("mouseleave.wijmenuitem", function () {
 							$(this).removeClass("ui-state-hover");
 						});
-						if (!li.hasClass(menuitemCss)) {
-							li.addClass(menuItemCss);
-							link.addClass(menuLinkCss);
+						if (!li.hasClass("wijmo-wijmenu-item ")) {
+							li.addClass("ui-widget wijmo-wijmenu-item " +
+							"ui-state-default ui-corner-all");
+							link.addClass("wijmo-wijmenu-link ui-corner-all");
 							link.wrapInner("<span>").children("span")
-							.addClass(menuCss + "-text");
+							.addClass("wijmo-wijmenu-text");
 							if (hasSubmenu) {
 								icon = $("<span>")
 								.addClass("ui-icon ui-icon-triangle-1-e");
@@ -3199,11 +3085,12 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						}
 					}
 					else if (link.is("h1,h2,h3,h4,h5")) {
-						li.addClass(headerCss);
+						li.addClass("ui-widget-header ui-corner-all");
 					}
 					else {
-						li.addClass(menuItemCss);
-						link.addClass(menuLinkCss);
+						li.addClass("ui-widget wijmo-wijmenu-item" +
+						"ui-state-default ui-corner-all");
+						link.addClass("wijmo-wijmenu-link ui-corner-all");
 						if (hasSubmenu) {
 							icon = $("<span>").addClass("ui-icon ui-icon-triangle-1-e");
 							link.append(icon);
@@ -3211,48 +3098,35 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 					}
 				}
 			});
-			ele.show();
-			$("ul", self.rootMenu).each(function () {
-				$(this).addClass(menuCss + "-list ui-widget-content ui-corner-all " +
-					"ui-helper-clearfix " + menuCss + "-child ui-helper-reset");
+			this.element.show();
+			$("ul", self.element).each(function () {
+				$(this).addClass("wijmo-wijmenu-list ui-widget-content ui-corner-all")
+				.addClass("ui-helper-clearfix wijmo-wijmenu-child ui-helper-reset");
 				$(this).hide();
 			});
-			this[o.mode === "flyout" ? "_flyout" : "_drilldown"]();
+			if (this.options.mode === "flyout") {
+				this._flyout();
+			}
+			//			else if (this.options.mode === "popup") {
+			//				this._popup();
+			//			}
+			else {
+				this._drilldown();
+			}
+
 			if (o.trigger !== "") {
-				triggerEle = self._getTriggerEle();
+				triggerEle = $(o.trigger).filter(function () {
+					return $(this).closest(".wijmo-wijmenu").length === 0;
+				});
 				if (triggerEle.length > 0) {
 					menucontainer.hide();
 					self._initTrigger(triggerEle);
 				}
 			}
-			$(document).bind("click.wijmenudoc", function (e) {
-				///fixed when click the breadcrumb choose item link to show
-				/// the root menu in sliding menu.
-				if ($(e.target).parent().is(".wijmo-wijmenu-all-lists")) {
-					return;
-				}
-				var obj = $(e.target).closest(".wijmo-wijmenu");
-				if (obj.length === 0) {
-					if (o.mode === "sliding") {
-						breadcrumb = $(".wijmo-wijmenu-breadcrumb", menucontainer);
-						self._resetDrilldownMenu(breadcrumb);
-					}
-					else if (o.mode === "flyout" && o.triggerEvent !== "mouseenter") {
-						self._hideAllMenus();
-						return;
-					}
-
-					if (triggerEle && triggerEle.length > 0) {
-						self._hideSubmenu(menucontainer);
-					}
-				}
-			});
 		},
 
 		_showFlyoutSubmenu: function (e, li, subList) {
-			var self = this,
-				curList = self.currentMenuList, i;
-
+			var self = this, curList = self.element.data("currentMenuList"), i;
 			if (curList !== undefined) {
 				for (i = curList.length; i > 0; i--) {
 					if (curList[i - 1].get(0) === li.parent().get(0)) {
@@ -3260,6 +3134,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 					}
 					else {
 						self._hideSubmenu(curList[i - 1]);
+
 					}
 				}
 			}
@@ -3267,12 +3142,13 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		},
 
 		_getItemTriggerEvent: function (item) {
-			var self = this,
-				o = self.options,
-				triggerEvent = "default", triggerEle;
-
+			var self = this, o = self.options, triggerEvent = "default", triggerEle;
 			if (o.trigger !== "") {
-				if (item.is(o.trigger) || self.element.is(o.trigger)) {
+
+				if (item.is(o.trigger)) {
+					triggerEvent = o.triggerEvent;
+				}
+				else if (self.element.is(o.trigger)) {
 					triggerEvent = o.triggerEvent;
 				}
 				else {
@@ -3283,7 +3159,9 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						}
 					});
 					if (triggerEvent === "default") {
-						triggerEle = self._getTriggerEle();
+						triggerEle = $(o.trigger).filter(function () {
+							return $(this).closest(".wijmo-wijmenu").length === 0;
+						});
 						if (triggerEle.length > 0) {
 							triggerEvent = o.triggerEvent;
 						}
@@ -3295,88 +3173,83 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		},
 
 		_flyout: function () {
-			var self = this,
-				container = self.domObject.menucontainer,
-				o = self.options,
-				linkCss = "wijmo-wijmenu-link",
-				eastIconCss = "ui-icon-triangle-1-e",
-				southIconCss = "ui-icon-triangle-1-s",
-				parentItemCss = "wijmo-wijmenu-parent";
-
+			var container = this.element.data("domObject").menucontainer, self = this;
 			container.attr("role", "menu");
-			if (o.orientation === "horizontal") {
+			if (self.options.orientation === "horizontal") {
 				container.attr("role", "menubar");
-				self.rootMenu.children("li:has(ul)").each(function () {
-					$(this).children("." + linkCss).find("." + eastIconCss)
-					.removeClass(eastIconCss).addClass(southIconCss);
+				self.element.children("li:has(ul)").each(function () {
+					$(this).children(".wijmo-wijmenu-link").find(".ui-icon-triangle-1-e")
+					.removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s");
 				});
 			}
 			container.find('li:has(ul)').each(function () {
 				var allSubLists = $(this).find('ul'),
-					nameSpace = ".wijmenu",
-					li = $(this).attr("aria-haspopup", true), showTimer, hideTimer,
-					triggerEvent = self._getItemTriggerEvent(li), link, subList;
-
+				li = $(this).attr("aria-haspopup", true), showTimer, hideTimer,
+				triggerEvent = self._getItemTriggerEvent(li), link, subList;
 				li.children("ul").attr("role", "menu")
 				.attr("aria-activedescendant", "ui-active-menuitem");
 				if (triggerEvent !== "default" &&
-				o.triggerEvent !== "mouseenter") {
-					li.removeClass(parentItemCss)
-					.addClass(parentItemCss);
-					link = $(this).find("." + linkCss + ":eq(0)");
+				self.options.triggerEvent !== "mouseenter") {
+					li.removeClass("wijmo-wijmenu-parent")
+					.addClass("wijmo-wijmenu-parent");
+					link = $(this).find('.wijmo-wijmenu-link:eq(0)');
 					subList = link.next();
 
-					switch (o.triggerEvent) {
+					switch (self.options.triggerEvent) {
 					case "click":
-						link.bind("click" + nameSpace, function (e) {
+						link.bind("click.wijmenu", function (e) {
 							self._showFlyoutSubmenu(e, li, subList);
 						});
 						break;
 					case "dblclick":
-						link.bind("dblclick" + nameSpace, function (e) {
+						link.bind("dblclick.wijmenu", function (e) {
 							self._showFlyoutSubmenu(e, li, subList);
 						});
 						break;
 					case "rtclick":
-						link.bind("contextmenu" + nameSpace, function (e) {
+						link.bind("contextmenu.wijmenu", function (e) {
 							self._showFlyoutSubmenu(e, li, subList);
 							e.preventDefault();
 						});
 						break;
 					}
+					$(document).bind("click.wijmenu", function (e) {
+						if (container.is(":animated")) {
+							return;
+						}
+						var obj = $(e.target).closest(".wijmo-wijmenu");
+						if (obj.length === 0) {
+							allSubLists.each(function () {
+								self._hideSubmenu($(this));
+							});
+						}
+					});
 					subList.data("notClose", true);
 				}
 				else {
-					li.removeClass(parentItemCss)
-					.addClass(parentItemCss);
-					$(this).find("." + linkCss + ":eq(0)").bind("mouseenter.wijmenu",
+					li.removeClass("wijmo-wijmenu-parent")
+					.addClass("wijmo-wijmenu-parent");
+					$(this).find('.wijmo-wijmenu-link:eq(0)').bind("mouseenter.wijmenu",
 					function (e) {
 						clearTimeout(hideTimer);
-						var subList = $(this).next(),
-							link = $(this);
-
+						var subList = $(this).next(), link = $(this);
 						showTimer = setTimeout(function () {
 							self._displaySubmenu(e, link, subList);
-						}, 400);
-					}).bind("mouseleave" + nameSpace,
+						}, 300);
+					}).bind("mouseleave.wijmenu",
 					function () {
 						clearTimeout(showTimer);
 						var subList = $(this).next();
-						//In slide effects, before animation,
-						//it wraped a div to the ul element.
-						if (!subList.is("ul")) {
-							subList = subList.children("ul:first");
-						}
 						hideTimer = setTimeout(function () {
 							self._hideSubmenu(subList);
 						}, 400);
 					});
 
-					$(this).find("ul ." + linkCss + ",ul >.ui-widget-header,ul " +
-						'>.wijmo-wijmenu-separator').bind("mouseenter" + nameSpace,
+					$(this).find('ul .wijmo-wijmenu-link,ul >.ui-widget-header,ul ' +
+					'>.wijmo-wijmenu-separator').bind("mouseenter.wijmenu",
 					function () {
 						clearTimeout(hideTimer);
-					}).bind("mouseleave" + nameSpace,
+					}).bind("mouseleave.wijmenu",
 					function () {
 						hideTimer = setTimeout(function () {
 							for (var i = allSubLists.length - 1; i >= 0; i--) {
@@ -3387,27 +3260,29 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				}
 			});
 
+
 			///when click the menu item hide the submenus.
-			container.find("." + linkCss).bind("click.wijmenu", function (e) {
+			container.find(".wijmo-wijmenu-link").bind("click.wijmenu", function (e) {
 				if ($(this).is("a")) {
-					if ($(this).parent().find("ul").length === 0) {
+					if (!$(this).next().is("ul")) {
 						self._hideAllMenus();
 					}
-					else if (!(o.trigger !== "" &&
+					else if (!(self.options.trigger !== "" &&
 					$(this).parent().data("triggerEvent") !== "default" &&
-					 o.triggerEvent !== "mouseenter")) {
+					 self.options.triggerEvent !== "mouseenter")) {
 						self._hideAllMenus();
 					}
 					else {
-						var curList = self.currentMenuList, item, j;
+						var curList = self.element.data("currentMenuList"), item, j;
 						if (curList !== undefined) {
 							item = $(this).parent();
+							//var link = $(this);
 							if (item.has("ul").length === 0) {
 								for (j = curList.length; j > 0; j--) {
 									if (curList[j - 1].get(0) === item.parent().get(0)) {
 										break;
 									}
-									else {
+									if (curList[j - 1].get(0) !== item.parent().get(0)) {
 										self._hideSubmenu(curList[j - 1]);
 									}
 								}
@@ -3426,25 +3301,24 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		},
 
 		_hideAllMenus: function () {
-			var self = this, container, outerTrigger, i, ul,
-				ele = self.rootMenu;
-
-			ul = ele.find("ul");
+			var self = this, container, outerTrigger, i, ul;
+			ul = self.element.find("ul");
 			for (i = ul.length - 1; i >= 0; i--) {
 				self._hideSubmenu($(ul[i]));
 			}
 			if (self.options.trigger !== "") {
-				container = self.domObject.menucontainer;
+				container = self.element.data("domObject").menucontainer;
 				if (container.is(":animated")) {
 					return;
 				}
-				// if the trigger is outer of the menu,
-				//when hide all menus hide the root menu.
-				outerTrigger = self._getTriggerEle();
+				outerTrigger = $(self.options.trigger).filter(function () {
+					return $(this).closest(".wijmo-wijmenu").length === 0;
+				});
 				if (outerTrigger.length === 0) {
 					return;
 				}
-				self._hideSubmenu(self.domObject.menucontainer);
+
+				self._hideSubmenu(self.element.data("domObject").menucontainer);
 			}
 		},
 
@@ -3453,21 +3327,20 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		},
 
 		_killFlyout: function () {
-			var container = this.domObject.menucontainer.attr("role", "");
-
+			var container = this.element.data("domObject").menucontainer.attr("role", "");
 			container.find("li").each(function () {
 				$(this).removeClass("wijmo-wijmenu-parent").unbind(".wijmenu")
 				.children(":first").unbind(".wijmenu").attr("aria-haspopup", "");
 			});
+			$(document).unbind("click.wijmenu");
 		},
 
 		_killmenuItems: function () {
-			var ele = this.rootMenu;
-			ele.removeClass("wijmo-wijmenu-list ui-helper-reset " +
-				"wijmo-wijmenu-content ui-helper-clearfix");
-			ele.find("li").each(function () {
+			this.element.removeClass("wijmo-wijmenu-list ui-helper-reset " +
+			"wij-menu-content ui-helper-clearfix");
+			this.element.find("li").each(function () {
 				var item = $(this), link;
-				item.removeClass("ui-widget " + menuitemCss + " ui-state-default " +
+				item.removeClass("ui-widget wijmo-wijmenu-item ui-state-default " +
 				"ui-corner-all wijmo-wijmenu-parent ui-widget-header " +
 				"wijmo-wijmenu-separator");
 				link = item.children(".wijmo-wijmenu-link");
@@ -3478,161 +3351,160 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				item.children("ul").removeClass("wijmo-wijmenu-list ui-widget-content" +
 				" ui-corner-all ui-helper-clearfix wijmo-wijmenu-child ui-helper-reset")
 				.attr("role", "").attr("aria-activedescendant", "")
-				.show().css({ left: "", top: "", position: "" }).attr("hidden", "");
+				.show().css({left: "", top: "", position: ""}).attr("hidden", "");
 			});
-			this.domObject.menucontainer.removeClass("");
-			$(document).unbind("click.wijmenudoc");
+			//this.element.data("domObject").scrollcontainer.wijsuperpanel("destroy");
+			this.element.data("domObject").menucontainer.removeClass("");
 		},
 
 		_sroll: function () {
-			var scroll = this.domObject.scrollcontainer,
-				options = this.options.superPanelOptions || {};
-
+			var scroll = this.element.data("domObject").scrollcontainer,
+			options = this.options.superPanelOptions || {};
 			scroll.height(this.options.maxHeight);
 			scroll.wijsuperpanel(options);
 		},
 
 		_hasScroll: function () {
-			var scroll = this.domObject.scrollcontainer;
+			var scroll = this.element.data("domObject").scrollcontainer;
 			return scroll.data("wijsuperpanel").vNeedScrollBar;
 		},
 
 
 		_resetDrillChildMenu: function (el) {
-			el.removeClass("wijmo-wijmenu-scroll wijmo-wijmenu-current").height("auto");
+			el.removeClass('wij-menu-scroll')
+			.removeClass('wij-menu-current').height('auto');
 		},
 
 		_checkDrillMenuHeight: function (el, mycontainer, scrollcontainer) {
-			var self = this,
-				fixPadding = 5;
-
+			//var o = this.options;
+			var self = this, fixPadding;
+			//			if (el.height() > o.maxHeight) { //el.addClass('fg-menu-scroll')
+			//			};
+			//el.css({ height: o.maxHeight });
 			mycontainer.height(el.height());
-			scrollcontainer.wijsuperpanel("option", "hScroller", { scrollValue: 0 });
-			scrollcontainer.wijsuperpanel("option", "vScroller", { scrollValue: 0 });
+			scrollcontainer.wijsuperpanel("option", "hScroller", {scrollValue: 0});
+			scrollcontainer.wijsuperpanel("option", "vScroller", {scrollValue: 0});
 			scrollcontainer.wijsuperpanel("paintPanel");
 			if (self._hasScroll()) {
+				fixPadding = 5;
 				if (el.prev().length > 0) {
 					fixPadding = el.prev().css("padding-left").replace(/px/g, "");
 				}
 				el.width(scrollcontainer.find(".wijmo-wijsuperpanel-contentwrapper" +
-					":first").width() - fixPadding);
+				":first").width() - fixPadding);
 			}
 		},
 
 		_resetDrilldownMenu: function (breadcrumb) {
-			var self = this,
-				o = self.options,
-				ele = self.rootMenu,
-				container = self.domObject.menucontainer,
-				crumbDefaultHeader = $('<li class="wijmo-wijmenu-breadcrumb-text">' +
-					o.crumbDefaultText + '</li>'),
-				mycontainer = ele.wrap("<div>").parent();
-
-			$('.wijmo-wijmenu-current', container).removeClass('wijmo-wijmenu-current');
-			ele.animate({ left: 0 }, o.showDuration, function () {
+			var self = this, o = self.options,
+			container = this.element.data("domObject").menucontainer,
+			topList = container.find('.wijmo-wijmenu-list:first'),
+			crumbDefaultHeader = $('<li class="wij-menu-breadcrumb-text">' +
+			o.crumbDefaultText + '</li>'),
+			mycontainer = this.element.wrap("<div>").parent(),
+			scrollcontainer = this.element.data("domObject").scrollcontainer;
+			$('.wij-menu-current', container).removeClass('wij-menu-current');
+			topList.animate({left: 0}, o.showDuration, function () {
 				$(this).find('ul').each(function () {
 					$(this).hide();
 					self._resetDrillChildMenu($(this));
 				});
-				ele.addClass('wijmo-wijmenu-current');
+				topList.addClass('wij-menu-current');
 			});
-			$('.wijmo-wijmenu-all-lists', container).find('span').remove();
+			$('.wij-menu-all-lists', container).find('span').remove();
 			breadcrumb.empty().append(crumbDefaultHeader);
-			$('.wijmo-wijmenu-footer', container).empty().hide();
-			self._checkDrillMenuHeight(ele, mycontainer, self.domObject.scrollcontainer);
+			$('.wij-menu-footer', container).empty().hide();
+			self._checkDrillMenuHeight(topList, mycontainer, scrollcontainer);
 		},
 
 		_drilldown: function () {
 			var self = this,
-				ele = self.rootMenu,
-				mycontainer = ele.wrap("<div>").parent().css("position", "relative"),
-				container = self.domObject.menucontainer.attr("role", "menu"),
-				scrollcontainer = self.domObject.scrollcontainer,
-				o = self.options, fixPadding,
-				breadcrumb = $('<ul class="wijmo-wijmenu-breadcrumb ui-state-default' +
-					' ui-corner-all ui-helper-clearfix"></ul>'),
-				crumbDefaultHeader = $('<li class="wijmo-wijmenu-breadcrumb-text">' +
-				o.crumbDefaultText + '</li>'),
-				firstCrumbText = (o.backLink) ? o.backLinkText : o.topLinkText,
-				firstCrumbClass = (o.backLink) ? 'wijmo-wijmenu-prev-list' :
-					'wijmo-wijmenu-all-lists',
-				firstCrumbLinkClass = (o.backLink) ?
-					'ui-state-default ui-corner-all' : '',
-				firstCrumbIcon = (o.backLink) ?
-					'<span class="ui-icon ui-icon-triangle-1-w"></span>' : '',
-				firstCrumb = $('<li class="' + firstCrumbClass +
-					'"><a href="#" class="' + firstCrumbLinkClass + '">' +
-					firstCrumbIcon + firstCrumbText + '</a></li>');
-
-			container.addClass('wijmo-wijmenu-ipod wijmo-wijmenu-container');
+			mycontainer = self.element.wrap("<div>").parent().css("position", "relative"),
+			container = self.element.data("domObject").menucontainer.attr("role", "menu"),
+			scrollcontainer = self.element.data("domObject").scrollcontainer,
+			o = self.options, fixPadding,
+			topList = container.find('.wijmo-wijmenu-list:first'),
+			breadcrumb = $('<ul class="wij-menu-breadcrumb ui-widget-default' +
+			' ui-corner-all ui-helper-clearfix"></ul>'),
+			crumbDefaultHeader = $('<li class="wij-menu-breadcrumb-text">' +
+			o.crumbDefaultText + '</li>'),
+			firstCrumbText = (o.backLink) ? o.backLinkText : o.topLinkText,
+			firstCrumbClass = (o.backLink) ? 'wij-menu-prev-list' : 'wij-menu-all-lists',
+			firstCrumbLinkClass = (o.backLink) ? 'ui-state-default ui-corner-all' : '',
+			firstCrumbIcon = (o.backLink) ?
+			'<span class="ui-icon ui-icon-triangle-1-w"></span>' : '',
+			firstCrumb = $('<li class="' + firstCrumbClass + '"><a href="#" class="' +
+			firstCrumbLinkClass + '">' + firstCrumbIcon + firstCrumbText + '</a></li>');
+			container.addClass('wij-menu-ipod wij-menu-container');
 			if (o.backLink) {
-				breadcrumb.addClass('wijmo-wijmenu-footer').appendTo(container).hide();
+				breadcrumb.addClass('wij-menu-footer').appendTo(container).hide();
 			}
 			else {
-				breadcrumb.addClass('wijmo-wijmenu-header').prependTo(container);
+				breadcrumb.addClass('wij-menu-header').prependTo(container);
 			}
 			if (!o.backLink) {
 				breadcrumb.append(crumbDefaultHeader);
 			}
-			ele.addClass('wijmo-wijmenu-content wijmo-wijmenu-current ui-widget-content' +
-				' ui-helper-clearfix').css({ width: container.width() })
+			topList.addClass('wij-menu-content wij-menu-current ui-widget-content' +
+			' ui-helper-clearfix').css({width: container.width()})
 			.find('ul').css({
 				width: container.width(),
 				left: container.width()
 			}).attr("role", "menu").attr("aria-activedescendant", "ui-active-menuitem")
 			.addClass('ui-widget-content');
 			//.hide();
-			mycontainer.height(self.rootMenu.height());
+			mycontainer.height(self.element.height());
 			self._sroll();
 			if (self._hasScroll()) {
 				fixPadding = 5;
-				if (ele.children(":first").children(":first").length > 0) {
-					fixPadding = ele.children(":first").children(":first")
+				if (topList.children(":first").children(":first").length > 0) {
+					fixPadding = topList.children(":first").children(":first")
 					.css("padding-left").replace(/px/g, "");
 				}
-				ele.width(scrollcontainer
+				topList.width(scrollcontainer
 				.find(".wijmo-wijsuperpanel-contentwrapper:first").width() - fixPadding);
 			}
 
-			self.element.data("firstLeftValue", parseFloat(ele.css('left')));
-			$('li>.wijmo-wijmenu-link', ele).each(function () {
+			self.element.data("firstLeftValue", parseFloat(topList.css('left')));
+			$('li>.wijmo-wijmenu-link', topList).each(function () {
 				// if the link opens a child menu:
 				if ($(this).next().is('ul')) {
 					$(this).click(function (e) { // ----- show the next menu
 						var nextList = $(this).next(),
-							parentUl = $(this).parents('ul:eq(0)'),
-							parentLeft = (parentUl.data("topmenu")) ?
-							0 : parseFloat(ele.css('left')),
-							crumbText, newCrumb,
-							nextLeftVal = Math.round(parentLeft -
-							parseFloat(container.width())),
-							footer = $('.wijmo-wijmenu-footer', container),
-							setPrevMenu = function (backlink) {
-								var b = backlink,
-								c = $('.wijmo-wijmenu-current', container), prevList;
-								if (c.get(0) === self.rootMenu.get(0)) {
-									return;
-								}
-								prevList = c.parents('ul:eq(0)');
-								c.hide().attr('aria-expanded', 'false');
-								self._resetDrillChildMenu(c);
-								self._checkDrillMenuHeight(prevList, mycontainer,
-								 scrollcontainer);
-								prevList.addClass('wijmo-wijmenu-current')
-								.attr('aria-expanded', 'true');
-								if (prevList.hasClass('wijmo-wijmenu-content')) {
-									b.remove();
-									footer.hide();
-								}
-							};
-
+						parentUl = $(this).parents('ul:eq(0)'),
+						parentLeft = (parentUl.data("topmenu")) ?
+						0 : parseFloat(topList.css('left')),
+						setPrevMenu, crumbText, newCrumb,
+						nextLeftVal = Math.round(parentLeft -
+						parseFloat(container.width())),
+						footer = $('.wij-menu-footer', container);
 						// show next menu
 						self._resetDrillChildMenu(parentUl);
 						self._checkDrillMenuHeight(nextList, mycontainer,
 						scrollcontainer);
-						self._slidingAnimation(ele, nextLeftVal, null);
-						nextList.show().addClass('wijmo-wijmenu-current')
+						topList.stop(true, true)
+						.animate({left: nextLeftVal}, o.showDuration);
+						nextList.show().addClass('wij-menu-current')
 						.attr('aria-expanded', 'true');
+
+						setPrevMenu = function (backlink) {
+							var b = backlink,
+							c = $('.wij-menu-current', container), prevList;
+							if (c.get(0) === self.element.get(0)) {
+								return;
+							}
+							prevList = c.parents('ul:eq(0)');
+							c.hide().attr('aria-expanded', 'false');
+							self._resetDrillChildMenu(c);
+							self._checkDrillMenuHeight(prevList, mycontainer,
+							 scrollcontainer);
+							prevList.addClass('wij-menu-current')
+							.attr('aria-expanded', 'true');
+							if (prevList.hasClass('wij-menu-content')) {
+								b.remove();
+								footer.hide();
+							}
+						};
 
 						// initialize "back" link
 						if (o.backLink) {
@@ -3643,18 +3515,19 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 									.appendTo(footer)
 									.click(function () { // ----- show the previous menu
 										var b = $(this), prevLeftVal;
-										ele.stop(true, true);
-										prevLeftVal = parseInt(ele.css('left'), 10) +
+										topList.stop(true, true);
+										prevLeftVal = parseInt(topList.css('left'), 10) +
 										parseInt(container.width(), 10);
 										///to fix click the back button too quickly.
 										///The menu display wrong.
 										if (prevLeftVal > parentLeft) {
 											return;
 										}
-										self._slidingAnimation(ele, prevLeftVal,
-										function () {
+										topList.animate({left: prevLeftVal},
+										o.hideDuration, function () {
 											setPrevMenu(b);
 										});
+										//return false;
 									});
 							}
 						}
@@ -3664,37 +3537,41 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 								breadcrumb.empty().append(firstCrumb);
 								firstCrumb.find('a').click(function () {
 									self._resetDrilldownMenu(breadcrumb);
+									//return false;
 								});
 							}
-							$('.wijmo-wijmenu-current-crumb', container)
-							.removeClass('wijmo-wijmenu-current-crumb');
+							$('.wij-menu-current-crumb', container)
+							.removeClass('wij-menu-current-crumb');
 							crumbText = $(this).find('span:eq(0)').text();
-							newCrumb = $('<li class="wijmo-wijmenu-current-crumb">' +
-							'<a href="#" class="wijmo-wijmenu-crumb">' + crumbText +
+							newCrumb = $('<li class="wij-menu-current-crumb">' +
+							'<a href="#" class="wij-menu-crumb">' + crumbText +
 							'</a></li>');
-							newCrumb.appendTo(breadcrumb).find('a').click(function () {
-								if (!$(this).parent()
-									.is('.wijmo-wijmenu-current-crumb')) {
-									var newLeftVal = -($('.wijmo-wijmenu-current')
+							newCrumb.appendTo(breadcrumb)
+								.find('a').click(function () {
+									if (!$(this).parent().is('.wij-menu-current-crumb')) {
+										var newLeftVal = -($('.wij-menu-current')
 										.parents('ul').size() - 1) * 180;
+										topList.animate({left: newLeftVal},
+										o.showDuration, function () {
+											setPrevMenu();
+										});
 
-									self._slidingAnimation(ele, newLeftVal, function () {
-										setPrevMenu();
-									});
-									//make this the current crumb, delete all
-									//breadcrumbs, and navigate to the relevant menu
-									$(this).parent()
-									.addClass('wijmo-wijmenu-current-crumb')
-									.find('span').remove();
-									$(this).parent().nextAll().remove();
-								}
-							});
+										//make this the current crumb, delete all
+										//breadcrumbs, and navigate to the relevant menu
+										$(this).parent()
+										.addClass('wij-menu-current-crumb')
+										.find('span').remove();
+										$(this).parent().nextAll().remove();
+									}
+									//return false;
+								});
 							newCrumb.prev()
 							.append(' <span class="ui-icon ui-icon-carat-1-e"></span>');
 						}
 						if ($(this).attr("href") === "#") {
 							e.preventDefault();
 						}
+						//return false;
 					});
 				}
 				// if the link is a leaf node (doesn't open a child menu)
@@ -3702,9 +3579,10 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 					$(this).click(function (e) {
 						self.activate(e, $(this).parent());
 						self.select(e);
-						if (o.trigger) {
-							var triggers = self._getTriggerEle();
-
+						if (self.options.trigger) {
+							var triggers = $(self.options.trigger).filter(function () {
+								return $(this).closest(".wijmo-wijmenu").length === 0;
+							});
 							if (triggers.length) {
 								self._hideSubmenu(container);
 								self._resetDrilldownMenu(breadcrumb);
@@ -3718,39 +3596,29 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			});
 		},
 
-		_slidingAnimation: function (ele, left, callback) {
-			var o = this.options.slidingAnimation;
-			if (o && !o.disabled) {
-				ele.stop(true, true)
-				.animate({ left: left }, o.duration, o.easing, callback);
-			} else {
-				ele.css("left", left);
-				callback.call(this);
-			}
-		},
-
 		_killDrilldown: function () {
-			var ele = this.rootMenu,
-				domObject = this.domObject,
-				style = { width: "", height: "" }, superpanel;
-
-			ele.css(style).removeClass("ui-widget-content");
+			var domObject = this.element.data("domObject"),
+			style = {width: "", height: ""}, superpanel;
+			this.element.css(style).removeClass("ui-widget-content");
 			domObject.scrollcontainer.css(style);
 			superpanel = $(".wijmo-wijsuperpanel-statecontainer",
-			domObject.scrollcontainer);
-			domObject.scrollcontainer.append(ele);
+			 domObject.scrollcontainer);
+			domObject.scrollcontainer.append(this.element);
 			superpanel.remove();
-			domObject.menucontainer
-			.removeClass("wijmo-wijmenu-ipod wijmo-wijmenu-container");
-			$('.wijmo-wijmenu-current', domObject.menucontainer)
-			.removeClass('wijmo-wijmenu-current');
-			$(".wijmo-wijmenu-breadcrumb", domObject.menucontainer).remove();
-			ele.find("li").each(function () {
+			domObject.menucontainer.removeClass("wij-menu-ipod wij-menu-container");
+			$('.wij-menu-current', domObject.menucontainer)
+			.removeClass('wij-menu-current');
+			$(".wij-menu-breadcrumb", domObject.menucontainer).remove();
+			//			if (!this.element.parent().is(".scrollcontainer")) {
+			//				//this.element.unwrap();
+			//			}
+
+			this.element.find("li").each(function () {
 				var obj = $(this).children(":first");
 				obj.unbind("click");
 			});
-			$("ul", ele).css({ left: "", width: "" });
-			ele.css("left", "");
+			$("ul", this.element).css({left: "", width: ""});
+			this.element.css("left", "");
 		},
 
 		///popup menu
@@ -3777,7 +3645,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		//		},
 
 		_getItemByValue: function (val) {
-			var items = this.rootMenu.find("a.wijmo-wijmenu-link").filter(function () {
+			var items = this.element.find("a.wijmo-wijmenu-link").filter(function () {
 				return $(this).text() === val;
 			});
 			if (items.length > 0) {
@@ -3819,11 +3687,10 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		},
 		*/
 		_displaySubmenu: function (e, item, sublist) {
-			var self = this,
-				o = self.options,
-				animationOptions, direction, showAnimation,
-				animations = $.wijmo.wijmenu.animations;
-
+			var o = this.options,
+			animated = o.animated,
+			duration = o.duration,
+			option, animationOptions, list;
 			//now do not support the popup menu and equal-height menu.
 			/*
 			var parentUl = null;
@@ -3855,105 +3722,121 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				item.addClass("ui-state-active");
 			}
 			sublist.show();
-			self._setPosition(item, sublist);
-			self.nowIndex++;
-			self._setZindex(sublist, self.nowIndex);
+			this._setPosition(item, sublist);
+			this.nowIndex++;
+			this._setZindex(sublist, this.nowIndex);
 			sublist.hide();
-			self._trigger("showing", e, sublist);
-
-			if ($.fn.wijshow) {
+			this._trigger("showing", e, sublist);
+			if (o.showAnimated !== null) {
+				animated = o.showAnimated;
+			}
+			if (o.showDuration !== null) {
+				duration = o.showDuration;
+			}
+			if (animated && $.wijmo.wijmenu.animations[animated]) {
+				option = $.extend({
+					animated: 'fade',
+					duration: 400,
+					complete: function () {
+						if ($.browser.msie && jQuery.browser.version === "9.0") {
+							sublist.wrap("<div></div>");
+							sublist.unwrap();
+						}
+						if ($.browser.msie && jQuery.browser.version === "6.0") {
+							sublist.css("overflow", "");
+						}
+					}
+				}, {duration: duration, animated: animated});
 				animationOptions = {
 					context: sublist,
 					show: true
 				};
-
-				direction = "left";
-				if (o.orientation === "horizontal") {
-					if (sublist.parent().closest("ul").get(0) === this.rootMenu.get(0)) {
-						direction = "up";
-					}
-				}
-				showAnimation = $.extend({}, { option: { direction: direction} },
-					o.animation, o.showAnimation);
-				sublist.wijshow(showAnimation, animations,
-					animationOptions, null, function () {
-						var browser = $.browser;
-						if (browser.msie && browser.version === "9.0") {
-							sublist.wrap("<div></div>");
-							sublist.unwrap();
-						}
-						else if (browser.msie && browser.version === "6.0") {
-							sublist.css("overflow", "");
-						}
-						sublist.attr("aria-hidden", false);
-					});
+				$.wijmo.wijmenu.animations[animated](option, animationOptions);
 			}
 			else {
 				sublist.show().attr("aria-hidden", false);
 			}
-
-			self._isClickToOpen = o.triggerEvent === "click";
+			if (this.options.triggerEvent === "click") {
+				this.element.data("shown", true);
+			}
+			else {
+				this.element.data("shown", false);
+			}
 
 			if (!sublist.is(".wijmo-wijmenu")) {
-				if (self.currentMenuList === undefined) {
-					self.currentMenuList = [];
+				if (this.element.data("currentMenuList") === undefined) {
+					this.element.data("currentMenuList", []);
 				}
-				self.currentMenuList.push(sublist);
+				list = this.element.data("currentMenuList");
+				list.push(sublist);
+				this.element.data("currentMenuList", list);
 			}
+			//this.element.data("currentMenuList", sublist);
 		},
 
 		_hideCurrentSubmenu: function (aItem) {
 			var self = this;
 			aItem.find("ul").each(function () {
 				if (!$(this).data("notClose")) {
+					//if (this != item.parent().get(0)&&aItem.get(0)!=item.get(0)) {
+					//	self._hideSubmenu($(this));
+					//}
 					self._hideSubmenu($(this));
 				}
 			});
 		},
 		_hideSubmenu: function (sublist) {
-			var self = this,
-				o = self.options,
-				animations = $.wijmo.wijmenu.animations,
-				animationOptions, list, hideAnimation;
-
+			var o = this.options,
+			self = this,
+			animated = o.animated,
+			duration = o.duration,
+			option, animationOptions, list;
+			if (o.hideAnimated !== null) {
+				animated = o.hideAnimated;
+			}
+			if (o.hideDuration !== null) {
+				duration = o.hideDuration;
+			}
 			if (sublist.prev().is(".wijmo-wijmenu-link")) {
 				sublist.prev().removeClass("ui-state-active");
 			}
-
-			if ($.fn.wijhide) {
+			//var
+			if (animated) {
+				option = $.extend({
+					animated: 'fade',
+					duration: 400,
+					complete: function () {
+						//self.nowIndex--;
+						self._setZindex(sublist);
+					}
+				}, {animated: o.hideAnimated, duration: o.hideDuration});
 				animationOptions = {
 					context: sublist,
 					show: false
 				};
-				hideAnimation = $.extend({}, o.animation, o.hideAnimation);
-				sublist.wijhide(hideAnimation, animations,
-				animationOptions, null, function () {
-					self._setZindex(sublist);
-					sublist.attr("aria-hidden", true);
-				});
+				$.wijmo.wijmenu.animations[animated](option, animationOptions);
 			}
 			else {
 				sublist.hide().attr("aria-hidden", true);
+				//self.nowIndex--;
 				self._setZindex(sublist);
 			}
 			this.element.data("shown", false);
-			list = this.currentMenuList;
+			list = this.element.data("currentMenuList");
 			if (list) {
 				list = $.map(list, function (n) {
 					return n && (n.get(0) === sublist.get(0)) ? null : n;
 				});
-				this.currentMenuList = $.makeArray(list);
+				this.element.data("currentMenuList", $.makeArray(list));
 			}
+
 		},
 
 		_setZindex: function (ele, value) {
-			var element = this.rootMenu,
-				domObject = this.domObject, menucontainer;
-
-			if (!domObject) {
+			if (!this.element.data("domObject")) {
 				return;
 			}
-			menucontainer = domObject.menucontainer;
+			var menucontainer = this.element.data("domObject").menucontainer;
 			if (ele.get(0) === menucontainer.get(0)) {
 				return;
 			}
@@ -3968,16 +3851,15 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				ele.css("z-index", "");
 				ele.parent().css("z-index", "");
 				if ($.browser.msie && $.browser.version < 8 &&
-				 $("ul:visible", element).length === 0) {
+				 $("ul:visible", this.element).length === 0) {
 					menucontainer.css("z-index", "");
 				}
 			}
 		},
 
 		_setPosition: function (item, sublist) {
-			sublist.css({ left: '0', top: '0', position: 'absolute' });
-			var pOption = this._getPosition(item),
-				obj = { of: item };
+			sublist.css({left: '0', top: '0', position: 'absolute'});
+			var pOption = this._getPosition(item), obj = {of: item};
 			//now do not support the equal-height menu.
 			/*
 			if (tag) {
@@ -3993,28 +3875,27 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 		_getPosition: function (item) {
 			var o = this.options,
-				pOption = { my: 'left top',
-					at: 'right top'
-				};
-
-			//If the menu's orientation is horizontal,
-			//set the first level submenu's position to horizontal.
+			pOption = {my: 'left top',
+				at: 'right top'
+			};
 			if (o.orientation === "horizontal") {
-				if (item.closest("ul").get(0) === this.rootMenu.get(0)) {
-					pOption = { my: 'left top',
+				if (item.parent().parent().parent().parent().is(".wijmo-wijmenu")) {
+					pOption = {my: 'left top',
 						at: 'left bottom'
 					};
 				}
 			}
-			//If the item is a element outer of the menu.
+
 			if (!item.is(".wijmo-wijmenu-link")) {
-				pOption = { my: 'left top',
+				pOption = {my: 'left top',
 					at: 'left bottom'
 				};
+
 			}
 			pOption = $.extend(pOption, o.position);
 			return pOption;
 		}
+
 	});
 
 	$.extend($.wijmo.wijmenu, {
@@ -4026,15 +3907,21 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				}, options, addtions);
 				if (options.show) {
 					options.context.stop(true, true).animate({
+						//opacity: 'show',
+						//width: 'show',
 						height: 'show'
+
 					}, options).attr("aria-hidden", false);
 				}
 				else {
 					options.context.stop(true, true).animate({
+						//opacity: 'hide',
+						//width: 'hide',
 						height: 'hide'
 					}, options).attr("aria-hidden", true);
 				}
 			},
+
             fade: function (options, addtions) {
                 options = $.extend({
                     duration: 400,
@@ -4051,787 +3938,6 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
                     }, options).attr("aria-hidden", true);
                 }
             }
-		}
-	});
-} (jQuery));
-
-/*globals jQuery,document,window*/
-/*
-*
-* Wijmo Library 1.1.2
-* http://wijmo.com/
-*
-* Copyright(c) ComponentOne, LLC.  All rights reserved.
-*
-* Dual licensed under the MIT or GPL Version 2 licenses.
-* licensing@wijmo.com
-* http://www.wijmo.com/license
-*
-* * Wijmo Dropdown widget.
-*
-* Depends:
-*  jquery-1.4.2.js
-*	jquery.ui.core.js
-*	jquery.ui.widget.js
-*
-*/
-(function ($) {
-	"use strict";
-	$.widget("wijmo.wijdropdown", {
-		options: {
-			zIndex: 1000,
-			showingAnimation: { effect: "blind" },
-			hidingAnimation: { effect: "blind" }
-		},
-		hoverClass: "ui-state-hover",
-		activeClass: "ui-state-active",
-		focusClass: "ui-state-focus",
-
-		_setOption: function (key, value) {
-			$.Widget.prototype._setOption.apply(this, arguments);
-		},
-
-		_create: function () {
-			var self = this,
-				ele = self.element;
-			if (ele.attr("tagName").toLowerCase() !== "select" &&
-			ele.attr("size") < 2) {
-				return;
-			}
-
-			self._activeItem = null;
-			self._createSelect();
-			self._bindEvents();
-		},
-
-		_createSelect: function () {
-			var self = this,
-				ele = self.element,
-				width = ele.width(),
-				height = ele.height(),
-				selectWrap = ele.wrap("<div></div>").parent()
-					.addClass("ui-helper-hidden"),
-				container = selectWrap.wrap("<div></div>")
-					.parent().attr("role", "select")
-					.addClass("wijmo-wijdropdown ui-widget ui-widwijmo-wijdropdownt" +
-					"-content ui-state-default ui-corner-all ui-helper-clearfix"),
-				label = $("<label class=\"wijmo-dropdown-label ui-corner-all\"></label>")
-					.attr("id", ele.attr("id") + "_select")
-					.attr("name", ele.attr("name")),
-				rightTrigger = $("<div></div>")
-					.addClass("wijmo-dropdown-trigger ui-state-default ui-corner-right"),
-				labelWrap = $("<a href=\"#\"></a>"),
-				listContainer = $("<div>").addClass("wijmo-dropdown"),
-				list = $("<ul></ul>")
-					.addClass("wijmo-dropdown-list ui-widget-content " +
-					"ui-widget ui-corner-all ui-helper-reset").appendTo(listContainer);
-
-			$("<span></span>")
-					.addClass("ui-icon ui-icon-triangle-1-s")
-					.appendTo(rightTrigger);
-			width = Math.max(width, container.width());
-			labelWrap.append(label);
-			container.append(selectWrap)
-				.append(labelWrap)
-				.append(rightTrigger)
-				.append(listContainer)
-				.width(width);
-
-			ele.children().each(function (i, n) {
-				var item = $(n),
-					group, groupText, goupItems;
-				if (item.is("option")) {
-					list.append(self._buildItem(item));
-				}
-				else {
-					group = $("<li class=\"wijmo-dropdown-optgroup\"></li>");
-					groupText = $("<span>" + item.attr("label") + "</span>")
-					.addClass("wijmo-optgroup-header ui-priority-primary");
-					goupItems = $("<ul></ul>")
-					.addClass("ui-helper-reset wijmo-dropdown-items");
-					group.append(groupText)
-						.append(goupItems);
-					item.children("option").each(function () {
-						goupItems.append(self._buildItem($(this)));
-					});
-					list.append(goupItems);
-				}
-			});
-
-			height = listContainer.height();
-			height = list.outerHeight() < height ? list.outerHeight() : height;
-			listContainer.css({
-				height: height,
-				width: width
-			});
-
-			self.superpanel = listContainer.wijsuperpanel().data("wijsuperpanel");
-			if ($.fn.bgiframe) {
-				self.superpanel.element.bgiframe();
-			}
-			list.setOutWidth(list.parent().parent().innerWidth());
-			listContainer.hide();
-
-			self._rightTrigger = rightTrigger;
-			self._label = label;
-			self._listContainer = listContainer;
-			self._list = list;
-			self._value = ele.val();
-			self._selectWrap = selectWrap;
-			self._labelWrap = labelWrap;
-		},
-
-		_handelEvents: function (ele) {
-			var self = this,
-				namespace = "." + self.widgetName,
-				element = self.element;
-
-			ele.bind("click" + namespace, function (e) {
-				if (self._listContainer.is(":hidden")) {
-					self._show();
-				}
-				else {
-					self._hide();
-				}
-				element.click();
-				if (ele.get(0) === self._label.get(0)) {
-					e.preventDefault();
-				}
-				else {
-					self._labelWrap.focus();
-				}
-			}).bind("mouseover" + namespace, function () {
-				self._label.addClass(self.hoverClass);
-				self._rightTrigger.addClass(self.hoverClass);
-				element.trigger('mouseover');
-			}).bind("mouseout" + namespace, function () {
-				self._label.removeClass(self.hoverClass);
-				self._rightTrigger.removeClass(self.hoverClass);
-				element.trigger('mouseout');
-			}).bind("mousedown" + namespace, function () {
-				self._label.addClass(self.activeClass);
-				self._rightTrigger.addClass(self.activeClass);
-				element.trigger('mousedown');
-			}).bind("mouseup" + namespace, function () {
-				self._label.removeClass(self.activeClass);
-				self._rightTrigger.removeClass(self.activeClass);
-				element.trigger('mouseup');
-			});
-		},
-
-		_bindEvents: function () {
-			var self = this,
-				namespace = "." + self.widgetName,
-				label = self._label,
-				rightTrigger = self._rightTrigger,
-				labelWrap = self._labelWrap,
-				listContainer = self._listContainer,
-				ele = self.element,
-				offset;
-			self._handelEvents(self._label);
-			self._handelEvents(self._rightTrigger);
-
-			$(document.body).bind("click" + namespace, function (e) {
-				if (listContainer.is(":hidden")) {
-					return;
-				}
-				offset = listContainer.offset();
-				if (e.target === label.get(0) ||
-				e.target === rightTrigger.get(0) ||
-				e.target === rightTrigger.children().get(0)) {
-					return;
-				}
-				if (e.pageX < offset.left ||
-					e.pageX > offset.left + listContainer.width() ||
-					e.pageY < offset.top ||
-					e.pageY > offset.top + listContainer.height()) {
-					self._hide();
-				}
-			});
-
-			listContainer.bind("click" + namespace, function (e) {
-				var target = $(e.target);
-				if (target.closest("li.wijmo-dropdown-item", $(this)).length > 0) {
-					self._setValue();
-					listContainer.hide();
-					self.oldVal = ele.val();
-					ele.val(self._value);
-					if (self.oldVal !== self._value) {
-						ele.trigger("change");
-					}
-				}
-				ele.click();
-			});
-
-			labelWrap.bind("keydown" + namespace, function (e) {
-				var keyCode = $.ui.keyCode;
-				switch (e.which) {
-				case keyCode.UP:
-				case keyCode.LEFT:
-					self.previous();
-					self._setValue();
-					break;
-				case keyCode.DOWN:
-				case keyCode.RIGHT:
-					self.next();
-					self._setValue();
-					break;
-				case keyCode.PAGE_DOWN:
-					self.nextPage();
-					self._setValue();
-					break;
-				case keyCode.PAGE_UP:
-					self.previousPage();
-					self._setValue();
-					break;
-				case keyCode.ENTER:
-				case keyCode.NUMPAD_ENTER:
-					self._setValue();
-					self._listContainer.hide();
-					self.oldVal = ele.val();
-					ele.val(self._value);
-					if (self.oldVal !== self._value) {
-						ele.trigger("change");
-					}
-					break;
-				}
-				if (e.which !== keyCode.TAB) {
-					e.preventDefault();
-				}
-				ele.trigger('keydown');
-			}).bind("focus" + namespace, function () {
-				label.addClass(self.focusClass);
-				rightTrigger.addClass(self.focusClass);
-				ele.focus();
-			}).bind("blur" + namespace, function () {
-				label.removeClass(self.focusClass);
-				rightTrigger.removeClass(self.focusClass);
-				ele.trigger('blur');
-			}).bind("keypress" + namespace, function () {
-				ele.trigger('keypress');
-			}).bind("keyup" + namespace, function () {
-				ele.trigger('keyup');
-			});
-		},
-
-		_init: function () {
-			var self = this;
-			self._initActiveItem();
-			if (self._activeItem) {
-				self._label.text(self._activeItem.text());
-			}
-		},
-
-		_buildItem: function ($item) {
-			var val = $item.val(), text = $item.text(), self = this, $li;
-			if (text === "") {
-				text = "&nbsp;";
-			}
-			$li = $("<li class=\"wijmo-dropdown-item ui-corner-all\"><span>" +
-				text + "</span></li>")
-				.mousemove(function (event) {
-					var current = $(event.target).closest(".wijmo-dropdown-item");
-					if (current !== this.last) {
-						self._activate($(this));
-					}
-					this.last = $(event.target).closest(".wijmo-dropdown-item");
-				}).attr("role", "option");
-			$li.data("value", val);
-			return $li;
-		},
-
-		_show: function () {
-			var self = this, listContainer = self._listContainer,
-				showingAnimation = self.options.showingAnimation;
-			listContainer.css("z-index", "100000");
-			if ($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-				listContainer.parent().css("z-index", "99999");
-			}
-			if (showingAnimation) {
-				listContainer.stop().show(
-				showingAnimation.effect,
-				showingAnimation.options,
-				showingAnimation.speed,
-				function () {
-					self._initActiveItem();
-				});
-			}
-			else {
-				listContainer.show();
-			}
-		},
-
-		_hide: function () {
-			var self = this, listContainer = self._listContainer,
-				hidingAnimation = self.options.hidingAnimation;
-
-			if (listContainer.is(":hidden")) {
-				return;
-			}
-			if (hidingAnimation) {
-				listContainer.stop(false, true).hide(
-				hidingAnimation.effect,
-				hidingAnimation.options,
-				hidingAnimation.speed,
-				function () {
-					if ($.isFunction(hidingAnimation.callback)) {
-						hidingAnimation.callback.apply(self, arguments);
-					}
-					if ($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-						listContainer.parent().css("z-index", "");
-					}
-					listContainer.css("z-index", "");
-				});
-			}
-			else {
-				if ($.browser.msie && $.browser.version === "6.0") {
-					listContainer.parent().css("z-index", "");
-				}
-				listContainer.css("z-index", "");
-				listContainer.hide();
-			}
-		},
-
-		_setValue: function () {
-			var self = this, listContainer = self._listContainer, top, height;
-			if (self._activeItem) {
-				self._label.text(self._activeItem.text());
-				self._value = self._activeItem.data("value");
-
-				if (self.superpanel.vNeedScrollBar) {
-					top = self._activeItem.offset().top;
-					height = self._activeItem.outerHeight();
-					if (listContainer.offset().top > top) {
-						listContainer.wijsuperpanel("scrollTo", 0,
-						top - self._list.offset().top);
-					}
-					else if (listContainer.offset().top < top + height -
-						listContainer.innerHeight()) {
-						listContainer.wijsuperpanel("scrollTo", 0,
-						top + height - listContainer.height() - self._list.offset().top);
-					}
-				}
-			}
-		},
-
-		_initActiveItem: function () {
-			var self = this;
-			if (self._value !== undefined) {
-				self._list.find("li.wijmo-dropdown-item").each(function () {
-					if ($(this).data("value") === self._value) {
-						self._activate($(this));
-					}
-				});
-			}
-		},
-
-		_activate: function (item) {
-			var self = this;
-			self._deactivate();
-			self._activeItem = item;
-			self._activeItem.addClass(self.hoverClass).attr("aria-selected", true);
-		},
-
-		_deactivate: function () {
-			var self = this;
-			if (self._activeItem) {
-				self._activeItem.removeClass(self.hoverClass)
-				.attr("aria-selected", false);
-			}
-		},
-
-		next: function () {
-			this._move("next", "first");
-		},
-
-		previous: function () {
-			this._move("prev", "last");
-		},
-
-		nextPage: function () {
-			this._movePage("first");
-		},
-
-		previousPage: function () {
-			this._movePage("last");
-		},
-
-		_move: function (direction, edge) {
-			var self = this, $nextLi, next;
-			if (!self._activeItem) {
-				self._activate(self._list.find(".wijmo-dropdown-item:" + edge));
-				return;
-			}
-			$nextLi = self._activeItem[direction]().eq(0);
-			if ($nextLi.length) {
-				next = self._getNextItem($nextLi, direction, edge);
-			}
-			else if (self._activeItem.closest(".wijmo-dropdown-optgroup").length) {
-				next = self._getNextItem(self._activeItem
-				.closest(".wijmo-dropdown-optgroup")[direction](),
-				direction, edge);
-			}
-			if (next && next.length) {
-				self._activate(next);
-			} else {
-				self._activate(self._list.find(".wijmo-dropdown-item:" + edge));
-			}
-		},
-
-		_movePage: function (direction) {//argu: "first","last"
-			var self = this, base, height, result,
-			antiDirection = direction === "first" ? "last" : "first";
-			if (self.superpanel.vNeedScrollBar) {
-				base = self._activeItem.offset().top;
-				height = self.options.height;
-				result = self._list.find(".wijmo-dropdown-item")
-				.filter(function () {
-					var close = $(this).offset().top - base +
-					(direction === "first" ? -height : height) + $(this).height(),
-					lineheight = $(this).height();
-					return close < lineheight && close > -lineheight;
-				});
-				if (!result.length) {
-					result = self._list.find(".wijmo-dropdown-item:" +
-					antiDirection);
-				}
-				self._activate(result);
-			} else {
-				self._activate(self._list.find(".wijmo-dropdown-item:" +
-				(!self._activeItem ? direction : antiDirection)));
-			}
-		},
-
-		_getNextItem: function (next, direction, edge) {
-			if (next.length) {
-				if (next.is(".wijmo-dropdown-optgroup")) {
-					if (!!next.find(">ul>li.wijmo-dropdown-item").length) {
-						return next.find(">ul>li.wijmo-dropdown-item:" + edge).eq(0);
-					} else {
-						this._getNextItem(next[direction]().eq(0));
-					}
-				} else {
-					return next;
-				}
-			}
-		},
-
-		destroy: function () {
-			this.element.closest(".wijmo-wijdropdown")
-			.find(">div.wijmo-dropdown-trigger,>div.wijmo-dropdown," +
-			">label.wijmo-dropdown-label").remove();
-			this.element.unwrap().unwrap().removeData("maxZIndex");
-			$.Widget.prototype.destroy.apply(this);
-		}
-	});
-} (jQuery));
-
-/*globals jQuery*/
-/*
- *
- * Wijmo Library 1.1.2
- * http://wijmo.com/
- *
- * Copyright(c) ComponentOne, LLC.  All rights reserved.
- *
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * licensing@wijmo.com
- * http://www.wijmo.com/license
- *
- * * Wijmo RadioButtonDecorator widget.
- *
- * Depends:
- *   jquery-1.4.2.js
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
- *
- */
-(function ($) {
-	"use strict";
-	var radiobuttonId = 0;
-	$.widget("wijmo.wijradio", {
-		_radiobuttonPre: "wijmo-wijradio",
-		_create: function () {
-			var self = this,
-				ele = self.element,
-				radiobuttonElement, label, targetLabel, boxElement, iconElement;
-
-			if (ele.is(":radio")) {
-				if (!ele.attr("id")) {
-					ele.attr("id", "wijmo-radio-" + radiobuttonId);
-					radiobuttonId += 1;
-				}
-				if (ele.parent().is("label")) {
-					radiobuttonElement = ele.parent().wrap("<div class='" +
-					self._radiobuttonPre + "-inputwrapper'></div>").parent()
-					.wrap("<div></div>").parent()
-					.addClass(self._radiobuttonPre + " ui-widget");
-					label = ele.parent();
-					label.attr("for", ele.attr("id"));
-					radiobuttonElement.find("." + self._radiobuttonPre + "-inputwrapper")
-					.append(ele);
-					radiobuttonElement.append(label);
-
-				}
-				else {
-					radiobuttonElement = ele
-					.wrap("<div class='" + self._radiobuttonPre + "-inputwrapper'></div>")
-					.parent().wrap("<div></div>").parent()
-					.addClass(self._radiobuttonPre + " ui-widget");
-				}
-				targetLabel = $("label[for='" + ele.attr("id") + "']");
-				if (targetLabel.length > 0) {
-					radiobuttonElement.append(targetLabel);
-					targetLabel.attr("labelsign", "wij");
-					//targetLabel.attr("tabindex", 0);
-				}
-				boxElement = $("<div class='" + self._radiobuttonPre +
-				"-box ui-widget ui-state-default ui-corner-all'><span class='" +
-				self._radiobuttonPre + "-icon'></span></div>");
-				iconElement = boxElement.children("." + self._radiobuttonPre + "-icon");
-				radiobuttonElement.append(boxElement);
-				iconElement.addClass("ui-icon ui-icon-radio-on");
-				ele.data("iconElement", iconElement);
-				ele.data("boxElement", boxElement);
-				if (ele.is(":disabled")) {
-					self._setOption("disabled", true);
-				}
-
-				boxElement.removeClass(self._radiobuttonPre + "-relative")
-				.attr("role", "radio")
-				.bind("mouseover", function () {
-					ele.mouseover();
-				}).bind("mouseout", function () {
-					ele.mouseout();
-				});
-				if (targetLabel.length === 0 || targetLabel.html() === "") {
-					boxElement.addClass(self._radiobuttonPre + "-relative");
-				}
-				self._setDefaul();
-				//			boxElement.css("margin-top","9px");
-
-				ele.bind("click.checkbox", function () {
-					ele.focus();
-					self._refresh();
-				}).bind("focus.checkbox", function () {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-default").addClass("ui-state-focus");
-				}).bind("blur.checkbox", function () {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-focus").not(".ui-state-hover")
-					.addClass("ui-state-default");
-				});
-
-				radiobuttonElement.click(function () {
-					if (targetLabel.length === 0 || targetLabel.html() === "") {
-						ele.attr("checked", true).focus();
-						self._refresh();
-						ele.change();
-					}
-
-				});
-
-				radiobuttonElement.bind("mouseover.checkbox", function () {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-default").addClass("ui-state-hover");
-				}).bind("mouseout.checkbox", function () {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-hover").not(".ui-state-focus")
-					.addClass("ui-state-default");
-				});
-
-			}
-		},
-
-		_setDefaul: function () {
-			if (this.element.attr("checked")) {
-				this.element.parents(".wijmo-wijradio")
-				.find("." + this._radiobuttonPre + "-box").children()
-				.removeClass("ui-icon-radio-on ui-icon-radio-off")
-				.addClass("ui-icon-radio-off");
-				this.element.data("boxElement").removeClass("ui-state-default")
-				.addClass("ui-state-active").attr("aria-checked", true);
-			}
-		},
-
-		_refresh: function () {
-			var name = this.element.attr("name"), self = this;
-			$("[name=" + name + "]").each(function (i, n) {
-				$(n).parents(".wijmo-wijradio")
-				.find("." + self._radiobuttonPre + "-box").children()
-				.removeClass("ui-icon-radio-on ui-icon-radio-off")
-				.addClass("ui-icon-radio-on");
-				$(n).parents(".wijmo-wijradio")
-				.find("." + self._radiobuttonPre + "-box")
-				.removeClass("ui-state-active").addClass("ui-state-default")
-				.attr("aria-checked", false);
-			});
-			if (self.element.is(":checked")) {
-				self.element.data("iconElement")
-				.removeClass("ui-icon-radio-on").addClass("ui-icon-radio-off");
-				self.element.data("boxElement").removeClass("ui-state-default")
-				.addClass("ui-state-active").attr("aria-checked", true);
-			}
-		},
-		destroy: function () {
-			var self = this, boxelement = self.element.parent().parent();
-			boxelement.children("div." + self._radiobuttonPre + "-box").remove();
-			self.element.unwrap();
-			self.element.unwrap();
-			$.Widget.prototype.destroy.apply(self);
-		}
-	});
-} (jQuery));
-
-/*globals jQuery*/
-/*
- *
- * Wijmo Library 1.1.2
- * http://wijmo.com/
- *
- * Copyright(c) ComponentOne, LLC.  All rights reserved.
- *
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * licensing@wijmo.com
- * http://www.wijmo.com/license
- *
- * * Wijmo CheckBoxDecorator widget.
- *
- * Depends:
- *  jquery-1.4.2.js
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
- *
- *
- */
-(function ($) {
-	"use strict";
-	var checkboxId = 0;
-	$.widget("wijmo.wijcheckbox", {
-		_csspre: "wijmo-checkbox",
-		_init: function () {
-			var self = this,
-				ele = self.element,
-				checkboxElement, label, targetLabel, boxElement, iconElement;
-			if (ele.is(":checkbox")) {
-				if (!ele.attr("id")) {
-					ele.attr("id", self._csspre + checkboxId);
-					checkboxId += 1;
-				}
-				if (ele.parent().is("label")) {
-					checkboxElement = ele.parent()
-					.wrap("<div class='" + self._csspre + "-inputwrapper'></div>")
-					.parent()
-					.wrap("<div></div>").parent().addClass(self._csspre + " ui-widget");
-					label = ele.parent();
-					label.attr("for", ele.attr("id"));
-					checkboxElement.find("." + self._csspre + "-inputwrapper")
-					.append(ele);
-					checkboxElement.append(label);
-				}
-				else {
-					checkboxElement = ele
-					.wrap("<div class='" + self._csspre + "-inputwrapper'></div>")
-					.parent().wrap("<div></div>").parent()
-					.addClass(self._csspre + " ui-widget");
-				}
-				targetLabel = $("label[for='" + ele.attr("id") + "']");
-				if (targetLabel.length > 0) {
-					checkboxElement.append(targetLabel);
-					targetLabel.attr("labelsign", "C1");
-				}
-				boxElement = $("<div class='" + self._csspre +
-				"-box ui-widget ui-state-default ui-corner-all'><span class='" +
-				self._csspre + "-icon'></span></div>");
-				iconElement = boxElement.children("." + self._csspre + "-icon");
-				checkboxElement.append(boxElement);
-				ele.data("iconElement", iconElement);
-				ele.data("boxElement", boxElement);
-				if (ele.is(":disabled")) {
-					self._setOption("disabled", true);
-				}
-				boxElement.removeClass(self._csspre + "-relative")
-				.attr("role", "checkbox")
-				.bind("mouseover", function () {
-					ele.mouseover();
-				}).bind("mouseout", function () {
-					ele.mouseout();
-				});
-				if (targetLabel.length === 0 || targetLabel.html() === "") {
-					boxElement.addClass(self._csspre + "-relative");
-				}
-				ele.bind("click.checkbox", function () {
-					self.refresh();
-				}).bind("focus.checkbox", function () {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-default").addClass("ui-state-focus");
-				}).bind("blur.checkbox", function () {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-focus").not(".ui-state-hover")
-					.addClass("ui-state-default");
-				}).bind("keydown.checkbox", function (e) {
-					if (e.keyCode === 32) {
-						ele.attr("checked", !ele.attr("checked"));
-						self.refresh();
-					}
-				});
-				checkboxElement.click(function (e) {
-					//if (targetLabel.length === 0 || targetLabel.html() === "") {
-					ele.attr("checked", !ele.attr("checked"));
-					ele.focus();
-
-                    if(e.target.tagName != 'LABEL' && e.target.tagName != 'INPUT') {
-                        ele.change();
-                    }
-
-					self.refresh();
-					//}
-
-				});
-				self.refresh();
-				checkboxElement.bind("mouseover.checkbox", function (e) {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-default").addClass("ui-state-hover");
-
-				}).bind("mouseout.checkbox", function (e) {
-					if (self.options.disabled) {
-						return;
-					}
-					boxElement.removeClass("ui-state-hover").not(".ui-state-focus")
-					.addClass("ui-state-default");
-				});
-			}
-		},
-
-		refresh: function () {
-			var self = this;
-			self.element.data("iconElement")
-			.toggleClass("ui-icon ui-icon-check", self.element.is(":checked"));
-			self.element.data("boxElement")
-			.toggleClass("ui-state-active", self.element.is(":checked"))
-			.attr("aria-checked", self.element.is(":checked"));
-		},
-
-		destroy: function () {
-			var self = this, boxelement = self.element.parent().parent();
-			boxelement.children("div." + self._csspre + "-box").remove();
-			self.element.unwrap();
-			self.element.unwrap();
-			$.Widget.prototype.destroy.apply(self);
 		}
 	});
 } (jQuery));

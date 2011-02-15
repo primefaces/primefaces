@@ -157,13 +157,13 @@ PrimeFaces.widget.InputText = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
-    //Visuals
-    PrimeFaces.skinInput(this.jq);
-
     //Client behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+
+    //Visuals
+    PrimeFaces.skinInput(this.jq);
 }
 
 /**
@@ -175,6 +175,11 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
+    //Client behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+    }
+
     //Visuals
     PrimeFaces.skinInput(this.jq);
 
@@ -185,148 +190,4 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
             ,animateDuration: this.cfg.effectDuration
         });
     }
-
-    //Client behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-    }
-}
-
-/**
- * PrimeFaces SelectOneMenu Widget
- */
-PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
-    this.id = id;
-    this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
-
-    //Animations
-    if(this.cfg.effect) {
-        this.cfg.showingAnimation = {
-            effect: this.cfg.effect
-            ,speed: this.cfg.effectDuration
-        };
-
-        this.cfg.hidingAnimation = {
-            effect: this.cfg.effect
-            ,speed: this.cfg.effectDuration
-        };
-    }
-
-    //Create widget
-    this.jq.wijdropdown(this.cfg);
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-    }
-}
-
-/**
- * PrimeFaces SelectOneRadio Widget
- */
-PrimeFaces.widget.SelectOneRadio = function(cfg) {
-    this.id = cfg.id;
-    this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='radio']");
-
-    //Create widget
-    this.jq.wijradio(this.cfg);
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-    }
-}
-
-/**
- * PrimeFaces SelectBooleanCheckbox Widget
- */
-PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
-    this.id = cfg.id;
-    this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
-
-    //Create widget
-    this.jq.wijcheckbox(this.cfg);
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-    }
-}
-
-/**
- * PrimeFaces SelectManyCheckbox Widget
- */
-PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
-    this.id = cfg.id;
-    this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
-
-    //Create widget
-    this.jq.wijcheckbox(this.cfg);
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-    }
-}
-
-/**
- * PrimeFaces SelectListbox Widget
- */
-PrimeFaces.widget.SelectListbox = function(id, cfg) {
-    this.id = id;
-    this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
-    this.input = jQuery(this.jqId + '_input');
-
-    var listContainer = jQuery(this.jqId).children('ul'),
-    options = jQuery(this.input.attr('options')),
-    _self = this;
-
-    options.each(function(i) {
-       var option = jQuery(this),
-       selected = option.attr('selected'),
-       styleClass = 'ui-selectlistbox-item ui-corner-all';
-
-       if(selected) {
-           styleClass = styleClass + ' ui-state-active';
-       }
-       
-       listContainer.append('<li class="' + styleClass + '">' + jQuery(this).html() + '</li>');
-    });
-
-    var items = listContainer.children('li');
-
-    items.mouseover(function() {
-        jQuery(this).addClass('ui-state-hover');
-    }).mouseout(function() {
-        jQuery(this).removeClass('ui-state-hover');
-    }).click(function() {
-        var element = jQuery(this),
-        option = jQuery(options.get(element.index()));
-
-        if(element.hasClass('ui-state-active')) {
-            element.removeClass('ui-state-active');
-            option.removeAttr('selected');
-        }
-        else {
-            if(_self.cfg.selection == 'single') {
-                items.removeClass('ui-state-active');
-                options.removeAttr('selected');
-            }
-
-            element.addClass('ui-state-active');
-            option.attr('selected', 'selected')
-        }
-    });
-
-    this.jq.wijsuperpanel(this.cfg);
 }
