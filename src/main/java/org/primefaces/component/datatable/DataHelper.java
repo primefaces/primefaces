@@ -253,10 +253,15 @@ class DataHelper {
 				table.setSelection(buildCell(table, selection));
 			}
             else {
-                table.setRowIndex(Integer.parseInt(selection));
-                Object data = table.getRowData();
+                int selectedRowIndex = Integer.parseInt(selection);
+                int first = table.getFirst();
+                int rows = table.getRows();
+                int last = rows == 0 ? table.getRowCount() : rows;
 
-                table.setSelection(data);
+                if(first <= selectedRowIndex && (first + last) > selectedRowIndex) {
+                    table.setRowIndex(selectedRowIndex);
+                    table.setSelection(table.getRowData());
+                }
             }
 		}
 	}
