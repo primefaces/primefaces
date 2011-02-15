@@ -457,10 +457,8 @@ public class DataTableRenderer extends CoreRenderer {
         int rowCountToRender = rows == 0 ? rowCount : rows;
         boolean hasData = rowCount > 0;
 
-        //Load lazy data initially
-        if(table.isLazy() && !table.initiallyLoaded()) {
+        if(table.isLazy()) {
             table.loadLazyData();
-            table.markAsLoaded();
         }
 
         String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
