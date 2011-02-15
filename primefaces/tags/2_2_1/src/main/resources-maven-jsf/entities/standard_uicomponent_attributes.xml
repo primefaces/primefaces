@@ -1,0 +1,19 @@
+<attribute>
+	<name>id</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<literal>true</literal>
+</attribute>
+<attribute>
+	<name>rendered</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
+	<name>binding</name>
+	<required>false</required>
+	<type>javax.faces.component.UIComponent</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>

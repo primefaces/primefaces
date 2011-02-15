@@ -1,0 +1,61 @@
+.ui-treetable {
+	border-collapse:collapse;
+    width:100%;
+}
+
+.ui-treetable th {
+    text-align:center;
+    white-space:nowrap;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-treetable .ui-treetable-data td {
+    border-right:1px solid;
+    border-right-color:inherit;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-treetable-selected {
+	border:1px solid #FFFFFF;
+}
+
+.ui-treetable-selected  td {
+	background-color:#426FD9;
+	color:#FFFFFF;
+}
+
+.ui-treetable tr td .expander {
+	background-position: left center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding: 0;
+	zoom: 1; /* IE7 Hack */
+}
+
+.ui-treetable tr.collapsed td .expander {
+	background-image: url("#{resource['primefaces:treetable/images/toggle-expand-dark.png']}");
+}
+
+.ui-treetable tr.expanded td .expander {
+	background-image: url("#{resource['primefaces:treetable/images/toggle-collapse-dark.png']}");
+}
+
+.ui-treetable tr.selected,.ui-treetable tr.accept {
+	background-color: #3875d7;
+	color: #fff;
+}
+
+.ui-treetable tr.collapsed.selected td .expander,.ui-treetable tr.collapsed.accept td .expander
+	{
+	background-image: url("#{resource['primefaces:treetable/images/toggle-expand-light.png']}");
+}
+
+.ui-treetable tr.expanded.selected td .expander,.ui-treetable tr.expanded.accept td .expander
+	{
+	background-image: url("#{resource['primefaces:treetable/images/toggle-collapse-light.png']}");
+}
+
+.ui-treetable .ui-draggable-dragging {
+	color: #000;
+	z-index: 1;
+}
