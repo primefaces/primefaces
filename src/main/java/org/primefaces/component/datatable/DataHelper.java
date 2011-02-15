@@ -50,10 +50,6 @@ class DataHelper {
 		table.setFirst(Integer.valueOf(firstParam));
 		table.setRows(Integer.valueOf(rowsParam));
 		table.setPage(Integer.valueOf(pageParam));
-
-        if(table.isLazy()) {
-            table.loadLazyData();
-        }
 	}
 
     void decodeSortRequest(FacesContext context, DataTable table) {
@@ -93,10 +89,7 @@ class DataHelper {
 
         if(table.isLazy()) {
             table.setSortField(resolveField(sortColumn.getValueExpression("sortBy")));
-            table.setSortOrder(asc);
-
-            table.loadLazyData();
-            
+            table.setSortOrder(asc);            
         } else {
             List list = (List) table.getValue();
             Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
@@ -131,8 +124,6 @@ class DataHelper {
             }
 
             table.setFilters(filters);
-
-            table.loadLazyData();
 
             //Metadata for callback
             if(table.isPaginator()) {

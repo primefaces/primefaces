@@ -311,14 +311,6 @@ import java.lang.StringBuilder;
         model.setWrappedData(null);
     }
 
-    public boolean initiallyLoaded() {
-        return (java.lang.Boolean) getStateHelper().eval("initiallyLoaded", false);
-    }
-
-    public void markAsLoaded() {
-        getStateHelper().put("initiallyLoaded", true);
-    }
-
     public String getSortField() {
         return (String) getStateHelper().eval("sortField", null);
     }
