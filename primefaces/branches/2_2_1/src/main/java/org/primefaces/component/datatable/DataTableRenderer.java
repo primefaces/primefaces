@@ -43,6 +43,10 @@ public class DataTableRenderer extends CoreRenderer {
 	public void decode(FacesContext context, UIComponent component) {
 		DataTable table = (DataTable) component;
 
+        if(table.isSelectionEnabled()) {
+			dataHelper.decodeSelection(context, table);
+		}
+
         if(table.isPaginationRequest(context)) {
             dataHelper.decodePageRequest(context, table);
         }
@@ -52,14 +56,13 @@ public class DataTableRenderer extends CoreRenderer {
         else if(table.isFilterRequest(context)) {
             dataHelper.decodeFilterRequest(context, table);
         }
-        else if(table.isSelectionEnabled()) {
-			dataHelper.decodeSelection(context, table);
-		}
         else if(table.isClearFiltersRequest(context)) {
             table.resetValue();
             context.renderResponse();
             return;
         }
+        
+        
 	}
     
     @Override
