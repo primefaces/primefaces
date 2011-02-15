@@ -210,6 +210,11 @@ import java.lang.StringBuilder;
     public void processDecodes(FacesContext context) {
 		if(isDataManipulationRequest(context)) {
             this.decode(context);
+            
+            if(isSelectionEnabled()) {
+                this.updateSelectionModel(context);
+            }
+            
             context.renderResponse();
         } else {
             super.processDecodes(context);
@@ -220,15 +225,20 @@ import java.lang.StringBuilder;
     public void processUpdates(FacesContext context) {
 		super.processUpdates(context);
 
+        updateSelectionModel(context);
+	}
+
+    protected void updateSelectionModel(FacesContext context) {
         ValueExpression selectionVE = this.getValueExpression("selection");
+        
         if(selectionVE != null) {
             Object value = emptySelected ? null : this.getSelection();
 
-            selectionVE.setValue(getFacesContext().getELContext(), value);
+            selectionVE.setValue(context.getELContext(), value);
 
             this.setSelection(null);
         }
-	}
+    }
 
     public void setEmptySelected(boolean emptySelected) {
         this.emptySelected = emptySelected;
