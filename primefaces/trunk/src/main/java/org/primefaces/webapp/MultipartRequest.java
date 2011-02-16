@@ -139,13 +139,4 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 			return null;
 		}	
 	}
-
-    //Workaround to mimic ajax request since flash does not allow custom request headers
-    @Override
-    public String getHeader(String name) {
-        if(name != null && name.equalsIgnoreCase("Faces-Request"))
-            return "partial/ajax";
-        else
-            return ((HttpServletRequest) getRequest()).getHeader(name);
-    }
 }

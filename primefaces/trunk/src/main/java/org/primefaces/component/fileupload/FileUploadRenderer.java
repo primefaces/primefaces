@@ -39,11 +39,15 @@ public class FileUploadRenderer extends CoreRenderer {
 		MultipartRequest multipartRequest = getMultiPartRequestInChain(context);
 		
 		if(multipartRequest != null) {
-			FileItem file = multipartRequest.getFileItem(clientId + "_input");
+			FileItem file = multipartRequest.getFileItem(clientId);
 
 			if(file != null) {
 				UploadedFile uploadedFile = new DefaultUploadedFile(file);
-				fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
+
+                if(fileUpload.getMode().equals("simple"))
+                    fileUpload.setSubmittedValue(uploadedFile);
+                else
+                    fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
 			}
 		}
 	}
@@ -67,18 +71,18 @@ public class FileUploadRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		FileUpload fileUpload = (FileUpload) component;
 		
-		encodeMarkup(facesContext, fileUpload);
-		encodeScript(facesContext, fileUpload);
+		encodeMarkup(context, fileUpload);
+		encodeScript(context, fileUpload);
 	}
 
 	protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
-        String update = fileUpload.getUpdate();
-        boolean auto = fileUpload.isAuto();
+        
+        String mode = fileUpload.getMode();
 				
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -87,22 +91,34 @@ public class FileUploadRenderer extends CoreRenderer {
 		
 		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.FileUpload('" + clientId + "', {");
 
-        writer.write("auto:" + auto);
+        writer.write("mode:'" + mode + "'");
 
-        if(update != null)
-            writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
+        if(!mode.equals("single")) {
+            writer.write(",auto:" + fileUpload.isAuto());
+            writer.write(",customUI:" + fileUpload.isCustomUI());
+
+            String update = fileUpload.getUpdate();
+            if(update != null)
+                writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
+        }
 
 		writer.write("});});");
 		
 		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, FileUpload fileUpload) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = fileUpload.getClientId(facesContext);
-		String inputFileId = clientId + "_input";
+	protected void encodeMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
+		if(fileUpload.getMode().equals("simple"))
+            encodeSimpleMarkup(context, fileUpload);
+        else
+            encodeAdvancedMarkup(context, fileUpload);
+	}
+
+    protected void encodeAdvancedMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+		String clientId = fileUpload.getClientId(context);
         boolean auto = fileUpload.isAuto();
-        
+
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
 
@@ -112,14 +128,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId + "_browser", "id");
 
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "file", null);
-		writer.writeAttribute("id", inputFileId, null);
-		writer.writeAttribute("name", inputFileId, null);
-        if(fileUpload.isMultiple()) {
-            writer.writeAttribute("multiple", "multiple", null);
-        }
-		writer.endElement("input");
+		encodeInputField(context, fileUpload, clientId + "_input");
 
         writer.startElement("button", null);
         writer.write("Upload");
@@ -135,7 +144,41 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_files", null);
         writer.endElement("table");
 
-		writer.endElement("div");
+        if(!fileUpload.isCustomUI()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-fileupload-controls", null);
+            encodeButton(context, fileUpload, "Upload", "ui-fileupload-upload-button");
+            encodeButton(context, fileUpload, "Cancel", "ui-fileupload-cancel-button");
+            writer.endElement("div");
+        }
 
+		writer.endElement("div");
+    }
+
+    protected void encodeSimpleMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
+        encodeInputField(context, fileUpload, fileUpload.getClientId(context));
+    }
+
+    protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("input", null);
+		writer.writeAttribute("type", "file", null);
+		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("name", clientId, null);
+        if(fileUpload.isMultiple()) {
+            writer.writeAttribute("multiple", "multiple", null);
+        }
+		writer.endElement("input");
+    }
+
+    protected void encodeButton(FacesContext facesContext, FileUpload fileUpload, String label, String styleClass) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+		writer.writeAttribute("class", styleClass, null);
+        writer.write(label);
+        writer.endElement("button");
 	}
 }

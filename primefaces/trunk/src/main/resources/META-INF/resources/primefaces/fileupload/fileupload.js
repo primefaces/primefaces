@@ -269,6 +269,7 @@
                 xhr.open(getMethod(settings), url, true);
                 if (sameDomain) {
                     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 } else if (settings.withCredentials) {
                     xhr.withCredentials = true;
                 }
@@ -944,63 +945,82 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.inputId = this.jqId + '_input';
     this.jq = jQuery(this.jqId);
-    this.filesTable = jQuery(this.jqId + '_files');
-    this.browser = jQuery(this.jqId + '_browser');
     this.form = this.jq.parents('form:first');
-    var _self = this;
 
     this.form.attr('enctype', 'multipart/form-data');
     
-    var params = this.form.serializeArray();
-    params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM,value: true});
-    params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM,value: this.id});
-    params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM,value: this.id});
+    if(this.cfg.mode != 'single') {
+        this.inputId = this.jqId + '_input';
+        this.filesTable = jQuery(this.jqId + '_files');
+        this.fileBrowser = jQuery(this.jqId + '_browser');
+        var _self = this;
 
-    if(this.cfg.update) {
-        params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM,value: this.cfg.update});
-    }
+        var params = this.form.serializeArray();
+        params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM,value: true});
+        params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM,value: this.id});
+        params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM,value: this.id});
 
-    this.cfg.beforeSend = function(event, files, index, xhr, handler, callBack) {
-        if(!_self.cfg.auto) {
-            handler.uploadRow.find('.file_upload_start button').click(function(e) {
+        if(this.cfg.update) {
+            params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM,value: this.cfg.update});
+        }
+
+        this.cfg.beforeSend = function(event, files, index, xhr, handler, callBack) {
+            if(!_self.cfg.auto) {
+                handler.uploadRow.find('.file_upload_start button').click(function(e) {
+                    callBack();
+                });
+            }
+            else {
                 callBack();
-                e.preventDefault();
-            });
-        }
-        else {
-            callBack();
-        }
-    };
+            }
+        };
 
-    this.cfg.fileInputFilter = this.inputId;
-    this.cfg.uploadTable = this.filesTable;
-    this.cfg.formData = params;
-    this.cfg.buildUploadRow = function (files, index) {
-        return jQuery('<tr><td class="file_upload_preview"><\/td>' +
-                '<td>' + files[index].name + '<\/td>' +
-                '<td class="file_upload_progress"><div><\/div><\/td>' +
-                '<td class="file_upload_start">' +
-                '<button class="ui-state-default ui-corner-all" title="Start Upload">' +
-                '<span class="ui-icon ui-icon-circle-arrow-e">Start Upload<\/span>' +
-                '<\/button><\/td>' +
-                '<td class="file_upload_cancel">' +
-                '<button class="ui-state-default ui-corner-all" title="Cancel">' +
-                '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
-                '<\/button><\/td><\/tr>');
-    };
+        this.cfg.fieldName = this.id;
+        this.cfg.fileInputFilter = this.inputId;
+        this.cfg.uploadTable = this.filesTable;
+        this.cfg.formData = params;
+        this.cfg.buildUploadRow = function (files, index) {
+            return jQuery('<tr><td class="file_upload_preview"><\/td>' +
+                    '<td>' + files[index].name + '<\/td>' +
+                    '<td class="file_upload_progress"><div><\/div><\/td>' +
+                    '<td class="file_upload_start">' +
+                    '<button class="ui-state-default ui-corner-all" title="Start Upload" type="button">' +
+                    '<span class="ui-icon ui-icon-circle-arrow-e">Start Upload<\/span>' +
+                    '<\/button><\/td>' +
+                    '<td class="file_upload_cancel">' +
+                    '<button class="ui-state-default ui-corner-all" title="Cancel" type="button">' +
+                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
+                    '<\/button><\/td><\/tr>');
+        };
 
-    this.cfg.parseResponse = function(xhr) {
-        PrimeFaces.ajax.AjaxResponse(xhr.responseXML);
-    };
+        this.cfg.parseResponse = function(xhr) {
+            PrimeFaces.ajax.AjaxResponse(xhr.responseXML);
+        };
+
+        this.form.fileUploadUI(this.cfg);
+
+        if(!this.cfg.customUI) {
+            this.createControls();
+        }
+
+        this.form.removeClass('file_upload');
+        this.fileBrowser.addClass('file_upload');
+    }    
+}
+
+
+PrimeFaces.widget.FileUpload.prototype.createControls = function() {
+    var _self = this;
     
-    this.form.fileUploadUI(this.cfg);
-
-    this.form.removeClass('file_upload');
-    this.browser.addClass('file_upload');
+    this.jq.find('.ui-fileupload-upload-button').button({icons: {primary: "ui-icon-arrowthick-1-n"}}).click(function() {_self.upload();});
+    this.jq.find('.ui-fileupload-cancel-button').button({icons: {primary: "ui-icon-closethick"}}).click(function() {_self.cancel();});
 }
 
 PrimeFaces.widget.FileUpload.prototype.upload = function() {
     jQuery(this.jqId + ' .file_upload_start button').click();
+}
+
+PrimeFaces.widget.FileUpload.prototype.cancel = function() {
+    jQuery(this.jqId + ' .file_upload_cancel button').click();
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -12,14 +14,14 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.FileUploadRenderer</rendererType>
 	<rendererClass>org.primefaces.component.fileupload.FileUploadRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>javax.faces.component.UIInput</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
 	</interfaces>
 	<attributes>
-		&standard_uicomponent_attributes;
+		&input_component_attributes;
 		&widget_var_attribute;
 		<attribute>
 			<name>update</name>
@@ -51,26 +53,6 @@
             <defaultValue>Browse</defaultValue>
 		</attribute>
 		<attribute>
-			<name>image</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>cancelImage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>height</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<name>allowTypes</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -85,11 +67,6 @@
 			<required>false</required>
 			<type>java.lang.Long</type>
 			<defaultValue>java.lang.Long.MAX_VALUE</defaultValue>
-		</attribute>
-		<attribute>
-			<name>wmode</name>
-			<required>false</required>
-			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>customUI</name>
