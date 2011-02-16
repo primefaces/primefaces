@@ -946,7 +946,8 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.inputId = this.jqId + '_input';
     this.jq = jQuery(this.jqId);
-    this.filesTable = jQuery('#files');
+    this.filesTable = jQuery(this.jqId + '_files');
+    this.browser = jQuery(this.jqId + '_browser');
     this.form = this.jq.parents('form:first');
     var _self = this;
     
@@ -986,6 +987,5 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.form.fileUploadUI(this.cfg);
 
     this.form.removeClass('file_upload');
-    this.jq.addClass('file_upload');
-
+    this.browser.addClass('file_upload');
 }

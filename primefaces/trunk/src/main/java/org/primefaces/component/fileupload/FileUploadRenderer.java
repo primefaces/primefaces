@@ -108,10 +108,13 @@ public class FileUploadRenderer extends CoreRenderer {
         
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
-		
+
 		if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
 		if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
-		
+
+        writer.startElement("div", fileUpload);
+		writer.writeAttribute("id", clientId + "_browser", "id");
+
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "file", null);
 		writer.writeAttribute("id", inputFileId, null);
@@ -126,10 +129,13 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.write(fileUpload.getLabel());
         writer.endElement("div");
 
+        writer.endElement("div");
+
+        writer.startElement("table", null);
+        writer.writeAttribute("id", clientId + "_files", null);
+        writer.endElement("table");
+
 		writer.endElement("div");
 
-        /*writer.startElement("table", null);
-        writer.writeAttribute("id", clientId + "_files", null);
-        writer.endElement("table");*/
 	}
 }
