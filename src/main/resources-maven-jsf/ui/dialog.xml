@@ -139,16 +139,46 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+            <name>pinnable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>minimizable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>maximizable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>
 			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+        <resource>
+			<name>wijmo/wijmo.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
+        <resource>
+			<name>wijmo/wijmo.js</name>
 		</resource>
         <resource>
             <name>core/core.js</name>

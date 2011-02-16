@@ -75,8 +75,12 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getShowEffect() != null) writer.write(",show:'" + dialog.getShowEffect() + "'");
         if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
         if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
-        if(!dialog.isClosable()) writer.write(",closable:false");
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
+        if(dialog.isPinnable()) writer.write(",pinnable:true");
+        if(dialog.isToggleable()) writer.write(",toggleable:true");
+        if(dialog.isMinimizable()) writer.write(",minimizable:true");
+        if(dialog.isMaximizable()) writer.write(",maximizable:true");
+        if(!dialog.isClosable()) writer.write(",closable:false");
 
         //Position
         String position = dialog.getPosition();

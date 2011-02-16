@@ -11,8 +11,18 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();
 
+    //Caption Buttons
+    this.cfg.captionButtons = {
+        pin: {visible: this.cfg.pinnable != undefined}
+        ,toggle: {visible: this.cfg.toggleable != undefined}
+        ,minimize: {visible: this.cfg.minimizable != undefined}
+        ,maximize: {visible: this.cfg.maximizable != undefined}
+        ,close: {visible: this.cfg.closable == undefined}
+        ,refresh: {visible:false}
+    };
+    
     //Create the dialog
-    this.jq.dialog(this.cfg);
+    this.jq.wijdialog(this.cfg);
 
     //Close handler
     this.jq.bind('dialogclose', function(event, ui) {_self.onHide(event, ui);});
@@ -20,22 +30,17 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     //Open handler
     this.jq.bind('dialogopen', function(event, ui) {_self.onShow(event, ui);});
 
-    //Hide close icon if dialog is not closable
-    if(this.cfg.closable == false) {
-        this.jq.parent().find('.ui-dialog-titlebar-close').hide();
-    }
-
     if(this.cfg.appendToBody) {
         this.jq.parent().appendTo(document.body);
     }
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
-    this.jq.dialog('open');
+    this.jq.wijdialog('open');
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {
-    this.jq.dialog('close');
+    this.jq.wijdialog('close');
 }
 
 /**
