@@ -89,9 +89,6 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.write("auto:" + auto);
 
-        if(!auto)
-            writer.write(",uploader:'" + ComponentUtils.findClientIds(context, fileUpload, fileUpload.getUploader()) + "'");
-
         if(update != null)
             writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
 
@@ -119,6 +116,9 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "file", null);
 		writer.writeAttribute("id", inputFileId, null);
 		writer.writeAttribute("name", inputFileId, null);
+        if(fileUpload.isMultiple()) {
+            writer.writeAttribute("multiple", "multiple", null);
+        }
 		writer.endElement("input");
 
         writer.startElement("button", null);
