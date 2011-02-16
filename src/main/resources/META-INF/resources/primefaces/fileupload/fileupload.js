@@ -1000,7 +1000,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
         this.form.fileUploadUI(this.cfg);
 
-        if(!this.cfg.customUI) {
+        if(!this.cfg.customUI && !_self.cfg.auto) {
             this.createControls();
         }
 
