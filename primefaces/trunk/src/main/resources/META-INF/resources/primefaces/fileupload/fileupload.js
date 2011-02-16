@@ -950,8 +950,10 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.browser = jQuery(this.jqId + '_browser');
     this.form = this.jq.parents('form:first');
     var _self = this;
+
+    this.form.attr('enctype', 'multipart/form-data');
     
-    var params = this.jq.parents('form:first').serializeArray();
+    var params = this.form.serializeArray();
     params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM,value: true});
     params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM,value: this.id});
     params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM,value: this.id});
@@ -961,19 +963,28 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     }
 
     this.cfg.beforeSend = function(event, files, index, xhr, handler, callBack) {
-        callBack();
-
-        /*if(!_self.cfg.auto) {
-            jQuery(PrimeFaces.escapeClientId(_self.cfg.uploader)).click(callBack);
-        }*/
+        if(!_self.cfg.auto) {
+            handler.uploadRow.find('.file_upload_start button').click(function(e) {
+                callBack();
+                e.preventDefault();
+            });
+        }
+        else {
+            callBack();
+        }
     };
 
     this.cfg.fileInputFilter = this.inputId;
     this.cfg.uploadTable = this.filesTable;
     this.cfg.formData = params;
     this.cfg.buildUploadRow = function (files, index) {
-        return jQuery('<tr><td>' + files[index].name + '<\/td>' +
+        return jQuery('<tr><td class="file_upload_preview"><\/td>' +
+                '<td>' + files[index].name + '<\/td>' +
                 '<td class="file_upload_progress"><div><\/div><\/td>' +
+                '<td class="file_upload_start">' +
+                '<button class="ui-state-default ui-corner-all" title="Start Upload">' +
+                '<span class="ui-icon ui-icon-circle-arrow-e">Start Upload<\/span>' +
+                '<\/button><\/td>' +
                 '<td class="file_upload_cancel">' +
                 '<button class="ui-state-default ui-corner-all" title="Cancel">' +
                 '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
@@ -988,4 +999,8 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
     this.form.removeClass('file_upload');
     this.browser.addClass('file_upload');
+}
+
+PrimeFaces.widget.FileUpload.prototype.upload = function() {
+    jQuery(this.jqId + ' .file_upload_start button').click();
 }
