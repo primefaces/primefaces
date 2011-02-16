@@ -144,7 +144,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_files", null);
         writer.endElement("table");
 
-        if(!fileUpload.isCustomUI()) {
+        if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-fileupload-controls", null);
             encodeButton(context, fileUpload, "Upload", "ui-fileupload-upload-button");
