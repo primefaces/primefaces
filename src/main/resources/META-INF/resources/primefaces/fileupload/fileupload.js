@@ -1015,7 +1015,6 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
         this.cfg.onComplete = function(event, files, index, xhr, handler) {
             _self.filesCount--;
-            alert(_self.filesCount);
             
             if(_self.filesCount == 0 && _self.controls) {
                 _self.controls.fadeOut('fast');
