@@ -983,12 +983,12 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
                     '<td>' + files[index].name + '<\/td>' +
                     '<td class="ui-fileupload-progress"><div><\/div><\/td>' +
                     '<td class="ui-fileupload-start">' +
-                    '<button class="ui-state-default ui-corner-all" title="Start Upload" type="button">' +
-                    '<span class="ui-icon ui-icon-circle-arrow-e">Start Upload<\/span>' +
+                    '<button class="ui-state-default ui-corner-all" title="' + _self.cfg.uploadLabel + '" type="button">' +
+                    '<span class="ui-icon ui-icon-circle-triangle-n">' + _self.cfg.uploadLabel + '<\/span>' +
                     '<\/button><\/td>' +
                     '<td class="ui-fileupload-cancel">' +
-                    '<button class="ui-state-default ui-corner-all" title="Cancel" type="button">' +
-                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
+                    '<button class="ui-state-default ui-corner-all" title="' + _self.cfg.cancelLabel + '" type="button">' +
+                    '<span class="ui-icon ui-icon-circle-close">' + _self.cfg.cancelLabel + '<\/span>' +
                     '<\/button><\/td><\/tr>');
         };
 
@@ -1048,8 +1048,8 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 PrimeFaces.widget.FileUpload.prototype.createControls = function() {
     var _self = this;
     
-    this.jq.find('.ui-fileupload-upload-button').button({icons: {primary: "ui-icon-arrowthick-1-n"}}).click(function() {_self.upload();});
-    this.jq.find('.ui-fileupload-cancel-button').button({icons: {primary: "ui-icon-closethick"}}).click(function() {_self.cancel();});
+    this.jq.find('.ui-fileupload-upload-button').button({icons: {primary: "ui-icon-circle-triangle-n"}}).click(function() {_self.upload();});
+    this.jq.find('.ui-fileupload-cancel-button').button({icons: {primary: "ui-icon-circle-close"}}).click(function() {_self.cancel();});
 
     this.controls = this.jq.children('.ui-fileupload-controls');
 }
