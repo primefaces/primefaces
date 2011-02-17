@@ -1,44 +1,33 @@
-.file_upload {
+.ui-fileupload-browser {
     position: relative;
     overflow: hidden;
     direction: ltr;
     cursor: pointer;
     text-align: center;
-    color: #333;
-    font-weight: bold;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    width: 200px;
+    width: 154px;
     height: 30px;
     line-height: 30px;
-    background: palegreen;
-    border: 1px solid limegreen;
 }
 
-.file_upload_small {
+.ui-fileupload-browser-small {
     width: 200px;
     height: 30px;
     line-height: 30px;
     font-size: auto;
-    background: palegreen;
-    border: 1px solid limegreen;
 }
 
-.file_upload_large {
+.ui-fileupload-browser-large {
     width: 100%;
     height: 150px;
     line-height: 150px;
     font-size: 20px;
-    background: palegreen;
-    border: 1px solid limegreen;
 }
 
-.file_upload_highlight {
-    background: lawngreen;
+.ui-fileupload-browser-highlight {
+
 }
 
-.file_upload input {
+.ui-fileupload-browser input {
     position: absolute;
     top: 0;
     right: 0;
@@ -52,23 +41,27 @@
     cursor: pointer;
 }
 
-.file_upload iframe, .file_upload button {
+.ui-fileupload-browser iframe, .ui-fileupload-browser button {
     display: none;
 }
 
-.file_upload_preview img {
+.ui-fileupload-preview img {
     width: 80px;
 }
 
-.file_upload_progress .ui-progressbar-value {
-    background: url("#{resource['primefaces:fileupload/pbar-ani.gif']}");
-}
-
-.file_upload_progress div {
+.ui-fileupload-progress div {
     width: 150px;
     height: 15px;
 }
 
-.file_upload_cancel button {
+.ui-fileupload-start button, .ui-fileupload-cancel button {
     cursor: pointer;
+}
+
+.ui-fileupload-controls {
+    display:none;
+}
+
+.ui-fileupload-upload-button {
+    margin-right:4px;
 }

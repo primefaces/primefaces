@@ -117,13 +117,13 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeAdvancedMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
-        boolean auto = fileUpload.isAuto();
+        String styleClass = fileUpload.getStyleClass();
+        styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
 
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
-
+        writer.writeAttribute("class", styleClass, "styleClass");
 		if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
-		if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
 
         writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId + "_browser", "id");
@@ -142,6 +142,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("id", clientId + "_files", null);
+        writer.writeAttribute("class", "ui-fileupload-files ui-widget", null);
         writer.endElement("table");
 
         if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {

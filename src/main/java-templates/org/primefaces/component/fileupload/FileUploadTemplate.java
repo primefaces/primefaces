@@ -1,3 +1,6 @@
+
+    public final static String CONTAINER_CLASS = "ui-fileupload";
+
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
 		

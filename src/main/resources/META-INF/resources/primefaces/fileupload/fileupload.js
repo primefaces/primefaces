@@ -950,12 +950,14 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
     this.form.attr('enctype', 'multipart/form-data');
     
-    if(this.cfg.mode != 'single') {
+    if(this.cfg.mode != 'simple') {
         this.inputId = this.jqId + '_input';
         this.filesTable = jQuery(this.jqId + '_files');
         this.fileBrowser = jQuery(this.jqId + '_browser');
+        this.filesCount = 0;
         var _self = this;
 
+        //request config
         var params = this.form.serializeArray();
         params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM,value: true});
         params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM,value: this.id});
@@ -965,9 +967,40 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
             params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM,value: this.cfg.update});
         }
 
+        //upload all and cancel all buttons
+        if(!this.cfg.customUI && !this.cfg.auto) {
+            this.createControls();
+        }
+
+        //core config
+        this.cfg.fieldName = this.id;
+        this.cfg.fileInputFilter = this.inputId;
+        this.cfg.uploadTable = this.filesTable;
+        this.cfg.formData = params;
+
+        this.cfg.buildUploadRow = function (files, index) {
+            return jQuery('<tr class="ui-widget-content"><td class="ui-fileupload-preview"><\/td>' +
+                    '<td>' + files[index].name + '<\/td>' +
+                    '<td class="ui-fileupload-progress"><div><\/div><\/td>' +
+                    '<td class="ui-fileupload-start">' +
+                    '<button class="ui-state-default ui-corner-all" title="Start Upload" type="button">' +
+                    '<span class="ui-icon ui-icon-circle-arrow-e">Start Upload<\/span>' +
+                    '<\/button><\/td>' +
+                    '<td class="ui-fileupload-cancel">' +
+                    '<button class="ui-state-default ui-corner-all" title="Cancel" type="button">' +
+                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
+                    '<\/button><\/td><\/tr>');
+        };
+
         this.cfg.beforeSend = function(event, files, index, xhr, handler, callBack) {
+            _self.filesCount++;
+
             if(!_self.cfg.auto) {
-                handler.uploadRow.find('.file_upload_start button').click(function(e) {
+                if(_self.controls && !_self.controls.is(':visible')) {
+                    _self.controls.fadeIn('fast');
+                }
+                
+                handler.uploadRow.find('.ui-fileupload-start button').click(function(e) {
                     callBack();
                 });
             }
@@ -976,36 +1009,38 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
             }
         };
 
-        this.cfg.fieldName = this.id;
-        this.cfg.fileInputFilter = this.inputId;
-        this.cfg.uploadTable = this.filesTable;
-        this.cfg.formData = params;
-        this.cfg.buildUploadRow = function (files, index) {
-            return jQuery('<tr><td class="file_upload_preview"><\/td>' +
-                    '<td>' + files[index].name + '<\/td>' +
-                    '<td class="file_upload_progress"><div><\/div><\/td>' +
-                    '<td class="file_upload_start">' +
-                    '<button class="ui-state-default ui-corner-all" title="Start Upload" type="button">' +
-                    '<span class="ui-icon ui-icon-circle-arrow-e">Start Upload<\/span>' +
-                    '<\/button><\/td>' +
-                    '<td class="file_upload_cancel">' +
-                    '<button class="ui-state-default ui-corner-all" title="Cancel" type="button">' +
-                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
-                    '<\/button><\/td><\/tr>');
-        };
-
         this.cfg.parseResponse = function(xhr) {
             PrimeFaces.ajax.AjaxResponse(xhr.responseXML);
         };
 
-        this.form.fileUploadUI(this.cfg);
-
-        if(!this.cfg.customUI && !_self.cfg.auto) {
-            this.createControls();
+        this.cfg.onComplete = function(event, files, index, xhr, handler) {
+            _self.filesCount--;
+            alert(_self.filesCount);
+            
+            if(_self.filesCount == 0 && _self.controls) {
+                _self.controls.fadeOut('fast');
+            }
         }
 
-        this.form.removeClass('file_upload');
-        this.fileBrowser.addClass('file_upload');
+        //css
+        this.cfg.cssClass = 'ui-fileupload-browser';
+        this.cfg.cssClassSmall = 'ui-fileupload-browser-small';
+        this.cfg.cssClassLarge = 'ui-fileupload-browser-large';
+        this.cfg.cssClassHighlight = 'ui-fileupload-browser-highlight';
+        this.cfg.previewSelector = '.ui-fileupload-preview';
+        this.cfg.progressSelector = '.ui-fileupload-progress div';
+        this.cfg.cancelSelector = '.ui-fileupload-cancel button';
+
+        //create fileupload
+        this.form.fileUploadUI(this.cfg);
+
+        //visuals
+        this.form.removeClass('ui-fileupload-browser');
+        this.fileBrowser.addClass('ui-fileupload-browser ui-widget ui-state-default ui-corner-all').mouseover(function() {
+            jQuery(this).addClass('ui-state-highlight');
+        }).mouseout(function() {
+            jQuery(this).removeClass('ui-state-highlight');
+        });
     }    
 }
 
@@ -1015,12 +1050,23 @@ PrimeFaces.widget.FileUpload.prototype.createControls = function() {
     
     this.jq.find('.ui-fileupload-upload-button').button({icons: {primary: "ui-icon-arrowthick-1-n"}}).click(function() {_self.upload();});
     this.jq.find('.ui-fileupload-cancel-button').button({icons: {primary: "ui-icon-closethick"}}).click(function() {_self.cancel();});
+
+    this.controls = this.jq.children('.ui-fileupload-controls');
 }
 
 PrimeFaces.widget.FileUpload.prototype.upload = function() {
-    jQuery(this.jqId + ' .file_upload_start button').click();
+    jQuery(this.jqId + ' .ui-fileupload-start button').click();
+
+    if(this.controls) {
+        this.controls.fadeOut('fast');
+    }
 }
 
 PrimeFaces.widget.FileUpload.prototype.cancel = function() {
-    jQuery(this.jqId + ' .file_upload_cancel button').click();
+    jQuery(this.jqId + ' .ui-fileupload-cancel button').click();
+    this.filesCount = 0;
+
+    if(this.controls) {
+        this.controls.fadeOut('fast');
+    }
 }
