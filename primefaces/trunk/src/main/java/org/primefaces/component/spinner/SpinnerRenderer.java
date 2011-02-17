@@ -50,7 +50,10 @@ public class SpinnerRenderer extends InputRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Spinner spinner = (Spinner) component;
-
+		
+		//IE8 Standards mode fix
+		context.getResponseWriter().write("<!--[if IE 8.0]><style type=\"text/css\">.ui-spinner {border:1px solid transparent;}</style><![endif]-->");
+		
 		encodeMarkup(context, spinner);
 		encodeScript(context, spinner);
 	}
@@ -87,7 +90,7 @@ public class SpinnerRenderer extends InputRenderer {
 		String clientId = spinner.getClientId(facesContext);
         String styleClass = spinner.getStyleClass();
         styleClass = styleClass == null ? Spinner.STYLE_CLASS : Spinner.STYLE_CLASS + " " + styleClass;
-        
+		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
