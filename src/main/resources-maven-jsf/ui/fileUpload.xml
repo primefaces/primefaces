@@ -90,6 +90,18 @@
 			<type>java.lang.String</type>
             <defaultValue>simple</defaultValue>
 		</attribute>
+        <attribute>
+			<name>uploadLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Upload</defaultValue>
+		</attribute>
+        <attribute>
+			<name>cancelLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Cancel</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

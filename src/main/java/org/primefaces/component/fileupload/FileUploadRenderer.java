@@ -102,6 +102,9 @@ public class FileUploadRenderer extends CoreRenderer {
                 writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
         }
 
+        writer.write(",uploadLabel:'" + fileUpload.getUploadLabel() + "'");
+        writer.write(",cancelLabel:'" + fileUpload.getCancelLabel() + "'");
+
 		writer.write("});});");
 		
 		writer.endElement("script");
@@ -148,8 +151,8 @@ public class FileUploadRenderer extends CoreRenderer {
         if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-fileupload-controls", null);
-            encodeButton(context, fileUpload, "Upload", "ui-fileupload-upload-button");
-            encodeButton(context, fileUpload, "Cancel", "ui-fileupload-cancel-button");
+            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "ui-fileupload-upload-button");
+            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "ui-fileupload-cancel-button");
             writer.endElement("div");
         }
 
