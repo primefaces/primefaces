@@ -33,6 +33,7 @@ This product includes software developed by Chris Landowski, Premium Software, L
 This product includes software developed by ComponentOne, LLC (http://wijmo.com/widgets/license/wijmo-mit-license/)
 This product includes software developed by Wayne Haffenden (http://www.waynehaffenden.com/Blog/jQuery-AutoResizable-Plugin)
 This product includes software developed by Brandon Aaron (https://github.com/brandonaaron/jquery-mousewheel/)
+This product includes software developed by Sebastian Tschan (https://github.com/blueimp/jQuery-File-Upload)
 
 
 
