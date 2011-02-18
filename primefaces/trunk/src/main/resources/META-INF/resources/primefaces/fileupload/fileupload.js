@@ -969,8 +969,11 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
         //upload all and cancel all buttons
         if(!this.cfg.customUI && !this.cfg.auto) {
-            this.createControls();
+            this.setupControls();
         }
+
+        //file type restrictions
+        this.setupRestrictions();
 
         //core config
         this.cfg.fieldName = this.id;
@@ -979,6 +982,10 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
         this.cfg.formData = params;
 
         this.cfg.buildUploadRow = function (files, index) {
+            if(_self.cfg.fileLimit && index + 1 > _self.cfg.fileLimit) {
+                return null;
+            }
+            
             return jQuery('<tr class="ui-widget-content"><td class="ui-fileupload-preview"><\/td>' +
                     '<td>' + files[index].name + '<\/td>' +
                     '<td class="ui-fileupload-progress"><div><\/div><\/td>' +
@@ -993,6 +1000,11 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
         };
 
         this.cfg.beforeSend = function(event, files, index, xhr, handler, callBack) {
+            var valid = _self.checkFileRestrictions(event, files, index, handler);
+            if(valid == false) {
+                return false;
+            }
+            
             _self.filesCount++;
 
             if(!_self.cfg.auto) {
@@ -1044,7 +1056,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 }
 
 
-PrimeFaces.widget.FileUpload.prototype.createControls = function() {
+PrimeFaces.widget.FileUpload.prototype.setupControls = function() {
     var _self = this;
     
     this.jq.find('.ui-fileupload-upload-button').button({icons: {primary: "ui-icon-circle-triangle-n"}}).click(function() {_self.upload();});
@@ -1068,4 +1080,55 @@ PrimeFaces.widget.FileUpload.prototype.cancel = function() {
     if(this.controls) {
         this.controls.fadeOut('fast');
     }
+}
+
+PrimeFaces.widget.FileUpload.prototype.checkFileRestrictions = function(event, files, index, handler) {
+    var valid = true;
+
+    //size limit
+    if(this.cfg.sizeLimit && files[index].size > this.cfg.sizeLimit) {
+        this.showError(handler, this.cfg.sizeExceedMessage);
+        valid = false;
+    }
+
+    //file type
+    if(this.cfg.allowTypes) {
+        var regexp = new RegExp('\\.' + this.cfg.allowTypes + '$', 'i');
+        if(!regexp.test(files[index].name)) {
+            this.showError(handler, this.cfg.invalidFileMessage);
+            valid = false;
+        }
+    }
+    
+    if(valid == false) {
+        setTimeout(function () {handler.removeNode(handler.uploadRow);}, this.cfg.errorMessageDelay);
+    }
+
+    return valid;
+}
+
+PrimeFaces.widget.FileUpload.prototype.showError = function(handler, message) {
+    handler.uploadRow.find('.ui-fileupload-progress').html('<div><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>' + message + '</div>');
+    handler.uploadRow.find('.ui-fileupload-start').hide();
+    handler.uploadRow.find('.ui-fileupload-cancel').hide();
+    handler.uploadRow.addClass('ui-state-error');
+}
+
+PrimeFaces.widget.FileUpload.prototype.setupRestrictions = function() {
+
+    //file types
+    if(this.cfg.allowTypes) {
+        this.extensions = this.cfg.allowTypes.split(",");
+
+        for(var i in this.extensions) {
+            this.extensions[i] = '(' + this.extensions[i] + ")";
+        }
+
+        this.cfg.allowTypes = this.extensions.join('|');
+    }
+
+    //configuration
+    this.cfg.sizeExceedMessage = this.cfg.sizeExceedMessage ? this.cfg.sizeExceedMessage : 'File is too large!';
+    this.cfg.invalidFileMessage = this.cfg.invalidFileMessage ? this.cfg.invalidFileMessage : 'Invalid file type!';
+    this.cfg.errorMessageDelay = this.cfg.errorMessageDelay ? this.cfg.errorMessageDelay : 5000;
 }

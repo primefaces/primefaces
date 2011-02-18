@@ -93,7 +93,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.write("mode:'" + mode + "'");
 
-        if(!mode.equals("single")) {
+        if(!mode.equals("simple")) {
             writer.write(",auto:" + fileUpload.isAuto());
             writer.write(",customUI:" + fileUpload.isCustomUI());
 
@@ -104,6 +104,14 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.write(",uploadLabel:'" + fileUpload.getUploadLabel() + "'");
         writer.write(",cancelLabel:'" + fileUpload.getCancelLabel() + "'");
+
+        //file restrictions
+        if(fileUpload.getAllowTypes() != null) writer.write(",allowTypes:'" + fileUpload.getAllowTypes() + "'");
+        if(fileUpload.getSizeLimit() != Integer.MAX_VALUE) writer.write(",sizeLimit:" + fileUpload.getSizeLimit());
+        if(fileUpload.getFileLimit() != Integer.MAX_VALUE) writer.write(",fileLimit:" + fileUpload.getFileLimit());
+        if(fileUpload.getSizeExceedMessage() != null) writer.write(",sizeExceedMessage:'" + fileUpload.getSizeExceedMessage() + "'");
+        if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
+        if(fileUpload.getErrorMessageDelay() != Integer.MAX_VALUE) writer.write(",errorMessageDelay:" + fileUpload.getErrorMessageDelay());
 
 		writer.write("});});");
 		
