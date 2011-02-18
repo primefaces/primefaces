@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
-import org.primefaces.util.Constants;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
@@ -65,5 +64,11 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
             return requestContext.getPartialUpdateTargets();
         }
+    }
+
+    @Override
+    public boolean isAjaxRequest() {
+        return getWrapped().isAjaxRequest()
+                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("javax.faces.partial.ajax");
     }
 }
