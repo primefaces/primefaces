@@ -947,8 +947,6 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
     this.form = this.jq.parents('form:first');
-
-    this.form.attr('enctype', 'multipart/form-data');
     
     if(this.cfg.mode != 'simple') {
         this.inputId = this.jqId + '_input';
@@ -1006,6 +1004,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
             }
             
             _self.filesCount++;
+            var isIE = xhr.length != undefined; //check if xhr is a jQuery object with an iframe node
 
             if(!_self.cfg.auto) {
                 if(_self.controls && !_self.controls.is(':visible')) {
@@ -1014,15 +1013,30 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
                 
                 handler.uploadRow.find('.ui-fileupload-start button').click(function(e) {
                     callBack();
+
+                    if(isIE) {
+                        _self.startIEProgress(handler);
+                    }
                 });
             }
             else {
                 callBack();
+
+                if(isIE) {
+                    _self.startIEProgress(handler);
+                }
             }
         };
 
-        this.cfg.parseResponse = function(xhr) {
-            PrimeFaces.ajax.AjaxResponse(xhr.responseXML);
+        this.cfg.parseResponse = function(response) {
+            if(response.responseXML) {
+                PrimeFaces.ajax.AjaxResponse(response.responseXML);
+            }
+            else {
+                var responseXML = _self.parseIFrameResponse(response);
+              
+                PrimeFaces.ajax.AjaxResponse(responseXML);
+            }
         };
 
         this.cfg.onComplete = function(event, files, index, xhr, handler) {
@@ -1131,4 +1145,27 @@ PrimeFaces.widget.FileUpload.prototype.setupRestrictions = function() {
     this.cfg.sizeExceedMessage = this.cfg.sizeExceedMessage ? this.cfg.sizeExceedMessage : 'File is too large!';
     this.cfg.invalidFileMessage = this.cfg.invalidFileMessage ? this.cfg.invalidFileMessage : 'Invalid file type!';
     this.cfg.errorMessageDelay = this.cfg.errorMessageDelay ? this.cfg.errorMessageDelay : 5000;
+}
+
+/**
+ * IFrame response response for legacy browsers e.g. IE.
+ */
+PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
+    var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+    xmlDoc.async = "false";
+
+    //format response so IE can parse
+    var iframeContent = iframe.contents().text();
+    iframeContent = jQuery.trim(iframeContent.replace(/(> -)|(>-)/g,'>'));
+
+    xmlDoc.loadXML(iframeContent);
+
+    var responseXML = {};
+    responseXML.documentElement = xmlDoc.documentElement;
+
+    return responseXML;
+}
+
+PrimeFaces.widget.FileUpload.prototype.startIEProgress = function(handler) {
+    handler.uploadRow.find('.ui-progressbar-value').addClass('ui-progressbar-value-ie');
 }

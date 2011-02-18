@@ -54,6 +54,10 @@
     height: 15px;
 }
 
+.ui-fileupload-progress .ui-progressbar-value-ie {
+  background: url("#{resource['primefaces:fileupload/ie-anim.gif']}") repeat-x;
+}
+
 .ui-fileupload-start button, .ui-fileupload-cancel button {
     cursor: pointer;
 }
