@@ -113,6 +113,7 @@ public class FileUploadRenderer extends CoreRenderer {
         if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
         if(fileUpload.getErrorMessageDelay() != Integer.MAX_VALUE) writer.write(",errorMessageDelay:" + fileUpload.getErrorMessageDelay());
 
+
 		writer.write("});});");
 		
 		writer.endElement("script");
@@ -138,6 +139,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId + "_browser", "id");
+        writer.writeAttribute("class", "ui-helper-hidden", null);
 
 		encodeInputField(context, fileUpload, clientId + "_input");
 

@@ -1061,11 +1061,14 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
         //visuals
         this.form.removeClass('ui-fileupload-browser');
-        this.fileBrowser.addClass('ui-fileupload-browser ui-widget ui-state-default ui-corner-all').mouseover(function() {
-            jQuery(this).addClass('ui-state-highlight');
-        }).mouseout(function() {
-            jQuery(this).removeClass('ui-state-highlight');
-        });
+        
+        this.fileBrowser.show()
+            .addClass('ui-fileupload-browser ui-widget ui-state-default ui-corner-all')
+            .mouseover(function() {
+                jQuery(this).addClass('ui-state-highlight');
+            }).mouseout(function() {
+                jQuery(this).removeClass('ui-state-highlight');
+            });
     }    
 }
 
