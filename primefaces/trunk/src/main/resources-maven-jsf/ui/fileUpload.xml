@@ -119,6 +119,12 @@
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
 		</attribute>
+        <attribute>
+			<name>dragDropSupport</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

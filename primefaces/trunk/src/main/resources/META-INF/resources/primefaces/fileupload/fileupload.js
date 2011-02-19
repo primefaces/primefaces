@@ -978,6 +978,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
         this.cfg.fileInputFilter = this.inputId;
         this.cfg.uploadTable = this.filesTable;
         this.cfg.formData = params;
+        this.cfg.dropZone = this.fileBrowser;
 
         this.cfg.buildUploadRow = function (files, index) {
             if(_self.cfg.fileLimit && index + 1 > _self.cfg.fileLimit) {
@@ -1049,9 +1050,9 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 
         //css
         this.cfg.cssClass = 'ui-fileupload-browser';
-        this.cfg.cssClassSmall = 'ui-fileupload-browser-small';
-        this.cfg.cssClassLarge = 'ui-fileupload-browser-large';
-        this.cfg.cssClassHighlight = 'ui-fileupload-browser-highlight';
+        this.cfg.cssClassSmall = 'ui-state-highlight';
+        this.cfg.cssClassLarge = 'ui-state-highlight';
+        this.cfg.cssClassHighlight = 'ui-state-active';
         this.cfg.previewSelector = '.ui-fileupload-preview';
         this.cfg.progressSelector = '.ui-fileupload-progress div';
         this.cfg.cancelSelector = '.ui-fileupload-cancel button';
