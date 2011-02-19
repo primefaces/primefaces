@@ -125,6 +125,11 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
 		</attribute>
+        <attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
