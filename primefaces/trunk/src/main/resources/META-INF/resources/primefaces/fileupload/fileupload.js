@@ -1046,6 +1046,10 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
             if(_self.filesCount == 0 && _self.controls) {
                 _self.controls.fadeOut('fast');
             }
+
+            if(_self.cfg.oncomplete) {
+                _self.cfg.oncomplete.call(_self, event, files, index, xhr, handler);
+            }
         }
 
         //css

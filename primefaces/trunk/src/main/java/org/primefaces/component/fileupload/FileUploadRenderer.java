@@ -106,6 +106,8 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.write(",uploadLabel:'" + fileUpload.getUploadLabel() + "'");
             writer.write(",cancelLabel:'" + fileUpload.getCancelLabel() + "'");
 
+            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(event, files, index, xhr, handler) {" + fileUpload.getOncomplete() + ";}");
+
             //file restrictions
             if(fileUpload.getAllowTypes() != null) writer.write(",allowTypes:'" + fileUpload.getAllowTypes() + "'");
             if(fileUpload.getSizeLimit() != Integer.MAX_VALUE) writer.write(",sizeLimit:" + fileUpload.getSizeLimit());
