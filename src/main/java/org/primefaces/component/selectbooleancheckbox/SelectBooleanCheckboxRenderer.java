@@ -35,7 +35,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         decodeBehaviors(context, checkbox);
 
 		String clientId = checkbox.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_checkbox");
+		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if(submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
             checkbox.setSubmittedValue(true);
@@ -57,15 +57,32 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
-        String checkboxId = clientId + "_checkbox";
         Boolean checked = (Boolean) checkbox.getValue();
-
+        
         writer.startElement("span", checkbox);
         writer.writeAttribute("id", clientId, "id");
 
+        writer.startElement("div", checkbox);
+        writer.writeAttribute("class", "ui-checkbox ui-widget", null);
+
+        encodeInput(context, checkbox, clientId, checked);
+        encodeOutput(context, checkbox, checked);
+
+        writer.endElement("div");
+        
+        writer.endElement("span");
+    }
+
+    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String inputId = clientId + "_input";
+
+        writer.startElement("div", checkbox);
+        writer.writeAttribute("class", "ui-checkbox-inputwrapper", null);
+        
         writer.startElement("input", null);
-        writer.writeAttribute("id", checkboxId, "id");
-        writer.writeAttribute("name", checkboxId, null);
+        writer.writeAttribute("id", inputId, "id");
+        writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
         if(checked) {
@@ -76,7 +93,25 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         writer.endElement("input");
 
+        writer.endElement("div");
+    }
+
+    protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String styleClass = "ui-checkbox-box ui-widget ui-corner-all ui-checkbox-relative";
+        styleClass = checked ? styleClass + " ui-state-active" : styleClass + " ui-state-default";
+
+        String iconClass = "ui-checkbox-icon";
+        iconClass = checked ? iconClass + " ui-icon ui-icon-check" : iconClass;
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
+
+        writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {

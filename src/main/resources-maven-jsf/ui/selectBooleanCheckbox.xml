@@ -177,9 +177,6 @@
         <resource>
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
-         <resource>
-			<name>wijmo/wijmo.css</name>
-		</resource>
         <resource>
 			<name>forms/forms.css</name>
 		</resource>
@@ -188,9 +185,6 @@
 		</resource>
         <resource>
 			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-         <resource>
-			<name>wijmo/wijmo.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

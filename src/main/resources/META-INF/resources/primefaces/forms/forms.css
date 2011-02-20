@@ -3,3 +3,42 @@
 .ui-selectonelistbox, .ui-selectmanymenu {width:100px;}
 .ui-selectonelistbox ul, .ui-selectmanymenu ul {list-style-type: none; margin: 0;padding: 0;}
 .ui-selectlistbox-item {margin:2px;border:0 !important;cursor: pointer;}
+
+.ui-checkbox {
+    position: relative; /*float: left;*/
+    margin: 3px 0;
+    line-height: 16px;
+    width: 16px;
+}
+.ui-checkbox .ui-checkbox-inputwrapper {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+.ui-checkbox label {
+    display: block;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0 0 0 1.4em;
+    outline: none;
+    margin: 0 3px;
+    width: 8em;
+}
+.ui-checkbox .ui-checkbox-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    margin-right: 3px; }
+
+.ui-checkbox .ui-checkbox-relative {
+    position: relative;
+    float: left;
+    margin-right: 3px;
+}

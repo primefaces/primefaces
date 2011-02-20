@@ -248,10 +248,31 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
+    this.jq = jQuery(this.jqId);
+    this.input = jQuery(this.jqId + '_input');
+    this.output = this.jq.find('.ui-checkbox-box');
+    this.icon = this.output.find('.ui-checkbox-icon');
+    
+    var _self = this;
 
-    //Create widget
-    this.jq.wijcheckbox(this.cfg);
+    //Visuals
+    this.output.mouseover(function() {
+        _self.output.addClass('ui-state-hover');
+    }).mouseout(function() {
+        _self.output.removeClass('ui-state-hover');
+    }).click(function() {
+        var checked = _self.output.hasClass('ui-state-active');
+
+        if(checked) {
+            _self.output.removeClass('ui-state-active');
+            _self.input.removeAttr('checked');
+            _self.icon.removeClass('ui-icon ui-icon-check');
+        } else {
+            _self.output.addClass('ui-state-active');
+            _self.input.attr('checked', 'checked');
+            _self.icon.addClass('ui-icon ui-icon-check');
+        }
+    })
 
     //Client Behaviors
     if(this.cfg.behaviors) {
