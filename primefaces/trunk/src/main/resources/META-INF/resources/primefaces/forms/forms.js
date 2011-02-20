@@ -147,7 +147,6 @@
     };
 })(jQuery);
 
-
 /**
  * PrimeFaces InputText Widget
  */
@@ -272,11 +271,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
             _self.input.attr('checked', 'checked');
             _self.icon.addClass('ui-icon ui-icon-check');
         }
-    })
+
+        _self.input.change();   //delegate event
+    });
 
     //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
 }
 
