@@ -39,7 +39,7 @@ public class ScrollPanelRenderer extends CoreRenderer {
 
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("style", style, "style");
+        writer.writeAttribute("style", style + ";overflow:hidden", "style");
         if(styleClass != null) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
@@ -56,14 +56,15 @@ public class ScrollPanelRenderer extends CoreRenderer {
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
+        //writer.write("jQuery(function() {");
 
         writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.ScrollPanel('" + clientId + "',{");
 
         writer.write("scrollMode:'" + panel.getScrollMode() + "'");
         writer.write(",easing:'" + panel.getEasing() + "'");
 
-        writer.write("});});");
+        //writer.write("});});");
+        writer.write("});");
         
         writer.endElement("script");
     }
