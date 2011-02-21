@@ -287,6 +287,16 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
     }
 }
 
+PrimeFaces.widget.SelectOneRadio.prototype.enable = function() {
+    this.jq.find('.ui-radiobutton').removeClass('ui-state-disabled');
+    this.cfg.disabled = false;
+}
+
+PrimeFaces.widget.SelectOneRadio.prototype.disable = function() {
+    this.jq.find('.ui-radiobutton').addClass('ui-state-disabled');
+    this.cfg.disabled = true;
+}
+
 /**
  * PrimeFaces SelectBooleanCheckbox Widget
  */
@@ -412,7 +422,7 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.enable = function() {
     this.cfg.disabled = false;
 }
 
-PrimeFaces.widget.addClass('ui-state-disabled');SelectManyCheckbox.prototype.disable = function() {
+PrimeFaces.widget.SelectManyCheckbox.prototype.disable = function() {
     this.jq.find('.ui-checkbox').addClass('ui-state-disabled');
     this.cfg.disabled = true;
 }
