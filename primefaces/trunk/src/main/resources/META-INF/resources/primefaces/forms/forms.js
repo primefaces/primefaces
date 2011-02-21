@@ -246,15 +246,17 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
         }
     }).click(function() {
         if(!_self.cfg.disabled) {
+
+            //unselect all
             _self.output.removeClass('ui-state-active');
             _self.icons.removeClass('ui-icon ui-icon-bullet');
 
             //select current
             var element = jQuery(this),
             input = element.prev().children('input'),
-            checked = element.hasClass('ui-state-active');
+            checked = input.attr('checked');
 
-            if(checked) {
+            if(checked && _self.cfg.unselectable) {
                 element.removeClass('ui-state-active');
                 input.removeAttr('checked');
                 element.children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
@@ -383,7 +385,7 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
         if(!_self.cfg.disabled) {
             var element = jQuery(this),
             input = element.prev().children('input'),
-            checked = element.hasClass('ui-state-active');
+            checked = input.attr('checked');
 
             if(checked) {
                 element.removeClass('ui-state-active');
