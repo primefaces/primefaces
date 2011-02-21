@@ -229,10 +229,57 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='radio']");
+    this.jq = jQuery(this.jqId);
+    this.output = this.jq.find('.ui-radiobutton-box');
+    this.labels = this.jq.find('label');
+    this.icons = this.jq.find('.ui-radiobutton-icon');
 
-    //Create widget
-    this.jq.wijradio(this.cfg);
+    var _self = this;
+
+    this.output.mouseover(function() {
+        if(!_self.cfg.disabled) {
+            jQuery(this).addClass('ui-state-hover');
+        }
+    }).mouseout(function() {
+        if(!_self.cfg.disabled) {
+            jQuery(this).removeClass('ui-state-hover');
+        }
+    }).click(function() {
+        if(!_self.cfg.disabled) {
+            _self.output.removeClass('ui-state-active');
+            _self.icons.removeClass('ui-icon ui-icon-bullet');
+
+            //select current
+            var element = jQuery(this),
+            input = element.prev().children('input'),
+            checked = element.hasClass('ui-state-active');
+
+            if(checked) {
+                element.removeClass('ui-state-active');
+                input.removeAttr('checked');
+                element.children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
+            } else {
+                element.addClass('ui-state-active');
+                input.attr('checked', 'checked');
+                element.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+            }
+
+            input.change();
+        }
+    });
+
+    this.labels.click(function(e) {
+        if(!_self.cfg.disabled) {
+            e.preventDefault();
+
+            var element = jQuery(this),
+            input = jQuery(PrimeFaces.escapeClientId(element.attr('for'))),
+            radiobutton = input.parent().next();
+
+            radiobutton.click();
+        }
+    });
+
 
     //Client Behaviors
     if(this.cfg.behaviors) {
