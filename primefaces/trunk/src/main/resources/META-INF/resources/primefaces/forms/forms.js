@@ -251,34 +251,55 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     this.input = jQuery(this.jqId + '_input');
     this.output = this.jq.find('.ui-checkbox-box');
     this.icon = this.output.find('.ui-checkbox-icon');
+    this.disabled = this.isDisabled();
     
     var _self = this;
 
     //Visuals
     this.output.mouseover(function() {
-        _self.output.addClass('ui-state-hover');
-    }).mouseout(function() {
-        _self.output.removeClass('ui-state-hover');
-    }).click(function() {
-        var checked = _self.output.hasClass('ui-state-active');
-
-        if(checked) {
-            _self.output.removeClass('ui-state-active');
-            _self.input.removeAttr('checked');
-            _self.icon.removeClass('ui-icon ui-icon-check');
-        } else {
-            _self.output.addClass('ui-state-active');
-            _self.input.attr('checked', 'checked');
-            _self.icon.addClass('ui-icon ui-icon-check');
+        if(!_self.disabled) {
+            _self.output.addClass('ui-state-hover');
         }
+    }).mouseout(function() {
+        if(!_self.disabled) {
+            _self.output.removeClass('ui-state-hover');
+        }
+    }).click(function() {
+        if(!_self.disabled) {
+            var checked = _self.output.hasClass('ui-state-active');
 
-        _self.input.change();   //delegate event
+            if(checked) {
+                _self.output.removeClass('ui-state-active');
+                _self.input.removeAttr('checked');
+                _self.icon.removeClass('ui-icon ui-icon-check');
+            } else {
+                _self.output.addClass('ui-state-active');
+                _self.input.attr('checked', 'checked');
+                _self.icon.addClass('ui-icon ui-icon-check');
+            }
+
+            _self.input.change();   //delegate event
+        }
     });
 
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
+}
+
+PrimeFaces.widget.SelectBooleanCheckbox.prototype.isDisabled = function() {
+    return this.jq.hasClass('ui-state-disabled');
+}
+
+PrimeFaces.widget.SelectBooleanCheckbox.prototype.enable = function() {
+    this.jq.removeClass('ui-state-disabled');
+    this.disabled = false;
+}
+
+PrimeFaces.widget.SelectBooleanCheckbox.prototype.disable = function() {
+    this.jq.addClass('ui-state-disabled');
+    this.disabled = true;
 }
 
 /**
