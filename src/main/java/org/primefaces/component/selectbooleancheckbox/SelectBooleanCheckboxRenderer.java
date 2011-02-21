@@ -20,7 +20,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.HTML;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
@@ -28,7 +27,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 	public void decode(FacesContext context, UIComponent component) {
 		SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
 
-        if(checkbox.isDisabled() || checkbox.isReadonly()) {
+        if(checkbox.isDisabled()) {
             return;
         }
 
@@ -45,7 +44,6 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         }
 	}
 
-
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
@@ -58,25 +56,29 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         Boolean checked = (Boolean) checkbox.getValue();
-        
-        writer.startElement("span", checkbox);
-        writer.writeAttribute("id", clientId, "id");
+        boolean disabled = checkbox.isDisabled();
+
+        String style = checkbox.getStyle();
+        String styleClass = checkbox.getStyleClass();
+        styleClass = styleClass == null ? SelectBooleanCheckbox.STYLE_CLASS : SelectBooleanCheckbox.STYLE_CLASS + " " + styleClass;
+        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         writer.startElement("div", checkbox);
-        writer.writeAttribute("class", "ui-checkbox ui-widget", null);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null)
+            writer.writeAttribute("style", style, "style");
 
-        encodeInput(context, checkbox, clientId, checked);
+        encodeInput(context, checkbox, clientId, checked, disabled);
         encodeOutput(context, checkbox, checked);
 
         writer.endElement("div");
-        
-        writer.endElement("span");
     }
 
-    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
+    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
-
+        
         writer.startElement("div", checkbox);
         writer.writeAttribute("class", "ui-checkbox-inputwrapper", null);
         
@@ -85,11 +87,9 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
-        if(checked) {
-            writer.writeAttribute("checked", "checked", null);
-        }
-
-        renderPassThruAttributes(context, checkbox, HTML.SELECT_ATTRS);
+        if(checked) writer.writeAttribute("checked", "checked", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(checkbox.getOnchange() != null) writer.writeAttribute("onchange", checkbox.getOnchange(), null);
 
         writer.endElement("input");
 
@@ -98,8 +98,8 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
     protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = "ui-checkbox-box ui-widget ui-corner-all ui-checkbox-relative";
-        styleClass = checked ? styleClass + " ui-state-active" : styleClass + " ui-state-default";
+        String styleClass = "ui-checkbox-box ui-widget ui-corner-all ui-checkbox-relative ui-state-default";
+        styleClass = checked ? styleClass + " ui-state-active" : styleClass;
 
         String iconClass = "ui-checkbox-icon";
         iconClass = checked ? iconClass + " ui-icon ui-icon-check" : iconClass;
