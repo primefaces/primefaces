@@ -437,7 +437,7 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     this.jq = jQuery(this.jqId);
     this.input = jQuery(this.jqId + '_input');
 
-    var listContainer = jQuery(this.jqId).children('ul'),
+    var listContainer = this.jq.children('ul'),
     options = jQuery(this.input.attr('options')),
     _self = this;
 
@@ -456,27 +456,50 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     var items = listContainer.children('li');
 
     items.mouseover(function() {
-        jQuery(this).addClass('ui-state-hover');
-    }).mouseout(function() {
-        jQuery(this).removeClass('ui-state-hover');
-    }).click(function() {
-        var element = jQuery(this),
-        option = jQuery(options.get(element.index()));
-        
-        if(element.hasClass('ui-state-active')) {
-            element.removeClass('ui-state-active');
-            option.removeAttr('selected');
+        if(!_self.cfg.disabled) {
+            jQuery(this).addClass('ui-state-hover');
         }
-        else {
-            if(_self.cfg.selection == 'single') {
-                items.removeClass('ui-state-active');
-                options.removeAttr('selected');
+    }).mouseout(function() {
+        if(!_self.cfg.disabled) {
+            jQuery(this).removeClass('ui-state-hover');
+        }
+    }).click(function() {
+        if(!_self.cfg.disabled) {
+            var element = jQuery(this),
+            option = jQuery(options.get(element.index()));
+
+            if(element.hasClass('ui-state-active')) {
+                element.removeClass('ui-state-active');
+                option.removeAttr('selected');
+            }
+            else {
+                if(_self.cfg.selection == 'single') {
+                    items.removeClass('ui-state-active');
+                    options.removeAttr('selected');
+                }
+
+                element.addClass('ui-state-active');
+                option.attr('selected', 'selected')
             }
 
-            element.addClass('ui-state-active');
-            option.attr('selected', 'selected')
+            _self.input.change();
         }
     });
 
     this.jq.wijsuperpanel(this.cfg);
+
+    //Client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+    }
+}
+
+PrimeFaces.widget.SelectListbox.prototype.enable = function() {
+    this.jq.removeClass('ui-state-disabled');
+    this.cfg.disabled = false;
+}
+
+PrimeFaces.widget.SelectListbox.prototype.disable = function() {
+    this.jq.addClass('ui-state-disabled');
+    this.cfg.disabled = true;
 }

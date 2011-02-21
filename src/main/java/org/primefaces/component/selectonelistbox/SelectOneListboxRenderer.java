@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.HTML;
 
 public class SelectOneListboxRenderer extends InputRenderer {
 
@@ -32,7 +31,7 @@ public class SelectOneListboxRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectOneListbox listbox = (SelectOneListbox) component;
 
-        if(listbox.isDisabled() || listbox.isReadonly()) {
+        if(listbox.isDisabled()) {
             return;
         }
 
@@ -40,10 +39,7 @@ public class SelectOneListboxRenderer extends InputRenderer {
 
         String clientId = listbox.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-
-        if(value != null) {
-            listbox.setSubmittedValue(value);
-        }
+        listbox.setSubmittedValue(value);
     }
 
     @Override
@@ -58,10 +54,13 @@ public class SelectOneListboxRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
         String style = listbox.getStyle();
+        String styleClass = listbox.getStyleClass();
+        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : SelectOneListbox.CONTAINER_CLASS + " " + styleClass;
+        styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         
         writer.startElement("div", listbox);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", SelectOneListbox.CONTAINER_CLASS, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) writer.writeAttribute("style", style, "style");
 
         encodeInput(context, listbox, clientId);
@@ -79,6 +78,11 @@ public class SelectOneListboxRenderer extends InputRenderer {
 
         writer.write(listbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectListbox('" + clientId + "',{");
         writer.write("selection:'single'");
+
+        if(listbox.isDisabled()) writer.write(",disabled:true");
+
+        encodeClientBehaviors(context, listbox);
+
         writer.write("});");
 
         writer.endElement("script");
@@ -95,8 +99,7 @@ public class SelectOneListboxRenderer extends InputRenderer {
         writer.writeAttribute("id", inputid, "id");
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-
-        //renderPassThruAttributes(context, listbox, HTML.SELECT_ATTRS);
+        if(listbox.getOnchange() != null) writer.writeAttribute("onchange", listbox.getOnchange(), null);
 
         encodeSelectItems(context, listbox);
 

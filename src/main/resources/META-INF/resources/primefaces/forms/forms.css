@@ -3,7 +3,10 @@
 .ui-selectonelistbox, .ui-selectmanymenu {width:100px;}
 .ui-selectonelistbox ul, .ui-selectmanymenu ul {list-style-type: none; margin: 0;padding: 0;}
 .ui-selectlistbox-item {margin:2px;border:0 !important;cursor: pointer;}
-
+.ui-selectlistbox-item.ui-state-hover,
+.ui-selectlistbox-item.ui-state-active {
+    font-weight: normal;
+}
 .ui-checkbox {
     position: relative;
     margin: 3px 0;
