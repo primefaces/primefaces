@@ -84,6 +84,8 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
         writer.write(checkbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectManyCheckbox({id:'" + clientId + "'");
 
+        if(checkbox.isDisabled()) writer.write(",disabled: true");
+
         encodeClientBehaviors(context, checkbox);
 
         writer.write("});");
@@ -99,6 +101,7 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         String clientId = component.getClientId(context);
         String containerClientId = component.getContainerClientId(context);
         boolean checked = componentValue != null && ((List) componentValue).contains(value);
+        boolean disabled = checkbox.isDisabled();
         boolean pageDirectionLayout = checkbox.getLayout().equals("pageDirection");
 
         if(pageDirectionLayout) {
@@ -106,10 +109,16 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         }
 
         writer.startElement("td", null);
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-checkbox ui-widget", null);
 
-        encodeOptionInput(context, checkbox, clientId, containerClientId, checked, checked, label, formattedValue);
+        String styleClass = "ui-checkbox ui-widget";
+        if(disabled) {
+            styleClass += " ui-state-disabled";
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+
+        encodeOptionInput(context, checkbox, clientId, containerClientId, checked, disabled, label, formattedValue);
         encodeOptionOutput(context, checkbox, checked);
 
         writer.endElement("div");
@@ -175,9 +184,8 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", formattedValue, null);
 
-        if(checked) {
-            writer.writeAttribute("checked", "checked", null);
-        }
+        if(checked) writer.writeAttribute("checked", "checked", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
 
         writer.endElement("input");
 
