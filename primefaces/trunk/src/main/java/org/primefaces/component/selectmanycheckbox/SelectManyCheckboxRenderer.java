@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -27,7 +26,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.HTML;
 
 public class SelectManyCheckboxRenderer extends InputRenderer {
 
@@ -35,7 +33,7 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
 
-        if(checkbox.isDisabled() || checkbox.isReadonly()) {
+        if(checkbox.isDisabled()) {
             return;
         }
 
@@ -46,6 +44,8 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
         if(values != null) {
             checkbox.setSubmittedValue(values);
+        } else {
+            checkbox.setSubmittedValue(new String[0]);
         }
     }
 
@@ -60,20 +60,19 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
-        String layout = checkbox.getLayout();
-        if(layout == null) {
-            layout = "lineDirection";
-        }
-
-        writer.startElement("span", checkbox);
+        String style = checkbox.getStyle();
+        String styleClass = checkbox.getStyleClass();
+        styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
+        
+        writer.startElement("table", checkbox);
         writer.writeAttribute("id", clientId, "id");
-        if(layout.equals("lineDirection")) {
-            writer.writeAttribute("class", "wijmo-checkbox-horizontal", null);
-        }
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null)
+            writer.writeAttribute("style", style, "style");
 
         encodeSelectItems(context, checkbox);
 
-        writer.endElement("span");
+        writer.endElement("table");
     }
 
     protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
@@ -95,28 +94,34 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
     @Override
     protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String formattedValue = formatOptionValue(context, component, converter, value);
         String clientId = component.getClientId(context);
         String containerClientId = component.getContainerClientId(context);
+        boolean checked = componentValue != null && ((List) componentValue).contains(value);
+        boolean pageDirectionLayout = checkbox.getLayout().equals("pageDirection");
 
-        writer.startElement("input", null);
-        writer.writeAttribute("id", containerClientId, null);
-        writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("value", formattedValue, null);
-        
-        if(componentValue != null && ((List) componentValue).contains(value)) {
-            writer.writeAttribute("checked", "checked", null);
+        if(pageDirectionLayout) {
+            writer.startElement("tr", null);
         }
 
-        renderPassThruAttributes(context, component, HTML.SELECT_ATTRS);
+        writer.startElement("td", null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-checkbox ui-widget", null);
 
-        writer.endElement("input");
+        encodeOptionInput(context, checkbox, clientId, containerClientId, checked, checked, label, formattedValue);
+        encodeOptionOutput(context, checkbox, checked);
 
-        writer.startElement("label", null);
-        writer.writeAttribute("for", containerClientId, null);
-        writer.write(label);
-        writer.endElement("label");
+        writer.endElement("div");
+        writer.endElement("td");
+
+        writer.startElement("td", null);
+        encodeOptionLabel(context, checkbox, containerClientId, label);
+        writer.endElement("td");
+
+        if(pageDirectionLayout) {
+            writer.endElement("tr");
+        }
     }
 
     @Override
@@ -139,4 +144,70 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
         return list;
 	}
+
+    @Override
+    protected void encodeSelectItems(FacesContext context, UIInput component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
+        String layout = checkbox.getLayout();
+        if(layout == null) {
+            checkbox.setLayout("lineDirection");
+        }
+
+        if(checkbox.getLayout().equals("lineDirection")) {
+            writer.startElement("tr", null);
+            super.encodeSelectItems(context, component);
+            writer.endElement("tr");
+        } else {
+            super.encodeSelectItems(context, component);
+        }
+    }
+
+    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String clientId, String containerClientId, boolean checked, boolean disabled, String label, String formattedValue) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-checkbox-inputwrapper", null);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("id", containerClientId, null);
+        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("value", formattedValue, null);
+
+        if(checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+
+        writer.endElement("input");
+
+        writer.endElement("div");
+    }
+
+    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, String label) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("label", null);
+        writer.writeAttribute("for", containerClientId, null);
+        writer.write(label);
+        writer.endElement("label");
+    }
+
+    protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox checkbox, boolean checked) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String styleClass = "ui-checkbox-box ui-widget ui-corner-all ui-checkbox-relative ui-state-default";
+        styleClass = checked ? styleClass + " ui-state-active" : styleClass;
+
+        String iconClass = "ui-checkbox-icon";
+        iconClass = checked ? iconClass + " ui-icon ui-icon-check" : iconClass;
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("div");
+    }
 }
