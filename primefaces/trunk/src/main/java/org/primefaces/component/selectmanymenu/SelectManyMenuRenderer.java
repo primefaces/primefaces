@@ -33,7 +33,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectManyMenu menu = (SelectManyMenu) component;
 
-        if(menu.isDisabled() || menu.isReadonly()) {
+        if(menu.isDisabled()) {
             return;
         }
 
@@ -44,6 +44,8 @@ public class SelectManyMenuRenderer extends InputRenderer {
 
         if(values != null) {
             menu.setSubmittedValue(values);
+        } else {
+            menu.setSubmittedValue(new String[0]);
         }
     }
 
@@ -59,10 +61,13 @@ public class SelectManyMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
         String style = menu.getStyle();
+        String styleClass = menu.getStyleClass();
+        styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : SelectManyMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", SelectManyMenu.CONTAINER_CLASS, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) writer.writeAttribute("style", style, "style");
 
         encodeInput(context, menu, clientId);
@@ -79,7 +84,13 @@ public class SelectManyMenuRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectListbox('" + clientId + "',{");
+        
         writer.write("selection:'multiple'");
+
+        if(menu.isDisabled()) writer.write(",disabled:true");
+
+        encodeClientBehaviors(context, menu);
+
         writer.write("});");
 
         writer.endElement("script");
@@ -97,8 +108,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-
-        //renderPassThruAttributes(context, listbox, HTML.SELECT_ATTRS);
+        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
 
         encodeSelectItems(context, menu);
 
