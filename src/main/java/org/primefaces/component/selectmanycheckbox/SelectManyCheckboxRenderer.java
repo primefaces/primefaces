@@ -186,6 +186,7 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(checkbox.getOnchange() != null) writer.writeAttribute("onchange", checkbox.getOnchange(), null);
 
         writer.endElement("input");
 

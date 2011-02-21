@@ -159,6 +159,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(radio.getOnchange() != null) writer.writeAttribute("onchange", radio.getOnchange(), null);
 
         writer.endElement("input");
 
