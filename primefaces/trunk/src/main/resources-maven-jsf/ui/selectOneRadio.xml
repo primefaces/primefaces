@@ -23,18 +23,6 @@
 		&input_component_attributes;
         &widget_var_attribute;
         <attribute>
-            <name>accesskey</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>dir</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
             <name>disabled</name>
             <required></required>
             <type>boolean</type>
@@ -47,19 +35,7 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>lang</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
             <name>layout</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onblur</name>
             <required></required>
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
@@ -68,84 +44,6 @@
             <name>onchange</name>
             <required></required>
             <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onclick</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>ondblclick</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onfocus</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onkeydown</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onkeypress</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onkeyup</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onmousedown</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onmousemove</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onmouseout</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onmouseover</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onmouseup</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>onselect</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>readonly</name>
-            <required></required>
-            <type>boolean</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
@@ -160,25 +58,10 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
-        <attribute>
-            <name>tabindex</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>title</name>
-            <required></required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
 	</attributes>
 	<resources>
         <resource>
 			<name>jquery/ui/jquery-ui.css</name>
-		</resource>
-         <resource>
-			<name>wijmo/wijmo.css</name>
 		</resource>
         <resource>
 			<name>forms/forms.css</name>
@@ -188,9 +71,6 @@
 		</resource>
         <resource>
 			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-         <resource>
-			<name>wijmo/wijmo.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

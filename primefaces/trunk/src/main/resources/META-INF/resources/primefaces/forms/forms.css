@@ -32,7 +32,39 @@
     margin-right: 3px;
 }
 
-.ui-selectmanycheckbox label {
+.ui-selectmanycheckbox label,
+.ui-selectoneradio label {
     display: block;
     margin-top: 4px;
+}
+
+.ui-radiobutton {
+    position: relative;
+    margin: 3px 0;
+    width: 16px;
+    line-height: 16px;
+}
+.ui-radiobutton .ui-radiobutton-inputwrapper {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+.ui-radiobutton .ui-radiobutton-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+.ui-radiobutton .ui-radiobutton-relative {
+    position: relative;
+    float: left;
+    margin-right: 3px;
+}
+.ui-radiobutton-icon {
+    margin-left: 1px;
 }
