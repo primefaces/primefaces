@@ -255,7 +255,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     
     var _self = this;
 
-    //Visuals
     this.output.mouseover(function() {
         if(!_self.disabled) {
             _self.output.addClass('ui-state-hover');
@@ -309,10 +308,41 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId).children(":input[type='checkbox']");
+    this.jq = jQuery(this.jqId);
+    this.output = this.jq.find('.ui-checkbox-box');
+    this.labels = this.jq.find('label');
 
-    //Create widget
-    this.jq.wijcheckbox(this.cfg);
+    this.output.mouseover(function() {
+        jQuery(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        jQuery(this).removeClass('ui-state-hover');
+    }).click(function() {
+        var element = jQuery(this),
+        input = element.prev().children('input'),
+        checked = element.hasClass('ui-state-active');
+
+        if(checked) {
+            element.removeClass('ui-state-active');
+            input.removeAttr('checked');
+            element.children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
+        } else {
+            element.addClass('ui-state-active');
+            input.attr('checked', 'checked');
+            element.children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
+        }
+
+        input.change();
+    });
+
+    this.labels.click(function(e) {
+        e.preventDefault();
+
+        var element = jQuery(this),
+        input = jQuery(PrimeFaces.escapeClientId(element.attr('for'))),
+        checkbox = input.parent().next();
+
+        checkbox.click();
+    });
 
     //Client Behaviors
     if(this.cfg.behaviors) {
@@ -355,7 +385,7 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     }).click(function() {
         var element = jQuery(this),
         option = jQuery(options.get(element.index()));
-
+        
         if(element.hasClass('ui-state-active')) {
             element.removeClass('ui-state-active');
             option.removeAttr('selected');
