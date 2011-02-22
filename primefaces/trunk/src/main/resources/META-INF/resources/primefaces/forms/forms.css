@@ -71,3 +71,57 @@
 .ui-radiobutton-icon {
     margin-left: 1px;
 }
+
+.ui-selectonemenu {
+    display: inline-block;
+    position: relative;
+    width: auto;
+    zoom: 1;
+    cursor: pointer;
+    *display: inline;
+    width:200px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    cursor: pointer;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 3px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger  .ui-icon {
+    margin-top: 3px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label  {
+    display: block;
+    padding: 3px 26px 3px 5px;
+    width: auto;
+    border: none;
+}
+
+.ui-selectonemenu .ui-selectonemenu-panel {
+    position: absolute;
+    height:250px;
+    width:200px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-list {
+    padding: 0.4em;
+    border: 0 none;
+}
+
+.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-item {
+    border:0px none;
+    cursor:pointer;
+    font-weight:normal;
+    margin:1px 0;
+    padding:3px 5px;
+    text-align:left;
+}

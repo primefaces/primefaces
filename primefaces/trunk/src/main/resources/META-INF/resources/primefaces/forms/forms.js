@@ -198,28 +198,119 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
+    this.jq = jQuery(this.jqId);
+    this.input = jQuery(this.jqId + '_input');
+    this.label = this.jq.children('.ui-selectonemenu-label');
+    this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
+    this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+    this.panel = this.jq.children('.ui-selectonemenu-panel');
+    
+    this.populateList();
+    
+    this.bindEvents();
 
-    //Animations
-    if(this.cfg.effect) {
-        this.cfg.showingAnimation = {
-            effect: this.cfg.effect
-            ,speed: this.cfg.effectDuration
-        };
+    this.panel.wijsuperpanel(this.cfg);
 
-        this.cfg.hidingAnimation = {
-            effect: this.cfg.effect
-            ,speed: this.cfg.effectDuration
-        };
-    }
-
-    //Create widget
-    this.jq.wijdropdown(this.cfg);
+    this.panel.hide().removeClass('ui-helper-hidden-accessible');
 
     //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.populateList = function() {
+    var listContainer = this.jq.find('.ui-selectonemenu-list'),
+    options = jQuery(this.input.attr('options')),
+    _self = this;
+
+    options.each(function(i) {
+       var option = jQuery(this),
+       selected = option.attr('selected'),
+       styleClass = 'ui-selectonemenu-item ui-corner-all';
+
+       if(selected) {
+           styleClass = styleClass + ' ui-state-active';
+       }
+
+       listContainer.append('<li class="' + styleClass + '">' + jQuery(this).html() + '</li>');
+    });
+
+    var items = listContainer.children('li');
+
+    //Bind events for items
+    items.mouseover(function() {
+        jQuery(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        jQuery(this).removeClass('ui-state-hover');
+    }).click(function() {
+        var element = jQuery(this),
+        option = jQuery(options.get(element.index()));
+
+        items.removeClass('ui-state-active');
+        element.addClass('ui-state-active');
+
+        option.attr('selected', 'selected');
+
+        _self.label.html(element.html());
+        _self.input.change();
+        _self.hide();
+    });
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
+    var _self = this;
+    
+    this.triggers.mouseover(function() {
+        _self.triggers.addClass('ui-state-hover');
+    }).mouseout(function() {
+        _self.triggers.removeClass('ui-state-hover');
+    }).click(function() {
+        if(_self.panel.is(":hidden")) {
+            _self.show();
+        } else {
+            _self.hide();
+        }
+    });
+
+    var offset;
+
+    jQuery(document.body).bind('click', function (e) {
+        if (_self.panel.is(":hidden")) {
+            return;
+        }
+        offset = _self.panel.offset();
+        if (e.target === _self.label.get(0) ||
+        e.target === _self.menuIcon.get(0) ||
+        e.target === _self.menuIcon.children().get(0)) {
+            return;
+        }
+        if (e.pageX < offset.left ||
+            e.pageX > offset.left + _self.panel.width() ||
+            e.pageY < offset.top ||
+            e.pageY > offset.top + _self.panel.height()) {
+            _self.hide();
+        }
+        _self.hide();
+    });
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
+    this.panel.css('z-index', '100000');
+    if(jQuery.browser.msie && /^[6,7]\.[0-9]+/.test(jQuery.browser.version)) {
+        this.panel.parent().css('z-index', '99999');
+    }
+
+    this.panel.show();
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.hide = function() {
+    this.panel.css('z-index', '');
+    if(jQuery.browser.msie && /^[6,7]\.[0-9]+/.test(jQuery.browser.version)) {
+        this.panel.parent().css('z-index", "');
+    }
+
+    this.panel.hide();
 }
 
 /**
@@ -281,7 +372,6 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
             radiobutton.click();
         }
     });
-
 
     //Client Behaviors
     if(this.cfg.behaviors) {

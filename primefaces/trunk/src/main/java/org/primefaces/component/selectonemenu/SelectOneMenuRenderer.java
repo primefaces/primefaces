@@ -39,7 +39,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         decodeBehaviors(context, menu);
 
         String clientId = menu.getClientId(context);
-        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_menu");
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if(value != null) {
             menu.setSubmittedValue(value);
@@ -57,22 +57,77 @@ public class SelectOneMenuRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
-        String menuId = clientId + "_menu";
+        String style = menu.getStyle();
+        String styleclass = menu.getStyleClass();
+        styleclass = styleclass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleclass;
 
-        writer.startElement("span", menu);
+        writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleclass, "styleclass");
+        if(style != null)
+            writer.writeAttribute("style", style, "style");
+
+        encodeInput(context, menu, clientId);
+        encodeLabel(context, menu);
+        encodeMenuIcon(context, menu);
+        encodePanel(context, menu);
+
+        writer.endElement("div");
+    }
+
+    protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String inputId = clientId + "_input";
+        
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
 
         writer.startElement("select", menu);
-        writer.writeAttribute("id", menuId, "id");
-        writer.writeAttribute("name", menuId, null);
-
-        renderPassThruAttributes(context, menu, HTML.SELECT_ATTRS);
+        writer.writeAttribute("id", inputId, "id");
+        writer.writeAttribute("name", inputId, null);
 
         encodeSelectItems(context, menu);
 
         writer.endElement("select");
 
+        writer.endElement("div");
+    }
+
+    protected void encodeLabel(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("label", null);
+        writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+
+        writer.writeText(menu.getSelectedLabel(), null);
+
+        writer.endElement("label");
+    }
+
+    protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", SelectOneMenu.TRIGGER_CLASS, null);
+
+        writer.startElement("span", menu);
+        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
         writer.endElement("span");
+
+        writer.endElement("div");
+    }
+
+    protected void encodePanel(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectOneMenu.PANEL_CLASS, null);
+
+        writer.startElement("ul", menu);
+        writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
+        writer.endElement("ul");
+        
+        writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
@@ -127,13 +182,17 @@ public class SelectOneMenuRenderer extends InputRenderer {
     @Override
     protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        SelectOneMenu menu = (SelectOneMenu) component;
         String formattedValue = formatOptionValue(context, component, converter, value);
 
         writer.startElement("option", null);
         writer.writeAttribute("value", formattedValue, null);
-        if(componentValue != null && componentValue.equals(value)) {
+        
+        if((componentValue == null && value.equals("")) || (componentValue != null && componentValue.equals(value))) {
             writer.writeAttribute("selected", "selected", null);
+            menu.setSelectedLabel(label);
         }
+        
         writer.write(label);
         writer.endElement("option");
     }
