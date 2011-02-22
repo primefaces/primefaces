@@ -204,6 +204,7 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children('.ui-selectonemenu-panel');
+    if(!this.cfg.effectDuration) this.cfg.effectDuration = 400;
 
     this.bindEvents();
 
@@ -283,15 +284,10 @@ PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
         this.panel.parent().css('z-index', '99999');
     }
 
-    this.panel.show();
+    this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.hide = function() {
-    this.panel.css('z-index', '');
-    if(jQuery.browser.msie && /^[6,7]\.[0-9]+/.test(jQuery.browser.version)) {
-        this.panel.parent().css('z-index", "');
-    }
-
     this.panel.hide();
 }
 
