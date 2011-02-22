@@ -16,13 +16,14 @@
 package org.primefaces.component.selectonelistbox;
 
 import java.io.IOException;
+import java.util.List;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.InputRenderer;
 
 public class SelectOneListboxRenderer extends InputRenderer {
@@ -143,17 +144,26 @@ public class SelectOneListboxRenderer extends InputRenderer {
 		return value;
 	}
 
-    @Override
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectOneListbox listbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String formattedValue = formatOptionValue(context, component, converter, value);
+        List<SelectItem> selectItems = getSelectItems(context, listbox);
+        Converter converter = getConverter(context, listbox);
+        Object value = listbox.getValue();
 
-        writer.startElement("option", null);
-        writer.writeAttribute("value", formattedValue, null);
-        if(componentValue != null && componentValue.equals(value)) {
-            writer.writeAttribute("selected", "selected", null);
+        for(SelectItem selectItem : selectItems) {
+            Object itemValue = selectItem.getValue();
+            String itemLabel = selectItem.getLabel();
+
+            writer.startElement("option", null);
+            writer.writeAttribute("value", getOptionAsString(context, listbox, converter, itemValue), null);
+
+            if(value != null && value.equals(itemValue)) {
+                writer.writeAttribute("selected", "selected", null);
+            }
+
+            writer.write(itemLabel);
+
+            writer.endElement("option");
         }
-        writer.write(label);
-        writer.endElement("option");
     }
 }

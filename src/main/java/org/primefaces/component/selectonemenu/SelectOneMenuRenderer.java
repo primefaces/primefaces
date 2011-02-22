@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,21 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.HTML;
 
 public class SelectOneMenuRenderer extends InputRenderer {
 
@@ -85,6 +91,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
+        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), "onchange");
 
         encodeSelectItems(context, menu);
 
@@ -119,15 +126,25 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
     protected void encodePanel(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean customContent = menu.getVar() != null;
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", SelectOneMenu.PANEL_CLASS, null);
-
-        writer.startElement("ul", menu);
-        writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
-        writer.endElement("ul");
+        if(customContent) {
+            writer.startElement("table", menu);
+            writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
+            encodeCustomContent(context, menu);
+            writer.endElement("table");
+        } else {
+            writer.startElement("ul", menu);
+            writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            writer.endElement("ul");
+        }
         
+   
         writer.endElement("div");
+    }
+
+    protected void encodeCustomContent(FacesContext context, SelectOneMenu menu) throws IOException {
+        
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
@@ -141,9 +158,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         writer.write("effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400) {
-            writer.write(",effectDuration:" + menu.getEffectDuration());
-        }
+        if(menu.getEffectDuration() != 400)writer.write(",effectDuration:" + menu.getEffectDuration());
+        if(menu.getVar() != null) writer.write(",customContent:true");
 
         encodeClientBehaviors(context, menu);
 
@@ -179,21 +195,27 @@ public class SelectOneMenuRenderer extends InputRenderer {
 		return value;
 	}
 
-    @Override
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectOneMenu menu = (SelectOneMenu) component;
-        String formattedValue = formatOptionValue(context, component, converter, value);
+        List<SelectItem> selectItems = getSelectItems(context, menu);
+        Converter converter = getConverter(context, menu);
+        Object value = menu.getValue();
 
-        writer.startElement("option", null);
-        writer.writeAttribute("value", formattedValue, null);
-        
-        if((componentValue == null && value.equals("")) || (componentValue != null && componentValue.equals(value))) {
-            writer.writeAttribute("selected", "selected", null);
-            menu.setSelectedLabel(label);
+        for(SelectItem selectItem : selectItems) {
+            Object itemValue = selectItem.getValue();
+            String itemLabel = selectItem.getLabel();
+            
+            writer.startElement("option", null);
+            writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
+
+            if((value == null && itemValue.equals("")) || (value != null && value.equals(itemValue))) {
+                writer.writeAttribute("selected", "selected", null);
+                menu.setSelectedLabel(itemLabel);
+            }
+
+            writer.write(itemLabel);
+
+            writer.endElement("option");
         }
-        
-        writer.write(label);
-        writer.endElement("option");
     }
 }

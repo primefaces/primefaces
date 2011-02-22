@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.InputRenderer;
 
 public class SelectManyMenuRenderer extends InputRenderer {
@@ -146,19 +146,26 @@ public class SelectManyMenuRenderer extends InputRenderer {
         return list;
 	}
 
-    @Override
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectManyMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String formattedValue = formatOptionValue(context, component, converter, value);
+        List<SelectItem> selectItems = getSelectItems(context, menu);
+        Converter converter = getConverter(context, menu);
+        Object value = menu.getValue();
 
-        writer.startElement("option", null);
-        writer.writeAttribute("value", formattedValue, null);
+        for(SelectItem selectItem : selectItems) {
+            Object itemValue = selectItem.getValue();
+            String itemLabel = selectItem.getLabel();
 
-        if(componentValue != null && ((List) componentValue).contains(value)) {
-            writer.writeAttribute("selected", "selected", null);
+            writer.startElement("option", null);
+            writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
+
+            if(value != null && value.equals(itemValue)) {
+                writer.writeAttribute("selected", "selected", null);
+            }
+
+            writer.write(itemLabel);
+
+            writer.endElement("option");
         }
-
-        writer.write(label);
-        writer.endElement("option");
     }
 }

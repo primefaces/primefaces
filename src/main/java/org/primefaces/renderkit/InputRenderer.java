@@ -16,6 +16,8 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +30,7 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
@@ -63,31 +66,29 @@ public class InputRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeSelectItems(FacesContext context, UIInput component) throws IOException {
-        Object componentValue = component.getValue();
-        Converter converter = getConverter(context, component);
+    protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
 
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UISelectItem) {
                 UISelectItem uiSelectItem = (UISelectItem) child;
 
-				encodeOption(context, component, componentValue, converter, uiSelectItem.getItemLabel(), uiSelectItem.getItemValue());
+				selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel()));
 			}
             else if(child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
 				Object value = uiSelectItems.getValue();
 
                 if(value instanceof SelectItem[]) {
-                    for(SelectItem selectItem : (SelectItem[]) value) {
-                        encodeOption(context, component, componentValue, converter, selectItem.getLabel(), selectItem.getValue());
-                    }
+                    selectItems.addAll(Arrays.asList((SelectItem[]) value));
                 }
                 else if(value instanceof Map) {
                     Map map = (Map) value;
 
                     for(Iterator it = map.keySet().iterator(); it.hasNext();) {
                         Object key = it.next();
-                        encodeOption(context, component, componentValue, converter, String.valueOf(key), map.get(key));
+
+                        selectItems.add(new SelectItem(map.get(key), String.valueOf(key)));
                     }
                 }
                 else if(value instanceof Collection) {
@@ -100,18 +101,16 @@ public class InputRenderer extends CoreRenderer {
                         String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
                         Object itemValue = uiSelectItems.getAttributes().get("itemValue");
 
-                        encodeOption(context, component, componentValue, converter, itemLabel, itemValue);
+                        selectItems.add(new SelectItem(itemValue, itemLabel));
                     }
                 }
 			}
         }
+
+        return selectItems;
 	}
 
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
-        throw new UnsupportedOperationException("Select components must implement how an option is rendered");
-    }
-
-	protected String formatOptionValue(FacesContext context, UIInput component, Converter converter, Object value) {
+	protected String getOptionAsString(FacesContext context, UIInput component, Converter converter, Object value) {
 		if(converter != null)
 			return converter.getAsString(context, component, value);
 		else if(value == null)
