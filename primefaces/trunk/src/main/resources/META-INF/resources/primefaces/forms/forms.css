@@ -140,3 +140,9 @@
     border-color: inherit;
     padding:4px 10px 4px 10px;
 }
+
+.ui-selectonemenu .wijmo-wijsuperpanel-vbarcontainer.ui-widget-header,
+.ui-selectonemenu .wijmo-wijsuperpanel-hbarcontainer.ui-widget-header,
+.ui-selectlistbox .wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
+    background-image: none;
+}
