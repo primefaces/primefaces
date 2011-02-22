@@ -110,92 +110,6 @@
     bottom: 0;
 }
 
-/* Forms */
-.wijmo-wijtextbox
-{
-    outline:none;
-    margin: 0;
-    padding:5px;
-}
-
-.wijmo-wijdropdown
-{
-    display: inline-block;
-    position: relative;
-    width: auto;
-    zoom: 1;
-    *display: inline;
-    width:200px;
-    /*z-index: 101;*/
-}
-
-.wijmo-wijdropdown div.wijmo-dropdown-trigger
-{
-    border-right: none;
-    border-top: none;
-    border-bottom: none;
-    cursor: pointer;
-    width: 16px;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 0 3px;
-}
-
-.wijmo-wijdropdown .wijmo-dropdown-trigger .ui-icon
-{
-    margin-top: 3px;
-}
-
-.wijmo-wijdropdown label.wijmo-dropdown-label
-{
-    display: block;
-    padding: 3px 26px 3px 5px;
-    width: auto;
-    border: none;
-}
-
-.wijmo-wijdropdown .wijmo-dropdown
-{
-    position: absolute; height:250px;
-}
-
-.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-list
-{
-    padding: 0.4em;
-    border: 0 none;
-}
-
-.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-item
-{
-    border:1px solid transparent;
-    cursor:pointer;
-    font-weight:normal;
-    margin:1px 0;
-    padding:3px 5px;
-    text-align:left;
-    *border-color: white;
-    *filter: chroma(color=white);
-
-}
-
-/*
-.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-optgroup .wijmo-dropdown-items
-{
-    margin-left: 15%;
-}*/
-
-.wijmo-wijdropdown .wijmo-dropdown .wijmo-dropdown-optgroup .wijmo-dropdown-items li
-{
-    padding-left: 10%;
-}
-
-.wijmo-wijdropdown .wijmo-dropdown .wijmo-optgroup-header
-{
-    font-style: italic;
-}
-
 /* Menu */
 .wijmo-wijmenu {
     width:150px;
@@ -451,22 +365,7 @@
     float:right;
 }
 
-/* PrimeFaces Extensions */
-.wijmo-wijradio-horizontal .wijmo-wijradio, .wijmo-checkbox-horizontal .wijmo-checkbox {
-    float:left;
-    width:auto;
-    margin:3px 0;
-}
-
-.wijmo-wijradio, .wijmo-checkbox {
-    margin:4px 0;
-}
-
-.wijmo-wijradio label, .wijmo-checkbox label {
-    width:auto;
-    white-space: nowrap;
-}
-
+/* Dialog */
 .wijmo-wijdialog-captionbutton {
 	height:18px;
 	padding:1px;
@@ -495,10 +394,4 @@
 /* for ie 6 minimize*/
 * html .wijmo-wijdialog-defaultdockingzone .ui-dialog-titlebar {
 	float:left;
-}
-
-/* PrimeFaces Extensions */
-.wijmo-wijsuperpanel-vbarcontainer.ui-widget-header,
-.wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
-    background-image: none;
 }
