@@ -110,6 +110,12 @@
     bottom: 0;
 }
 
+/* PrimeFaces Extensions */
+.wijmo-wijsuperpanel-vbarcontainer.ui-widget-header,
+.wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
+    background-image: none;
+}
+
 /* Menu */
 .wijmo-wijmenu {
     width:150px;
@@ -394,4 +400,3 @@
 /* for ie 6 minimize*/
 * html .wijmo-wijdialog-defaultdockingzone .ui-dialog-titlebar {
 	float:left;
-}
