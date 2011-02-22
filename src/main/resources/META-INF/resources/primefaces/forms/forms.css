@@ -104,6 +104,12 @@
     padding: 3px 26px 3px 5px;
     width: auto;
     border: none;
+    cursor: pointer;
+}
+
+.ui-selectonemenu.ui-state-disabled .ui-selectonemenu-trigger,
+.ui-selectonemenu.ui-state-disabled .ui-selectonemenu-label {
+    cursor: auto
 }
 
 .ui-selectonemenu .ui-selectonemenu-panel {

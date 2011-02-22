@@ -204,6 +204,7 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children('.ui-selectonemenu-panel');
+    this.disabled = this.jq.hasClass('ui-state-disabled');
     if(!this.cfg.effectDuration) this.cfg.effectDuration = 400;
 
     this.bindEvents();
@@ -245,14 +246,19 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
     //Events to show/hide the panel
     this.triggers.mouseover(function() {
-        _self.triggers.addClass('ui-state-hover');
+        if(!_self.disabled) {
+            _self.triggers.addClass('ui-state-hover');
+        }
     }).mouseout(function() {
-        _self.triggers.removeClass('ui-state-hover');
+        if(!_self.disabled) {
+            _self.triggers.removeClass('ui-state-hover');
+        }
     }).click(function() {
-        if(_self.panel.is(":hidden")) {
-            _self.show();
-        } else {
-            _self.hide();
+        if(!_self.disabled) {
+            if(_self.panel.is(":hidden"))
+                _self.show();
+            else
+                _self.hide();
         }
     });
 
@@ -289,6 +295,16 @@ PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
 
 PrimeFaces.widget.SelectOneMenu.prototype.hide = function() {
     this.panel.hide();
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.disable = function() {
+    this.disabled = true;
+    this.jq.addClass('ui-state-disabled');
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.enable = function() {
+    this.disabled = false;
+    this.jq.removeclass('ui-state-disabled');
 }
 
 /**
