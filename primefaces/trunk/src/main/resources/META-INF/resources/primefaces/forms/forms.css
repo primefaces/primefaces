@@ -117,11 +117,23 @@
     border: 0 none;
 }
 
-.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-item {
+.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-list-item {
     border:0px none;
     cursor:pointer;
     font-weight:normal;
     margin:1px 0;
     padding:3px 5px;
     text-align:left;
+}
+
+.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-table {
+    border-collapse:collapse;
+    width:100%;
+}
+
+.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-table td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:4px 10px 4px 10px;
 }

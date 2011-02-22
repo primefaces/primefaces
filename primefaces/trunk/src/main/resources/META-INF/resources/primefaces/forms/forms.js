@@ -204,9 +204,7 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children('.ui-selectonemenu-panel');
-    
-    this.populateList();
-    
+
     this.bindEvents();
 
     this.panel.wijsuperpanel(this.cfg);
@@ -219,26 +217,13 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     }
 }
 
-PrimeFaces.widget.SelectOneMenu.prototype.populateList = function() {
-    var listContainer = this.jq.find('.ui-selectonemenu-list'),
+PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
+    var itemContainer = this.panel.children('.ui-selectonemenu-items'),
+    items = itemContainer.find('.ui-selectonemenu-item'),
     options = jQuery(this.input.attr('options')),
     _self = this;
 
-    options.each(function(i) {
-       var option = jQuery(this),
-       selected = option.attr('selected'),
-       styleClass = 'ui-selectonemenu-item ui-corner-all';
-
-       if(selected) {
-           styleClass = styleClass + ' ui-state-active';
-       }
-
-       listContainer.append('<li class="' + styleClass + '">' + jQuery(this).html() + '</li>');
-    });
-
-    var items = listContainer.children('li');
-
-    //Bind events for items
+    //Events for items
     items.mouseover(function() {
         jQuery(this).addClass('ui-state-hover');
     }).mouseout(function() {
@@ -252,15 +237,12 @@ PrimeFaces.widget.SelectOneMenu.prototype.populateList = function() {
 
         option.attr('selected', 'selected');
 
-        _self.label.html(element.html());
+        _self.label.html(option.html());
         _self.input.change();
         _self.hide();
     });
-}
 
-PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
-    var _self = this;
-    
+    //Events to show/hide the panel
     this.triggers.mouseover(function() {
         _self.triggers.addClass('ui-state-hover');
     }).mouseout(function() {
