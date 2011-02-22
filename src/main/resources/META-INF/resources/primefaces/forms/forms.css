@@ -79,7 +79,6 @@
     zoom: 1;
     cursor: pointer;
     *display: inline;
-    width:200px;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -114,8 +113,6 @@
 
 .ui-selectonemenu .ui-selectonemenu-panel {
     position: absolute;
-    height:250px;
-    width:200px;
 }
 
 .ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-list {

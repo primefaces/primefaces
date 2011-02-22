@@ -69,6 +69,12 @@
             <required></required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <name>height</name>
+            <required></required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
