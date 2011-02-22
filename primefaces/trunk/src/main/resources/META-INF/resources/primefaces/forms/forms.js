@@ -205,7 +205,10 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children('.ui-selectonemenu-panel');
     this.disabled = this.jq.hasClass('ui-state-disabled');
-    if(!this.cfg.effectDuration) this.cfg.effectDuration = 400;
+    this.panel.css('width', this.jq.width());
+
+    if(!this.cfg.effectDuration)
+        this.cfg.effectDuration = 400;
 
     this.bindEvents();
 
@@ -227,14 +230,20 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
     //Events for items
     items.mouseover(function() {
-        jQuery(this).addClass('ui-state-hover');
+        var element = jQuery(this);
+        if(!element.hasClass('ui-state-active')) {
+            jQuery(this).addClass('ui-state-hover');
+        }
     }).mouseout(function() {
-        jQuery(this).removeClass('ui-state-hover');
+        var element = jQuery(this);
+        if(!element.hasClass('ui-state-active')) {
+            jQuery(this).removeClass('ui-state-hover');
+        }
     }).click(function() {
         var element = jQuery(this),
         option = jQuery(options.get(element.index()));
 
-        items.removeClass('ui-state-active');
+        items.removeClass('ui-state-active ui-state-hover');
         element.addClass('ui-state-active');
 
         option.attr('selected', 'selected');
@@ -542,11 +551,13 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     var items = listContainer.children('li');
 
     items.mouseover(function() {
-        if(!_self.cfg.disabled) {
+        var element = jQuery(this);
+        if(!_self.cfg.disabled && !element.hasClass('ui-state-active')) {
             jQuery(this).addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        if(!_self.cfg.disabled) {
+        var element = jQuery(this);
+        if(!_self.cfg.disabled && !element.hasClass('ui-state-active')) {
             jQuery(this).removeClass('ui-state-hover');
         }
     }).click(function() {
@@ -555,12 +566,12 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
             option = jQuery(options.get(element.index()));
 
             if(element.hasClass('ui-state-active')) {
-                element.removeClass('ui-state-active');
+                element.removeClass('ui-state-active ui-state-hover');
                 option.removeAttr('selected');
             }
             else {
                 if(_self.cfg.selection == 'single') {
-                    items.removeClass('ui-state-active');
+                    items.removeClass('ui-state-active ui-state-hover');
                     options.removeAttr('selected');
                 }
 

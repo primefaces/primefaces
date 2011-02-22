@@ -126,9 +126,12 @@ public class SelectOneMenuRenderer extends InputRenderer {
     protected void encodePanel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = menu.getVar() != null;
+        int height = menu.getHeight();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.PANEL_CLASS, null);
+        if(height != Integer.MAX_VALUE)
+            writer.writeAttribute("style", "height:" + height + "px", null);
 
         if(customContent) {
             writer.startElement("table", menu);
@@ -194,7 +197,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
             
             writer.startElement("li", null);
             writer.writeAttribute("class", itemStyleClass, null);
-            writer.writeText(String.valueOf(selectItem.getValue()), null);
+            writer.writeText(String.valueOf(selectItem.getLabel()), null);
             writer.endElement("li");
         }
     }
