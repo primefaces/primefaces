@@ -64,6 +64,11 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <attribute>
+            <name>var</name>
+            <required></required>
+            <type>java.lang.String</type>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
