@@ -59,9 +59,11 @@ public class SelectOneMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, menu);
         String clientId = menu.getClientId(context);
+        boolean disabled = menu.isDisabled();
         String style = menu.getStyle();
         String styleclass = menu.getStyleClass();
         styleclass = styleclass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleclass;
+        styleclass = disabled ? styleclass + " ui-state-disabled" : styleclass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -87,7 +89,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
-        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), "onchange");
+        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
+        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
         encodeSelectItems(context, menu, selectItems);
 
