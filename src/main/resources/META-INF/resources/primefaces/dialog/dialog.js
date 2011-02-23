@@ -22,7 +22,7 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     };
     
     //Create the dialog
-    this.jq.wijdialog(this.cfg);
+    this.jq.dialog(this.cfg);
 
     //Close handler
     this.jq.bind('dialogclose', function(event, ui) {_self.onHide(event, ui);});
@@ -36,11 +36,11 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
-    this.jq.wijdialog('open');
+    this.jq.dialog('open');
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {
-    this.jq.wijdialog('close');
+    this.jq.dialog('close');
 }
 
 /**
