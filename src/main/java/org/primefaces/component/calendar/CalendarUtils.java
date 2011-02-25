@@ -88,6 +88,11 @@ public class CalendarUtils {
 			
 			//day of week
 			pattern = pattern.replaceAll("EEE", "D");
+
+            //time
+            if(pattern.indexOf("H") != -1 || pattern.indexOf("h") != -1) {
+                pattern = pattern.replaceAll("H", "h").replaceAll("a", "TT");
+            }
 			
 			return pattern;
 		}

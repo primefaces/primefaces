@@ -25,6 +25,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.event.DateSelectEvent;
@@ -64,14 +65,15 @@ public class CalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         String inputId = clientId + "_input";
+        boolean popup = calendar.isPopup();
 
         writer.startElement("span", calendar);
         writer.writeAttribute("id", clientId, null);
         if(calendar.getStyle() != null) writer.writeAttribute("style", calendar.getStyle(), null);
         if(calendar.getStyleClass() != null) writer.writeAttribute("class", calendar.getStyleClass(), null);
 
-        //popup container
-        if(!calendar.isPopup()) {
+        //inline container
+        if(!popup) {
             writer.startElement("div", null);
             writer.writeAttribute("id", clientId + "_inline", null);
             writer.endElement("div");
@@ -89,7 +91,7 @@ public class CalendarRenderer extends InputRenderer {
             writer.writeAttribute("value", value, null);
         }
 
-        if(calendar.isPopup()) {
+        if(popup) {
             String inputStyleClass = calendar.getInputStyleClass();
             inputStyleClass = inputStyleClass == null ? Calendar.INPUT_STYLE_CLASS : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
 
@@ -130,6 +132,7 @@ public class CalendarRenderer extends InputRenderer {
         if(calendar.isShowWeek()) writer.write(",showWeek:true");
         if(calendar.isDisabled()) writer.write(",disabled:true");
         if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
+        if(calendar.isTimeOnly()) writer.write(",timeOnly:true");
 
         if(calendar.isNavigator()) {
             writer.write(",changeMonth:true");
@@ -186,16 +189,18 @@ public class CalendarRenderer extends InputRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         Calendar calendar = (Calendar) component;
         String submittedValue = (String) value;
+        Converter converter = calendar.getConverter();
 
-        if (isValueBlank(submittedValue)) {
+        if(isValueBlank(submittedValue)) {
             return null;
         }
 
         //Delegate to user supplied converter if defined
-        if (calendar.getConverter() != null) {
-            return calendar.getConverter().getAsObject(context, calendar, submittedValue);
+        if(converter != null) {
+            return converter.getAsObject(context, calendar, submittedValue);
         }
 
+        //Use built-in converter
         try {
             Date convertedValue;
             Locale locale = calendar.calculateLocale(context);

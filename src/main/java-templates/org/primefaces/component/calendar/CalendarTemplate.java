@@ -85,3 +85,9 @@ import org.primefaces.util.ArrayUtils;
 
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_ajaxSelect");
     }
+
+    public boolean hasTime() {
+        String pattern = getPattern();
+
+        return (pattern != null && (pattern.indexOf("H") != -1 || pattern.indexOf("h") != -1));
+    }
