@@ -1002,14 +1002,14 @@ PrimeFaces.widget.Calendar.prototype.configureTimePicker = function() {
     this.cfg.dateFormat = pattern.substring(0, timeSeparatorIndex - 1);
     this.cfg.timeFormat = pattern.substring(timeSeparatorIndex, pattern.length);
 
-    //ampm
-    if(this.cfg.timeFormat.indexOf('TT') != -1) {
-        this.cfg.ampm = true;
-    }
-
     //second
     if(this.cfg.timeFormat.indexOf('ss') != -1) {
         this.cfg.showSecond = true;
+    }
+
+    //ampm
+    if(this.cfg.timeFormat.indexOf('TT') != -1) {
+        this.cfg.ampm = true;
     }
 }
 
