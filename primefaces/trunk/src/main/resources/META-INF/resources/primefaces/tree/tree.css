@@ -1,0 +1,89 @@
+.ui-tree {
+    width: 300px;
+    padding: 0.5em;
+}
+
+.ui-tree .ui-tree-checkbox {
+    margin: 0;
+    float: left;
+}
+
+.ui-tree .ui-tree-parent span {
+    float: left;
+}
+
+.ui-tree .ui-tree-child {
+    margin-left: 24px;
+}
+
+.ui-tree .ui-tree-nodes .ui-tree-node {
+    border: 0px;
+    background: none;
+    display: block;
+    float: left;
+    clear: both;
+    font-weight: normal;
+    margin: 0 20px 0 0;
+}
+
+.ui-tree-node-content {
+	border: 1px solid transparent;
+	padding: 3px;
+	vertical-align:middle;
+}
+.ui-tree .ui-tree-nodes .ui-tree-node .ui-tree-node-content a {
+	outline: none;
+    margin:0 0 0 0.5em;
+    float: left;
+}
+
+.ui-tree .ui-tree-nodes li.ui-tree-node {
+	margin-left:16px;
+}
+
+.ui-tree .ui-tree-nodes .ui-state-default a, .ui-tree .ui-tree-nodes .ui-state-default {
+    color: inherit;
+}
+
+.ui-tree .ui-tree-nodes .ui-state-hover, .ui-tree .ui-tree-nodes .ui-state-active {
+    font-weight: normal;
+}
+
+.ui-tree a.ui-state-default:link,
+.ui-tree a.ui-state-default:visited,
+.ui-tree a.ui-state-default:hover,
+.ui-tree a.ui-state-default:active,
+.ui-tree a.ui-state-hover:link,
+.ui-tree a.ui-state-hover:visited,
+.ui-tree a.ui-state-hover:hover,
+.ui-tree a.ui-state-hover:active,
+.ui-tree a.ui-state-active:link,
+.ui-tree a.ui-state-active:visited,
+.ui-tree a.ui-state-active:hover,
+.ui-tree a.ui-state-active:active {
+    border-style: solid;
+    font-weight: normal;
+}
+
+.ui-tree .ui-tree-nodes .ui-tree-item {
+    padding: 0;
+    width: 100%;
+    float: left;
+    clear:left;
+    margin: 0 0 0 16px;
+    display: inline;
+    width:100%;
+}
+
+.ui-tree .ui-tree-nodes .ui-tree-parent {
+	margin: 0;
+    padding: 0;
+    width: 100%;
+    float: left;
+    clear:left;
+}
+
+.ui-tree-insertion {
+	height:1px;
+	font-size:0px;
+}
