@@ -44,18 +44,6 @@
 			<defaultValue>true</defaultValue>
 		</attribute>
 		<attribute>
-			<name>expandAnim</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>fade</defaultValue>
-		</attribute>
-		<attribute>
-			<name>collapseAnim</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>fade</defaultValue>
-		</attribute>
-		<attribute>
 			<name>nodeSelectListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
