@@ -132,7 +132,6 @@ public class CalendarRenderer extends InputRenderer {
         if(calendar.isShowWeek()) writer.write(",showWeek:true");
         if(calendar.isDisabled()) writer.write(",disabled:true");
         if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
-        if(calendar.isTimeOnly()) writer.write(",timeOnly:true");
 
         if(calendar.isNavigator()) {
             writer.write(",changeMonth:true");
@@ -176,6 +175,24 @@ public class CalendarRenderer extends InputRenderer {
             if(calendar.getOnSelectUpdate() != null) {
                 writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, calendar, calendar.getOnSelectUpdate()) + "'");
             }
+        }
+
+        //time
+        if(calendar.hasTime()) {
+            writer.write(",timeOnly:" + calendar.isTimeOnly());
+
+            //step
+            writer.write(",stepHour:" + calendar.getStepHour());
+            writer.write(",stepMinute:" + calendar.getStepMinute());
+            writer.write(",stepSecond:" + calendar.getStepSecond());
+            
+            //minmax
+            writer.write(",hourMin:" + calendar.getMinHour());
+            writer.write(",hourMax:" + calendar.getMaxHour());
+            writer.write(",minuteMin:" + calendar.getMinMinute());
+            writer.write(",minuteMax:" + calendar.getMaxMinute());
+            writer.write(",secondMin:" + calendar.getMinSecond());
+            writer.write(",secondMax:" + calendar.getMaxSecond());
         }
 
         encodeClientBehaviors(context, calendar);

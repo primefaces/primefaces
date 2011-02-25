@@ -164,6 +164,60 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+            <name>stepHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+        </attribute>
+        <attribute>
+            <name>stepMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+        </attribute>
+        <attribute>
+            <name>stepSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+        </attribute>
+        <attribute>
+            <name>minHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+        </attribute>
+        <attribute>
+            <name>maxHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>23</defaultValue>
+        </attribute>
+        <attribute>
+            <name>minMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+        </attribute>
+        <attribute>
+            <name>maxMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>59</defaultValue>
+        </attribute>
+        <attribute>
+            <name>minSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+        </attribute>
+        <attribute>
+            <name>maxSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>59</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>

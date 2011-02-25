@@ -89,5 +89,5 @@ import org.primefaces.util.ArrayUtils;
     public boolean hasTime() {
         String pattern = getPattern();
 
-        return (pattern != null && (pattern.indexOf("H") != -1 || pattern.indexOf("h") != -1));
+        return (pattern != null && pattern.indexOf(":") != -1);
     }
