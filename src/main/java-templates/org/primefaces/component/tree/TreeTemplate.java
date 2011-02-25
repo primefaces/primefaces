@@ -92,3 +92,15 @@ import org.primefaces.model.TreeNode;
     public Object getLocalSelectedNodes() {
         return getStateHelper().get(PropertyKeys.selection);
     }
+
+    public static String STYLE_CLASS = "ui-tree ui-widget ui-widget-content ui-helper-clearfix ui-corner-all";
+    public static String ROOT_NODES_CLASS = "ui-tree-nodes ui-helper-reset";
+    public static String PARENT_CLASS = "ui-tree-parent";
+    public static String NODE_CLASS = "ui-tree-node ui-state-default";
+    public static String NODES_CLASS = "ui-tree-nodes ui-helper-reset ui-tree-child";
+    public static String LEAF_CLASS = "ui-tree-item";
+    public static String NODE_CONTENT_CLASS = "ui-helper-clearfix ui-tree-node-content ui-corner-all";
+    public static String EXPANDED_ICON_CLASS = "ui-tree-icon ui-icon ui-icon-triangle-1-s";
+    public static String COLLAPSED_ICON_CLASS = "ui-tree-icon ui-icon ui-icon-triangle-1-e";
+
+

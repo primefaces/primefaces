@@ -12,7 +12,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>javax.faces.component.UIPanel</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -47,11 +47,13 @@
 			<name>expandAnim</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>fade</defaultValue>
 		</attribute>
 		<attribute>
 			<name>collapseAnim</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>fade</defaultValue>
 		</attribute>
 		<attribute>
 			<name>nodeSelectListener</name>
@@ -131,20 +133,23 @@
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>treeview/treeview.css</name>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
+         <resource>
+			<name>tree/tree.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
 		<resource>
 			<name>core/core.js</name>
 		</resource>
-		<resource>
-			<name>treeview/treeview.js</name>
+        <resource>
+			<name>tree/tree.js</name>
 		</resource>
 	</resources>
 </component>
