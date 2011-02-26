@@ -79,6 +79,7 @@ public class TreeRenderer extends CoreRenderer {
         if(dynamic) {
             writer.write(",formId:'" + ComponentUtils.findParentForm(context, tree).getClientId(context) + "'");
             writer.write(",actionURL:'" + getActionURL(context) + "'");
+            writer.write(",cache:" + tree.isCache());
         }
 
         writer.write("});");
