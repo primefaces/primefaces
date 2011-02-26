@@ -24,8 +24,10 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.model.TreeExplorer;
 import org.primefaces.model.TreeExplorerImpl;
+import org.primefaces.model.TreeModel;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class TreeRenderer extends CoreRenderer {
 	
@@ -36,12 +38,10 @@ public class TreeRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
 		Tree tree = (Tree) component;
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
-		
-		String clientId = tree.getClientId(facesContext);
-		
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		String clientId = tree.getClientId(context);
 	}
 
     @Override
@@ -49,27 +49,37 @@ public class TreeRenderer extends CoreRenderer {
 		Tree tree = (Tree) component;
 
         if(tree.isNodeLoadRequest(context)) {
-            encodeDynamicNodes(context, tree);
-        } else {
+            encodeDynamicNode(context, tree);
+        }
+        else {
             encodeMarkup(context, tree);
             encodeScript(context, tree);
         }
 	}
 	
-	public void encodeDynamicNodes(FacesContext facesContext, Tree tree) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
+	public void encodeDynamicNode(FacesContext context, Tree tree) throws IOException {
+        TreeNode root = (TreeNode) tree.getValue();
+        String rowKey = context.getExternalContext().getRequestParameterMap().get(tree.getClientId(context) + "_loadNode");
+        TreeNode treeNode = treeExplorer.findTreeNode(rowKey, new TreeModel(root));
+
+        encodeTreeNodeChildren(context, tree, treeNode, rowKey, true, false);
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Tree tree) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = tree.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Tree tree) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = tree.getClientId(context);
+        boolean dynamic = tree.isDynamic();
 			
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-
-
         writer.write(tree.resolveWidgetVar() + " = new PrimeFaces.widget.Tree('" + clientId + "', {");
+
+        writer.write("dynamic:" + dynamic);
+
+        if(dynamic) {
+            writer.write(",formId:'" + ComponentUtils.findParentForm(context, tree).getClientId(context) + "'");
+            writer.write(",actionURL:'" + getActionURL(context) + "'");
+        }
 
         writer.write("});");
 
@@ -80,7 +90,8 @@ public class TreeRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tree.getClientId(context);
         TreeNode root = (TreeNode) tree.getValue();
-        String var = tree.getVar();
+        int rowIndex = 0;
+        boolean dynamic = tree.isDynamic();
         String styleClass = tree.getStyleClass();
         styleClass = styleClass == null ? Tree.STYLE_CLASS : Tree.STYLE_CLASS + " " + styleClass;
         
@@ -93,7 +104,9 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         for(TreeNode child : root.getChildren()) {
-            encodeTreeNode(context, tree, child);
+            encodeTreeNode(context, tree, child, String.valueOf(rowIndex), dynamic);
+            
+            rowIndex++;
         }
 
 		writer.endElement("ul");
@@ -101,7 +114,7 @@ public class TreeRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
-	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node) throws IOException {
+	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String rowKey, boolean dynamic) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         context.getExternalContext().getRequestMap().put(tree.getVar(), node.getData());
         boolean isLeaf = node.isLeaf();
@@ -110,6 +123,7 @@ public class TreeRenderer extends CoreRenderer {
         String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
         
 		writer.startElement("li", null);
+            writer.writeAttribute("id", rowKey, null);
             writer.writeAttribute("class", nodeClass, null);
 
             //label
@@ -142,23 +156,32 @@ public class TreeRenderer extends CoreRenderer {
             writer.endElement("div");
 
             //children
-            if(!isLeaf) {
-                writer.startElement("ul", null);
-                writer.writeAttribute("class", Tree.NODES_CLASS , null);
-
-                if(!expanded) {
-                    writer.writeAttribute("style", "display:none", null);
-                }
-
-                for(TreeNode childNode : node.getChildren()) {
-                    encodeTreeNode(context, tree, childNode);
-                }
-
-                writer.endElement("ul");
+            if(!isLeaf && !dynamic) {
+                encodeTreeNodeChildren(context, tree, node, rowKey, dynamic, expanded);
             }
 
         writer.endElement("li");
 	}
+
+    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String parentRowKey, boolean dynamic, boolean expanded) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        int rowIndex = 0;
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", Tree.NODES_CLASS , null);
+
+        if(!expanded) {
+            writer.writeAttribute("style", "display:none", null);
+        }
+
+        for(TreeNode childNode : node.getChildren()) {
+            String childRowKey = parentRowKey + "_" + rowIndex;
+            encodeTreeNode(context, tree, childNode, childRowKey, dynamic);
+            rowIndex++;
+        }
+
+        writer.endElement("ul");
+    }
 
     @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

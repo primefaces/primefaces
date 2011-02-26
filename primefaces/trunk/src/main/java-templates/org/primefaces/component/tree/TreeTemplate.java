@@ -86,7 +86,7 @@ import org.primefaces.model.TreeNode;
 	}
 
     public boolean isNodeLoadRequest(FacesContext context) {
-		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicLoad");
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_loadNode");
 	}
 
     public Object getLocalSelectedNodes() {

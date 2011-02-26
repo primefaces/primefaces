@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class TreeExplorerImpl implements TreeExplorer, Serializable {
 
 	public TreeNode findTreeNode(String path, TreeModel model) {
-		String[] paths = path.split("\\.");
+		String[] paths = path.split("_");
 		
 		if(paths.length == 0)
 			return null;
@@ -40,15 +40,15 @@ public class TreeExplorerImpl implements TreeExplorer, Serializable {
 	}
 	
 	private String buildSubpath(String[] path) {
-		StringBuffer pathBuffer = new StringBuffer();
+		StringBuilder pathBuilder = new StringBuilder();
 		
 		for(int i=1; i < path.length; i++) {
-			pathBuffer.append(path[i]);
+			pathBuilder.append(path[i]);
 			
 			if(i != (path.length-1))
-				pathBuffer.append(".");
+				pathBuilder.append("_");
 		}
 		
-		return pathBuffer.toString();
+		return pathBuilder.toString();
 	}
 }
