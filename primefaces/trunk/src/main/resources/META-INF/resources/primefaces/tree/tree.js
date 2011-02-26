@@ -39,8 +39,9 @@ PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
 
 PrimeFaces.widget.Tree.prototype.expandNode = function(nodeEL, iconEL) {
     var _self = this;
-    
-    if(this.cfg.dynamic) {
+
+    if(this.cfg.dynamic && (!this.cfg.cache || nodeEL.children('.ui-tree-nodes').length == 0)) {
+
         var options = {
             source: this.id,
             process: this.id,
@@ -86,8 +87,9 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(nodeEL, iconEL) {
     var _self = this;
 
     iconEL.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+
     nodeEL.children('.ui-tree-nodes').hide('fade', {}, 'fast', function() {
-        if(_self.cfg.dynamic) {
+        if(_self.cfg.dynamic && !_self.cfg.cache) {
             nodeEL.children('.ui-tree-nodes').remove();
         }
     });
