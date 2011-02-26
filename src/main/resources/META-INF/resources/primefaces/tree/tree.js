@@ -7,13 +7,13 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
-    this.bindEvents();
+    this.bindEvents(this.jq.find('.ui-tree-node-content'));
 }
 
-PrimeFaces.widget.Tree.prototype.bindEvents = function() {
+PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
     var _self = this;
     
-    this.jq.find('.ui-tree-node-content').mouseover(function() {
+    elements.mouseover(function() {
         jQuery(this).addClass('ui-state-hover');
     })
     .mouseout(function() {
@@ -38,13 +38,57 @@ PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
 }
 
 PrimeFaces.widget.Tree.prototype.expandNode = function(nodeEL, iconEL) {
-    iconEL.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+    var _self = this;
+    
+    if(this.cfg.dynamic) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            formId: this.cfg.formId
+        };
 
-    nodeEL.children('.ui-tree-nodes').show('fade', {}, 'fast');
+        options.onsuccess = function(responseXML) {
+            var xmlDoc = responseXML.documentElement,
+            updates = xmlDoc.getElementsByTagName("update");
+
+            for(var i=0; i < updates.length; i++) {
+                var id = updates[i].attributes.getNamedItem("id").nodeValue,
+                content = updates[i].firstChild.data;
+
+                if(id == _self.id){
+                    nodeEL.append(content);
+                    _self.bindEvents(nodeEL.children('.ui-tree-nodes').find('.ui-tree-node-content'));
+ 
+                    iconEL.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+                    nodeEL.children('.ui-tree-nodes').show('fade', {}, 'fast');
+                }
+                else {
+                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                }
+            }
+
+            return false;
+        };
+
+        var params = {};
+        params[this.id + '_loadNode'] = nodeEL.attr('id');
+
+        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    }
+    else {
+        iconEL.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+        nodeEL.children('.ui-tree-nodes').show('fade', {}, 'fast');
+    }
 }
 
 PrimeFaces.widget.Tree.prototype.collapseNode = function(nodeEL, iconEL) {
-    iconEL.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+    var _self = this;
 
-    nodeEL.children('.ui-tree-nodes').hide('fade', {}, 'fast');
+    iconEL.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+    nodeEL.children('.ui-tree-nodes').hide('fade', {}, 'fast', function() {
+        if(_self.cfg.dynamic) {
+            nodeEL.children('.ui-tree-nodes').remove();
+        }
+    });
 }
