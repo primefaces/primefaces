@@ -122,9 +122,10 @@ public class TreeRenderer extends CoreRenderer {
         boolean expanded = node.isExpanded();
         String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
         String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
+        String nodeId = tree.getClientId() + "_node_" + rowKey;
         
 		writer.startElement("li", null);
-            writer.writeAttribute("id", rowKey, null);
+            writer.writeAttribute("id", nodeId, null);
             writer.writeAttribute("class", nodeClass, null);
 
             //label
