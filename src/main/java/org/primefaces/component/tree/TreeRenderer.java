@@ -123,6 +123,10 @@ public class TreeRenderer extends CoreRenderer {
         String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
         String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
         String nodeId = tree.getClientId() + "_node_" + rowKey;
+        UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
+        if(uiTreeNode.getStyleClass() != null) {
+            nodeClass = nodeClass + " " + uiTreeNode.getStyleClass();
+        }
         
 		writer.startElement("li", null);
             writer.writeAttribute("id", nodeId, null);
@@ -135,20 +139,26 @@ public class TreeRenderer extends CoreRenderer {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS, null);
 
+                    //tree icon
                     if(!isLeaf) {
                         writer.startElement("span", null);
                         writer.writeAttribute("class", iconClass, null);
                         writer.endElement("span");
                     }
 
+                    //node icon
                     writer.startElement("span", null);
+                    if(uiTreeNode.getIcon() != null) {
+                        writer.writeAttribute("class", uiTreeNode.getIcon(), null);
+                    }
                     writer.endElement("span");
 
+                    //content
                     writer.startElement("a", null);
                     writer.writeAttribute("href", "#", null);
                         writer.startElement("span", null);
 
-                        tree.getUITreeNodeByType(node.getType()).encodeAll(context);
+                        uiTreeNode.encodeAll(context);
 
                         writer.endElement("span");
                     writer.endElement("a");

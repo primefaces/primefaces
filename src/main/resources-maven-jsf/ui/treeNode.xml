@@ -17,8 +17,13 @@
 			<type>java.lang.String</type>
 			<defaultValue>default</defaultValue>
 		</attribute>
-		<attribute>
+        <attribute>
 			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>icon</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
