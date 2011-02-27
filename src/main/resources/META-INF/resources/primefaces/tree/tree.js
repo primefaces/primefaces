@@ -7,18 +7,29 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
-    this.bindEvents(this.jq.find('.ui-tree-node-content'));
+    this.bindEvents(this.jq.find(this.CONTENT_SELECTOR));
 }
+
+PrimeFaces.widget.Tree.prototype.CONTENT_SELECTOR = '.ui-tree-node-content';
+PrimeFaces.widget.Tree.prototype.CHILDREN_SELECTOR = '.ui-tree-nodes';
+PrimeFaces.widget.Tree.prototype.ICON_SELECTOR = '.ui-tree-icon';
+
+PrimeFaces.widget.Tree.prototype.HOVER_CLASS = 'ui-state-hover';
+PrimeFaces.widget.Tree.prototype.SELECTED_CLASS = 'ui-state-active';
+PrimeFaces.widget.Tree.prototype.EXPANDED_ICON_SELECTOR = 'ui-icon-triangle-1-s';
+PrimeFaces.widget.Tree.prototype.COLLAPSED_ICON_SELECTOR = 'ui-icon-triangle-1-e';
+
 
 PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
     var _self = this;
     
     elements.mouseover(function() {
-        jQuery(this).addClass('ui-state-hover');
+        jQuery(this).addClass(_self.HOVER_CLASS);
     })
     .mouseout(function() {
-        jQuery(this).removeClass('ui-state-hover');
-    }).click(function(e) {
+        jQuery(this).removeClass(_self.HOVER_CLASS);
+    })
+    .click(function(e) {
         _self.onNodeClick(e, jQuery(this).parents('li:first'));
     });
 }
@@ -26,21 +37,27 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
 PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
     var target = jQuery(e.target);
     
-    if(target.is("span.ui-tree-icon")) {
-        if(target.hasClass('ui-icon-triangle-1-e'))
-            this.expandNode(nodeEL, target);
+    if(target.is(this.ICON_SELECTOR)) {
+        if(target.hasClass(this.COLLAPSED_ICON_SELECTOR))
+            this.expandNode(nodeEL);
         else
-            this.collapseNode(nodeEL, target);
+            this.collapseNode(nodeEL);
     }
     else {
         //todo selection
     }
 }
 
-PrimeFaces.widget.Tree.prototype.expandNode = function(nodeEL, iconEL) {
+PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
     var _self = this;
 
-    if(this.cfg.dynamic && (!this.cfg.cache || nodeEL.children('.ui-tree-nodes').length == 0)) {
+    if(this.cfg.dynamic) {
+
+        if(this.cfg.cache && node.children(this.CHILDREN_SELECTOR).length > 0) {
+            this.showNodeChildren(node);
+            
+            return;
+        }
 
         var options = {
             source: this.id,
@@ -58,11 +75,10 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(nodeEL, iconEL) {
                 content = updates[i].firstChild.data;
 
                 if(id == _self.id){
-                    nodeEL.append(content);
-                    _self.bindEvents(nodeEL.children('.ui-tree-nodes').find('.ui-tree-node-content'));
+                    node.append(content);
+                    _self.bindEvents(node.children(_self.CHILDREN_SELECTOR).find(_self.CONTENT_SELECTOR));
  
-                    iconEL.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
-                    nodeEL.children('.ui-tree-nodes').show('fade', {}, 'fast');
+                    _self.showNodeChildren(node);
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
@@ -73,24 +89,35 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(nodeEL, iconEL) {
         };
 
         var params = {};
-        params[this.id + '_loadNode'] = nodeEL.attr('id');
+        params[this.id + '_loadNode'] = node.attr('id');
 
         PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
     }
     else {
-        iconEL.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
-        nodeEL.children('.ui-tree-nodes').show('fade', {}, 'fast');
+        this.showNodeChildren(node);
     }
 }
 
-PrimeFaces.widget.Tree.prototype.collapseNode = function(nodeEL, iconEL) {
-    var _self = this;
+PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
+    var _self = this,
+    icon = node.find(this.ICON_SELECTOR + ':first');
 
-    iconEL.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+    icon.addClass(this.COLLAPSED_ICON_SELECTOR).removeClass(this.EXPANDED_ICON_SELECTOR);
 
-    nodeEL.children('.ui-tree-nodes').hide('fade', {}, 'fast', function() {
+    node.children(this.CHILDREN_SELECTOR).hide('fade', {}, 'fast', function() {
         if(_self.cfg.dynamic && !_self.cfg.cache) {
-            nodeEL.children('.ui-tree-nodes').remove();
+            jQuery(this).remove();
         }
     });
+}
+
+PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node) {
+    var icon = node.find(this.ICON_SELECTOR + ':first');
+
+    icon.addClass(this.EXPANDED_ICON_SELECTOR).removeClass(this.COLLAPSED_ICON_SELECTOR);
+    node.children(this.CHILDREN_SELECTOR).show('fade', {}, 'fast');
+}
+
+PrimeFaces.widget.Tree.prototype.saveClientState = function() {
+    
 }
