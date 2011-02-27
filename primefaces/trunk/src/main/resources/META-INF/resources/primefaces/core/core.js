@@ -61,6 +61,10 @@ PrimeFaces = {
         return cookieValue;
     },
 
+    setCookie : function(name, value) {
+        jQuery.cookie(name, value);
+    },
+
     skinInput : function(input) {
         input.hover(
             function() {
