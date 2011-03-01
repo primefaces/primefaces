@@ -43,6 +43,37 @@ public class TreeRenderer extends CoreRenderer {
 		Tree tree = (Tree) component;
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String clientId = tree.getClientId(context);
+
+        if(tree.getSelectionMode() != null) {
+            String selection = params.get(clientId + "_selection");
+            boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
+
+            if(selection.equals("")) {
+                if(isSingle)
+                    tree.setSelection(null);
+                else
+                    tree.setSelection(new TreeNode[0]);
+            }
+            else {
+                String[] selectedRowKeys = selection.split(",");
+                TreeModel model = new TreeModel((TreeNode) tree.getValue());
+
+                if(isSingle) {
+                    TreeNode selectedNode = treeExplorer.findTreeNode(selectedRowKeys[0], model);
+                    tree.setSelection(selectedNode);
+                }
+                else {
+                    TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
+
+                    for(int i = 0 ; i < selectedRowKeys.length; i++) {
+                        selectedNodes[i] = treeExplorer.findTreeNode(selectedRowKeys[i], model);
+                        model.setRowIndex(-1);  //reset
+                    }
+
+                    tree.setSelection(selectedNodes);
+                }
+            }
+        }
 	}
 
     @Override
@@ -70,6 +101,7 @@ public class TreeRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
+        String selectionMode = tree.getSelectionMode();
 			
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -81,6 +113,21 @@ public class TreeRenderer extends CoreRenderer {
             writer.write(",formId:'" + ComponentUtils.findParentForm(context, tree).getClientId(context) + "'");
             writer.write(",actionURL:'" + getActionURL(context) + "'");
             writer.write(",cache:" + tree.isCache());
+        }
+
+        if(selectionMode != null) {
+            writer.write(",selectionMode:'" + selectionMode + "'");
+
+            //instant selection
+            if(tree.getNodeSelectListener() != null) {
+                //update is deprecated and used for backward compatibility
+                String onSelectUpdate = tree.getOnSelectUpdate() != null ? tree.getOnSelectUpdate() : tree.getUpdate();
+
+                writer.write(",instantSelect:true");
+
+                if(onSelectUpdate != null)
+                    writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, tree, onSelectUpdate) + "'");
+            }
         }
 
         encodeIconStates(context, tree);
@@ -114,6 +161,10 @@ public class TreeRenderer extends CoreRenderer {
         }
 
 		writer.endElement("ul");
+
+        if(tree.getSelectionMode() != null) {
+            encodeSelectionHolder(context, tree);
+        }
 
 		writer.endElement("div");
 	}
@@ -161,14 +212,14 @@ public class TreeRenderer extends CoreRenderer {
                     writer.endElement("span");
 
                     //content
-                    writer.startElement("a", null);
-                    writer.writeAttribute("href", "#", null);
+                    /*writer.startElement("a", null);
+                    writer.writeAttribute("href", "#", null);*/
                         writer.startElement("span", null);
 
                         uiTreeNode.encodeAll(context);
 
                         writer.endElement("span");
-                    writer.endElement("a");
+                    //writer.endElement("a");
 
                 writer.endElement("span");
 
@@ -226,6 +277,18 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.write("}");
+    }
+
+    protected void encodeSelectionHolder(FacesContext context, Tree tree) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        String id = tree.getClientId(context) + "_selection";
+
+		writer.startElement("input", null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+		writer.endElement("input");
     }
 
     @Override
