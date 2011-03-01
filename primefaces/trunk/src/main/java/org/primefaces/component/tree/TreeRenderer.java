@@ -120,10 +120,12 @@ public class TreeRenderer extends CoreRenderer {
         context.getExternalContext().getRequestMap().put(tree.getVar(), node.getData());
         boolean isLeaf = node.isLeaf();
         boolean expanded = node.isExpanded();
-        String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
         String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
         String nodeId = tree.getClientId() + "_node_" + rowKey;
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
+
+        String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
+        nodeClass = nodeClass + " " + uiTreeNode.getType();
         if(uiTreeNode.getStyleClass() != null) {
             nodeClass = nodeClass + " " + uiTreeNode.getStyleClass();
         }
