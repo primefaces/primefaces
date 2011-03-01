@@ -7,6 +7,11 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
+    if(this.cfg.selectionMode) {
+        this.selectionHolder = jQuery(this.jqId + '_selection');
+        this.selections = [];
+    }
+
     this.bindEvents(this.jq.find(this.CONTENT_SELECTOR));
 
     if(!this.cfg.dynamic) {
@@ -15,15 +20,15 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     }
 }
 
-PrimeFaces.widget.Tree.prototype.CONTENT_SELECTOR = '.ui-tree-node-content';
-PrimeFaces.widget.Tree.prototype.CHILDREN_SELECTOR = '.ui-tree-nodes';
-PrimeFaces.widget.Tree.prototype.ICON_SELECTOR = '.ui-tree-icon';
-
 PrimeFaces.widget.Tree.prototype.HOVER_CLASS = 'ui-state-hover';
-PrimeFaces.widget.Tree.prototype.SELECTED_CLASS = 'ui-state-active';
+PrimeFaces.widget.Tree.prototype.SELECTED_CLASS = 'ui-state-highlight';
 PrimeFaces.widget.Tree.prototype.EXPANDED_ICON_SELECTOR = 'ui-icon-triangle-1-s';
 PrimeFaces.widget.Tree.prototype.COLLAPSED_ICON_SELECTOR = 'ui-icon-triangle-1-e';
 
+PrimeFaces.widget.Tree.prototype.CONTENT_SELECTOR = '.ui-tree-node-content';
+PrimeFaces.widget.Tree.prototype.CHILDREN_SELECTOR = '.ui-tree-nodes';
+PrimeFaces.widget.Tree.prototype.ICON_SELECTOR = '.ui-tree-icon';
+PrimeFaces.widget.Tree.prototype.SELECTED_SELECTOR = '.ui-tree-node-content.ui-state-highlight';
 
 PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
     var _self = this;
@@ -40,7 +45,8 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
 }
 
 PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
-    var target = jQuery(e.target);
+    var target = jQuery(e.target),
+    selectionMode = this.cfg.selectionMode;
     
     if(target.is(this.ICON_SELECTOR)) {
         if(target.hasClass(this.COLLAPSED_ICON_SELECTOR))
@@ -48,8 +54,15 @@ PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
         else
             this.collapseNode(nodeEL);
     }
-    else {
-        //todo selection
+    else if(selectionMode) {
+        if(selectionMode == 'single')
+            this.selectSingleNode(nodeEL);
+
+        
+
+        if(this.cfg.instantSelect) {
+            this.fireNodeSelectEvent(nodeEL);
+        }
     }
 }
 
@@ -94,7 +107,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
         };
 
         var params = {};
-        params[this.id + '_loadNode'] = node.attr('id').split('_node_')[1];
+        params[this.id + '_loadNode'] = _self.getNodeId(node);
 
         PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
     }
@@ -174,4 +187,28 @@ PrimeFaces.widget.Tree.prototype.restoreClientState = function() {
             this.showNodeChildren(node, false);
         }
     }
+}
+
+PrimeFaces.widget.Tree.prototype.selectSingleNode = function(node) {
+    //clean all selections
+    this.selections = [];
+    this.jq.find(this.SELECTED_SELECTOR).removeClass(this.SELECTED_CLASS);  
+
+    //select node
+    node.find(this.CONTENT_SELECTOR + ':first').addClass(this.SELECTED_CLASS);
+    this.selections.push(this.getNodeId(node));
+
+    this.writeSelections();
+}
+
+PrimeFaces.widget.Tree.prototype.writeSelections = function() {    
+    this.selectionHolder.val(this.selections.join(','));
+}
+
+PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
+    
+}
+
+PrimeFaces.widget.Tree.prototype.getNodeId = function(node) {
+    return node.attr('id').split('_node_')[1];
 }
