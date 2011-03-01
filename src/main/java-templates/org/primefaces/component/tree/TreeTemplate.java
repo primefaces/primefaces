@@ -28,16 +28,7 @@ import org.primefaces.model.TreeNode;
 	}
 	
 	public UITreeNode getUITreeNodeByType(String type) {
-		if(nodes == null) {
-			nodes = new HashMap<String,UITreeNode>();
-			for(UIComponent child : getChildren()) {
-				UITreeNode uiTreeNode = (UITreeNode) child;
-				
-				nodes.put(uiTreeNode.getType(), uiTreeNode);
-			}
-		}
-		
-		UITreeNode node = nodes.get(type);
+		UITreeNode node = getTreeNodes().get(type);
 		
 		if(node == null)
 			throw new javax.faces.FacesException("Unsupported tree node type:" + type);
@@ -102,5 +93,17 @@ import org.primefaces.model.TreeNode;
     public static String NODE_CONTENT_CLASS = "ui-helper-clearfix ui-tree-node-content ui-corner-all";
     public static String EXPANDED_ICON_CLASS = "ui-tree-icon ui-icon ui-icon-triangle-1-s";
     public static String COLLAPSED_ICON_CLASS = "ui-tree-icon ui-icon ui-icon-triangle-1-e";
+
+    public Map<String,UITreeNode> getTreeNodes() {
+        if(nodes == null) {
+			nodes = new HashMap<String,UITreeNode>();
+			for(UIComponent child : getChildren()) {
+                UITreeNode node = (UITreeNode) child;
+				nodes.put(node.getType(), node);
+			}
+		}
+
+        return nodes;
+    }
 
 

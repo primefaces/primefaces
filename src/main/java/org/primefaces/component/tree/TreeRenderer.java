@@ -16,6 +16,7 @@
 package org.primefaces.component.tree;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -82,6 +83,8 @@ public class TreeRenderer extends CoreRenderer {
             writer.write(",cache:" + tree.isCache());
         }
 
+        encodeIconStates(context, tree);
+
         writer.write("});");
 
 		writer.endElement("script");
@@ -125,10 +128,11 @@ public class TreeRenderer extends CoreRenderer {
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
 
         String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
-        nodeClass = nodeClass + " " + uiTreeNode.getType();
         if(uiTreeNode.getStyleClass() != null) {
             nodeClass = nodeClass + " " + uiTreeNode.getStyleClass();
         }
+        nodeClass = nodeClass + " " + uiTreeNode.getType();
+        
         
 		writer.startElement("li", null);
             writer.writeAttribute("id", nodeId, null);
@@ -141,7 +145,7 @@ public class TreeRenderer extends CoreRenderer {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS, null);
 
-                    //tree icon
+                    //state icon
                     if(!isLeaf) {
                         writer.startElement("span", null);
                         writer.writeAttribute("class", iconClass, null);
@@ -150,8 +154,9 @@ public class TreeRenderer extends CoreRenderer {
 
                     //node icon
                     writer.startElement("span", null);
-                    if(uiTreeNode.getIcon() != null) {
-                        writer.writeAttribute("class", uiTreeNode.getIcon(), null);
+                    String icon = uiTreeNode.getIconToRender(expanded);
+                    if(icon != null) {
+                        writer.writeAttribute("class", icon, null);
                     }
                     writer.endElement("span");
 
@@ -195,6 +200,32 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.endElement("ul");
+    }
+
+    protected void encodeIconStates(FacesContext context, Tree tree) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Map<String,UITreeNode> nodes = tree.getTreeNodes();
+
+        writer.write(",iconStates:{");
+
+        for(Iterator<String> it = nodes.keySet().iterator(); it.hasNext();) {
+            String type = it.next();
+            UITreeNode node = nodes.get(type);
+            String expandedIcon = node.getExpandedIcon();
+            String collapsedIcon = node.getCollapsedIcon();
+
+            if(expandedIcon != null && collapsedIcon != null) {
+                writer.write("'" + node.getType() + "' : {");
+                writer.write("expandedIcon:'" + expandedIcon + "'");
+                writer.write(",collapsedIcon:'" + collapsedIcon + "'");
+                writer.write("}");
+
+                if(it.hasNext())
+                    writer.write(",");
+            }
+        }
+
+        writer.write("}");
     }
 
     @Override
