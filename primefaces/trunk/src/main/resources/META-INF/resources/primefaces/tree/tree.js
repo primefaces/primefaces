@@ -106,9 +106,16 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
 PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
     var _self = this,
-    icon = node.find(this.ICON_SELECTOR + ':first');
+    icon = node.find(this.ICON_SELECTOR + ':first'),
+    lastClass = node.attr('class').split(' ').slice(-1),
+    nodeIcon = icon.next(),
+    iconState = this.cfg.iconStates[lastClass];
 
     icon.addClass(this.COLLAPSED_ICON_SELECTOR).removeClass(this.EXPANDED_ICON_SELECTOR);
+
+    if(iconState) {
+        nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
+    }
 
     node.children(this.CHILDREN_SELECTOR).hide('fade', {}, 'fast', function() {
         if(_self.cfg.dynamic) {
@@ -122,9 +129,16 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
 }
 
 PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node, animate) {
-    var icon = node.find(this.ICON_SELECTOR + ':first');
+    var icon = node.find(this.ICON_SELECTOR + ':first'),
+    lastClass = node.attr('class').split(' ').slice(-1),
+    nodeIcon = icon.next(),
+    iconState = this.cfg.iconStates[lastClass];
 
     icon.addClass(this.EXPANDED_ICON_SELECTOR).removeClass(this.COLLAPSED_ICON_SELECTOR);
+
+    if(iconState) {
+        nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
+    }
 
     if(animate)
         node.children(this.CHILDREN_SELECTOR).show('fade', {}, 'fast');
