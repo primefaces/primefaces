@@ -45,6 +45,9 @@ public class TreeRenderer extends CoreRenderer {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String clientId = tree.getClientId(context);
 
+        //state change
+
+        //selection
         if(tree.getSelectionMode() != null) {
             String selection = params.get(clientId + "_selection");
             String instantSelection = params.get(clientId + "_instantSelection");
@@ -125,6 +128,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.write(",cache:" + tree.isCache());
         }
 
+        //selection
         if(selectionMode != null) {
             writer.write(",selectionMode:'" + selectionMode + "'");
 
@@ -146,6 +150,22 @@ public class TreeRenderer extends CoreRenderer {
             }
         }
 
+        //state change listeners
+        if(tree.getNodeExpandListener() != null)
+            encodeStateChangeListener(context, tree, "hasExpandListener", "onExpandUpdate", tree.getOnExpandUpdate());
+        if(tree.getNodeCollapseListener() != null)
+            encodeStateChangeListener(context, tree, "hasCollapseListener", "onCollapseUpdate", tree.getOnCollapseUpdate());
+
+        //collapse listener
+        if(tree.getNodeCollapseListener() != null) {
+            writer.write(",hasCollapseListener:true");
+
+            String onCollapseUpdate = tree.getOnCollapseUpdate();
+            if(onCollapseUpdate != null)
+                writer.write(",onCollapseUpdate:'" + ComponentUtils.findClientIds(context, tree, onCollapseUpdate) + "'");
+        }
+
+        //expand/collapse icon states for specific treenodes
         encodeIconStates(context, tree);
 
         writer.write("});");
@@ -305,6 +325,15 @@ public class TreeRenderer extends CoreRenderer {
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
 		writer.endElement("input");
+    }
+
+    protected void encodeStateChangeListener(FacesContext context, Tree tree, String configParam, String updateParam, String update) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.write("," + configParam + ":true");
+
+        if(update != null)
+            writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(context, tree, update) + "'");
     }
 
     @Override
