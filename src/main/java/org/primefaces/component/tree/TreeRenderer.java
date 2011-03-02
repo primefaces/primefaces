@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.event.NodeSelectEvent;
 
 import org.primefaces.model.TreeExplorer;
 import org.primefaces.model.TreeExplorerImpl;
@@ -46,6 +47,7 @@ public class TreeRenderer extends CoreRenderer {
 
         if(tree.getSelectionMode() != null) {
             String selection = params.get(clientId + "_selection");
+            String instantSelection = params.get(clientId + "_instantSelection");
             boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
 
             if(selection.equals("")) {
@@ -71,6 +73,14 @@ public class TreeRenderer extends CoreRenderer {
                     }
 
                     tree.setSelection(selectedNodes);
+                }
+
+                //Queue event to invoke nodeSelectListener
+                if(instantSelection != null) {
+                    model.setRowIndex(-1);  //reset
+                    TreeNode selectedNode = treeExplorer.findTreeNode(instantSelection, model);
+
+                    tree.queueEvent(new NodeSelectEvent(tree, selectedNode));
                 }
             }
         }
@@ -124,6 +134,12 @@ public class TreeRenderer extends CoreRenderer {
                 String onSelectUpdate = tree.getOnSelectUpdate() != null ? tree.getOnSelectUpdate() : tree.getUpdate();
 
                 writer.write(",instantSelect:true");
+
+                //onselectStart and onselectComplete are deprecated but still here for backward compatibility for some time
+                if(tree.getOnselectStart() != null) writer.write(",onSelectStart:function() {" + tree.getOnselectStart() + "}");
+                if(tree.getOnselectStart() != null) writer.write(",onSelectComplete:function(xhr, status, args) {" + tree.getOnselectStart() + "}");
+                if(tree.getOnSelectStart() != null) writer.write(",onSelectStart:function() {" + tree.getOnSelectStart() + "}");
+                if(tree.getOnSelectComplete() != null) writer.write(",onSelectComplete:function(xhr, status, args) {" + tree.getOnSelectComplete() + "}");
 
                 if(onSelectUpdate != null)
                     writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, tree, onSelectUpdate) + "'");
