@@ -96,6 +96,12 @@
             <type>javax.el.MethodExpression</type>
             <method-signature>java.lang.String saveListener(org.primefaces.event.SelectEvent)</method-signature>
         </attribute>
+        <attribute>
+			<name>toggleable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
