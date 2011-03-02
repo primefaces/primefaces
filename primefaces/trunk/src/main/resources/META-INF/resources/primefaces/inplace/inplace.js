@@ -12,15 +12,20 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
 	
 	if(!this.cfg.disabled) {
         
-		this.display.bind(this.cfg.event, function(){
-            _self.show();
-        });
-        
-        this.display.mouseover(function(){
-            jQuery(this).toggleClass("ui-state-highlight");
-        }).mouseout(function(){
-            jQuery(this).toggleClass("ui-state-highlight");
-        });
+        if(this.cfg.toggleable) {
+            this.display.bind(this.cfg.event, function(){
+                _self.show();
+            });
+
+            this.display.mouseover(function(){
+                jQuery(this).toggleClass("ui-state-highlight");
+            }).mouseout(function(){
+                jQuery(this).toggleClass("ui-state-highlight");
+            });
+        }
+        else {
+            this.display.css('cursor', 'default');
+        }
 
         if(this.cfg.editor) {
             this.editor = jQuery(this.jqId + '_editor');

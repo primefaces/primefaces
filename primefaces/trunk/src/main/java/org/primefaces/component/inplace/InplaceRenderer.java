@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,7 +149,8 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.write("effect:'" + inplace.getEffect() + "'");
 		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
         writer.write(",event:'" + inplace.getEvent() + "'");
-        
+
+        if(inplace.isToggleable()) writer.write(",toggleable:true");
 		if(inplace.isDisabled()) writer.write(",disabled:true");
         if(inplace.isEditor()) {
             UIComponent form = ComponentUtils.findParentForm(context, inplace);
