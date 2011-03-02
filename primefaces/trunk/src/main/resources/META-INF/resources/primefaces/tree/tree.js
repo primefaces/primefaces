@@ -55,10 +55,10 @@ PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
             this.collapseNode(nodeEL);
     }
     else if(selectionMode) {
-        if(selectionMode == 'single')
-            this.selectSingleNode(nodeEL);
-
-        
+        if(this.isNodeSelected(nodeEL))
+            this.unselectNode(nodeEL);
+        else
+            this.selectNode(nodeEL);
 
         if(this.cfg.instantSelect) {
             this.fireNodeSelectEvent(nodeEL);
@@ -189,14 +189,30 @@ PrimeFaces.widget.Tree.prototype.restoreClientState = function() {
     }
 }
 
-PrimeFaces.widget.Tree.prototype.selectSingleNode = function(node) {
-    //clean all selections
-    this.selections = [];
-    this.jq.find(this.SELECTED_SELECTOR).removeClass(this.SELECTED_CLASS);  
+PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
+
+    if(this.isSingleSelection()) {
+        //clean all selections
+        this.selections = [];
+        this.jq.find(this.SELECTED_SELECTOR).removeClass(this.SELECTED_CLASS);
+    }
 
     //select node
     node.find(this.CONTENT_SELECTOR + ':first').addClass(this.SELECTED_CLASS);
     this.selections.push(this.getNodeId(node));
+
+    this.writeSelections();
+}
+
+PrimeFaces.widget.Tree.prototype.unselectNode = function(node) {
+    var nodeId = this.getNodeId(node);
+
+    node.find(this.CONTENT_SELECTOR + ':first').removeClass(this.SELECTED_CLASS);
+   
+    //remove from selection
+    this.selections = jQuery.grep(this.selections, function(r) {
+        return r != nodeId;
+    });
 
     this.writeSelections();
 }
@@ -211,4 +227,12 @@ PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
 
 PrimeFaces.widget.Tree.prototype.getNodeId = function(node) {
     return node.attr('id').split('_node_')[1];
+}
+
+PrimeFaces.widget.Tree.prototype.isNodeSelected = function(node) {
+    return jQuery.inArray(this.getNodeId(node), this.selections) != -1;
+}
+
+PrimeFaces.widget.Tree.prototype.isSingleSelection = function(node) {
+    return this.cfg.selectionMode == 'single';
 }
