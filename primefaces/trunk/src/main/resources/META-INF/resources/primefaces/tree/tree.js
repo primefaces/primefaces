@@ -132,7 +132,7 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
                 jQuery(this).remove();
         }
         else {
-            _self.saveClientState();1
+            _self.saveClientState();
         }
     });
 }
