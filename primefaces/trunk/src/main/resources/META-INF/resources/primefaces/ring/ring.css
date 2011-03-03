@@ -1,12 +1,12 @@
-.roundabout-holder {
+.ui-ring {
     list-style: none;
     width: 75%;
     height: 10em;
     margin: 1em auto;
 }
-.roundabout-moveable-item {
+.ui-ring-item {
     height: 4em;
     width: 8em;
     cursor: pointer;
 }
-.roundabout-in-focus { cursor: auto; }
+.ui-ring-item-focus { cursor: auto; }
