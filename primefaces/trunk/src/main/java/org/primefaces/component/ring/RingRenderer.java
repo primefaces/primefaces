@@ -17,7 +17,6 @@ package org.primefaces.component.ring;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -73,11 +72,13 @@ public class RingRenderer extends CoreRenderer {
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("jQuery(function() {");
+
         writer.write(ring.resolveWidgetVar() + " = new PrimeFaces.widget.Ring('" + clientId + "', {");
 
         writer.write("startingChild:" + ring.getFirst());
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
 	}
