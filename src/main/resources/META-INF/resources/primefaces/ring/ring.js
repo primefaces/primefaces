@@ -89,7 +89,7 @@ jQuery.fn.roundabout = function() {
 
 		// set starting styles
 		ref
-			.addClass('roundabout-holder')
+			.addClass('ui-ring')
 			.css('padding', 0)
 			.css('position', 'relative')
 			.css('z-index', options.minZ);
@@ -180,7 +180,7 @@ jQuery.fn.roundabout_startChildren = function() {
 
 			// apply classes and css first
 			jQuery(this)
-				.addClass('roundabout-moveable-item')
+				.addClass('ui-ring-item')
 				.css('position', 'absolute');
 
 			// then measure
@@ -413,9 +413,9 @@ jQuery.fn.roundabout_updateChildPositions = function() {
 		ref.children(data.childSelector).each(function(i) {
 			if (jQuery.roundabout_updateChildPosition(jQuery(this), ref, info, i) && info.animating === 0) {
 				inFocus = i;
-				jQuery(this).addClass('roundabout-in-focus');
+				jQuery(this).addClass('ui-ring-item-focus');
 			} else {
-				jQuery(this).removeClass('roundabout-in-focus');
+				jQuery(this).removeClass('ui-ring-item-focus');
 			}
 		});
 
