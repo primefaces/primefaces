@@ -11,15 +11,4 @@ PrimeFaces.widget.TagCloud = function(id, cfg) {
     }).mouseout(function() {
         jQuery(this).removeClass('ui-state-hover');
     })
-
-    if(this.cfg.sortable) {
-        this.jq.children('ul').sortable({
-            placeholder: 'ui-state-highlight'
-            ,forcePlaceholderSize: true
-            ,containment: 'parent'
-            ,stop: function(event, ui) {
-                ui.item.removeClass('ui-state-hover');
-            }
-        });
-    }
 }

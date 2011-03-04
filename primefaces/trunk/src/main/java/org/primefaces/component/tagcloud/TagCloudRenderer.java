@@ -72,9 +72,7 @@ public class TagCloudRenderer extends CoreRenderer {
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(tagCloud.resolveWidgetVar() + " = new PrimeFaces.widget.TagCloud('" + clientId + "', {");
-        writer.write("sortable:" + tagCloud.isSortable());
-        writer.write("});");
+		writer.write(tagCloud.resolveWidgetVar() + " = new PrimeFaces.widget.TagCloud('" + clientId + "', {});");
 
         writer.endElement("script");
     }
