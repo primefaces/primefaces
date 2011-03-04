@@ -98,6 +98,12 @@
 			<type>java.lang.Integer</type>
             <defaultValue>200</defaultValue>
 		</attribute>
+        <attribute>
+			<name>triggerEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>click</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
