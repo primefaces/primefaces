@@ -1,5 +1,5 @@
 <!ELEMENT component (tag,tagClass,componentClass,componentHandlerClass?,componentType,componentFamily,rendererType?,rendererClass?,parent,interfaces?,attributes,resources*)>
-<!ELEMENT tagman (#PCDATA)>
+<!ELEMENT tag (#PCDATA)>
 <!ELEMENT tagClass (#PCDATA)>
 <!ELEMENT componentClass (#PCDATA)>
 <!ELEMENT componentHandlerClass (#PCDATA)>
