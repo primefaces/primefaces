@@ -118,11 +118,12 @@ public class TreeRenderer extends CoreRenderer {
 	public void encodeDynamicNode(FacesContext context, Tree tree) throws IOException {
         TreeModel model = new TreeModel((TreeNode) tree.getValue());
         model.setRowIndex(-1);  //reset
+        boolean checkbox = tree.getSelectionMode() != null && tree.getSelectionMode().equals("checkbox");
 
         String rowKey = context.getExternalContext().getRequestParameterMap().get(tree.getClientId(context) + "_expandNode");
         TreeNode treeNode = treeExplorer.findTreeNode(rowKey, model);
 
-        encodeTreeNodeChildren(context, tree, treeNode, rowKey, true, false);
+        encodeTreeNodeChildren(context, tree, treeNode, rowKey, true, false, checkbox);
 	}
 	
 	protected void encodeScript(FacesContext context, Tree tree) throws IOException {
@@ -192,6 +193,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         String styleClass = tree.getStyleClass();
         styleClass = styleClass == null ? Tree.STYLE_CLASS : Tree.STYLE_CLASS + " " + styleClass;
+        boolean checkbox = tree.getSelectionMode() != null && tree.getSelectionMode().equals("checkbox");
         
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
@@ -202,7 +204,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         for(TreeNode child : root.getChildren()) {
-            encodeTreeNode(context, tree, child, String.valueOf(rowIndex), dynamic);
+            encodeTreeNode(context, tree, child, String.valueOf(rowIndex), dynamic, checkbox);
             
             rowIndex++;
         }
@@ -216,7 +218,7 @@ public class TreeRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
-	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String rowKey, boolean dynamic) throws IOException {
+	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String rowKey, boolean dynamic, boolean checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         context.getExternalContext().getRequestMap().put(tree.getVar(), node.getData());
         boolean isLeaf = node.isLeaf();
@@ -258,15 +260,16 @@ public class TreeRenderer extends CoreRenderer {
                     }
                     writer.endElement("span");
 
+                    //checkbox
+                    if(checkbox) {
+                        encodeCheckbox(context, tree, node);
+                    }
+
                     //content
-                    /*writer.startElement("a", null);
-                    writer.writeAttribute("href", "#", null);*/
-                        writer.startElement("span", null);
-
-                        uiTreeNode.encodeAll(context);
-
-                        writer.endElement("span");
-                    //writer.endElement("a");
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+                    uiTreeNode.encodeAll(context);
+                    writer.endElement("span");
 
                 writer.endElement("span");
 
@@ -274,13 +277,13 @@ public class TreeRenderer extends CoreRenderer {
 
             //children
             if(!isLeaf && !dynamic) {
-                encodeTreeNodeChildren(context, tree, node, rowKey, dynamic, expanded);
+                encodeTreeNodeChildren(context, tree, node, rowKey, dynamic, expanded, checkbox);
             }
 
         writer.endElement("li");
 	}
 
-    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String parentRowKey, boolean dynamic, boolean expanded) throws IOException {
+    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String parentRowKey, boolean dynamic, boolean expanded, boolean checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         int rowIndex = 0;
 
@@ -293,7 +296,7 @@ public class TreeRenderer extends CoreRenderer {
 
         for(TreeNode childNode : node.getChildren()) {
             String childRowKey = parentRowKey + "_" + rowIndex;
-            encodeTreeNode(context, tree, childNode, childRowKey, dynamic);
+            encodeTreeNode(context, tree, childNode, childRowKey, dynamic, checkbox);
             rowIndex++;
         }
 
@@ -347,8 +350,27 @@ public class TreeRenderer extends CoreRenderer {
             writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(context, tree, update) + "'");
     }
 
+	protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Tree.CHECKBOX_CLASS, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Tree.CHECKBOX_BOX_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Tree.CHECKBOX_ICON_CLASS, null);
+
+        writer.endElement("span");
+
+        writer.endElement("div");
+
+        writer.endElement("div");
+	}
+
     @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
 

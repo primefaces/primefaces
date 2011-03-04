@@ -95,8 +95,13 @@ import org.primefaces.model.TreeNode;
     public static String NODES_CLASS = "ui-tree-nodes ui-helper-reset ui-tree-child";
     public static String LEAF_CLASS = "ui-tree-item";
     public static String NODE_CONTENT_CLASS = "ui-helper-clearfix ui-tree-node-content ui-corner-all";
+    public static String NODE_LABEL_CLASS = "ui-tree-node-label";
     public static String EXPANDED_ICON_CLASS = "ui-tree-icon ui-icon ui-icon-triangle-1-s";
     public static String COLLAPSED_ICON_CLASS = "ui-tree-icon ui-icon ui-icon-triangle-1-e";
+    public static String CHECKBOX_CLASS = "ui-tree-checkbox ui-widget";
+    public static String CHECKBOX_BOX_CLASS = "ui-tree-checkbox-box ui-widget ui-corner-all ui-state-default";
+    public static String CHECKBOX_ICON_CLASS = "ui-tree-checkbox-icon";
+    public static String CHECKBOX_ICON_CHECKED_CLASS = "ui-tree-checkbox-icon ui-icon ui-icon-check";
 
     public Map<String,UITreeNode> getTreeNodes() {
         if(nodes == null) {

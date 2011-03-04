@@ -31,9 +31,8 @@
 	padding: 3px;
 	vertical-align:middle;
 }
-.ui-tree .ui-tree-nodes .ui-tree-node .ui-tree-node-content a {
-	outline: none;
-    margin:0 0 0 0.5em;
+.ui-tree .ui-tree-nodes .ui-tree-node .ui-tree-node-content .ui-tree-node-label {
+    margin:0.2em 0 0 0.5em;
     float: left;
 }
 
@@ -74,7 +73,6 @@
     display: inline;
     width:100%;
 }
-
 .ui-tree .ui-tree-nodes .ui-tree-parent {
 	margin: 0;
     padding: 0;
@@ -82,8 +80,30 @@
     float: left;
     clear:left;
 }
-
 .ui-tree-insertion {
 	height:1px;
 	font-size:0px;
+}
+
+.ui-tree .ui-tree-checkbox {
+    position: relative;
+    line-height: 16px;
+    width: 16px;
+    margin: 0;
+    float: left;
+}
+.ui-tree .ui-tree-checkbox .ui-tree-checkbox-box {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    margin-right: 3px;
+}
+
+.ui-tree .ui-tree-icon {
+    cursor: pointer;
 }

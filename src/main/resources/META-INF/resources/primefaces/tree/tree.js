@@ -29,36 +29,47 @@ PrimeFaces.widget.Tree.prototype.CONTENT_SELECTOR = '.ui-tree-node-content';
 PrimeFaces.widget.Tree.prototype.CHILDREN_SELECTOR = '.ui-tree-nodes';
 PrimeFaces.widget.Tree.prototype.ICON_SELECTOR = '.ui-tree-icon';
 PrimeFaces.widget.Tree.prototype.SELECTED_SELECTOR = '.ui-tree-node-content.ui-state-highlight';
+PrimeFaces.widget.Tree.prototype.CHECKBOX_SELECTOR = '.ui-tree-checkbox';
+PrimeFaces.widget.Tree.prototype.CHECKBOX_ICON_SELECTOR = '.ui-tree-checkbox-icon:first';
+PrimeFaces.widget.Tree.prototype.CHECKED_CLASS = 'ui-icon ui-icon-check';
 
 PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
-    var _self = this;
-    
-    elements.mouseover(function() {
-        jQuery(this).addClass(_self.HOVER_CLASS);
-    })
-    .mouseout(function() {
-        jQuery(this).removeClass(_self.HOVER_CLASS);
-    })
-    .click(function(e) {
-        _self.onNodeClick(e, jQuery(this).parents('li:first'));
+    var _self = this,
+    selectionMode = this.cfg.selectionMode;
+
+    //expand-collapse
+    elements.children(this.ICON_SELECTOR).click(function(e) {
+        var icon = jQuery(this),
+        node = icon.parents('li:first');
+
+        if(icon.hasClass(_self.COLLAPSED_ICON_SELECTOR))
+            _self.expandNode(node);
+        else
+            _self.collapseNode(node);
     });
+
+    //selection hover
+    if(selectionMode) {
+        var clickTarget = selectionMode == 'checkbox' ? elements.children(this.CHECKBOX_SELECTOR).children() : elements;
+
+        clickTarget.mouseover(function() {
+            jQuery(this).addClass(_self.HOVER_CLASS);
+        })
+        .mouseout(function() {
+            jQuery(this).removeClass(_self.HOVER_CLASS);
+        })
+        .click(function(e) {
+            _self.onNodeClick(e, jQuery(this).parents('li:first'));
+        });
+    }
 }
 
-PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, nodeEL) {
-    var target = jQuery(e.target),
-    selectionMode = this.cfg.selectionMode;
-    
-    if(target.is(this.ICON_SELECTOR)) {
-        if(target.hasClass(this.COLLAPSED_ICON_SELECTOR))
-            this.expandNode(nodeEL);
+PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, node) {
+    if(jQuery(e.target).is(':not(' + this.ICON_SELECTOR + ')')) {
+        if(this.isNodeSelected(node))
+            this.unselectNode(node);
         else
-            this.collapseNode(nodeEL);
-    }
-    else if(selectionMode) {
-        if(this.isNodeSelected(nodeEL))
-            this.unselectNode(nodeEL);
-        else
-            this.selectNode(nodeEL);
+            this.selectNode(node);
     }
 }
 
@@ -203,7 +214,13 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
     }
 
     //select node
-    node.find(this.CONTENT_SELECTOR + ':first').addClass(this.SELECTED_CLASS);
+    if(this.isCheckboxSelection()) {
+        this.toggleCheckbox(node, true);
+    }
+    else {
+        node.find(this.CONTENT_SELECTOR + ':first').addClass(this.SELECTED_CLASS);
+    }
+    
     this.selections.push(this.getNodeId(node));
 
     this.writeSelections();
@@ -216,8 +233,14 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
 PrimeFaces.widget.Tree.prototype.unselectNode = function(node) {
     var nodeId = this.getNodeId(node);
 
-    node.find(this.CONTENT_SELECTOR + ':first').removeClass(this.SELECTED_CLASS);
-   
+    //select node
+    if(this.isCheckboxSelection()) {
+        this.toggleCheckbox(node, false);
+    }
+    else {
+        node.find(this.CONTENT_SELECTOR + ':first').removeClass(this.SELECTED_CLASS);
+    }
+
     //remove from selection
     this.selections = jQuery.grep(this.selections, function(r) {
         return r != nodeId;
@@ -272,6 +295,19 @@ PrimeFaces.widget.Tree.prototype.isNodeSelected = function(node) {
     return jQuery.inArray(this.getNodeId(node), this.selections) != -1;
 }
 
-PrimeFaces.widget.Tree.prototype.isSingleSelection = function(node) {
+PrimeFaces.widget.Tree.prototype.isSingleSelection = function() {
     return this.cfg.selectionMode == 'single';
+}
+
+PrimeFaces.widget.Tree.prototype.isCheckboxSelection = function() {
+    return this.cfg.selectionMode == 'checkbox';
+}
+
+PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
+    var icon = node.find(this.CHECKBOX_ICON_SELECTOR);
+
+    if(check)
+        icon.addClass(this.CHECKED_CLASS)
+    else
+        icon.removeClass(this.CHECKED_CLASS);
 }
