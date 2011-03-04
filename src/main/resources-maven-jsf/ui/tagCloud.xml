@@ -35,12 +35,6 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
-        <attribute>
-            <name>sortable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
 	</attributes>
     <resources>
         <resource>
@@ -51,9 +45,6 @@
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
-		</resource>
-        <resource>
-			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
