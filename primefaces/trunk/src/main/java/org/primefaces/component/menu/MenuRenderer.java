@@ -57,10 +57,13 @@ public class MenuRenderer extends BaseMenuRenderer {
            writer.write(",at:'" + menu.getAt() + "'");
 
             UIComponent trigger = menu.findComponent(menu.getTrigger());
-            if(trigger != null)
+            if(trigger != null) {
                 writer.write(",trigger:'" + trigger.getClientId(context) + "'");
-            else
+                writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
+            }
+            else {
                 writer.write(",trigger:'" + menu.getTrigger() + "'");
+            }
         }
 
         if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
