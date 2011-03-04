@@ -22,6 +22,8 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 
 import org.primefaces.model.TreeExplorer;
@@ -44,8 +46,20 @@ public class TreeRenderer extends CoreRenderer {
 		Tree tree = (Tree) component;
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String clientId = tree.getClientId(context);
+        TreeModel model = new TreeModel((TreeNode) tree.getValue());
 
         //state change
+        if(tree.isNodeExpandRequest(context)) {
+            TreeNode nodeToExpand = treeExplorer.findTreeNode(params.get(clientId + "_expandNode"), model);
+            tree.queueEvent(new NodeExpandEvent(tree, nodeToExpand));
+        }
+        else if(tree.isNodeCollapseRequest(context)) {
+            TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_collapseNode"), model);
+            tree.queueEvent(new NodeCollapseEvent(tree, nodeToCollapse));
+        }
+
+        //reset
+        model.setRowIndex(-1);
 
         //selection
         if(tree.getSelectionMode() != null) {
@@ -61,7 +75,6 @@ public class TreeRenderer extends CoreRenderer {
             }
             else {
                 String[] selectedRowKeys = selection.split(",");
-                TreeModel model = new TreeModel((TreeNode) tree.getValue());
 
                 if(isSingle) {
                     TreeNode selectedNode = treeExplorer.findTreeNode(selectedRowKeys[0], model);
@@ -93,7 +106,7 @@ public class TreeRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;
 
-        if(tree.isNodeLoadRequest(context)) {
+        if(tree.isNodeExpandRequest(context)) {
             encodeDynamicNode(context, tree);
         }
         else {
@@ -103,9 +116,11 @@ public class TreeRenderer extends CoreRenderer {
 	}
 	
 	public void encodeDynamicNode(FacesContext context, Tree tree) throws IOException {
-        TreeNode root = (TreeNode) tree.getValue();
-        String rowKey = context.getExternalContext().getRequestParameterMap().get(tree.getClientId(context) + "_loadNode");
-        TreeNode treeNode = treeExplorer.findTreeNode(rowKey, new TreeModel(root));
+        TreeModel model = new TreeModel((TreeNode) tree.getValue());
+        model.setRowIndex(-1);  //reset
+
+        String rowKey = context.getExternalContext().getRequestParameterMap().get(tree.getClientId(context) + "_expandNode");
+        TreeNode treeNode = treeExplorer.findTreeNode(rowKey, model);
 
         encodeTreeNodeChildren(context, tree, treeNode, rowKey, true, false);
 	}
@@ -155,15 +170,6 @@ public class TreeRenderer extends CoreRenderer {
             encodeStateChangeListener(context, tree, "hasExpandListener", "onExpandUpdate", tree.getOnExpandUpdate());
         if(tree.getNodeCollapseListener() != null)
             encodeStateChangeListener(context, tree, "hasCollapseListener", "onCollapseUpdate", tree.getOnCollapseUpdate());
-
-        //collapse listener
-        if(tree.getNodeCollapseListener() != null) {
-            writer.write(",hasCollapseListener:true");
-
-            String onCollapseUpdate = tree.getOnCollapseUpdate();
-            if(onCollapseUpdate != null)
-                writer.write(",onCollapseUpdate:'" + ComponentUtils.findClientIds(context, tree, onCollapseUpdate) + "'");
-        }
 
         //expand/collapse icon states for specific treenodes
         encodeIconStates(context, tree);
