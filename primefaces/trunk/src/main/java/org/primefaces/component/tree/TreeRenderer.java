@@ -165,13 +165,18 @@ public class TreeRenderer extends CoreRenderer {
             }
         }
 
+        //dragdrop
+        if(tree.isDragdrop()) {
+            writer.write(",dragdrop:true");
+        }
+
         //state change listeners
         if(tree.getNodeExpandListener() != null)
             encodeStateChangeListener(context, tree, "hasExpandListener", "onExpandUpdate", tree.getOnExpandUpdate());
         if(tree.getNodeCollapseListener() != null)
             encodeStateChangeListener(context, tree, "hasCollapseListener", "onCollapseUpdate", tree.getOnCollapseUpdate());
 
-        //expand/collapse icon states for specific treenodes
+        //expand-collapse icon states for specific treenodes
         encodeIconStates(context, tree);
 
         writer.write("});");
