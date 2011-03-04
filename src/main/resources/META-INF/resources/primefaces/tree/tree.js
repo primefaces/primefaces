@@ -80,6 +80,10 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
             formId: this.cfg.formId
         };
 
+        if(this.cfg.hasExpandListener && this.cfg.onExpandUpdate) {
+            options.update = options.update + ' ' + this.cfg.onExpandUpdate;
+        }
+
         options.onsuccess = function(responseXML) {
             var xmlDoc = responseXML.documentElement,
             updates = xmlDoc.getElementsByTagName("update");
@@ -103,7 +107,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
         };
 
         var params = {};
-        params[this.id + '_loadNode'] = _self.getNodeId(node);
+        params[this.id + '_expandNode'] = _self.getNodeId(node);
 
         PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
     }
@@ -128,8 +132,13 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
 
     node.children(this.CHILDREN_SELECTOR).hide('fade', {}, 'fast', function() {
         if(_self.cfg.dynamic) {
-            if(!_self.cfg.cache)
+            if(!_self.cfg.cache) {
                 jQuery(this).remove();
+
+                if(_self.cfg.hasCollapseListener) {
+                    _self.fireNodeCollapseEvent(node);
+                }
+            }
         }
         else {
             _self.saveClientState();
@@ -237,6 +246,20 @@ PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
 
     var params = {};
     params[this.id + '_instantSelection'] = this.getNodeId(node);
+
+    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+}
+
+PrimeFaces.widget.Tree.prototype.fireNodeCollapseEvent = function(node) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        update: this.cfg.onCollapseUpdate,
+        formId: this.cfg.formId
+    };
+
+    var params = {};
+    params[this.id + '_collapseNode'] = this.getNodeId(node);
 
     PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
 }
