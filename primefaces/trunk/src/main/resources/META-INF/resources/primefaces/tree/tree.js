@@ -12,7 +12,7 @@ PrimeFaces.widget.Tree = function(id, cfg) {
         this.selections = [];
     }
 
-    this.bindEvents(this.jq.find(this.CONTENT_SELECTOR));
+    this.bindEvents(this.jq.find('.ui-tree-node-content'));
 
     if(!this.cfg.dynamic) {
         this.cookieName = this.id + '_state';
@@ -24,30 +24,16 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     }
 }
 
-PrimeFaces.widget.Tree.prototype.HOVER_CLASS = 'ui-state-hover';
-PrimeFaces.widget.Tree.prototype.SELECTED_CLASS = 'ui-state-highlight';
-PrimeFaces.widget.Tree.prototype.EXPANDED_ICON_SELECTOR = 'ui-icon-triangle-1-s';
-PrimeFaces.widget.Tree.prototype.COLLAPSED_ICON_SELECTOR = 'ui-icon-triangle-1-e';
-
-PrimeFaces.widget.Tree.prototype.CONTENT_SELECTOR = '.ui-tree-node-content';
-PrimeFaces.widget.Tree.prototype.LABEL_SELECTOR = '.ui-tree-node-label';
-PrimeFaces.widget.Tree.prototype.CHILDREN_SELECTOR = '.ui-tree-nodes';
-PrimeFaces.widget.Tree.prototype.ICON_SELECTOR = '.ui-tree-icon';
-PrimeFaces.widget.Tree.prototype.SELECTED_SELECTOR = '.ui-tree-node-content.ui-state-highlight';
-PrimeFaces.widget.Tree.prototype.CHECKBOX_SELECTOR = '.ui-tree-checkbox';
-PrimeFaces.widget.Tree.prototype.CHECKBOX_ICON_SELECTOR = '.ui-tree-checkbox-icon:first';
-PrimeFaces.widget.Tree.prototype.CHECKED_CLASS = 'ui-icon ui-icon-check';
-
 PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
     var _self = this,
     selectionMode = this.cfg.selectionMode;
 
     //expand-collapse
-    elements.children(this.ICON_SELECTOR).click(function(e) {
+    elements.children('.ui-tree-icon').click(function(e) {
         var icon = jQuery(this),
         node = icon.parents('li:first');
 
-        if(icon.hasClass(_self.COLLAPSED_ICON_SELECTOR))
+        if(icon.hasClass('ui-icon-triangle-1-e'))
             _self.expandNode(node);
         else
             _self.collapseNode(node);
@@ -55,13 +41,13 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
 
     //selection hover
     if(selectionMode) {
-        var clickTarget = selectionMode == 'checkbox' ? elements.children(this.CHECKBOX_SELECTOR).children() : elements;
+        var clickTarget = selectionMode == 'checkbox' ? elements.children('.ui-tree-checkbox').children() : elements;
 
         clickTarget.mouseover(function() {
-            jQuery(this).addClass(_self.HOVER_CLASS);
+            jQuery(this).addClass('ui-state-hover');
         })
         .mouseout(function() {
-            jQuery(this).removeClass(_self.HOVER_CLASS);
+            jQuery(this).removeClass('ui-state-hover');
         })
         .click(function(e) {
             _self.onNodeClick(e, jQuery(this).parents('li:first'));
@@ -70,7 +56,7 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
 }
 
 PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, node) {
-    if(jQuery(e.target).is(':not(' + this.ICON_SELECTOR + ')')) {
+    if(jQuery(e.target).is(':not(.ui-tree-icon)')) {
         if(this.isNodeSelected(node))
             this.unselectNode(node);
         else
@@ -83,7 +69,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
     if(this.cfg.dynamic) {
 
-        if(this.cfg.cache && node.children(this.CHILDREN_SELECTOR).length > 0) {
+        if(this.cfg.cache && node.children('.ui-tree-nodes').length > 0) {
             this.showNodeChildren(node, true);
             
             return;
@@ -110,7 +96,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
                 if(id == _self.id){
                     node.append(content);
-                    _self.bindEvents(node.children(_self.CHILDREN_SELECTOR).find(_self.CONTENT_SELECTOR));
+                    _self.bindEvents(node.children('.ui-tree-nodes').find('.ui-tree-node-content'));
  
                     _self.showNodeChildren(node, true);
                 }
@@ -135,18 +121,18 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
 PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
     var _self = this,
-    icon = node.find(this.ICON_SELECTOR + ':first'),
+    icon = node.find('.ui-tree-icon:first'),
     lastClass = node.attr('class').split(' ').slice(-1),
     nodeIcon = icon.next(),
     iconState = this.cfg.iconStates[lastClass];
 
-    icon.addClass(this.COLLAPSED_ICON_SELECTOR).removeClass(this.EXPANDED_ICON_SELECTOR);
+    icon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
 
     if(iconState) {
         nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
     }
 
-    node.children(this.CHILDREN_SELECTOR).hide('fade', {}, 'fast', function() {
+    node.children('.ui-tree-nodes').hide('fade', {}, 'fast', function() {
         if(_self.cfg.dynamic) {
             if(!_self.cfg.cache) {
                 jQuery(this).remove();
@@ -163,21 +149,21 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
 }
 
 PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node, animate) {
-    var icon = node.find(this.ICON_SELECTOR + ':first'),
+    var icon = node.find('.ui-tree-icon:first'),
     lastClass = node.attr('class').split(' ').slice(-1),
     nodeIcon = icon.next(),
     iconState = this.cfg.iconStates[lastClass];
 
-    icon.addClass(this.EXPANDED_ICON_SELECTOR).removeClass(this.COLLAPSED_ICON_SELECTOR);
+    icon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
 
     if(iconState) {
         nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
     }
 
     if(animate)
-        node.children(this.CHILDREN_SELECTOR).show('fade', {}, 'fast');
+        node.children('.ui-tree-nodes').show('fade', {}, 'fast');
     else
-        node.children(this.CHILDREN_SELECTOR).show();
+        node.children('.ui-tree-nodes').show();
 }
 
 PrimeFaces.widget.Tree.prototype.saveClientState = function() {
@@ -186,9 +172,9 @@ PrimeFaces.widget.Tree.prototype.saveClientState = function() {
     
     jQuery(this.jq).find('li').each(function() {
         var node = jQuery(this),
-        icon = node.find(_self.ICON_SELECTOR + ':first');
+        icon = node.find('.ui-tree-icon:first');
 
-        if(icon.hasClass(_self.EXPANDED_ICON_SELECTOR)) {
+        if(icon.hasClass('ui-icon-triangle-1-s')) {
             expandedNodes.push(node.attr('id'));
         }
     });
@@ -215,7 +201,7 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
     if(this.isSingleSelection()) {
         //clean all selections
         this.selections = [];
-        this.jq.find(this.SELECTED_SELECTOR).removeClass(this.SELECTED_CLASS);
+        this.jq.find('.ui-tree-node-content.ui-state-highlight').removeClass('ui-state-highlight');
     }
 
     //select node
@@ -223,7 +209,7 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
         this.toggleCheckbox(node, true);
     }
     else {
-        node.find(this.CONTENT_SELECTOR + ':first').addClass(this.SELECTED_CLASS);
+        node.find('.ui-tree-node-content:first').addClass('ui-state-highlight');
     }
     
     this.selections.push(this.getNodeId(node));
@@ -243,7 +229,7 @@ PrimeFaces.widget.Tree.prototype.unselectNode = function(node) {
         this.toggleCheckbox(node, false);
     }
     else {
-        node.find(this.CONTENT_SELECTOR + ':first').removeClass(this.SELECTED_CLASS);
+        node.find('.ui-tree-node-content:first').removeClass('ui-state-highlight');
     }
 
     //remove from selection
@@ -309,31 +295,31 @@ PrimeFaces.widget.Tree.prototype.isCheckboxSelection = function() {
 }
 
 PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
-    var icon = node.find(this.CHECKBOX_ICON_SELECTOR);
+    var icon = node.find('.ui-tree-checkbox-icon:first');
 
     if(check)
-        icon.addClass(this.CHECKED_CLASS)
+        icon.addClass('ui-icon ui-icon-check')
     else
-        icon.removeClass(this.CHECKED_CLASS);
+        icon.removeClass('ui-icon ui-icon-check');
 }
 
 PrimeFaces.widget.Tree.prototype.setupDragDrop = function() {
     var _self = this;
 
     //make all labels draggable
-    this.jq.find(this.LABEL_SELECTOR).draggable({
+    this.jq.find('.ui-tree-node-label').draggable({
         revert:'invalid',
         helper: 'clone',
         containment: this.jqId
     });
 
     //make all node contents droppable
-    this.jq.find(this.CONTENT_SELECTOR).droppable({
-        hoverClass: _self.HOVER_CLASS,
+    this.jq.find('.ui-tree-node-content').droppable({
+        hoverClass: 'ui-state-hover',
         drop: function(event, ui) {
             var newParent = jQuery(this).parents('li:first'),
             draggedNode = ui.draggable.parents('li:first'),
-            newParentChildrenContainer = newParent.children(_self.CHILDREN_SELECTOR),
+            newParentChildrenContainer = newParent.children('.ui-tree-nodes'),
             oldParent = null;
 
             //ignore self dragdrop
@@ -351,7 +337,7 @@ PrimeFaces.widget.Tree.prototype.setupDragDrop = function() {
             //If old parent has no children left, make it a leaf
             if(draggedNode.siblings().length == 0) {
                 oldParent = draggedNode.parents('li:first');
-                newParent.children(_self.CHILDREN_SELECTOR).append(draggedNode);
+                newParent.children('.ui-tree-nodes').append(draggedNode);
                 oldParent.removeClass('ui-tree-parent').addClass('ui-tree-item');
                 oldParent.find('.ui-tree-icon:first').remove();
                 oldParent.children('.ui-tree-nodes').remove();
