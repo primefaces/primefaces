@@ -18,6 +18,10 @@ PrimeFaces.widget.Tree = function(id, cfg) {
         this.cookieName = this.id + '_state';
         this.restoreClientState();
     }
+
+    if(this.cfg.dragdrop) {
+        this.setupDragDrop();
+    }
 }
 
 PrimeFaces.widget.Tree.prototype.HOVER_CLASS = 'ui-state-hover';
@@ -26,6 +30,7 @@ PrimeFaces.widget.Tree.prototype.EXPANDED_ICON_SELECTOR = 'ui-icon-triangle-1-s'
 PrimeFaces.widget.Tree.prototype.COLLAPSED_ICON_SELECTOR = 'ui-icon-triangle-1-e';
 
 PrimeFaces.widget.Tree.prototype.CONTENT_SELECTOR = '.ui-tree-node-content';
+PrimeFaces.widget.Tree.prototype.LABEL_SELECTOR = '.ui-tree-node-label';
 PrimeFaces.widget.Tree.prototype.CHILDREN_SELECTOR = '.ui-tree-nodes';
 PrimeFaces.widget.Tree.prototype.ICON_SELECTOR = '.ui-tree-icon';
 PrimeFaces.widget.Tree.prototype.SELECTED_SELECTOR = '.ui-tree-node-content.ui-state-highlight';
@@ -310,4 +315,53 @@ PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
         icon.addClass(this.CHECKED_CLASS)
     else
         icon.removeClass(this.CHECKED_CLASS);
+}
+
+PrimeFaces.widget.Tree.prototype.setupDragDrop = function() {
+    var _self = this;
+
+    //make all labels draggable
+    this.jq.find(this.LABEL_SELECTOR).draggable({
+        revert:'invalid',
+        helper: 'clone',
+        containment: this.jqId
+    });
+
+    //make all node contents droppable
+    this.jq.find(this.CONTENT_SELECTOR).droppable({
+        hoverClass: _self.HOVER_CLASS,
+        drop: function(event, ui) {
+            var newParent = jQuery(this).parents('li:first'),
+            draggedNode = ui.draggable.parents('li:first'),
+            newParentChildrenContainer = newParent.children(_self.CHILDREN_SELECTOR),
+            oldParent = null;
+
+            //ignore self dragdrop
+            if(newParent.attr('id') == draggedNode.attr('id')) {
+                return;
+            }
+
+            //If newParent had no children before, make it a parent
+            if(newParentChildrenContainer.length == 0) {
+                newParent.append('<ul class="ui-tree-nodes ui-helper-reset ui-tree-child"></ul>')
+                .removeClass('ui-tree-item').addClass('ui-tree-parent')
+                .find('.ui-tree-node-content:first').prepend('<span class="ui-tree-icon ui-icon ui-icon-triangle-1-s"></span>');
+            }
+
+            //If old parent has no children left, make it a leaf
+            if(draggedNode.siblings().length == 0) {
+                oldParent = draggedNode.parents('li:first');
+                newParent.children(_self.CHILDREN_SELECTOR).append(draggedNode);
+                oldParent.removeClass('ui-tree-parent').addClass('ui-tree-item');
+                oldParent.find('.ui-tree-icon:first').remove();
+                oldParent.children('.ui-tree-nodes').remove();
+            }
+            else {
+                //append droppedNode to newParent
+                newParent.children('.ui-tree-nodes').append(draggedNode);
+            }
+
+            draggedNode.hide().fadeIn('fast');
+        }
+    });
 }
