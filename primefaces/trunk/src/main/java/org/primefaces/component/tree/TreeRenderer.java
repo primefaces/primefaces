@@ -174,6 +174,7 @@ public class TreeRenderer extends CoreRenderer {
             if(tree.getNodeSelectListener() != null) {
                 //update is deprecated and used for backward compatibility
                 String onSelectUpdate = tree.getOnSelectUpdate() != null ? tree.getOnSelectUpdate() : tree.getUpdate();
+                String onSelectProcess = tree.getOnSelectProcess();
 
                 writer.write(",instantSelect:true");
 
@@ -185,6 +186,8 @@ public class TreeRenderer extends CoreRenderer {
 
                 if(onSelectUpdate != null)
                     writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, tree, onSelectUpdate) + "'");
+                if(onSelectProcess != null)
+                    writer.write(",onSelectProcess:'" + ComponentUtils.findClientIds(context, tree, onSelectProcess) + "'");
             }
         }
 
