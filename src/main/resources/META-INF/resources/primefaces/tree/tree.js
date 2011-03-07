@@ -254,9 +254,10 @@ PrimeFaces.widget.Tree.prototype.writeSelections = function() {
 PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
     var options = {
         source: this.id,
-        process: this.id,
         formId: this.cfg.formId
     };
+
+    options.process = this.cfg.onSelectProcess ? this.cfg.onSelectProcess : this.id;
 
     if(this.cfg.onSelectUpdate) {
         options.update = this.cfg.onSelectUpdate;
