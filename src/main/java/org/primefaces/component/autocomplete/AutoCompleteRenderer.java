@@ -173,20 +173,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = ac.getClientId(facesContext);
 
-        UIComponent form = ComponentUtils.findParentForm(facesContext, ac);
-        if (form == null) {
-            throw new FacesException("AutoComplete : \"" + clientId + "\" must be inside a form");
-        }
-
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("jQuery(function(){");
 
         writer.write(ac.resolveWidgetVar() + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
-        writer.write("url:'" + getActionURL(facesContext) + "'");
-        writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-        writer.write(",pojo:" + (ac.getVar() != null));
+        writer.write("pojo:" + (ac.getVar() != null));
         writer.write(",maxResults:" + ac.getMaxResults());
 
         //Configuration

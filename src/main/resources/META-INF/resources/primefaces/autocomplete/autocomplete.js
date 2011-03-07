@@ -4,6 +4,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId + '_input');
     this.jqh = jQuery(this.jqId + '_hinput');
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
 	
     this.setupDataSource();
 		
@@ -92,7 +93,9 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
         var params = {};
         params[_self.id + '_query'] = request.term;
 
-        PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
         
     };
 }
@@ -118,7 +121,9 @@ PrimeFaces.widget.AutoComplete.prototype.onItemSelect = function(event, ui) {
         var params = {};
         params[this.id + "_ajaxSelect"] = true;
 
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     }
 }
 
