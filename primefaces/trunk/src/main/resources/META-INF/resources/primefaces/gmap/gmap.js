@@ -71,7 +71,9 @@ PrimeFaces.widget.GMap.prototype.fireMarkerDragEvent = function(event, marker) {
     params[this.id + '_lat'] = event.latLng.lat();
     params[this.id + '_lng'] = event.latLng.lng();
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.GMap.prototype.configurePolylines = function() {
@@ -134,11 +136,15 @@ PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overla
         options.update = this.cfg.onOverlaySelectUpdate;
     }
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.GMap.prototype.configureEventListeners = function() {
 	var _self = this;
+
+    this.cfg.formId = $(PrimeFaces.escapeClientId(this.id)).parents('form:first').attr('id');
 	
 	//client side events
 	if(this.cfg.onPointClick) {
@@ -182,7 +188,9 @@ PrimeFaces.widget.GMap.prototype.fireStateChangeEvent = function() {
     params[this.id + '_center'] = this.map.getBounds().getCenter().lat() + "," + this.map.getBounds().getCenter().lng();
     params[this.id + '_zoom'] = this.map.getZoom();
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.GMap.prototype.configurePointSelectListener = function() {	
@@ -208,7 +216,9 @@ PrimeFaces.widget.GMap.prototype.firePointSelectEvent = function(event) {
     params[this.id + '_pointSelected'] = true;
     params[this.id + '_pointLatLng'] = event.latLng.lat() + "," + event.latLng.lng();
  
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.GMap.prototype.addOverlay = function(overlay) {
