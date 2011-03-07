@@ -54,18 +54,17 @@ public class TerminalRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write("$(function() {");
         
 		writer.write(terminal.resolveWidgetVar() + " = new PrimeFaces.widget.Terminal('" + clientId + "', {");
 		writer.write("PS1:'" + terminal.getPrompt() + "'");
-		writer.write(",id:'" + clientId + "'");
-		writer.write(",url:'" + getActionURL(facesContext) + "'");
-		writer.write(",formId:'" + ComponentUtils.findParentForm(facesContext, terminal).getClientId(facesContext) + "'");
 
   		if(terminal.getWelcomeMessage() != null) writer.write(",WELCOME_MESSAGE:'" + terminal.getWelcomeMessage() + "'");
 		if(terminal.getWidth() != null) writer.write(",WIDTH:'" + terminal.getWidth() + "'");
 		if(terminal.getHeight() != null) writer.write(",HEIGHT:'" + terminal.getHeight() + "'");
 
-		writer.write("});");
+		writer.write("});});");
 		
 		writer.endElement("script");
 	}
