@@ -1,5 +1,5 @@
-jQuery(document).ready(function() {
-    jQuery('body').addClass('yui-skin-sam');
+$(document).ready(function() {
+    $('body').addClass('yui-skin-sam');
 });
 
 PrimeFaces = {
@@ -13,21 +13,21 @@ PrimeFaces = {
     },
 	
     cleanWatermarks : function(){
-        jQuery.watermark.hideAll();
+        $.watermark.hideAll();
     },
 	
     showWatermarks : function(){
-        jQuery.watermark.showAll();
+        $.watermark.showAll();
     },
 	
     addSubmitParam : function(parent, name, value) {
-        jQuery(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
+        $(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
 	
         return this;
     },
 
     submit : function(formId) {
-        jQuery(this.escapeClientId(formId)).submit();
+        $(this.escapeClientId(formId)).submit();
     },
 
     attachBehaviors : function(element, behaviors) {
@@ -46,25 +46,25 @@ PrimeFaces = {
     },
 
     getCookie : function(name) {
-        return jQuery.cookie(name);
+        return $.cookie(name);
     },
 
     setCookie : function(name, value) {
-        jQuery.cookie(name, value);
+        $.cookie(name, value);
     },
 
     skinInput : function(input) {
         input.hover(
             function() {
-                jQuery(this).addClass('ui-state-hover');
+                $(this).addClass('ui-state-hover');
             },
             function() {
-                jQuery(this).removeClass('ui-state-hover');
+                $(this).removeClass('ui-state-hover');
             }
         ).focus(function() {
-                jQuery(this).addClass('ui-state-focus');
+                $(this).addClass('ui-state-focus');
         }).blur(function() {
-                jQuery(this).removeClass('ui-state-focus');
+                $(this).removeClass('ui-state-focus');
         });
     },
 	
@@ -95,12 +95,12 @@ PrimeFaces.ajax.AjaxUtils = {
     },
 	
     updateState: function(value) {
-        jQuery("form").each(function() {
-            var form = jQuery(this),
+        $("form").each(function() {
+            var form = $(this),
             formViewState = form.children("input[name='javax.faces.ViewState']").get(0);
 
             if(formViewState) {
-                jQuery(formViewState).val(value);
+                $(formViewState).val(value);
             }
             else
             {
@@ -124,12 +124,12 @@ PrimeFaces.ajax.AjaxUtils = {
             PrimeFaces.ajax.AjaxUtils.updateState(content);
         }
         else {
-            jQuery(PrimeFaces.escapeClientId(id)).replaceWith(content);
+            $(PrimeFaces.escapeClientId(id)).replaceWith(content);
         }
     }
 };
 
-PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
+PrimeFaces.ajax.AjaxRequest = function(cfg) {
     if(cfg.onstart) {
        var retVal = cfg.onstart.call(this);
        if(retVal == false) {
@@ -137,51 +137,52 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
        }
     }
 
-    var postURL = actionURL,
-    requestParams = null;
+    var form = null;
 
     if(cfg.formId) {
-        var jqForm = jQuery(PrimeFaces.escapeClientId(cfg.formId)),
-        requestParams = jqForm.serialize(),
-        encodedURLfield = jqForm.children("input[name='javax.faces.encodedURL']");
-
-        if(encodedURLfield.length > 0) {
-            postURL = encodedURLfield.val();
-        }
+        form = $(PrimeFaces.escapeClientId(cfg.formId));
+    } else {
+        form = $('form').eq(0);
     }
-    else {
-        requestParams = PrimeFaces.VIEW_STATE + "=" + PrimeFaces.ajax.AjaxUtils.encodeViewState();
+    
+    var postURL = form.attr('action'),
+    postParams = form.serialize(),
+    encodedURLfield = form.children("input[name='javax.faces.encodedURL']");
+
+    //portlet support
+    if(encodedURLfield.length > 0) {
+        postURL = encodedURLfield.val();
     }
 
     //partial ajax
-    requestParams = requestParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
+    postParams = postParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
 
     //source
     if(typeof cfg.source == 'string')
-        requestParams = requestParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
+        postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
     else
-        requestParams = requestParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source.id;
+        postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source.id;
 
     //process
     if(cfg.process) {
-        requestParams = requestParams + "&" + PrimeFaces.PARTIAL_PROCESS_PARAM + "=" + cfg.process;
+        postParams = postParams + "&" + PrimeFaces.PARTIAL_PROCESS_PARAM + "=" + cfg.process;
     }
 
     //update
     if(cfg.update) {
-        requestParams = requestParams + "&" + PrimeFaces.PARTIAL_UPDATE_PARAM + "=" + cfg.update;
+        postParams = postParams + "&" + PrimeFaces.PARTIAL_UPDATE_PARAM + "=" + cfg.update;
     }
 
     //behavior event
     if(cfg.event) {
-        requestParams = requestParams + "&" + PrimeFaces.BEHAVIOR_EVENT_PARAM + "=" + cfg.event;
+        postParams = postParams + "&" + PrimeFaces.BEHAVIOR_EVENT_PARAM + "=" + cfg.event;
     } else {
-        requestParams = requestParams + "&" + cfg.source + "=" + cfg.source;
+        postParams = postParams + "&" + cfg.source + "=" + cfg.source;
     }
     
     //params
-    if(params) {
-        requestParams = requestParams + PrimeFaces.ajax.AjaxUtils.serialize(params);
+    if(cfg.params) {
+        postParams = postParams + PrimeFaces.ajax.AjaxUtils.serialize(cfg.params);
     }
 	
     var xhrOptions = {
@@ -189,7 +190,7 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
         type : "POST",
         cache : false,
         dataType : "xml",
-        data : requestParams,
+        data : postParams,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
         },
@@ -211,14 +212,14 @@ PrimeFaces.ajax.AjaxRequest = function(actionURL, cfg, params) {
         }
     };
 	
-    xhrOptions.global = cfg.global === false ? false : true;
+    xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
 	
     if(cfg.onerror) {
         xhrOptions.error = cfg.onerror;
     }
 
     if(cfg.async) {
-        jQuery.ajax(xhrOptions);
+        $.ajax(xhrOptions);
     } else {
         PrimeFaces.ajax.RequestManager.offer(xhrOptions);
     }
@@ -247,7 +248,7 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
         var extension = extensions[i];
         
         if(extension.getAttributeNode('primefacesCallbackParam')) {
-            var jsonObj = jQuery.parseJSON(extension.firstChild.data);
+            var jsonObj = $.parseJSON(extension.firstChild.data);
 
             for(var paramName in jsonObj) {
                 if(paramName)
@@ -265,7 +266,7 @@ PrimeFaces.ajax.RequestManager = {
         this.requests.push(req);
 
         if(this.requests.length == 1) {
-            var retVal = jQuery.ajax(req);
+            var retVal = $.ajax(req);
             if(retVal === false)
                 this.poll();
         }
@@ -279,7 +280,7 @@ PrimeFaces.ajax.RequestManager = {
         var processedRequest = this.requests.shift();
         var nextRequest = this.peek();
         if(nextRequest != null) {
-            jQuery.ajax(nextRequest);
+            $.ajax(nextRequest);
         }
 
         return processedRequest;
@@ -338,6 +339,6 @@ jQuery.cookie = function (key, value, options) {
 
     // key and possibly options given, get cookie...
     options = value || {};
-    var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
+    var result, decode = options.raw ? function (s) {return s;} : decodeURIComponent;
     return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 };

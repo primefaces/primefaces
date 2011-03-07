@@ -188,14 +188,9 @@ public class CoreRenderer extends Renderer {
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ajax.AjaxRequest(");
 
-        //url
-        req.append("'").append(getActionURL(facesContext)).append("'");
-
         //options
-        req.append(",{formId:'").append(formId).append("'");
-        req.append(",async:").append(source.isAsync());
-        req.append(",global:").append(source.isGlobal());
-
+        req.append("{formId:'").append(formId).append("'");
+        
         //source
         req.append(",source:'").append(decodeParam).append("'");
 
@@ -208,6 +203,14 @@ public class CoreRenderer extends Renderer {
             req.append(",update:'").append(ComponentUtils.findClientIds(facesContext, component, source.getUpdate())).append("'");
         }
 
+        //async
+        if(source.isAsync())
+            req.append(",async:true");
+
+        //global
+        if(!source.isGlobal())
+            req.append(",global:false");
+
         //callbacks
         if(source.getOnstart() != null)
             req.append(",onstart:function(){").append(source.getOnstart()).append(";}");
@@ -217,8 +220,6 @@ public class CoreRenderer extends Renderer {
             req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
         if(source.getOncomplete() != null)
             req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
-
-        req.append("}");
 
         //params
         boolean firstParam = true, hasParam = false;
@@ -230,7 +231,7 @@ public class CoreRenderer extends Renderer {
 
                 if(firstParam) {
                     firstParam = false;
-                    req.append(",{");
+                    req.append(",params:{");
                 } else {
                     req.append(",");
                 }
@@ -243,7 +244,7 @@ public class CoreRenderer extends Renderer {
             req.append("}");
         }
 
-        req.append(");");
+        req.append("});");
 
         return req.toString();
     }

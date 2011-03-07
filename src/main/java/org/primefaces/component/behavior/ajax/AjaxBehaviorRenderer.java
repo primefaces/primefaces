@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,13 +64,8 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ajax.AjaxRequest(");
 
-        //url
-        req.append("'").append(url).append("'");
-
         //options
-        req.append(",{formId:'").append(form.getClientId(fc)).append("'");
-        req.append(",async:").append(ajaxBehavior.isAsync());
-        req.append(",global:").append(ajaxBehavior.isGlobal());
+        req.append("{formId:'").append(form.getClientId(fc)).append("'");
 
         //source
         req.append(",source:this");
@@ -87,27 +82,33 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         //behavior event
         req.append(",event:'").append(behaviorContext.getEventName()).append("'");
 
-        //callbacks
-        if (ajaxBehavior.getOnstart() != null)
-            req.append(",onstart:function(xhr){").append(ajaxBehavior.getOnstart()).append(";}");
-        if (ajaxBehavior.getOnerror() != null)
-            req.append(",onerror:function(xhr, status, error){").append(ajaxBehavior.getOnerror()).append(";}");
-        if (ajaxBehavior.getOnsuccess() != null)
-            req.append(",onsuccess:function(data, status, xhr, args){").append(ajaxBehavior.getOnsuccess()).append(";}");
-        if (ajaxBehavior.getOncomplete() != null)
-            req.append(",oncomplete:function(xhr, status, args){").append(ajaxBehavior.getOncomplete()).append(";}");
+        //async
+        if(ajaxBehavior.isAsync())
+            req.append(",async:true");
 
-        req.append("}");
+        //global
+        if(!ajaxBehavior.isGlobal())
+            req.append(",global:false");
+
+        //callbacks
+        if(ajaxBehavior.getOnstart() != null)
+            req.append(",onstart:function(xhr){").append(ajaxBehavior.getOnstart()).append(";}");
+        if(ajaxBehavior.getOnerror() != null)
+            req.append(",onerror:function(xhr, status, error){").append(ajaxBehavior.getOnerror()).append(";}");
+        if(ajaxBehavior.getOnsuccess() != null)
+            req.append(",onsuccess:function(data, status, xhr, args){").append(ajaxBehavior.getOnsuccess()).append(";}");
+        if(ajaxBehavior.getOncomplete() != null)
+            req.append(",oncomplete:function(xhr, status, args){").append(ajaxBehavior.getOncomplete()).append(";}");
 
         //params
         boolean firstParam = true, hasParam = false;
 
-        for (UIComponent child : component.getChildren()) {
+        for(UIComponent child : component.getChildren()) {
             if (child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
                 hasParam = true;
 
-                if (firstParam) {
+                if(firstParam) {
                     firstParam = false;
                     req.append(",{");
                 } else {
@@ -117,11 +118,11 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                 req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
             }
 
-            if (hasParam)
+            if(hasParam)
                 req.append("}");
         }
 
-        req.append(");");
+        req.append("});");
 
         return req.toString();
     }
@@ -129,11 +130,11 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
     private boolean isImmediate(UIComponent component, AjaxBehavior ajaxBehavior) {
         boolean immediate = false;
 
-        if (ajaxBehavior.isImmediateSet()) {
+        if(ajaxBehavior.isImmediateSet()) {
             immediate = ajaxBehavior.isImmediate();
-        } else if (component instanceof EditableValueHolder) {
+        } else if(component instanceof EditableValueHolder) {
             immediate = ((EditableValueHolder)component).isImmediate();
-        } else if (component instanceof ActionSource) {
+        } else if(component instanceof ActionSource) {
             immediate = ((ActionSource)component).isImmediate();
         }
 
