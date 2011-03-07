@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,54 +95,38 @@ public class DataListRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(list.resolveWidgetVar() + " = new PrimeFaces.widget.DataList('" + clientId + "',{");
-        if (list.isPaginator()) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, list);
-            if (form == null) {
-                throw new FacesException("DataList : \"" + clientId + "\" must be inside a form element");
-            }
-            
-            writer.write("url:'" + getActionURL(facesContext) + "'");
-            writer.write(",formId:'" + form.getClientId() + "'");
 
-            if (list.isEffect()) {
-                writer.write(",effect:true");
-                writer.write(",effectSpeed:'" + list.getEffectSpeed() + "'");
-            }
-
-            writer.write(",paginator:new YAHOO.widget.Paginator({");
+        if(list.isPaginator()) {
+            writer.write("paginator:new YAHOO.widget.Paginator({");
             writer.write("rowsPerPage:" + list.getRows());
             writer.write(",totalRecords:" + list.getRowCount());
             writer.write(",initialPage:" + list.getPage());
 
-            if (list.getPageLinks() != 10) {
-                writer.write(",pageLinks:" + list.getPageLinks());
-            }
-            if (list.getPaginatorTemplate() != null) {
-                writer.write(",template:'" + list.getPaginatorTemplate() + "'");
-            }
-            if (list.getRowsPerPageTemplate() != null) {
-                writer.write(",rowsPerPageOptions : [" + list.getRowsPerPageTemplate() + "]");
-            }
-            if (list.getCurrentPageReportTemplate() != null) {
-                writer.write(",pageReportTemplate:'" + list.getCurrentPageReportTemplate() + "'");
-            }
-            if (!list.isPaginatorAlwaysVisible()) {
-                writer.write(",alwaysVisible:false");
-            }
+            if(list.getPageLinks() != 10) writer.write(",pageLinks:" + list.getPageLinks());
+            if(list.getPaginatorTemplate() != null) writer.write(",template:'" + list.getPaginatorTemplate() + "'");
+            if(list.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + list.getRowsPerPageTemplate() + "]");
+            if(list.getCurrentPageReportTemplate() != null) writer.write(",pageReportTemplate:'" + list.getCurrentPageReportTemplate() + "'");
+            if (!list.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
 
             String paginatorPosition = list.getPaginatorPosition();
             String paginatorContainer = null;
-            if (paginatorPosition.equals("both")) {
+            if(paginatorPosition.equals("both"))
                 paginatorContainer = clientId + "_paginatorTop','" + clientId + "_paginatorBottom";
-            } else if (paginatorPosition.equals("top")) {
+            else if (paginatorPosition.equals("top"))
                 paginatorContainer = clientId + "_paginatorTop";
-            } else if (paginatorPosition.equals("bottom")) {
+            else if (paginatorPosition.equals("bottom"))
                 paginatorContainer = clientId + "_paginatorBottom";
-            }
 
             writer.write(",containers:['" + paginatorContainer + "']");
 
             writer.write("})");
+
+            if(list.isEffect()) {
+                writer.write(",effect:true");
+                writer.write(",effectSpeed:'" + list.getEffectSpeed() + "'");
+            }
+        } else {
+            writer.write("paginator:false");
         }
 
         writer.write("});");
