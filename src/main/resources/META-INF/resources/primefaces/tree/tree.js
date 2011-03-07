@@ -13,7 +13,7 @@ PrimeFaces.widget.Tree = function(id, cfg) {
         this.selections = [];
     }
 
-    this.bindEvents(this.jq.find('.ui-tree-node-content'));
+    this.bindEvents();
 
     if(!this.cfg.dynamic) {
         this.cookieName = this.id + '_state';
@@ -30,15 +30,17 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
     selectionMode = this.cfg.selectionMode;
 
     //expand-collapse
-    elements.children('.ui-tree-icon').click(function(e) {
-        var icon = jQuery(this),
-        node = icon.parents('li:first');
+    $(this.jqId + ' .ui-tree-icon')
+        .die()
+        .live('click',function(e) {
+            var icon = jQuery(this),
+            node = icon.parents('li:first');
 
-        if(icon.hasClass('ui-icon-triangle-1-e'))
-            _self.expandNode(node);
-        else
-            _self.collapseNode(node);
-    });
+            if(icon.hasClass('ui-icon-triangle-1-e'))
+                _self.expandNode(node);
+            else
+                _self.collapseNode(node);
+        });
 
     //selection hover
     if(selectionMode) {
@@ -97,8 +99,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
                 if(id == _self.id){
                     node.append(content);
-                    _self.bindEvents(node.children('.ui-tree-nodes').find('.ui-tree-node-content'));
- 
+                    
                     _self.showNodeChildren(node, true);
                 }
                 else {
