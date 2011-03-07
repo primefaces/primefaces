@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,15 +160,13 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function() {");
+		writer.write("$(function() {");
 
 		writer.write(schedule.resolveWidgetVar() + " = new PrimeFaces.widget.Schedule('" + clientId +"'");
 		writer.write(",{");
 		
 		writer.write("defaultView:'"+ schedule.getView() + "'");
 		writer.write(",language:'"+ schedule.calculateLocale(facesContext).getLanguage() + "'");
-		writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-		writer.write(",url:'" + getActionURL(facesContext) + "'");
 		writer.write(",theme:true");
 		
 		if(schedule.isEditable()) {
