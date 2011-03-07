@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,18 +178,7 @@ public class GMapRenderer extends CoreRenderer {
 	protected void encodeEventListeners(FacesContext facesContext, GMap map) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = map.getClientId();
-		
-		//Map event listeners
-		if(map.hasEventListener()) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, map);
-			if(form == null) {
-				throw new FacesException("Map : \"" + clientId + "\" must be inside a form element");
-			}
-			
-			writer.write(",url:'" + getActionURL(facesContext) + "'");
-			writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-		}
-		
+				
 		if(map.getStateChangeListener() != null) {
 			writer.write(",hasStateChangeListener: true");
 			if(map.getOnStateChangeUpdate() != null) writer.write(",onStateChangeUpdate:'" + ComponentUtils.findClientIds(facesContext, map, map.getOnStateChangeUpdate()) + "'");
