@@ -1,10 +1,9 @@
 package org.primefaces.component.tree;
 
-import java.util.List;
-
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
+import org.primefaces.event.DragDropEvent;
 
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
@@ -20,13 +19,11 @@ public class TreeHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		Class[] selectEventClasses = new Class[]{NodeSelectEvent.class};
-		Class[] expandEventClasses = new Class[]{NodeExpandEvent.class};
-		Class[] collapseEventClasses = new Class[]{NodeCollapseEvent.class};
 		
-		metaRuleset.addRule(new MethodRule("nodeSelectListener", List.class, selectEventClasses));
-		metaRuleset.addRule(new MethodRule("nodeExpandListener", List.class, expandEventClasses));
-		metaRuleset.addRule(new MethodRule("nodeCollapseListener", List.class, collapseEventClasses));
+		metaRuleset.addRule(new MethodRule("nodeSelectListener", null, new Class[]{NodeSelectEvent.class}));
+		metaRuleset.addRule(new MethodRule("nodeExpandListener", null, new Class[]{NodeExpandEvent.class}));
+		metaRuleset.addRule(new MethodRule("nodeCollapseListener", null, new Class[]{NodeCollapseEvent.class}));
+        metaRuleset.addRule(new MethodRule("dragdropListener", null, new Class[]{DragDropEvent.class}));
 		
 		return metaRuleset; 
 	} 

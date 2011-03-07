@@ -1,6 +1,7 @@
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.DragDropEvent;
 import javax.faces.component.UIComponent;
 import java.util.Map;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ import org.primefaces.model.TreeNode;
 			me = getNodeExpandListener();
 		} else if(event instanceof NodeCollapseEvent) {
 			me = getNodeCollapseListener();
+		} else if(event instanceof DragDropEvent) {
+			me = getDragdropListener();
 		}
 		
 		if (me != null) {
