@@ -23,7 +23,8 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = this.jqId + '_container';
+    this.jq = $(this.jqId + '_container');
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
 
 	this.setupEventSource();
 	
@@ -33,7 +34,7 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	if(this.cfg.editable)
 		this.setupEventHandlers();
 	
-	jQuery(this.jq).fullCalendar(this.cfg);
+	this.jq.fullCalendar(this.cfg);
 }
 
 PrimeFaces.widget.Schedule.prototype.applyLocale = function() {
@@ -66,8 +67,10 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
 
         if(_self.cfg.onDateSelectComplete)
             options.oncomplete = _self.cfg.onDateSelectComplete;
+
+        options.params = params;
 		
-		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+		PrimeFaces.ajax.AjaxRequest(options);
 	}
 
 	this.cfg.eventClick = function(calEvent, jsEvent, view) {
@@ -85,7 +88,9 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
         if(_self.cfg.onEventSelectComplete)
             options.oncomplete = _self.cfg.onEventSelectComplete;
 		
-		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+		options.params = params;
+
+		PrimeFaces.ajax.AjaxRequest(options);
 	}
 	
 	this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
@@ -100,7 +105,9 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
 			options.update = _self.cfg.onEventMoveUpdate;
         }
 		
-		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+		options.params = params;
+
+		PrimeFaces.ajax.AjaxRequest(options);;
 	}
 	
 	this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
@@ -116,7 +123,9 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
 			options.update = _self.cfg.onEventResizeUpdate;
         }
 		
-		PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+		options.params = params;
+
+		PrimeFaces.ajax.AjaxRequest(options);
 	}
 }
 
@@ -160,12 +169,14 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
         params[_self.id + "_start"] = start.getTime();
 		params[_self.id + "_end"] = end.getTime();
 		
-        PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+        options.params = params;
+
+		PrimeFaces.ajax.AjaxRequest(options);
 	}
 }
 
 PrimeFaces.widget.Schedule.prototype.update = function() {
-	jQuery(this.jq).fullCalendar('refetchEvents');
+	this.jq.fullCalendar('refetchEvents');
 }
 
 PrimeFaces.widget.ScheduleResourceBundle = {
