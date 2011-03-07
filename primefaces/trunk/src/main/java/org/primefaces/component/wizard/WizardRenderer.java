@@ -87,11 +87,11 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(wizard.resolveWidgetVar() + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
-        writer.write("formId:'" + form.getClientId(facesContext) + "'");
-        writer.write(",url:'" + getActionURL(facesContext) + "'");
+        writer.write("$(function() {");
 
-        writer.write(",showStepStatus:" + wizard.isShowStepStatus());
+        writer.write(wizard.resolveWidgetVar() + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
+
+        writer.write("showStepStatus:" + wizard.isShowStepStatus());
         writer.write(",showNavBar:" + wizard.isShowNavBar());
 
         if(wizard.getOnback() != null) {
@@ -137,7 +137,7 @@ public class WizardRenderer extends CoreRenderer {
             writer.write(",effectSpeed:'" + wizard.getEffectSpeed() + "'");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }
