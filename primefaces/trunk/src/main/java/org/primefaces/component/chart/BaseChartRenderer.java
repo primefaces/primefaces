@@ -88,16 +88,6 @@ public class BaseChartRenderer extends CoreRenderer {
 			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
 		}
 
-        if(chart.isLive() || chart.getItemSelectListener() != null) {
-            UIComponent form = ComponentUtils.findParentForm(context, chart);
-            if(form == null) {
-                throw new FacesException("Chart: '" + chart.getClientId(context) + "' must be inside a form element");
-            }
-
-            writer.write(",url:'" + getActionURL(context) + "'");
-            writer.write(",formId:'" + form.getClientId(context) + "'");
-        }
-
         if(chart.isLive()) {
             writer.write(",live:true");
             writer.write(",refreshInterval:" + chart.getRefreshInterval());
