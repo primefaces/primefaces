@@ -245,7 +245,9 @@ PrimeFaces.widget.DataTable.prototype.loadLiveRows = function() {
     params[this.id + "_scrolling"] = true;
     params[this.id + "_scrollOffset"] = this.scrollOffset;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -287,7 +289,9 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     params[this.id + "_rows"] = newState.rowsPerPage;
     params[this.id + "_page"] = newState.page;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -337,7 +341,9 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
     params[this.id + "_sortKey"] = columnId;
     params[this.id + "_sortDir"] = asc;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -394,8 +400,9 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
     var params = {};
     params[this.id + "_filtering"] = true;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
 
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -482,7 +489,9 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
     var params = {};
     params[this.id + '_instantSelectedRowIndex'] = rowId;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -502,7 +511,9 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
     var params = {};
     params[this.id + '_instantUnselectedRowIndex'] = rowId;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -695,7 +706,9 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
     params[this.id + '_rowExpansion'] = true;
     params[this.id + '_expandedRowId'] = rowId;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -804,7 +817,9 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     params[this.id + '_rowEdit'] = true;
     params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 
@@ -894,5 +909,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
     var params = {};
     params[this.id + "_clearFilters"] = true;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
