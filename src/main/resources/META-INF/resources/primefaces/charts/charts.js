@@ -20,7 +20,9 @@ PrimeFaces.widget.ChartExtensions = {
         params[this.id + '_itemIndex'] = event.index;
 		params[this.id + '_seriesIndex'] = event.seriesIndex;
 
-		PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+		PrimeFaces.ajax.AjaxRequest(options);
 	}
 
     ,createLocalDataSource : function(data, schema) {
@@ -90,10 +92,16 @@ PrimeFaces.widget.ChartExtensions = {
         var params = {};
         params[this.id + '_dataPoll'] = true;
 
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     },
 
     init : function() {
+        if(this.cfg.live || this.cfg.ajaxItemSelect) {
+            this.cfg.formId = $(PrimeFaces.escapeClientId(this.id)).parents('form').attr('id');
+        }
+        
         if(this.cfg.ajaxItemSelect) {
             this.subscribe('itemClickEvent', this.itemSelectHandler, this, true);
         }
