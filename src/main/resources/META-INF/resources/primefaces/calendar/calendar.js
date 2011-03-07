@@ -921,6 +921,7 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jqEl = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
     this.jq = jQuery(this.jqEl);
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
     var hasTimePicker = this.hasTimePicker();
    
     this.configureOnSelectHandler();
@@ -988,8 +989,10 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
 
             var params = {};
             params[_self.id + "_ajaxSelect"] = true;
+
+            options.params = params;
 	
-            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+            PrimeFaces.ajax.AjaxRequest(options);
         }
 
     }
