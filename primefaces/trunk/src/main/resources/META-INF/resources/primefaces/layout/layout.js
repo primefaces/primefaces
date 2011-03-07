@@ -2379,7 +2379,9 @@ YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
         params[this.id + "_collapsed"] = args.collapsed;
         params[this.id + "_unit"] = args.layoutUnit.get('position');
 
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     },
 
     handleClose : function(e, args) {
@@ -2400,7 +2402,9 @@ YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
         params[this.id + "_closed"] = true;
         params[this.id + "_unit"] = args.layoutUnit.get('position');
 	
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     },
 	
     handleResize : function(e, args) {
@@ -2423,7 +2427,9 @@ YAHOO.lang.extend(PrimeFaces.widget.Layout, YAHOO.widget.Layout,
         params[this.id + "_unitWidth"] = args.layoutUnit.getSizes().wrap.w;
         params[this.id + "_unitHeight"] = args.layoutUnit.getSizes().wrap.h;
         
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     },
 	
     setState : function() {
