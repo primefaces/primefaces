@@ -113,7 +113,6 @@ public class FieldsetRenderer extends CoreRenderer {
 
             if(fieldset.getToggleListener() != null) {
                 writer.write(",ajaxToggle:true");
-                writer.write(",url:'" + getActionURL(context) + "'");
 
                 if(fieldset.getOnToggleUpdate() != null) {
                     writer.write(",onToggleUpdate:'" + ComponentUtils.findClientIds(context, fieldset, fieldset.getOnToggleUpdate()) + "'");
