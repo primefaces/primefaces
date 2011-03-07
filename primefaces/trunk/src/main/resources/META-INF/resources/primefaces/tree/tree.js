@@ -25,7 +25,7 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     }
 }
 
-PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
+PrimeFaces.widget.Tree.prototype.bindEvents = function() {
     var _self = this,
     selectionMode = this.cfg.selectionMode;
 
@@ -44,7 +44,7 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
 
     //selection hover
     if(selectionMode) {
-        var clickTargetSelector = selectionMode == 'checkbox' ? this.jqId  + ' .ui-tree-checkbox' : this.jqId  + ' .ui-tree-node-content';
+        var clickTargetSelector = selectionMode == 'checkbox' ? this.jqId  + ' .ui-tree-checkbox-box' : this.jqId  + ' .ui-tree-node-content';
 
         $(clickTargetSelector)
             .die()
@@ -219,9 +219,9 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
         }
 
         node.find('.ui-tree-node-content:first').addClass('ui-state-highlight');
+
+        this.selections.push(this.getNodeId(node));
     }
-    
-    this.selections.push(this.getNodeId(node));
 
     this.writeSelections();
 
@@ -239,12 +239,12 @@ PrimeFaces.widget.Tree.prototype.unselectNode = function(node) {
     }
     else {
         node.find('.ui-tree-node-content:first').removeClass('ui-state-highlight');
-    }
 
-    //remove from selection
-    this.selections = jQuery.grep(this.selections, function(r) {
-        return r != nodeId;
-    });
+        //remove from selection
+        this.selections = jQuery.grep(this.selections, function(r) {
+            return r != nodeId;
+        });
+    }
 
     this.writeSelections();
 }
@@ -296,7 +296,7 @@ PrimeFaces.widget.Tree.prototype.getNodeId = function(node) {
 }
 
 PrimeFaces.widget.Tree.prototype.isNodeSelected = function(node) {
-    return jQuery.inArray(this.getNodeId(node), this.selections) != -1;
+    return $.inArray(this.getNodeId(node), this.selections) != -1;
 }
 
 PrimeFaces.widget.Tree.prototype.isSingleSelection = function() {
@@ -308,12 +308,29 @@ PrimeFaces.widget.Tree.prototype.isCheckboxSelection = function() {
 }
 
 PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
-    var icon = node.find('.ui-tree-checkbox-icon:first');
+    var _self = this;
 
-    if(check)
-        icon.addClass('ui-icon ui-icon-check')
-    else
-        icon.removeClass('ui-icon ui-icon-check');
+    node.find('.ui-tree-checkbox-icon').each(function() {
+        var icon = $(this),
+        nodeId = _self.getNodeId(icon.parents('li:first'));
+
+        if(check) {
+            if($.inArray(nodeId, _self.selections) == -1) {
+                icon.addClass('ui-icon ui-icon-check');
+            
+                _self.selections.push(nodeId);
+            }
+        }
+        else {
+            icon.removeClass('ui-icon ui-icon-check');
+
+            _self.selections = jQuery.grep(_self.selections, function(r) {
+                return r != nodeId;
+            });
+        }
+    });
+
+    
 }
 
 PrimeFaces.widget.Tree.prototype.setupDragDrop = function(draggables, droppables) {
