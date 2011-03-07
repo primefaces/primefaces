@@ -144,6 +144,8 @@ public class InplaceRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write("$(function() {");
 		
 		writer.write(inplace.resolveWidgetVar() + " = new PrimeFaces.widget.Inplace('" + clientId + "', {");
 		writer.write("effect:'" + inplace.getEffect() + "'");
@@ -152,15 +154,9 @@ public class InplaceRenderer extends CoreRenderer {
 
         if(inplace.isToggleable()) writer.write(",toggleable:true");
 		if(inplace.isDisabled()) writer.write(",disabled:true");
+        
         if(inplace.isEditor()) {
-            UIComponent form = ComponentUtils.findParentForm(context, inplace);
-            if (form == null) {
-                throw new FacesException("Inplace : \"" + inplace.getClientId(context) + "\" must be inside a form element");
-            }
-            
             writer.write(",editor:true");
-            writer.write(",url:'" + getActionURL(context) + "'");
-            writer.write(",formId:'" + form.getClientId(context) + "'");
 
             String onEditUpdate = inplace.getOnEditUpdate();
             if(onEditUpdate != null) {
@@ -168,7 +164,8 @@ public class InplaceRenderer extends CoreRenderer {
             }
         }
 
-		writer.write("});");
+		writer.write("});});");
+        
 		writer.endElement("script");
 	}
 

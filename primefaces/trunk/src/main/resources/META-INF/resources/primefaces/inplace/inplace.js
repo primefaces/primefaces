@@ -5,8 +5,8 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
-    this.display = jQuery(this.jqId + '_display');
-    this.content = jQuery(this.jqId + '_content');
+    this.display = $(this.jqId + '_display');
+    this.content = $(this.jqId + '_content');
 
     var _self = this;
 	
@@ -18,9 +18,9 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
             });
 
             this.display.mouseover(function(){
-                jQuery(this).toggleClass("ui-state-highlight");
+                $(this).toggleClass("ui-state-highlight");
             }).mouseout(function(){
-                jQuery(this).toggleClass("ui-state-highlight");
+                $(this).toggleClass("ui-state-highlight");
             });
         }
         else {
@@ -28,8 +28,9 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
         }
 
         if(this.cfg.editor) {
-            this.editor = jQuery(this.jqId + '_editor');
+            this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
 
+            this.editor = $(this.jqId + '_editor');
             this.editor.children('.ui-inplace-save').button({icons: {primary: "ui-icon-check"},text:false}).click(function() {_self.save();});
             this.editor.children('.ui-inplace-cancel').button({icons: {primary: "ui-icon-close"},text:false}).click(function() {_self.cancel();});
         }
@@ -101,5 +102,7 @@ PrimeFaces.widget.Inplace.prototype.doAjaxInplaceRequest = function(process, upd
         options.update = options.update + ' ' + update;
     }
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
