@@ -89,7 +89,9 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
         params[this.id + '_tabChange'] = true;
     }
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -109,7 +111,9 @@ PrimeFaces.widget.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(pan
     params[this.id + '_tabChange'] = true;
     params[this.id + '_newTab'] = panel.id;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.markAsLoaded = function(panel) {

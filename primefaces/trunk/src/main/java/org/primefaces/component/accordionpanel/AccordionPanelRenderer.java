@@ -110,7 +110,6 @@ public class AccordionPanelRenderer extends CoreRenderer {
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
 
         if(acco.isDynamic() || hasTabChangeListener) {
-            writer.write(",url:'" + getActionURL(context) + "'");
             writer.write(",cache:" + acco.isCache());
         }
 
