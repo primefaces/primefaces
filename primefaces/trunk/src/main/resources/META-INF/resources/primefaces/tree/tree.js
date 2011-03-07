@@ -44,17 +44,19 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function(elements) {
 
     //selection hover
     if(selectionMode) {
-        var clickTarget = selectionMode == 'checkbox' ? elements.children('.ui-tree-checkbox').children() : elements;
+        var clickTargetSelector = selectionMode == 'checkbox' ? this.jqId  + ' .ui-tree-checkbox' : this.jqId  + ' .ui-tree-node-content';
 
-        clickTarget.mouseover(function() {
-            jQuery(this).addClass('ui-state-hover');
-        })
-        .mouseout(function() {
-            jQuery(this).removeClass('ui-state-hover');
-        })
-        .click(function(e) {
-            _self.onNodeClick(e, jQuery(this).parents('li:first'));
-        });
+        $(clickTargetSelector)
+            .die()
+            .live('mouseover', function() {
+                jQuery(this).addClass('ui-state-hover');
+            })
+            .live('mouseout', function() {
+                jQuery(this).removeClass('ui-state-hover');
+            })
+            .live('click', function(e) {
+                _self.onNodeClick(e, jQuery(this).parents('li:first'));
+            });
     }
 }
 
@@ -202,17 +204,16 @@ PrimeFaces.widget.Tree.prototype.restoreClientState = function() {
 
 PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
 
-    if(this.isSingleSelection()) {
-        //clean all selections
-        this.selections = [];
-        this.jq.find('.ui-tree-node-content.ui-state-highlight').removeClass('ui-state-highlight');
-    }
-
-    //select node
     if(this.isCheckboxSelection()) {
         this.toggleCheckbox(node, true);
     }
     else {
+        if(this.isSingleSelection()) {
+            //clean all selections
+            this.selections = [];
+            this.jq.find('.ui-tree-node-content.ui-state-highlight').removeClass('ui-state-highlight');
+        }
+
         node.find('.ui-tree-node-content:first').addClass('ui-state-highlight');
     }
     
