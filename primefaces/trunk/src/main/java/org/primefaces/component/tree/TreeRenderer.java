@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
@@ -100,6 +101,26 @@ public class TreeRenderer extends CoreRenderer {
                 }
             }
         }
+
+        //dragdrop
+        if(params.containsKey(clientId + "_dragdrop")) {
+            String draggedNodeId = params.get(clientId + "_draggedNode");
+            String droppedNodeId = params.get(clientId + "_droppedNode");
+            
+            model.setRowIndex(-1);
+            TreeNode draggedNode = treeExplorer.findTreeNode(draggedNodeId, model);
+            
+            model.setRowIndex(-1);
+            TreeNode droppedNode = treeExplorer.findTreeNode(droppedNodeId, model);
+
+            //update model
+            TreeNode oldParent = draggedNode.getParent();
+            oldParent.getChildren().remove(draggedNode);
+            droppedNode.addChild(draggedNode);
+
+            //fire dragdrop event
+            tree.queueEvent(new DragDropEvent(tree, draggedNodeId, droppedNodeId, draggedNode));
+        }
 	}
 
     @Override
@@ -170,6 +191,10 @@ public class TreeRenderer extends CoreRenderer {
         //dragdrop
         if(tree.isDragdrop()) {
             writer.write(",dragdrop:true");
+
+            String onDragdropUpdate = tree.getOnDragdropUpdate();
+            if(onDragdropUpdate != null)
+                writer.write(",onDragdropUpdate:'" + ComponentUtils.findClientIds(context, tree, onDragdropUpdate) + "'");
         }
 
         //state change listeners

@@ -356,7 +356,32 @@ PrimeFaces.widget.Tree.prototype.setupDragDrop = function() {
                 newParent.children('.ui-tree-nodes').append(draggedNode);
             }
 
-            draggedNode.hide().fadeIn('fast');
+            _self.fireDragDropEvent(draggedNode, newParent);
         }
     });
+}
+
+PrimeFaces.widget.Tree.prototype.fireDragDropEvent = function(draggedNode, newParent) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+
+    if(this.cfg.onDragdropUpdate) {
+        options.update = this.cfg.onDragdropUpdate;
+    }
+
+    options.oncomplete = function(xhr, status, args) {
+        draggedNode.hide().fadeIn('fast');
+    }
+
+    var params = {};
+    params[this.id + '_dragdrop'] = true;
+    params[this.id + '_draggedNode'] = this.getNodeId(draggedNode);
+    params[this.id + '_droppedNode'] = this.getNodeId(newParent);
+
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
