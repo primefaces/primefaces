@@ -15,8 +15,10 @@ PrimeFaces.widget.Droppable = function(id, cfg) {
 }
 
 PrimeFaces.widget.Droppable.prototype.setupDropHandler = function() {
+    this.cfg.formId = $(PrimeFaces.escapeClientId(this.id)).parents('form:first').attr('id');
+
     var _self = this;
-	
+    
     this.cfg.drop = function(event, ui) {
         if(_self.cfg.onDrop) {
             _self.cfg.onDrop.call(this, event, ui);
@@ -35,7 +37,9 @@ PrimeFaces.widget.Droppable.prototype.setupDropHandler = function() {
         var params = {};
         params[_self.id + "_dragId"] = ui.draggable.attr('id');
         params[_self.id + "_dropId"] = _self.cfg.target;
-		
-        PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     };
 }

@@ -84,15 +84,9 @@ public class DroppableRenderer extends CoreRenderer {
         if(droppable.getAccept() != null) writer.write(",accept:'" + droppable.getAccept() + "'");
         if(droppable.getScope() != null) writer.write(",scope:'" + droppable.getScope() + "'");
         if(droppable.getTolerance() != null) writer.write(",tolerance:'" + droppable.getTolerance() + "'");
-        if(droppable.getDropListener() != null && onDropUpdate != null) {
-            UIComponent form = ComponentUtils.findParentForm(context, droppable);
-            if (form == null) {
-                throw new FacesException("Droppable: '" + clientId + "' must be inside a form");
-            }
 
+        if(droppable.getDropListener() != null && onDropUpdate != null) {
             writer.write(",ajaxDrop:true");
-            writer.write(",url:'" + getActionURL(context) + "'");
-            writer.write(",formId:'" + form.getClientId(context) + "'");
 
             if (onDropUpdate != null)
                 writer.write(",onDropUpdate:'" + ComponentUtils.findClientIds(context, droppable, onDropUpdate) + "'");
