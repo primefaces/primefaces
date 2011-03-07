@@ -193,7 +193,9 @@
                  var params = {};
                  params[options.id + '_args'] = tokens.join(",");
 
-                 PrimeFaces.ajax.AjaxRequest(cfg.url, cfg, params);
+                 cfg.params = params;
+
+                 PrimeFaces.ajax.AjaxRequest(cfg);
       		}
       };
 
@@ -449,12 +451,14 @@
 PrimeFaces.widget.Terminal = function(id, cfg) {
     this.id= id;
 	this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jqId);
 	this.cfg = cfg;
     this.cfg.id = id;
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
 	
-	jQuery(this.jqId).wterm(this.cfg);
+	this.jq.wterm(this.cfg);
 }
 
 PrimeFaces.widget.Terminal.prototype.focus = function() {
-    jQuery(this.jqId + ' input').eq(0).focus();
+    $(this.jqId + ' input').eq(0).focus();
 }
