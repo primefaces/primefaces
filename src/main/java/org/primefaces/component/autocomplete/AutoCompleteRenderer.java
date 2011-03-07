@@ -22,7 +22,6 @@ import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -176,7 +175,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function(){");
+        writer.write("$(function(){");
 
         writer.write(ac.resolveWidgetVar() + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
         writer.write("pojo:" + (ac.getVar() != null));

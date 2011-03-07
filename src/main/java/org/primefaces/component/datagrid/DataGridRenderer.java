@@ -18,13 +18,11 @@ package org.primefaces.component.datagrid;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class DataGridRenderer extends CoreRenderer {
 
@@ -91,6 +89,8 @@ public class DataGridRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(functio() { ");
+
         writer.write(grid.resolveWidgetVar() + " = new PrimeFaces.widget.DataGrid('" + clientId + "',{");
 
         if(grid.isPaginator()) {
@@ -126,7 +126,7 @@ public class DataGridRenderer extends CoreRenderer {
             writer.write("paginator:false");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }

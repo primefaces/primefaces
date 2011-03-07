@@ -74,6 +74,8 @@ public class DroppableRenderer extends CoreRenderer {
         writer.startElement("script", droppable);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(function() {");
+
         writer.write(droppable.resolveWidgetVar() + " = new PrimeFaces.widget.Droppable('" + clientId + "', {");
         writer.write("target:'" + target + "'");
 
@@ -92,7 +94,7 @@ public class DroppableRenderer extends CoreRenderer {
                 writer.write(",onDropUpdate:'" + ComponentUtils.findClientIds(context, droppable, onDropUpdate) + "'");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }
