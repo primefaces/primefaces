@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,9 +118,8 @@ public class DashboardRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(dashboard.resolveWidgetVar() + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
-		writer.write("url:'" + getActionURL(facesContext) + "'");
-        
-		if(dashboard.isDisabled()) writer.write(",disabled:true");
+		writer.write("disabled:" + dashboard.isDisabled());
+
 		if(dashboard.getOnReorderUpdate() != null) writer.write(",onReorderUpdate:'" + ComponentUtils.findClientIds(facesContext, dashboard, dashboard.getOnReorderUpdate()) + "'");
 		
 		writer.write("});");

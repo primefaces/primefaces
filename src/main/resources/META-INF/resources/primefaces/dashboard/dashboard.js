@@ -34,8 +34,10 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
 			if(ui.sender) {
 				params[id + "_senderColumnIndex"] = ui.sender.parent().children().index(ui.sender);
             }
+
+            options.params = params;
 			
-			PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+			PrimeFaces.ajax.AjaxRequest(options);
 		}
 	};
 	
