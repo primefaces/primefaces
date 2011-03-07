@@ -74,6 +74,8 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
         var params = {};
         params[this.id + "_ajaxClose"] = true;
 
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     }
 }
