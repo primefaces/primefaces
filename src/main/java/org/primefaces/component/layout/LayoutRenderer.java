@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public class LayoutRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        if (layout.isFullPage()) {
+        if(layout.isFullPage()) {
             writer.write(widgetVar + " = new PrimeFaces.widget.Layout({");
         } else {
             writer.write(widgetVar + " = new PrimeFaces.widget.Layout('" + clientId + "', {");
@@ -121,16 +121,16 @@ public class LayoutRenderer extends CoreRenderer {
 
         writer.write(",url:'" + getActionURL(facesContext) + "'");
 
-        if (layout.isFullPage()) {
+        if(layout.isFullPage()) {
             writer.write(",clientId:'" + clientId + "'");
         }
-        if (layout.getCloseTitle() != null) {
+        if(layout.getCloseTitle() != null) {
             writer.write(",closeTitle:'" + layout.getCloseTitle() + "'");
         }
-        if (layout.getCollapseTitle() != null) {
+        if(layout.getCollapseTitle() != null) {
             writer.write(",collapseTitle:'" + layout.getCollapseTitle() + "'");
         }
-        if (layout.getExpandTitle() != null) {
+        if(layout.getExpandTitle() != null) {
             writer.write(",expandTitle:'" + layout.getExpandTitle() + "'");
         }
 
