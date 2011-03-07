@@ -62,7 +62,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 		}
 
         StringBuilder req = new StringBuilder();
-        req.append("PrimeFaces.ajax.AjaxRequest(");
+        req.append("PrimeFaces.ab(");
 
         //options
         req.append("{formId:'").append(form.getClientId(fc)).append("'");

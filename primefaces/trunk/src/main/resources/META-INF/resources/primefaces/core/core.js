@@ -67,6 +67,11 @@ PrimeFaces = {
                 $(this).removeClass('ui-state-focus');
         });
     },
+
+    //ajax shortcut
+    ab : function(cfg) {
+        PrimeFaces.ajax.AjaxRequest(cfg);
+    },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 

@@ -186,7 +186,7 @@ public class CoreRenderer extends Renderer {
         UIComponent component = (UIComponent) source;
 
         StringBuilder req = new StringBuilder();
-        req.append("PrimeFaces.ajax.AjaxRequest(");
+        req.append("PrimeFaces.ab(");
 
         //options
         req.append("{formId:'").append(formId).append("'");
