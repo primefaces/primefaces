@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,20 +88,13 @@ public class DataGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId();
 
-        UIComponent form = ComponentUtils.findParentForm(context, grid);
-        if (form == null) {
-            throw new FacesException("DataGrid : \"" + clientId + "\" must be inside a form element");
-        }
-
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(grid.resolveWidgetVar() + " = new PrimeFaces.widget.DataGrid('" + clientId + "',{");
-        writer.write("url:'" + getActionURL(context) + "'");
-        writer.write(",formId:'" + form.getClientId() + "'");
 
         if(grid.isPaginator()) {
-            writer.write(",paginator:new YAHOO.widget.Paginator({");
+            writer.write("paginator:new YAHOO.widget.Paginator({");
             writer.write("rowsPerPage:" + grid.getRows());
             writer.write(",totalRecords:" + grid.getRowCount());
             writer.write(",initialPage:" + grid.getPage());
@@ -129,6 +122,8 @@ public class DataGridRenderer extends CoreRenderer {
                 writer.write(",effect:true");
                 writer.write(",effectSpeed:'" + grid.getEffectSpeed() + "'");
             }
+        } else {
+            writer.write("paginator:false");
         }
 
         writer.write("});");
