@@ -134,13 +134,14 @@ public class TreeRenderer extends CoreRenderer {
 			
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write("$(function() {");
+
         writer.write(tree.resolveWidgetVar() + " = new PrimeFaces.widget.Tree('" + clientId + "', {");
 
         writer.write("dynamic:" + dynamic);
 
         if(dynamic) {
-            writer.write(",formId:'" + ComponentUtils.findParentForm(context, tree).getClientId(context) + "'");
-            writer.write(",actionURL:'" + getActionURL(context) + "'");
             writer.write(",cache:" + tree.isCache());
         }
 
@@ -180,7 +181,7 @@ public class TreeRenderer extends CoreRenderer {
         //expand-collapse icon states for specific treenodes
         encodeIconStates(context, tree);
 
-        writer.write("});");
+        writer.write("});});");
 
 		writer.endElement("script");
 	}
