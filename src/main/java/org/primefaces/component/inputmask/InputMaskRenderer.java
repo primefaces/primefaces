@@ -16,6 +16,7 @@
 package org.primefaces.component.inputmask;
 
 import java.io.IOException;
+import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -112,12 +113,16 @@ public class InputMaskRenderer extends InputRenderer {
 		}
 		//Try to guess
 		else {
-			Class<?> valueType = inputMask.getValueExpression("value").getType(context.getELContext());
-			Converter converterForType = context.getApplication().createConverter(valueType);
-			
-			if(converterForType != null) {
-				return converterForType.getAsObject(context, inputMask, value);
-			}
+            ValueExpression ve = inputMask.getValueExpression("value");
+
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                Converter converterForType = context.getApplication().createConverter(valueType);
+
+                if(converterForType != null) {
+                    return converterForType.getAsObject(context, inputMask, value);
+                }
+            }
 		}
 		
 		return value;
