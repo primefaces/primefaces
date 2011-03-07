@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,9 +57,9 @@ public class ResizableRenderer extends CoreRenderer {
 
         //If it is an image wait until the image is loaded
         if(target instanceof UIGraphic)
-            writer.write("jQuery(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
+            writer.write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
         else
-            writer.write("jQuery(function(){");
+            writer.write("$(function(){");
 		
 		writer.write(resizable.resolveWidgetVar() + " = new PrimeFaces.widget.Resizable('"+ clientId + "',{");
 
@@ -93,17 +93,11 @@ public class ResizableRenderer extends CoreRenderer {
 
         //Ajax resize
         if(resizable.getResizeListener() != null) {
-            UIComponent form = ComponentUtils.findParentForm(context, resizable);
-            if (form == null) {
-                throw new FacesException("Resizable '" + resizable.getClientId(context) + "' must be inside a form");
-            }
-
-            writer.write(",url:'" + getActionURL(context) + "'");
             writer.write(",ajaxResize:true");
-            writer.write(",formID:'" + form.getClientId(context) + "'");
 
+            String onResizeUpdate = resizable.getOnResizeUpdate();
             if(resizable.getOnResizeUpdate() != null)
-                writer.write(",onResizeUpdate:'" + ComponentUtils.findClientIds(context, resizable, resizable.getOnResizeUpdate()) + "'");
+                writer.write(",onResizeUpdate:'" + ComponentUtils.findClientIds(context, resizable, onResizeUpdate) + "'");
         }
 		
 		writer.write("});});");
