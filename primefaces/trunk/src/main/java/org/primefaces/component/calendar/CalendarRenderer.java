@@ -158,13 +158,6 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if(calendar.getSelectListener() != null) {
-            UIComponent form = ComponentUtils.findParentForm(context, calendar);
-            if (form == null) {
-                throw new FacesException("Calendar \"" + calendar.getClientId(context) + "\" must be enclosed with a form when using ajax selection.");
-            }
-
-            writer.write(",formId:'" + form.getClientId(context) + "'");
-            writer.write(",url:'" + getActionURL(context) + "'");
             writer.write(",hasSelectListener:true");
 
             String onSelectProcess = calendar.getOnSelectProcess();
