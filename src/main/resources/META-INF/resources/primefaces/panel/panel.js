@@ -7,27 +7,27 @@ PrimeFaces.widget.Panel = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(id);
 
     if(this.cfg.toggleable) {
-        this.toggler = jQuery(this.jqId + '_toggler');
-        this.toggleStateHolder = jQuery(this.jqId + '_collapsed');
-        this.content = jQuery(this.jqId + '_content');
+        this.toggler = $(this.jqId + '_toggler');
+        this.toggleStateHolder = $(this.jqId + '_collapsed');
+        this.content = $(this.jqId + '_content');
 
         this.setupToggleTrigger();
     }
 
     if(this.cfg.closable) {
-        this.visibleStateHolder = jQuery(this.jqId + "_visible");
+        this.visibleStateHolder = $(this.jqId + "_visible");
 
         this.setupCloseTrigger();
     }
 
     if(this.cfg.hasMenu) {
-        this.visibleStateHolder = jQuery(this.jqId + "_visible");
+        this.visibleStateHolder = $(this.jqId + "_visible");
 
         this.setupMenuTrigger();
     }
 	
     if(!this.cfg.visible) {
-        jQuery(this.jqId).css('display','none');
+        $(this.jqId).css('display','none');
     }
 }
 
@@ -60,9 +60,10 @@ PrimeFaces.widget.Panel.prototype.toggle = function() {
                 var params = {};
                 params[_self.id + "_ajaxToggle"] = true;
                 params[_self.id + "_collapsed"] = _self.cfg.collapsed;
+
+                options.params = params;
 				
-                PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
-                
+                PrimeFaces.ajax.AjaxRequest(options);
             }
         });
 }
@@ -77,7 +78,7 @@ PrimeFaces.widget.Panel.prototype.close = function() {
     var _self = this;
 
     if(this.cfg.ajaxClose) {
-        jQuery(this.jqId).fadeOut(this.cfg.closeSpeed,
+        $(this.jqId).fadeOut(this.cfg.closeSpeed,
             function() {
                 var options = {
                     source: _self.id,
@@ -97,12 +98,14 @@ PrimeFaces.widget.Panel.prototype.close = function() {
                 var params = {};
                 params[_self.id + "_ajaxClose"] = true;
 
-                PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+                options.params = params;
+
+                PrimeFaces.ajax.AjaxRequest(options);
                 
             });
     } else {
 
-        jQuery(this.jqId).fadeOut(this.cfg.closeSpeed, function() {
+        $(this.jqId).fadeOut(this.cfg.closeSpeed, function() {
             if(_self.cfg.onCloseComplete) {
                 _self.cfg.onCloseComplete.call();
             }
@@ -111,7 +114,7 @@ PrimeFaces.widget.Panel.prototype.close = function() {
 }
 
 PrimeFaces.widget.Panel.prototype.show = function() {
-    jQuery(this.jqId).fadeIn(this.cfg.closeSpeed);
+    $(this.jqId).fadeIn(this.cfg.closeSpeed);
 	
     this.visibleStateHolder.val(true);
 }
@@ -127,7 +130,7 @@ PrimeFaces.widget.Panel.prototype.setupToggleTrigger = function() {
 
 PrimeFaces.widget.Panel.prototype.setupCloseTrigger = function() {
     var _self = this,
-    trigger = jQuery(this.jqId + '_closer').parent();
+    trigger = $(this.jqId + '_closer').parent();
 
     this.setupTriggerVisuals(trigger);
     
@@ -135,12 +138,12 @@ PrimeFaces.widget.Panel.prototype.setupCloseTrigger = function() {
 }
 
 PrimeFaces.widget.Panel.prototype.setupMenuTrigger = function() {
-    var trigger = jQuery(this.jqId + '_menu').parent();
+    var trigger = $(this.jqId + '_menu').parent();
 
     this.setupTriggerVisuals(trigger);
 }
 
 PrimeFaces.widget.Panel.prototype.setupTriggerVisuals = function(trigger) {
-    trigger.mouseover(function() {jQuery(this).addClass('ui-state-hover');})
-            .mouseout(function() {jQuery(this).removeClass('ui-state-hover');});
+    trigger.mouseover(function() {$(this).addClass('ui-state-hover');})
+            .mouseout(function() {$(this).removeClass('ui-state-hover');});
 }

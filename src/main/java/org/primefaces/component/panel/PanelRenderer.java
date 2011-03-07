@@ -122,10 +122,6 @@ public class PanelRenderer extends CoreRenderer {
             }
         }
 
-        if(panel.getToggleListener() != null || panel.getCloseListener() != null) {
-            writer.write(",url:'" + getActionURL(context) + "'");
-        }
-
         //Options menu configuration
         if(panel.getOptionsMenu() != null) {
             writer.write(",hasMenu:true");
