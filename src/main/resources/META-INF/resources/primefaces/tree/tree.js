@@ -6,6 +6,7 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
 
     if(this.cfg.selectionMode) {
         this.selectionHolder = jQuery(this.jqId + '_selection');
@@ -111,7 +112,9 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
         var params = {};
         params[this.id + '_expandNode'] = _self.getNodeId(node);
 
-        PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
     }
     else {
         this.showNodeChildren(node, true);
@@ -261,7 +264,9 @@ PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
     var params = {};
     params[this.id + '_instantSelection'] = this.getNodeId(node);
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.Tree.prototype.fireNodeCollapseEvent = function(node) {
@@ -275,7 +280,9 @@ PrimeFaces.widget.Tree.prototype.fireNodeCollapseEvent = function(node) {
     var params = {};
     params[this.id + '_collapseNode'] = this.getNodeId(node);
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.Tree.prototype.getNodeId = function(node) {
