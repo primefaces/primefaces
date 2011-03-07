@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,6 @@ public class DialogRenderer extends CoreRenderer {
         //Ajax Close
         if (dialog.getCloseListener() != null || dialog.getOnCloseUpdate() != null) {
             writer.write(",ajaxClose:true");
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
 
             if (dialog.getOnCloseUpdate() != null) {
                 writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(facesContext, dialog, dialog.getOnCloseUpdate()) + "'");
