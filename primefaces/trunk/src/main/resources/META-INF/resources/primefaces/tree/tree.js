@@ -21,7 +21,7 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     }
 
     if(this.cfg.dragdrop) {
-        this.setupDragDrop();
+        this.setupDragDrop(this.jq.find('.ui-tree-node-label'), this.jq.find('.ui-tree-node-content'));
     }
 }
 
@@ -101,6 +101,10 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
                 if(id == _self.id){
                     node.append(content);
+
+                    if(_self.cfg.dragdrop) {
+                        _self.setupDragDrop(node.find('.ui-tree-node-label'), node.find('.ui-tree-node-content'));
+                    }
                     
                     _self.showNodeChildren(node, true);
                 }
@@ -312,18 +316,18 @@ PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
         icon.removeClass('ui-icon ui-icon-check');
 }
 
-PrimeFaces.widget.Tree.prototype.setupDragDrop = function() {
+PrimeFaces.widget.Tree.prototype.setupDragDrop = function(draggables, droppables) {
     var _self = this;
 
     //make all labels draggable
-    this.jq.find('.ui-tree-node-label').draggable({
+    draggables.draggable({
         revert:'invalid',
         helper: 'clone',
         containment: this.jqId
     });
 
     //make all node contents droppable
-    this.jq.find('.ui-tree-node-content').droppable({
+    droppables.droppable({
         hoverClass: 'ui-state-hover',
         drop: function(event, ui) {
             var newParent = jQuery(this).parents('li:first'),
