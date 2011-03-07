@@ -390,6 +390,7 @@ PrimeFaces.widget.Rating = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId + ' input');
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
     var _self = this;
 
     this.cfg.callback = function(value) {
@@ -412,7 +413,9 @@ PrimeFaces.widget.Rating = function(id, cfg) {
             var params = {};
             params[_self.id + '_ajaxRating'] = true;
 
-            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options, params);
+            options.params = params;
+
+            PrimeFaces.ajax.AjaxRequest(options);
         }
     };
 	

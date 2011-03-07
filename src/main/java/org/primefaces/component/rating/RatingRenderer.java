@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.primefaces.component.rating;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -76,30 +75,17 @@ public class RatingRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(function() {");
+
         writer.write(rating.resolveWidgetVar() + " = new PrimeFaces.widget.Rating('" + clientId + "'");
         writer.write(",{");
 
         writer.write("hasRateListener:" + hasRateListener);
 
         if(rating.getOnRate() != null) writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");
-        
-        if(hasRateListener) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, rating);
+        if(rating.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, rating, rating.getUpdate()) + "'");
 
-            if (form == null) {
-                throw new FacesException("Rating:\"" + clientId + "\" needs to be enclosed in a form when using a rateListener");
-            }
-
-            ;
-            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
-
-            if(rating.getUpdate() != null) {
-                writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, rating, rating.getUpdate()) + "'");
-            }
-        }
-        
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }
