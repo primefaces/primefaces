@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,33 +88,28 @@ public class ProgressBarRenderer extends CoreRenderer {
         writer.startElement("script", progressBar);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(function() {");
+
         writer.write(progressBar.resolveWidgetVar() + " = new PrimeFaces.widget.ProgressBar('" + clientId + "', {");
         writer.write("value:" + progressBar.getValue());
 
-        if (progressBar.isAjax()) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, progressBar);
-            if (form == null) {
-                throw new FacesException("ProgressBar \"" + clientId + "\" must be enclosed with a form in ajax mode.");
-            }
-
+        if(progressBar.isAjax()) {
             writer.write(",ajax:true");
             writer.write(",interval:" + progressBar.getInterval());
-            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
 
-            if (progressBar.getOnCompleteUpdate() != null) writer.write(",onCompleteUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCompleteUpdate()) + "'");
-            if (progressBar.getOnCancelUpdate() != null) writer.write(",onCancelUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCancelUpdate()) + "'");
-            if (progressBar.getOncomplete() != null) writer.write(",oncomplete:function(xhr, status, args) {" + progressBar.getOncomplete() + "}");
+            if(progressBar.getOnCompleteUpdate() != null) writer.write(",onCompleteUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCompleteUpdate()) + "'");
+            if(progressBar.getOnCancelUpdate() != null) writer.write(",onCancelUpdate:'" + ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCancelUpdate()) + "'");
+            if(progressBar.getOncomplete() != null) writer.write(",oncomplete:function(xhr, status, args) {" + progressBar.getOncomplete() + "}");
 
         } else {
             writer.write(",ajax:false");
         }
 
-        if (progressBar.isDisabled()) {
+        if(progressBar.isDisabled()) {
             writer.write(",disabled:true");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }

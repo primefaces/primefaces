@@ -2,6 +2,10 @@ PrimeFaces.widget.ProgressBar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+
+    if(this.cfg.ajax) {
+        this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
+    }
 	
     jQuery(this.jqId).progressbar(this.cfg);
 }
@@ -36,7 +40,7 @@ PrimeFaces.widget.ProgressBar.prototype.start = function() {
                 }
             };
 
-            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options);
+            PrimeFaces.ajax.AjaxRequest(options);
             
         }, this.cfg.interval);
     }
@@ -59,8 +63,10 @@ PrimeFaces.widget.ProgressBar.prototype.fireCompleteEvent = function() {
 
     var params = {};
     params[this.id + '_complete'] = true;
+
+    options.params = params;
 	
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.ProgressBar.prototype.cancel = function() {
@@ -84,5 +90,7 @@ PrimeFaces.widget.ProgressBar.prototype.cancel = function() {
     var params = {};
     params[this.id + '_cancel'] = true;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
