@@ -101,8 +101,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(form == null) {
             throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
         }
-        writer.write("url:'" + getActionURL(context) + "'");
-        writer.write(",formId:'" + form.getClientId(context) + "'");
+        writer.write("formId:'" + form.getClientId(context) + "'");
 
         //Pagination
         if(table.isPaginator()) {
