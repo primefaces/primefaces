@@ -119,8 +119,6 @@ public class LayoutRenderer extends CoreRenderer {
         encodeUnits(facesContext, layout);
         encodeAjaxEventListeners(facesContext, layout);
 
-        writer.write(",url:'" + getActionURL(facesContext) + "'");
-
         if(layout.isFullPage()) {
             writer.write(",clientId:'" + clientId + "'");
         }
