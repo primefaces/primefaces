@@ -110,6 +110,8 @@ public class GMapRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(function() {");
+
 		writer.write(map.resolveWidgetVar() + " = new PrimeFaces.widget.GMap('" + clientId + "',{");
 		
 		//Required configuration
@@ -134,7 +136,7 @@ public class GMapRenderer extends CoreRenderer {
 		//Client events
 		if(map.getOnPointClick() != null) writer.write(",onPointClick:function(event) {" + map.getOnPointClick() + ";}");
 		
-		writer.write("});");
+		writer.write("});});");
 		
 		writer.endElement("script");
 	}

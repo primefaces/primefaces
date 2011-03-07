@@ -39,7 +39,7 @@ public class DraggableRenderer extends CoreRenderer {
         writer.startElement("script", draggable);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
+        writer.write("$(function() {");
 
         writer.write(draggable.resolveWidgetVar() + " = new PrimeFaces.widget.Draggable('" + clientId + "',");
 

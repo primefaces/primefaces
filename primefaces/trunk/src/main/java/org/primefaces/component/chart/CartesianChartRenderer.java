@@ -53,7 +53,7 @@ public class CartesianChartRenderer extends BaseChartRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(function(){");
+		writer.write("$(function(){");
 
 		writer.write(chart.resolveWidgetVar() + " = new " + chart.getChartWidget() + "('" + clientId + "', {");
 

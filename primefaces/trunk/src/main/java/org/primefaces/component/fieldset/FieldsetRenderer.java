@@ -84,7 +84,6 @@ public class FieldsetRenderer extends CoreRenderer {
 
     protected void encodeContent(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = fieldset.getClientId(context);
         
         writer.startElement("div", null);
         writer.writeAttribute("class", Fieldset.CONTENT_CLASS, null);

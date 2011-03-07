@@ -18,13 +18,11 @@ package org.primefaces.component.datalist;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class DataListRenderer extends CoreRenderer {
 
@@ -94,6 +92,8 @@ public class DataListRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(functio() { ");
+
         writer.write(list.resolveWidgetVar() + " = new PrimeFaces.widget.DataList('" + clientId + "',{");
 
         if(list.isPaginator()) {
@@ -129,7 +129,7 @@ public class DataListRenderer extends CoreRenderer {
             writer.write("paginator:false");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }
