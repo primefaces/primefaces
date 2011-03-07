@@ -5,6 +5,7 @@ PrimeFaces.widget.Wizard = function(id, cfg) {
     this.content = this.jqId + '_content';
     this.backNav = this.jqId + '_back';
     this.nextNav = this.jqId + '_next';
+    this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
     
     this.currentStep = this.cfg.initialStep;
     var currentStepIndex = this.getStepIndex(this.currentStep);
@@ -51,6 +52,91 @@ PrimeFaces.widget.Wizard.prototype.next = function() {
 
 PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
     var _self = this;
+
+    var options = {
+        source:this.id,
+        process:this.id,
+        update:this.id,
+        formId:this.cfg.formId,
+        onsuccess: function(responseXML) {
+            var xmlDoc = responseXML.documentElement,
+            updates = xmlDoc.getElementsByTagName("update"),
+            extensions = xmlDoc.getElementsByTagName("extension");
+
+            //Retrieve validationFailed flag and currentStep id from callback params
+            var args = {};
+            for(var i=0; i < extensions.length; i++) {
+                var extension = extensions[i];
+
+                if(extension.getAttributeNode('primefacesCallbackParam')) {
+                    var jsonObj = jQuery.parseJSON(extension.firstChild.data);
+
+                    for(var paramName in jsonObj) {
+                        if(paramName)
+                            args[paramName] = jsonObj[paramName];
+                    }
+                }
+            }
+
+            _self.currentStep = args.currentStep;
+
+            for(i=0; i < updates.length; i++) {
+                var id = updates[i].attributes.getNamedItem("id").nodeValue,
+                content = updates[i].firstChild.data;
+
+                if(id == _self.id){
+                    if(!args.validationFailed) {
+                        //update content
+                        if(_self.cfg.effect) {
+                            var _content = content;
+                            jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
+                                jQuery(_self.content).html(_content);
+                                jQuery(_self.content).fadeIn();
+
+                            });
+                        } else {
+                            jQuery(_self.content).html(content);
+                        }
+
+                        //update navigation controls
+                        var currentStepIndex = _self.getStepIndex(_self.currentStep);
+
+                        if(_self.cfg.showNavBar) {
+                             if(currentStepIndex == _self.cfg.steps.length - 1) {
+                                _self.hideNextNav();
+                                _self.showBackNav();
+                            } else if(currentStepIndex == 0) {
+                                _self.hideBackNav();
+                                _self.showNextNav();
+                            } else {
+                                _self.showBackNav();
+                                _self.showNextNav();
+                            }
+
+                        }
+
+                        if(_self.cfg.showStepStatus) {
+                            _self.stepControls.removeClass('ui-state-hover');
+                            jQuery(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
+                        }
+
+                    } else {
+                        //update content
+                        jQuery(_self.content).html(content);
+                    }
+
+                }
+                else {
+                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                }
+            }
+
+            return false;
+        },
+        error: function() {
+            alert('Error in loading dynamic tab content');
+        }
+    };
     
     var params = {};
     params[this.id + '_wizardRequest'] = true;
@@ -61,93 +147,9 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
         params[this.id + '_backRequest'] = true;
     }
 
-    PrimeFaces.ajax.AjaxRequest(
-        this.cfg.url,
-        {
-            source:this.id,
-            process:this.id,
-            update:this.id,
-            formId:this.cfg.formId,
-            onsuccess: function(responseXML) {
-                var xmlDoc = responseXML.documentElement,
-                updates = xmlDoc.getElementsByTagName("update"),
-                extensions = xmlDoc.getElementsByTagName("extension");
+    options.params = params;
 
-                //Retrieve validationFailed flag and currentStep id from callback params
-                var args = {};
-                for(var i=0; i < extensions.length; i++) {
-                    var extension = extensions[i];
-
-                    if(extension.getAttributeNode('primefacesCallbackParam')) {
-                        var jsonObj = jQuery.parseJSON(extension.firstChild.data);
-
-                        for(var paramName in jsonObj) {
-                            if(paramName)
-                                args[paramName] = jsonObj[paramName];
-                        }
-                    }
-                }
-
-                _self.currentStep = args.currentStep;
-
-                for(i=0; i < updates.length; i++) {
-                    var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                    content = updates[i].firstChild.data;
-
-                    if(id == _self.id){
-                        if(!args.validationFailed) {
-                            //update content
-                            if(_self.cfg.effect) {
-                                var _content = content;
-                                jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-                                    jQuery(_self.content).html(_content);
-                                    jQuery(_self.content).fadeIn();
-
-                                });
-                            } else {
-                                jQuery(_self.content).html(content);
-                            }
-
-                            //update navigation controls
-                            var currentStepIndex = _self.getStepIndex(_self.currentStep);
-
-                            if(_self.cfg.showNavBar) {
-                                 if(currentStepIndex == _self.cfg.steps.length - 1) {
-                                    _self.hideNextNav();
-                                    _self.showBackNav();
-                                } else if(currentStepIndex == 0) {
-                                    _self.hideBackNav();
-                                    _self.showNextNav();
-                                } else {
-                                    _self.showBackNav();
-                                    _self.showNextNav();
-                                }
-
-                            }
-
-                            if(_self.cfg.showStepStatus) {
-                                _self.stepControls.removeClass('ui-state-hover');
-                                jQuery(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
-                            }
-                            
-                        } else {
-                            //update content
-                            jQuery(_self.content).html(content);
-                        }
-
-                    }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
-                    }
-                }
-
-                return false;
-            },
-            error: function() {
-                alert('Error in loading dynamic tab content');
-            }
-        },
-        params);
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.Wizard.prototype.getStepIndex = function(step) {

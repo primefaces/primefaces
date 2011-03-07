@@ -100,7 +100,9 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
         params[this.id + '_tabChange'] = true;
     }
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
@@ -120,7 +122,9 @@ PrimeFaces.widget.TabView.prototype.fireAjaxTabChangeEvent = function(panel) {
     params[this.id + '_tabChange'] = true;
     params[this.id + '_newTab'] = panel.id;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {
