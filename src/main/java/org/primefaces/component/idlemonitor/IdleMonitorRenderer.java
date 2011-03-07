@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.primefaces.component.idlemonitor;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -34,7 +33,7 @@ public class IdleMonitorRenderer extends CoreRenderer {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         IdleMonitor monitor = (IdleMonitor) component;
 
-        if (params.containsKey(monitor.getClientId(facesContext))) {
+        if(params.containsKey(monitor.getClientId(facesContext))) {
             monitor.queueEvent(new IdleEvent(monitor));
         }
     }
@@ -48,30 +47,23 @@ public class IdleMonitorRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(function() {");
+
         writer.write(monitor.resolveWidgetVar() + " = new PrimeFaces.widget.IdleMonitor('" + clientId + "', {");
         writer.write("timeout:" + monitor.getTimeout());
 
-        if (monitor.getIdleListener() != null) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, monitor);
-
-            if (form == null) {
-                throw new FacesException("IdleMonitor:\"" + clientId + "\" needs to be enclosed in a form when using an idleListener");
-            }
-
+        if(monitor.getIdleListener() != null) {         
             writer.write(",hasIdleListener:true");
-            writer.write(",url:'" + getActionURL(facesContext) + "'");
-            writer.write(",formId:'" + form.getClientId(facesContext) + "'");
-            writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, monitor, monitor.getUpdate()) + "'");
+
+            String update = monitor.getUpdate();
+            if(update != null)
+                writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, monitor, update) + "'");
         }
 
-        if (monitor.getOnidle() != null) {
-            writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
-        }
-        if (monitor.getOnactive() != null) {
-            writer.write(",onactive: function() {" + monitor.getOnactive() + ";}");
-        }
+        if(monitor.getOnidle() != null) writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
+        if(monitor.getOnactive() != null) writer.write(",onactive: function() {" + monitor.getOnactive() + ";}");
 
-        writer.write("});");
+        writer.write("});});");
 
         writer.endElement("script");
     }

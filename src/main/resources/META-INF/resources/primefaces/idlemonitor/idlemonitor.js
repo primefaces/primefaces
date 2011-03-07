@@ -168,7 +168,7 @@ PrimeFaces.widget.IdleMonitor = function(id, cfg) {
 
     var _self = this;
 	
-    jQuery(document).bind("idle.idleTimer", function(){
+    $(document).bind("idle.idleTimer", function(){
 
         if(_self.cfg.onidle) {
             _self.cfg.onidle.call(_self);
@@ -177,23 +177,22 @@ PrimeFaces.widget.IdleMonitor = function(id, cfg) {
         if(_self.cfg.hasIdleListener) {
             var options = {
                 source: _self.id,
-                process: _self.id,
-                formId: _self.cfg.formId
+                process: _self.id
             };
 
             if(_self.cfg.update) {
                 options.update = _self.cfg.update;
             }
 
-            PrimeFaces.ajax.AjaxRequest(_self.cfg.url, options);
+            PrimeFaces.ajax.AjaxRequest(options);
         }
     });
 	
-    jQuery(document).bind("active.idleTimer", function(){
+    $(document).bind("active.idleTimer", function(){
         if(_self.cfg.onactive) {
             _self.cfg.onactive.call(this);
         }
     });
     
-    jQuery.idleTimer(this.cfg.timeout);
+    $.idleTimer(this.cfg.timeout);
 }
