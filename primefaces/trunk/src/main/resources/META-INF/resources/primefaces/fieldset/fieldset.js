@@ -58,7 +58,9 @@ PrimeFaces.widget.Fieldset.prototype.fireToggleEvent = function() {
     params[this.id + "_ajaxToggle"] = true;
     params[this.id + "_collapsed"] = this.cfg.collapsed;
 
-    PrimeFaces.ajax.AjaxRequest(this.cfg.url, options, params);
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
