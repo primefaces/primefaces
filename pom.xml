@@ -135,13 +135,13 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>generate-touch-metadata</id>
+                        <id>generate-mobile-metadata</id>
                         <phase>generate-sources</phase>
                         <configuration>
                             <xslFile>src/main/resources-maven-jsf/misc/resolve_entities.xsl</xslFile>
                             <srcIncludes>**/*.xml</srcIncludes>
-                            <srcDir>src/main/resources-maven-jsf/touch</srcDir>
-                            <destDir>target/resources-maven-jsf/touch</destDir>
+                            <srcDir>src/main/resources-maven-jsf/mobile</srcDir>
+                            <destDir>target/resources-maven-jsf/mobile</destDir>
                         </configuration>
                         <goals>
                             <goal>transform</goal>
@@ -194,13 +194,13 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>generate-touch</id>
+                        <id>generate-mobile</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <uri>http://primefaces.prime.com.tr/touch</uri>
-                            <shortName>i</shortName>
+                            <uri>http://primefaces.prime.com.tr/mobile</uri>
+                            <shortName>pm</shortName>
                             <jsfVersion>2</jsfVersion>
-                            <componentConfigsDir>target/resources-maven-jsf/touch</componentConfigsDir>
+                            <componentConfigsDir>target/resources-maven-jsf/mobile</componentConfigsDir>
                         </configuration>
                         <goals>
                             <goal>generate-components</goal>
@@ -211,7 +211,7 @@
                         <id>generate-facesconfig</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <componentConfigsDir>target/resources-maven-jsf/ui,target/resources-maven-jsf/touch</componentConfigsDir>
+                            <componentConfigsDir>target/resources-maven-jsf/ui,target/resources-maven-jsf/mobile</componentConfigsDir>
                             <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
                             <jsfVersion>2</jsfVersion>
                         </configuration>
