@@ -50,6 +50,7 @@ public class PageRenderer extends CoreRenderer {
         
         renderResource(context, "mobile/mobile.js", "javax.faces.resource.Script");
         renderResource(context, "core/core.js", "javax.faces.resource.Script");
+        renderResource(context, "mobile/core.js", "javax.faces.resource.Script");
 
         writer.endElement("head");
 
