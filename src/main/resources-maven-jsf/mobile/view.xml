@@ -14,5 +14,10 @@
 	<parent>javax.faces.component.UIPanel</parent>
 	<attributes>
 		&standard_uicomponent_attributes;
+        <attribute>
+            <name>swatch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
 	</attributes>
 </component>
