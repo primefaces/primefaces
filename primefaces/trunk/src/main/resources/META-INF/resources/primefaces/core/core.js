@@ -72,6 +72,11 @@ PrimeFaces = {
     ab : function(cfg) {
         PrimeFaces.ajax.AjaxRequest(cfg);
     },
+
+    //mobile
+    changePage : function(to, transition, reverse, changeHash) {
+        $.mobile.changePage(to, transition, reverse, changeHash);
+    },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
