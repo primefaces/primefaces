@@ -20,14 +20,18 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.mobile.util.MobileUtils;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class PageRenderer extends CoreRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        MobileUtils.setMobileRequest();
+        
         ResponseWriter writer = context.getResponseWriter();
         Page page = (Page) component;
+        UIComponent meta = page.getFacet("meta");
 
         writer.write("<!DOCTYPE html>\n");
         writer.startElement("html", page);
@@ -39,7 +43,13 @@ public class PageRenderer extends CoreRenderer {
 
         renderResource(context, "mobile/mobile.css", "javax.faces.resource.Stylesheet");
         renderResource(context, "jquery/jquery.js", "javax.faces.resource.Script");
+
+        if(meta != null) {
+            meta.encodeAll(context);
+        }
+        
         renderResource(context, "mobile/mobile.js", "javax.faces.resource.Script");
+        renderResource(context, "core/core.js", "javax.faces.resource.Script");
 
         writer.endElement("head");
 
