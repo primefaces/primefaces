@@ -27,10 +27,14 @@ public class ViewRenderer extends CoreRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         View view = (View) component;
+        String swatch = view.getSwatch();
 
         writer.startElement("div", view);
         writer.writeAttribute("id", view.getId(), "id");
         writer.writeAttribute("data-role", "page", null);
+
+        if(swatch != null)
+            writer.writeAttribute("data-theme", swatch, null);
     }
 
     @Override
