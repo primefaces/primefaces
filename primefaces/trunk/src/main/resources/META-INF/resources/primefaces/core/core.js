@@ -77,6 +77,10 @@ PrimeFaces = {
     changePage : function(to, transition, reverse, changeHash) {
         $.mobile.changePage(to, transition, reverse, changeHash);
     },
+
+    refreshList : function(listId) {
+        $(PrimeFaces.escapeClientId(listId)).listview();
+    },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
