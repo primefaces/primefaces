@@ -28,15 +28,27 @@ public class HeaderRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Header header = (Header) component;
         String title = header.getTitle();
+        UIComponent left = header.getFacet("left");
+        UIComponent right = header.getFacet("right");
 
         writer.startElement("div", header);
         writer.writeAttribute("id", header.getClientId(context), "id");
         writer.writeAttribute("data-role", "header", null);
+        writer.writeAttribute("data-backbtn", "false", null);
+
+        if(left != null) {
+            left.encodeAll(context);
+        }
 
         if(title != null) {
              writer.startElement("h1", header);
              writer.writeText(title, null);
              writer.endElement("h1");
+        }
+        
+        if(right != null) {
+            right.getAttributes().put("styleClass", "ui-btn-right");
+            right.encodeAll(context);
         }
     }
 
