@@ -31,7 +31,8 @@ public class PageRenderer extends CoreRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         Page page = (Page) component;
-        UIComponent meta = page.getFacet("meta");
+        UIComponent preinit = page.getFacet("preinit");
+        UIComponent postinit = page.getFacet("postinit");
 
         writer.write("<!DOCTYPE html>\n");
         writer.startElement("html", page);
@@ -44,13 +45,17 @@ public class PageRenderer extends CoreRenderer {
         renderResource(context, "mobile/mobile.css", "javax.faces.resource.Stylesheet");
         renderResource(context, "jquery/jquery.js", "javax.faces.resource.Script");
 
-        if(meta != null) {
-            meta.encodeAll(context);
+        if(preinit != null) {
+            preinit.encodeAll(context);
         }
         
         renderResource(context, "mobile/mobile.js", "javax.faces.resource.Script");
         renderResource(context, "core/core.js", "javax.faces.resource.Script");
         renderResource(context, "mobile/core.js", "javax.faces.resource.Script");
+
+        if(postinit != null) {
+            postinit.encodeAll(context);
+        }
 
         writer.endElement("head");
 
