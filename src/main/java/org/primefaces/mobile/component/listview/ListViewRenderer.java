@@ -35,6 +35,8 @@ public class ListViewRenderer extends CoreRenderer{
 
         writer.startElement("ul", listView);
         writer.writeAttribute("id", listView.getClientId(context), "id");
+        writer.writeAttribute("data-role", "listview", null);
+        
         if(listView.getStyle() != null) writer.writeAttribute("style", listView.getStyle(), null);
         if(listView.getStyleClass() != null) writer.writeAttribute("class", listView.getStyleClass(), null);
 
