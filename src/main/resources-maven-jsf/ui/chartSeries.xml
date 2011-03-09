@@ -10,6 +10,11 @@
 	<componentType>org.primefaces.component.chart.ChartSeries</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIOutput</parent>
+    <interfaces>
+		<interface>
+			<name>java.io.Serializable</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&output_component_attributes;
 		<attribute>
