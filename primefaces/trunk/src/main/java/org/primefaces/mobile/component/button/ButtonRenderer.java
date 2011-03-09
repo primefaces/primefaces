@@ -35,6 +35,7 @@ public class ButtonRenderer extends CoreRenderer {
         if(button.getIcon() != null) writer.writeAttribute("data-icon", button.getIcon(), null);
         if(button.getIconPos() != null) writer.writeAttribute("data-iconpos", button.getIconPos(), null);
         if(button.getRole() != null) writer.writeAttribute("data-rel", button.getRole(), null);
+        if(button.getTransition() != null) writer.writeAttribute("data-transition", button.getTransition(), null);
         if(button.getStyle() != null) writer.writeAttribute("style", button.getStyle(), null);
         if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass(), null);
         
