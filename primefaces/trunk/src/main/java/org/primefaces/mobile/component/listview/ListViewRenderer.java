@@ -31,7 +31,7 @@ public class ListViewRenderer extends CoreRenderer{
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ListView listView = (ListView) component;
-        int rowCount = listView.getRowCount();
+        String title = listView.getTitle();
 
         writer.startElement("ul", listView);
         writer.writeAttribute("id", listView.getClientId(context), "id");
@@ -41,8 +41,19 @@ public class ListViewRenderer extends CoreRenderer{
         if(listView.getSwatch() != null) writer.writeAttribute("data-theme", listView.getSwatch(), null);
         if(listView.getStyle() != null) writer.writeAttribute("style", listView.getStyle(), null);
         if(listView.getStyleClass() != null) writer.writeAttribute("class", listView.getStyleClass(), null);
+        if(listView.getTitleSwatch() != null) writer.writeAttribute("data-dividertheme", listView.getTitleSwatch(), null);
+
+        if(title != null) {
+            writer.startElement("li", listView);
+            writer.writeAttribute("data-role", "list-divider", null);
+
+            writer.writeText(title, null);
+            writer.endElement("li");
+        }
 
         if(listView.getVar() != null) {
+            int rowCount = listView.getRowCount();
+
             for(int i = 0; i < rowCount; i++) {
                 listView.setRowIndex(i);
 
