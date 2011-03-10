@@ -42,12 +42,23 @@ public class ListViewRenderer extends CoreRenderer{
         if(listView.getStyle() != null) writer.writeAttribute("style", listView.getStyle(), null);
         if(listView.getStyleClass() != null) writer.writeAttribute("class", listView.getStyleClass(), null);
 
-        for(int i = 0; i < rowCount; i++) {
-            listView.setRowIndex(i);
+        if(listView.getVar() != null) {
+            for(int i = 0; i < rowCount; i++) {
+                listView.setRowIndex(i);
 
-            writer.startElement("li", listView);
-            renderChildren(context, listView);
-            writer.endElement("li");
+                writer.startElement("li", listView);
+                renderChildren(context, listView);
+                writer.endElement("li");
+            }
+        }
+        else {
+            for(UIComponent child : listView.getChildren()) {
+                if(child.isRendered()) {
+                    writer.startElement("li", listView);
+                    child.encodeAll(context);
+                    writer.endElement("li");
+                }
+            }
         }
         writer.endElement("ul");
 
