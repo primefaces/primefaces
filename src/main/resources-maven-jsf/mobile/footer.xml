@@ -5,7 +5,7 @@
 ]>
 <component>
 	<tag>footer</tag>
-    <tagClass>org.primefaces.mobile.component.content.FooterTag</tagClass>
+    <tagClass>org.primefaces.mobile.component.footer.FooterTag</tagClass>
 	<componentClass>org.primefaces.mobile.component.footer.Footer</componentClass>
 	<componentType>org.primefaces.mobile.Footer</componentType>
 	<componentFamily>org.primefaces.mobile</componentFamily>
