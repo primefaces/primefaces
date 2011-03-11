@@ -74,7 +74,7 @@ PrimeFaces = {
     },
 
     //mobile
-    changePage : function(to, transition, reverse, changeHash) {
+    navigate : function(to, transition, reverse, changeHash) {
         $.mobile.changePage(to, transition, reverse, changeHash);
     },
 
