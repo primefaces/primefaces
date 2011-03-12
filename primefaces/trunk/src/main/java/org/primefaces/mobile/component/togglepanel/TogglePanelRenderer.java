@@ -30,6 +30,7 @@ public class TogglePanelRenderer extends CoreRenderer {
         String title = panel.getTitle();
 
         writer.startElement("div", panel);
+        writer.writeAttribute("id", panel.getClientId(context), null);
         writer.writeAttribute("data-role", "collapsible", null);
 
         if(panel.isCollapsed()) writer.writeAttribute("data-collapsed", "true", null);
