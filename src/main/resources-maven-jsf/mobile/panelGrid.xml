@@ -4,31 +4,21 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>togglePanel</tag>
-    <tagClass>org.primefaces.mobile.component.togglepanel.TogglePanelTag</tagClass>
-	<componentClass>org.primefaces.mobile.component.togglepanel.TogglePanel</componentClass>
-	<componentType>org.primefaces.mobile.TogglePanel</componentType>
+	<tag>panelGrid</tag>
+    <tagClass>org.primefaces.mobile.component.panelgrid.PanelGridTag</tagClass>
+	<componentClass>org.primefaces.mobile.component.panelgrid.PanelGrid</componentClass>
+	<componentType>org.primefaces.mobile.PanelGrid</componentType>
 	<componentFamily>org.primefaces.mobile</componentFamily>
-	<rendererType>org.primefaces.mobile.component.TogglePanelRenderer</rendererType>
-	<rendererClass>org.primefaces.mobile.component.togglepanel.TogglePanelRenderer</rendererClass>
+	<rendererType>org.primefaces.mobile.component.PanelGridRenderer</rendererType>
+	<rendererClass>org.primefaces.mobile.component.panelgrid.PanelGridRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
 	<attributes>
 		&standard_uicomponent_attributes;
         <attribute>
-			<name>swatch</name>
+			<name>columns</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>title</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>collapsed</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
+			<type>java.lang.Integer</type>
+            <defaultValue>2</defaultValue>
 		</attribute>
         <attribute>
             <name>style</name>
