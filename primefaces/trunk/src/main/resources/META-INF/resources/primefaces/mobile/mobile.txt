@@ -1,0 +1,1 @@
+- Added support for semi-colon in label fieldcontainer.
