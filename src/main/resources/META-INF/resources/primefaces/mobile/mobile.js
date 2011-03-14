@@ -2554,7 +2554,7 @@ $.widget( "mobile.checkboxradio", $.mobile.widget, {
 	_create: function(){
 		var self = this,
 			input = this.element,
-			label = input.closest("form,fieldset,[data-role='page']").find("label[for='" + input.attr( "id" ) + "']"),
+			label = input.closest("form,fieldset,[data-role='page']").find("label[for='" + input.attr( "id" ).replace(/:/g,"\\:") + "']"),
 			inputtype = input.attr( "type" ),
 			checkedicon = "ui-icon-" + inputtype + "-on",
 			uncheckedicon = "ui-icon-" + inputtype + "-off";
@@ -2663,7 +2663,7 @@ $.widget( "mobile.checkboxradio", $.mobile.widget, {
 
 	refresh: function( ){
 		var input = this.element,
-			label = input.closest("form,fieldset,[data-role='page']").find("label[for='" + input.attr( "id" ) + "']"),
+			label = input.closest("form,fieldset,[data-role='page']").find("label[for='" + input.attr( "id" ).replace(/:/g,"\\:") + "']"),
 			inputtype = input.attr( "type" ),
 			icon = label.find( ".ui-icon" ),
 			checkedicon = "ui-icon-" + inputtype + "-on",
@@ -2723,7 +2723,7 @@ $.widget( "mobile.textinput", $.mobile.widget, {
 
 		themeclass = " ui-body-" + theme;
 
-		$('label[for='+input.attr('id')+']').addClass('ui-input-text');
+		$('label[for='+input.attr('id').replace(/:/g,"\\:")+']').addClass('ui-input-text');
 
 		input.addClass('ui-input-text ui-body-'+ o.theme);
 
@@ -2828,7 +2828,7 @@ $.widget( "mobile.selectmenu", $.mobile.widget, {
 
 			selectID = select.attr( "id" ),
 
-			label = $( "label[for="+ selectID +"]" ).addClass( "ui-select" ),
+			label = $( "label[for="+ selectID.replace(/:/g,"\\:") +"]" ).addClass( "ui-select" ),
 
 			button = ( self.options.nativeMenu ? $( "<div/>" ) : $( "<a>", {
 					"href": "#",
@@ -3526,7 +3526,7 @@ $.widget( "mobile.slider", $.mobile.widget, {
 			selectClass = (cType == 'select') ? 'ui-slider-switch' : '',
 			controlID = control.attr('id'),
 			labelID = controlID + '-label',
-			label = $('[for='+ controlID +']').attr('id',labelID),
+			label = $('[for='+ controlID.replace(/:/g,"\\:") +']').attr('id',labelID),
 			val = function(){
 				return (cType == 'input') ? parseFloat(control.val()) : control[0].selectedIndex;
 			},
