@@ -16,8 +16,10 @@
 package org.primefaces.mobile.component.page;
 
 import java.io.IOException;
+import java.util.ListIterator;
 import java.util.Map;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.mobile.util.MobileUtils;
@@ -55,6 +57,15 @@ public class PageRenderer extends CoreRenderer {
 
         if(postinit != null) {
             postinit.encodeAll(context);
+        }
+
+        //Registered resources
+        UIViewRoot viewRoot = context.getViewRoot();
+        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
+        while (iter.hasNext()) {
+            writer.write("\n");
+            UIComponent resource = (UIComponent) iter.next();
+            resource.encodeAll(context);
         }
 
         writer.endElement("head");
