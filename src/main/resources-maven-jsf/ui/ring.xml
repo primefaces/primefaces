@@ -31,6 +31,11 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<name>easing</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
@@ -44,6 +49,9 @@
 		</resource>
 		<resource>
 			<name>ring/ring.js</name>
+		</resource>
+        <resource>
+			<name>easing/easing.js</name>
 		</resource>
 	</resources>
 </component>
