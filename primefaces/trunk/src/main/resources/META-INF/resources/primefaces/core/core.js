@@ -77,10 +77,6 @@ PrimeFaces = {
     navigate : function(to, transition, reverse, changeHash) {
         $.mobile.changePage(to, transition, reverse, changeHash);
     },
-
-    refreshList : function(listId) {
-        $(PrimeFaces.escapeClientId(listId)).listview();
-    },
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
@@ -139,6 +135,31 @@ PrimeFaces.ajax.AjaxUtils = {
         }
         else {
             $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+
+            //PrimeFaces Mobile
+            if($.mobile) {
+                var controls = $(PrimeFaces.escapeClientId(id)).parent().find("input, textarea, select, button, ul");
+
+                //input and textarea
+                controls
+                    .filter("input, textarea")
+                    .not("[type='radio'], [type='checkbox'], [type='button'], [type='submit'], [type='reset'], [type='image'], [type='hidden']")
+                    .textinput();
+                    
+                //lists
+                controls.filter("[data-role='listview']").listview();
+                
+                //buttons
+                controls.filter("button, [type='button'], [type='submit'], [type='reset'], [type='image']" ).button();
+
+                //slider
+                controls.filter("input, select")
+                        .filter("[data-role='slider'], [data-type='range']")
+                        .slider();
+                
+                //selects
+                controls.filter("select:not([data-role='slider'])" ).selectmenu();
+            }
         }
     }
 };
