@@ -68,6 +68,7 @@ public class RingRenderer extends CoreRenderer {
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ring.getClientId(context);
+        String easing = ring.getEasing();
 
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -77,6 +78,8 @@ public class RingRenderer extends CoreRenderer {
         writer.write(ring.resolveWidgetVar() + " = new PrimeFaces.widget.Ring('" + clientId + "', {");
 
         writer.write("startingChild:" + ring.getFirst());
+
+        if(easing != null) writer.write(",easing:'" + easing + "'");
 
         writer.write("});});");
 
