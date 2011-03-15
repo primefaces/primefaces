@@ -89,7 +89,7 @@ public class DataGridRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("$(functio() { ");
+        writer.write("$(function() { ");
 
         writer.write(grid.resolveWidgetVar() + " = new PrimeFaces.widget.DataGrid('" + clientId + "',{");
 

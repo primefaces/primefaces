@@ -92,7 +92,7 @@ public class DataListRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("$(functio() { ");
+        writer.write("$(function() { ");
 
         writer.write(list.resolveWidgetVar() + " = new PrimeFaces.widget.DataList('" + clientId + "',{");
 
