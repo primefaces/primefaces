@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.GalleriaOverlayRenderer</rendererType>
 	<rendererClass>org.primefaces.component.galleria.GalleriaOverlayRenderer</rendererClass>
-	<parent>javax.faces.component.UIPanel</parent>
+	<parent>javax.faces.component.UIColumn</parent>
     <attributes>
         <attribute>
             <name>title</name>

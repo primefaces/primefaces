@@ -21,27 +21,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 
-public class GalleriaOverlayRenderer extends CoreRenderer {
+public class GalleriaContentRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        GalleriaOverlay overlay = (GalleriaOverlay) component;
+        GalleriaContent content = (GalleriaContent) component;
         ResponseWriter writer = context.getResponseWriter();
-        String title = overlay.getTitle();
 
-        writer.startElement("div", overlay);
-        writer.writeAttribute("class", "gv-panel-overlay", null);
+        writer.startElement("div", content);
+        writer.writeAttribute("class", "gv-panel-content", null);
 
-        if(title != null) {
-            writer.startElement("h3", overlay);
-            writer.writeText(title, null);
-            writer.endElement("h3");
-        }
-
-        writer.startElement("p", overlay);
-        renderChildren(context, overlay);
-        writer.endElement("p");
-
+        renderChildren(context, content);
 
         writer.endElement("div");
     }
