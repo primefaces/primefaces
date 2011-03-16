@@ -690,12 +690,12 @@ $(window).load(function(){
 			// Add navigation buttons
 			if(opts.show_filmstrip_nav) {
 				var navNext = $('<div></div>');
-				navNext.addClass('ui-galleria-nav-next').appendTo(j_gallery).css({
+				navNext.addClass('ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e').appendTo(j_gallery).css({
 					position:'absolute'
 				}).click(showNextItem);
 
 				var navPrev = $('<div></div>');
-				navPrev.addClass('ui-galleria-nav-prev').appendTo(j_gallery).css({
+				navPrev.addClass('ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w').appendTo(j_gallery).css({
 					position:'absolute'
 				}).click(showPrevItem);
 
