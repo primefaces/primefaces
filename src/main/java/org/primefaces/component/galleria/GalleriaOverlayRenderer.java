@@ -30,7 +30,7 @@ public class GalleriaOverlayRenderer extends CoreRenderer {
         String title = overlay.getTitle();
 
         writer.startElement("div", overlay);
-        writer.writeAttribute("class", "gv-panel-overlay", null);
+        writer.writeAttribute("class", "ui-galleria-overlay", null);
 
         if(title != null) {
             writer.startElement("h3", overlay);
