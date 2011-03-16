@@ -46,13 +46,65 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>fade</defaultValue>
+            <defaultValue>crossfade</defaultValue>
 		</attribute>
         <attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>700</defaultValue>
+            <defaultValue>800</defaultValue>
+		</attribute>
+        <attribute>
+			<name>panelWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>600</defaultValue>
+		</attribute>
+        <attribute>
+			<name>panelHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>400</defaultValue>
+		</attribute>
+        <attribute>
+			<name>frameWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>60</defaultValue>
+		</attribute>
+        <attribute>
+			<name>frameHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>40</defaultValue>
+		</attribute>
+        <attribute>
+			<name>filmstripStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>filmstripPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>showFilmstrip</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
+        <attribute>
+			<name>showCaptions</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>showOverlays</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
