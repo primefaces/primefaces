@@ -1,9 +1,6 @@
 /* GALLERY CONTAINER */
 .ui-galleria { overflow: hidden; }
 
-/* LOADING BOX */
-.ui-galleria-loader { background: url(loader.gif) center center no-repeat #fff; }
-
 /*************************************************/
 /**   PANEL STYLES								**/
 /*************************************************/

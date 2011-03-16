@@ -893,7 +893,7 @@ $(window).load(function(){
 			// Wrap UL in DIV and transfer ID to container DIV
 			_t.wrap("<div></div>");
 			j_gallery = _t.parent();
-			j_gallery.css('visibility','hidden').attr('id',_t.attr('id')).addClass('ui-galleria').addClass(_t.attr('class'));
+			j_gallery.css('visibility','hidden').attr('id',_t.attr('id')).addClass('ui-galleria ui-widget').addClass(_t.attr('class'));
 
 			// Assign filmstrip class to the UL sent to the plugin
 			_t.removeAttr('id').addClass('ui-galleria-filmstrip');
