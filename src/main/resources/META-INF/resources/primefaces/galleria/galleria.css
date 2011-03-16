@@ -34,7 +34,9 @@
 .ui-galleria-filmstrip { margin: 5px; }
 
 /* FILMSTRIP FRAMES (contains both images and captions) */
-.ui-galleria-frame {}
+.ui-galleria-frame {
+    float:left;
+}
 
 /* WRAPPER FOR FILMSTRIP IMAGES */
 .ui-galleria-frame .ui-galleria-img-wrap {}
