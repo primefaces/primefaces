@@ -90,13 +90,13 @@ $(window).load(function(){
 
 			// Disable next/prev buttons until transition is complete
 			// This prevents overlapping of animations
-			$('.gv-nav-next, .gv-panel-nav-next, .gv-nav-prev, .gv-panel-nav-prev',j_gallery).unbind('click');
+			$('.ui-galleria-nav-next, .ui-galleria-panel-nav-next, .ui-galleria-nav-prev, .ui-galleria-panel-nav-prev',j_gallery).unbind('click');
 			j_frames.unbind('click');
 
 			// Use timer to rebind navigation buttons when transition ends
 			$(document).oneTime(speed,'bindNavButtons',function(){
-				$('.gv-nav-next, .gv-panel-nav-next',j_gallery).click(showNextItem);
-				$('.gv-nav-prev, .gv-panel-nav-prev',j_gallery).click(showPrevItem);
+				$('.ui-galleria-nav-next, .ui-galleria-panel-nav-next',j_gallery).click(showNextItem);
+				$('.ui-galleria-nav-prev, .ui-galleria-panel-nav-prev',j_gallery).click(showPrevItem);
 				enableFrameClicking();
 			});
 
@@ -116,7 +116,7 @@ $(window).load(function(){
 
 						// Move target frame just to the right of the current frame
 						j_panels.eq(mod_i).css({
-							left: getInt($('.gv-panel.current').eq(0).css('left'))+opts.panel_width+'px',
+							left: getInt($('.ui-galleria-panel.current').eq(0).css('left'))+opts.panel_width+'px',
 							zIndex: 50
 						}).show().animate({
 							left: '-='+opts.panel_width+'px'
@@ -125,7 +125,7 @@ $(window).load(function(){
 						});
 
 						// Slide current frame and target frame to the left
-						$('.gv-panel.current').css({zIndex:49}).animate({
+						$('.ui-galleria-panel.current').css({zIndex:49}).animate({
 							left: '-='+opts.panel_width+'px'
 						},speed,opts.easing,function(){
 							$(this).removeClass('current').hide();
@@ -142,7 +142,7 @@ $(window).load(function(){
 
 						// Shrink panel container to center while moving image in opposite direction
 						// End result is an image that remains static while borders of container shrink
-						$('.gv-panel.current img').animate({
+						$('.ui-galleria-panel.current img').animate({
 							top: '-='+opts.panel_height/2+'px',
 							left:'-='+opts.panel_width/2+'px'
 						},speed,'swing',function(){
@@ -154,7 +154,7 @@ $(window).load(function(){
 							},0);
 						});
 
-						$('.gv-panel.current').animate({
+						$('.ui-galleria-panel.current').animate({
 							top:'+='+opts.panel_height/2+'px',
 							left:'+='+opts.panel_width/2+'px',
 							height:0,
@@ -423,7 +423,7 @@ $(window).load(function(){
 
 	/*
 	**	buildPanels()
-	**		Construct gallery panels: <div class="gv-panel"> elements
+	**		Construct gallery panels: <div class="ui-galleria-panel"> elements
 	**		NOTE - These DIVs are generated automatically from the content of the UL passed to the plugin
 	*/
 		function buildPanels() {
@@ -431,21 +431,21 @@ $(window).load(function(){
 			// If panel overlay content exists, add the necessary overlay background DIV
 			// The overlay content and background are separate elements so the background's opacity isn't inherited by the content
 			j_panels.each(function(i){
-		   		if($('.gv-panel-overlay',this).length>0) {
-					$(this).append('<div class="gv-overlay-background"></div>');
+		   		if($('.ui-galleria-overlay',this).length>0) {
+					$(this).append('<div class="ui-galleria-overlay-background"></div>');
 				}
 		   	});
 
 			// If there is no filmstrip in this gallery, add navigation buttons to the panel itself
 			if(opts.show_panel_nav) {
-				$('<div></div>').addClass('gv-panel-nav-next').appendTo(j_gallery).css({
+				$('<div></div>').addClass('ui-galleria-panel-nav-next').appendTo(j_gallery).css({
 					position:'absolute',
 					zIndex:'1100',
 					top:((opts.filmstrip_position=='top'?opts.frame_gap+wrapper_height:0)+(opts.panel_height-22)/2)+'px',
 					right:((opts.filmstrip_position=='right'?opts.frame_gap+wrapper_width:0)+10)+'px',
 					display:'none'
 				}).click(showNextItem);
-				$('<div></div>').addClass('gv-panel-nav-prev').appendTo(j_gallery).css({
+				$('<div></div>').addClass('ui-galleria-panel-nav-prev').appendTo(j_gallery).css({
 					position:'absolute',
 					zIndex:'1100',
 					top:((opts.filmstrip_position=='top'?opts.frame_gap+wrapper_height:0)+(opts.panel_height-22)/2)+'px',
@@ -483,13 +483,13 @@ $(window).load(function(){
 			});
 
 			// Position each panel overlay within panel
-			$('.gv-panel-overlay',j_panels).css({
+			$('.ui-galleria-overlay',j_panels).css({
 				position:'absolute',
 				zIndex:'999',
-				width:(opts.panel_width-extraWidth($('.gv-panel-overlay',j_panels)))+'px',
+				width:(opts.panel_width-extraWidth($('.ui-galleria-overlay',j_panels)))+'px',
 				left:0
 			});
-			$('.gv-overlay-background',j_panels).css({
+			$('.ui-galleria-overlay-background',j_panels).css({
 				position:'absolute',
 				zIndex:'998',
 				width:opts.panel_width+'px',
@@ -497,14 +497,14 @@ $(window).load(function(){
 				opacity:opts.overlay_opacity
 			});
 			if(opts.overlay_position=='top') {
-				$('.gv-panel-overlay',j_panels).css('top',0);
-				$('.gv-overlay-background',j_panels).css('top',0);
+				$('.ui-galleria-overlay',j_panels).css('top',0);
+				$('.ui-galleria-overlay-background',j_panels).css('top',0);
 			} else {
-				$('.gv-panel-overlay',j_panels).css('bottom',0);
-				$('.gv-overlay-background',j_panels).css('bottom',0);
+				$('.ui-galleria-overlay',j_panels).css('bottom',0);
+				$('.ui-galleria-overlay-background',j_panels).css('bottom',0);
 			}
 
-			$('.gv-panel iframe',j_panels).css({
+			$('.ui-galleria-panel iframe',j_panels).css({
 				width:opts.panel_width+'px',
 				height:opts.panel_height+'px',
 				border:0
@@ -526,7 +526,7 @@ $(window).load(function(){
 
 	/*
 	**	buildFilmstrip()
-	**		Construct filmstrip from <ul class="gv-filmstrip"> element
+	**		Construct filmstrip from <ul class="ui-galleria-filmstrip"> element
 	**		NOTE - 'filmstrip' class is automatically added to UL passed to plugin
 	*/
 		function buildFilmstrip() {
@@ -541,8 +541,8 @@ $(window).load(function(){
 
 			// If captions are enabled, add caption DIV to each frame and fill with the image titles
 			if(opts.show_captions) {
-				j_frames.append('<div class="gv-caption"></div>').each(function(i){
-					$(this).find('.gv-caption').html($(this).find('img').attr('title'));
+				j_frames.append('<div class="ui-galleria-caption"></div>').each(function(i){
+					$(this).find('.ui-galleria-caption').html($(this).find('img').attr('title'));
 				});
 			}
 
@@ -572,7 +572,7 @@ $(window).load(function(){
 			});
 
 			// Apply styling to individual image wrappers. These will eventually hide overflow in the case of cropped filmstrip images
-			$('.gv-img_wrap',j_frames).each(function(i){
+			$('.ui-galleria-img-wrap',j_frames).each(function(i){
 				$(this).css({
 					height:Math.min(opts.frame_height,img_h[i%item_count]*frame_img_scale[i%item_count])+'px',
 					width:Math.min(opts.frame_width,img_w[i%item_count]*frame_img_scale[i%item_count])+'px',
@@ -624,7 +624,7 @@ $(window).load(function(){
 			}
 
 			// Style frame captions
-			$('.gv-caption',j_gallery).css({
+			$('.ui-galleria-caption',j_gallery).css({
 				position:'absolute',
 				top:(opts.filmstrip_position=='bottom'?f_frame_height:0)+'px',
 				left:0,
@@ -635,7 +635,7 @@ $(window).load(function(){
 
 			// Create pointer for current frame
 			var pointer = $('<div></div>');
-			pointer.addClass('gv-pointer').appendTo(j_gallery).css({
+			pointer.addClass('ui-galleria-pointer').appendTo(j_gallery).css({
 				 position:'absolute',
 				 zIndex:'1000',
 				 width:0,
@@ -685,17 +685,17 @@ $(window).load(function(){
 							}); break;
 			}
 
-			j_pointer = $('.gv-pointer',j_gallery);
+			j_pointer = $('.ui-galleria-pointer',j_gallery);
 
 			// Add navigation buttons
 			if(opts.show_filmstrip_nav) {
 				var navNext = $('<div></div>');
-				navNext.addClass('gv-nav-next').appendTo(j_gallery).css({
+				navNext.addClass('ui-galleria-nav-next').appendTo(j_gallery).css({
 					position:'absolute'
 				}).click(showNextItem);
 
 				var navPrev = $('<div></div>');
-				navPrev.addClass('gv-nav-prev').appendTo(j_gallery).css({
+				navPrev.addClass('ui-galleria-nav-prev').appendTo(j_gallery).css({
 					position:'absolute'
 				}).click(showPrevItem);
 
@@ -743,7 +743,7 @@ $(window).load(function(){
 		function mouseIsOverPanel(x,y) {
 
 			// Get position of panel wrapper in relation to gallery
-			var pos = getPos($('#'+id+' .gv-panel_wrap')[0]);
+			var pos = getPos($('#'+id+' .ui-galleria-panel_wrap')[0]);
 			var gPos = getPos(j_gallery[0]);
 
 			// Add wrap position to gallery position
@@ -807,7 +807,7 @@ $(window).load(function(){
 
 			//Strip out panel overlays if the user does not want to display them
 			if(!opts.show_overlays) {
-				$('.gv-panel-overlay',j_gallery).remove();
+				$('.ui-galleria-overlay',j_gallery).remove();
 			}
 
 			// Build panels if necessary
@@ -841,10 +841,10 @@ $(window).load(function(){
 					// If panel navigation is turned on, display or hide it based on mouse position
 					if(opts.show_panel_nav) {
 						if(mouseIsOverPanel(e.pageX,e.pageY) && !panel_nav_displayed) {
-							$('.gv-panel-nav-next, .gv-panel-nav-prev',j_gallery).show();
+							$('.ui-galleria-panel-nav-next, .ui-galleria-panel-nav-prev',j_gallery).show();
 							panel_nav_displayed = true;
 						} else if(!mouseIsOverPanel(e.pageX,e.pageY) && panel_nav_displayed) {
-							$('.gv-panel-nav-next, .gv-panel-nav-prev',j_gallery).hide();
+							$('.ui-galleria-panel-nav-next, .ui-galleria-panel-nav-prev',j_gallery).hide();
 							panel_nav_displayed = false;
 						}
 					}
@@ -857,7 +857,7 @@ $(window).load(function(){
 
 			// Show the 'first' item and then fade out the loader box and begin slideshow timer if necessary
 			showItem(iterator,10,function(){
-				$('.gv-loader',j_gallery).fadeOut('1000',function(){
+				$('.ui-galleria-loader',j_gallery).fadeOut('1000',function(){
 
 					// If we have more than one item, begin automated transitions
 					if(item_count > 1 && opts.transition_interval > 0) {
@@ -893,10 +893,10 @@ $(window).load(function(){
 			// Wrap UL in DIV and transfer ID to container DIV
 			_t.wrap("<div></div>");
 			j_gallery = _t.parent();
-			j_gallery.css('visibility','hidden').attr('id',_t.attr('id')).addClass('gv-gallery').addClass(_t.attr('class'));
+			j_gallery.css('visibility','hidden').attr('id',_t.attr('id')).addClass('ui-galleria').addClass(_t.attr('class'));
 
 			// Assign filmstrip class to the UL sent to the plugin
-			_t.removeAttr('id').addClass('gv-filmstrip');
+			_t.removeAttr('id').addClass('ui-galleria-filmstrip');
 
 			// If the transition or pause timers exist for any reason, stop them now.
 			$(document).stopTime("transition");
@@ -905,8 +905,8 @@ $(window).load(function(){
 			// Save the id of the UL passed to the plugin
 			id = j_gallery.attr('id');
 
-			// If the UL does not contain any <div class="gv-panel-content"> elements, we will scale the UL images to fill the panels
-			scale_panel_images = $('.gv-panel-content',j_gallery).length==0;
+			// If the UL does not contain any <div class="ui-galleria-panel-content"> elements, we will scale the UL images to fill the panels
+			scale_panel_images = $('.ui-galleria-panel-content',j_gallery).length==0;
 
 			animate_panels = (opts.panel_animation != 'none');
 
@@ -927,22 +927,22 @@ $(window).load(function(){
 
 
 			// Assign elements to variables to minimize calls to jQuery
-			j_filmstrip = $('.gv-filmstrip',j_gallery);
+			j_filmstrip = $('.ui-galleria-filmstrip',j_gallery);
 			j_frames = $('li',j_filmstrip);
-			j_frames.addClass('gv-frame');
+			j_frames.addClass('ui-galleria-frame');
 			j_panel_wrapper = $('<div>');
-			j_panel_wrapper.addClass('gv-panel_wrap').prependTo(j_gallery);
+			j_panel_wrapper.addClass('ui-galleria-panel_wrap').prependTo(j_gallery);
 
 			// If the user wants panels, generate them using the filmstrip images
 			if(opts.show_panels) {
 				for(i=j_frames.length-1;i>=0;i--) {
 					jf = j_frames.eq(i);
-					if(jf.find('.gv-panel-content').length>0) {
-						jf.find('.gv-panel-content').remove().prependTo(j_panel_wrapper).addClass('gv-panel').addClass(jf.attr('class')).removeClass('gv-frame');
+					if(jf.find('.ui-galleria-panel-content').length>0) {
+						jf.find('.ui-galleria-panel-content').remove().prependTo(j_panel_wrapper).addClass('ui-galleria-panel').addClass(jf.attr('class')).removeClass('ui-galleria-frame');
 					} else {
 						p = $('<div>');
-						p.addClass('gv-panel');
-						p.addClass(jf.attr('class')).removeClass('gv-frame');
+						p.addClass('ui-galleria-panel');
+						p.addClass(jf.attr('class')).removeClass('ui-galleria-frame');
 						im = $('<img />');
 						jfimg = jf.find('img').eq(0)
 						im.attr('src',jfimg.attr('src'));
@@ -956,12 +956,12 @@ $(window).load(function(){
 							im.appendTo(p);
 						}
 						p.prependTo(j_panel_wrapper);
-						j_frames.eq(i).find('.gv-panel-overlay').remove().appendTo(p);
+						j_frames.eq(i).find('.ui-galleria-overlay').remove().appendTo(p);
 					}
 				}
 			} else {
-				$('.gv-panel-overlay',j_frames).remove();
-				$('.gv-panel-content',j_frames).remove();
+				$('.ui-galleria-overlay',j_frames).remove();
+				$('.ui-galleria-panel-content',j_frames).remove();
 			}
 
 			// If the user doesn't want a filmstrip, delete it
@@ -971,15 +971,15 @@ $(window).load(function(){
 				// These divs will handle cropping and zooming of the images
 				j_frames.each(function(i){
 					if($(this).find('a').length>0) {
-						$(this).find('a').wrap('<div class="gv-img_wrap"></div>');
+						$(this).find('a').wrap('<div class="ui-galleria-img-wrap"></div>');
 					} else {
-						$(this).find('img').wrap('<div class="gv-img_wrap"></div>');
+						$(this).find('img').wrap('<div class="ui-galleria-img-wrap"></div>');
 					}
 				});
-				j_frame_img_wrappers = $('.gv-img_wrap',j_frames);
+				j_frame_img_wrappers = $('.ui-galleria-img-wrap',j_frames);
 			}
 
-			j_panels = $('.gv-panel',j_gallery);
+			j_panels = $('.ui-galleria-panel',j_gallery);
 
 			if(!opts.show_panels) {
 				opts.panel_height = 0;
@@ -987,17 +987,17 @@ $(window).load(function(){
 			}
 
 			// Briefly create a caption element so galleryView can determine any padding or borders applied by the user
-			$('<div class="gv-caption"></div>').appendTo(j_frames);
+			$('<div class="ui-galleria-caption"></div>').appendTo(j_frames);
 
 			// Determine final frame dimensions, accounting for user-added padding and border
 			f_frame_width = opts.frame_width+extraWidth(j_frame_img_wrappers);
 			f_frame_height = opts.frame_height+extraHeight(j_frame_img_wrappers);
-			frame_caption_size = getInt($('.gv-caption',j_gallery).css('height'));
-			f_caption_width = f_frame_width - extraWidth($('.gv-caption',j_gallery));
-			f_caption_height = frame_caption_size + extraHeight($('.gv-caption',j_gallery));
+			frame_caption_size = getInt($('.ui-galleria-caption',j_gallery).css('height'));
+			f_caption_width = f_frame_width - extraWidth($('.ui-galleria-caption',j_gallery));
+			f_caption_height = frame_caption_size + extraHeight($('.ui-galleria-caption',j_gallery));
 
 			// Delete the temporary caption element
-			$('.gv-caption',j_gallery).remove();
+			$('.ui-galleria-caption',j_gallery).remove();
 
 			// Number of frames in filmstrip
 			item_count = opts.show_panels?j_panels.length:j_frames.length;
@@ -1108,7 +1108,7 @@ $(window).load(function(){
 
 			// Place loading box over gallery until page loads
 			galleryPos = getPos(j_gallery[0]);
-			$('<div>').addClass('gv-loader').css({
+			$('<div>').addClass('ui-galleria-loader').css({
 				position:'absolute',
 				zIndex:'32666',
 				opacity:1,

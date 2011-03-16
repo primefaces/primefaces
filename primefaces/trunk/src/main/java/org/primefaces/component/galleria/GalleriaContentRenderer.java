@@ -29,7 +29,7 @@ public class GalleriaContentRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", content);
-        writer.writeAttribute("class", "gv-panel-content", null);
+        writer.writeAttribute("class", "ui-galleria-panel-content", null);
 
         renderChildren(context, content);
 

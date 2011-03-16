@@ -1,31 +1,30 @@
 /* GALLERY CONTAINER */
-.gv-gallery { overflow: hidden; }
+.ui-galleria { overflow: hidden; }
 
 /* LOADING BOX */
-.gv-loader { background: url(loader.gif) center center no-repeat #fff; }
-
+.ui-galleria-loader { background: url(loader.gif) center center no-repeat #fff; }
 
 /*************************************************/
 /**   PANEL STYLES								**/
 /*************************************************/
 
 /* GALLERY PANELS */
-.gv-panel { filter: inherit; }
+.ui-galleria-panel { filter: inherit; }
 
 /* DEFINE HEIGHT OF PANEL OVERLAY */
 /* NOTE - It is best to define padding here as well so overlay and background retain identical dimensions */
-.gv-panel .gv-panel-overlay,
-.gv-panel .gv-overlay-background { height: 5em; padding: 1em; }
+.ui-galleria-panel .ui-galleria-overlay,
+.ui-galleria-panel .ui-galleria-overlay-background { height: 5em; padding: 1em; }
 
 /* PANEL OVERLAY BACKGROUND */
-.gv-panel .gv-overlay-background { background: #222; }
+.ui-galleria-panel .ui-galleria-overlay-background { background: #222; }
 
 /* PANEL OVERLAY CONTENT */
-.gv-panel .gv-panel-overlay { color: white; }
-.gv-panel .gv-panel-overlay a { color: white; text-decoration: underline; font-weight: bold; }
+.ui-galleria-panel .ui-galleria-overlay { color: white; }
+.ui-galleria-panel .ui-galleria-overlay a { color: white; text-decoration: underline; font-weight: bold; }
 
 /* CONTENT PANELS */
-.gv-panel-content { overflow-y: auto; }
+.ui-galleria-panel-content { overflow-y: auto; }
 
 
 /*************************************************/
@@ -35,51 +34,51 @@
 
 /* FILMSTRIP */
 /* 'margin' will define top/bottom margin in completed gallery */
-.gv-filmstrip { margin: 5px; }
+.ui-galleria-filmstrip { margin: 5px; }
 
 /* FILMSTRIP FRAMES (contains both images and captions) */
-.gv-frame {}
+.ui-galleria-frame {}
 
 /* WRAPPER FOR FILMSTRIP IMAGES */
-.gv-frame .gv-img_wrap {}
+.ui-galleria-frame .ui-galleria-img-wrap {}
 
 /* WRAPPER FOR CURRENT FILMSTRIP IMAGE */
-.gv-frame.current .gv-img_wrap {}
+.ui-galleria-frame.current .ui-galleria-img-wrap {}
 
 /* FRAME IMAGES */
-.gv-frame img { border: none; }
+.ui-galleria-frame img { border: none; }
 
 /* FRAME CAPTION */
-.gv-frame .gv-caption { height: 2em; line-height: 2em; font-size: 1em; text-align: center; }
+.ui-galleria-frame .ui-galleria-caption { height: 2em; line-height: 2em; font-size: 1em; text-align: center; }
 
 /* CURRENT FRAME CAPTION */
-.gv-frame.current .gv-caption { }
+.ui-galleria-frame.current .ui-galleria-caption { }
 
 /* POINTER FOR CURRENT FRAME */
-.gv-pointer {
+.ui-galleria-pinter {
 	border-color: black;
 }
 
 /* NAVIGATION BUTTONS */
-.gv-nav-next {
+.ui-galleria-nav-next {
 	height: 22px;
 	width: 22px;
 	cursor: pointer;
 	background: url(themes/dark/next.png) top left no-repeat;
 }
-.gv-nav-prev {
+.ui-galleria-nav-prev {
 	height: 22px;
 	width: 22px;
 	cursor: pointer;
 	background: url(themes/dark/prev.png) top right no-repeat;
 }
-.gv-panel-nav-next {
+.ui-galleria-panel-nav-next {
 	height: 42px;
 	width: 42px;
 	cursor: pointer;
 	background: url(themes/dark/panel-nav-next.png) top left no-repeat;
 }
-.gv-panel-nav-prev {
+.ui-galleria-panel-nav-prev {
 	height: 42px;
 	width: 42px;
 	cursor: pointer;
