@@ -560,7 +560,6 @@ $(window).load(function(){
 			});
 
 			j_frames.css({
-				float:'left',
 				position:'relative',
 				height:f_frame_height+(opts.show_captions?f_caption_height:0)+'px',
 				width:f_frame_width+'px',
