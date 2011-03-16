@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,35 +24,66 @@ import org.primefaces.renderkit.CoreRenderer;
 public class GalleriaRenderer extends CoreRenderer {
 
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Galleria galleria = (Galleria) component;
 
-        writer.startElement("div", null);
-        writer.writeAttribute("id", galleria.getClientId(context), null);
-
-        if(galleria.getStyleClass() !=  null) writer.writeAttribute("Class", galleria.getStyleClass(), "styleClass");
-        if(galleria.getStyle() !=  null) writer.writeAttribute("style", galleria.getStyle(), "style");
+        encodeMarkup(context, galleria);
+        encodeScript(context, galleria);
     }
 
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Galleria galleria = (Galleria) component;
+        int dataCount = galleria.getRowCount();
+        
+        writer.startElement("ul", null);
+        writer.writeAttribute("id", galleria.getClientId(context), null);
+
+        if(galleria.getStyleClass() !=  null) writer.writeAttribute("class", galleria.getStyleClass(), "styleClass");
+        if(galleria.getStyle() !=  null) writer.writeAttribute("style", galleria.getStyle(), "style");
+
+        for(int i=0; i < dataCount; i++) {
+            galleria.setRowIndex(i);
+
+            writer.startElement("li", null);
+
+            renderChildren(context, galleria);
+
+            writer.endElement("li");
+        }
+
+        writer.endElement("ul");
+
+        galleria.setRowIndex(-1);
+    }
+
+    public void encodeScript(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
         String clientId = galleria.getClientId(context);
 
-        writer.endElement("div");
-
         writer.startElement("script", component);
         writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write("$(function() {");
 
 		writer.write(galleria.resolveWidgetVar() + " = new PrimeFaces.widget.Galleria('" + clientId + "',{");
 
         writer.write("transition:'" + galleria.getEffect() + "'");
         writer.write(",transition_speed:" + galleria.getEffectSpeed());
 
-        writer.write("});");
-        
+        writer.write("});});");
+
         writer.endElement("script");
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
