@@ -1,5 +1,5 @@
 /* GALLERY CONTAINER */
-.ui-galleria { overflow: hidden; }
+.ui-galleria { overflow: hidden; visibility: hidden; }
 
 /*************************************************/
 /**   PANEL STYLES								**/

@@ -34,12 +34,14 @@ public class GalleriaRenderer extends CoreRenderer {
     public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
+        String styleClass = galleria.getStyleClass();
+        styleClass = styleClass == null ? "ui-galleria" : "ui-galleria " + styleClass;
         int dataCount = galleria.getRowCount();
         
         writer.startElement("ul", null);
         writer.writeAttribute("id", galleria.getClientId(context), null);
+        writer.writeAttribute("class", styleClass, "style");
 
-        if(galleria.getStyleClass() !=  null) writer.writeAttribute("class", galleria.getStyleClass(), "styleClass");
         if(galleria.getStyle() !=  null) writer.writeAttribute("style", galleria.getStyle(), "style");
 
         for(int i=0; i < dataCount; i++) {
