@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.GalleriaRenderer</rendererType>
 	<rendererClass>org.primefaces.component.galleria.GalleriaRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>javax.faces.component.UIData</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -20,6 +20,18 @@
 	<attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
          <attribute>
             <name>style</name>
             <required>false</required>
@@ -57,7 +69,7 @@
 			<name>galleria/galleria.js</name>
 		</resource>
         <resource>
-			<name>galleria/galleria.classic.js</name>
+			<name>easing/easing.js</name>
 		</resource>
 	</resources>
 </component>
