@@ -69,8 +69,18 @@ public class GalleriaRenderer extends CoreRenderer {
 
 		writer.write(galleria.resolveWidgetVar() + " = new PrimeFaces.widget.Galleria('" + clientId + "',{");
 
-        writer.write("transition:'" + galleria.getEffect() + "'");
+        writer.write("panel_animation:'" + galleria.getEffect() + "'");
         writer.write(",transition_speed:" + galleria.getEffectSpeed());
+
+        if(galleria.getPanelWidth() != 600) writer.write(",panel_width:" + galleria.getPanelWidth());
+        if(galleria.getPanelHeight() != 400) writer.write(",panel_height:" + galleria.getPanelHeight());
+        if(galleria.getFrameWidth() != 60) writer.write(",frame_width:" + galleria.getFrameWidth());
+        if(galleria.getFrameHeight() != 40) writer.write(",frame_width:" + galleria.getFrameHeight());
+        if(galleria.getFilmstripStyle() != null) writer.write(",filmstrip_style:'" + galleria.getFilmstripStyle() + "'");
+        if(galleria.getFilmstripPosition() != null) writer.write(",filmstrip_position:'" + galleria.getFilmstripPosition() + "'");
+        if(!galleria.isShowFilmstrip()) writer.write(",show_filmstrip:false");
+        if(galleria.isShowCaptions()) writer.write(",show_captions:true");
+        if(galleria.isShowOverlays()) writer.write(",show_overlays:true");
 
         writer.write("});});");
 
