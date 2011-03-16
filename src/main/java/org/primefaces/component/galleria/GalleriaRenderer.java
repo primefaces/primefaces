@@ -71,6 +71,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
         writer.write("panel_animation:'" + galleria.getEffect() + "'");
         writer.write(",transition_speed:" + galleria.getEffectSpeed());
+        writer.write(",transition_interval:" + galleria.getTransitionInterval());
 
         if(galleria.getPanelWidth() != 600) writer.write(",panel_width:" + galleria.getPanelWidth());
         if(galleria.getPanelHeight() != 400) writer.write(",panel_height:" + galleria.getPanelHeight());

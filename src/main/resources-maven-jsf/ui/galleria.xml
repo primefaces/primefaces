@@ -106,6 +106,12 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
 		</attribute>
+        <attribute>
+			<name>transitionInterval</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>4000</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
