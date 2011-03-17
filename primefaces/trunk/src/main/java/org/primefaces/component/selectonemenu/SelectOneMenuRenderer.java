@@ -72,7 +72,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
             writer.writeAttribute("style", style, "style");
 
         encodeInput(context, menu, clientId, selectItems);
-        encodeLabel(context, menu);
+        encodeLabel(context, menu, selectItems);
         encodeMenuIcon(context, menu);
         encodePanel(context, menu, selectItems);
 
@@ -99,13 +99,13 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeLabel(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("label", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
 
-        writer.writeText(menu.getSelectedLabel(), null);
+        writer.writeText(getSelectedLabel(context, menu, selectItems), null);
 
         writer.endElement("label");
     }
@@ -263,7 +263,6 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
             if((value == null && itemValue.equals("")) || (value != null && value.equals(itemValue))) {
                 writer.writeAttribute("selected", "selected", null);
-                menu.setSelectedLabel(itemLabel);
             }
 
             writer.write(itemLabel);
@@ -271,6 +270,23 @@ public class SelectOneMenuRenderer extends InputRenderer {
             writer.endElement("option");
         }
     }
+
+	public String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items) {
+		Object value = menu.getValue();
+        String label = null;
+
+        if(value == null && !items.isEmpty()) {
+            label = items.get(0).getLabel();
+        } else {
+            Converter converter = getConverter(context, menu);
+            if(converter == null)
+                label = value.toString();
+            else
+                label = converter.getAsString(context, menu, value);
+        }
+
+        return label == null ? "&nbsp;" : label;
+	}
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

@@ -12,16 +12,6 @@ import javax.faces.component.UIComponent;
     public final static String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
     public final static String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
 
-    private String selectedLabel = "";
-
-    public void setSelectedLabel(String label) {
-        this.selectedLabel = label;
-    }
-
-    public String getSelectedLabel() {
-        return this.selectedLabel;
-    }
-
     public List<Column> getColums() {
         List<Column> columns = new ArrayList<Column>();
         
