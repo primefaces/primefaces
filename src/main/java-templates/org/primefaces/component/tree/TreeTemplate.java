@@ -4,8 +4,14 @@ import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.DragDropEvent;
 import javax.faces.component.UIComponent;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.HashMap;
+import java.lang.StringBuilder;
 import org.primefaces.model.TreeNode;
+
+    private List<String> selectedRowKeys = new ArrayList<String>();
 
 	private Map<String,UITreeNode> nodes;
 
@@ -105,6 +111,7 @@ import org.primefaces.model.TreeNode;
     public static String CHECKBOX_BOX_CLASS = "ui-tree-checkbox-box ui-widget ui-corner-all ui-state-default";
     public static String CHECKBOX_ICON_CLASS = "ui-tree-checkbox-icon";
     public static String CHECKBOX_ICON_CHECKED_CLASS = "ui-tree-checkbox-icon ui-icon ui-icon-check";
+    public static String CHECKBOX_ICON_MINUS_CLASS = "ui-tree-checkbox-icon ui-icon ui-icon-minus";
 
     public Map<String,UITreeNode> getTreeNodes() {
         if(nodes == null) {
@@ -116,6 +123,24 @@ import org.primefaces.model.TreeNode;
 		}
 
         return nodes;
+    }
+
+    public List<String> getSelectedRowKeys() {
+        return this.selectedRowKeys;
+    }
+
+    public String getSelectedRowKeysAsString() {
+        StringBuilder builder = new StringBuilder();
+
+        for(Iterator<String> iter = this.selectedRowKeys.iterator();iter.hasNext();) {
+            builder.append(iter.next());
+
+            if(iter.hasNext()) {
+                builder.append(',');
+            }
+        }
+
+        return builder.toString();
     }
 
 
