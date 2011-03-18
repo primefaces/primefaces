@@ -256,6 +256,11 @@ public class TreeRenderer extends CoreRenderer {
         String nodeId = tree.getClientId() + "_node_" + rowKey;
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
 
+        boolean selected = node.isSelected();
+        if(selected) {
+            tree.getSelectedRowKeys().add(rowKey);
+        }
+
         String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
         if(uiTreeNode.getStyleClass() != null) {
             nodeClass = nodeClass + " " + uiTreeNode.getStyleClass();
@@ -271,8 +276,10 @@ public class TreeRenderer extends CoreRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", Tree.NODE_CLASS, null);
 
+                //node content
+                String nodeContentClass = selected && !checkbox ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
                 writer.startElement("span", null);
-                writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS, null);
+                writer.writeAttribute("class", nodeContentClass, null);
 
                     //state icon
                     if(!isLeaf) {
@@ -291,7 +298,7 @@ public class TreeRenderer extends CoreRenderer {
 
                     //checkbox
                     if(checkbox) {
-                        encodeCheckbox(context, tree, node);
+                        encodeCheckbox(context, tree, node, selected);
                     }
 
                     //content
@@ -367,6 +374,7 @@ public class TreeRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
+        writer.writeAttribute("value", tree.getSelectedRowKeysAsString(), null);
 		writer.endElement("input");
     }
 
@@ -379,8 +387,9 @@ public class TreeRenderer extends CoreRenderer {
             writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(context, tree, update) + "'");
     }
 
-	protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node) throws IOException {
+	protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        String iconClass = selected ? Tree.CHECKBOX_ICON_CHECKED_CLASS : Tree.CHECKBOX_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Tree.CHECKBOX_CLASS, null);
@@ -389,8 +398,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("class", Tree.CHECKBOX_BOX_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Tree.CHECKBOX_ICON_CLASS, null);
-
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
 
         writer.endElement("div");

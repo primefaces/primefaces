@@ -10,7 +10,11 @@ PrimeFaces.widget.Tree = function(id, cfg) {
 
     if(this.cfg.selectionMode) {
         this.selectionHolder = $(this.jqId + '_selection');
-        this.selections = [];
+        var selectionsValue = this.selectionHolder.val();
+        this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
+
+        if(this.cfg.selectionMode == 'checkbox')
+            this.preselectCheckboxPropagation();
     }
 
     this.bindEvents();
@@ -440,4 +444,14 @@ PrimeFaces.widget.Tree.prototype.fireDragDropEvent = function(draggedNode, newPa
     options.params = params;
 
     PrimeFaces.ajax.AjaxRequest(options);
+}
+
+PrimeFaces.widget.Tree.prototype.preselectCheckboxPropagation = function() {
+    this.jq.find('.ui-tree-checkbox-icon').not('.ui-icon-check').each(function() {
+        var icon = $(this),
+        node = icon.parents('li:first');
+
+        if(node.find('.ui-tree-checkbox-icon.ui-icon-check').length > 0)
+            $(this).addClass('ui-icon ui-icon-minus');
+    });
 }
