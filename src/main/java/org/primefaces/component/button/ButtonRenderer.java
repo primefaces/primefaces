@@ -53,6 +53,8 @@ public class ButtonRenderer extends CoreRenderer {
 
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
+        if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        
 		writer.writeAttribute("onclick", buildOnclick(context, button), null);
 
 		if(button.getValue() != null) {
