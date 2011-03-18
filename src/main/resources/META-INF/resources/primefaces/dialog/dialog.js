@@ -6,20 +6,15 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId);
-    var _self = this;
+    var _self = this,
+    closable = this.cfg.closable;
+
+    if(closable == false) {
+        this.cfg.closeOnEscape = false;
+    }
 
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();
-
-    //Caption Buttons
-    this.cfg.captionButtons = {
-        pin: {visible: this.cfg.pinnable != undefined}
-        ,toggle: {visible: this.cfg.toggleable != undefined}
-        ,minimize: {visible: this.cfg.minimizable != undefined}
-        ,maximize: {visible: this.cfg.maximizable != undefined}
-        ,close: {visible: this.cfg.closable == undefined}
-        ,refresh: {visible:false}
-    };
     
     //Create the dialog
     this.jq.dialog(this.cfg);
@@ -29,6 +24,11 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
 
     //Open handler
     this.jq.bind('dialogopen', function(event, ui) {_self.onShow(event, ui);});
+
+    //Hide close icon if dialog is not closable
+    if(closable == false) {
+        this.jq.parent().find('.ui-dialog-titlebar-close').hide();
+    }
 
     if(this.cfg.appendToBody) {
         this.jq.parent().appendTo(document.body);
