@@ -43,6 +43,12 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
 			<name>accesskey</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -56,12 +62,6 @@
 		</attribute>
 		<attribute>
 			<name>dir</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
