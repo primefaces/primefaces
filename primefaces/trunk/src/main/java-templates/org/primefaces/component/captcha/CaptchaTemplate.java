@@ -54,11 +54,21 @@ import java.util.logging.Logger;
             if(!isValid) {
                 setValid(false);
 
-                Object[] params = new Object[2];
-                params[0] = MessageFactory.getLabel(context, this);
-                params[1] = verification.getAnswer();
+                String validatorMessage = getValidatorMessage();
+                FacesMessage msg = null;
 
-                context.addMessage(getClientId(context), MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params));
+                if(validatorMessage != null) {
+                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+                }
+                else {
+                    Object[] params = new Object[2];
+                    params[0] = MessageFactory.getLabel(context, this);
+                    params[1] = verification.getAnswer();
+
+                    msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                }
+
+                context.addMessage(getClientId(context), msg);
             }
         }
 	}
