@@ -173,7 +173,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.1.7</version>
+                <version>1.1.8-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>generate-ui</id>
@@ -217,6 +217,13 @@
                         </configuration>
                         <goals>
                             <goal>generate-faces-config</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>css-compressor</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compress-css</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -304,6 +311,7 @@
             <id>release</id>
             <build>
                 <plugins>
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -340,6 +348,22 @@
                             </excludes>
                         </configuration>
                     </plugin>
+
+                    <!--<plugin>
+                        <groupId>org.primefaces</groupId>
+                        <artifactId>maven-jsf-plugin</artifactId>
+                        <version>1.1.8-SNAPSHOT</version>
+                        <executions>
+                            <execution>
+                                <id>css-compressor</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>compress-css</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>-->
+                    
                 </plugins>
             </build>
         </profile>
