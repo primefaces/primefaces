@@ -238,8 +238,5 @@
         <resource>
             <name>calendar/calendar.js</name>
         </resource>
-        <resource>
-            <name>calendar/calendar_i18n.js</name>
-        </resource>
     </resources>
 </component>

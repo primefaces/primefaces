@@ -123,7 +123,7 @@ public class CalendarRenderer extends InputRenderer {
         writer.write(",locale:'" + calendar.calculateLocale(context).toString() + "'");
 
         if(!isValueBlank(value)) writer.write(",defaultDate:'" + value + "'");
-        if(calendar.getPattern() != null) writer.write(",dateFormat:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
+        if(calendar.getPattern() != null) writer.write(",pattern:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
         if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
         if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMindate()) + "'");
         if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMaxdate()) + "'");
