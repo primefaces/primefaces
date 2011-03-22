@@ -79,7 +79,7 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         //input
-        String type = calendar.isPopup() ? "text" : "hidden";
+        String type = popup ? "text" : "hidden";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);

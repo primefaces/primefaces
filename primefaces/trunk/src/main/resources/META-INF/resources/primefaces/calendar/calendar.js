@@ -919,18 +919,30 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jqEl = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
-    this.jq = jQuery(this.jqEl);
+    this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
+    this.jq = $(this.jqElId);
     this.cfg.formId = this.jq.parents('form:first').attr('id');
     var hasTimePicker = this.hasTimePicker();
-   
-    this.configureOnSelectHandler();
+
+    //i18n
     this.configureLocale();
 
+    //Ajax select listener
+    if(this.cfg.hasSelectListener) {
+        this.configureOnSelectHandler();
+    }
+
+    //Form field to use in inline mode
+    if(!this.cfg.popup) {
+        this.cfg.altField = $(this.jqId + '_input');
+    }
+
+    //Setup timepicker
     if(hasTimePicker) {
         this.configureTimePicker();
     }
-	
+
+	//Initialize calendar
     if(!this.cfg.disabled) {
         if(hasTimePicker) {
             if(this.cfg.timeOnly)
@@ -943,6 +955,7 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
         }
     }
 
+    //Client behaviors and input skinning
     if(this.cfg.popup) {
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
@@ -971,31 +984,23 @@ PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
     var _self = this;
 	
     this.cfg.onSelect = function(dateText, input) {
-		
-        if(!_self.cfg.popup) {
-            jQuery(_self.jqId + '_input').val(dateText);
-        }
-		
-        if(_self.cfg.hasSelectListener) {
-            var options = {
-                source: _self.id,
-                process: _self.cfg.onSelectProcess,
-                formId: _self.cfg.formId
-            };
+        var options = {
+            source: _self.id,
+            process: _self.cfg.onSelectProcess,
+            formId: _self.cfg.formId
+        };
 
-            if(_self.cfg.onSelectUpdate) {
-                options.update = _self.cfg.onSelectUpdate;
-            }
-
-            var params = {};
-            params[_self.id + "_ajaxSelect"] = true;
-
-            options.params = params;
-	
-            PrimeFaces.ajax.AjaxRequest(options);
+        if(_self.cfg.onSelectUpdate) {
+            options.update = _self.cfg.onSelectUpdate;
         }
 
-    }
+        var params = {};
+        params[_self.id + "_ajaxSelect"] = true;
+
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
+    };
 }
 
 PrimeFaces.widget.Calendar.prototype.configureTimePicker = function() {
