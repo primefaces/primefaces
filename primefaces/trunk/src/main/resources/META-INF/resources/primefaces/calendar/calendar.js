@@ -976,7 +976,7 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
 }
 
 PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
-    var localeSettings = PrimeFaces.widget.LocaleManager[this.cfg.locale];
+    var localeSettings = PrimeFaces.locales[this.cfg.locale];
 	
     if(localeSettings) {
         for(var setting in localeSettings) {

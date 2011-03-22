@@ -1,7 +1,3 @@
-$(document).ready(function() {
-    $('body').addClass('yui-skin-sam');
-});
-
 PrimeFaces = {
 
     escapeClientId : function(id) {
@@ -77,6 +73,8 @@ PrimeFaces = {
     navigate : function(to, transition, reverse, changeHash) {
         $.mobile.changePage(to, transition, reverse, changeHash);
     },
+
+    locales : {},
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
@@ -93,7 +91,6 @@ PrimeFaces = {
 
 PrimeFaces.ajax = {};
 PrimeFaces.widget = {};
-PrimeFaces.widget.LocaleManager = {};
 
 PrimeFaces.ajax.AjaxUtils = {
 	
