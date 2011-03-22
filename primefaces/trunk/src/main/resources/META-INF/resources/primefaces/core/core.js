@@ -93,6 +93,7 @@ PrimeFaces = {
 
 PrimeFaces.ajax = {};
 PrimeFaces.widget = {};
+PrimeFaces.widget.LocaleManager = {};
 
 PrimeFaces.ajax.AjaxUtils = {
 	

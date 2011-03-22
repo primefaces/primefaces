@@ -922,10 +922,14 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
     this.jq = $(this.jqElId);
     this.cfg.formId = this.jq.parents('form:first').attr('id');
-    var hasTimePicker = this.hasTimePicker();
-
-    //i18n
+    
+    //i18n and l7n
     this.configureLocale();
+
+    //Override locale pattern with user pattern
+    if(this.cfg.pattern) {
+        this.cfg.dateFormat = this.cfg.pattern;
+    }
 
     //Ajax select listener
     if(this.cfg.hasSelectListener) {
@@ -936,6 +940,8 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     if(!this.cfg.popup) {
         this.cfg.altField = $(this.jqId + '_input');
     }
+
+    var hasTimePicker = this.hasTimePicker();
 
     //Setup timepicker
     if(hasTimePicker) {
@@ -970,8 +976,7 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
 }
 
 PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
-    jQuery.datepicker.setDefaults(jQuery.datepicker.regional['']);
-    var localeSettings = jQuery.datepicker.regional[this.cfg.locale];
+    var localeSettings = PrimeFaces.widget.LocaleManager[this.cfg.locale];
 	
     if(localeSettings) {
         for(var setting in localeSettings) {

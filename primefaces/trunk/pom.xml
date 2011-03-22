@@ -344,12 +344,11 @@
                             <excludes>
                                 <exclude>**/*.css</exclude>
                                 <exclude>**/yui/**</exclude>
-                                <exclude>**/calendar/calendar_i18n.js</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
 
-                    <!--<plugin>
+                    <plugin>
                         <groupId>org.primefaces</groupId>
                         <artifactId>maven-jsf-plugin</artifactId>
                         <version>1.1.8-SNAPSHOT</version>
@@ -362,7 +361,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>-->
+                    </plugin>
                     
                 </plugins>
             </build>
