@@ -39,11 +39,11 @@ import org.primefaces.util.ComponentUtils;
 public class ScheduleRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
 		Schedule schedule = (Schedule) component;
 		ScheduleModel model = (ScheduleModel) schedule.getValue();
-		String clientId = schedule.getClientId(facesContext);
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+		String clientId = schedule.getClientId(context);
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
 		if(params.containsKey(clientId + "_ajaxEvent")) {
             
@@ -91,21 +91,21 @@ public class ScheduleRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Schedule schedule = (Schedule) component;
 
-        if(fc.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(fc))) {
-            encodeEvents(fc, schedule);
+        if(context.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(context))) {
+            encodeEvents(context, schedule);
         } else {
-            encodeMarkup(fc, schedule);
-            encodeScript(fc, schedule);
+            encodeMarkup(context, schedule);
+            encodeScript(context, schedule);
         }
 	}
 	
-	protected void encodeEvents(FacesContext facesContext, Schedule schedule) throws IOException {
-		String clientId = schedule.getClientId(facesContext);
+	protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
+		String clientId = schedule.getClientId(context);
 		ScheduleModel model = (ScheduleModel) schedule.getValue();
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		
 		String startDateParam = params.get(clientId + "_start");
 		String endDateParam = params.get(clientId + "_end");
@@ -119,11 +119,11 @@ public class ScheduleRenderer extends CoreRenderer {
 			lazyModel.loadEvents(startDate, endDate);	//Lazy load events
 		}
 		
-		encodeEventsAsJSON(facesContext, model);			
+		encodeEventsAsJSON(context, model);
 	}
 	
-	protected void encodeEventsAsJSON(FacesContext facesContext, ScheduleModel model) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeEventsAsJSON(FacesContext context, ScheduleModel model) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 
 		writer.write("{");
 		writer.write("\"events\" : [");
@@ -149,10 +149,10 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.write("]}");	
 	}
 
-	protected void encodeScript(FacesContext facesContext, Schedule schedule) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = schedule.getClientId(facesContext);
-		UIComponent form = ComponentUtils.findParentForm(facesContext, schedule);
+	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = schedule.getClientId(context);
+		UIComponent form = ComponentUtils.findParentForm(context, schedule);
 		if(form == null) {
 			throw new FacesException("Schedule: '" + clientId + "' must be inside a form");
 		}
@@ -166,16 +166,16 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.write(",{");
 		
 		writer.write("defaultView:'"+ schedule.getView() + "'");
-		writer.write(",language:'"+ schedule.calculateLocale(facesContext).getLanguage() + "'");
+		writer.write(",locale:'"+ schedule.calculateLocale(context) + "'");
 		writer.write(",theme:true");
 		
 		if(schedule.isEditable()) {
 			writer.write(",editable:true");
 
-			if(schedule.getOnEventSelectUpdate() != null) writer.write(",onEventSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnEventSelectUpdate()) + "'");
-			if(schedule.getOnDateSelectUpdate() != null) writer.write(",onDateSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnDateSelectUpdate()) + "'");
-			if(schedule.getOnEventMoveUpdate() != null) writer.write(",onEventMoveUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnEventMoveUpdate()) + "'");
-			if(schedule.getOnEventResizeUpdate() != null) writer.write(",onEventResizeUpdate:'" + ComponentUtils.findClientIds(facesContext, schedule, schedule.getOnEventResizeUpdate()) + "'");
+			if(schedule.getOnEventSelectUpdate() != null) writer.write(",onEventSelectUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnEventSelectUpdate()) + "'");
+			if(schedule.getOnDateSelectUpdate() != null) writer.write(",onDateSelectUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnDateSelectUpdate()) + "'");
+			if(schedule.getOnEventMoveUpdate() != null) writer.write(",onEventMoveUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnEventMoveUpdate()) + "'");
+			if(schedule.getOnEventResizeUpdate() != null) writer.write(",onEventResizeUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnEventResizeUpdate()) + "'");
 
             //client side callbacks
             if(schedule.getOnEventSelectStart() != null) writer.write(",onEventSelectStart: function(xhr) {" + schedule.getOnEventSelectStart() + "}");
@@ -217,9 +217,9 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.endElement("script");		
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Schedule schedule) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = schedule.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = schedule.getClientId(context);
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -234,7 +234,7 @@ public class ScheduleRenderer extends CoreRenderer {
 	}
 	
     @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
