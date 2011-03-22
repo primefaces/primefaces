@@ -37,7 +37,7 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 }
 
 PrimeFaces.widget.Schedule.prototype.configureLocale = function() {
-	var lang = PrimeFaces.widget.LocaleManager[this.cfg.locale];
+	var lang = PrimeFaces.locales[this.cfg.locale];
 	                                                    
 	if(lang) {
 		this.cfg.monthNames = lang.monthNames;
