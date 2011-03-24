@@ -23,20 +23,21 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import org.primefaces.component.datatable.DataTable;
 
 public class ExcelExporter extends Exporter {
 
     @Override
 	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
-    	HSSFWorkbook wb = new HSSFWorkbook();
-    	HSSFSheet sheet = wb.createSheet();
+    	Workbook wb = new HSSFWorkbook();
+    	Sheet sheet = wb.createSheet();
     	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
     	if(preProcessor != null) {
@@ -51,7 +52,7 @@ public class ExcelExporter extends Exporter {
     	
     	for(int i = first; i < size; i++) {
     		table.setRowIndex(i);
-			HSSFRow row = sheet.createRow(sheetRowIndex++);
+			Row row = sheet.createRow(sheetRowIndex++);
 			
 			for (int j = 0; j < numberOfColumns; j++) {
 				UIColumn column = columns.get(j);
@@ -70,8 +71,8 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(((HttpServletResponse)facesContext.getExternalContext().getResponse()), wb, filename);
 	}
 	
-	private void addColumnHeaders(HSSFSheet sheet, List<UIColumn> columns) {
-        HSSFRow rowHeader = sheet.createRow(0);
+	private void addColumnHeaders(Sheet sheet, List<UIColumn> columns) {
+        Row rowHeader = sheet.createRow(0);
 
         for (int i = 0; i < columns.size(); i++) {
             UIColumn column = (UIColumn) columns.get(i);
@@ -81,15 +82,15 @@ public class ExcelExporter extends Exporter {
         }
     }
 
-    private void addColumnValue(HSSFRow rowHeader, UIComponent component, int index) {
-        HSSFCell cell = rowHeader.createCell(index);
+    private void addColumnValue(Row rowHeader, UIComponent component, int index) {
+        Cell cell = rowHeader.createCell(index);
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
         cell.setCellValue(new HSSFRichTextString(value));
     }
     
-    private void addColumnValue(HSSFRow rowHeader, List<UIComponent> components, int index) {
-        HSSFCell cell = rowHeader.createCell(index);
+    private void addColumnValue(Row rowHeader, List<UIComponent> components, int index) {
+        Cell cell = rowHeader.createCell(index);
         StringBuilder builder = new StringBuilder();
         
         for(UIComponent component : components) {
@@ -104,7 +105,7 @@ public class ExcelExporter extends Exporter {
         cell.setCellValue(new HSSFRichTextString(builder.toString()));
     }
     
-    private void writeExcelToResponse(HttpServletResponse response, HSSFWorkbook generatedExcel, String filename) throws IOException {
+    private void writeExcelToResponse(HttpServletResponse response, Workbook generatedExcel, String filename) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Expires", "0");
         response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
