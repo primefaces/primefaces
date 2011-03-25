@@ -118,7 +118,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (value == null) {
             return "";
         } else {
-            return value.replaceAll("\"", "\\\\\"").replaceAll("\\\\", "\\\\\\\\");
+            return value.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"");
         }
     }
 
