@@ -391,20 +391,21 @@ PrimeFaces.widget.Rating = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId + ' input');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
-    var _prevValue = '';
-    var _prevId = '';
+    this.value = this.getValue();
+    alert(this.value);
     var _self = this;
     
-
-    
     this.cfg.callback = function(value) {
+        if(_self.value == value)
+            return;
+
+        _self.value = value;
+
         if(_self.cfg.onRate) {
             _self.cfg.onRate.call(_self, value);
         }
 
         if(_self.cfg.hasRateListener) {
-        	if(_prevValue == value && _prevId == id)
-        		return;
             var options = {
                 source: _self.id,
                 process: _self.id,
@@ -423,8 +424,6 @@ PrimeFaces.widget.Rating = function(id, cfg) {
 
             PrimeFaces.ajax.AjaxRequest(options);
         }
-        _prevId = id;
-        _prevValue = value;
     };
 	
     this.jq.rating(this.cfg);
