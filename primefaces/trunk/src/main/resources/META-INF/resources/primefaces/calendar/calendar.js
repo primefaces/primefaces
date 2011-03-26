@@ -932,7 +932,7 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     }
 
     //Ajax select listener
-    if(this.cfg.hasSelectListener) {
+    if(this.cfg.ajaxSelect) {
         this.configureOnSelectHandler();
     }
 
