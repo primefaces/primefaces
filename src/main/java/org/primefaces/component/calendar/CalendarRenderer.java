@@ -156,16 +156,17 @@ public class CalendarRenderer extends InputRenderer {
             writer.write(",selectOtherMonths:" + calendar.isSelectOtherMonths());
         }
 
-        if(calendar.getSelectListener() != null) {
-            writer.write(",hasSelectListener:true");
+        String onSelectUpdate = calendar.getOnSelectUpdate();
+        if(onSelectUpdate != null || calendar.getSelectListener() != null) {
+            writer.write(",ajaxSelect:true");
 
             String onSelectProcess = calendar.getOnSelectProcess();
             onSelectProcess = onSelectProcess == null ? clientId : ComponentUtils.findClientIds(context, calendar, onSelectProcess);
             
             writer.write(",onSelectProcess:'" + onSelectProcess + "'");
 
-            if(calendar.getOnSelectUpdate() != null) {
-                writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, calendar, calendar.getOnSelectUpdate()) + "'");
+            if(onSelectUpdate != null) {
+                writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, calendar, onSelectUpdate) + "'");
             }
         }
 
