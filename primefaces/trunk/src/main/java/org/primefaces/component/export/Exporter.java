@@ -34,6 +34,11 @@ import javax.faces.convert.Converter;
 import org.primefaces.component.datatable.DataTable;
 
 public abstract class Exporter {
+	
+	protected enum ColumnType{
+		HEADER,
+		FOOTER;
+	};
 
     public abstract void export(FacesContext facesContext, DataTable table,
 			String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,

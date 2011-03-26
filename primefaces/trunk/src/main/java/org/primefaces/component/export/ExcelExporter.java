@@ -44,7 +44,7 @@ public class ExcelExporter extends Exporter {
     		preProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
     	}
     	
-    	addColumnHeaders(sheet, columns);
+    	addFacetColumns(sheet, columns, ColumnType.HEADER);
     	
     	int first = pageOnly ? table.getFirst() : 0;
     	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
@@ -62,6 +62,8 @@ public class ExcelExporter extends Exporter {
 			}
 		}
     	
+    	addFacetColumns(sheet, columns, ColumnType.FOOTER);
+    	
     	table.setRowIndex(-1);
     	
     	if(postProcessor != null) {
@@ -71,17 +73,17 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(((HttpServletResponse)facesContext.getExternalContext().getResponse()), wb, filename);
 	}
 	
-	private void addColumnHeaders(Sheet sheet, List<UIColumn> columns) {
+	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType) {
         Row rowHeader = sheet.createRow(0);
 
         for (int i = 0; i < columns.size(); i++) {
             UIColumn column = (UIColumn) columns.get(i);
             
             if(column.isRendered())
-            	addColumnValue(rowHeader, column.getHeader(), i);
+            	addColumnValue(rowHeader, columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter(), i);
         }
     }
-
+	
     private void addColumnValue(Row rowHeader, UIComponent component, int index) {
         Cell cell = rowHeader.createCell(index);
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);

@@ -40,7 +40,7 @@ public class CSVExporter extends Exporter {
 		PrintWriter writer = new PrintWriter(osw);	
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	
-    	addColumnHeaders(writer, columns);
+    	addFacetColumns(writer, columns, ColumnType.HEADER);
     	
     	int first = pageOnly ? table.getFirst() : 0;
     	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
@@ -50,6 +50,8 @@ public class CSVExporter extends Exporter {
     		addColumnValues(writer, columns);
 			writer.write("\n");
 		}
+    	
+    	addFacetColumns(writer, columns, ColumnType.FOOTER);
     	
     	table.setRowIndex(-1);
     	
@@ -78,12 +80,12 @@ public class CSVExporter extends Exporter {
 		}
 	}
 
-	private void addColumnHeaders(PrintWriter writer, List<UIColumn> columns) throws IOException {
+	private void addFacetColumns(PrintWriter writer, List<UIColumn> columns, ColumnType columnType) throws IOException {
 		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
 			UIColumn column = (UIColumn) iterator.next();
 			
 			if(column.isRendered()) {
-				addColumnValue(writer, column.getHeader());
+				addColumnValue(writer, columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter());
 			
 				if(iterator.hasNext())
 					writer.write(",");
