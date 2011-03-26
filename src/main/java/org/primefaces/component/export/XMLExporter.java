@@ -42,7 +42,8 @@ public class XMLExporter extends Exporter {
 		PrintWriter writer = new PrintWriter(osw);	
 		
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-    	List<String> headers = getHeaderTexts(table);
+    	List<String> headers = getFacetTexts(table, ColumnType.HEADER);
+    	List<String> footers = getFacetTexts(table, ColumnType.FOOTER);
     	String var = table.getVar().toLowerCase();
     	
     	writer.write("<?xml version=\"1.0\"?>\n");
@@ -58,6 +59,10 @@ public class XMLExporter extends Exporter {
     		addColumnValues(writer, columns, headers);
     		writer.write("\t</" + var + ">\n");
 		}
+    	
+   		writer.write("\t<footers>\n");
+   		addFooterValues(writer, footers, headers);
+   		writer.write("\t</footers>\n");
     	
     	writer.write("</" + table.getId() + ">");
     	
@@ -84,27 +89,37 @@ public class XMLExporter extends Exporter {
 		}
 	}
 	
-	private List<String> getHeaderTexts(UIData data) {
-		List<String> headers = new ArrayList<String>();
+	private void addFooterValues(PrintWriter writer, List<String> footers, List<String> headers) throws IOException {
+		for (int i = 0; i < footers.size(); i++) {
+			String footer = footers.get(i);
+			
+			if(!footer.isEmpty())
+				addColumnValue(writer, footer, headers.get(i));
+		}
+	}	
+	
+	private List<String> getFacetTexts(UIData data, ColumnType columnType) {
+		List<String> facets = new ArrayList<String>();
 		 
         for (int i = 0; i < data.getChildCount(); i++) {
             UIComponent child = (UIComponent) data.getChildren().get(i);
             
             if (child instanceof UIColumn && child.isRendered()) {
-            	UIComponent header = ((UIColumn) child).getHeader();
+            	UIColumn column = (UIColumn) child;
+				UIComponent facet = columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter();
             	
-            	if(header != null && header.isRendered()) {
-            		String value = exportValue(FacesContext.getCurrentInstance(), header);
+            	if(facet != null && facet.isRendered()) {
+            		String value = exportValue(FacesContext.getCurrentInstance(), facet);
             		
-            		headers.add(value);
+            		facets.add(value);
             	} else {
-            		headers.add("");
+            		facets.add("");
             	}
             }
         }
-        return headers;
+        return facets;
 	}
-	
+
 	private void addColumnValue(PrintWriter writer, List<UIComponent> components, String header) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		String tag = header.toLowerCase();
@@ -122,4 +137,14 @@ public class XMLExporter extends Exporter {
 		
 		writer.write("</" + tag + ">\n");
 	}
+	
+	private void addColumnValue(PrintWriter writer, String footer, String header) throws IOException {
+		String tag = header.toLowerCase();
+		writer.write("\t\t<" + tag + ">");
+
+		writer.write(footer.toLowerCase());
+		
+		writer.write("</" + tag + ">\n");
+	}
+	
 }
