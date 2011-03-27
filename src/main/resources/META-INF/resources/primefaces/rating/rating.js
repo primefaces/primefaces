@@ -392,7 +392,6 @@ PrimeFaces.widget.Rating = function(id, cfg) {
     this.jq = jQuery(this.jqId + ' input');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
     this.value = this.getValue();
-    alert(this.value);
     var _self = this;
     
     this.cfg.callback = function(value) {
