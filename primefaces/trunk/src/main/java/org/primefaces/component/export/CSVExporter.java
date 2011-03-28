@@ -81,11 +81,11 @@ public class CSVExporter extends Exporter {
 	}
 
 	private void addFacetColumns(PrintWriter writer, List<UIColumn> columns, ColumnType columnType) throws IOException {
-		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
+		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
 			UIColumn column = (UIColumn) iterator.next();
 			
 			if(column.isRendered()) {
-				addColumnValue(writer, columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter());
+				addColumnValue(writer, column.getFacet(columnType.facet()));
 			
 				if(iterator.hasNext())
 					writer.write(",");
