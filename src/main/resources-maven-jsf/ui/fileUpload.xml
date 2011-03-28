@@ -28,6 +28,11 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 		<attribute>
 			<name>fileUploadListener</name>
 			<required>false</required>
@@ -89,7 +94,7 @@
 			<name>mode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>simple</defaultValue>
+            <defaultValue>advanced</defaultValue>
 		</attribute>
         <attribute>
 			<name>uploadLabel</name>
