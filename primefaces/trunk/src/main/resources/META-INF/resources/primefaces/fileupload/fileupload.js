@@ -956,9 +956,10 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
         var _self = this;
 
         //request config
-        var params = this.form.serializeArray();
+        var process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id,
+        params = this.form.serializeArray();
         params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM,value: true});
-        params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM,value: this.id});
+        params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM,value: process});
         params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM,value: this.id});
 
         if(this.cfg.update) {
