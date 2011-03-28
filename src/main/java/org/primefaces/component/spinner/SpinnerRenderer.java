@@ -72,6 +72,7 @@ public class SpinnerRenderer extends InputRenderer {
 		if(spinner.getMax() != Double.MAX_VALUE) writer.write(",max:" + spinner.getMax());
 		if(spinner.getPrefix() != null) writer.write(",prefix:'" + spinner.getPrefix() + "'");
 		if(spinner.getSuffix() != null) writer.write(",suffix:'" + spinner.getSuffix() + "'");
+        if(spinner.isDisabled() || spinner.isReadonly()) writer.write(",disabled:true");
 
         encodeClientBehaviors(context, spinner);
  		
@@ -83,9 +84,9 @@ public class SpinnerRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = spinner.getClientId(context);
-        String inputId = spinner.getClientId(context) + "_input";
         String styleClass = spinner.getStyleClass();
         styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
+        boolean disabled = spinner.isDisabled() || spinner.isReadonly();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -95,24 +96,10 @@ public class SpinnerRenderer extends InputRenderer {
 
 		encodeInput(context, spinner);
 
-        encodeButton(context, Spinner.UP_BUTTON_CLASS, Spinner.UP_ICON_CLASS);
-        encodeButton(context, Spinner.DOWN_BUTTON_CLASS, Spinner.DOWN_ICON_CLASS);
+        encodeButton(context, Spinner.UP_BUTTON_CLASS, Spinner.UP_ICON_CLASS, disabled);
+        encodeButton(context, Spinner.DOWN_BUTTON_CLASS, Spinner.DOWN_ICON_CLASS, disabled);
 
         writer.endElement("span");
-/*
-        <span class="ui-spinner ui-state-default ui-widget ui-widget-content ui-corner-all ui-state-active">
-        <input name="value" id="spinner" class="ui-spinner-input" autocomplete="off" role="spinbutton">
-        <a class="ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only ui-state-focus" tabindex="-1" role="button">
-            <span class="ui-button-text">
-                <span class="ui-icon ui-icon-triangle-1-n">▲</span>
-            </span>
-        </a>
-        <a class="ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only" tabindex="-1" role="button">
-            <span class="ui-button-text">
-                <span class="ui-icon ui-icon-triangle-1-s">▼</span>
-            </span>
-        </a>
-    </span>*/
 	}
 
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
@@ -126,16 +113,20 @@ public class SpinnerRenderer extends InputRenderer {
         writer.writeAttribute("class", Spinner.INPUT_CLASS, null);
         writer.writeAttribute("autocomplete", "off", null);
 
+        if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+
 		String valueToRender = ComponentUtils.getStringValueToRender(context, spinner);
 		if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender , null);
 		}
-		//renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS);
+		renderPassThruAttributes(context, spinner, Spinner.ATTRS);
 		writer.endElement("input");
     }
 
-    protected void encodeButton(FacesContext context, String styleClass, String iconClass) throws IOException {
+    protected void encodeButton(FacesContext context, String styleClass, String iconClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         writer.startElement("a", null);
         writer.writeAttribute("class", styleClass, null);
