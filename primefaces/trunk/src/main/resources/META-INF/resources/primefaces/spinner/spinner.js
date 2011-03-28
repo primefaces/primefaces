@@ -13,6 +13,10 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
     this.decimalCount = this.findDecimalCount();
     var _self = this;
 
+    if(this.cfg.disabled) {
+        return;
+    }
+
     //visuals
     this.jq.children('.ui-spinner-button').mouseover(function() {
         $(this).addClass('ui-state-hover');
