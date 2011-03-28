@@ -81,6 +81,7 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.isMinimizable()) writer.write(",minimizable:true");
         if(dialog.isMaximizable()) writer.write(",maximizable:true");
         if(!dialog.isClosable()) writer.write(",closable:false");
+        if(!dialog.isShowHeader()) writer.write(",showHeader:false");
 
         //Position
         String position = dialog.getPosition();
