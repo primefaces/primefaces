@@ -54,15 +54,14 @@ public class ExcelExporter extends Exporter {
     		table.setRowIndex(i);
 			Row row = sheet.createRow(sheetRowIndex++);
 			
-			for (int j = 0; j < numberOfColumns; j++) {
-				UIColumn column = columns.get(j);
-				
-				if(column.isRendered())
-					addColumnValue(row, column.getChildren(), j);
+			for(int j = 0; j < numberOfColumns; j++) {
+                addColumnValue(row, columns.get(j).getChildren(), j);
 			}
 		}
-    	
-    	addFacetColumns(sheet, columns, ColumnType.FOOTER, sheetRowIndex++);
+
+        if(hasColumnFooter(columns)) {
+            addFacetColumns(sheet, columns, ColumnType.FOOTER, sheetRowIndex++);
+        }
     	
     	table.setRowIndex(-1);
     	
@@ -76,11 +75,8 @@ public class ExcelExporter extends Exporter {
 	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
         Row rowHeader = sheet.createRow(rowIndex);
 
-        for(int i = 0; i < columns.size(); i++) {
-            UIColumn column = (UIColumn) columns.get(i);
-            
-            if(column.isRendered())
-            	addColumnValue(rowHeader, column.getFacet(columnType.facet()), i);
+        for(int i = 0; i < columns.size(); i++) {            
+            addColumnValue(rowHeader, columns.get(i).getFacet(columnType.facet()), i);
         }
     }
 	

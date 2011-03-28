@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,15 +84,15 @@ public class PDFExporter extends Exporter {
         
     	for(int i = first; i < size; i++) {
     		table.setRowIndex(i);
-			for (int j = 0; j < numberOfColumns; j++) {
-				UIColumn column = columns.get(j);
-				
-				if(column.isRendered())
-					addColumnValue(pdfTable, column.getChildren(), j, font);
+
+			for(int j = 0; j < numberOfColumns; j++) {				
+                addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
 			}
 		}
 
-    	addFacetColumns(pdfTable, columns, headerFont, ColumnType.FOOTER);
+        if(hasColumnFooter(columns)) {
+            addFacetColumns(pdfTable, columns, headerFont, ColumnType.FOOTER);
+        }
     	
     	table.setRowIndex(-1);
     	
@@ -103,12 +103,11 @@ public class PDFExporter extends Exporter {
         for(int i = 0; i < columns.size(); i++) {
             UIColumn column = (UIColumn) columns.get(i);
 
-            if(column.isRendered())
-            	addColumnValue(pdfTable, column.getFacet(columnType.facet()), i, font);
+            addColumnValue(pdfTable, column.getFacet(columnType.facet()), font);
         }
 	}
 	
-    private void addColumnValue(PdfPTable pdfTable, UIComponent component, int index, Font font) {
+    private void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
     	String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
             
         pdfTable.addCell(new Paragraph(value, font));
