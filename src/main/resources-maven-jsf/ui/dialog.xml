@@ -163,6 +163,12 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+            <name>showHeader</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>

@@ -30,6 +30,12 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
         this.jq.parent().find('.ui-dialog-titlebar-close').hide();
     }
 
+    //Hide header if showHeader is false
+    if(this.cfg.showHeader == false) {
+        this.jq.parent().children('.ui-dialog-titlebar').hide();
+    }
+
+    //Relocate dialog to body if appendToBody is true
     if(this.cfg.appendToBody) {
         this.jq.parent().appendTo(document.body);
     }
