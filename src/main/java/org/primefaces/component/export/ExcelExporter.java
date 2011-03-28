@@ -43,14 +43,14 @@ public class ExcelExporter extends Exporter {
     	if(preProcessor != null) {
     		preProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
     	}
-    	
-    	addFacetColumns(sheet, columns, ColumnType.HEADER);
-    	
+
     	int first = pageOnly ? table.getFirst() : 0;
-    	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
+    	int rowsToExport = pageOnly ? (first + table.getRows()) : table.getRowCount();
     	int sheetRowIndex = 1;
+
+        addFacetColumns(sheet, columns, ColumnType.HEADER, 0);
     	
-    	for(int i = first; i < size; i++) {
+    	for(int i = first; i < rowsToExport; i++) {
     		table.setRowIndex(i);
 			Row row = sheet.createRow(sheetRowIndex++);
 			
@@ -62,7 +62,7 @@ public class ExcelExporter extends Exporter {
 			}
 		}
     	
-    	addFacetColumns(sheet, columns, ColumnType.FOOTER);
+    	addFacetColumns(sheet, columns, ColumnType.FOOTER, sheetRowIndex++);
     	
     	table.setRowIndex(-1);
     	
@@ -73,14 +73,14 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(((HttpServletResponse)facesContext.getExternalContext().getResponse()), wb, filename);
 	}
 	
-	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType) {
-        Row rowHeader = sheet.createRow(0);
+	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
+        Row rowHeader = sheet.createRow(rowIndex);
 
-        for (int i = 0; i < columns.size(); i++) {
+        for(int i = 0; i < columns.size(); i++) {
             UIColumn column = (UIColumn) columns.get(i);
             
             if(column.isRendered())
-            	addColumnValue(rowHeader, columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter(), i);
+            	addColumnValue(rowHeader, column.getFacet(columnType.facet()), i);
         }
     }
 	

@@ -36,8 +36,23 @@ import org.primefaces.component.datatable.DataTable;
 public abstract class Exporter {
 	
 	protected enum ColumnType{
-		HEADER,
-		FOOTER;
+		HEADER("header"),
+		FOOTER("footer");
+        
+        private final String facet;
+        
+        ColumnType(String facet) {
+            this.facet = facet;
+        }
+
+        public String facet() {
+            return facet;
+        }
+        
+        @Override
+        public String toString() {
+            return facet;
+        }
 	};
 
     public abstract void export(FacesContext facesContext, DataTable table,

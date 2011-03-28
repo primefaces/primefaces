@@ -81,6 +81,7 @@ public class PDFExporter extends Exporter {
     	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
     	
     	addFacetColumns(pdfTable, columns, headerFont, ColumnType.HEADER);
+        
     	for(int i = first; i < size; i++) {
     		table.setRowIndex(i);
 			for (int j = 0; j < numberOfColumns; j++) {
@@ -90,6 +91,7 @@ public class PDFExporter extends Exporter {
 					addColumnValue(pdfTable, column.getChildren(), j, font);
 			}
 		}
+
     	addFacetColumns(pdfTable, columns, headerFont, ColumnType.FOOTER);
     	
     	table.setRowIndex(-1);
@@ -98,11 +100,11 @@ public class PDFExporter extends Exporter {
 	}
 	
 	private void addFacetColumns(PdfPTable pdfTable, List<UIColumn> columns, Font font, ColumnType columnType) {
-        for (int i = 0; i < columns.size(); i++) {
+        for(int i = 0; i < columns.size(); i++) {
             UIColumn column = (UIColumn) columns.get(i);
-            
+
             if(column.isRendered())
-            	addColumnValue(pdfTable, columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter(), i, font);
+            	addColumnValue(pdfTable, column.getFacet(columnType.facet()), i, font);
         }
 	}
 	
