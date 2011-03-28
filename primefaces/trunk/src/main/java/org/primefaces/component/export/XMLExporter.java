@@ -59,10 +59,12 @@ public class XMLExporter extends Exporter {
     		addColumnValues(writer, columns, headers);
     		writer.write("\t</" + var + ">\n");
 		}
-    	
-   		writer.write("\t<footers>\n");
-   		addFooterValues(writer, footers, headers);
-   		writer.write("\t</footers>\n");
+
+        if(hasColumnFooter(columns)) {
+            writer.write("\t<footers>\n");
+            addFooterValues(writer, footers, headers);
+            writer.write("\t</footers>\n");
+        }
     	
     	writer.write("</" + table.getId() + ">");
     	
@@ -81,11 +83,8 @@ public class XMLExporter extends Exporter {
 	}
 	
 	private void addColumnValues(PrintWriter writer, List<UIColumn> columns, List<String> headers) throws IOException {
-		for (int i = 0; i < columns.size(); i++) {
-			UIColumn column = columns.get(i);
-			
-			if(column.isRendered())
-				addColumnValue(writer, column.getChildren(), headers.get(i));
+		for(int i = 0; i < columns.size(); i++) {
+            addColumnValue(writer, columns.get(i).getChildren(), headers.get(i));
 		}
 	}
 	
@@ -106,7 +105,7 @@ public class XMLExporter extends Exporter {
             
             if (child instanceof UIColumn && child.isRendered()) {
             	UIColumn column = (UIColumn) child;
-				UIComponent facet = columnType == ColumnType.HEADER ? column.getHeader() : column.getFooter();
+				UIComponent facet = column.getFacet(columnType.facet());
             	
             	if(facet != null && facet.isRendered()) {
             		String value = exportValue(FacesContext.getCurrentInstance(), facet);

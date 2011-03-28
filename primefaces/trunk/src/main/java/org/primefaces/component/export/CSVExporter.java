@@ -50,8 +50,10 @@ public class CSVExporter extends Exporter {
     		addColumnValues(writer, columns);
 			writer.write("\n");
 		}
-    	
-    	addFacetColumns(writer, columns, ColumnType.FOOTER);
+
+        if(hasColumnFooter(columns)) {
+            addFacetColumns(writer, columns, ColumnType.FOOTER);
+        }
     	
     	table.setRowIndex(-1);
     	
@@ -68,28 +70,20 @@ public class CSVExporter extends Exporter {
 	}
 	
 	private void addColumnValues(PrintWriter writer, List<UIColumn> columns) throws IOException {
-		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
-			UIColumn column = (UIColumn) iterator.next();
-			
-			if(column.isRendered()) {
-				addColumnValue(writer, column.getChildren());
-				
-				if(iterator.hasNext())
-					writer.write(",");
-			}
+		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
+            addColumnValue(writer, iterator.next().getChildren());
+
+            if(iterator.hasNext())
+                writer.write(",");
 		}
 	}
 
 	private void addFacetColumns(PrintWriter writer, List<UIColumn> columns, ColumnType columnType) throws IOException {
 		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
-			UIColumn column = (UIColumn) iterator.next();
-			
-			if(column.isRendered()) {
-				addColumnValue(writer, column.getFacet(columnType.facet()));
-			
-				if(iterator.hasNext())
-					writer.write(",");
-			}
+            addColumnValue(writer, iterator.next().getFacet(columnType.facet()));
+
+            if(iterator.hasNext())
+                writer.write(",");
 		}
 		
 		writer.write("\n");

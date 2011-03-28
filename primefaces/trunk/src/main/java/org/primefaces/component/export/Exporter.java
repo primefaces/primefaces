@@ -62,26 +62,30 @@ public abstract class Exporter {
 
 	
 	protected List<UIColumn> getColumnsToExport(UIData table, int[] excludedColumns) {
-        List<UIColumn> allColumns = new ArrayList<UIColumn>();
-        List<UIColumn> columnsToExport = new ArrayList<UIColumn>();
-        
-        for(UIComponent component : table.getChildren()) {
-        	if(component instanceof UIColumn)
-        		allColumns.add((UIColumn)component);
-		}
-        
-        if(excludedColumns == null) {
-        	return allColumns;
-        } else {
-        	for(int i = 0; i < allColumns.size(); i++) {
-				if(Arrays.binarySearch(excludedColumns, i) < 0)
-					columnsToExport.add(allColumns.get(i));
-        	}
-        	
-        	allColumns = null;
-        	
-        	return columnsToExport;
-		}
+        List<UIColumn> columns = new ArrayList<UIColumn>();
+        int columnIndex = -1;
+
+        for(UIComponent child : table.getChildren()) {
+            if(child instanceof UIColumn) {
+                UIColumn column = (UIColumn) child;
+                columnIndex++;
+
+                if(excludedColumns == null || column.isRendered() && Arrays.binarySearch(excludedColumns, columnIndex) < 0) {
+                    columns.add(column);
+                }
+            }
+        }
+
+        return columns;
+    }
+
+    protected boolean hasColumnFooter(List<UIColumn> columns) {
+        for(UIColumn column : columns) {
+            if(column.getFooter() != null)
+                return true;
+        }
+
+        return false;
     }
 
     protected String exportValue(FacesContext context, UIComponent component) {
