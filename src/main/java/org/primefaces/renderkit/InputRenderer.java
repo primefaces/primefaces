@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,7 +29,6 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
@@ -95,14 +93,20 @@ public class InputRenderer extends CoreRenderer {
                     Collection collection = (Collection) value;
                     String var = (String) uiSelectItems.getAttributes().get("var");
 
-                    for (Iterator it = collection.iterator(); it.hasNext();) {
-                        Object object = it.next();
-                        context.getExternalContext().getRequestMap().put(var, object);
-                        String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                        Object itemValue = uiSelectItems.getAttributes().get("itemValue");
+                    if(var != null) {
+                        for(Iterator it = collection.iterator(); it.hasNext();) {
+                            Object object = it.next();
+                            context.getExternalContext().getRequestMap().put(var, object);
+                            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
+                            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
 
-                        selectItems.add(new SelectItem(itemValue, itemLabel));
-                    }
+                            selectItems.add(new SelectItem(itemValue, itemLabel));
+                        }
+                    } else {
+                        for(Iterator it = collection.iterator(); it.hasNext();) {
+                            selectItems.add((SelectItem) it.next());
+                        }
+                    }                    
                 }
 			}
         }
