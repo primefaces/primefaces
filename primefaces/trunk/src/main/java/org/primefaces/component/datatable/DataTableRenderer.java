@@ -33,7 +33,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class DataTableRenderer extends CoreRenderer {
 
-    private DataHelper dataHelper;
+    protected DataHelper dataHelper;
 
     public DataTableRenderer() {
         dataHelper = new DataHelper();
@@ -865,7 +865,7 @@ public class DataTableRenderer extends CoreRenderer {
         encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getSelectionMode(), table.getSelection());
     }
 
-    private void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
+    protected void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         String clientId = table.getClientId(context);
