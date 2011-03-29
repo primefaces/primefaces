@@ -197,7 +197,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
             
             writer.startElement("li", null);
             writer.writeAttribute("class", itemStyleClass, null);
-            writer.writeText(String.valueOf(selectItem.getLabel()), null);
+            writer.writeText(selectItem.getLabel(), null);
             writer.endElement("li");
         }
     }

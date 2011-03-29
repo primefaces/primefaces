@@ -198,8 +198,8 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
-    this.input = jQuery(this.jqId + '_input');
+    this.jq = $(this.jqId);
+    this.input = $(this.jqId + '_input');
     this.label = this.jq.children('.ui-selectonemenu-label');
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
@@ -225,30 +225,30 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     var itemContainer = this.panel.children('.ui-selectonemenu-items'),
     items = itemContainer.find('.ui-selectonemenu-item'),
-    options = jQuery(this.input.attr('options')),
+    options = $(this.input).children('option'),
     _self = this;
 
     //Events for items
     items.mouseover(function() {
-        var element = jQuery(this);
+        var element = $(this);
         if(!element.hasClass('ui-state-active')) {
-            jQuery(this).addClass('ui-state-hover');
+            $(this).addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        var element = jQuery(this);
+        var element = $(this);
         if(!element.hasClass('ui-state-active')) {
-            jQuery(this).removeClass('ui-state-hover');
+            $(this).removeClass('ui-state-hover');
         }
     }).click(function() {
-        var element = jQuery(this),
-        option = jQuery(options.get(element.index()));
+        var element = $(this),
+        option = $(options.get(element.index()));
 
         items.removeClass('ui-state-active ui-state-hover');
         element.addClass('ui-state-active');
 
         option.attr('selected', 'selected');
 
-        _self.label.html(option.html());
+        _self.label.html(option.text());
         _self.input.change();
         _self.hide();
     });
@@ -273,7 +273,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
     var offset;
 
-    jQuery(document.body).bind('click', function (e) {
+    $(document.body).bind('click', function (e) {
         if (_self.panel.is(":hidden")) {
             return;
         }
