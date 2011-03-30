@@ -110,13 +110,6 @@
     bottom: 0;
 }
 
-/* PrimeFaces Extensions */
-.wijmo-wijsuperpanel-vbarcontainer.ui-widget-header,
-.wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
-    background-image: none;
-}
-
-/* Menu */
 .wijmo-wijmenu {
     width:150px;
     padding:0.3em;
@@ -369,4 +362,10 @@
 .wijmo-wijmenu .wijmo-wijmenu-link .wijmo-wijmenu-icon-right {
     display:inline-block;
     float:right;
+}
+
+/* PrimeFaces Extensions */
+.wijmo-wijsuperpanel-vbarcontainer.ui-widget-header,
+.wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
+    background-image: none;
 }
