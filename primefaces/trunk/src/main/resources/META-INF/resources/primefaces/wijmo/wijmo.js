@@ -3360,8 +3360,8 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			};
 			self.domObject = domObject;
 			self.rootMenu.data("topmenu", true);
-			if (!self.rootMenu.hasClass(menuCss + "-list ui-helper-reset")) {
-				self.rootMenu.addClass(menuCss + "-list ui-helper-reset");
+			if (!self.rootMenu.hasClass(menuCss + "-list")) {
+				self.rootMenu.addClass(menuCss + "-list");
 			}
 			$("li", self.rootMenu).each(function (i, n) {
 				//var isFirstLevel = $(n).parent().parent().parent().is(".wijmo-wijmenu");
@@ -3408,7 +3408,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			ele.show();
 			$("ul", self.rootMenu).each(function () {
 				$(this).addClass(menuCss + "-list ui-widget-content ui-corner-all " +
-					"ui-helper-clearfix " + menuCss + "-child ui-helper-reset");
+					"ui-helper-clearfix " + menuCss + "-child");
 				$(this).hide();
 			});
 			this[o.mode === "flyout" ? "_flyout" : "_drilldown"]();
@@ -3663,7 +3663,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 		_killmenuItems: function () {
 			var ele = this.rootMenu;
-			ele.removeClass("wijmo-wijmenu-list ui-helper-reset " +
+			ele.removeClass("wijmo-wijmenu-list " +
 				"wijmo-wijmenu-content ui-helper-clearfix");
 			ele.find("li").each(function () {
 				var item = $(this), link;
@@ -3676,7 +3676,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				.html(link.children(".wijmo-wijmenu-text").html())
 				.unbind(".wijmenu .wijmenuitem");
 				item.children("ul").removeClass("wijmo-wijmenu-list ui-widget-content" +
-				" ui-corner-all ui-helper-clearfix wijmo-wijmenu-child ui-helper-reset")
+				" ui-corner-all ui-helper-clearfix wijmo-wijmenu-child")
 				.attr("role", "").attr("aria-activedescendant", "")
 				.show().css({ left: "", top: "", position: "" }).attr("hidden", "");
 			});
