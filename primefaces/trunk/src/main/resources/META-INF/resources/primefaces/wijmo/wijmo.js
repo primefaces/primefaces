@@ -3349,7 +3349,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 
 			scrollcontainer.addClass("scrollcontainer checkablesupport");
-			menucontainer.addClass("ui-widget ui-widget-header " + menuCss +
+			menucontainer.addClass("ui-widget ui-widget-content " + menuCss +
 				" ui-corner-all ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
 			if (o.orientation === "horizontal" && o.mode === "flyout") {
