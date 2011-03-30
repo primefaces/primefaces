@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ public class EditorRenderer extends CoreRenderer{
     @Override
 	public void decode(FacesContext context, UIComponent component) {
 		Editor editor = (Editor) component;
-        String clientId = editor.getClientId(context);
+        String inputParam = editor.getClientId(context) + "_input";
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
-        if(params.containsKey(clientId)) {
-            editor.setSubmittedValue(params.get(clientId));
+        if(params.containsKey(inputParam)) {
+            editor.setSubmittedValue(params.get(inputParam));
         }
 	}
 
@@ -49,16 +49,24 @@ public class EditorRenderer extends CoreRenderer{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = editor.getClientId(facesContext);
         String value = (String) editor.getValue();
+        String inputId = clientId + "_input";
+
+        writer.startElement("div", editor);
+        writer.writeAttribute("id", clientId , null);
+        if(editor.getStyle() != null) writer.writeAttribute("style", editor.getStyle(), null);
+        if(editor.getStyleClass() != null) writer.writeAttribute("class", editor.getStyleClass(), null);
         
-		writer.startElement("textarea", editor);
-		writer.writeAttribute("id", clientId , null);
-        writer.writeAttribute("name", clientId , null);
+		writer.startElement("textarea", null);
+		writer.writeAttribute("id", inputId , null);
+        writer.writeAttribute("name", inputId , null);
 
         if(value != null) {
             writer.write(value);
         }
 
 		writer.endElement("textarea");
+
+        writer.endElement("div");
 	}
 	
 	private void encodeScript(FacesContext facesContext, Editor editor) throws IOException{
@@ -69,7 +77,7 @@ public class EditorRenderer extends CoreRenderer{
 		writer.startElement("script", editor);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
+        writer.write("$(function() {");
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + clientId + "',{");
 

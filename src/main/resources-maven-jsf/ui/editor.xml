@@ -52,6 +52,16 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

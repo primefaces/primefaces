@@ -1137,7 +1137,8 @@
 PrimeFaces.widget.Editor = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jq = jQuery(PrimeFaces.escapeClientId(id));
+    this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jqId + '_input');
 
     if(!this.cfg.lazy) {
         this.init();
