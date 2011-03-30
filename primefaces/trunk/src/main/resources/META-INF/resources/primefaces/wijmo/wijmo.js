@@ -80,7 +80,7 @@ function handler(event) {
 
 /*
  *
- * Wijmo Library 1.1.2
+ * Wijmo Library 1.1.4
  * http://wijmo.com/
  *
  * Copyright(c) ComponentOne, LLC.  All rights reserved.
@@ -239,14 +239,14 @@ function handler(event) {
 		}
 	};
 
-	$.fn.wijhide = function (animation, customAnimations, customAnimationOptions, hidding, hidden) {
+	$.fn.wijhide = function (animation, customAnimations, customAnimationOptions, hiding, hidden) {
 		var animated = animation.animated || false,
 			duration = animation.duration || 400,
 			easing = animation.easing,
 			option = animation.option || {};
 
-		if (hidding && $.isFunction(hidding)) {
-			hidding.call(this);
+		if (hiding && $.isFunction(hiding)) {
+			hiding.call(this);
 		}
 
 		if (animated) {
@@ -368,27 +368,27 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 /*globals window document jQuery */
 /*
- *
- * Wijmo Library 1.1.2
- * http://wijmo.com/
- *
- * Copyright(c) ComponentOne, LLC.  All rights reserved.
- *
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * licensing@wijmo.com
- * http://www.wijmo.com/license
- *
- * * Wijmo SuperPanel widget.
- *
- * Depends:
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
- *	jquery.ui.resizable.js
- *	jquery.ui.draggable.js
- *	jquery.effects.core.js
- *	jquery.mousewheel.js
- *
- */
+*
+* Wijmo Library 1.1.4
+* http://wijmo.com/
+*
+* Copyright(c) ComponentOne, LLC.  All rights reserved.
+*
+* Dual licensed under the MIT or GPL Version 2 licenses.
+* licensing@wijmo.com
+* http://www.wijmo.com/license
+*
+* * Wijmo SuperPanel widget.
+*
+* Depends:
+*	jquery.ui.core.js
+*	jquery.ui.widget.js
+*	jquery.ui.resizable.js
+*	jquery.ui.draggable.js
+*	jquery.effects.core.js
+*	jquery.mousewheel.js
+*
+*/
 (function ($) {
 	"use strict";
 	var uiSuperPanelClasses = "wijmo-wijsuperpanel " + "ui-widget " + "ui-widget-content",
@@ -475,19 +475,27 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				/// </summary>
 				easing: undefined
 			},
-
 			/// <summary>
-			/// This function gets called when thumb buttons of scrollbars dragging stops.
-			/// Default: null.
-			/// Type: Function.
+			/// The hScrollerActivating event handler.
+			/// A function called when horizontal scrollbar is activating.
+			/// Default: null
+			/// Type: Function
+			/// Code example:
+			/// Supply a function as an option.
+			/// $("#selector").wijsuperpanel({ hScrollerActivating: function (e, data) { } });
+			/// Bind to the event by type: wijtreenodeClick
+			/// $("#selector").bind("wijsuperpanelhScrollerActivating", function(e, data) { } );
 			/// </summary>
-			dragstop: null,
-			/// <summary>
-			/// This function gets called after panel is painted.
-			/// Default: null.
-			/// Type: Function.
-			/// </summary>
-			painted: null,
+			/// <param name="e" type="Object">
+			/// jQuery.Event object.
+			/// </param>
+			/// <param name="data" type="Object">
+			/// The data that relates to this event.
+			/// data.direction: the direction of the scrollbar("horizontal" or "vertical").
+			/// data.targetBarLen: the height of the horizontal scrollbar.
+			/// data.contentLength: the height of the content.
+			/// </param>
+			hScrollerActivating: null,
 			/// <summary>
 			/// This option contains horizontal scroller settings.
 			/// </summary>
@@ -653,12 +661,6 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// </summary>
 			bubbleScrollingEvent: true,
 			/// <summary>
-			/// Resized event handler. A function gets called when resized event is fired.
-			/// Default: null.
-			/// Type: Function.
-			/// </summary>
-			resized: null,
-			/// <summary>
 			/// This option determines the behavior of resizable widget.
 			/// See JQuery UI resizable options document.
 			/// Type: Object.
@@ -668,12 +670,58 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				helper: "ui-widget-content wijmo-wijsuperpanel-helper"
 			},
 			/// <summary>
+			/// Resized event handler. A function gets called when resized event is fired.
+			/// Default: null.
+			/// Type: Function.
+			/// code example:
+			/// Supply a callback function to handle the resized event:
+			/// $("#element").wijsuperpanel({ resized: funtion() { dosometing } });
+			/// Bind to the event by type:
+			/// $("#element").bind("wijsuperpanelresized", funtion() { dosometing });
+			/// </summary>
+			resized: null,
+			/// <summary>
+			/// This function gets called when thumb buttons of scrollbars dragging stops.
+			/// Default: null.
+			/// Type: Function.
+			/// code example:
+			/// Supply a callback function to handle the dragstop event:
+			/// $("#element").wijsuperpanel({ dragstop: funtion(e, data) { dosometing } });
+			/// Bind to the event by type:
+			/// $("#element").bind("wijsuperpaneldragstop", funtion(e, data) { dosometing });
+			/// <param name="e" type="EventObj">
+			/// EventObj relates to this event.
+			/// </param>
+			/// <param name="data" type="Object">
+			/// The data with this event.
+			/// data.dir: data.draghandle is the direction of the scrolling action.
+			/// Possible values: "v"(vertical) and "h"(horizontal).
+			/// </param>
+			/// </summary>
+			dragstop: null,
+			/// <summary>
+			/// This function gets called after panel is painted.
+			/// Default: null.
+			/// Type: Function.
+			/// code example:
+			/// Supply a callback function to handle the painted event:
+			/// $("#element").wijsuperpanel({ painted: funtion() { dosometing } });
+			/// Bind to the event by type:
+			/// $("#element").bind("wijsuperpanelpainted", funtion() { dosometing });
+			/// </summary>
+			painted: null,
+			/// <summary>
 			/// Scrolling event handler. A function called before scrolling occurs.
 			/// Default: null.
 			/// Type: Function.
+			/// code example:
+			/// Supply a callback function to handle the scrolling event:
+			/// $("#element").wijsuperpanel({ scrolling: funtion(e, data) { dosometing } });
+			/// Bind to the event by type:
+			/// $("#element").bind("wijsuperpanelscrolling", funtion(e, data) { dosometing });
 			/// </summary>
-			/// <param name="e" type="EventObj">
-			/// EventObj relates to this event.
+			/// <param name="e" type="Object">
+			/// jQuery.Event object.
 			/// </param>
 			/// <param name="data" type="Object">
 			/// The data with this event.
@@ -688,9 +736,14 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Scrolled event handler.  A function called after scrolling occurs.
 			/// Default: null.
 			/// Type: Function.
+			/// code example:
+			/// Supply a callback function to handle the scrolled event:
+			/// $("#element").wijsuperpanel({ scrolled: funtion(e, data) { dosometing } });
+			/// Bind to the event by type:
+			/// $("#element").bind("wijsuperpanelscrolled", funtion(e, data) { dosometing });
 			/// </summary>
-			/// <param name="e" type="EventObj">
-			/// EventObj relates to this event.
+			/// <param name="e" type="Object">
+			/// jQuery.Event object.
 			/// </param>
 			/// <param name="data" type="Object">
 			/// The data with this event.
@@ -706,6 +759,27 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Type: Boolean.
 			/// </summary>
 			showRounder: true,
+			/// <summary>
+			/// The vScrollerActivating event handler.
+			/// A function called when vertical scrollbar is activating.
+			/// Default: null
+			/// Type: Function
+			/// Code example:
+			/// Supply a function as an option.
+			/// $("#selector").wijsuperpanel({ vScrollerActivating: function (e, data) { } });
+			/// Bind to the event by type: wijtreenodeClick
+			/// $("#selector").bind("wijsuperpanelvScrollerActivating", function(e, data) { } );
+			/// </summary>
+			/// <param name="e" type="Object">
+			/// jQuery.Event object.
+			/// </param>
+			/// <param name="data" type="Object">
+			/// The data that relates to this event.
+			/// data.direction: the direction of the scrollbar("horizontal" or "vertical").
+			/// data.targetBarLen: the width of the vertical scrollbar.
+			/// data.contentLength: the width of the content.
+			/// </param>
+			vScrollerActivating: null,
 			/// <summary>
 			/// This option contains vertical scroller settings.
 			/// </summary>
@@ -874,7 +948,10 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			else if (key === "resizableOptions") {
 				value = $.extend(self.resizableOptions, value);
 			}
-			$.Widget.prototype._setOption.apply(self, arguments);
+            $.Widget.prototype._setOption.apply(self, arguments);
+            if ($.isPlainObject(value)) {
+                self.options[key] = value;
+            }
 			switch (key) {
 			case "allowResize":
 				self._initResizer();
@@ -1775,7 +1852,8 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				self._bindElementEvents(self, f, ele, o);
 				templateWrapper = f.templateWrapper;
 				templateWrapper.css({ "float": "left", left: "0px", top: "0px",
-				width: "auto", height: "auto" });
+					width: "auto", height: "auto"
+				});
 				// hide and show wrapper div to force the width to change
 				// for some browser.
 				templateWrapper.hide();
@@ -1785,14 +1863,17 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				templateWrapper.css("float", "");
 				self._setRounder(self, ele);
 				self._setInnerElementsSize(f, ele);
-				self._testScroll(self, f, o);
+				if (self._testScroll(self, f, o) === false) {
+					return false;
+				}
 				self._initScrollBars(self, f, o);
 				self._initScrollButtons(self, f, o);
 				self._trigger("painted");
 
 				self._paintedMark = { date: new Date(), mainWidth: ele[0].offsetWidth,
-				mainHeight: ele[0].offsetHeight, width: f.contentWidth,
-				height: f.contentWidth };
+					mainHeight: ele[0].offsetHeight, width: f.contentWidth,
+					height: f.contentWidth
+				};
 				if (focused !== undefined) {
 					$(focused).focus();
 				}
@@ -2243,19 +2324,33 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		_createBarIfNeeded: function (hNeedScrollBar, scrollerWrapper,
 		dir, html, content) {
 			if (hNeedScrollBar) {
-				var self = this,
+				var self = this, o = self.options, data,
 				f = self._fields(),
 				strBarContainer = dir + "barContainer",
 				strBarDrag = dir + "barDrag",
 				hbar = dir === "h",
 				contentLength = content[0][hbar ? "clientHeight" : "clientWidth"],
 				c = f[strBarContainer] = $(html), targetBarLen, d;
+
 				scrollerWrapper.append(c);
 				targetBarLen = c[0][hbar ? "offsetHeight" : "offsetWidth"];
+				contentLength = contentLength - targetBarLen;
+
+				data = {
+					direction: hbar ? "horizontal" : "vertical",
+					targetBarLen: targetBarLen,
+					contentLength: contentLength
+				};
+
+				if (self._trigger(hbar ? "hScrollerActivating" : "vScrollerActivating",
+				null, data) === false) {
+					return false;
+				}
+
 				d = f[strBarDrag] = c.find("." + scrollerHandle);
 				self._bindBarEvent(c, d, dir);
 
-				content[hbar ? "height" : "width"](contentLength - targetBarLen);
+				content[hbar ? "height" : "width"](contentLength);
 			}
 		},
 
@@ -2272,14 +2367,18 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				targetPadding = self._getScrollContainerPadding(dir);
 				targetBarPosition = hbar ? "top" : "left";
 				barPosition1 = hbar ? { top: "0px", bottom: "auto", left: "auto",
-				right: "auto"} : { left: "0px", right: "auto", top: "auto",
-				bottom: "auto" };
+					right: "auto"
+				} : { left: "0px", right: "auto", top: "auto",
+					bottom: "auto"
+				};
 				contentPosition1 = hbar ? { top: targetBarLen + "px"} :
 				{ left: targetBarLen + "px" };
 
 				barPosition2 = hbar ? { top: "auto", right: "auto", left: "auto",
-				bottom: "0px"} : { left: "auto", right: "0px", top: "auto",
-				bottom: "auto" };
+					bottom: "0px"
+				} : { left: "auto", right: "0px", top: "auto",
+					bottom: "auto"
+				};
 				contentPosition2 = hbar ? { top: ""} : { left: "" };
 				//var contentLength = content[0][hbar? "clientHeight":"clientWidth"];
 				contentLength2 = content[0][hbar ? "clientWidth" : "clientHeight"];
@@ -2377,8 +2476,10 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 			hNeedScrollBar = self.hNeedScrollBar =
 			self._needScrollbar(o.hScroller, f.hScrolling);
-			self._createBarIfNeeded(self.hNeedScrollBar, scrollerWrapper,
-			"h", hbarHtml, content);
+			if (self._createBarIfNeeded(hNeedScrollBar, scrollerWrapper,
+			"h", hbarHtml, content) === false) {
+				return false;
+			}
 			// having h scroll bar, but no vscroll bar, we need to test vscrolling again.
 			if (hNeedScrollBar && !f.vScrolling) {
 				wrapper.css("float", "left");
@@ -2391,8 +2492,10 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 			vNeedScrollBar = self.vNeedScrollBar =
 			self._needScrollbar(o.vScroller, f.vScrolling);
-			self._createBarIfNeeded(self.vNeedScrollBar, scrollerWrapper, "v",
-			vbarHtml, content);
+			if (self._createBarIfNeeded(vNeedScrollBar, scrollerWrapper, "v",
+			vbarHtml, content) === false) {
+				return false;
+			}
 
 			if (vNeedScrollBar && !f.hScrolling) {
 				wrapper.css("float", "left");
@@ -2400,11 +2503,13 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				f.hScrolling = f.contentWidth > (contentWidth -
 				f.vbarContainer[0].offsetWidth);
 				wrapper.css("float", "");
-				if (f.hScrolling) {
+				if (f.hScrolling && !hNeedScrollBar) {
 					hNeedScrollBar = self.hNeedScrollBar =
 					self._needScrollbar(o.hScroller, f.hScrolling);
-					self._createBarIfNeeded(self.hNeedScrollBar, scrollerWrapper, "h",
-					 hbarHtml, content);
+					if (self._createBarIfNeeded(hNeedScrollBar, scrollerWrapper, "h",
+					 hbarHtml, content) === false) {
+						return false;
+					}
 				}
 			}
 
@@ -2580,13 +2685,13 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			style.display = "";
 		}
 	});
-}(jQuery));
+} (jQuery));
 
 /*globals window,document,jQuery,clearTimeout,setTimeout*/
 
 /*
 *
-* Wijmo Library 1.1.2
+* Wijmo Library 1.1.4
 * http://wijmo.com/
 *
 * Copyright(c) ComponentOne, LLC.  All rights reserved.
@@ -2620,6 +2725,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// (if the triggerEvent set to 'click') show submenu.  If set to a element
 			/// out of the menu, click(if the triggerEvent set to 'click') it, open the
 			/// menu.
+			/// Code example: $(".selector").wijmenu("option", "trigger", "")
 			/// </summary>
 			trigger: '',
 			/// <summary>
@@ -2628,6 +2734,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Type: String.
 			/// Remark: The value can be seted to 'click', 'mouseenter', 'dbclick',
 			/// 'rtclick'
+			/// Code example: $(".selector").wijmenu("option", "triggerEvent", "click")
 			/// </summary>
 			triggerEvent: 'click',
 			/// <summary>
@@ -2637,6 +2744,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// detection automatically too.
 			/// Default: {}.
 			/// Type: Object.
+			/// Code example: $(".selector").wijmenu("option", "position", {})
 			/// </summary>
 			position: {},
 			/// <summary>
@@ -2644,24 +2752,42 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Default: { animated: "slide", duration: 400, easing: null }.
 			/// Type: Object.
 			/// Remark: User's standard animation setting syntax from other widgets.
+			/// Code example: $(".selector").wijmenu("option", "animation", {})
 			/// </summary>
 			animation: { animated: "slide", duration: 400, easing: null },
 			/// <summary>
 			/// Determine the animation used to show submenu.
 			/// Default: {}.
 			/// Type: Object.
+			/// Code example: $(".selector").wijmenu("option", "showAnimation", {})
 			/// </summary>
 			showAnimation: {},
 			/// <summary>
 			/// Determine the animation used to hide submenu.
 			/// Default: { animated: "fade", duration: 400, easing: null }.
 			/// Type: Object.
+			/// Code example: $(".selector").wijmenu("option", "hideAnimation", {})
 			/// </summary>
 			hideAnimation: { animated: "fade", duration: 400, easing: null },
+			/// <summary>
+			/// When the menu is flyout menu, determines how many milliseconds delay to show submenu.
+			/// Default: 400
+			/// Type: Number
+            /// Code example: $(".selector").wijmenu("option", "showDelay", 400);
+            /// </summary>
+			showDelay: 400,
+			/// <summary>
+			/// When the menu is flyout menu, determines how many milliseconds delay to hide submenu.
+			/// Default: 400
+			/// Type: Number
+            /// Code exapmle: $(".selector").wijmenu("option", "hideDelay", 400).
+            /// </summary>
+            hideDelay: 400,
 			/// <summary>
 			/// Determine the animation used to slide submenu in sliding mode.
 			/// Default: { duration: 400, easing: null }.
 			/// Type: Object.
+			/// Code example: $(".selector").wijmenu("option", "slidingAnimation", {})
 			/// </summary>
 			slidingAnimation: { duration: 400, easing: null },
 			/// <summary>
@@ -2670,6 +2796,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Default:"flyout".
 			/// Type:String.
 			/// Remarks: Possible values are "flyout" or "sliding".
+			/// Code example: $(".selector").wijmenu("option", "mode", "sliding")
 			/// </summary>
 			mode: 'flyout',
 			/// <summary>
@@ -2677,12 +2804,14 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// when a superpanel is created.
 			/// Default: null.
 			/// Type: Object.
+			/// Code example: $(".selector").wijmenu("option", "superPanelOptions", {})
 			/// </summary>
 			superPanelOptions: null,
 			/// <summary>
 			/// Defines whether the item can be checked.
 			/// Default: false.
 			/// Type: Boolean.
+			/// Code example: $(".selector").wijmenu("option","chackable", true).
 			/// </summary>
 			checkable: false,
 			/// <summary>
@@ -2691,6 +2820,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Default: "horizontal".
 			/// Type: String.
 			/// Remark: The value should be "horizontal" or "vertical".
+			/// Code example: $(".selector").wijmenu("option", "orientation", "vertical")
 			/// </summary>
 			orientation: 'horizontal',
 			/// <summary>
@@ -2699,6 +2829,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// Type: Number.
 			/// Remark: This option only used in i-pod style menu.  When the menu's
 			/// heiget largger than this value, menu show scroll bar.
+			/// Code example: $(".selector").wijmenu("option", "maxHeight", 200)
 			/// </summary>
 			maxHeight: 200,
 			/// <summary>
@@ -2706,26 +2837,89 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			/// in the menu.
 			/// Default: true.
 			/// Type: Boolean.
+			/// Code example: $(".selector").wijmenu("option", "backLink", true)
 			/// </summary>
 			backLink: true,
 			/// <summary>
 			/// Sets the text of the back link.
 			/// Default: "Back".
 			/// Type: String.
+			/// Code example: $(".selector").wijmenu("option", "backLinkText", "Back")
 			/// </summary>
 			backLinkText: 'Back',
 			/// <summary>
 			/// Sets the text of the top link.
 			/// Default: "All".
 			/// Type: String.
+			/// Code example: $(".selector").wijmenu("option", "topLinkText", "All")
 			/// </summary>
 			topLinkText: 'All',
 			/// <summary>
 			/// Sets the top breadcrumb's default Text.
 			/// Default: "Choose an option".
 			/// Type: String.
+			/// Code example: $(".selector").wijmenu("option", "crumbDefaultText",
+			/// "Choose")
 			/// </summary>
-			crumbDefaultText: 'Choose an option'
+			crumbDefaultText: 'Choose an option',
+			/// <summary>
+			/// Triggered when a menu item is selected.
+			/// Default: null
+			/// Type: Function
+			/// code example:
+			/// Supply a function as an option.
+			/// $("#selector").wijmenu("select", function(e, data){})
+			/// Bind to the event by type: wijmenuselect
+			/// $(".selector").bind("wijmenuselect", function(e, data) { } );
+			/// </summary>
+			/// <param name="e" type="EventObj">jQuery.Event object.</param>
+			/// <param name="data" type="Object">data.item is the avtive
+			/// item of the menu.</param>
+			select: null,
+			/// <summary>
+			/// Triggered when a menu item gets the foucs, either when the mouse is
+			/// used to hover over it (on hover) or when the cursor keys are used
+			/// on the keyboard(navigation width cursor key) focus.
+			/// Default: null.
+			/// Type: Function
+			/// Code example:
+			/// Supply a function as an option.
+			/// $("#selector").wijmenu("focus", function(e, data) {})
+			/// Bind to the event by type: wijmenufocus
+			/// $(".selector").bind("wijmenufocus", function(e, data) { } );
+			/// </summary>
+			/// <param name="e" type="Object">jQuery.Event object</param>
+			/// <param name="data" type="Object">data.item is the item
+			/// which is focused.</param>
+			focus: null,
+			/// <summary>
+			/// Triggered when a menu item loses focus.
+			/// Default: null.
+			/// Type: Function.
+			/// Code example:
+			/// Supply a function as an option.
+			/// $("#selector").wijmenu("blur", function(e, data){})
+			/// Bind to the event by type: wijmenublur
+			/// $(".selector").bind("wijmenublur", function(e, data) { } );
+			/// </summary>
+			/// <param name="e" type="Object">jQuery.Event object.</param>
+			/// <param name="data" type="Object">data.item is the a menu item
+			/// which loses focus.</param>
+			blur: null,
+			/// <summary>
+			/// Triggered before showing the submenu.
+			/// Default: null.
+			/// Type: Function.
+			/// Code example:
+			/// Supply a function as an option.
+			/// $("#selector").wijmenu("showing", function(e, sublist){})
+			/// Bind to the event by type: wijmenushowing
+			/// $(".selector").bind("wijmenushowing", function(e, data) { } );
+			/// </summary>
+			/// <param name="e" type="Object">the event object relates to the
+			/// submenu's parent item.</param>
+			/// <param name="sublist" type="Element">the submenu element.</param>
+			showing: null
 		},
 
 		_preventEvent: function (event) {
@@ -3047,7 +3241,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				triggerEle = self._getTriggerEle();
 
 			self._killtrigger();
-			o.triggerEvent = value;
+			o.trigger = value;
 			if (triggerEle.length > 0) {
 				self._initTrigger(triggerEle);
 			}
@@ -3155,7 +3349,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 
 			scrollcontainer.addClass("scrollcontainer checkablesupport");
-			menucontainer.addClass("ui-widget ui-widget-content " + menuCss +
+			menucontainer.addClass("ui-widget ui-widget-header " + menuCss +
 				" ui-corner-all ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
 			if (o.orientation === "horizontal" && o.mode === "flyout") {
@@ -3231,10 +3425,16 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				if ($(e.target).parent().is(".wijmo-wijmenu-all-lists")) {
 					return;
 				}
+
 				var obj = $(e.target).closest(".wijmo-wijmenu");
 				if (obj.length === 0) {
 					if (o.mode === "sliding") {
 						breadcrumb = $(".wijmo-wijmenu-breadcrumb", menucontainer);
+						// fixed a bug, when the trigger is not seted.
+						// when click the document, trigger this method!
+						if (o.trigger === "") {
+							return;
+						}
 						self._resetDrilldownMenu(breadcrumb);
 					}
 					else if (o.mode === "flyout" && o.triggerEvent !== "mouseenter") {
@@ -3357,7 +3557,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 						showTimer = setTimeout(function () {
 							self._displaySubmenu(e, link, subList);
-						}, 400);
+						}, o.showDelay);
 					}).bind("mouseleave" + nameSpace,
 					function () {
 						clearTimeout(showTimer);
@@ -3369,7 +3569,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 						}
 						hideTimer = setTimeout(function () {
 							self._hideSubmenu(subList);
-						}, 400);
+						}, o.hideDelay);
 					});
 
 					$(this).find("ul ." + linkCss + ",ul >.ui-widget-header,ul " +
@@ -3382,7 +3582,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 							for (var i = allSubLists.length - 1; i >= 0; i--) {
 								self._hideSubmenu($(allSubLists[i]));
 							}
-						}, 500);
+						}, o.hideDelay);
 					});
 				}
 			});
@@ -4054,3 +4254,5 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 		}
 	});
 } (jQuery));
+
+
