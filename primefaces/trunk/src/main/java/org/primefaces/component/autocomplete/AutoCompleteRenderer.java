@@ -126,17 +126,17 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         Object value = ac.getValue();
-        String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
+        if(ac.getStyle() != null) writer.writeAttribute("style", ac.getStyle(), null);
+        if(ac.getStyleClass() != null) writer.writeAttribute("class", ac.getStyleClass(), null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
-        if (value != null) {
+        if(value != null) {
             if (ac.getVar() == null) {
                 writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac), null);
             } else {
@@ -145,9 +145,14 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
 
+        if(ac.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
 
-        writer.writeAttribute("class", styleClass, "styleClass");
+        if(themeForms()) {
+            writer.writeAttribute("class", AutoComplete.STYLE_CLASS, null);
+        }
 
         writer.endElement("input");
 
@@ -201,6 +206,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
 
         encodeClientBehaviors(facesContext, ac);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 
         writer.write("});});");
 

@@ -92,18 +92,16 @@ public class HTML {
 		"width",
 		"style"
 	};
-	
+
+    //disabled, readonly, style, styleClass handles by component renderer
 	public static String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
 		"accesskey",
 		"alt",
         "autocomplete",
 		"dir",
-		"disabled",
 		"lang",
 		"maxlength",
-		"readonly",
 		"size",
-		"style",
 		"tabindex",
 		"title"
 	};

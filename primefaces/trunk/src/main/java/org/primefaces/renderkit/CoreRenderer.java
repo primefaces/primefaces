@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 public class CoreRenderer extends Renderer {
 	
@@ -330,5 +331,12 @@ public class CoreRenderer extends Renderer {
 
             writer.write("}");
         }
+    }
+
+    protected boolean themeForms() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String value = context.getExternalContext().getInitParameter(Constants.THEME_FORMS_PARAM);
+
+        return value == null ? true : Boolean.valueOf(value);
     }
 }
