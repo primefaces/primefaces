@@ -356,6 +356,9 @@
                             <execution>
                                 <id>css-compressor</id>
                                 <phase>process-resources</phase>
+                                <configuration>
+                                    <theme>false</theme>
+                                </configuration>
                                 <goals>
                                     <goal>compress-css</goal>
                                 </goals>
