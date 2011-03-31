@@ -87,7 +87,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function(){");
+        writer.write("$(function(){");
 		
 		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.FileUpload('" + clientId + "', {");
 
