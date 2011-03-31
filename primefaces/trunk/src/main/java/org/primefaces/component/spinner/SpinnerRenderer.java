@@ -26,6 +26,7 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public class SpinnerRenderer extends InputRenderer {
 
@@ -75,6 +76,10 @@ public class SpinnerRenderer extends InputRenderer {
         if(spinner.isDisabled() || spinner.isReadonly()) writer.write(",disabled:true");
 
         encodeClientBehaviors(context, spinner);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
  		
 		writer.write("});});");
 		
@@ -110,7 +115,6 @@ public class SpinnerRenderer extends InputRenderer {
 		writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("class", Spinner.INPUT_CLASS, null);
         writer.writeAttribute("autocomplete", "off", null);
 
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
@@ -118,9 +122,13 @@ public class SpinnerRenderer extends InputRenderer {
 
 		String valueToRender = ComponentUtils.getStringValueToRender(context, spinner);
 		if(valueToRender != null) {
-			writer.writeAttribute("value", valueToRender , null);
+			writer.writeAttribute("value", valueToRender, null);
 		}
-		renderPassThruAttributes(context, spinner, Spinner.ATTRS);
+		renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS);
+
+        String inputClass = themeForms() ? Spinner.THEME_INPUT_CLASS : Spinner.PLAIN_INPUT_CLASS;
+        writer.writeAttribute("class", inputClass, null);
+
 		writer.endElement("input");
     }
 
