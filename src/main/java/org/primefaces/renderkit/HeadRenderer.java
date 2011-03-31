@@ -18,7 +18,6 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -30,10 +29,9 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import org.primefaces.util.Constants;
 
 public class HeadRenderer extends Renderer {
-
-    private final static Logger logger = Logger.getLogger(HeadRenderer.class.getName());
 
 	@Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -42,21 +40,9 @@ public class HeadRenderer extends Renderer {
 
         //Theme
         String theme = null;
-        String oldestThemeParamValue = context.getExternalContext().getInitParameter("primefaces.skin");
-        String oldThemeParamValue = context.getExternalContext().getInitParameter("primefaces.SKIN");
-        String themeParamValue = context.getExternalContext().getInitParameter("primefaces.THEME");
+        String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
 
-        if(oldestThemeParamValue != null) {
-            logger.info("primefaces.skin is deprecated, use primefaces.THEME instead.");
-
-            theme = oldestThemeParamValue;
-        }
-        else if(oldThemeParamValue != null) {
-            logger.info("primefaces.SKIN is deprecated, use primefaces.THEME instead.");
-            
-            theme = oldThemeParamValue;
-        }
-        else if(themeParamValue != null) {
+       if(themeParamValue != null) {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
