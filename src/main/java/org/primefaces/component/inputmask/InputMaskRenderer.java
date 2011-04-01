@@ -73,6 +73,10 @@ public class InputMaskRenderer extends InputRenderer {
 
         encodeClientBehaviors(context, inputMask);
 
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
+
 		writer.write("});");
 	
 		writer.endElement("script");
@@ -81,8 +85,9 @@ public class InputMaskRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
+        String defaultClass = themeForms() ? InputMask.THEME_INPUT_CLASS : InputMask.PLAIN_INPUT_CLASS;
         String styleClass = inputMask.getStyleClass();
-        styleClass = styleClass == null ? InputMask.STYLE_CLASS : InputMask.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
@@ -95,6 +100,10 @@ public class InputMaskRenderer extends InputRenderer {
 		}
 		
 		renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS);
+
+        if(inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+        if(inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
 		
         writer.writeAttribute("class", styleClass, "styleClass");
 
