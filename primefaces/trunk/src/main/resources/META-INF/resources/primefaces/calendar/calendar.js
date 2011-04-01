@@ -968,7 +968,7 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
         }
 
         //Visuals
-        if(this.cfg.popup) {
+        if(this.cfg.popup && this.cfg.theme != false) {
             PrimeFaces.skinInput(this.jq);
         }
     }

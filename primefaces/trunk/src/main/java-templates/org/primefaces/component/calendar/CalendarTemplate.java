@@ -7,20 +7,6 @@ import org.primefaces.util.ArrayUtils;
 
 	public static String POPUP_ICON = "calendar/calendar_icon.png";
 
-    public static String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
-		"accesskey",
-		"alt",
-        "autocomplete",
-		"dir",
-		"lang",
-		"maxlength",
-		"size",
-		"tabindex",
-		"title"
-	};
-
-    public static final String[] INPUT_TEXT_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, HTML.COMMON_EVENTS, HTML.CHANGE_SELECT_EVENTS, HTML.BLUR_FOCUS_EVENTS);
-
 	private java.util.Locale appropriateLocale;
 	private java.util.TimeZone appropriateTimeZone;
 	

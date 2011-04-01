@@ -103,16 +103,6 @@
             <method-signature>void selectListener()</method-signature>
         </attribute>
         <attribute>
-            <name>inputStyle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>inputStyleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
             <name>showButtonPanel</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
