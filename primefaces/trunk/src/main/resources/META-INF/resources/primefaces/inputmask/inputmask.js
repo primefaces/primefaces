@@ -267,5 +267,7 @@ PrimeFaces.widget.InputMask = function(id, cfg) {
     }
 
     //Visuals
-    PrimeFaces.skinInput(this.jq);
+    if(this.cfg.theme != false) {
+        PrimeFaces.skinInput(this.jq);
+    }
 }
