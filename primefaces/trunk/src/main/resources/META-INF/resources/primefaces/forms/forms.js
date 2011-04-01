@@ -156,12 +156,14 @@ PrimeFaces.widget.InputText = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
 
-    //Visuals
-    PrimeFaces.skinInput(this.jq);
-
     //Client behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+    }
+
+    //Visuals
+    if(this.cfg.theme != false) {
+        PrimeFaces.skinInput(this.jq);
     }
 }
 
@@ -175,7 +177,9 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     this.jq = jQuery(this.jqId);
 
     //Visuals
-    PrimeFaces.skinInput(this.jq);
+    if(this.cfg.theme != false) {
+        PrimeFaces.skinInput(this.jq);
+    }
 
     //AutoResize
     if(this.cfg.autoResize) {

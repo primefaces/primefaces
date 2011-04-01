@@ -60,13 +60,17 @@ public class InputTextareaRenderer extends InputRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(inputTextarea.resolveWidgetVar() + " = new PrimeFaces.widget.InputTextarea('" + clientId + "', {");
+        writer.write(inputTextarea.resolveWidgetVar() + " = new PrimeFaces.widget.InputTextarea('" + clientId + "',{");
 
         writer.write("autoResize:" + autoResize);
         writer.write(",maxHeight:" + inputTextarea.getMaxHeight());
         writer.write(",effectDuration:" + inputTextarea.getEffectDuration());
 
         encodeClientBehaviors(context, inputTextarea);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 
         writer.write("});");
 
@@ -76,8 +80,9 @@ public class InputTextareaRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputTextarea.getClientId(context);
+        String defaultClass = themeForms() ? InputTextarea.THEME_INPUT_CLASS : InputTextarea.PLAIN_INPUT_CLASS;
         String styleClass = inputTextarea.getStyleClass();
-        styleClass = styleClass == null ? InputTextarea.STYLE_CLASS : InputTextarea.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 
         if(inputTextarea.isAutoResize()) {
             styleClass = styleClass + " ui-inputtextarea-resizable";
@@ -88,6 +93,10 @@ public class InputTextareaRenderer extends InputRenderer {
 		writer.writeAttribute("name", clientId, null);
 
 		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
+
+        if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        if(inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
