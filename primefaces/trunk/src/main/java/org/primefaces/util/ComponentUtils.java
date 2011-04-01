@@ -19,9 +19,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -34,7 +37,9 @@ import javax.faces.model.SelectItem;
 import org.primefaces.component.api.Widget;
 
 public class ComponentUtils {
-	
+
+    private final static Logger logger = Logger.getLogger(ComponentUtils.class.getName());
+
 	/**
 	 * Algorithm works as follows;
 	 * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
@@ -208,13 +213,13 @@ public class ComponentUtils {
 		return process;
 	}
 	
-	public static String findClientIds(FacesContext facesContext, UIComponent component, String list) {
+	public static String findClientIds(FacesContext context, UIComponent component, String list) {
 		if(list == null)
 			return "@none";
 		
-		String formattedList = formatKeywords(facesContext, component, list);
+		String formattedList = formatKeywords(context, component, list);
 		String[] ids = formattedList.split("[,\\s]+");
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		
 		for(int i = 0; i < ids.length; i++) {
 			if(i != 0)
@@ -226,10 +231,15 @@ public class ComponentUtils {
 				buffer.append(id);
 			else {
 				UIComponent comp = component.findComponent(id);
-				if(comp != null)
-					buffer.append(comp.getClientId(facesContext));
-				else
+				if(comp != null) {
+					buffer.append(comp.getClientId(context));
+                }
+				else {
+                    if(context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
+                        logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
+                    }
 					buffer.append(id);
+                }
 			}
 		}
 		
