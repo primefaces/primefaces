@@ -26,13 +26,15 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		OutputPanel panel = (OutputPanel) component;
-		String tagName = getLayoutTag(facesContext, panel);
+        String clientId = panel.getClientId(context);
+		String tagName = getLayoutTag(context, panel);
 		
 		writer.startElement(tagName, panel);
-		writer.writeAttribute("id", panel.getClientId(facesContext), "id");
+		writer.writeAttribute("id", clientId, "id");
 		
 		if(panel.getStyle() != null) {
 			writer.writeAttribute("style", panel.getStyle(), "style");
@@ -41,27 +43,33 @@ public class OutputPanelRenderer extends CoreRenderer {
 			writer.writeAttribute("class", panel.getStyleClass(), "styleClass");
 		}
 		
-		renderChildren(facesContext, panel);
+		renderChildren(context, panel);
 		
 		writer.endElement(tagName);
+
+        if(panel.isAutoUpdate()) {
+            addToAutoUpdate(clientId);
+        }
 	}
-	
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+
+    @Override
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
-	
+
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
 	
-	protected String getLayoutTag(FacesContext facesContext, OutputPanel panel) {
+	protected String getLayoutTag(FacesContext context, OutputPanel panel) {
 		String layout = panel.getLayout();
 		if(layout.equalsIgnoreCase("inline"))
 			return "span";
 		else if(layout.equalsIgnoreCase("block"))
 			return "div";
 		else
-			throw new FacesException("Layout type '" + layout + "' is not a valid value for OutputPanel '" + panel.getClientId(facesContext)  + "'");
+			throw new FacesException("Layout type '" + layout + "' is not a valid value for OutputPanel '" + panel.getClientId(context)  + "'");
 	}
 	
 }

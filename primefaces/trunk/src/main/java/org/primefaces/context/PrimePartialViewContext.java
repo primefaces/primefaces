@@ -15,11 +15,14 @@
  */
 package org.primefaces.context;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
+import org.primefaces.util.Constants;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
@@ -55,15 +58,17 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public Collection<String> getRenderIds() {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        List<String> ids = new ArrayList<String>(getWrapped().getRenderIds());
+        Collection<String> partialUpdateTargets = RequestContext.getCurrentInstance().getPartialUpdateTargets();
+        Collection<String> autoUpdateIds = (Collection<String>) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get(Constants.AUTO_UPDATE);
+        
+        ids.addAll(partialUpdateTargets);
 
-        if (requestContext == null || requestContext.getPartialUpdateTargets().isEmpty()) {
-            return getWrapped().getRenderIds();
-        } else {
-            requestContext.addPartialUpdateTargets(getWrapped().getRenderIds());
-
-            return requestContext.getPartialUpdateTargets();
+        if(autoUpdateIds != null) {
+            ids.addAll(autoUpdateIds);
         }
+
+        return ids;
     }
 
     @Override
