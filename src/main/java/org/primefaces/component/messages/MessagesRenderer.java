@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,12 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class MessagesRenderer extends CoreRenderer {
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		Messages uiMessages = (Messages) component;
-		ResponseWriter writer = facesContext.getResponseWriter();
-		Iterator<FacesMessage> allMessages = uiMessages.isGlobalOnly() ? facesContext.getMessages(null) : facesContext.getMessages();
+		ResponseWriter writer = context.getResponseWriter();
+        String clientId = uiMessages.getClientId(context);
+		Iterator<FacesMessage> allMessages = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
 		Map<String, List<FacesMessage>> messages = new HashMap<String, List<FacesMessage>>();
 		messages.put("info", new ArrayList<FacesMessage>());
 		messages.put("warn", new ArrayList<FacesMessage>());
@@ -55,21 +57,25 @@ public class MessagesRenderer extends CoreRenderer {
 		}
 		
 		writer.startElement("div", uiMessages);
-		writer.writeAttribute("id", uiMessages.getClientId(facesContext), "id");
+		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-messages ui-widget", null);
 		
 		for(String severity : messages.keySet()) {
 			List<FacesMessage> severityMessages = messages.get(severity);
 			
 			if(severityMessages.size() > 0)
-				encodeSeverityMessages(facesContext, uiMessages, severity, severityMessages);
+				encodeSeverityMessages(context, uiMessages, severity, severityMessages);
 		}
 		
 		writer.endElement("div");
+
+        if(uiMessages.isAutoUpdate()) {
+            addToAutoUpdate(clientId);
+        }
 	}
 
-	private void encodeSeverityMessages(FacesContext facesContext, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	private void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		String styleClassPrefix = "ui-messages-" + severity;
 		
 		writer.startElement("div", null);

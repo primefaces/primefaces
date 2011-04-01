@@ -16,7 +16,9 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -338,5 +340,18 @@ public class CoreRenderer extends Renderer {
         String value = context.getExternalContext().getInitParameter(Constants.THEME_FORMS_PARAM);
 
         return value == null ? true : Boolean.valueOf(value);
+    }
+
+    protected void addToAutoUpdate(String clientId) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String,Object> viewMap = context.getViewRoot().getViewMap();
+        Collection<String> autoUpdateIds = (Collection<String>) viewMap.get(Constants.AUTO_UPDATE);
+
+        if(autoUpdateIds == null) {
+            autoUpdateIds = new HashSet<String>();
+            autoUpdateIds.add(clientId);
+        }
+
+        viewMap.put(Constants.AUTO_UPDATE, autoUpdateIds);
     }
 }

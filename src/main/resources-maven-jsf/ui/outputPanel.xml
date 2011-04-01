@@ -29,5 +29,11 @@
 			<type>java.lang.String</type>
 			<defaultValue>inline</defaultValue>
 		</attribute>
+        <attribute>
+			<name>autoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
 	</attributes>
 </component>

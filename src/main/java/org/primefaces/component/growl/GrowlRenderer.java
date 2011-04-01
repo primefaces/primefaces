@@ -16,7 +16,11 @@
 package org.primefaces.component.growl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -24,14 +28,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 
 public class GrowlRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		Growl growl = (Growl) component;
-		String clientId = growl.getClientId(facesContext);
+		String clientId = growl.getClientId(context);
 		
 		writer.startElement("span", growl);
 		writer.writeAttribute("id", clientId, "id");
@@ -40,13 +45,13 @@ public class GrowlRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function(){");
+		writer.write("$(function(){");
 
-		Iterator<FacesMessage> messages = growl.isGlobalOnly() ? facesContext.getMessages(null) : facesContext.getMessages();
+		Iterator<FacesMessage> messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
 		
 		while(messages.hasNext()) {
 			FacesMessage message = messages.next();
-			String severityImage = getImage(facesContext, growl, message);
+			String severityImage = getImage(context, growl, message);
 			String summary = message.getSummary().replaceAll("'", "\\\\'");
 			String detail = message.getDetail().replaceAll("'", "\\\\'");
 			
@@ -77,6 +82,10 @@ public class GrowlRenderer extends CoreRenderer {
 		writer.write("});");
 		
 		writer.endElement("script");
+
+        if(growl.isAutoUpdate()) {
+            addToAutoUpdate(clientId);
+        }
 	}
 	
 	protected String getImage(FacesContext facesContext, Growl growl, FacesMessage message) {

@@ -24,4 +24,5 @@ public class Constants {
 
     public static final String THEME_PARAM = "primefaces.THEME";
     public static final String THEME_FORMS_PARAM = "primefaces.THEME_FORMS";
+    public static final String AUTO_UPDATE = "primefaces.AUTO_UPDATE";
 }
