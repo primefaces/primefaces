@@ -30,6 +30,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public class CalendarRenderer extends InputRenderer {
 
@@ -91,16 +92,11 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if(popup) {
-            String inputStyleClass = calendar.getInputStyleClass();
-            inputStyleClass = inputStyleClass == null ? Calendar.INPUT_STYLE_CLASS : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
-
-            writer.writeAttribute("class", inputStyleClass, null);
-
-            if(calendar.getInputStyle() != null) writer.writeAttribute("style", calendar.getInputStyle(), null);
+            if(themeForms()) writer.writeAttribute("class", Calendar.INPUT_STYLE_CLASS, null);
             if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
-            renderPassThruAttributes(context, calendar, Calendar.INPUT_TEXT_ATTRS);
+            renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS);
         }
 
         writer.endElement("input");
@@ -189,6 +185,10 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         encodeClientBehaviors(context, calendar);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 
         writer.write("});});");
 
