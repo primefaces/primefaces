@@ -67,6 +67,10 @@ public class InputTextRenderer extends InputRenderer {
 
         encodeClientBehaviors(context, inputText);
 
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
+
         writer.write("});");
 
 		writer.endElement("script");
@@ -75,8 +79,9 @@ public class InputTextRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputText.getClientId(context);
+        String defaultClass = themeForms() ? InputText.THEME_INPUT_CLASS : InputText.PLAIN_INPUT_CLASS;
         String styleClass = inputText.getStyleClass();
-        styleClass = styleClass == null ? InputText.STYLE_CLASS : InputText.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
@@ -89,6 +94,10 @@ public class InputTextRenderer extends InputRenderer {
 		}
 
 		renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS);
+
+        if(inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        if(inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
