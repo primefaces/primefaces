@@ -82,6 +82,10 @@ public class KeyboardRenderer extends InputRenderer {
 		if(keyboard.getCloseLabel() != null) writer.write(",closeText:'" + keyboard.getCloseLabel() + "'");
 
         encodeClientBehaviors(context, keyboard);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 	
 		writer.write("});");
 		
@@ -92,18 +96,23 @@ public class KeyboardRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = keyboard.getClientId(context);
 		String type = keyboard.isPassword() ? "password" : "text";
+        String defaultClass = themeForms() ? Keyboard.THEME_INPUT_CLASS : Keyboard.PLAIN_INPUT_CLASS;
         String styleClass = keyboard.getStyleClass();
-        styleClass = styleClass == null ? Keyboard.STYLE_CLASS : Keyboard.STYLE_CLASS + " " + styleClass;
-		
+        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+
 		writer.startElement("input", keyboard);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", type, null);
-
 		writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, keyboard), null);
-        
-		renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
+
+        renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
+
         writer.writeAttribute("class", styleClass, "styleClass");
+
+        if(keyboard.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(keyboard.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+        if(keyboard.getStyle() != null) writer.writeAttribute("style", keyboard.getStyle(), "style");
 
 		writer.endElement("input");		
 	}
