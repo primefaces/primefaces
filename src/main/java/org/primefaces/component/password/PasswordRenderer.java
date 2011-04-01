@@ -37,8 +37,8 @@ public class PasswordRenderer extends InputRenderer {
 
         decodeBehaviors(context, password);
 
-		String clientId = password.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+		String paramKey = password.getClientId(context) + "_input";
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(paramKey);
 
         if(submittedValue != null) {
             password.setSubmittedValue(submittedValue);
@@ -61,7 +61,7 @@ public class PasswordRenderer extends InputRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function(){");
+		writer.write("$(function(){");
 
 		writer.write(password.resolveWidgetVar() + " = new PrimeFaces.widget.Password('" + clientId + "', {");
 
@@ -77,11 +77,14 @@ public class PasswordRenderer extends InputRenderer {
             if(password.getGoodLabel() != null) writer.write(",goodLabel:'" + password.getGoodLabel() + "'");
             if(password.getStrongLabel() != null) writer.write(",strongLabel:'" + password.getStrongLabel() + "'");
             if(password.getOnshow() != null) writer.write(",onShow:" + password.getOnshow());
-            if(password.getOnhide() != null) writer.write(",onHide:" + password.getOnhide());
-            
+            if(password.getOnhide() != null) writer.write(",onHide:" + password.getOnhide());   
         }
 
         encodeClientBehaviors(context, password);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 
 		writer.write("});});");
         
@@ -91,12 +94,16 @@ public class PasswordRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, Password password) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
-        String styleClass = password.getStyleClass();
-        styleClass = styleClass == null ? Password.STYLE_CLASS : Password.STYLE_CLASS + " " + styleClass;
+        String inputId = clientId + "_input";
+
+        writer.startElement("span", password);
+        writer.writeAttribute("id", clientId, "id");
+        if(password.getStyle() != null) writer.writeAttribute("style", password.getStyle(), null);
+        if(password.getStyleClass() != null) writer.writeAttribute("class", password.getStyleClass(), null);
 		
 		writer.startElement("input", password);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("name", clientId, null);
+		writer.writeAttribute("id", inputId, "id");
+		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "password", null);
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(context, password);
@@ -105,9 +112,16 @@ public class PasswordRenderer extends InputRenderer {
 		}
 		
 		renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS);
+
+        if(password.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+
+        if(themeForms()) {
+            writer.writeAttribute("class", Password.STYLE_CLASS, null);
+        }
 		
-        writer.writeAttribute("class", styleClass, "styleClass");
-		
-		writer.endElement("input");		
+		writer.endElement("input");
+
+        writer.endElement("span");
 	}
 }

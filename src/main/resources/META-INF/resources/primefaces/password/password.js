@@ -20,7 +20,7 @@ PrimeFaces.widget.Password = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
+    this.jq = jQuery(this.jqId + '_input');
 
     if(this.cfg.feedback) {
 
@@ -57,5 +57,7 @@ PrimeFaces.widget.Password = function(id, cfg) {
     }
 
     //Visuals
-    PrimeFaces.skinInput(this.jq);
+    if(this.cfg.theme != false) {
+        PrimeFaces.skinInput(this.jq);
+    }
 }
