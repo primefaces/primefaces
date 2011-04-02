@@ -36,27 +36,37 @@ public class GalleriaRenderer extends CoreRenderer {
         Galleria galleria = (Galleria) component;
         String styleClass = galleria.getStyleClass();
         styleClass = styleClass == null ? "ui-galleria" : "ui-galleria " + styleClass;
-        int dataCount = galleria.getRowCount();
         
         writer.startElement("ul", null);
         writer.writeAttribute("id", galleria.getClientId(context), null);
         writer.writeAttribute("class", styleClass, "style");
+        if(galleria.getStyle() !=  null)
+            writer.writeAttribute("style", galleria.getStyle(), "style");
 
-        if(galleria.getStyle() !=  null) writer.writeAttribute("style", galleria.getStyle(), "style");
+        if(galleria.getVar() == null) {
+            for(UIComponent child : galleria.getChildren()) {
+                if(child.isRendered()) {
+                    writer.startElement("li", null);
+                    child.encodeAll(context);
+                    writer.endElement("li");
+                }
+            }
+        }
+        else {
+            for(int i=0; i < galleria.getRowCount(); i++) {
+                galleria.setRowIndex(i);
 
-        for(int i=0; i < dataCount; i++) {
-            galleria.setRowIndex(i);
+                writer.startElement("li", null);
 
-            writer.startElement("li", null);
+                renderChildren(context, galleria);
 
-            renderChildren(context, galleria);
+                writer.endElement("li");
+            }
 
-            writer.endElement("li");
+            galleria.setRowIndex(-1);
         }
 
         writer.endElement("ul");
-
-        galleria.setRowIndex(-1);
     }
 
     public void encodeScript(FacesContext context, UIComponent component) throws IOException {
