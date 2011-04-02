@@ -13,7 +13,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
 	<rendererClass>org.primefaces.component.datatable.DataTableRenderer</rendererClass>
-	<parent>javax.faces.component.UIData</parent>
+	<parent>org.primefaces.component.api.UIData</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
