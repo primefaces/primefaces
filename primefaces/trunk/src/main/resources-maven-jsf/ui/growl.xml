@@ -11,6 +11,11 @@
 	<rendererType>org.primefaces.component.GrowlRenderer</rendererType>
 	<rendererClass>org.primefaces.component.growl.GrowlRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+        <interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>

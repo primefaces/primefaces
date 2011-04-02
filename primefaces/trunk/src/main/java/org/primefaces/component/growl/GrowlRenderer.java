@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,7 @@
 package org.primefaces.component.growl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -28,7 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
 
 public class GrowlRenderer extends CoreRenderer {
 
@@ -37,6 +32,7 @@ public class GrowlRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Growl growl = (Growl) component;
 		String clientId = growl.getClientId(context);
+        String widgetVar = growl.resolveWidgetVar();
 		
 		writer.startElement("span", growl);
 		writer.writeAttribute("id", clientId, "id");
@@ -44,49 +40,67 @@ public class GrowlRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("$(function(){");
 
-		Iterator<FacesMessage> messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-		
-		while(messages.hasNext()) {
-			FacesMessage message = messages.next();
-			String severityImage = getImage(context, growl, message);
-			String summary = message.getSummary().replaceAll("'", "\\\\'");
-			String detail = message.getDetail().replaceAll("'", "\\\\'");
-			
-			writer.write("jQuery.gritter.add({");
-			
-			if(growl.isShowSummary() && growl.isShowDetail()) 
-				writer.write("title:'" + summary + "',text:'" + detail + "'");
-			else if(growl.isShowSummary() && !growl.isShowDetail())
-				writer.write("title:'" + summary + "',text:''");
-			else if(!growl.isShowSummary() && growl.isShowDetail())
-				writer.write("title:'',text:'" + detail + "'");
-			
-			if(!isValueBlank(severityImage))
-				writer.write(",image:'" + severityImage + "'");
-			
-			if(growl.isSticky())
-				writer.write(",sticky:true");
-			else
-				writer.write(",sticky:false");
-			
-			if(growl.getLife() != 6000) writer.write(",time:" + growl.getLife());
-			
-			writer.write("});");	
-			
-			message.rendered();
-		}
-		
-		writer.write("});");
-		
+        if(isAjaxRequest(context)) {
+            writer.write(widgetVar + ".show(");
+            encodeMessages(context, growl);
+            writer.write(");");
+        } else {
+            writer.write("$(function(){");
+            writer.write(widgetVar + " = new PrimeFaces.widget.Growl('" + clientId +"',");
+            encodeMessages(context, growl);
+            writer.write(");});");
+        }
+	
 		writer.endElement("script");
 
         if(growl.isAutoUpdate()) {
             addToAutoUpdate(clientId);
         }
 	}
+
+    protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Iterator<FacesMessage> messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+
+        writer.write("[");
+
+		while(messages.hasNext()) {
+			FacesMessage message = messages.next();
+			String severityImage = getImage(context, growl, message);
+			String summary = message.getSummary().replaceAll("'", "\\\\'");
+			String detail = message.getDetail().replaceAll("'", "\\\\'");
+
+            writer.write("{");
+
+			if(growl.isShowSummary() && growl.isShowDetail())
+				writer.write("title:'" + summary + "',text:'" + detail + "'");
+			else if(growl.isShowSummary() && !growl.isShowDetail())
+				writer.write("title:'" + summary + "',text:''");
+			else if(!growl.isShowSummary() && growl.isShowDetail())
+				writer.write("title:'',text:'" + detail + "'");
+
+			if(!isValueBlank(severityImage))
+				writer.write(",image:'" + severityImage + "'");
+
+			if(growl.isSticky())
+				writer.write(",sticky:true");
+			else
+				writer.write(",sticky:false");
+
+			if(growl.getLife() != 6000)
+                writer.write(",time:" + growl.getLife());
+
+            writer.write("}");
+
+            if(messages.hasNext())
+                writer.write(",");
+            
+			message.rendered();
+		}
+
+        writer.write("]");
+    }
 	
 	protected String getImage(FacesContext facesContext, Growl growl, FacesMessage message) {
         FacesMessage.Severity severity = message.getSeverity();
