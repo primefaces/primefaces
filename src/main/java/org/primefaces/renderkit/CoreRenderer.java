@@ -88,6 +88,10 @@ public class CoreRenderer extends Renderer {
 		return facesContext.getRenderKit().getResponseStateManager().isPostback(facesContext);
 	}
 
+    public boolean isAjaxRequest(FacesContext facesContext) {
+		return facesContext.getPartialViewContext().isAjaxRequest();
+	}
+
 	protected void renderPassThruAttributes(FacesContext facesContext, UIComponent component, String var, String[] attrs) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		

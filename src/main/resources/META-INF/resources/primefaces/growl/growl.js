@@ -394,3 +394,21 @@
 	}
 	
 })(jQuery);
+
+/**
+ * PrimeFaces Growl Widget
+ */
+PrimeFaces.widget.Growl = function(id, msgs) {
+    this.id = id;
+
+    this.show(msgs);
+}
+
+PrimeFaces.widget.Growl.prototype.show = function(msgs) {
+    for(var i in msgs)
+        $.gritter.add(msgs[i]);
+}
+
+PrimeFaces.widget.Growl.prototype.hideAll = function() {
+    $.gritter.removeAll();
+}
