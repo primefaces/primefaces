@@ -57,9 +57,7 @@ public class GalleriaRenderer extends CoreRenderer {
                 galleria.setRowIndex(i);
 
                 writer.startElement("li", null);
-
                 renderChildren(context, galleria);
-
                 writer.endElement("li");
             }
 
