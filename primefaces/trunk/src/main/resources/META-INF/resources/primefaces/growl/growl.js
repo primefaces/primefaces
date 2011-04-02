@@ -405,8 +405,18 @@ PrimeFaces.widget.Growl = function(id, msgs) {
 }
 
 PrimeFaces.widget.Growl.prototype.show = function(msgs) {
-    for(var i in msgs)
-        $.gritter.add(msgs[i]);
+    if($('.ui-growl-item-container').length > 0) {
+        $.gritter.removeAll({
+            after_close:function() {
+                for(var i in msgs)
+                    $.gritter.add(msgs[i]);
+            }
+        })
+    } else {
+        for(var i in msgs)
+            $.gritter.add(msgs[i]);
+    }
+    
 }
 
 PrimeFaces.widget.Growl.prototype.hideAll = function() {
