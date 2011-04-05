@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 	private Map<String, List<String>> formParams;
 	
 	private Map<String, List<FileItem>> fileParams;
+
+    private Map<String, String[]> parameterMap;
 	
 	public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
 		super(request);
@@ -104,7 +106,17 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
 	@Override
 	public Map getParameterMap() {
-		return Collections.unmodifiableMap(formParams);
+        if(parameterMap == null) {
+            Map<String,String[]> map = new LinkedHashMap<String, String[]>();
+
+            for(String formParam : formParams.keySet()) {
+                map.put(formParam, formParams.get(formParam).toArray(new String[0]));
+            }
+            
+            parameterMap = Collections.unmodifiableMap(map);
+        }
+
+		return parameterMap;
 	}
 
 	@Override
