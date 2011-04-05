@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -28,16 +29,18 @@ import org.primefaces.renderkit.CoreRenderer;
 public class EffectRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		Effect effect = (Effect) component;
-		String parentClientId = effect.getParent().getClientId(facesContext);
+		String parentClientId = effect.getParent().getClientId(context);
 		String effectedComponentClientId = null;
+        String event = effect.getEvent();
+        String timeoutKey = "window.effect_" + effect.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
 		
 		if(effect.getFor() != null) {
 			UIComponent target = effect.findComponent(effect.getFor());
 			if(target != null)
-				effectedComponentClientId = target.getClientId(facesContext);
+				effectedComponentClientId = target.getClientId(context);
 			else
 				throw new FacesException("Cannot find component \"" + effect.getFor() + "\" in view.");
 		} else {
@@ -48,14 +51,19 @@ public class EffectRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.write("jQuery(function() {");
+		writer.write("$(function() {");
 
-		if(effect.getEvent().equals("load")) {
+        writer.write("PrimeFaces.clearTimeout(" + timeoutKey + ");");
+        writer.write(timeoutKey + " = setTimeout(function() {");
+
+		if(event.equals("load")) {
 			writer.write(animation);
 		} else {
-            writer.write("jQuery(PrimeFaces.escapeClientId('" + parentClientId + "'))");
+            writer.write("$(PrimeFaces.escapeClientId('" + parentClientId + "'))");
             writer.write(".bind('" + effect.getEvent() + "', function() {" + animation + "});");
 		}
+
+        writer.write("}," + effect.getDelay() + ");");
 
         writer.write("});");
 		

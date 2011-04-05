@@ -34,6 +34,12 @@
 			<defaultValue>1000</defaultValue>
 			<type>java.lang.Integer</type>
 		</attribute>
+        <attribute>
+			<name>delay</name>
+			<required>false</required>
+			<defaultValue>0</defaultValue>
+			<type>java.lang.Integer</type>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

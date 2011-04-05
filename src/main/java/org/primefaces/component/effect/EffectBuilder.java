@@ -25,7 +25,9 @@ public class EffectBuilder implements JSObjectBuilder {
 
 	public EffectBuilder(String type, String id) {
 		buffer = new StringBuffer();
-		buffer.append("jQuery(PrimeFaces.escapeClientId('" + id + "'))");
+		buffer.append("$(PrimeFaces.escapeClientId('");
+        buffer.append(id);
+        buffer.append("'))");
 		buffer.append(".effect('");
 		buffer.append(type);
 		buffer.append("',{");
