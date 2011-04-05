@@ -947,6 +947,23 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.jq = $(this.jqId);
     this.form = this.jq.parents('form:first');
     
+    //css
+    this.cfg.cssClass = 'ui-fileupload-browser';
+    this.cfg.cssClassSmall = 'ui-state-highlight';
+    this.cfg.cssClassLarge = 'ui-state-highlight';
+    this.cfg.cssClassHighlight = 'ui-state-active';
+    this.cfg.previewSelector = '.ui-fileupload-preview';
+    this.cfg.progressSelector = '.ui-fileupload-progress div';
+    this.cfg.cancelSelector = '.ui-fileupload-cancel button';
+
+    //namespaces
+    this.cfg.namespace = 'ui-fileupload-' + this.id;
+    this.cfg.fileInputFilter = this.jqId + '_input';
+    this.cfg.dropZone = $(this.jqId + '_browser');
+
+    //remove previous namespace
+    this.form.removeData(this.cfg.namespace);
+    
     if(this.cfg.mode != 'simple') {
         this.inputId = this.jqId + '_input';
         this.filesTable = jQuery(this.jqId + '_files');
@@ -1051,20 +1068,6 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
                 _self.cfg.oncomplete.call(_self, event, files, index, xhr, handler);
             }
         }
-
-        //css
-        this.cfg.cssClass = 'ui-fileupload-browser';
-        this.cfg.cssClassSmall = 'ui-state-highlight';
-        this.cfg.cssClassLarge = 'ui-state-highlight';
-        this.cfg.cssClassHighlight = 'ui-state-active';
-        this.cfg.previewSelector = '.ui-fileupload-preview';
-        this.cfg.progressSelector = '.ui-fileupload-progress div';
-        this.cfg.cancelSelector = '.ui-fileupload-cancel button';
-
-        //namespaces
-        this.cfg.namespace = 'ui-fileupload-' + this.id;
-        this.cfg.fileInputFilter = this.jqId + '_input';
-        this.cfg.dropZone = $(this.jqId + '_browser');
 
         //create fileupload
         this.form.fileUploadUI(this.cfg);
