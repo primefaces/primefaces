@@ -66,6 +66,10 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function() {
 
 PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, node) {
     if($(e.target).is(':not(.ui-tree-icon)')) {
+        if(this.cfg.onNodeClick) {
+            this.cfg.onNodeClick.call(this, node);
+        }
+
         if(this.isNodeSelected(node))
             this.unselectNode(node);
         else
