@@ -1,4 +1,5 @@
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.DragDropEvent;
@@ -23,6 +24,8 @@ import org.primefaces.model.TreeNode;
 
 		if(event instanceof NodeSelectEvent) {
 			me = getNodeSelectListener();
+		} else if(event instanceof NodeUnselectEvent) {
+			me = getNodeUnselectListener();
 		} else if(event instanceof NodeExpandEvent) {
 			me = getNodeExpandListener();
 		} else if(event instanceof NodeCollapseEvent) {
