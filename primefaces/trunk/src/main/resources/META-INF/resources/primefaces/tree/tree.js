@@ -272,7 +272,7 @@ PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
     }
 
     options.onstart = this.cfg.onSelectStart;
-    options.onstart = this.cfg.onSelectComplete;
+    options.oncomplete = this.cfg.onSelectComplete;
 
     var params = {};
     params[this.id + '_instantSelection'] = this.getNodeId(node);
