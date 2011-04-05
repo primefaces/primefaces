@@ -142,7 +142,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId + "_browser", "id");
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", FileUpload.BROWSER_CLASS, null);
 
 		encodeInputField(context, fileUpload, clientId + "_input");
 
@@ -158,14 +158,14 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("id", clientId + "_files", null);
-        writer.writeAttribute("class", "ui-fileupload-files ui-widget", null);
+        writer.writeAttribute("class", FileUpload.TABLE_CLASS, null);
         writer.endElement("table");
 
         if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-fileupload-controls", null);
-            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "ui-fileupload-upload-button");
-            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "ui-fileupload-cancel-button");
+            writer.writeAttribute("class", FileUpload.CONTROLS_CLASS, null);
+            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS);
+            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS);
             writer.endElement("div");
         }
 

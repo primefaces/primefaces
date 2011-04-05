@@ -505,8 +505,7 @@
                 return;
             }
             container
-                .data(settings.namespace, fileUpload)
-                .addClass(settings.cssClass);
+                .data(settings.namespace, fileUpload);
             settings.dropZone.not(container).addClass(settings.cssClass);
             initEventHandlers();
         };
@@ -945,7 +944,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
+    this.jq = $(this.jqId);
     this.form = this.jq.parents('form:first');
     
     if(this.cfg.mode != 'simple') {
@@ -1062,14 +1061,15 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
         this.cfg.progressSelector = '.ui-fileupload-progress div';
         this.cfg.cancelSelector = '.ui-fileupload-cancel button';
 
+        //namespaces
+        this.cfg.namespace = 'ui-fileupload-' + this.id;
+        this.cfg.fileInputFilter = this.jqId + '_input';
+        this.cfg.dropZone = $(this.jqId + '_browser');
+
         //create fileupload
         this.form.fileUploadUI(this.cfg);
-
-        //visuals
-        this.form.removeClass('ui-fileupload-browser');
         
         this.fileBrowser.show()
-            .addClass('ui-fileupload-browser ui-widget ui-state-default ui-corner-all')
             .mouseover(function() {
                 jQuery(this).addClass('ui-state-highlight');
             }).mouseout(function() {
@@ -1165,7 +1165,7 @@ PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
 
     //format response so IE can parse
     var iframeContent = iframe.contents().text();
-    iframeContent = jQuery.trim(iframeContent.replace(/(> -)|(>-)/g,'>'));
+    iframeContent = $.trim(iframeContent.replace(/(> -)|(>-)/g,'>'));
 
     xmlDoc.loadXML(iframeContent);
 
