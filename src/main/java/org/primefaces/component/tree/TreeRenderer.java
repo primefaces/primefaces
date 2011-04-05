@@ -206,6 +206,10 @@ public class TreeRenderer extends CoreRenderer {
             }
         }
 
+        if(tree.getOnNodeClick() != null) {
+            writer.write(",onNodeClick:function(node) {" + tree.getOnNodeClick() + "}");
+        }
+
         //dragdrop
         if(tree.isDragdrop()) {
             writer.write(",dragdrop:true");
