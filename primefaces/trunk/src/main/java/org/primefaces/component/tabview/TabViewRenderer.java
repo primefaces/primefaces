@@ -159,16 +159,15 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
+        int i = 0;
 
-        for (int i = 0; i < tabView.getChildren().size(); i++) {
-            UIComponent kid = tabView.getChildren().get(i);
-
-            if (kid.isRendered() && kid instanceof Tab) {
+         for(UIComponent kid : tabView.getChildren()) {
+            if(kid.isRendered() && kid instanceof Tab) {
                 Tab tab = (Tab) kid;
                 writer.startElement("div", null);
                 writer.writeAttribute("id", tab.getClientId(facesContext), null);
 
-                if (tabView.isDynamic()) {
+                if(tabView.isDynamic()) {
                     if (i == activeTabIndex) {
                         tab.encodeAll(facesContext);
                     }
@@ -177,6 +176,8 @@ public class TabViewRenderer extends CoreRenderer {
                 }
 
                 writer.endElement("div");
+
+                i++;
             }
         }
     }
