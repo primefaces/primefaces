@@ -49,6 +49,12 @@
 			<type>javax.el.MethodExpression</type>
 			<method-signature>void nodeSelectListener(org.primefaces.event.NodeSelectEvent)</method-signature>
 		</attribute>
+        <attribute>
+			<name>nodeUnselectListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void nodeUnselectListener(org.primefaces.event.NodeUnselectEvent)</method-signature>
+		</attribute>
 		<attribute>
 			<name>nodeExpandListener</name>
 			<required>false</required>
@@ -104,6 +110,11 @@
 		</attribute>
 		<attribute>
 			<name>onSelectComplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>onUnselectUpdate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

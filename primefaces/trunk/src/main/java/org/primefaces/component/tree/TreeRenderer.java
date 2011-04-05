@@ -26,6 +26,7 @@ import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
 
 import org.primefaces.model.TreeExplorer;
 import org.primefaces.model.TreeExplorerImpl;
@@ -66,6 +67,7 @@ public class TreeRenderer extends CoreRenderer {
         if(tree.getSelectionMode() != null) {
             String selection = params.get(clientId + "_selection");
             String instantSelection = params.get(clientId + "_instantSelection");
+            String instantUnselection = params.get(clientId + "_instantUnselection");
             boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
 
             if(selection.equals("")) {
@@ -91,14 +93,20 @@ public class TreeRenderer extends CoreRenderer {
 
                     tree.setSelection(selectedNodes);
                 }
+            }
 
-                //Queue event to invoke nodeSelectListener
-                if(instantSelection != null) {
-                    model.setRowIndex(-1);  //reset
-                    TreeNode selectedNode = treeExplorer.findTreeNode(instantSelection, model);
+            //Queue event to invoke instant select/unselect
+            if(instantSelection != null) {
+                model.setRowIndex(-1);  //reset
+                TreeNode selectedNode = treeExplorer.findTreeNode(instantSelection, model);
 
-                    tree.queueEvent(new NodeSelectEvent(tree, selectedNode));
-                }
+                tree.queueEvent(new NodeSelectEvent(tree, selectedNode));
+            }
+            else if(instantUnselection != null) {
+                model.setRowIndex(-1);  //reset
+                TreeNode selectedNode = treeExplorer.findTreeNode(instantUnselection, model);
+
+                tree.queueEvent(new NodeUnselectEvent(tree, selectedNode));
             }
         }
 
@@ -188,6 +196,13 @@ public class TreeRenderer extends CoreRenderer {
                     writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, tree, onSelectUpdate) + "'");
                 if(onSelectProcess != null)
                     writer.write(",onSelectProcess:'" + ComponentUtils.findClientIds(context, tree, onSelectProcess) + "'");
+            }
+
+            if(tree.getNodeUnselectListener() != null) {
+                writer.write(",instantUnselect:true");
+
+                if(tree.getOnUnselectUpdate() != null)
+                    writer.write(",onUnselectUpdate:'" + ComponentUtils.findClientIds(context, tree, tree.getOnUnselectUpdate()) + "'");
             }
         }
 

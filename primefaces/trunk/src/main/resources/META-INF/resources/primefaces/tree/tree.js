@@ -249,6 +249,10 @@ PrimeFaces.widget.Tree.prototype.unselectNode = function(node) {
     }
 
     this.writeSelections();
+
+    if(this.cfg.instantUnselect) {
+        this.fireNodeUnselectEvent(node);
+    }
 }
 
 PrimeFaces.widget.Tree.prototype.writeSelections = function() {    
@@ -272,6 +276,25 @@ PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
 
     var params = {};
     params[this.id + '_instantSelection'] = this.getNodeId(node);
+
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
+}
+
+PrimeFaces.widget.Tree.prototype.fireNodeUnselectEvent = function(node) {
+    var options = {
+        source: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+
+    if(this.cfg.onUnselectUpdate) {
+        options.update = this.cfg.onUnselectUpdate;
+    }
+
+    var params = {};
+    params[this.id + '_instantUnselection'] = this.getNodeId(node);
 
     options.params = params;
 
