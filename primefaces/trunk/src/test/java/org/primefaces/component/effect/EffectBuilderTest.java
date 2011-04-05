@@ -25,14 +25,14 @@ public class EffectBuilderTest {
 	public void buildHighlightEffectWithNoOptions() {
 		String effect = new EffectBuilder("highlight", "id").atSpeed(1000).build();
 		
-		assertEquals("jQuery(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
+		assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
 	}
 	
 	@Test
 	public void buildHighlightEffectWithAnOption() {
 		String effect = new EffectBuilder("highlight","id").withOption("startcolor", "'#FFFFFF'").atSpeed(5000).build();
 		
-		assertEquals("jQuery(PrimeFaces.escapeClientId('id')).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
+		assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
 	}
 	
 	@Test
@@ -44,6 +44,6 @@ public class EffectBuilderTest {
 													.atSpeed(1000)
 													.build();
 		
-		assertEquals("jQuery(PrimeFaces.escapeClientId('id')).effect('highlight',{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000'},1000);", effect);
+		assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000'},1000);", effect);
 	}	
 }
