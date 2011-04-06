@@ -10,4 +10,9 @@
 
     <application>
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
+        <system-event-listener>
+            <source-class>javax.faces.application.Application</source-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
+        </system-event-listener>
     </application>

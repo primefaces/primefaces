@@ -17,6 +17,7 @@ package org.primefaces.application;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
+import org.primefaces.util.Constants;
 
 public class PrimeResource extends ResourceWrapper {
 
@@ -33,7 +34,7 @@ public class PrimeResource extends ResourceWrapper {
 
     @Override
     public String getRequestPath() {
-        return super.getRequestPath() + "&amp;v=" + PrimeResourceHandler.VERSION;
+        return super.getRequestPath() + "&amp;v=" + Constants.VERSION;
     }
 
     @Override
