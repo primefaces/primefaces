@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,20 +93,18 @@ class DataHelper {
         } else {
             List list = (List) table.getValue();
             Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
-
-            if(table.isFiltered()) {
-                table.setValue(list);
-            }
         }        
 	}
 
-    void decodeFilterRequest(FacesContext context, DataTable table) {
+    void decodeFilters(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
-        //Reset state
-        table.setFirst(0);
-        table.setPage(1);
+        if(table.isFilterRequest(context)) {
+            //Reset state
+            table.setFirst(0);
+            table.setPage(1);
+        }
 
         if(table.isLazy()) {
             Map<String,String> filters = new HashMap<String, String>();
@@ -134,7 +132,6 @@ class DataHelper {
         else {
             Map<String,Column> filterMap = table.getFilterMap();
             List filteredData = new ArrayList();
-            table.setValue(null);	//Always work with user data
 
             String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
             boolean hasGlobalFilter = !isValueBlank(globalFilter);
@@ -178,17 +175,13 @@ class DataHelper {
             }
 
             table.setRowIndex(-1);	//cleanup
-
-            table.setValue(filteredData);
-            table.setFiltered(true);
+            table.setFilteredData(filteredData);
 
             //Metadata for callback
             if(table.isPaginator()) {
                 RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
             }
-
         }
-
 	}
 
     public boolean isValueBlank(String value) {
