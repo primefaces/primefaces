@@ -176,8 +176,6 @@ class DataHelper {
 
             table.setRowIndex(-1);	//cleanup
 
-            System.out.println("Filtered Size:" + filteredData.size());
-
             boolean isAllFiltered = filteredData.size() == table.getRowCount();
 
             //No need to define filtered data if it is same as actual data
