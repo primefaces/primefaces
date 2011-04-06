@@ -31,9 +31,8 @@ public class DataListRenderer extends CoreRenderer {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
         String clientId = list.getClientId();
-        boolean isAjaxPaging = params.containsKey(clientId + "_ajaxPaging");
 
-        if (isAjaxPaging) {
+        if(list.isPagingRequest(facesContext)) {
             list.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             list.setRows(Integer.valueOf(params.get(clientId + "_rows")));
             list.setPage(Integer.valueOf(params.get(clientId + "_page")));

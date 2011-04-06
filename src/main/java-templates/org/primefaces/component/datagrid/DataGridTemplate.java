@@ -7,3 +7,30 @@
     public boolean isPagingRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_ajaxPaging");
     }
+
+    protected void updatePaginationMetadata(FacesContext context) {
+        ValueExpression firstVe = this.getValueExpression("first");
+        ValueExpression rowsVe = this.getValueExpression("rows");
+        ValueExpression pageVE = this.getValueExpression("page");
+
+        if(firstVe != null)
+            firstVe.setValue(context.getELContext(), getFirst());
+        if(rowsVe != null)
+            rowsVe.setValue(context.getELContext(), getRows());
+        if(pageVE != null)
+            pageVE.setValue(context.getELContext(), getPage());
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+		if(isPagingRequest(context)) {
+            this.decode(context);
+
+            updatePaginationMetadata(context);
+
+            context.renderResponse();
+        }
+        else {
+            super.processDecodes(context);
+        }
+	}
