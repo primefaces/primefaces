@@ -174,20 +174,20 @@ class DataHelper {
                 }
             }
 
-            table.setRowIndex(-1);	//cleanup
-
-            boolean isAllFiltered = filteredData.size() == table.getRowCount();
-
-            //No need to define filtered data if it is same as actual data
-            if(!isAllFiltered) {
-                table.setFilteredData(filteredData);
-            }
+            boolean isAllFiltered = filteredData.size() == table.getRowCount();            
 
             //Metadata for callback
             if(table.isPaginator()) {
                 int totalRecords = isAllFiltered ? table.getRowCount() : filteredData.size();
                 RequestContext.getCurrentInstance().addCallbackParam("totalRecords", totalRecords);
             }
+
+            //No need to define filtered data if it is same as actual data
+            if(!isAllFiltered) {
+                table.setFilteredData(filteredData);
+            }
+
+            table.setRowIndex(-1);  //reset datamodel
         }
 	}
 
@@ -209,12 +209,8 @@ class DataHelper {
 		else
 			decodeMultipleSelection(table, selection);
 
-        table.setRowIndex(-1);	//clean
-
         //Instant selection and unselection
         queueInstantSelectionEvent(context, table, clientId, params);
-
-		table.setRowIndex(-1);	//clean
 	}
 
     void queueInstantSelectionEvent(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
