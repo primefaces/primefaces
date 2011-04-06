@@ -43,7 +43,7 @@ import java.lang.StringBuilder;
 
     public List<Column> columns;
 
-    public List<Column> getColumns() {
+    public List<Column> getColumns() {        
         if(columns == null) {
             columns = new ArrayList<Column>();
 
@@ -214,6 +214,10 @@ import java.lang.StringBuilder;
             if(isSelectionEnabled()) {
                 this.updateSelectionModel(context);
             }
+
+            if(isPaginator()) {
+                updatePaginationMetadata(context);
+            }
             
             context.renderResponse();
         } else {
@@ -238,6 +242,19 @@ import java.lang.StringBuilder;
 
             this.setSelection(null);
         }
+    }
+
+    protected void updatePaginationMetadata(FacesContext context) {
+        ValueExpression firstVe = this.getValueExpression("first");
+        ValueExpression rowsVe = this.getValueExpression("rows");
+        ValueExpression pageVE = this.getValueExpression("page");
+
+        if(firstVe != null)
+            firstVe.setValue(context.getELContext(), getFirst());
+        if(rowsVe != null)
+            rowsVe.setValue(context.getELContext(), getRows());
+        if(pageVE != null)
+            pageVE.setValue(context.getELContext(), getPage());
     }
 
     public void setEmptySelected(boolean emptySelected) {
