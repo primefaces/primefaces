@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.HashMap;
 import org.primefaces.model.LazyDataModel;
 import java.lang.StringBuilder;
+import java.util.List;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -90,16 +91,6 @@ import java.lang.StringBuilder;
         }
 
         return filterRequest;
-    }
-
-    public boolean isClearFiltersRequest(FacesContext context) {
-        if(clearFiltersRequest == null) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-            clearFiltersRequest = params.containsKey(this.getClientId(context) + "_clearFilters");
-        }
-
-        return clearFiltersRequest;
     }
 
     public boolean isGlobalFilterRequest(FacesContext context) {
@@ -385,7 +376,6 @@ import java.lang.StringBuilder;
 
     public void resetValue() {
         setValue(null);
-        setFiltered(false);
     }
 
     public void resetPagination() {
@@ -411,11 +401,13 @@ import java.lang.StringBuilder;
         }
     }
 
-    public boolean isFiltered() {
-		return (java.lang.Boolean) getStateHelper().eval("filtered", false);
+    public boolean isFilteringEnabled() {
+        Object value = getStateHelper().get("filtering");
+
+        return value == null ? false : true;
 	}
-	public void setFiltered(boolean filtered) {
-		getStateHelper().put("filtered", filtered);
+	public void enableFiltering() {
+		getStateHelper().put("filtering", true);
 	}
 
     public RowExpansion getRowExpansion() {
@@ -425,4 +417,19 @@ import java.lang.StringBuilder;
         }
 
         return null;
+    }
+
+    private List filteredData;
+
+    public void setFilteredData(List list) {
+        this.filteredData = list;
+    }
+
+    public List getFilteredData() {
+        return this.filteredData;
+    }
+
+    @Override
+    public Object getValue() {
+        return filteredData != null ? filteredData : super.getValue();
     }

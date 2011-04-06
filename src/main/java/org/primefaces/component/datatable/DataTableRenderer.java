@@ -43,6 +43,10 @@ public class DataTableRenderer extends CoreRenderer {
 	public void decode(FacesContext context, UIComponent component) {
 		DataTable table = (DataTable) component;
 
+        if(table.isFilteringEnabled()) {
+            dataHelper.decodeFilters(context, table);
+        }
+
         if(table.isSelectionEnabled()) {
 			dataHelper.decodeSelection(context, table);
 		}
@@ -52,17 +56,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
         else if(table.isSortRequest(context)) {
             dataHelper.decodeSortRequest(context, table);
-        }
-        else if(table.isFilterRequest(context)) {
-            dataHelper.decodeFilterRequest(context, table);
-        }
-        else if(table.isClearFiltersRequest(context)) {
-            table.resetValue();
-            context.renderResponse();
-            return;
-        }
-        
-        
+        }  
 	}
     
     @Override
@@ -275,10 +269,9 @@ public class DataTableRenderer extends CoreRenderer {
             }
         }
 
-        
-
         //Filter
         if(hasFilter) {
+            table.enableFiltering();
             encodeFilter(context, table, column);
         }
 

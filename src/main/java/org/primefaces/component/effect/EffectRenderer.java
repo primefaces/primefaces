@@ -53,7 +53,7 @@ public class EffectRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		writer.write("$(function() {");
 
-        writer.write("PrimeFaces.clearTimeout(" + timeoutKey + ");");
+        writer.write("clearTimeout(" + timeoutKey + ");");
         writer.write(timeoutKey + " = setTimeout(function() {");
 
 		if(event.equals("load")) {
