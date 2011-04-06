@@ -18,11 +18,9 @@ package org.primefaces.application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
-
-    public final static String VERSION = "3.0-SNAPSHOT";
-    public final static String LIBRARY = "primefaces";
 
     private ResourceHandler wrapped;
 
@@ -39,7 +37,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName) {
         Resource resource = super.createResource(resourceName, libraryName);
 
-        if(resource != null && libraryName != null && libraryName.equalsIgnoreCase(LIBRARY)) {
+        if(resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
             return new PrimeResource(resource);
         }
         else {
