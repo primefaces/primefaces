@@ -175,11 +175,20 @@ class DataHelper {
             }
 
             table.setRowIndex(-1);	//cleanup
-            table.setFilteredData(filteredData);
+
+            System.out.println("Filtered Size:" + filteredData.size());
+
+            boolean isAllFiltered = filteredData.size() == table.getRowCount();
+
+            //No need to define filtered data if it is same as actual data
+            if(!isAllFiltered) {
+                table.setFilteredData(filteredData);
+            }
 
             //Metadata for callback
             if(table.isPaginator()) {
-                RequestContext.getCurrentInstance().addCallbackParam("totalRecords", filteredData.size());
+                int totalRecords = isAllFiltered ? table.getRowCount() : filteredData.size();
+                RequestContext.getCurrentInstance().addCallbackParam("totalRecords", totalRecords);
             }
         }
 	}
