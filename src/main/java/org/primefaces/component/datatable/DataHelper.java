@@ -238,21 +238,15 @@ class DataHelper {
     void decodeSingleSelection(DataTable table, String selection) {
 		if(isValueBlank(selection)) {
 			table.setSelection(null);
-            table.setEmptySelected(true);
 		} else {
             if(table.isCellSelection()) {
 				table.setSelection(buildCell(table, selection));
 			}
             else {
                 int selectedRowIndex = Integer.parseInt(selection);
-                int first = table.getFirst();
-                int rows = table.getRows();
-                int last = rows == 0 ? table.getRowCount() : rows;
 
-                if(first <= selectedRowIndex && (first + last) > selectedRowIndex) {
-                    table.setRowIndex(selectedRowIndex);
-                    table.setSelection(table.getRowData());
-                }
+                table.setRowIndex(selectedRowIndex);
+                table.setSelection(table.getRowData());
             }
 		}
 	}
@@ -262,9 +256,9 @@ class DataHelper {
 
 		if(isValueBlank(selection)) {
 			Object data = Array.newInstance(clazz.getComponentType(), 0);
-			table.setSelection(data);
-            
-		} else {
+			table.setSelection(data);   
+		}
+        else {
             if(table.isCellSelection()) {
 				String[] cellInfos = selection.split(",");
 				Cell[] cells = new Cell[cellInfos.length];

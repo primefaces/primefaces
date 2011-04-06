@@ -195,8 +195,6 @@ import java.util.List;
             return false;
 	}
 
-    private boolean emptySelected = false;
-
     @Override
     public void processDecodes(FacesContext context) {
 		if(isDataManipulationRequest(context)) {
@@ -227,9 +225,7 @@ import java.util.List;
         ValueExpression selectionVE = this.getValueExpression("selection");
         
         if(selectionVE != null) {
-            Object value = emptySelected ? null : this.getSelection();
-
-            selectionVE.setValue(context.getELContext(), value);
+            selectionVE.setValue(context.getELContext(), this.getLocalSelection());
 
             this.setSelection(null);
         }
@@ -246,10 +242,6 @@ import java.util.List;
             rowsVe.setValue(context.getELContext(), getRows());
         if(pageVE != null)
             pageVE.setValue(context.getELContext(), getPage());
-    }
-
-    public void setEmptySelected(boolean emptySelected) {
-        this.emptySelected = emptySelected;
     }
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
@@ -433,3 +425,7 @@ import java.util.List;
     public Object getValue() {
         return filteredData != null ? filteredData : super.getValue();
     }
+
+    public Object getLocalSelection() {
+		return getStateHelper().get(PropertyKeys.selection);
+	}
