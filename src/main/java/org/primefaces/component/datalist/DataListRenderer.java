@@ -105,7 +105,7 @@ public class DataListRenderer extends CoreRenderer {
             if(list.getPaginatorTemplate() != null) writer.write(",template:'" + list.getPaginatorTemplate() + "'");
             if(list.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + list.getRowsPerPageTemplate() + "]");
             if(list.getCurrentPageReportTemplate() != null) writer.write(",pageReportTemplate:'" + list.getCurrentPageReportTemplate() + "'");
-            if (!list.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
+            if(!list.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
 
             String paginatorPosition = list.getPaginatorPosition();
             String paginatorContainer = null;
@@ -133,8 +133,8 @@ public class DataListRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeList(FacesContext facesContext, DataList list) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeList(FacesContext context, DataList list) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean isDefinition = list.isDefinition();
         UIComponent definition = list.getFacet("description");
@@ -144,31 +144,42 @@ public class DataListRenderer extends CoreRenderer {
         int first = list.getFirst();
         int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
 
+        String rowIndexVar = list.getRowIndexVar();
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+
         writer.startElement(listTag, null);
         writer.writeAttribute("id", clientId + "_list", null);
         writer.writeAttribute("class", DataList.LIST_CLASS, null);
-        if (list.getItemType() != null) {
+        if(list.getItemType() != null) {
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        for (int i = first; i < (first + rows); i++) {
+        for(int i = first; i < (first + rows); i++) {
             list.setRowIndex(i);
 
-            if (list.isRowAvailable()) {
+            if(rowIndexVar != null) {
+                requestMap.put(rowIndexVar, i);
+            }
+
+            if(list.isRowAvailable()) {
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", DataList.LIST_ITEM_CLASS, null);
-                renderChildren(facesContext, list);
+                renderChildren(context, list);
                 writer.endElement(listItemTag);
 
-                if (isDefinition) {
+                if(isDefinition) {
                     writer.startElement("dd", null);
-                    definition.encodeAll(facesContext);
+                    definition.encodeAll(context);
                     writer.endElement("dd");
                 }
             }
         }
 
         list.setRowIndex(-1);	//cleanup
+
+        if(rowIndexVar != null) {
+            requestMap.remove(rowIndexVar);
+        }
 
         writer.endElement(listTag);
     }
