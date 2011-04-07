@@ -83,7 +83,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
     if(this.cfg.dynamic) {
 
         if(this.cfg.cache && node.children('.ui-tree-nodes').length > 0) {
-            this.showNodeChildren(node, true);
+            this.showNodeChildren(node);
             
             return;
         }
@@ -114,7 +114,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
                         _self.setupDragDrop(node.find('.ui-tree-node-label'), node.find('.ui-tree-node-content'));
                     }
                     
-                    _self.showNodeChildren(node, true);
+                    _self.showNodeChildren(node);
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
@@ -132,7 +132,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
         PrimeFaces.ajax.AjaxRequest(options);
     }
     else {
-        this.showNodeChildren(node, true);
+        this.showNodeChildren(node);
         this.saveClientState();
     }
 }
@@ -150,23 +150,23 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
         nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
     }
 
-    node.children('.ui-tree-nodes').hide('fade', {}, 'fast', function() {
-        if(_self.cfg.dynamic) {
-            if(!_self.cfg.cache) {
-                $(this).remove();
+    node.children('.ui-tree-nodes').hide();
+        
+    if(_self.cfg.dynamic) {
+        if(!_self.cfg.cache) {
+            $(this).remove();
 
-                if(_self.cfg.hasCollapseListener) {
-                    _self.fireNodeCollapseEvent(node);
-                }
+            if(_self.cfg.hasCollapseListener) {
+                _self.fireNodeCollapseEvent(node);
             }
         }
-        else {
-            _self.saveClientState();
-        }
-    });
+    }
+    else {
+        _self.saveClientState();
+    }
 }
 
-PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node, animate) {
+PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node) {
     var icon = node.find('.ui-tree-icon:first'),
     lastClass = node.attr('class').split(' ').slice(-1),
     nodeIcon = icon.next(),
@@ -178,10 +178,7 @@ PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node, animate) {
         nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
     }
 
-    if(animate)
-        node.children('.ui-tree-nodes').show('fade', {}, 'fast');
-    else
-        node.children('.ui-tree-nodes').show();
+    node.children('.ui-tree-nodes').show();
 }
 
 PrimeFaces.widget.Tree.prototype.saveClientState = function() {
@@ -209,7 +206,7 @@ PrimeFaces.widget.Tree.prototype.restoreClientState = function() {
         for(var i in expandedNodes) {
             var node = $(PrimeFaces.escapeClientId(expandedNodes[i]));
 
-            this.showNodeChildren(node, false);
+            this.showNodeChildren(node);
         }
     }
 }
