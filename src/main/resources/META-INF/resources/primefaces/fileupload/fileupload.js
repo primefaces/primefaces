@@ -957,7 +957,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.cancelSelector = '.ui-fileupload-cancel button';
 
     //namespaces
-    this.cfg.namespace = 'ui-fileupload-' + this.id;
+    this.cfg.namespace = 'ui-fileupload-' + this.id.replace(/:/g, '_');
     this.cfg.fileInputFilter = this.jqId + '_input';
     this.cfg.dropZone = $(this.jqId + '_browser');
 
