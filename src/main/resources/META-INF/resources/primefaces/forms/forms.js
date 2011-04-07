@@ -533,15 +533,15 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
-    this.input = jQuery(this.jqId + '_input');
+    this.jq = $(this.jqId);
+    this.input = $(this.jqId + '_input');
 
     var listContainer = this.jq.children('ul'),
-    options = jQuery(this.input.attr('options')),
+    options = $(this.input).children('option'),
     _self = this;
 
     options.each(function(i) {
-       var option = jQuery(this),
+       var option = $(this),
        selected = option.attr('selected'),
        styleClass = 'ui-selectlistbox-item ui-corner-all';
 
@@ -549,7 +549,7 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
            styleClass = styleClass + ' ui-state-active';
        }
        
-       listContainer.append('<li class="' + styleClass + '">' + jQuery(this).html() + '</li>');
+       listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
     });
 
     var items = listContainer.children('li');
@@ -557,12 +557,12 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     items.mouseover(function() {
         var element = jQuery(this);
         if(!_self.cfg.disabled && !element.hasClass('ui-state-active')) {
-            jQuery(this).addClass('ui-state-hover');
+            $(this).addClass('ui-state-hover');
         }
     }).mouseout(function() {
         var element = jQuery(this);
         if(!_self.cfg.disabled && !element.hasClass('ui-state-active')) {
-            jQuery(this).removeClass('ui-state-hover');
+            $(this).removeClass('ui-state-hover');
         }
     }).click(function() {
         if(!_self.cfg.disabled) {
