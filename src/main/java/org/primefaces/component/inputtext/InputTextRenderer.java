@@ -80,6 +80,7 @@ public class InputTextRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputText.getClientId(context);
         String defaultClass = themeForms() ? InputText.THEME_INPUT_CLASS : InputText.PLAIN_INPUT_CLASS;
+        defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
         String styleClass = inputText.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 
