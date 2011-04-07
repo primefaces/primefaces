@@ -41,80 +41,79 @@ public class FocusRenderer extends CoreRenderer {
 	}
 	
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Focus focus = (Focus) component;
-		ResponseWriter writer = facesContext.getResponseWriter();
+		ResponseWriter writer = context.getResponseWriter();
 		
 		//Dummy markup for ajax update
 		writer.startElement("span", focus);
-		writer.writeAttribute("id", focus.getClientId(facesContext), "id");
+		writer.writeAttribute("id", focus.getClientId(context), "id");
 		writer.endElement("span");
 		
 		writer.startElement("script", focus);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		if(focus.getFor() != null) {
-			encodeExplicitFocus(facesContext, focus);
+			encodeExplicitFocus(context, focus);
 		} else {
-			encodeImplicitFocus(facesContext, focus);				
+			encodeImplicitFocus(context, focus);
 		}
 		
 		writer.endElement("script");
 	}
 
-	protected void encodeExplicitFocus(FacesContext facesContext, Focus focus) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeExplicitFocus(FacesContext context, Focus focus) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		UIComponent forComponent = focus.findComponent(focus.getFor());
 		
 		if(forComponent == null) {
 			throw new FacesException("Cannot find component '" + focus.getFor() + "' in view.");
 		}
-		String clientId = forComponent.getClientId(facesContext);
+		String clientId = forComponent.getClientId(context);
 		
-		writer.write("jQuery(function(){");
+		writer.write("$(function(){");
 		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
 		writer.write("});");
 	}
 	
-	protected void encodeImplicitFocus(FacesContext facesContext, Focus focus) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeImplicitFocus(FacesContext context, Focus focus) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        String clientId = findFirstInvalidClientId(context, focus);
+
+        writer.write("$(function(){");
 		
-		if(isPostBack()){
-			String clientId = findFirstInvalidClientId(facesContext, focus);
-			
-			if(clientId != null) {
-				writer.write("setTimeout(function() {");
-                writer.write("var focusTarget = PrimeFaces.escapeClientId('" + clientId + "');");
-				writer.write("jQuery(focusTarget + ',' + focusTarget + ' input').focus();");
-				writer.write("}, 500);");
-			}
-			
-		} else {
-			writer.write("jQuery(function(){");
+		if(isPostBack() && clientId != null){
+            writer.write("setTimeout(function() {");
+            writer.write("var focusTarget = PrimeFaces.escapeClientId('" + clientId + "');");
+            writer.write("$(focusTarget + ',' + focusTarget + ' input').focus();");
+            writer.write("}, 500);");
+		}
+        else {
 			String selector = Focus.INPUT_SELECTOR;
 			
 			if(focus.getContext() != null) {
-				UIComponent context = focus.findComponent(focus.getContext());
+				UIComponent focusContext = focus.findComponent(focus.getContext());
 				
 				if(context == null)
 					throw new FacesException("Cannot find component " + focus.getContext() + " in view");
 				else {
-					selector = ComponentUtils.escapeJQueryId(context.getClientId(facesContext)) + " " +  selector;
+					selector = ComponentUtils.escapeJQueryId(focusContext.getClientId(context)) + " " +  selector;
 				}
 			}
 			
-			writer.write("jQuery('" + selector + "').focus();");
-			writer.write("});");
+			writer.write("$('" + selector + "').focus();");
 		}
+
+        writer.write("});");
 	}
 	
-	protected String findFirstInvalidClientId(FacesContext facesContext, Focus focus) {
+	protected String findFirstInvalidClientId(FacesContext context, Focus focus) {
 		int minSeverityOrdinal = severityOrdinals.get(focus.getMinSeverity());
 		
-		for(Iterator<String> iterator = facesContext.getClientIdsWithMessages(); iterator.hasNext();) {
+		for(Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext();) {
 			String clientId = iterator.next();
 			
-			for(Iterator<FacesMessage> messageIter = facesContext.getMessages(clientId); messageIter.hasNext();) {
+			for(Iterator<FacesMessage> messageIter = context.getMessages(clientId); messageIter.hasNext();) {
 				FacesMessage message = messageIter.next();
 				
 				if(message.getSeverity().getOrdinal() <= minSeverityOrdinal)
