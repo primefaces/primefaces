@@ -81,6 +81,7 @@ public class InputTextareaRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputTextarea.getClientId(context);
         String defaultClass = themeForms() ? InputTextarea.THEME_INPUT_CLASS : InputTextarea.PLAIN_INPUT_CLASS;
+        defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
         String styleClass = inputTextarea.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 
