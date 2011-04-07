@@ -1,9 +1,13 @@
 PrimeFaces.widget.Stack = function(id, cfg) {
-	var elId = PrimeFaces.escapeClientId(id),
-	openSpeed = cfg.openSpeed,
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+
+	var openSpeed = cfg.openSpeed,
 	closeSpeed = cfg.closeSpeed;
 	
-	jQuery(elId + '.ui-stack>img').toggle(function(){
+	$(this.jqId + '.ui-stack>img').toggle(function(){
 		var vertical = 0;
 		var horizontal = 0;
 		var el=jQuery(this);
@@ -20,5 +24,9 @@ PrimeFaces.widget.Stack = function(id, cfg) {
 		el.next().removeClass('openStack').children('li').animate({top: '55px', left: '-10px'}, closeSpeed);
 		el.next().find('li a>img').animate({width: '79px', marginLeft: '0'}, closeSpeed);
 		el.animate({paddingTop: '35'});
-	});	
+	});
+
+    if(this.cfg.expanded) {
+        this.jq.children('img').click();
+    }
 }

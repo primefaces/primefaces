@@ -42,6 +42,12 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>300</defaultValue>
 		</attribute>
+        <attribute>
+			<name>expanded</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
