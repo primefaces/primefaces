@@ -12,7 +12,7 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     //Create accordion
     this.jq.accordion(this.cfg);
 
-    if(this.cfg.dynamic) {
+    if(this.cfg.dynamic && this.cfg.cache) {
         this.markAsLoaded(this.jq.children('div').get(this.cfg.active));
     }
     
