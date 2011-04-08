@@ -460,8 +460,12 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", tbodyClass, null);
 
         if(hasData) {
+            if(selectionMode != null && selection != null) {
+                handlePreselection(table, selectionMode, selection);
+            }
+            
             for(int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, clientId, i, rowIndexVar, selMode, selection);
+                encodeRow(context, table, clientId, i, rowIndexVar);
             }
         }
         else if(emptyMessage != null){
@@ -486,7 +490,7 @@ public class DataTableRenderer extends CoreRenderer {
 		}
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar, String selectionMode, Object selection) throws IOException {
+    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
             return;
@@ -498,7 +502,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         //Preselection
-        boolean selected = handlePreselection(table, rowIndex, selectionMode, selection);
+        boolean selected = table.getSelectedRowIndexes().contains(rowIndex);
 
         ResponseWriter writer = context.getResponseWriter();
 
@@ -632,15 +636,16 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("tfoot");
     }
 
-    protected boolean handlePreselection(DataTable table, int rowIndex, String selectionMode, Object selection) {
-        boolean selected = false;
+    protected void handlePreselection(DataTable table, String selectionMode, Object selection) {
         
-        if(selectionMode != null && selection != null) {
+        for(int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
+            table.setRowIndex(rowIndex);
 
             if(selectionMode.equals("single")) {
-                if(selection != null && selection.equals(table.getRowData())) {
+                if(selection.equals(table.getRowData())) {
                     table.addSelectedRowIndex(rowIndex);
-                    selected = true;
+
+                    break;
                 }
             }
             else if(selectionMode.equals("multiple")) {
@@ -649,15 +654,11 @@ public class DataTableRenderer extends CoreRenderer {
                 for(int i = 0; i < selections.length; i++) {
                     if(selections[i].equals(table.getRowData())) {
                         table.addSelectedRowIndex(rowIndex);
-                        selected = true;
                         break;
                     }
                 }
             }
-            
         }
-
-        return selected;
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
@@ -855,7 +856,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         table.setRowIndex(editedRowId);
 
-        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar(), table.getSelectionMode(), table.getSelection());
+        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
     }
 
     protected void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
@@ -867,7 +868,7 @@ public class DataTableRenderer extends CoreRenderer {
         Object selection = table.getSelection();
 
         for(int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
-            encodeRow(context, table, clientId, i, rowIndexVar, selectionMode, selection);
+            encodeRow(context, table, clientId, i, rowIndexVar);
         }
     }
 }
