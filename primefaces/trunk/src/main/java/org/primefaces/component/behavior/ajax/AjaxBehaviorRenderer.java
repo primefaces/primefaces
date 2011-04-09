@@ -50,6 +50,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
     @Override
     public String getScript(ClientBehaviorContext behaviorContext, ClientBehavior behavior) {
         AjaxBehavior ajaxBehavior = (AjaxBehavior) behavior;
+        if(ajaxBehavior.isDisabled()) {
+            return null;
+        }
+        
         FacesContext fc = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
