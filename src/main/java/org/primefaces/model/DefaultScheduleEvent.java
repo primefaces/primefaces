@@ -118,4 +118,39 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 	public void setData(Object data) {
 		this.data = data;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DefaultScheduleEvent other = (DefaultScheduleEvent) obj;
+        if ((this.title == null) ? (other.title != null) : !this.title.equals(other.title)) {
+            return false;
+        }
+        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+            return false;
+        }
+        if (this.endDate != other.endDate && (this.endDate == null || !this.endDate.equals(other.endDate))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 61 * hash + (this.title != null ? this.title.hashCode() : 0);
+        hash = 61 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
+        hash = 61 * hash + (this.endDate != null ? this.endDate.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultScheduleEvent{title=" + title + ",startDate=" + startDate + ",endDate=" + endDate + "}";
+    }
 }
