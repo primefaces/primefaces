@@ -309,6 +309,7 @@ public class CoreRenderer extends Renderer {
             for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
                 String event = eventIterator.next();
                 String domEvent = event;
+                boolean firstEventBehaviorWritten = false;
 
                 if(event.equalsIgnoreCase("valueChange"))       //editable value holders
                     domEvent = "change";
@@ -321,10 +322,14 @@ public class CoreRenderer extends Renderer {
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, null, params);
+                    String script = behavior.getScript(cbc);
 
-                    writer.write("function(event){" + behavior.getScript(cbc) + ";}");
+                    if(script != null) {
+                        writer.write("function(event){" + script + ";}");
+                        firstEventBehaviorWritten = true;
+                    }
 
-                    if(behaviorIter.hasNext()) {
+                    if(behaviorIter.hasNext() && firstEventBehaviorWritten) {
                         writer.write(",");
                     }
                 }
