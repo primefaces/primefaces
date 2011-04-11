@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>rating</tag>
+    <tagClass>org.primefaces.component.rating.RatingTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.rating.RatingHandler</componentHandlerClass>
+    <componentClass>org.primefaces.component.rating.Rating</componentClass>
+    <componentType>org.primefaces.component.Rating</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.RatingRenderer</rendererType>
+    <rendererClass>org.primefaces.component.rating.RatingRenderer</rendererClass>
+    <parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &input_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>stars</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>5</defaultValue>
+        </attribute>
+        <attribute>
+            <name>rateListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void rateListener(org.primefaces.event.RateEvent)</method-signature>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+         <attribute>
+            <name>onRate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>rating/rating.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core/core.js</name>
+        </resource>
+        <resource>
+            <name>rating/rating.js</name>
+        </resource>
+    </resources>
+</component>

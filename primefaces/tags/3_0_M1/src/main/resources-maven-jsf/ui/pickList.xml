@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>pickList</tag>
+	<tagClass>org.primefaces.component.picklist.PickListTag</tagClass>
+	<componentClass>org.primefaces.component.picklist.PickList</componentClass>
+	<componentType>org.primefaces.component.PickList</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.PickListRenderer</rendererType>
+	<rendererClass>org.primefaces.component.picklist.PickListRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>itemLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>itemValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+		</attribute>
+        <attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fast</defaultValue>
+		</attribute>
+        <attribute>
+			<name>iconOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>addLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Add</defaultValue>
+		</attribute>
+        <attribute>
+			<name>addAllLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Add All</defaultValue>
+		</attribute>
+        <attribute>
+			<name>removeLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Remove</defaultValue>
+		</attribute>
+        <attribute>
+			<name>removeAllLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Remove All</defaultValue>
+		</attribute>
+        <attribute>
+			<name>moveUpLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Up</defaultValue>
+		</attribute>
+        <attribute>
+			<name>moveTopLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Top</defaultValue>
+		</attribute>
+        <attribute>
+			<name>moveDownLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Down</defaultValue>
+		</attribute>
+        <attribute>
+			<name>moveBottomLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Bottom</defaultValue>
+		</attribute>
+        <attribute>
+			<name>showSourceControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>showTargetControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>onTransfer</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>picklist/picklist.css</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
+		<resource>
+			<name>core/core.js</name>
+		</resource>
+		<resource>
+			<name>picklist/picklist.js</name>
+		</resource>
+	</resources>
+</component>

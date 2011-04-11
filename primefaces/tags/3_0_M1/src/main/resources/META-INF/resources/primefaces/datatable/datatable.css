@@ -1,0 +1,112 @@
+.ui-datatable table {
+	border-collapse:collapse;
+    width:100%;
+}
+
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer {
+    text-align:center;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-datatable .ui-datatable-header {
+    border-bottom: 0px none;
+}
+
+.ui-datatable .ui-datatable-footer {
+    border-top: 0px none;
+}
+
+.ui-datatable th, .ui-datatable tfoot td {
+    text-align:center;
+    white-space:nowrap;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-datatable-data, .ui-datatable-data-empty {}
+
+.ui-datatable .ui-datatable-data td,
+.ui-datatable .ui-datatable-data-empty td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-datatable .ui-paginator {
+    margin:0px;
+    text-align: center;
+    padding:2px;
+}
+
+.ui-datatable .ui-paginator-top {
+    border-bottom:0px none;
+}
+
+.ui-datatable .ui-paginator-bottom {
+    border-top:0px none;
+}
+
+.ui-datatable .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-sortable-column-icon {
+    float:right;
+}
+
+.ui-datatable .ui-column-filter {
+    display: block;
+    width:100px;
+    margin:auto;
+}
+
+.ui-datatable .ui-expanded-row {
+    border-bottom:0px none;
+}
+
+.ui-datatable .ui-expanded-row-content {
+    border-top:0px none;
+}
+
+.ui-datatable .ui-row-toggler {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-cell-editor-input {
+    display:none;
+}
+
+.ui-datatable .ui-row-editor-column {
+
+}
+
+.ui-datatable .ui-row-editor {
+    
+}
+
+.ui-datatable .ui-row-editor span {
+    cursor:pointer;
+    float:left;
+}
+
+.ui-datatable tr.ui-state-highlight {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-selection-column {
+    width: 20px;
+}
+
+.ui-datatable-odd, .ui-datatable-even {}
+
+.ui-datatable-scrollable {}
+.ui-datatable-scrollable-header {}
+.ui-datatable-scrollable-body {
+    overflow:auto;
+}
+.ui-datatable-scrollable .ui-datatable-scrollable-body table,
+.ui-datatable-scrollable .ui-datatable-scrollable-header table,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
+    width:auto;
+}
