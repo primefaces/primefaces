@@ -17,11 +17,13 @@ package org.primefaces.component.rating;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.el.ValueExpression;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
@@ -90,10 +92,11 @@ public class RatingRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    private void encodeMarkup(FacesContext facesContext, Rating rating) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = rating.getClientId(facesContext);
-        Double value = (Double) rating.getValue();
+    private void encodeMarkup(FacesContext context, Rating rating) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = rating.getClientId(context);
+        String valueToRender = ComponentUtils.getStringValueToRender(context, rating);
+        Double value = isValueBlank(valueToRender) ? null : Double.valueOf(valueToRender);
 
         writer.startElement("span", rating);
         writer.writeAttribute("id", clientId, "id");
@@ -119,16 +122,38 @@ public class RatingRenderer extends CoreRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         String value = (String) submittedValue;
+        Rating rating = (Rating) component;
+        Converter converter = rating.getConverter();
 
-        if(value == null)
+        //first ask the converter
+		if(converter != null) {
+			return converter.getAsObject(context, rating, value);
+		}
+		//Try to guess
+		else {
+            ValueExpression ve = rating.getValueExpression("value");
+
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                Converter converterForType = context.getApplication().createConverter(valueType);
+
+                if(converterForType != null) {
+                    return converterForType.getAsObject(context, rating, value);
+                }
+            }
+		}
+
+        //Built-in converter
+        if(value == null) {
             return null;
+        }
 
         try {
             return Double.valueOf(value);
         } catch (NumberFormatException exception) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion error", submittedValue + " is not a valid value for " + component.getClientId(facesContext));
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion error", submittedValue + " is not a valid value for " + component.getClientId(context));
 
             throw new ConverterException(msg);
         }
