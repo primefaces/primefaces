@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,21 +20,21 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 
 public class LayoutUnitRenderer extends CoreRenderer {
 
-	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+    @Override
+	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		LayoutUnit unit = (LayoutUnit) component;
 		
 		writer.startElement("div", component);
-		writer.writeAttribute("id", component.getClientId(facesContext), "id");
-		if(unit.getStyle() != null) writer.writeAttribute("style", unit.getStyle(), "style");
-		if(unit.getStyleClass() != null) writer.writeAttribute("class", unit.getStyleClass(), "styleClass");
+		writer.writeAttribute("id", component.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-layout-unit ui-widget ui-widget-content ui-corner-all ui-layout-" + unit.getPosition(), "styleClass");
 	}
 
+    @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		

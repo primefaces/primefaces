@@ -103,19 +103,13 @@
     </attributes>
     <resources>
         <resource>
-            <name>yui/resize/assets/skins/sam/resize.css</name>
-        </resource>
-        <resource>
             <name>layout/layout.css</name>
         </resource>
         <resource>
-            <name>yui/utilities/utilities.js</name>
-        </resource>
-        <resource>
-            <name>yui/resize/resize-min.js</name>
-        </resource>
-        <resource>
             <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-ui.js</name>
         </resource>
         <resource>
             <name>core/core.js</name>

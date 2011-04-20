@@ -16,6 +16,7 @@
 package org.primefaces.component.layout;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -31,6 +32,68 @@ import org.primefaces.util.ComponentUtils;
 
 public class LayoutRenderer extends CoreRenderer {
 
+    @Override
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Layout layout = (Layout) component;
+        String clientId = layout.getClientId(context);
+
+        if(!layout.isFullPage()) {
+            writer.startElement("div", layout);
+            writer.writeAttribute("id", clientId, "id");
+
+            if(layout.getStyle() != null) writer.writeAttribute("style", layout.getStyle(), "style");
+            if(layout.getStyleClass() != null) writer.writeAttribute("class", layout.getStyleClass(), "styleClass");
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        Layout layout = (Layout) component;
+
+        if(!layout.isFullPage()) {
+            writer.endElement("div");
+        }
+
+        encodeScript(facesContext, layout);
+    }
+
+    protected void encodeScript(FacesContext context, Layout layout) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = layout.getClientId(context);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        writer.write("$(function() {");
+        writer.write(layout.resolveWidgetVar() + " = new PrimeFaces.widget.Layout('" + clientId + "', {");
+        
+        writer.write("full:" + layout.isFullPage());
+
+        encodeUnits(context, layout);
+
+        writer.write("});});");
+
+        writer.endElement("script");
+    }
+
+    protected void encodeUnits(FacesContext facesContext, Layout layout) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        for(UIComponent child : layout.getChildren()) {
+            if(child.isRendered() && child instanceof LayoutUnit) {
+                LayoutUnit unit = (LayoutUnit) child;
+                
+                writer.write("," + unit.getPosition() + ":{");
+                writer.write("size:'" + unit.getSize() + "'");
+                writer.write("}");
+
+            }
+        }
+
+    }
+/*
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
         Layout layout = (Layout) component;
@@ -200,5 +263,5 @@ public class LayoutRenderer extends CoreRenderer {
         }
 
         writer.write("]");
-    }
+    }*/
 }

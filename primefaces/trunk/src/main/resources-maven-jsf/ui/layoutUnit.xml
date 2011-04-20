@@ -19,16 +19,10 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<name>width</name>
+			<name>size</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-		</attribute>
-		<attribute>
-			<name>height</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
+			<type>java.lang.String</type>
+			<defaultValue>auto</defaultValue>
 		</attribute>
 		<attribute>
 			<name>resizable</name>
@@ -50,16 +44,6 @@
 		</attribute>
 		<attribute>
 			<name>scrollable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
