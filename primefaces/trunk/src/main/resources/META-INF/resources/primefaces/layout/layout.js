@@ -4394,6 +4394,16 @@ PrimeFaces.widget.Layout.prototype.bindEvents = function() {
     }).mouseout(function() {
         $(this).removeClass('ui-state-hover');
     });
+
+    $('.ui-layout-resizer').mouseover(function() {
+        var element = $(this);
+        if(!element.hasClass('ui-layout-resizer-closed'))
+            $(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        var element = $(this);
+        if(!element.hasClass('ui-layout-resizer-closed'))
+            $(this).removeClass('ui-state-hover');
+    });
 }
 
 PrimeFaces.widget.Layout.prototype.toggle = function(location) {
