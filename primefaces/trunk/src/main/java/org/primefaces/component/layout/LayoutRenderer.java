@@ -94,8 +94,6 @@ public class LayoutRenderer extends CoreRenderer {
                     writer.write(",spacing_closed:" + unit.getCollapseSize());
                 }
 
-                writer.write(",togglerLength_open:0");
-
                 writer.write("}");
 
             }
