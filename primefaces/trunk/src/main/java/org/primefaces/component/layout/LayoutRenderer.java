@@ -16,8 +16,6 @@
 package org.primefaces.component.layout;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -85,7 +83,7 @@ public class LayoutRenderer extends CoreRenderer {
             if(child.isRendered() && child instanceof LayoutUnit) {
                 LayoutUnit unit = (LayoutUnit) child;
                 
-                writer.write("," + unit.getPosition() + ":{");
+                writer.write("," + unit.getLocation() + ":{");
                 writer.write("size:'" + unit.getSize() + "'");
                 writer.write("}");
 

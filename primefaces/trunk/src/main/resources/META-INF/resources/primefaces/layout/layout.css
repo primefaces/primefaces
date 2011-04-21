@@ -1,3 +1,17 @@
 .ui-layout-unit {
     visibility: hidden;
+    padding: 0.2em;
+}
+
+.ui-layout-unit-header, .ui-layout-unit-footer {
+	padding: 0.4em 1em;
+	position: relative;
+}
+
+.ui-layout-unit-header-title, .ui-layout-unit-footer-title {
+    
+}
+
+.ui-layout-unit-content {
+    padding: 0.2em 0em;
 }

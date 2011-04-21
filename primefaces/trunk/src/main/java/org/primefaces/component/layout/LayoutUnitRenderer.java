@@ -28,16 +28,45 @@ public class LayoutUnitRenderer extends CoreRenderer {
 	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		LayoutUnit unit = (LayoutUnit) component;
+        String selector = "ui-layout-" + unit.getLocation();
 		
 		writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-layout-unit ui-widget ui-widget-content ui-corner-all ui-layout-" + unit.getPosition(), "styleClass");
+        writer.writeAttribute("class", "ui-layout-unit ui-widget ui-widget-content ui-corner-all " + selector, "styleClass");
+
+        if(unit.getHeader() != null) {
+            encodeRegion(context, unit.getHeader(), Layout.UNIT_HEADER_CLASS, Layout.UNIT_HEADER_TITLE_CLASS);
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Layout.UNIT_CONTENT_CLASS, null);
 	}
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        LayoutUnit unit = (LayoutUnit) component;
+
+        writer.endElement("div");
+
+        if(unit.getFooter() != null) {
+            encodeRegion(context, unit.getHeader(), Layout.UNIT_FOOTER_CLASS, Layout.UNIT_FOOTER_TITLE_CLASS);
+        }
 		
 		writer.endElement("div");
+	}
+
+	public void encodeRegion(FacesContext context, String text, String regionClass, String titleClass) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+
+		writer.startElement("div", null);
+        writer.writeAttribute("class", regionClass, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", titleClass, null);
+        writer.write(text);
+        writer.endElement("div");
+
+        writer.endElement("div");
 	}
 }
