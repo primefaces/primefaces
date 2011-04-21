@@ -11,8 +11,8 @@ import java.util.Map;
         locationMap = new HashMap<String,String>();
         locationMap.put("top", "north");
         locationMap.put("bottom", "south");
-        locationMap.put("left", "east");
-        locationMap.put("right", "west");
+        locationMap.put("left", "west");
+        locationMap.put("right", "east");
         locationMap.put("center", "center");
     }
 

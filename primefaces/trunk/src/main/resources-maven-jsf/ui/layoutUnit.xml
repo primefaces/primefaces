@@ -58,34 +58,22 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<name>minWidth</name>
+			<name>minSize</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
+			<defaultValue>50</defaultValue>
 		</attribute>
 		<attribute>
-			<name>maxWidth</name>
+			<name>maxSize</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-		</attribute>
-		<attribute>
-			<name>minHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-		</attribute>
-		<attribute>
-			<name>maxHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
+			<defaultValue>0</defaultValue>
 		</attribute>
 		<attribute>
 			<name>gutter</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>4px</defaultValue>
+			<type>java.lang.Integer</type>
+			<defaultValue>6</defaultValue>
 		</attribute>
 		<attribute>
 			<name>zindex</name>
@@ -115,7 +103,7 @@
 			<name>collapseSize</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
+			<defaultValue>25</defaultValue>
 		</attribute>
 	</attributes>
 </component>

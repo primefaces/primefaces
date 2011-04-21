@@ -27,3 +27,11 @@
 	margin-left:0.2em;
     margin-top:-0.2em;
 }
+
+.ui-layout-unit-expand-icon {
+    display: block;
+    width:16px;
+    position: absolute;
+    left:4px;
+    top:2px;
+}

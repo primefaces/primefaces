@@ -85,6 +85,17 @@ public class LayoutRenderer extends CoreRenderer {
                 
                 writer.write("," + unit.getLocation() + ":{");
                 writer.write("size:'" + unit.getSize() + "'");
+
+                if(unit.getMinSize() != 50) writer.write(",minSize:" + unit.getMinSize());
+                if(unit.getMaxSize() != 0) writer.write(",maxSize:" + unit.getMaxSize());
+
+                if(unit.isCollapsible()) {
+                    writer.write(",spacing_open:" + unit.getGutter());
+                    writer.write(",spacing_closed:" + unit.getCollapseSize());
+                }
+
+                writer.write(",togglerLength_open:0");
+
                 writer.write("}");
 
             }

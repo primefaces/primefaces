@@ -4339,14 +4339,29 @@ PrimeFaces.widget.Layout = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = this.cfg.full ? $('body') : $(this.jqId);
+    var _self = this;
 
     //backward compatibility
     this.locations = [];
     this.locations['top'] = 'north';
     this.locations['bottom'] = 'south';
-    this.locations['left'] = 'east';
-    this.locations['right'] = 'west';
+    this.locations['left'] = 'west';
+    this.locations['right'] = 'east';
     this.locations['center'] = 'center';
+
+    //defaults
+    this.cfg.defaults = {
+        onshow: function(location,pane) { _self.onshow(location,pane); },
+        onhide: function(location,pane) { _self.onhide(location,pane); },
+        onopen: function(location,pane) { _self.onopen(location,pane); },
+        onclose: function(location,pane) { _self.onclose(location,pane); },
+        onresize: function(location,pane) { _self.onresize(location,pane); },
+        slidable: false,
+        togglerLength_open: 0,
+        togglerLength_closed: 21,
+        togglerAlign_closed: 'top',
+        togglerContent_closed: '<a href="javascript:void(0)" class="ui-layout-unit-expand-icon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrow-4-diag"></span>'
+    };
 
     this.layout = this.jq.layout(this.cfg);
 
@@ -4355,7 +4370,7 @@ PrimeFaces.widget.Layout = function(id, cfg) {
 
 PrimeFaces.widget.Layout.prototype.bindEvents = function() {
     var _self = this;
-    
+
     if(this.cfg.full) {
         $('.ui-layout-unit-header-icon').mouseover(function() {
             $(this).addClass('ui-state-hover');
@@ -4373,6 +4388,12 @@ PrimeFaces.widget.Layout.prototype.bindEvents = function() {
             }
         });
     }
+    
+    $('.ui-layout-unit-expand-icon').mouseover(function() {
+        $(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        $(this).removeClass('ui-state-hover');
+    });
 }
 
 PrimeFaces.widget.Layout.prototype.toggle = function(location) {
@@ -4392,3 +4413,23 @@ PrimeFaces.widget.Layout.prototype.getPane = function(location) {
 
     return pane ? pane : location;
 }
+
+PrimeFaces.widget.Layout.prototype.onhide = function(location, pane) {
+    $('.ui-layout-resizer-' + location).addClass('ui-widget-content ui-corner-all');
+};
+
+PrimeFaces.widget.Layout.prototype.onshow = function(location, pane) {
+    $('.ui-layout-resizer-' + location).removeClass('ui-widget-content  ui-corner-all');
+};
+
+PrimeFaces.widget.Layout.prototype.onopen = function(location, pane) {
+    $('.ui-layout-resizer-' + location).removeClass('ui-widget-content  ui-corner-all');
+};
+
+PrimeFaces.widget.Layout.prototype.onclose = function(location, pane) {
+    $('.ui-layout-resizer-' + location).addClass('ui-widget-content  ui-corner-all');
+};
+
+PrimeFaces.widget.Layout.prototype.onresize = function(location, pane) {
+    //$('.ui-layout-resizer-' + location).removeClass('ui-state-hover ui-corner-all');
+};
