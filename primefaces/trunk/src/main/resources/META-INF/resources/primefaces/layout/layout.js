@@ -4374,33 +4374,33 @@ PrimeFaces.widget.Layout = function(id, cfg) {
 }
 
 PrimeFaces.widget.Layout.prototype.bindEvents = function() {
-    var _self = this;
+    var _self = this,
+    units = this.jq.children('.ui-layout-unit'),
+    resizers = this.jq.children('.ui-layout-resizer');
 
-    if(this.cfg.full) {
-        $('.ui-layout-unit-header-icon').mouseover(function() {
-            $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
-            $(this).removeClass('ui-state-hover');
-        }).click(function() {
-            var element = $(this),
-            unit = element.parents('.ui-layout-unit:first'),
-            pane = unit.data('layoutEdge');
+    units.children('.ui-layout-unit-header').children('a.ui-layout-unit-header-icon').mouseover(function() {
+        $(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        $(this).removeClass('ui-state-hover');
+    }).click(function() {
+        var element = $(this),
+        unit = element.parents('.ui-layout-unit:first'),
+        pane = unit.data('layoutEdge');
 
-            if(element.children('span').hasClass('ui-icon-close')) {
-                _self.hide(pane);
-            } else {
-                _self.toggle(pane);
-            }
-        });
-    }
+        if(element.children('span').hasClass('ui-icon-close')) {
+            _self.hide(pane);
+        } else {
+            _self.toggle(pane);
+        }
+    });
     
-    $('.ui-layout-unit-expand-icon').mouseover(function() {
+    resizers.find('a.ui-layout-unit-expand-icon').mouseover(function() {
         $(this).addClass('ui-state-hover');
     }).mouseout(function() {
         $(this).removeClass('ui-state-hover');
     });
 
-    $('.ui-layout-resizer').mouseover(function() {
+    resizers.mouseover(function() {
         var element = $(this);
         if(!element.hasClass('ui-layout-resizer-closed'))
             $(this).addClass('ui-state-hover');
