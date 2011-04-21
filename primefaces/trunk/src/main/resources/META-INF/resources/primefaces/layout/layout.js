@@ -4366,6 +4366,10 @@ PrimeFaces.widget.Layout = function(id, cfg) {
 
     this.layout = this.jq.layout(this.cfg);
 
+    if(!this.cfg.full) {
+        this.jq.css('overflow','visible');
+    }
+
     this.bindEvents();
 }
 
