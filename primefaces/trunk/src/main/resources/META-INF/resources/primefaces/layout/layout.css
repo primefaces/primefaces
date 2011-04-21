@@ -4,7 +4,7 @@
 }
 
 .ui-layout-unit-header, .ui-layout-unit-footer {
-	padding: 0.4em 1em;
+	padding: 0.4em;
 	position: relative;
 }
 
@@ -12,6 +12,18 @@
     
 }
 
-.ui-layout-unit-content {
+.ui-layout-unit .ui-layout-unit-content {
     padding: 0.2em 0em;
+    border: 0px none;
+}
+
+.ui-layout-unit-header-icon {
+	float: right;
+}
+
+.ui-layout-unit-header-icon,
+.ui-layout-unit-header-icon:hover,
+.ui-layout-unit-header-icon:focus {
+	margin-left:0.2em;
+    margin-top:-0.2em;
 }

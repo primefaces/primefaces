@@ -32,10 +32,10 @@ public class LayoutUnitRenderer extends CoreRenderer {
 		
 		writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-layout-unit ui-widget ui-widget-content ui-corner-all " + selector, "styleClass");
+        writer.writeAttribute("class", Layout.UNIT_CLASS + " " + selector, "styleClass");
 
         if(unit.getHeader() != null) {
-            encodeRegion(context, unit.getHeader(), Layout.UNIT_HEADER_CLASS, Layout.UNIT_HEADER_TITLE_CLASS);
+            encodeHeader(context, unit);
         }
 
         writer.startElement("div", null);
@@ -50,23 +50,61 @@ public class LayoutUnitRenderer extends CoreRenderer {
         writer.endElement("div");
 
         if(unit.getFooter() != null) {
-            encodeRegion(context, unit.getHeader(), Layout.UNIT_FOOTER_CLASS, Layout.UNIT_FOOTER_TITLE_CLASS);
+            encodeFooter(context, unit);
         }
 		
 		writer.endElement("div");
 	}
 
-	public void encodeRegion(FacesContext context, String text, String regionClass, String titleClass) throws IOException {
+    public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        String layout = ((Layout) unit.getParent()).resolveWidgetVar();
+        String location = unit.getLocation();
+
+		writer.startElement("div", null);
+        writer.writeAttribute("class", Layout.UNIT_HEADER_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Layout.UNIT_FOOTER_TITLE_CLASS, null);
+        writer.write(unit.getHeader());
+        writer.endElement("span");
+
+        if(unit.isClosable()) {
+            encodeIcon(context, "ui-icon-close");
+        }
+
+        if(unit.isCollapsible()) {
+            encodeIcon(context, unit.getCollapseIcon());
+        }
+
+        writer.endElement("div");
+	}
+
+	public void encodeFooter(FacesContext context, LayoutUnit unit) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("div", null);
-        writer.writeAttribute("class", regionClass, null);
+        writer.writeAttribute("class", Layout.UNIT_FOOTER_CLASS, null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", titleClass, null);
-        writer.write(text);
+        writer.writeAttribute("class", Layout.UNIT_FOOTER_TITLE_CLASS, null);
+        writer.write(unit.getFooter());
         writer.endElement("div");
 
         writer.endElement("div");
 	}
+
+    protected void encodeIcon(FacesContext context, String iconClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "javascript:void(0)", null);
+        writer.writeAttribute("class", Layout.UNIT_HEADER_ICON_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon " + iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+    }
 }

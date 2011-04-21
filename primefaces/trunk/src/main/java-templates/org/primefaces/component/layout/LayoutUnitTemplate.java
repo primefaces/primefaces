@@ -19,3 +19,7 @@ import java.util.Map;
     public String getLocation() {
         return locationMap.get(this.getPosition());
     }
+
+    public String getCollapseIcon() {
+        return "ui-icon-triangle-1-" + this.getLocation().substring(0,1);
+    }

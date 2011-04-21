@@ -4340,5 +4340,55 @@ PrimeFaces.widget.Layout = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = this.cfg.full ? $('body') : $(this.jqId);
 
-    this.jq.layout(this.cfg);
+    //backward compatibility
+    this.locations = [];
+    this.locations['top'] = 'north';
+    this.locations['bottom'] = 'south';
+    this.locations['left'] = 'east';
+    this.locations['right'] = 'west';
+    this.locations['center'] = 'center';
+
+    this.layout = this.jq.layout(this.cfg);
+
+    this.bindEvents();
+}
+
+PrimeFaces.widget.Layout.prototype.bindEvents = function() {
+    var _self = this;
+    
+    if(this.cfg.full) {
+        $('.ui-layout-unit-header-icon').mouseover(function() {
+            $(this).addClass('ui-state-hover');
+        }).mouseout(function() {
+            $(this).removeClass('ui-state-hover');
+        }).click(function() {
+            var element = $(this),
+            unit = element.parents('.ui-layout-unit:first'),
+            pane = unit.data('layoutEdge');
+
+            if(element.children('span').hasClass('ui-icon-close')) {
+                _self.hide(pane);
+            } else {
+                _self.toggle(pane);
+            }
+        });
+    }
+}
+
+PrimeFaces.widget.Layout.prototype.toggle = function(location) {
+    this.layout.toggle(this.getPane(location));
+}
+
+PrimeFaces.widget.Layout.prototype.show = function(location) {
+    this.layout.show(this.getPane(location));
+}
+
+PrimeFaces.widget.Layout.prototype.hide = function(location) {
+    this.layout.hide(this.getPane(location));
+}
+
+PrimeFaces.widget.Layout.prototype.getPane = function(location) {
+    var pane = this.locations[location];
+
+    return pane ? pane : location;
 }
