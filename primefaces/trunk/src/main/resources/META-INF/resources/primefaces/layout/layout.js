@@ -4356,9 +4356,10 @@ PrimeFaces.widget.Layout = function(id, cfg) {
         onopen: function(location,pane) { _self.onopen(location,pane); },
         onclose: function(location,pane) { _self.onclose(location,pane); },
         onresize: function(location,pane) { _self.onresize(location,pane); },
+        contentSelector: '.ui-layout-unit-content',
         slidable: false,
         togglerLength_open: 0,
-        togglerLength_closed: 21,
+        togglerLength_closed: 23,
         togglerAlign_closed: 'top',
         togglerContent_closed: '<a href="javascript:void(0)" class="ui-layout-unit-expand-icon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrow-4-diag"></span>'
     };

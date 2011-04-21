@@ -15,6 +15,7 @@
 .ui-layout-unit .ui-layout-unit-content {
     padding: 0.2em 0em;
     border: 0px none;
+    overflow: auto;
 }
 
 .ui-layout-unit-header-icon {
