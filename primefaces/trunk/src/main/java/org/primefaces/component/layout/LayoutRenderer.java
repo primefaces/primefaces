@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ResizeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.renderkit.CoreRenderer;
@@ -59,13 +60,17 @@ public class LayoutRenderer extends CoreRenderer {
             //Queue resize event
             if (params.containsKey(clientId + "_resized")) {
                 LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
-                /*int width = Integer.valueOf(params.get(clientId + "_unitWidth"));
-                int height = Integer.valueOf(params.get(clientId + "_unitHeight"));
+                String position = unit.getPosition();
+                int width = Integer.valueOf(params.get(clientId + "_width"));
+                int height = Integer.valueOf(params.get(clientId + "_height"));
 
-                unit.setWidth(width);
-                unit.setHeight(height);
-
-                layout.queueEvent(new ResizeEvent(unit, width, height));*/
+                if(position.equals("west") || position.equals("east")) {
+                    unit.setSize(String.valueOf(width));
+                } else if(position.equals("north") || position.equals("south")) {
+                    unit.setSize(String.valueOf(height));
+                }
+                
+                layout.queueEvent(new ResizeEvent(unit, width, height));
             }
 
         }

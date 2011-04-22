@@ -4343,11 +4343,11 @@ PrimeFaces.widget.Layout = function(id, cfg) {
 
     //defaults
     this.cfg.defaults = {
-        onshow: function(location,pane,state,options) { _self.onshow(location,pane,state,options); },
-        onhide: function(location,pane,state,options) { _self.onhide(location,pane,state,options); },
-        onopen: function(location,pane,state,options) { _self.onopen(location,pane,state,options); },
-        onclose: function(location,pane,state,options) { _self.onclose(location,pane,state,options); },
-        onresize: function(location,pane,state,options) { _self.onresize(location,pane,state,options); },
+        onshow: function(location,pane,state,options) { _self.onshow(location,pane,state); },
+        onhide: function(location,pane,state,options) { _self.onhide(location,pane,state); },
+        onopen: function(location,pane,state,options) { _self.onopen(location,pane,state); },
+        onclose: function(location,pane,state,options) { _self.onclose(location,pane,state); },
+        onresize: function(location,pane,state,options) { _self.onresize(location,pane,state); },
         contentSelector: '.ui-layout-unit-content',
         slidable: false,
         togglerLength_open: 0,
@@ -4415,7 +4415,7 @@ PrimeFaces.widget.Layout.prototype.hide = function(location) {
     this.layout.hide(location);
 }
 
-PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state, options) {
+PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state) {
     if(this.cfg.ajaxClose) {
         var options = {
             source: this.id,
@@ -4433,31 +4433,47 @@ PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state, opti
     }
 }
 
-PrimeFaces.widget.Layout.prototype.onshow = function(location, pane, state, options) {
+PrimeFaces.widget.Layout.prototype.onshow = function(location, pane, state) {
 
 }
 
-PrimeFaces.widget.Layout.prototype.onopen = function(location, pane, state, options) {
+PrimeFaces.widget.Layout.prototype.onopen = function(location, pane, state) {
     pane.siblings('.ui-layout-resizer-' + location).removeClass('ui-widget-content ui-corner-all');
 
     if(this.cfg.ajaxToggle) {
-        this.fireToggleEvent(location, false, state, options);
+        this.fireToggleEvent(location, false, state);
     }
 }
 
-PrimeFaces.widget.Layout.prototype.onclose = function(location, pane, state, options) {
+PrimeFaces.widget.Layout.prototype.onclose = function(location, pane, state) {
     pane.siblings('.ui-layout-resizer-' + location).addClass('ui-widget-content ui-corner-all');
 
     if(this.cfg.ajaxToggle && !state.isHidden) {
-        this.fireToggleEvent(location, true, state, options);
+        this.fireToggleEvent(location, true, state);
     }
 }
 
-PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state, options) {
+PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state) {
+    if(this.cfg.ajaxResize && !state.isClosed && !state.isHidden) {
+        var options = {
+        source: this.id,
+        process: this.id,
+        update: this.cfg.onToggleUpdate
+        };
 
+        var params = {};
+        params[this.id + '_resized'] = true;
+        params[this.id + '_unit'] = location;
+        params[this.id + '_width'] = state.innerWidth;
+        params[this.id + '_height'] = state.innerHeight;
+
+        options.params = params;
+
+        PrimeFaces.ajax.AjaxRequest(options);
+    }
 }
 
-PrimeFaces.widget.Layout.prototype.fireToggleEvent = function(location, collapsed, state, options) {
+PrimeFaces.widget.Layout.prototype.fireToggleEvent = function(location, collapsed, state) {
     var options = {
         source: this.id,
         process: this.id,
