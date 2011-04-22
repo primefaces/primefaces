@@ -138,6 +138,7 @@ public class LayoutRenderer extends CoreRenderer {
                 writer.write("," + unit.getPosition() + ":{");
                 writer.write("paneSelector:'" + ComponentUtils.escapeJQueryId(unit.getClientId(context)) + "'");
                 writer.write(",size:'" + unit.getSize() + "'");
+                writer.write(",resizable:" + unit.isResizable());
 
                 if(unit.getMinSize() != 50) writer.write(",minSize:" + unit.getMinSize());
                 if(unit.getMaxSize() != 0) writer.write(",maxSize:" + unit.getMaxSize());
