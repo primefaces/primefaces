@@ -82,7 +82,9 @@ public class LayoutRenderer extends CoreRenderer {
         Layout layout = (Layout) component;
         String clientId = layout.getClientId(context);
 
-        if(!layout.isFullPage()) {
+        encodeScript(context, layout);
+
+        if(layout.isElementLayout()) {
             writer.startElement("div", layout);
             writer.writeAttribute("id", clientId, "id");
 
@@ -92,15 +94,13 @@ public class LayoutRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Layout layout = (Layout) component;
 
-        if(!layout.isFullPage()) {
+        if(layout.isElementLayout()) {
             writer.endElement("div");
         }
-
-        encodeScript(facesContext, layout);
     }
 
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
@@ -115,6 +115,10 @@ public class LayoutRenderer extends CoreRenderer {
         
         writer.write("full:" + layout.isFullPage());
 
+        if(layout.isNested()) {
+            writer.write(",parent:'" + layout.getParent().getClientId(context) + "'");
+        }
+
         encodeUnits(context, layout);
 
         encodeAjaxEventListeners(context, layout);
@@ -124,15 +128,16 @@ public class LayoutRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeUnits(FacesContext facesContext, Layout layout) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeUnits(FacesContext context, Layout layout) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
         for(UIComponent child : layout.getChildren()) {
             if(child.isRendered() && child instanceof LayoutUnit) {
                 LayoutUnit unit = (LayoutUnit) child;
                 
                 writer.write("," + unit.getPosition() + ":{");
-                writer.write("size:'" + unit.getSize() + "'");
+                writer.write("paneSelector:'" + ComponentUtils.escapeJQueryId(unit.getClientId(context)) + "'");
+                writer.write(",size:'" + unit.getSize() + "'");
 
                 if(unit.getMinSize() != 50) writer.write(",minSize:" + unit.getMinSize());
                 if(unit.getMaxSize() != 0) writer.write(",maxSize:" + unit.getMaxSize());

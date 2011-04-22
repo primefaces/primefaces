@@ -47,3 +47,11 @@ import org.primefaces.component.layout.LayoutUnit;
 			}
 		}
 	}
+
+    public boolean isNested() {
+        return this.getParent() instanceof LayoutUnit;
+    }
+
+    public boolean isElementLayout() {
+        return !isNested() && !isFullPage();
+    }

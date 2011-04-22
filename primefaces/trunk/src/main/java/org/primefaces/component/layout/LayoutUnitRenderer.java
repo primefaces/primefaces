@@ -25,11 +25,12 @@ import org.primefaces.renderkit.CoreRenderer;
 public class LayoutUnitRenderer extends CoreRenderer {
 
     @Override
-	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		LayoutUnit unit = (LayoutUnit) component;
         String selector = "ui-layout-" + unit.getPosition();
-		
+        boolean nesting = unit.isNesting();
+
 		writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", Layout.UNIT_CLASS + " " + selector, "styleClass");
@@ -38,16 +39,16 @@ public class LayoutUnitRenderer extends CoreRenderer {
             encodeHeader(context, unit);
         }
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Layout.UNIT_CONTENT_CLASS, null);
-	}
+        if(!nesting) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", Layout.UNIT_CONTENT_CLASS, null);
+        }
 
-    @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        LayoutUnit unit = (LayoutUnit) component;
+        renderChildren(context, unit);
 
-        writer.endElement("div");
+        if(!nesting) {
+            writer.endElement("div");
+        }
 
         if(unit.getFooter() != null) {
             encodeFooter(context, unit);
@@ -55,6 +56,16 @@ public class LayoutUnitRenderer extends CoreRenderer {
 		
 		writer.endElement("div");
 	}
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 
     public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();

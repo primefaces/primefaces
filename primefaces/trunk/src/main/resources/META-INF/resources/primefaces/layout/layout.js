@@ -4338,7 +4338,15 @@ PrimeFaces.widget.Layout = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = this.cfg.full ? $('body') : $(this.jqId);
+
+    if(this.cfg.full) {                                                 //full
+        this.jq = $('body');
+    } else if(this.cfg.parent) {                                        //nested
+        this.jq = $(PrimeFaces.escapeClientId(this.cfg.parent));
+    } else {                                                            //element
+        this.jq = $(this.jqId);
+    }
+
     var _self = this;
 
     //defaults
