@@ -28,7 +28,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
 	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		LayoutUnit unit = (LayoutUnit) component;
-        String selector = "ui-layout-" + unit.getLocation();
+        String selector = "ui-layout-" + unit.getPosition();
 		
 		writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(context), "id");
@@ -58,14 +58,12 @@ public class LayoutUnitRenderer extends CoreRenderer {
 
     public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String layout = ((Layout) unit.getParent()).resolveWidgetVar();
-        String location = unit.getLocation();
 
 		writer.startElement("div", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Layout.UNIT_FOOTER_TITLE_CLASS, null);
+        writer.writeAttribute("class", Layout.UNIT_HEADER_TITLE_CLASS, null);
         writer.write(unit.getHeader());
         writer.endElement("span");
 

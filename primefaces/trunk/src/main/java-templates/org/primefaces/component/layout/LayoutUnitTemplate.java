@@ -5,21 +5,6 @@ import java.util.Map;
 		getParent().broadcast(event);
 	}
 
-    private static Map<String,String> locationMap;
-
-    {
-        locationMap = new HashMap<String,String>();
-        locationMap.put("top", "north");
-        locationMap.put("bottom", "south");
-        locationMap.put("left", "west");
-        locationMap.put("right", "east");
-        locationMap.put("center", "center");
-    }
-
-    public String getLocation() {
-        return locationMap.get(this.getPosition());
-    }
-
     public String getCollapseIcon() {
-        return "ui-icon-triangle-1-" + this.getLocation().substring(0,1);
+        return "ui-icon-triangle-1-" + this.getPosition().substring(0,1);
     }

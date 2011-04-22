@@ -16,19 +16,60 @@
 package org.primefaces.component.layout;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ResizeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class LayoutRenderer extends CoreRenderer {
+
+    @Override
+    public void decode(FacesContext facesContext, UIComponent component) {
+        Layout layout = (Layout) component;
+        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = layout.getClientId(facesContext);
+
+        if(params.containsKey(clientId)) {
+
+            //Queue toggle event
+            if (params.containsKey(clientId + "_toggled")) {
+                boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
+                LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
+                Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
+                unit.setCollapsed(collapsed);
+
+                layout.queueEvent(new ToggleEvent(unit, visibility));
+            }
+
+            //Queue close event
+            if (params.containsKey(clientId + "_closed")) {
+                LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
+                unit.setVisible(false);
+
+                layout.queueEvent(new CloseEvent(unit));
+            }
+
+            //Queue resize event
+            if (params.containsKey(clientId + "_resized")) {
+                LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
+                /*int width = Integer.valueOf(params.get(clientId + "_unitWidth"));
+                int height = Integer.valueOf(params.get(clientId + "_unitHeight"));
+
+                unit.setWidth(width);
+                unit.setHeight(height);
+
+                layout.queueEvent(new ResizeEvent(unit, width, height));*/
+            }
+
+        }
+    }
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -71,6 +112,8 @@ public class LayoutRenderer extends CoreRenderer {
 
         encodeUnits(context, layout);
 
+        encodeAjaxEventListeners(context, layout);
+
         writer.write("});});");
 
         writer.endElement("script");
@@ -83,7 +126,7 @@ public class LayoutRenderer extends CoreRenderer {
             if(child.isRendered() && child instanceof LayoutUnit) {
                 LayoutUnit unit = (LayoutUnit) child;
                 
-                writer.write("," + unit.getLocation() + ":{");
+                writer.write("," + unit.getPosition() + ":{");
                 writer.write("size:'" + unit.getSize() + "'");
 
                 if(unit.getMinSize() != 50) writer.write(",minSize:" + unit.getMinSize());
@@ -98,7 +141,31 @@ public class LayoutRenderer extends CoreRenderer {
 
             }
         }
+    }
 
+    protected void encodeAjaxEventListeners(FacesContext context, Layout layout) throws IOException {
+        if(layout.getToggleListener() != null)
+            encodeAjaxEventListener(context, layout, "onToggleUpdate", layout.getOnToggleUpdate(), "ajaxToggle", "onToggleComplete", layout.getOnToggleComplete());
+
+        if(layout.getCloseListener() != null)
+            encodeAjaxEventListener(context, layout, "onCloseUpdate", layout.getOnCloseUpdate(), "ajaxClose", "onCloseComplete", layout.getOnCloseComplete());
+
+        if(layout.getResizeListener() != null)
+            encodeAjaxEventListener(context, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize", "onResizeComplete", layout.getOnResizeComplete());
+    }
+
+    protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam, String callbackName, String callback) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.write("," + ajaxEventParam + ":true");
+
+        if (update != null) {
+            writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(facesContext, layout, update) + "'");
+        }
+
+        if (callback != null) {
+            writer.write("," + callbackName + ":function(xhr, status, args) {" + callback + ";}");
+        }
     }
 /*
     @Override
