@@ -148,6 +148,9 @@ public class LayoutRenderer extends CoreRenderer {
                     writer.write(",spacing_closed:" + unit.getCollapseSize());
                 }
 
+                if(!unit.isVisible()) writer.write(",initHidden:true");
+                if(unit.isCollapsed()) writer.write(",initClosed:true");
+
                 writer.write("}");
 
             }

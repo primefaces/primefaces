@@ -43,11 +43,6 @@
 			<defaultValue>false</defaultValue>
 		</attribute>
 		<attribute>
-			<name>scrollable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<name>header</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -76,12 +71,6 @@
 			<defaultValue>6</defaultValue>
 		</attribute>
 		<attribute>
-			<name>zindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>-1</defaultValue>
-		</attribute>
-		<attribute>
 			<name>visible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
@@ -92,12 +81,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>proxyResize</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
 		</attribute>
 		<attribute>
 			<name>collapseSize</name>
