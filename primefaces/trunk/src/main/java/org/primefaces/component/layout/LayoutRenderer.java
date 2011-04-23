@@ -122,6 +122,8 @@ public class LayoutRenderer extends CoreRenderer {
 
         encodeAjaxEventListeners(context, layout);
 
+        encodeClientCallbacks(context, layout);
+
         writer.write("});});");
 
         writer.endElement("script");
@@ -170,6 +172,19 @@ public class LayoutRenderer extends CoreRenderer {
 
         if(layout.getResizeListener() != null)
             encodeAjaxEventListener(context, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize");
+    }
+
+    protected void encodeClientCallbacks(FacesContext context, Layout layout) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if(layout.getOnToggle() != null)
+            writer.write(",onToggle:function(e) {" + layout.getOnToggle() + "}");
+
+        if(layout.getOnClose() != null)
+            writer.write(",onClose:function(e) {" + layout.getOnClose() + "}");
+
+        if(layout.getOnResize() != null)
+            writer.write(",onResize:function(e) {" + layout.getOnResize() + "}");
     }
 
     protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam) throws IOException {

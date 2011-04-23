@@ -4414,6 +4414,10 @@ PrimeFaces.widget.Layout.prototype.hide = function(location) {
 }
 
 PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state) {
+    if(this.cfg.onClose) {
+        this.cfg.onClose.call(this, state);
+    }
+    
     if(this.cfg.ajaxClose) {
         var options = {
             source: this.id,
@@ -4432,11 +4436,15 @@ PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state) {
 }
 
 PrimeFaces.widget.Layout.prototype.onshow = function(location, pane, state) {
-
+    
 }
 
 PrimeFaces.widget.Layout.prototype.onopen = function(location, pane, state) {
     pane.siblings('.ui-layout-resizer-' + location).removeClass('ui-widget-content ui-corner-all');
+
+    if(this.cfg.onToggle) {
+        this.cfg.onToggle.call(this, state);
+    }
 
     if(this.cfg.ajaxToggle) {
         this.fireToggleEvent(location, false, state);
@@ -4446,12 +4454,20 @@ PrimeFaces.widget.Layout.prototype.onopen = function(location, pane, state) {
 PrimeFaces.widget.Layout.prototype.onclose = function(location, pane, state) {
     pane.siblings('.ui-layout-resizer-' + location).addClass('ui-widget-content ui-corner-all');
 
+    if(this.cfg.onToggle && !state.isHidden) {
+        this.cfg.onToggle.call(this, state);
+    }
+
     if(this.cfg.ajaxToggle && !state.isHidden) {
         this.fireToggleEvent(location, true, state);
     }
 }
 
 PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state) {
+    if(this.cfg.onResize) {
+        this.cfg.onResize.call(this, state);
+    }
+
     if(this.cfg.ajaxResize && !state.isClosed && !state.isHidden) {
         var options = {
             source: this.id,
