@@ -98,5 +98,15 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 </component>
