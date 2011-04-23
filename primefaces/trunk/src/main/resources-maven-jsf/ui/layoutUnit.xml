@@ -105,5 +105,15 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>25</defaultValue>
 		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 </component>

@@ -28,13 +28,17 @@ public class LayoutUnitRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		LayoutUnit unit = (LayoutUnit) component;
-        String selector = "ui-layout-" + unit.getPosition();
         boolean nesting = unit.isNesting();
+        
+        String defaultStyleClass = Layout.UNIT_CLASS + " ui-layout-" + unit.getPosition();
+        String styleClass = unit.getStyleClass();
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
 		writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(context), "id");
-        writer.writeAttribute("class", Layout.UNIT_CLASS + " " + selector, "styleClass");
-
+        writer.writeAttribute("class", styleClass , "styleClass");
+        if(unit.getStyle() != null) writer.writeAttribute("style", unit.getStyle() , "style");
+        
         if(unit.getHeader() != null) {
             encodeHeader(context, unit);
         }
