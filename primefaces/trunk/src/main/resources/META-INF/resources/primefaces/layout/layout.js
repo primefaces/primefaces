@@ -4361,7 +4361,7 @@ PrimeFaces.widget.Layout = function(id, cfg) {
         togglerLength_open: 0,
         togglerLength_closed: 23,
         togglerAlign_closed: 'top',
-        togglerContent_closed: '<a href="javascript:void(0)" class="ui-layout-unit-expand-icon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrow-4-diag"></span>'
+        togglerContent_closed: '<a href="javascript:void(0)" class="ui-layout-unit-expand-icon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrow-4-diag"></span></a>'
     };
 
     this.layout = this.jq.layout(this.cfg);
