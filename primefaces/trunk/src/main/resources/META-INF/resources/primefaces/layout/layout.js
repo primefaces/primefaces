@@ -4454,9 +4454,9 @@ PrimeFaces.widget.Layout.prototype.onclose = function(location, pane, state) {
 PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state) {
     if(this.cfg.ajaxResize && !state.isClosed && !state.isHidden) {
         var options = {
-        source: this.id,
-        process: this.id,
-        update: this.cfg.onToggleUpdate
+            source: this.id,
+            process: this.id,
+            update: this.cfg.onToggleUpdate
         };
 
         var params = {};

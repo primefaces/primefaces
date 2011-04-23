@@ -73,6 +73,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
 
     public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        Layout layout = (Layout) unit.getParent();
 
 		writer.startElement("div", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_CLASS, null);
@@ -83,11 +84,11 @@ public class LayoutUnitRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if(unit.isClosable()) {
-            encodeIcon(context, "ui-icon-close");
+            encodeIcon(context, "ui-icon-close", layout.getCloseTitle());
         }
 
         if(unit.isCollapsible()) {
-            encodeIcon(context, unit.getCollapseIcon());
+            encodeIcon(context, unit.getCollapseIcon(), layout.getCollapseTitle());
         }
 
         writer.endElement("div");
@@ -107,12 +108,13 @@ public class LayoutUnitRenderer extends CoreRenderer {
         writer.endElement("div");
 	}
 
-    protected void encodeIcon(FacesContext context, String iconClass) throws IOException {
+    protected void encodeIcon(FacesContext context, String iconClass, String title) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "javascript:void(0)", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_ICON_CLASS, null);
+        writer.writeAttribute("title", title, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon " + iconClass, null);

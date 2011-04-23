@@ -153,6 +153,9 @@ public class LayoutRenderer extends CoreRenderer {
                 if(unit.getEffect() != null) writer.write(",fxName:'" + unit.getEffect() + "'");
                 if(unit.getEffectSpeed() != null) writer.write(",fxSpeed:'" + unit.getEffectSpeed() + "'");
 
+                if(layout.getResizeTitle() != null) writer.write(",resizerTip:'" + layout.getResizeTitle() + "'");
+                if(layout.getExpandTitle() != null) writer.write(",togglerTip_closed:'" + layout.getExpandTitle() + "'");
+
                 writer.write("}");
             }
         }
@@ -160,26 +163,22 @@ public class LayoutRenderer extends CoreRenderer {
 
     protected void encodeAjaxEventListeners(FacesContext context, Layout layout) throws IOException {
         if(layout.getToggleListener() != null)
-            encodeAjaxEventListener(context, layout, "onToggleUpdate", layout.getOnToggleUpdate(), "ajaxToggle", "onToggleComplete", layout.getOnToggleComplete());
+            encodeAjaxEventListener(context, layout, "onToggleUpdate", layout.getOnToggleUpdate(), "ajaxToggle");
 
         if(layout.getCloseListener() != null)
-            encodeAjaxEventListener(context, layout, "onCloseUpdate", layout.getOnCloseUpdate(), "ajaxClose", "onCloseComplete", layout.getOnCloseComplete());
+            encodeAjaxEventListener(context, layout, "onCloseUpdate", layout.getOnCloseUpdate(), "ajaxClose");
 
         if(layout.getResizeListener() != null)
-            encodeAjaxEventListener(context, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize", "onResizeComplete", layout.getOnResizeComplete());
+            encodeAjaxEventListener(context, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize");
     }
 
-    protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam, String callbackName, String callback) throws IOException {
+    protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.write("," + ajaxEventParam + ":true");
 
         if (update != null) {
             writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(facesContext, layout, update) + "'");
-        }
-
-        if (callback != null) {
-            writer.write("," + callbackName + ":function(xhr, status, args) {" + callback + ";}");
         }
     }
 }

@@ -38,21 +38,6 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>closeTitle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>collapseTitle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>expandTitle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
             <name>closeListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
@@ -86,20 +71,42 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>onResizeComplete</name>
+            <name>onResize</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>onCloseComplete</name>
+            <name>onClose</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>onToggleComplete</name>
+            <name>onToggle</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+			<name>resizeTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>collapseTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Collapse</defaultValue>
+		</attribute>
+        <attribute>
+			<name>expandTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>closeTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Close</defaultValue>
+		</attribute>
     </attributes>
     <resources>
         <resource>
