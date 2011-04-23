@@ -59,10 +59,12 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     @Override
     public Collection<String> getRenderIds() {
         List<String> ids = new ArrayList<String>(getWrapped().getRenderIds());
-        Collection<String> partialUpdateTargets = RequestContext.getCurrentInstance().getPartialUpdateTargets();
+        RequestContext requestContext = RequestContext.getCurrentInstance();
         Collection<String> autoUpdateIds = (Collection<String>) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get(Constants.AUTO_UPDATE);
-        
-        ids.addAll(partialUpdateTargets);
+
+        if(requestContext != null) {
+            ids.addAll(requestContext.getPartialUpdateTargets());
+        }
 
         if(autoUpdateIds != null) {
             ids.addAll(autoUpdateIds);
