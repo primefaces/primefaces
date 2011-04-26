@@ -22,6 +22,12 @@
 	<attributes>
 		&input_component_attributes;
 		&widget_var_attribute;
+        <attribute>
+			<name>mode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>popup</defaultValue>
+		</attribute>
 		<attribute>
 			<name>header</name>
 			<required>false</required>
@@ -67,28 +73,10 @@
 	</attributes>
 	<resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
-		</resource>
-		<resource>
-			<name>yui/slider/assets/skins/sam/slider.css</name>
-		</resource>
-		<resource>
-			<name>yui/colorpicker/assets/skins/sam/colorpicker.css</name>
-		</resource>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
-			<name>yui/slider/slider-min.js</name>
-		</resource>
-		<resource>
-			<name>yui/colorpicker/colorpicker-min.js</name>
+			<name>colorpicker/colorpicker.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
