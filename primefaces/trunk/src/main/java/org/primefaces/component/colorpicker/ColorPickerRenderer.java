@@ -53,10 +53,31 @@ public class ColorPickerRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = colorPicker.getClientId(context);
         String inputId = clientId + "_input";
+        String buttonId = clientId + "_button";
         Color color = (Color) colorPicker.getValue();
+        boolean isPopup = colorPicker.getMode().equals("popup");
 
-        writer.startElement("div", null);
+        writer.startElement("span", null);
         writer.writeAttribute("id", colorPicker.getClientId(context), "id");
+
+        if(isPopup) {
+            //Button
+            writer.startElement("button", null);
+            writer.writeAttribute("id", buttonId, null);
+            writer.writeAttribute("name", buttonId, null);
+            writer.writeAttribute("type", "button", null);
+            writer.write("<em id=\""+ clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
+            if(color != null) {
+                writer.write("background-color:#" + color.getHex());
+            }
+            writer.write("\">Live Preview</em>");
+
+            writer.endElement("button");
+        } else {
+            writer.startElement("div", null);
+            writer.writeAttribute("id", colorPicker.getClientId(context) + "_inline", "id");
+            writer.endElement("div");
+        }
 
         //Input
 		writer.startElement("input", null);
@@ -68,7 +89,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		}
 		writer.endElement("input");
 
-        writer.endElement("div");
+        writer.endElement("span");
     }
 
     protected void encodeScript(FacesContext context, ColorPicker colorPicker) throws IOException {

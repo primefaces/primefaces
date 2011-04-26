@@ -787,12 +787,19 @@ PrimeFaces.widget.ColorPicker = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
-    var _self = this;
+    var _self = this,
+    popup = this.cfg.mode == 'popup';
+
+    this.jq = popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
 
     //options
-    this.cfg.flat = this.cfg.mode == 'inline';
+    this.cfg.flat = !popup;
+
+    //popup button
+    if(popup) {
+        this.jq.button();
+    }
 
     //events
     this.cfg.onChange = function(hsb, hex, rgb) {
