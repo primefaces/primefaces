@@ -113,6 +113,7 @@ public class ColorPickerRenderer extends CoreRenderer {
             writer.write(",effect:'" + effect + "'");
             writer.write(",effectSpeed:'" + colorPicker.getEffectSpeed() + "'");
         }
+        if(colorPicker.getZindex() != Integer.MAX_VALUE) writer.write(",zindex:" + colorPicker.getZindex());
 
         writer.write("});});");
 
