@@ -13,7 +13,7 @@
 			inAction,
 			charMin = 65,
 			visible,
-			tpl = '<div class="colorpicker"><div class="colorpicker_color"><div><div></div></div></div><div class="colorpicker_hue"><div></div></div><div class="colorpicker_new_color"></div><div class="colorpicker_current_color"></div><div class="colorpicker_hex"><input type="text" maxlength="6" size="6" /></div><div class="colorpicker_rgb_r colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_rgb_g colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_rgb_b colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_hsb_h colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_hsb_s colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_hsb_b colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_submit"></div></div>',
+			tpl = '<div class="ui-colorpicker"><div class="ui-colorpicker_color"><div><div></div></div></div><div class="ui-colorpicker_hue"><div></div></div><div class="ui-colorpicker_new_color"></div><div class="ui-colorpicker_current_color"></div><div class="ui-colorpicker_hex"><input type="text" maxlength="6" size="6" /></div><div class="ui-colorpicker_rgb_r ui-colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="ui-colorpicker_rgb_g ui-colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="ui-colorpicker_rgb_b ui-colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="ui-colorpicker_hsb_h ui-colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="ui-colorpicker_hsb_s ui-colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="ui-colorpicker_hsb_b ui-colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="ui-colorpicker_submit"></div></div>',
 			defaults = {
 				eventName: 'click',
 				onShow: function () {},
@@ -126,7 +126,7 @@
 			},
 			upIncrement = function (ev) {
 				change.apply(ev.data.field.get(0), [true]);
-				ev.data.el.removeClass('colorpicker_slider').find('input').focus();
+				ev.data.el.removeClass('ui-colorpicker_slider').find('input').focus();
 				$(document).unbind('mouseup', upIncrement);
 				$(document).unbind('mousemove', moveIncrement);
 				return false;
@@ -197,10 +197,10 @@
 				return false;
 			},
 			enterSubmit = function (ev) {
-				$(this).addClass('colorpicker_focus');
+				$(this).addClass('ui-colorpicker_focus');
 			},
 			leaveSubmit = function (ev) {
-				$(this).removeClass('colorpicker_focus');
+				$(this).removeClass('ui-colorpicker_focus');
 			},
 			clickSubmit = function (ev) {
 				var cal = $(this).parent();
@@ -411,16 +411,16 @@
 												.bind('focus', focus);
 						cal
 							.find('span').bind('mousedown', downIncrement).end()
-							.find('>div.colorpicker_current_color').bind('click', restoreOriginal);
-						options.selector = cal.find('div.colorpicker_color').bind('mousedown', downSelector);
+							.find('>div.ui-colorpicker_current_color').bind('click', restoreOriginal);
+						options.selector = cal.find('div.ui-colorpicker_color').bind('mousedown', downSelector);
 						options.selectorIndic = options.selector.find('div div');
 						options.el = this;
-						options.hue = cal.find('div.colorpicker_hue div');
-						cal.find('div.colorpicker_hue').bind('mousedown', downHue);
-						options.newColor = cal.find('div.colorpicker_new_color');
-						options.currentColor = cal.find('div.colorpicker_current_color');
+						options.hue = cal.find('div.ui-colorpicker_hue div');
+						cal.find('div.ui-colorpicker_hue').bind('mousedown', downHue);
+						options.newColor = cal.find('div.ui-colorpicker_new_color');
+						options.currentColor = cal.find('div.ui-colorpicker_current_color');
 						cal.data('colorpicker', options);
-						cal.find('div.colorpicker_submit')
+						cal.find('div.ui-colorpicker_submit')
 							.bind('mouseenter', enterSubmit)
 							.bind('mouseleave', leaveSubmit)
 							.bind('click', clickSubmit);
@@ -786,15 +786,17 @@ if (!$.easing.easeout) {
 PrimeFaces.widget.ColorPicker = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.input = $(this.jqId + '_input');
+    
     var _self = this,
-    popup = this.cfg.mode == 'popup';
+    popup = this.cfg.mode == 'popup'
 
     this.jq = popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
 
     //options
     this.cfg.flat = !popup;
+    this.cfg.livePreview = false;
 
     //popup button
     if(popup) {
@@ -804,7 +806,24 @@ PrimeFaces.widget.ColorPicker = function(id, cfg) {
     //events
     this.cfg.onChange = function(hsb, hex, rgb) {
 		_self.input.val(hex + ',' + rgb.r + '_' + rgb.g + '_' + rgb.b + ',' + hsb.h + '_' + hsb.s + '_' + hsb.b);
+
+        if(popup) {
+            $(_self.jqId + '_livePreview').css('backgroundColor', '#' + hex);
+        }
 	};
+
+    //animation
+    if(this.cfg.effect) {
+        this.cfg.onShow = function(cp) {
+            $(cp).show(_self.cfg.effect,{}, _self.cfg.effectSpeed);
+            return false;
+        };
+
+        this.cfg.onHide = function(cp) {
+            $(cp).hide(_self.cfg.effect,{}, _self.cfg.effectSpeed);
+            return false;
+        };
+    }
 
     this.jq.ColorPicker(this.cfg);
 }

@@ -28,47 +28,27 @@
 			<type>java.lang.String</type>
 			<defaultValue>popup</defaultValue>
 		</attribute>
-		<attribute>
-			<name>header</name>
+        <attribute>
+			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>Choose a color</defaultValue>
+			<defaultValue>fade</defaultValue>
 		</attribute>
-		<attribute>
-			<name>showControls</name>
+        <attribute>
+			<name>effectSpeed</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
 		</attribute>
-		<attribute>
-			<name>showHexControls</name>
+        <attribute>
+			<name>style</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+			<type>java.lang.String</type>
 		</attribute>
-		<attribute>
-			<name>showHexSummary</name>
+        <attribute>
+			<name>styleClass</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-		</attribute>
-		<attribute>
-			<name>showHsvControls</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>showRGBControls</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-		</attribute>
-		<attribute>
-			<name>showWebSafe</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+			<type>java.lang.String</type>
 		</attribute>
 	</attributes>
 	<resources>

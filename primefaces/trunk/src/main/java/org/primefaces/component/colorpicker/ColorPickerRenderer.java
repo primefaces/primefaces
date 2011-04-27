@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,8 @@ public class ColorPickerRenderer extends CoreRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("id", colorPicker.getClientId(context), "id");
+        if(colorPicker.getStyle() != null) writer.writeAttribute("style", colorPicker.getStyle(), "style");
+        if(colorPicker.getStyleClass() != null) writer.writeAttribute("class", colorPicker.getStyleClass(), "styleClass");
 
         if(isPopup) {
             //Button
@@ -66,11 +68,11 @@ public class ColorPickerRenderer extends CoreRenderer {
             writer.writeAttribute("id", buttonId, null);
             writer.writeAttribute("name", buttonId, null);
             writer.writeAttribute("type", "button", null);
-            writer.write("<em id=\""+ clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
+            writer.write("<span id=\""+ clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
             if(color != null) {
                 writer.write("background-color:#" + color.getHex());
             }
-            writer.write("\">Live Preview</em>");
+            writer.write("\">Live Preview</span>");
 
             writer.endElement("button");
         } else {
@@ -96,6 +98,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = colorPicker.getClientId(context);
         Color color = (Color) colorPicker.getValue();
+        String effect = colorPicker.getEffect();
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -106,6 +109,10 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.write("mode:'" + colorPicker.getMode() + "'");
 
         if(color != null) writer.write(",color:'" + color.getHex() + "'");
+        if(!effect.equals("none")) {
+            writer.write(",effect:'" + effect + "'");
+            writer.write(",effectSpeed:'" + colorPicker.getEffectSpeed() + "'");
+        }
 
         writer.write("});});");
 
