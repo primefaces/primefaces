@@ -21,8 +21,6 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-import org.primefaces.model.Color;
 
 import org.primefaces.renderkit.CoreRenderer;
 
@@ -54,7 +52,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         String clientId = colorPicker.getClientId(context);
         String inputId = clientId + "_input";
         String buttonId = clientId + "_button";
-        Color color = (Color) colorPicker.getValue();
+        String value = (String) colorPicker.getValue();
         boolean isPopup = colorPicker.getMode().equals("popup");
         String styleClass = colorPicker.getStyleClass();
         styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
@@ -72,8 +70,8 @@ public class ColorPickerRenderer extends CoreRenderer {
             writer.writeAttribute("name", buttonId, null);
             writer.writeAttribute("type", "button", null);
             writer.write("<span id=\""+ clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
-            if(color != null) {
-                writer.write("background-color:#" + color.getHex());
+            if(value != null) {
+                writer.write("background-color:#" + value);
             }
             writer.write("\">Live Preview</span>");
 
@@ -89,8 +87,8 @@ public class ColorPickerRenderer extends CoreRenderer {
 		writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "hidden", null);
-		if(color != null) {
-			writer.writeAttribute("value", color.toString(), null);
+		if(value != null) {
+			writer.writeAttribute("value", value, null);
 		}
 		writer.endElement("input");
 
@@ -100,7 +98,7 @@ public class ColorPickerRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, ColorPicker colorPicker) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = colorPicker.getClientId(context);
-        Color color = (Color) colorPicker.getValue();
+        String value = (String) colorPicker.getValue();
         String effect = colorPicker.getEffect();
 
 		writer.startElement("script", null);
@@ -111,7 +109,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		writer.write(colorPicker.resolveWidgetVar() + " = new PrimeFaces.widget.ColorPicker('" + clientId + "', {");
         writer.write("mode:'" + colorPicker.getMode() + "'");
 
-        if(color != null) writer.write(",color:'" + color.getHex() + "'");
+        if(value != null) writer.write(",color:'" + value + "'");
         if(!effect.equals("none")) {
             writer.write(",effect:'" + effect + "'");
             writer.write(",effectSpeed:'" + colorPicker.getEffectSpeed() + "'");
@@ -121,27 +119,5 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.write("});});");
 
         writer.endElement("script");
-    }
-
-    @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
-		try {
-			String submittedValue = (String) value;
-                    
-			if(isValueBlank(submittedValue)) {
-				return null;
-            }
-
-            String[] values = submittedValue.split(",");
-            String hex = values[0];
-            String[] rgb = values[1].split("_");
-            String[] hsb = values[2].split("_");
-
-            return new Color(hex, Integer.valueOf(rgb[0]), Integer.valueOf(rgb[1]), Integer.valueOf(rgb[2]),
-                                    Integer.valueOf(hsb[0]), Integer.valueOf(hsb[1]), Integer.valueOf(hsb[2]));
-			
-		} catch (Exception e) {
-			throw new ConverterException(e);
-		}
     }
 }

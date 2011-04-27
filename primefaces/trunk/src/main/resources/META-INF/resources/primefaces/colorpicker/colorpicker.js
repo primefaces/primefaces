@@ -800,7 +800,7 @@ PrimeFaces.widget.ColorPicker = function(id, cfg) {
 
     //events
     this.cfg.onChange = function(hsb, hex, rgb) {
-		_self.input.val(hex + ',' + rgb.r + '_' + rgb.g + '_' + rgb.b + ',' + hsb.h + '_' + hsb.s + '_' + hsb.b);
+		_self.input.val(hex);
 
         if(popup) {
             $(_self.jqId + '_livePreview').css('backgroundColor', '#' + hex);
