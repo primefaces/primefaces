@@ -1,4 +1,4 @@
-.ui-colorpicker {
+.ui-colorpicker-container {
 	width: 356px;
 	height: 176px;
 	overflow: hidden;
@@ -68,7 +68,7 @@
 	top: 13px;
 	background: #f00;
 }
-.ui-colorpicker input {
+.ui-colorpicker-container input {
 	background-color: transparent;
 	border: 1px solid transparent;
 	position: absolute;

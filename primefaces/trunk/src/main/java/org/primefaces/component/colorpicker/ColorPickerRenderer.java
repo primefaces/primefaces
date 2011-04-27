@@ -56,11 +56,14 @@ public class ColorPickerRenderer extends CoreRenderer {
         String buttonId = clientId + "_button";
         Color color = (Color) colorPicker.getValue();
         boolean isPopup = colorPicker.getMode().equals("popup");
+        String styleClass = colorPicker.getStyleClass();
+        styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", colorPicker.getClientId(context), "id");
-        if(colorPicker.getStyle() != null) writer.writeAttribute("style", colorPicker.getStyle(), "style");
-        if(colorPicker.getStyleClass() != null) writer.writeAttribute("class", colorPicker.getStyleClass(), "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(colorPicker.getStyle() != null)
+            writer.writeAttribute("style", colorPicker.getStyle(), "style");
 
         if(isPopup) {
             //Button
