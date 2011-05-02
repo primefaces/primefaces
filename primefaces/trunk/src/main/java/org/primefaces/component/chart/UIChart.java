@@ -99,17 +99,17 @@ public abstract class UIChart extends UIComponentBase {
 		getStateHelper().put(PropertyKeys.wmode, _wmode);
 	}
 	
-	public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, "500px");
+	public int getWidth() {
+        return (Integer) getStateHelper().eval(PropertyKeys.width, 500);
 	}
-	public void setWidth(String _width) {
+	public void setWidth(int _width) {
 		getStateHelper().put(PropertyKeys.width, _width);
 	}
 	
-	public String getHeight() {
-		return (String) getStateHelper().eval(PropertyKeys.height, "350px");
+	public int getHeight() {
+		return (Integer) getStateHelper().eval(PropertyKeys.height, 350);
 	}
-	public void setHeight(java.lang.String _height) {
+	public void setHeight(int _height) {
 		getStateHelper().put(PropertyKeys.height, _height);
 	}
 	

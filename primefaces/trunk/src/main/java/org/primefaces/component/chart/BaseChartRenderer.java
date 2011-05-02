@@ -55,19 +55,16 @@ public class BaseChartRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
-        if(!chart.hasModel()) {
-            logger.log(Level.INFO, "Chart \"{0}\" has no ChartModel, declarative way of creating charts is deprecated, use a ChartModel instead.", chart.getClientId(context));
-        }
-
 		ResponseWriter writer = context.getResponseWriter();
 
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", chart.getClientId(context), null);
-		writer.writeAttribute("style", "width:" + chart.getWidth() + ";height:" + chart.getHeight(), null);
+		writer.writeAttribute("style", "width:" + chart.getWidth() + "px;height:" + chart.getHeight() + "px", null);
 		
-		if(chart.getStyleClass() != null)
+		if(chart.getStyleClass() != null) {
 			writer.writeAttribute("class", chart.getStyleClass(), "styleClass");
+        }
 		
 		writer.endElement("div");
 	}

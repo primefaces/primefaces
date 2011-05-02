@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.primefaces.component.chart.pie;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Iterator;
 import javax.faces.component.UIComponent;
 
@@ -33,14 +32,8 @@ public class PieChartRenderer extends BaseChartRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		PieChart chart = (PieChart) component;
 
-        if(chart.isLiveDataRequest(context)) {
-            encodeData(context, chart, true);
-        }
-        else {
-            encodeResources(context);
-            encodeMarkup(context, chart);
-            encodeScript(context, chart);
-        }
+        encodeMarkup(context, chart);
+        encodeScript(context, chart);
 	}
 
 	protected void encodeScript(FacesContext context, UIChart uichart) throws IOException{
@@ -55,65 +48,53 @@ public class PieChartRenderer extends BaseChartRenderer {
 
         writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', {");
 
-        encodeCommonConfig(context, chart);
+        writer.write("x:" + chart.getWidth() / 2);
+        writer.write(",y:" + chart.getHeight() / 2);
+        writer.write(",r:" + chart.getRadius());
+        writer.write(",animate:" + chart.isAnimate());
 
-        writer.write(",categoryField:'category'");
-        writer.write(",dataField:'data'");
-        
-		if(chart.getSeriesStyle() != null) {
-			writer.write(",series: [{style:" + chart.getSeriesStyle() + "}]");
-		}
+        encodeData(context, chart);
 
-        encodeData(context, chart, false);
+        encodeOptions(context, chart);
         
 		writer.write("});});");
 
 		writer.endElement("script");
 	}
 
-	protected void encodeData(FacesContext context, PieChart chart, boolean remote) throws IOException {
+	protected void encodeData(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-        if(remote) {
-            writer.write("{");
-        } else {
-            writer.write(",");
-        }
+		writer.write(",data:[" );
+        PieChartModel model = (PieChartModel) chart.getModel();
 
-		writer.write("\"data\":[" );
+        for(Iterator<Number> it = model.getData().values().iterator(); it.hasNext();) {
+            writer.write(String.valueOf(it.next()));
 
-        if(chart.hasModel()) {
-            PieChartModel model = (PieChartModel) chart.getModel();
-
-            for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
-                String category = it.next();
-
-                writer.write("{\"category\":\"" + category + "\",\"data\":" + model.getData().get(category) + "}");
-
-                if(it.hasNext())
-                    writer.write(",");
-                
-            }
-        }
-        else {
-            Collection<?> value = (Collection<?>) chart.getValue();
-            
-            for(Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
-                context.getExternalContext().getRequestMap().put(chart.getVar(), iterator.next());
-                
-                writer.write("{\"category\":\"" + chart.getCategoryField() + "\",\"data\":" + chart.getDataField() + "}");
-
-                if(iterator.hasNext())
-                    writer.write(",");
-            }
-
-            context.getExternalContext().getRequestMap().remove(chart.getVar());
+            if(it.hasNext())
+                writer.write(",");
         }
 
         writer.write("]");
-
-        if(remote) {
-            writer.write("}");
-        }
 	}
+
+    protected void encodeOptions(FacesContext context, PieChart chart) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        String legendPosition = chart.getLegendPosition();
+        boolean hasLegend = legendPosition != null;
+        PieChartModel model = (PieChartModel) chart.getModel();
+
+        if(hasLegend) {
+            writer.write(",legend:[");
+            for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
+                writer.write("'" + String.valueOf(it.next()) + "'");
+
+                if(it.hasNext())
+                    writer.write(",");
+            }
+            writer.write("]");
+
+            writer.write(",legendpos:'" + legendPosition + "'");
+        }
+    }
 }

@@ -24,25 +24,8 @@
 		<attribute>
 			<name>value</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
+			<type>org.primefaces.model.chart.ChartModel</type>
 			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>var</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-			<literal>true</literal>
-		</attribute>
-		<attribute>
-			<name>categoryField</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
-		</attribute>
-		<attribute>
-			<name>dataField</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
@@ -52,17 +35,6 @@
 		</attribute>
 		<attribute>
 			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>seriesStyle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>wmode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
@@ -103,48 +75,42 @@
 		<attribute>
 			<name>width</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>500px</defaultValue>
+			<type>java.lang.Integer</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>350px</defaultValue>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>dataTipFunction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Integer</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
-			<name>model</name>
+			<name>radius</name>
 			<required>false</required>
-			<type>org.primefaces.model.chart.ChartModel</type>
-			<ignoreInComponent>true</ignoreInComponent>
+			<type>java.lang.Integer</type>
+			<defaultValue>150</defaultValue>
+		</attribute>
+        <attribute>
+			<name>legendPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
-		<resource>
-			<name>yui/datasource/datasource-min.js</name>
-		</resource>
-		<resource>
-			<name>yui/swf/swf-min.js</name>
-		</resource>
-		<resource>
-			<name>yui/charts/charts-min.js</name>
-		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>raphael/raphael.js</name>
 		</resource>
 		<resource>
 			<name>charts/charts.js</name>

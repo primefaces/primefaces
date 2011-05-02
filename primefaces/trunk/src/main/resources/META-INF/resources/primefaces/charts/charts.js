@@ -1,4 +1,36 @@
-PrimeFaces.widget.ChartExtensions = {
+PrimeFaces.widget.PieChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.raphael = Raphael(this.id);
+
+    var options = {};
+    if(this.cfg.legend) {
+        options.legend = this.cfg.legend;
+        options.legendpos = this.cfg.legendpos;
+    }
+
+    this.graph = this.raphael.g.piechart(this.cfg.x, this.cfg.y, this.cfg.r, this.cfg.data, options);
+
+    if(this.cfg.animate) {
+        this.graph.hover(function () {
+            this.sector.stop();
+            this.sector.scale(1.1, 1.1, this.cx, this.cy);
+            if (this.label) {
+                this.label[0].stop();
+                this.label[0].scale(1.5);
+                this.label[1].attr({"font-weight": 800});
+            }
+        }, function () {
+            this.sector.animate({scale: [1, 1, this.cx, this.cy]}, 500, "bounce");
+            if (this.label) {
+                this.label[0].animate({scale: 1}, 500, "bounce");
+                this.label[1].attr({"font-weight": 400});
+            }
+        });
+    }
+}
+
+/*PrimeFaces.widget.ChartExtensions = {
 
     itemSelectHandler : function(event) {
 		var options = {
@@ -203,4 +235,4 @@ YAHOO.lang.extend(PrimeFaces.widget.StackedColumnChart, YAHOO.widget.StackedColu
 
 YAHOO.lang.extend(PrimeFaces.widget.BarChart, YAHOO.widget.BarChart, PrimeFaces.widget.ChartExtensions);
 
-YAHOO.lang.extend(PrimeFaces.widget.StackedBarChart, YAHOO.widget.StackedBarChart, PrimeFaces.widget.ChartExtensions);
+YAHOO.lang.extend(PrimeFaces.widget.StackedBarChart, YAHOO.widget.StackedBarChart, PrimeFaces.widget.ChartExtensions);*/
