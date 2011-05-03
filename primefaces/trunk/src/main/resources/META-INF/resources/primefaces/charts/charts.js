@@ -9833,11 +9833,21 @@ if (!document.createElement('canvas').getContext) {
 PrimeFaces.widget.PieChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    
+
+    //renderer options
+    var rendererCfg = {
+        diameter : this.cfg.diameter,
+        sliceMargin : this.cfg.sliceMargin,
+        fill: this.cfg.fill
+    }
+
+    //renderer configuration
     this.cfg.seriesDefaults = {
-        renderer: $.jqplot.PieRenderer
+        renderer: $.jqplot.PieRenderer,
+        rendererOptions: rendererCfg
     };
 
+    //render chart
     this.plot = $.jqplot(this.id, [this.cfg.data], this.cfg);
 }
 

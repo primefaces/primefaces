@@ -88,5 +88,13 @@ public class PieChartRenderer extends BaseChartRenderer {
             writer.write("show:true");
             writer.write(",location:'" + legendPosition + "'}");
         }
+
+        //renderer options
+        if(chart.getDiameter() != Integer.MIN_VALUE) 
+            writer.write(",diameter:" + chart.getDiameter());
+        if(chart.getSliceMargin() != 0)
+            writer.write(",sliceMargin:" + chart.getSliceMargin());
+        if(chart.isFill() == false)
+            writer.write(",fill:false");
     }
 }

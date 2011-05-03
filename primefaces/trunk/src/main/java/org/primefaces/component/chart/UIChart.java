@@ -99,7 +99,7 @@ public abstract class UIChart extends UIComponentBase {
 	}
 
     public String getTitle() {
-		return (String) getStateHelper().eval(PropertyKeys.title, null);
+		return (String) getStateHelper().eval(PropertyKeys.title, "");
 	}
 	public void setTitle(String _title) {
 		getStateHelper().put(PropertyKeys.title, _title);

@@ -84,7 +84,19 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<name>animate</name>
+			<name>diameter</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+		</attribute>
+        <attribute>
+			<name>sliceMargin</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+		</attribute>
+        <attribute>
+			<name>fill</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
