@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.primefaces.model.chart;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PieChartModel extends ChartModel implements Serializable {
@@ -24,7 +24,7 @@ public class PieChartModel extends ChartModel implements Serializable {
     private Map<String,Number> data;
 
     public PieChartModel() {
-        data = new HashMap<String, Number>();
+        data = new LinkedHashMap<String, Number>();
     }
 
     public PieChartModel(Map<String, Number> data) {
@@ -41,5 +41,9 @@ public class PieChartModel extends ChartModel implements Serializable {
 
     public void set(String category, Number data) {
         this.data.put(category, data);
+    }
+
+    public void clear() {
+        this.data.clear();
     }
 }

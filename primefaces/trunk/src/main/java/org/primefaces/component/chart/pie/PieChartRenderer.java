@@ -48,11 +48,6 @@ public class PieChartRenderer extends BaseChartRenderer {
 
         writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', {");
 
-        writer.write("x:" + chart.getWidth() / 2);
-        writer.write(",y:" + chart.getHeight() / 2);
-        writer.write(",r:" + chart.getRadius());
-        writer.write(",animate:" + chart.isAnimate());
-
         encodeData(context, chart);
 
         encodeOptions(context, chart);
@@ -65,11 +60,14 @@ public class PieChartRenderer extends BaseChartRenderer {
 	protected void encodeData(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		writer.write(",data:[" );
+		writer.write("data:[" );
         PieChartModel model = (PieChartModel) chart.getModel();
 
-        for(Iterator<Number> it = model.getData().values().iterator(); it.hasNext();) {
-            writer.write(String.valueOf(it.next()));
+        for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
+            String key = it.next();
+            Number value = model.getData().get(key);
+
+            writer.write("['" + key + "'," + value + "]");
 
             if(it.hasNext())
                 writer.write(",");
@@ -81,20 +79,14 @@ public class PieChartRenderer extends BaseChartRenderer {
     protected void encodeOptions(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         String legendPosition = chart.getLegendPosition();
-        boolean hasLegend = legendPosition != null;
-        PieChartModel model = (PieChartModel) chart.getModel();
 
-        if(hasLegend) {
-            writer.write(",legend:[");
-            for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
-                writer.write("'" + String.valueOf(it.next()) + "'");
+        if(chart.getTitle() != null)
+            writer.write(",title:'" + chart.getTitle() + "'");
 
-                if(it.hasNext())
-                    writer.write(",");
-            }
-            writer.write("]");
-
-            writer.write(",legendpos:'" + legendPosition + "'");
+        if(legendPosition != null) {
+            writer.write(",legend:{");
+            writer.write("show:true");
+            writer.write(",location:'" + legendPosition + "'}");
         }
     }
 }

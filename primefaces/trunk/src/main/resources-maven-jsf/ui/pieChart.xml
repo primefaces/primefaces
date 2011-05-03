@@ -72,23 +72,11 @@
 			<ignoreInComponent>true</ignoreInComponent>
 			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
 		</attribute>
-		<attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>height</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
         <attribute>
-			<name>radius</name>
+			<name>title</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>150</defaultValue>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>legendPosition</name>
@@ -103,14 +91,14 @@
 		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>charts/charts.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
-		</resource>
-        <resource>
-			<name>raphael/raphael.js</name>
 		</resource>
 		<resource>
 			<name>charts/charts.js</name>

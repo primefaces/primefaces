@@ -57,14 +57,14 @@ public class BaseChartRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", chart.getClientId(context), null);
-		writer.writeAttribute("style", "width:" + chart.getWidth() + "px;height:" + chart.getHeight() + "px", null);
-		
-		if(chart.getStyleClass() != null) {
+
+        if(chart.getStyle() != null)
+            writer.writeAttribute("style", chart.getStyle(), "style");
+
+		if(chart.getStyleClass() != null)
 			writer.writeAttribute("class", chart.getStyleClass(), "styleClass");
-        }
 		
 		writer.endElement("div");
 	}

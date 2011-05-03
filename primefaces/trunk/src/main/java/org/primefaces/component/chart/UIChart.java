@@ -38,8 +38,7 @@ public abstract class UIChart extends UIComponentBase {
         ,itemSelectListener
         ,oncomplete
         ,wmode
-        ,width
-        ,height
+        ,title
         ,dataTipFunction
         ,model;
 
@@ -98,19 +97,12 @@ public abstract class UIChart extends UIComponentBase {
 	public void setWmode(String _wmode) {
 		getStateHelper().put(PropertyKeys.wmode, _wmode);
 	}
-	
-	public int getWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.width, 500);
+
+    public String getTitle() {
+		return (String) getStateHelper().eval(PropertyKeys.title, null);
 	}
-	public void setWidth(int _width) {
-		getStateHelper().put(PropertyKeys.width, _width);
-	}
-	
-	public int getHeight() {
-		return (Integer) getStateHelper().eval(PropertyKeys.height, 350);
-	}
-	public void setHeight(int _height) {
-		getStateHelper().put(PropertyKeys.height, _height);
+	public void setTitle(String _title) {
+		getStateHelper().put(PropertyKeys.title, _title);
 	}
 	
 	public boolean isLive() {
