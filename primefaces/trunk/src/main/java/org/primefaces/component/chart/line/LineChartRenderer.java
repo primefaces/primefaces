@@ -67,8 +67,8 @@ public class LineChartRenderer extends BaseChartRenderer {
             ChartSeries series = it.next();
             
             writer.write("[");
-            for(Iterator<Number> x = series.getData().keySet().iterator(); x.hasNext();) {
-                Number xValue = x.next();
+            for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
+                Number xValue = (Number) x.next();
                 Number yValue = series.getData().get(xValue);
 
                 writer.write("[");

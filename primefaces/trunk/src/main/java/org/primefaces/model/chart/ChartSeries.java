@@ -23,7 +23,7 @@ public class ChartSeries implements Serializable {
 
     private String title;
 
-    private Map<Number,Number> data = new LinkedHashMap<Number, Number>();
+    private Map<Object,Number> data = new LinkedHashMap<Object, Number>();
 
     public ChartSeries() {}
 
@@ -39,15 +39,15 @@ public class ChartSeries implements Serializable {
         this.title = title;
     }
     
-    public Map<Number, Number> getData() {
+    public Map<Object, Number> getData() {
         return data;
     }
 
-    public void setData(Map<Number, Number> data) {
+    public void setData(Map<Object, Number> data) {
         this.data = data;
     }
 
-    public void set(Number x, Number y) {
+    public void set(Object x, Number y) {
         this.data.put(x, y);
     }
 }

@@ -66,7 +66,7 @@ public class BarChartRenderer extends BaseChartRenderer {
             ChartSeries series = it.next();
 
             writer.write("[");
-            for(Iterator<Number> x = series.getData().keySet().iterator(); x.hasNext();) {
+            for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Number value = series.getData().get(x.next());
 
                 writer.write(String.valueOf(value));
@@ -114,7 +114,7 @@ public class BarChartRenderer extends BaseChartRenderer {
         writer.write("]");
 
         writer.write(",categories:[");
-        for(Iterator<Number> it = model.getSeries().get(0).getData().keySet().iterator(); it.hasNext();) {
+        for(Iterator<Object> it = model.getSeries().get(0).getData().keySet().iterator(); it.hasNext();) {
             writer.write("'" + it.next() + "'");
 
             if(it.hasNext()) {
