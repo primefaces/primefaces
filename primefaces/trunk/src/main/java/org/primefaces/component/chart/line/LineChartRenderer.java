@@ -24,6 +24,7 @@ import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartSeries;
 
 public class LineChartRenderer extends BaseChartRenderer {
 
@@ -91,6 +92,7 @@ public class LineChartRenderer extends BaseChartRenderer {
     protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         String legendPosition = chart.getLegendPosition();
+        CartesianChartModel model = (CartesianChartModel) chart.getValue();
 
         if(chart.getTitle() != null)
             writer.write(",title:'" + chart.getTitle() + "'");
@@ -100,6 +102,23 @@ public class LineChartRenderer extends BaseChartRenderer {
             writer.write("show:true");
             writer.write(",location:'" + legendPosition + "'}");
         }
+
+        writer.write(",series:[");
+        for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+            LineChartSeries series = (LineChartSeries) it.next();
+
+            writer.write("{");
+            writer.write("label:'" + series.getTitle() + "'");
+            writer.write(",showLine:" + series.isShowLine());
+            writer.write(",markerOptions:{style:'" + series.getMarkerStyle() + "'}");
+            writer.write("}");
+
+            if(it.hasNext()) {
+                writer.write(",");
+            }
+        }
+
+        writer.write("]");
         
     }
 }

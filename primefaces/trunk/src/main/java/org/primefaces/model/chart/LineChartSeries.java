@@ -15,39 +15,32 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
+public class LineChartSeries extends ChartSeries {
 
-public class ChartSeries implements Serializable {
+    private String markerStyle = "filledCircle";
 
-    private String title;
+    private boolean showLine = true;
 
-    private Map<Number,Number> data = new LinkedHashMap<Number, Number>();
-
-    public ChartSeries() {}
-
-    public ChartSeries(String title) {
-        this.title = title;
+    public LineChartSeries() {
     }
 
-    public String getTitle() {
-        return title;
+    public LineChartSeries(String title) {
+        super(title);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public Map<Number, Number> getData() {
-        return data;
+    public String getMarkerStyle() {
+        return markerStyle;
     }
 
-    public void setData(Map<Number, Number> data) {
-        this.data = data;
+    public void setMarkerStyle(String markerStyle) {
+        this.markerStyle = markerStyle;
     }
 
-    public void set(Number x, Number y) {
-        this.data.put(x, y);
+    public boolean isShowLine() {
+        return showLine;
+    }
+
+    public void setShowLine(boolean showLine) {
+        this.showLine = showLine;
     }
 }
