@@ -84,7 +84,7 @@ public class CartesianChartRenderer extends BaseChartRenderer {
         if(chart.hasModel()) {
             CartesianChartModel model = (CartesianChartModel) chart.getModel();
 
-            for(Iterator<String> iter = model.getCategoryFields().iterator(); iter.hasNext();) {
+            /*for(Iterator<String> iter = model.getCategoryFields().iterator(); iter.hasNext();) {
                 String categoryField = iter.next();
 
                 writer.write("{\"category\":\"" + categoryField + "\"");
@@ -98,7 +98,7 @@ public class CartesianChartRenderer extends BaseChartRenderer {
                 if(iter.hasNext()) {
                     writer.write(",");
                 }
-            }
+            }*/
 
         }
         else {
@@ -189,7 +189,7 @@ public class CartesianChartRenderer extends BaseChartRenderer {
         List<ChartSeries> series = null;
 
         if(chart.hasModel()) {
-            series = ((CartesianChartModel) chart.getModel()).getAllSeries();
+            //series = ((CartesianChartModel) chart.getModel()).getAllSeries();
         }
         else {
             List<UIComponent> children = chart.getChildren();

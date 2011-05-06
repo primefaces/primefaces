@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,21 @@ package org.primefaces.model.chart;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import org.primefaces.component.chart.series.ChartSeries;
 
 public class CartesianChartModel extends ChartModel implements Serializable {
 
     private List<ChartSeries> series = new ArrayList<ChartSeries>();
 
-    private List<String> categoryFields = new ArrayList<String>();
-
-    public List<ChartSeries> getAllSeries() {
+    public List<ChartSeries> getSeries() {
         return series;
     }
 
     public void addSeries(ChartSeries chartSeries) {
-        chartSeries.setKey("series_" + series.size() + 1);
-        
-        series.add(chartSeries);
-
-        for(Iterator<String> iter = chartSeries.getData().keySet().iterator(); iter.hasNext();) {
-            String category = iter.next();
-
-            if(!categoryFields.contains(category))
-                categoryFields.add(category);
-        }
+        this.series.add(chartSeries);
     }
 
-    public List<String> getCategoryFields() {
-        return categoryFields;
+    public void clear() {
+        this.series.clear();
     }
 }

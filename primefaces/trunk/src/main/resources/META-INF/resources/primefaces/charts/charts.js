@@ -9851,6 +9851,17 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     this.plot = $.jqplot(this.id, [this.cfg.data], this.cfg);
 }
 
+/**
+ * PrimeFaces LineChart Widget
+ */
+PrimeFaces.widget.LineChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+
+    //render chart
+    this.plot = $.jqplot(this.id, this.cfg.data, this.cfg);
+}
+
 /*PrimeFaces.widget.ChartExtensions = {
 
     itemSelectHandler : function(event) {
