@@ -59,18 +59,28 @@ public class BarChartRenderer extends BaseChartRenderer {
     protected void encodeData(FacesContext context, BarChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
+        boolean horizontal = chart.getOrientation().equals("horizontal");
 
 		writer.write("data:[" );
 
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = it.next();
+            int i = 1;
 
             writer.write("[");
             for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Number value = series.getData().get(x.next());
 
-                writer.write(String.valueOf(value));
-
+                if(horizontal) {
+                    writer.write("[");
+                    writer.write(value + "," + i);
+                    writer.write("]");
+                    
+                    i++;
+                } else {
+                    writer.write(String.valueOf(value));
+                }
+                
                 if(x.hasNext()) {
                     writer.write(",");
                 }
@@ -122,5 +132,9 @@ public class BarChartRenderer extends BaseChartRenderer {
             }
         }
         writer.write("]");
+
+        writer.write(",orientation:'" + chart.getOrientation() + "'");
+        writer.write(",barPadding:" + chart.getBarPadding());
+        writer.write(",barMargin:" + chart.getBarMargin());
     }
 }

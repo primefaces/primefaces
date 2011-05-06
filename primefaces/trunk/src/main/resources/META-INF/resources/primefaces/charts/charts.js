@@ -11146,19 +11146,33 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
 
-    //renderer configuration
-    this.cfg.seriesDefaults = {
-        renderer: $.jqplot.BarRenderer
+    var rendererCfg = {
+    	barDirection:this.cfg.orientation,
+    	barPadding: this.cfg.barPadding,
+    	barMargin: this.cfg.barMargin
     };
 
-    //axes
-    this.cfg.axes = {
-        xaxis:{
-                renderer:$.jqplot.CategoryAxisRenderer,
-                ticks: this.cfg.categories
-              },
-        yaxix:{min:0}
+    //renderer configuration
+    this.cfg.seriesDefaults = {
+        renderer: $.jqplot.BarRenderer,
+        rendererOptions: rendererCfg
     };
+
+    var categoryAxis = {
+            renderer:$.jqplot.CategoryAxisRenderer,
+            ticks: this.cfg.categories
+    };
+    
+    //axes
+    this.cfg.axes = {};
+
+    if(this.cfg.orientation == 'vertical') {
+    	this.cfg.axes.xaxis = categoryAxis;
+    }
+    else {
+    	this.cfg.axes.yaxis = categoryAxis;
+    }
+
 
     //render chart
     this.plot = $.jqplot(this.id, this.cfg.data, this.cfg);

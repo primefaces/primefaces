@@ -98,6 +98,24 @@
 			<type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>barPadding</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>8</defaultValue>
+		</attribute>
+        <attribute>
+			<name>barMargin</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>vertical</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
