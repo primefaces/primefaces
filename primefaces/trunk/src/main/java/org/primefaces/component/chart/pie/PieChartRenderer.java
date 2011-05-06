@@ -61,7 +61,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 
 		writer.write("data:[[" );
-        PieChartModel model = (PieChartModel) chart.getModel();
+        PieChartModel model = (PieChartModel) chart.getValue();
 
         for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
             String key = it.next();
@@ -87,6 +87,11 @@ public class PieChartRenderer extends BaseChartRenderer {
             writer.write(",legend:{");
             writer.write("show:true");
             writer.write(",location:'" + legendPosition + "'}");
+        }
+
+        if(chart.isLive()) {
+            writer.write(",live:true");
+            writer.write(",refreshInterval:" + chart.getRefreshInterval());
         }
 
         //renderer options

@@ -109,6 +109,11 @@ public class BarChartRenderer extends BaseChartRenderer {
             writer.write(",location:'" + legendPosition + "'}");
         }
 
+        if(chart.isLive()) {
+            writer.write(",live:true");
+            writer.write(",refreshInterval:" + chart.getRefreshInterval());
+        }
+
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
