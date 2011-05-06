@@ -136,5 +136,9 @@ public class BarChartRenderer extends BaseChartRenderer {
         writer.write(",orientation:'" + chart.getOrientation() + "'");
         writer.write(",barPadding:" + chart.getBarPadding());
         writer.write(",barMargin:" + chart.getBarMargin());
+
+        if(chart.isStacked()) {
+            writer.write(",stackSeries:true");
+        }
     }
 }
