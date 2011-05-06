@@ -82,6 +82,7 @@
 			<name>legendPosition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>diameter</name>

@@ -97,7 +97,19 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>   
+		</attribute>
+        <attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>legendPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

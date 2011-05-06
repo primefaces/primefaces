@@ -60,7 +60,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 	protected void encodeData(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		writer.write("data:[" );
+		writer.write("data:[[" );
         PieChartModel model = (PieChartModel) chart.getModel();
 
         for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
@@ -73,7 +73,7 @@ public class PieChartRenderer extends BaseChartRenderer {
                 writer.write(",");
         }
 
-        writer.write("]");
+        writer.write("]]");
 	}
 
     protected void encodeOptions(FacesContext context, PieChart chart) throws IOException {

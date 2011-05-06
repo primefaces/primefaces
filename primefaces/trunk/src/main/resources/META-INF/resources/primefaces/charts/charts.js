@@ -9848,7 +9848,7 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     };
 
     //render chart
-    this.plot = $.jqplot(this.id, [this.cfg.data], this.cfg);
+    this.plot = $.jqplot(this.id, this.cfg.data, this.cfg);
 }
 
 /**

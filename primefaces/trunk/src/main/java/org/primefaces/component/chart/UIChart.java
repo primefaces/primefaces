@@ -39,6 +39,7 @@ public abstract class UIChart extends UIComponentBase {
         ,oncomplete
         ,wmode
         ,title
+        ,legendPosition
         ,dataTipFunction
         ,model;
 
@@ -103,6 +104,13 @@ public abstract class UIChart extends UIComponentBase {
 	}
 	public void setTitle(String _title) {
 		getStateHelper().put(PropertyKeys.title, _title);
+	}
+
+    public String getLegendPosition() {
+		return (String) getStateHelper().eval(PropertyKeys.legendPosition, null);
+	}
+	public void setLegendPosition(String _legendPosition) {
+		getStateHelper().put(PropertyKeys.legendPosition, _legendPosition);
 	}
 	
 	public boolean isLive() {

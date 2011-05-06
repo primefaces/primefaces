@@ -49,7 +49,7 @@ public class LineChartRenderer extends BaseChartRenderer {
 
         encodeData(context, chart);
 
-        //encodeOptions(context, chart);
+        encodeOptions(context, chart);
 
 		writer.write("});});");
 
@@ -87,4 +87,19 @@ public class LineChartRenderer extends BaseChartRenderer {
 
         writer.write("]");
 	}
+
+    protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        String legendPosition = chart.getLegendPosition();
+
+        if(chart.getTitle() != null)
+            writer.write(",title:'" + chart.getTitle() + "'");
+
+        if(legendPosition != null) {
+            writer.write(",legend:{");
+            writer.write("show:true");
+            writer.write(",location:'" + legendPosition + "'}");
+        }
+        
+    }
 }
