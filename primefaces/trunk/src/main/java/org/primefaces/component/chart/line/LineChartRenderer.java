@@ -28,7 +28,7 @@ import org.primefaces.model.chart.LineChartSeries;
 
 public class LineChartRenderer extends BaseChartRenderer {
 
-     @Override
+    @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		LineChart chart = (LineChart) component;
 
