@@ -31,6 +31,7 @@ import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
@@ -171,7 +172,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 listener.invoke(eLContext, null);       //no-arg listener
             } catch(MethodNotFoundException e1) {
                 MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{BehaviorEvent.class});
+                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{AjaxBehaviorEvent.class});
 
                 argListener.invoke(eLContext, new Object[]{event});
             }
