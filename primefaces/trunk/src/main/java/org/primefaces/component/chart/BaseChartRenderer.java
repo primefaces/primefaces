@@ -71,29 +71,21 @@ public class BaseChartRenderer extends CoreRenderer {
 	
     protected void encodeCommonConfig(FacesContext context, UIChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String legendPosition = chart.getLegendPosition();
 
-        writer.write("expressInstall:'" + getResourceRequestPath(context,"yui/assets/expressinstall.swf") + "'");
-
-        if(chart.getWmode() != null) {
-			writer.write(",wmode:'" + chart.getWmode() + "'");
+        if(chart.getTitle() != null) {
+            writer.write(",title:'" + chart.getTitle() + "'");
         }
-		if(chart.getStyle() != null) {
-			writer.write(",style:" + chart.getStyle() + "");
-		}
-		if(chart.getDataTipFunction() != null) {
-			writer.write(",dataTipFunction:" + chart.getDataTipFunction());
-		}
+
+        if(legendPosition != null) {
+            writer.write(",legend:{");
+            writer.write("show:true");
+            writer.write(",location:'" + legendPosition + "'}");
+        }
 
         if(chart.isLive()) {
             writer.write(",live:true");
             writer.write(",refreshInterval:" + chart.getRefreshInterval());
-        }
-
-        if(chart.getItemSelectListener() != null) {
-            writer.write(",ajaxItemSelect: true");
-            
-            if(chart.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, chart, chart.getUpdate()) + "'");
-            if(chart.getOncomplete() != null) writer.write(",oncomplete: function() {" + chart.getOncomplete() + ";}");
         }
     }
     

@@ -27,14 +27,14 @@
 			<type>org.primefaces.model.chart.ChartModel</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-		<attribute>
-			<name>styleClass</name>
+        <attribute>
+			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
-			<name>style</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
@@ -52,25 +52,6 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>3000</defaultValue>
 			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>oncomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>itemSelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<ignoreInComponent>true</ignoreInComponent>
-			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
 		</attribute>
         <attribute>
 			<name>title</name>

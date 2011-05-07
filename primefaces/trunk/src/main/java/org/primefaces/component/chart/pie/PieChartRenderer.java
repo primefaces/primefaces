@@ -78,23 +78,10 @@ public class PieChartRenderer extends BaseChartRenderer {
 
     protected void encodeOptions(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String legendPosition = chart.getLegendPosition();
 
-        if(chart.getTitle() != null)
-            writer.write(",title:'" + chart.getTitle() + "'");
+        encodeCommonConfig(context, chart);
 
-        if(legendPosition != null) {
-            writer.write(",legend:{");
-            writer.write("show:true");
-            writer.write(",location:'" + legendPosition + "'}");
-        }
-
-        if(chart.isLive()) {
-            writer.write(",live:true");
-            writer.write(",refreshInterval:" + chart.getRefreshInterval());
-        }
-
-        //renderer options
+        //chart specific config
         if(chart.getDiameter() != Integer.MIN_VALUE) 
             writer.write(",diameter:" + chart.getDiameter());
         if(chart.getSliceMargin() != 0)

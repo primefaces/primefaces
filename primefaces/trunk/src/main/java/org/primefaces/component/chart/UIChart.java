@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.component.chart;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -24,7 +25,7 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.model.chart.ChartModel;
 
-public abstract class UIChart extends UIComponentBase {
+public abstract class UIChart extends UIComponentBase implements ClientBehaviorHolder {
 
     protected enum PropertyKeys {
         widgetVar

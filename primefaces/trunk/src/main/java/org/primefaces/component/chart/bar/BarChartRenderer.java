@@ -100,19 +100,7 @@ public class BarChartRenderer extends BaseChartRenderer {
         String legendPosition = chart.getLegendPosition();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
 
-        if(chart.getTitle() != null)
-            writer.write(",title:'" + chart.getTitle() + "'");
-
-        if(legendPosition != null) {
-            writer.write(",legend:{");
-            writer.write("show:true");
-            writer.write(",location:'" + legendPosition + "'}");
-        }
-
-        if(chart.isLive()) {
-            writer.write(",live:true");
-            writer.write(",refreshInterval:" + chart.getRefreshInterval());
-        }
+        encodeCommonConfig(context, chart);
 
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
