@@ -11112,6 +11112,7 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
     this.cfg.formId = $('#' + this.jqId).parents('form:first').attr('id');
+    var _self = this;
 
     //renderer options
     var rendererCfg = {
@@ -11125,6 +11126,9 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         renderer: $.jqplot.PieRenderer,
         rendererOptions: rendererCfg
     };
+
+    //events
+    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -11143,6 +11147,9 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
     this.cfg.formId = $('#' + this.jqId).parents('form:first').attr('id');
+
+    //events
+    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -11189,6 +11196,9 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     	this.cfg.axes.yaxis = categoryAxis;
     }
 
+    //events
+    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
 
@@ -11213,5 +11223,16 @@ PrimeFaces.widget.ChartUtils = {
 
             PrimeFaces.ajax.AjaxRequest(options);
         }, interval);
+    },
+
+    bindItemSelectListener : function(chart) {
+        $('#' + chart.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+            if(neighbor && chart.cfg.behaviors) {
+                var itemSelectCallback = chart.cfg.behaviors['itemSelect'];
+                if(itemSelectCallback) {
+                    itemSelectCallback.call(chart, {itemIndex:neighbor.pointIndex, seriesIndex:neighbor.seriesIndex});
+                }
+            }
+        });
     }
 }

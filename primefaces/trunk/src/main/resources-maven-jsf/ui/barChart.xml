@@ -12,7 +12,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.chart.BarChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.bar.BarChartRenderer</rendererClass>
-	<parent>org.primefaces.component.chart.CartesianChart</parent>
+	<parent>org.primefaces.component.chart.UIChart</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>

@@ -15,7 +15,6 @@
  */
 package org.primefaces.component.behavior.ajax;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.BehaviorHandler;
 import javax.faces.view.facelets.MetaRuleset;
@@ -33,10 +32,8 @@ public class AjaxBehaviorHandler extends BehaviorHandler {
 
 		metaRuleset.addRule(new MethodRule("listener", null, new Class[0]));
         
-        //For backward compatibility, deprecated
-        metaRuleset.addRule(new MethodRule("action", null, new Class[0]));
-        metaRuleset.addRule(new MethodRule("actionListener", null, new Class[]{ActionEvent.class}));
-
 		return metaRuleset;
     }
+
+
 }

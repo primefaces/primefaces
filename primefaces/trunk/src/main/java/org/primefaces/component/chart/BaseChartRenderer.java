@@ -16,44 +16,29 @@
 package org.primefaces.component.chart;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class BaseChartRenderer extends CoreRenderer {
 
     private final static Logger logger = Logger.getLogger(BaseChartRenderer.class.getName());
 	
     @Override
-	public void decode(FacesContext fc, UIComponent component) {
-		String clientId = component.getClientId(fc);
-		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
-
-		if(params.containsKey(clientId + "_ajaxItemSelect")) {
-			int seriesIndex = Integer.parseInt(params.get(clientId + "_seriesIndex"));
-			int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-
-			component.queueEvent(new ItemSelectEvent(component, itemIndex, seriesIndex));
-        }
+	public void decode(FacesContext context, UIComponent component) {
+        super.decodeBehaviors(context, component);
 	}
-	
-	protected void encodeResources(FacesContext facesContext) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-        writer.write("YAHOO.widget.Chart.SWFURL = '" + getResourceRequestPath(facesContext, "yui/charts/assets/charts.swf") + "'");
-		writer.endElement("script");
-	}
-	
 	protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
@@ -88,14 +73,29 @@ public class BaseChartRenderer extends CoreRenderer {
             writer.write(",refreshInterval:" + chart.getRefreshInterval());
         }
     }
-    
-    @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do Nothing
-	}
 
-    @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    protected void encodeBehaviors(FacesContext context, UIChart chart) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        Map<String,List<ClientBehavior>> behaviorEvents = chart.getClientBehaviors();
+
+        if(!behaviorEvents.isEmpty()) {
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+            writer.write(",behaviors:{");
+
+            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
+                String event = eventIterator.next();
+                ClientBehavior clientBehavior = behaviorEvents.get(event).get(0);
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, chart, event, chart.getClientId(context), params);
+
+                writer.write(event + ":");
+                writer.write("function(data) {" + clientBehavior.getScript(cbc) +  "}");
+
+                if(eventIterator.hasNext()) {
+                    writer.write(",");
+                }
+            }
+            writer.write("}");
+        }
+    }
 }

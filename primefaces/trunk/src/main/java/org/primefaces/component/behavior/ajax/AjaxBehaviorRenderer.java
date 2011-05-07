@@ -19,7 +19,6 @@ import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
@@ -57,6 +56,8 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         FacesContext fc = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
+        String source = behaviorContext.getSourceId();
+        source = source == null ? "this" : "'" + source + "'";
         String url = fc.getApplication().getViewHandler().getActionURL(fc, fc.getViewRoot().getViewId());
 		url =  fc.getExternalContext().encodeResourceURL(url);
         
@@ -72,7 +73,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         req.append("{formId:'").append(form.getClientId(fc)).append("'");
 
         //source
-        req.append(",source:this");
+        req.append(",source:").append(source);
 
         //process
         String process = ajaxBehavior.getProcess() != null ? ComponentUtils.findClientIds(fc, component, ajaxBehavior.getProcess()) : clientId;
@@ -105,26 +106,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             req.append(",oncomplete:function(xhr, status, args){").append(ajaxBehavior.getOncomplete()).append(";}");
 
         //params
-        boolean firstParam = true, hasParam = false;
-
-        for(UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter) {
-                UIParameter parameter = (UIParameter) child;
-                hasParam = true;
-
-                if(firstParam) {
-                    firstParam = false;
-                    req.append(",{");
-                } else {
-                    req.append(",");
-                }
-
-                req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
-            }
-
-            if(hasParam)
-                req.append("}");
-        }
+        req.append(",params:data");
 
         req.append("});");
 

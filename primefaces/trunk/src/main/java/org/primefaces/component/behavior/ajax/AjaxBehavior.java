@@ -31,7 +31,6 @@ import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
@@ -57,12 +56,6 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
 
     private Map<String, ValueExpression> bindings;
-
-    @Deprecated
-    private MethodExpression action;
-
-    @Deprecated
-    private MethodExpression actionListener;
 
     @Override
     public String getRendererType() {
@@ -146,22 +139,6 @@ public class AjaxBehavior extends ClientBehaviorBase {
         this.listener = listener;
     }
 
-    public MethodExpression getAction() {
-        return action;
-    }
-
-    public void setAction(MethodExpression action) {
-        this.action = action;
-    }
-
-    public MethodExpression getActionListener() {
-        return actionListener;
-    }
-
-    public void setActionListener(MethodExpression actionListener) {
-        this.actionListener = actionListener;
-    }
-
     public boolean isDisabled() {
         return disabled;
     }
@@ -186,24 +163,17 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     @Override
     public void broadcast(BehaviorEvent event) throws AbortProcessingException {
-        ELContext eLContext = FacesContext.getCurrentInstance().getELContext();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext eLContext = context.getELContext();
 
-        //Backward compatible implementation of listener invocation
         if(listener != null) {
             try {
-                listener.invoke(eLContext, new Object[]{});
-            } catch(MethodNotFoundException mnfe) {
-                listener.invoke(eLContext, new Object[]{event});
-            }
-        }
-        else if(action != null) {
-            action.invoke(eLContext, new Object[0]);
-        }
-        else if(actionListener != null) {
-            try {
-                actionListener.invoke(eLContext, new Object[]{new ActionEvent(event.getComponent())});
-            } catch(IllegalArgumentException iae) {
-                actionListener.invoke(eLContext, new Object[0]);
+                listener.invoke(eLContext, null);       //no-arg listener
+            } catch(MethodNotFoundException e1) {
+                MethodExpression argListener = context.getApplication().getExpressionFactory().
+                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{BehaviorEvent.class});
+
+                argListener.invoke(eLContext, new Object[]{event});
             }
         }
     }

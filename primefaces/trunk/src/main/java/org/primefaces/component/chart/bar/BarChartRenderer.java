@@ -51,6 +51,8 @@ public class BarChartRenderer extends BaseChartRenderer {
 
         encodeOptions(context, chart);
 
+        encodeBehaviors(context, chart);
+
 		writer.write("});});");
 
 		writer.endElement("script");

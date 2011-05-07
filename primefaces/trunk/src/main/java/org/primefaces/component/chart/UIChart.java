@@ -15,34 +15,31 @@
  */
 package org.primefaces.component.chart;
 
-import javax.el.MethodExpression;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.ItemSelectEvent;
-import org.primefaces.model.chart.ChartModel;
 
 public abstract class UIChart extends UIComponentBase implements ClientBehaviorHolder {
+
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect"));
 
     protected enum PropertyKeys {
         widgetVar
 		,value
-		,var
         ,styleClass
         ,style
         ,live
         ,refreshInterval
-        ,update
-        ,itemSelectListener
-        ,oncomplete
-        ,wmode
         ,title
         ,legendPosition
-        ,dataTipFunction
-        ,model;
+        ,dataTipFunction;
 
 		String toString;
 
@@ -72,13 +69,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.value, _value);
 	}
 
-	public String getVar() {
-		return (String) getStateHelper().eval(PropertyKeys.var, null);
-	}
-	public void setVar(String _var) {
-		getStateHelper().put(PropertyKeys.var, _var);
-	}
-
 	public String getStyleClass() {
 		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
 	}
@@ -93,13 +83,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.style, _style);
 	}
 	
-	public String getWmode() {
-		return (String) getStateHelper().eval(PropertyKeys.wmode, null);
-	}
-	public void setWmode(String _wmode) {
-		getStateHelper().put(PropertyKeys.wmode, _wmode);
-	}
-
     public String getTitle() {
 		return (String) getStateHelper().eval(PropertyKeys.title, "");
 	}
@@ -128,28 +111,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.refreshInterval, _refreshInterval);
 	}
 	
-	public String getUpdate() {
-		return (String) getStateHelper().eval(PropertyKeys.update, null);
-	}
-	public void setUpdate(java.lang.String _update) {
-		getStateHelper().put(PropertyKeys.update, _update);
-	}
-
-	public MethodExpression getItemSelectListener() {
-		return (MethodExpression) getStateHelper().eval(PropertyKeys.itemSelectListener, null);
-	}
-
-	public void setItemSelectListener(MethodExpression _itemSelectListener) {
-		getStateHelper().put(PropertyKeys.itemSelectListener, _itemSelectListener);
-	}
-	
-	public String getOncomplete() {
-		return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-	}
-	public void setOncomplete(java.lang.String _oncomplete) {
-		getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
-	}
-	
 	public String getDataTipFunction() {
 		return (String) getStateHelper().eval(PropertyKeys.dataTipFunction, null);
 	}
@@ -157,32 +118,20 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.dataTipFunction, _dataTipFunction);
 	}
 
-    public boolean isLiveDataRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dataPoll");
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
     }
 
-    public ChartModel getModel() {
-		return (ChartModel) getStateHelper().eval(PropertyKeys.model, null);
-	}
-	public void setModel(ChartModel _value) {
-		getStateHelper().put(PropertyKeys.model, _value);
-	}
-
     @Override
-	public void broadcast(FacesEvent event) throws AbortProcessingException {
-		super.broadcast(event);
-		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+    public void queueEvent(FacesEvent event) {
+        BehaviorEvent behaviorEvent = (BehaviorEvent) event;
+        Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        int itemIndex = Integer.parseInt(map.get("itemIndex"));
+        int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
 
-		if(event instanceof ItemSelectEvent) {
-			MethodExpression me = getItemSelectListener();
-		
-			if (me != null) 
-				me.invoke(facesContext.getELContext(), new Object[] {event});
-		}
-	}
+        ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, seriesIndex);
 
-    public boolean hasModel() {
-        return getValueExpression("model") != null;
+        super.queueEvent(itemSelectEvent);
     }
 }
