@@ -172,7 +172,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 listener.invoke(eLContext, null);       //no-arg listener
             } catch(MethodNotFoundException e1) {
                 MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{AjaxBehaviorEvent.class});
+                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
 
                 argListener.invoke(eLContext, new Object[]{event});
             }
