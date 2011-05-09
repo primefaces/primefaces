@@ -78,19 +78,25 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
         rendererOptions: rendererCfg
     };
 
+    //axes
     var categoryAxis = {
         renderer:$.jqplot.CategoryAxisRenderer,
         ticks: this.cfg.categories
-    };
-    
-    //axes
+    },
+    valueAxis = {
+        min: this.cfg.min,
+        max: this.cfg.max
+    }
+
     this.cfg.axes = {};
 
     if(this.cfg.orientation == 'vertical') {
     	this.cfg.axes.xaxis = categoryAxis;
+        this.cfg.axes.yaxis = valueAxis;
     }
     else {
     	this.cfg.axes.yaxis = categoryAxis;
+        this.cfg.axes.xaxis = valueAxis;
     }
 
     //events

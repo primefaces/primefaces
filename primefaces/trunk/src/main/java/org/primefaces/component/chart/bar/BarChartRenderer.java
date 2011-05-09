@@ -117,15 +117,17 @@ public class BarChartRenderer extends BaseChartRenderer {
         }
         writer.write("]");
 
-        writer.write(",categories:[");
-        for(Iterator<Object> it = model.getSeries().get(0).getData().keySet().iterator(); it.hasNext();) {
-            writer.write("'" + it.next() + "'");
+        if(!model.getCategories().isEmpty()) {
+            writer.write(",categories:[");
+            for(Iterator<String> it = model.getCategories().iterator(); it.hasNext();) {
+                writer.write("'" + it.next() + "'");
 
-            if(it.hasNext()) {
-                writer.write(",");
+                if(it.hasNext()) {
+                    writer.write(",");
+                }
             }
+            writer.write("]");
         }
-        writer.write("]");
 
         writer.write(",orientation:'" + chart.getOrientation() + "'");
         writer.write(",barPadding:" + chart.getBarPadding());
@@ -134,5 +136,8 @@ public class BarChartRenderer extends BaseChartRenderer {
         if(chart.isStacked()) {
             writer.write(",stackSeries:true");
         }
+
+        if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
+        if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
     }
 }
