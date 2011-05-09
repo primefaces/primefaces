@@ -67,11 +67,6 @@ public class BaseChartRenderer extends CoreRenderer {
             writer.write("show:true");
             writer.write(",location:'" + legendPosition + "'}");
         }
-
-        if(chart.isLive()) {
-            writer.write(",live:true");
-            writer.write(",refreshInterval:" + chart.getRefreshInterval());
-        }
     }
 
     protected void encodeBehaviors(FacesContext context, UIChart chart) throws IOException {

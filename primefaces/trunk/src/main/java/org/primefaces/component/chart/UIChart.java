@@ -35,11 +35,8 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		,value
         ,styleClass
         ,style
-        ,live
-        ,refreshInterval
         ,title
-        ,legendPosition
-        ,dataTipFunction;
+        ,legendPosition;
 
 		String toString;
 
@@ -97,27 +94,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.legendPosition, _legendPosition);
 	}
 	
-	public boolean isLive() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.live, false);
-	}
-	public void setLive(boolean _live) {
-		getStateHelper().put(PropertyKeys.live, _live);
-	}
-
-	public int getRefreshInterval() {
-		return (Integer) getStateHelper().eval(PropertyKeys.refreshInterval, 3000);
-	}
-	public void setRefreshInterval(int _refreshInterval) {
-		getStateHelper().put(PropertyKeys.refreshInterval, _refreshInterval);
-	}
-	
-	public String getDataTipFunction() {
-		return (String) getStateHelper().eval(PropertyKeys.dataTipFunction, null);
-	}
-	public void setDataTipFunction(String _dataTipFunction) {
-		getStateHelper().put(PropertyKeys.dataTipFunction, _dataTipFunction);
-	}
-
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;

@@ -39,20 +39,6 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-		<attribute>
-			<name>live</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>refreshInterval</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>3000</defaultValue>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
         <attribute>
 			<name>title</name>
 			<required>false</required>

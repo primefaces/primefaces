@@ -39,53 +39,6 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-		<attribute>
-			<name>live</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>oncomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>refreshInterval</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>3000</defaultValue>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>itemSelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<ignoreInComponent>true</ignoreInComponent>
-			<method-signature>void itemSelectListener(org.primefaces.event.ItemSelectEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>minY</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>maxY</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
         <attribute>
 			<name>title</name>
 			<required>false</required>
