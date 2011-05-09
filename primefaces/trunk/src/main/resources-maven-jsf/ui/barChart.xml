@@ -83,6 +83,9 @@
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
+        <resource>
+			<name>charts/jqplot.js</name>
+		</resource>
 		<resource>
 			<name>core/core.js</name>
 		</resource>

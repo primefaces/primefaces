@@ -99,7 +99,6 @@ public class BarChartRenderer extends BaseChartRenderer {
 
     protected void encodeOptions(FacesContext context, BarChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String legendPosition = chart.getLegendPosition();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
 
         encodeCommonConfig(context, chart);

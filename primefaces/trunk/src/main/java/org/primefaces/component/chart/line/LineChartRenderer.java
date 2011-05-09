@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ public class LineChartRenderer extends BaseChartRenderer {
     protected void encodeData(FacesContext context, LineChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
+        boolean hasCategories = !model.getCategories().isEmpty();
 
 		writer.write("data:[" );
 
@@ -73,9 +74,13 @@ public class LineChartRenderer extends BaseChartRenderer {
                 Number xValue = (Number) x.next();
                 Number yValue = series.getData().get(xValue);
 
-                writer.write("[");
-                writer.write(xValue + "," + yValue);
-                writer.write("]");
+                if(hasCategories) {
+                    writer.write(yValue.toString());
+                } else {
+                    writer.write("[");
+                    writer.write(xValue + "," + yValue);
+                    writer.write("]");
+                }
 
                 if(x.hasNext()) {
                     writer.write(",");
@@ -113,6 +118,18 @@ public class LineChartRenderer extends BaseChartRenderer {
         }
 
         writer.write("]");
+
+        if(!model.getCategories().isEmpty()) {
+            writer.write(",categories:[");
+            for(Iterator<String> it = model.getCategories().iterator(); it.hasNext();) {
+                writer.write("'" + it.next() + "'");
+
+                if(it.hasNext()) {
+                    writer.write(",");
+                }
+            }
+            writer.write("]");
+        }
 
         if(chart.getMinX() != Double.MIN_VALUE) writer.write(",minX:" + chart.getMinX());
         if(chart.getMaxX() != Double.MAX_VALUE) writer.write(",maxX:" + chart.getMaxX());

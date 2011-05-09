@@ -23,6 +23,8 @@ public class CartesianChartModel extends ChartModel implements Serializable {
 
     private List<ChartSeries> series = new ArrayList<ChartSeries>();
 
+    private List<String> categories = new ArrayList<String>();
+
     public List<ChartSeries> getSeries() {
         return series;
     }
@@ -33,5 +35,13 @@ public class CartesianChartModel extends ChartModel implements Serializable {
 
     public void clear() {
         this.series.clear();
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 }
