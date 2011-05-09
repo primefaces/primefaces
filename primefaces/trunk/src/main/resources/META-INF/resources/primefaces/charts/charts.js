@@ -11112,7 +11112,6 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
     this.cfg.formId = $('#' + this.jqId).parents('form:first').attr('id');
-    var _self = this;
 
     //renderer options
     var rendererCfg = {
@@ -11132,11 +11131,6 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
-
-    //live
-    if(this.cfg.live) {
-        PrimeFaces.widget.ChartUtils.startPolling(this, this.cfg.refreshInterval);
-    }
 }
 
 /**
@@ -11151,13 +11145,20 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
+    //axes
+    this.cfg.axes = {
+        xaxis:{
+            min:this.cfg.minX,
+            max:this.cfg.maxX
+        },
+        yaxis:{
+            min:this.cfg.minY,
+            max:this.cfg.maxY
+        }
+    };
+    
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
-
-    //live
-    if(this.cfg.live) {
-        PrimeFaces.widget.ChartUtils.startPolling(this, this.cfg.refreshInterval);
-    }
 }
 
 /**
@@ -11201,11 +11202,6 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
-
-    //live
-    if(this.cfg.live) {
-        PrimeFaces.widget.ChartUtils.startPolling(this, this.cfg.refreshInterval);
-    }
 }
 
 PrimeFaces.widget.ChartUtils = {

@@ -93,7 +93,6 @@ public class LineChartRenderer extends BaseChartRenderer {
 
     protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String legendPosition = chart.getLegendPosition();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
 
         encodeCommonConfig(context, chart);
@@ -114,6 +113,11 @@ public class LineChartRenderer extends BaseChartRenderer {
         }
 
         writer.write("]");
+
+        if(chart.getMinX() != Double.MIN_VALUE) writer.write(",minX:" + chart.getMinX());
+        if(chart.getMaxX() != Double.MAX_VALUE) writer.write(",maxX:" + chart.getMaxX());
+        if(chart.getMinY() != Double.MIN_VALUE) writer.write(",minY:" + chart.getMinY());
+        if(chart.getMaxY() != Double.MAX_VALUE) writer.write(",maxY:" + chart.getMaxY());
         
     }
 }

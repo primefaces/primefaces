@@ -39,21 +39,7 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-		<attribute>
-			<name>minY</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-		<attribute>
-			<name>maxY</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-        <attribute>
+         <attribute>
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -64,6 +50,30 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>minY</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+		</attribute>
+		<attribute>
+			<name>maxY</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MAX_VALUE</defaultValue>
+		</attribute>
+        <attribute>
+			<name>minX</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+		</attribute>
+		<attribute>
+			<name>maxX</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MAX_VALUE</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
