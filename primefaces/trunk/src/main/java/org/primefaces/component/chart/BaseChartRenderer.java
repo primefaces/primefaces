@@ -32,8 +32,6 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class BaseChartRenderer extends CoreRenderer {
 
-    private final static Logger logger = Logger.getLogger(BaseChartRenderer.class.getName());
-	
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         super.decodeBehaviors(context, component);

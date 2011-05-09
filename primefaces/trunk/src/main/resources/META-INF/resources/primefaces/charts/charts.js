@@ -19,7 +19,7 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         rendererOptions: rendererCfg
     };
 
-    //events
+//events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
     //render chart
