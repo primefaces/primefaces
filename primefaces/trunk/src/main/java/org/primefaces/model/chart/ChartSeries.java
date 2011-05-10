@@ -21,22 +21,22 @@ import java.util.Map;
 
 public class ChartSeries implements Serializable {
 
-    private String title;
+    private String label;
 
     private Map<Object,Number> data = new LinkedHashMap<Object, Number>();
 
     public ChartSeries() {}
 
-    public ChartSeries(String title) {
-        this.title = title;
+    public ChartSeries(String label) {
+        this.label = label;
     }
 
-    public String getTitle() {
-        return title;
+    public String getLabel() {
+        return label;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLabel(String label) {
+        this.label = label;
     }
     
     public Map<Object, Number> getData() {

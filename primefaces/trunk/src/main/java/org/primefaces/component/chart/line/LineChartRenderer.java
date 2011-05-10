@@ -107,7 +107,7 @@ public class LineChartRenderer extends BaseChartRenderer {
             LineChartSeries series = (LineChartSeries) it.next();
 
             writer.write("{");
-            writer.write("label:'" + series.getTitle() + "'");
+            writer.write("label:'" + series.getLabel() + "'");
             writer.write(",showLine:" + series.isShowLine());
             writer.write(",markerOptions:{style:'" + series.getMarkerStyle() + "'}");
             writer.write("}");

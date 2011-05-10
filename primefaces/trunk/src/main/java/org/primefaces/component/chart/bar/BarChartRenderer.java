@@ -108,7 +108,7 @@ public class BarChartRenderer extends BaseChartRenderer {
             ChartSeries series = (ChartSeries) it.next();
 
             writer.write("{");
-            writer.write("label:'" + series.getTitle() + "'");
+            writer.write("label:'" + series.getLabel() + "'");
             writer.write("}");
 
             if(it.hasNext()) {
