@@ -17,6 +17,7 @@ package org.primefaces.component.chart.bar;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -47,8 +48,6 @@ public class BarChartRenderer extends BaseChartRenderer {
 
         writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.BarChart('" + clientId + "', {");
 
-        encodeData(context, chart);
-
         encodeOptions(context, chart);
 
         encodeBehaviors(context, chart);
@@ -58,13 +57,14 @@ public class BarChartRenderer extends BaseChartRenderer {
 		writer.endElement("script");
 	}
 
-    protected void encodeData(FacesContext context, BarChart chart) throws IOException {
+    protected void encodeOptions(FacesContext context, BarChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
         boolean horizontal = chart.getOrientation().equals("horizontal");
+        List<String> categories = model.getCategories();
 
+        //data
 		writer.write("data:[" );
-
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = it.next();
             int i = 1;
@@ -77,12 +77,12 @@ public class BarChartRenderer extends BaseChartRenderer {
                     writer.write("[");
                     writer.write(value + "," + i);
                     writer.write("]");
-                    
+
                     i++;
                 } else {
                     writer.write(String.valueOf(value));
                 }
-                
+
                 if(x.hasNext()) {
                     writer.write(",");
                 }
@@ -93,16 +93,12 @@ public class BarChartRenderer extends BaseChartRenderer {
                 writer.write(",");
             }
         }
-
         writer.write("]");
-	}
 
-    protected void encodeOptions(FacesContext context, BarChart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        CartesianChartModel model = (CartesianChartModel) chart.getValue();
-
+        //common config
         encodeCommonConfig(context, chart);
 
+        //series
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
@@ -117,18 +113,18 @@ public class BarChartRenderer extends BaseChartRenderer {
         }
         writer.write("]");
 
-        if(!model.getCategories().isEmpty()) {
-            writer.write(",categories:[");
-            for(Iterator<String> it = model.getCategories().iterator(); it.hasNext();) {
-                writer.write("'" + it.next() + "'");
+        //categories
+        writer.write(",categories:[");
+        for(Iterator<String> it = categories.iterator(); it.hasNext();) {
+            writer.write("'" + it.next() + "'");
 
-                if(it.hasNext()) {
-                    writer.write(",");
-                }
+            if(it.hasNext()) {
+                writer.write(",");
             }
-            writer.write("]");
         }
+        writer.write("]");
 
+        //config
         writer.write(",orientation:'" + chart.getOrientation() + "'");
         writer.write(",barPadding:" + chart.getBarPadding());
         writer.write(",barMargin:" + chart.getBarMargin());
@@ -137,6 +133,7 @@ public class BarChartRenderer extends BaseChartRenderer {
             writer.write(",stackSeries:true");
         }
 
+        //boundaries
         if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
         if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
     }

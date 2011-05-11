@@ -17,6 +17,7 @@ package org.primefaces.component.chart.line;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -48,8 +49,6 @@ public class LineChartRenderer extends BaseChartRenderer {
 
         writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.LineChart('" + clientId + "', {");
 
-        encodeData(context, chart);
-
         encodeOptions(context, chart);
 
         encodeBehaviors(context, chart);
@@ -59,19 +58,20 @@ public class LineChartRenderer extends BaseChartRenderer {
 		writer.endElement("script");
 	}
 
-    protected void encodeData(FacesContext context, LineChart chart) throws IOException {
+    protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
-        boolean hasCategories = !model.getCategories().isEmpty();
+        List<String> categories = model.getCategories();
+        boolean hasCategories = !categories.isEmpty();
 
+        //data
 		writer.write("data:[" );
-
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = it.next();
-            
+
             writer.write("[");
             for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
-                Number xValue = (Number) x.next();
+                Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
 
                 if(hasCategories) {
@@ -92,24 +92,23 @@ public class LineChartRenderer extends BaseChartRenderer {
                 writer.write(",");
             }
         }
-
         writer.write("]");
-	}
 
-    protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        CartesianChartModel model = (CartesianChartModel) chart.getValue();
-
+        //common config
         encodeCommonConfig(context, chart);
 
+        //series
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
-            LineChartSeries series = (LineChartSeries) it.next();
+            ChartSeries series = (ChartSeries) it.next();
 
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
-            writer.write(",showLine:" + series.isShowLine());
-            writer.write(",markerOptions:{style:'" + series.getMarkerStyle() + "'}");
+            if(series instanceof LineChartSeries) {
+                LineChartSeries  lineChartSeries = (LineChartSeries) series;
+                writer.write(",showLine:" + lineChartSeries.isShowLine());
+                writer.write(",markerOptions:{style:'" + lineChartSeries.getMarkerStyle() + "'}");
+            }
             writer.write("}");
 
             if(it.hasNext()) {
@@ -119,9 +118,10 @@ public class LineChartRenderer extends BaseChartRenderer {
 
         writer.write("]");
 
-        if(!model.getCategories().isEmpty()) {
+        //categories
+        if(hasCategories) {
             writer.write(",categories:[");
-            for(Iterator<String> it = model.getCategories().iterator(); it.hasNext();) {
+            for(Iterator<String> it = categories.iterator(); it.hasNext();) {
                 writer.write("'" + it.next() + "'");
 
                 if(it.hasNext()) {
@@ -131,10 +131,10 @@ public class LineChartRenderer extends BaseChartRenderer {
             writer.write("]");
         }
 
+        //boundaries
         if(chart.getMinX() != Double.MIN_VALUE) writer.write(",minX:" + chart.getMinX());
         if(chart.getMaxX() != Double.MAX_VALUE) writer.write(",maxX:" + chart.getMaxX());
         if(chart.getMinY() != Double.MIN_VALUE) writer.write(",minY:" + chart.getMinY());
         if(chart.getMaxY() != Double.MAX_VALUE) writer.write(",maxY:" + chart.getMaxY());
-        
     }
 }

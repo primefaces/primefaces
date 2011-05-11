@@ -15,8 +15,6 @@
  */
 package org.primefaces.model.chart;
 
-import java.util.List;
-
 public abstract class ChartModel {
 
 }
