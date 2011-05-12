@@ -73,12 +73,13 @@ public class LineChartRenderer extends BaseChartRenderer {
             for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
+                String yValueAsString = yValue != null ? yValue.toString() : "null";
 
                 if(hasCategories) {
-                    writer.write(yValue.toString());
+                    writer.write(yValueAsString);
                 } else {
                     writer.write("[");
-                    writer.write(xValue + "," + yValue);
+                    writer.write(xValue + "," + yValueAsString);
                     writer.write("]");
                 }
 
@@ -136,5 +137,8 @@ public class LineChartRenderer extends BaseChartRenderer {
         if(chart.getMaxX() != Double.MAX_VALUE) writer.write(",maxX:" + chart.getMaxX());
         if(chart.getMinY() != Double.MIN_VALUE) writer.write(",minY:" + chart.getMinY());
         if(chart.getMaxY() != Double.MAX_VALUE) writer.write(",maxY:" + chart.getMaxY());
+
+        //other
+        if(chart.isBreakOnNull()) writer.write(",breakOnNull:true");
     }
 }

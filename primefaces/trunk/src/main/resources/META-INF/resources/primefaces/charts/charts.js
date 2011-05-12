@@ -51,6 +51,12 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
         this.cfg.axes.xaxis.ticks = this.cfg.categories;
     }
 
+    if(this.cfg.breakOnNull) {
+        this.cfg.seriesDefaults = {
+            breakOnNull: true
+        }
+    }
+
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
     
@@ -77,6 +83,10 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
         renderer: $.jqplot.BarRenderer,
         rendererOptions: rendererCfg
     };
+
+    if(this.cfg.breakOnNull) {
+        this.cfg.seriesDefaults.breakOnNull = true;
+    }
 
     //axes
     var categoryAxis = {

@@ -72,15 +72,16 @@ public class BarChartRenderer extends BaseChartRenderer {
             writer.write("[");
             for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Number value = series.getData().get(x.next());
+                String valueToRender = value != null ? value.toString() : "null";
 
                 if(horizontal) {
                     writer.write("[");
-                    writer.write(value + "," + i);
+                    writer.write(valueToRender + "," + i);
                     writer.write("]");
 
                     i++;
                 } else {
-                    writer.write(String.valueOf(value));
+                    writer.write(valueToRender);
                 }
 
                 if(x.hasNext()) {
@@ -136,5 +137,8 @@ public class BarChartRenderer extends BaseChartRenderer {
         //boundaries
         if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
         if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
+
+        //other
+        if(chart.isBreakOnNull()) writer.write(",breakOnNull:true");
     }
 }

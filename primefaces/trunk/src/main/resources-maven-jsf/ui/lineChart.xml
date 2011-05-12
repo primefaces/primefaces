@@ -75,6 +75,12 @@
 			<type>java.lang.Double</type>
 			<defaultValue>java.lang.Double.MAX_VALUE</defaultValue>
 		</attribute>
+        <attribute>
+			<name>breakOnNull</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
