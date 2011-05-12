@@ -16,12 +16,11 @@
 package org.primefaces.component.chart;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -29,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 
 public class BaseChartRenderer extends CoreRenderer {
 
@@ -72,7 +72,8 @@ public class BaseChartRenderer extends CoreRenderer {
         Map<String,List<ClientBehavior>> behaviorEvents = chart.getClientBehaviors();
 
         if(!behaviorEvents.isEmpty()) {
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            params.add((new ClientBehaviorContext.Parameter(Constants.CUSTOM_EVENT, true)));
 
             writer.write(",behaviors:{");
 
@@ -82,7 +83,7 @@ public class BaseChartRenderer extends CoreRenderer {
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, chart, event, chart.getClientId(context), params);
 
                 writer.write(event + ":");
-                writer.write("function(data) {" + clientBehavior.getScript(cbc) +  "}");
+                writer.write("function() {" + clientBehavior.getScript(cbc) +  "}");
 
                 if(eventIterator.hasNext()) {
                     writer.write(",");

@@ -28,4 +28,6 @@ public class Constants {
 
     public final static String VERSION = "3.0.M2-SNAPSHOT";
     public final static String LIBRARY = "primefaces";
+
+    public final static String CUSTOM_EVENT = "CUSTOM_EVENT";
 }

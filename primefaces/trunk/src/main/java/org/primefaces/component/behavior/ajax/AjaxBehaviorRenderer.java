@@ -27,6 +27,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.render.FacesBehaviorRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 @FacesBehaviorRenderer(rendererType="org.primefaces.component.AjaxBehaviorRenderer")
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
@@ -60,6 +61,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         source = source == null ? "this" : "'" + source + "'";
         String url = fc.getApplication().getViewHandler().getActionURL(fc, fc.getViewRoot().getViewId());
 		url =  fc.getExternalContext().encodeResourceURL(url);
+        boolean isCustomEvent = isCustomEvent(behaviorContext);
         
         UIComponent form = ComponentUtils.findParentForm(fc, component);
 		if(form == null) {
@@ -106,7 +108,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             req.append(",oncomplete:function(xhr, status, args){").append(ajaxBehavior.getOncomplete()).append(";}");
 
         //params
-        req.append(",params:data");
+        if(isCustomEvent) {
+            req.append(",params:arguments[0]");
+        }
 
         req.append("});");
 
@@ -125,5 +129,14 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         }
 
         return immediate;
+    }
+
+    private boolean isCustomEvent(ClientBehaviorContext behaviorContext) {
+        for(ClientBehaviorContext.Parameter param : behaviorContext.getParameters()) {
+            if(param.getName().equals(Constants.CUSTOM_EVENT))
+                return true;
+        }
+
+        return false;
     }
 }
