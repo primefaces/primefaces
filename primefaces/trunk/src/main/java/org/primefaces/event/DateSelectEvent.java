@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
 
 public class DateSelectEvent extends BehaviorEvent {
 
