@@ -22,9 +22,9 @@ import javax.faces.event.FacesListener;
 
 public class RateEvent extends BehaviorEvent {
 
-	private double rating;
+	private Object rating;
 	
-	public RateEvent(UIComponent component, Behavior behavior, double rating) {
+	public RateEvent(UIComponent component, Behavior behavior, Object rating) {
 		super(component, behavior);
 		this.rating = rating;
 	}
@@ -39,11 +39,7 @@ public class RateEvent extends BehaviorEvent {
 		throw new UnsupportedOperationException();
 	}
 	
-	public double getRating() {
+	public Object getRating() {
 		return rating;
-	}
-
-	public void setRating(double rating) {
-		this.rating = rating;
-	}
+    }
 }
