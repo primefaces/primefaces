@@ -6,7 +6,6 @@
 <component>
 	<tag>lineChart</tag>
 	<tagClass>org.primefaces.component.chart.line.LineChartTag</tagClass>
-	<componentHandlerClass>org.primefaces.component.chart.ChartHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.chart.line.LineChart</componentClass>
 	<componentType>org.primefaces.component.chart.LineChart</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>

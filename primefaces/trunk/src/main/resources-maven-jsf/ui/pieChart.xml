@@ -6,7 +6,6 @@
 <component>
 	<tag>pieChart</tag>
 	<tagClass>org.primefaces.component.chart.pie.PieChartTag</tagClass>
-	<componentHandlerClass>org.primefaces.component.chart.ChartHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.chart.pie.PieChart</componentClass>
 	<componentType>org.primefaces.component.chart.PieChart</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>

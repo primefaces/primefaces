@@ -6,7 +6,6 @@
 <component>
 	<tag>barChart</tag>
 	<tagClass>org.primefaces.component.chart.bar.BarChartTag</tagClass>
-	<componentHandlerClass>org.primefaces.component.chart.ChartHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.chart.bar.BarChart</componentClass>
 	<componentType>org.primefaces.component.chart.BarChart</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
