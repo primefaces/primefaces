@@ -3,18 +3,24 @@ import org.primefaces.event.DateSelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 
     public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
 
 	public static String POPUP_ICON = "calendar/calendar_icon.png";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "dateSelect"));
+
+    private Map<String,BehaviorEvent> customEvents = new HashMap<String,BehaviorEvent>();
 
 	private java.util.Locale appropriateLocale;
 	private java.util.TimeZone appropriateTimeZone;
@@ -80,12 +86,28 @@ import javax.faces.event.FacesEvent;
         FacesContext context = FacesContext.getCurrentInstance();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
         
-        if(eventName != null && eventName.equals("dateSelect")) {
-            BehaviorEvent behaviorEvent = (BehaviorEvent) event;
-            Date date = (Date) getConvertedValue(context, getSubmittedValue());
-
-            super.queueEvent(new DateSelectEvent(this, behaviorEvent.getBehavior(), date));
+        if(eventName != null && eventName.equals("dateSelect") && event instanceof BehaviorEvent) {
+            customEvents.put("dateSelect", (BehaviorEvent) event);
         } else {
             super.queueEvent(event);
         }
+    }
+
+    @Override
+    public void validate(FacesContext context) {
+        super.validate(context);
+       
+        if(isValid()) {
+            for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
+                BehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
+                DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), (Date) getValue());
+
+                if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+                    dateSelectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                }
+
+                super.queueEvent(dateSelectEvent);
+            }
+        }
+        customEvents = null;
     }
