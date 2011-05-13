@@ -61,7 +61,6 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         source = source == null ? "this" : "'" + source + "'";
         String url = fc.getApplication().getViewHandler().getActionURL(fc, fc.getViewRoot().getViewId());
 		url =  fc.getExternalContext().encodeResourceURL(url);
-        boolean isCustomEvent = isCustomEvent(behaviorContext);
         
         UIComponent form = ComponentUtils.findParentForm(fc, component);
 		if(form == null) {
@@ -127,14 +126,5 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         }
 
         return immediate;
-    }
-
-    private boolean isCustomEvent(ClientBehaviorContext behaviorContext) {
-        for(ClientBehaviorContext.Parameter param : behaviorContext.getParameters()) {
-            if(param.getName().equals(Constants.CUSTOM_EVENT))
-                return true;
-        }
-
-        return false;
     }
 }

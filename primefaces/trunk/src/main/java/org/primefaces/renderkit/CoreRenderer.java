@@ -309,19 +309,19 @@ public class CoreRenderer extends Renderer {
 
             for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
                 String event = eventIterator.next();
-                String eventName = event;
+                String domEvent = event;
 
                 if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    eventName = "change";
+                    domEvent = "change";
                 else if(event.equalsIgnoreCase("action"))       //commands
-                    eventName = "click";
+                    domEvent = "click";
 
-                writer.write(eventName + ":");
+                writer.write(domEvent + ":");
 
                 writer.write("function() {");
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script != null) {

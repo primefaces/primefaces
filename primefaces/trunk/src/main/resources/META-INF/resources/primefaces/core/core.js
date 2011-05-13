@@ -82,6 +82,8 @@ PrimeFaces = {
 
     BEHAVIOR_EVENT_PARAM : "javax.faces.behavior.event",
 
+    PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
+
     VIEW_STATE : "javax.faces.ViewState"
 };
 
@@ -205,6 +207,14 @@ PrimeFaces.ajax.AjaxRequest = function(cfg) {
     //behavior event
     if(cfg.event) {
         postParams = postParams + "&" + PrimeFaces.BEHAVIOR_EVENT_PARAM + "=" + cfg.event;
+        var domEvent = cfg.event;
+
+        if(cfg.event == 'valueChange')
+            domEvent = 'change';
+        else if(cfg.event == 'action')
+            domEvent = 'click';
+
+        postParams = postParams + "&" + PrimeFaces.PARTIAL_EVENT_PARAM + "=" + domEvent;
     } else {
         postParams = postParams + "&" + cfg.source + "=" + cfg.source;
     }
