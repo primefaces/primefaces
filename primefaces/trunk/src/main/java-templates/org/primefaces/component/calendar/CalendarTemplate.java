@@ -2,6 +2,7 @@ import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
+import org.primefaces.util.Constants;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.Collection;
@@ -63,12 +64,6 @@ import javax.faces.event.FacesEvent;
 		return getMode().equalsIgnoreCase("popup");
 	}
 
-    public boolean isInstantSelection() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_ajaxSelect");
-    }
-
     public boolean hasTime() {
         String pattern = getPattern();
 
@@ -82,10 +77,15 @@ import javax.faces.event.FacesEvent;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if(event instanceof BehaviorEvent) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        
+        if(eventName != null && eventName.equals("dateSelect")) {
             BehaviorEvent behaviorEvent = (BehaviorEvent) event;
-            Date date = (Date) getConvertedValue(FacesContext.getCurrentInstance(), getSubmittedValue());
+            Date date = (Date) getConvertedValue(context, getSubmittedValue());
 
             super.queueEvent(new DateSelectEvent(this, behaviorEvent.getBehavior(), date));
+        } else {
+            super.queueEvent(event);
         }
     }
