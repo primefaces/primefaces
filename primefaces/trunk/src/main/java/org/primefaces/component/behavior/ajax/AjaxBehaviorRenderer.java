@@ -108,9 +108,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             req.append(",oncomplete:function(xhr, status, args){").append(ajaxBehavior.getOncomplete()).append(";}");
 
         //params
-        if(isCustomEvent) {
-            req.append(",params:arguments[0]");
-        }
+        req.append(",params:arguments[1]");
 
         req.append("});");
 

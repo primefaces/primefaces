@@ -302,38 +302,33 @@ public class CoreRenderer extends Renderer {
         Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
 
         if(!behaviorEvents.isEmpty()) {
+            String clientId = ((UIComponent) component).getClientId(context);
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
 
             writer.write(",behaviors:{");
 
             for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
                 String event = eventIterator.next();
-                String domEvent = event;
-                boolean firstEventBehaviorWritten = false;
+                String eventName = event;
 
                 if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
+                    eventName = "change";
                 else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
+                    eventName = "click";
 
-                writer.write(domEvent + ":");
+                writer.write(eventName + ":");
 
-                writer.write("[");
+                writer.write("function() {");
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, domEvent, null, params);
-                    String script = behavior.getScript(cbc);
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
+                    String script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script != null) {
-                        writer.write("function(event){" + script + ";}");
-                        firstEventBehaviorWritten = true;
-                    }
-
-                    if(behaviorIter.hasNext() && firstEventBehaviorWritten) {
-                        writer.write(",");
+                        writer.write(script);
                     }
                 }
-                writer.write("]");
+                writer.write("}");
 
                 if(eventIterator.hasNext()) {
                     writer.write(",");

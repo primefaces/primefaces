@@ -123,7 +123,7 @@ PrimeFaces.widget.ChartUtils = {
             if(neighbor && chart.cfg.behaviors) {
                 var itemSelectCallback = chart.cfg.behaviors['itemSelect'];
                 if(itemSelectCallback) {
-                    itemSelectCallback.call(chart, {itemIndex:neighbor.pointIndex, seriesIndex:neighbor.seriesIndex});
+                    itemSelectCallback.call(chart, ev, {itemIndex:neighbor.pointIndex, seriesIndex:neighbor.seriesIndex});
                 }
             }
         });

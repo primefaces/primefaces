@@ -29,15 +29,11 @@ PrimeFaces = {
     attachBehaviors : function(element, behaviors) {
         for(var event in behaviors) {
             var domEvent = event,
-            handlers = behaviors[domEvent];
+            handler = behaviors[domEvent];
 
-            for(var i in handlers) {
-                var handler = handlers[i];
-
-                element.bind(domEvent, function(e) {
-                    handler.call(this, e);
-                });
-            }
+            element.bind(domEvent, function(e) {
+                handler.call(element, e);
+            });
         }
     },
 

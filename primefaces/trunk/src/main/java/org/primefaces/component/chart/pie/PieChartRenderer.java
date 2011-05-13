@@ -52,7 +52,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 
         encodeOptions(context, chart);
         
-        encodeBehaviors(context, chart);
+        encodeClientBehaviors(context, chart);
 
 		writer.write("});});");
 

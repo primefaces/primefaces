@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,11 @@
 package org.primefaces.component.chart;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
 
 public class BaseChartRenderer extends CoreRenderer {
 
@@ -64,32 +56,6 @@ public class BaseChartRenderer extends CoreRenderer {
             writer.write(",legend:{");
             writer.write("show:true");
             writer.write(",location:'" + legendPosition + "'}");
-        }
-    }
-
-    protected void encodeBehaviors(FacesContext context, UIChart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        Map<String,List<ClientBehavior>> behaviorEvents = chart.getClientBehaviors();
-
-        if(!behaviorEvents.isEmpty()) {
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
-            params.add((new ClientBehaviorContext.Parameter(Constants.CUSTOM_EVENT, true)));
-
-            writer.write(",behaviors:{");
-
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
-                String event = eventIterator.next();
-                ClientBehavior clientBehavior = behaviorEvents.get(event).get(0);
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, chart, event, chart.getClientId(context), params);
-
-                writer.write(event + ":");
-                writer.write("function() {" + clientBehavior.getScript(cbc) +  "}");
-
-                if(eventIterator.hasNext()) {
-                    writer.write(",");
-                }
-            }
-            writer.write("}");
         }
     }
 }
