@@ -28,7 +28,9 @@ import org.primefaces.event.ItemSelectEvent;
 
 public abstract class UIChart extends UIComponentBase implements ClientBehaviorHolder {
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect"));
+    private final static String DEFAULT_EVENT = "itemSelect";
+
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
 
     protected enum PropertyKeys {
         widgetVar
@@ -99,6 +101,11 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
         return EVENT_NAMES;
     }
 
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
+    
     @Override
     public void queueEvent(FacesEvent event) {
         BehaviorEvent behaviorEvent = (BehaviorEvent) event;
