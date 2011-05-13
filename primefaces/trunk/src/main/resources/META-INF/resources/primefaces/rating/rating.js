@@ -385,8 +385,8 @@
 /**
  * PrimeFaces Star Rating
  */
-PrimeFaces.widget.Rating = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Rating = function(cfg) {
+    this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId + ' input');
@@ -404,24 +404,11 @@ PrimeFaces.widget.Rating = function(id, cfg) {
             _self.cfg.onRate.call(_self, value);
         }
 
-        if(_self.cfg.hasRateListener) {
-            var options = {
-                source: _self.id,
-                process: _self.id,
-                formId: _self.cfg.formId
-            };
-
-            if(_self.cfg.update) {
-            	
-                options.update = _self.cfg.update;
+        if(_self.cfg.behaviors) {
+            var rateBehavior = _self.cfg.behaviors['rate'];
+            if(rateBehavior) {
+                rateBehavior.call(_self);
             }
-
-            var params = {};
-            params[_self.id + '_ajaxRating'] = true;
-
-            options.params = params;
-
-            PrimeFaces.ajax.AjaxRequest(options);
         }
     };
 	

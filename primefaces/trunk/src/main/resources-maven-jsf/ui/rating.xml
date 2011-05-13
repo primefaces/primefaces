@@ -8,7 +8,6 @@
 <component>
     <tag>rating</tag>
     <tagClass>org.primefaces.component.rating.RatingTag</tagClass>
-    <componentHandlerClass>org.primefaces.component.rating.RatingHandler</componentHandlerClass>
     <componentClass>org.primefaces.component.rating.Rating</componentClass>
     <componentType>org.primefaces.component.Rating</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
@@ -19,6 +18,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
     <attributes>
         &input_component_attributes;
@@ -28,17 +30,6 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>5</defaultValue>
-        </attribute>
-        <attribute>
-            <name>rateListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void rateListener(org.primefaces.event.RateEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>update</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <name>disabled</name>

@@ -20,8 +20,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.ItemSelectEvent;
@@ -108,13 +110,15 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
     
     @Override
     public void queueEvent(FacesEvent event) {
-        BehaviorEvent behaviorEvent = (BehaviorEvent) event;
-        Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        int itemIndex = Integer.parseInt(map.get("itemIndex"));
-        int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
+        if(event instanceof BehaviorEvent) {
+            BehaviorEvent behaviorEvent = (BehaviorEvent) event;
+            Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            int itemIndex = Integer.parseInt(map.get("itemIndex"));
+            int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
 
-        ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, seriesIndex);
+            ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, seriesIndex);
 
-        super.queueEvent(itemSelectEvent);
+            super.queueEvent(itemSelectEvent);
+        }
     }
 }

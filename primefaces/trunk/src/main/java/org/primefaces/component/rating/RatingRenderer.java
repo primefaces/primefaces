@@ -16,7 +16,6 @@
 package org.primefaces.component.rating;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.el.ValueExpression;
 
 import javax.faces.application.FacesMessage;
@@ -25,67 +24,52 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.event.PhaseId;
 
-import org.primefaces.event.RateEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class RatingRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        if(rating.isDisabled()) {
+            return;
+        }
+
         String clientId = rating.getClientId();
-        String value = params.get(clientId + "_input");
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         String submittedValue = value == null ? "0" : value;
-        boolean isAjaxRating = params.containsKey(clientId + "_ajaxRating");
 
         rating.setSubmittedValue(submittedValue);
 
-        if(isAjaxRating) {
-            RateEvent rateEvent;
-
-            if(isValueBlank(value))
-                rateEvent = new RateEvent(rating, 0D);
-            else
-                rateEvent = new RateEvent(rating, Double.valueOf(value));
-
-            if(rating.isImmediate())
-                rateEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            else
-                rateEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-
-            rating.queueEvent(rateEvent);
-        }
+        decodeBehaviors(context, rating);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Rating rating = (Rating) component;
 
-        encodeMarkup(facesContext, rating);
-        encodeScript(facesContext, rating);
+        encodeMarkup(context, rating);
+        encodeScript(context, rating);
     }
 
-    private void encodeScript(FacesContext facesContext, Rating rating) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = rating.getClientId(facesContext);
-        boolean hasRateListener = rating.getRateListener() != null;
+    private void encodeScript(FacesContext context, Rating rating) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = rating.getClientId(context);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");
 
-        writer.write(rating.resolveWidgetVar() + " = new PrimeFaces.widget.Rating('" + clientId + "'");
-        writer.write(",{");
-
-        writer.write("hasRateListener:" + hasRateListener);
-
-        if(rating.getOnRate() != null) writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");
-        if(rating.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, rating, rating.getUpdate()) + "'");
+        writer.write(rating.resolveWidgetVar() + " = new PrimeFaces.widget.Rating({id:'" + clientId + "'");
+        
+        if(rating.getOnRate() != null) {
+            writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");
+        }
+        
+        encodeClientBehaviors(context, rating);
 
         writer.write("});});");
 
