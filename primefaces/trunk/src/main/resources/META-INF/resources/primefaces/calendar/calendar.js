@@ -931,10 +931,8 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
         this.cfg.dateFormat = this.cfg.pattern;
     }
 
-    //Ajax select listener
-    if(this.cfg.ajaxSelect) {
-        this.configureOnSelectHandler();
-    }
+    //Select listener
+    this.bindDateSelectListener();
 
     //Form field to use in inline mode
     if(!this.cfg.popup) {
@@ -985,27 +983,19 @@ PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
     }
 }
 
-PrimeFaces.widget.Calendar.prototype.configureOnSelectHandler = function() {
+PrimeFaces.widget.Calendar.prototype.bindDateSelectListener = function() {
     var _self = this;
-	
-    this.cfg.onSelect = function(dateText, input) {
-        var options = {
-            source: _self.id,
-            process: _self.cfg.onSelectProcess,
-            formId: _self.cfg.formId
+
+    if(this.cfg.behaviors) {
+        this.cfg.onSelect = function(dateText, input) {
+            var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
+
+            if(dateSelectBehavior) {
+                dateSelectBehavior.call(_self);
+            }
         };
-
-        if(_self.cfg.onSelectUpdate) {
-            options.update = _self.cfg.onSelectUpdate;
-        }
-
-        var params = {};
-        params[_self.id + "_ajaxSelect"] = true;
-
-        options.params = params;
-
-        PrimeFaces.ajax.AjaxRequest(options);
-    };
+    }
+    
 }
 
 PrimeFaces.widget.Calendar.prototype.configureTimePicker = function() {

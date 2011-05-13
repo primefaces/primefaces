@@ -87,22 +87,6 @@
             <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <name>onSelectUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>onSelectProcess</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>selectListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void selectListener()</method-signature>
-        </attribute>
-        <attribute>
             <name>showButtonPanel</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

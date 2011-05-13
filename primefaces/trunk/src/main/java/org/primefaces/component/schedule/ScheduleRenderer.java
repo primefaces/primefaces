@@ -60,7 +60,7 @@ public class ScheduleRenderer extends CoreRenderer {
 			//Date Select
 			else if(params.containsKey(selectedDateParam)) {
 				String dateAsString = params.get(selectedDateParam);
-				schedule.queueEvent(new DateSelectEvent(component, new Date(Long.valueOf(dateAsString))));
+				schedule.queueEvent(new DateSelectEvent(component, null, new Date(Long.valueOf(dateAsString))));
 			}
 			//Event dragdrop or resize
 			else if(params.containsKey(changedEventParam)) {

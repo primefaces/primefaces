@@ -2,10 +2,18 @@ import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
+import java.util.Date;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
 
     public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
 
 	public static String POPUP_ICON = "calendar/calendar_icon.png";
+
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "dateSelect"));
 
 	private java.util.Locale appropriateLocale;
 	private java.util.TimeZone appropriateTimeZone;
@@ -55,17 +63,6 @@ import org.primefaces.util.ArrayUtils;
 		return getMode().equalsIgnoreCase("popup");
 	}
 
-	public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
-		super.broadcast(event);
-		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		MethodExpression me = getSelectListener();
-		
-		if (me != null && event instanceof org.primefaces.event.DateSelectEvent) {
-			me.invoke(facesContext.getELContext(), new Object[] {event});
-		}
-	}
-
     public boolean isInstantSelection() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -76,4 +73,19 @@ import org.primefaces.util.ArrayUtils;
         String pattern = getPattern();
 
         return (pattern != null && pattern.indexOf(":") != -1);
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        if(event instanceof BehaviorEvent) {
+            BehaviorEvent behaviorEvent = (BehaviorEvent) event;
+            Date date = (Date) getConvertedValue(FacesContext.getCurrentInstance(), getSubmittedValue());
+
+            super.queueEvent(new DateSelectEvent(this, behaviorEvent.getBehavior(), date));
+        }
     }

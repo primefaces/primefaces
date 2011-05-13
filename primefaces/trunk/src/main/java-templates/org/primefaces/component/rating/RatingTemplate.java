@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import org.primefaces.event.RateEvent;
-import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 

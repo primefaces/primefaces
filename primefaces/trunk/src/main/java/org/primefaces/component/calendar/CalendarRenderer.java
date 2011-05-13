@@ -27,9 +27,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.event.DateSelectEvent;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class CalendarRenderer extends InputRenderer {
@@ -42,14 +40,14 @@ public class CalendarRenderer extends InputRenderer {
             return;
         }
 
-        decodeBehaviors(context, calendar);
-        
         String param = calendar.getClientId(context) + "_input";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
 
         if(submittedValue != null) {
             calendar.setSubmittedValue(submittedValue);
         }
+
+        decodeBehaviors(context, calendar);
     }
 
     @Override
@@ -152,20 +150,6 @@ public class CalendarRenderer extends InputRenderer {
             writer.write(",selectOtherMonths:" + calendar.isSelectOtherMonths());
         }
 
-        String onSelectUpdate = calendar.getOnSelectUpdate();
-        if(onSelectUpdate != null || calendar.getSelectListener() != null) {
-            writer.write(",ajaxSelect:true");
-
-            String onSelectProcess = calendar.getOnSelectProcess();
-            onSelectProcess = onSelectProcess == null ? clientId : ComponentUtils.findClientIds(context, calendar, onSelectProcess);
-            
-            writer.write(",onSelectProcess:'" + onSelectProcess + "'");
-
-            if(onSelectUpdate != null) {
-                writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, calendar, onSelectUpdate) + "'");
-            }
-        }
-
         //time
         if(calendar.hasTime()) {
             writer.write(",timeOnly:" + calendar.isTimeOnly());
@@ -216,12 +200,7 @@ public class CalendarRenderer extends InputRenderer {
             Locale locale = calendar.calculateLocale(context);
             SimpleDateFormat format = new SimpleDateFormat(calendar.getPattern(), locale);
             format.setTimeZone(calendar.calculateTimeZone());
-
             convertedValue = format.parse(submittedValue);
-
-            if(calendar.isInstantSelection()) {
-                calendar.queueEvent(new DateSelectEvent(calendar, convertedValue));
-            }
             
             return convertedValue;
 

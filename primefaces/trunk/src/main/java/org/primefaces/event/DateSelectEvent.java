@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@ package org.primefaces.event;
 import java.util.Date;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class DateSelectEvent extends FacesEvent {
+public class DateSelectEvent extends BehaviorEvent {
 
 	private Date date;
 	
-	public DateSelectEvent(UIComponent component, Date date) {
-		super(component);
+	public DateSelectEvent(UIComponent component, Behavior behavior, Date date) {
+		super(component, behavior);
 		this.date = date;
 	}
 
@@ -42,9 +43,5 @@ public class DateSelectEvent extends FacesEvent {
 	
 	public Date getDate() {
 		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 }
