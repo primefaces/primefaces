@@ -62,7 +62,7 @@ public class CommandLinkRenderer extends CoreRenderer {
 			if(link.getStyleClass() != null) writer.writeAttribute("class", link.getStyleClass(), null);
 			
 			String formClientId = form.getClientId(facesContext);
-			String request = link.isAjax() ? buildAjaxRequest(facesContext, (AjaxSource) link, formClientId, clientId) : buildNonAjaxRequest(facesContext, link, formClientId, clientId);
+			String request = link.isAjax() ? buildAjaxRequest(facesContext, (AjaxSource) link) : buildNonAjaxRequest(facesContext, link, formClientId, clientId);
 			String onclick = link.getOnclick() != null ? link.getOnclick() + ";" + request : request;
 			writer.writeAttribute("onclick", onclick, "onclick");
 			

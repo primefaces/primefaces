@@ -40,10 +40,10 @@ public class HotkeyRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		Hotkey hotkey = (Hotkey) component;
-		String clientId = hotkey.getClientId(facesContext);
+		String clientId = hotkey.getClientId(context);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -52,13 +52,13 @@ public class HotkeyRenderer extends CoreRenderer {
 		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
 	
 		if(hotkey.getHandler() == null) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext,hotkey);
+			UIComponent form = ComponentUtils.findParentForm(context,hotkey);
 
 			if(form == null) {
 				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
 			}
 			
-			writer.write(buildAjaxRequest(facesContext, hotkey, form.getClientId(facesContext), clientId));
+			writer.write(buildAjaxRequest(context, hotkey));
 
 		} else {
 			writer.write(hotkey.getHandler());

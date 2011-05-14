@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 				}
 				
 				String formClientId = form.getClientId(facesContext);
-				String command = menuItem.isAjax() ? buildAjaxRequest(facesContext, menuItem, formClientId, clientId) : buildNonAjaxRequest(facesContext, menuItem, formClientId, clientId);
+				String command = menuItem.isAjax() ? buildAjaxRequest(facesContext, menuItem) : buildNonAjaxRequest(facesContext, menuItem, formClientId, clientId);
 				
 				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
 				

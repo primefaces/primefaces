@@ -57,23 +57,12 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
-        source = source == null ? "this" : "'" + source + "'";
-        String url = fc.getApplication().getViewHandler().getActionURL(fc, fc.getViewRoot().getViewId());
-		url =  fc.getExternalContext().encodeResourceURL(url);
-        
-        UIComponent form = ComponentUtils.findParentForm(fc, component);
-		if(form == null) {
-			throw new FacesException("AjaxBehavior for : \"" + component.getClientId(fc) + "\" must be inside a form element");
-		}
 
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ab(");
 
-        //options
-        req.append("{formId:'").append(form.getClientId(fc)).append("'");
-
         //source
-        req.append(",source:").append(source);
+        req.append("{source:").append("'").append(source).append("'");
 
         //process
         String process = ajaxBehavior.getProcess() != null ? ComponentUtils.findClientIds(fc, component, ajaxBehavior.getProcess()) : clientId;

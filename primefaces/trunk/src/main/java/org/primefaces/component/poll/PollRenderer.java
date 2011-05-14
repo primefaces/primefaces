@@ -56,7 +56,7 @@ public class PollRenderer extends CoreRenderer {
         writer.write("frequency:" + poll.getInterval());
         writer.write(",autoStart:" + poll.isAutoStart());
         writer.write(",fn: function() {");
-        writer.write(buildAjaxRequest(facesContext, poll, form.getClientId(facesContext), clientId));
+        writer.write(buildAjaxRequest(facesContext, poll));
         writer.write("}");
 
         writer.write("});});");

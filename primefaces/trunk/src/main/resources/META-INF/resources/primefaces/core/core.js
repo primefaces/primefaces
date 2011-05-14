@@ -168,11 +168,8 @@ PrimeFaces.ajax.AjaxRequest = function(cfg) {
        }
     }
 
-    var form = null;
-
-    if(cfg.formId) {
-        form = $(PrimeFaces.escapeClientId(cfg.formId));
-    } else {
+    var form = $(PrimeFaces.escapeClientId(cfg.source)).parents('form:first');
+    if(form.length == 0) {
         form = $('form').eq(0);
     }
     

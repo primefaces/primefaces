@@ -189,25 +189,22 @@ public class CoreRenderer extends Renderer {
 		return value.trim().equals("");
 	}
 	
-    protected String buildAjaxRequest(FacesContext facesContext, AjaxSource source, String formId, String decodeParam) {
+    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
         UIComponent component = (UIComponent) source;
 
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ab(");
 
-        //options
-        req.append("{formId:'").append(formId).append("'");
-        
         //source
-        req.append(",source:'").append(decodeParam).append("'");
+        req.append("{source:'").append("'").append(component.getClientId(context)).append("'");
 
         //process
-        String process = source.getProcess() != null ? ComponentUtils.findClientIds(facesContext, component, source.getProcess()) : "@all";
+        String process = source.getProcess() != null ? ComponentUtils.findClientIds(context, component, source.getProcess()) : "@all";
         req.append(",process:'").append(process).append("'");
 
         //update
         if(source.getUpdate() != null) {
-            req.append(",update:'").append(ComponentUtils.findClientIds(facesContext, component, source.getUpdate())).append("'");
+            req.append(",update:'").append(ComponentUtils.findClientIds(context, component, source.getUpdate())).append("'");
         }
 
         //async

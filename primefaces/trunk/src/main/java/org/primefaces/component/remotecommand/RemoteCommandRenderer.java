@@ -55,7 +55,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
 
         writer.write(command.getName() + " = function() {");
 
-        writer.write(buildAjaxRequest(facesContext, command, formClientId, clientId));
+        writer.write(buildAjaxRequest(facesContext, command));
 
         writer.write("}");
 

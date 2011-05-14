@@ -112,7 +112,7 @@ public class StackRenderer extends CoreRenderer {
 				}
 				
 				String formClientId = form.getClientId(facesContext);
-				String command = menuitem.isAjax() ? buildAjaxRequest(facesContext, menuitem, formClientId, clientId) : buildNonAjaxRequest(facesContext, menuitem, formClientId, clientId);
+				String command = menuitem.isAjax() ? buildAjaxRequest(facesContext, menuitem) : buildNonAjaxRequest(facesContext, menuitem, formClientId, clientId);
 				
 				command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
 				

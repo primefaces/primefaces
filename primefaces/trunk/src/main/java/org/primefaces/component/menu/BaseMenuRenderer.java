@@ -66,7 +66,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				}
 
 				String formClientId = form.getClientId(context);
-				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, formClientId, clientId) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
 
 				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
 
