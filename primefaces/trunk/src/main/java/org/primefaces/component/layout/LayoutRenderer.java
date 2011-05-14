@@ -54,7 +54,7 @@ public class LayoutRenderer extends CoreRenderer {
                 LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 unit.setVisible(false);
 
-                layout.queueEvent(new CloseEvent(unit));
+                //layout.queueEvent(new CloseEvent(unit));
             }
 
             //Queue resize event

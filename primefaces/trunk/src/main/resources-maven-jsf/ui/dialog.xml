@@ -6,7 +6,6 @@
 <component>
     <tag>dialog</tag>
     <tagClass>org.primefaces.component.dialog.DialogTag</tagClass>
-    <componentHandlerClass>org.primefaces.component.dialog.DialogHandler</componentHandlerClass>
     <componentClass>org.primefaces.component.dialog.Dialog</componentClass>
     <componentType>org.primefaces.component.Dialog</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
     <attributes>
@@ -86,17 +88,6 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>closeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void closeListener(org.primefaces.event.CloseEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onCloseUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
             <name>showEffect</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -135,30 +126,6 @@
         </attribute>
         <attribute>
             <name>appendToBody</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
-        <attribute>
-            <name>pinnable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
-        <attribute>
-            <name>minimizable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
-        <attribute>
-            <name>maximizable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
-        <attribute>
-            <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>

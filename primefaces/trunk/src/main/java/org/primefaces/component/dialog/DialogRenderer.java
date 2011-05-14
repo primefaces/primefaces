@@ -16,42 +16,31 @@
 package org.primefaces.component.dialog;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.event.CloseEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class DialogRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
-        Dialog dialog = (Dialog) component;
-        String clientId = dialog.getClientId(facesContext);
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-
-        //Queue close event
-        if (params.containsKey(clientId + "_ajaxClose")) {
-            dialog.setVisible(false);
-            dialog.queueEvent(new CloseEvent(dialog));
-        }
+    public void decode(FacesContext context, UIComponent component) {
+        super.decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Dialog dialog = (Dialog) component;
 
-        encodeMarkup(facesContext, dialog);
-        encodeScript(facesContext, dialog);
+        encodeMarkup(context, dialog);
+        encodeScript(context, dialog);
     }
 
-    protected void encodeScript(FacesContext facesContext, Dialog dialog) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = dialog.getClientId(facesContext);
+    protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = dialog.getClientId(context);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -76,10 +65,6 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
         if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
-        if(dialog.isPinnable()) writer.write(",pinnable:true");
-        if(dialog.isToggleable()) writer.write(",toggleable:true");
-        if(dialog.isMinimizable()) writer.write(",minimizable:true");
-        if(dialog.isMaximizable()) writer.write(",maximizable:true");
         if(!dialog.isClosable()) writer.write(",closable:false");
         if(!dialog.isShowHeader()) writer.write(",showHeader:false");
 
@@ -93,18 +78,12 @@ public class DialogRenderer extends CoreRenderer {
             }
         }
 
-        //Ajax Close
-        if (dialog.getCloseListener() != null || dialog.getOnCloseUpdate() != null) {
-            writer.write(",ajaxClose:true");
-
-            if (dialog.getOnCloseUpdate() != null) {
-                writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(facesContext, dialog, dialog.getOnCloseUpdate()) + "'");
-            }
-        }
-
         //Client side callbacks
         if(dialog.getOnShow() != null) writer.write(",onShow:function(event, ui) {" + dialog.getOnShow() + "}");
         if(dialog.getOnHide() != null) writer.write(",onHide:function(event, ui) {" + dialog.getOnHide() + "}");
+
+        //Behaviors
+        encodeClientBehaviors(context, dialog);
 
         writer.write("});});");
 

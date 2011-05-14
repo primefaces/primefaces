@@ -67,21 +67,11 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
         this.cfg.onHide.call(this, event, ui);
     }
 
-    if(this.cfg.ajaxClose) {
-        var options = {
-            source: this.id,
-            process: this.id
+    if(this.cfg.behaviors) {
+        var closeBehavior = this.cfg.behaviors['close'];
+
+        if(closeBehavior) {
+            closeBehavior.call(this);
         }
-
-        if(this.cfg.onCloseUpdate) {
-            options.update = this.cfg.onCloseUpdate;
-        }
-
-        var params = {};
-        params[this.id + "_ajaxClose"] = true;
-
-        options.params = params;
-
-        PrimeFaces.ajax.AjaxRequest(options);
     }
 }

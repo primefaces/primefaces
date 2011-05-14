@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,14 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class CloseEvent extends FacesEvent {
+public class CloseEvent extends BehaviorEvent {
 
-	public CloseEvent(UIComponent uiComponent) {
-		super(uiComponent);
+	public CloseEvent(UIComponent component, Behavior behavior) {
+		super(component, behavior);
 	}
 
 	@Override

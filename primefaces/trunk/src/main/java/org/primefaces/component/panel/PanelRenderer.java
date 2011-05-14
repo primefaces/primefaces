@@ -61,7 +61,7 @@ public class PanelRenderer extends CoreRenderer {
             //Queue close event
             if (params.containsKey(clientId + "_ajaxClose")) {
                 panel.setVisible(false);
-                panel.queueEvent(new CloseEvent(panel));
+                //panel.queueEvent(new CloseEvent(panel));
             }
 
         }
