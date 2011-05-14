@@ -196,7 +196,7 @@ public class CoreRenderer extends Renderer {
         req.append("PrimeFaces.ab(");
 
         //source
-        req.append("{source:'").append("'").append(component.getClientId(context)).append("'");
+        req.append("{source:").append("'").append(component.getClientId(context)).append("'");
 
         //process
         String process = source.getProcess() != null ? ComponentUtils.findClientIds(context, component, source.getProcess()) : "@all";
