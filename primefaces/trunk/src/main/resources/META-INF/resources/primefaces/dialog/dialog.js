@@ -19,10 +19,8 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     //Create the dialog
     this.jq.dialog(this.cfg);
 
-    //Close handler
+    //Event handlers
     this.jq.bind('dialogclose', function(event, ui) {_self.onHide(event, ui);});
-
-    //Open handler
     this.jq.bind('dialogopen', function(event, ui) {_self.onShow(event, ui);});
 
     //Hide close icon if dialog is not closable
@@ -39,10 +37,17 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     if(this.cfg.appendToBody) {
         this.jq.parent().appendTo(document.body);
     }
+
+    //Apply focus to first input initially
+    if(this.cfg.autoOpen) {
+        this.focusFirstInput();
+    }
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
     this.jq.dialog('open');
+
+    this.focusFirstInput();
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {
@@ -74,4 +79,8 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
             closeBehavior.call(this);
         }
     }
+}
+
+PrimeFaces.widget.Dialog.prototype.focusFirstInput = function() {
+    this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
 }
