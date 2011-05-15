@@ -45,7 +45,7 @@ import javax.faces.event.PhaseId;
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        String source = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
+        String source = params.get(Constants.PARTIAL_SOURCE_PARAM);
         String clientId = this.getClientId(context);
         
         if(clientId.equals(source)) {
@@ -55,13 +55,10 @@ import javax.faces.event.PhaseId;
                 boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
-                ToggleEvent toggleEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility);
-                super.queueEvent(toggleEvent);
+                super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
 
             } else if(eventName.equals("close")) {
-                CloseEvent closeEvent = new CloseEvent(this, behaviorEvent.getBehavior());
-                super.queueEvent(closeEvent);
-                
+                super.queueEvent(new CloseEvent(this, behaviorEvent.getBehavior()));
             }
         }
         else {
@@ -72,4 +69,32 @@ import javax.faces.event.PhaseId;
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if(isSelfRequest(context)) {
+            this.decode(context);
+        }
+        else {
+            super.processDecodes(context);
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        if(!isSelfRequest(context)) {
+            super.processValidators(context);
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if(!isSelfRequest(context)) {
+            super.processUpdates(context);
+        }
+    }
+
+    private boolean isSelfRequest(FacesContext context) {
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
     }
