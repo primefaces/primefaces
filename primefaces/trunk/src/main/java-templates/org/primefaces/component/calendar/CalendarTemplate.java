@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import javax.faces.event.BehaviorEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
@@ -20,7 +20,7 @@ import javax.faces.event.PhaseId;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "dateSelect"));
 
-    private Map<String,BehaviorEvent> customEvents = new HashMap<String,BehaviorEvent>();
+    private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
 	private java.util.Locale appropriateLocale;
 	private java.util.TimeZone appropriateTimeZone;
@@ -86,8 +86,8 @@ import javax.faces.event.PhaseId;
         FacesContext context = FacesContext.getCurrentInstance();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
         
-        if(eventName != null && eventName.equals("dateSelect") && event instanceof BehaviorEvent) {
-            customEvents.put("dateSelect", (BehaviorEvent) event);
+        if(eventName != null && eventName.equals("dateSelect") && event instanceof AjaxBehaviorEvent) {
+            customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
         } else {
             super.queueEvent(event);
         }
@@ -99,7 +99,7 @@ import javax.faces.event.PhaseId;
        
         if(isValid()) {
             for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
-                BehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
+                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
                 DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), (Date) getValue());
 
                 if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {

@@ -17,10 +17,10 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.BehaviorEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class ItemSelectEvent extends BehaviorEvent {
+public class ItemSelectEvent extends AjaxBehaviorEvent {
 	
 	private int itemIndex;
 	

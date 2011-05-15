@@ -17,10 +17,10 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.BehaviorEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class RateEvent extends BehaviorEvent {
+public class RateEvent extends AjaxBehaviorEvent {
 
 	private Object rating;
 	

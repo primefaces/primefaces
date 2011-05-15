@@ -19,10 +19,10 @@ import java.util.Date;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.BehaviorEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class DateSelectEvent extends BehaviorEvent {
+public class DateSelectEvent extends AjaxBehaviorEvent {
 
 	private Date date;
 	

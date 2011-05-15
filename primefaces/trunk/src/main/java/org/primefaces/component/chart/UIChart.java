@@ -110,8 +110,8 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
     
     @Override
     public void queueEvent(FacesEvent event) {
-        if(event instanceof BehaviorEvent) {
-            BehaviorEvent behaviorEvent = (BehaviorEvent) event;
+        if(event instanceof AjaxBehaviorEvent) {
+            BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             int itemIndex = Integer.parseInt(map.get("itemIndex"));
             int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
