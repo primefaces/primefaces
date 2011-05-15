@@ -50,10 +50,7 @@ PrimeFaces.widget.Panel.prototype.toggle = function() {
             if(_self.cfg.behaviors) {
                 var toggleBehavior = _self.cfg.behaviors['toggle'];
                 if(toggleBehavior) {
-                    var params = {};
-                    params[_self.id + "_collapsed"] = _self.cfg.collapsed;
-
-                    toggleBehavior.call(this, e, params);
+                    toggleBehavior.call(this, e);
                 }
             }
         });
