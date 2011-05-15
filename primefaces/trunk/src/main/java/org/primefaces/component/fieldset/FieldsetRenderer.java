@@ -41,7 +41,7 @@ public class FieldsetRenderer extends CoreRenderer {
 
             if(isAjaxToggle) {
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
-                fieldset.queueEvent(new ToggleEvent(fieldset, visibility));
+                //fieldset.queueEvent(new ToggleEvent(fieldset, visibility));
             }
         }
     }

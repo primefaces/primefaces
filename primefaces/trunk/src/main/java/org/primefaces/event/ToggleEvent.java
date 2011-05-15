@@ -16,17 +16,18 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
 import org.primefaces.model.Visibility;
 
-public class ToggleEvent extends FacesEvent {
+public class ToggleEvent extends AjaxBehaviorEvent {
 	
 	private Visibility visibility;
 	
-	public ToggleEvent(UIComponent component, Visibility visibility) {
-		super(component);
+	public ToggleEvent(UIComponent component, Behavior behavior, Visibility visibility) {
+		super(component, behavior);
 		this.visibility = visibility;
 	}
 

@@ -46,7 +46,7 @@ public class LayoutRenderer extends CoreRenderer {
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
                 unit.setCollapsed(collapsed);
 
-                layout.queueEvent(new ToggleEvent(unit, visibility));
+                //layout.queueEvent(new ToggleEvent(unit, visibility));
             }
 
             //Queue close event

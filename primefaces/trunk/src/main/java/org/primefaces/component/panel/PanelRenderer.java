@@ -23,11 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.Menu;
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.Visibility;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class PanelRenderer extends CoreRenderer {
 
@@ -49,23 +45,7 @@ public class PanelRenderer extends CoreRenderer {
             panel.setVisible(Boolean.valueOf(visibleParam));
         }
 
-        //Ajax toggle and close listener
-        if(params.containsKey(clientId)) {
-
-            //Queue toggle event
-            if (params.containsKey(clientId + "_ajaxToggle")) {
-                Visibility visibility = panel.isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
-                panel.queueEvent(new ToggleEvent(panel, visibility));
-            }
-
-            //Queue close event
-            if (params.containsKey(clientId + "_ajaxClose")) {
-                panel.setVisible(false);
-                //panel.queueEvent(new CloseEvent(panel));
-            }
-
-        }
-
+        decodeBehaviors(context, component);
     }
 
     @Override
@@ -91,41 +71,20 @@ public class PanelRenderer extends CoreRenderer {
             writer.write(",toggleable:true");
             writer.write(",toggleSpeed:" + panel.getToggleSpeed());
             writer.write(",collapsed:" + panel.isCollapsed());
-
-            if(panel.getToggleListener() != null) {
-                writer.write(",ajaxToggle:true");
-
-                if (panel.getOnToggleUpdate() != null) {
-                    writer.write(",onToggleUpdate:'" + ComponentUtils.findClientIds(context, panel, panel.getOnToggleUpdate()) + "'");
-                }
-            }
         }
 
         //Toggle configuration
         if(panel.isClosable()) {
             writer.write(",closable:true");
             writer.write(",closeSpeed:" + panel.getCloseSpeed());
-
-            if (panel.getOnCloseStart() != null) {
-                writer.write(",onCloseStart:" + panel.getOnCloseStart());
-            }
-            if (panel.getOnCloseComplete() != null) {
-                writer.write(",onCloseComplete:" + panel.getOnCloseComplete());
-            }
-
-            if (panel.getCloseListener() != null) {
-                writer.write(",ajaxClose:true");
-
-                if (panel.getOnCloseUpdate() != null) {
-                    writer.write(",onCloseUpdate:'" + ComponentUtils.findClientIds(context, panel, panel.getOnCloseUpdate()) + "'");
-                }
-            }
         }
 
         //Options menu configuration
         if(panel.getOptionsMenu() != null) {
             writer.write(",hasMenu:true");
         }
+
+        encodeClientBehaviors(context, panel);
 
         writer.write("});");
         writer.endElement("script");
@@ -140,7 +99,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         String styleClass = panel.getStyleClass() != null ? Panel.PANEL_CLASS + " " + panel.getStyleClass() : Panel.PANEL_CLASS;
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (panel.getStyle() != null) {
+        if(panel.getStyle() != null) {
             writer.writeAttribute("style", panel.getStyle(), "style");
         }
 
@@ -148,11 +107,11 @@ public class PanelRenderer extends CoreRenderer {
         encodeContent(context, panel);
         encodeFooter(context, panel);
 
-        if (panel.isToggleable()) {
+        if(panel.isToggleable()) {
             encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(panel.isCollapsed()));
         }
 
-        if (panel.isClosable()) {
+        if(panel.isClosable()) {
             encodeStateHolder(context, panel, clientId + "_visible", String.valueOf(panel.isVisible()));
         }
 

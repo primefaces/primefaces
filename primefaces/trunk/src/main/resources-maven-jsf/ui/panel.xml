@@ -17,6 +17,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
     <attributes>
         &standard_uicomponent_attributes;
@@ -66,27 +69,6 @@
             <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <name>closeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void closeListener(org.primefaces.event.CloseEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onCloseUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>onCloseStart</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>onCloseComplete</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
             <name>closeSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
@@ -97,17 +79,6 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-        </attribute>
-        <attribute>
-            <name>onToggleUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>toggleListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
         </attribute>
     </attributes>
     <resources>

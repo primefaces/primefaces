@@ -46,24 +46,15 @@ PrimeFaces.widget.Panel.prototype.toggle = function() {
     var _self = this;
 
     this.content.slideToggle(this.cfg.toggleSpeed,
-        function() {
-            if(_self.cfg.ajaxToggle) {
-                var options = {
-                    source: _self.id,
-                    process: _self.id
-                };
+        function(e) {
+            if(_self.cfg.behaviors) {
+                var toggleBehavior = _self.cfg.behaviors['toggle'];
+                if(toggleBehavior) {
+                    var params = {};
+                    params[_self.id + "_collapsed"] = _self.cfg.collapsed;
 
-                if(_self.cfg.onToggleUpdate) {
-                   options.update = _self.cfg.onToggleUpdate;
+                    toggleBehavior.call(this, e, params);
                 }
-                
-                var params = {};
-                params[_self.id + "_ajaxToggle"] = true;
-                params[_self.id + "_collapsed"] = _self.cfg.collapsed;
-
-                options.params = params;
-				
-                PrimeFaces.ajax.AjaxRequest(options);
             }
         });
 }
@@ -71,46 +62,18 @@ PrimeFaces.widget.Panel.prototype.toggle = function() {
 PrimeFaces.widget.Panel.prototype.close = function() {
     this.visibleStateHolder.val(false);
 
-    if(this.cfg.onCloseStart) {
-        this.cfg.onCloseStart.call();
-    }
-
     var _self = this;
 
-    if(this.cfg.ajaxClose) {
-        $(this.jqId).fadeOut(this.cfg.closeSpeed,
-            function() {
-                var options = {
-                    source: _self.id,
-                    process: _self.id
-                };
-
-                if(_self.cfg.onCloseUpdate) {
-                   options.update = _self.cfg.onCloseUpdate;
+    $(this.jqId).fadeOut(this.cfg.closeSpeed,
+        function(e) {
+            if(_self.cfg.behaviors) {
+                var closeBehavior = _self.cfg.behaviors['close'];
+                if(closeBehavior) {
+                    closeBehavior.call(this, e);
                 }
-
-                if(_self.cfg.onCloseComplete) {
-                    options.oncomplete = function() {
-                        _self.cfg.onCloseComplete.call();
-                    };
-                }
-
-                var params = {};
-                params[_self.id + "_ajaxClose"] = true;
-
-                options.params = params;
-
-                PrimeFaces.ajax.AjaxRequest(options);
-                
-            });
-    } else {
-
-        $(this.jqId).fadeOut(this.cfg.closeSpeed, function() {
-            if(_self.cfg.onCloseComplete) {
-                _self.cfg.onCloseComplete.call();
             }
-        });
-    }
+        }
+    );
 }
 
 PrimeFaces.widget.Panel.prototype.show = function() {
