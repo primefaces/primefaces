@@ -261,13 +261,6 @@ public class DataTableRenderer extends CoreRenderer {
             writer.endElement("span");
         }
 
-        //Resizer
-        if(table.isResizableColumns()) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_RESIZER_CLASS, null);
-            writer.endElement("div");
-        }
-
         //Header content
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
