@@ -119,6 +119,7 @@ public class DataTableRenderer extends CoreRenderer {
             }
         }
 
+        //Scrolling
         if(table.isScrollable()) {
             writer.write(",scrollable:true");
             writer.write(",liveScroll:" + table.isLiveScroll());
@@ -130,8 +131,14 @@ public class DataTableRenderer extends CoreRenderer {
             }
         }
 
+        //Editable rows
         if(table.getOnRowEditUpdate() != null) {
             writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
+        }
+
+        //Resizable Columns
+        if(table.isResizableColumns()) {
+            writer.write(",resizableColumns:true");
         }
 
         writer.write("});");
@@ -243,11 +250,22 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
+        //Container
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.COLUMN_HEADER_CONTAINER_CLASS, null);
+
         //Sort icon
         if(isSortable) {
             writer.startElement("span", null);
             writer.writeAttribute("class", DataTable.SORTABLE_COLUMN_ICON_CLASS, null);
             writer.endElement("span");
+        }
+
+        //Resizer
+        if(table.isResizableColumns()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_RESIZER_CLASS, null);
+            writer.endElement("div");
         }
 
         //Header content
@@ -274,6 +292,8 @@ public class DataTableRenderer extends CoreRenderer {
             table.enableFiltering();
             encodeFilter(context, table, column);
         }
+
+        writer.endElement("div");
 
         writer.endElement("th");
     }
@@ -373,7 +393,11 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
-        //Header content
+        //Container
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.COLUMN_HEADER_CONTAINER_CLASS, null);
+
+        //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
         if(facet != null) {
@@ -381,6 +405,8 @@ public class DataTableRenderer extends CoreRenderer {
         } else if(text != null) {
             writer.write(text);
         }
+
+        writer.endElement("div");
 
         writer.endElement("td");
     }

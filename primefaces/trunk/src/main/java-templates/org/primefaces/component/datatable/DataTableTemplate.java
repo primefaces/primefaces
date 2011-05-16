@@ -16,7 +16,9 @@ import java.util.List;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String COLUMN_HEADER_CONTAINER_CLASS = "ui-header-column";
     public static final String COLUMN_FOOTER_CLASS = "ui-state-default";
+    public static final String COLUMN_FOOTER_CONTAINER_CLASS = "ui-footer-column";
     public static final String DATA_CLASS = "ui-datatable-data";
     public static final String EMPTY_DATA_CLASS = "ui-datatable-data-empty";
     public static final String ROW_CLASS = "ui-widget-content";
@@ -41,6 +43,7 @@ import java.util.List;
     public static final String SCROLLABLE_HEADER_CLASS = "ui-datatable-scrollable-header";
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
+    public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
 
     public List<Column> columns;
 

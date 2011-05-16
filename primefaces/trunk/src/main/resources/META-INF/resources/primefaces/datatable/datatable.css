@@ -20,7 +20,13 @@
 .ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
+    padding:0px;
+    margin:0px;
+}
+
+.ui-datatable .ui-header-column, .ui-datatable .ui-footer-column {
     padding:4px 10px 4px 10px;
+    position: relative;
 }
 
 .ui-datatable-data, .ui-datatable-data-empty {}
@@ -109,4 +115,16 @@
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,
 .ui-datatable-scrollable .ui-datatable-scrollable-footer table {
     width:auto;
+}
+
+.ui-datatable .ui-column-resizer {
+    width:2px;
+    height:20px;
+    padding:0px;
+    margin:0px;
+    position:absolute;
+    top:0;
+    right:0;
+    cursor:col-resize;
+    background: transparent;
 }

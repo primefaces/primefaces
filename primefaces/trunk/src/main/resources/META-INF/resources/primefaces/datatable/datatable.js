@@ -37,6 +37,11 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     if(rowEditors.length > 0) {
         this.setupCellEditorEvents(rowEditors);
     }
+
+    //Resizable columns
+    if(this.cfg.resizableColumns) {
+        this.setupResizableColumns();
+    }
 }
 
 /**
@@ -898,4 +903,46 @@ PrimeFaces.widget.DataTable.prototype.setupCellEditorEvents = function(rowEditor
  */
 PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
     $(this.jqId + ' thead th .ui-column-filter').val('');
+}
+
+/**
+ * Add resize behavior to columns
+ */
+PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
+    this.columnWidthsCookie = this.id + '_columnWidths',
+    resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
+    _self = this;
+
+    resizers.draggable({
+        axis:'x',
+        drag: function(event, ui) {
+            var column = ui.helper.parents('th:first'),
+            newWidth = ui.position.left + ui.helper.outerWidth();
+
+            column.css('width', newWidth);
+        },
+        stop: function(event, ui) {
+            ui.helper.css('left', '');
+            
+            var columns = ui.helper.parents('thead:first').children('th'),
+            columnWidths = [];
+
+            columns.each(function(i, item) {
+                var columnHeader = $(item);
+                columnWidths.push(columnHeader.css('width'));
+            });
+            PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+        }
+    });
+
+    resizers.css('height', $(this.jqId + ' thead').css('height'));
+
+    //restore widths on postback
+    var widths = PrimeFaces.getCookie(this.columnWidthsCookie),
+    columns = $(this.jqId + ' thead th');
+    if(widths) {
+        for(var i in widths.split(',')) {
+            $(columns.get(i)).css('width', widths[i]);
+        }
+    }
 }
