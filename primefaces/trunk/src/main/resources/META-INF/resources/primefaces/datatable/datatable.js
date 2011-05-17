@@ -183,8 +183,13 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
     var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) + "px" : (tbodyElement.parentNode.clientWidth - 1) + "px";
     $(this.jqId).css('width', containerWidth);
 
+    //align column widths
+    $(this.jqId + ' .ui-datatable-scrollable-header .ui-header-column,' + this.jqId + ' .ui-datatable-scrollable-footer .ui-header-column').each(function() {
+        var columnHeaderContent = $(this);
+        columnHeaderContent.css('width', columnHeaderContent.parent().css('width'));
+    });
+
     //live scroll
-    
     if(this.cfg.liveScroll) {
         this.scrollOffset = this.cfg.scrollStep;
         this.shouldLiveScroll = true;
