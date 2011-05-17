@@ -25,7 +25,7 @@
 }
 
 .ui-datatable .ui-header-column, .ui-datatable .ui-footer-column {
-    padding:4px 0px;
+    padding:4px 10px;
     position: relative;
 }
 
