@@ -109,5 +109,4 @@ import javax.faces.event.PhaseId;
                 super.queueEvent(dateSelectEvent);
             }
         }
-        customEvents = null;
     }
