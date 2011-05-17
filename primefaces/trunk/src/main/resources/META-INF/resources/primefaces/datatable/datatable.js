@@ -944,8 +944,6 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
         }
     });
 
-    resizers.css('height', $(this.jqId + ' thead').css('height'));
-
     //restore widths on postback
     var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
     if(widths) {

@@ -6,7 +6,7 @@
 .ui-datatable .ui-datatable-header,
 .ui-datatable .ui-datatable-footer {
     text-align:center;
-    padding:4px 10px 4px 10px;
+    padding:4px 10px;
 }
 
 .ui-datatable .ui-datatable-header {
@@ -25,7 +25,7 @@
 }
 
 .ui-datatable .ui-header-column, .ui-datatable .ui-footer-column {
-    padding:4px 10px 4px 10px;
+    padding:4px 0px;
     position: relative;
 }
 
@@ -122,9 +122,9 @@
     height:20px;
     padding:0px;
     margin:0px;
-    position:absolute;
+    cursor:col-resize;
+    position: absolute;
     top:0;
     right:0;
-    cursor:col-resize;
     background: transparent;
 }
