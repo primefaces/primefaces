@@ -914,37 +914,51 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  * Add resize behavior to columns
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
-    //Add resizers
-    $(this.jqId + ' thead :not(th:last)').children('.ui-header-column').append('<div class="ui-column-resizer"></div>');
+    //Add resizers and resizer helper
+    $(this.jqId + ' thead :not(th:last)').children('.ui-header-column').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight ui-corner-all"></div>');
 
-    //Setup resizing
-    this.columnWidthsCookie = this.id + '_columnWidths',
+    //Variables
+    var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
     columns = $(this.jqId + ' thead th'),
-    _self = this;
+    tbodyTop = $(this.tbody).offset().top,
+    tbodyLeft = $(this.tbody).offset().left;
 
-    resizers.draggable({
-        axis:'x',
+    //Set height of resizer helper
+    resizerHelper.css('height', $(this.tbody).innerHeight() - 1);
+
+    //State cookie
+    this.columnWidthsCookie = this.id + '_columnWidths';
+
+    //Main resize events
+    resizers.mousedown(function(event) {
+        resizerHelper.css('top', tbodyTop).css('left', event.clientX).fadeIn();
+    }).draggable({
+        axis: 'x',
         drag: function(event, ui) {
-            var column = ui.helper.parents('th:first'),
-            newWidth = ui.position.left + ui.helper.outerWidth();
-
-            column.css('width', newWidth);
+            if(event.clientX >= tbodyLeft) {
+                resizerHelper.css('top', tbodyTop).css('left', event.clientX);
+            }
         },
         stop: function(event, ui) {
-            ui.helper.css('left', '');
-            
+            var column = ui.helper.parents('th:first');
+            column.css('width', column.width() + ui.position.left);
+
+            ui.helper.css('left','');
+
+            resizerHelper.fadeOut();
+
+            //Save state
             var columnWidths = [];
-            
             columns.each(function(i, item) {
-                var columnHeader = $(item);
-                columnWidths.push(columnHeader.css('width'));
+                columnWidths.push($(item).css('width'));
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
         }
     });
 
-    //restore widths on postback
+    //Restore width on postback
     var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
     if(widths) {
         widths = widths.split(',');

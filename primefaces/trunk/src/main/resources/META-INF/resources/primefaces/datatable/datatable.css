@@ -120,11 +120,16 @@
 .ui-datatable .ui-column-resizer {
     width:2px;
     height:20px;
+    float:right;
     padding:0px;
     margin:0px;
     cursor:col-resize;
-    position: absolute;
-    top:0;
-    right:0;
     background: transparent;
+}
+
+.ui-datatable .ui-column-resizer-helper {
+    width: 4px;
+    position: absolute;
+    z-index: 10;
+    display: none;
 }
