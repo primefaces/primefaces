@@ -20,13 +20,8 @@
 .ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
-    padding:0px;
+    padding:4px 0px;
     margin:0px;
-}
-
-.ui-datatable .ui-header-column, .ui-datatable .ui-footer-column {
-    padding:4px 10px;
-    position: relative;
 }
 
 .ui-datatable-data, .ui-datatable-data-empty {}
@@ -118,8 +113,8 @@
 }
 
 .ui-datatable .ui-column-resizer {
-    width:2px;
-    height:20px;
+    width:4px;
+    height:15px;
     float:right;
     padding:0px;
     margin:0px;

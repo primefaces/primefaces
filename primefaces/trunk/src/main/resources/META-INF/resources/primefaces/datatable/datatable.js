@@ -915,7 +915,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper
-    $(this.jqId + ' thead :not(th:last)').children('.ui-header-column').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId + ' thead tr :not(th:last)').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight ui-corner-all"></div>');
 
     //Variables
@@ -923,7 +923,8 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
     columns = $(this.jqId + ' thead th'),
     tbodyTop = $(this.tbody).offset().top,
-    tbodyLeft = $(this.tbody).offset().left;
+    tbodyLeft = $(this.tbody).offset().left,
+    _self = this;
 
     //Set height of resizer helper
     resizerHelper.css('height', $(this.tbody).innerHeight() - 1);
@@ -934,7 +935,10 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Main resize events
     resizers.mousedown(function(event) {
         resizerHelper.css('top', tbodyTop).css('left', event.clientX).fadeIn();
-    }).draggable({
+    }).mouseup(function(event) {
+        resizerHelper.fadeOut();
+    })
+    .draggable({
         axis: 'x',
         drag: function(event, ui) {
             if(event.clientX >= tbodyLeft) {
@@ -946,8 +950,6 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             column.css('width', column.width() + ui.position.left);
 
             ui.helper.css('left','');
-
-            resizerHelper.fadeOut();
 
             //Save state
             var columnWidths = [];

@@ -250,10 +250,6 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
-        //Container
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_HEADER_CONTAINER_CLASS, null);
-
         //Sort icon
         if(isSortable) {
             writer.startElement("span", null);
@@ -285,8 +281,6 @@ public class DataTableRenderer extends CoreRenderer {
             table.enableFiltering();
             encodeFilter(context, table, column);
         }
-
-        writer.endElement("div");
 
         writer.endElement("th");
     }
@@ -386,10 +380,6 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
-        //Container
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_HEADER_CONTAINER_CLASS, null);
-
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
@@ -398,8 +388,6 @@ public class DataTableRenderer extends CoreRenderer {
         } else if(text != null) {
             writer.write(text);
         }
-
-        writer.endElement("div");
 
         writer.endElement("td");
     }
