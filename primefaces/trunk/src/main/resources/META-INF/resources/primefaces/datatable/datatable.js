@@ -933,13 +933,11 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     this.columnWidthsCookie = this.id + '_columnWidths';
 
     //Main resize events
-    resizers.mousedown(function(event) {
-        resizerHelper.css('top', tbodyTop).css('left', event.clientX).fadeIn();
-    }).mouseup(function(event) {
-        resizerHelper.fadeOut();
-    })
-    .draggable({
+    resizers.draggable({
         axis: 'x',
+        start: function(event, ui) {
+            resizerHelper.fadeIn();
+        },
         drag: function(event, ui) {
             if(event.clientX >= tbodyLeft) {
                 resizerHelper.css('top', tbodyTop).css('left', event.clientX);
@@ -950,6 +948,8 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             column.css('width', column.width() + ui.position.left);
 
             ui.helper.css('left','');
+
+            resizerHelper.fadeOut();
 
             //Save state
             var columnWidths = [];
