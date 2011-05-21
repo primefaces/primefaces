@@ -179,16 +179,16 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
     var bodyContainer = $(this.jqId + ' .ui-datatable-scrollable-body'),
     bodyContainerEl = bodyContainer.get(0),
     tbodyElement = $(this.tbody).get(0);
-    
+
     var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) + "px" : (tbodyElement.parentNode.clientWidth - 1) + "px";
-    $(this.jqId).css('width', containerWidth);
+    $(this.jqId + ' .ui-datatable-scrollable-body').css('width', containerWidth);
 
     //live scroll
     if(this.cfg.liveScroll) {
         this.scrollOffset = this.cfg.scrollStep;
         this.shouldLiveScroll = true;
         var _self = this;
-        
+
         bodyContainer.scroll(function() {
 
             if(_self.shouldLiveScroll) {
@@ -201,9 +201,9 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
                     _self.loadLiveRows();
                 }
             }
-            
+
         });
-        
+
     }
 }
 
@@ -918,8 +918,11 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
     columnHeaders = $(this.jqId + ' thead th'),
     columnFooters = $(this.jqId + ' tfoot tr td'),
-    tbodyTop = $(this.tbody).offset().top,
-    tbodyLeft = $(this.tbody).offset().left,
+    tbody = $(this.tbody),
+    tbodyTop = tbody.offset().top,
+    tbodyLeft = tbody.offset().left,
+    headerTable = $(this.jqId + ' .ui-datatable-scrollable-header table'),
+    scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     _self = this;
 
     //Set height of resizer helper
@@ -969,9 +972,9 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
 
             //Scrollable support, recalculates widths of main container, inner table cells and footers
             if(_self.cfg.scrollable) {
-                _self.jq.css('width', _self.jq.width() + ui.position.left);
                $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth);
                columnFooters.eq(columnHeader.index()).width(newWidth);
+               scrollBody.width(headerTable.width() + 16);
             }
 
             //Save state
