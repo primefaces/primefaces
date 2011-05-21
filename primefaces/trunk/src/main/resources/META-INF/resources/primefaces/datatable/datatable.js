@@ -908,7 +908,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  * Add resize behavior to columns
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
-    
+
     //Add resizers and resizer helper
     $(this.jqId + ' thead tr :not(th:last)').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight ui-corner-all"></div>');
@@ -941,19 +941,37 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             }
         },
         stop: function(event, ui) {
-            var column = ui.helper.parents('th:first'),
-            newColumnWidth = column.width() + ui.position.left;
-            column.width(newColumnWidth);
+            var columnHeader = ui.helper.parents('th:first'),
+            newWidth = columnHeader.width() + ui.position.left,
+            minWidth = columnHeader.css('min-width'),
+            maxWidth = columnHeader.css('max-width');
 
             ui.helper.css('left','');
-
             resizerHelper.fadeOut();
+
+            if(minWidth) {
+                minWidth = parseInt(minWidth.split('px')[0]);
+
+                if(minWidth > newWidth) {
+                    newWidth = minWidth;
+                }
+            }
+
+            if(maxWidth) {
+                maxWidth = parseInt(maxWidth.split('px')[0]);
+
+                if(maxWidth < newWidth) {
+                    newWidth = maxWidth;
+                }
+            }
+
+            columnHeader.width(newWidth);
 
             //Scrollable support, recalculates widths of main container, inner table cells and footers
             if(_self.cfg.scrollable) {
-               _self.jq.css('width', _self.jq.width() + ui.position.left);
-               $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (column.index() + 1) + ')').width(newColumnWidth);
-               columnFooters.eq(column.index()).width(newColumnWidth);
+                _self.jq.css('width', _self.jq.width() + ui.position.left);
+               $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth);
+               columnFooters.eq(columnHeader.index()).width(newWidth);
             }
 
             //Save state
@@ -973,9 +991,9 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     if(widths) {
         widths = widths.split(',');
         for(var i in widths) {
-            
+
             $(columnHeaders.get(i)).css('width', widths[i]);
-            
+
             cells.width(widths[i]);
 
             if(columnFooters.length > 0) {
