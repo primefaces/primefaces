@@ -5,6 +5,7 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jqId);
     this.tbody = this.jqId + '_data';
 
     //Paginator
@@ -29,18 +30,17 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
         this.setupExpansionEvents();
     }
 
-    if(this.cfg.scrollable) {
-        this.setupScrolling();
-    }
-
     var rowEditors = this.getRowEditors();
     if(rowEditors.length > 0) {
         this.setupCellEditorEvents(rowEditors);
     }
 
-    //Resizable columns
     if(this.cfg.resizableColumns) {
         this.setupResizableColumns();
+    }
+
+    if(this.cfg.scrollable) {
+        this.setupScrolling();
     }
 }
 
@@ -908,6 +908,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  * Add resize behavior to columns
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
+    
     //Add resizers and resizer helper
     $(this.jqId + ' thead tr :not(th:last)').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight ui-corner-all"></div>');
@@ -915,13 +916,15 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Variables
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
-    columns = $(this.jqId + ' thead th'),
+    columnHeaders = $(this.jqId + ' thead th'),
+    columnFooters = $(this.jqId + ' tfoot tr td'),
     tbodyTop = $(this.tbody).offset().top,
     tbodyLeft = $(this.tbody).offset().left,
     _self = this;
 
     //Set height of resizer helper
-    resizerHelper.css('height', $(this.tbody).innerHeight() - 1);
+    var resizerHelperHeight = this.cfg.scrollable ? $(this.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : $(this.tbody).innerHeight() - 1;
+    resizerHelper.css('height', resizerHelperHeight);
 
     //State cookie
     this.columnWidthsCookie = this.id + '_columnWidths';
@@ -938,28 +941,50 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             }
         },
         stop: function(event, ui) {
-            var column = ui.helper.parents('th:first');
-            column.css('width', column.width() + ui.position.left);
+            var column = ui.helper.parents('th:first'),
+            newColumnWidth = column.width() + ui.position.left;
+            column.width(newColumnWidth);
 
             ui.helper.css('left','');
 
             resizerHelper.fadeOut();
 
+            //Scrollable support, recalculates widths of main container, inner table cells and footers
+            if(_self.cfg.scrollable) {
+               _self.jq.css('width', _self.jq.width() + ui.position.left);
+               $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (column.index() + 1) + ')').width(newColumnWidth);
+               columnFooters.eq(column.index()).width(newColumnWidth);
+            }
+
             //Save state
             var columnWidths = [];
-            columns.each(function(i, item) {
+            columnHeaders.each(function(i, item) {
                 columnWidths.push($(item).css('width'));
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+
         }
     });
 
-    //Restore width on postback
-    var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
+    //Restore widths on postback
+    var widths = PrimeFaces.getCookie(this.columnWidthsCookie),
+    cells = $(this.jqId + ' .ui-datatable-scrollable-body table tbody tr td:first-child');
+
     if(widths) {
         widths = widths.split(',');
         for(var i in widths) {
-            $(columns.get(i)).css('width', widths[i]);
+            
+            $(columnHeaders.get(i)).css('width', widths[i]);
+            
+            cells.width(widths[i]);
+
+            if(columnFooters.length > 0) {
+                columnFooters.eq(i).width(widths[i]);
+            }
+
+            if(i != (widths.length -1)) {
+                cells = cells.next();
+            }
         }
     }
 }
