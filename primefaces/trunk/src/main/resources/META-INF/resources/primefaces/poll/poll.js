@@ -1,7 +1,7 @@
 PrimeFaces.widget.Poll = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-	
+
     if(this.cfg.autoStart) {
         this.start();
     }
@@ -13,4 +13,10 @@ PrimeFaces.widget.Poll.prototype.start = function() {
 
 PrimeFaces.widget.Poll.prototype.stop = function() {
     clearInterval(this.timer);
+}
+
+PrimeFaces.widget.Poll.prototype.handleComplete = function(xhr, status, args) {
+    if(args.stop) {
+        this.stop();
+    }
 }

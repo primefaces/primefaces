@@ -12,7 +12,7 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.PollRenderer</rendererType>
     <rendererClass>org.primefaces.component.poll.PollRenderer</rendererClass>
-    <parent>javax.faces.component.UICommand</parent>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <interfaces>
         <interface>
             <name>org.primefaces.component.api.AjaxSource</name>
@@ -40,20 +40,6 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void listener()</method-signature>
-        </attribute>
-        <attribute>
-            <name>actionListener</name>
-            <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
-            <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>action</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>java.lang.Object action()</method-signature>
-            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>immediate</name>
@@ -104,6 +90,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>stop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
         </attribute>
     </attributes>
     <resources>
