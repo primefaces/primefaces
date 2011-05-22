@@ -31,7 +31,7 @@ import org.primefaces.util.HTML;
 public class CommandLinkRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
         CommandLink link = (CommandLink) component;
         if(link.isDisabled()) {
             return;
@@ -39,49 +39,60 @@ public class CommandLinkRenderer extends CoreRenderer {
         
 		String param = component.getClientId();
 
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param)) {
+		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
 		}
 	}
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		CommandLink link = (CommandLink) component;
-		String clientId = link.getClientId(facesContext);
+		String clientId = link.getClientId(context);
 
-		UIComponent form = ComponentUtils.findParentForm(facesContext, link);
+		UIComponent form = ComponentUtils.findParentForm(context, link);
 		if(form == null) {
 			throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
 		}
 		
 		if(!link.isDisabled()) {
+            String styleClass = link.getStyleClass();
+            styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
+
 			writer.startElement("a", link);
 			writer.writeAttribute("id", clientId, "id");
 			writer.writeAttribute("href", "javascript:void(0);", null);
-			if(link.getStyleClass() != null) writer.writeAttribute("class", link.getStyleClass(), null);
+			writer.writeAttribute("class", styleClass, null);
 			
-			String formClientId = form.getClientId(facesContext);
-			String request = link.isAjax() ? buildAjaxRequest(facesContext, (AjaxSource) link) : buildNonAjaxRequest(facesContext, link, formClientId, clientId);
+			String formClientId = form.getClientId(context);
+			String request = link.isAjax() ? buildAjaxRequest(context, (AjaxSource) link) : buildNonAjaxRequest(context, link, formClientId, clientId);
 			String onclick = link.getOnclick() != null ? link.getOnclick() + ";" + request : request;
 			writer.writeAttribute("onclick", onclick, "onclick");
 			
-			renderPassThruAttributes(facesContext, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
+			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
 
 			if(link.getValue() != null)
 				writer.write(link.getValue().toString());
 			else
-				renderChildren(facesContext, link);
+				renderChildren(context, link);
 			
 			writer.endElement("a");
-		} else {
+		}
+        else {
+            String styleClass = link.getStyleClass();
+            styleClass = styleClass == null ? CommandLink.DISABLED_STYLE_CLASS : CommandLink.DISABLED_STYLE_CLASS + " " + styleClass;
+
 			writer.startElement("span", link);
 			writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("class", styleClass, "styleclass");
+
+            if(link.getStyle() != null)
+                writer.writeAttribute("style", link.getStyle(), "style");
 			
 			if(link.getValue() != null)
 				writer.write(link.getValue().toString());
 			else
-				renderChildren(facesContext, link);
+				renderChildren(context, link);
 			
 			writer.endElement("span");
 		}
