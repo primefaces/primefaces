@@ -90,7 +90,7 @@ public class MessageRenderer extends CoreRenderer {
 	protected void encodeText(ResponseWriter writer, String text, String severity) throws IOException {
 		writer.startElement("span", null);
 		writer.writeAttribute("class", "ui-message-" + severity, null);
-		writer.write(text);
+		writer.writeText(text, null);
 		writer.endElement("span");
 	}
 

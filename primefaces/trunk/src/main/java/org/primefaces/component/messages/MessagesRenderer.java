@@ -96,14 +96,14 @@ public class MessagesRenderer extends CoreRenderer {
             if(uiMessages.isShowSummary()) {
 	            writer.startElement("span", null);
 	            writer.writeAttribute("class", styleClassPrefix + "-summary", null);
-	            writer.write(summary);
+	            writer.writeText(summary, null);
 	            writer.endElement("span");
             }
             
             if(uiMessages.isShowDetail()) {
             	writer.startElement("span", null);
             	writer.writeAttribute("class", styleClassPrefix + "-detail", null);
-            	writer.write(detail);
+            	writer.writeText(detail, null);
             	writer.endElement("span");
             }
             

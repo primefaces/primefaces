@@ -88,7 +88,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
 		
 		if(button.getValue() != null) {
-			writer.write(button.getValue().toString());
+			writer.writeText(button.getValue(), "value");
 		} else if(button.getImage() != null) {
 			writer.write("ui-button");
 		}

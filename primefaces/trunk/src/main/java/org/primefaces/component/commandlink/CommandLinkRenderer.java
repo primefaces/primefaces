@@ -49,6 +49,7 @@ public class CommandLinkRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		CommandLink link = (CommandLink) component;
 		String clientId = link.getClientId(context);
+        Object label = link.getValue();
 
 		UIComponent form = ComponentUtils.findParentForm(context, link);
 		if(form == null) {
@@ -71,8 +72,8 @@ public class CommandLinkRenderer extends CoreRenderer {
 			
 			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
 
-			if(link.getValue() != null)
-				writer.write(link.getValue().toString());
+			if(label != null)
+				writer.writeText(label, "value");
 			else
 				renderChildren(context, link);
 			
@@ -89,8 +90,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if(link.getStyle() != null)
                 writer.writeAttribute("style", link.getStyle(), "style");
 			
-			if(link.getValue() != null)
-				writer.write(link.getValue().toString());
+			if(label != null)
+				writer.writeText(label, "value");
 			else
 				renderChildren(context, link);
 			
