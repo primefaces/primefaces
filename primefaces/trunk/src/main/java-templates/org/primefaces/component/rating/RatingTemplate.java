@@ -29,10 +29,11 @@ import javax.faces.event.PhaseId;
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
-        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if(eventName != null && eventName.equals("rate") && event instanceof AjaxBehaviorEvent) {
-            customEvents.put("rate", (AjaxBehaviorEvent) event);
+        if(event instanceof AjaxBehaviorEvent) {
+            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+
+            customEvents.put(eventName, (AjaxBehaviorEvent) event);
         } else {
             super.queueEvent(event);
         }
@@ -54,5 +55,4 @@ import javax.faces.event.PhaseId;
                 super.queueEvent(rateEvent);
             }
         }
-        customEvents = null;
     }
