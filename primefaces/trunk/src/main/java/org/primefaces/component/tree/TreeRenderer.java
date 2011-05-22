@@ -251,10 +251,12 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
-        for(TreeNode child : root.getChildren()) {
-            encodeTreeNode(context, tree, child, String.valueOf(rowIndex), dynamic, checkbox);
-            
-            rowIndex++;
+        if(root != null) {
+            for(TreeNode child : root.getChildren()) {
+                encodeTreeNode(context, tree, child, String.valueOf(rowIndex), dynamic, checkbox);
+
+                rowIndex++;
+            }
         }
 
 		writer.endElement("ul");
