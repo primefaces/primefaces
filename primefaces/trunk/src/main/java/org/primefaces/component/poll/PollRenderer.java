@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -33,7 +34,13 @@ public class PollRenderer extends CoreRenderer {
         Poll poll = (Poll) component;
 
         if(context.getExternalContext().getRequestParameterMap().containsKey(poll.getClientId(context))) {
-            poll.queueEvent(new ActionEvent(poll));
+            ActionEvent event = new ActionEvent(poll);
+            if(poll.isImmediate())
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            else
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            
+            poll.queueEvent(event);
         }
     }
 

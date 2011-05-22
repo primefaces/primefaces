@@ -42,6 +42,12 @@
             <method-signature>void listener()</method-signature>
         </attribute>
         <attribute>
+            <name>immediate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
