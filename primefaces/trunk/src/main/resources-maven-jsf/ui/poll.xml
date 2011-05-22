@@ -42,13 +42,6 @@
             <method-signature>void listener()</method-signature>
         </attribute>
         <attribute>
-            <name>immediate</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
