@@ -7,7 +7,6 @@
 	<tag>schedule</tag>
 	<tagClass>org.primefaces.component.schedule.ScheduleTag</tagClass>
 	<componentClass>org.primefaces.component.schedule.Schedule</componentClass>
-	<componentHandlerClass>org.primefaces.component.schedule.ScheduleHandler</componentHandlerClass>
 	<componentType>org.primefaces.Schedule</componentType>
 	<componentFamily>org.primefaces</componentFamily>
 	<rendererType>org.primefaces.component.ScheduleRenderer</rendererType>

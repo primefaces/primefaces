@@ -7,7 +7,6 @@
     <tag>panel</tag>
     <tagClass>org.primefaces.component.panel.PanelTag</tagClass>
     <componentClass>org.primefaces.component.panel.Panel</componentClass>
-    <componentHandlerClass>org.primefaces.component.panel.PanelHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Panel</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.PanelRenderer</rendererType>
