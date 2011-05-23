@@ -30,8 +30,9 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	
     this.configureLocale();
 	
-	if(this.cfg.editable)
+	if(this.cfg.editable) {
 		this.setupEventHandlers();
+    }
 	
 	this.jq.fullCalendar(this.cfg);
 }
@@ -56,78 +57,49 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
     var _self = this;
     
 	this.cfg.dayClick = function(dayDate, allDay, jsEvent, view) {
-        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
-        params = {};
-        params[_self.id + '_ajaxEvent'] = true;
-		params[_self.id + '_selectedDate'] = dayDate.getTime();
-		
-		if(_self.cfg.onDateSelectUpdate)
-            options.update = _self.cfg.onDateSelectUpdate;
+        if(_self.cfg.behaviors) {
+            var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
+            if(dateSelectBehavior) {
+                var params = {};
+                params[_self.id + '_selectedDate'] = dayDate.getTime();
 
-        if(_self.cfg.onDateSelectStart)
-            _self.cfg.onDateSelectStart.call(_self, dayDate, allDay, jsEvent, view);
-
-        if(_self.cfg.onDateSelectComplete)
-            options.oncomplete = _self.cfg.onDateSelectComplete;
-
-        options.params = params;
-		
-		PrimeFaces.ajax.AjaxRequest(options);
+                dateSelectBehavior.call(_self, dayDate, params);
+            }
+        }
 	}
 
 	this.cfg.eventClick = function(calEvent, jsEvent, view) {
-        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
-        params = {};
-        params[_self.id + '_ajaxEvent'] = true;
-		params[_self.id + '_selectedEventId'] = calEvent.id;
-		
-		if(_self.cfg.onEventSelectUpdate)
-            options.update = _self.cfg.onEventSelectUpdate;
+        var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
+        if(eventSelectBehavior) {
+            var params = {};
+            params[_self.id + '_selectedEventId'] = calEvent.id;
 
-        if(_self.cfg.onEventSelectStart)
-            _self.cfg.onEventSelectStart.call(_self, calEvent, jsEvent, view);
-
-        if(_self.cfg.onEventSelectComplete)
-            options.oncomplete = _self.cfg.onEventSelectComplete;
-		
-		options.params = params;
-
-		PrimeFaces.ajax.AjaxRequest(options);
+            eventSelectBehavior.call(_self, calEvent, params);
+        }
 	}
 	
 	this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
-        params = {};
-        params[_self.id + '_ajaxEvent'] = true;
-		params[_self.id + '_changedEventId'] = calEvent.id;
-		params[_self.id + '_dayDelta'] = dayDelta;
-		params[_self.id + '_minuteDelta'] = minuteDelta;
-		
-		if(_self.cfg.onEventMoveUpdate) {
-			options.update = _self.cfg.onEventMoveUpdate;
-        }
-		
-		options.params = params;
+        var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
+        if(eventMoveBehavior) {
+            var params = {};
+            params[_self.id + '_movedEventId'] = calEvent.id;
+            params[_self.id + '_dayDelta'] = dayDelta;
+            params[_self.id + '_minuteDelta'] = minuteDelta;
 
-		PrimeFaces.ajax.AjaxRequest(options);;
+            eventMoveBehavior.call(_self, calEvent, params);
+        }
 	}
 	
 	this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
-        var options = {source: _self.id, process: _self.id, formId: _self.cfg.formId},
-        params = {};
-        params[_self.id + '_ajaxEvent'] = true;
-		params[_self.id + '_changedEventId'] = calEvent.id;
-		params[_self.id + '_dayDelta'] = dayDelta;
-		params[_self.id + '_minuteDelta'] = minuteDelta;
-		params[_self.id + '_resized'] = true;
-		
-		if(_self.cfg.onEventResizeUpdate) {
-			options.update = _self.cfg.onEventResizeUpdate;
-        }
-		
-		options.params = params;
+        var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
+        if(eventResizeBehavior) {
+            var params = {};
+            params[_self.id + '_resizedEventId'] = calEvent.id;
+            params[_self.id + '_dayDelta'] = dayDelta;
+            params[_self.id + '_minuteDelta'] = minuteDelta;
 
-		PrimeFaces.ajax.AjaxRequest(options);
+            eventResizeBehavior.call(_self, calEvent, params);
+        }
 	}
 }
 
@@ -149,7 +121,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                     data = updates[i].firstChild.data;
 
                     if(id == _self.id){
-                        var events = jQuery.parseJSON(data).events;
+                        var events = $.parseJSON(data).events;
 
                         for(var j=0; j < events.length; j++) {
                             events[j].start = new Date(events[j].start);

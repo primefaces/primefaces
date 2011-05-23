@@ -26,10 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.event.DateSelectEvent;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -40,7 +36,8 @@ public class ScheduleRenderer extends CoreRenderer {
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
-		Schedule schedule = (Schedule) component;
+        decodeBehaviors(context, component);
+		/*Schedule schedule = (Schedule) component;
 		ScheduleModel model = (ScheduleModel) schedule.getValue();
 		String clientId = schedule.getClientId(context);
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -87,7 +84,7 @@ public class ScheduleRenderer extends CoreRenderer {
 				else
 					schedule.queueEvent(new ScheduleEntryMoveEvent(schedule, changedEvent, dayDelta, minuteDelta));
 			}
-		}
+		}*/
 	}
 
     @Override
@@ -171,17 +168,6 @@ public class ScheduleRenderer extends CoreRenderer {
 		
 		if(schedule.isEditable()) {
 			writer.write(",editable:true");
-
-			if(schedule.getOnEventSelectUpdate() != null) writer.write(",onEventSelectUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnEventSelectUpdate()) + "'");
-			if(schedule.getOnDateSelectUpdate() != null) writer.write(",onDateSelectUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnDateSelectUpdate()) + "'");
-			if(schedule.getOnEventMoveUpdate() != null) writer.write(",onEventMoveUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnEventMoveUpdate()) + "'");
-			if(schedule.getOnEventResizeUpdate() != null) writer.write(",onEventResizeUpdate:'" + ComponentUtils.findClientIds(context, schedule, schedule.getOnEventResizeUpdate()) + "'");
-
-            //client side callbacks
-            if(schedule.getOnEventSelectStart() != null) writer.write(",onEventSelectStart: function(xhr) {" + schedule.getOnEventSelectStart() + "}");
-            if(schedule.getOnEventSelectComplete() != null) writer.write(",onEventSelectComplete: function(xhr, status, args) {" + schedule.getOnEventSelectComplete() + "}");
-            if(schedule.getOnDateSelectStart() != null) writer.write(",onDateSelectStart: function(xhr) {" + schedule.getOnDateSelectStart() + "}");
-            if(schedule.getOnDateSelectComplete() != null) writer.write(",onDateSelectComplete: function(xhr, status, args) {" + schedule.getOnDateSelectComplete() + "}");
 		}
 	
 		if(schedule.getInitialDate() != null) {
@@ -211,6 +197,9 @@ public class ScheduleRenderer extends CoreRenderer {
 		if(!schedule.isDraggable()) writer.write(",disableDragging:true");
 		if(!schedule.isResizable()) writer.write(",disableResizing:true");
 		if(schedule.getStartWeekday() != 0) writer.write(",firstDay:" + schedule.getStartWeekday());
+
+        //behaviors
+        encodeClientBehaviors(context, schedule);
 		
 		writer.write("});});");
 		

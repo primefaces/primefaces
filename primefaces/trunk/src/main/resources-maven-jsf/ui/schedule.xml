@@ -17,6 +17,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+         <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -24,7 +27,7 @@
 		<attribute>
 			<name>value</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
+			<type>org.primefaces.model.ScheduleModel</type>
 		</attribute>
 		<attribute>
 			<name>locale</name>
@@ -80,70 +83,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-		</attribute>
-		<attribute>
-			<name>eventSelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void eventSelectListener(org.primefaces.event.ScheduleEntrySelectEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>dateSelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void dateSelectListener(org.primefaces.event.DateSelectEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>eventMoveListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void eventMoveListener(org.primefaces.event.ScheduleEntryMoveEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>eventResizeListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void eventResizeListener(org.primefaces.event.ScheduleEntryResizeEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>onEventSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onDateSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onEventMoveUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onEventResizeUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onEventSelectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onEventSelectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onDateSelectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onDateSelectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>showHeader</name>

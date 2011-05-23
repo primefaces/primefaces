@@ -16,12 +16,13 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
 import org.primefaces.model.ScheduleEvent;
 
-public class ScheduleEntryMoveEvent extends FacesEvent {
+public class ScheduleEntryMoveEvent extends AjaxBehaviorEvent {
 
 	private ScheduleEvent scheduleEvent;
 	
@@ -29,8 +30,8 @@ public class ScheduleEntryMoveEvent extends FacesEvent {
 	
 	private int minuteDelta;
 
-	public ScheduleEntryMoveEvent(UIComponent component, ScheduleEvent scheduleEvent, int dayDelta, int minuteDelta) {
-		super(component);
+	public ScheduleEntryMoveEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent, int dayDelta, int minuteDelta) {
+		super(component, behavior);
 		this.scheduleEvent = scheduleEvent;
 		this.dayDelta = dayDelta;
 		this.minuteDelta = minuteDelta;
