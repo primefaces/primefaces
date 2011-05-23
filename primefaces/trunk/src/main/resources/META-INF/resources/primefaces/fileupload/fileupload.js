@@ -1016,11 +1016,26 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
         };
 
         this.cfg.beforeSend = function(event, files, index, xhr, handler, callBack) {
+            //update viewstate
+            var hasviewstate = false;
+            for(var paramIndex = 0; paramIndex < this.formData.length; paramIndex++) {
+                if(this.formData[paramIndex].name == 'javax.faces.ViewState') {
+                    this.formData[paramIndex].value = this.uploadForm.children('input[name="javax.faces.ViewState"]').val();
+                    hasviewstate = true;
+                    break;
+                }
+            }
+
+            if(!hasviewstate) {
+                this.formData.push({name:'javax.faces.ViewState', value: this.uploadForm.children('input[name="javax.faces.ViewState"]').val()});
+            }
+
+            //validate
             var valid = _self.checkFileRestrictions(event, files, index, handler);
             if(valid == false) {
                 return false;
             }
-            
+
             _self.filesCount++;
             var isIE = xhr.length != undefined; //check if xhr is a jQuery object with an iframe node
 
