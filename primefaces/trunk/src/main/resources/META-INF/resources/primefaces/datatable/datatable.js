@@ -130,7 +130,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
 
             })
             .live(selectEvent, function(event) {
-                if(this.nodeName == 'TR')
+                if(this.nodeName.toLowerCase() == 'tr')
                     _self.onRowClick(event, this);
                 else
                     _self.onCellClick(event, this);
