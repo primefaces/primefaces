@@ -50,6 +50,8 @@ PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
         }
     }
 
+    PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+
     return false;
 }
 

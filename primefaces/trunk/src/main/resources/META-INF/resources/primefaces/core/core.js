@@ -157,6 +157,41 @@ PrimeFaces.ajax.AjaxUtils = {
                 controls.filter("select:not([data-role='slider'])" ).selectmenu();
             }
         }
+    },
+
+    /**
+     *  Handles response handling tasks after updating the dom
+     **/
+    handleResponse: function(xmlDoc) {
+        var redirect = xmlDoc.getElementsByTagName("redirect"),
+        extensions = xmlDoc.getElementsByTagName("extension"),
+        scripts = xmlDoc.getElementsByTagName("eval");
+
+        if(redirect.length > 0) {
+            window.location = redirect[0].attributes.getNamedItem("url").nodeValue;
+        }
+        else {
+            //callbsack arguments
+            this.args = {};
+            for(var i=0; i < extensions.length; i++) {
+                var extension = extensions[i];
+
+                if(extension.getAttributeNode('primefacesCallbackParam')) {
+                    var jsonObj = $.parseJSON(extension.firstChild.data);
+
+                    for(var paramName in jsonObj) {
+                        if(paramName)
+                            this.args[paramName] = jsonObj[paramName];
+                    }
+                }
+            }
+
+            //scripts to execute
+            for(i=0; i < scripts.length; i++) {
+                $.globalEval(scripts[i].firstChild.data);
+            }
+            
+        }
     }
 };
 
@@ -263,40 +298,16 @@ PrimeFaces.ajax.AjaxRequest = function(cfg) {
 
 PrimeFaces.ajax.AjaxResponse = function(responseXML) {
     var xmlDoc = responseXML.documentElement,
-    updates = xmlDoc.getElementsByTagName("update"),
-    redirect = xmlDoc.getElementsByTagName("redirect"),
-    extensions = xmlDoc.getElementsByTagName("extension"),
-    scripts = xmlDoc.getElementsByTagName("eval");
+    updates = xmlDoc.getElementsByTagName("update");
 
-    if(redirect.length > 0) {
-        window.location = redirect[0].attributes.getNamedItem("url").nodeValue;
-    } else {
+    for(var i=0; i < updates.length; i++) {
+        var id = updates[i].attributes.getNamedItem("id").nodeValue,
+        content = updates[i].firstChild.data;
 
-        for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
-
-            PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
-        }
+        PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
     }
 
-    this.args = {};
-    for(i=0; i < extensions.length; i++) {
-        var extension = extensions[i];
-        
-        if(extension.getAttributeNode('primefacesCallbackParam')) {
-            var jsonObj = $.parseJSON(extension.firstChild.data);
-
-            for(var paramName in jsonObj) {
-                if(paramName)
-                    this.args[paramName] = jsonObj[paramName];
-            }
-        }
-    }
-    
-    for(i=0; i < scripts.length; i++) {
-        $.globalEval(scripts[i].firstChild.data);
-    }
+    PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 }
 
 PrimeFaces.ajax.RequestManager = {
