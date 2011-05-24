@@ -7,7 +7,6 @@
 	<tag>gmap</tag>
 	<tagClass>org.primefaces.component.gmap.GMapTag</tagClass>
 	<componentClass>org.primefaces.component.gmap.GMap</componentClass>
-	<componentHandlerClass>org.primefaces.component.gmap.GMapHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.GMap</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.GMapRenderer</rendererType>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -51,60 +53,6 @@
 			<required>true</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>8</defaultValue>
-		</attribute>
-		<attribute>
-			<name>onOverlaySelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onOverlaySelectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onOverlaySelectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>overlaySelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void overlaySelectListener(org.primefaces.event.map.OverlaySelectEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>stateChangeListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void stateChangeListener(org.primefaces.event.map.StateChangeEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>onStateChangeUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>pointSelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void pointSelectListener(org.primefaces.event.map.PointSelectEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>onPointSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>markerDragListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void markerDragListener(org.primefaces.event.map.MarkerDragEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>onMarkerDragUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>streetView</name>

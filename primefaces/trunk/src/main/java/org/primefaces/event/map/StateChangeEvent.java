@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,20 @@
 package org.primefaces.event.map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
 import org.primefaces.model.map.LatLngBounds;
 
-public class StateChangeEvent extends FacesEvent {
+public class StateChangeEvent extends AjaxBehaviorEvent {
 
 	private LatLngBounds bounds;
 	
 	private int zoomLevel;
 
-	public StateChangeEvent(UIComponent component, LatLngBounds bounds, int zoomLevel) {
-		super(component);
+	public StateChangeEvent(UIComponent component, Behavior behavior, LatLngBounds bounds, int zoomLevel) {
+		super(component, behavior);
 		this.bounds = bounds;
 		this.zoomLevel = zoomLevel;
 	}

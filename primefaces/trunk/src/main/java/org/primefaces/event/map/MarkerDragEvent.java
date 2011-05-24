@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,18 @@
 package org.primefaces.event.map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
 import org.primefaces.model.map.Marker;
 
-public class MarkerDragEvent extends FacesEvent {
+public class MarkerDragEvent extends AjaxBehaviorEvent {
 	
 	private Marker marker;
 
-	public MarkerDragEvent(UIComponent component, Marker marker) {
-		super(component);
+	public MarkerDragEvent(UIComponent component, Behavior behavior, Marker marker) {
+		super(component, behavior);
 		this.marker = marker;
 	}
 

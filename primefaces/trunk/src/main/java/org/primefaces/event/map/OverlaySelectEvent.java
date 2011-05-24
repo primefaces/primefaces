@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,18 @@
 package org.primefaces.event.map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
 import org.primefaces.model.map.Overlay;
 
-public class OverlaySelectEvent extends FacesEvent {
+public class OverlaySelectEvent extends AjaxBehaviorEvent {
 	
 	private Overlay overlay;
 
-	public OverlaySelectEvent(UIComponent component, Overlay overlay) {
-		super(component);
+	public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {
+		super(component, behavior);
 		this.overlay = overlay;
 	}
 
