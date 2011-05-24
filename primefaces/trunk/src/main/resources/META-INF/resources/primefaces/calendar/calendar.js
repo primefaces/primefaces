@@ -747,7 +747,8 @@ $.datepicker._doKeyPress = function(event) {
 								.replace(/t/g, ampm ? 'ap' : '') +
 								" " +
 								tp_inst._defaults.separator +
-								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
+								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')) +
+                                $.datepicker._possibleChars($.datepicker._get(inst, 'timeFormat')),
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
 			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
 		}
