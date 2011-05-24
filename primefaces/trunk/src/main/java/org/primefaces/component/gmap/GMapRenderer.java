@@ -18,10 +18,13 @@ package org.primefaces.component.gmap;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.behavior.ajax.AjaxBehavior;
 
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -60,13 +63,15 @@ public class GMapRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, GMap map) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = map.getClientId();
+        String widgetVar = map.resolveWidgetVar();
+        GMapInfoWindow infoWindow = map.getInfoWindow();
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");
 
-		writer.write(map.resolveWidgetVar() + " = new PrimeFaces.widget.GMap('" + clientId + "',{");
+		writer.write(widgetVar + " = new PrimeFaces.widget.GMap('" + clientId + "',{");
 		
 		//Required configuration
 		writer.write("mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());
@@ -89,7 +94,19 @@ public class GMapRenderer extends CoreRenderer {
 		//Client events
 		if(map.getOnPointClick() != null) writer.write(",onPointClick:function(event) {" + map.getOnPointClick() + ";}");
 
-        //Behaviors
+        /*
+         * Behaviors
+         * - Adds hook to show info window if one defined
+         * - Encodes behaviors
+         */
+        if(infoWindow != null) {
+            Map<String,List<ClientBehavior>> behaviorEvents = map.getClientBehaviors();
+            List<ClientBehavior> overlaySelectBehaviors = behaviorEvents.get("overlaySelect");
+            for(ClientBehavior clientBehavior : overlaySelectBehaviors) {
+                ((AjaxBehavior) clientBehavior).setOnsuccess(widgetVar + ".openWindow(data)");
+            }
+        }
+
         encodeClientBehaviors(context, map);
 		
 		writer.write("});});");

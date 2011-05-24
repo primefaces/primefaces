@@ -31,8 +31,26 @@ PrimeFaces.widget.GMap.prototype.getInfoWindow = function() {
 	return this.cfg.infoWindow;
 }
 
-PrimeFaces.widget.GMap.prototype.openWindow = function(marker) {
-	this.getInfoWindow().open(this.getMap(), marker);
+PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
+    var xmlDoc = responseXML.documentElement,
+    updates = xmlDoc.getElementsByTagName("update"),
+    infoWindow = this.getInfoWindow();
+
+    for(var i=0; i < updates.length; i++) {
+        var id = updates[i].attributes.getNamedItem("id").nodeValue,
+        content = updates[i].firstChild.data;
+
+        if(id == infoWindow.id){
+            infoWindow.setContent(content);
+
+            infoWindow.open(this.getMap(), this.selectedOverlay);
+        }
+        else {
+            PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+        }
+    }
+
+    return false;
 }
 
 PrimeFaces.widget.GMap.prototype.configureMarkers = function() {
@@ -76,6 +94,8 @@ PrimeFaces.widget.GMap.prototype.configurePolygons = function() {
 }
 
 PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overlay) {
+    this.selectedOverlay = overlay;
+    
     var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
 
     if(overlaySelectBehavior) {
@@ -84,53 +104,6 @@ PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overla
 
         overlaySelectBehavior.call(this, event, params);
     }
-
-    /*var _self = this,
-    options = {
-        source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
-    };
-   
-    var params = {};
-    params[this.id + '_overlaySelected'] = true;
-    params[this.id + '_overlayId'] = overlay.id;
-
-    if(this.cfg.onOverlaySelectStart) options.onstart = this.cfg.onOverlaySelectStart;
-    if(this.cfg.onOverlaySelectComplete) options.oncomplete = this.cfg.onOverlaySelectComplete;
-
-    if(this.cfg.infoWindow) {
-        var infoWindow = this.getInfoWindow();
-        options.update = infoWindow.id;
-
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = responseXML.documentElement,
-            updates = xmlDoc.getElementsByTagName("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                content = updates[i].firstChild.data;
-
-                if(id == infoWindow.id){
-                    infoWindow.setContent(content);
-
-                    _self.openWindow(overlay);
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
-                }
-            }
-
-            return false;
-        };
-
-    } else if(this.cfg.onOverlaySelectUpdate) {
-        options.update = this.cfg.onOverlaySelectUpdate;
-    }
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);*/
 }
 
 PrimeFaces.widget.GMap.prototype.configureEventListeners = function() {
