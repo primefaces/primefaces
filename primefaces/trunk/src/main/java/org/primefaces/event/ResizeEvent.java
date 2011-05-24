@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,17 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class ResizeEvent extends FacesEvent {
+public class ResizeEvent extends AjaxBehaviorEvent {
 
 	private int width;
 	private int height;
 	
-	public ResizeEvent(UIComponent component, int width, int height) {
-		super(component);
+	public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
+		super(component, behavior);
 		this.width = width;
 		this.height = height;
 	}

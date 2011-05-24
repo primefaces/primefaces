@@ -4417,21 +4417,13 @@ PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state) {
     if(this.cfg.onClose) {
         this.cfg.onClose.call(this, state);
     }
-    
-    if(this.cfg.ajaxClose) {
-        var options = {
-            source: this.id,
-            process: this.id,
-            update: this.cfg.onCloseUpdate
-        };
 
+    var closeBehavior = this.cfg.behaviors['close'];
+    if(closeBehavior) {
         var params = {};
-        params[this.id + '_closed'] = true;
         params[this.id + '_unit'] = location;
 
-        options.params = params;
-
-        PrimeFaces.ajax.AjaxRequest(options);
+        closeBehavior.call(this, location, params);
     }
 }
 
@@ -4446,20 +4438,18 @@ PrimeFaces.widget.Layout.prototype.onopen = function(location, pane, state) {
         this.cfg.onToggle.call(this, state);
     }
 
-    if(this.cfg.ajaxToggle) {
-        this.fireToggleEvent(location, false, state);
-    }
+    this.fireToggleEvent(location, false);
 }
 
 PrimeFaces.widget.Layout.prototype.onclose = function(location, pane, state) {
     pane.siblings('.ui-layout-resizer-' + location).addClass('ui-widget-content ui-corner-all');
 
-    if(this.cfg.onToggle && !state.isHidden) {
-        this.cfg.onToggle.call(this, state);
-    }
+    if(!state.isHidden) {
+        if(this.cfg.onToggle) {
+            this.cfg.onToggle.call(this, state);
+        }
 
-    if(this.cfg.ajaxToggle && !state.isHidden) {
-        this.fireToggleEvent(location, true, state);
+        this.fireToggleEvent(location, true);
     }
 }
 
@@ -4468,38 +4458,26 @@ PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state) {
         this.cfg.onResize.call(this, state);
     }
 
-    if(this.cfg.ajaxResize && !state.isClosed && !state.isHidden) {
-        var options = {
-            source: this.id,
-            process: this.id,
-            update: this.cfg.onToggleUpdate
-        };
+    if(!state.isClosed && !state.isHidden) {
+        var resizeBehavior = this.cfg.behaviors['resize'];
+        if(resizeBehavior) {
+            var params = {};
+            params[this.id + '_unit'] = location;
+            params[this.id + '_width'] = state.innerWidth;
+            params[this.id + '_height'] = state.innerHeight;
 
-        var params = {};
-        params[this.id + '_resized'] = true;
-        params[this.id + '_unit'] = location;
-        params[this.id + '_width'] = state.innerWidth;
-        params[this.id + '_height'] = state.innerHeight;
-
-        options.params = params;
-
-        PrimeFaces.ajax.AjaxRequest(options);
+            resizeBehavior.call(this, location, params);
+        }
     }
 }
 
-PrimeFaces.widget.Layout.prototype.fireToggleEvent = function(location, collapsed, state) {
-    var options = {
-        source: this.id,
-        process: this.id,
-        update: this.cfg.onToggleUpdate
-    };
+PrimeFaces.widget.Layout.prototype.fireToggleEvent = function(location, collapsed) {
+    var toggleBehavior = this.cfg.behaviors['toggle'];
+    if(toggleBehavior) {
+        var params = {};
+        params[this.id + '_unit'] = location;
+        params[this.id + '_collapsed'] = true;
 
-    var params = {};
-    params[this.id + '_toggled'] = true;
-    params[this.id + '_unit'] = location;
-    params[this.id + '_collapsed'] = collapsed;
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
+        toggleBehavior.call(this, location, params);
+    }
 }

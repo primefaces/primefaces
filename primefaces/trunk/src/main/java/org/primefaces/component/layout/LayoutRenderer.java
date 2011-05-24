@@ -16,63 +16,19 @@
 package org.primefaces.component.layout;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ResizeEvent;
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.Visibility;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class LayoutRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
-        Layout layout = (Layout) component;
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-        String clientId = layout.getClientId(facesContext);
-
-        if(params.containsKey(clientId)) {
-
-            //Queue toggle event
-            if (params.containsKey(clientId + "_toggled")) {
-                boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
-                LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
-                Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
-                unit.setCollapsed(collapsed);
-
-                //layout.queueEvent(new ToggleEvent(unit, visibility));
-            }
-
-            //Queue close event
-            if (params.containsKey(clientId + "_closed")) {
-                LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
-                unit.setVisible(false);
-
-                //layout.queueEvent(new CloseEvent(unit));
-            }
-
-            //Queue resize event
-            if (params.containsKey(clientId + "_resized")) {
-                LayoutUnit unit = layout.getLayoutUnitByPosition(params.get(clientId + "_unit"));
-                String position = unit.getPosition();
-                int width = Integer.valueOf(params.get(clientId + "_width"));
-                int height = Integer.valueOf(params.get(clientId + "_height"));
-
-                if(position.equals("west") || position.equals("east")) {
-                    unit.setSize(String.valueOf(width));
-                } else if(position.equals("north") || position.equals("south")) {
-                    unit.setSize(String.valueOf(height));
-                }
-                
-                layout.queueEvent(new ResizeEvent(unit, width, height));
-            }
-        }
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
     }
 
     @Override
@@ -120,9 +76,9 @@ public class LayoutRenderer extends CoreRenderer {
 
         encodeUnits(context, layout);
 
-        encodeAjaxEventListeners(context, layout);
-
         encodeClientCallbacks(context, layout);
+
+        encodeClientBehaviors(context, layout);
 
         writer.write("});});");
 
@@ -163,17 +119,6 @@ public class LayoutRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeAjaxEventListeners(FacesContext context, Layout layout) throws IOException {
-        if(layout.getToggleListener() != null)
-            encodeAjaxEventListener(context, layout, "onToggleUpdate", layout.getOnToggleUpdate(), "ajaxToggle");
-
-        if(layout.getCloseListener() != null)
-            encodeAjaxEventListener(context, layout, "onCloseUpdate", layout.getOnCloseUpdate(), "ajaxClose");
-
-        if(layout.getResizeListener() != null)
-            encodeAjaxEventListener(context, layout, "onResizeUpdate", layout.getOnResizeUpdate(), "ajaxResize");
-    }
-
     protected void encodeClientCallbacks(FacesContext context, Layout layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -185,15 +130,5 @@ public class LayoutRenderer extends CoreRenderer {
 
         if(layout.getOnResize() != null)
             writer.write(",onResize:function(e) {" + layout.getOnResize() + "}");
-    }
-
-    protected void encodeAjaxEventListener(FacesContext facesContext, Layout layout, String updateParam, String update, String ajaxEventParam) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        writer.write("," + ajaxEventParam + ":true");
-
-        if (update != null) {
-            writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(facesContext, layout, update) + "'");
-        }
     }
 }

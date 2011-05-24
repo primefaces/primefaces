@@ -7,7 +7,6 @@
     <tag>layout</tag>
     <tagClass>org.primefaces.component.layout.LayoutTag</tagClass>
     <componentClass>org.primefaces.component.layout.Layout</componentClass>
-    <componentHandlerClass>org.primefaces.component.layout.LayoutHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Layout</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.LayoutRenderer</rendererType>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
     <attributes>
@@ -34,39 +36,6 @@
         </attribute>
         <attribute>
             <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>closeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void closeListener(org.primefaces.event.CloseEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onCloseUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>toggleListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onToggleUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>resizeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void resizeListener(org.primefaces.event.ResizeEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onResizeUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

@@ -40,7 +40,7 @@ public class ResizableRenderer extends CoreRenderer {
             int width = Integer.parseInt(params.get(clientId + "_width"));
             int height = Integer.parseInt(params.get(clientId + "_height"));
             
-            resizable.queueEvent(new ResizeEvent(resizable, width, height));
+            //resizable.queueEvent(new ResizeEvent(resizable, width, height));
         }
     }
 
