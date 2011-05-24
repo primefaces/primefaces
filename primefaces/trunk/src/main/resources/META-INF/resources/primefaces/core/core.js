@@ -265,7 +265,8 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
     var xmlDoc = responseXML.documentElement,
     updates = xmlDoc.getElementsByTagName("update"),
     redirect = xmlDoc.getElementsByTagName("redirect"),
-    extensions = xmlDoc.getElementsByTagName("extension");
+    extensions = xmlDoc.getElementsByTagName("extension"),
+    scripts = xmlDoc.getElementsByTagName("eval");
 
     if(redirect.length > 0) {
         window.location = redirect[0].attributes.getNamedItem("url").nodeValue;
@@ -291,6 +292,10 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
                     this.args[paramName] = jsonObj[paramName];
             }
         }
+    }
+    
+    for(i=0; i < scripts.length; i++) {
+        $.globalEval(scripts[i].firstChild.data);
     }
 }
 

@@ -26,7 +26,8 @@ import javax.faces.context.FacesContext;
 public class DefaultRequestContext extends RequestContext {
 
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
-    private final static String PARTIAL_UPDATE_TARGETS_KEY = "PARTIAL_UPDATE_TARGETS_KEY";
+    private final static String PARTIAL_UPDATE_TARGETS_KEY = "PARTIAL_UPDATE_TARGETS";
+    private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
     private Map<Object, Object> attributes;
 
     public DefaultRequestContext() {
@@ -63,6 +64,11 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
+    public void execute(String script) {
+        getScriptsToExecute().add(script);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCallbackParams() {
         if (attributes.get(CALLBACK_PARAMS_KEY) == null) {
@@ -78,5 +84,13 @@ public class DefaultRequestContext extends RequestContext {
             attributes.put(PARTIAL_UPDATE_TARGETS_KEY, new ArrayList());
         }
         return (List<String>) attributes.get(PARTIAL_UPDATE_TARGETS_KEY);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getScriptsToExecute() {
+        if (attributes.get(EXECUTE_SCRIPT_KEY) == null) {
+            attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList());
+        }
+        return (List<String>) attributes.get(EXECUTE_SCRIPT_KEY);
     }
 }

@@ -55,4 +55,8 @@ public abstract class RequestContext {
     public abstract void addPartialUpdateTargets(Collection<String> collection);
 
     public abstract List<String> getPartialUpdateTargets();
+
+    public abstract List<String> getScriptsToExecute();
+
+    public abstract void execute(String script);
 }

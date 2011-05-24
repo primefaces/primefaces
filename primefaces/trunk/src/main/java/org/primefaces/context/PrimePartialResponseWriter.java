@@ -17,6 +17,7 @@ package org.primefaces.context;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
@@ -35,13 +36,15 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void endDocument() throws IOException {
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        
+
         if(requestContext != null) {
-            requestContext.addCallbackParam("validationFailed", FacesContext.getCurrentInstance().isValidationFailed());
-            Map<String, Object> params = requestContext.getCallbackParams();
 
             try {
-                for (String paramName : params.keySet()) {
+                //callback params
+                requestContext.addCallbackParam("validationFailed", FacesContext.getCurrentInstance().isValidationFailed());
+                Map<String, Object> params = requestContext.getCallbackParams();
+
+                for(String paramName : params.keySet()) {
                     Map<String, String> callbackParamExtension = new HashMap<String, String>();
                     callbackParamExtension.put("primefacesCallbackParam", paramName);
 
@@ -53,12 +56,23 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
                     endExtension();
                 }
+
+                //scripts
+                List<String> scripts = requestContext.getScriptsToExecute();
+                if(!scripts.isEmpty()) {
+                    startEval();
+                    for(String script : scripts) {
+                        write(script + ";");
+                    }
+                    endEval();
+                }
             } catch (Exception exception) {
                 throw new AbortProcessingException(exception);
             } finally {
                 requestContext.release();
             }
         }
+
             
         wrapped.endDocument();
     }
