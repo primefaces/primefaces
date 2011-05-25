@@ -7,7 +7,6 @@
 	<tag>resizable</tag>
 	<tagClass>org.primefaces.component.resizable.ResizableTag</tagClass>
 	<componentClass>org.primefaces.component.resizable.Resizable</componentClass>
-    <componentHandlerClass>org.primefaces.component.resizable.ResizableHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Resizable</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.ResizableRenderer</rendererType>
@@ -16,6 +15,9 @@
      <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -103,17 +105,6 @@
 			<defaultValue>1</defaultValue>
 			<type>java.lang.Integer</type>
 		</attribute>
-         <attribute>
-            <name>onResizeUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>resizeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void resizeListener(org.primefaces.event.ResizeEvent)</method-signature>
-        </attribute>
         <attribute>
             <name>onStart</name>
             <required>false</required>

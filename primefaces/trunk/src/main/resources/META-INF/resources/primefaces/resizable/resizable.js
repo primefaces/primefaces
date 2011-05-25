@@ -14,8 +14,15 @@ PrimeFaces.widget.Resizable = function(id, cfg) {
             _self.cfg.onStop.call(_self, event, ui);
         }
 
-        if(_self.cfg.ajaxResize) {
-            _self.fireAjaxResizeEvent(event, ui);
+        if(_self.cfg.behaviors) {
+            var resizeBehavior = _self.cfg.behaviors['resize'];
+            if(resizeBehavior) {
+                var params = {};
+                params[_self.id + '_width'] = ui.helper.width();
+                params[_self.id + '_height'] = ui.helper.height();
+
+                resizeBehavior.call(_self, event, params);
+            }
         }
     }
 

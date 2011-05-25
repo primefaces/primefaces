@@ -16,14 +16,12 @@
 package org.primefaces.component.resizable;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.event.ResizeEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -32,16 +30,7 @@ public class ResizableRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        Resizable resizable = (Resizable) component;
-        String clientId = resizable.getClientId(context);
-
-        if(params.containsKey(clientId + "_ajaxResize")) {
-            int width = Integer.parseInt(params.get(clientId + "_width"));
-            int height = Integer.parseInt(params.get(clientId + "_height"));
-            
-            //resizable.queueEvent(new ResizeEvent(resizable, width, height));
-        }
+        decodeBehaviors(context, component);
     }
 
     @Override
@@ -91,14 +80,8 @@ public class ResizableRenderer extends CoreRenderer {
         if(resizable.getOnResize() != null) writer.write(",onResize:function(event, ui) {" + resizable.getOnResize() + "}");
         if(resizable.getOnStop() != null) writer.write(",onStop:function(event, ui) {" + resizable.getOnStop() + "}");
 
-        //Ajax resize
-        if(resizable.getResizeListener() != null) {
-            writer.write(",ajaxResize:true");
-
-            String onResizeUpdate = resizable.getOnResizeUpdate();
-            if(resizable.getOnResizeUpdate() != null)
-                writer.write(",onResizeUpdate:'" + ComponentUtils.findClientIds(context, resizable, onResizeUpdate) + "'");
-        }
+        //Behaviors
+        encodeClientBehaviors(context, resizable);
 		
 		writer.write("});});");
 		
