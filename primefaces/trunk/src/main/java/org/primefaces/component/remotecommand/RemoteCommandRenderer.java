@@ -46,13 +46,6 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
-        String clientId = command.getClientId(context);
-
-        //dummy markup
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("style", "display:none", "style");
-        writer.endElement("span");
 
         //script
         writer.startElement("script", command);

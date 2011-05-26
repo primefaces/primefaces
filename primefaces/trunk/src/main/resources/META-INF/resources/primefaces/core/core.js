@@ -203,11 +203,19 @@ PrimeFaces.ajax.AjaxRequest = function(cfg) {
        }
     }
 
-    var form = $(PrimeFaces.escapeClientId(cfg.source)).parents('form:first');
-    if(form.length == 0) {
-        form = $('form').eq(0);
+    var form = null;
+    if(cfg.formId) {
+        form = $(PrimeFaces.escapeClientId(cfg.formId));                    //Explicit form is defined
     }
-    
+    else {
+        form = $(PrimeFaces.escapeClientId(cfg.source)).parents('form:first');     //look for a parent of source
+
+        //source has no parent form so use first form in document
+        if(form.length == 0) {
+            form = $('form').eq(0);
+        }
+    }
+
     var postURL = form.attr('action'),
     postParams = form.serialize(),
     encodedURLfield = form.children("input[name='javax.faces.encodedURL']");

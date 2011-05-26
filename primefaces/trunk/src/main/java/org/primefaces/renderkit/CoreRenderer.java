@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -191,12 +192,19 @@ public class CoreRenderer extends Renderer {
 	
     protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
         UIComponent component = (UIComponent) source;
+        UIComponent form = ComponentUtils.findParentForm(context, component);
+        if(form == null) {
+            throw new FacesException("Component " + component.getClientId(context) + " must be enclosed in a form.");
+        }
 
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ab(");
 
+        //form
+        req.append("{formId:").append("'").append(form.getClientId(context)).append("'");
+
         //source
-        req.append("{source:").append("'").append(component.getClientId(context)).append("'");
+        req.append(",source:").append("'").append(component.getClientId(context)).append("'");
 
         //process
         String process = source.getProcess() != null ? ComponentUtils.findClientIds(context, component, source.getProcess()) : "@all";
