@@ -101,16 +101,18 @@ PrimeFaces.ajax.AjaxUtils = {
     },
 	
     updateState: function(value) {
+        var viewstateValue = $.trim(value);
+        
         $("form").each(function() {
             var form = $(this),
-            formViewState = form.children("input[name='javax.faces.ViewState']").get(0);
+            formViewStateElement = form.children("input[name='javax.faces.ViewState']").get(0);
 
-            if(formViewState) {
-                $(formViewState).val(value);
+            if(formViewStateElement) {
+                $(formViewStateElement).val(viewstateValue);
             }
             else
             {
-                form.append('<input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="' + value + '" autocomplete="off" />');
+                form.append('<input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="' + viewstateValue + '" autocomplete="off" />');
             }
         });
     },
