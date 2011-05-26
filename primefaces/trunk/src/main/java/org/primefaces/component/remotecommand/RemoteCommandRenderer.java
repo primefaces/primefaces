@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,45 +17,50 @@ package org.primefaces.component.remotecommand;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         RemoteCommand command = (RemoteCommand) component;
 
-        if (facesContext.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(facesContext))) {
-            command.queueEvent(new ActionEvent(command));
+        if(context.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(context))) {
+            ActionEvent event = new ActionEvent(command);
+            if(command.isImmediate())
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            else
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+
+            command.queueEvent(event);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
-        String clientId = command.getClientId(facesContext);
-        UIComponent form = ComponentUtils.findParentForm(facesContext, command);
+        String clientId = command.getClientId(context);
 
-        if (form == null) {
-            throw new FacesException("Remote Command '" + command.getName() + "' must be enclosed inside a form component.");
-        }
+        //dummy markup
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("style", "display:none", "style");
+        writer.endElement("span");
 
-        String formClientId = form.getClientId(facesContext);
-
+        //script
         writer.startElement("script", command);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(command.getName() + " = function() {");
 
-        writer.write(buildAjaxRequest(facesContext, command));
+        writer.write(buildAjaxRequest(context, command));
 
         writer.write("}");
 
