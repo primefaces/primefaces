@@ -19,7 +19,6 @@ import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
-import org.primefaces.event.IdleEvent;
 import org.primefaces.facelets.MethodRule;
 
 public class PollHandler extends ComponentHandler {
