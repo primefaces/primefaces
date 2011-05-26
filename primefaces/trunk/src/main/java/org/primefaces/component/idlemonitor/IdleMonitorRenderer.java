@@ -36,12 +36,6 @@ public class IdleMonitorRenderer extends CoreRenderer {
         IdleMonitor monitor = (IdleMonitor) component;
         String clientId = monitor.getClientId();
 
-        //dummy markup
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("style", "display:none", "style");
-        writer.endElement("span");
-
         //script
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
