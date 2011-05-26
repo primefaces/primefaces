@@ -6,7 +6,6 @@
 <component>
     <tag>idleMonitor</tag>
     <tagClass>org.primefaces.component.idlemonitor.IdleMonitorTag</tagClass>
-    <componentHandlerClass>org.primefaces.component.idlemonitor.IdleMonitorHandler</componentHandlerClass>
     <componentClass>org.primefaces.component.idlemonitor.IdleMonitor</componentClass>
     <componentType>org.primefaces.component.IdleMonitor</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
     <attributes>
@@ -34,17 +36,6 @@
         </attribute>
         <attribute>
             <name>onactive</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>idleListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void idleListener(org.primefaces.event.IdleEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>update</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

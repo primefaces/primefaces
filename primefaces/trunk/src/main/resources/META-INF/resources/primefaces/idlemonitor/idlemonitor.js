@@ -174,23 +174,24 @@ PrimeFaces.widget.IdleMonitor = function(id, cfg) {
             _self.cfg.onidle.call(_self);
         }
 		
-        if(_self.cfg.hasIdleListener) {
-            var options = {
-                source: _self.id,
-                process: _self.id
-            };
-
-            if(_self.cfg.update) {
-                options.update = _self.cfg.update;
+        if(_self.cfg.behaviors) {
+            var idleBehavior = _self.cfg.behaviors['idle'];
+            if(idleBehavior) {
+                idleBehavior.call(_self);
             }
-
-            PrimeFaces.ajax.AjaxRequest(options);
         }
     });
 	
     $(document).bind("active.idleTimer", function(){
         if(_self.cfg.onactive) {
             _self.cfg.onactive.call(this);
+        }
+
+        if(_self.cfg.behaviors) {
+            var activeBehavior = _self.cfg.behaviors['active'];
+            if(activeBehavior) {
+                activeBehavior.call(_self);
+            }
         }
     });
     

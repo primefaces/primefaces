@@ -16,34 +16,33 @@
 package org.primefaces.component.idlemonitor;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.event.IdleEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class IdleMonitorRenderer extends CoreRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-        IdleMonitor monitor = (IdleMonitor) component;
-
-        if(params.containsKey(monitor.getClientId(facesContext))) {
-            monitor.queueEvent(new IdleEvent(monitor));
-        }
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         IdleMonitor monitor = (IdleMonitor) component;
         String clientId = monitor.getClientId();
 
+        //dummy markup
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("style", "display:none", "style");
+        writer.endElement("span");
+
+        //script
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
@@ -52,16 +51,12 @@ public class IdleMonitorRenderer extends CoreRenderer {
         writer.write(monitor.resolveWidgetVar() + " = new PrimeFaces.widget.IdleMonitor('" + clientId + "', {");
         writer.write("timeout:" + monitor.getTimeout());
 
-        if(monitor.getIdleListener() != null) {         
-            writer.write(",hasIdleListener:true");
-
-            String update = monitor.getUpdate();
-            if(update != null)
-                writer.write(",update:'" + ComponentUtils.findClientIds(facesContext, monitor, update) + "'");
-        }
-
+        //client side callbacks
         if(monitor.getOnidle() != null) writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
         if(monitor.getOnactive() != null) writer.write(",onactive: function() {" + monitor.getOnactive() + ";}");
+
+        //behaviors
+        encodeClientBehaviors(context, monitor);
 
         writer.write("});});");
 
