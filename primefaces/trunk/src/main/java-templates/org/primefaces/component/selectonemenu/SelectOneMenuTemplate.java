@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.faces.component.UIComponent;
 
     public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all ui-helper-clearfix";
+    public final static String LABEL_CONTAINER_CLASS = "ui-selectonemenu-label-container";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-corner-all";
     public final static String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
     public final static String PANEL_CLASS = "ui-selectonemenu-panel ui-helper-hidden-accessible";

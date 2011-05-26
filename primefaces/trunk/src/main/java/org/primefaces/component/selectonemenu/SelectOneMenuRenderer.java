@@ -101,12 +101,17 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", SelectOneMenu.LABEL_CONTAINER_CLASS, null);
+
         writer.startElement("label", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
 
         writer.writeText(getSelectedLabel(context, menu, selectItems), null);
 
+        writer.endElement("a");
         writer.endElement("label");
     }
 

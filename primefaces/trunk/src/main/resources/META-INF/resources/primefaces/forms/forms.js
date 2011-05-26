@@ -204,9 +204,10 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
-    this.label = this.jq.children('.ui-selectonemenu-label');
+    this.labelContainer = this.jq.find('.ui-selectonemenu-label-container');
+    this.label = this.jq.find('.ui-selectonemenu-label');
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-    this.triggers = this.jq.children('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+    this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children('.ui-selectonemenu-panel');
     this.disabled = this.jq.hasClass('ui-state-disabled');
     this.panel.css('width', this.jq.width());
@@ -266,13 +267,17 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         if(!_self.disabled) {
             _self.triggers.removeClass('ui-state-hover');
         }
-    }).click(function() {
+    }).click(function(e) {
+        _self.labelContainer.focus();
+
         if(!_self.disabled) {
             if(_self.panel.is(":hidden"))
                 _self.show();
             else
                 _self.hide();
         }
+
+        e.preventDefault();
     });
 
     var offset;
@@ -294,6 +299,20 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
             _self.hide();
         }
         _self.hide();
+    });
+
+    _self.labelContainer.keydown(function(e) {
+        var letter = String.fromCharCode(e.keyCode).toLowerCase(),
+        options = $(_self.input).children('option');
+
+        options.each(function(i, option) {
+            if(option.text.toLowerCase().indexOf(letter) == 0) {
+                var item = items.eq(i);
+                item.click();
+
+                return false;
+            }
+        });
     });
 }
 
