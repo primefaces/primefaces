@@ -317,7 +317,7 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
         PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
     }
 
-    PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+    PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 }
 
 PrimeFaces.ajax.RequestManager = {
