@@ -111,8 +111,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         writer.writeText(getSelectedLabel(context, menu, selectItems), null);
 
-        writer.endElement("a");
         writer.endElement("label");
+        writer.endElement("a");
     }
 
     protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu) throws IOException {
