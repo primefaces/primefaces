@@ -87,6 +87,8 @@ public class DataTableRenderer extends CoreRenderer {
 
 		writer.startElement("script", table);
 		writer.writeAttribute("type", "text/javascript", null);
+        
+        writer.write("$(function() {");
 
         writer.write(table.resolveWidgetVar() + " = new PrimeFaces.widget.DataTable('" + clientId + "',{");
 
@@ -141,7 +143,7 @@ public class DataTableRenderer extends CoreRenderer {
             writer.write(",resizableColumns:true");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
 		writer.endElement("script");
 	}

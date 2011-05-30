@@ -919,28 +919,30 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     columnHeaders = $(this.jqId + ' thead th'),
     columnFooters = $(this.jqId + ' tfoot tr td'),
     tbody = $(this.tbody),
-    tbodyTop = tbody.offset().top,
-    tbodyLeft = tbody.offset().left,
     headerTable = $(this.jqId + ' .ui-datatable-scrollable-header table'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     _self = this;
-
+ 
     //Set height of resizer helper
-    var resizerHelperHeight = this.cfg.scrollable ? $(this.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : $(this.tbody).innerHeight() - 1;
+    var resizerHelperHeight = this.cfg.scrollable ? $(this.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : tbody.innerHeight() - 1;
     resizerHelper.css('height', resizerHelperHeight);
 
     //State cookie
     this.columnWidthsCookie = this.id + '_columnWidths';
-
+    
     //Main resize events
     resizers.draggable({
         axis: 'x',
         start: function(event, ui) {
+            var tbodyOffset = tbody.offset();
+            this.tbodyLeft = tbodyOffset.left;
+            this.tbodyTop = tbodyOffset.top;
+    
             resizerHelper.fadeIn();
         },
         drag: function(event, ui) {
-            if(event.clientX >= tbodyLeft) {
-                resizerHelper.css('top', tbodyTop).css('left', event.clientX);
+            if(event.clientX >= this.tbodyLeft) {
+                resizerHelper.offset({left:ui.helper.offset().left, top:this.tbodyTop});
             }
         },
         stop: function(event, ui) {
