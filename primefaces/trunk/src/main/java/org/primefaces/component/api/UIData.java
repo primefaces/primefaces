@@ -20,40 +20,5 @@ import javax.faces.context.FacesContext;
 
 public class UIData extends javax.faces.component.UIData {
 
-    private String baseClientId = null;
-
-    private StringBuilder builder;
-
-    @Override
-    public String getClientId(FacesContext context) {
-        if(baseClientId == null) {
-            baseClientId = super.getClientId(context);
-        }
-
-        return baseClientId;
-    }
-
-    @Override
-    public String getContainerClientId(FacesContext context) {
-        String containerClientId = super.getContainerClientId(context);
-
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1)
-        {
-            return containerClientId;
-        }
-
-        StringBuilder bld = getBuilder();
-        
-        return bld.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
-    }
-
-    public StringBuilder getBuilder() {
-        if(builder == null) {
-            builder = new StringBuilder();
-        }
-        builder.setLength(0);
-        
-        return builder;
-    }
+    
 }
