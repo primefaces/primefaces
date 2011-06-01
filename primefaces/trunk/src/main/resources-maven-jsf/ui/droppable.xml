@@ -6,7 +6,6 @@
 <component>
     <tag>droppable</tag>
     <tagClass>org.primefaces.component.dnd.DroppableTag</tagClass>
-    <componentHandlerClass>org.primefaces.component.dnd.DroppableHandler</componentHandlerClass>
     <componentClass>org.primefaces.component.dnd.Droppable</componentClass>
     <componentType>org.primefaces.component.Droppable</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
     <attributes>
@@ -41,17 +43,6 @@
             <name>activeStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>onDropUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>dropListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void dropListener(org.primefaces.event.DragDropEvent)</method-signature>
         </attribute>
         <attribute>
             <name>onDrop</name>
