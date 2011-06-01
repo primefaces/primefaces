@@ -37,24 +37,22 @@ PrimeFaces.widget.AccordionPanel.prototype.onTabChange = function(event, ui) {
     this.stateHolder.val(ui.options.active);
 
     if(shouldLoad) {
-        this.loadDynamicTab(panel);
-    }
-    else if(this.cfg.ajaxTabChange) {
-        this.fireAjaxTabChangeEvent(panel);
+        this.loadDynamicTab(event, panel);
+    } else {
+        this.fireTabChangeEvent(event, panel);
     }
 }
 
 /**
  * Loads tab contents with ajax
  */
-PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
+PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(event, panel) {
     var _self = this,
     options = {
         source: this.id,
-        process: this.id
+        process: this.id,
+        update: this.id
     };
-
-    options.update = this.cfg.ajaxTabChange ? this.id + ' ' + this.cfg.onTabChangeUpdate : this.id;
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,
@@ -77,17 +75,19 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
             }
 
         }
+        
+        PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 
         return false;
     };
+    
+    options.oncomplete = function() {
+        _self.fireTabChangeEvent(event, panel);
+    }
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
     params[this.id + '_newTab'] = panel.id;
-
-    if(this.cfg.ajaxTabChange) {
-        params[this.id + '_tabChange'] = true;
-    }
 
     options.params = params;
 
@@ -97,23 +97,16 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
 /**
  * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
  */
-PrimeFaces.widget.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
-    var options = {
-        source: this.id,
-        process: this.id
-    };
+PrimeFaces.widget.AccordionPanel.prototype.fireTabChangeEvent = function(event, panel) {
+    if(this.cfg.behaviors) {
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
+        if(tabChangeBehavior) {
+            var params = {};
+            params[this.id + '_newTab'] = panel.id;
 
-    if(this.cfg.onTabChangeUpdate) {
-        options.update = this.cfg.onTabChangeUpdate;
+            tabChangeBehavior.call(this, event, params);
+        }
     }
-
-    var params = {};
-    params[this.id + '_tabChange'] = true;
-    params[this.id + '_newTab'] = panel.id;
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.markAsLoaded = function(panel) {

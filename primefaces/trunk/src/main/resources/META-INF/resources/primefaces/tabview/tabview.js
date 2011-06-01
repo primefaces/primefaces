@@ -61,10 +61,9 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
     var _self = this,
     options = {
         source: this.id,
-        process: this.id
+        process: this.id,
+        update: this.id
     };
-
-    options.update = this.cfg.ajaxTabChange ? this.id + ' ' + this.cfg.onTabChangeUpdate : this.id;
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,

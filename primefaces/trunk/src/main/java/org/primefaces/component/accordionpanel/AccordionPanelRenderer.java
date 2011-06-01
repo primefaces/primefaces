@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,9 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.component.tabview.Tab;
-import org.primefaces.event.TabChangeEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
@@ -42,22 +39,19 @@ public class AccordionPanelRenderer extends CoreRenderer {
             else
                 acco.setActiveIndex(Integer.valueOf(activeIndex));
 		}
-
-        /*if(acco.isTabChangeRequest(context)) {
-            TabChangeEvent changeEvent = new TabChangeEvent(acco, acco.findTabToLoad(context));
-            changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-
-            acco.queueEvent(changeEvent);
-        }*/
+        
+        decodeBehaviors(context, component);
 	}
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		AccordionPanel acco = (AccordionPanel) component;
+        String clientId = acco.getClientId(context);
 
         if(acco.isContentLoadRequest(context)) {
-            Tab tabToLoad = (Tab) acco.findTabToLoad(context);
+            String tabClientId = params.get(clientId + "_newTab");
+            Tab tabToLoad = (Tab) acco.findTab(tabClientId);
 
             tabToLoad.encodeAll(context);
         }else {
@@ -92,14 +86,14 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         int activeIndex = acco.getActiveIndex();
-        boolean hasTabChangeListener = acco.getTabChangeListener() != null;
+        boolean dynamic = acco.isDynamic();
  		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
 		writer.write("active:" + (activeIndex == -1 ? false : activeIndex));
-        writer.write(",dynamic:" + acco.isDynamic());
+        writer.write(",dynamic:" + dynamic);
 		writer.write(",animated:'" + acco.getEffect() + "'");
 		
 		if(acco.getEvent() != null) writer.write(",event:'" + acco.getEvent() + "'");
@@ -109,17 +103,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		if(acco.isDisabled()) writer.write(",disabled:true");
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
 
-        if(acco.isDynamic() || hasTabChangeListener) {
+        if(dynamic) {
             writer.write(",cache:" + acco.isCache());
         }
 
-        if(hasTabChangeListener) {
-            writer.write(",ajaxTabChange:true");
-
-            if(acco.getOnTabChangeUpdate() != null) {
-                writer.write(",onTabChangeUpdate:'" + ComponentUtils.findClientIds(context, acco, acco.getOnTabChangeUpdate()) + "'");
-            }
-        }
+        encodeClientBehaviors(context, acco);
 		
 		writer.write("});");
 		
