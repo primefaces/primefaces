@@ -51,11 +51,11 @@ public class DroppableRenderer extends CoreRenderer {
                 Object data = datasource.getRowData();
                 datasource.setRowIndex(-1);
 
-                event = new DragDropEvent(droppable, dragId, dropId, data);
+                //event = new DragDropEvent(droppable, dragId, dropId, data);
 
             }
             else {
-                event = new DragDropEvent(droppable, dragId, dropId);
+                //event = new DragDropEvent(droppable, dragId, dropId);
             }
             
 

@@ -160,6 +160,32 @@ import org.primefaces.model.TreeNode;
                 TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_collapseNode"), model);
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
             }
+            else if(eventName.equals("select")) {
+                TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_instantSelection"), model);
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+            }
+            else if(eventName.equals("unselect")) {
+                TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_instantUnselection"), model);
+                wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+            } 
+            else if(eventName.equals("dragdrop")) {
+                String draggedNodeId = params.get(clientId + "_draggedNode");
+                String droppedNodeId = params.get(clientId + "_droppedNode");
+
+                model.setRowIndex(-1);
+                TreeNode draggedNode = treeExplorer.findTreeNode(draggedNodeId, model);
+
+                model.setRowIndex(-1);
+                TreeNode droppedNode = treeExplorer.findTreeNode(droppedNodeId, model);
+
+                //update model
+                TreeNode oldParent = draggedNode.getParent();
+                oldParent.getChildren().remove(draggedNode);
+                droppedNode.addChild(draggedNode);
+
+                //fire dragdrop event
+                wrapperEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), draggedNodeId, droppedNodeId, draggedNode);
+            }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             super.queueEvent(wrapperEvent);

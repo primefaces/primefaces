@@ -16,18 +16,18 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.model.TreeNode;
 
-public class NodeUnselectEvent extends FacesEvent {
+public class NodeUnselectEvent extends AjaxBehaviorEvent {
 
 	private TreeNode treeNode;
-
-	public NodeUnselectEvent(UIComponent source, TreeNode treeNode) {
-		super(source);
+	
+	public NodeUnselectEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
+		super(component, behavior);
 		this.treeNode = treeNode;
 	}
 
@@ -47,10 +47,5 @@ public class NodeUnselectEvent extends FacesEvent {
 
 	public void setTreeNode(TreeNode treeNode) {
 		this.treeNode = treeNode;
-	}
-
-	@Override
-	public PhaseId getPhaseId() {
-		return PhaseId.INVOKE_APPLICATION;
 	}
 }

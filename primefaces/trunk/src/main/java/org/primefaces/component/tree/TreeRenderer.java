@@ -44,25 +44,9 @@ public class TreeRenderer extends CoreRenderer {
 		String clientId = tree.getClientId(context);
         TreeModel model = new TreeModel((TreeNode) tree.getValue());
         
-        decodeBehaviors(context, component);
-        /*
-        //state change
-        if(tree.isNodeExpandRequest(context)) {
-            TreeNode nodeToExpand = treeExplorer.findTreeNode(params.get(clientId + "_expandNode"), model);
-            tree.queueEvent(new NodeExpandEvent(tree, nodeToExpand));
-        }
-        else if(tree.isNodeCollapseRequest(context)) {
-            TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_collapseNode"), model);
-            tree.queueEvent(new NodeCollapseEvent(tree, nodeToCollapse));
-        }
-
-        //reset
-        model.setRowIndex(-1);
-
-        //selection
         if(tree.getSelectionMode() != null) {
             String selection = params.get(clientId + "_selection");
-            String instantSelection = params.get(clientId + "_instantSelection");
+            
             String instantUnselection = params.get(clientId + "_instantUnselection");
             boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
 
@@ -90,41 +74,9 @@ public class TreeRenderer extends CoreRenderer {
                     tree.setSelection(selectedNodes);
                 }
             }
-
-            //Queue event to invoke instant select/unselect
-            if(instantSelection != null) {
-                model.setRowIndex(-1);  //reset
-                TreeNode selectedNode = treeExplorer.findTreeNode(instantSelection, model);
-
-                tree.queueEvent(new NodeSelectEvent(tree, selectedNode));
-            }
-            else if(instantUnselection != null) {
-                model.setRowIndex(-1);  //reset
-                TreeNode selectedNode = treeExplorer.findTreeNode(instantUnselection, model);
-
-                tree.queueEvent(new NodeUnselectEvent(tree, selectedNode));
-            }
         }
-
-        //dragdrop
-        if(params.containsKey(clientId + "_dragdrop")) {
-            String draggedNodeId = params.get(clientId + "_draggedNode");
-            String droppedNodeId = params.get(clientId + "_droppedNode");
-            
-            model.setRowIndex(-1);
-            TreeNode draggedNode = treeExplorer.findTreeNode(draggedNodeId, model);
-            
-            model.setRowIndex(-1);
-            TreeNode droppedNode = treeExplorer.findTreeNode(droppedNodeId, model);
-
-            //update model
-            TreeNode oldParent = draggedNode.getParent();
-            oldParent.getChildren().remove(draggedNode);
-            droppedNode.addChild(draggedNode);
-
-            //fire dragdrop event
-            tree.queueEvent(new DragDropEvent(tree, draggedNodeId, droppedNodeId, draggedNode));
-        }*/
+        
+        decodeBehaviors(context, component);
 	}
 
     @Override
