@@ -7,7 +7,6 @@
     <tag>tabView</tag>
     <tagClass>org.primefaces.component.tabview.TabViewTag</tagClass>
     <componentClass>org.primefaces.component.tabview.TabView</componentClass>
-    <componentHandlerClass>org.primefaces.component.tabview.TabViewHandler</componentHandlerClass>
     <componentType>org.primefaces.component.TabView</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.TabViewRenderer</rendererType>
@@ -16,6 +15,9 @@
      <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
     <attributes>
@@ -58,17 +60,6 @@
         </attribute>
         <attribute>
             <name>event</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>tabChangeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void tabChangeListener(org.primefaces.event.TabChangeEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onTabChangeUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

@@ -43,12 +43,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 acco.setActiveIndex(Integer.valueOf(activeIndex));
 		}
 
-        if(acco.isTabChangeRequest(context)) {
+        /*if(acco.isTabChangeRequest(context)) {
             TabChangeEvent changeEvent = new TabChangeEvent(acco, acco.findTabToLoad(context));
             changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
 
             acco.queueEvent(changeEvent);
-        }
+        }*/
 	}
 
 	@Override

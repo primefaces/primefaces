@@ -5,11 +5,11 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
-    this.stateHolder = jQuery(this.jqId + '_activeIndex');
+    this.jq = $(this.jqId);
+    this.stateHolder = $(this.jqId + '_activeIndex');
     var _self = this;
 
-    //tab change handler
+    //tab click handler
     this.cfg.select = function(event, ui) {
         _self.onTabSelect(event, ui);
     };
@@ -50,8 +50,11 @@ PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     if(shouldLoad) {
         this.loadDynamicTab(panel);
     }
-    else if(this.cfg.ajaxTabChange) {
-        this.fireAjaxTabChangeEvent(panel);
+    else if(this.cfg.behaviors) {
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
+        if(tabChangeBehavior) {
+            this.fireAjaxTabChangeEvent(event, panel);
+        }
     }
 }
 
@@ -108,23 +111,12 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
 /**
  * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
  */
-PrimeFaces.widget.TabView.prototype.fireAjaxTabChangeEvent = function(panel) {
-    var options = {
-        source: this.id,
-        process: this.id
-    };
-
-    if(this.cfg.onTabChangeUpdate) {
-        options.update = this.cfg.onTabChangeUpdate;
-    }
-
-    var params = {};
-    params[this.id + '_tabChange'] = true;
+PrimeFaces.widget.TabView.prototype.fireAjaxTabChangeEvent = function(event, panel) {
+    var tabChangeBehavior = this.cfg.behaviors['tabChange'],
+    params = {};
     params[this.id + '_newTab'] = panel.id;
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
+    
+    tabChangeBehavior.call(this, event, params);
 }
 
 PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {

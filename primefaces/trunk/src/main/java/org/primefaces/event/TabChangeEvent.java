@@ -16,16 +16,17 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 import org.primefaces.component.tabview.Tab;
 
-public class TabChangeEvent extends FacesEvent {
+public class TabChangeEvent extends AjaxBehaviorEvent {
 
     private Tab tab;
 
-	public TabChangeEvent(UIComponent uiComponent, Tab tab) {
-		super(uiComponent);
+	public TabChangeEvent(UIComponent component, Behavior behavior, Tab tab) {
+		super(component, behavior);
         this.tab = tab;
 	}
 

@@ -17,16 +17,12 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.el.MethodExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-import org.primefaces.event.TabChangeEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class TabViewRenderer extends CoreRenderer {
 
@@ -39,22 +35,19 @@ public class TabViewRenderer extends CoreRenderer {
         if(!isValueEmpty(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
         }
-
-        if(tabView.isTabChangeRequest(context)) {
-            TabChangeEvent changeEvent = new TabChangeEvent(tabView, tabView.findTabToLoad(context));
-            changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-
-            tabView.queueEvent(changeEvent);
-        }
+        
+        decodeBehaviors(context, component);
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
+        String clientId = tabView.getClientId(context);
 
         if(tabView.isContentLoadRequest(context)) {
-            Tab tabToLoad = (Tab) tabView.findTabToLoad(context);
+            String tabClientId = params.get(clientId + "_newTab");
+            Tab tabToLoad = (Tab) tabView.findTab(tabClientId);
             
             tabToLoad.encodeAll(context);
         } else {
@@ -66,7 +59,6 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
-        MethodExpression tabChangeListener = tabView.getTabChangeListener();
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -89,13 +81,7 @@ public class TabViewRenderer extends CoreRenderer {
             writer.write("}");
         }
 
-        if(tabChangeListener != null) {
-            writer.write(",ajaxTabChange:true");
-
-            if(tabView.getOnTabChangeUpdate() != null) {
-                writer.write(",onTabChangeUpdate:'" + ComponentUtils.findClientIds(context, tabView, tabView.getOnTabChangeUpdate()) + "'");
-            }
-        }
+        encodeClientBehaviors(context, tabView);
 
         writer.write("});");
 
