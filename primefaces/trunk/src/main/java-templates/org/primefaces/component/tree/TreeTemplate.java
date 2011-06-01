@@ -9,36 +9,27 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.lang.StringBuilder;
 import org.primefaces.model.TreeNode;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.model.TreeExplorer;
+import org.primefaces.model.TreeExplorerImpl;
+import org.primefaces.model.TreeModel;
+import org.primefaces.model.TreeNode;
+
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop"));;;
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
 	private Map<String,UITreeNode> nodes;
 
-	public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
-		super.broadcast(event);
-		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		MethodExpression me = null;
+    private TreeExplorer treeExplorer = new TreeExplorerImpl();
 
-		if(event instanceof NodeSelectEvent) {
-			me = getNodeSelectListener();
-		} else if(event instanceof NodeUnselectEvent) {
-			me = getNodeUnselectListener();
-		} else if(event instanceof NodeExpandEvent) {
-			me = getNodeExpandListener();
-		} else if(event instanceof NodeCollapseEvent) {
-			me = getNodeCollapseListener();
-		} else if(event instanceof DragDropEvent) {
-			me = getDragdropListener();
-		}
-		
-		if (me != null) {
-			me.invoke(facesContext.getELContext(), new Object[] {event});
-		}
-	}
-	
 	public UITreeNode getUITreeNodeByType(String type) {
 		UITreeNode node = getTreeNodes().get(type);
 		
@@ -47,6 +38,10 @@ import org.primefaces.model.TreeNode;
 		else
 			return node;
 	}
+
+    private boolean isRequestSource(FacesContext context) {
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+    }
 	
 	public void processUpdates(FacesContext context) {
 		super.processUpdates(context);
@@ -84,16 +79,8 @@ import org.primefaces.model.TreeNode;
 		}
 	}
 	
-	public boolean hasAjaxListener() {
-		return getNodeSelectListener() != null || getNodeExpandListener() != null || getNodeCollapseListener() != null;
-	}
-
     public boolean isNodeExpandRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_expandNode");
-	}
-
-    public boolean isNodeCollapseRequest(FacesContext context) {
-		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_collapseNode");
 	}
 
     public Object getLocalSelectedNodes() {
@@ -146,4 +133,38 @@ import org.primefaces.model.TreeNode;
         return builder.toString();
     }
 
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(isRequestSource(context)) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String clientId = this.getClientId(context);
+            TreeModel model = new TreeModel((TreeNode) getValue());
+            model.setRowIndex(-1);
+            FacesEvent wrapperEvent = null;
+
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+
+            if(eventName.equals("expand")) {
+                TreeNode nodeToExpand = treeExplorer.findTreeNode(params.get(clientId + "_expandNode"), model);
+                wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), nodeToExpand);
+            }
+            else if(eventName.equals("collapse")) {
+                TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_collapseNode"), model);
+                wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+            }
+
+            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            super.queueEvent(wrapperEvent);
+        }
+        else {
+            super.queueEvent(event);
+        }
+    }

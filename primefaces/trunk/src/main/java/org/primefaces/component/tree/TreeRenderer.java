@@ -22,18 +22,12 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.event.DragDropEvent;
-import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.NodeExpandEvent;
-import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.event.NodeUnselectEvent;
 
 import org.primefaces.model.TreeExplorer;
 import org.primefaces.model.TreeExplorerImpl;
 import org.primefaces.model.TreeModel;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class TreeRenderer extends CoreRenderer {
 	
@@ -49,7 +43,9 @@ public class TreeRenderer extends CoreRenderer {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String clientId = tree.getClientId(context);
         TreeModel model = new TreeModel((TreeNode) tree.getValue());
-
+        
+        decodeBehaviors(context, component);
+        /*
         //state change
         if(tree.isNodeExpandRequest(context)) {
             TreeNode nodeToExpand = treeExplorer.findTreeNode(params.get(clientId + "_expandNode"), model);
@@ -128,7 +124,7 @@ public class TreeRenderer extends CoreRenderer {
 
             //fire dragdrop event
             tree.queueEvent(new DragDropEvent(tree, draggedNodeId, droppedNodeId, draggedNode));
-        }
+        }*/
 	}
 
     @Override
@@ -177,33 +173,6 @@ public class TreeRenderer extends CoreRenderer {
         //selection
         if(selectionMode != null) {
             writer.write(",selectionMode:'" + selectionMode + "'");
-
-            //instant selection
-            if(tree.getNodeSelectListener() != null) {
-                //update is deprecated and used for backward compatibility
-                String onSelectUpdate = tree.getOnSelectUpdate() != null ? tree.getOnSelectUpdate() : tree.getUpdate();
-                String onSelectProcess = tree.getOnSelectProcess();
-
-                writer.write(",instantSelect:true");
-
-                //onselectStart and onselectComplete are deprecated but still here for backward compatibility for some time
-                if(tree.getOnselectStart() != null) writer.write(",onSelectStart:function() {" + tree.getOnselectStart() + "}");
-                if(tree.getOnselectStart() != null) writer.write(",onSelectComplete:function(xhr, status, args) {" + tree.getOnselectStart() + "}");
-                if(tree.getOnSelectStart() != null) writer.write(",onSelectStart:function() {" + tree.getOnSelectStart() + "}");
-                if(tree.getOnSelectComplete() != null) writer.write(",onSelectComplete:function(xhr, status, args) {" + tree.getOnSelectComplete() + "}");
-
-                if(onSelectUpdate != null)
-                    writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(context, tree, onSelectUpdate) + "'");
-                if(onSelectProcess != null)
-                    writer.write(",onSelectProcess:'" + ComponentUtils.findClientIds(context, tree, onSelectProcess) + "'");
-            }
-
-            if(tree.getNodeUnselectListener() != null) {
-                writer.write(",instantUnselect:true");
-
-                if(tree.getOnUnselectUpdate() != null)
-                    writer.write(",onUnselectUpdate:'" + ComponentUtils.findClientIds(context, tree, tree.getOnUnselectUpdate()) + "'");
-            }
         }
 
         if(tree.getOnNodeClick() != null) {
@@ -213,20 +182,12 @@ public class TreeRenderer extends CoreRenderer {
         //dragdrop
         if(tree.isDragdrop()) {
             writer.write(",dragdrop:true");
-
-            String onDragdropUpdate = tree.getOnDragdropUpdate();
-            if(onDragdropUpdate != null)
-                writer.write(",onDragdropUpdate:'" + ComponentUtils.findClientIds(context, tree, onDragdropUpdate) + "'");
         }
-
-        //state change listeners
-        if(tree.getNodeExpandListener() != null)
-            encodeStateChangeListener(context, tree, "hasExpandListener", "onExpandUpdate", tree.getOnExpandUpdate());
-        if(tree.getNodeCollapseListener() != null)
-            encodeStateChangeListener(context, tree, "hasCollapseListener", "onCollapseUpdate", tree.getOnCollapseUpdate());
 
         //expand-collapse icon states for specific treenodes
         encodeIconStates(context, tree);
+        
+        encodeClientBehaviors(context, tree);
 
         writer.write("});});");
 
@@ -397,15 +358,6 @@ public class TreeRenderer extends CoreRenderer {
 		writer.writeAttribute("name", id, null);
         writer.writeAttribute("value", tree.getSelectedRowKeysAsString(), null);
 		writer.endElement("input");
-    }
-
-    protected void encodeStateChangeListener(FacesContext context, Tree tree, String configParam, String updateParam, String update) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.write("," + configParam + ":true");
-
-        if(update != null)
-            writer.write("," + updateParam + ":'" + ComponentUtils.findClientIds(context, tree, update) + "'");
     }
 
 	protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {

@@ -6,7 +6,6 @@
 <component>
 	<tag>tree</tag>
 	<tagClass>org.primefaces.component.tree.TreeTag</tagClass>
-	<componentHandlerClass>org.primefaces.component.tree.TreeHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.tree.Tree</componentClass>
 	<componentType>org.primefaces.component.Tree</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -44,30 +46,6 @@
 			<defaultValue>true</defaultValue>
 		</attribute>
 		<attribute>
-			<name>nodeSelectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeSelectListener(org.primefaces.event.NodeSelectEvent)</method-signature>
-		</attribute>
-        <attribute>
-			<name>nodeUnselectListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeUnselectListener(org.primefaces.event.NodeUnselectEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>nodeExpandListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeExpandListener(org.primefaces.event.NodeExpandEvent)</method-signature>
-		</attribute>
-		<attribute>
-			<name>nodeCollapseListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void nodeCollapseListener(org.primefaces.event.NodeCollapseEvent)</method-signature>
-		</attribute>
-		<attribute>
 			<name>onNodeClick</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -80,41 +58,6 @@
 		</attribute>
 		<attribute>
 			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onSelectProcess</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onselectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onselectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onSelectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onSelectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onUnselectUpdate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -139,31 +82,10 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<name>onExpandUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onCollapseUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
 			<name>dragdrop</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-		</attribute>
-        <attribute>
-			<name>dragdropListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void dragdropListener(org.primefaces.event.DragDropEvent)</method-signature>
-		</attribute>
-        <attribute>
-			<name>onDragdropUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
 		</attribute>
 	</attributes>
 	<resources>

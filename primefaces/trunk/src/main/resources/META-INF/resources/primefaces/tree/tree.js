@@ -95,10 +95,6 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
             formId: this.cfg.formId
         };
 
-        if(this.cfg.hasExpandListener && this.cfg.onExpandUpdate) {
-            options.update = options.update + ' ' + this.cfg.onExpandUpdate;
-        }
-
         options.onsuccess = function(responseXML) {
             var xmlDoc = responseXML.documentElement,
             updates = xmlDoc.getElementsByTagName("update");
@@ -120,9 +116,15 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
                     PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
                 }
             }
+            
+            PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 
             return false;
         };
+        
+        options.oncomplete = function() {
+            _self.fireExpandEvent(node);
+        }
 
         var params = {};
         params[this.id + '_expandNode'] = _self.getNodeId(node);
@@ -134,6 +136,19 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
     else {
         this.showNodeChildren(node);
         this.saveClientState();
+        this.fireExpandEvent(node);
+    }
+}
+
+PrimeFaces.widget.Tree.prototype.fireExpandEvent = function(node) {
+    if(this.cfg.behaviors) {
+        var expandBehavior = this.cfg.behaviors['expand'];
+        if(expandBehavior) {
+            var params = {};
+            params[this.id + '_expandNode'] = this.getNodeId(node);
+            
+            expandBehavior.call(this, node, params);
+        }
     }
 }
 
@@ -150,19 +165,30 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
         nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
     }
 
-    node.children('.ui-tree-nodes').hide();
+    var childNodeContainer = node.children('.ui-tree-nodes');
+    childNodeContainer.hide();
         
     if(_self.cfg.dynamic) {
         if(!_self.cfg.cache) {
-            $(this).remove();
-
-            if(_self.cfg.hasCollapseListener) {
-                _self.fireNodeCollapseEvent(node);
-            }
+            childNodeContainer.remove();
         }
     }
     else {
         _self.saveClientState();
+    }
+    
+    _self.fireCollapseEvent(node);
+}
+
+PrimeFaces.widget.Tree.prototype.fireCollapseEvent = function(node) {
+    if(this.cfg.behaviors) {
+        var collapseBehavior = this.cfg.behaviors['collapse'];
+        if(collapseBehavior) {
+            var params = {};
+            params[this.id + '_collapseNode'] = this.getNodeId(node);
+            
+            collapseBehavior.call(this, node, params);
+        }
     }
 }
 
@@ -296,22 +322,6 @@ PrimeFaces.widget.Tree.prototype.fireNodeUnselectEvent = function(node) {
 
     var params = {};
     params[this.id + '_instantUnselection'] = this.getNodeId(node);
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
-}
-
-PrimeFaces.widget.Tree.prototype.fireNodeCollapseEvent = function(node) {
-    var options = {
-        source: this.id,
-        process: this.id,
-        update: this.cfg.onCollapseUpdate,
-        formId: this.cfg.formId
-    };
-
-    var params = {};
-    params[this.id + '_collapseNode'] = this.getNodeId(node);
 
     options.params = params;
 
