@@ -156,16 +156,16 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if(panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer");
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle());
         }
 
         if(panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler");
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle());
         }
 
         if(panel.getOptionsMenu() != null) {
-            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu");
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle());
         }
 
         writer.endElement("div");
@@ -206,12 +206,15 @@ public class PanelRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id) throws IOException {
+    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "javascript:void(0)", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
+        if(title != null) {
+            writer.writeAttribute("title", title, null);
+        }
 
         writer.startElement("span", null);
         
