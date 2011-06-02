@@ -79,10 +79,6 @@ public class InputTextRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputText.getClientId(context);
-        String defaultClass = themeForms() ? InputText.THEME_INPUT_CLASS : InputText.PLAIN_INPUT_CLASS;
-        defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        String styleClass = inputText.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
@@ -100,7 +96,7 @@ public class InputTextRenderer extends InputRenderer {
         if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
 
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
 
         writer.endElement("input");
 	}
@@ -131,4 +127,15 @@ public class InputTextRenderer extends InputRenderer {
 
 		return value;
 	}
+    
+    protected String createStyleClass(InputText inputText) {
+        String defaultClass = themeForms() ? InputText.THEME_INPUT_CLASS : InputText.PLAIN_INPUT_CLASS;
+        defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
+        defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
+        
+        String styleClass = inputText.getStyleClass();
+        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        
+        return styleClass;
+    }
 }

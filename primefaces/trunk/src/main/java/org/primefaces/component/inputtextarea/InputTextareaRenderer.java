@@ -80,14 +80,6 @@ public class InputTextareaRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputTextarea.getClientId(context);
-        String defaultClass = themeForms() ? InputTextarea.THEME_INPUT_CLASS : InputTextarea.PLAIN_INPUT_CLASS;
-        defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        String styleClass = inputTextarea.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-
-        if(inputTextarea.isAutoResize()) {
-            styleClass = styleClass + " ui-inputtextarea-resizable";
-        }
 
 		writer.startElement("textarea", null);
 		writer.writeAttribute("id", clientId, null);
@@ -99,7 +91,7 @@ public class InputTextareaRenderer extends InputRenderer {
         if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
 
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
         String valueToRender = ComponentUtils.getStringValueToRender(context, inputTextarea);
 		if(valueToRender != null) {
@@ -135,4 +127,19 @@ public class InputTextareaRenderer extends InputRenderer {
 
 		return value;
 	}
+    
+    protected String createStyleClass(InputTextarea inputTextarea) {
+        String defaultClass = themeForms() ? InputTextarea.THEME_INPUT_CLASS : InputTextarea.PLAIN_INPUT_CLASS;
+        defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
+        defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
+        
+        String styleClass = inputTextarea.getStyleClass();
+        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        
+        if(inputTextarea.isAutoResize()) {
+            styleClass = styleClass + " ui-inputtextarea-resizable";
+        }
+        
+        return styleClass;
+    }
 }
