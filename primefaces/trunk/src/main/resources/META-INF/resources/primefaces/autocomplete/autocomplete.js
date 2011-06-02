@@ -91,6 +91,10 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
                 return false;
             }
         };
+        
+        if(_self.cfg.global === false) {
+            options.global = false;
+        }
 
         var params = {};
         params[_self.id + '_query'] = request.term;

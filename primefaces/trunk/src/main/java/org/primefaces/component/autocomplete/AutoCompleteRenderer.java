@@ -190,6 +190,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());
         if(ac.isDisabled()) writer.write(",disabled:true");
         if(ac.isForceSelection()) writer.write(",forceSelection:true");
+        if(!ac.isGlobal()) writer.write(",global:false");
 
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");

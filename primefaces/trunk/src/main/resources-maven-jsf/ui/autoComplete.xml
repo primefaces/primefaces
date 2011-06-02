@@ -80,6 +80,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>
