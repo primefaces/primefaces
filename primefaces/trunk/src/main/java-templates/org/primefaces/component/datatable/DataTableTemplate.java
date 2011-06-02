@@ -26,6 +26,7 @@ import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
+import org.primefaces.event.data.SortEvent;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -262,34 +263,6 @@ import org.primefaces.event.data.PageEvent;
             pageVE.setValue(context.getELContext(), getPage());
     }
 
-    /*public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
-		super.broadcast(event);
-
-		FacesContext context = FacesContext.getCurrentInstance();
-        String outcome = null;
-        MethodExpression me = null;
-		
-		if(event instanceof org.primefaces.event.SelectEvent) {
-            me = getRowSelectListener();
-        } else if(event instanceof org.primefaces.event.UnselectEvent) {
-            me = getRowUnselectListener();
-        } else if(event instanceof org.primefaces.event.RowEditEvent) {
-            me = getRowEditListener();
-        }
-
-        if(me != null) {
-            outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
-        }
-
-        if(outcome != null) {
-            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-
-            navHandler.handleNavigation(context, null, outcome);
-
-            context.renderResponse();
-        }
-	}*/
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -315,6 +288,12 @@ import org.primefaces.event.data.PageEvent;
             else if(eventName.equals("page")) {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
             }
+            else if(eventName.equals("sort")) {
+                boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
+                Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
+
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, asc);
+            }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
 
@@ -323,6 +302,16 @@ import org.primefaces.event.data.PageEvent;
         else {
             super.queueEvent(event);
         }
+    }
+
+    private Column findColumn(String clientId) {
+        for(Column column : getColumns()) {
+            if(column.getClientId().equals(clientId)) {
+                return column;
+            }
+        }
+        
+        return null;
     }
 
     public ColumnGroup getColumnGroup(String target) {

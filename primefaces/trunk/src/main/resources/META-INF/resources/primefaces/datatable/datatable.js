@@ -348,6 +348,19 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 
         return false;
     };
+    
+    options.oncomplete = function() {
+        if(_self.cfg.behaviors) {
+            var sortBehavior = _self.cfg.behaviors['sort'];
+            if(sortBehavior) {
+                var sortBehaviorParams = {};
+                sortBehaviorParams[_self.id + "_sortKey"] = columnId;
+                sortBehaviorParams[_self.id + "_sortDir"] = asc;
+                
+                sortBehavior.call(_self, columnId, sortBehaviorParams);
+            }
+        }
+    };
 
     var params = {};
     params[this.id + "_sorting"] = true;
