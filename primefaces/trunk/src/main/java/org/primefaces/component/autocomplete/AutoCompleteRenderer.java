@@ -27,9 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.event.PhaseId;
 
-import org.primefaces.event.SelectEvent;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -44,8 +42,6 @@ public class AutoCompleteRenderer extends InputRenderer {
             return;
         }
 
-        decodeBehaviors(facesContext, autoComplete);
-
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = autoComplete.getClientId(facesContext);
         String valueParam = autoComplete.getVar() == null ? clientId + "_input" : clientId + "_hinput";
@@ -54,6 +50,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(submittedValue != null) {
             autoComplete.setSubmittedValue(submittedValue);
         }
+        
+        decodeBehaviors(facesContext, autoComplete);
     }
 
     @Override
@@ -63,7 +61,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if(params.containsKey(autoComplete.getClientId(facesContext) + "_query")) {
             encodeResults(facesContext, component);
-        } else {
+        } 
+        else {
             encodeMarkup(facesContext, autoComplete);
             encodeScript(facesContext, autoComplete);
         }
@@ -192,15 +191,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.isDisabled()) writer.write(",disabled:true");
         if(ac.isForceSelection()) writer.write(",forceSelection:true");
 
-        //Instant ajax selection
-        if (ac.getSelectListener() != null) {
-            writer.write(",ajaxSelect:true");
-
-            if (ac.getOnSelectUpdate() != null) {
-                writer.write(",onSelectUpdate:'" + ComponentUtils.findClientIds(facesContext, ac, ac.getOnSelectUpdate()) + "'");
-            }
-        }
-
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
         if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
@@ -237,13 +227,6 @@ public class AutoCompleteRenderer extends InputRenderer {
                 }
             }
         }
-/*
-        //Queue ajax select event
-        if (facesContext.getExternalContext().getRequestParameterMap().containsKey(autoComplete.getClientId(facesContext) + "_ajaxSelect")) {
-            SelectEvent selectEvent = new SelectEvent(autoComplete, value);
-            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            autoComplete.queueEvent(selectEvent);
-        }*/
 
         return value;
     }

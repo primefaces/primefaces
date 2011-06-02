@@ -109,23 +109,11 @@ PrimeFaces.widget.AutoComplete.prototype.onItemSelect = function(event, ui) {
         this.jq.val(ui.item.label);
 	
     //Fire instant selection event
-    if(this.cfg.ajaxSelect) {
-        var options = {
-            source: this.id,
-            process: this.id,
-            formId: this.cfg.formId
-        };
-
-        if(this.cfg.onSelectUpdate) {
-            options.update = this.cfg.onSelectUpdate;
+    if(this.cfg.behaviors) {
+        var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(itemSelectBehavior) {
+            itemSelectBehavior.call(this, event);
         }
-        
-        var params = {};
-        params[this.id + "_ajaxSelect"] = true;
-
-        options.params = params;
-
-        PrimeFaces.ajax.AjaxRequest(options);
     }
 }
 

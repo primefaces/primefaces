@@ -71,17 +71,6 @@
             <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <name>selectListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void selectListener(org.primefaces.event.SelectEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>onSelectUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
