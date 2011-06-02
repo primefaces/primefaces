@@ -17,12 +17,16 @@ package org.primefaces.component.editor;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class EditorRenderer extends CoreRenderer{
 
@@ -45,10 +49,10 @@ public class EditorRenderer extends CoreRenderer{
 		encodeScript(facesContext, editor);
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Editor editor) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = editor.getClientId(facesContext);
-        String value = (String) editor.getValue();
+	protected void encodeMarkup(FacesContext context, Editor editor) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = editor.getClientId(context);
+        String valueToRender = ComponentUtils.getStringValueToRender(context, editor);
         String inputId = clientId + "_input";
 
         writer.startElement("div", editor);
@@ -60,8 +64,8 @@ public class EditorRenderer extends CoreRenderer{
 		writer.writeAttribute("id", inputId , null);
         writer.writeAttribute("name", inputId , null);
 
-        if(value != null) {
-            writer.write(value);
+        if(valueToRender != null) {
+            writer.write(valueToRender);
         }
 
 		writer.endElement("textarea");
@@ -91,5 +95,32 @@ public class EditorRenderer extends CoreRenderer{
 		writer.write("});});");
 		
 		writer.endElement("script");
+	}
+    
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		Editor editor = (Editor) component;
+		String value = (String) submittedValue;
+		Converter converter = editor.getConverter();
+
+		//first ask the converter
+		if(converter != null) {
+			return converter.getAsObject(context, editor, value);
+		}
+		//Try to guess
+		else {
+            ValueExpression ve = editor.getValueExpression("value");
+            
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                Converter converterForType = context.getApplication().createConverter(valueType);
+
+                if(converterForType != null) {
+                    return converterForType.getAsObject(context, editor, value);
+                }
+            }
+		}
+
+		return value;
 	}
 }
