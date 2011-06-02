@@ -208,27 +208,6 @@ class DataHelper {
 			decodeSingleSelection(table, selection);
 		else
 			decodeMultipleSelection(table, selection);
-
-        //Instant selection and unselection
-        queueInstantSelectionEvent(context, table, clientId, params);
-	}
-
-    void queueInstantSelectionEvent(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-
-		if(table.isInstantSelectionRequest(context)) {
-            int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
-            table.setRowIndex(selectedRowIndex);
-            SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
-            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            table.queueEvent(selectEvent);
-        }
-        else if(table.isInstantUnselectionRequest(context)) {
-            int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
-            table.setRowIndex(unselectedRowIndex);
-            UnselectEvent unselectEvent = new UnselectEvent(table, table.getRowData());
-            unselectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            table.queueEvent(unselectEvent);
-        }
 	}
 
     void decodeSingleSelection(DataTable table, String selection) {

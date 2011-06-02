@@ -237,13 +237,13 @@ public class AutoCompleteRenderer extends InputRenderer {
                 }
             }
         }
-
+/*
         //Queue ajax select event
         if (facesContext.getExternalContext().getRequestParameterMap().containsKey(autoComplete.getClientId(facesContext) + "_ajaxSelect")) {
             SelectEvent selectEvent = new SelectEvent(autoComplete, value);
             selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
             autoComplete.queueEvent(selectEvent);
-        }
+        }*/
 
         return value;
     }

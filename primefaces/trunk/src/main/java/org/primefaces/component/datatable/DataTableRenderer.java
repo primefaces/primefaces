@@ -56,7 +56,9 @@ public class DataTableRenderer extends CoreRenderer {
         }
         else if(table.isSortRequest(context)) {
             dataHelper.decodeSortRequest(context, table);
-        }  
+        }
+        
+        decodeBehaviors(context, component);
 	}
     
     @Override
@@ -142,6 +144,9 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isResizableColumns()) {
             writer.write(",resizableColumns:true");
         }
+        
+        //Behaviors
+        encodeClientBehaviors(context, table);
 
         writer.write("});});");
 
@@ -716,31 +721,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(table.isDblClickSelect()) {
             writer.write(",dblclickSelect:true");
-        }
-
-        //update is deprecated and used for backward compatibility
-        String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
-
-        if(table.getRowSelectListener() != null || onRowSelectUpdate != null) {
-            writer.write(",instantSelect:true");
-
-            if(onRowSelectUpdate != null) {
-                writer.write(",onRowSelectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), onRowSelectUpdate) + "'");
-            }
-
-            //onselectstart and onselectcomplete are deprecated but still here for backward compatibility for some time
-            if(table.getOnselectStart() != null) writer.write(",onRowSelectStart:function() {" + table.getOnselectStart() + "}");
-            if(table.getOnselectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnselectComplete() + "}");
-            if(table.getOnRowSelectStart() != null) writer.write(",onRowSelectStart:function() {" + table.getOnRowSelectStart() + "}");
-            if(table.getOnRowSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnRowSelectComplete() + "}");
-        }
-
-        if(table.getRowUnselectListener() != null) {
-            writer.write(",instantUnselect:true");
-            
-            if(table.getOnRowUnselectUpdate() != null) {
-                writer.write(",onRowUnselectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), table.getOnRowUnselectUpdate()) + "'");
-            }
         }
     }
 

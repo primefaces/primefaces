@@ -18,6 +18,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&data_component_attributes;
@@ -113,59 +116,12 @@
             <defaultValue>No records found.</defaultValue>
 		</attribute>
 		<attribute>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onRowSelectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-            <name>rowSelectListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>java.lang.String rowSelectListener(org.primefaces.event.SelectEvent)</method-signature>
-        </attribute>
-        <attribute>
-            <name>rowUnselectListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>java.lang.String rowUnselectListener(org.primefaces.event.UnselectEvent)</method-signature>
-        </attribute>
-        <attribute>
-			<name>onRowUnselectUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onselectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onselectComplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>onRowSelectStart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>onRowSelectComplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

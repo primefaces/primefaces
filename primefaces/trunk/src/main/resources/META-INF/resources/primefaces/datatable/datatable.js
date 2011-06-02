@@ -423,7 +423,7 @@ PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
         var row = $(rowElement);
 
         if(row.hasClass('ui-selected'))
-            this.unselectRow(row);
+           this.unselectRow(row);
         else
            this.selectRow(row);
        
@@ -447,9 +447,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
     //save state
     this.writeSelections();
 
-    if(this.cfg.instantSelect) {
-        this.fireRowSelectEvent(rowId);
-    }
+    this.fireRowSelectEvent(rowId);
 }
 
 PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
@@ -466,58 +464,39 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
     //save state
     this.writeSelections();
 
-    if(this.cfg.instantUnselect) {
-        this.fireRowUnselectEvent(rowId);
-    }
+    this.fireRowUnselectEvent(rowId);
 }
 
 /**
  *  Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
  */
 PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
-    var options = {
-        source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
-    };
-
-    if(this.cfg.onRowSelectUpdate) {
-        options.update = this.cfg.onRowSelectUpdate;
+    if(this.cfg.behaviors) {
+        var selectBehavior = this.cfg.behaviors['selectRow'];
+        
+        if(selectBehavior) {
+            var params = {};
+            params[this.id + '_instantSelectedRowIndex'] = rowId;
+            
+            selectBehavior.call(this, rowId, params);
+        }
     }
-    
-    if(this.cfg.onRowSelectStart) 
-        options.onstart = this.cfg.onRowSelectStart;
-    if(this.cfg.onRowSelectComplete)
-        options.oncomplete = this.cfg.onRowSelectComplete;
-    
-    var params = {};
-    params[this.id + '_instantSelectedRowIndex'] = rowId;
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
  *  Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
  */
 PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
-    var options = {
-        source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
-    };
-
-    if(this.cfg.onRowUnselectUpdate) {
-        options.update = this.cfg.onRowUnselectUpdate;
+    if(this.cfg.behaviors) {
+        var unselectBehavior = this.cfg.behaviors['unselectRow'];
+        
+        if(unselectBehavior) {
+            var params = {};
+            params[this.id + '_instantUnselectedRowIndex'] = rowId;
+            
+            unselectBehavior.call(this, rowId, params);
+        }
     }
-
-    var params = {};
-    params[this.id + '_instantUnselectedRowIndex'] = rowId;
-
-    options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**

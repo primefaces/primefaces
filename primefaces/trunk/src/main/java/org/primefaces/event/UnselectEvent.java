@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,16 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class UnselectEvent extends FacesEvent {
+public class UnselectEvent extends AjaxBehaviorEvent {
 
 	private Object object;
 
-	public UnselectEvent(UIComponent component, Object object) {
-		super(component);
+	public UnselectEvent(UIComponent component, Behavior behavior, Object object) {
+		super(component, behavior);
 		this.object = object;
 	}
 

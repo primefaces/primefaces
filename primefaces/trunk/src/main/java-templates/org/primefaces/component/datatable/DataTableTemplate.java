@@ -5,6 +5,12 @@ import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.component.row.Row;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import javax.faces.component.UIComponent;
 import javax.faces.application.NavigationHandler;
 import java.util.Map;
@@ -13,6 +19,12 @@ import java.util.HashMap;
 import org.primefaces.model.LazyDataModel;
 import java.lang.StringBuilder;
 import java.util.List;
+import javax.el.ValueExpression;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -44,6 +56,8 @@ import java.util.List;
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
+
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "selectRow", "unselectRow", "rowEdit"));
 
     public List<Column> columns;
 
@@ -247,7 +261,7 @@ import java.util.List;
             pageVE.setValue(context.getELContext(), getPage());
     }
 
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    /*public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
 
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -273,7 +287,39 @@ import java.util.List;
 
             context.renderResponse();
         }
-	}
+	}*/
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(isRequestSource(context)) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String clientId = this.getClientId(context);
+            FacesEvent wrapperEvent = null;
+
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+
+            if(eventName.equals("selectRow")) {
+                int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
+                this.setRowIndex(selectedRowIndex);
+                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+            }
+            else if(eventName.equals("unselectRow")) {
+                int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
+                this.setRowIndex(unselectedRowIndex);
+                wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+            }
+
+            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+            super.queueEvent(wrapperEvent);
+        }
+        else {
+            super.queueEvent(event);
+        }
+    }
 
     public ColumnGroup getColumnGroup(String target) {
         for(UIComponent child : this.getChildren()) {
@@ -432,3 +478,13 @@ import java.util.List;
     public Object getLocalSelection() {
 		return getStateHelper().get(PropertyKeys.selection);
 	}
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    private boolean isRequestSource(FacesContext context) {
+        setRowIndex(-1);
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+    }
