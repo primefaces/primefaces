@@ -18,5 +18,15 @@
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<name>titleStyle</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>titleStyleClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</attributes>
 </component>

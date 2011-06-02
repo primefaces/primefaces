@@ -128,6 +128,10 @@ public class TabViewRenderer extends CoreRenderer {
                 Tab tab = (Tab) kid;
 
                 writer.startElement("li", null);
+                if(tab.getTitleStyle() != null) 
+                    writer.writeAttribute("style", tab.getTitleStyle(), null);
+                if(tab.getTitleStyleClass() != null) 
+                    writer.writeAttribute("class", tab.getTitleStyleClass(), null);
 
                 writer.startElement("a", null);
                 writer.writeAttribute("href", "#" + tab.getClientId(facesContext), null);
