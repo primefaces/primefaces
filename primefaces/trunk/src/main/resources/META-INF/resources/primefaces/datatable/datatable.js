@@ -286,6 +286,15 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
 
         return false;
     };
+    
+    options.oncomplete = function() {
+        if(_self.cfg.behaviors) {
+            var pageBehavior = _self.cfg.behaviors['page'];
+            if(pageBehavior) {
+                pageBehavior.call(_self);
+            }
+        }
+    };
 
     var params = {};
     params[this.id + "_paging"] = true;

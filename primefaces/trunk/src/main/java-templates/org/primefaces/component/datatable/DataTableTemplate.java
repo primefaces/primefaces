@@ -25,6 +25,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.event.data.PageEvent;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -310,6 +311,9 @@ import org.primefaces.event.UnselectEvent;
                 int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
                 this.setRowIndex(unselectedRowIndex);
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+            }
+            else if(eventName.equals("page")) {
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
