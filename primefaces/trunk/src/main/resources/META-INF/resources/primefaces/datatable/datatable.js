@@ -422,6 +422,15 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
         return false;
     };
+    
+    options.oncomplete = function() {
+        if(_self.cfg.behaviors) {
+            var filterBehavior = _self.cfg.behaviors['filter'];
+            if(filterBehavior) {
+                filterBehavior.call(_self);
+            }
+        }
+    };
 
     var params = {};
     params[this.id + "_filtering"] = true;

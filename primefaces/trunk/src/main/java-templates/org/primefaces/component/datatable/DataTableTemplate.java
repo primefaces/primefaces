@@ -267,7 +267,7 @@ import org.primefaces.event.data.SortEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(isRequestSource(context)) {
+        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -293,6 +293,9 @@ import org.primefaces.event.data.SortEvent;
                 Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, asc);
+            }
+            else if(eventName.equals("filter")) {
+                wrapperEvent = event;
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
