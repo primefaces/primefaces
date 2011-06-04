@@ -268,6 +268,7 @@ import org.primefaces.event.data.SortEvent;
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+            setRowIndex(-1);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -481,6 +482,5 @@ import org.primefaces.event.data.SortEvent;
     }
 
     private boolean isRequestSource(FacesContext context) {
-        setRowIndex(-1);
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).startsWith(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
     }
