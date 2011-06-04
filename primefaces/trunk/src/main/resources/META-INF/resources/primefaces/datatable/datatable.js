@@ -27,6 +27,7 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     }
 
     if(this.cfg.expansion) {
+        this.expansionProcess = [];
         this.setupExpansionEvents();
     }
 
@@ -663,22 +664,33 @@ PrimeFaces.widget.DataTable.prototype.unselectCell = function(cell) {
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
     var expander = $(expanderElement),
     row = expander.parent().parent(),
-    expanded = row.hasClass('ui-expanded-row');
-
-    if(expanded) {
-        expander.removeClass('ui-icon-circle-triangle-s');
-        row.removeClass('ui-expanded-row');
-        row.next().fadeOut(function() {
-           $(this).remove();
-        });
-    }
-    else {
-        expander.addClass('ui-icon-circle-triangle-s');
-        row.addClass('ui-expanded-row');
-
-        this.loadExpandedRowContent(row);
-    }
+    rowId = row.attr('id'),
+    expanded = row.hasClass('ui-expanded-row'),
+    _self = this;
     
+    //Run toggle expansion if row is not being toggled already to prevent conflicts
+    if($.inArray(rowId, this.expansionProcess) == -1) {
+        if(expanded) {
+            this.expansionProcess.push(rowId);
+            expander.removeClass('ui-icon-circle-triangle-s');
+            row.removeClass('ui-expanded-row');
+
+            row.next().fadeOut(function() {
+               $(this).remove();
+
+               _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
+                   return r != rowId;
+               });
+            });
+        }
+        else {
+            this.expansionProcess.push(row.attr('id'));
+            expander.addClass('ui-icon-circle-triangle-s');
+            row.addClass('ui-expanded-row');
+
+            this.loadExpandedRowContent(row);
+        }
+    }
 }
 
 PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
@@ -714,6 +726,12 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
         }
 
         return false;
+    };
+    
+    options.oncomplete = function() {
+        _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
+           return r != row.attr('id');
+       });
     };
 
     var params = {};
