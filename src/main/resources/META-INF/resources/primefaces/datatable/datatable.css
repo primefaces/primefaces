@@ -72,6 +72,7 @@
 
 .ui-datatable .ui-row-toggler {
     cursor: pointer;
+    margin-right: 4px;
 }
 
 .ui-datatable .ui-cell-editor-input {
