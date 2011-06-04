@@ -24,10 +24,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
-import javax.faces.render.FacesBehaviorRenderer;
 import org.primefaces.util.ComponentUtils;
 
-@FacesBehaviorRenderer(rendererType="org.primefaces.component.AjaxBehaviorRenderer")
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
     @Override

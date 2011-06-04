@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,17 +28,14 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
-import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
 	@ResourceDependency(library="primefaces", name="core/core.js")
 })
-@FacesBehavior("org.primefaces.component.AjaxBehavior")
 public class AjaxBehavior extends ClientBehaviorBase {
 
     private String update;
