@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,32 +26,26 @@ import org.primefaces.renderkit.CoreRenderer;
 public class NotificationBarRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		NotificationBar bar = (NotificationBar) component;
 		
-		encodeMarkup(facesContext, bar);
-		encodeScript(facesContext, bar);
+		encodeMarkup(context, bar);
+		encodeScript(context, bar);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, NotificationBar bar) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String styleClass = bar.getStyleClass() == null ? "ui-notificationbar" : "ui-notificationbar " + bar.getStyleClass();
-		UIComponent close = bar.getFacet("close");
+	protected void encodeMarkup(FacesContext context, NotificationBar bar) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String styleClass = bar.getStyleClass();
+        styleClass = styleClass == null ? NotificationBar.STYLE_CLASS : NotificationBar.STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("div", bar);
-		writer.writeAttribute("id", bar.getClientId(facesContext), null);
+		writer.writeAttribute("id", bar.getClientId(context), null);
 		writer.writeAttribute("class", styleClass, null);
-		if(bar.getStyle() != null) writer.writeAttribute("style", bar.getStyle(), null);
+		if(bar.getStyle() != null) {
+          writer.writeAttribute("style", bar.getStyle(), null);
+        }
 		
-		if(close != null) {
-			writer.startElement("span", null);
-			writer.writeAttribute("class", "ui-notificationbar-close", null);
-			writer.writeAttribute("onclick", bar.resolveWidgetVar() + ".hide()", null);
-			renderChild(facesContext, close);
-			writer.endElement("span");
-		}
-
-		renderChildren(facesContext, bar);
+		renderChildren(context, bar);
 		
 		writer.endElement("div");
 	}
@@ -63,7 +57,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(document).ready(function(){");
+		writer.write("$(function() {");
 
 		writer.write(bar.resolveWidgetVar() + " = new PrimeFaces.widget.NotificationBar('" + clientId + "',{");
 		writer.write("position:'" + bar.getPosition() + "'");
@@ -78,10 +72,12 @@ public class NotificationBarRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
