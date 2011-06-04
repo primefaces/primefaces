@@ -16,3 +16,9 @@
             <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
         </system-event-listener>
     </application>
+    
+    <behavior>
+        <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+        <behavior-class>org.primefaces.component.behavior.ajax.AjaxBehavior</behavior-class>
+    </behavior>
+    
