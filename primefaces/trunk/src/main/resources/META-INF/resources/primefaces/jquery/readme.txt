@@ -1,2 +1,0 @@
-- Appended dialog to parent instead of document body
-- Added PrimeFaces extensions to jquery-ui.css
