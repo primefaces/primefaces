@@ -1,0 +1,44 @@
+&output_component_attributes;
+<attribute>
+	<name>immediate</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
+	<name>required</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
+	<name>validator</name>
+	<required>false</required>
+	<type>javax.faces.validator.Validator</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
+	<name>valueChangeListener</name>
+	<required>false</required>
+	<type>javax.faces.event.ValueChangeListener</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
+</attribute>
+<attribute>
+	<name>requiredMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
+	<name>converterMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>
+<attribute>
+	<name>validatorMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+</attribute>

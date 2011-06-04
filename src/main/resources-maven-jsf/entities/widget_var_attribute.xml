@@ -1,0 +1,6 @@
+<attribute>
+	<name>widgetVar</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>false</ignoreInComponent>
+</attribute>

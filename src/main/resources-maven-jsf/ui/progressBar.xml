@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>progressBar</tag>
+    <tagClass>org.primefaces.component.progressbar.ProgressBarTag</tagClass>
+    <componentClass>org.primefaces.component.progressbar.ProgressBar</componentClass>
+    <componentHandlerClass>org.primefaces.component.progressbar.ProgressBarHandler</componentHandlerClass>
+    <componentType>org.primefaces.component.ProgressBar</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ProgressBarRenderer</rendererType>
+    <rendererClass>org.primefaces.component.progressbar.ProgressBarRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <defaultValue>0</defaultValue>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <defaultValue>false</defaultValue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>ajax</name>
+            <required>false</required>
+            <defaultValue>false</defaultValue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>interval</name>
+            <required>false</required>
+            <defaultValue>3000</defaultValue>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+         <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>onCompleteUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>completeListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void completeListener()</method-signature>
+        </attribute>
+        <attribute>
+            <name>onCancelUpdate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>cancelListener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void completeListener()</method-signature>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>jquery/ui/jquery-ui.js</name>
+		</resource>
+        <resource>
+            <name>core/core.js</name>
+        </resource>
+        <resource>
+            <name>progressbar/progressbar.js</name>
+        </resource>
+    </resources>
+</component>
