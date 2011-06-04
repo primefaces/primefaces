@@ -482,5 +482,7 @@ import org.primefaces.event.data.SortEvent;
     }
 
     private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).startsWith(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
+
+        return partialSource != null && this.getClientId(context).startsWith(partialSource);
     }

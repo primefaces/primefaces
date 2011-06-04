@@ -178,8 +178,12 @@ class DataHelper {
 
             //Metadata for callback
             if(table.isPaginator()) {
-                int totalRecords = isAllFiltered ? table.getRowCount() : filteredData.size();
-                RequestContext.getCurrentInstance().addCallbackParam("totalRecords", totalRecords);
+                RequestContext requestContext = RequestContext.getCurrentInstance();
+                
+                if(requestContext != null) {
+                  int totalRecords = isAllFiltered ? table.getRowCount() : filteredData.size();
+                  requestContext.addCallbackParam("totalRecords", totalRecords);
+                }
             }
 
             //No need to define filtered data if it is same as actual data
