@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
         
-    public static final String DYNAMIC_CONTENT_URL = "primefacesDynamicContent";
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
     
     private ResourceHandler wrapped;
@@ -81,6 +80,8 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             response.setStatus(200);
             response.getOutputStream().flush();
             context.responseComplete();
+            
+            session.remove(dynamicContentId);
         }
         else {
            super.handleResourceRequest(context); 
