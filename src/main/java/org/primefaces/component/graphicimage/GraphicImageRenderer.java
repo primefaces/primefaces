@@ -16,15 +16,16 @@
 package org.primefaces.component.graphicimage;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
-import javax.el.ValueExpression;
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.DynamicContentStreamer;
+import org.primefaces.application.PrimeResourceHandler;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -36,7 +37,7 @@ public class GraphicImageRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		GraphicImage image = (GraphicImage) component;
 		String clientId = image.getClientId(context);
-		String imageSrc = image.getValue() == null ? "" : getImageSrc(context, image);
+		String imageSrc = getImageSrc(context, image);
 		
 		writer.startElement("img", image);
 		writer.writeAttribute("id", clientId, "id");
@@ -54,40 +55,54 @@ public class GraphicImageRenderer extends CoreRenderer {
 		String src = null;
 		Object value = image.getValue();
 
-		//Create url for dynamic or static image
-		if(value instanceof StreamedContent) {
-			ValueExpression valueVE = image.getValueExpression("value");
-			String expressionString = valueVE.getExpressionString();
-			String expressionParamValue = expressionString.substring(2, expressionString.length() - 1);
+		if(value == null) {
+            src = "";
+        }
+        else {
+            if(value instanceof StreamedContent) {
+                StreamedContent streamedContent = (StreamedContent) value;
+                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent", "primefaces", streamedContent.getContentType());
+                String resourcePath = resource.getRequestPath();
+                String rid = createUniqueContentId(context);
+                StringBuilder builder = new StringBuilder(resourcePath);
 
-            String actionURL = getActionURL(context);
-            StringBuilder builder = new StringBuilder();
-            
-            char queryChar = actionURL.contains("?") ? '&' : '?';
+                builder.append("&").append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
 
-            builder.append(actionURL).append(queryChar).append(DynamicContentStreamer.DYNAMIC_CONTENT_PARAM).append("=").append(expressionParamValue);
-			
-			for(UIComponent kid : image.getChildren()) {
-				if(kid instanceof UIParameter) {
-					UIParameter param = (UIParameter) kid;
-					
-					builder.append("&").append(param.getName()).append("=").append(param.getValue());
-				}
-			}
-			
-			src = builder.toString();
-		}
-		else {
-	        src = getResourceURL(context, (String) value);
-		}
-		
-		//Add caching if needed
-		if(!image.isCache()) {
-			src += src.contains("?") ? "&" : "?";
-			
-			src = src + "primefaces_image=" + UUID.randomUUID().toString();
-		}
+                for(UIComponent kid : image.getChildren()) {
+                    if(kid instanceof UIParameter) {
+                        UIParameter param = (UIParameter) kid;
+
+                        builder.append("&").append(param.getName()).append("=").append(param.getValue());
+                    }
+                }
+
+                src = builder.toString();
+
+                context.getExternalContext().getSessionMap().put(rid, image.getValueExpression("value").getExpressionString());
+            }
+            else {
+                src = getResourceURL(context, (String) value);
+            }
+
+            //Add caching if needed
+            if(!image.isCache()) {
+                src += src.contains("?") ? "&" : "?";
+
+                src = src + "primefaces_image=" + UUID.randomUUID().toString();
+            }
+        }
 
 		return src;
 	}
+    
+    protected String createUniqueContentId(FacesContext context) {
+        Map<String,Object> session = context.getExternalContext().getSessionMap();
+        
+        String key = UUID.randomUUID().toString();
+        while(session.containsKey(key)) {
+            key = UUID.randomUUID().toString();
+        }
+        
+        return key;
+    }
 }

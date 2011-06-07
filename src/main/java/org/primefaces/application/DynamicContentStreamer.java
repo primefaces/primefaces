@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -39,12 +37,9 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.graphictext.GraphicTextRenderer;
-import org.primefaces.model.StreamedContent;
 
 public class DynamicContentStreamer implements PhaseListener {
 
-	public static final String DYNAMIC_CONTENT_PARAM = "primefacesDynamicContent";
-	public static final String CONTENT_TYPE_PARAM = "contentType";
 	public static final String GRAPHIC_TEXT_PARAM = "primefacesGraphicText";
 	
 	private final static Logger logger = Logger.getLogger(DynamicContentStreamer.class.getName());
@@ -53,40 +48,10 @@ public class DynamicContentStreamer implements PhaseListener {
 		FacesContext facesContext = phaseEvent.getFacesContext();
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
 		
-		if(params.containsKey(DYNAMIC_CONTENT_PARAM))
-			streamDynamicContent(facesContext, params.get(DYNAMIC_CONTENT_PARAM));
-		else if(params.containsKey(GRAPHIC_TEXT_PARAM))
-			streamGraphicText(facesContext, params);
+        if(params.containsKey(GRAPHIC_TEXT_PARAM))
+            streamGraphicText(facesContext, params);
 	}
-	
-	private void streamDynamicContent(FacesContext facesContext, String expression) {
-		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-		ELContext elContext = facesContext.getELContext();
-		ValueExpression ve = facesContext.getApplication().getExpressionFactory().createValueExpression(elContext, "#{" + expression + "}", StreamedContent.class);
-		StreamedContent content = (StreamedContent) ve.getValue(elContext);
-
-		if(content != null) {
-			if(logger.isLoggable(Level.FINE))
-				logger.log(Level.FINE, "Streaming image: {0}", ve.getExpressionString());
 		
-			try {
-				response.setContentType(content.getContentType());
-				
-				byte[] buffer = new byte[2048];
-		
-				int length;
-				while ((length = (content.getStream().read(buffer))) >= 0) {
-					response.getOutputStream().write(buffer, 0, length);
-				}
-				
-				finalizeResponse(facesContext);
-			}
-			catch (IOException e) {
-				logger.log(Level.WARNING, "Exception in streaming image {0}", ve.getExpressionString());
-			}
-		}
-	}
-	
 	private void streamGraphicText(FacesContext facesContext, Map<String,String> params) {
 		try {
 			HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
