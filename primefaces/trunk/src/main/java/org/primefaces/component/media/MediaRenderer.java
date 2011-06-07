@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@ package org.primefaces.component.media;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
+import javax.faces.application.Resource;
 
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.application.PrimeResourceHandler;
 
-import org.primefaces.application.DynamicContentStreamer;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.model.StreamedContent;
@@ -35,19 +36,19 @@ import org.primefaces.util.HTML;
 public class MediaRenderer extends CoreRenderer {
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Media media = (Media) component;
-		MediaPlayer player = resolvePlayer(facesContext, media);
+		MediaPlayer player = resolvePlayer(context, media);
 		
-		if(AgentUtils.isIE(facesContext))
-			encodeObjectTag(facesContext, media, player);
+		if(AgentUtils.isIE(context))
+			encodeObjectTag(context, media, player);
 		else
-			encodeEmbedTag(facesContext, media, player);
+			encodeEmbedTag(context, media, player);
 	}
 	
-	private void encodeObjectTag(FacesContext facesContext, Media media, MediaPlayer player) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String src = getMediaSrc(facesContext, media);
+	private void encodeObjectTag(FacesContext context, Media media, MediaPlayer player) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String src = getMediaSrc(context, media);
 		
 		writer.startElement("object", media);
 		writer.writeAttribute("classid", player.getClassId(), null);
@@ -57,7 +58,7 @@ public class MediaRenderer extends CoreRenderer {
 		if(media.getStyleClass() != null) {
 			writer.writeAttribute("class", media.getStyleClass(), null);
 		}
-		renderPassThruAttributes(facesContext, media, HTML.MEDIA_ATTRS);
+		renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
 		
 		encodeParam(writer, player.getSourceParam(), src, false);
 	
@@ -72,9 +73,9 @@ public class MediaRenderer extends CoreRenderer {
 		writer.endElement("object");
 	}
 	
-	private void encodeEmbedTag(FacesContext facesContext, Media media, MediaPlayer player) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String src = getMediaSrc(facesContext, media);
+	private void encodeEmbedTag(FacesContext context, Media media, MediaPlayer player) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String src = getMediaSrc(context, media);
 		
 		writer.startElement("embed", media);
 		writer.writeAttribute("pluginspage", player.getPlugingPage(), null);
@@ -86,7 +87,7 @@ public class MediaRenderer extends CoreRenderer {
 			writer.writeAttribute("type", player.getType(), null);
 		}
 		
-		renderPassThruAttributes(facesContext, media, HTML.MEDIA_ATTRS);
+		renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
 		
 		for(UIComponent child : media.getChildren()) {
 			if(child instanceof UIParameter) {
@@ -113,7 +114,7 @@ public class MediaRenderer extends CoreRenderer {
 		}
 	}
 
-	private MediaPlayer resolvePlayer(FacesContext facesContext, Media media) {
+	private MediaPlayer resolvePlayer(FacesContext context, Media media) {
 		if(media.getPlayer() != null) {
 			return MediaPlayerFactory.getPlayer(media.getPlayer());
 		}
@@ -128,40 +129,54 @@ public class MediaRenderer extends CoreRenderer {
 			}
 		}
 		
-		throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(facesContext) + "', cannot play source:" + media.getValue());
+		throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(context) + "', cannot play source:" + media.getValue());
 	}
 
-	private String getMediaSrc(FacesContext facesContext, Media media) {
+	protected String getMediaSrc(FacesContext context, Media media) {
+		String src = null;
 		Object value = media.getValue();
-		if(value == null)
-			return "";
-		
-		if(value instanceof StreamedContent) {
-			ValueExpression valueVE = media.getValueExpression("value");
-			String veString = valueVE.getExpressionString();
-			String expressionParamValue = veString.substring(2, veString.length() -1);
-			
-			String url = getActionURL(facesContext);
-			if(url.contains("?"))
-				url = url + "&";
-			else
-				url = url + "?";
-			
-			StringBuilder builder = new StringBuilder(url);
-			builder.append(DynamicContentStreamer.DYNAMIC_CONTENT_PARAM).append("=").append(expressionParamValue);
-			
-			for(UIComponent kid : media.getChildren()) {
-				if(kid instanceof UIParameter) {
-					UIParameter param = (UIParameter) kid;
-					
-					builder.append("&").append(param.getName()).append("=").append(param.getValue());
-				}
-			}
-			
-			return builder.toString();
-		}
-		else {
-	        return getResourceURL(facesContext, media.getValue().toString());
-		}	
+        
+        if(value == null) {
+            src = "";
+        }
+        else {
+            if(value instanceof StreamedContent) {
+                StreamedContent streamedContent = (StreamedContent) value;
+                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent", "primefaces", streamedContent.getContentType());
+                String resourcePath = resource.getRequestPath();
+                String rid = createUniqueContentId(context);
+                StringBuilder builder = new StringBuilder(resourcePath);
+
+                builder.append("&").append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
+
+                for(UIComponent kid : media.getChildren()) {
+                    if(kid instanceof UIParameter) {
+                        UIParameter param = (UIParameter) kid;
+
+                        builder.append("&").append(param.getName()).append("=").append(param.getValue());
+                    }
+                }
+
+                src = builder.toString();
+
+                context.getExternalContext().getSessionMap().put(rid, media.getValueExpression("value").getExpressionString());
+            }
+            else {
+                src = getResourceURL(context, (String) value);
+            }
+        }
+
+		return src;
 	}
+    
+    protected String createUniqueContentId(FacesContext context) {
+        Map<String,Object> session = context.getExternalContext().getSessionMap();
+        
+        String key = UUID.randomUUID().toString();
+        while(session.containsKey(key)) {
+            key = UUID.randomUUID().toString();
+        }
+        
+        return key;
+    }
 }
