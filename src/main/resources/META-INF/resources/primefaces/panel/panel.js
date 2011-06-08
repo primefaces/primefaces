@@ -50,7 +50,7 @@ PrimeFaces.widget.Panel.prototype.toggle = function() {
             if(_self.cfg.behaviors) {
                 var toggleBehavior = _self.cfg.behaviors['toggle'];
                 if(toggleBehavior) {
-                    toggleBehavior.call(this, e);
+                    toggleBehavior.call(_self, e);
                 }
             }
         });
@@ -66,7 +66,7 @@ PrimeFaces.widget.Panel.prototype.close = function() {
             if(_self.cfg.behaviors) {
                 var closeBehavior = _self.cfg.behaviors['close'];
                 if(closeBehavior) {
-                    closeBehavior.call(this, e);
+                    closeBehavior.call(_self, e);
                 }
             }
         }
