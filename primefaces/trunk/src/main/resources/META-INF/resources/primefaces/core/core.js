@@ -246,7 +246,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     if(cfg.update) {
         update.push(cfg.update);
     }
-    if(ext.update) {
+    if(ext && ext.update) {
         update.push(ext.update);
     }
     
@@ -287,15 +287,15 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
         },
         success : function(data, status, xhr) {
-            var parsed = false;
+            var parsed;
 
             //call user callback
             if(cfg.onsuccess) {
-                cfg.onsuccess.call(this, data, status, xhr);    
+                parsed = cfg.onsuccess.call(this, data, status, xhr);
             }
 
             //extension callback that might parse response
-            if(ext && ext.onsuccess) {
+            if(ext && ext.onsuccess && !parsed) {
                 parsed = ext.onsuccess.call(this, data, status, xhr); 
             }
 
