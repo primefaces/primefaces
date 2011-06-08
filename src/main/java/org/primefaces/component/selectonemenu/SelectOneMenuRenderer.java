@@ -17,12 +17,10 @@ package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
 import java.util.List;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.InputRenderer;
@@ -227,33 +225,6 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         writer.endElement("script");
     }
-
-    @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		SelectOneMenu menu = (SelectOneMenu) component;
-		String value = (String) submittedValue;
-		Converter converter = menu.getConverter();
-
-		//first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, menu, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = menu.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, menu, value);
-                }
-            }
-		}
-
-		return value;
-	}
 
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();

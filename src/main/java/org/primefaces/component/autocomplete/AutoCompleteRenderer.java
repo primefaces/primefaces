@@ -21,12 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.el.MethodExpression;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -205,30 +202,5 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.write("});});");
 
         writer.endElement("script");
-    }
-
-    @Override
-    public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException {
-        AutoComplete autoComplete = (AutoComplete) component;
-        Object value = submittedValue;
-        Converter converter = autoComplete.getConverter();
-
-        //first ask the converter
-        if (converter != null) {
-            value = converter.getAsObject(facesContext, autoComplete, (String) submittedValue);
-        } //Try to guess
-        else {
-            ValueExpression expr = autoComplete.getValueExpression("value");
-            if (expr != null) {
-                Class<?> valueType = expr.getType(facesContext.getELContext());
-                Converter converterForType = facesContext.getApplication().createConverter(valueType);
-
-                if (converterForType != null) {
-                    value = converterForType.getAsObject(facesContext, autoComplete, (String) submittedValue);
-                }
-            }
-        }
-
-        return value;
     }
 }

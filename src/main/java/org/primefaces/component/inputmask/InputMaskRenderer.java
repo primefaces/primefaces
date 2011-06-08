@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,10 @@
 package org.primefaces.component.inputmask;
 
 import java.io.IOException;
-import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -108,32 +105,5 @@ public class InputMaskRenderer extends InputRenderer {
         writer.writeAttribute("class", styleClass, "styleClass");
 
         writer.endElement("input");
-	}
-
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		InputMask inputMask = (InputMask) component;
-		String value = (String) submittedValue;
-		Converter converter = inputMask.getConverter();
-		
-		//first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, inputMask, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = inputMask.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, inputMask, value);
-                }
-            }
-		}
-		
-		return value;
 	}
 }

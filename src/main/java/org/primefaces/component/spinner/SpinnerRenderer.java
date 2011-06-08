@@ -16,13 +16,10 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
-import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -150,31 +147,4 @@ public class SpinnerRenderer extends InputRenderer {
 
         writer.endElement("a");
     }
-
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		Spinner spinner = (Spinner) component;
-		String value = (String) submittedValue;
-		Converter converter = spinner.getConverter();
-		
-		//first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, spinner, value);
-		}
-		//Try to guess
-		else {
-			ValueExpression ve = spinner.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, spinner, value);
-                }
-            }
-		}
-		
-		return value;
-	}
 }
