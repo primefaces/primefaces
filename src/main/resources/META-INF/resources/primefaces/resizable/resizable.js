@@ -1,7 +1,7 @@
 PrimeFaces.widget.Resizable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.target = PrimeFaces.escapeClientId(this.cfg.target);
+    this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
 
     if(this.cfg.ajaxResize) {
         this.cfg.formId = $(this.target).parents('form:first').attr('id');
@@ -14,16 +14,7 @@ PrimeFaces.widget.Resizable = function(id, cfg) {
             _self.cfg.onStop.call(_self, event, ui);
         }
 
-        if(_self.cfg.behaviors) {
-            var resizeBehavior = _self.cfg.behaviors['resize'];
-            if(resizeBehavior) {
-                var params = {};
-                params[_self.id + '_width'] = ui.helper.width();
-                params[_self.id + '_height'] = ui.helper.height();
-
-                resizeBehavior.call(_self, event, params);
-            }
-        }
+        _self.fireAjaxResizeEvent(event, ui);
     }
 
     this.cfg.start = function(event, ui) {
@@ -38,27 +29,21 @@ PrimeFaces.widget.Resizable = function(id, cfg) {
         }
     }
 
-    jQuery(this.target).resizable(this.cfg);
+    this.jq.resizable(this.cfg);
     
 }
 
 PrimeFaces.widget.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
-    var options = {
-        source: this.id,
-        process: this.id,
-        formId: this.cfg.formId
-    };
+    if(this.cfg.behaviors) {
+        var resizeBehavior = this.cfg.behaviors['resize'];
+        if(resizeBehavior) {
+            var ext = {
+                params:{}
+            };
+            ext.params[this.id + '_width'] = ui.helper.width();
+            ext.params[this.id + '_height'] = ui.helper.height();
 
-    if(this.cfg.onResizeUpdate) {
-        options.update = this.cfg.onResizeUpdate;
+            resizeBehavior.call(this, event, ext);
+        }
     }
-
-    var params = {};
-    params[this.id + '_ajaxResize'] = true;
-    params[this.id + '_width'] = ui.helper.width();
-    params[this.id + '_height'] = ui.helper.height();
-
-    options.params = params;
-    
-    PrimeFaces.ajax.AjaxRequest(options);
 }
