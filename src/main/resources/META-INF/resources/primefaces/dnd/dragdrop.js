@@ -30,11 +30,13 @@ PrimeFaces.widget.Droppable.prototype.bindDropListener = function() {
             var dropBehavior = _self.cfg.behaviors['drop'];
 
             if(dropBehavior) {
-                var params = {};
-                params[_self.id + "_dragId"] = ui.draggable.attr('id');
-                params[_self.id + "_dropId"] = _self.cfg.target;
+                var ext = {
+                    params: {}
+                };
+                ext.params[_self.id + "_dragId"] = ui.draggable.attr('id');
+                ext.params[_self.id + "_dropId"] = _self.cfg.target;
                 
-                dropBehavior.call(_self, event, params);
+                dropBehavior.call(_self, event, ext);
             }
         }
     };
