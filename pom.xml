@@ -221,13 +221,6 @@
                             <goal>generate-faces-config</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>css-compressor</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compress-css</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -353,7 +346,7 @@
                     <plugin>
                         <groupId>org.primefaces</groupId>
                         <artifactId>maven-jsf-plugin</artifactId>
-                        <version>1.1.8</version>
+                        <version>1.1.9-SNAPSHOT</version>
                         <executions>
                             <execution>
                                 <id>css-compressor</id>
