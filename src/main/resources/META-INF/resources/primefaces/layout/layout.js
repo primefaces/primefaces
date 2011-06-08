@@ -4420,10 +4420,12 @@ PrimeFaces.widget.Layout.prototype.onhide = function(location, pane, state) {
 
     var closeBehavior = this.cfg.behaviors['close'];
     if(closeBehavior) {
-        var params = {};
-        params[this.id + '_unit'] = location;
+        var ext = {
+            params : {}
+        };
+        ext.params[this.id + '_unit'] = location;
 
-        closeBehavior.call(this, location, params);
+        closeBehavior.call(this, location, ext);
     }
 }
 
@@ -4461,12 +4463,14 @@ PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state) {
     if(!state.isClosed && !state.isHidden) {
         var resizeBehavior = this.cfg.behaviors['resize'];
         if(resizeBehavior) {
-            var params = {};
-            params[this.id + '_unit'] = location;
-            params[this.id + '_width'] = state.innerWidth;
-            params[this.id + '_height'] = state.innerHeight;
+            var ext = {
+                params : {}
+            };
+            ext.params[this.id + '_unit'] = location;
+            ext.params[this.id + '_width'] = state.innerWidth;
+            ext.params[this.id + '_height'] = state.innerHeight;
 
-            resizeBehavior.call(this, location, params);
+            resizeBehavior.call(this, location, ext);
         }
     }
 }
@@ -4474,10 +4478,12 @@ PrimeFaces.widget.Layout.prototype.onresize = function(location, pane, state) {
 PrimeFaces.widget.Layout.prototype.fireToggleEvent = function(location, collapsed) {
     var toggleBehavior = this.cfg.behaviors['toggle'];
     if(toggleBehavior) {
-        var params = {};
-        params[this.id + '_unit'] = location;
-        params[this.id + '_collapsed'] = true;
+        var ext = {
+            params : {}
+        };
+        ext.params[this.id + '_unit'] = location;
+        ext.params[this.id + '_collapsed'] = collapsed;
 
-        toggleBehavior.call(this, location, params);
+        toggleBehavior.call(this, location, ext);
     }
 }
