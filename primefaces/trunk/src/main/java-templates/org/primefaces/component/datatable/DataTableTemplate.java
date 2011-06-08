@@ -22,6 +22,7 @@ import java.util.List;
 import javax.el.ValueExpression;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -114,10 +115,6 @@ import org.primefaces.event.data.SortEvent;
 
     public boolean isGlobalFilterRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_globalFilter");
-    }
-
-    public boolean isDataManipulationRequest(FacesContext context) {
-        return isPaginationRequest(context) || isSortRequest(context) || isFilterRequest(context);
     }
 
     public boolean isInstantSelectionRequest(FacesContext context) {
@@ -216,7 +213,7 @@ import org.primefaces.event.data.SortEvent;
 
     @Override
     public void processDecodes(FacesContext context) {
-		if(isDataManipulationRequest(context)) {
+		if(isRequestSource(context)) {
             this.decode(context);
             
             if(isSelectionEnabled()) {
@@ -280,26 +277,29 @@ import org.primefaces.event.data.SortEvent;
                 int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
                 this.setRowIndex(selectedRowIndex);
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());    
             }
             else if(eventName.equals("unselectRow")) {
                 int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
                 this.setRowIndex(unselectedRowIndex);
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("page")) {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("sort")) {
                 boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
                 Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, asc);
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("filter")) {
                 wrapperEvent = event;
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-
-            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
 
             super.queueEvent(wrapperEvent);
         }
@@ -481,7 +481,7 @@ import org.primefaces.event.data.SortEvent;
         return EVENT_NAMES;
     }
 
-    private boolean isRequestSource(FacesContext context) {
+    public boolean isRequestSource(FacesContext context) {
         String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
 
         return partialSource != null && this.getClientId(context).startsWith(partialSource);
