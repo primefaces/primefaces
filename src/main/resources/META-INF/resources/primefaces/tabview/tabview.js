@@ -33,7 +33,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
  * Tab change handler
  *
  * - Saves the activeIndex and loads content if necessary for dynamic tabs
- * - Fires an ajax tabChangeEvent if there is one on server side
+ * - Invokes tabChange behavior event if defined
  */
 PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     var panel = ui.panel,
@@ -79,7 +79,6 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
                 if(_self.cfg.cache) {
                     _self.markAsLoaded(panel);
                 }
-                
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
@@ -88,12 +87,9 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
         
         PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 
-        return false;
+        return true;
     };
-    
-    options.oncomplete = function() {
-        _self.fireTabChangeEvent(event, panel);
-    }
+
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
@@ -101,7 +97,14 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
 
     options.params = params;
 
-    PrimeFaces.ajax.AjaxRequest(options);
+    if(this.hasBehavior('tabChange')) {
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
+        
+        tabChangeBehavior.call(this, event, options);
+    }
+    else {
+        PrimeFaces.ajax.AjaxRequest(options);
+    }
 }
 
 PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {
@@ -146,13 +149,21 @@ PrimeFaces.widget.TabView.prototype.getActiveIndex = function() {
 }
 
 PrimeFaces.widget.TabView.prototype.fireTabChangeEvent = function(event, panel) {
-    if(this.cfg.behaviors) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
-        if(tabChangeBehavior) {
-            var params = {};
-            params[this.id + '_newTab'] = panel.id;
+    if(this.hasBehavior('tabChange')) {
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
+        ext = {
+            params: {}
+        };
+        ext.params[this.id + '_newTab'] = panel.id;
 
-            tabChangeBehavior.call(this, event, params);
-        }
+        tabChangeBehavior.call(this, event, ext);
     }
+}
+
+PrimeFaces.widget.TabView.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }

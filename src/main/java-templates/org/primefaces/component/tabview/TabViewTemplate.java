@@ -11,6 +11,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
+import org.primefaces.context.RequestContext;
 
     private final static String DEFAULT_EVENT = "tabChange";
 
@@ -49,6 +50,8 @@ import org.primefaces.util.Constants;
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(changeEvent);
+
+                RequestContext.getCurrentInstance().addPartialUpdateTarget(clientId);
             }
         }
         else {

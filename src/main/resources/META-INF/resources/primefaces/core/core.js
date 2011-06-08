@@ -279,13 +279,25 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
         },
         success : function(data, status, xhr) {
+            var parsed = false;
+
+            //call user callback
             if(cfg.onsuccess) {
-                var value = cfg.onsuccess.call(this, data, status, xhr);
-                if(value === false)
-                    return;
+                cfg.onsuccess.call(this, data, status, xhr);    
             }
-		
-            PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+
+            //extension callback that might parse response
+            if(ext && ext.onsuccess) {
+                parsed = ext.onsuccess.call(this, data, status, xhr); 
+            }
+
+            //do not execute default handler as response already has been parsed
+            if(parsed) {
+                return;
+            } 
+            else {
+                PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+            } 
         },
         complete : function(xhr, status) {
             if(cfg.oncomplete) {
