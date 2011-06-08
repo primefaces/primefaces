@@ -22,14 +22,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.el.ValueExpression;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
 public class InputRenderer extends CoreRenderer {
@@ -110,4 +110,35 @@ public class InputRenderer extends CoreRenderer {
 
         return null;
     }
+    
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		EditableValueHolder editableValueHolder = (EditableValueHolder) component;
+		String value = (String) submittedValue;
+		Converter converter = editableValueHolder.getConverter();
+
+		//first ask the converter
+		if(converter != null) {
+			return converter.getAsObject(context, component, value);
+		}
+		//Try to guess
+		else {
+            ValueExpression ve = component.getValueExpression("value");
+            
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                
+                if(valueType != null) {
+                    Converter converterForType = context.getApplication().createConverter(valueType);
+
+                    if(converterForType != null) {
+                        return converterForType.getAsObject(context, component, value);
+                    }
+                }
+                
+            }
+		}
+
+		return value;
+	}
 }

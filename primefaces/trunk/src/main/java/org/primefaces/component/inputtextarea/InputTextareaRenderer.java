@@ -16,12 +16,9 @@
 package org.primefaces.component.inputtextarea;
 
 import java.io.IOException;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -99,33 +96,6 @@ public class InputTextareaRenderer extends InputRenderer {
 		}
 
         writer.endElement("textarea");
-	}
-
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		InputTextarea inputTextarea = (InputTextarea) component;
-		String value = (String) submittedValue;
-		Converter converter = inputTextarea.getConverter();
-
-		//first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, inputTextarea, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = inputTextarea.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, inputTextarea, value);
-                }
-            }
-		}
-
-		return value;
 	}
     
     protected String createStyleClass(InputTextarea inputTextarea) {

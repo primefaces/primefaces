@@ -16,12 +16,9 @@
 package org.primefaces.component.inputtext;
 
 import java.io.IOException;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -101,33 +98,6 @@ public class InputTextRenderer extends InputRenderer {
         writer.endElement("input");
 	}
 
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		InputText inputText = (InputText) component;
-		String value = (String) submittedValue;
-		Converter converter = inputText.getConverter();
-
-		//first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, inputText, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = inputText.getValueExpression("value");
-            
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, inputText, value);
-                }
-            }
-		}
-
-		return value;
-	}
-    
     protected String createStyleClass(InputText inputText) {
         String defaultClass = themeForms() ? InputText.THEME_INPUT_CLASS : InputText.PLAIN_INPUT_CLASS;
         defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
