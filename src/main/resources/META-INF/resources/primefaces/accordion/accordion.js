@@ -5,8 +5,8 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = jQuery(this.jqId + '_acco');
-    this.stateHolder = jQuery(this.jqId + '_active');
+    this.jq = $(this.jqId + '_acco');
+    this.stateHolder = $(this.jqId + '_active');
     var _self = this;
 
     //Create accordion
@@ -63,7 +63,7 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(event, pane
             content = updates[i].firstChild.data;
 
             if(id == _self.id){
-                jQuery(panel).html(content);
+                $(panel).html(content);
 
                 if(_self.cfg.cache) {
                     _self.markAsLoaded(panel);
@@ -78,43 +78,46 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(event, pane
         
         PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 
-        return false;
+        return true;
     };
-    
-    options.oncomplete = function() {
-        _self.fireTabChangeEvent(event, panel);
-    }
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
     params[this.id + '_newTab'] = panel.id;
 
     options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
+    
+    if(this.hasBehavior('tabChange')) {
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
+        
+        tabChangeBehavior.call(this, event, options);
+    }
+    else {
+        PrimeFaces.ajax.AjaxRequest(options);
+    }
 }
 
 /**
  * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
  */
 PrimeFaces.widget.AccordionPanel.prototype.fireTabChangeEvent = function(event, panel) {
-    if(this.cfg.behaviors) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
-        if(tabChangeBehavior) {
-            var params = {};
-            params[this.id + '_newTab'] = panel.id;
+    if(this.hasBehavior('tabChange')) {
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
+        ext = {
+            params: {}
+        };
+        ext.params[this.id + '_newTab'] = panel.id;
 
-            tabChangeBehavior.call(this, event, params);
-        }
+        tabChangeBehavior.call(this, event, ext);
     }
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.markAsLoaded = function(panel) {
-    jQuery(panel).data('loaded', true);
+    $(panel).data('loaded', true);
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.isLoaded = function(panel) {
-    return jQuery(panel).data('loaded') == true;
+    return $(panel).data('loaded') == true;
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
@@ -123,4 +126,12 @@ PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
 
 PrimeFaces.widget.AccordionPanel.prototype.collapseAll = function() {
     this.jq.accordion('activate', false);
+}
+
+PrimeFaces.widget.AccordionPanel.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }
