@@ -131,7 +131,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                 }
             }
 
-            return false;
+            return true;
         },
         error: function() {
             alert('Error in loading dynamic tab content');
