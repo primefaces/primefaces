@@ -267,6 +267,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     };
 
     var _self = this;
+    
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,
         updates = xmlDoc.getElementsByTagName("update");
@@ -287,15 +288,6 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
 
         return true;
     };
-    
-    options.oncomplete = function() {
-        if(_self.cfg.behaviors) {
-            var pageBehavior = _self.cfg.behaviors['page'];
-            if(pageBehavior) {
-                pageBehavior.call(_self);
-            }
-        }
-    };
 
     var params = {};
     params[this.id + "_paging"] = true;
@@ -304,8 +296,14 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     params[this.id + "_page"] = newState.page;
 
     options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
+    
+    if(this.hasBehavior('page')) {
+       var pageBehavior = this.cfg.behaviors['page'];
+       
+       pageBehavior.call(this, newState, options);
+    } else {
+       PrimeFaces.ajax.AjaxRequest(options); 
+    }
 }
 
 /**
@@ -350,27 +348,20 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
         return true;
     };
     
-    options.oncomplete = function() {
-        if(_self.cfg.behaviors) {
-            var sortBehavior = _self.cfg.behaviors['sort'];
-            if(sortBehavior) {
-                var sortBehaviorParams = {};
-                sortBehaviorParams[_self.id + "_sortKey"] = columnId;
-                sortBehaviorParams[_self.id + "_sortDir"] = asc;
-                
-                sortBehavior.call(_self, columnId, sortBehaviorParams);
-            }
-        }
-    };
-
     var params = {};
     params[this.id + "_sorting"] = true;
     params[this.id + "_sortKey"] = columnId;
     params[this.id + "_sortDir"] = asc;
 
     options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
+    
+    if(this.hasBehavior('sort')) {
+       var sortBehavior = this.cfg.behaviors['sort'];
+       
+       sortBehavior.call(this, columnId, options);
+    } else {
+       PrimeFaces.ajax.AjaxRequest(options); 
+    }
 }
 
 /**
@@ -424,21 +415,18 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
         return true;
     };
     
-    options.oncomplete = function() {
-        if(_self.cfg.behaviors) {
-            var filterBehavior = _self.cfg.behaviors['filter'];
-            if(filterBehavior) {
-                filterBehavior.call(_self);
-            }
-        }
-    };
-
     var params = {};
     params[this.id + "_filtering"] = true;
 
     options.params = params;
 
-    PrimeFaces.ajax.AjaxRequest(options);
+    if(this.hasBehavior('filter')) {
+       var filterBehavior = this.cfg.behaviors['filter'];
+       
+       filterBehavior.call(this, {}, options);
+    } else {
+       PrimeFaces.ajax.AjaxRequest(options); 
+    }
 }
 
 /**
@@ -1038,4 +1026,12 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             }
         }
     }
+}
+
+PrimeFaces.widget.DataTable.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }
