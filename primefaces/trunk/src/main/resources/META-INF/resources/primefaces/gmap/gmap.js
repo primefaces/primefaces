@@ -78,12 +78,14 @@ PrimeFaces.widget.GMap.prototype.fireMarkerDragEvent = function(event, marker) {
     var markerDragBehavior = this.cfg.behaviors['markerDrag'];
 
     if(markerDragBehavior) {
-        var params = {};
-        params[this.id + '_markerId'] = marker.id;
-        params[this.id + '_lat'] = event.latLng.lat();
-        params[this.id + '_lng'] = event.latLng.lng();
+        var ext = {
+            params: {}
+        };
+        ext.params[this.id + '_markerId'] = marker.id;
+        ext.params[this.id + '_lat'] = event.latLng.lat();
+        ext.params[this.id + '_lng'] = event.latLng.lng();
 
-        markerDragBehavior.call(this, event, params);
+        markerDragBehavior.call(this, event, ext);
     }
 }
 
@@ -101,10 +103,12 @@ PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overla
     var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
 
     if(overlaySelectBehavior) {
-        var params = {};
-        params[this.id + '_overlayId'] = overlay.id;
+        var ext = {
+            params: {}
+        };
+        ext.params[this.id + '_overlayId'] = overlay.id;
 
-        overlaySelectBehavior.call(this, event, params);
+        overlaySelectBehavior.call(this, event, ext);
     }
 }
 
@@ -139,13 +143,15 @@ PrimeFaces.widget.GMap.prototype.fireStateChangeEvent = function(event) {
     var stateChangeBehavior = this.cfg.behaviors['stateChange'];
 
     if(stateChangeBehavior) {
-        var params = {};
-        params[this.id + '_northeast'] = this.map.getBounds().getNorthEast().lat() + "," + this.map.getBounds().getNorthEast().lng();
-        params[this.id + '_southwest'] = this.map.getBounds().getSouthWest().lat() + "," + this.map.getBounds().getSouthWest().lng();
-        params[this.id + '_center'] = this.map.getBounds().getCenter().lat() + "," + this.map.getBounds().getCenter().lng();
-        params[this.id + '_zoom'] = this.map.getZoom();
+        var ext = {
+            params: {}
+        };
+        ext.params[this.id + '_northeast'] = this.map.getBounds().getNorthEast().lat() + "," + this.map.getBounds().getNorthEast().lng();
+        ext.params[this.id + '_southwest'] = this.map.getBounds().getSouthWest().lat() + "," + this.map.getBounds().getSouthWest().lng();
+        ext.params[this.id + '_center'] = this.map.getBounds().getCenter().lat() + "," + this.map.getBounds().getCenter().lng();
+        ext.params[this.id + '_zoom'] = this.map.getZoom();
 
-        stateChangeBehavior.call(this, event, params);
+        stateChangeBehavior.call(this, event, ext);
     }
 }
 
@@ -161,10 +167,12 @@ PrimeFaces.widget.GMap.prototype.firePointSelectEvent = function(event) {
     var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
 
     if(pointSelectBehavior) {
-        var params = {};
-        params[this.id + '_pointLatLng'] = event.latLng.lat() + "," + event.latLng.lng();
+        var ext = {
+            params: {}
+        };
+        ext.params[this.id + '_pointLatLng'] = event.latLng.lat() + "," + event.latLng.lng();
 
-        pointSelectBehavior.call(this, event, params);
+        pointSelectBehavior.call(this, event, ext);
     }
 }
 
