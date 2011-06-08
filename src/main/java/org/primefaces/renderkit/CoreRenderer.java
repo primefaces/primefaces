@@ -229,20 +229,19 @@ public class CoreRenderer extends Renderer {
         if(source.getOnerror() != null)
             req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
         if(source.getOnsuccess() != null)
-            req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
+            req.append(",onsuccess:function(data, status, xhr){").append(source.getOnsuccess()).append(";}");
         if(source.getOncomplete() != null)
             req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
 
         //params
-        boolean firstParam = true, hasParam = false;
+        boolean paramWritten = false;
 
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
-                hasParam = true;
 
-                if(firstParam) {
-                    firstParam = false;
+                if(!paramWritten) {
+                    paramWritten = true;
                     req.append(",params:{");
                 } else {
                     req.append(",");
@@ -252,7 +251,7 @@ public class CoreRenderer extends Renderer {
             }
         }
 
-        if(hasParam) {
+        if(paramWritten) {
             req.append("}");
         }
 

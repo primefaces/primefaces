@@ -61,8 +61,8 @@ PrimeFaces = {
     },
 
     //ajax shortcut
-    ab : function(cfg) {
-        PrimeFaces.ajax.AjaxRequest(cfg);
+    ab : function(cfg, ext) {
+        PrimeFaces.ajax.AjaxRequest(cfg, ext);
     },
 
     //mobile
@@ -197,7 +197,7 @@ PrimeFaces.ajax.AjaxUtils = {
     }
 };
 
-PrimeFaces.ajax.AjaxRequest = function(cfg) {
+PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     if(cfg.onstart) {
        var retVal = cfg.onstart.call(this);
        if(retVal == false) {
@@ -264,6 +264,9 @@ PrimeFaces.ajax.AjaxRequest = function(cfg) {
     //params
     if(cfg.params) {
         postParams = postParams + PrimeFaces.ajax.AjaxUtils.serialize(cfg.params);
+    }
+    if(ext && ext.params) {
+        postParams = postParams + PrimeFaces.ajax.AjaxUtils.serialize(ext.params);
     }
 	
     var xhrOptions = {
