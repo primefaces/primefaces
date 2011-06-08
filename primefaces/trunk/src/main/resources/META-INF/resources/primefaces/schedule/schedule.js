@@ -143,7 +143,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                     }
                 }
 
-                return false;
+                return true;
             }
         };
 

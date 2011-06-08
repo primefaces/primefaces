@@ -88,7 +88,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
                     }
                 }
 
-                return false;
+                return true;
             }
         };
         
