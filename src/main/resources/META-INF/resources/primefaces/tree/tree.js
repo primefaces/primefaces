@@ -119,7 +119,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
             
             PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 
-            return false;
+            return true;
         };
         
         options.oncomplete = function() {
