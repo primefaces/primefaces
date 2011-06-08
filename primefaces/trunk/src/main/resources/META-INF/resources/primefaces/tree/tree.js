@@ -144,10 +144,12 @@ PrimeFaces.widget.Tree.prototype.fireExpandEvent = function(node) {
     if(this.cfg.behaviors) {
         var expandBehavior = this.cfg.behaviors['expand'];
         if(expandBehavior) {
-            var params = {};
-            params[this.id + '_expandNode'] = this.getNodeId(node);
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_expandNode'] = this.getNodeId(node);
             
-            expandBehavior.call(this, node, params);
+            expandBehavior.call(this, node, ext);
         }
     }
 }
@@ -184,10 +186,12 @@ PrimeFaces.widget.Tree.prototype.fireCollapseEvent = function(node) {
     if(this.cfg.behaviors) {
         var collapseBehavior = this.cfg.behaviors['collapse'];
         if(collapseBehavior) {
-            var params = {};
-            params[this.id + '_collapseNode'] = this.getNodeId(node);
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_collapseNode'] = this.getNodeId(node);
             
-            collapseBehavior.call(this, node, params);
+            collapseBehavior.call(this, node, ext);
         }
     }
 }
@@ -287,10 +291,12 @@ PrimeFaces.widget.Tree.prototype.fireNodeSelectEvent = function(node) {
         var selectBehavior = this.cfg.behaviors['select'];
         
         if(selectBehavior) {
-            var params = {};
-            params[this.id + '_instantSelection'] = this.getNodeId(node);
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_instantSelection'] = this.getNodeId(node);
             
-            selectBehavior.call(this, node, params);
+            selectBehavior.call(this, node, ext);
         }
     }
 }
@@ -300,10 +306,12 @@ PrimeFaces.widget.Tree.prototype.fireNodeUnselectEvent = function(node) {
         var unselectBehavior = this.cfg.behaviors['unselect'];
         
         if(unselectBehavior) {
-            var params = {};
-            params[this.id + '_instantUnselection'] = this.getNodeId(node);
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_instantUnselection'] = this.getNodeId(node);
             
-            unselectBehavior.call(this, node, params);
+            unselectBehavior.call(this, node, ext);
         }
     }
 }
@@ -440,11 +448,13 @@ PrimeFaces.widget.Tree.prototype.fireDragDropEvent = function(draggedNode, newPa
         var dndBehavior = this.cfg.behaviors['dragdrop'];
         
         if(dndBehavior) {
-            var params = {};
-            params[this.id + '_draggedNode'] = this.getNodeId(draggedNode);
-            params[this.id + '_droppedNode'] = this.getNodeId(newParent);
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_draggedNode'] = this.getNodeId(draggedNode);
+            ext.params[this.id + '_droppedNode'] = this.getNodeId(newParent);
             
-            dndBehavior.call(this, draggedNode, params);
+            dndBehavior.call(this, draggedNode, ext);
         }
     }
 }
