@@ -243,7 +243,7 @@ PrimeFaces.widget.DataTable.prototype.loadLiveRows = function() {
             }
         }
 
-        return false;
+        return true;
     };
 
     var params = {};
@@ -285,7 +285,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
             }
         }
 
-        return false;
+        return true;
     };
     
     options.oncomplete = function() {
@@ -347,7 +347,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
             }
         }
 
-        return false;
+        return true;
     };
     
     options.oncomplete = function() {
@@ -421,7 +421,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
             }
         }
 
-        return false;
+        return true;
     };
     
     options.oncomplete = function() {
@@ -725,7 +725,7 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
             }
         }
 
-        return false;
+        return true;
     };
     
     options.oncomplete = function() {
@@ -841,7 +841,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
             }
         }
 
-        return false;
+        return true;
     };
 
     var params = {};
