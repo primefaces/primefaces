@@ -53,7 +53,7 @@ PrimeFaces.widget.DataList.prototype.handlePagination = function(newState) {
                 }
             }
 
-            return false;
+            return true;
         }
     };
 

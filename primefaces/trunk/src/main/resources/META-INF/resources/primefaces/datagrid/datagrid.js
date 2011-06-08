@@ -53,7 +53,7 @@ PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
                 }
             }
 
-            return false;
+            return true;
         }
     };
 
