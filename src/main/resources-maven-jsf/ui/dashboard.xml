@@ -7,7 +7,6 @@
 	<tag>dashboard</tag>
 	<tagClass>org.primefaces.component.dashboard.DashboardTag</tagClass>
 	<componentClass>org.primefaces.component.dashboard.Dashboard</componentClass>
-	<componentHandlerClass>org.primefaces.component.dashboard.DashboardHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Dashboard</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.DashboardRenderer</rendererType>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -31,17 +33,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-		</attribute>
-		<attribute>
-			<name>onReorderUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>reorderListener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void reorderListener(org.primefaces.event.DashboardReorderEvent)</method-signature>
 		</attribute>
 		<attribute>
 			<name>style</name>
