@@ -37,10 +37,10 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if(submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
-            checkbox.setSubmittedValue(true);
+            checkbox.setSubmittedValue("true");
         }
         else {
-            checkbox.setSubmittedValue(false);
+            checkbox.setSubmittedValue("false");
         }
 	}
 
