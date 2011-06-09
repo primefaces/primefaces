@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class DashboardReorderEvent extends FacesEvent {
+public class DashboardReorderEvent extends AjaxBehaviorEvent {
 
 	private String widgetId;
 
@@ -29,16 +30,12 @@ public class DashboardReorderEvent extends FacesEvent {
 	
 	private Integer senderColumnIndex;
 
-	public DashboardReorderEvent(UIComponent component, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {
-		super(component);
+    public DashboardReorderEvent(UIComponent component, Behavior behavior, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {
+		super(component, behavior);
 		this.widgetId = widgetId;
 		this.itemIndex = itemIndex;
 		this.columnIndex = columnIndex;
 		this.senderColumnIndex = senderColumnIndex;
-	}
-
-	public DashboardReorderEvent(UIComponent component) {
-		super(component);
 	}
 
 	@Override

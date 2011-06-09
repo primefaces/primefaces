@@ -27,62 +27,25 @@ import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class DashboardRenderer extends CoreRenderer {
 	
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		Dashboard dashboard = (Dashboard) component;
-		String clientId = dashboard.getClientId(facesContext);
-		String senderIndexParam = clientId + "_senderColumnIndex";
-		Integer senderColumnIndex = null;
-		
-		if(params.containsKey(clientId + "_reordered")) {
-			String widgetClientId = params.get(clientId + "_widgetId");
-			Integer itemIndex = Integer.valueOf(params.get(clientId + "_itemIndex"));
-			Integer receiverColumnIndex = Integer.valueOf(params.get(clientId + "_receiverColumnIndex"));
-			
-			if(params.containsKey(senderIndexParam)) {
-				senderColumnIndex = Integer.valueOf(params.get(senderIndexParam));
-			}
-			
-			String[] idTokens = widgetClientId.split(":");
-			String widgetId = idTokens.length == 1 ? idTokens[0] : idTokens[idTokens.length - 1];
-			
-			DashboardReorderEvent event = new DashboardReorderEvent(component, widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
-			dashboard.queueEvent(event);
-			
-			updateDashboardModel(dashboard.getModel(), widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
-		}
-	}
-
-	protected void updateDashboardModel(DashboardModel model, String widgetId, Integer itemIndex, Integer receiverColumnIndex, Integer senderColumnIndex) {		
-		if(senderColumnIndex == null) {
-			//Reorder widget in same column
-			DashboardColumn column = model.getColumn(receiverColumnIndex);
-			column.reorderWidget(itemIndex, widgetId);
-		} else {
-			//Transfer widget
-			DashboardColumn oldColumn = model.getColumn(senderColumnIndex);
-			DashboardColumn newColumn = model.getColumn(receiverColumnIndex);
-			
-			model.transferWidget(oldColumn, newColumn, widgetId, itemIndex);
-		}
+	public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
 	}
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Dashboard dashboard = (Dashboard) component;
 		
-		encodeMarkup(facesContext, dashboard);
-		encodeScript(facesContext, dashboard);
+		encodeMarkup(context, dashboard);
+		encodeScript(context, dashboard);
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Dashboard dashboard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = dashboard.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext contextr, Dashboard dashboard) throws IOException {
+		ResponseWriter writer = contextr.getResponseWriter();
+		String clientId = dashboard.getClientId(contextr);
 		
 		writer.startElement("div", dashboard);
 		writer.writeAttribute("id", clientId, "id");
@@ -100,7 +63,7 @@ public class DashboardRenderer extends CoreRenderer {
 					Panel widget = findWidget(widgetId, dashboard);
 					
 					if(widget != null)
-						renderChild(facesContext, widget);
+						renderChild(contextr, widget);
 				}
 				
 				writer.endElement("div");
@@ -110,9 +73,9 @@ public class DashboardRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Dashboard dashboard) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = dashboard.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = dashboard.getClientId(context);
         
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -120,8 +83,8 @@ public class DashboardRenderer extends CoreRenderer {
 		writer.write(dashboard.resolveWidgetVar() + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
 		writer.write("disabled:" + dashboard.isDisabled());
 
-		if(dashboard.getOnReorderUpdate() != null) writer.write(",onReorderUpdate:'" + ComponentUtils.findClientIds(facesContext, dashboard, dashboard.getOnReorderUpdate()) + "'");
-		
+        encodeClientBehaviors(context, dashboard);
+        
 		writer.write("});");
 		
 		writer.endElement("script");
@@ -139,7 +102,7 @@ public class DashboardRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Rendering happens on encodeEnd
 	}
 
