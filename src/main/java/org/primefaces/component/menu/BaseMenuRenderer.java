@@ -53,13 +53,8 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
         else {
             writer.startElement("a", null);
             
-            if(menuItem.getStyle() != null){
-              writer.writeAttribute("style", menuItem.getStyle(), null);
-            }
-            
-            if(menuItem.getStyleClass() != null){
-              writer.writeAttribute("class", menuItem.getStyleClass(), null);
-            }
+            if(menuItem.getStyle() != null) writer.writeAttribute("style", menuItem.getStyle(), null);
+            if(menuItem.getStyleClass() != null) writer.writeAttribute("class", menuItem.getStyleClass(), null);
 
 			if(menuItem.getUrl() != null) {
 				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
