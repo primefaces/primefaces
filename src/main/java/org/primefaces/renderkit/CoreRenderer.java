@@ -322,7 +322,7 @@ public class CoreRenderer extends Renderer {
 
                 writer.write(domEvent + ":");
 
-                writer.write("function() {");
+                writer.write("function(event) {");
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
