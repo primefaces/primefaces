@@ -7,7 +7,6 @@
 	<tag>fieldset</tag>
 	<tagClass>org.primefaces.component.fieldset.FieldsetTag</tagClass>
 	<componentClass>org.primefaces.component.fieldset.Fieldset</componentClass>
-    <componentHandlerClass>org.primefaces.component.fieldset.FieldsetHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Fieldset</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.FieldsetRenderer</rendererType>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -47,17 +49,6 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>500</defaultValue>
-        </attribute>
-        <attribute>
-            <name>onToggleUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>toggleListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void toggleListener(org.primefaces.event.ToggleEvent)</method-signature>
         </attribute>
         <attribute>
             <name>collapsed</name>
