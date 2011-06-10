@@ -276,30 +276,27 @@ import org.primefaces.event.data.SortEvent;
             if(eventName.equals("selectRow")) {
                 int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
                 this.setRowIndex(selectedRowIndex);
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());    
+                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData());  
             }
             else if(eventName.equals("unselectRow")) {
                 int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
                 this.setRowIndex(unselectedRowIndex);
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("page")) {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("sort")) {
                 boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
                 Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, asc);
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("filter")) {
                 wrapperEvent = event;
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
+
+            wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
 
             super.queueEvent(wrapperEvent);
         }

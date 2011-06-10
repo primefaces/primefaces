@@ -495,10 +495,12 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
         var selectBehavior = this.cfg.behaviors['selectRow'];
         
         if(selectBehavior) {
-            var params = {};
-            params[this.id + '_instantSelectedRowIndex'] = rowId;
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_instantSelectedRowIndex'] = rowId;
             
-            selectBehavior.call(this, rowId, params);
+            selectBehavior.call(this, rowId, ext);
         }
     }
 }
@@ -511,10 +513,12 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
         var unselectBehavior = this.cfg.behaviors['unselectRow'];
         
         if(unselectBehavior) {
-            var params = {};
-            params[this.id + '_instantUnselectedRowIndex'] = rowId;
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_instantUnselectedRowIndex'] = rowId;
             
-            unselectBehavior.call(this, rowId, params);
+            unselectBehavior.call(this, rowId, ext);
         }
     }
 }
