@@ -1197,7 +1197,7 @@ PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
         return new DOMParser().parseFromString(xmlString, 'text/xml');
     }
     else {                                                                  //IE
-        iframeContent = $.trim(iframeContent.replace(/(> -)|(>-)/g,'>'));
+        iframeContent = $.trim(iframeContent.text().replace(/(> -)|(>-)/g,'>'));
         var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
         xmlDoc.async = "false";
 
