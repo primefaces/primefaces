@@ -7,7 +7,6 @@
     <tag>progressBar</tag>
     <tagClass>org.primefaces.component.progressbar.ProgressBarTag</tagClass>
     <componentClass>org.primefaces.component.progressbar.ProgressBar</componentClass>
-    <componentHandlerClass>org.primefaces.component.progressbar.ProgressBarHandler</componentHandlerClass>
     <componentType>org.primefaces.component.ProgressBar</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.ProgressBarRenderer</rendererType>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
     <attributes>
@@ -59,28 +61,6 @@
             <name>oncomplete</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>onCompleteUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>completeListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void completeListener()</method-signature>
-        </attribute>
-        <attribute>
-            <name>onCancelUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>cancelListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void completeListener()</method-signature>
         </attribute>
     </attributes>
     <resources>
