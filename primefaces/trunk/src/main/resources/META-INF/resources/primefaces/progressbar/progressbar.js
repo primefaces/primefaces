@@ -62,12 +62,4 @@ PrimeFaces.widget.ProgressBar.prototype.fireCompleteEvent = function() {
 PrimeFaces.widget.ProgressBar.prototype.cancel = function() {
     clearInterval(this.progressPoll);
     this.setValue(0);
-    
-    if(this.cfg.behaviors) {
-        var cancelBehavior = this.cfg.behaviors['cancel'];
-        
-        if(cancelBehavior) {
-            cancelBehavior.call(this);
-        }
-    }
 }

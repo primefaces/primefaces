@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javax.faces.event.PhaseId;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("complete", "cancel"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("complete"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -26,10 +26,6 @@ import javax.faces.event.PhaseId;
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-
-            if(eventName.equals("cancel")) {
-                
-            }
             
             behaviorEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
 
