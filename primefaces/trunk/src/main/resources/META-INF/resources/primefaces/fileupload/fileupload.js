@@ -1175,23 +1175,40 @@ PrimeFaces.widget.FileUpload.prototype.setupRestrictions = function() {
 }
 
 /**
- * IFrame response response for legacy browsers e.g. IE.
+ * IFrame response response for legacy browsers e.g. IE, FF 3.5
  */
 PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
-    var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-    xmlDoc.async = "false";
+    var iframeContent = iframe.contents();
+    
+    if(window.DOMParser) {                                                  //FF 3.5 and before
+        var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
+        xmlString += '<partial-response><changes>';
+        
+        iframeContent.find('update').each(function(i) {
+            var update = $(this),
+            id = update.attr('id'),
+            content = update.text();
+            
+            xmlString += '<update id="' + id + '"><![CDATA[' + content + ']]></update>';
+        });
+        
+        xmlString += '</changes></partial-response>';
 
-    //format response so IE can parse
-    var iframeContent = iframe.contents().text();
-    iframeContent = $.trim(iframeContent.replace(/(> -)|(>-)/g,'>'));
+        return new DOMParser().parseFromString(xmlString, 'text/xml');
+    }
+    else {                                                                  //IE
+        iframeContent = $.trim(iframeContent.replace(/(> -)|(>-)/g,'>'));
+        var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = "false";
 
-    xmlDoc.loadXML(iframeContent);
+        xmlDoc.loadXML(iframeContent);
 
-    var responseXML = {};
-    responseXML.documentElement = xmlDoc.documentElement;
+        var responseXML = {};
+        responseXML.documentElement = xmlDoc.documentElement;
 
-    return responseXML;
-}
+        return responseXML;
+    }
+}              
 
 PrimeFaces.widget.FileUpload.prototype.startIEProgress = function(handler) {
     handler.uploadRow.find('.ui-progressbar-value').addClass('ui-progressbar-value-ie');
