@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.Visibility;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class FieldsetRenderer extends CoreRenderer {
 
@@ -33,17 +30,12 @@ public class FieldsetRenderer extends CoreRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = fieldset.getClientId();
         String toggleStateParam = clientId + "_collapsed";
-        boolean isAjaxToggle = params.containsKey(clientId + "_ajaxToggle");
-
+        
         if(params.containsKey(toggleStateParam)) {
-            boolean collapsed = Boolean.valueOf(params.get(toggleStateParam));
-            fieldset.setCollapsed(collapsed);
-
-            if(isAjaxToggle) {
-                Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
-                //fieldset.queueEvent(new ToggleEvent(fieldset, visibility));
-            }
+            fieldset.setCollapsed(Boolean.valueOf(params.get(toggleStateParam)));
         }
+        
+        decodeBehaviors(context, component);
     }
 
     @Override
@@ -109,15 +101,9 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.write("toggleable:true");
             writer.write(",collapsed:" + fieldset.isCollapsed());
             writer.write(",toggleSpeed:" + fieldset.getToggleSpeed());
-
-            if(fieldset.getToggleListener() != null) {
-                writer.write(",ajaxToggle:true");
-
-                if(fieldset.getOnToggleUpdate() != null) {
-                    writer.write(",onToggleUpdate:'" + ComponentUtils.findClientIds(context, fieldset, fieldset.getOnToggleUpdate()) + "'");
-                }
-            }
         }
+        
+        encodeClientBehaviors(context, fieldset);
 
         writer.write("});");
 
