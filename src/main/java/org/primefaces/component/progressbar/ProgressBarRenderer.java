@@ -24,7 +24,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class ProgressBarRenderer extends CoreRenderer {
 
@@ -37,6 +36,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         if(params.containsKey(clientId)) {
             RequestContext.getCurrentInstance().addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
         }
+        
+        decodeBehaviors(context, progressBar);
 
         FacesContext.getCurrentInstance().renderResponse();
     }
@@ -77,9 +78,11 @@ public class ProgressBarRenderer extends CoreRenderer {
         if(isAjax) {
             writer.write(",interval:" + progressBar.getInterval());
 
-            if(progressBar.getOncomplete() != null) 
+            if(progressBar.getOncomplete() != null) {
                 writer.write(",oncomplete:function(xhr, status, args) {" + progressBar.getOncomplete() + "}");
+            }
 
+            encodeClientBehaviors(context, progressBar);
         }
 
         if(progressBar.isDisabled()) {
