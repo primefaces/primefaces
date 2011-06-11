@@ -17,6 +17,8 @@ package org.primefaces.application;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.application.Resource;
@@ -28,6 +30,8 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
+    
+    private final static Logger logger = Logger.getLogger(PrimeResourceHandler.class.getName());
         
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
     
@@ -62,26 +66,32 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
             Map<String,Object> session = context.getExternalContext().getSessionMap();
-            String dynamicContentEL = (String) session.get(dynamicContentId);
-            ELContext eLContext = context.getELContext();
-            ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
-            StreamedContent content = (StreamedContent) ve.getValue(eLContext);
-            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
             
-            response.setContentType(content.getContentType());
-				
-            byte[] buffer = new byte[2048];
+            try {
+                String dynamicContentEL = (String) session.get(dynamicContentId);
+                ELContext eLContext = context.getELContext();
+                ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
+                StreamedContent content = (StreamedContent) ve.getValue(eLContext);
+                HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 
-            int length;
-            while ((length = (content.getStream().read(buffer))) >= 0) {
-                response.getOutputStream().write(buffer, 0, length);
+                response.setContentType(content.getContentType());
+
+                byte[] buffer = new byte[2048];
+
+                int length;
+                while ((length = (content.getStream().read(buffer))) >= 0) {
+                    response.getOutputStream().write(buffer, 0, length);
+                }
+
+                response.setStatus(200);
+                response.getOutputStream().flush();
+                context.responseComplete();
+
+            } catch(Exception e) {
+                logger.log(Level.SEVERE, "Error in streaming dynamic resource.");
+            } finally {
+                session.remove(dynamicContentId);
             }
-
-            response.setStatus(200);
-            response.getOutputStream().flush();
-            context.responseComplete();
-            
-            session.remove(dynamicContentId);
         }
         else {
            super.handleResourceRequest(context); 
