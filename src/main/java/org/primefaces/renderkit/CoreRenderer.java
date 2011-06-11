@@ -192,7 +192,9 @@ public class CoreRenderer extends Renderer {
 	
     protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
         UIComponent component = (UIComponent) source;
+        String clientId = component.getClientId(context);
         UIComponent form = ComponentUtils.findParentForm(context, component);
+        
         if(form == null) {
             throw new FacesException("Component " + component.getClientId(context) + " must be enclosed in a form.");
         }
@@ -204,11 +206,21 @@ public class CoreRenderer extends Renderer {
         req.append("{formId:").append("'").append(form.getClientId(context)).append("'");
 
         //source
-        req.append(",source:").append("'").append(component.getClientId(context)).append("'");
+        req.append(",source:").append("'").append(clientId).append("'");
 
         //process
-        String process = source.getProcess() != null ? ComponentUtils.findClientIds(context, component, source.getProcess()) : "@all";
+        String process = source.getProcess();
+        if(process == null) {
+            process = "@all";
+        } else {
+            process = ComponentUtils.findClientIds(context, component, process);
+            
+            //add @this   
+            if(process.indexOf(clientId) == -1)
+                process = process + " " + clientId;
+        }
         req.append(",process:'").append(process).append("'");
+
 
         //update
         if(source.getUpdate() != null) {
