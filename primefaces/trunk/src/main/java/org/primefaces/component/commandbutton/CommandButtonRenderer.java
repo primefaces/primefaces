@@ -31,34 +31,34 @@ import org.primefaces.util.HTML;
 public class CommandButtonRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {
+	public void decode(FacesContext context, UIComponent component) {
         CommandButton button = (CommandButton) component;
         if(button.isDisabled()) {
             return;
         }
         
-		String param = component.getClientId(facesContext);
+		String param = component.getClientId(context);
 		
-		if(facesContext.getExternalContext().getRequestParameterMap().containsKey(param)) {
+		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
 		}
 	}
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		CommandButton button = (CommandButton) component;
 		
 		//myfaces fix
 		if(button.getType() == null)
 			button.setType("submit");
 		
-		encodeMarkup(facesContext, button);
-		encodeScript(facesContext, button);
+		encodeMarkup(context, button);
+		encodeScript(context, button);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, CommandButton button) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = button.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, CommandButton button) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = button.getClientId(context);
 		String type = button.getType();
 
 		writer.startElement("button", button);
@@ -68,13 +68,13 @@ public class CommandButtonRenderer extends CoreRenderer {
 
 		String onclick = button.getOnclick();
 		if(!type.equals("reset") && !type.equals("button")) {
-			UIComponent form = ComponentUtils.findParentForm(facesContext, button);
+			UIComponent form = ComponentUtils.findParentForm(context, button);
 			if(form == null) {
 				throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
 			}
 			
-			String formClientId = form.getClientId(facesContext);		
-			String request = button.isAjax() ? buildAjaxRequest(facesContext, button) + "return false;" : buildNonAjaxRequest(facesContext, button, formClientId);
+			String formClientId = form.getClientId(context);		
+			String request = button.isAjax() ? buildAjaxRequest(context, button) + "return false;" : buildNonAjaxRequest(context, button, formClientId);
 			onclick = onclick != null ? onclick + ";" + request : request;
 		}
 		
@@ -82,7 +82,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 			writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
-		renderPassThruAttributes(facesContext, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
         if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
@@ -96,9 +96,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 		writer.endElement("button");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, CommandButton button) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = button.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = button.getClientId(context);
 		String type = button.getType();
 		boolean hasValue = (button.getValue() != null);
 		
@@ -119,7 +119,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
-	protected String buildNonAjaxRequest(FacesContext facesContext, CommandButton button, String formId) {
+	protected String buildNonAjaxRequest(FacesContext context, CommandButton button, String formId) {
         boolean hasParam = false;
         StringBuilder request = new StringBuilder();
         
