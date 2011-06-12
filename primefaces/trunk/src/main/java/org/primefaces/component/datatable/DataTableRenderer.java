@@ -18,6 +18,7 @@ package org.primefaces.component.datatable;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -59,6 +60,10 @@ public class DataTableRenderer extends CoreRenderer {
         }
         
         decodeBehaviors(context, component);
+        
+        if(table.isPaginator()) {
+            updatePaginationMetadata(context, table);
+        }
 	}
     
     @Override
@@ -133,11 +138,6 @@ public class DataTableRenderer extends CoreRenderer {
             if(table.getHeight() != Integer.MIN_VALUE) {
                 writer.write(",height:" + table.getHeight());
             }
-        }
-
-        //Editable rows
-        if(table.getOnRowEditUpdate() != null) {
-            writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
         }
 
         //Resizable Columns
@@ -859,5 +859,18 @@ public class DataTableRenderer extends CoreRenderer {
         for(int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
             encodeRow(context, table, clientId, i, rowIndexVar);
         }
+    }
+    
+    protected void updatePaginationMetadata(FacesContext context, DataTable table) {
+        ValueExpression firstVe = table.getValueExpression("first");
+        ValueExpression rowsVe = table.getValueExpression("rows");
+        ValueExpression pageVE = table.getValueExpression("page");
+
+        if(firstVe != null)
+            firstVe.setValue(context.getELContext(), table.getFirst());
+        if(rowsVe != null)
+            rowsVe.setValue(context.getELContext(), table.getRows());
+        if(pageVE != null)
+            pageVE.setValue(context.getELContext(), table.getPage());
     }
 }

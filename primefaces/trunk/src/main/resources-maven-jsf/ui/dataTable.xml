@@ -143,17 +143,6 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-            <name>rowEditListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void rowEditListener(org.primefaces.event.RowEditEvent)</method-signature>
-        </attribute>
-        <attribute>
-			<name>onRowEditUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
 			<name>onExpandStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
