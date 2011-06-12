@@ -483,3 +483,9 @@ import org.primefaces.event.data.SortEvent;
 
         return partialSource != null && this.getClientId(context).startsWith(partialSource);
     }
+
+    public boolean isBodyUpdate(FacesContext context) {
+        String clientId = this.getClientId(context);
+
+        return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_updateBody");
+    }
