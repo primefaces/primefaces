@@ -8,7 +8,6 @@
 	<tag>dataTable</tag>
 	<tagClass>org.primefaces.component.datatable.DataTableTag</tagClass>
 	<componentClass>org.primefaces.component.datatable.DataTable</componentClass>
-    <componentHandlerClass>org.primefaces.component.datatable.DataTableHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.DataTable</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
