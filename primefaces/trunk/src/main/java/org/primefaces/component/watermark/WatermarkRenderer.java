@@ -41,7 +41,7 @@ public class WatermarkRenderer extends CoreRenderer {
 			}
 			String jqId = ComponentUtils.escapeJQueryId(forComponent.getClientId(context));
 
-            target.append(jqId).append(",").append(jqId).append(" input:text");
+            target.append(jqId).append(",").append(jqId).append(" input");
 			
 		} else if(watermark.getForElement() != null) {
 			target.append(watermark.getForElement());
