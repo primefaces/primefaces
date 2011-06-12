@@ -495,7 +495,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
  */
 PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
     if(this.cfg.behaviors) {
-        var selectBehavior = this.cfg.behaviors['selectRow'];
+        var selectBehavior = this.cfg.behaviors['rowSelect'];
         
         if(selectBehavior) {
             var ext = {
@@ -513,7 +513,7 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
  */
 PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
     if(this.cfg.behaviors) {
-        var unselectBehavior = this.cfg.behaviors['unselectRow'];
+        var unselectBehavior = this.cfg.behaviors['rowUnselect'];
         
         if(unselectBehavior) {
             var ext = {
@@ -771,7 +771,7 @@ PrimeFaces.widget.DataTable.prototype.cancelRowEdit = function(element) {
  * Sends an ajax request to handle row save or cancel
  */
 PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, action) {
-    var row = $($(element).parents('tr').get(0)),
+    var row = $(element).parents('tr').eq(0),
     options = {
         source: this.id,
         update: this.id,
@@ -784,18 +784,12 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     if(action === 'save') {
         //Only process cell editors of current row
         var editorsToProcess = new Array();
-        editorsToProcess.push(rowEditorId);
 
         row.find('span.ui-cell-editor').each(function() {
            editorsToProcess.push($(this).attr('id'));
         });
 
         options.process = editorsToProcess.join(' ');
-
-        //Additional components to update after row edit request
-        if(this.cfg.onRowEditUpdate) {
-            options.update += ' ' + this.cfg.onRowEditUpdate;
-        }
     }
 
     options.onsuccess = function(responseXML) {
@@ -843,10 +837,20 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     params[rowEditorId] = rowEditorId;
     params[this.id + '_rowEdit'] = true;
     params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
+    
+    if(action === 'cancel') {
+        params[this.id + '_rowEditCancel'] = true;
+    }
 
     options.params = params;
-
-    PrimeFaces.ajax.AjaxRequest(options);
+    
+    if(this.hasBehavior('rowEdit')) {
+       var rowEditBehavior = this.cfg.behaviors['rowEdit'];
+       
+       rowEditBehavior.call(this, row, options);
+    } else {
+       PrimeFaces.ajax.AjaxRequest(options); 
+    }
 }
 
 

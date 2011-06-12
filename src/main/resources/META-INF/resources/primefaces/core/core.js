@@ -237,22 +237,24 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source.id;
 
     //process
-    if(cfg.process) {
-        postParams = postParams + "&" + PrimeFaces.PARTIAL_PROCESS_PARAM + "=" + cfg.process;
-    }
+    var process = [];
+    if(cfg.process)
+        process.push(cfg.process);
+    if(ext && ext.process)
+        process.push(ext.process);
+    
+    if(process.length > 0)
+        postParams = postParams + "&" + PrimeFaces.PARTIAL_PROCESS_PARAM + "=" + process.join(' ');
 
     //update
     var update = [];
-    if(cfg.update) {
+    if(cfg.update)
         update.push(cfg.update);
-    }
-    if(ext && ext.update) {
+    if(ext && ext.update)
         update.push(ext.update);
-    }
     
-    if(update.length > 0) {
+    if(update.length > 0)
         postParams = postParams + "&" + PrimeFaces.PARTIAL_UPDATE_PARAM + "=" + update.join(' ');
-    }
 
     //behavior event
     if(cfg.event) {

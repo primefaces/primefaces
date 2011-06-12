@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,32 +16,13 @@
 package org.primefaces.component.roweditor;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.RowEditEvent;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class RowEditorRenderer extends CoreRenderer {
-
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        RowEditor editor = (RowEditor) component;
-        String clientId = editor.getClientId(context);
-
-        //Decode row edit request triggered by this editor
-        if(params.containsKey(clientId)) {
-            DataTable table = findParentTable(context, editor);
-
-            table.setRowIndex(-1);
-            int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowId"));
-            table.setRowIndex(editedRowId);
-            table.queueEvent(new RowEditEvent(table, table.getRowData()));
-        }
-    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -67,18 +48,4 @@ public class RowEditorRenderer extends CoreRenderer {
 
         writer.endElement("span");
     }
-
-    protected DataTable findParentTable(FacesContext context, RowEditor editor) {
-		UIComponent parent = editor.getParent();
-
-		while(parent != null) {
-			if(parent instanceof DataTable) {
-				return (DataTable) parent;
-            }
-
-			parent = parent.getParent();
-		}
-
-		return null;
-	}
 }

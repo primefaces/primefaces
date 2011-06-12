@@ -24,6 +24,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
@@ -60,7 +61,7 @@ import org.primefaces.event.data.SortEvent;
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "selectRow", "unselectRow", "rowEdit"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit"));
 
     public List<Column> columns;
 
@@ -213,17 +214,14 @@ import org.primefaces.event.data.SortEvent;
 
     @Override
     public void processDecodes(FacesContext context) {
-		if(isRequestSource(context)) {
-            this.decode(context);
-            
-            if(isSelectionEnabled()) {
-                this.updateSelectionModel(context);
-            }
+		String clientId = getClientId(context);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
-            if(isPaginator()) {
-                updatePaginationMetadata(context);
-            }
-            
+        if(isBodyUpdate(context)) {
+            this.decode(context);
+            context.renderResponse();
+        }
+        else if(params.containsKey(clientId + "_rowEditCancel")) {
             context.renderResponse();
         } else {
             super.processDecodes(context);
@@ -234,10 +232,6 @@ import org.primefaces.event.data.SortEvent;
     public void processUpdates(FacesContext context) {
 		super.processUpdates(context);
 
-        updateSelectionModel(context);
-	}
-
-    protected void updateSelectionModel(FacesContext context) {
         ValueExpression selectionVE = this.getValueExpression("selection");
         
         if(selectionVE != null) {
@@ -245,20 +239,7 @@ import org.primefaces.event.data.SortEvent;
 
             this.setSelection(null);
         }
-    }
-
-    protected void updatePaginationMetadata(FacesContext context) {
-        ValueExpression firstVe = this.getValueExpression("first");
-        ValueExpression rowsVe = this.getValueExpression("rows");
-        ValueExpression pageVE = this.getValueExpression("page");
-
-        if(firstVe != null)
-            firstVe.setValue(context.getELContext(), getFirst());
-        if(rowsVe != null)
-            rowsVe.setValue(context.getELContext(), getRows());
-        if(pageVE != null)
-            pageVE.setValue(context.getELContext(), getPage());
-    }
+	}
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -273,30 +254,38 @@ import org.primefaces.event.data.SortEvent;
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("selectRow")) {
+            if(eventName.equals("rowSelect")) {
                 int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
                 this.setRowIndex(selectedRowIndex);
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData());  
+                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData()); 
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if(eventName.equals("unselectRow")) {
+            else if(eventName.equals("rowUnselect")) {
                 int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
                 this.setRowIndex(unselectedRowIndex);
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("page")) {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("sort")) {
                 boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
                 Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, asc);
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("filter")) {
                 wrapperEvent = event;
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-
-            wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            else if(eventName.equals("rowEdit")) {
+                int editedRowId = Integer.parseInt(params.get(clientId + "_editedRowId"));
+                setRowIndex(editedRowId);
+                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+            }
 
             super.queueEvent(wrapperEvent);
         }
