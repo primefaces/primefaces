@@ -69,6 +69,30 @@ PrimeFaces = {
     navigate : function(to, transition, reverse, changeHash) {
         $.mobile.changePage(to, transition, reverse, changeHash);
     },
+    
+    info: function(msg) {
+        if(log) {
+            log.info(msg);
+        }
+    },
+    
+    debug: function(msg) {
+        if(log) {
+            log.debug(msg);
+        }
+    },
+    
+    warn: function(msg) {
+        if(log) {
+            log.warn(msg);
+        }
+    },
+    
+    error: function(msg) {
+        if(log) {
+            log.error(msg);
+        }
+    },
 
     locales : {},
 	
