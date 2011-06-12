@@ -228,7 +228,13 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     }
 }
 
+String.prototype.startsWith = function(str){
+    return (this.indexOf(str) === 0);
+}
+
+        
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
+
     var itemContainer = this.panel.children('.ui-selectonemenu-items'),
     items = itemContainer.find('.ui-selectonemenu-item'),
     options = $(this.input).children('option'),
@@ -289,8 +295,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         }
         offset = _self.panel.offset();
         if (e.target === _self.label.get(0) ||
-        e.target === _self.menuIcon.get(0) ||
-        e.target === _self.menuIcon.children().get(0)) {
+            e.target === _self.menuIcon.get(0) ||
+            e.target === _self.menuIcon.children().get(0)) {
             return;
         }
         if (e.pageX < offset.left ||
@@ -303,9 +309,17 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     });
 
     //key bindings
-    this.highlightLetter = null;
+    this.highlightItems = [];
+    this.highlightKeyPath = '';
+    this.highlightItem = null;
 
     this.labelContainer.keydown(function(e) {
+        $(this).stop().clearQueue();
+
+        $(this).animate({ opacity : 1}, 1000, function(){
+            _self.highlightKeyPath = '';
+        });
+
 
         var keyCode = $.ui.keyCode;
 
@@ -334,47 +348,75 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
             case keyCode.ENTER:
             case keyCode.NUMPAD_ENTER:
-                    items.filter('.ui-state-active').click();
+                items.filter('.ui-state-active').click();
                 break;
-
+            case keyCode.ALT: 
+            case keyCode.TAB: 
+            case keyCode.COMMAND: 
+            case keyCode.MENU: 
+            case keyCode.HOME: 
+            case keyCode.PERIOD: 
+            case keyCode.WINDOWS:
+            case keyCode.COMMAND_LEFT:
+            case keyCode.COMMAND_RIGHT:
+            case 224: break;
             default:
-                var letter = String.fromCharCode(e.keyCode).toLowerCase(),
+                var letter = String.fromCharCode(e.keyCode).toLowerCase();
                 options = $(_self.input).children('option');
 
-                if(_self.highlightLetter != letter) {
-                    _self.highlightLetter = letter;
-                    _self.highlightIndex = null;
-                    _self.highlightItems = null;
-                }
+                if( _self.highlightKeyPath != letter ){
 
-                if(_self.highlightItems == null) {
-                    _self.highlightItems = [];
-
-                    options.each(function(i, option) {
-                        if(option.text.toLowerCase().indexOf(letter) == 0) {
-                            _self.highlightItems.push(items.eq(i));
-                        }
-                    });
-                }
-
-                if(_self.highlightItems.length > 0) {
-
-                    //find item to highlight
-                    if(_self.highlightIndex == null) {
-                        _self.highlightIndex = 0;
-                    } else {
-                        _self.highlightIndex++;
-
-                        if(_self.highlightIndex == _self.highlightItems.length) {
-                            _self.highlightIndex = 0;
-                        }
+                     _self.highlightKeyPath += letter;
+                     _self.highlightItems = [];
+                     // find matches
+                    for( var index = 0 ; index < options.length; index++){
+                        if(options[index].text.toLowerCase().startsWith(_self.highlightKeyPath))
+                            _self.highlightItems.push(items.eq(index));
                     }
 
-                    var highlightItem = _self.highlightItems[_self.highlightIndex];
 
-                    items.removeClass('ui-state-active');   //clear previous highlighted ones if any
-                    highlightItem.addClass('ui-state-active');
+
                 }
+
+                // no change
+                if(_self.highlightItems.length < 1)
+                        return;
+
+                if(_self.highlightItem ){
+
+                    // similar
+                    if($(_self.highlightItem).html().toLowerCase().startsWith(_self.highlightKeyPath)){
+                        if(_self.highlightKeyPath.length < 2){
+                            var i = 0;
+                            for( ; i < _self.highlightItems.length && $(_self.highlightItems[i]).html() != $(_self.highlightItem).html(); i++);
+                            _self.highlightIndex = i + 1;
+                        }
+                        else
+                            return;
+                    }
+                    else{ // not similar
+
+                        var o = items.index(_self.highlightItem);
+                        var n = items.index(_self.highlightItems[0]);
+
+                        // find nearest
+                        for( var i = 0; i < _self.highlightItems.length && items.index(_self.highlightItems[i]) < o ; i++);
+                        _self.highlightIndex = i;
+                    }
+                }
+                else{ // new
+                    _self.highlightIndex = 0;
+                }
+
+
+                //round
+                if(_self.highlightIndex == _self.highlightItems.length) {
+                            _self.highlightIndex = 0;
+                }
+
+                _self.highlightItem = _self.highlightItems[_self.highlightIndex];
+                items.removeClass('ui-state-active');   //clear previous highlighted ones if any
+                _self.highlightItem.addClass('ui-state-active');
         };
 
         e.preventDefault();
