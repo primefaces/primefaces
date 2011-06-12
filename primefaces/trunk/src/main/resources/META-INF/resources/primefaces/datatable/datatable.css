@@ -20,7 +20,7 @@
 .ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
-    padding:4px 0px 4px 10px;
+    padding:4px 10px;
     margin:0px;
 }
 
@@ -31,7 +31,7 @@
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
-    padding:4px 0px 4px 10px;
+    padding:4px 10px;
 }
 
 .ui-datatable .ui-paginator {
@@ -72,7 +72,6 @@
 
 .ui-datatable .ui-row-toggler {
     cursor: pointer;
-    margin-right: 4px;
 }
 
 .ui-datatable .ui-cell-editor-input {
@@ -118,7 +117,7 @@
     height:15px;
     float:right;
     padding:0px;
-    margin:0px;
+    margin:0px -10px 0px 0px;
     cursor:col-resize;
     background: transparent;
 }
