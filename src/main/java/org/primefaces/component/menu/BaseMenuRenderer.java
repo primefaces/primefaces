@@ -54,11 +54,19 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             writer.startElement("a", null);
             
             if(menuItem.getStyle() != null) writer.writeAttribute("style", menuItem.getStyle(), null);
+            
+            if(menuItem.isDisabled())
+                if(menuItem.getStyleClass() != null)
+                    menuItem.setStyleClass(menuItem.getStyleClass() + " ui-state-disabled");
+                else
+                    menuItem.setStyleClass("ui-state-disabled");
+            
             if(menuItem.getStyleClass() != null) writer.writeAttribute("class", menuItem.getStyleClass(), null);
-
+            
+            
 			if(menuItem.getUrl() != null) {
 				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+				if(menuItem.getOnclick() != null && !menuItem.isDisabled()) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
 				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
 			} else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
@@ -72,8 +80,8 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
 
 				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-
-				writer.writeAttribute("onclick", command, null);
+                                if(!menuItem.isDisabled())
+                                    writer.writeAttribute("onclick", command, null);
 			}
 
             if(icon != null) {

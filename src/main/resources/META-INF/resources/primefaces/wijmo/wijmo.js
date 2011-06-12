@@ -3374,7 +3374,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				}
 				else {
 					li.attr("role", "menuitem");
-					if (link.is("a")) {
+					if (link.is("a:not(.ui-state-disabled)")) {
 						link.bind("mouseenter.wijmenuitem", function () {
 							$(this).addClass("ui-state-hover");
 						}).bind("mouseleave.wijmenuitem", function () {
