@@ -65,7 +65,7 @@ public class DataTableRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
 
-        if(table.isRequestSource(context)) {
+        if(table.isBodyUpdate(context)) {
             encodeTbody(context, table);
         } 
         else if(table.isRowExpansionRequest(context)) {

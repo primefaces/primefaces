@@ -294,6 +294,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     params[this.id + "_first"] = newState.recordOffset;
     params[this.id + "_rows"] = newState.rowsPerPage;
     params[this.id + "_page"] = newState.page;
+    params[this.id + "_updateBody"] = true;
 
     options.params = params;
     
@@ -352,6 +353,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
     params[this.id + "_sorting"] = true;
     params[this.id + "_sortKey"] = columnId;
     params[this.id + "_sortDir"] = asc;
+    params[this.id + "_updateBody"] = true;
 
     options.params = params;
     
@@ -417,6 +419,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
     
     var params = {};
     params[this.id + "_filtering"] = true;
+    params[this.id + "_updateBody"] = true;
 
     options.params = params;
 
