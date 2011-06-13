@@ -222,9 +222,12 @@ PrimeFaces.ajax.AjaxUtils = {
 };
 
 PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
+    PrimeFaces.debug('Initiating ajax request.');
+    
     if(cfg.onstart) {
        var retVal = cfg.onstart.call(this);
        if(retVal == false) {
+           PrimeFaces.debug('Ajax request cancelled by onstart callback.');
            return;  //cancel request
        }
     }
@@ -241,6 +244,8 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             form = $('form').eq(0);
         }
     }
+    
+    PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
     var postURL = form.attr('action'),
     postParams = form.serialize(),
@@ -250,6 +255,8 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     if(encodedURLfield.length > 0) {
         postURL = encodedURLfield.val();
     }
+    
+    PrimeFaces.debug('URL to post ' + postURL + '.');
 
     //partial ajax
     postParams = postParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
@@ -302,6 +309,8 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     if(ext && ext.params) {
         postParams = postParams + PrimeFaces.ajax.AjaxUtils.serialize(ext.params);
     }
+    
+    PrimeFaces.debug('Post Data:' + postParams);
 	
     var xhrOptions = {
         url : postURL,
@@ -312,7 +321,12 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
         },
+        error: function(xhr, status, errorThrown) {
+            PrimeFaces.error('Request return with error:' + status + '.');
+        },
         success : function(data, status, xhr) {
+            PrimeFaces.debug('Response received succesfully.');
+            
             var parsed;
 
             //call user callback
@@ -331,12 +345,16 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             } 
             else {
                 PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
-            } 
+            }
+            
+            PrimeFaces.debug('DOM is updated.');
         },
         complete : function(xhr, status) {
             if(cfg.oncomplete) {
                 cfg.oncomplete.call(this, xhr, status, this.args);
             }
+            
+            PrimeFaces.debug('Response completed.');
 
             PrimeFaces.ajax.RequestManager.poll();
         }
