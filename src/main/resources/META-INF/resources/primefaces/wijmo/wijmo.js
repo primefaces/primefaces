@@ -3036,7 +3036,6 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				scrollContainer.wijsuperpanel("scrollChildIntoView", item);
 			}
 			active.children(":first")
-			.addClass("ui-state-focus")
 			.attr("id", "ui-active-menuitem")
 			.end();
 			self.activeItem = active;
@@ -3062,7 +3061,6 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				}
 			}
 			active.children(":first")
-			.removeClass("ui-state-focus")
 			.removeAttr("id");
 			self._trigger("blur");
 			self.activeItem = null;
