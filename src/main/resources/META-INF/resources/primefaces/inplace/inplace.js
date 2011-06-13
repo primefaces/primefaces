@@ -4,9 +4,11 @@
 PrimeFaces.widget.Inplace = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+	this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
     this.display = $(this.jqId + '_display');
     this.content = $(this.jqId + '_content');
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
 
     var _self = this;
 	
@@ -31,12 +33,10 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
             this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
 
             this.editor = $(this.jqId + '_editor');
-            this.editor.children('.ui-inplace-save').button({icons: {primary: "ui-icon-check"},text:false}).click(function() {_self.save();});
-            this.editor.children('.ui-inplace-cancel').button({icons: {primary: "ui-icon-close"},text:false}).click(function() {_self.cancel();});
+            this.editor.children('.ui-inplace-save').button({icons: {primary: "ui-icon-check"},text:false}).click(function(e) {_self.save(e);});
+            this.editor.children('.ui-inplace-cancel').button({icons: {primary: "ui-icon-close"},text:false}).click(function(e) {_self.cancel(e);});
         }
 	}
-
-    
 }
 
 PrimeFaces.widget.Inplace.prototype.show = function() {
@@ -76,33 +76,49 @@ PrimeFaces.widget.Inplace.prototype.getContent = function() {
     return this.content;
 }
 
-PrimeFaces.widget.Inplace.prototype.save = function() {
-    this.doAjaxInplaceRequest(this.id, this.cfg.onEditUpdate);
-}
-
-PrimeFaces.widget.Inplace.prototype.cancel = function() {
-    this.doAjaxInplaceRequest();
-}
-
-PrimeFaces.widget.Inplace.prototype.doAjaxInplaceRequest = function(process, update) {
+PrimeFaces.widget.Inplace.prototype.save = function(e) {
     var options = {
         source: this.id,
         update: this.id,
+        process: this.id,
         formId: this.cfg.formId
     };
 
+    if(this.hasBehavior('save')) {
+        var saveBehavior = this.cfg.behaviors['save'];
+        
+        saveBehavior.call(this, e, options);
+    } else {
+        PrimeFaces.ajax.AjaxRequest(options); 
+    }
+}
+
+PrimeFaces.widget.Inplace.prototype.cancel = function(e) {
+    var options = {
+        source: this.id,
+        update: this.id,
+        process: this.id,
+        formId: this.cfg.formId
+    };
+    
     var params = {};
-
-    if(process) {
-        options.process = process;
-        params[this.id + '_save'] = true;
-    }
-
-    if(update) {
-        options.update = options.update + ' ' + update;
-    }
-
+    params[this.id + '_cancel'] = true;
+    
     options.params = params;
+    
+    if(this.hasBehavior('cancel')) {
+        var saveBehavior = this.cfg.behaviors['cancel'];
+        
+        saveBehavior.call(this, e, options);
+    } else {
+        PrimeFaces.ajax.AjaxRequest(options); 
+    }
+}
 
-    PrimeFaces.ajax.AjaxRequest(options);
+PrimeFaces.widget.Inplace.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }

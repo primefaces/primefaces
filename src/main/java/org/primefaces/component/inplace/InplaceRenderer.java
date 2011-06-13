@@ -16,15 +16,10 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
-import java.util.Map;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -33,30 +28,7 @@ public class InplaceRenderer extends CoreRenderer {
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
-		Inplace inplace = (Inplace) component;
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-        if(params.containsKey(inplace.getClientId(context) + "_save")) {
-            FacesEvent event = new FacesEvent(inplace) {
-
-                @Override
-                public boolean isAppropriateListener(FacesListener fl) {
-                    return false;
-                }
-
-                @Override
-                public void processListener(FacesListener fl) {
-                    throw new UnsupportedOperationException();
-                }
-
-                @Override
-                public PhaseId getPhaseId() {
-                    return PhaseId.INVOKE_APPLICATION;
-                }
-            };
-
-            inplace.queueEvent(event);
-        }
+        decodeBehaviors(context, component);
 	}
 
     @Override
@@ -157,12 +129,9 @@ public class InplaceRenderer extends CoreRenderer {
         
         if(inplace.isEditor()) {
             writer.write(",editor:true");
-
-            String onEditUpdate = inplace.getOnEditUpdate();
-            if(onEditUpdate != null) {
-                writer.write(",onEditUpdate:'" + ComponentUtils.findClientIds(context, inplace, onEditUpdate) + "'");
-            }
         }
+        
+        encodeClientBehaviors(context, inplace);
 
 		writer.write("});});");
         
