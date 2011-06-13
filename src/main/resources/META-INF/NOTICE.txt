@@ -34,7 +34,8 @@ This product includes software developed by Wayne Haffenden (http://www.waynehaf
 This product includes software developed by Brandon Aaron (https://github.com/brandonaaron/jquery-mousewheel/)
 This product includes software developed by Sebastian Tschan (https://github.com/blueimp/jQuery-File-Upload)
 This product includes software developed by Klaus Hartl (http://plugins.jquery.com/files/jquery.cookie.js.txt)
-
+This product includes software developed by G Scott Olson (http://www.gscottolson.com/blackbirdjs/
+)
 
 
 
