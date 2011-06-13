@@ -71,25 +71,25 @@ PrimeFaces = {
     },
     
     info: function(msg) {
-        if(log) {
+        if(window.log) {
             log.info(msg);
         }
     },
     
     debug: function(msg) {
-        if(log) {
+        if(window.log) {
             log.debug(msg);
         }
     },
     
     warn: function(msg) {
-        if(log) {
+        if(window.log) {
             log.warn(msg);
         }
     },
     
     error: function(msg) {
-        if(log) {
+        if(window.log) {
             log.error(msg);
         }
     },

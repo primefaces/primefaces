@@ -7,7 +7,6 @@
 	<tag>inplace</tag>
 	<tagClass>org.primefaces.component.inplace.InplaceTag</tagClass>
 	<componentClass>org.primefaces.component.inplace.Inplace</componentClass>
-    <componentHandlerClass>org.primefaces.component.inplace.InplaceHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Inplace</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.InplaceRenderer</rendererType>
@@ -16,6 +15,9 @@
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -80,22 +82,11 @@
 			<defaultValue>Cancel</defaultValue>
 		</attribute>
         <attribute>
-			<name>onEditUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
 			<name>event</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>click</defaultValue>
 		</attribute>
-        <attribute>
-            <name>saveListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>java.lang.String saveListener(org.primefaces.event.SelectEvent)</method-signature>
-        </attribute>
         <attribute>
 			<name>toggleable</name>
 			<required>false</required>
