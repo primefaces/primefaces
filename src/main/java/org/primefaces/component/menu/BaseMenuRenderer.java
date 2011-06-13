@@ -51,24 +51,25 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			renderChildren(context, menuItem);
 		}
         else {
+            boolean disabled = menuItem.isDisabled();
+            String onclick = menuItem.getOnclick();
+            
             writer.startElement("a", null);
+            String styleClass = menuItem.getStyleClass();
+            styleClass = styleClass == null ? MenuItem.STYLE_CLASS : MenuItem.STYLE_CLASS + " " + styleClass;
+            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
             
-            if(menuItem.getStyle() != null) writer.writeAttribute("style", menuItem.getStyle(), null);
+            writer.writeAttribute("class", styleClass, null);
             
-            if(menuItem.isDisabled())
-                if(menuItem.getStyleClass() != null)
-                    menuItem.setStyleClass(menuItem.getStyleClass() + " ui-state-disabled");
-                else
-                    menuItem.setStyleClass("ui-state-disabled");
-            
-            if(menuItem.getStyleClass() != null) writer.writeAttribute("class", menuItem.getStyleClass(), null);
-            
-            
+            if(menuItem.getStyle() != null) 
+                writer.writeAttribute("style", menuItem.getStyle(), null);
+                        
 			if(menuItem.getUrl() != null) {
 				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null && !menuItem.isDisabled()) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+                                
 				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-			} else {
+			} 
+            else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
 
 				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
@@ -76,13 +77,19 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
-				String formClientId = form.getClientId(context);
-				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+                if(!disabled) {
+                    String formClientId = form.getClientId(context);
+                    String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
 
-				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-                                if(!menuItem.isDisabled())
-                                    writer.writeAttribute("onclick", command, null);
+                    onclick = onclick == null ? command : command + ";" + onclick;
+                } else {
+                    onclick =  "return false;";
+                }
 			}
+
+            if(onclick != null) {
+                writer.writeAttribute("onclick", onclick, null);
+            }
 
             if(icon != null) {
                 writer.startElement("span", null);

@@ -3,6 +3,8 @@ import javax.faces.component.UIParameter;
 import java.util.Map;
 import javax.faces.event.ActionEvent;
 
+    public final static String STYLE_CLASS = "wijmo-wijmenu-link ui-corner-all";
+
 	public void decode(FacesContext facesContext) {
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
 		String clientId = getClientId(facesContext);
