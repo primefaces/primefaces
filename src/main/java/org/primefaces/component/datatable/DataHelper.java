@@ -211,6 +211,9 @@ class DataHelper {
 			decodeSingleSelection(table, selection);
 		else
 			decodeMultipleSelection(table, selection);
+        
+        //clear
+        table.setRowIndex(-1);
 	}
 
     void decodeSingleSelection(DataTable table, String selection) {
