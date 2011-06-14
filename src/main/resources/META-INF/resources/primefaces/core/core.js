@@ -322,6 +322,10 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
         },
         error: function(xhr, status, errorThrown) {
+            if(cfg.onerror) {
+                cfg.onerror.call(xhr, status, errorThrown);
+            }
+    
             PrimeFaces.error('Request return with error:' + status + '.');
         },
         success : function(data, status, xhr) {
@@ -361,10 +365,6 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     };
 	
     xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
-	
-    if(cfg.onerror) {
-        xhrOptions.error = cfg.onerror;
-    }
 
     if(cfg.async) {
         $.ajax(xhrOptions);
