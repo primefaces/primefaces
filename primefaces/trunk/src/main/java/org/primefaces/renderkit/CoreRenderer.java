@@ -369,8 +369,9 @@ public class CoreRenderer extends Renderer {
 
         if(autoUpdateIds == null) {
             autoUpdateIds = new HashSet<String>();
-            autoUpdateIds.add(clientId);
         }
+        
+        autoUpdateIds.add(clientId);
 
         viewMap.put(Constants.AUTO_UPDATE, autoUpdateIds);
     }
