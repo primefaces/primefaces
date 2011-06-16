@@ -40,31 +40,30 @@ public class DataTableRenderer extends CoreRenderer {
         dataHelper = new DataHelper();
     }
 
-	@Override
-	public void decode(FacesContext context, UIComponent component) {
-		DataTable table = (DataTable) component;
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        DataTable table = (DataTable) component;
 
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
         }
 
         if(table.isSelectionEnabled()) {
-			dataHelper.decodeSelection(context, table);
-		}
+            dataHelper.decodeSelection(context, table);
+        }
 
         if(table.isPaginationRequest(context)) {
             dataHelper.decodePageRequest(context, table);
-        }
-        else if(table.isSortRequest(context)) {
+        } else if(table.isSortRequest(context)) {
             dataHelper.decodeSortRequest(context, table);
         }
-        
+
         decodeBehaviors(context, component);
-        
+
         if(table.isPaginator()) {
             updatePaginationMetadata(context, table);
         }
-	}
+    }
     
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
