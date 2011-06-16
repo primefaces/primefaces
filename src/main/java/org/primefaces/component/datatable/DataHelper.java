@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIColumn;
@@ -89,24 +90,29 @@ class DataHelper {
 		table.setFirst(0);
 		table.setPage(1);
         
-        table.setSortBy(sortColumn.getValueExpression("sortBy").getExpressionString());
+        ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
+        table.setSortBy(sortByVE.getExpressionString());
         table.setSortOrder(sortDir);
 
         if(!table.isLazy()) {
-            Object value = table.getValue();
-            List list = null;
-            
-            if(value instanceof List) {
-                list = (List) value;
-            } else if(value instanceof ListDataModel) {
-                list = (List) ((ListDataModel) value).getWrappedData();
-            } else {
-                throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-            }
-            
-            Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), SortOrder.valueOf(sortDir)));
-        }        
+            sort(context, table, sortByVE, table.getVar(), SortOrder.valueOf(sortDir), sortColumn.getSortFunction());
+        }  
 	}
+    
+    void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+        Object value = table.getValue();
+        List list = null;
+
+        if(value instanceof List) {
+            list = (List) value;
+        } else if(value instanceof ListDataModel) {
+            list = (List) ((ListDataModel) value).getWrappedData();
+        } else {
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
+
+        Collections.sort(list, new BeanPropertyComparator(sortByVE, var, sortOrder, sortFunction));
+    }
 
     void decodeFilters(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
