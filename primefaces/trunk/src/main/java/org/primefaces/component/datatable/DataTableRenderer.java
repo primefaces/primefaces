@@ -48,11 +48,8 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
             
-            if(table.getSortBy() != null) {
-                ValueExpression sortByVE = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), table.getSortBy(), Object.class);
-                SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase());
-        
-                dataHelper.sort(context, table, sortByVE, table.getVar(), sortOrder, null);
+            if(table.getValueExpression("sortBy") != null) {
+                sort(context, table);
             }
         }
 
@@ -164,11 +161,20 @@ public class DataTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
+
+        //style
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
         String style = null;
+        
+        //paginator
         boolean hasPaginator = table.isPaginator();
         String paginatorPosition = table.getPaginatorPosition();
+        
+        //default sort
+        if(!isPostBack() && table.getValueExpression("sortBy") != null) {
+            sort(context, table);
+        }
 
         if(hasPaginator) {
             table.calculatePage();
@@ -246,9 +252,11 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodeColumnHeader(FacesContext context, DataTable table, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getClientId(context);
-        boolean isSortable = column.getValueExpression("sortBy") != null;
+        ValueExpression sortByVe = table.getValueExpression("sortBy");
+        boolean isSortable = sortByVe != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
         String selectionMode = column.getSelectionMode();
+        String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
         
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
@@ -256,6 +264,22 @@ public class DataTableRenderer extends CoreRenderer {
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
 
+        if(isSortable) {
+            String columnSortByExpression = column.getValueExpression("sortBy").getExpressionString();
+            String tableSortByExpression = sortByVe.getExpressionString();
+
+            if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
+                String sortOrder = table.getSortOrder().toUpperCase();
+            
+                if(sortOrder.equals("ASCENDING"))
+                    sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+                else if(sortOrder.equals("DESCENDING"))
+                    sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
+                
+                columnClass = columnClass + " ui-state-active";
+            }
+        }
+        
         writer.startElement("th", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
@@ -263,11 +287,10 @@ public class DataTableRenderer extends CoreRenderer {
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
-
-        //Sort icon
+        
         if(isSortable) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", DataTable.SORTABLE_COLUMN_ICON_CLASS, null);
+            writer.writeAttribute("class", sortIcon, null);
             writer.endElement("span");
         }
 
@@ -879,5 +902,9 @@ public class DataTableRenderer extends CoreRenderer {
             rowsVe.setValue(context.getELContext(), table.getRows());
         if(pageVE != null)
             pageVE.setValue(context.getELContext(), table.getPage());
+    }
+
+    protected void sort(FacesContext context, DataTable table) {
+        dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), SortOrder.valueOf(table.getSortOrder().toUpperCase()), null);
     }
 }

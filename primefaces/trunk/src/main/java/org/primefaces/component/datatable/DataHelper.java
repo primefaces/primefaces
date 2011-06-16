@@ -91,7 +91,7 @@ class DataHelper {
 		table.setPage(1);
         
         ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
-        table.setSortBy(sortByVE.getExpressionString());
+        table.setValueExpression("sortBy", sortByVE);
         table.setSortOrder(sortDir);
 
         if(!table.isLazy()) {

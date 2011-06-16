@@ -155,12 +155,13 @@
         <attribute>
 			<name>sortBy</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Object</type>
 		</attribute>
         <attribute>
 			<name>sortOrder</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>ascending</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
