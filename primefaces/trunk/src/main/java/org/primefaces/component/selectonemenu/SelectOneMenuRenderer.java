@@ -99,7 +99,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+        String label = getSelectedLabel(context, menu, selectItems);
+        
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CONTAINER_CLASS, null);
@@ -107,7 +108,10 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.startElement("label", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
 
-        writer.writeText(getSelectedLabel(context, menu, selectItems), null);
+        if(label.equals("&nbsp;"))
+            writer.write(label);
+        else
+            writer.writeText(label, null);
 
         writer.endElement("label");
         writer.endElement("a");
