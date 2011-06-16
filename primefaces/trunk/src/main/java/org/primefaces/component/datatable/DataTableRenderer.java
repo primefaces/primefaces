@@ -29,6 +29,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
+import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -46,6 +47,13 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
+            
+            if(table.getSortBy() != null) {
+                ValueExpression sortByVE = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), table.getSortBy(), Object.class);
+                SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase());
+        
+                dataHelper.sort(context, table, sortByVE, table.getVar(), sortOrder, null);
+            }
         }
 
         if(table.isSelectionEnabled()) {
