@@ -16,14 +16,17 @@
 package org.primefaces.component.remotecommand;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
+import org.primefaces.component.api.AjaxSource;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 
@@ -58,5 +61,69 @@ public class RemoteCommandRenderer extends CoreRenderer {
         writer.write("}");
 
         writer.endElement("script");
+    }
+    
+    @Override
+    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
+        UIComponent component = (UIComponent) source;
+        String clientId = component.getClientId(context);
+        UIComponent form = ComponentUtils.findParentForm(context, component);
+        
+        if(form == null) {
+            throw new FacesException("Component " + component.getClientId(context) + " must be enclosed in a form.");
+        }
+
+        StringBuilder req = new StringBuilder();
+        req.append("PrimeFaces.ab(");
+
+        //form
+        req.append("{formId:").append("'").append(form.getClientId(context)).append("'");
+
+        //source
+        req.append(",source:").append("'").append(clientId).append("'");
+
+        //process
+        String process = source.getProcess();
+        if(process == null) {
+            process = "@all";
+        } else {
+            process = ComponentUtils.findClientIds(context, component, process);
+            
+            //add @this   
+            if(process.indexOf(clientId) == -1)
+                process = process + " " + clientId;
+        }
+        req.append(",process:'").append(process).append("'");
+
+
+        //update
+        if(source.getUpdate() != null) {
+            req.append(",update:'").append(ComponentUtils.findClientIds(context, component, source.getUpdate())).append("'");
+        }
+
+        //async
+        if(source.isAsync())
+            req.append(",async:true");
+
+        //global
+        if(!source.isGlobal())
+            req.append(",global:false");
+
+        //callbacks
+        if(source.getOnstart() != null)
+            req.append(",onstart:function(){").append(source.getOnstart()).append(";}");
+        if(source.getOnerror() != null)
+            req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
+        if(source.getOnsuccess() != null)
+            req.append(",onsuccess:function(data, status, xhr){").append(source.getOnsuccess()).append(";}");
+        if(source.getOncomplete() != null)
+            req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
+
+        //params
+        req.append(",params:arguments[0]");
+       
+        req.append("});");
+
+        return req.toString();
     }
 }
