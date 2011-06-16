@@ -81,6 +81,11 @@ public class TabViewRenderer extends CoreRenderer {
             writer.write("}");
         }
 
+        String disabledTabs = tabView.findDisabledTabs();
+        
+        if(disabledTabs.length() > 0)
+            writer.write(",disabled:[" + disabledTabs + "]");
+        
         encodeClientBehaviors(context, tabView);
 
         writer.write("});");
