@@ -231,6 +231,9 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
            return;  //cancel request
        }
     }
+    
+    //block ui
+    $('body').append('<div class="ui-block" style="background-color:transparent;margin:0;position:absolute;top:0;left:0;height:100%;width:100%;z-index:1000"></div>');
 
     var form = null;
     if(cfg.formId) {
@@ -357,6 +360,9 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             if(cfg.oncomplete) {
                 cfg.oncomplete.call(this, xhr, status, this.args);
             }
+            
+            //unblock
+            $('body').children('.ui-block').remove();
             
             PrimeFaces.debug('Response completed.');
 
