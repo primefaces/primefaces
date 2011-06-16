@@ -29,6 +29,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.SortOrder;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -333,30 +334,30 @@ import org.primefaces.event.data.SortEvent;
         LazyDataModel model = (LazyDataModel) getDataModel();
         model.setPageSize(getRows());
 
-        List<?> data = model.load(getFirst(), getRows(), getSortField(), getSortOrder(), getFilters());
+        List<?> data = model.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
 
         model.setWrappedData(data);
+    }
+
+    protected SortOrder convertSortOrder() {
+        String sortOrder = getSortOrder();
+        
+        if(sortOrder == null)
+            return SortOrder.UNSORTED;
+        else
+            return SortOrder.valueOf(sortOrder.toUpperCase());
+    }
+
+    protected String resolveSortField(ValueExpression expression) {
+        String expressionString = expression.getExpressionString();
+        expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
+        
+        return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
     }
 
     public void clearLazyCache() {
         LazyDataModel model = (LazyDataModel) getDataModel();
         model.setWrappedData(null);
-    }
-
-    public String getSortField() {
-        return (String) getStateHelper().eval("sortField", null);
-    }
-
-    public void setSortField(String sortField) {
-        getStateHelper().put("sortField", sortField);
-    }
-
-    public boolean getSortOrder() {
-        return (Boolean) getStateHelper().eval("sortOrder", true);
-    }
-
-    public void setSortOrder(boolean sortOrder) {
-        getStateHelper().put("sortOrder", sortOrder);
     }
 
     public Map<String,String> getFilters() {

@@ -86,16 +86,16 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
             if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
 
-                _self.sort(columnId, false);
+                _self.sort(columnId, "DESCENDING");
             }
             else if(sortIcon.hasClass('ui-icon-triangle-1-s')) {
                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
 
-                _self.sort(columnId, true);
+                _self.sort(columnId, "ASCENDING");
             } else {
                 sortIcon.addClass('ui-icon-triangle-1-n');
 
-                _self.sort(columnId, true);
+                _self.sort(columnId, "ASCENDING");
             }
         });
 }

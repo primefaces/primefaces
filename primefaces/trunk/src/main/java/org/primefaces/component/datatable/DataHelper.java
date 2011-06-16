@@ -33,6 +33,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.Cell;
+import org.primefaces.model.SortOrder;
 
 class DataHelper {
 
@@ -56,7 +57,7 @@ class DataHelper {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
 		String sortKey = params.get(clientId + "_sortKey");
-		boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
+		String sortDir  = params.get(clientId + "_sortDir");
         Column sortColumn = null;
 
         ColumnGroup group = table.getColumnGroup("header");
@@ -87,11 +88,12 @@ class DataHelper {
 		table.setPage(1);
 
         if(table.isLazy()) {
-            table.setSortField(resolveField(sortColumn.getValueExpression("sortBy")));
-            table.setSortOrder(asc);            
+            table.setSortBy(sortColumn.getValueExpression("sortBy").getExpressionString());
+            table.setSortOrder(sortDir);            
         } else {
             List list = (List) table.getValue();
-            Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), asc));
+            
+            Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), SortOrder.valueOf(sortDir)));
         }        
 	}
 
