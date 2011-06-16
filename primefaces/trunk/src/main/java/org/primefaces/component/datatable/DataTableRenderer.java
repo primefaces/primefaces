@@ -48,7 +48,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
             
-            if(table.getValueExpression("sortBy") != null) {
+            if(table.getValueExpression("sortBy") != null && table.isLazy()) {
                 sort(context, table);
             }
         }
@@ -172,7 +172,7 @@ public class DataTableRenderer extends CoreRenderer {
         String paginatorPosition = table.getPaginatorPosition();
         
         //default sort
-        if(!isPostBack() && table.getValueExpression("sortBy") != null) {
+        if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
             sort(context, table);
         }
 
@@ -252,8 +252,9 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodeColumnHeader(FacesContext context, DataTable table, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getClientId(context);
-        ValueExpression sortByVe = table.getValueExpression("sortBy");
-        boolean isSortable = sortByVe != null;
+        ValueExpression tableSortByVe = table.getValueExpression("sortBy");
+        ValueExpression columnSortByVe = column.getValueExpression("sortBy");
+        boolean isSortable = columnSortByVe != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
         String selectionMode = column.getSelectionMode();
         String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
@@ -265,18 +266,21 @@ public class DataTableRenderer extends CoreRenderer {
         columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
 
         if(isSortable) {
-            String columnSortByExpression = column.getValueExpression("sortBy").getExpressionString();
-            String tableSortByExpression = sortByVe.getExpressionString();
-
-            if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
-                String sortOrder = table.getSortOrder().toUpperCase();
+            String columnSortByExpression = columnSortByVe.getExpressionString();
             
-                if(sortOrder.equals("ASCENDING"))
-                    sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-                else if(sortOrder.equals("DESCENDING"))
-                    sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
-                
-                columnClass = columnClass + " ui-state-active";
+            if(tableSortByVe != null) {
+                String tableSortByExpression = tableSortByVe.getExpressionString();
+
+                if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
+                    String sortOrder = table.getSortOrder().toUpperCase();
+
+                    if(sortOrder.equals("ASCENDING"))
+                        sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+                    else if(sortOrder.equals("DESCENDING"))
+                        sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
+
+                    columnClass = columnClass + " ui-state-active";
+                }
             }
         }
         
