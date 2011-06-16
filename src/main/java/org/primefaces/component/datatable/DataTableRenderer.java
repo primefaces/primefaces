@@ -491,15 +491,15 @@ public class DataTableRenderer extends CoreRenderer {
         String selMode = selectionMode != null ? selectionMode : columnSelectionMode != null ? columnSelectionMode : null;
         Object selection = table.getSelection();
         
+        if(table.isLazy()) {
+            table.loadLazyData();
+        }
+        
         int rows = table.getRows();
 		int first = table.getFirst();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? rowCount : rows;
         boolean hasData = rowCount > 0;
-
-        if(table.isLazy()) {
-            table.loadLazyData();
-        }
 
         String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
       
