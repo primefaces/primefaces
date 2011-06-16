@@ -473,8 +473,8 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", tbodyClass, null);
 
         if(hasData) {
-            if(selectionMode != null && selection != null) {
-                handlePreselection(table, selectionMode, selection);
+            if(selMode != null && selection != null) {
+                handlePreselection(table, selMode, selection);
             }
             
             for(int i = first; i < (first + rowCountToRender); i++) {
