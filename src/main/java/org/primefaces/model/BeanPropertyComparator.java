@@ -41,10 +41,10 @@ public class BeanPropertyComparator implements Comparator {
 	
 	private final static Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
 	
-	public BeanPropertyComparator(Column column, String var, boolean asc) {
+	public BeanPropertyComparator(Column column, String var, SortOrder sortOrder) {
 		this.column = column;
 		this.var = var;
-		this.asc = asc;
+		this.asc = sortOrder.equals(SortOrder.ASCENDING);
 		this.sortByExpression = column.getValueExpression("sortBy");
 		this.sortFunction = column.getSortFunction();
 	}

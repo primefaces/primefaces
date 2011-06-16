@@ -80,5 +80,5 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
         this.rowCount = rowCount;
     }
 
-    public abstract List<T> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String,String> filters);
+    public abstract List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters);
 }
