@@ -80,7 +80,7 @@ public class InputTextRenderer extends InputRenderer {
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("type", "text", null);
+		writer.writeAttribute("type", inputText.getType(), null);
 
 		String valueToRender = ComponentUtils.getStringValueToRender(context, inputText);
 		if(valueToRender != null) {
