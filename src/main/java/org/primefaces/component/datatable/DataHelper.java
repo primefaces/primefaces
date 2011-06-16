@@ -22,11 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.model.ListDataModel;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
@@ -86,12 +88,21 @@ class DataHelper {
         //Reset state
 		table.setFirst(0);
 		table.setPage(1);
+        
+        table.setSortBy(sortColumn.getValueExpression("sortBy").getExpressionString());
+        table.setSortOrder(sortDir);
 
-        if(table.isLazy()) {
-            table.setSortBy(sortColumn.getValueExpression("sortBy").getExpressionString());
-            table.setSortOrder(sortDir);            
-        } else {
-            List list = (List) table.getValue();
+        if(!table.isLazy()) {
+            Object value = table.getValue();
+            List list = null;
+            
+            if(value instanceof List) {
+                list = (List) value;
+            } else if(value instanceof ListDataModel) {
+                list = (List) ((ListDataModel) value).getWrappedData();
+            } else {
+                throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+            }
             
             Collections.sort(list, new BeanPropertyComparator(sortColumn, table.getVar(), SortOrder.valueOf(sortDir)));
         }        
