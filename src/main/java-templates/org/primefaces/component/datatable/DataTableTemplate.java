@@ -351,10 +351,15 @@ import org.primefaces.model.SortOrder;
     }
 
     protected String resolveSortField(ValueExpression expression) {
-        String expressionString = expression.getExpressionString();
-        expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
-        
-        return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+        if(expression != null) {
+            String expressionString = expression.getExpressionString();
+            expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
+
+            return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+        }
+        else {
+            return null;
+        }
     }
 
     public void clearLazyCache() {
