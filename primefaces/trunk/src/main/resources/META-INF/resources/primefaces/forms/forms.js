@@ -350,16 +350,10 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
             case keyCode.NUMPAD_ENTER:
                 items.filter('.ui-state-active').click();
                 break;
+            
             case keyCode.ALT: 
-            case keyCode.TAB: 
-            case keyCode.COMMAND: 
-            case keyCode.MENU: 
-            case keyCode.HOME: 
-            case keyCode.PERIOD: 
-            case keyCode.WINDOWS:
-            case keyCode.COMMAND_LEFT:
-            case keyCode.COMMAND_RIGHT:
             case 224: break;
+            case keyCode.TAB: _self.hide();
             default:
                 var letter = String.fromCharCode(e.keyCode).toLowerCase();
                 options = $(_self.input).children('option');
@@ -373,9 +367,6 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
                         if(options[index].text.toLowerCase().startsWith(_self.highlightKeyPath))
                             _self.highlightItems.push(items.eq(index));
                     }
-
-
-
                 }
 
                 // no change
@@ -426,6 +417,17 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
     this.panel.css('z-index', '100000');
     if(jQuery.browser.msie && /^[6,7]\.[0-9]+/.test(jQuery.browser.version)) {
+        
+        //ie7 zIndex defender
+        var zIndexNumber = 1000;
+        $('div').each(function() {
+            $(this).css('zIndex', zIndexNumber);
+            zIndexNumber -= 10;
+        });
+        
+        //ie7 div positioning
+        this.panel.css({ 'left' : '0px', 'top' : '20px'});
+        
         this.panel.parent().css('z-index', '99999');
     }
 
