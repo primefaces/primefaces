@@ -312,14 +312,16 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     this.highlightItems = [];
     this.highlightKeyPath = '';
     this.highlightItem = null;
+    this.highlightTimer = null;
 
     this.labelContainer.keydown(function(e) {
-        $(this).stop().clearQueue();
+        
+        if(_self.highlightTimer != null)
+            clearTimeout(_self.highlightTimer);
 
-        $(this).animate({ opacity : 1}, 1000, function(){
+        _self.highlightTimer = setTimeout(function(){
             _self.highlightKeyPath = '';
-        });
-
+        }, 1000);
 
         var keyCode = $.ui.keyCode;
 
