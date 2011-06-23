@@ -22,6 +22,7 @@
     white-space:nowrap;
     padding:4px 10px;
     margin:0px;
+    *padding-right: 0px;
 }
 
 .ui-datatable-data, .ui-datatable-data-empty {}
@@ -117,9 +118,10 @@
     height:15px;
     float:right;
     padding:0px;
-    margin:0px -10px 0px 0px;
+    margin:0px -12px 0px 0px;
     cursor:col-resize;
     background: transparent;
+    *margin:0px -2px 0px 0px;
 }
 
 .ui-datatable .ui-column-resizer-helper {
