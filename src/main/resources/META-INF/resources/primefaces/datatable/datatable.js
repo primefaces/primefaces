@@ -937,7 +937,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
 
     //Add resizers and resizer helper
-    $(this.jqId + ' thead tr :not(th:last)').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId + ' thead tr th:not(:last)').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight ui-corner-all"></div>');
 
     //Variables
@@ -945,15 +945,13 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
     columnHeaders = $(this.jqId + ' thead th'),
     columnFooters = $(this.jqId + ' tfoot tr td'),
+    table = $(this.jqId + ' table'),
     tbody = $(this.tbody),
+    thead = thead = $(this.jqId + ' thead'),
     headerTable = $(this.jqId + ' .ui-datatable-scrollable-header table'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     _self = this;
  
-    //Set height of resizer helper
-    var resizerHelperHeight = this.cfg.scrollable ? $(this.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : tbody.innerHeight() - 1;
-    resizerHelper.css('height', resizerHelperHeight);
-
     //State cookie
     this.columnWidthsCookie = this.id + '_columnWidths';
     
@@ -965,12 +963,12 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             this.tbodyLeft = tbodyOffset.left;
             this.tbodyTop = tbodyOffset.top;
     
+            //Set height of resizer helper
+            resizerHelper.height(_self.cfg.scrollable ? $(_self.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : table.height() - thead.height() - 1 );
             resizerHelper.fadeIn();
         },
         drag: function(event, ui) {
-            if(event.clientX >= this.tbodyLeft) {
-                resizerHelper.offset({left:ui.helper.offset().left, top:this.tbodyTop});
-            }
+            resizerHelper.offset({left:ui.helper.offset().left, top: thead.offset().top + thead.height()});  
         },
         stop: function(event, ui) {
             var columnHeader = ui.helper.parents('th:first'),
@@ -1012,8 +1010,8 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 columnWidths.push($(item).css('width'));
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
-
-        }
+        },
+        containment: _self.jqId + '.ui-datatable table thead'
     });
 
     //Restore widths on postback
