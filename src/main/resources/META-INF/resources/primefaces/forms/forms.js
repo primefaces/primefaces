@@ -418,18 +418,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
 PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
     this.panel.css('z-index', '100000');
-    if(jQuery.browser.msie && /^[6,7]\.[0-9]+/.test(jQuery.browser.version)) {
-        
-        //ie7 zIndex defender
-        var zIndexNumber = 1000;
-        $('div').each(function() {
-            $(this).css('zIndex', zIndexNumber);
-            zIndexNumber -= 10;
-        });
-        
-        //ie7 div positioning
-        this.panel.css({ 'left' : '0px', 'top' : '20px'});
-        
+    
+    if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
         this.panel.parent().css('z-index', '99999');
     }
 
@@ -437,7 +427,11 @@ PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.hide = function() {
-    this.panel.hide();
+    if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
+        this.panel.parent().css('z-index', '');
+    }
+    
+    this.panel.css('z-index', '').hide();
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.disable = function() {
