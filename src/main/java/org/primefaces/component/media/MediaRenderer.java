@@ -172,11 +172,18 @@ public class MediaRenderer extends CoreRenderer {
     protected String createUniqueContentId(FacesContext context) {
         Map<String,Object> session = context.getExternalContext().getSessionMap();
         
-        String key = UUID.randomUUID().toString();
+        String key = generateKey();
+        
         while(session.containsKey(key)) {
-            key = UUID.randomUUID().toString();
+            key = generateKey();
         }
         
         return key;
+    }
+    
+    protected String generateKey() {
+        StringBuilder builder = new StringBuilder();
+        
+        return builder.append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
     }
 }

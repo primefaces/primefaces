@@ -97,16 +97,19 @@ public class GraphicImageRenderer extends CoreRenderer {
     
     protected String createUniqueContentId(FacesContext context) {
         Map<String,Object> session = context.getExternalContext().getSessionMap();
-        StringBuilder builder = new StringBuilder();
         
-        String key = builder.append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
+        String key = generateKey();
         
         while(session.containsKey(key)) {
-            builder.setLength(0);
-            
-            key = builder.append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
+            key = generateKey();
         }
         
         return key;
+    }
+    
+    protected String generateKey() {
+        StringBuilder builder = new StringBuilder();
+        
+        return builder.append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
     }
 }
