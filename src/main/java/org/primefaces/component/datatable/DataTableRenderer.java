@@ -490,10 +490,6 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
-        String selectionMode = table.getSelectionMode();
-        String columnSelectionMode = table.getColumnSelectionMode();
-        String selMode = selectionMode != null ? selectionMode : columnSelectionMode != null ? columnSelectionMode : null;
-        Object selection = table.getSelection();
         
         if(table.isLazy()) {
             table.loadLazyData();
