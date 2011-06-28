@@ -225,6 +225,14 @@ class DataHelper {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
 		String selection = params.get(clientId + "_selection");
+        
+        if(selection != null) {
+            String[] rowKeys = selection.split(",");
+            
+            for(String rowKey : rowKeys) {
+                table.addSelectedRowIndex(Integer.parseInt(rowKey.trim()));
+            }
+        }
 
 		if(table.isSingleSelectionMode())
 			decodeSingleSelection(table, selection);

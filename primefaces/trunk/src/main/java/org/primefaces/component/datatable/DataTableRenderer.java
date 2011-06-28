@@ -208,6 +208,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(table.isSelectionEnabled()) {
             encodeSelectionHolder(context, table);
+            table.clearSelectedRowIndexes();
         }
 
         writer.endElement("div");
@@ -507,11 +508,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_data", null);
         writer.writeAttribute("class", tbodyClass, null);
 
-        if(hasData) {
-            if(selMode != null && selection != null) {
-                handlePreselection(table, selMode, selection);
-            }
-            
+        if(hasData) {            
             for(int i = first; i < (first + rowCountToRender); i++) {
                 encodeRow(context, table, clientId, i, rowIndexVar);
             }
@@ -682,31 +679,6 @@ public class DataTableRenderer extends CoreRenderer {
         }
         
         writer.endElement("tfoot");
-    }
-
-    protected void handlePreselection(DataTable table, String selectionMode, Object selection) {
-        
-        for(int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
-            table.setRowIndex(rowIndex);
-
-            if(selectionMode.equals("single")) {
-                if(selection.equals(table.getRowData())) {
-                    table.addSelectedRowIndex(rowIndex);
-
-                    break;
-                }
-            }
-            else if(selectionMode.equals("multiple")) {
-                Object[] selections = (Object[]) selection;
-
-                for(int i = 0; i < selections.length; i++) {
-                    if(selections[i].equals(table.getRowData())) {
-                        table.addSelectedRowIndex(rowIndex);
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
