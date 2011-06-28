@@ -385,6 +385,10 @@ import org.primefaces.model.SortOrder;
         return selectedRowIndexes;
     }
 
+    public void clearSelectedRowIndexes() {
+        this.selectedRowIndexes.clear();
+    }
+
     public String getSelectedRowIndexesAsString() {
         StringBuilder sb = new StringBuilder();
         for(Iterator<Integer> iter = selectedRowIndexes.iterator(); iter.hasNext();) {
