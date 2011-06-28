@@ -104,7 +104,10 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CONTAINER_CLASS, null);
-
+        
+        if(menu.getTabindex() != null)
+            writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        
         writer.startElement("label", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
 

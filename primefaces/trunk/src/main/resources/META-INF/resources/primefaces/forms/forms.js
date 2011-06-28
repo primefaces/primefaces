@@ -304,6 +304,15 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         }
         _self.hide();
     });
+    
+    //tabindex focus
+    this.labelContainer.focus(function(){
+        _self.menuIcon.addClass("ui-state-focus");
+    });
+    
+    this.labelContainer.blur(function(){
+        _self.menuIcon.removeClass("ui-state-focus");
+    });
 
     //key bindings
     this.highlightItems = [];
@@ -347,7 +356,10 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
             case keyCode.ENTER:
             case keyCode.NUMPAD_ENTER:
-                items.filter('.ui-state-active').click();
+                if(_self.panel.is(":visible"))
+                    items.filter('.ui-state-active').click();
+                else
+                    _self.show();
                 break;
             
             case keyCode.ALT: 
