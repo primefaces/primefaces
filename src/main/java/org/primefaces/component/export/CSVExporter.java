@@ -33,12 +33,13 @@ import org.primefaces.component.datatable.DataTable;
 public class CSVExporter extends Exporter {
 
     @Override
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
-		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os , encodingType);
 		PrintWriter writer = new PrintWriter(osw);	
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+        String rowIndexVar = table.getRowIndexVar();
     	
     	addFacetColumns(writer, columns, ColumnType.HEADER);
     	
@@ -47,6 +48,11 @@ public class CSVExporter extends Exporter {
     	
     	for(int i = first; i < size; i++) {
     		table.setRowIndex(i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+            }
+            
     		addColumnValues(writer, columns);
 			writer.write("\n");
 		}
@@ -56,6 +62,10 @@ public class CSVExporter extends Exporter {
         }
     	
     	table.setRowIndex(-1);
+        
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().remove(rowIndexVar);
+        }
     	
     	response.setContentType("text/csv");
     	response.setHeader("Expires", "0");

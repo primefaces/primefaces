@@ -40,42 +40,43 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PDFExporter extends Exporter {
 
 	@Override
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
 		try {
 	        Document document = new Document();
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        PdfWriter.getInstance(document, baos);
 	        
 	        if(preProcessor != null) {
-	    		preProcessor.invoke(facesContext.getELContext(), new Object[]{document});
+	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
 	    	}
 
             if(!document.isOpen()) {
                 document.open();
             }
 	        
-			PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType);
+			PdfPTable pdfTable = exportPDFTable(context, table, pageOnly,excludeColumns, encodingType);
 	    	document.add(pdfTable);
 	    	
 	    	if(postProcessor != null) {
-	    		postProcessor.invoke(facesContext.getELContext(), new Object[]{document});
+	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
 	    	}
 	    	
 	        document.close();
 	    	
-	        writePDFToResponse(((HttpServletResponse) facesContext.getExternalContext().getResponse()), baos, filename);
+	        writePDFToResponse(((HttpServletResponse) context.getExternalContext().getResponse()), baos, filename);
 	        
 		} catch (DocumentException e) {
 			throw new IOException(e.getMessage());
 		}
 	}
 	
-	private PdfPTable exportPDFTable(UIData table, boolean pageOnly, int[] excludeColumns, String encoding) {
+	private PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, int[] excludeColumns, String encoding) {
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
     	PdfPTable pdfTable = new PdfPTable(numberOfColumns);
     	Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
     	Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
+        String rowIndexVar = table.getRowIndexVar();
     	
     	int first = pageOnly ? table.getFirst() : 0;
     	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
@@ -84,6 +85,10 @@ public class PDFExporter extends Exporter {
         
     	for(int i = first; i < size; i++) {
     		table.setRowIndex(i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+            }
 
 			for(int j = 0; j < numberOfColumns; j++) {				
                 addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
@@ -95,6 +100,10 @@ public class PDFExporter extends Exporter {
         }
     	
     	table.setRowIndex(-1);
+        
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().remove(rowIndexVar);
+        }
     	
     	return pdfTable;
 	}

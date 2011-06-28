@@ -34,8 +34,8 @@ import org.primefaces.component.datatable.DataTable;
 public class XMLExporter extends Exporter {
 
     @Override
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
-		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
     	
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
@@ -45,6 +45,7 @@ public class XMLExporter extends Exporter {
     	List<String> headers = getFacetTexts(table, ColumnType.HEADER);
     	List<String> footers = getFacetTexts(table, ColumnType.FOOTER);
     	String var = table.getVar().toLowerCase();
+        String rowIndexVar = table.getRowIndexVar();
     	
     	writer.write("<?xml version=\"1.0\"?>\n");
     	writer.write("<" + table.getId() + ">\n");
@@ -54,6 +55,10 @@ public class XMLExporter extends Exporter {
     	
     	for (int i = first; i < size; i++) {
     		table.setRowIndex(i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+            }
     		
     		writer.write("\t<" + var + ">\n");
     		addColumnValues(writer, columns, headers);
@@ -69,6 +74,10 @@ public class XMLExporter extends Exporter {
     	writer.write("</" + table.getId() + ">");
     	
     	table.setRowIndex(-1);
+        
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().remove(rowIndexVar);
+        }
     	
     	response.setContentType("text/xml");
     	response.setHeader("Expires", "0");
