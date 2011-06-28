@@ -123,6 +123,7 @@ public class CalendarRenderer extends InputRenderer {
         if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMaxdate()) + "'");
         if(calendar.isShowButtonPanel()) writer.write(",showButtonPanel:true");
         if(calendar.isShowWeek()) writer.write(",showWeek:true");
+        if(calendar.isDisabledWeekends()) writer.write(",disabledWeekends:true");
         if(calendar.isDisabled()) writer.write(",disabled:true");
         if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
 

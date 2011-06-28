@@ -116,6 +116,12 @@
             <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
+            <name>disabledWeekends</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
             <name>showOtherMonths</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
