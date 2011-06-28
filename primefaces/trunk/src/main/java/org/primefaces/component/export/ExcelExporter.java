@@ -35,13 +35,14 @@ import org.primefaces.component.datatable.DataTable;
 public class ExcelExporter extends Exporter {
 
     @Override
-	public void export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
     	Workbook wb = new HSSFWorkbook();
     	Sheet sheet = wb.createSheet();
     	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
+        String rowIndexVar = table.getRowIndexVar();
     	if(preProcessor != null) {
-    		preProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
+    		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
     	int first = pageOnly ? table.getFirst() : 0;
@@ -52,6 +53,11 @@ public class ExcelExporter extends Exporter {
     	
     	for(int i = first; i < rowsToExport; i++) {
     		table.setRowIndex(i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+            }
+            
 			Row row = sheet.createRow(sheetRowIndex++);
 			
 			for(int j = 0; j < numberOfColumns; j++) {
@@ -64,12 +70,16 @@ public class ExcelExporter extends Exporter {
         }
     	
     	table.setRowIndex(-1);
+        
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().remove(rowIndexVar);
+        }
     	
     	if(postProcessor != null) {
-    		postProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
+    		postProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
     	
-    	writeExcelToResponse(((HttpServletResponse)facesContext.getExternalContext().getResponse()), wb, filename);
+    	writeExcelToResponse(((HttpServletResponse)context.getExternalContext().getResponse()), wb, filename);
 	}
 	
 	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
