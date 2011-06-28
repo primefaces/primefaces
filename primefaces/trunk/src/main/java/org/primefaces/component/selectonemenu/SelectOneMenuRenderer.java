@@ -133,12 +133,14 @@ public class SelectOneMenuRenderer extends InputRenderer {
     protected void encodePanel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = menu.getVar() != null;
-        int height = menu.getHeight();
+        int height = calculatePanelHeight(menu, selectItems.size());
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.PANEL_CLASS, null);
-        if(height != Integer.MAX_VALUE)
+        
+        if(height != -1) {
             writer.writeAttribute("style", "height:" + height + "px", null);
+        }
 
         if(customContent) {
             writer.startElement("table", menu);
@@ -272,6 +274,18 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         return label;
 	}
+    
+    protected int calculatePanelHeight(SelectOneMenu menu, int itemSize) {
+        int height = menu.getHeight();
+        
+        if(height != Integer.MAX_VALUE) {
+            return height;
+        } else if(itemSize > 10) {
+            return 200;
+        }
+        
+        return -1;
+    }
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

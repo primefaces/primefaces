@@ -114,6 +114,8 @@
 .ui-selectonemenu .ui-selectonemenu-panel {
     position: absolute;
     margin-left: -1px;
+    overflow: auto;
+    width: 100%;
 }
 
 .ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-list {

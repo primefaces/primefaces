@@ -210,15 +210,12 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children('.ui-selectonemenu-panel');
     this.disabled = this.jq.hasClass('ui-state-disabled');
-    this.panel.css('width', this.jq.width());
 
     if(!this.cfg.effectDuration) {
         this.cfg.effectDuration = 400;
     }
 
     this.bindEvents();
-
-    this.panel.wijsuperpanel(this.cfg);
 
     this.panel.hide().removeClass('ui-helper-hidden-accessible');
 
