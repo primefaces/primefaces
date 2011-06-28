@@ -48,11 +48,10 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 	
 		String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";	
 		StreamedContent content = (StreamedContent) value.getValue(elContext);
-        String fileName = content.getName().replaceAll(" ", "_");
 		
 		try {
 			response.setContentType(content.getContentType());
-			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=" + fileName);
+			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
 			
 			byte[] buffer = new byte[2048];
 	
