@@ -7,7 +7,7 @@
 
   The MIT License - Copyright (c) 2008 Blackbird Project
 */
-#blackbird { margin:0; padding:0; position:fixed; _position:absolute; font:11px/1.3 Consolas, 'Lucida Console', Monaco, monospace; _border:2px solid #BBB;  }
+#blackbird { margin:0; padding:0; position:fixed; _position:absolute; font:11px/1.3 Consolas, 'Lucida Console', Monaco, monospace; _border:2px solid #BBB; z-index: 10000; }
 #blackbird.bbTopLeft { top:0; left:0; _top:expression(eval(document.documentElement.scrollTop+8)); _left:expression(eval(document.documentElement.scrollLeft+8)); }
 #blackbird.bbTopRight { top:0; right:0; }
 * html .bbTopRight { right:auto; top:expression(eval(document.documentElement.scrollTop+8)); left:expression(eval(document.documentElement.scrollLeft+document.documentElement.clientWidth-document.getElementById('blackbird').offsetWidth-8)); }
