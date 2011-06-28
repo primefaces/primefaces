@@ -45,11 +45,12 @@ public class DataTableRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
+        boolean isSortRequest = table.isSortRequest(context);
 
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
             
-            if(table.getValueExpression("sortBy") != null && table.isLazy()) {
+            if(!isSortRequest && table.getValueExpression("sortBy") != null && !table.isLazy()) {
                 sort(context, table);
             }
         }
@@ -60,7 +61,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(table.isPaginationRequest(context)) {
             dataHelper.decodePageRequest(context, table);
-        } else if(table.isSortRequest(context)) {
+        } 
+        else if(isSortRequest) {
             dataHelper.decodeSortRequest(context, table);
         }
 
