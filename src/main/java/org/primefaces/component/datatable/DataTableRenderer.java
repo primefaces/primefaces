@@ -443,7 +443,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement("thead", null);
 
-        if(group != null) {
+        if(group != null && group.isRendered()) {
 
             for(UIComponent child : group.getChildren()) {
                 if(child.isRendered() && child instanceof Row) {
@@ -649,7 +649,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement("tfoot", null);
 
-        if(group != null) {
+        if(group != null && group.isRendered()) {
 
             for(UIComponent child : group.getChildren()) {
                 if(child.isRendered() && child instanceof Row) {
