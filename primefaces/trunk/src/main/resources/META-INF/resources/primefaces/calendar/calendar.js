@@ -939,6 +939,11 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     if(!this.cfg.popup) {
         this.cfg.altField = $(this.jqId + '_input');
     }
+    
+    //weekends
+    if(this.cfg.disabledWeekends) {
+        this.cfg.beforeShowDay = $.datepicker.noWeekends;
+    }
 
     var hasTimePicker = this.hasTimePicker();
 
