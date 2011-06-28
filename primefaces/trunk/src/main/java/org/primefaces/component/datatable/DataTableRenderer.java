@@ -642,14 +642,14 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("footer");
-        boolean shouldRender = table.hasFooterColumn() || group != null;
+        boolean shouldRender = table.hasFooterColumn() || (group != null && group.isRendered());
 
         if(!shouldRender)
             return;
 
         writer.startElement("tfoot", null);
 
-        if(group != null && group.isRendered()) {
+        if(group != null) {
 
             for(UIComponent child : group.getChildren()) {
                 if(child.isRendered() && child instanceof Row) {
