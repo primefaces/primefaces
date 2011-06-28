@@ -708,8 +708,6 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
         }
     });
 
-    this.jq.wijsuperpanel(this.cfg);
-
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
