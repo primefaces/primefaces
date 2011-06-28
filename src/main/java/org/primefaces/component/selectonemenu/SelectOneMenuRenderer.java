@@ -201,13 +201,20 @@ public class SelectOneMenuRenderer extends InputRenderer {
         for(int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             Object itemValue = selectItem.getValue();
+            String itemLabel = selectItem.getLabel();
+            itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
 
             boolean selected = (i==0 && value==null) || (value != null && value.equals(itemValue));
             String itemStyleClass = selected ? SelectOneMenu.ITEM_CLASS + " ui-state-active" : SelectOneMenu.ITEM_CLASS;
             
             writer.startElement("li", null);
             writer.writeAttribute("class", itemStyleClass, null);
-            writer.writeText(selectItem.getLabel(), null);
+            
+            if(itemLabel.equals("&nbsp;"))
+                writer.write(itemLabel);
+            else
+                writer.writeText(itemLabel, null);
+
             writer.endElement("li");
         }
     }
@@ -240,7 +247,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         for(SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
-            
+
             writer.startElement("option", null);
             writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
 
@@ -254,16 +261,14 @@ public class SelectOneMenuRenderer extends InputRenderer {
         }
     }
 
-	public String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items) {
+	protected String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items) {
 		Object value = menu.getValue();
-        String label = "&nbsp;";    //null display
+        String label = null;
 
-        if(value == null) {
-            if(!items.isEmpty())
-                label = items.get(0).getLabel();
-            else
-                label = "&nbsp;";
-        } else {
+        if(value == null && !items.isEmpty()) {
+            label = items.get(0).getLabel();
+        } 
+        else {
             for(SelectItem item : items) {
                 if(item.getValue().equals(value)) {
                     label = item.getLabel();
@@ -271,6 +276,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
                 }
             }
         }
+        
+        label = (isValueBlank(label)) ? "&nbsp;" : label;
 
         return label;
 	}
