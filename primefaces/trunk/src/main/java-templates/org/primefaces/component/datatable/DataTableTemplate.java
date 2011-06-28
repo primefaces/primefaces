@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.application.NavigationHandler;
 import java.util.Map;
@@ -347,7 +348,7 @@ import org.primefaces.model.SortOrder;
         if(sortOrder == null)
             return SortOrder.UNSORTED;
         else
-            return SortOrder.valueOf(sortOrder.toUpperCase());
+            return SortOrder.valueOf(sortOrder.toUpperCase(Locale.ENGLISH));
     }
 
     protected String resolveSortField(ValueExpression expression) {
