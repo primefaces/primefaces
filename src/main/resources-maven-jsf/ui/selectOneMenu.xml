@@ -66,14 +66,20 @@
         </attribute>
         <attribute>
             <name>var</name>
-            <required></required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <name>height</name>
-            <required></required>
+            <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+        </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
 	</attributes>
 	<resources>
