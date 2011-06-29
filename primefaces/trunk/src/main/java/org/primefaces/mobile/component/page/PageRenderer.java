@@ -39,6 +39,11 @@ public class PageRenderer extends CoreRenderer {
         writer.write("<!DOCTYPE html>\n");
         writer.startElement("html", page);
         writer.startElement("head", page);
+        
+        writer.startElement("meta", page);
+        writer.writeAttribute("name", "viewport", null);
+        writer.writeAttribute("content", "width=device-width, minimum-scale=1, maximum-scale=1", null);
+        writer.endElement("meta");
 
         writer.startElement("title", page);
         writer.write(page.getTitle());

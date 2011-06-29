@@ -1,5 +1,5 @@
 /*!
- * jQuery Mobile v1.0a3
+ * jQuery Mobile v1.0b1
  * http://jquerymobile.com/
  *
  * Copyright 2010, jQuery Project
@@ -10,7 +10,7 @@
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-* Note: Code is in draft form and is subject to change
+* Note: Code is in draft form and is subject to change 
 */
 
 
@@ -23,18 +23,18 @@
 	color: 					#ffffff;
 	font-weight: bold;
 	text-shadow: 0 -1px 1px #000000;
-	background-image: -moz-linear-gradient(top,
-							#3c3c3c,
+	background-image: -moz-linear-gradient(top, 
+							#3c3c3c, 
 							#111111);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 	#3c3c3c),
 		color-stop(1, 		#111111));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#3c3c3c', EndColorStr='#111111')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#3c3c3c', EndColorStr='#111111')";
 }
-.ui-bar-a,
-.ui-bar-a input,
-.ui-bar-a select,
-.ui-bar-a textarea,
+.ui-bar-a, 
+.ui-bar-a input, 
+.ui-bar-a select, 
+.ui-bar-a textarea, 
 .ui-bar-a button {
 	font-family: Helvetica, Arial, sans-serif;
 }
@@ -51,8 +51,8 @@
 	color: 					#fff;
 	 text-shadow: 0 1px 0 	#000;
 	font-weight: normal;
-	background-image: -moz-linear-gradient(top,
-							#666666,
+	background-image: -moz-linear-gradient(top, 
+							#666666, 
 							#222222);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#666666),
@@ -74,18 +74,19 @@
 	font-weight: bold;
 }
 .ui-br {
-	border-bottom: 1px solid rgba(130,130,130,.3);
+	border-bottom: rgb(130,130,130);
+	border-bottom: rgba(130,130,130,.3);
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
 }
 .ui-btn-up-a {
 	border: 1px solid 		#222;
 	background: 			#333333;
 	font-weight: bold;
 	color: 					#fff;
-	cursor: pointer;
 	text-shadow: 0 -1px 1px #000;
-	text-decoration: none;
-	background-image: -moz-linear-gradient(top,
-							#555555,
+	background-image: -moz-linear-gradient(top, 
+							#555555, 
 							#333333);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#555555),
@@ -101,9 +102,8 @@
 	font-weight: bold;
 	color: 					#fff;
 	text-shadow: 0 -1px 1px #000;
-	text-decoration: none;
-	background-image: -moz-linear-gradient(top,
-							#666666,
+	background-image: -moz-linear-gradient(top, 
+							#666666, 
 							#444444);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#666666),
@@ -119,8 +119,8 @@
 	font-weight: bold;
 	color: 					#fff;
 	text-shadow: 0 -1px 1px #000;
-	background-image: -moz-linear-gradient(top,
-							#333333,
+	background-image: -moz-linear-gradient(top, 
+							#333333, 
 							#5a5a5a);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#333333),
@@ -134,6 +134,7 @@
 .ui-btn-hover-a,
 .ui-btn-down-a {
 	font-family: Helvetica, Arial, sans-serif;
+	text-decoration: none;
 }
 
 
@@ -146,8 +147,8 @@
 	color: 					#fff;
 	font-weight: bold;
 	text-shadow: 0 -1px 1px #254f7a;
-	background-image: -moz-linear-gradient(top,
-							#81a8ce,
+	background-image: -moz-linear-gradient(top, 
+							#81a8ce, 
 							#5e87b0);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#81a8ce),
@@ -175,8 +176,8 @@
 	color: 					#333333;
 	text-shadow: 0 1px 0 	#fff;
 	font-weight: normal;
-	background-image: -moz-linear-gradient(top,
-							#e6e6e6,
+	background-image: -moz-linear-gradient(top, 
+							#e6e6e6, 
 							#cccccc);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#e6e6e6),
@@ -202,11 +203,9 @@
 	background: 			#2567ab;
 	font-weight: bold;
 	color: 					#fff;
-	cursor: pointer;
 	text-shadow: 0 -1px 1px #145072;
-	text-decoration: none;
-	background-image: -moz-linear-gradient(top,
-							#4e89c5,
+	background-image: -moz-linear-gradient(top, 
+							#4e89c5, 
 							#2567ab);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 			color-stop(0, 	#5f9cc5),
@@ -222,10 +221,9 @@
 	font-weight: bold;
 	color: 					#fff;
 	text-shadow: 0 -1px 1px #014D68;
-	background-image: -moz-linear-gradient(top,
-							#72b0d4,
+	background-image: -moz-linear-gradient(top, 
+							#72b0d4, 
 							#4b88b6);
-	text-decoration: none;
 	background-image: -webkit-gradient(linear,left top,left bottom,
 			color-stop(0, 	#72b0d4),
 			color-stop(1, 	#4b88b6));
@@ -240,8 +238,8 @@
 	font-weight: bold;
 	color: 					#fff;
 	text-shadow: 0 -1px 1px #225377;
-	background-image: -moz-linear-gradient(top,
-							#396b9e,
+	background-image: -moz-linear-gradient(top, 
+							#396b9e, 
 							#4e89c5);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#396b9e),
@@ -255,6 +253,7 @@
 .ui-btn-hover-b,
 .ui-btn-down-b {
 	font-family: Helvetica, Arial, sans-serif;
+	text-decoration: none;
 }
 
 
@@ -267,7 +266,7 @@
 	color: 					#3E3E3E;
 	font-weight: bold;
 	text-shadow: 0 1px 1px 	#fff;
-	background-image: -moz-linear-gradient(top,
+	background-image: -moz-linear-gradient(top, 
 							#f0f0f0,
 							#e9eaeb);
 	background-image: -webkit-gradient(linear,left top,left bottom,
@@ -287,8 +286,8 @@
 	color: 					#333333;
 	text-shadow: 0 1px 0 	#fff;
 	background: 			#f0f0f0;
-	background-image: -moz-linear-gradient(top,
-							#eeeeee,
+	background-image: -moz-linear-gradient(top, 
+							#eeeeee, 
 							#dddddd);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#eeeeee),
@@ -315,11 +314,9 @@
 	background: 			#eee;
 	font-weight: bold;
 	color: 					#444;
-	cursor: pointer;
 	text-shadow: 0 1px 1px #f6f6f6;
-	text-decoration: none;
-	background-image: -moz-linear-gradient(top,
-							#fefefe,
+	background-image: -moz-linear-gradient(top, 
+							#fefefe, 
 							#eeeeee);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fdfdfd),
@@ -335,10 +332,9 @@
 	background: 			#dadada;
 	font-weight: bold;
 	color: 					#101010;
-	text-decoration: none;
 	text-shadow: 0 1px 1px 	#fff;
-	background-image: -moz-linear-gradient(top,
-							#ededed,
+	background-image: -moz-linear-gradient(top, 
+							#ededed, 
 							#dadada);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#ededed),
@@ -354,13 +350,13 @@
 	font-weight: bold;
 	color: 					#111111;
 	text-shadow: 0 1px 1px 	#ffffff;
-	background-image: -moz-linear-gradient(top,
-							#eeeeee,
+	background-image: -moz-linear-gradient(top, 
+							#eeeeee, 
 							#fdfdfd);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#eeeeee),
 		color-stop(1, 		#fdfdfd));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#fdfdfd')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#fdfdfd')";
 }
 .ui-btn-down-c a.ui-link-inherit {
 	color: 					#2F3E46;
@@ -369,6 +365,7 @@
 .ui-btn-hover-c,
 .ui-btn-down-c {
 	font-family: Helvetica, Arial, sans-serif;
+	text-decoration: none;
 }
 
 
@@ -380,8 +377,8 @@
 	background: 			#bbb;
 	color: 					#333;
 	text-shadow: 0 1px 0 #eee;
-	background-image: -moz-linear-gradient(top,
-							#ddd,
+	background-image: -moz-linear-gradient(top, 
+							#ddd, 
 							#bbb);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#ddd),
@@ -427,7 +424,6 @@
 	background: 			#fff;
 	font-weight: bold;
 	color: 					#444;
-	text-decoration: none;
 	text-shadow: 0 1px 1px #fff;
 }
 .ui-btn-up-d a.ui-link-inherit {
@@ -440,14 +436,13 @@
 	color: 					#222;
 	cursor: pointer;
 	text-shadow: 0 1px 1px 	#fff;
-	text-decoration: none;
-	background-image: -moz-linear-gradient(top,
-							#fdfdfd,
+	background-image: -moz-linear-gradient(top, 
+							#fdfdfd, 
 							#eeeeee);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fdfdfd),
 		color-stop(1, 		#eeeeee));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fdfdfd', EndColorStr='#eeeeee')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fdfdfd', EndColorStr='#eeeeee')";
 }
 .ui-btn-hover-d a.ui-link-inherit {
 	color: 					#222;
@@ -458,32 +453,22 @@
 	font-weight: bold;
 	color: 					#111;
 	text-shadow: 0 1px 1px 	#ffffff;
-	background-image: -moz-linear-gradient(top,
-							#eeeeee,
+	background-image: -moz-linear-gradient(top, 
+							#eeeeee, 
 							#ffffff);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#eeeeee),
 		color-stop(1, 		#ffffff));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#ffffff')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#ffffff')";
 }
 .ui-btn-down-d a.ui-link-inherit {
-	border: 1px solid 		#808080;
-	background: 			#ced0d2;
-	font-weight: bold;
 	color: 					#111;
-	text-shadow: none;
-	background-image: -moz-linear-gradient(top,
-							#cccccc,
-							#eeeeee);
-	background-image: -webkit-gradient(linear,left top,left bottom,
-		color-stop(0, 		#cccccc),
-		color-stop(1, 		#eeeeee));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee')";
 }
 .ui-btn-up-d,
 .ui-btn-hover-d,
 .ui-btn-down-d {
 	font-family: Helvetica, Arial, sans-serif;
+	text-decoration: none;
 }
 
 
@@ -495,13 +480,13 @@
 	background: 			#fadb4e;
 	color: 					#333;
 	text-shadow: 0 1px 0 	#fff;
-	background-image: -moz-linear-gradient(top,
-							#fceda7,
+	background-image: -moz-linear-gradient(top, 
+							#fceda7, 
 							#fadb4e);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fceda7),
 		color-stop(1, 		#fadb4e));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fceda7', EndColorStr='#fadb4e')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fceda7', EndColorStr='#fadb4e')";
 }
 .ui-bar-e,
 .ui-bar-e input,
@@ -522,13 +507,13 @@
 	color: 					#333333;
 	text-shadow: 0 1px 0 	#fff;
 	background: 			#faeb9e;
-	background-image: -moz-linear-gradient(top,
-							#fff,
+	background-image: -moz-linear-gradient(top, 
+							#fff, 
 							#faeb9e);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fff),
 		color-stop(1, 		#faeb9e));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#faeb9e')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#faeb9e')";
 }
 .ui-body-e,
 .ui-body-e input,
@@ -549,12 +534,9 @@
 	background: 			#fadb4e;
 	font-weight: bold;
 	color: 					#333;
-	cursor: pointer;
-	text-shadow: 0 1px 1px 	#fe3;
-	text-decoration: none;
 	text-shadow: 0 1px 0 	#fff;
-	background-image: -moz-linear-gradient(top,
-							#fceda7,
+	background-image: -moz-linear-gradient(top, 
+							#fceda7, 
 							#fadb4e);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fceda7),
@@ -569,15 +551,14 @@
 	background: 			#fbe26f;
 	font-weight: bold;
 	color: 					#111;
-	text-decoration: none;
 	text-shadow: 0 1px 1px 	#fff;
-	background-image: -moz-linear-gradient(top,
-							#fcf0b5,
+	background-image: -moz-linear-gradient(top, 
+							#fcf0b5, 
 							#fbe26f);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fcf0b5),
 		color-stop(1, 		#fbe26f));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fcf0b5', EndColorStr='#fbe26f')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fcf0b5', EndColorStr='#fbe26f')";
 }
 
 .ui-btn-hover-e a.ui-link-inherit {
@@ -589,8 +570,8 @@
 	font-weight: bold;
 	color: 					#111;
 	text-shadow: 0 1px 1px 	#ffffff;
-	background-image: -moz-linear-gradient(top,
-							#fadb4e,
+	background-image: -moz-linear-gradient(top, 
+							#fadb4e, 
 							#fceda7);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#fadb4e),
@@ -604,10 +585,11 @@
 .ui-btn-hover-e,
 .ui-btn-down-e {
 	font-family: Helvetica, Arial, sans-serif;
+	text-decoration: none;
 }
 
 
-/* links within "buttons"
+/* links within "buttons" 
 -----------------------------------------------------------------------------------------------------------*/
 
 a.ui-link-inherit {
@@ -626,13 +608,13 @@ a.ui-link-inherit {
 	cursor: pointer;
 	text-shadow: 0 -1px 1px #145072;
 	text-decoration: none;
-	background-image: -moz-linear-gradient(top,
-							#85bae4,
+	background-image: -moz-linear-gradient(top, 
+							#85bae4, 
 							#5393c5);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#85bae4),
 		color-stop(1, 		#5393c5));
-  	-msfilter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#85bae4', EndColorStr='#5393c5')";
+  	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#85bae4', EndColorStr='#5393c5')";
   	outline: none;
 }
 .ui-btn-active a.ui-link-inherit {
@@ -719,116 +701,128 @@ a.ui-link-inherit {
 }
 .ui-disabled,
 .ui-disabled a {
-	cursor: default !important;
+	cursor: default;
 }
 
 /* Icons
 -----------------------------------------------------------------------------------------------------------*/
 
 .ui-icon {
+	background: 						#666;
+	background: 						rgba(0,0,0,.4);
 	background-image: url("#{resource['primefaces:mobile/images/icons-18-white.png']}");
 	background-repeat: no-repeat;
-	background-color: 					#666;
-	background-color: rgba(0,0,0,.4);
 	-moz-border-radius: 				9px;
 	-webkit-border-radius: 				9px;
 	border-radius: 						9px;
 }
-.ui-icon-disc {
-	background-color: 					#666;
-	background-color: 					rgba(0,0,0,.3);
-	-moz-border-radius: 				9px;
-	-webkit-border-radius: 				9px;
-	border-radius: 						9px;
-}
+
 
 /* Alt icon color
 -----------------------------------------------------------------------------------------------------------*/
 
-.ui-icon-black {
+.ui-icon-alt {
+	background: 						#fff;
+	background: 						rgba(255,255,255,.3);
 	background-image: url("#{resource['primefaces:mobile/images/icons-18-black.png']}");
-}
-.ui-icon-black-disc {
-	background-color: 					#fff;
-	background-color: 					rgba(255,255,255,.3);
-	-moz-border-radius: 				9px;
-	-webkit-border-radius: 				9px;
-	border-radius: 						9px;
+	background-repeat: no-repeat;
 }
 
 /* HD/"retina" sprite
 -----------------------------------------------------------------------------------------------------------*/
 
-@media screen and (-webkit-min-device-pixel-ratio: 2), screen and (max--moz-device-pixel-ratio: 2) {
-	.ui-icon {
-	background-image: url("#{resource['primefaces:mobile/images/icons-36-white.png']}");
-	background-size: 630px 18px;
-}
-	.ui-icon-black {
-	background-image: url("#{resource['primefaces:mobile/images/icons-36-black.png']}");
-}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min--moz-device-pixel-ratio: 1.5),
+       only screen and (min-resolution: 240dpi) {
+	
+	.ui-icon-plus, .ui-icon-minus, .ui-icon-delete, .ui-icon-arrow-r,
+	.ui-icon-arrow-l, .ui-icon-arrow-u, .ui-icon-arrow-d, .ui-icon-check,
+	.ui-icon-gear, .ui-icon-refresh, .ui-icon-forward, .ui-icon-back,
+	.ui-icon-grid, .ui-icon-star, .ui-icon-alert, .ui-icon-info, .ui-icon-home, .ui-icon-search, 
+	.ui-icon-checkbox-off, .ui-icon-checkbox-on, .ui-icon-radio-off, .ui-icon-radio-on {
+		background-image: url("#{resource['primefaces:mobile/images/icons-36-white.png']}");
+		-moz-background-size: 776px 18px;
+		-o-background-size: 776px 18px;
+		-webkit-background-size: 776px 18px;
+		background-size: 776px 18px;
+	}
+	.ui-icon-alt {
+		background-image: url("#{resource['primefaces:mobile/images/icons-36-black.png']}");
+	}
 }
 
 /* plus minus */
 .ui-icon-plus {
-	background-position: 	-0 0;
+	background-position: 	-0 50%;
 }
 .ui-icon-minus {
-	background-position: 	-36px 0;
+	background-position: 	-36px 50%;
 }
 
 /* delete/close */
 .ui-icon-delete {
-	background-position: 	-72px 0;
+	background-position: 	-72px 50%;
 }
 
 /* arrows */
 .ui-icon-arrow-r {
-	background-position: 	-108px 0;
+	background-position: 	-108px 50%;
 }
 .ui-icon-arrow-l {
-	background-position: 	-144px 0;
+	background-position: 	-144px 50%;
 }
 .ui-icon-arrow-u {
-	background-position: 	-180px 0;
+	background-position: 	-180px 50%;
 }
 .ui-icon-arrow-d {
-	background-position: 	-216px 0;
+	background-position: 	-216px 50%;
 }
 
 /* misc */
 .ui-icon-check {
-	background-position: 	-252px 0;
+	background-position: 	-252px 50%;
 }
 .ui-icon-gear {
-	background-position: 	-288px 0;
+	background-position: 	-288px 50%;
 }
 .ui-icon-refresh {
-	background-position: 	-324px 0;
+	background-position: 	-324px 50%;
 }
 .ui-icon-forward {
-	background-position: 	-360px 0;
+	background-position: 	-360px 50%;
 }
 .ui-icon-back {
-	background-position: 	-396px 0;
+	background-position: 	-396px 50%;
 }
 .ui-icon-grid {
-	background-position: 	-432px 0;
+	background-position: 	-432px 50%;
 }
 .ui-icon-star {
-	background-position: 	-468px 0;
+	background-position: 	-468px 50%;
 }
 .ui-icon-alert {
-	background-position: 	-504px 0;
+	background-position: 	-504px 50%;
 }
 .ui-icon-info {
-	background-position: 	-540px 0;
+	background-position: 	-540px 50%;
 }
 .ui-icon-home {
-	background-position: 	-576px 0;
+	background-position: 	-576px 50%;
 }
 .ui-icon-search {
-	background-position: 	-612px 0;
+	background-position: 	-612px 50%;
+}
+.ui-icon-checkbox-off {
+	background-position: 	-684px 50%;
+}
+.ui-icon-checkbox-on {
+	background-position: 	-648px 50%;
+}
+.ui-icon-radio-off {
+	background-position: 	-756px 50%;
+}
+.ui-icon-radio-on {
+	background-position: 	-720px 50%;
 }
 
 
@@ -841,18 +835,6 @@ a.ui-link-inherit {
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
 	border-radius: 0;
-	background-size: 20px 20px;
-}
-.ui-icon-checkbox-off {
-	background-image: url("#{resource['primefaces:mobile/images/form-check-off.png']}");
-}
-.ui-icon-checkbox-on {
-	background-image: url("#{resource['primefaces:mobile/images/form-check-on.png']}");
-}
-.ui-icon-radio-off {
-	background-image: url("#{resource['primefaces:mobile/images/form-radio-off.png']}");}
-.ui-icon-radio-on {
-	background-image: url("#{resource['primefaces:mobile/images/form-radio-on.png']}");
 }
 .ui-icon-searchfield {
 	background-image: url("#{resource['primefaces:mobile/images/icon-search-black.png']}");
@@ -935,19 +917,19 @@ a.ui-link-inherit {
 /* radius clip workaround for cleaning up corner trapping */
 .ui-corner-tl,
 .ui-corner-tr,
-.ui-corner-bl,
+.ui-corner-bl, 
 .ui-corner-br,
 .ui-corner-top,
-.ui-corner-bottom,
+.ui-corner-bottom, 
 .ui-corner-right,
 .ui-corner-left,
 .ui-corner-all,
 .ui-btn-corner-tl,
 .ui-btn-corner-tr,
-.ui-btn-corner-bl,
+.ui-btn-corner-bl, 
 .ui-btn-corner-br,
 .ui-btn-corner-top,
-.ui-btn-corner-bottom,
+.ui-btn-corner-bottom, 
 .ui-btn-corner-right,
 .ui-btn-corner-left,
 .ui-btn-corner-all {
@@ -1021,10 +1003,11 @@ a.ui-link-inherit {
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-* Note: Code is in draft form and is subject to change
+* Note: Code is in draft form and is subject to change 
 */
 
 /* some unsets - more probably needed */
+.ui-mobile, .ui-mobile body { height: 100%; }
 .ui-mobile fieldset, .ui-page { padding: 0; margin: 0; }
 .ui-mobile a img, .ui-mobile fieldset { border: 0; }
 
@@ -1032,20 +1015,20 @@ a.ui-link-inherit {
 .ui-mobile-viewport {  margin: 0; overflow-x: hidden; -webkit-text-size-adjust: none; -ms-text-size-adjust:none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 /* "page" containers - full-screen views, one should always be in view post-pageload */
-.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page { top: 0; left: 0; width: 100%; min-height: 100%; position: absolute; display: none; border: 0; }
+.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page { top: 0; left: 0; width: 100%; min-height: 100%; position: absolute; display: none; border: 0; } 
 .ui-mobile .ui-page-active { display: block; overflow: visible; }
 
 /*orientations from js are available */
 .portrait,
-.portrait .ui-page { min-height: 480px; }
+.portrait .ui-page { min-height: 420px; }
 .landscape,
-.landscape .ui-page  { min-height: 320px; }
+.landscape .ui-page  { min-height: 300px; }
 
 /* loading screen */
 .ui-loading .ui-mobile-viewport { overflow: hidden !important; }
 .ui-loading .ui-loader { display: block; }
 .ui-loading .ui-page { overflow: hidden;  }
-.ui-loader { display: none; position: absolute; opacity: .85; z-index: 10; left: 50%; width: 200px; margin-left: -130px; margin-top: -35px; padding: 10px 30px; }
+.ui-loader { display: none; position: absolute; opacity: .85; z-index: 100; left: 50%; width: 200px; margin-left: -130px; margin-top: -35px; padding: 10px 30px; }
 .ui-loader h1 { font-size: 15px; text-align: center; }
 .ui-loader .ui-icon { position: static; display: block; opacity: .9; margin: 0 auto; width: 35px; height: 35px; background-color: transparent; }
 
@@ -1060,8 +1043,8 @@ a.ui-link-inherit {
 .ui-header, .ui-footer { display: block; }
 .ui-page .ui-header, .ui-page .ui-footer { position: relative; }
 .ui-header .ui-btn-left { position: absolute; left: 10px; top: .4em;  }
-.ui-header .ui-title, .ui-footer .ui-title { text-align: center; font-size: 16px; display: block; margin: .6em 90px .8em;  padding: 0;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; outline: 0 !important; }
 .ui-header .ui-btn-right { position: absolute; right: 10px; top: .4em; }
+.ui-header .ui-title, .ui-footer .ui-title { min-height: 1.1em; text-align: center; font-size: 16px; display: block; margin: .6em 90px .8em;  padding: 0;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; outline: 0 !important; }
 
 /*content area*/
 .ui-content { border-width: 0; overflow: visible; overflow-x: hidden; padding: 15px; }
@@ -1223,13 +1206,13 @@ Built by David Kaneda and maintained by Jonathan Stark.
 	-webkit-animation-name: fadeout;
 }
 
-/* The properties in this body rule are only necessary for the 'flip' transition.
+/* The properties in this rule are only necessary for the 'flip' transition.
  * We need specify the perspective to create a projection matrix. This will add
  * some depth as the element flips. The depth number represents the distance of
  * the viewer from the z-plane. According to the CSS3 spec, 1000 is a moderate
  * value.
  */
-.ui-mobile-viewport-perspective {
+.viewport-flip {
 	-webkit-perspective: 1000;
 	position: absolute;
 }
@@ -1348,7 +1331,10 @@ Built by David Kaneda and maintained by Jonathan Stark.
 
 /* content configurations. */
 .ui-grid-a, .ui-grid-b, .ui-grid-c, .ui-grid-d { overflow: hidden; }
-.ui-block-a, .ui-block-b, .ui-block-c, .ui-block-d, .ui-block-e { margin: 0; padding: 0; border: 0; float: left; }
+.ui-block-a, .ui-block-b, .ui-block-c, .ui-block-d, .ui-block-e { margin: 0; padding: 0; border: 0; float: left; min-height:1px;}
+
+/* grid solo: 100 - single item fallback */
+.ui-grid-solo .ui-block-a { width: 100%; float: none; }
 
 /* grid a: 50/50 */
 .ui-grid-a .ui-block-a, .ui-grid-a .ui-block-b { width: 50%; }
@@ -1364,7 +1350,8 @@ Built by David Kaneda and maintained by Jonathan Stark.
 
 /* grid d: 20/20/20/20/20 */
 .ui-grid-d .ui-block-a, .ui-grid-d .ui-block-b, .ui-grid-d .ui-block-c, .ui-grid-d .ui-block-d, .ui-grid-d .ui-block-e { width: 20%; }
-.ui-grid-d .ui-block-a { clear: left; }/*
+.ui-grid-d .ui-block-a { clear: left; }
+/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
@@ -1412,7 +1399,7 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-btn:focus, .ui-btn:active { outline: none; }
 .ui-header .ui-btn, .ui-footer .ui-btn, .ui-bar .ui-btn { display: inline-block; font-size: 13px; margin: 0; }
 .ui-btn-inline { display: inline-block; }
-.ui-btn-inner { padding: .6em 25px; display: block; height: 100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; position: relative; }
+.ui-btn-inner { padding: .6em 25px; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; position: relative; }
 .ui-header .ui-btn-inner, .ui-footer .ui-btn-inner, .ui-bar .ui-btn-inner { padding: .4em 8px .5em; }
 .ui-btn-icon-notext { display: inline-block; width: 20px; height: 20px; padding: 2px 1px 2px 3px; text-indent: -9999px; }
 .ui-btn-icon-notext .ui-btn-inner { padding: 0; }
@@ -1455,7 +1442,7 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-btn-icon-top .ui-icon { top: 5px; }
 .ui-btn-icon-bottom .ui-icon { bottom: 5px; }
 /*hiding native button,inputs */
-.ui-btn-hidden {  position: absolute; top: 0; left: 0; width: 100%; height: 100%; -webkit-appearance: button; opacity: 0; cursor: pointer; }
+.ui-btn-hidden {  position: absolute; top: 0; left: 0; width: 100%; height: 100%; -webkit-appearance: button; opacity: 0; cursor: pointer; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); background: transparent; }
 /*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
@@ -1466,7 +1453,7 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-collapsible-heading a { text-align: left; margin: 0;  }
 .ui-collapsible-heading a .ui-btn-inner { padding-left: 40px; }
 .ui-collapsible-heading a span.ui-btn { position: absolute; left: 6px; top: 50%; margin: -12px 0 0 0; width: 20px; height: 20px; padding: 1px 0px 1px 2px; text-indent: -9999px; }
-.ui-collapsible-heading a span.ui-btn .ui-btn-inner { padding: 0; }
+.ui-collapsible-heading a span.ui-btn .ui-btn-inner { padding: 10px 0; }
 .ui-collapsible-heading a span.ui-btn .ui-icon { left: 0; margin-top: -10px; }
 .ui-collapsible-heading-status { position:absolute; left:-9999px; }
 .ui-collapsible-content {  display: block; padding: 10px 0 10px 8px; }
@@ -1489,7 +1476,8 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-controlgroup-vertical .ui-controlgroup-last { border-bottom-width: 1px; }
 .ui-controlgroup-horizontal { padding: 0; }
 .ui-controlgroup-horizontal .ui-btn,
-.ui-controlgroup-horizontal .ui-checkbox, .ui-controlgroup-horizontal .ui-radio { margin: 0 -5px 0 0; display: inline-block;  }
+.ui-controlgroup-horizontal .ui-checkbox, .ui-controlgroup-horizontal .ui-radio { display: inline-block; margin: 0 -5px 0 0; }
+.ui-controlgroup-horizontal .ui-checkbox, .ui-controlgroup-horizontal .ui-radio { display: inline; }
 .ui-controlgroup-horizontal .ui-checkbox .ui-btn, .ui-controlgroup-horizontal .ui-radio .ui-btn,
 .ui-controlgroup-horizontal .ui-checkbox:last-child, .ui-controlgroup-horizontal .ui-radio:last-child { margin-right: 0; }
 .ui-controlgroup-horizontal .ui-controlgroup-last { margin-right: 0; }
@@ -1499,8 +1487,10 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-controlgroup .ui-btn-icon-notext .ui-btn-inner {  padding: 5px 6px 5px 5px; }
 */
 
-.min-width-480px .ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
-.min-width-480px .ui-controlgroup-controls { width: 60%; display: inline-block; } /*
+@media all and (min-width: 450px){
+	.ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
+	.ui-controlgroup-controls { width: 60%; display: inline-block; } 
+}	/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
@@ -1515,8 +1505,10 @@ Built by David Kaneda and maintained by Jonathan Stark.
 */
 .ui-checkbox, .ui-radio { position:relative;  margin: .2em 0 .5em; z-index: 1;  }
 .ui-checkbox .ui-btn, .ui-radio .ui-btn { margin: 0; text-align: left; z-index: 2; }
+.ui-checkbox .ui-btn-inner, .ui-radio .ui-btn-inner { white-space: normal; }
 .ui-checkbox .ui-btn-icon-left .ui-btn-inner,.ui-radio .ui-btn-icon-left .ui-btn-inner { padding-left: 45px; }
 .ui-checkbox .ui-btn-icon-right .ui-btn-inner, .ui-radio .ui-btn-icon-right .ui-btn-inner { padding-right: 45px; }
+.ui-checkbox .ui-icon, .ui-radio .ui-icon { top: 1.1em; }
 .ui-checkbox .ui-btn-icon-left .ui-icon, .ui-radio .ui-btn-icon-left .ui-icon {left: 15px; }
 .ui-checkbox .ui-btn-icon-right .ui-icon, .ui-radio .ui-btn-icon-right .ui-icon {right: 15px; }
 /* input, label positioning */
@@ -1527,17 +1519,21 @@ Built by David Kaneda and maintained by Jonathan Stark.
 */
 .ui-field-contain { background: none; padding: 1.5em 0; margin: 0; border-bottom-width: 1px; overflow: visible; }
 .ui-field-contain:first-child { border-top-width: 0; }
-.min-width-480px .ui-field-contain { border-width: 0; padding: 0; margin: 1em 0; }/*
+@media all and (min-width: 450px){
+	.ui-field-contain { border-width: 0; padding: 0; margin: 1em 0; }
+}	/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
 */
 .ui-select { display: block; position: relative; }
 .ui-select select { position: absolute; left: -9999px; top: -9999px; }
-.ui-select .ui-btn select { cursor: pointer; -webkit-appearance: button; left: 0; top:0; width: 100%; height: 100%; opacity: 0.001; }
-.ui-select .ui-btn select.ui-select-nativeonly { opacity: 1; }
+.ui-select .ui-btn { overflow: hidden; }
+.ui-select .ui-btn select { cursor: pointer; -webkit-appearance: button; left: 0; top:0; width: 100%; height: 100%; opacity: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); }
+@-moz-document url-prefix() {.ui-select .ui-btn select { opacity: 0.0001; }}
+.ui-select .ui-btn select.ui-select-nativeonly { opacity: 1; text-indent: 0; }
 
-.ui-select .ui-btn-icon-right .ui-btn-inner { padding-right: 45px; }
+.ui-select .ui-btn-icon-right .ui-btn-inner { padding-right: 45px; } 
 .ui-select .ui-btn-icon-right .ui-icon { right: 15px;  }
 
 /* labels */
@@ -1545,7 +1541,7 @@ label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margi
 
 /*listbox*/
 .ui-select .ui-btn-text, .ui-selectmenu .ui-btn-text { display: inline-block; min-height: 1em; }
-.ui-select .ui-btn-text { text-overflow: ellipsis; overflow: hidden; width: 85% }
+.ui-select .ui-btn-text { text-overflow: ellipsis; overflow: hidden; display: block;}
 
 .ui-selectmenu { position: absolute; padding: 0; z-index: 100 !important; width: 80%; max-width: 350px; padding: 6px; }
 .ui-selectmenu .ui-listview { margin: 0; }
@@ -1555,13 +1551,15 @@ label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margi
 .ui-screen-hidden, .ui-selectmenu-list .ui-li .ui-icon { display: none; }
 .ui-selectmenu-list .ui-li .ui-icon { display: block; }
 .ui-li.ui-selectmenu-placeholder { display: none; }
+.ui-selectmenu .ui-header .ui-title { margin: 0.6em 46px 0.8em; }
 
-.min-width-480px label.ui-select { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-.min-width-480px .ui-select { width: 60%; display: inline-block; }
+@media all and (min-width: 450px){
+	label.ui-select { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+	.ui-select { width: 60%; display: inline-block; }
+}	
 
 /* when no placeholder is defined in a multiple select, the header height doesn't even extend past the close button.  this shim's content in there */
-.ui-selectmenu .ui-header h1:after { content: '.'; visibility: hidden; }
-/*
+.ui-selectmenu .ui-header h1:after { content: '.'; visibility: hidden; }/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
@@ -1576,12 +1574,14 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 .ui-input-search .ui-input-clear-hidden { display: none; }
 
 /* orientation adjustments - incomplete!*/
-.min-width-480px label.ui-input-text  { vertical-align: top;   }
-.min-width-480px label.ui-input-text { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-.min-width-480px input.ui-input-text,
-.min-width-480px textarea.ui-input-text,
-.min-width-480px .ui-input-search { width: 60%; display: inline-block; }
-.min-width-480px .ui-input-search { width: 50%; }/*
+@media all and (min-width: 450px){
+	label.ui-input-text  { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0 }
+	input.ui-input-text, 
+	textarea.ui-input-text, 
+	.ui-input-search { width: 60%; display: inline-block; } 
+	.ui-input-search { width: 50%; }
+	.ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
+}/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
@@ -1589,17 +1589,19 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 .ui-listview { margin: 0; counter-reset: listnumbering; }
 .ui-content .ui-listview { margin: -15px; }
 .ui-content .ui-listview-inset { margin: 1em 0;  }
-.ui-listview, .ui-li { list-style:none; padding:0; zoom: 1; }
-.ui-li { display: block; margin:0; position: relative; overflow: hidden; text-align: left; border-width: 0; border-top-width: 1px; }
-.ui-li .ui-btn-text { text-overflow: ellipsis; overflow: hidden; white-space: nowrap;  }
-.ui-li-divider, .ui-li-static { padding: .5em 15px; font-size: 14px; font-weight: bold; counter-reset: listnumbering;  }
-ol.ui-listview .ui-link-inherit:before, .ui-li-dec { font-size: .8em; display: inline-block; padding-right: .3em; font-weight: normal;counter-increment: listnumbering; content: counter(listnumbering) ". "; }
+.ui-listview, .ui-li { list-style:none; padding:0; }
+.ui-li, .ui-li.ui-field-contain { display: block; margin:0; position: relative; overflow: visible; text-align: left; border-width: 0; border-top-width: 1px; }
+.ui-li .ui-btn-text a.ui-link-inherit { text-overflow: ellipsis; overflow: hidden; white-space: nowrap;  }
+.ui-li-divider, .ui-li-static { padding: .5em 15px; font-size: 14px; font-weight: bold;  }
+.ui-li-divider { counter-reset: listnumbering;  }
+ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui-li-dec { font-size: .8em; display: inline-block; padding-right: .3em; font-weight: normal;counter-increment: listnumbering; content: counter(listnumbering) ". "; }
 ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid chance of duplication */
 .ui-listview-inset .ui-li { border-right-width: 1px; border-left-width: 1px; }
-.ui-li:last-child { border-bottom-width: 1px; }
-.ui-li .ui-btn-inner { display: block; position: relative; padding: .7em 75px .7em 15px; }
-.ui-li-has-thumb .ui-btn-inner { min-height: 60px; padding-left: 100px; }
-.ui-li-has-icon .ui-btn-inner {  min-height: 20px; padding-left: 40px; }
+.ui-li:last-child, .ui-li.ui-field-contain:last-child { border-bottom-width: 1px; }
+.ui-li>.ui-btn-inner { display: block; position: relative; padding: 0; }
+.ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li { padding: .7em 75px .7em 15px; display: block; }
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb  { min-height: 60px; padding-left: 100px; }
+.ui-li-has-icon .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-icon {  min-height: 20px; padding-left: 40px; }
 .ui-li-heading { font-size: 16px; font-weight: bold; display: block; margin: .6em 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;  }
 .ui-li-desc {  font-size: 12px; font-weight: normal; display: block; margin: -.5em 0 .6em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .ui-li-thumb, .ui-li-icon { position: absolute; left: 1px; top: 0; max-height: 80px; max-width: 80px; }
@@ -1607,10 +1609,13 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 .ui-li-thumb, .ui-li-icon, .ui-li-content { float: left; margin-right: 10px; }
 
 .ui-li-aside { float: right; width: 50%; text-align: right; margin: .3em 0; }
-.min-width-480px .ui-li-aside { width: 45%; }
-.ui-li-has-alt .ui-btn-inner { padding-right: 95px; }
+@media all and (min-width: 480px){
+	 .ui-li-aside { width: 45%; }
+}	 
+.ui-li-divider { cursor: default; }
+.ui-li-has-alt .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-alt { padding-right: 95px; }
 .ui-li-count { position: absolute; font-size: 11px; font-weight: bold; padding: .2em .5em; top: 50%; margin-top: -.9em; right: 38px; }
-.ui-li-divider .ui-li-count { right: 10px; }
+.ui-li-divider .ui-li-count, .ui-li-static .ui-li-count { right: 10px; }
 .ui-li-has-alt .ui-li-count { right: 55px; }
 .ui-li-link-alt { position: absolute; width: 40px; height: 100%; border-width: 0; border-left-width: 1px; top: 0; right: 0; margin: 0; padding: 0; }
 .ui-li-link-alt .ui-btn { overflow: hidden; position: absolute; right: 8px; top: 50%; margin: -11px 0 0 0; border-bottom-width: 1px; }
@@ -1620,6 +1625,8 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 .ui-listview-filter { border-width: 0; overflow: hidden; margin: -15px -15px 15px -15px }
 .ui-listview-filter .ui-input-search { margin: 5px; width: auto; display: block; }
 
+.ui-listview-filter-inset { margin: -15px -5px -15px -5px; background: transparent; }
+.ui-li.ui-screen-hidden{display:none;}
 /* Odd iPad positioning issue. */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
     .ui-li .ui-btn-text { overflow:  visible; }
@@ -1629,13 +1636,15 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
 */
 label.ui-slider { display: block; }
-input.ui-slider-input, .min-width-480px input.ui-slider-input { display: inline-block; width: 50px; }
+input.ui-slider-input  { display: inline-block; width: 50px; }
 select.ui-slider-switch { display: none; }
 div.ui-slider { position: relative; display: inline-block; overflow: visible; height: 15px; padding: 0; margin: 0 2% 0 20px; top: 4px; width: 66%; }
 a.ui-slider-handle { position: absolute; z-index: 10;  top: 50%; width: 28px; height: 28px; margin-top: -15px; margin-left: -15px; }
 a.ui-slider-handle .ui-btn-inner { padding-left: 0; padding-right: 0; }
-.min-width-480px label.ui-slider { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-.min-width-480px div.ui-slider { width: 45%; }
+@media all and (min-width: 480px){
+	label.ui-slider { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+	div.ui-slider { width: 45%; }
+}	
 
 div.ui-slider-switch { height: 32px;  overflow: hidden; margin-left: 0; }
 div.ui-slider-inneroffset { margin-left: 50%; position: absolute; top: 1px; height: 100%; width: 50%; }
@@ -1643,8 +1652,8 @@ div.ui-slider-handle-snapping { -webkit-transition: left 100ms linear; }
 div.ui-slider-labelbg { position: absolute; top:0; margin: 0; border-width: 0; }
 div.ui-slider-switch div.ui-slider-labelbg-a { width: 60%; height: 100%; left: 0; }
 div.ui-slider-switch div.ui-slider-labelbg-b { width: 60%; height: 100%; right: 0; }
-.ui-slider-switch-a div.ui-slider-labelbg-a, .ui-slider-switch-b div.ui-slider-labelbg-b { z-index: 1; }
-.ui-slider-switch-a div.ui-slider-labelbg-b, .ui-slider-switch-b div.ui-slider-labelbg-a { z-index: 10; }
+.ui-slider-switch-a div.ui-slider-labelbg-a, .ui-slider-switch-b div.ui-slider-labelbg-b { z-index: -1; }
+.ui-slider-switch-a div.ui-slider-labelbg-b, .ui-slider-switch-b div.ui-slider-labelbg-a { z-index: 0; }
 
 div.ui-slider-switch a.ui-slider-handle { z-index: 20;  width: 101%; height: 32px; margin-top: -18px; margin-left: -101%; }
 span.ui-slider-label { width: 100%; position: absolute;height: 32px;  font-size: 16px; text-align: center; line-height: 2; background: none; border-color: transparent; }
