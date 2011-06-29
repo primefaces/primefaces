@@ -996,6 +996,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             }
 
             columnHeader.width(newWidth);
+            table.width(table.width() + ui.position.left);
 
             //Scrollable support, recalculates widths of main container, inner table cells and footers
             if(_self.cfg.scrollable) {
