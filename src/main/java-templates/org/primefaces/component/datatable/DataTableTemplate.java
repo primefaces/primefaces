@@ -64,7 +64,6 @@ import org.primefaces.model.SortOrder;
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
-    public static final String RESIZABLE_TABLE_CLASS = "ui-datatable-resizable";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit"));
 
