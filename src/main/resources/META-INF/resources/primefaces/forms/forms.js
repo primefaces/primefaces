@@ -307,7 +307,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     
     //tabindex focus
     this.labelContainer.focus(function(){
-        _self.menuIcon.addClass("ui-state-focus");
+        if(!_self.disabled)
+          _self.menuIcon.addClass("ui-state-focus");
     });
     
     this.labelContainer.blur(function(){
