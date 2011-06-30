@@ -947,7 +947,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     columnFooters = $(this.jqId + ' tfoot tr td'),
     table = $(this.jqId + ' table'),
     tbody = $(this.tbody),
-    thead = thead = $(this.jqId + ' thead'),
+    thead = $(this.jqId + ' thead'),
     headerTable = $(this.jqId + ' .ui-datatable-scrollable-header table'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     _self = this;
@@ -1013,7 +1013,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
         },
-        containment: _self.jqId + '.ui-datatable table thead'
+        containment: thead
     });
 
     //Restore widths on postback
