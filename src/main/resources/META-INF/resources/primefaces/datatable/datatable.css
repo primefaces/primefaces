@@ -120,6 +120,7 @@
     padding:0px;
     cursor:col-resize;
     background: transparent;
+    margin-right:-10px;
 }
 
 .ui-datatable .ui-column-resizer-helper {
@@ -131,5 +132,9 @@
 
 .ui-datatable.ui-datatable-resizable {
     overflow: auto;
+}
+
+.ui-datatable.ui-datatable-scrollable {
+    overflow: inherit;
 }
 
