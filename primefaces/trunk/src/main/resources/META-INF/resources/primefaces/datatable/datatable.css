@@ -118,16 +118,18 @@
     height:15px;
     float:right;
     padding:0px;
-    margin:0px -14px 0px 0px;
     cursor:col-resize;
     background: transparent;
-    *margin:0px -2px 0px 0px;
 }
 
 .ui-datatable .ui-column-resizer-helper {
-    width: 4px;
+    width: 1px;
     position: absolute;
     z-index: 10;
     display: none;
+}
+
+.ui-datatable.ui-datatable-resizable {
+    overflow: auto;
 }
 
