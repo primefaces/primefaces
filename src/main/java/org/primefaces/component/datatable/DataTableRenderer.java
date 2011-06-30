@@ -170,6 +170,10 @@ public class DataTableRenderer extends CoreRenderer {
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
         String style = null;
         
+        if(table.isResizableColumns()) {
+            containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS; 
+        }
+        
         //paginator
         boolean hasPaginator = table.isPaginator();
         String paginatorPosition = table.getPaginatorPosition();

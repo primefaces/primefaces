@@ -938,7 +938,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
 
     //Add resizers and resizer helper
     $(this.jqId + ' thead tr th:not(:last)').prepend('<div class="ui-column-resizer"></div>');
-    $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight ui-corner-all"></div>');
+    $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
     //Variables
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
@@ -965,38 +965,39 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     
             //Set height of resizer helper
             resizerHelper.height(_self.cfg.scrollable ? $(_self.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : table.height() - thead.height() - 1 );
-            resizerHelper.fadeIn();
+            resizerHelper.show();
         },
         drag: function(event, ui) {
-            resizerHelper.offset({left:ui.helper.offset().left, top: thead.offset().top + thead.height()});  
+            resizerHelper.offset(
+                {
+                    left: ui.helper.offset().left + ui.helper.width() / 2, 
+                    top: thead.offset().top + thead.height()
+                });  
         },
         stop: function(event, ui) {
             var columnHeader = ui.helper.parents('th:first'),
-            newWidth = columnHeader.width() + ui.position.left,
-            minWidth = columnHeader.css('min-width'),
-            maxWidth = columnHeader.css('max-width');
-
+            oldPos = ui.originalPosition.left,
+            newPos = ui.position.left,
+            change = (newPos - oldPos),
+            newWidth = columnHeader.width() + change;
+            
             ui.helper.css('left','');
-            resizerHelper.fadeOut();
-
-            if(minWidth) {
-                minWidth = parseInt(minWidth.split('px')[0]);
-
-                if(minWidth > newWidth) {
-                    newWidth = minWidth;
+            resizerHelper.hide();
+            
+            if(change < 0) {
+                var preWidth = columnHeader.width();
+                columnHeader.width(newWidth);
+                var postWidth = columnHeader.width();
+                
+                if(preWidth != postWidth) {
+                    table.width(table.width() + change);
                 }
             }
-
-            if(maxWidth) {
-                maxWidth = parseInt(maxWidth.split('px')[0]);
-
-                if(maxWidth < newWidth) {
-                    newWidth = maxWidth;
-                }
+            else {
+                columnHeader.width(newWidth);
+                table.width(table.width() + change);
             }
 
-            columnHeader.width(newWidth);
-            table.width(table.width() + ui.position.left);
 
             //Scrollable support, recalculates widths of main container, inner table cells and footers
             if(_self.cfg.scrollable) {
