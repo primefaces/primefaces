@@ -182,8 +182,8 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
     
     this.refreshScrollBodyWidth();
     
-    $(this.jqId + ' .ui-datatable-scrollable-header').width(table.width());
-    $(this.jqId + ' .ui-datatable-scrollable-footer').width(table.width());
+    $(this.jqId + ' .ui-datatable-scrollable-header').width(table.outerWidth());
+    $(this.jqId + ' .ui-datatable-scrollable-footer').width(table.outerWidth());
 
     //live scroll
     if(this.cfg.liveScroll) {
