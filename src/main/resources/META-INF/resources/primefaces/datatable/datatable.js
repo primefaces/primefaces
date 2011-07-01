@@ -35,13 +35,13 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     if(rowEditors.length > 0) {
         this.setupCellEditorEvents(rowEditors);
     }
+    
+    if(this.cfg.scrollable) {
+        this.setupScrolling();
+    }
 
     if(this.cfg.resizableColumns) {
         this.setupResizableColumns();
-    }
-
-    if(this.cfg.scrollable) {
-        this.setupScrolling();
     }
 }
 
@@ -177,12 +177,13 @@ PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
  * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
  */
 PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
-    var bodyContainer = $(this.jqId + ' .ui-datatable-scrollable-body'),
-    bodyContainerEl = bodyContainer.get(0),
-    tbodyElement = $(this.tbody).get(0);
-
-    var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) + "px" : (tbodyElement.parentNode.clientWidth - 1) + "px";
-    $(this.jqId + ' .ui-datatable-scrollable-body').css('width', containerWidth);
+    this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
+    var table = this.scrollBody.children('table:first');
+    
+    this.refreshScrollBodyWidth();
+    
+    $(this.jqId + ' .ui-datatable-scrollable-header').width(table.width());
+    $(this.jqId + ' .ui-datatable-scrollable-footer').width(table.width());
 
     //live scroll
     if(this.cfg.liveScroll) {
@@ -190,7 +191,7 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
         this.shouldLiveScroll = true;
         var _self = this;
 
-        bodyContainer.scroll(function() {
+        this.scrollBody.scroll(function() {
 
             if(_self.shouldLiveScroll) {
                 var viewport = $(this);
@@ -206,6 +207,14 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
         });
 
     }
+}
+
+PrimeFaces.widget.DataTable.prototype.refreshScrollBodyWidth = function() {
+    var bodyContainerEl = this.scrollBody.get(0),
+    tbodyElement = $(this.tbody).get(0);
+    
+    var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) : (tbodyElement.parentNode.clientWidth - 1);
+    $(this.jqId + ' .ui-datatable-scrollable-body').width(containerWidth);
 }
 
 /**
@@ -947,10 +956,22 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     columnFooters = $(this.jqId + ' tfoot tr td'),
     table = $(this.jqId + ' table'),
     tbody = $(this.tbody),
-    thead = $(this.jqId + ' thead'),
-    headerTable = $(this.jqId + ' .ui-datatable-scrollable-header table'),
+    thead = $(this.jqId + ' thead'),    
+    scrollHead = $(this.jqId + ' .ui-datatable-scrollable-header'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
+    scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer'),
     _self = this;
+    
+    //Also scroll header and footer horizontally
+    if(_self.cfg.scrollable) {
+        scrollBody.scroll(function() {
+            var scrollLeft = $(this).scrollLeft();
+            scrollHead.scrollLeft(scrollLeft);
+            scrollFooter.scrollLeft(scrollLeft);
+        });
+        
+        var initialScrollBodyWidth = scrollBody.width();
+    }
  
     //State cookie
     this.columnWidthsCookie = this.id + '_columnWidths';
@@ -998,12 +1019,16 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 table.width(table.width() + change);
             }
 
-
             //Scrollable support, recalculates widths of main container, inner table cells and footers
             if(_self.cfg.scrollable) {
-               $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth);
-               columnFooters.eq(columnHeader.index()).width(newWidth);
-               scrollBody.width(headerTable.width() + 16);
+                $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth);
+                columnFooters.eq(columnHeader.index()).width(newWidth);
+                
+                if(scrollHead.children('table').width() < scrollHead.width()) {
+                    _self.refreshScrollBodyWidth();
+                } else {
+                    scrollBody.width(initialScrollBodyWidth);
+                }
             }
 
             //Save state
