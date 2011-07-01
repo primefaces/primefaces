@@ -304,15 +304,22 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         }
         _self.hide();
     });
-    
+
     //tabindex focus
     this.labelContainer.focus(function(){
-        if(!_self.disabled)
+        if(!_self.disabled){
           _self.menuIcon.addClass("ui-state-focus");
+          _self.label.addClass("ui-state-focus");
+        }
     });
     
     this.labelContainer.blur(function(){
-        _self.menuIcon.removeClass("ui-state-focus");
+        if(_self.panel.is(":hidden")){
+            _self.label.removeClass("ui-state-focus");
+            _self.menuIcon.removeClass("ui-state-focus");
+        }
+        else
+          _self.labelContainer.focus();
     });
 
     //key bindings
