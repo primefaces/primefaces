@@ -36,13 +36,14 @@ PrimeFaces.widget.TabView = function(id, cfg) {
  * - Invokes tabChange behavior event if defined
  */
 PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
-    var panel = ui.panel,
-    shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
-
+    
     //Call user onTabChange callback
     if(this.cfg.onTabChange) {
         this.cfg.onTabChange.call(this, event, ui);
     }
+    
+    var panel = ui.panel,
+    shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
     //Write state
     this.stateHolder.val(ui.index);
