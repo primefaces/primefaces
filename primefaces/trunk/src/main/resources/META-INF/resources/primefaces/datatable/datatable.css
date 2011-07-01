@@ -1,6 +1,7 @@
 .ui-datatable table {
 	border-collapse:collapse;
     width:100%;
+    table-layout: fixed;
 }
 
 .ui-datatable .ui-datatable-header,
@@ -22,6 +23,7 @@
     white-space:nowrap;
     padding:4px 10px;
     margin:0px;
+    overflow: hidden;
     *padding-right: 0px;
 }
 
@@ -33,6 +35,7 @@
     border-style: solid;
     border-color: inherit;
     padding:4px 10px;
+    overflow: hidden;
 }
 
 .ui-datatable .ui-paginator {
@@ -103,10 +106,15 @@
 .ui-datatable-odd, .ui-datatable-even {}
 
 .ui-datatable-scrollable {}
-.ui-datatable-scrollable-header {}
+
 .ui-datatable-scrollable-body {
     overflow:auto;
 }
+.ui-datatable-scrollable-header,
+.ui-datatable-scrollable-footer {
+    overflow: hidden;
+}
+
 .ui-datatable-scrollable .ui-datatable-scrollable-body table,
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,
 .ui-datatable-scrollable .ui-datatable-scrollable-footer table {
