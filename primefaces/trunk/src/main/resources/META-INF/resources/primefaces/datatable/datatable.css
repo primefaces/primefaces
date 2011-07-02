@@ -127,7 +127,7 @@
     float:right;
     padding:0px;
     cursor:col-resize;
-    background: transparent;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
     margin-right:-10px;
 }
 
