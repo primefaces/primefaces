@@ -177,13 +177,13 @@ PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
  * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
  */
 PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
-    this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
-    var table = this.scrollBody.children('table:first');
+    var bodyContainerEl = $(this.jqId + ' .ui-datatable-scrollable-body').get(0),
+    tbodyElement = $(this.tbody).get(0);
     
-    this.refreshScrollBodyWidth();
-    
-    $(this.jqId + ' .ui-datatable-scrollable-header').width(table.outerWidth());
-    $(this.jqId + ' .ui-datatable-scrollable-footer').width(table.outerWidth());
+    var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) : (tbodyElement.parentNode.clientWidth - 1);
+    $(this.jqId + ' .ui-datatable-scrollable-body').width(containerWidth);
+    $(this.jqId + ' .ui-datatable-scrollable-header').width(containerWidth);
+    $(this.jqId + ' .ui-datatable-scrollable-footer').width(containerWidth);
 
     //live scroll
     if(this.cfg.liveScroll) {
@@ -207,14 +207,6 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
         });
 
     }
-}
-
-PrimeFaces.widget.DataTable.prototype.refreshScrollBodyWidth = function() {
-    var bodyContainerEl = this.scrollBody.get(0),
-    tbodyElement = $(this.tbody).get(0);
-    
-    var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) : (tbodyElement.parentNode.clientWidth - 1);
-    $(this.jqId + ' .ui-datatable-scrollable-body').width(containerWidth);
 }
 
 /**
