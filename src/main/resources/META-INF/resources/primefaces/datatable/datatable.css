@@ -113,6 +113,7 @@
 .ui-datatable-scrollable-header,
 .ui-datatable-scrollable-footer {
     overflow: hidden;
+    border:0px none;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-body table,
