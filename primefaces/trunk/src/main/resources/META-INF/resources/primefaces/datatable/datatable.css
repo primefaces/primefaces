@@ -143,7 +143,3 @@
     overflow: auto;
 }
 
-.ui-datatable.ui-datatable-scrollable {
-    overflow: inherit;
-}
-
