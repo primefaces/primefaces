@@ -957,21 +957,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     table = $(this.jqId + ' table'),
     tbody = $(this.tbody),
     thead = $(this.jqId + ' thead'),    
-    scrollHead = $(this.jqId + ' .ui-datatable-scrollable-header'),
-    scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
-    scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer'),
     _self = this;
-    
-    //Also scroll header and footer horizontally
-    if(_self.cfg.scrollable) {
-        scrollBody.scroll(function() {
-            var scrollLeft = $(this).scrollLeft();
-            scrollHead.scrollLeft(scrollLeft);
-            scrollFooter.scrollLeft(scrollLeft);
-        });
-        
-        var initialScrollBodyWidth = scrollBody.width();
-    }
  
     //State cookie
     this.columnWidthsCookie = this.id + '_columnWidths';
@@ -985,7 +971,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             this.tbodyTop = tbodyOffset.top;
     
             //Set height of resizer helper
-            resizerHelper.height(_self.cfg.scrollable ? $(_self.jqId + ' .ui-datatable-scrollable-body').innerHeight() - 1 : table.height() - thead.height() - 1 );
+            resizerHelper.height(table.height() - thead.height() - 1 );
             resizerHelper.show();
         },
         drag: function(event, ui) {
@@ -1019,18 +1005,6 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 table.width(table.width() + change);
             }
 
-            //Scrollable support, recalculates widths of main container, inner table cells and footers
-            if(_self.cfg.scrollable) {
-                $(_self.jqId + ' .ui-datatable-scrollable-body table tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth);
-                columnFooters.eq(columnHeader.index()).width(newWidth);
-                
-                if(scrollHead.children('table').width() < scrollHead.width()) {
-                    _self.refreshScrollBodyWidth();
-                } else {
-                    scrollBody.width(initialScrollBodyWidth);
-                }
-            }
-
             //Save state
             var columnWidths = [];
             columnHeaders.each(function(i, item) {
@@ -1042,8 +1016,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     });
 
     //Restore widths on postback
-    var widths = PrimeFaces.getCookie(this.columnWidthsCookie),
-    cells = $(this.jqId + ' .ui-datatable-scrollable-body table tbody tr td:first-child');
+    var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
 
     if(widths) {
         widths = widths.split(',');
@@ -1051,14 +1024,8 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
 
             $(columnHeaders.get(i)).css('width', widths[i]);
 
-            cells.width(widths[i]);
-
             if(columnFooters.length > 0) {
                 columnFooters.eq(i).width(widths[i]);
-            }
-
-            if(i != (widths.length -1)) {
-                cells = cells.next();
             }
         }
     }
