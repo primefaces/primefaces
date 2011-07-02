@@ -60,9 +60,9 @@ import org.primefaces.model.SortOrder;
     public static final String EVEN_ROW_CLASS = "ui-datatable-even";
     public static final String ODD_ROW_CLASS = "ui-datatable-odd";
     public static final String SCROLLABLE_CONTAINER_CLASS = "ui-datatable-scrollable";
-    public static final String SCROLLABLE_HEADER_CLASS = "ui-datatable-scrollable-header";
+    public static final String SCROLLABLE_HEADER_CLASS = "ui-widget-header ui-datatable-scrollable-header";
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
-    public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
+    public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-datatable-scrollable-footer";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-datatable-resizable";  
 
