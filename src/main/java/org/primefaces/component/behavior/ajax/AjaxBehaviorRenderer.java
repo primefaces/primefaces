@@ -55,6 +55,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
+        if(source == null) {
+            source = component.getClientId(fc);
+        }
 
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ab(");
