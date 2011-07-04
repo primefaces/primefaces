@@ -226,7 +226,7 @@ class DataHelper {
         
 		String selection = params.get(clientId + "_selection");
         
-        if(!isValueBlank(selection)) {
+        if(!isValueBlank(selection) && !table.isCellSelection()) {
             String[] rowKeys = selection.split(",");
             
             for(String rowKey : rowKeys) {
