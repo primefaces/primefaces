@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Slider Widget
  */
-    PrimeFaces.widget.Slider = function(id, cfg) {
+PrimeFaces.widget.Slider = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jq = jQuery(PrimeFaces.escapeClientId(this.id));
@@ -27,12 +27,15 @@
     //Slide end handler
     this.jq.bind('slidestop', function(event, ui) {_self.onSlideEnd(event, ui);});
     
-    this.input.keydown(function(e){
-      if(String.fromCharCode(e.keyCode).match(/[^0-9]/))
-        return false;
+    this.input.keypress(function(e){
+        var charCode = (e.which) ? e.which : e.keyCode
+        if(charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        else
+            return true;
     });
     
-    this.input.blur(function(){
+    this.input.keyup(function(){
       _self.setValue(_self.input.val());
     });
 }
