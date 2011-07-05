@@ -60,13 +60,7 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
         _self.hide();
         
         //update theme
-        var themeLink = $('link[href*="javax.faces.resource/theme.css"]'),
-        themeURL = themeLink.attr('href'),
-        plainURL = themeURL.split('&')[0],
-        theme = plainURL.split('ln=')[1],
-        newThemeURL = themeURL.replace(theme, 'primefaces-' + option.attr('value'));
-
-        themeLink.attr('href', newThemeURL);
+        PrimeFaces.changeTheme(option.attr('value'));
     });
 
     //Events to show/hide the panel
