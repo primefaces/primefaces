@@ -41,7 +41,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>topLeft</defaultValue>
-            <description>The corner of the tooltip to position the target’s position. Default is topLeft.</description>
+            <description>The corner of the tooltip to position the target's position. Default is topLeft.</description>
 		</attribute>
 		<attribute>
 			<name>showEvent</name>

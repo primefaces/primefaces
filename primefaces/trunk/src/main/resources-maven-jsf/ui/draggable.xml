@@ -70,7 +70,7 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Reverts draggable to it’s original position when not dropped onto a valid droppable. Default is false.</description>
+            <description>Reverts draggable to it's original position when not dropped onto a valid droppable. Default is false.</description>
         </attribute>
         <attribute>
             <name>snap</name>
