@@ -17,6 +17,8 @@ PrimeFaces.widget.ThemeSwitcher = function(id, cfg) {
     if(!this.cfg.effectDuration) {
         this.cfg.effectDuration = 400;
     }
+    
+    this.panel.hide().removeClass('ui-helper-hidden-accessible');
 
     this.bindEvents();
 

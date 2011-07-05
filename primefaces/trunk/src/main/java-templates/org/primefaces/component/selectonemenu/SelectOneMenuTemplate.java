@@ -7,7 +7,7 @@ import javax.faces.component.UIComponent;
     public final static String LABEL_CONTAINER_CLASS = "ui-selectonemenu-label-container";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-corner-all";
     public final static String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
-    public final static String PANEL_CLASS = "ui-selectonemenu-panel ui-widget-content ui-corner-all";
+    public final static String PANEL_CLASS = "ui-selectonemenu-panel ui-widget-content ui-corner-all ui-helper-hidden-accessible";
     public final static String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
