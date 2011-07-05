@@ -1,4 +1,4 @@
-<!ELEMENT component (tag,tagClass,componentClass,componentHandlerClass?,componentType,componentFamily,rendererType?,rendererClass?,parent,interfaces?,attributes,resources*)>
+<!ELEMENT component (tag,tagClass,componentClass,componentHandlerClass?,componentType,componentFamily,rendererType?,rendererClass?,parent,description,interfaces?,attributes,resources*)>
 <!ELEMENT tag (#PCDATA)>
 <!ELEMENT tagClass (#PCDATA)>
 <!ELEMENT componentClass (#PCDATA)>
@@ -8,6 +8,7 @@
 <!ELEMENT rendererType (#PCDATA)>
 <!ELEMENT rendererClass (#PCDATA)>
 <!ELEMENT parent (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
 <!ELEMENT interfaces (interface)>
 <!ELEMENT interface (name)>
 <!ELEMENT attributes (attribute*)>
