@@ -983,6 +983,12 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             ui.helper.css('left','');
             resizerHelper.hide();
             
+            //include padding for webkit
+            if($.browser.webkit) {
+                var padding = columnHeader.innerWidth() - columnHeader.width();
+                newWidth += padding;
+            }
+            
             if(change < 0) {
                 var preWidth = columnHeader.width();
                 columnHeader.width(newWidth);
@@ -1000,7 +1006,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             //Save state
             var columnWidths = [];
             columnHeaders.each(function(i, item) {
-                columnWidths.push($(item).css('width'));
+                columnWidths.push($(item).width());
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
         },
@@ -1014,7 +1020,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
         widths = widths.split(',');
         for(var i in widths) {
 
-            $(columnHeaders.get(i)).css('width', widths[i]);
+            $(columnHeaders.get(i)).width();
 
             if(columnFooters.length > 0) {
                 columnFooters.eq(i).width(widths[i]);
