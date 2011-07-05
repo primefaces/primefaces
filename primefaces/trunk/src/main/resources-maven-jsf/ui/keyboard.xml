@@ -15,6 +15,7 @@
 	<rendererType>org.primefaces.component.KeyboardRenderer</rendererType>
 	<rendererClass>org.primefaces.component.keyboard.KeyboardRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features are the customizable layouts and skinning capabilities.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -29,71 +30,84 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Makes the input a password field. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>showMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>focus</defaultValue>
+            <description>Specifies the showMode, 'focus', 'button', 'both'</description>
 		</attribute>
 		<attribute>
 			<name>buttonImage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Image for the button.</description>
 		</attribute>
 		<attribute>
 			<name>buttonImageOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When set to true only image of the button would be displayed. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fadeIn</defaultValue>
+            <description>Effect of the display animation. Default is fadeIn</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Length of the display animation.</description>
 		</attribute>
 		<attribute>
 			<name>layout</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>qwerty</defaultValue>
+            <description>Built-in layout of the keyboard. Default is qwerty.</description>
 		</attribute>
 		<attribute>
 			<name>layoutTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Template of the custom layout.</description>
 		</attribute>
 		<attribute>
 			<name>keypadOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Specifies displaying a keypad instead of a keyboard. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>promptLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Label of the prompt text.</description>
 		</attribute>
 		<attribute>
 			<name>closeLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Label of the close key.</description>
 		</attribute>
 		<attribute>
 			<name>clearLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Label of the clear key.</description>
 		</attribute>
 		<attribute>
 			<name>backspaceLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Label of the backspace key.</description>
 		</attribute>
 	</attributes>
 	<resources>

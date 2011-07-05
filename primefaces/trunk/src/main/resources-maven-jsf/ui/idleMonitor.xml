@@ -12,6 +12,7 @@
     <rendererType>org.primefaces.component.IdleMonitorRenderer</rendererType>
     <rendererClass>org.primefaces.component.idlemonitor.IdleMonitorRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>
+    <description>IdleMonitor watches user actions on a page and notify several callbacks in case they go idle or active again.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -28,16 +29,19 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>300000</defaultValue>
+            <description>Time to wait in milliseconds until deciding if the user is idle. Default is 5 minutes.</description>
         </attribute>
         <attribute>
             <name>onidle</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to execute when user goes idle.</description>
         </attribute>
         <attribute>
             <name>onactive</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to execute when user goes idle.</description>
         </attribute>
     </attributes>
     <resources>

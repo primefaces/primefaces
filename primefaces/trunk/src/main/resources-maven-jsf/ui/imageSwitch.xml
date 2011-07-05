@@ -14,6 +14,7 @@
 	<rendererType>org.primefaces.component.ImageSwitchRenderer</rendererType>
 	<rendererClass>org.primefaces.component.imageswitch.ImageSwitchRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Imageswitch component is used to enable switching between a set of images with nice effects. ImageSwitch also provides a simple client side api for flexibility.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -26,34 +27,40 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the main container.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>true</required>
 			<type>java.lang.String</type>
+            <description>Name of the effect for transition. Required.</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>500</defaultValue>
+            <description>Speed of the effect in milliseconds. Default is 500.</description>
 		</attribute>
 		<attribute>
 			<name>slideshowSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>3000</defaultValue>
+            <description>Slideshow speed in milliseconds. Default is 3000.</description>
 		</attribute>
 		<attribute>
 			<name>slideshowAuto</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Starts slideshow automatically on page load. Default is true.</description>
 		</attribute>
 	</attributes>
 	<resources>

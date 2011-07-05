@@ -13,6 +13,7 @@
 	<rendererType>org.primefaces.component.CarouselRenderer</rendererType>
 	<rendererClass>org.primefaces.component.carousel.CarouselRenderer</rendererClass>
 	<parent>org.primefaces.component.api.UIData</parent>
+    <description>Carousel is a multi purpose component to display a set of data or general content with slide effects.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -26,72 +27,85 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
+            <description>Number of items to pass in each scroll. Default is 1.</description>
 		</attribute>
 		<attribute>
 			<name>circular</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Sets continuous scrolling. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>vertical</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Sets vertical scrolling. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>autoPlayInterval</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
+            <description>Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.</description>
 		</attribute>
 		<attribute>
 			<name>revealAmount</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
+            <description>The percentage of the previous and next item of the current item to be revealed. Default is 0.</description>
 		</attribute>
 		<attribute>
 			<name>animate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>When enabled scrolling is animated, animation is turned on by default.</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>0.5</defaultValue>
+            <description>Sets the speed of the scrolling animation. Default is 0.5.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Name of the animation effect.</description>
 		</attribute>
 		<attribute>
 			<name>pagerPrefix</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Prefix text of the pager dropdown.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
 		</attribute>
 		<attribute>
 			<name>itemStyle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of each item container.</description>
 		</attribute>
 		<attribute>
 			<name>itemStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of each item container.</description>
 		</attribute>
 	</attributes>
 	<resources>

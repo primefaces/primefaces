@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.DashboardRenderer</rendererType>
 	<rendererClass>org.primefaces.component.dashboard.DashboardRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
+    <description>Dashboard provides a portal like layout with drag-drop based reorder capabilities.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -27,22 +28,26 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.DashboardModel</type>
+            <description>Dashboard model instance representing the layout of the UI.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Disables reordering.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the dashboard container.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the dashboard container.</description>
 		</attribute>
 	</attributes>
 	<resources>

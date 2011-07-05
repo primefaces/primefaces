@@ -14,6 +14,7 @@
 	<rendererType>org.primefaces.component.SliderRenderer</rendererType>
 	<rendererClass>org.primefaces.component.slider.SliderRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Slider is used to provide input with various customization options like orientation, display modes and skinning.</description>
      <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -26,83 +27,98 @@
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Id of the input text that the slider will be used for.</description>
 		</attribute>
 		<attribute>
 			<name>display</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Id of the component to display the slider value.</description>
 		</attribute>
 		<attribute>
 			<name>minValue</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
+            <description>Minimum value of the slider. Default is 0.</description>
 		</attribute>
 		<attribute>
 			<name>maxValue</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>100</defaultValue>
+            <description>Maximum value of the slider. Default is 100.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>animate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Boolean value to enable/disable the animated move when background of slider is clicked. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>horizontal</defaultValue>
+            <description>Sets the type of the slider, "horizontal" or "vertical". Default is horizontal.</description>
 		</attribute>
 		<attribute>
 			<name>step</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
+            <description>Fixed pixel increments that the slider move in. Default is 1.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Disables or enables the slider.</description>
 		</attribute>
         <attribute>
 			<name>onSlideStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute when slide begins.</description>
 		</attribute>
          <attribute>
 			<name>onSlide</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute during sliding.</description>
 		</attribute>
         <attribute>
 			<name>onSlideEnd</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute when slide ends.</description>
 		</attribute>
         <attribute>
             <name>slideEndListener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
             <method-signature>void slideEndListener(org.primefaces.event.SlideEndEvent)</method-signature>
+            <description>Server side method to execute when slide ends.</description>
         </attribute>
         <attribute>
             <name>onSlideEndUpdate</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Component(s) to update after ajax sliding.</description>
         </attribute>
 	</attributes>
 	<resources>

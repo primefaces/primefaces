@@ -9,6 +9,7 @@
 	<componentType>org.primefaces.component.RowExpansion</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIColumn</parent>
+    <description>RowExpansion is a helper component of datatable used to implement expandable rows.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 	</attributes>

@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.DockRenderer</rendererType>
 	<rendererClass>org.primefaces.component.dock.DockRenderer</rendererClass>
 	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>Dock component mimics the well known dock interface of Mac OS X.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,36 +25,42 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
 		</attribute>
 		<attribute>
 			<name>position</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>bottom</defaultValue>
+            <description>Position of the dock, bottom or top. Default is bottom.</description>
 		</attribute>
 		<attribute>
 			<name>itemWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>40</defaultValue>
+            <description>Initial width of items. Default is 40.</description>
 		</attribute>
 		<attribute>
 			<name>maxWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>50</defaultValue>
+            <description>Maximum width of items. Default is 50.</description>
 		</attribute>
 		<attribute>
 			<name>proximity</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>90</defaultValue>
+            <description>Distance to enlarge. Default is 90.</description>
 		</attribute>
 		<attribute>
 			<name>halign</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>center</defaultValue>
+            <description>Horizontal alignment. Default is center.</description>
 		</attribute>
 	</attributes>
 	<resources>

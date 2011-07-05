@@ -13,6 +13,7 @@
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
 	<rendererClass>org.primefaces.component.datatable.DataTableRenderer</rendererClass>
 	<parent>org.primefaces.component.api.UIData</parent>
+    <description>DataTable is an enhanced version of the standard Datatable that provides built-in solutions to many commons use cases like paging, sorting, selection, lazy loading, filtering and more.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -29,139 +30,157 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Enables pagination. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>paginatorTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Template of the paginator.</description>
 		</attribute>
 		<attribute>
 			<name>rowsPerPageTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Template of the rowsPerPage dropdown.</description>
 		</attribute>
 		<attribute>
 			<name>currentPageReportTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Template of the currentPageReport UI.</description>
 		</attribute>
         <attribute>
 			<name>pageLinks</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>10</defaultValue>
+            <description>Maximum number of page links to display. Default is 10.</description>
 		</attribute>
          <attribute>
 			<name>paginatorPosition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>both</defaultValue>
+            <description>Position of the paginator. Default is both.</description>
 		</attribute>
          <attribute>
 			<name>paginatorAlwaysVisible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Defines if paginator should be hidden if total data count is less than number of rows per page. Default is true.</description>
 		</attribute>
         <attribute>
 			<name>page</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
+            <description>Index of the current page. Default is 1.</description>
 		</attribute>
 		<attribute>
 			<name>scrollable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Makes data scrollable with fixed header. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height in pixels for scrollable data. Default is min integer value.</description>
 		</attribute>
 		<attribute>
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Enables data selection, valid values are single, multiple, singlecell and multiplecell.</description>
 		</attribute>
 		<attribute>
 			<name>selection</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-		</attribute>
-		<attribute>
-			<name>dynamic</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+            <description>Reference to the selection data.</description>
 		</attribute>
 		<attribute>
 			<name>lazy</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Enables lazy loading. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>rowIndexVar</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Name of iterator to refer each row index.</description>
 		</attribute>
 		<attribute>
 			<name>emptyMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>No records found.</defaultValue>
+            <description>Text to display when there is no data to display. Default is "No records found."</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
 		</attribute>
 		<attribute>
 			<name>dblClickSelect</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Client side callback to execute after ajax request to select a row ends. Default is false.</description>
 		</attribute>
         <attribute>
 			<name>liveScroll</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Enables live scrolling. Default is false.</description>
 		</attribute>
         <attribute>
 			<name>rowStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class for each row.</description>
 		</attribute>
         <attribute>
 			<name>onExpandStart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute before row expansion.</description>
 		</attribute>
         <attribute>
 			<name>resizableColumns</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Decides whether datatable columns are resizable or not.</description>
 		</attribute>
         <attribute>
 			<name>sortBy</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+            <description>Property to be used for sorting.</description>
 		</attribute>
         <attribute>
 			<name>sortOrder</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>ascending</defaultValue>
+            <description>Sets sorting order. Default is "ascending"</description>
 		</attribute>
 	</attributes>
 	<resources>

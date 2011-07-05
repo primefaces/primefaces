@@ -11,34 +11,40 @@
 	<rendererType>org.primefaces.component.EffectRenderer</rendererType>
 	<rendererClass>org.primefaces.component.effect.EffectRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Effect component is based on the jQuery UI effects library.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>event</name>
 			<required>true</required>
 			<type>java.lang.String</type>
+            <description>Dom event to attach the event that executes the animation. Required.</description>
 		</attribute>
 		<attribute>
 			<name>type</name>
 			<required>true</required>
 			<type>java.lang.String</type>
+            <description>Specifies the name of the animation. Required.</description>
 		</attribute>
 		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Component that is animated.</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<defaultValue>1000</defaultValue>
 			<type>java.lang.Integer</type>
+            <description>Speed of the animation in ms. Default is 1000.</description>
 		</attribute>
         <attribute>
 			<name>delay</name>
 			<required>false</required>
 			<defaultValue>0</defaultValue>
 			<type>java.lang.Integer</type>
+            <description>Startup delay on firing animation.</description>
 		</attribute>
 	</attributes>
 	<resources>

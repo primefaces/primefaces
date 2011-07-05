@@ -11,37 +11,44 @@
 	<rendererType>org.primefaces.component.ImageCompareRenderer</rendererType>
 	<rendererClass>org.primefaces.component.imagecompare.ImageCompareRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>ImageCompare provides a rich user interface to compare two images.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>leftImage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Source of the image placed on the left side.</description>
 		</attribute>
 		<attribute>
 			<name>rightImage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Source of the image placed on the right side</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Width of the images.</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Height of the images.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the image container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the image container element.</description>
 		</attribute>
 	</attributes>
 	<resources>

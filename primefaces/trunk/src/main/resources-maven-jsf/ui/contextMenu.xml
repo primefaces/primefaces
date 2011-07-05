@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.ContextMenuRenderer</rendererType>
 	<rendererClass>org.primefaces.component.contextmenu.ContextMenuRenderer</rendererClass>
 	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>ContextMenu provides an overlay menu displayed on mouse right-click event.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,39 +25,46 @@
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Id of the component to attach to.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the main container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>
 			<name>zindex</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1</defaultValue>
+            <description>zindex property to control overlapping with other elements. Default is 1.</description>
 		</attribute>
         <attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
+            <description>Sets the effect for the menu display. Default is fade.</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>400</defaultValue>
+            <description>Sets the effect duration in milliseconds. Default is 400.</description>
 		</attribute>
         <attribute>
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
+            <description>Menu model instance to create menu programmatically.</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -11,6 +11,7 @@
     <rendererType>org.primefaces.component.RowEditorRenderer</rendererType>
 	<rendererClass>org.primefaces.component.roweditor.RowEditorRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>RowToggler is a helper component for datatable.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 	</attributes>

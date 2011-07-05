@@ -9,6 +9,7 @@
 	<componentType>org.primefaces.component.ToolbarGroup</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>ToolbarbarGroup is a helper component for Toolbar component to define placeholders.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
         <attribute>
@@ -16,16 +17,19 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>left</defaultValue>
+            <description>Defines the alignment within toolbar, valid values are left and right. Default is left.</description>
 		</attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class of the container element.</description>
         </attribute>
 	</attributes>
 </component>

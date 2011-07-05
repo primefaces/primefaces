@@ -15,6 +15,10 @@
 	<rendererType>org.primefaces.component.FileUploadRenderer</rendererType>
 	<rendererClass>org.primefaces.component.fileupload.FileUploadRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
+    <description>
+      FileUpload goes beyond the browser input type="file" functionality and features a flash-javascript solution for uploading files. 
+      File filtering, multiple uploads, partial page rendering and progress tracking are the significant features compared to legacy fileUploads.
+    </description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -27,68 +31,80 @@
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side ids of the component(s) to be updated after file upload completes.</description>
 		</attribute>
         <attribute>
 			<name>process</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description></description>
 		</attribute>
 		<attribute>
 			<name>fileUploadListener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 			<method-signature>void fileUploadListener(org.primefaces.event.FileUploadEvent)</method-signature>
+            <description>Method expression to listen file upload events.</description>
 		</attribute>
 		<attribute>
 			<name>multiple</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Allows multi file uploads, turned off by default.</description>
 		</attribute>
 		<attribute>
 			<name>auto</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When set to true, selecting a file starts the upload process implicitly. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>Browse</defaultValue>
+            <description>Label of the browse button, default is 'Browse'</description>
 		</attribute>
 		<attribute>
 			<name>allowTypes</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Semi colon separated list of file extensions to accept.</description>
 		</attribute>
 		<attribute>
 			<name>sizeLimit</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Number of maximum bytes to allow. Default is max integer value.</description>
 		</attribute>
         <attribute>
 			<name>fileLimit</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Number of maximum files to allow. Default is max integer value.</description>
 		</attribute>
 		<attribute>
 			<name>customUI</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When custom UI is turned on upload and cancel links won't be rendered. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the main container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>
 			<name>mode</name>

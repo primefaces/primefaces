@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
+    <description>Tree is is used for displaying hierarchical data and creating site navigations.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -27,65 +28,77 @@
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+            <description>A TreeNode instance as the backing model.</description>
 		</attribute>
 		<attribute>
 			<name>var</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Name of the request-scoped variable that'll be used to refer each treenode data during rendering.</description>
 		</attribute>
 		<attribute>
 			<name>dynamic</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Specifies the ajax/client toggleMode. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>cache</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Specifies caching on dynamically loaded nodes. When set to true expanded nodes will be kept in memory. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>onNodeClick</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Javascript event to process when a tree node is clicked.</description>
 		</attribute>
 		<attribute>
 			<name>expanded</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When set to true, all nodes will be displayed as expanded on initial page load. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Id(s) of component(s) to update after node selection.</description>
 		</attribute>
 		<attribute>
 			<name>selection</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+            <description>TreeNode array to reference the selections.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the main container element of tree.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the main container element of tree.</description>
 		</attribute>
 		<attribute>
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Defines the selectionMode.</description>
 		</attribute>
         <attribute>
 			<name>dragdrop</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Makes tree nodes draggable/droppable when true. Default is false.</description>
 		</attribute>
 	</attributes>
 	<resources>

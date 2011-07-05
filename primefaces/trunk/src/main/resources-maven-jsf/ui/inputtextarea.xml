@@ -15,6 +15,7 @@
 	<rendererType>org.primefaces.component.InputTextareaRenderer</rendererType>
 	<rendererClass>org.primefaces.component.inputtextarea.InputTextareaRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlInputTextarea</parent>
+    <description>InputTextarea is an extension to standard inputTextara with skinning capabilities and auto growing.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -29,18 +30,21 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Allows to expand height automatically when text input overflows.</description>
 		</attribute>
         <attribute>
 			<name>maxHeight</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>500</defaultValue>
+            <description>Sets maximum height of text area container. Default is 500.</description>
 		</attribute>
         <attribute>
 			<name>effectDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>200</defaultValue>
+            <description>Expand animation period in milliseconds. Default is 200.</description>
 		</attribute>
 	</attributes>
 	<resources>

@@ -13,7 +13,8 @@
 	<rendererType>org.primefaces.component.TreeTableRenderer</rendererType>
 	<rendererClass>org.primefaces.component.treetable.TreeTableRenderer</rendererClass>
 	<parent>org.primefaces.component.api.UIData</parent>
-     <interfaces>
+    <description>Treetable is is used for displaying hierarchical data in tabular format.</description>
+    <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
@@ -25,23 +26,27 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>readOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Nodes are displayed as readonly andexpanded. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>expanded</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Nodes are displayed as expanded. Default is false.</description>
 		</attribute>
 	</attributes>
 	<resources>

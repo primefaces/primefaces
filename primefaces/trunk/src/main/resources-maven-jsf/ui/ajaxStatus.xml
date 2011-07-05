@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.AjaxStatusRenderer</rendererType>
 	<rendererClass>org.primefaces.component.ajaxstatus.AjaxStatusRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>AjaxStatus is a global notifier for ajax requests made by PrimeFaces components.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,36 +25,43 @@
 			<name>onstart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute after ajax requests start.</description>
 		</attribute>
 		<attribute>
 			<name>oncomplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute after ajax requests complete.</description>
 		</attribute>
 		<attribute>
 			<name>onprestart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute before ajax requests start.</description>
 		</attribute>
 		<attribute>
 			<name>onsuccess</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute after ajax requests completed succesfully.</description>
 		</attribute>
 		<attribute>
 			<name>onerror</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side callback to execute when an ajax request fails.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
 		</attribute>
 	</attributes>
 	<resources>

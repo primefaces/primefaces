@@ -12,6 +12,10 @@
 	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
 	<rendererClass>org.primefaces.component.accordionpanel.AccordionPanelRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
+    <description>
+      AccordionPanel is a container component that displays content in stacked format.
+      It consists of one or more tabs and each tab can group any other jsf components.
+    </description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -28,68 +32,80 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
+            <description>Index of the active tab. Default is zero.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Disables or enables the accordion panel.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>slide</defaultValue>
+            <description>Effect to use when toggling the tabs. Default is slide.</description>
 		</attribute>
 		<attribute>
 			<name>autoHeight</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>When enabled, tab with highest content is used to calculate the height. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>collapsible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Defines if accordion panel can be collapsed all together.</description>
 		</attribute>
 		<attribute>
 			<name>fillSpace</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When enabled, accordion panel fills the height of it's parent container.</description>
 		</attribute>
 		<attribute>
 			<name>event</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Client side event to toggle the tabs. Default is click.</description>
 		</attribute>
         <attribute>
             <name>onTabChange</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to invoke when active tab changes.</description>
         </attribute>
         <attribute>
             <name>dynamic</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Defines the toggle mode.</description>
         </attribute>
         <attribute>
             <name>cache</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Defines if activating a dynamic tab should load the contents from server again.</description>
         </attribute>
 	</attributes>
 	<resources>

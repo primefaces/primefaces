@@ -12,6 +12,7 @@
     <rendererType>org.primefaces.component.PanelRenderer</rendererType>
     <rendererClass>org.primefaces.component.panel.PanelRenderer</rendererClass>
     <parent>javax.faces.component.UIPanel</parent>
+    <description>Panel is a grouping component for other components, notable features are toggling, closing, built-in popup menu and ajax event listeners.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -27,72 +28,85 @@
             <name>header</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Header text.</description>
         </attribute>
         <attribute>
             <name>footer</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Footer text.</description>
         </attribute>
         <attribute>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Makes panel toggleable. Default is false.</description>
         </attribute>
         <attribute>
             <name>toggleSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1000</defaultValue>
+            <description>Speed of toggling in milliseconds. Default is 1000.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style of the panel.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class of the panel.</description>
         </attribute>
         <attribute>
             <name>collapsed</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Renders a toggleable panel as collapsed. Default is false.</description>
         </attribute>
         <attribute>
             <name>closable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Make panel closable. Default is false.</description>
         </attribute>
         <attribute>
             <name>closeSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1000</defaultValue>
+            <description>Speed of closing effect in milliseconds. Default is 1000.</description>
         </attribute>
         <attribute>
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Renders panel as hidden. Default is true.</description>
         </attribute>
         <attribute>
             <name>closeTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Title label for closer element of closable panel.</description>
         </attribute>
         <attribute>
             <name>toggleTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Title attribute for toggler element of toggleable panel.</description>
         </attribute>
         <attribute>
             <name>menuTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Title attribute for menu element on panel header.</description>
         </attribute>
     </attributes>
     <resources>
