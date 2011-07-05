@@ -14,6 +14,7 @@
 	<rendererType>org.primefaces.component.ThemeSwitcherRenderer</rendererType>
 	<rendererClass>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</rendererClass>
 	<parent>org.primefaces.component.selectonemenu.SelectOneMenu</parent>
+    <description>ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refresh.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -26,6 +27,7 @@
 			<name>buttonPreText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Prefix text displayed on button.</description>
 		</attribute>
 	</attributes>
 	<resources>
