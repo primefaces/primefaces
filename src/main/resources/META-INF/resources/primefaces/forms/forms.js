@@ -217,8 +217,6 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
 
     this.bindEvents();
 
-    this.panel.hide().removeClass('ui-helper-hidden-accessible');
-
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
