@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
@@ -11,57 +13,33 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.ThemeSwitcherRenderer</rendererType>
 	<rendererClass>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>org.primefaces.component.selectonemenu.SelectOneMenu</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
 	</interfaces>
 	<attributes>
-		&standard_uicomponent_attributes;
+		&input_component_attributes;
         &widget_var_attribute;
-		<attribute>
-			<name>theme</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>150</defaultValue>
-		</attribute>
-		<attribute>
-			<name>height</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>200</defaultValue>
-		</attribute>
-		<attribute>
-			<name>buttonHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>14</defaultValue>
-		</attribute>
-		<attribute>
-			<name>initialText</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
 		<attribute>
 			<name>buttonPreText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-        <attribute>
-			<name>onSelect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
+        <resource>
+			<name>forms/forms.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
