@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.StackRenderer</rendererType>
 	<rendererClass>org.primefaces.component.stack.StackRenderer</rendererClass>
 	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>Stack is a navigation component that mimics the stacks feature in Mac OS X.</description>
      <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,29 +25,34 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
 		</attribute>
 		<attribute>
 			<name>icon</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>An optional image to contain stacked items.</description>
 		</attribute>
 		<attribute>
 			<name>openSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>300</defaultValue>
+            <description>Speed of the animation in milliseconds when opening the stack. Default is 300.</description>
 		</attribute>
 		<attribute>
 			<name>closeSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>300</defaultValue>
+            <description>Speed of the animation in milliseconds when opening the stack. Default is 300.</description>
 		</attribute>
         <attribute>
 			<name>expanded</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description></description>
 		</attribute>
 	</attributes>
 	<resources>

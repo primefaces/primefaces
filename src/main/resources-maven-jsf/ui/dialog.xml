@@ -12,6 +12,7 @@
     <rendererType>org.primefaces.component.DialogRenderer</rendererType>
     <rendererClass>org.primefaces.component.dialog.DialogRenderer</rendererClass>
     <parent>javax.faces.component.UIPanel</parent>
+    <description>Dialog is a panel component overlaying other elements. Dialog avoids popup blockers, provides customization, resizing, modality, ajax interactions and more.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -27,114 +28,134 @@
             <name>header</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Text of the header.</description>
         </attribute>
         <attribute>
             <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Specifies draggability. Default is true.</description>
         </attribute>
         <attribute>
             <name>resizable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Specifies resizability. Default is true.</description>
         </attribute>
         <attribute>
             <name>modal</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is false.</description>
         </attribute>
         <attribute>
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Sets dialogs visibility. Default is false.</description>
         </attribute>
         <attribute>
             <name>width</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>300</defaultValue>
+            <description>Width of the dialog. Default is 300.</description>
         </attribute>
         <attribute>
             <name>height</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width of the dialog. Default is min integer value.</description>
         </attribute>
         <attribute>
             <name>zindex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1000</defaultValue>
+            <description>Specifies zindex property. Default is 1000.</description>
         </attribute>
         <attribute>
             <name>minWidth</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>150</defaultValue>
+            <description>Minimum width of a resizable dialog. Default is 150.</description>
         </attribute>
         <attribute>
             <name>minHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
+            <description>Minimum height of a resizable dialog. Default is 0.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class of the dialog.</description>
         </attribute>
         <attribute>
             <name>showEffect</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Effect to use when showing the dialog.</description>
         </attribute>
         <attribute>
             <name>hideEffect</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Effect to use when hiding the dialog.</description>
         </attribute>
         <attribute>
             <name>position</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Defines where the dialog should be displayed.</description>
         </attribute>
         <attribute>
             <name>closeOnEscape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Defines where the dialog should be displayed. Default is true.</description>
         </attribute>
         <attribute>
             <name>closable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Defines if close icon should be displayed or not.</description>
         </attribute>
         <attribute>
             <name>onShow</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to execute when dialog is displayed.</description>
         </attribute>
         <attribute>
             <name>onHide</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to execute when dialog is hidden.</description>
         </attribute>
         <attribute>
             <name>appendToBody</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Appends dialog as a child of document body.</description>
         </attribute>
         <attribute>
             <name>showHeader</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Specifies visibility of header content.</description>
         </attribute>
     </attributes>
     <resources>

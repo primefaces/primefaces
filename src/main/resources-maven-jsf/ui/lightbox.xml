@@ -14,6 +14,7 @@
 	<rendererType>org.primefaces.component.LightBoxRenderer</rendererType>
 	<rendererClass>org.primefaces.component.lightbox.LightBoxRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Lightbox features a powerful overlay that can display images, multimedia content, other JSF components and external urls.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -26,96 +27,113 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the container element not the overlay element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the container element not the overlay element.</description>
 		</attribute>
 		<attribute>
 			<name>transition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>elastic</defaultValue>
+            <description>Name of the transition effect. Valid values are 'elastic','fade' and 'none'. Default is elastic.</description>
 		</attribute>
 		<attribute>
 			<name>speed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>350</defaultValue>
+            <description>Speed of the transition effect in milliseconds. Default is 350.</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Width of the overlay.</description>
 		</attribute>
 		<attribute>
 			<name>height</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Height of the overlay.</description>
 		</attribute>
 		<attribute>
 			<name>iframe</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Specifies an iframe to display an external url in overlay. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>opacity</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
 			<defaultValue>0.85</defaultValue>
+            <description>Level of overlay opacity between 0 and 1. Default is 0.85.</description>
 		</attribute>
 		<attribute>
 			<name>visible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Displays lightbox without requiring any user interaction by default. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>slideshow</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Displays lightbox without requiring any user interaction by default. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>slideshowSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>2500</defaultValue>
+            <description>Speed for slideshow in milliseconds. Default is 2500.</description>
 		</attribute>
 		<attribute>
 			<name>slideshowStartText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Label of slideshow start text.</description>
 		</attribute>
 		<attribute>
 			<name>slideshowStopText</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Label of slideshow stop text.</description>
 		</attribute>
 		<attribute>
 			<name>slideshowAuto</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Starts slideshow automatically. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>currentTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Text template for current image display like "1 of 3". Default is "{current} of {total}".</description>
 		</attribute>
 		<attribute>
 			<name>overlayClose</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>When true clicking outside of overlay will close lightbox. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>group</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Defines grouping, by default children belong to same group and switching is enabled. Default is true.</description>
 		</attribute>
 	</attributes>
 	<resources>

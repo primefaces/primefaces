@@ -11,6 +11,7 @@
     <rendererType>org.primefaces.component.CellEditorRenderer</rendererType>
 	<rendererClass>org.primefaces.component.celleditor.CellEditorRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>CellEditor is a helper component of datatable used for incell editing.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 	</attributes>

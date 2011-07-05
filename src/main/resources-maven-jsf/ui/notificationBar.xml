@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.NotificationBarRenderer</rendererType>
 	<rendererClass>org.primefaces.component.notificationbar.NotificationBarRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>NotificationBar displayes a multipurpose fixed positioned panel for notification. Any group of JSF content can be placed inside notificationbar.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,35 +25,41 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>StyleClass of the container element.</description>
 		</attribute>
 		<attribute>
 			<name>position</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>top</defaultValue>
+            <description>Position of the bar, "top" or "bottom". Default is top.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
+            <description>Name of the effect, "fade", "slide" or "none". Default is fade.</description>
 		</attribute>
 		<attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>normal</defaultValue>
+            <description>Speed of the effect, "slow", "normal" or "fast". Default is normal.</description>
 		</attribute>
 		<attribute>
 			<name>autoDisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description></description>
 		</attribute>
 	</attributes>
 	<resources>

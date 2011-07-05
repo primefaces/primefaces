@@ -11,6 +11,7 @@
 	<rendererType>org.primefaces.component.MessagesRenderer</rendererType>
 	<rendererClass>org.primefaces.component.messages.MessagesRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Message is a pre-skinned extended version of the standard JSF message component.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
@@ -18,30 +19,35 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Specifies if the summary of the FacesMessage should be displayed. Default is true.</description>
 		</attribute>
 		<attribute>
 			<name>showDetail</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>Specifies if the detail of the FacesMessage should be displayed. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>globalOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When true, only facesmessages with no clientIds are displayed. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>redisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <description>Defines if already rendered messages should be displayed. Default is true.</description>
 		</attribute>
         <attribute>
 			<name>autoUpdate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description></description>
 		</attribute>
 	</attributes>
 	<resources>

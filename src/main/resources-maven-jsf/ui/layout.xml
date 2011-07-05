@@ -12,6 +12,7 @@
     <rendererType>org.primefaces.component.LayoutRenderer</rendererType>
     <rendererClass>org.primefaces.component.layout.LayoutRenderer</rendererClass>
     <parent>javax.faces.component.UIPanel</parent>
+    <description>Layout component features a highly customizable borderLayout model making it very easy to create complex layouts even if you're not familar with web design.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -28,53 +29,63 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Specifies whether layout should span all page or not.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style to apply to container element, this is only applicable to element based layouts.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class to apply to container element, this is only applicable to element based layouts.</description>
         </attribute>
         <attribute>
             <name>onResize</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>A server side listener to process a ResizeEvent.</description>
         </attribute>
         <attribute>
             <name>onClose</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>A server side listener to process a CloseEvent.</description>
         </attribute>
         <attribute>
             <name>onToggle</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>A server side listener to process a ToggleEvent.</description>
         </attribute>
         <attribute>
 			<name>resizeTitle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Title label for the resizer element.</description>
 		</attribute>
         <attribute>
 			<name>collapseTitle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>Collapse</defaultValue>
+            <description>Title label for the collapse button of collapsible units. Default is "Collapse"</description>
 		</attribute>
         <attribute>
 			<name>expandTitle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Title label for the expand button of closable units.</description>
 		</attribute>
         <attribute>
 			<name>closeTitle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>Close</defaultValue>
+            <description>Title label for the close button of closable units. Default is "Close"</description>
 		</attribute>
     </attributes>
     <resources>

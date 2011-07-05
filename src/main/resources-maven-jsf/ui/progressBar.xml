@@ -12,6 +12,7 @@
     <rendererType>org.primefaces.component.ProgressBarRenderer</rendererType>
     <rendererClass>org.primefaces.component.progressbar.ProgressBarRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>
+    <description>ProgressBar is a process status indicator that can either work purely on client side or interact with server side using ajax.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -28,39 +29,46 @@
             <required>false</required>
             <defaultValue>0</defaultValue>
             <type>java.lang.Integer</type>
+            <description>Value of the progress bar. Default is 0.</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <defaultValue>false</defaultValue>
             <type>java.lang.Boolean</type>
+            <description>Disables or enables the progressbar.</description>
         </attribute>
         <attribute>
             <name>ajax</name>
             <required>false</required>
             <defaultValue>false</defaultValue>
             <type>java.lang.Boolean</type>
+            <description>Specifies the mode of progressBar, in ajax mode progress value is retrieved from a backing bean. Default is false.</description>
         </attribute>
         <attribute>
             <name>interval</name>
             <required>false</required>
             <defaultValue>3000</defaultValue>
             <type>java.lang.Integer</type>
+            <description>Interval in seconds to do periodic requests in ajax mode. Default is 300.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Inline style of the main container element.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
         </attribute>
          <attribute>
             <name>oncomplete</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to execute when progress ends.</description>
         </attribute>
     </attributes>
     <resources>

@@ -13,22 +13,26 @@
 	<rendererType>org.primefaces.component.WatermarkRenderer</rendererType>
 	<rendererClass>org.primefaces.component.watermark.WatermarkRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Watermark displays a hint on an input field.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>value</name>
 			<required>true</required>
 			<type>java.lang.String</type>
+            <description>Text of watermark. Required.</description>
 		</attribute>
 		<attribute>
 			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Id of the component to attach the watermark.</description>
 		</attribute>
 		<attribute>
 			<name>forElement</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>jQuery selector to attach the watermark.</description>
 		</attribute>
 	</attributes>
 	<resources>

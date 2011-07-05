@@ -12,12 +12,14 @@
 	<rendererType>org.primefaces.component.PrinterRenderer</rendererType>
 	<rendererClass>org.primefaces.component.printer.PrinterRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Printer allows sending a specific JSF component to the printer, not the whole page.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>target</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Id of the component to print.</description>
 		</attribute>
 	</attributes>
 	<resources>

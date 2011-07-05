@@ -13,6 +13,10 @@
     <rendererType>org.primefaces.component.DataListRenderer</rendererType>
     <rendererClass>org.primefaces.component.datalist.DataListRenderer</rendererClass>
     <parent>org.primefaces.component.api.UIData</parent>
+    <description>
+      DataList presents a collection of data in list layout with several display types.
+      Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.
+    </description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -26,83 +30,98 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>unordered</defaultValue>
+            <description>Type of the list, valid values are "unordered", "ordered" and "definition". Default is unordered.</description>
         </attribute>
         <attribute>
             <name>itemType</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Specifies the list item type.</description>
         </attribute>
         <attribute>
             <name>paginator</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Enables pagination. Default is false.</description>
         </attribute>
         <attribute>
             <name>paginatorTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Template of the paginator.</description>
         </attribute>
         <attribute>
             <name>rowsPerPageTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Template of the rowsPerPage dropdown.</description>
         </attribute>
         <attribute>
             <name>currentPageReportTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Template of the currentPageReport UI.</description>
         </attribute>
         <attribute>
             <name>pageLinks</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
+            <description>Maximum number of page links to display. Default is 10.</description>
         </attribute>
         <attribute>
             <name>paginatorPosition</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>both</defaultValue>
+            <description>Position of the paginator. Default is both.</description>
         </attribute>
         <attribute>
             <name>paginatorAlwaysVisible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Defines if paginator should be hidden if total data count is less than number of rows per page.</description>
         </attribute>
         <attribute>
             <name>page</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
+            <description>Index of the current page. Default is 1.</description>
         </attribute>
         <attribute>
             <name>effect</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Displays a fade animation during pagination. Default is true.</description>
         </attribute>
         <attribute>
             <name>effectSpeed</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>normal</defaultValue>
+            <description>Speed of the pagination effect. Default is normal.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
         </attribute>
         <attribute>
             <name>rowIndexVar</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Name of iterator to refer each row index.</description>
         </attribute>
     </attributes>
     <resources>

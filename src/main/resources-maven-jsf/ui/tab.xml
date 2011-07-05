@@ -11,28 +11,33 @@
 	<componentType>org.primefaces.component.Tab</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Tab is a generic container component used by other PrimeFaces components such as tabView or accordionPanel.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Title text of the tab.</description>
 		</attribute>
         <attribute>
 			<name>titleStyle</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Title container inner style.</description>
 		</attribute>
         <attribute>
 			<name>titleStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Title container style class.</description>
 		</attribute>
         <attribute>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Disables tab element if true.</description>
 		</attribute>
 	</attributes>
 </component>

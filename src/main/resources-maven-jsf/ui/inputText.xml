@@ -15,6 +15,7 @@
 	<rendererType>org.primefaces.component.InputTextRenderer</rendererType>
 	<rendererClass>org.primefaces.component.inputtext.InputTextRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>InputText is an extension to standard inputText with skinning capabilities.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -29,6 +30,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>text</defaultValue>
+            <description>Input field type. Default is text.</description>
         </attribute>
 	</attributes>
 	<resources>

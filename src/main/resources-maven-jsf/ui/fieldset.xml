@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.FieldsetRenderer</rendererType>
 	<rendererClass>org.primefaces.component.fieldset.FieldsetRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
+    <description>Fieldset is a grouping component with a title and content.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -27,34 +28,40 @@
 			<name>legend</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Title text.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Inline style of the fieldset.</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the fieldset.</description>
 		</attribute>
          <attribute>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Makes content toggleable with animation. Default is false.</description>
         </attribute>
         <attribute>
             <name>toggleSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>500</defaultValue>
+            <description>Sets toogle animation speed in milliseconds. Default is 500.</description>
         </attribute>
         <attribute>
             <name>collapsed</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Defines initial visibility state of content. Default is false.</description>
         </attribute>
 	</attributes>
 	<resources>

@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.MenubarRenderer</rendererType>
 	<rendererClass>org.primefaces.component.menubar.MenubarRenderer</rendererClass>
 	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>Menubar is a horizontal navigation component.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,34 +25,40 @@
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
 		</attribute>
 		<attribute>
 			<name>autoSubmenuDisplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <description>When set to true, submenus are displayed on mouseover of a menuitem. Default is false.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
+            <description>Sets the effect for the menu display. Default is fade.</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>400</defaultValue>
+            <description>Sets the effect duration in milliseconds. Default is 400.</description>
 		</attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <defaultValue>Inline style of menubar.</defaultValue>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Style class of menubar.</description>
         </attribute>
 	</attributes>
 	<resources>

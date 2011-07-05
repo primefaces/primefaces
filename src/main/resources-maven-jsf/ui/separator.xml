@@ -11,22 +11,26 @@
 	<rendererType>org.primefaces.component.SeparatorRenderer</rendererType>
 	<rendererClass>org.primefaces.component.separator.SeparatorRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Seperator displays a horizontal line to separate content.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>title</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Advisory tooltip informaton.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>Inline style of the separator.</defaultValue>
 		</attribute>
         <attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <description>Style class of the separator.</description>
 		</attribute>
 	</attributes>
 </component>

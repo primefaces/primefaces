@@ -9,6 +9,7 @@
 	<componentType>org.primefaces.component.Row</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Row is a helper component for datatable.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 	</attributes>

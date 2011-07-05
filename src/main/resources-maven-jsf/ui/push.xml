@@ -12,6 +12,7 @@
 	<rendererType>org.primefaces.component.PushRenderer</rendererType>
 	<rendererClass>org.primefaces.component.push.PushRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Push component is an agent that creates a channel between the server and the client.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -24,11 +25,13 @@
 			<name>channel</name>
 			<required>true</required>
 			<type>java.lang.String</type>
+            <description>Unique channel name of the connection between subscriber and the server. Required.</description>
 		</attribute>
 		<attribute>
 			<name>onpublish</name>
 			<required>true</required>
 			<type>java.lang.String</type>
+            <description>Javascript event handler that is process when the server publishes data. Required.</description>
 		</attribute>
 	</attributes>
 	<resources>
