@@ -455,6 +455,14 @@ PrimeFaces.widget.SelectOneMenu.prototype.enable = function() {
     this.jq.removeclass('ui-state-disabled');
 }
 
+PrimeFaces.widget.SelectOneMenu.prototype.focus = function() {
+    this.triggers.addClass('ui-state-focus');
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.blur = function() {
+    this.triggers.removeClass('ui-state-focus');
+}
+
 /**
  * PrimeFaces SelectOneRadio Widget
  */
