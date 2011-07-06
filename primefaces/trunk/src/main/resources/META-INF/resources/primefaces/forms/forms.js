@@ -257,6 +257,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
         option.attr('selected', 'selected');
 
+        _self.labelContainer.focus();
         _self.label.html(option.text());
         _self.input.change();
         _self.hide();
@@ -314,12 +315,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     });
     
     this.labelContainer.blur(function(){
-        if(_self.panel.is(":hidden")){
-            _self.label.removeClass("ui-state-focus");
-            _self.menuIcon.removeClass("ui-state-focus");
-        }
-        else
-          _self.labelContainer.focus();
+        _self.label.removeClass("ui-state-focus");
+        _self.menuIcon.removeClass("ui-state-focus");
     });
 
     //key bindings
