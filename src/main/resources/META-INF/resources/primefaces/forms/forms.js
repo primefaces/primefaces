@@ -306,17 +306,14 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         _self.hide();
     });
 
-    //tabindex focus
     this.labelContainer.focus(function(){
         if(!_self.disabled){
+          _self.triggers.addClass('ui-state-focus');
           _self.menuIcon.addClass("ui-state-focus");
           _self.label.addClass("ui-state-focus");
         }
-    });
-    
-    this.labelContainer.blur(function(){
-        _self.label.removeClass("ui-state-focus");
-        _self.menuIcon.removeClass("ui-state-focus");
+    }).blur(function(){
+        _self.triggers.removeClass('ui-state-focus');
     });
 
     //key bindings

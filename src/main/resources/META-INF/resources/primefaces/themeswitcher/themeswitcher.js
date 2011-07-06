@@ -55,6 +55,7 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
 
         option.attr('selected', 'selected');
 
+        _self.labelContainer.focus();
         _self.label.html(option.text());
         _self.input.change();
         _self.hide();
@@ -106,22 +107,16 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
         _self.hide();
     });
 
-    //tabindex focus
     this.labelContainer.focus(function(){
         if(!_self.disabled){
+          _self.triggers.addClass('ui-state-focus');
           _self.menuIcon.addClass("ui-state-focus");
           _self.label.addClass("ui-state-focus");
         }
+    }).blur(function(){
+        _self.triggers.removeClass('ui-state-focus');
     });
-    
-    this.labelContainer.blur(function(){
-        if(_self.panel.is(":hidden")){
-            _self.label.removeClass("ui-state-focus");
-            _self.menuIcon.removeClass("ui-state-focus");
-        }
-        else
-          _self.labelContainer.focus();
-    });
+
 }
 
 PrimeFaces.widget.ThemeSwitcher.prototype.show = function() {
