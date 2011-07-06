@@ -95,13 +95,15 @@ PrimeFaces = {
     },
     
     changeTheme: function(newTheme) {
-        var themeLink = $('link[href*="javax.faces.resource/theme.css"]'),
-        themeURL = themeLink.attr('href'),
-        plainURL = themeURL.split('&')[0],
-        oldTheme = plainURL.split('ln=')[1],
-        newThemeURL = themeURL.replace(oldTheme, 'primefaces-' + newTheme);
+        if(newTheme && newTheme != '') {
+            var themeLink = $('link[href*="javax.faces.resource/theme.css"]'),
+            themeURL = themeLink.attr('href'),
+            plainURL = themeURL.split('&')[0],
+            oldTheme = plainURL.split('ln=')[1],
+            newThemeURL = themeURL.replace(oldTheme, 'primefaces-' + newTheme);
 
-        themeLink.attr('href', newThemeURL);
+            themeLink.attr('href', newThemeURL);
+        }
     },
 
     locales : {},
