@@ -102,6 +102,13 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                     if(_self.panel.is(':hidden')) {
                         _self.show();
                     }
+          
+                    //adjust height
+                    _self.panel.css('height', '');
+                    
+                    if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
+                        _self.panel.css('height', _self.cfg.scrollHeight + 'px');
+                    }
                     
                 } else {
                     PrimeFaces.ajax.AjaxUtils.updateElement(id, data);

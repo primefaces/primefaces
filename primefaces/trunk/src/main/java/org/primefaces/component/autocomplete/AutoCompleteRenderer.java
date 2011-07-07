@@ -89,7 +89,6 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         encodeInput(context, ac, clientId, value);
         
-
         //hidden input for pojo support
         if(ac.getVar() != null) {
             encodeHiddenInput(context, ac, clientId, value);
@@ -148,15 +147,9 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = ac.getVar() != null;
-        //int height = calculatePanelHeight(ac, selectItems.size());
 
         writer.startElement("div", null);
         writer.writeAttribute("class", AutoComplete.PANEL_CLASS, null);
-        
-        /*if(height != -1) {
-            writer.writeAttribute("style", "height:" + height + "px", null);
-        }*/
-
         writer.endElement("div");
     }
     
@@ -240,21 +233,23 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.write(ac.resolveWidgetVar() + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
         writer.write("pojo:" + (ac.getVar() != null));
-        writer.write(",maxResults:" + ac.getMaxResults());
 
         //Configuration
         if(ac.getMinQueryLength() != 1) writer.write(",minLength:" + ac.getMinQueryLength());
         if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());
-        if(ac.isDisabled()) writer.write(",disabled:true");
         if(ac.isForceSelection()) writer.write(",forceSelection:true");
         if(!ac.isGlobal()) writer.write(",global:false");
+        if(ac.getMaxResults() != 10) writer.write(",maxResults:" + ac.getMaxResults());
+        if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
 
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
         if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
   
+        //Behaviors
         encodeClientBehaviors(context, ac);
 
+        //Themeing
         if(!themeForms()) {
             writer.write(",theme:false");
         }
@@ -262,17 +257,5 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.write("});});");
 
         writer.endElement("script");
-    }
-    
-    protected int calculatePanelHeight(AutoComplete ac, int itemSize) {
-        int height = ac.getHeight();
-        
-        if(height != Integer.MAX_VALUE) {
-            return height;
-        } else if(itemSize > 10) {
-            return 200;
-        }
-        
-        return -1;
     }
 }
