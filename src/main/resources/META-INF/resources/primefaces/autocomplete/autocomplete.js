@@ -28,7 +28,8 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
         var value = _self.input.val();
         
         if(value.length >= _self.cfg.minLength) {
-            //Cancel the search request if user types withing the timeout
+            
+            //Cancel the search request if user types within the timeout
             if(_self.timeout) {
                 clearTimeout(_self.timeout);
             }
