@@ -97,7 +97,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupDataSource = function() {
         }
 
         var params = {};
-        params[_self.id + '_query'] = request.term;
+        params[_self.id + '_query'] = encodeURIComponent(request.term);
 
         options.params = params;
 
