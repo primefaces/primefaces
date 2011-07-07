@@ -27,15 +27,17 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     this.jq.keyup(function() {
         var value = _self.input.val();
         
-        //Cancel the search request if user types withing the timeout
-        if(_self.timeout) {
-            clearTimeout(_self.timeout);
-        }
+        if(value.length >= _self.cfg.minLength) {
+            //Cancel the search request if user types withing the timeout
+            if(_self.timeout) {
+                clearTimeout(_self.timeout);
+            }
 
-        _self.timeout = setTimeout(function() {
-                            _self.search(value);
-                        }, 
-                        _self.cfg.delay);
+            _self.timeout = setTimeout(function() {
+                                _self.search(value);
+                            }, 
+                            _self.cfg.delay);
+        }
     });
     
     //visuals and click handler for items
