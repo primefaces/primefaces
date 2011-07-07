@@ -99,11 +99,11 @@
             <description>Defines whether to trigger ajaxStatus or not. Default is true.</description>
         </attribute>
         <attribute>
-            <name>height</name>
+            <name>scrollHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Defines the height of the suggestion panel in pixels.</description>
+            <description>Defines the height of the items viewport.</description>
         </attribute>
     </attributes>
     <resources>
