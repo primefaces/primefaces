@@ -32,6 +32,7 @@ public class ViewRenderer extends CoreRenderer {
         writer.startElement("div", view);
         writer.writeAttribute("id", view.getId(), "id");
         writer.writeAttribute("data-role", "page", null);
+        writer.writeAttribute("class", "ui-page", null);
 
         if(swatch != null)
             writer.writeAttribute("data-theme", swatch, null);
