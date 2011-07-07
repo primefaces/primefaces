@@ -308,12 +308,12 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
     this.labelContainer.focus(function(){
         if(!_self.disabled){
-          _self.triggers.addClass('ui-state-focus');
-          _self.menuIcon.addClass("ui-state-focus");
-          _self.label.addClass("ui-state-focus");
+            _self.triggers.addClass('ui-state-focus');
         }
     }).blur(function(){
-        _self.triggers.removeClass('ui-state-focus');
+        if(!_self.disabled){
+            _self.triggers.removeClass('ui-state-focus');
+        }
     });
 
     //key bindings
@@ -456,11 +456,11 @@ PrimeFaces.widget.SelectOneMenu.prototype.enable = function() {
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.focus = function() {
-    this.triggers.addClass('ui-state-focus');
+    this.labelContainer.focus();
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.blur = function() {
-    this.triggers.removeClass('ui-state-focus');
+    this.labelContainer.blur();
 }
 
 /**
