@@ -1,6 +1,155 @@
 PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+    this.input = $(this.jqId + '_input');
+    this.hinput = $(this.jqId + '_hinput');
+    this.panel = this.jq.children('.ui-autocomplete-panel');
+    
+    //options
+    this.cfg.minLength = this.cfg.minLength ? this.cfg.minLength : 1;
+    this.cfg.delay = this.cfg.delay ? this.cfg.delay : 300;
+    
+    //visuals
+    if(this.cfg.theme != false) {
+        PrimeFaces.skinInput(this.input);
+    }
+    
+    this.bindEvents();
+}
+
+PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
+    var _self = this,
+    items = $(_self.jqId + ' .ui-autocomplete-item');
+    
+    //bind keyup handler
+    this.jq.keyup(function() {
+        var value = _self.input.val();
+        
+        //Cancel the search request if user types withing the timeout
+        if(_self.timeout) {
+            clearTimeout(_self.timeout);
+        }
+
+        _self.timeout = setTimeout(function() {
+                            _self.search(value);
+                        }, 
+                        _self.cfg.delay);
+    });
+    
+    //visuals and click handler for items
+    items.live('mouseover', function() {
+        $(this).addClass('ui-state-hover');
+    })
+    .live('mouseout', function() {
+        $(this).removeClass('ui-state-hover');
+    })
+    .live('click', function() {
+        var item = $(this);
+        
+        _self.input.val(item.html());
+    });
+    
+    //hide overlay when outside is clicked
+    var offset;
+
+    $(document.body).bind('click', function (e) {
+        if(_self.panel.is(":hidden")) {
+            return;
+        }
+        offset = _self.panel.offset();
+        if(e.target === _self.input.get(0)) {
+            return;
+        }
+        if (e.pageX < offset.left ||
+            e.pageX > offset.left + _self.panel.width() ||
+            e.pageY < offset.top ||
+            e.pageY > offset.top + _self.panel.height()) {
+            _self.hide();
+        }
+        _self.hide();
+    });
+}
+
+PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
+    var _self = this;
+    
+    //start callback
+    if(this.cfg.onstart) {
+        this.cfg.onstart.call(this, value);
+    }
+
+    var options = {
+        source: this.id,
+        process: this.id,
+        update: this.id,
+        formId: this.cfg.formId,
+        onsuccess: function(responseXML) {
+            var xmlDoc = responseXML.documentElement,
+            updates = xmlDoc.getElementsByTagName("update");
+
+            for(var i=0; i < updates.length; i++) {
+                var id = updates[i].attributes.getNamedItem("id").nodeValue,
+                data = updates[i].firstChild.data;
+
+                if(id == _self.id) {
+                    _self.panel.html(data);
+                    
+                    if(_self.panel.is(':hidden')) {
+                        _self.show();
+                    }
+                    
+                } else {
+                    PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
+                }
+            }
+
+            return true;
+        }
+    };
+    
+    //complete callback
+    if(this.cfg.oncomplete) {
+        options.complete = this.cfg.oncomplete;
+    }
+
+    if(this.cfg.global === false) {
+        options.global = false;
+    }
+
+    var params = {};
+    params[this.id + '_query'] = encodeURIComponent(value);
+
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
+}
+
+PrimeFaces.widget.AutoComplete.prototype.show = function() {
+    this.panel.css('z-index', '100000');
+    
+    if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
+        this.panel.parent().css('z-index', '99999');
+    }
+
+    this.panel.show();
+}
+
+PrimeFaces.widget.AutoComplete.prototype.hide = function() {
+    if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
+        this.panel.parent().css('z-index', '');
+    }
+    
+    this.panel.css('z-index', '').hide();
+}
+
+/**
+ * PrimeFaces AutoComplete Widget
+ */
+/*PrimeFaces.widget.AutoComplete = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId + '_input');
     this.jqh = jQuery(this.jqId + '_hinput');
@@ -165,4 +314,4 @@ PrimeFaces.widget.AutoComplete.prototype.deactivate = function() {
 
 PrimeFaces.widget.AutoComplete.prototype.activate = function() {
     this.jq.autocomplete('enable');
-}
+}*/
