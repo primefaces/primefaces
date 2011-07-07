@@ -250,7 +250,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         }
     }).click(function() {
         var element = $(this),
-        option = $(options.get(element.index()));
+        option = $(options.get(element.index())),
+        label = option.text() == '' ? '&nbsp;' : option.text();
 
         items.removeClass('ui-state-active ui-state-hover');
         element.addClass('ui-state-active');
@@ -258,7 +259,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         option.attr('selected', 'selected');
 
         _self.labelContainer.focus();
-        _self.label.html(option.text());
+        _self.label.html(label);
         _self.input.change();
         _self.hide();
     });
