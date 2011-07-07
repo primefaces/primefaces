@@ -16,11 +16,9 @@
 package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -32,15 +30,15 @@ import org.primefaces.util.HTML;
 public class AutoCompleteRenderer extends InputRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         AutoComplete autoComplete = (AutoComplete) component;
 
         if(autoComplete.isDisabled() || autoComplete.isReadonly()) {
             return;
         }
 
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-        String clientId = autoComplete.getClientId(facesContext);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = autoComplete.getClientId(context);
         String valueParam = autoComplete.getVar() == null ? clientId + "_input" : clientId + "_hinput";
         String submittedValue = params.get(valueParam);
 
@@ -48,92 +46,71 @@ public class AutoCompleteRenderer extends InputRenderer {
             autoComplete.setSubmittedValue(submittedValue);
         }
         
-        decodeBehaviors(facesContext, autoComplete);
+        decodeBehaviors(context, autoComplete);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         AutoComplete autoComplete = (AutoComplete) component;
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String query = params.get(autoComplete.getClientId(context) + "_query");
 
-        if(params.containsKey(autoComplete.getClientId(facesContext) + "_query")) {
-            encodeResults(facesContext, component);
-        } 
+        if(query != null) {
+            encodeResults(context, component, query);
+        }
         else {
-            encodeMarkup(facesContext, autoComplete);
-            encodeScript(facesContext, autoComplete);
+            encodeMarkup(context, autoComplete);
+            encodeScript(context, autoComplete);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeResults(FacesContext facesContext, UIComponent component) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
         AutoComplete autoComplete = (AutoComplete) component;
-        String clientId = autoComplete.getClientId(facesContext);
-        String var = autoComplete.getVar();
+        List results = (List) autoComplete.getCompleteMethod().invoke(context.getELContext(), new Object[]{query});
 
-        MethodExpression me = autoComplete.getCompleteMethod();
-        String query = facesContext.getExternalContext().getRequestParameterMap().get(clientId + "_query");
-
-        List results = (List) me.invoke(facesContext.getELContext(), new Object[]{query});
-        writer.write("{");
-        writer.write("\"results\" : [");
-
-        for (Iterator iterator = results.iterator(); iterator.hasNext();) {
-            Object result = iterator.next();
-
-            if (result != null) {
-
-                if (var == null) {
-                    writer.write("{\"label\":\"" + escape((String) result) + "\"}");
-                } else {
-                    facesContext.getExternalContext().getRequestMap().put(var, result);
-                    String itemLabel = escape(autoComplete.getItemLabel());
-                    String itemValue = escape(ComponentUtils.getStringValueToRender(facesContext, autoComplete, autoComplete.getItemValue()));
-
-                    writer.write("{");
-                    writer.write("\"label\":\"" + itemLabel + "\"");
-                    writer.write(",\"data\":\"" + itemValue + "\"");
-                    writer.write("}");
-                }
-
-                if (iterator.hasNext()) {
-                    writer.write(",");
-                }
-            }
-        }
-
-        if (var != null) {
-            facesContext.getExternalContext().getRequestMap().remove(var);	//clean
-        }
-
-        writer.write("]}");
-    }
-
-    private String escape(String value) {
-        if (value == null) {
-            return "";
-        } else {
-            return value.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"");
-        }
+        encodeSuggestions(context, autoComplete, results);
     }
 
     protected void encodeMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         Object value = ac.getValue();
+        String styleClass = ac.getStyleClass();
+        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
-        if(ac.getStyle() != null) writer.writeAttribute("style", ac.getStyle(), null);
-        if(ac.getStyleClass() != null) writer.writeAttribute("class", ac.getStyleClass(), null);
+        writer.writeAttribute("class", styleClass, null);
 
+        if(ac.getStyle() != null) {
+            writer.writeAttribute("style", ac.getStyle(), null);
+        }
+
+        encodeInput(context, ac, clientId, value);
+        
+
+        //hidden input for pojo support
+        if(ac.getVar() != null) {
+            encodeHiddenInput(context, ac, clientId, value);
+        }
+        
+        //panel
+        encodePanel(context, ac);
+        
+
+        writer.endElement("span");
+    }
+    
+    protected void encodeInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
         if(value != null) {
-            if (ac.getVar() == null) {
+            if(ac.getVar() == null) {
                 writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac), null);
             } else {
                 context.getExternalContext().getRequestMap().put(ac.getVar(), value);
@@ -147,31 +124,114 @@ public class AutoCompleteRenderer extends InputRenderer {
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
 
         if(themeForms()) {
-            writer.writeAttribute("class", AutoComplete.STYLE_CLASS, null);
+            writer.writeAttribute("class", AutoComplete.INPUT_CLASS, null);
         }
 
         writer.endElement("input");
+    }
+    
+    protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("id", clientId + "_hinput", null);
+        writer.writeAttribute("name", clientId + "_hinput", null);
+        writer.writeAttribute("type", "hidden", null);
+        if (value != null) {
+            writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue()), null);
+        }
+        writer.endElement("input");
 
-        //hidden input for pojo support
-        if (ac.getVar() != null) {
-            writer.startElement("input", null);
-            writer.writeAttribute("id", clientId + "_hinput", null);
-            writer.writeAttribute("name", clientId + "_hinput", null);
-            writer.writeAttribute("type", "hidden", null);
-            if (value != null) {
-                writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue()), null);
+        context.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
+    }
+    
+    protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean customContent = ac.getVar() != null;
+        //int height = calculatePanelHeight(ac, selectItems.size());
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", AutoComplete.PANEL_CLASS, null);
+        
+        /*if(height != -1) {
+            writer.writeAttribute("style", "height:" + height + "px", null);
+        }*/
+
+        writer.endElement("div");
+    }
+    
+    protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean customContent = ac.getVar() != null;
+        
+        if(customContent) {
+            writer.startElement("table", ac);
+            writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
+            writer.startElement("tbody", ac);
+            encodeSuggestionsAsTable(context, ac, items);
+            writer.startElement("tbody", ac);
+            writer.endElement("table");
+        } else {
+            encodeSuggestionsAsList(context, ac, items);
+        }
+    }
+    
+    protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, List items) throws IOException {
+        /*ResponseWriter writer = context.getResponseWriter();
+        String var = ac.getVar();
+        List<Column> columns = ac.getColums();
+        Object value = ac.getValue();
+
+        for(SelectItem selectItem : selectItems) {
+            Object itemValue = selectItem.getValue();
+            
+            context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
+            boolean selected = (value != null && value.equals(itemValue));
+            String rowStyleClass = selected ? SelectOneMenu.ROW_CLASS + " ui-state-active" : SelectOneMenu.ROW_CLASS;
+            
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", rowStyleClass, null);
+
+            if(itemValue instanceof String) {
+                writer.startElement("td", null);
+                writer.writeAttribute("colspan", columns.size(), null);
+                writer.write(selectItem.getLabel());
+                writer.endElement("td");
+            } else {
+                for(Column column : columns) {
+                    writer.startElement("td", null);
+                    column.encodeAll(context);
+                    writer.endElement("td");
+                }
             }
-            writer.endElement("input");
 
-            context.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
+            writer.endElement("tr");
         }
 
-        writer.endElement("span");
+        context.getExternalContext().getRequestMap().put(var, null);*/
     }
 
-    protected void encodeScript(FacesContext facesContext, AutoComplete ac) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = ac.getClientId(facesContext);
+    protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("ul", ac);
+        writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
+
+        for(Object item : items) {
+            writer.startElement("li", null);
+            writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
+   
+            writer.writeText(item, null);
+
+            writer.endElement("li");
+        }
+        
+        writer.endElement("ul");
+    }
+
+    protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = ac.getClientId(context);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -192,8 +252,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
         if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
-
-        encodeClientBehaviors(facesContext, ac);
+  
+        encodeClientBehaviors(context, ac);
 
         if(!themeForms()) {
             writer.write(",theme:false");
@@ -202,5 +262,17 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.write("});});");
 
         writer.endElement("script");
+    }
+    
+    protected int calculatePanelHeight(AutoComplete ac, int itemSize) {
+        int height = ac.getHeight();
+        
+        if(height != Integer.MAX_VALUE) {
+            return height;
+        } else if(itemSize > 10) {
+            return 200;
+        }
+        
+        return -1;
     }
 }

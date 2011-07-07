@@ -3,6 +3,8 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.component.column.Column;
+import javax.faces.component.UIComponent;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -18,7 +20,13 @@ import javax.faces.event.PhaseId;
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
     
-    public final static String STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public final static String STYLE_CLASS = "ui-autocomplete";
+    public final static String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public final static String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content ui-corner-all ui-helper-hidden";
+    public final static String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public final static String TABLE_CLASS = "ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public final static String ITEM_CLASS = "ui-autocomplete-item ui-autocomplete-list-item ui-corner-all";
+    public final static String ROW_CLASS = "ui-autocomplete-item ui-autocomplete-row ui-widget-content";
 
     @Override
     public Collection<String> getEventNames() {
@@ -53,4 +61,15 @@ import javax.faces.event.PhaseId;
                 super.queueEvent(selectEvent);
             }
         }
+    }
+
+    public List<Column> getColums() {
+        List<Column> columns = new ArrayList<Column>();
+        
+        for(UIComponent kid : this.getChildren()) {
+            if(kid instanceof Column)
+                columns.add((Column) kid);
+        }
+
+        return columns;
     }

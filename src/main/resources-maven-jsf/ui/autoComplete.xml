@@ -98,19 +98,26 @@
             <defaultValue>true</defaultValue>
             <description>Defines whether to trigger ajaxStatus or not. Default is true.</description>
         </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Defines the height of the suggestion panel in pixels.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
 			<name>forms/forms.css</name>
 		</resource>
         <resource>
+			<name>autocomplete/autocomplete.css</name>
+		</resource>
+        <resource>
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
         <resource>
             <name>core/core.js</name>
