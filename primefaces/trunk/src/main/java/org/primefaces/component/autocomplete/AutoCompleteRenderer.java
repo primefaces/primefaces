@@ -109,6 +109,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
         if(value != null) {
             if(ac.getVar() == null) {
                 writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac), null);
@@ -137,6 +138,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId + "_hinput", null);
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
         if (value != null) {
             writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue()), null);
         }
