@@ -66,8 +66,8 @@ PrimeFaces = {
     },
 
     //mobile
-    navigate : function(to, transition, reverse, changeHash) {
-        $.mobile.changePage(to, transition, reverse, changeHash);
+    navigate : function(to, cfg) {
+        $.mobile.changePage($(PrimeFaces.escapeClientId(to)), cfg);
     },
     
     info: function(msg) {
