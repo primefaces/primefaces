@@ -51,7 +51,12 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     .live('click', function() {
         var item = $(this);
         
-        _self.input.val(item.html());
+        if(_self.cfg.pojo) {
+            _self.input.val(item.html());
+            _self.hinput.val(item.attr('data-value'));
+        } else {
+            _self.input.val(item.html());
+        }
     });
     
     //hide overlay when outside is clicked

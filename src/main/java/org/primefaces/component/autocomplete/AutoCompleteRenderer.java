@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -155,7 +156,8 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean customContent = ac.getVar() != null;
+        boolean customContent = ac.getColums().size() > 0;
+        Converter converter = getConverter(context, ac);
         
         if(customContent) {
             writer.startElement("table", ac);
@@ -165,7 +167,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.startElement("tbody", ac);
             writer.endElement("table");
         } else {
-            encodeSuggestionsAsList(context, ac, items);
+            encodeSuggestionsAsList(context, ac, items, converter);
         }
     }
     
@@ -204,8 +206,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         context.getExternalContext().getRequestMap().put(var, null);*/
     }
 
-    protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items) throws IOException {
+    protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String var = ac.getVar();
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        boolean pojo = var != null;
         
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
@@ -213,13 +218,26 @@ public class AutoCompleteRenderer extends InputRenderer {
         for(Object item : items) {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
-   
-            writer.writeText(item, null);
+            
+            if(pojo) {
+                requestMap.put(var, item);
+                String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                writer.writeAttribute("data-value", value, null);
+                
+                writer.writeText(ac.getItemLabel(), null);
+            }
+            else {
+                writer.writeText(item, null);
+            }
 
             writer.endElement("li");
         }
         
         writer.endElement("ul");
+        
+        if(pojo) {
+            requestMap.remove(var);
+        }
     }
 
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
