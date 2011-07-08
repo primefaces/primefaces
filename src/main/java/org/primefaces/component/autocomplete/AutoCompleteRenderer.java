@@ -23,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import org.primefaces.component.column.Column;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -90,14 +91,11 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         encodeInput(context, ac, clientId, value);
         
-        //hidden input for pojo support
         if(ac.getVar() != null) {
             encodeHiddenInput(context, ac, clientId, value);
         }
         
-        //panel
         encodePanel(context, ac);
-        
 
         writer.endElement("span");
     }
@@ -149,7 +147,6 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean customContent = ac.getVar() != null;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", AutoComplete.PANEL_CLASS, null);
@@ -162,50 +159,50 @@ public class AutoCompleteRenderer extends InputRenderer {
         Converter converter = getConverter(context, ac);
         
         if(customContent) {
-            writer.startElement("table", ac);
-            writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
-            writer.startElement("tbody", ac);
-            encodeSuggestionsAsTable(context, ac, items);
-            writer.startElement("tbody", ac);
-            writer.endElement("table");
+            encodeSuggestionsAsTable(context, ac, items, converter);
         } else {
             encodeSuggestionsAsList(context, ac, items, converter);
         }
     }
     
-    protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, List items) throws IOException {
-        /*ResponseWriter writer = context.getResponseWriter();
+    protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String var = ac.getVar();
-        List<Column> columns = ac.getColums();
-        Object value = ac.getValue();
-
-        for(SelectItem selectItem : selectItems) {
-            Object itemValue = selectItem.getValue();
-            
-            context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
-            boolean selected = (value != null && value.equals(itemValue));
-            String rowStyleClass = selected ? SelectOneMenu.ROW_CLASS + " ui-state-active" : SelectOneMenu.ROW_CLASS;
-            
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        boolean pojo = var != null;
+        
+        writer.startElement("table", ac);
+        writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
+        writer.startElement("tbody", ac);
+        
+        for(Object item : items) {
             writer.startElement("tr", null);
-            writer.writeAttribute("class", rowStyleClass, null);
-
-            if(itemValue instanceof String) {
-                writer.startElement("td", null);
-                writer.writeAttribute("colspan", columns.size(), null);
-                writer.write(selectItem.getLabel());
-                writer.endElement("td");
-            } else {
-                for(Column column : columns) {
+            writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
+            
+            if(pojo) {
+                requestMap.put(var, item);
+                String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                writer.writeAttribute("data-item-value", value, null);
+                writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+            }
+            
+            for(Column column : ac.getColums()) {
+                if(column.isRendered()) {
                     writer.startElement("td", null);
+                    if(column.getStyle() != null) writer.writeAttribute("style", item, null);
+                    if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                    
                     column.encodeAll(context);
+                    
                     writer.endElement("td");
                 }
             }
 
             writer.endElement("tr");
         }
-
-        context.getExternalContext().getRequestMap().put(var, null);*/
+        
+        writer.startElement("tbody", ac);
+        writer.endElement("table");
     }
 
     protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
@@ -224,7 +221,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             if(pojo) {
                 requestMap.put(var, item);
                 String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
-                writer.writeAttribute("data-value", value, null);
+                writer.writeAttribute("data-item-value", value, null);
                 
                 writer.writeText(ac.getItemLabel(), null);
             }
@@ -277,5 +274,15 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.write("});});");
 
         writer.endElement("script");
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
