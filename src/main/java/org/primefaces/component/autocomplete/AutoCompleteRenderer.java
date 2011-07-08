@@ -106,6 +106,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodeInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean disabled = ac.isDisabled();
         
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
@@ -121,13 +122,14 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
 
-        if(ac.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
 
         if(themeForms()) {
-            writer.writeAttribute("class", AutoComplete.INPUT_CLASS, null);
+            String styleClass = disabled ? AutoComplete.INPUT_CLASS + " ui-state-disabled" : AutoComplete.INPUT_CLASS;
+            writer.writeAttribute("class", styleClass, null);
         }
 
         writer.endElement("input");
