@@ -48,7 +48,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     .live('mouseout', function() {
         $(this).removeClass('ui-state-highlight');
     })
-    .live('click', function() {
+    .live('click', function(event) {
         var item = $(this);
         
         if(_self.cfg.pojo) {
@@ -63,6 +63,9 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
         else {
             _self.input.val(item.html());
         }
+        
+        //invoke itemSelect behavipr
+        _self.invokeItemSelectBehavior(event);
     });
     
     //hide overlay when outside is clicked
@@ -171,6 +174,16 @@ PrimeFaces.widget.AutoComplete.prototype.hide = function() {
     }
     
     this.panel.css('z-index', '').hide();
+}
+
+PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+
+        if(itemSelectBehavior) {
+            itemSelectBehavior.call(this, event);
+        }
+    }
 }
 
 /**
