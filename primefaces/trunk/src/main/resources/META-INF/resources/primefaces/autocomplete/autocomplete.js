@@ -16,7 +16,13 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
         PrimeFaces.skinInput(this.input);
     }
     
+    //bind key and mouse events
     this.bindEvents();
+    
+    //force selection
+    if(this.cfg.forceSelection) {
+        this.setupForceSelection();
+    }
 }
 
 PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
@@ -51,26 +57,17 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     .live('click', function(event) {
         var item = $(this);
         
-        if(_self.cfg.pojo) {
-            _self.hinput.val(item.attr('data-item-value'));
-            
-            if(item.is('tr')) {
-                _self.input.val(item.attr('data-item-label'));
-            } else {
-                _self.input.val(item.html());
-            }
-        } 
-        else {
-            _self.input.val(item.html());
-        }
+        _self.input.val(item.attr('data-item-label'));
         
-        //invoke itemSelect behavipr
+        if(_self.cfg.pojo) {
+            _self.hinput.val(item.attr('data-item-value'));            
+        } 
+
         _self.invokeItemSelectBehavior(event);
     });
     
     //hide overlay when outside is clicked
     var offset;
-
     $(document.body).bind('click', function (e) {
         if(_self.panel.is(":hidden")) {
             return;
@@ -113,14 +110,22 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                 if(id == _self.id) {
                     _self.panel.html(data);
                     
-                    if(_self.panel.find('.ui-autocomplete-item').length > 0) {
+                    var items = _self.panel.find('.ui-autocomplete-item');
+                    
+                    if(items.length > 0) {
+                        if(_self.cfg.forceSelection) {
+                            _self.cachedResults = [];
+                            items.each(function(i, item) {
+                               _self.cachedResults.push($(item).attr('data-item-label'));
+                            });
+                        }
+                        
                         if(_self.panel.is(':hidden')) {
                             _self.show();
                         }
 
                         //adjust height
                         _self.panel.css('height', '');
-
                         if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
                             _self.panel.css('height', _self.cfg.scrollHeight + 'px');
                         }
@@ -184,6 +189,28 @@ PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(eve
             itemSelectBehavior.call(this, event);
         }
     }
+}
+
+PrimeFaces.widget.AutoComplete.prototype.setupForceSelection = function() {
+    var _self = this;
+	
+    this.input.blur(function() {
+        var value = $(this).val(),
+        valid = false;
+		
+        if(_self.cachedResults) {
+            for(var i = 0; i < _self.cachedResults.length; i++) {
+                if(_self.cachedResults[i] == value) {
+                    valid = true;
+                    break;
+                }
+            }
+        }
+		
+        if(!valid) {
+            $(this).val('');
+        }
+    });
 }
 
 /**

@@ -226,10 +226,13 @@ public class AutoCompleteRenderer extends InputRenderer {
                 requestMap.put(var, item);
                 String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                 writer.writeAttribute("data-item-value", value, null);
+                writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                 
                 writer.writeText(ac.getItemLabel(), null);
             }
             else {
+                writer.writeAttribute("data-item-label", item, null);
+                
                 writer.writeText(item, null);
             }
 
