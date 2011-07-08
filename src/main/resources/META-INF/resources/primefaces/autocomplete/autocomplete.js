@@ -46,6 +46,41 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
                             _self.cfg.delay);
         }
     });
+  
+    //key events
+    this.input.keydown(function(e) {
+        var keyCode = $.ui.keyCode,
+        currentItems = _self.panel.find('.ui-autocomplete-item'),
+        highlightItem = _self.panel.find('.ui-autocomplete-item.ui-state-highlight');
+        
+         switch(e.which) {
+            case keyCode.UP:
+            case keyCode.LEFT:
+                break;
+                
+            case keyCode.DOWN:
+            case keyCode.RIGHT:
+                alert('right');
+                if(highlightItem.length > 0) {
+                    highlightItem.removeClass('.ui-state-highlight').next().addClass('.ui-state-highlight')
+                } else {
+                    currentItems.eq(0).addClass('.ui-state-highlight');
+                }
+                break;
+                
+            case keyCode.ENTER:
+            case keyCode.NUMPAD_ENTER:
+                break;
+                
+            case keyCode.ALT: 
+            case 224: 
+                break;
+                
+            case keyCode.TAB: 
+                _self.hide();
+                break;
+         }
+    });
     
     //visuals and click handler for items
     items.die().live('mouseover', function() {
