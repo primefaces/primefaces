@@ -43,18 +43,24 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     
     //visuals and click handler for items
     items.live('mouseover', function() {
-        $(this).addClass('ui-state-hover');
+        $(this).addClass('ui-state-highlight');
     })
     .live('mouseout', function() {
-        $(this).removeClass('ui-state-hover');
+        $(this).removeClass('ui-state-highlight');
     })
     .live('click', function() {
         var item = $(this);
         
         if(_self.cfg.pojo) {
-            _self.input.val(item.html());
-            _self.hinput.val(item.attr('data-value'));
-        } else {
+            _self.hinput.val(item.attr('data-item-value'));
+            
+            if(item.is('tr')) {
+                _self.input.val(item.attr('data-item-label'));
+            } else {
+                _self.input.val(item.html());
+            }
+        } 
+        else {
             _self.input.val(item.html());
         }
     });
