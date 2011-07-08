@@ -262,6 +262,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
         if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
+        
+        //Effects
+        String effect = ac.getEffect();
+        if(effect != null) {
+            writer.write(",effect:'" + effect + "'");
+            writer.write(",effectDuration:" + ac.getEffectDuration());
+        }
   
         //Behaviors
         encodeClientBehaviors(context, ac);

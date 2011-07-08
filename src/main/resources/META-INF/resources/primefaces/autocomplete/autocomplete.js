@@ -159,7 +159,10 @@ PrimeFaces.widget.AutoComplete.prototype.show = function() {
         this.panel.parent().css('z-index', '99999');
     }
 
-    this.panel.show();
+    if(this.cfg.effect)
+        this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
+    else
+        this.panel.show();
 }
 
 PrimeFaces.widget.AutoComplete.prototype.hide = function() {

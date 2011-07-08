@@ -105,6 +105,17 @@
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Defines the height of the items viewport.</description>
         </attribute>
+        <attribute>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>effectDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>400</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>
