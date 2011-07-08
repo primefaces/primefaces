@@ -55,8 +55,8 @@
             <name>maxResults</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>10</defaultValue>
-            <description>Maximum number of results to be displayed. Default is 10.</description>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Maximum number of results to be displayed. Default is unlimited.</description>
         </attribute>
         <attribute>
             <name>minQueryLength</name>

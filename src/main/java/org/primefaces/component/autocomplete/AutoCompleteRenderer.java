@@ -68,10 +68,14 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
-        AutoComplete autoComplete = (AutoComplete) component;
-        List results = (List) autoComplete.getCompleteMethod().invoke(context.getELContext(), new Object[]{query});
+        AutoComplete ac = (AutoComplete) component;
+        List results = (List) ac.getCompleteMethod().invoke(context.getELContext(), new Object[]{query});
+        
+        if(ac.getMaxResults() != Integer.MAX_VALUE) {
+            results = results.subList(0, ac.getMaxResults());
+        }
 
-        encodeSuggestions(context, autoComplete, results);
+        encodeSuggestions(context, ac, results);
     }
 
     protected void encodeMarkup(FacesContext context, AutoComplete ac) throws IOException {
@@ -256,7 +260,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());
         if(ac.isForceSelection()) writer.write(",forceSelection:true");
         if(!ac.isGlobal()) writer.write(",global:false");
-        if(ac.getMaxResults() != 10) writer.write(",maxResults:" + ac.getMaxResults());
         if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
 
         //Client side callbacks
