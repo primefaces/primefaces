@@ -110,18 +110,23 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                 if(id == _self.id) {
                     _self.panel.html(data);
                     
-                    if(_self.panel.is(':hidden')) {
-                        _self.show();
+                    if(_self.panel.find('.ui-autocomplete-item').length > 0) {
+                        if(_self.panel.is(':hidden')) {
+                            _self.show();
+                        }
+
+                        //adjust height
+                        _self.panel.css('height', '');
+
+                        if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
+                            _self.panel.css('height', _self.cfg.scrollHeight + 'px');
+                        }
+                    } 
+                    else {
+                        _self.panel.hide();
                     }
-          
-                    //adjust height
-                    _self.panel.css('height', '');
-                    
-                    if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
-                        _self.panel.css('height', _self.cfg.scrollHeight + 'px');
-                    }
-                    
-                } else {
+                } 
+                else {
                     PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
                 }
             }
