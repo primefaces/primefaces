@@ -30,56 +30,87 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     items = $(_self.jqId + ' .ui-autocomplete-item');
     
     //bind keyup handler
-    this.jq.keyup(function() {
-        var value = _self.input.val();
+    this.input.keyup(function(e) {
+        var keyCode = $.ui.keyCode,
+        key = e.which,
+        shouldSearch = true;
         
-        if(value.length >= _self.cfg.minLength) {
-            
-            //Cancel the search request if user types within the timeout
-            if(_self.timeout) {
-                clearTimeout(_self.timeout);
-            }
-
-            _self.timeout = setTimeout(function() {
-                                _self.search(value);
-                            }, 
-                            _self.cfg.delay);
+        if(key == keyCode.UP 
+            || key == keyCode.LEFT 
+            || key == keyCode.DOWN 
+            || key == keyCode.RIGHT 
+            || key == keyCode.TAB 
+            || key == keyCode.ENTER
+            || key == keyCode.NUMPAD_ENTER) {
+            shouldSearch = false;
         }
+
+        if(shouldSearch) {
+            var value = _self.input.val();
+        
+            if(value.length >= _self.cfg.minLength) {
+
+                //Cancel the search request if user types within the timeout
+                if(_self.timeout) {
+                    clearTimeout(_self.timeout);
+                }
+
+                _self.timeout = setTimeout(function() {
+                                    _self.search(value);
+                                }, 
+                                _self.cfg.delay);
+            }
+        }
+ 
     });
   
     //key events
     this.input.keydown(function(e) {
-        var keyCode = $.ui.keyCode,
-        currentItems = _self.panel.find('.ui-autocomplete-item'),
-        highlightItem = _self.panel.find('.ui-autocomplete-item.ui-state-highlight');
+        if(_self.panel.is(':visible')) {
+            var keyCode = $.ui.keyCode,
+            currentItems = _self.panel.find('.ui-autocomplete-item'),
+            highlightItem = _self.panel.find('.ui-autocomplete-item.ui-state-highlight');
         
-         switch(e.which) {
-            case keyCode.UP:
-            case keyCode.LEFT:
-                break;
-                
-            case keyCode.DOWN:
-            case keyCode.RIGHT:
-                alert('right');
-                if(highlightItem.length > 0) {
-                    highlightItem.removeClass('.ui-state-highlight').next().addClass('.ui-state-highlight')
-                } else {
-                    currentItems.eq(0).addClass('.ui-state-highlight');
-                }
-                break;
-                
-            case keyCode.ENTER:
-            case keyCode.NUMPAD_ENTER:
-                break;
-                
-            case keyCode.ALT: 
-            case 224: 
-                break;
-                
-            case keyCode.TAB: 
-                _self.hide();
-                break;
-         }
+            switch(e.which) {
+                case keyCode.UP:
+                case keyCode.LEFT:
+                    if(highlightItem.length > 0) {
+                        highlightItem.removeClass('ui-state-highlight').prev().addClass('ui-state-highlight');
+                    } else {
+                        currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
+                    }
+
+                    e.preventDefault();
+                    break;
+
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                    if(highlightItem.length > 0) {
+                        highlightItem.removeClass('ui-state-highlight').next().addClass('ui-state-highlight');
+                    } else {
+                        currentItems.eq(0).addClass('ui-state-highlight');
+                    }
+
+                    e.preventDefault();
+                    break;
+
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                    highlightItem.click();
+
+                    e.preventDefault();
+                    break;
+
+                case keyCode.ALT: 
+                case 224: 
+                    break;
+
+                case keyCode.TAB: 
+                    _self.hide();
+                    break;
+             }
+        }
+         
     });
     
     //visuals and click handler for items
