@@ -42,7 +42,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindEvents = function() {
     });
     
     //visuals and click handler for items
-    items.live('mouseover', function() {
+    items.die().live('mouseover', function() {
         $(this).addClass('ui-state-highlight');
     })
     .live('mouseout', function() {
