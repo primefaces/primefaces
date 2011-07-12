@@ -1023,7 +1023,9 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
         for(var i = 0; i < widths.length; i++) {
             var width = widths[i];
             
-            columnHeaders.eq(i).children('div').width(width);
+            var columnHeaderWrapper = columnHeaders.eq(i).children('div');
+            columnHeaderWrapper.width(width);
+            columnHeaders.eq(i).width(columnHeaderWrapper.innerWidth());
             $(this.jqId + ' tbody').find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
             columnFooters.eq(i).children('div').width(width);
         }
