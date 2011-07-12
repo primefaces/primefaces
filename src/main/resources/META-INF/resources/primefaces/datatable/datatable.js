@@ -70,18 +70,19 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
         )
         .click(function(event) {
 
-            if($(event.target).is(':not(th,span)')) {
+            if($(event.target).is(':not(th,span,div)')) {
                 return;
             }
 
             var columnId = $(this).attr('id');
+            
             //Reset previous sorted columns
             $(this).siblings().removeClass('ui-state-active').
-                children('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
 
             //Update sort state
             $(this).addClass('ui-state-active');
-            var sortIcon = $(this).children('.ui-sortable-column-icon');
+            var sortIcon = $(this).find('.ui-sortable-column-icon');
             
             if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
