@@ -153,6 +153,10 @@
     overflow: auto;
 }
 
+.ui-datatable.ui-datatable-resizable table {
+    width: auto;
+}
+
 .ui-datatable th div,
 .ui-datatable .ui-datatable-data td div,
 .ui-datatable tfoot td div {
