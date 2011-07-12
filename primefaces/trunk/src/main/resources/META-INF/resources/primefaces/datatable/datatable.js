@@ -177,37 +177,50 @@ PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
  * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
  */
 PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
-    var bodyContainerEl = $(this.jqId + ' .ui-datatable-scrollable-body').get(0),
-    tbodyElement = $(this.tbody).get(0);
+    var columnHeaders = $(this.jqId + ' .ui-datatable-scrollable-header thead th'),
+    tbody = $(this.jqId + ' .ui-datatable-scrollable-body tbody'),
+    tfoot = $(this.jqId + ' .ui-datatable-scrollable-footer tfoot'),
+    scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
+    scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
+    scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer'),
+    _self = this;
     
-    var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (tbodyElement.parentNode.clientWidth + 16) : (tbodyElement.parentNode.clientWidth - 1);
-    $(this.jqId + ' .ui-datatable-scrollable-body').width(containerWidth);
-    $(this.jqId + ' .ui-datatable-scrollable-header').width(containerWidth);
-    $(this.jqId + ' .ui-datatable-scrollable-footer').width(containerWidth);
-
-    //live scroll
     if(this.cfg.liveScroll) {
         this.scrollOffset = this.cfg.scrollStep;
-        this.shouldLiveScroll = true;
-        var _self = this;
-
-        this.scrollBody.scroll(function() {
-
-            if(_self.shouldLiveScroll) {
-                var viewport = $(this);
-                var scrollTop = viewport.attr('scrollTop'),
-                scrollHeight = viewport.attr('scrollHeight'),
-                viewportHeight = viewport.attr('clientHeight');
-
-                if(scrollTop >= (scrollHeight - (viewportHeight))) {
-                    _self.loadLiveRows();
-                }
-            }
-
-        });
-
+        this.shouldLiveScroll = true;       
     }
+    
+    scrollBody.scroll(function() {
+        scrollHeader.scrollLeft(scrollBody.scrollLeft());
+        scrollFooter.scrollLeft(scrollBody.scrollLeft());
+        
+        if(_self.shouldLiveScroll) {
+            var viewport = $(this);
+            var scrollTop = viewport.attr('scrollTop'),
+            scrollHeight = viewport.attr('scrollHeight'),
+            viewportHeight = viewport.attr('clientHeight');
+
+            if(scrollTop >= (scrollHeight - (viewportHeight))) {
+                _self.loadLiveRows();
+            }
+        }
+    });
+    
+    //Copy column widths to columnWrapper and clear column widths
+    columnHeaders.each(function(i, item) {
+        var columnHeader = $(item),
+        columnHeaderWrapper = columnHeader.children('div'),
+        padding = columnHeaderWrapper.innerWidth() - columnHeaderWrapper.width(),
+        width = columnHeader.width() - padding;
+        
+        columnHeaderWrapper.width(width);
+        columnHeader.width('');
+        
+        tbody.find('tr td:nth-child(' + ( i+ 1) + ')').width('').children('div').width(width);
+        tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(width);
+    });
 }
+  
 
 /**
  * Loads rows on-the-fly when scrolling live
@@ -936,19 +949,21 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  * Add resize behavior to columns
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
-
     //Add resizers and resizer helper
-    $(this.jqId + ' thead tr th:not(:last)').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId + ' thead tr th:not(:last) div').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
     //Variables
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
     columnHeaders = $(this.jqId + ' thead th'),
-    columnFooters = $(this.jqId + ' tfoot tr td'),
+    columnFooters = $(this.jqId + ' tfoot td'),
+    scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
+    scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     table = $(this.jqId + ' table'),
-    tbody = $(this.tbody),
-    thead = $(this.jqId + ' thead'),    
+    tbody = $(this.jqId + ' tbody'),
+    thead = $(this.jqId + ' thead'),  
+    tfoot = $(this.jqId + ' tfoot'),
     _self = this;
  
     //State cookie
@@ -958,12 +973,10 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     resizers.draggable({
         axis: 'x',
         start: function(event, ui) {
-            var tbodyOffset = tbody.offset();
-            this.tbodyLeft = tbodyOffset.left;
-            this.tbodyTop = tbodyOffset.top;
-    
+            var height = _self.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
+
             //Set height of resizer helper
-            resizerHelper.height(table.height() - thead.height() - 1 );
+            resizerHelper.height(height);
             resizerHelper.show();
         },
         drag: function(event, ui) {
@@ -974,57 +987,44 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 });  
         },
         stop: function(event, ui) {
-            var columnHeader = ui.helper.parents('th:first'),
+            var columnHeaderWrapper = ui.helper.parent(),
+            columnHeader = columnHeaderWrapper.parent(),
             oldPos = ui.originalPosition.left,
             newPos = ui.position.left,
             change = (newPos - oldPos),
-            newWidth = columnHeader.width() + change;
+            newWidth = columnHeaderWrapper.width() + change;
             
             ui.helper.css('left','');
             resizerHelper.hide();
             
-            //include padding for webkit
-            if($.browser.webkit) {
-                var padding = columnHeader.innerWidth() - columnHeader.width();
-                newWidth += padding;
-            }
-            
-            if(change < 0) {
-                var preWidth = columnHeader.width();
-                columnHeader.width(newWidth);
-                var postWidth = columnHeader.width();
-                
-                if(preWidth != postWidth) {
-                    table.width(table.width() + change);
-                }
-            }
-            else {
-                columnHeader.width(newWidth);
-                table.width(table.width() + change);
-            }
+            columnHeaderWrapper.width(newWidth);
+            columnHeader.width('');
+                        
+            tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
+            tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+
+            scrollHeader.scrollLeft(scrollBody.scrollLeft());
 
             //Save state
             var columnWidths = [];
             columnHeaders.each(function(i, item) {
-                columnWidths.push($(item).width());
+                columnWidths.push($(item).children('div').width());
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
         },
         containment: thead
     });
-
+    
     //Restore widths on postback
     var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
-
     if(widths) {
         widths = widths.split(',');
-        for(var i in widths) {
-
-            $(columnHeaders.get(i)).width();
-
-            if(columnFooters.length > 0) {
-                columnFooters.eq(i).width(widths[i]);
-            }
+        for(var i = 0; i < widths.length; i++) {
+            var width = widths[i];
+            
+            columnHeaders.eq(i).children('div').width(width);
+            $(this.jqId + ' tbody').find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
+            columnFooters.eq(i).children('div').width(width);
         }
     }
 }
