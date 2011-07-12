@@ -998,7 +998,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             resizerHelper.hide();
             
             columnHeaderWrapper.width(newWidth);
-            columnHeader.width('');
+            columnHeader.width(columnHeaderWrapper.innerWidth());
                         
             tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
             tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
