@@ -236,9 +236,15 @@ public class DataTableRenderer extends CoreRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-datatable-scrollable-header-box", null);
+        
         writer.startElement("table", null);
         encodeThead(context, table);
         writer.endElement("table");
+        
+        writer.endElement("div");
         writer.endElement("div");
 
         writer.startElement("div", null);
@@ -251,9 +257,16 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-datatable-scrollable-footer-box", null);
+        
         writer.startElement("table", null);
         encodeTFoot(context, table);
         writer.endElement("table");
+        
+        writer.endElement("div");
+        
         writer.endElement("div");
     }
 
@@ -300,6 +313,8 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
         
+        writer.startElement("div", null);
+        
         if(isSortable) {
             writer.startElement("span", null);
             writer.writeAttribute("class", sortIcon, null);
@@ -330,6 +345,8 @@ public class DataTableRenderer extends CoreRenderer {
             table.enableFiltering();
             encodeFilter(context, table, column);
         }
+        
+        writer.endElement("div");
 
         writer.endElement("th");
     }
@@ -429,6 +446,8 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
+        writer.startElement("div", null);
+        
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
@@ -437,6 +456,8 @@ public class DataTableRenderer extends CoreRenderer {
         } else if(text != null) {
             writer.write(text);
         }
+        
+        writer.endElement("div");
 
         writer.endElement("td");
     }
@@ -600,8 +621,12 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getSelectionMode() != null) {
             columnStyleClass = columnStyleClass == null ? DataTable.SELECTION_COLUMN_CLASS : DataTable.SELECTION_COLUMN_CLASS + " " + columnStyleClass;
             writer.writeAttribute("class", columnStyleClass, null);
+            
+            writer.startElement("div", null);
 
             encodeColumnSelection(context, table, clientId, column, selected);
+            
+            writer.endElement("div");
         }
         else {
             CellEditor editor = column.getCellEditor();
@@ -611,8 +636,9 @@ public class DataTableRenderer extends CoreRenderer {
             if(columnStyleClass != null)
                 writer.writeAttribute("class", columnStyleClass, null);
 
-
+            writer.startElement("div", null);
             column.encodeAll(context);
+            writer.endElement("div");
         }
 
         writer.endElement("td");

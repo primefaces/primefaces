@@ -21,10 +21,9 @@
 .ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
-    padding:4px 10px;
+    padding:0px;
     margin:0px;
     overflow: hidden;
-    *padding-right: 0px;
 }
 
 .ui-datatable-data, .ui-datatable-data-empty {}
@@ -34,7 +33,8 @@
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
-    padding:4px 10px;
+    padding:0px;
+    margin:0px;
     overflow: hidden;
 }
 
@@ -121,6 +121,16 @@
 .ui-datatable-scrollable .ui-datatable-scrollable-footer table {
     width:auto;
 }
+.ui-datatable-scrollable .ui-datatable-scrollable-header,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer {
+    position: relative;
+} 
+            
+.ui-datatable-scrollable .ui-datatable-scrollable-header-box,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer-box {
+    float:left;
+    padding-right: 40px;
+}
 
 .ui-datatable .ui-column-resizer {
     width:8px;
@@ -141,5 +151,11 @@
 
 .ui-datatable.ui-datatable-resizable {
     overflow: auto;
+}
+
+.ui-datatable th div,
+.ui-datatable .ui-datatable-data td div,
+.ui-datatable tfoot td div {
+    padding: 4px 10px;
 }
 
