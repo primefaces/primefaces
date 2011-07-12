@@ -117,7 +117,10 @@ public class PasswordRenderer extends InputRenderer {
         if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
         if(themeForms()) {
-            writer.writeAttribute("class", Password.STYLE_CLASS, null);
+            String inputClass = themeForms() ? Password.STYLE_CLASS : Password.PLAIN_STYLE_CLASS;
+            inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
+            inputClass = !password.isDisabled() ? inputClass : inputClass + " ui-state-disabled";
+            writer.writeAttribute("class", inputClass, null);
         }
 		
 		writer.endElement("input");
