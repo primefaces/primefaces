@@ -134,12 +134,16 @@
 
 .ui-datatable .ui-column-resizer {
     width:8px;
-    height:15px;
+    height:22px;
     float:right;
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin-right:-10px;
+    margin: -4px -10px;
+}
+
+.ui-datatable .ui-filter-column .ui-column-resizer {
+    height:45px;
 }
 
 .ui-datatable .ui-column-resizer-helper {

@@ -948,9 +948,6 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
     
-    //resizer align
-    resizers.css({height : columnHeaders.filter(':first').height(), 'margin-top' : -(parseInt(thead.find('th:first .ui-dt-c').css('padding-top')))});
-    
     //Copy column widths to columnWrapper and clear column widths
     columnHeaders.each(function(i, item) {
         var columnHeader = $(item),
@@ -1009,9 +1006,6 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 columnWidths.push($(item).children('div').width());
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
-        
-            //resizer re-align
-            resizers.css({height : columnHeader.height(), 'margin-top' : -(parseInt(thead.find('th:first .ui-dt-c').css('padding-top')))});
         },
         containment: scrollBody
     });
