@@ -949,7 +949,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     _self = this;
     
     //resizer align
-    resizers.css({height : scrollHeader.find('table thead th:first').height(), 'margin-top' : -(parseInt(scrollHeader.find('table thead th:first .ui-dt-c').css('padding-top')))});
+    resizers.css({height : columnHeaders.filter(':first').height(), 'margin-top' : -(parseInt(thead.find('th:first .ui-dt-c').css('padding-top')))});
     
     //Copy column widths to columnWrapper and clear column widths
     columnHeaders.each(function(i, item) {
@@ -1011,7 +1011,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
         
             //resizer re-align
-            resizers.css({height : scrollHeader.find('table thead th:first').height(), 'margin-top' : -(parseInt(scrollHeader.find('table thead th:first .ui-dt-c').css('padding-top')))});
+            resizers.css({height : columnHeader.height(), 'margin-top' : -(parseInt(thead.find('th:first .ui-dt-c').css('padding-top')))});
         },
         containment: scrollBody
     });
