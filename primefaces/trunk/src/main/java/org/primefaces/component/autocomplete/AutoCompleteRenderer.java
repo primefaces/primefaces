@@ -155,6 +155,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
+        writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", AutoComplete.PANEL_CLASS, null);
         writer.endElement("div");
     }
