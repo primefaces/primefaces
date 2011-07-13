@@ -32,7 +32,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     
     //Panel management
     $(document.body).children(this.panelId).remove();
-    this.panel.appendTo(document.body).width(this.input.innerWidth());
+    this.panel.appendTo(document.body);
 }
 
 PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
@@ -326,6 +326,7 @@ PrimeFaces.widget.AutoComplete.prototype.alignPanel = function() {
     
     this.panel.css({
        'top':  offset.top + this.input.outerHeight(),
-       'left': offset.left
+       'left': offset.left,
+       'width': this.input.innerWidth() + 'px'
     });
 }
