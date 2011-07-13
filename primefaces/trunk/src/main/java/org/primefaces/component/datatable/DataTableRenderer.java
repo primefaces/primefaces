@@ -238,7 +238,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-datatable-scrollable-header-box", null);
+        writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
         encodeThead(context, table);
@@ -259,7 +259,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-datatable-scrollable-footer-box", null);
+        writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
         
         writer.startElement("table", null);
         encodeTFoot(context, table);
@@ -314,6 +314,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
         
         writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
         
         if(isSortable) {
             writer.startElement("span", null);
@@ -447,6 +448,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
         writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
         
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -544,7 +546,10 @@ public class DataTableRenderer extends CoreRenderer {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumns().size(), null);
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             writer.write(emptyMessage);
+            writer.endElement("div");
             writer.endElement("td");
             
             writer.endElement("tr");
@@ -623,6 +628,7 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute("class", columnStyleClass, null);
             
             writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
 
             encodeColumnSelection(context, table, clientId, column, selected);
             
@@ -637,6 +643,7 @@ public class DataTableRenderer extends CoreRenderer {
                 writer.writeAttribute("class", columnStyleClass, null);
 
             writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             column.encodeAll(context);
             writer.endElement("div");
         }
@@ -656,9 +663,10 @@ public class DataTableRenderer extends CoreRenderer {
             UIComponent header = columns.getFacet("header");
 
             writer.startElement("td", null);
-            writer.startElement("span", null);
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             columns.encodeAll(context);
-            writer.endElement("span");
+            writer.endElement("div");
             writer.endElement("td");
 
             colIndex++;
