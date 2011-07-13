@@ -990,7 +990,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             change = (newPos - oldPos),
             newWidth = columnHeaderWrapper.width() + change;
             
-            ui.helper.css({height : 1, left:''}); //reset resizer env.
+            ui.helper.css('left','');
             resizerHelper.hide();
             
             columnHeaderWrapper.width(newWidth);
@@ -1007,7 +1007,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
         },
-        containment: scrollBody
+        containment: this.jq
     });
     
     //Restore widths on postback
