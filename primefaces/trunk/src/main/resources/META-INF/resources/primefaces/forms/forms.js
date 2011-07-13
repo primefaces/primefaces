@@ -202,13 +202,14 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.panelId = this.jqId + '_panel';
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
     this.labelContainer = this.jq.find('.ui-selectonemenu-label-container');
     this.label = this.jq.find('.ui-selectonemenu-label');
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-    this.panel = this.jq.children('.ui-selectonemenu-panel');
+    this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
 
     if(!this.cfg.effectDuration) {
@@ -217,19 +218,20 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
 
     this.bindEvents();
 
-    this.panel.hide().removeClass('ui-helper-hidden-accessible');
-
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
+    
+    //Panel management
+    $(document.body).children(this.panelId).remove();
+    this.panel.appendTo(document.body);
 }
 
 String.prototype.startsWith = function(str){
     return (this.indexOf(str) === 0);
 }
 
-        
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
     var itemContainer = this.panel.children('.ui-selectonemenu-items'),
@@ -366,8 +368,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
                 break;
             
             case keyCode.ALT: 
-            case 224: break;
-            case keyCode.TAB: _self.hide();
+            case 224:break;
+            case keyCode.TAB:_self.hide();
             default:
                 var letter = String.fromCharCode(e.keyCode).toLowerCase();
                 options = $(_self.input).children('option');
@@ -429,6 +431,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
+    this.alignPanel();
+    
     this.panel.css('z-index', '100000');
     
     if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
@@ -462,6 +466,15 @@ PrimeFaces.widget.SelectOneMenu.prototype.focus = function() {
 
 PrimeFaces.widget.SelectOneMenu.prototype.blur = function() {
     this.labelContainer.blur();
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
+    var offset = this.jq.offset();
+    
+    this.panel.css({
+       'top':  offset.top + this.jq.outerHeight(),
+       'left': offset.left
+    });
 }
 
 /**

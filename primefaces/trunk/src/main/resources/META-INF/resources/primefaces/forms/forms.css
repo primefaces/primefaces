@@ -111,19 +111,17 @@
     cursor: auto
 }
 
-.ui-selectonemenu .ui-selectonemenu-panel {
+.ui-selectonemenu-panel {
     position: absolute;
-    margin-left: -1px;
     overflow: auto;
-    width: 100%;
 }
 
-.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-list {
+.ui-selectonemenu-panel .ui-selectonemenu-list {
     padding: 0.4em;
     border: 0 none;
 }
 
-.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-list-item {
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
     border:0px none;
     cursor:pointer;
     font-weight:normal;
@@ -132,22 +130,16 @@
     text-align:left;
 }
 
-.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-table {
+.ui-selectonemenu-panel .ui-selectonemenu-table {
     border-collapse:collapse;
     width:100%;
 }
 
-.ui-selectonemenu .ui-selectonemenu-panel .ui-selectonemenu-table td {
+.ui-selectonemenu-panel .ui-selectonemenu-table td {
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
     padding:4px 10px 4px 10px;
-}
-
-.ui-selectonemenu .wijmo-wijsuperpanel-vbarcontainer.ui-widget-header,
-.ui-selectonemenu .wijmo-wijsuperpanel-hbarcontainer.ui-widget-header,
-.ui-selectlistbox .wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
-    background-image: none;
 }
 
 /* css for timepicker */

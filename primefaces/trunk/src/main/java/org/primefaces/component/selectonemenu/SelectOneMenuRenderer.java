@@ -139,6 +139,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         int height = calculatePanelHeight(menu, selectItems.size());
 
         writer.startElement("div", null);
+        writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", SelectOneMenu.PANEL_CLASS, null);
         
         if(height != -1) {
