@@ -10,7 +10,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.input = $(this.jqId + '_input');
     this.hinput = $(this.jqId + '_hinput');
     this.panel = this.jq.children(this.panelId);
-    this.dropdown = this.jq.children('.ui-autocomplete-dropdown');
+    this.dropdown = this.jq.children('.ui-button');
     this.disabled = this.input.is(':disabled');
     this.active = true;
     

@@ -159,14 +159,21 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("div", ac);
-        writer.writeAttribute("class", AutoComplete.DROPDOWN_ICON_CLASS, null);
+        writer.startElement("button", ac);
+        writer.writeAttribute("class", "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only", null);
+        writer.writeAttribute("type", "button", null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", "ui-button-icon-primary ui-icon ui-icon-triangle-1-s", null);
         writer.endElement("span");
-
-        writer.endElement("div");
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-button-text", null);
+        writer.write("&nbsp;");
+        writer.endElement("span");
+        
+        
+        writer.endElement("button");
     }
     
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
