@@ -178,10 +178,7 @@ PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
  * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
  */
 PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
-    var columnHeaders = $(this.jqId + ' .ui-datatable-scrollable-header thead th'),
-    tbody = $(this.jqId + ' .ui-datatable-scrollable-body tbody'),
-    tfoot = $(this.jqId + ' .ui-datatable-scrollable-footer tfoot'),
-    scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
+    var scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer'),
     _self = this;
