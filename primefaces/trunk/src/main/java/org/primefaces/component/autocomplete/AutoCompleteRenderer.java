@@ -99,6 +99,10 @@ public class AutoCompleteRenderer extends InputRenderer {
             encodeHiddenInput(context, ac, clientId, value);
         }
         
+        if(ac.isDropdown()) {
+            encodeDropDown(context, ac);
+        }
+        
         encodePanel(context, ac);
 
         writer.endElement("span");
@@ -107,6 +111,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean disabled = ac.isDisabled();
+        String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
         
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
@@ -128,7 +133,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
 
         if(themeForms()) {
-            String styleClass = disabled ? AutoComplete.INPUT_CLASS + " ui-state-disabled" : AutoComplete.INPUT_CLASS;
+            String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
             writer.writeAttribute("class", styleClass, null);
         }
 
@@ -149,6 +154,19 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("input");
 
         context.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
+    }
+    
+    protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", ac);
+        writer.writeAttribute("class", AutoComplete.DROPDOWN_ICON_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
+        writer.endElement("span");
+
+        writer.endElement("div");
     }
     
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {

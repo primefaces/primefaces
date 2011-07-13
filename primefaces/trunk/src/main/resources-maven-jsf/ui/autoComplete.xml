@@ -116,6 +116,12 @@
             <type>java.lang.Integer</type>
             <defaultValue>400</defaultValue>
         </attribute>
+        <attribute>
+            <name>dropdown</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>
