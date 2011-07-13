@@ -1,13 +1,11 @@
 .ui-autocomplete {
-    display: inline-block;
-    position: relative;
     width: auto;
     zoom: 1;
     cursor: pointer;
-    *display: inline;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
+    position:static;
 }
 
 .ui-autocomplete-panel {
