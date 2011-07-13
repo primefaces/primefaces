@@ -10,6 +10,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.input = $(this.jqId + '_input');
     this.hinput = $(this.jqId + '_hinput');
     this.panel = this.jq.children(this.panelId);
+    this.dropdown = this.jq.children('.ui-autocomplete-dropdown');
     this.disabled = this.input.is(':disabled');
     this.active = true;
     
@@ -120,6 +121,27 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
              }
         }
          
+    });
+    
+    //dropdown
+    this.dropdown.mouseover(function() {
+        if(!_self.disabled) {
+            $(this).addClass('ui-state-hover');
+        }
+    }).mouseout(function() {
+        if(!_self.disabled) {
+            $(this).removeClass('ui-state-hover');
+        }
+    }).mousedown(function() {
+        if(!_self.disabled && _self.active) {
+            $(this).addClass('ui-state-active');
+        }
+    }).mouseup(function() {
+        if(!_self.disabled && _self.active) {
+            $(this).removeClass('ui-state-active');
+            
+            _self.search('');
+        }
     });
 
     //hide overlay when outside is clicked

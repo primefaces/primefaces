@@ -40,3 +40,18 @@
     border-color: inherit;
     padding:4px 10px 4px 10px;
 }
+
+.ui-autocomplete .ui-autocomplete-dropdown {
+    cursor: pointer;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 3px;
+    margin-right: -24px;
+}
+
+.ui-autocomplete .ui-autocomplete-dropdown .ui-icon {
+    margin-top: 3px;
+}
