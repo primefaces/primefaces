@@ -283,6 +283,7 @@ public class DataTableRenderer extends CoreRenderer {
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
+        columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
 
