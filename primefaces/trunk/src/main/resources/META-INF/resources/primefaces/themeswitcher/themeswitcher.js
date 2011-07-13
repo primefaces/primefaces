@@ -158,10 +158,16 @@ PrimeFaces.widget.ThemeSwitcher.prototype.enable = function() {
 }
 
 PrimeFaces.widget.ThemeSwitcher.prototype.alignPanel = function() {
-    var offset = this.jq.offset();
+    var offset = this.jq.offset(),
+    panelWidth = this.panel.width(),
+    buttonWidth = this.jq.width();
     
     this.panel.css({
        'top':  offset.top + this.jq.outerHeight(),
        'left': offset.left
     });
+    
+    if(panelWidth < buttonWidth) {
+        this.panel.width(buttonWidth);
+    }
 }
