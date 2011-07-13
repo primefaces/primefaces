@@ -23,7 +23,6 @@
     white-space:nowrap;
     padding:0px;
     margin:0px;
-    overflow: hidden;
 }
 
 .ui-datatable-data, .ui-datatable-data-empty {}
@@ -35,8 +34,13 @@
     border-color: inherit;
     padding:0px;
     margin:0px;
-    overflow: hidden;
 }
+
+.ui-datatable-resizable th, 
+.ui-datatable-resizable tfoot td,
+.ui-datatable-resizable .ui-datatable-data td {
+    overflow: hidden;
+} 
 
 .ui-datatable .ui-paginator {
     margin:0px;
@@ -157,9 +161,9 @@
     width: auto;
 }
 
-.ui-datatable th div,
-.ui-datatable .ui-datatable-data td div,
-.ui-datatable tfoot td div {
+.ui-datatable th div.ui-dt-c,
+.ui-datatable .ui-datatable-data td div.ui-dt-c,
+.ui-datatable tfoot td div.ui-dt-c {
     padding: 4px 10px;
 }
 
