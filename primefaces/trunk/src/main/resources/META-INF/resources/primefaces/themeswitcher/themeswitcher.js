@@ -5,27 +5,35 @@ PrimeFaces.widget.ThemeSwitcher = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.panelId = this.jqId + '_panel';
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
     this.labelContainer = this.jq.find('.ui-selectonemenu-label-container');
     this.label = this.jq.find('.ui-selectonemenu-label');
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-    this.panel = this.jq.children('.ui-selectonemenu-panel');
+    this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
-
+    
+    //options
     if(!this.cfg.effectDuration) {
         this.cfg.effectDuration = 400;
     }
     
-    this.panel.hide().removeClass('ui-helper-hidden-accessible');
+    //add selector
+    this.jq.addClass('ui-themeswitcher');
 
+    //visuals and behaviors
     this.bindEvents();
 
-    //Client Behaviors
+    //client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
+    
+    //panel management
+    $(document.body).children(this.panelId).remove();
+    this.panel.appendTo(document.body);
 }
         
 PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
@@ -120,6 +128,8 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.ThemeSwitcher.prototype.show = function() {
+    this.alignPanel();
+
     this.panel.css('z-index', '100000');
     
     if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
@@ -145,4 +155,13 @@ PrimeFaces.widget.ThemeSwitcher.prototype.disable = function() {
 PrimeFaces.widget.ThemeSwitcher.prototype.enable = function() {
     this.disabled = false;
     this.jq.removeclass('ui-state-disabled');
+}
+
+PrimeFaces.widget.ThemeSwitcher.prototype.alignPanel = function() {
+    var offset = this.jq.offset();
+    
+    this.panel.css({
+       'top':  offset.top + this.jq.outerHeight(),
+       'left': offset.left
+    });
 }
