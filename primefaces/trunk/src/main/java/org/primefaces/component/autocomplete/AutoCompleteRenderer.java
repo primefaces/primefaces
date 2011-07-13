@@ -160,7 +160,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("button", ac);
-        writer.writeAttribute("class", "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only", null);
+        writer.writeAttribute("class", "ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only", null);
         writer.writeAttribute("type", "button", null);
 
         writer.startElement("span", null);
