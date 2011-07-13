@@ -932,7 +932,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper
-    $(this.jqId + ' thead tr th:not(:last) div').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId + ' thead tr th div').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
     //Variables
@@ -947,6 +947,9 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     thead = $(this.jqId + ' thead'),  
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
+    
+    //resizer align
+    resizers.css({height : scrollHeader.find('table thead th:first').height(), 'margin-top' : -(parseInt(scrollHeader.find('table thead th:first .ui-dt-c').css('padding-top')))});
     
     //Copy column widths to columnWrapper and clear column widths
     columnHeaders.each(function(i, item) {
@@ -990,7 +993,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             change = (newPos - oldPos),
             newWidth = columnHeaderWrapper.width() + change;
             
-            ui.helper.css('left','');
+            ui.helper.css({height : 1, left:''}); //reset resizer env.
             resizerHelper.hide();
             
             columnHeaderWrapper.width(newWidth);
@@ -1006,8 +1009,11 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 columnWidths.push($(item).children('div').width());
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+        
+            //resizer re-align
+            resizers.css({height : scrollHeader.find('table thead th:first').height(), 'margin-top' : -(parseInt(scrollHeader.find('table thead th:first .ui-dt-c').css('padding-top')))});
         },
-        containment: thead
+        containment: scrollBody
     });
     
     //Restore widths on postback
