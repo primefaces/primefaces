@@ -37,7 +37,6 @@ public class TooltipRenderer extends CoreRenderer {
     
     protected void encodeMarkup(FacesContext context, Tooltip tooltip) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String value = ComponentUtils.getStringValueToRender(context, tooltip);
         String styleClass = tooltip.getStyleClass();
         styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
         
@@ -48,7 +47,13 @@ public class TooltipRenderer extends CoreRenderer {
         if(tooltip.getStyle() != null) 
             writer.writeAttribute("style", tooltip.getStyle(), "style");
         
-        writer.writeText(value, "value");
+        if(tooltip.getChildCount() > 0) {
+            renderChildren(context, tooltip);
+        }
+        else {
+            writer.writeText(ComponentUtils.getStringValueToRender(context, tooltip), "value");
+        }
+        
         
         writer.endElement("div");
     }
@@ -68,6 +73,8 @@ public class TooltipRenderer extends CoreRenderer {
         
         if(tooltip.getShowEvent() != null) writer.write(",showEvent:'" + tooltip.getShowEvent() + "'");
         if(tooltip.getHideEvent() != null) writer.write(",hideEvent:'" + tooltip.getHideEvent() + "'");
+        if(tooltip.getShowEffect() != null) writer.write(",showEffect:'" + tooltip.getShowEffect() + "'");
+        if(tooltip.getHideEffect() != null) writer.write(",hideEffect:'" + tooltip.getHideEffect() + "'");
         		
 		writer.write("});});");
 		
