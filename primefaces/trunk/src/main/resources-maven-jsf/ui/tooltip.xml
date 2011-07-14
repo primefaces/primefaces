@@ -30,31 +30,10 @@
             <description>A global tooltip converts each title attribute to a tooltip. Default is false.</description>
 		</attribute>
 		<attribute>
-			<name>targetPosition</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>bottomRight</defaultValue>
-            <description>The corner of the target element to position the tooltip by. Default is bottomRight.</description>
-		</attribute>
-		<attribute>
-			<name>position</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>topLeft</defaultValue>
-            <description>The corner of the tooltip to position the target's position. Default is topLeft.</description>
-		</attribute>
-		<attribute>
 			<name>showEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Event displaying the tooltip. Default is mouseover.</description>
-		</attribute>
-		<attribute>
-			<name>showDelay</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>140</defaultValue>
-            <description>Delay time for displaying the tooltip. Default is 140.</description>
 		</attribute>
 		<attribute>
 			<name>showEffect</name>
@@ -64,24 +43,10 @@
             <description>Effect to be used for displaying. Default is fade.</description>
 		</attribute>
 		<attribute>
-			<name>showEffectLength</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>500</defaultValue>
-            <description>Time in milliseconds to display the effect. Default is 500.</description>
-		</attribute>
-		<attribute>
 			<name>hideEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Event hiding the tooltip. Default is mouseout.</description>
-		</attribute>
-		<attribute>
-			<name>hideDelay</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-            <description>Delay time for hiding the tooltip. Default is 0.</description>
 		</attribute>
 		<attribute>
 			<name>hideEffect</name>
@@ -89,13 +54,6 @@
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
             <description>Effect to be used for hiding. Default is fade.</description>
-		</attribute>
-		<attribute>
-			<name>hideEffectLength</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>500</defaultValue>
-            <description>Time in milliseconds to process the hide effect. Default is 500.</description>
 		</attribute>
 		<attribute>
 			<name>for</name>

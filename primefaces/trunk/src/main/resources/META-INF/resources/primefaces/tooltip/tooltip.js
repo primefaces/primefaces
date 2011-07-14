@@ -11,6 +11,8 @@ PrimeFaces.widget.Tooltip = function(id, cfg) {
     //options
     this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent : 'mouseover';
     this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent : 'mouseout';
+    this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
+    this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
     
     //bind tooltip to the target
     this.bindEvents();
@@ -31,7 +33,8 @@ PrimeFaces.widget.Tooltip.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.Tooltip.prototype.show = function() {
-    var offset = this.target.offset();
+    var offset = this.target.offset(),
+    _self = this;
     
     this.jq.css({
        'top':  offset.top + this.target.outerHeight(),
@@ -39,9 +42,15 @@ PrimeFaces.widget.Tooltip.prototype.show = function() {
        'z-index': '100000'
     });
     
-    this.jq.show();
+    this.timeout = setTimeout(function() {
+        _self.jq.show(_self.cfg.showEffect, {}, 400);
+    }, 1000);
 }
 
 PrimeFaces.widget.Tooltip.prototype.hide = function() {
-    this.jq.css('z-index', '').hide();
+    clearTimeout(this.timeout);
+    
+    this.jq.hide(this.cfg.hideEffect, {}, 400, function() {
+        $(this).css('z-index', '');
+    });
 }
