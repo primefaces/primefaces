@@ -323,34 +323,50 @@ public class DataTableRenderer extends CoreRenderer {
             writer.endElement("span");
         }
 
-        //Header content
-        UIComponent header = column.getFacet("header");
-        String headerText = column.getHeaderText();
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
-            writer.startElement("input", header);
+            writer.startElement("input", null);
             writer.writeAttribute("type", "checkbox", null);
             writer.writeAttribute("name", clientId + "_checkAll", null);
             writer.writeAttribute("onclick", table.resolveWidgetVar() + ".toggleCheckAll(this)", null);
             writer.endElement("input");
         }
         else {
-            if(header != null) {
-                header.encodeAll(context);
-            } else if(headerText != null) {
-                writer.write(headerText);
+            if(hasFilter) {
+                table.enableFiltering();
+                String filterPosition = column.getFilterPosition();
+                
+                if(filterPosition.equals("bottom")) {
+                    encodeColumnHeaderContent(context, column);
+                    encodeFilter(context, table, column);
+                }
+                else if(filterPosition.equals("top")) {
+                    encodeFilter(context, table, column);
+                    encodeColumnHeaderContent(context, column);
+                } else {
+                    throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
+                }
             }
-        }
-
-        //Filter
-        if(hasFilter) {
-            table.enableFiltering();
-            encodeFilter(context, table, column);
+            else {
+                encodeColumnHeaderContent(context, column);
+            }
         }
         
         writer.endElement("div");
 
         writer.endElement("th");
+    }
+    
+    protected void encodeColumnHeaderContent(FacesContext context, Column column) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        UIComponent header = column.getFacet("header");
+        String headerText = column.getHeaderText();
+        
+        if(header != null)
+            header.encodeAll(context);
+        else if(headerText != null)
+            writer.write(headerText);
     }
 
     protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
