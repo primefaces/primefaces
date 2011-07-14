@@ -44,7 +44,7 @@ PrimeFaces.widget.Tooltip.prototype.show = function() {
     
     this.timeout = setTimeout(function() {
         _self.jq.show(_self.cfg.showEffect, {}, 400);
-    }, 1000);
+    }, 150);
 }
 
 PrimeFaces.widget.Tooltip.prototype.hide = function() {
