@@ -78,6 +78,13 @@
             <description>Match mode for filtering.</description>
 		</attribute>
         <attribute>
+			<name>filterPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>bottom</defaultValue>
+            <description>Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.</description>
+		</attribute>
+        <attribute>
 			<name>rowspan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
