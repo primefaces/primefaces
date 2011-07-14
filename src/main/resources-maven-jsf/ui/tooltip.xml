@@ -47,7 +47,6 @@
 			<name>showEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>mouseover</defaultValue>
             <description>Event displaying the tooltip. Default is mouseover.</description>
 		</attribute>
 		<attribute>
@@ -75,7 +74,6 @@
 			<name>hideEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>mouseout</defaultValue>
             <description>Event hiding the tooltip. Default is mouseout.</description>
 		</attribute>
 		<attribute>
@@ -111,10 +109,31 @@
 			<type>java.lang.String</type>
             <description>Id of the html element to attach the tooltip.</description>
 		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the tooltip.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the tooltip.</description>
+		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>tooltip/tooltip.css</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
