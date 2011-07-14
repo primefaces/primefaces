@@ -4,6 +4,10 @@
 PrimeFaces.widget.Tooltip = function(id, cfg) {
 	this.id = id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
+    
+    //remove previous element to support ajax updates
+    $(document.body).children(this.jqId).remove();
+    
     this.jq = $(this.jqId);
 	this.cfg = cfg;
     this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
