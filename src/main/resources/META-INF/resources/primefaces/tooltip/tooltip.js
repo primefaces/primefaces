@@ -23,6 +23,14 @@ PrimeFaces.widget.Tooltip = function(id, cfg) {
 	
 	//append to body
     this.jq.appendTo(document.body);
+    
+    //use target title if value is blank
+    if($.trim(this.jq.html()) == '') {
+        this.jq.html(this.target.attr('title'));
+    }
+    
+    //remove target's title
+    this.target.removeAttr('title');
 }
 
 PrimeFaces.widget.Tooltip.prototype.bindEvents = function() {
