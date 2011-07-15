@@ -57,15 +57,9 @@
 		</attribute>
 		<attribute>
 			<name>for</name>
-			<required>false</required>
+			<required>true</required>
 			<type>java.lang.String</type>
             <description>Id of the component to attach the tooltip.</description>
-		</attribute>
-		<attribute>
-			<name>forElement</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Id of the html element to attach the tooltip.</description>
 		</attribute>
         <attribute>
 			<name>style</name>
