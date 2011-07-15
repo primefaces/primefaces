@@ -82,25 +82,19 @@ public class TooltipRenderer extends CoreRenderer {
 	}
 	
 	protected String getTarget(FacesContext context, Tooltip tooltip) {
-		if(tooltip.isGlobal())
-			return "@all";
-		else {
-			String _for = tooltip.getFor();
-			
-			if(_for != null) {
-				UIComponent forComponent = tooltip.findComponent(_for);
-                
-				if(forComponent == null)
-					throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-				else
-					return forComponent.getClientId(context);
-				
-			} else if(tooltip.getForElement() != null) {
-				return tooltip.getForElement();
-			} else {
-				throw new FacesException("No target is defined for tooltip '" + tooltip.getClientId(context) + "'");
-			}
-		}
+        String _for = tooltip.getFor();
+
+        if(_for != null) {
+            UIComponent forComponent = tooltip.findComponent(_for);
+
+            if(forComponent == null)
+                throw new FacesException("Cannot find component \"" + _for + "\" in view.");
+            else
+                return forComponent.getClientId(context);
+
+        } else {
+            throw new FacesException("No target is defined for tooltip '" + tooltip.getClientId(context) + "'");
+        }
 	}
 
     @Override
