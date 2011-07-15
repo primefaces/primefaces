@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
 import java.util.Locale;
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -922,15 +923,16 @@ public class DataTableRenderer extends CoreRenderer {
     }
     
     protected void updatePaginationMetadata(FacesContext context, DataTable table) {
+        ELContext elContext = context.getELContext();
         ValueExpression firstVe = table.getValueExpression("first");
         ValueExpression rowsVe = table.getValueExpression("rows");
         ValueExpression pageVE = table.getValueExpression("page");
 
-        if(firstVe != null)
+        if(firstVe != null && !firstVe.isReadOnly(elContext))
             firstVe.setValue(context.getELContext(), table.getFirst());
-        if(rowsVe != null)
+        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
             rowsVe.setValue(context.getELContext(), table.getRows());
-        if(pageVE != null)
+        if(pageVE != null && !pageVE.isReadOnly(elContext))
             pageVE.setValue(context.getELContext(), table.getPage());
     }
 
