@@ -947,21 +947,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     thead = $(this.jqId + ' thead'),  
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
-    
-    //Copy column widths to columnWrapper and clear column widths
-    columnHeaders.each(function(i, item) {
-        var columnHeader = $(item),
-        columnHeaderWrapper = columnHeader.children('div'),
-        padding = columnHeaderWrapper.innerWidth() - columnHeaderWrapper.width(),
-        width = columnHeader.width() - padding;
-        
-        columnHeaderWrapper.width(width);
-        columnHeader.width('');
-        
-        tbody.find('tr td:nth-child(' + ( i+ 1) + ')').width('').children('div').width(width);
-        tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(width);
-    });
- 
+     
     //State cookie
     this.columnWidthsCookie = this.id + '_columnWidths';
     

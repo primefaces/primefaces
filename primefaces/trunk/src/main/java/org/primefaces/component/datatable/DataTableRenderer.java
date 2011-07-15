@@ -230,9 +230,23 @@ public class DataTableRenderer extends CoreRenderer {
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        int scrollHeight = table.getScrollHeight();
+        int scrollWidth = table.getScrollWidth();
+        boolean hasScrollHeight = scrollHeight != Integer.MIN_VALUE;
+        boolean hasScrollWidth = scrollWidth != Integer.MIN_VALUE;
+        StringBuilder style = new StringBuilder();
         
+        if(scrollHeight != Integer.MIN_VALUE)
+            style.append("height:").append(scrollHeight).append("px;");
+        if(hasScrollWidth)
+            style.append("width:").append(scrollWidth).append("px;");
+        
+        //header
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
@@ -244,16 +258,23 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("div");
         writer.endElement("div");
 
+        //body
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        writer.writeAttribute("style", "height:" + table.getScrollHeight() + "px", null);
+        if(style.length() > 0) {
+            writer.writeAttribute("style", style, null);
+        }
         writer.startElement("table", null);
         encodeTbody(context, table);
         writer.endElement("table");
         writer.endElement("div");
 
+        //footer
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
@@ -277,12 +298,9 @@ public class DataTableRenderer extends CoreRenderer {
         String selectionMode = column.getSelectionMode();
         String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
         
-        String style = column.getStyle();
-        String styleClass = column.getStyleClass();
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
-        columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
 
         if(isSortable) {
             String columnSortByExpression = columnSortByVe.getExpressionString();
@@ -307,12 +325,18 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         
-        if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
         
+        //column content wrapper
+        String style = column.getStyle();
+        String styleClass = column.getStyleClass();
+        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
+        
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null)
+            writer.writeAttribute("style", style, null);
         
         if(isSortable) {
             writer.startElement("span", null);
@@ -450,19 +474,21 @@ public class DataTableRenderer extends CoreRenderer {
 
     protected void encodeColumnFooter(FacesContext context, DataTable table, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+        
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        String footerClass = styleClass != null ? DataTable.COLUMN_FOOTER_CLASS + " " + styleClass : DataTable.COLUMN_FOOTER_CLASS;
+        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", footerClass, null);
-        if(style != null) writer.writeAttribute("style", style, null);
+        writer.writeAttribute("class", DataTable.COLUMN_FOOTER_CLASS, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+        writer.writeAttribute("class", styleClass, null);
+        
+        if(style != null) 
+            writer.writeAttribute("style", style, null);
         
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -630,19 +656,21 @@ public class DataTableRenderer extends CoreRenderer {
 
     protected void encodeRegularCell(FacesContext context, DataTable table, Column column, String clientId, boolean selected) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String style = column.getStyle();
+        String styleClass = column.getStyleClass();
+        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
 
         writer.startElement("td", null);
-        String columnStyleClass = column.getStyleClass();
-
-        if(column.getStyle() != null)
-            writer.writeAttribute("style", column.getStyle(), null);
 
         if(column.getSelectionMode() != null) {
-            columnStyleClass = columnStyleClass == null ? DataTable.SELECTION_COLUMN_CLASS : DataTable.SELECTION_COLUMN_CLASS + " " + columnStyleClass;
-            writer.writeAttribute("class", columnStyleClass, null);
+            writer.writeAttribute("class", DataTable.SELECTION_COLUMN_CLASS , null);
             
             writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+            writer.writeAttribute("class", styleClass, null);
+            
+            if(style != null) {
+                writer.writeAttribute("style", style, null);
+            }
 
             encodeColumnSelection(context, table, clientId, column, selected);
             
@@ -650,14 +678,17 @@ public class DataTableRenderer extends CoreRenderer {
         }
         else {
             CellEditor editor = column.getCellEditor();
-            if(editor != null)
-                columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_COLUMN_CLASS : DataTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
-
-            if(columnStyleClass != null)
-                writer.writeAttribute("class", columnStyleClass, null);
+            if(editor != null) {
+                writer.writeAttribute("class", DataTable.EDITABLE_COLUMN_CLASS , null);
+            }
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+            writer.writeAttribute("class", styleClass, null);
+            
+            if(style != null) {
+                writer.writeAttribute("style", style, null);
+            }
+            
             column.encodeAll(context);
             writer.endElement("div");
         }
