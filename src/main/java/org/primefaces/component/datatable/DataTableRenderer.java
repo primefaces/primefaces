@@ -142,10 +142,6 @@ public class DataTableRenderer extends CoreRenderer {
             writer.write(",liveScroll:" + table.isLiveScroll());
             writer.write(",scrollStep:" + table.getRows());
             writer.write(",scrollLimit:" + table.getRowCount());
-
-            if(table.getHeight() != Integer.MIN_VALUE) {
-                writer.write(",height:" + table.getHeight());
-            }
         }
 
         //Resizable Columns
@@ -250,7 +246,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        writer.writeAttribute("style", "height:" + table.getHeight() + "px", null);
+        writer.writeAttribute("style", "height:" + table.getScrollHeight() + "px", null);
         writer.startElement("table", null);
         encodeTbody(context, table);
         writer.endElement("table");

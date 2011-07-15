@@ -85,12 +85,19 @@
 			<defaultValue>false</defaultValue>
             <description>Makes data scrollable with fixed header. Default is false.</description>
 		</attribute>
-		<attribute>
-			<name>height</name>
+        <attribute>
+			<name>scrollHeight</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Height in pixels for scrollable data. Default is min integer value.</description>
+            <description>Height in pixels for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>scrollWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width in pixels for scrollable data.</description>
 		</attribute>
 		<attribute>
 			<name>selectionMode</name>
