@@ -17,27 +17,24 @@ package org.primefaces.model.timeline;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class DefaultTimelineModel implements TimelineModel {
     
-    private List<TimelineEvent> events;
-
+    private List<TimelineColumn> columns;
+    
     public DefaultTimelineModel() {
-        this.events = new ArrayList<TimelineEvent>();
+        columns = new ArrayList<TimelineColumn>();
     }
 
-    public void addEvent(TimelineEvent event) {
-        event.setId(UUID.randomUUID().toString());
-		
-		events.add(event);
+    public List<TimelineColumn> getColumns() {
+        return columns;
     }
 
-    public boolean deleteEvent(TimelineEvent event) {
-        return events.remove(event);
+    public void setColumns(List<TimelineColumn> columns) {
+        this.columns = columns;
     }
 
-    public List<TimelineEvent> getEvents() {
-        return events;
+    public void addColumn(TimelineColumn column) {
+        columns.add(column);
     }
 }
