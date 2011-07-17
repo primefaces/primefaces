@@ -13,7 +13,7 @@
     <rendererClass>org.primefaces.component.timeline.TimelineRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      Timeline visualizes temporal data.
+        Timeline visualizes temporal data.
     </description>
     <interfaces>
         <interface>
@@ -28,9 +28,42 @@
 		&widget_var_attribute;
         <attribute>
             <name>value</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.util.List</type>
             <description>A java.util.List instance representing the backed model.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the timeline container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.util.List</type>
+            <description>Style class of the timeline container.</description>
+        </attribute>
+        <attribute>
+            <name>minZoom</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Minimum zoom level, default is 1.</description>
+        </attribute>
+        <attribute>
+            <name>maxZoom</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>50</defaultValue>
+            <description>Maximum zoom level, default is 50.</description>
+        </attribute>
+        <attribute>
+            <name>zoomable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When enabled a zoom slider is displayed to control zoom level, default is true.</description>
         </attribute>
     </attributes>
     <resources>
