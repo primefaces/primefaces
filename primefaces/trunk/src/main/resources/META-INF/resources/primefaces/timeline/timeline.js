@@ -384,7 +384,7 @@ PrimeFaces.widget.Timeline = function(id, cfg) {
     this.cfg = cfg;
     
     this.cfg.show_footer = false;
-    this.cfg.icon_folder = '/prime-showcase/';
+    this.cfg.icon_folder = '';
     
     this.jq.timeline(this.cfg);
 }
