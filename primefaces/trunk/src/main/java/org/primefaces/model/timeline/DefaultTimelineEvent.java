@@ -29,7 +29,7 @@ public class DefaultTimelineEvent implements TimelineEvent {
     
     private Date endDate;
     
-    private int importance = 20;
+    private int importance = 35;
     
     public DefaultTimelineEvent() {
         
