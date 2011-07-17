@@ -26,8 +26,6 @@ public class DefaultTimeLine implements Timeline {
     
     private String title;
     
-    private String description;
-    
     private Date focusDate;
     
     private int initialZoom = 20;
@@ -38,10 +36,9 @@ public class DefaultTimeLine implements Timeline {
         this.events = new ArrayList<TimelineEvent>();
     }
 
-    public DefaultTimeLine(String id, String title, String description) {
+    public DefaultTimeLine(String id, String title) {
         this.id = id;
         this.title = title;
-        this.description = description;
         this.events = new ArrayList<TimelineEvent>();
     }
 
@@ -59,14 +56,6 @@ public class DefaultTimeLine implements Timeline {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getFocusDate() {

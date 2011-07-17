@@ -78,7 +78,6 @@ public class TimelineRenderer extends CoreRenderer {
                 writer.write("{");
                 writer.write("\"id\":\"" + timeline.getId() + "\"");
                 writer.write(",\"title\":\"" + timeline.getTitle() + "\"");
-                writer.write(",\"description\":\"" + timeline.getDescription() + "\"");
                 writer.write(",\"initial_zoom\":\"" + timeline.getInitialZoom() + "\"");
                 writer.write(",\"focus_date\":\"" + formatter.format(timeline.getFocusDate()) + "\"");
 
