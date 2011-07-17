@@ -106,10 +106,11 @@ public class TimelineRenderer extends CoreRenderer {
         writer.write(",\"title\":\"" + event.getTitle() + "\"");
         writer.write(",\"description\":\"" + event.getDescription() + "\"");
         writer.write(",\"startdate\":\"" + formatter.format(event.getStartDate()) + "\"");
+        writer.write(",\"importance\":\"" + event.getImportance() + "\"");
         
-        if(event.getEndDate() != null) writer.write(",\"enddate\":\"" + formatter.format(event.getEndDate()) + "\"");
-        if(event.getImportance() != 20) writer.write(",\"importance\":\"" + event.getImportance() + "\"");
-        
+        if(event.getEndDate() != null) 
+            writer.write(",\"enddate\":\"" + formatter.format(event.getEndDate()) + "\"");
+
         writer.write("}");
     }
 }
