@@ -29,8 +29,8 @@
         <attribute>
             <name>value</name>
             <required>true</required>
-            <type>org.primefaces.model.timeline.TimelineModel</type>
-            <description>An org.primefaces.model.timeline.TimelineModel instance representing the backed model.</description>
+            <type>java.util.List</type>
+            <description>A java.util.List instance representing the backed model.</description>
         </attribute>
     </attributes>
     <resources>
@@ -42,6 +42,9 @@
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/ui/jquery-ui.js</name>
         </resource>
         <resource>
             <name>core/core.js</name>
