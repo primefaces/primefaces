@@ -42,6 +42,11 @@ public class TimelineRenderer extends CoreRenderer {
         
         writer.startElement("div", tl);
         writer.writeAttribute("id", clientId, "id"); 
+        if(tl.getStyle() != null) writer.writeAttribute("style", tl.getStyle(), "style");
+        if(tl.getStyleClass() != null) writer.writeAttribute("class", tl.getStyleClass(), "styleClass"); 
+        
+        //rest of the dom is created on the client side
+        
         writer.endElement("div");
     }
 
@@ -57,9 +62,14 @@ public class TimelineRenderer extends CoreRenderer {
         writer.write("$(function() {");
 
 		writer.write(tl.resolveWidgetVar() + " = new PrimeFaces.widget.Timeline('" + clientId +"', {");
+        writer.write("min_zoom:" + tl.getMinZoom());
+        writer.write(",max_zoom:" + tl.getMaxZoom());
+        
+        if(!tl.isZoomable())
+            writer.write(",display_zoom_level:false);");
 
         if(!model.isEmpty()) {
-            writer.write("data_source: [");
+            writer.write(",data_source: [");
 
             for(Iterator<Timeline> it = model.iterator(); it.hasNext();) {
                 Timeline timeline = it.next();
@@ -70,9 +80,7 @@ public class TimelineRenderer extends CoreRenderer {
                 writer.write(",\"title\":\"" + timeline.getTitle() + "\"");
                 writer.write(",\"description\":\"" + timeline.getDescription() + "\"");
                 writer.write(",\"initial_zoom\":\"" + timeline.getInitialZoom() + "\"");
-   
-                if(timeline.getFocusDate() != null) 
-                    writer.write(",\"focus_date\":\"" + formatter.format(timeline.getFocusDate()) + "\"");
+                writer.write(",\"focus_date\":\"" + formatter.format(timeline.getFocusDate()) + "\"");
 
                 //events
                 writer.write(",\"events\":[");
