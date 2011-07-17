@@ -24,8 +24,6 @@ public interface Timeline {
     
     public String getTitle();
     
-    public String getDescription();
-    
     public Date getFocusDate();
     
     public int getInitialZoom();
