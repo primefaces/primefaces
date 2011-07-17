@@ -21,9 +21,8 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.model.timeline.TimelineColumn;
+import org.primefaces.model.timeline.Timeline;
 import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class TimelineRenderer extends CoreRenderer {
@@ -39,45 +38,16 @@ public class TimelineRenderer extends CoreRenderer {
     public void encodeMarkup(FacesContext context, UITimeline tl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tl.getClientId(context);
-        TimelineModel model = (TimelineModel) tl.getValue();
         
         writer.startElement("div", tl);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "ui-timeline ui-widget ui-widget-content ui-corner-all", "id");
-        
-        writer.startElement("div", tl);
-        writer.writeAttribute("class", "ui-timeline-container", null);
-        
-        for(TimelineColumn column : model.getColumns()) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-timeline-column", null);
-            
-            writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-timeline-column-title", null);
-            writer.write(column.getTitle());
-            writer.endElement("span");
-            
-            writer.startElement("ul", null);
-            writer.writeAttribute("class", "ui-timeline-events", null);
-            for(TimelineEvent event : column.getEvents()) {
-                writer.startElement("li", null);
-                writer.writeAttribute("class", "ui-timeline-event ui-state-default", null);
-                writer.write(event.getTitle());
-                writer.endElement("li");
-            }
-            writer.endElement("ul");
-            
-            writer.endElement("div");
-        }
-        
-        writer.endElement("div");
-        
+        writer.writeAttribute("id", clientId, "id"); 
         writer.endElement("div");
     }
 
     public void encodeScript(FacesContext context, UITimeline tl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tl.getClientId(context);
+        List<Timeline> model = tl.getValue();
         
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -86,14 +56,55 @@ public class TimelineRenderer extends CoreRenderer {
 
 		writer.write(tl.resolveWidgetVar() + " = new PrimeFaces.widget.Timeline('" + clientId +"', {");
         
+        if(!model.isEmpty()) {
+            writer.write("data_source: [");
+
+            for(Iterator<Timeline> it = model.iterator(); it.hasNext();) {
+                Timeline timeline = it.next();
+
+                writer.write("{");
+                writer.write("\"id\":\"" + timeline.getId() + "\"");
+                writer.write("\",title\":\"" + timeline.getTitle() + "\"");
+
+                if(timeline.getFocusDate() != null) writer.write("\",focus_date\":\"" + timeline.getFocusDate() + "\"");
+                if(timeline.getInitialZoom() != 20) writer.write("\",initial_zoom\":\"" + timeline.getInitialZoom() + "\"");
+
+                //events
+                writer.write("\"events\":[");
+                for(Iterator<TimelineEvent> eventIter = timeline.getEvents().iterator(); eventIter.hasNext();) {             
+                    encodeEvent(context, eventIter.next());
+
+                    if(it.hasNext()) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("]}");
+
+                if(it.hasNext()) {
+                    writer.write(",");
+                }
+            }
+
+            writer.write("]");
+        }
+        
         writer.write("});});");
         
         writer.endElement("script");
     }
     
-    protected void encodeEvents(FacesContext context, TimelineEvent event) throws IOException {
+    public void encodeEvent(FacesContext context, TimelineEvent event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
+        writer.write("{");
+        writer.write("\"id\":\"" + event.getId() + "\"");
+        writer.write("\",title\":\"" + event.getTitle() + "\"");
+        writer.write("\",description\":\"" + event.getDescription() + "\"");
+        writer.write("\",startdate\":\"" + event.getStartDate() + "\"");
         
+        if(event.getEndDate() != null) writer.write("\",enddate\":\"" + event.getEndDate() + "\"");
+        if(event.getImportance() != 20) writer.write("\",importance\":\"" + event.getImportance() + "\"");
+        
+        writer.write("}");
     }
 }

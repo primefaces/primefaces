@@ -1,31 +1,712 @@
-.ui-timeline {
-    overflow: hidden;
-    padding: 10px;
+@charset "UTF-8";
+/* CSS Document */
+
+.timeglider-container {
+    position:relative;
+    overflow:hidden;
+    border:2px solid black;
+    font-family:Helvetica, Arial, sans-serif;
+    -moz-border-radius:7px;
+    -webkit-border-radius:7px;
+    border-radius:7px;
+    background-color:#F4F4F4;
+    height:300px;
 }
 
-.ui-timeline-container {
-    margin:0;
-    padding:0;
+
+/* Slightly darker than the larger stage, in .timeglider-container */
+.timeglider-slider-container {
+    background-color:#DDD;
+}
+.timeglider-loading {
+    background-color:black;
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+    width:100px;
+    padding:12px;
+    -moz-border-radius:7px;
+    -webkit-border-radius:7px;
+    border-radius:7px;
+    margin:12px auto 12px auto;
+    text-align:center;
 }
 
-.ui-timeline-column {
+.timeglider-footer {
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    height:26px;
+    width:100%;
+    background-color:#333;
+    color:#ccc;
+    font-size:10px;
+    padding:3px;
+
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#444444'); 
+    background: -webkit-gradient(linear, left top, left bottom, from(#000), to(#444));
+    background: -moz-linear-gradient(top,  #000,  #444);
+    background-repeat:no-repeat;
+
+}
+
+.timeglider-footer ul {
+    list-style:none;
+}
+
+.timeglider-footer ul li {
+    display:inline;
+    cursor:pointer;
+}
+
+
+
+.tg-timeline-envelope {
+    width:100%;
+    vertical-align:bottom;
+}
+
+.tg-timeline-envelope .titleBar {
+    background-color:#444;
+    color:#FFF;
+    height:16px;
+    width:auto;
+    padding:4px;
+    position:absolute;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-border-radius:4px;
+}
+
+.tg-timeline-envelope .titleBar .timeline-title {
+    color:#FFF;
+    font-size:14px;
+    width:auto;
+    position:absolute;
+    display:inline;
+    margin-top:0px;
+    font-weight:bold;
+    text-shadow:1px 1px #000;
+    z-index:10;
+}
+
+/* Correction of aristo ui css */
+.ui-slider-vertical .ui-slider-handle { 
+    left:0;margin-left: -.6em; margin-bottom: -.6em; 
+}
+
+.timeglider-slider-container {
+    width:24px;
+    padding-left:16px;
+    position:absolute;
+    height:auto;
+    z-index:10;
+    top:2px;
+    right:2px;
+    padding-top:8px;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-topright: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.timeglider-slider { 	/* style set in jQuery UI css file */   }
+
+.timeglider-zoomlevel-display {
+    font-size:.8em;
+    color:#83A0C5;
+    width:20px;
+    text-align:center;
+    background-color:#FFF;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    padding:3px;
+    margin-top:3px;
+    margin-left:-10px;
+    margin-bottom:4px;
+}
+
+
+.timeglider-pan-buttons a {
+    cursor:pointer;
+}
+
+
+.timeglider-centerline {
+    border-left:1px dashed #CCC;
+    position:absolute;
+    margin:0px auto 0px auto;
+}
+
+
+.timeglider-truck {
+    position:relative;
+}
+
+
+.timeglider-ticks {
+    top:0px;
+    position:relative;
+    height:900px;
+}
+
+.timeglider-tick {
+    /* defaults on arrival in ticks */
+    position:absolute;
+    height:30px;
+    font-size:11px;
+    background-color:#75a3c7; 
+    /* A line as bg doesn't alter the width of the div!*/
+    background-image:url("img/dotted.png");
+    background-repeat:no-repeat;
+}
+
+.timeglider-tick-label {
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
+    color:#333;
+    position:absolute;
+    top:4px;
+    left:4px;
+    font-weight:bold;
+}
+
+.timeglider-tick-hour-label {
     float:left;
-    width:300px;
-    margin-right: 10px;
+    color:#F0F0F0;
+    display:inline;
+    /* This padding-left needs to be exactly the same as
+       the value in TG_TimelineView addTick() for setting hour labels
+    */
+    padding-left:4px;
+    font-size:9px;
+    margin:0;
 }
 
-.ui-timeline-column-title {
-    font-weight: bold;
-    font-size: 16px;
+.timeglider-handle {
+    position:absolute;
+    top:0px;
+    height:1000px;
+    width:100%;
+
+    filter:alpha(opacity=1);
+    -moz-opacity:0.01;
+    -khtml-opacity: 0.01;
+    opacity: 0.01;
+
+    cursor:move;
+
 }
 
-.ui-timeline-events {
-    list-style: none outside none;
+
+
+.timeglider-menu-shown {
+    display:block;
+}
+
+.timeglider-menu-hidden {
+    display:none;
+}
+
+
+/* JUST A SHADOW TO ADD TO CLASSES */
+.tg-modal, .timeglider-event-hover-info, .timeglider-menu-modal {
+    -moz-box-shadow: 3px 3px 4px #333;
+    -webkit-box-shadow: 3px 3px 4px #333;
+    box-shadow: 3px 3px 4px #333;
+    /* For IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#333333')";
+    /* For IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#333333');
+    position:absolute;
+}
+
+.close-button-remove, .close-button-filter, .close-button-toggleMenu {
+    cursor:pointer;
+    width:30px;
+    height:30px;
+    background-image:url(buttons/close.png);
+    position:absolute;
+    top:-16px;
+    right:-16px;
+}
+
+.timeglider-close-button-small {
+    float:right;
+    cursor:pointer;
+
+    width:15px;
+    height:15px;
+    background-image:url(buttons/close_small.png);
+    margin-top:-8px;
+    margin-right:-7px;
+}
+
+#timeglider-measure-span {
+    font-size:12px;
+    width:auto;
+    font-family:Helvetica, Arial;
+    position:absolute;
+    top:-50px;
+    left:0px;
+}
+
+
+
+/* TEMP */
+.timeglider-timeline-event {
+    position:absolute;
+    /* background-color:white; */
+    padding:0px;
+    font-size:.9em;
+    cursor:pointer;
+}
+
+.timeglider-timeline-event:hover .timeglider-event-image-layout img {
+    border:1px solid #CC0000;
+}
+
+.timeglider-event-hover-info {
+    position:absolute;
+    left:-1000px;
+    border:1px solid #FFF;
+    background-color:white;
+    padding:3px 6px 3px 6px;
+    min-width:120px;
+    font-size:.7em;
+    z-index:100;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -moz-border-radius-topright: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-bottomright: 6px;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-bottom-right-radius:6px;
+}
+
+.tg-event-hovered .timeglider-event-title {
+    color:#CC0000;
+}
+
+
+.timeglider-event-image-bar {
+    /* placed in a div in the timeline bar */
+    width:22px;
+    height:22px;
+    overflow:hidden;
+    position:absolute;
+    border:1px solid #333;
+    top:-28px;
+    z-index:1;
+}
+.timeglider-event-image-bar img {
+    height:24px;
+    width:auto;
+}
+
+
+.timeglider-event-image-above {
+    /* placed in a div floating just below the "ceiling" */
+    position:absolute;
+    /* top:-28px; */
+    z-index:1;
+}
+.timeglider-event-image-above img {
+    height:48px;
+    width:auto;
+}
+
+
+.timeglider-event-image-layout {
+    /* div for default fullsize image with event */
+    position:absolute;
+
+}
+
+.timeglider-event-image-layout img {
+    position:absolute;
+}
+
+.tg-timeline-env-buttons {
+    color:#FFF;
+    cursor:pointer;
+    font-size:10px;
+    margin-top:4px;
+    background-color:#555;
+    font-weight:normal;
+    padding:2px 0 2px 6px;
+
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomright: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+
+    width:112px;
+    text-shadow:none;
+
+}
+
+
+.tg-timeline-env-buttons .expand-collapse, .tg-timeline-env-buttons .timeline-info {
+    margin-right:12px;
+}
+
+.timeglider-event-icon {
+    margin-right:5px;
+    width:auto;
+    position:absolute;
+}
+
+.timeglider-footer-button {
+    float:right;
+    width:26px;
+    height:26px;
+    cursor:pointer;
+    margin-right:12px;
+}
+
+.timeglider-filter-bt {
+    margin-right:6px;
+    background-image:url(buttons/filter.png);
+}
+.timeglider-list-bt {
+    background-image:url(buttons/list.png);
+}
+.timeglider-tools-bt {
+    background-image:url(buttons/tools.png);
+}
+
+/* MENU MODALS */
+
+
+.timeglider-menu-modal {
+    position:absolute;
+    background-color:#111;
+    border-radius:6px;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    z-index:20;
+    padding:2px;
+
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#555555', endColorstr='#000000'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#555), to(#000)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #555,  #000); /* for firefox 3.6+ */
+    background-repeat:no-repeat;
+}
+
+.timeglider-menu-modal  h3 {
+    float:left;
+    width:100px;
+    font-size:14px;
+    margin:6px 0px 3px 4px;
+    font-weight:bold;
+    color:#F0F0F0;
+    clear:left;
+    letter-spacing:.5px;
+    text-shadow:1px 1px black;
+}
+
+.timeglider-menu-modal .close-button {
+    float:right;
+    cursor:pointer;
+    margin-right:-16px;
+    margin-top:-16px;
+    width:30px;
+    height:30px;
+    background-image:url(buttons/close.png);
+}
+
+
+.timeglider-menu-modal-point-right {
+    width:20px;
+    height:20px;
+    background-image:url("img/menu-pointer-right.png");
+    background-repeat:no-repeat;
+    position:absolute;
+    bottom:-20px;
+    right:6px;
+}
+
+
+.timeglider-pan-buttons {
+    margin-top:4px;
+    margin-bottom:6px;
+    height:18px;
+    width:32px;
+    margin-left:-12px;
+}
+
+.timeglider-pan-left, .timeglider-pan-right {
+    float:left;
+    width:14px;
+    height:18px;
+    background-repeat:no-repeat;
+    cursor:pointer;
+}
+.timeglider-pan-left {
+    background-image:url("buttons/pan_left.png");
+    margin-right:1px;
+}
+.timeglider-pan-right {
+    background-image:url("buttons/pan_right.png");
+}
+/* add hover effects? */
+
+
+
+.timeglider-logo {
+    float:left;
+    width:162px;
+    height:20px;
+    background-image:url("img/timeglider.png");
+    background-repeat:no-repeat;
+    margin-top:4px;
+    margin-left:12px;
+}
+
+.timeglider-menu-modal-point-left {
+    width:20px;
+    height:20px;
+    background-image:url("img/menu-pointer-left.png");
+    background-repeat:no-repeat;
+    position:absolute;
+    bottom:-20px;
+    left:6px;
+}
+
+
+
+.timeglider-menu-modal-content {
+    clear:both;
+    background-color:#FFF;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    margin:3px;
+    padding:6px 8px 8px 8px;
+
+}
+
+
+.timeglider-menu-modal ul {
+    list-style:none;
     margin:0;
     padding:0;
 }
 
-.ui-timeline-event {
-    margin: 5px 0px;
-    padding: 3px 10px;
+.timeglider-menu-modal ul li {
+    font-size:11px;
+    margin:3px 0 3px 0;
+    padding:3px 0 3px 0;
+    cursor:pointer;
+    color:#666;
 }
+
+
+
+.timeglider-timeline-menu {
+    width:200px;
+}
+
+.timeglider-timeline-menu ul li.activeTimeline {
+    color:#000;
+}
+
+.timeglider-legend {
+    position:absolute;
+    width:150px;
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-topright: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.timeglider-legend img {
+    width:12px;
+    height:auto;
+    margin-right:8px;
+}
+
+.timeglider-legend .timeglider-menu-modal-content {
+    margin-top:8px;
+}
+
+.timeglider-legend ul li {
+    color:#999;
+}
+.timeglider-legend ul li.tg-legend-icon-selected {
+    color:#000;
+}
+
+.timeglider-legend-all {
+    float:right;
+    font-size:9px;
+    color:#777;
+    cursor:pointer;
+    margin-right:12px;
+    margin-top:-4px;
+}
+
+
+
+.timeglider-filter-box {
+    width:200px;
+}
+
+.timeglider-filter-box ul{
+    list-style:none;
+    text-align:right;
+}
+
+.timeglider-filter-box ul li {
+    display:inline;
+    margin:2px 12px 2px 0px;
+    cursor:pointer;
+    color:green;
+    font-weight:bold;
+}
+
+.timeglider-formline#bottom {
+    margin-bottom:12px;
+}
+
+.timeglider-formline {
+    margin-bottom:4px;
+    color:#555;
+    font-size:10px;
+    float:right;
+}
+.timeglider-formline input {
+    padding:4px;
+    font-size:10px;
+    color:#333;
+    border:1px dotted #333;
+    background-color:#FFF;
+}
+
+
+.box-visible {
+    display:block;
+}
+
+.timeglider-event-spanner {
+    position:absolute;
+    background-color:#ccc;
+    height:16px;
+    z-index:1;
+    padding:2px;
+    margin-left:-2px;
+    margin-top:-2px;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+
+}
+
+.timeglider-event-title {
+    width:auto;
+    color:#444;
+    position:absolute;
+    z-index:5;
+}
+
+.timeglider-event-collapsed {
+    position:absolute;
+    border-left:1px solid red;
+    top:0px;
+    height:20px;
+    width:1px;
+}
+
+
+
+/* EVENT MODAL:  
+ * override this with Timeglider_full_modal.css to make modal full-window
+*/
+.timeglider-ev-modal, .timeglider-timeline-modal {
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:7px;
+    background:#FFF;
+    border:1px solid #333;
+    width:250px;
+    padding:2px;
+}
+
+.timeglider-ev-video-modal {
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:7px;
+    background:#FFF;
+    border:1px solid #333;
+    width:450px;
+    padding:8px;
+    position:absolute;
+    top:50px;
+    left:50px;
+}
+
+
+.timeglider-ev-modal p, .timeglider-timeline-modal p {
+    font-size:11px;
+    color:#555;
+    margin:8px;
+    max-height:200px;
+    overflow-y:auto;
+}
+
+.timeglider-ev-modal p img, .timeglider-timeline-modal p img{
+    width:100px;
+    height:auto;
+    float:left;
+    margin-right:8px;
+    margin-bottom:8px;
+}
+
+.timeglider-ev-modal h4, .timeglider-timeline-modal h4  {
+    margin:4px 8px 2px 8px;
+    padding:0;
+    color:#222;
+    font-size:12px;
+}
+
+.timeglider-ev-modal .startdate {
+    font-size:10px;
+    color:#666;
+    margin:8px 8px 0px 8px;
+}
+ul.timeglider-ev-modal-links {
+    list-style:none;
+    margin:0;
+    margin:6px 8px 2px 8px;
+    padding:0;
+    clear:both;
+}
+ul.timeglider-ev-modal-links li {
+    font-size:10px;
+    display:inline;
+    padding:4px;
+    border-left:1px dotted #CCC;
+    border-right:1px dotted #CCC;
+}
+ul.timeglider-ev-modal-links li a {
+    color:#374b99;
+}
+
+/* END timeglider-ev-modal */
+.timeglider-more-plus {
+    position:absolute;
+    color:#A4DD90;
+    font-weight:bold;
+    font-size:10px;
+    cursor:pointer;
+}
+
