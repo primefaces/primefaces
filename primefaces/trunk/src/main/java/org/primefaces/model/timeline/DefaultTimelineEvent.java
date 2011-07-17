@@ -45,6 +45,14 @@ public class DefaultTimelineEvent implements TimelineEvent {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+    
+    public DefaultTimelineEvent(String title, String description, Date startDate, Date endDate, int importance) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.importance = importance;
+    }
 
     public String getId() {
         return id;

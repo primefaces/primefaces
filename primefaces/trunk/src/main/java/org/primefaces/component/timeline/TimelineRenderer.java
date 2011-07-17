@@ -16,6 +16,7 @@
 package org.primefaces.component.timeline;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import javax.faces.component.UIComponent;
@@ -48,6 +49,7 @@ public class TimelineRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tl.getClientId(context);
         List<Timeline> model = tl.getValue();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -55,26 +57,29 @@ public class TimelineRenderer extends CoreRenderer {
         writer.write("$(function() {");
 
 		writer.write(tl.resolveWidgetVar() + " = new PrimeFaces.widget.Timeline('" + clientId +"', {");
-        
+
         if(!model.isEmpty()) {
             writer.write("data_source: [");
 
             for(Iterator<Timeline> it = model.iterator(); it.hasNext();) {
                 Timeline timeline = it.next();
+                String id = timeline.getId();
 
                 writer.write("{");
                 writer.write("\"id\":\"" + timeline.getId() + "\"");
-                writer.write("\",title\":\"" + timeline.getTitle() + "\"");
-
-                if(timeline.getFocusDate() != null) writer.write("\",focus_date\":\"" + timeline.getFocusDate() + "\"");
-                if(timeline.getInitialZoom() != 20) writer.write("\",initial_zoom\":\"" + timeline.getInitialZoom() + "\"");
+                writer.write(",\"title\":\"" + timeline.getTitle() + "\"");
+                writer.write(",\"description\":\"" + timeline.getDescription() + "\"");
+                writer.write(",\"initial_zoom\":\"" + timeline.getInitialZoom() + "\"");
+   
+                if(timeline.getFocusDate() != null) 
+                    writer.write(",\"focus_date\":\"" + formatter.format(timeline.getFocusDate()) + "\"");
 
                 //events
-                writer.write("\"events\":[");
+                writer.write(",\"events\":[");
                 for(Iterator<TimelineEvent> eventIter = timeline.getEvents().iterator(); eventIter.hasNext();) {             
-                    encodeEvent(context, eventIter.next());
+                    encodeEvent(context, eventIter.next(), formatter, id);
 
-                    if(it.hasNext()) {
+                    if(eventIter.hasNext()) {
                         writer.write(",");
                     }
                 }
@@ -93,17 +98,17 @@ public class TimelineRenderer extends CoreRenderer {
         writer.endElement("script");
     }
     
-    public void encodeEvent(FacesContext context, TimelineEvent event) throws IOException {
+    public void encodeEvent(FacesContext context, TimelineEvent event, SimpleDateFormat formatter, String timelineId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.write("{");
-        writer.write("\"id\":\"" + event.getId() + "\"");
-        writer.write("\",title\":\"" + event.getTitle() + "\"");
-        writer.write("\",description\":\"" + event.getDescription() + "\"");
-        writer.write("\",startdate\":\"" + event.getStartDate() + "\"");
+        writer.write("\"id\":\"" + timelineId + "-" + event.getId() + "\"");
+        writer.write(",\"title\":\"" + event.getTitle() + "\"");
+        writer.write(",\"description\":\"" + event.getDescription() + "\"");
+        writer.write(",\"startdate\":\"" + formatter.format(event.getStartDate()) + "\"");
         
-        if(event.getEndDate() != null) writer.write("\",enddate\":\"" + event.getEndDate() + "\"");
-        if(event.getImportance() != 20) writer.write("\",importance\":\"" + event.getImportance() + "\"");
+        if(event.getEndDate() != null) writer.write(",\"enddate\":\"" + formatter.format(event.getEndDate()) + "\"");
+        if(event.getImportance() != 20) writer.write(",\"importance\":\"" + event.getImportance() + "\"");
         
         writer.write("}");
     }

@@ -383,5 +383,7 @@ PrimeFaces.widget.Timeline = function(id, cfg) {
     this.jq = $(this.jqId);
     this.cfg = cfg;
     
+    this.cfg.show_footer = false;
+    
     this.jq.timeline(this.cfg);
 }
