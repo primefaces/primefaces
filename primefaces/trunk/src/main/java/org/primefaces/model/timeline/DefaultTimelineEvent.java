@@ -31,6 +31,8 @@ public class DefaultTimelineEvent implements TimelineEvent {
     
     private int importance = 35;
     
+    private String icon;
+    
     public DefaultTimelineEvent() {
         
     }
@@ -46,12 +48,12 @@ public class DefaultTimelineEvent implements TimelineEvent {
         this.endDate = endDate;
     }
     
-    public DefaultTimelineEvent(String title, String description, Date startDate, Date endDate, int importance) {
+    public DefaultTimelineEvent(String title, String description, Date startDate, Date endDate, String icon) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.importance = importance;
+        this.icon = icon;
     }
 
     public String getId() {
@@ -100,6 +102,14 @@ public class DefaultTimelineEvent implements TimelineEvent {
 
     public void setImportance(int importance) {
         this.importance = importance;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     @Override

@@ -32,4 +32,6 @@ public interface TimelineEvent {
     public Date getEndDate();
     
     public int getImportance();
+    
+    public String getIcon();
 }

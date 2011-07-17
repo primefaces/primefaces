@@ -117,6 +117,8 @@ public class TimelineRenderer extends CoreRenderer {
         
         if(event.getEndDate() != null) 
             writer.write(",\"enddate\":\"" + formatter.format(event.getEndDate()) + "\"");
+        if(event.getIcon() != null) 
+            writer.write(",\"icon\":\"" + getResourceURL(context , event.getIcon()) + "\"");
 
         writer.write("}");
     }
