@@ -23,13 +23,6 @@
 		&data_component_attributes;
 		&widget_var_attribute;
 		<attribute>
-			<name>scrollIncrement</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>Number of items to pass in each scroll. Default is 1.</description>
-		</attribute>
-		<attribute>
 			<name>circular</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
@@ -49,6 +42,13 @@
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
             <description>Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.</description>
+		</attribute>
+		<attribute>
+			<name>maxButton</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>3</defaultValue>
+            <description>Sets max navigation button number. Higher number of pages uses dropdown for navigation. Default is 3.</description>
 		</attribute>
 		<attribute>
 			<name>revealAmount</name>
@@ -75,13 +75,22 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Name of the animation effect.</description>
+            <defaultValue>slide</defaultValue>
+            <description>Name of the animation effect slide or fade. Default is slide.</description>
 		</attribute>
 		<attribute>
-			<name>pagerPrefix</name>
+			<name>easing</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Prefix text of the pager dropdown.</description>
+            <defaultValue>easeInOutCirc</defaultValue>
+            <description>Name of the animation effect. Default is easeInOutCirc.</description>
+		</attribute>
+		<attribute>
+			<name>pagerFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>{page}</defaultValue>
+            <description>Text format of the pager dropdown elements. Default is "{page}"</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -106,6 +115,18 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Style class of each item container.</description>
+		</attribute>
+        <attribute>
+			<name>headerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Shortcut for header facet.</description>
+		</attribute>
+        <attribute>
+			<name>footerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Shortcut for footer facet.</description>
 		</attribute>
 	</attributes>
 	<resources>
