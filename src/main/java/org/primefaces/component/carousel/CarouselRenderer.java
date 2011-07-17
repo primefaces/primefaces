@@ -61,19 +61,14 @@ public class CarouselRenderer extends CoreRenderer {
 		if(carousel.isVertical()) writer.write(",isVertical:" + carousel.isVertical());
 		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());
 		if(carousel.getAutoPlayInterval() != 0) writer.write(",autoPlayInterval:" + carousel.getAutoPlayInterval());
-		if(carousel.getScrollIncrement() != 1) writer.write(",scrollIncrement:" + carousel.getScrollIncrement());
 		if(carousel.getRevealAmount() != 0) writer.write(",revealAmount:" + carousel.getRevealAmount());
-		if(carousel.getPagerPrefix() != null) writer.write(",pagerPrefixText:'" + carousel.getPagerPrefix() + "'"); 
-		
-		if(carousel.isAnimate()) {
-			writer.write(",animation:{speed:" + carousel.getSpeed());
-			if(carousel.getEffect() != null) {
-				writer.write(",effect:YAHOO.util.Easing." + carousel.getEffect());
-			}
-			
-			writer.write("}");
-		}
-		
+		writer.write(",pagerFormat:'" + carousel.getPagerFormat() + "'"); 
+		writer.write(",maxButton:" + carousel.getMaxButton());
+		writer.write(",speed:" + carousel.getSpeed());
+		writer.write(",animate:" + carousel.isAnimate());
+		writer.write(",effect:'" + carousel.getEffect() + "'");
+		writer.write(",easing:'" + carousel.getEasing() + "'");
+
 		writer.write("});");
 		
 		if(carousel.isCircular() && carousel.getAutoPlayInterval() != 0) {
@@ -83,22 +78,90 @@ public class CarouselRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
+    
+    protected void encodeCarouselFooter(FacesContext facesContext, Carousel carousel) throws IOException {
+        
+        if(carousel.getFacet("footer") == null && carousel.getFooterText() == null)
+          return;
+      
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-carousel-footer ui-widget-header ui-corner-all", null);
+
+        //Footer content
+        UIComponent facet = carousel.getFacet("footer");
+        String text = carousel.getFooterText();
+        if(facet != null) {
+            facet.encodeAll(facesContext);
+        } else if(text != null) {
+            writer.write(text);
+        }
+
+        writer.endElement("div");
+    }
+    
+    
+    protected void encodeCarouselHeader(FacesContext facesContext, Carousel carousel) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        //header container
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-widget-header ui-corner-all ui-carousel-header", null);
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-carousel-header-content", null);
+        
+        //Footer content
+        UIComponent facet = carousel.getFacet("header");
+        String text = carousel.getHeaderText();
+        if(facet != null) {
+            facet.encodeAll(facesContext);
+        } else if(text != null) {
+            writer.write(text);
+        }
+        
+        writer.endElement("div");
+        
+        //next button
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-carousel-button ui-carousel-next-button ui-icon" + (carousel.isVertical() ? " ui-icon-circle-triangle-s" : " ui-icon-circle-triangle-e"), null);
+        writer.endElement("span");
+
+        //prev button
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-carousel-button ui-carousel-prev-button ui-icon" + (carousel.isVertical() ? " ui-icon-circle-triangle-n" : " ui-icon-circle-triangle-w"), null);
+        writer.endElement("span");
+        writer.endElement("div");
+    }
+    
+    
+    
+    
 	protected void encodeMarkup(FacesContext facesContext, Carousel carousel) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = carousel.getClientId(facesContext);
 		String itemStyleClass = "ui-widget-content ui-corner-all";
 		if(carousel.getItemStyleClass() != null) itemStyleClass += " " + carousel.getItemStyleClass(); 
 		
+        //wrapper
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		if(carousel.getStyle() != null) 
+        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all ui-carousel", null);
+        
+        if(carousel.getStyle() != null) 
 			writer.writeAttribute("style", carousel.getStyle(), "style");
-		if(carousel.getStyleClass() != null) 
-			writer.writeAttribute("class", carousel.getStyleClass(), "styleClass");
-		
+
+        //header
+        encodeCarouselHeader(facesContext, carousel);
+        
+        
+        //data container
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_container", null);
+        writer.writeAttribute("class", (carousel.isVertical() ? "ui-carousel-vertical-container " : "") + "ui-widget ui-carousel-container", null);
 		
+        //data list
 		writer.startElement("ol", null);
 		
 		if(carousel.getVar() != null) {
@@ -136,6 +199,9 @@ public class CarouselRenderer extends CoreRenderer {
 		
 		writer.endElement("div");
 		
+        //footer
+        encodeCarouselFooter(facesContext, carousel);
+        
 		encodeHiddenStateField(facesContext, clientId + "_first", String.valueOf(carousel.getFirst()));
 		
 		writer.endElement("div");

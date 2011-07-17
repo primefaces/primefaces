@@ -1,211 +1,99 @@
-/*
-Copyright (c) 2009, Yahoo! Inc. All rights reserved.
-Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
-version: 2.8.0r4
-*/
-.ui-carousel {
-    visibility: hidden;
-    overflow: hidden;
-    position: relative;
-    text-align: left;
-    zoom: 1;
-    padding: 0.2em;
-}
- 
-.ui-carousel.ui-carousel-visible {
-    visibility: visible;
+/* all looong data collapser */
+.ui-carousel-container ol{
+  list-style: none outside none;
+  margin: 0;
+  padding:0;
+  position: absolute;
+  width: 32000px;
+  left: 0;
 }
 
-.ui-carousel .ui-carousel-content {
-	border:0;
-}
- 
-.ui-carousel-content {
-    overflow: hidden;
-    position: relative;
-    text-align:center;
-    border: none;
-}
- 
-.ui-carousel-element li {
-    list-style: none;
-    margin: 1px; 
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    text-align: center;
+/* data packages*/
+.ui-carousel-container ol li{
+  margin: 1px;
+  padding: 0;
+  float: left;
 }
 
-.ui-carousel-vertical .ui-carousel-element li {
-    display: block;
-    float: none;
+/* after header data container*/
+.ui-carousel-container{
+  overflow: hidden;
+  position: relative;
+  border: 0;
 }
 
-.ui-carousel-nav {
-    zoom: 1;
-}
- 
-.ui-carousel-nav:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;    
-}
- 
-.ui-carousel-button-focus {
-    outline: 1px dotted #000;
+/* vertical alignment */
+.ui-carousel-vertical-container ol li{
+  float: none !important;
 }
 
-.ui-carousel-min-width {
-    min-width: 115px;
+.ui-carousel-vertical-container ol{
+  width: auto !important;
 }
 
-.ui-carousel-element   {
-    overflow: hidden;
-    position:relative;
-	margin: 0 auto;
-    padding:0;
-    text-align:left;
-    *margin:0;
+/*footer*/
+.ui-carousel-footer{
+  margin: 1px 1px 0px 1px;
+  height: 16px;
+  padding-top: 9px;
+  padding-bottom: 6px;
+  padding-right: 10px;
+  padding-left: 10px;
+  overflow: hidden;
 }
 
-.ui-carousel-horizontal .ui-carousel-element {
-    width: 320000px;
+/* header */
+.ui-carousel-header{
+  margin: 0 1px;
+  height: 16px;
+  overflow: hidden;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
-.ui-carousel-vertical .ui-carousel-element {
-    height:320000px;
+.ui-carousel-header .ui-carousel-header-content{
+  display: inline-block;
+  width: 30%;
+  padding-top: 2px;
+  overflow: hidden;
 }
 
-.ui-carousel .ui-carousel-item-selected {
-	outline: 0 none;
-    margin: 1px;
+/* root parent */
+.ui-carousel{
+  visibility: hidden;
+  position: relative;
+  display: inline-block;
+  padding: 1px;
 }
 
-/*
-Copyright (c) 2009, Yahoo! Inc. All rights reserved.
-Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
-version: 2.8.0r4
-*/
-.ui-carousel-nav {
-    padding: 3px;
-    text-align: right;
+/*dropdown pager*/
+.ui-carousel-dropdown{
+  float: right;
+  margin: 0px 10px;
 }
 
-.ui-carousel-button {
-    float: right;
-    height: 16px;
-    margin: 5px;
-    overflow: hidden;
-    width: 16px;
+/* next prev buttons */
+.ui-carousel-button{
+  float: right;
+  margin: 2px;
 }
 
-.ui-carousel-vertical .ui-carousel-button {
-    background-position: 0 -800px;
+/* page navigation buttons*/
+.ui-carousel-nav-button{
+  float: left;
+  margin: 0 2px;
 }
 
-.ui-carousel-button-disabled {
-    background-position: 0 -2000px;
+.ui-carousel-nav-button, .ui-carousel-button{
+  cursor: pointer;
 }
 
-.ui-carousel-vertical .ui-carousel-button-disabled {
-    background-position: 0 -2100px;
-}
-
-.ui-carousel-button input,
-.ui-carousel-button button {
-    background-color: transparent;
-    border: 0;
-    cursor: pointer;
-    display: block;
-    height: 44px;
-    margin: -2px 0 0 -2px;
-    padding: 0 0 0 50px;
-}
-
- span.ui-carousel-first-button {
-    margin-left: -100px;
-    margin-right: 25px;
-   *margin: 5px 5px 5px -90px;
-}
-
- .ui-carousel-vertical span.ui-carousel-first-button {
-    background-position: 0px -750px;
-}
-
- .ui-carousel-vertical span.ui-carousel-first-button-disabled {
-    background-position: 0 -2050px;
-}
-
- .ui-carousel-nav ul {
-    float: right;
-    height: 19px;
-    margin: 0;
-    margin-left: -220px;
-    margin-right: 50px;
-   *margin-left: -160px;
-   *margin-right: 0;
-    padding: 0;
-}
-
-.ui-carousel-min-width .ui-carousel-nav ul {
-    *margin-left: -170px;
-}
-
-.ui-carousel-nav select {
-    position: relative;
-   *right: 50px;
-    top: 4px;
-}
-
-.ui-carousel-vertical .ui-carousel-nav select {
-    position: static;
-}
-
-.ui-carousel-vertical .ui-carousel-nav ul,
-.ui-carousel-vertical .ui-carousel-nav select {
-    float: none;
-    margin: 0;
-   *zoom: 1;
-}
-
-.ui-carousel-nav ul li {
-    cursor: pointer;
-    float: left;
-    height: 16px;
-    list-style: none;
-    margin: 5px 0 0 5px;
-    overflow: hidden;
-    padding: 0;
-    width: 16px;
-}
-
-.ui-carousel-nav ul:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-.ui-carousel-nav ul li a {
-    display:block;
-    width: 100%;
-    height: 100%;
-    text-indent: -10000px;
-    text-align:left;
-    overflow:hidden;
-}
-
-.ui-carousel-nav ul li.ui-carousel-nav-page-focus {
-    outline: 1px dotted #000;
-}
-
-.ui-carousel-item-loading {
-    background: url(ajax-loader.gif) no-repeat 50% 50%;
-    position: absolute;
-    text-indent: -150px;
+/* page navigation button container */
+.ui-carousel-nav{
+  margin: 0px 9px;
+  margin-top: 1px;
+  display: inline-table;
+  float: right;
 }
