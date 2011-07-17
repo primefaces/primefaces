@@ -15,11 +15,23 @@
  */
 package org.primefaces.model.timeline;
 
+import java.util.Date;
 import java.util.List;
 
-public interface TimelineModel {
+public interface Timeline {
     
-    public List<TimelineColumn> getColumns();
+    public String getId();
     
-    public void addColumn(TimelineColumn column);
+    public String getTitle();
+    
+    public Date getFocusDate();
+    
+    public int getInitialZoom();
+    
+    public void addEvent(TimelineEvent event);
+	
+	public boolean deleteEvent(TimelineEvent event);
+	
+	public List<TimelineEvent> getEvents();
+    
 }

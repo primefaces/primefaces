@@ -16,48 +16,84 @@
 package org.primefaces.component.timeline;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.model.timeline.TimelineColumn;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class TimelineRenderer extends CoreRenderer {
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Timeline timeline = (Timeline) component;
+        UITimeline tl = (UITimeline) component;
         
-        encodeMarkup(context, timeline);
-        encodeScript(context, timeline);
+        encodeMarkup(context, tl);
+        encodeScript(context, tl);
     }
 
-    public void encodeMarkup(FacesContext context, Timeline timeline) throws IOException {
+    public void encodeMarkup(FacesContext context, UITimeline tl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
+        String clientId = tl.getClientId(context);
+        TimelineModel model = (TimelineModel) tl.getValue();
         
-        writer.startElement("div", timeline);
+        writer.startElement("div", tl);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", "ui-timeline ui-widget ui-widget-content ui-corner-all", "id");
         
-        writer.startElement("div", timeline);
-        writer.writeAttribute("id", clientId + "_container", null);
+        writer.startElement("div", tl);
+        writer.writeAttribute("class", "ui-timeline-container", null);
+        
+        for(TimelineColumn column : model.getColumns()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-timeline-column", null);
+            
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "ui-timeline-column-title", null);
+            writer.write(column.getTitle());
+            writer.endElement("span");
+            
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", "ui-timeline-events", null);
+            for(TimelineEvent event : column.getEvents()) {
+                writer.startElement("li", null);
+                writer.writeAttribute("class", "ui-timeline-event ui-state-default", null);
+                writer.write(event.getTitle());
+                writer.endElement("li");
+            }
+            writer.endElement("ul");
+            
+            writer.endElement("div");
+        }
+        
         writer.endElement("div");
         
         writer.endElement("div");
     }
 
-    public void encodeScript(FacesContext context, Timeline timeline) throws IOException {
+    public void encodeScript(FacesContext context, UITimeline tl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
+        String clientId = tl.getClientId(context);
         
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
         
         writer.write("$(function() {");
 
-		writer.write(timeline.resolveWidgetVar() + " = new PrimeFaces.widget.Schedule('" + clientId +"', {");
+		writer.write(tl.resolveWidgetVar() + " = new PrimeFaces.widget.Timeline('" + clientId +"', {");
         
         writer.write("});});");
         
         writer.endElement("script");
+    }
+    
+    protected void encodeEvents(FacesContext context, TimelineEvent event) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        
     }
 }

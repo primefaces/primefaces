@@ -29,10 +29,14 @@ public class DefaultTimelineEvent implements TimelineEvent {
     
     private Date endDate;
     
-    private int importance;
+    private int importance = 20;
     
     public DefaultTimelineEvent() {
         
+    }
+    
+    public DefaultTimelineEvent(String title) {
+        this.title = title;
     }
 
     public DefaultTimelineEvent(String title, String description, Date startDate, Date endDate) {

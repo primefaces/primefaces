@@ -5,9 +5,9 @@
 ]>
 <component>
     <tag>timeline</tag>
-    <tagClass>org.primefaces.component.timeline.TimelineTag</tagClass>
-    <componentClass>org.primefaces.component.timeline.Timeline</componentClass>
-    <componentType>org.primefaces.Timeline</componentType>
+    <tagClass>org.primefaces.component.timeline.UITimelineTag</tagClass>
+    <componentClass>org.primefaces.component.timeline.UITimeline</componentClass>
+    <componentType>org.primefaces.UITimeline</componentType>
     <componentFamily>org.primefaces</componentFamily>
     <rendererType>org.primefaces.component.TimelineRenderer</rendererType>
     <rendererClass>org.primefaces.component.timeline.TimelineRenderer</rendererClass>
@@ -30,7 +30,7 @@
             <name>value</name>
             <required>true</required>
             <type>org.primefaces.model.timeline.TimelineModel</type>
-            <description>An org.primefaces.model.timeline.TimeLineModel instance representing the backed model.</description>
+            <description>An org.primefaces.model.timeline.TimelineModel instance representing the backed model.</description>
         </attribute>
     </attributes>
     <resources>
@@ -42,9 +42,6 @@
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-            <name>jquery/ui/jquery-ui.js</name>
         </resource>
         <resource>
             <name>core/core.js</name>
