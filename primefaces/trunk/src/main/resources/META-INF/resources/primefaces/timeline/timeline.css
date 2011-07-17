@@ -709,3 +709,8 @@ ul.timeglider-ev-modal-links li a {
     cursor:pointer;
 }
 
+/* PrimeFaces Extensions */
+.tg-timeline-env-buttons {
+    display: none;
+}
+
