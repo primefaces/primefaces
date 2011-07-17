@@ -91,7 +91,7 @@
 
 /* Correction of aristo ui css */
 .ui-slider-vertical .ui-slider-handle { 
-    left:0;margin-left: -.6em; margin-bottom: -.6em; 
+    left:0;margin-left: -.3em; margin-bottom: -.6em; 
 }
 
 .timeglider-slider-container {
