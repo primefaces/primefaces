@@ -992,6 +992,21 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 columnWidths.push($(item).children('div').width());
             });
             PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+            
+            //Invoke colResize behavior
+            if(_self.hasBehavior('colResize')) {
+                var colResizeBehavior = _self.cfg.behaviors['colResize'];
+                
+                var ext = {
+                    params: {}
+                };
+                ext.params[_self.id + '_columnId'] = columnHeader.attr('id');
+                ext.params[_self.id + '_width'] = newWidth;
+                ext.params[_self.id + '_height'] = columnHeader.height();
+                
+                colResizeBehavior.call(_self, event, ext);
+                
+            }
         },
         containment: this.jq
     });

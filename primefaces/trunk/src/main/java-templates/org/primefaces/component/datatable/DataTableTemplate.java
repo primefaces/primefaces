@@ -30,6 +30,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.model.SortOrder;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
@@ -70,7 +71,7 @@ import org.primefaces.model.SortOrder;
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-datatable-resizable"; 
     public static final String COLUMN_CONTENT_WRAPPER = "ui-dt-c"; 
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit", "colResize"));
 
     public List<Column> columns;
 
@@ -294,6 +295,13 @@ import org.primefaces.model.SortOrder;
                 int editedRowId = Integer.parseInt(params.get(clientId + "_editedRowId"));
                 setRowIndex(editedRowId);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+            }
+            else if(eventName.equals("colResize")) {
+                String columnId = params.get(clientId + "_columnId");
+                int width = Integer.parseInt(params.get(clientId + "_width"));
+                int height = Integer.parseInt(params.get(clientId + "_height"));
+
+                wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
 
             super.queueEvent(wrapperEvent);
