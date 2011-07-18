@@ -39,7 +39,7 @@
 }
 .wijmo-wijsuperpanel-templateouterwrapper
 {
-    position: relative;
+    position: relative; 
     /*    overflow:auto; */
     zoom: 1;
 }
@@ -327,6 +327,7 @@
 .wijmo-wijmenu-footer a span {
     float:left;
     cursor:pointer;
+    margin-top:.4em;
 }
 
 .wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:link,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:visited,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:hover,.wijmo-wijmenu-breadcrumb .wijmo-wijmenu-prev-list a:active {
@@ -369,7 +370,7 @@
 .wijmo-wijsuperpanel-hbarcontainer.ui-widget-header {
     background-image: none;
 }
-
+/*
 .wijmo-wijmenu-list {
     font-size: 100%;
     line-height: 1.3;
@@ -378,4 +379,4 @@
     outline: 0 none;
     padding: 0;
     text-decoration: none;
-}
+}*/
