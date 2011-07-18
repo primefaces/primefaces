@@ -65,9 +65,11 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                 writer.writeAttribute("style", menuItem.getStyle(), null);
                         
 			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
+                String href = disabled ? "javascript:void(0)" : getResourceURL(context, menuItem.getUrl());
+				writer.writeAttribute("href", href, null);
                                 
-				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+				if(menuItem.getTarget() != null) 
+                    writer.writeAttribute("target", menuItem.getTarget(), null);
 			} 
             else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
@@ -77,17 +79,12 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
-                if(!disabled) {
-                    String formClientId = form.getClientId(context);
-                    String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
 
-                    onclick = onclick == null ? command : command + ";" + onclick;
-                } else {
-                    onclick =  "return false;";
-                }
+                onclick = onclick == null ? command : onclick + ";" + command;
 			}
 
-            if(onclick != null) {
+            if(onclick != null && !disabled) {
                 writer.writeAttribute("onclick", onclick, null);
             }
 
