@@ -27,7 +27,7 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
   this.pageCount = this.pageCount%1 > 0 ? parseInt(this.pageCount) : this.pageCount-1;
 
   //nav buttons
-  if(this.pageCount < this.cfg.maxButton){
+  if(this.pageCount < this.cfg.pageLinks){
     this.header.append(this.getNavigator(this.pageCount+1));
     this.navButtons = this.header.find('.ui-carousel-nav-button');
   }
@@ -66,7 +66,7 @@ PrimeFaces.widget.Carousel.prototype.getDropDown = function(n){
   _self = this;
 
   for(var i=0; i<n; i++){
-    var o = $('<option>'+ this.cfg.pagerFormat.replace(/{page}/i,(i+1)) +'</option>').attr('value', i);
+    var o = $('<option>'+ this.cfg.dropdownTemplate.replace(/{page}/i,(i+1)) +'</option>').attr('value', i);
     if(this.page == i)
       o.attr('selected', 'selected');
     s.append(o);
