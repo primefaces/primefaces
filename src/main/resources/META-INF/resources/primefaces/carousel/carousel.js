@@ -21,7 +21,6 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
 
   this.cfg.numVisible = this.cfg.numVisible || 3;
   this.cfg.speed *=1000;
-  this.page = this.cfg.firstVisible || 0;
   this.plus = (((this.cfg.revealAmount || 0)/100)%this.items.length) * ( this.cfg.isVertical ? this.oneHeight : this.oneWidth);
   this.pageCount = this.items.length / (this.cfg.numVisible || 3 );
   this.pageCount = this.pageCount%1 > 0 ? parseInt(this.pageCount) : this.pageCount-1;
@@ -45,9 +44,12 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
     this.container.width((this.cfg.numVisible * this.oneWidth) + (this.plus*2));
     this.container.height(this.oneHeight);
   }
-    
+  
+  this.cfg.firstVisible = (this.cfg.firstVisible|| 0)%(this.items.length);
+  this.page = this.cfg.firstVisible/this.cfg.numVisible;
+  
   //first align
-  this.setPosition(this.getPagePosition(this.page));
+  this.setPosition(this.getItemPosition(this.cfg.firstVisible));//
   this.jq.width(this.container.outerWidth(true));
 
   this.checkButtons();
@@ -142,6 +144,13 @@ PrimeFaces.widget.Carousel.prototype.bindEvents = function(){
  */
 PrimeFaces.widget.Carousel.prototype.getPagePosition = function(index){
   return (-(index * (this.cfg.isVertical ? this.oneHeight : this.oneWidth) * this.cfg.numVisible) + this.plus);
+}
+
+/**
+ * Calculates position of a given indexed item.
+ */
+PrimeFaces.widget.Carousel.prototype.getItemPosition = function(index){
+  return (-(index * (this.cfg.isVertical ? this.oneHeight : this.oneWidth)) + this.plus);
 }
 
 /**
@@ -248,13 +257,14 @@ PrimeFaces.widget.Carousel.prototype.next = function(){
  * Previous navigation of pageing.
  */
 PrimeFaces.widget.Carousel.prototype.prev = function(){
-  return this.prevButton.disabled && !(this.animating = false) || this.go(this.page - 1);
+  return this.prevButton.disabled && !(this.animating = false) || this.go(this.page - (this.page%1 == 0 ? 1 : 0));
 }
 
 /**
  * Navigation to a given page index.
  */
 PrimeFaces.widget.Carousel.prototype.go = function( index ){
+  index = parseInt(index);
   if(this.cfg.isCircular)
     this.page = index > -1 ? index%(this.pageCount + 1) : this.pageCount + (index%(this.pageCount||1)) + 1;
   else{
@@ -296,7 +306,7 @@ PrimeFaces.widget.Carousel.prototype.checkButtons = function(){
   }
   
   //upper bound
-  if(this.page == this.pageCount){
+  if(this.page > this.pageCount-1){
     this.nextButton.disabled = true;
     this.nextButton.addClass('ui-state-disabled');
   }
