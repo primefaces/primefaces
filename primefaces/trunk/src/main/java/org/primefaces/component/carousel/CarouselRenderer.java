@@ -62,8 +62,8 @@ public class CarouselRenderer extends CoreRenderer {
 		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());
 		if(carousel.getAutoPlayInterval() != 0) writer.write(",autoPlayInterval:" + carousel.getAutoPlayInterval());
 		if(carousel.getRevealAmount() != 0) writer.write(",revealAmount:" + carousel.getRevealAmount());
-		writer.write(",pagerFormat:'" + carousel.getPagerFormat() + "'"); 
-		writer.write(",maxButton:" + carousel.getMaxButton());
+		writer.write(",dropdownTemplate:'" + carousel.getDropdownTemplate() + "'"); 
+		writer.write(",pageLinks:" + carousel.getPageLinks());
 		writer.write(",speed:" + carousel.getSpeed());
 		writer.write(",animate:" + carousel.isAnimate());
 		writer.write(",effect:'" + carousel.getEffect() + "'");

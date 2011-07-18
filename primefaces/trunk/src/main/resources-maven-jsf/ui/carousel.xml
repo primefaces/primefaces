@@ -44,7 +44,7 @@
             <description>Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.</description>
 		</attribute>
 		<attribute>
-			<name>maxButton</name>
+			<name>pageLinks</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>3</defaultValue>
@@ -86,7 +86,7 @@
             <description>Name of the animation effect. Default is easeInOutCirc.</description>
 		</attribute>
 		<attribute>
-			<name>pagerFormat</name>
+			<name>dropdownTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>{page}</defaultValue>
