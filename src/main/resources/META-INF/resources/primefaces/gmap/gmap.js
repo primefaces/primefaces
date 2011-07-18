@@ -75,9 +75,9 @@ PrimeFaces.widget.GMap.prototype.configureMarkers = function() {
 }
 
 PrimeFaces.widget.GMap.prototype.fireMarkerDragEvent = function(event, marker) {
-    var markerDragBehavior = this.cfg.behaviors['markerDrag'];
+    if(this.hasBehavior('markerDrag')) {
+        var markerDragBehavior = this.cfg.behaviors['markerDrag'];
 
-    if(markerDragBehavior) {
         var ext = {
             params: {}
         };
@@ -100,9 +100,9 @@ PrimeFaces.widget.GMap.prototype.configurePolygons = function() {
 PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overlay) {
     this.selectedOverlay = overlay;
     
-    var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
+    if(this.hasBehavior('overlaySelect')) {
+        var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
 
-    if(overlaySelectBehavior) {
         var ext = {
             params: {}
         };
@@ -140,9 +140,9 @@ PrimeFaces.widget.GMap.prototype.configureStateChangeListener = function() {
 }
 
 PrimeFaces.widget.GMap.prototype.fireStateChangeEvent = function(event) {
-    var stateChangeBehavior = this.cfg.behaviors['stateChange'];
+    if(this.hasBehavior('stateChange')) {
+        var stateChangeBehavior = this.cfg.behaviors['stateChange'];
 
-    if(stateChangeBehavior) {
         var ext = {
             params: {}
         };
@@ -164,9 +164,9 @@ PrimeFaces.widget.GMap.prototype.configurePointSelectListener = function() {
 }
 
 PrimeFaces.widget.GMap.prototype.firePointSelectEvent = function(event) {
-    var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
+    if(this.hasBehavior('pointSelect')) {
+        var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
 
-    if(pointSelectBehavior) {
         var ext = {
             params: {}
         };
@@ -193,4 +193,12 @@ PrimeFaces.widget.GMap.prototype.addOverlays = function(overlays) {
 PrimeFaces.widget.GMap.prototype.checkResize = function() {
     google.maps.event.trigger(this.map, 'resize');
     this.map.setZoom(this.map.getZoom());
+}
+
+PrimeFaces.widget.GMap.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }
