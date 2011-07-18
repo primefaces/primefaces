@@ -14,12 +14,9 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
   this.prevButton = this.header.find('.ui-carousel-prev-button');
   this.nextButton = this.header.find('.ui-carousel-next-button');
     
-  //get computed dimensions
-  var element = this.items.filter(':first').get(0),
-  computedStyle = $.browser.msie ? element.currentStyle : document.defaultView.getComputedStyle(element, null);
-  
-  this.oneWidth = parseInt(computedStyle.getPropertyValue("width")) + parseInt(computedStyle.getPropertyValue("margin-left")) + parseInt(computedStyle.getPropertyValue("margin-right")) +  ((parseInt(computedStyle.getPropertyValue("border-left-width")) + parseInt(computedStyle.getPropertyValue("border-right-width"))));
-  this.oneHeight= parseInt(computedStyle.getPropertyValue("height")) + Math.max(parseInt(computedStyle.getPropertyValue("margin-top")), parseInt(computedStyle.getPropertyValue("margin-bottom"))) + ((parseInt(computedStyle.getPropertyValue("border-top-width")) + parseInt(computedStyle.getPropertyValue("border-bottom-width"))));
+  var item = this.items.filter(':first').get(0);
+  this.oneWidth = parseInt( this.getProperty(item,"width")) + parseInt(this.getProperty(item,"margin-left")) + parseInt(this.getProperty(item,"margin-right")) +  ((parseInt(this.getProperty(item,"border-left-width")) + parseInt(this.getProperty(item,"border-right-width"))));
+  this.oneHeight= parseInt(this.getProperty(item,"height")) + Math.max(parseInt(this.getProperty(item,"margin-top")), parseInt(this.getProperty(item,"margin-bottom"))) + ((parseInt(this.getProperty(item,"border-top-width")) + parseInt(this.getProperty(item,"border-bottom-width"))));
 
   this.cfg.numVisible = this.cfg.numVisible || 3;
   this.cfg.speed *=1000;
@@ -91,6 +88,13 @@ PrimeFaces.widget.Carousel.prototype.getNavigator = function(n){
     nbc.append($('<a></a>').addClass('ui-icon ui-carousel-nav-button ui-icon-radio-off'));
 
   return nbc;
+}
+
+/**
+ * Returns browser specific computed style property value.
+ */
+PrimeFaces.widget.Carousel.prototype.getProperty = function(item, prop){
+  return $.browser.msie ? item.currentStyle.getAttribute(prop) : document.defaultView.getComputedStyle(item, "").getPropertyValue(prop);
 }
 
 /**
