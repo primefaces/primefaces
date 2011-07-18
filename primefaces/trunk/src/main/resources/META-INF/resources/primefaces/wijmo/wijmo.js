@@ -3150,7 +3150,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             if (self.options.mode === "sliding") {
                 scrollContainer.wijsuperpanel("scrollChildIntoView", item);
             }
-            active.children(":first")
+            active.children(":first:not(.ui-state-disabled)")
 			.addClass("ui-state-focus")
 			.attr("id", "ui-active-menuitem")
 			.end();
@@ -3458,7 +3458,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 
             scrollcontainer.addClass("scrollcontainer checkablesupport");
-            menucontainer.addClass("ui-widget ui-widget-header " + menuCss +
+            menucontainer.addClass("ui-widget ui-widget-content " + menuCss +
 				" ui-corner-all ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
             if (o.orientation === "horizontal" && o.mode === "flyout") {
@@ -3485,11 +3485,18 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
                     li.attr("role", "menuitem");
                     if (link.is("a")) {
                         link.bind("mouseenter.wijmenuitem", function () {
-                            $(this).addClass("ui-state-hover");
+                            var element = $(this);
+                            
+                            if(!element.hasClass('ui-state-disabled'))
+                                $(this).addClass("ui-state-hover");
                         }).bind("mouseleave.wijmenuitem", function () {
-                            $(this).removeClass("ui-state-hover");
-                            if ($(this).data("subMenuOpened")) {
-                                $(this).addClass("ui-state-active");
+                            var element = $(this);
+                            
+                            if(!element.hasClass('ui-state-disabled'))
+                                $(this).removeClass("ui-state-hover");
+
+                            if (element.data("subMenuOpened")) {
+                                element.addClass("ui-state-active");
                             }
                         });
                         if (!li.hasClass(menuitemCss)) {
