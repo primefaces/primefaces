@@ -15,9 +15,11 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
   this.nextButton = this.header.find('.ui-carousel-next-button');
     
   //get computed dimensions
-  var item = document.defaultView.getComputedStyle(this.items.filter(':first').get(0), "");
-  this.oneWidth = parseInt(item.getPropertyValue("width")) + parseInt(item.getPropertyValue("margin-left")) + parseInt(item.getPropertyValue("margin-right")) +  ((parseInt(item.getPropertyValue("border-left-width")) + parseInt(item.getPropertyValue("border-right-width"))));
-  this.oneHeight= parseInt(item.getPropertyValue("height")) + Math.max(parseInt(item.getPropertyValue("margin-top")), parseInt(item.getPropertyValue("margin-bottom"))) + ((parseInt(item.getPropertyValue("border-top-width")) + parseInt(item.getPropertyValue("border-bottom-width"))));
+  var element = this.items.filter(':first').get(0),
+  computedStyle = $.browser.msie ? element.currentStyle : document.defaultView.getComputedStyle(element, null);
+  
+  this.oneWidth = parseInt(computedStyle.getPropertyValue("width")) + parseInt(computedStyle.getPropertyValue("margin-left")) + parseInt(computedStyle.getPropertyValue("margin-right")) +  ((parseInt(computedStyle.getPropertyValue("border-left-width")) + parseInt(computedStyle.getPropertyValue("border-right-width"))));
+  this.oneHeight= parseInt(computedStyle.getPropertyValue("height")) + Math.max(parseInt(computedStyle.getPropertyValue("margin-top")), parseInt(computedStyle.getPropertyValue("margin-bottom"))) + ((parseInt(computedStyle.getPropertyValue("border-top-width")) + parseInt(computedStyle.getPropertyValue("border-bottom-width"))));
 
   this.cfg.numVisible = this.cfg.numVisible || 3;
   this.cfg.speed *=1000;
