@@ -26,6 +26,11 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     //core events
     this.bindStaticEvents();
     
+    //client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+    }
+    
     //force selection
     if(this.cfg.forceSelection) {
         this.setupForceSelection();
