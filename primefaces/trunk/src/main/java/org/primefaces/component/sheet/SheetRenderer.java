@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,6 +112,14 @@ public class SheetRenderer extends CoreRenderer {
         writer.startElement("thead", null);
         writer.startElement("tr", null);
         
+        //index column header
+        writer.startElement("th", null);
+        writer.writeAttribute("class", Sheet.COLUMN_HEADER_CLASS, null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Sheet.INDEX_CELL_CLASS, null);
+        writer.endElement("div");
+        writer.endElement("th");
+        
         for(UIComponent child : sheet.getChildren()) {
             if(child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
@@ -173,6 +181,15 @@ public class SheetRenderer extends CoreRenderer {
         writer.startElement("tr", null);
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
         writer.writeAttribute("class", Sheet.ROW_CLASS, null);
+        
+        //index column
+        writer.startElement("td", null);
+        writer.writeAttribute("class", Sheet.COLUMN_HEADER_CLASS, null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Sheet.INDEX_CELL_CLASS, null);
+        writer.write(String.valueOf(rowIndex + 1));
+        writer.endElement("div");
+        writer.endElement("td");
         
         for(UIComponent child : sheet.getChildren()) {
             if(child instanceof Column && child.isRendered()) {
