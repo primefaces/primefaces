@@ -8,6 +8,7 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     this.header = this.jq.children('.ui-sheet-header');
     this.body = this.jq.children('.ui-sheet-body');
     this.cfg = cfg;
+    this.editor = $(this.jqId + ' .ui-sheet-editor-bar').find('.ui-sheet-editor');
     var _self = this;
 
     //sync body scroll with header
@@ -25,17 +26,19 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
     cells = this.body.find('div.ui-sh-c');
         
     cells.click(function(e) {
+        var cell = $(this);
+        _self.current = cell;
+        
         cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-        $(this).addClass('ui-state-highlight');
+        cell.addClass('ui-state-highlight');
+        _self.editor.val(cell.children('.ui-sh-c-d').html());
     })
     .dblclick(function(e) {
         var cell = $(this),
         oldWidth = cell.width(),
         padding = cell.innerWidth() - cell.width(),
         newWidth = oldWidth + padding;
-                    
-        _self.current = cell;
-                    
+                                        
         //change cell structure to allocate all the space
         cell.data('oldWidth', oldWidth)
         .removeClass('ui-state-highlight')
@@ -47,16 +50,17 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
         cell.children('.ui-sh-c-e').show().children('input:first').focus();
     });
                 
-    cells.find('input').blur(function() {
-        //switch to display mode
+    cells.find('input').blur(function(e) {
+        //switch to display mode if anything other than editor is clicked
         var editableContainer = _self.current.children('.ui-sh-c-e'),
         editableValue = editableContainer.children('input:first').val();
-                    
+
         _self.current.children('.ui-sh-c-d').html(editableValue).show();
         editableContainer.hide();
-                    
+
         //restore cell structure
         _self.current.css('padding', '').width(_self.current.data('oldWidth')).removeData('oldWidth');
+
         
     }).keydown(function(e) {
         //switch to display mode when enter is pressed during editing
@@ -66,6 +70,21 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
 
         if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
             input.blur();
+        } 
+        else {
+            _self.editor.val(input.val());
+        }
+    });
+    
+    this.editor.keydown(function(e) {
+        var keyCode = $.ui.keyCode,
+        key = e.which,
+        editor = $(this);
+
+        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+            _self.current.children('.ui-sh-c-d').html(editor.val());
+            _self.current.find('input:first').val(editor.val());
+            editor.val('');
         }
     });
 }
