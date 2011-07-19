@@ -6,3 +6,5 @@
     public static final String CELL_CLASS = "ui-sh-c";
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String CELL_DISPLAY_CLASS = "ui-sh-c-d";
+    public static final String CELL_EDIT_CLASS = "ui-sh-c-e";

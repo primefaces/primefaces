@@ -54,3 +54,15 @@
 .ui-sheet div.ui-sh-c {
     padding: 4px 10px;
 }
+
+.ui-sheet .ui-sh-c-e {
+    display: none;
+}
+
+.ui-sheet .ui-sh-c.ui-state-highlight {
+    border:0 none;
+}
+
+.ui-sh-c-e input {
+    width: 100%;
+}
