@@ -5,25 +5,31 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
+    var o = this.cfg.plotOptions;
 
     //renderer options
     var rendererCfg = {
-        diameter : this.cfg.diameter,
-        sliceMargin : this.cfg.sliceMargin,
-        fill: this.cfg.fill
+        diameter : o.diameter,
+        sliceMargin : o.sliceMargin,
+        fill: o.fill
     }
 
     //renderer configuration
-    this.cfg.seriesDefaults = {
+    this.cfg.plotOptions.seriesDefaults = {
         renderer: $.jqplot.PieRenderer,
         rendererOptions: rendererCfg
     };
 
-//events
+    //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
+    //highlighter
+    if(this.cfg.tooltip)
+      PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+    this.cfg.plotOptions.highlighter = {show:false}; //default highlighter 
+
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqId, this.cfg.plotOptions.data, this.cfg.plotOptions);
 }
 
 /**
@@ -33,35 +39,37 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
-
+    var o = this.cfg.plotOptions;
     //axes
-    this.cfg.axes = {
+    this.cfg.plotOptions.axes = {
         xaxis:{
-            min:this.cfg.minX,
-            max:this.cfg.maxX
+            min:o.minX,
+            max:o.maxX
         },
         yaxis:{
-            min:this.cfg.minY,
-            max:this.cfg.maxY
+            min:o.minY,
+            max:o.maxY
         }
     };
 
-    if(this.cfg.categories) {
-        this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
-        this.cfg.axes.xaxis.ticks = this.cfg.categories;
+    if(o.categories) {
+        this.cfg.plotOptions.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
+        this.cfg.plotOptions.axes.xaxis.ticks = o.categories;
     }
 
-    if(this.cfg.breakOnNull) {
-        this.cfg.seriesDefaults = {
+    if(o.breakOnNull) {
+        this.cfg.plotOptions.seriesDefaults = {
             breakOnNull: true
         }
     }
+
+    this.cfg.plotOptions.highlighter = { show : this.cfg.tooltip, formatString : '%s, %s', showTooltip : true};
 
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
     
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqId, this.cfg.plotOptions.data, this.cfg.plotOptions);
 }
 
 /**
@@ -71,49 +79,55 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
+    var o = this.cfg.plotOptions;
 
     var rendererCfg = {
-    	barDirection:this.cfg.orientation,
-    	barPadding: this.cfg.barPadding,
-    	barMargin: this.cfg.barMargin
+    	barDirection:o.orientation,
+    	barPadding: o.barPadding,
+    	barMargin: o.barMargin
     };
 
     //renderer configuration
-    this.cfg.seriesDefaults = {
+    this.cfg.plotOptions.seriesDefaults = {
         renderer: $.jqplot.BarRenderer,
         rendererOptions: rendererCfg
     };
 
-    if(this.cfg.breakOnNull) {
-        this.cfg.seriesDefaults.breakOnNull = true;
+    if(o.breakOnNull) {
+        this.cfg.plotOptions.seriesDefaults.breakOnNull = true;
     }
 
     //axes
     var categoryAxis = {
         renderer:$.jqplot.CategoryAxisRenderer,
-        ticks: this.cfg.categories
+        ticks: o.categories
     },
     valueAxis = {
-        min: this.cfg.min,
-        max: this.cfg.max
+        min: o.min,
+        max: o.max
     }
 
-    this.cfg.axes = {};
+    this.cfg.plotOptions.axes = {};
 
-    if(this.cfg.orientation == 'vertical') {
-    	this.cfg.axes.xaxis = categoryAxis;
-        this.cfg.axes.yaxis = valueAxis;
+    if(o.orientation == 'vertical') {
+    	this.cfg.plotOptions.axes.xaxis = categoryAxis;
+        this.cfg.plotOptions.axes.yaxis = valueAxis;
     }
     else {
-    	this.cfg.axes.yaxis = categoryAxis;
-        this.cfg.axes.xaxis = valueAxis;
+    	this.cfg.plotOptions.axes.yaxis = categoryAxis;
+        this.cfg.plotOptions.axes.xaxis = valueAxis;
     }
 
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-
+    
+    //highlighter
+    if(this.cfg.tooltip)
+      PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+    this.cfg.plotOptions.highlighter = {show:false}; //default highlighter off
+    
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqId, this.cfg.plotOptions.data, this.cfg.plotOptions);
 }
 
 PrimeFaces.widget.ChartUtils = {
@@ -134,5 +148,23 @@ PrimeFaces.widget.ChartUtils = {
                 }
             }
         });
+    },
+    
+    bindHighlighter : function(chart){
+      var _self = $('#' + chart.jqId);
+      _self.append($('<div class="ui-chart-tooltip" style="position:absolute;display:none;background:#E5DACA;padding:4px; z-index:1000;"></div>').css({opacity : 0.8}));
+      var tooltip = _self.find('.ui-chart-tooltip');
+      _self.bind('jqplotDataHighlight',
+        function (ev, seriesIndex, pointIndex, data) {
+          tooltip.html(data[0] + ", " +data[1]).css({display : 'block'});
+        }
+      ).bind('jqplotDataUnhighlight',
+        function (ev, seriesIndex, pointIndex, data) {
+          tooltip.css({display : 'none'});
+      }).bind('jqplotMouseMove', 
+        function(ev, gridpos, datapos, neighbor, plot){
+          if (neighbor != null)
+            tooltip.css({left:(gridpos.x ), top:(gridpos.y - 5)});
+      });
     }
 }

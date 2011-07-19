@@ -47,13 +47,17 @@ public class LineChartRenderer extends BaseChartRenderer {
 
 		writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.LineChart('" + clientId + "', {");
+        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.LineChart('" + clientId + "', { ");
+        
+        writer.write("tooltip : " + chart.isTooltip() + ",");
+        
+        writer.write("plotOptions : {");
 
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
 
-		writer.write("});});");
+		writer.write("}});});");
 
 		writer.endElement("script");
 	}
