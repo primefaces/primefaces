@@ -9,6 +9,14 @@
     text-align: center;
 }
 
+.ui-sheet .ui-sheet-editor-bar table {
+    width: 100%;
+}
+
+.ui-sheet .ui-sheet-editor-bar tbody td {
+    border:0 none;
+}
+
 .ui-sheet th {
     text-align:center;
     white-space:nowrap;
@@ -75,4 +83,13 @@
 
 .ui-sheet .ui-sheet-index-cell {
     width: 16px;
+}
+
+.ui-sheet .ui-sheet-cell-info {
+    width: 36px;
+}
+
+.ui-sheet .ui-sheet-editor {
+    width: 100%;
+    padding-left: 4px;
 }

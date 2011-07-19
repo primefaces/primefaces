@@ -47,6 +47,7 @@ public class SheetRenderer extends CoreRenderer {
         }
         
         encodeCaption(context, sheet);
+        encodeEditorBar(context, sheet);
         encodeContent(context, sheet);
         
         writer.endElement("div");
@@ -77,6 +78,34 @@ public class SheetRenderer extends CoreRenderer {
             
             writer.endElement("div");
         }
+    }
+    
+    protected void encodeEditorBar(FacesContext context, Sheet sheet) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", sheet);
+        writer.writeAttribute("class", Sheet.EDITOR_BAR_CLASS, null);
+
+        writer.startElement("table", null);
+        writer.startElement("tbody", null);
+        writer.startElement("tr", null);
+        
+        writer.startElement("td", null);
+        writer.writeAttribute("class", Sheet.CELL_INFO_CLASS, null);
+        writer.endElement("td");
+        
+        writer.startElement("td", null);
+        writer.startElement("input", null);
+        writer.writeAttribute("class", Sheet.EDITOR_CLASS, null);
+        writer.writeAttribute("type", "text", null);
+        writer.endElement("input");
+        writer.endElement("td");
+        
+        writer.endElement("tr");
+        writer.endElement("tbody");
+        writer.endElement("table");
+
+        writer.endElement("div");
     }
 
     protected void encodeContent(FacesContext context, Sheet sheet) throws IOException {

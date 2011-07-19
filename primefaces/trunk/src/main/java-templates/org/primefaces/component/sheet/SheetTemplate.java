@@ -10,5 +10,8 @@
     public static final String CELL_DISPLAY_CLASS = "ui-sh-c-d";
     public static final String CELL_EDIT_CLASS = "ui-sh-c-e";
     public static final String INDEX_CELL_CLASS = "ui-sheet-index-cell ui-sh-c";
+    public static final String EDITOR_BAR_CLASS = "ui-sheet-editor-bar ui-widget-header";
+    public static final String CELL_INFO_CLASS = "ui-sheet-cell-info";
+    public static final String EDITOR_CLASS = "ui-sheet-editor";
 
     public static final String[] LETTERS = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"}; 
