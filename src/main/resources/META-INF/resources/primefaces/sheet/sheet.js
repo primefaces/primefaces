@@ -34,19 +34,32 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     //events for data cells
     cells.click(function(e) {
         var cell = $(this);
+        
         _self.current = cell;
+        
+        if(cell.hasClass('ui-state-highlight') && e.metaKey) {
+            cell.removeClass('ui-state-highlight');
+            _self.editor.val('');
+        } 
+        else {
+            
+            //clean previous selections if metakey is off
+            if(!e.metaKey) {
+                cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+            }
+            
+            cell.addClass('ui-state-highlight');
+            _self.editor.val(cell.children('.ui-sh-c-d').html());
+            _self.updateCellInfoDisplay(cell);
+        }
 
-        cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-        cell.addClass('ui-state-highlight');
-        _self.editor.val(cell.children('.ui-sh-c-d').html());
-        _self.updateCellInfoDisplay();
     })
     .dblclick(function(e) {
         var cell = $(this),
         oldWidth = cell.width(),
         padding = cell.innerWidth() - cell.width(),
         newWidth = oldWidth + padding;
-
+        
         //change cell structure to allocate all the space
         cell.data('oldWidth', oldWidth)
         .removeClass('ui-state-highlight')
@@ -61,14 +74,16 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     //events for input controls in data cells
     cells.find('input').blur(function(e) {
         //switch to display mode if anything other than editor is clicked
-        var editableContainer = _self.current.children('.ui-sh-c-e'),
-        editableValue = editableContainer.children('input:first').val();
+        var input = $(this),
+        cell = input.parents('.ui-sh-c:first'),
+        editableContainer = cell.children('.ui-sh-c-e'),
+        editableValue = input.val();
 
-        _self.current.children('.ui-sh-c-d').html(editableValue).show();
+        cell.children('.ui-sh-c-d').html(editableValue).show();
         editableContainer.hide();
 
         //restore cell structure
-        _self.current.css('padding', '').width(_self.current.data('oldWidth')).removeData('oldWidth');
+        cell.css('padding', '').width(cell.data('oldWidth')).removeData('oldWidth');
 
     }).keyup(function(e) {
         //switch to display mode when enter is pressed during editing
@@ -83,8 +98,6 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
             _self.editor.val(input.val());
         }
     });
-
-    
 }
 
 PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
@@ -95,11 +108,12 @@ PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
         //update cell value on enter key
         var keyCode = $.ui.keyCode,
         key = e.which,
-        editor = $(this);
+        editor = $(this),
+        selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
 
         if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-            _self.current.children('.ui-sh-c-d').html(editor.val());
-            _self.current.find('input:first').val(editor.val());
+            selectedCells.children('.ui-sh-c-d').html(editor.val());
+            selectedCells.find('input:first').val(editor.val());
             editor.val('');
         }
     }).focus(function(e) {
@@ -113,8 +127,10 @@ PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
         if(!target.is('html') && !target.is(document.body)) {
             return;
         }
+        
+        var selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
 
-        if(_self.body.find('div.ui-sh-c.ui-state-highlight').length > 0) {
+        if(selectedCells.length > 0) {
             var keyCode = $.ui.keyCode,
             key = e.which,
             current = _self.current;
@@ -139,6 +155,13 @@ PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
 
                 case keyCode.UP:
                     current.parents('tr:first').prev().children().eq(current.parent().index()).children('div.ui-sh-c').click();
+                    e.preventDefault();
+                break;
+                
+                case keyCode.BACKSPACE:
+                    selectedCells.children('.ui-sh-c-d').html('&nbsp;');
+                    selectedCells.find('input').val('');
+                    selectedCells.removeClass('ui-state-highlight');
                     e.preventDefault();
                 break;
             }
@@ -307,9 +330,8 @@ PrimeFaces.widget.Sheet.prototype.saveColumnWidths = function() {
     PrimeFaces.setCookie(this.columnWidthsCookie, columnWidths.join(','));
 }
 
-PrimeFaces.widget.Sheet.prototype.updateCellInfoDisplay = function() {
-    var cell = this.current,
-    rowIndex = cell.parent().siblings().eq(0).children('.ui-sheet-index-cell').html(),
+PrimeFaces.widget.Sheet.prototype.updateCellInfoDisplay = function(cell) {
+    var rowIndex = cell.parent().siblings().eq(0).children('.ui-sheet-index-cell').html(),
     columnName = this.header.find('th').eq(cell.parent().index()).children('.ui-sh-c').text();
     
     this.cellInfoDisplay.html(rowIndex + columnName);
