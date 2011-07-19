@@ -86,7 +86,8 @@
 }
 
 .ui-sheet .ui-sheet-cell-info {
-    width: 36px;
+    padding-left: 10px;
+    width: 26px;
 }
 
 .ui-sheet .ui-sheet-editor {

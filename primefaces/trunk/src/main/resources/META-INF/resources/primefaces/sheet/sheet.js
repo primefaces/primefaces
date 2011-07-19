@@ -10,6 +10,7 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     this.cfg = cfg;
     this.editor = $(this.jqId + ' .ui-sheet-editor-bar').find('.ui-sheet-editor');
     this.columnHeaders = this.header.find('thead th');
+    this.cellInfoDisplay = $(this.jqId + ' .ui-sheet-editor-bar .ui-sheet-cell-info');
     var _self = this;
 
     //sync body scroll with header
@@ -38,6 +39,7 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
         cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
         cell.addClass('ui-state-highlight');
         _self.editor.val(cell.children('.ui-sh-c-d').html());
+        _self.updateCellInfoDisplay();
     })
     .dblclick(function(e) {
         var cell = $(this),
@@ -303,4 +305,12 @@ PrimeFaces.widget.Sheet.prototype.saveColumnWidths = function() {
         columnWidths.push($(item).children('div').width());
     });
     PrimeFaces.setCookie(this.columnWidthsCookie, columnWidths.join(','));
+}
+
+PrimeFaces.widget.Sheet.prototype.updateCellInfoDisplay = function() {
+    var cell = this.current,
+    rowIndex = cell.parent().siblings().eq(0).children('.ui-sheet-index-cell').html(),
+    columnName = this.header.find('th').eq(cell.parent().index()).children('.ui-sh-c').text();
+    
+    this.cellInfoDisplay.html(rowIndex + columnName);
 }
