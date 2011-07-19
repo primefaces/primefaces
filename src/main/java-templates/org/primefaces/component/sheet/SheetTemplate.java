@@ -1,0 +1,8 @@
+
+    public final static String CONTAINER_CLASS = "ui-sheet ui-widget";
+    public static final String HEADER_CLASS = "ui-widget-header ui-sheet-header";
+    public static final String HEADER_BOX_CLASS = "ui-sheet-header-box";
+    public static final String BODY_CLASS = "ui-sheet-body";
+    public static final String CELL_CLASS = "ui-sh-c";
+    public static final String ROW_CLASS = "ui-widget-content";
+    public static final String COLUMN_HEADER_CLASS = "ui-state-default";

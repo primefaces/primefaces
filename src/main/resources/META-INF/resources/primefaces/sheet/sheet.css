@@ -1,0 +1,56 @@
+.ui-sheet table {
+	border-collapse:collapse;
+    table-layout: fixed;
+}
+
+.ui-sheet th {
+    text-align:center;
+    white-space:nowrap;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-sheet .ui-sheet-body td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-sheet-body {
+    overflow:auto;
+}
+.ui-sheet-header {
+    overflow: hidden;
+    border:0px none;
+    position: relative;
+}
+            
+.ui-sheet-header-box {
+    float:left;
+    padding-right: 40px;
+}
+
+.ui-sheet .ui-column-resizer {
+    width:8px;
+    height:22px;
+    float:right;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    margin: -4px -10px;
+}
+
+.ui-sheet .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-sheet div.ui-sh-c {
+    padding: 4px 10px;
+}
