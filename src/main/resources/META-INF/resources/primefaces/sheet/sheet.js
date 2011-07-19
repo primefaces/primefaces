@@ -9,6 +9,7 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     this.body = this.jq.children('.ui-sheet-body');
     this.cfg = cfg;
     this.editor = $(this.jqId + ' .ui-sheet-editor-bar').find('.ui-sheet-editor');
+    this.columnHeaders = this.header.find('thead th');
     var _self = this;
 
     //sync body scroll with header
@@ -153,7 +154,6 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
     frozenHeaderRow = this.header.find('tbody'),
-    columnHeaders = this.header.find('thead th'),
     thead = $(this.jqId + ' thead'),
     _self = this;
     
@@ -192,27 +192,14 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
             _self.body.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
             
             //Save state
-            var columnWidths = [];
-            columnHeaders.each(function(i, item) {
-                columnWidths.push($(item).children('div').width());
-            });
-            PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+            _self.saveColumnWidths();
+            
         },
         containment: this.jq
     });
     
     //Restore widths on postback
-    var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
-    if(widths) {
-        widths = widths.split(',');
-        for(var i = 0; i < widths.length; i++) {
-            var width = widths[i];
-            
-            columnHeaders.eq(i).children('div').width(width);
-            _self.header.find('tbody tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
-            _self.body.find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
-        }
-    }
+    this.restoreColumnWidths();
 
 }
 
@@ -274,6 +261,7 @@ PrimeFaces.widget.Sheet.prototype.sort = function(columnId, order) {
 
             if(id == _self.id){
                 _self.body.children('table').children('tbody').html(content);
+                _self.restoreColumnWidths();
                 _self.bindDynamicEvents();
             }
             else {
@@ -292,4 +280,27 @@ PrimeFaces.widget.Sheet.prototype.sort = function(columnId, order) {
     options.params = params;
     
     PrimeFaces.ajax.AjaxRequest(options); 
+}
+
+PrimeFaces.widget.Sheet.prototype.restoreColumnWidths = function() {
+    var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
+    if(widths) {
+        widths = widths.split(',');
+        for(var i = 0; i < widths.length; i++) {
+            var width = widths[i];
+            
+            this.columnHeaders.eq(i).children('div').width(width);
+            this.header.find('tbody tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
+            this.body.find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
+        }
+    }
+}
+
+PrimeFaces.widget.Sheet.prototype.saveColumnWidths = function() {
+    var columnWidths = [];
+    
+    this.columnHeaders.each(function(i, item) {
+        columnWidths.push($(item).children('div').width());
+    });
+    PrimeFaces.setCookie(this.columnWidthsCookie, columnWidths.join(','));
 }
