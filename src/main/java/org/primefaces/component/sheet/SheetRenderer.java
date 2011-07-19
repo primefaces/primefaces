@@ -21,9 +21,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class SheetRenderer extends CoreRenderer {
     
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Sheet sheet = (Sheet) component;
         
@@ -131,8 +133,6 @@ public class SheetRenderer extends CoreRenderer {
                 } else if(column.getHeaderText() != null) {
                     writer.write(column.getHeaderText());
                 }
-                
-                child.encodeAll(context);
 
                 writer.endElement("th");
             }
@@ -189,12 +189,30 @@ public class SheetRenderer extends CoreRenderer {
                     writer.writeAttribute("style", style, null);
                 }
                 
+                writer.startElement("span", null);
+                writer.writeAttribute("class", Sheet.CELL_DISPLAY_CLASS, null);
+                writer.write(ComponentUtils.getStringValueToRender(context, child.getChildren().get(0)));
+                writer.endElement("span");
+                
+                writer.startElement("span", null);
+                writer.writeAttribute("class", Sheet.CELL_EDIT_CLASS, null);
                 child.encodeAll(context);
+                writer.endElement("span");
 
                 writer.endElement("td");
             }
         }
         
         writer.endElement("tr");
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
