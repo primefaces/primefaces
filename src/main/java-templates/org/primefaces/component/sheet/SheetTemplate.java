@@ -1,5 +1,6 @@
 
     public final static String CONTAINER_CLASS = "ui-sheet ui-widget";
+    public static final String CAPTION_CLASS = "ui-widget-header ui-sheet-caption ui-corner-tl ui-corner-tr";
     public static final String HEADER_CLASS = "ui-widget-header ui-sheet-header";
     public static final String HEADER_BOX_CLASS = "ui-sheet-header-box";
     public static final String BODY_CLASS = "ui-sheet-body";

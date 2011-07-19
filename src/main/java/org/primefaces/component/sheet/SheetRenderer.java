@@ -46,6 +46,7 @@ public class SheetRenderer extends CoreRenderer {
             writer.writeAttribute("style", sheet.getStyle(), "style");
         }
         
+        encodeCaption(context, sheet);
         encodeContent(context, sheet);
         
         writer.endElement("div");
@@ -62,6 +63,20 @@ public class SheetRenderer extends CoreRenderer {
         writer.write("});");
 
 		writer.endElement("script");
+    }
+    
+    protected void encodeCaption(FacesContext context, Sheet sheet) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent caption = sheet.getFacet("caption");
+        
+        if(caption != null) {
+            writer.startElement("div", sheet);
+            writer.writeAttribute("class", Sheet.CAPTION_CLASS, null);
+            
+            caption.encodeAll(context);
+            
+            writer.endElement("div");
+        }
     }
 
     protected void encodeContent(FacesContext context, Sheet sheet) throws IOException {
