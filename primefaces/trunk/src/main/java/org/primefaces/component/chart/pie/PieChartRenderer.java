@@ -46,7 +46,11 @@ public class PieChartRenderer extends BaseChartRenderer {
 		
 		writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', {");
+        writer.write( chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', { " ); 
+        
+		writer.write("tooltip : " + chart.isTooltip() + ",");
+        
+        writer.write("plotOptions : {");
 
         encodeData(context, chart);
 
@@ -54,8 +58,8 @@ public class PieChartRenderer extends BaseChartRenderer {
         
         encodeClientBehaviors(context, chart);
 
-		writer.write("});});");
-
+		writer.write("}});});");
+        
 		writer.endElement("script");
 	}
 
