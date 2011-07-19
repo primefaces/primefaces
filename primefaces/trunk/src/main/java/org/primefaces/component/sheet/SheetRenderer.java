@@ -102,7 +102,7 @@ public class SheetRenderer extends CoreRenderer {
         writer.writeAttribute("class", Sheet.HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
-        encodeThead(context, sheet);
+        encodeHeader(context, sheet);
         writer.endElement("table");
         
         writer.endElement("div");
@@ -115,15 +115,16 @@ public class SheetRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.startElement("table", null);
-        encodeTbody(context, sheet);
+        encodeBody(context, sheet);
         writer.endElement("table");
         
         writer.endElement("div");
     }
-
-    public void encodeThead(FacesContext context, Sheet sheet) throws IOException {
+    
+    public void encodeHeader(FacesContext context, Sheet sheet) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
+        //fixed columns
         writer.startElement("thead", null);
         writer.startElement("tr", null);
         
@@ -135,6 +136,7 @@ public class SheetRenderer extends CoreRenderer {
         writer.endElement("div");
         writer.endElement("th");
         
+        int columnIndex = 0;
         for(UIComponent child : sheet.getChildren()) {
             if(child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
@@ -151,21 +153,63 @@ public class SheetRenderer extends CoreRenderer {
                     writer.writeAttribute("style", style, null);
                 }
                 
+                writer.write(Sheet.LETTERS[columnIndex]);
+
+                writer.endElement("th");
+                
+                columnIndex++;
+            }
+        }
+        
+        writer.endElement("tr");
+        writer.endElement("thead");
+        
+        //frozen headers
+        writer.startElement("tbody", null);
+        writer.startElement("tr", null);
+        writer.writeAttribute("class", Sheet.ROW_CLASS, null);
+        
+        //index column header
+        writer.startElement("td", null);
+        writer.writeAttribute("class", Sheet.COLUMN_HEADER_CLASS, null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Sheet.INDEX_CELL_CLASS, null);
+        writer.write("1");
+        writer.endElement("div");
+        writer.endElement("td");
+        
+        for(UIComponent child : sheet.getChildren()) {
+            if(child instanceof Column && child.isRendered()) {
+                Column column = (Column) child;
+                String style = column.getStyle();
+                String styleClass = column.getStyleClass();
+                styleClass = styleClass == null ? Sheet.CELL_CLASS : Sheet.CELL_CLASS  + " " + styleClass;
+        
+                writer.startElement("td", null);
+
+                writer.startElement("div", null);
+                writer.writeAttribute("class", styleClass, null);
+                if(style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                
                 if(column.getHeader() != null) {
                     column.getHeader().encodeAll(context);
                 } else if(column.getHeaderText() != null) {
                     writer.write(column.getHeaderText());
                 }
 
-                writer.endElement("th");
+                writer.endElement("div");
+                
+                writer.endElement("td");
             }
-        }
+         }
         
         writer.endElement("tr");
-        writer.endElement("thead");
+        writer.endElement("tbody");
     }
     
-    public void encodeTbody(FacesContext context, Sheet sheet) throws IOException {
+    public void encodeBody(FacesContext context, Sheet sheet) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         int rows = sheet.getRows();
@@ -194,7 +238,7 @@ public class SheetRenderer extends CoreRenderer {
         sheet.setRowIndex(rowIndex);
         
         writer.startElement("tr", null);
-        writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
+        writer.writeAttribute("id", clientId + "_row_" + rowIndex , null);
         writer.writeAttribute("class", Sheet.ROW_CLASS, null);
         
         //index column
@@ -202,7 +246,7 @@ public class SheetRenderer extends CoreRenderer {
         writer.writeAttribute("class", Sheet.COLUMN_HEADER_CLASS, null);
         writer.startElement("div", null);
         writer.writeAttribute("class", Sheet.INDEX_CELL_CLASS, null);
-        writer.write(String.valueOf(rowIndex + 1));
+        writer.write(String.valueOf(rowIndex + 2));
         writer.endElement("div");
         writer.endElement("td");
         
