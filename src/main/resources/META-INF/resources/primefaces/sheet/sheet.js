@@ -60,7 +60,6 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
 
         //restore cell structure
         _self.current.css('padding', '').width(_self.current.data('oldWidth')).removeData('oldWidth');
-
         
     }).keydown(function(e) {
         //switch to display mode when enter is pressed during editing
@@ -77,6 +76,7 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
     });
     
     this.editor.keydown(function(e) {
+        //update cell value on enter key
         var keyCode = $.ui.keyCode,
         key = e.which,
         editor = $(this);
@@ -86,6 +86,9 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
             _self.current.find('input:first').val(editor.val());
             editor.val('');
         }
+    }).focus(function(e) {
+        //highlight current cell
+        _self.current.addClass('ui-state-highlight');
     });
 }
 
