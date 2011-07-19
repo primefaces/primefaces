@@ -66,3 +66,7 @@
 .ui-sh-c-e input {
     width: 100%;
 }
+
+.ui-sheet .ui-sheet-index-cell {
+    width: 16px;
+}
