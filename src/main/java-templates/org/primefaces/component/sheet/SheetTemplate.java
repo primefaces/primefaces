@@ -26,7 +26,7 @@ import org.primefaces.component.column.Column;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_sorting");
     }
 
-    @Override
+    /*@Override
     public void processDecodes(FacesContext context) {
         if(isSortingRequest(context)) {
             this.decode(context);
@@ -35,7 +35,7 @@ import org.primefaces.component.column.Column;
         else {
             super.processDecodes(context);
         }
-	}
+	}*/
 
     public List<Column> columns;
     public Column findColumn(String clientId) {
