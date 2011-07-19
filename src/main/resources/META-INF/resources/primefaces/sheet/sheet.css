@@ -17,7 +17,7 @@
     overflow: hidden;
 }
 
-.ui-sheet .ui-sheet-body td {
+.ui-sheet tbody td {
     border-width: 1px;
     border-style: solid;
     border-color: inherit;

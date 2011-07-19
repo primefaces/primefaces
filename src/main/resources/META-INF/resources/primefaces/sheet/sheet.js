@@ -78,8 +78,9 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
     //Variables
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
-    columnHeaders = $(this.jqId + ' thead th'),
-    thead = $(this.jqId + ' thead'),  
+    frozenHeaderRow = this.header.find('tbody'),
+    columnHeaders = this.header.find('thead th'),
+    thead = $(this.jqId + ' thead'),
     _self = this;
     
     //State cookie
@@ -90,7 +91,7 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
         axis: 'x',
         start: function(event, ui) {
             //Set height of resizer helper
-            resizerHelper.height(_self.body.height());
+            resizerHelper.height(_self.body.height() + frozenHeaderRow.height());
             resizerHelper.show();
         },
         drag: function(event, ui) {
@@ -113,6 +114,7 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
             
             columnHeaderWrapper.width(newWidth);
                         
+            _self.header.find('tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
             _self.body.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
             
             //Save state
@@ -133,6 +135,7 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
             var width = widths[i];
             
             columnHeaders.eq(i).children('div').width(width);
+            _self.header.find('tbody tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
             _self.body.find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
         }
     }
