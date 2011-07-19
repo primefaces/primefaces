@@ -16,14 +16,16 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
         _self.header.scrollLeft(_self.body.scrollLeft());
     });
     
-    this.bindEvents();
+    this.bindDynamicEvents();
+    
+    this.bindStaticEvents();
     
     this.setupSorting();
     
     this.setupResizableColumns();
 }
 
-PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
+PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     var _self = this,
     cells = this.body.find('div.ui-sh-c');
 
@@ -79,6 +81,12 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
         }
     });
 
+    
+}
+
+PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
+    var _self = this;
+    
     //events for global editor
     this.editor.keydown(function(e) {
         //update cell value on enter key
@@ -103,7 +111,7 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
             return;
         }
 
-        if(cells.filter('.ui-state-highlight').length > 0) {
+        if(_self.body.find('div.ui-sh-c.ui-state-highlight').length > 0) {
             var keyCode = $.ui.keyCode,
             key = e.which,
             current = _self.current;
@@ -132,7 +140,6 @@ PrimeFaces.widget.Sheet.prototype.bindEvents = function() {
                 break;
             }
         }
-
 
     });
 }
@@ -267,6 +274,7 @@ PrimeFaces.widget.Sheet.prototype.sort = function(columnId, order) {
 
             if(id == _self.id){
                 _self.body.children('table').children('tbody').html(content);
+                _self.bindDynamicEvents();
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
