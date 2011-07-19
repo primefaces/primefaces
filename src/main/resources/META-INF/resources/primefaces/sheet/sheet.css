@@ -93,3 +93,11 @@
     width: 100%;
     padding-left: 4px;
 }
+
+.ui-sheet .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-sheet .ui-sortable-column-icon {
+    float:right;
+}

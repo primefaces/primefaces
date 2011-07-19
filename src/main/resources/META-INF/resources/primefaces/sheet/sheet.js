@@ -18,6 +18,8 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     
     this.bindEvents();
     
+    this.setupSorting();
+    
     this.setupResizableColumns();
 }
 
@@ -205,4 +207,81 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
         }
     }
 
+}
+
+PrimeFaces.widget.Sheet.prototype.setupSorting = function() {
+    var _self = this;
+    
+    this.header.find('.ui-sortable-column').mouseover(function() {
+        $(this).addClass('ui-state-hover');
+    })
+    .mouseout(function() {
+        $(this).removeClass('ui-state-hover');
+    })
+    .click(function(e) {
+        var column = $(this);
+        
+        //Reset previous sorted columns
+        column.siblings().removeClass('ui-state-active').
+            find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+
+        //Update sort state
+        column.addClass('ui-state-active');
+        
+        var columnId = column.attr('id'),
+        sortIcon = column.find('.ui-sortable-column-icon');
+
+        if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
+            sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+
+            _self.sort(columnId, "DESCENDING");
+        }
+        else if(sortIcon.hasClass('ui-icon-triangle-1-s')) {
+            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+
+            _self.sort(columnId, "ASCENDING");
+        } else {
+            sortIcon.addClass('ui-icon-triangle-1-n');
+
+            _self.sort(columnId, "ASCENDING");
+        }
+    });
+}
+
+PrimeFaces.widget.Sheet.prototype.sort = function(columnId, order) {
+    var options = {
+        source: this.id,
+        update: this.id,
+        process: this.id,
+        formId: this.jq.parents('form:first').attr('id')
+    };
+
+    var _self = this;
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement,
+        updates = xmlDoc.getElementsByTagName("update");
+
+        for(var i=0; i < updates.length; i++) {
+            var id = updates[i].attributes.getNamedItem("id").nodeValue,
+            content = updates[i].firstChild.data;
+
+            if(id == _self.id){
+                _self.body.children('table').children('tbody').html(content);
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+            }
+        }
+
+        return true;
+    };
+    
+    var params = {};
+    params[this.id + "_sorting"] = true;
+    params[this.id + "_sortKey"] = columnId;
+    params[this.id + "_sortDir"] = order;
+
+    options.params = params;
+    
+    PrimeFaces.ajax.AjaxRequest(options); 
 }

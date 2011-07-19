@@ -16,10 +16,18 @@
 package org.primefaces.component.sheet;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.model.ListDataModel;
 import org.primefaces.component.column.Column;
+import org.primefaces.model.BeanPropertyComparator;
+import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -29,8 +37,14 @@ public class SheetRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Sheet sheet = (Sheet) component;
         
-        encodeMarkup(context, sheet);
-        encodeScript(context, sheet);
+        if(sheet.isSortingRequest(context)) {
+            sort(context, sheet);
+            encodeBody(context, sheet);
+        } 
+        else {
+            encodeMarkup(context, sheet);
+            encodeScript(context, sheet);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, Sheet sheet) throws IOException {
@@ -169,17 +183,28 @@ public class SheetRenderer extends CoreRenderer {
         for(UIComponent child : sheet.getChildren()) {
             if(child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
+                boolean sortable = column.getValueExpression("sortBy") != null;
+                
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
                 styleClass = styleClass == null ? Sheet.CELL_CLASS : Sheet.CELL_CLASS  + " " + styleClass;
+                
+                String columnHeaderClass = sortable ? Sheet.COLUMN_HEADER_CLASS + " " + Sheet.SORTABLE_COLUMN : Sheet.COLUMN_HEADER_CLASS;
         
                 writer.startElement("th", null);
-                writer.writeAttribute("class", Sheet.COLUMN_HEADER_CLASS, null);
+                writer.writeAttribute("id", column.getClientId(context), style);
+                writer.writeAttribute("class", columnHeaderClass, null);
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", styleClass, null);
                 if(style != null) {
                     writer.writeAttribute("style", style, null);
+                }
+                
+                if(sortable) {
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", Sheet.SORTABLE_COLUMN_ICON, null);
+                    writer.endElement("span");
                 }
                 
                 writer.write(Sheet.LETTERS[columnIndex]);
@@ -319,5 +344,25 @@ public class SheetRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+    
+    protected void sort(FacesContext context, Sheet sheet) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Object value = sheet.getValue();
+        List list = null;
+        String clientId = sheet.getClientId(context);
+        Column sortColumn = sheet.findColumn(params.get(clientId + "_sortKey"));
+        ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
+        SortOrder sortOrder = SortOrder.valueOf(params.get(clientId + "_sortDir"));
+
+        if(value instanceof List) {
+            list = (List) value;
+        } else if(value instanceof ListDataModel) {
+            list = (List) ((ListDataModel) value).getWrappedData();
+        } else {
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
+
+        Collections.sort(list, new BeanPropertyComparator(sortByVE, sheet.getVar(), sortOrder, null));
     }
 }
