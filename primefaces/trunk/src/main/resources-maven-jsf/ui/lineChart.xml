@@ -80,12 +80,6 @@
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
 		</attribute>
-        <attribute>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-		</attribute>
 	</attributes>
 	<resources>
         <resource>

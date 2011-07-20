@@ -48,17 +48,13 @@ public class PieChartRenderer extends BaseChartRenderer {
 
         writer.write( chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', { " ); 
         
-		writer.write("tooltip : " + chart.isTooltip() + ",");
-        
-        writer.write("plotOptions : {");
-
         encodeData(context, chart);
 
         encodeOptions(context, chart);
         
         encodeClientBehaviors(context, chart);
 
-		writer.write("}});});");
+		writer.write("});});");
         
 		writer.endElement("script");
 	}
