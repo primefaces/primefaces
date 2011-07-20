@@ -27,32 +27,53 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     this.setupResizableColumns();
 }
 
-PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
+  PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     var _self = this,
-    cells = this.body.find('div.ui-sh-c');
+    cells = this.body.find('div.ui-sh-c'),
+    rows = this.body.find('tr');
+    
+    cells.disableSelection();
 
     //events for data cells
     cells.click(function(e) {
-        var cell = $(this);
+        var cell = $(this),
+        metaKey = e.metaKey,
+        shiftKey = e.shiftKey,
+        selected = _self.isSelected(cell);
         
-        _self.current = cell;
-        
-        if(cell.hasClass('ui-state-highlight') && e.metaKey) {
-            cell.removeClass('ui-state-highlight');
-            _self.editor.val('');
+        if(metaKey) {
+            if(selected)
+                _self.unselectCell(cell);
+            else
+                _self.selectCell(cell);
         } 
-        else {
+        else if(shiftKey) {
+            cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
             
-            //clean previous selections if metakey is off
-            if(!e.metaKey) {
-                cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-            }
+            var startRowIndex = _self.current.parents('tr:first').index(),
+            startColumnIndex = _self.current.parent().index(),
+            endRowIndex = cell.parents('tr:first').index(),
+            endColumnIndex = cell.parent().index(),
+            containerRows = null;
             
-            cell.addClass('ui-state-highlight');
-            _self.editor.val(cell.children('.ui-sh-c-d').html());
-            _self.updateCellInfoDisplay(cell);
+            if(endRowIndex > startRowIndex)
+                containerRows = rows.slice(startRowIndex, endRowIndex + 1);
+            else
+                containerRows = rows.slice(endRowIndex, startRowIndex + 1);
+                        
+            containerRows.each(function(i, item) {
+                var row = $(item);
+                
+                if(endColumnIndex > startColumnIndex)
+                    row.children().slice(startColumnIndex, endColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
+                else
+                    row.children().slice(endColumnIndex, startColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
+            });
+        } 
+        else if(!selected) {
+            cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+            _self.selectCell(cell);
         }
-
     })
     .dblclick(function(e) {
         var cell = $(this),
@@ -335,4 +356,28 @@ PrimeFaces.widget.Sheet.prototype.updateCellInfoDisplay = function(cell) {
     columnName = this.header.find('th').eq(cell.parent().index()).children('.ui-sh-c').text();
     
     this.cellInfoDisplay.html(rowIndex + columnName);
+}
+
+PrimeFaces.widget.Sheet.prototype.selectCell = function(cell) {
+    cell.addClass('ui-state-highlight');
+    this.editor.val(cell.children('.ui-sh-c-d').html());
+    this.updateCellInfoDisplay(cell);
+    this.current = cell;
+}
+
+PrimeFaces.widget.Sheet.prototype.unselectCell = function(cell) {
+    cell.removeClass('ui-state-highlight');
+}
+
+PrimeFaces.widget.Sheet.prototype.selectCells = function(cells) {
+    cells.addClass('ui-state-highlight');
+    this.editor.val('');
+}
+
+PrimeFaces.widget.Sheet.prototype.unselectCells = function(cells) {
+    cells.removeClass('ui-state-highlight');
+}
+
+PrimeFaces.widget.Sheet.prototype.isSelected = function(cell) {
+    return cell.hasClass('ui-state-highlight');
 }
