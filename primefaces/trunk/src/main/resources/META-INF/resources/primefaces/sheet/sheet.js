@@ -196,9 +196,11 @@ PrimeFaces.widget.Sheet.prototype.updateCellInfoDisplay = function(cell) {
 
 PrimeFaces.widget.Sheet.prototype.selectCell = function(cell) {
     cell.addClass('ui-state-highlight');
-    this.editor.val(cell.children('.ui-sh-c-d').html());
+    
+    this.editor.val(cell.find('input').val());
     this.updateCellInfoDisplay(cell);
     this.origin = cell;
+    this.cursor = cell;
 }
 
 PrimeFaces.widget.Sheet.prototype.unselectCell = function(cell) {
@@ -236,7 +238,7 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
         else if(shiftKey) {
             _self.selectCells(_self.origin, cell);
         } 
-        else if(!selected) {
+        else {
             _self.cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
             _self.selectCell(cell);
         }
