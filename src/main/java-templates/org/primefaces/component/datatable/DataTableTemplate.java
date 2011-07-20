@@ -215,7 +215,7 @@ import org.primefaces.model.SortOrder;
         String columnSelectionMode = this.getColumnSelectionMode();
 
 		if(selectionMode != null)
-			return selectionMode.equalsIgnoreCase("single") || selectionMode.equalsIgnoreCase("singlecell");
+			return selectionMode.equalsIgnoreCase("single");
 		else if(columnSelectionMode != null)
 			return columnSelectionMode.equalsIgnoreCase("single");
         else
@@ -414,15 +414,6 @@ import org.primefaces.model.SortOrder;
 
         return sb.toString();
     }
-
-    public boolean isCellSelection() {
-		String selectionMode = this.getSelectionMode();
-
-		if(selectionMode != null)
-			return selectionMode.indexOf("cell") != -1;
-		else
-			return false;
-	}
 
     public void resetValue() {
         setValue(null);

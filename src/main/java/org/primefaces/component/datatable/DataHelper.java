@@ -35,7 +35,6 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.BeanPropertyComparator;
-import org.primefaces.model.Cell;
 import org.primefaces.model.SortOrder;
 
 class DataHelper {
@@ -226,7 +225,7 @@ class DataHelper {
         
 		String selection = params.get(clientId + "_selection");
         
-        if(!isValueBlank(selection) && !table.isCellSelection()) {
+        if(!isValueBlank(selection)) {
             String[] rowKeys = selection.split(",");
             
             for(String rowKey : rowKeys) {
@@ -246,17 +245,13 @@ class DataHelper {
     void decodeSingleSelection(DataTable table, String selection) {
 		if(isValueBlank(selection)) {
 			table.setSelection(null);
-		} else {
-            if(table.isCellSelection()) {
-				table.setSelection(buildCell(table, selection));
-			}
-            else {
-                int selectedRowIndex = Integer.parseInt(selection);
+		} 
+        else {
+            int selectedRowIndex = Integer.parseInt(selection);
 
-                table.setRowIndex(selectedRowIndex);
-                table.setSelection(table.getRowData());
-            }
-		}
+            table.setRowIndex(selectedRowIndex);
+            table.setSelection(table.getRowData());
+        }
 	}
 
 	void decodeMultipleSelection(DataTable table, String selection) {
@@ -267,29 +262,16 @@ class DataHelper {
 			table.setSelection(data);   
 		}
         else {
-            if(table.isCellSelection()) {
-				String[] cellInfos = selection.split(",");
-				Cell[] cells = new Cell[cellInfos.length];
+            String[] rowSelectValues = selection.split(",");
+            Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
 
-				for(int i = 0; i < cellInfos.length; i++) {
-					cells[i] = buildCell(table, cellInfos[i]);
-					table.setRowIndex(-1);	//clean
-				}
+            for(int i = 0; i < rowSelectValues.length; i++) {
+                table.setRowIndex(Integer.parseInt(rowSelectValues[i]));
 
-				table.setSelection(cells);
-			}
-             else {
-                String[] rowSelectValues = selection.split(",");
-                Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
-
-                for(int i = 0; i < rowSelectValues.length; i++) {
-                    table.setRowIndex(Integer.parseInt(rowSelectValues[i]));
-
-                    Array.set(data, i, table.getRowData());
-                }
-
-                table.setSelection(data);
+                Array.set(data, i, table.getRowData());
             }
+
+            table.setSelection(data);
 		}
 	}
 
@@ -299,25 +281,4 @@ class DataHelper {
         
         return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
     }
-
-    Cell buildCell(DataTable dataTable, String value) {
-		String[] cellInfo = value.split("#");
-
-		//Column
-        int rowIndex = Integer.parseInt(cellInfo[0]);
-		UIColumn column = dataTable.getColumns().get(Integer.parseInt(cellInfo[1]));
-
-		//RowData
-		dataTable.setRowIndex(rowIndex);
-		Object rowData = dataTable.getRowData();
-
-		//Cell value
-		Object cellValue = null;
-		UIComponent columnChild = column.getChildren().get(0);
-		if(columnChild instanceof ValueHolder) {
-			cellValue = ((ValueHolder) columnChild).getValue();
-		}
-
-		return new Cell(rowData, column.getId(), cellValue);
-	}
 }

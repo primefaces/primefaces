@@ -103,7 +103,7 @@
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Enables data selection, valid values are single, multiple, singlecell and multiplecell.</description>
+            <description>Enables data selection, valid values are "single" and "multiple".</description>
 		</attribute>
 		<attribute>
 			<name>selection</name>
