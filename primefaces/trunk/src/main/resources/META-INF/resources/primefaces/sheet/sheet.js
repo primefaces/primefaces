@@ -27,170 +27,6 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     this.setupResizableColumns();
 }
 
-  PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
-    var _self = this,
-    cells = this.body.find('div.ui-sh-c'),
-    rows = this.body.find('tr');
-    
-    cells.disableSelection();
-
-    //events for data cells
-    cells.click(function(e) {
-        var cell = $(this),
-        metaKey = e.metaKey,
-        shiftKey = e.shiftKey,
-        selected = _self.isSelected(cell);
-        
-        if(metaKey) {
-            if(selected)
-                _self.unselectCell(cell);
-            else
-                _self.selectCell(cell);
-        } 
-        else if(shiftKey) {
-            cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-            
-            var startRowIndex = _self.current.parents('tr:first').index(),
-            startColumnIndex = _self.current.parent().index(),
-            endRowIndex = cell.parents('tr:first').index(),
-            endColumnIndex = cell.parent().index(),
-            containerRows = null;
-            
-            if(endRowIndex > startRowIndex)
-                containerRows = rows.slice(startRowIndex, endRowIndex + 1);
-            else
-                containerRows = rows.slice(endRowIndex, startRowIndex + 1);
-                        
-            containerRows.each(function(i, item) {
-                var row = $(item);
-                
-                if(endColumnIndex > startColumnIndex)
-                    row.children().slice(startColumnIndex, endColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
-                else
-                    row.children().slice(endColumnIndex, startColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
-            });
-        } 
-        else if(!selected) {
-            cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-            _self.selectCell(cell);
-        }
-    })
-    .dblclick(function(e) {
-        var cell = $(this),
-        oldWidth = cell.width(),
-        padding = cell.innerWidth() - cell.width(),
-        newWidth = oldWidth + padding;
-        
-        //change cell structure to allocate all the space
-        cell.data('oldWidth', oldWidth)
-        .removeClass('ui-state-highlight')
-        .css('padding', '0px')
-        .width(newWidth);
-
-        //switch to edit mode    
-        cell.children('.ui-sh-c-d').hide();
-        cell.children('.ui-sh-c-e').show().children('input:first').focus();
-    });
-
-    //events for input controls in data cells
-    cells.find('input').blur(function(e) {
-        //switch to display mode if anything other than editor is clicked
-        var input = $(this),
-        cell = input.parents('.ui-sh-c:first'),
-        editableContainer = cell.children('.ui-sh-c-e'),
-        editableValue = input.val();
-
-        cell.children('.ui-sh-c-d').html(editableValue).show();
-        editableContainer.hide();
-
-        //restore cell structure
-        cell.css('padding', '').width(cell.data('oldWidth')).removeData('oldWidth');
-
-    }).keyup(function(e) {
-        //switch to display mode when enter is pressed during editing
-        var keyCode = $.ui.keyCode,
-        key = e.which,
-        input = $(this);
-
-        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-            input.blur();
-        } 
-        else {
-            _self.editor.val(input.val());
-        }
-    });
-}
-
-PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
-    var _self = this;
-    
-    //events for global editor
-    this.editor.keydown(function(e) {
-        //update cell value on enter key
-        var keyCode = $.ui.keyCode,
-        key = e.which,
-        editor = $(this),
-        selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
-
-        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-            selectedCells.children('.ui-sh-c-d').html(editor.val());
-            selectedCells.find('input:first').val(editor.val());
-            editor.val('');
-        }
-    }).focus(function(e) {
-        //highlight current cell
-        _self.current.addClass('ui-state-highlight');
-    });
-
-    //keyboard navigation for datacells
-    $(document).keydown(function(e) {
-        var target = $(e.target);
-        if(!target.is('html') && !target.is(document.body)) {
-            return;
-        }
-        
-        var selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
-
-        if(selectedCells.length > 0) {
-            var keyCode = $.ui.keyCode,
-            key = e.which,
-            current = _self.current;
-
-            switch(e.which) {
-                case keyCode.RIGHT:
-                    current.parent().next().children('div.ui-sh-c').click();
-                    e.preventDefault();
-                break;
-
-                case keyCode.LEFT:
-                    current.parent().prev().children('div.ui-sh-c').click();
-                    e.preventDefault();
-                break;
-
-                case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
-                case keyCode.DOWN:
-                    current.parents('tr:first').next().children().eq(current.parent().index()).children('div.ui-sh-c').click();
-                    e.preventDefault();
-                break;
-
-                case keyCode.UP:
-                    current.parents('tr:first').prev().children().eq(current.parent().index()).children('div.ui-sh-c').click();
-                    e.preventDefault();
-                break;
-                
-                case keyCode.BACKSPACE:
-                    selectedCells.children('.ui-sh-c-d').html('&nbsp;');
-                    selectedCells.find('input').val('');
-                    selectedCells.removeClass('ui-state-highlight');
-                    e.preventDefault();
-                break;
-            }
-        }
-
-    });
-}
-
 PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper
     this.header.find('th div.ui-sh-c').prepend('<div class="ui-column-resizer"></div>');
@@ -362,16 +198,11 @@ PrimeFaces.widget.Sheet.prototype.selectCell = function(cell) {
     cell.addClass('ui-state-highlight');
     this.editor.val(cell.children('.ui-sh-c-d').html());
     this.updateCellInfoDisplay(cell);
-    this.current = cell;
+    this.origin = cell;
 }
 
 PrimeFaces.widget.Sheet.prototype.unselectCell = function(cell) {
     cell.removeClass('ui-state-highlight');
-}
-
-PrimeFaces.widget.Sheet.prototype.selectCells = function(cells) {
-    cells.addClass('ui-state-highlight');
-    this.editor.val('');
 }
 
 PrimeFaces.widget.Sheet.prototype.unselectCells = function(cells) {
@@ -381,3 +212,214 @@ PrimeFaces.widget.Sheet.prototype.unselectCells = function(cells) {
 PrimeFaces.widget.Sheet.prototype.isSelected = function(cell) {
     return cell.hasClass('ui-state-highlight');
 }
+              
+PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
+    var _self = this;
+    this.cells = this.body.find('div.ui-sh-c'),
+    this.rows = this.body.find('tr');
+    
+    this.cells.disableSelection();
+
+    //events for data cells
+    this.cells.click(function(e) {
+        var cell = $(this),
+        metaKey = e.metaKey,
+        shiftKey = e.shiftKey,
+        selected = _self.isSelected(cell);
+        
+        if(metaKey) {
+            if(selected)
+                _self.unselectCell(cell);
+            else
+                _self.selectCell(cell);
+        } 
+        else if(shiftKey) {
+            _self.selectCells(_self.origin, cell);
+        } 
+        else if(!selected) {
+            _self.cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+            _self.selectCell(cell);
+        }
+    })
+    .dblclick(function(e) {
+        var cell = $(this),
+        oldWidth = cell.width(),
+        padding = cell.innerWidth() - cell.width(),
+        newWidth = oldWidth + padding;
+        
+        //change cell structure to allocate all the space
+        cell.data('oldWidth', oldWidth)
+        .removeClass('ui-state-highlight')
+        .css('padding', '0px')
+        .width(newWidth);
+
+        //switch to edit mode    
+        cell.children('.ui-sh-c-d').hide();
+        cell.children('.ui-sh-c-e').show().children('input:first').focus();
+    });
+
+    //events for input controls in data cells
+    this.cells.find('input').blur(function(e) {
+        //switch to display mode if anything other than editor is clicked
+        var input = $(this),
+        cell = input.parents('.ui-sh-c:first'),
+        editableContainer = cell.children('.ui-sh-c-e'),
+        editableValue = input.val();
+
+        cell.children('.ui-sh-c-d').html(editableValue).show();
+        editableContainer.hide();
+
+        //restore cell structure
+        cell.css('padding', '').width(cell.data('oldWidth')).removeData('oldWidth');
+
+    }).keyup(function(e) {
+        //switch to display mode when enter is pressed during editing
+        var keyCode = $.ui.keyCode,
+        key = e.which,
+        input = $(this);
+
+        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+            input.blur();
+        } 
+        else {
+            _self.editor.val(input.val());
+        }
+    });
+}
+
+PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
+    var _self = this;
+    
+    //events for global editor
+    this.editor.keydown(function(e) {
+        //update cell value on enter key
+        var keyCode = $.ui.keyCode,
+        key = e.which,
+        editor = $(this),
+        selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
+
+        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+            selectedCells.children('.ui-sh-c-d').html(editor.val());
+            selectedCells.find('input:first').val(editor.val());
+            editor.val('');
+        }
+    }).focus(function(e) {
+        //highlight current cell
+        _self.origin.addClass('ui-state-highlight');
+    });
+
+    //keyboard navigation for datacells
+    $(document).keydown(function(e) {
+        var target = $(e.target);
+        if(!target.is('html') && !target.is(document.body)) {
+            return;
+        }
+        
+        var selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
+
+        if(selectedCells.length > 0) {
+            var keyCode = $.ui.keyCode,
+            key = e.which,
+            origin = _self.origin,
+            shift = e.shiftKey;
+            
+            _self.cursor = _self.cursor || origin;
+
+            switch(e.which) {
+                case keyCode.RIGHT:
+                    var cursor = _self.cursor.parent().next().children('div.ui-sh-c');
+                    
+                    if(cursor.length > 0) {
+                        _self.cursor = cursor;
+                        
+                        if(shift)
+                            _self.selectCells(origin, _self.cursor);
+                        else
+                            _self.cursor.click();
+                    } 
+
+                    e.preventDefault();
+                break;
+
+                case keyCode.LEFT:
+                    var cursor = _self.cursor.parent().prev().children('div.ui-sh-c:not(.ui-sheet-index-cell)');
+                    
+                    if(cursor.length > 0) {
+                        _self.cursor = cursor;
+                        
+                        if(shift)
+                            _self.selectCells(origin, _self.cursor);
+                        else
+                            _self.cursor.click();
+                    } 
+
+                    e.preventDefault();
+                break;
+
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.DOWN:
+                    _self.cursor = _self.cursor.parents('tr:first').next().children().eq(_self.cursor.parent().index()).children('div.ui-sh-c');
+                    
+                    if(shift)
+                        _self.selectCells(origin, _self.cursor);
+                    else
+                        _self.cursor.click();
+                                        
+                    e.preventDefault();
+                break;
+
+                case keyCode.UP:
+                    _self.cursor = _self.cursor.parents('tr:first').prev().children().eq(_self.cursor.parent().index()).children('div.ui-sh-c');
+                    
+                    if(shift)
+                        _self.selectCells(origin, _self.cursor);
+                    else
+                        _self.cursor.click();
+                                        
+                    e.preventDefault();
+                break;
+                
+                case keyCode.BACKSPACE:
+                    selectedCells.children('.ui-sh-c-d').html('&nbsp;');
+                    selectedCells.find('input').val('');
+                    selectedCells.removeClass('ui-state-highlight');
+                    e.preventDefault();
+                break;
+            }
+        }
+
+    });
+}
+
+PrimeFaces.widget.Sheet.prototype.selectCells = function(origin, cursor) {
+    this.cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+    
+    var startRowIndex = origin.parents('tr:first').index(),
+    startColumnIndex = origin.parent().index(),
+    endRowIndex = cursor.parents('tr:first').index(),
+    endColumnIndex = cursor.parent().index(),
+    containerRows = null;
+
+    if(endRowIndex > startRowIndex)
+        containerRows = this.rows.slice(startRowIndex, endRowIndex + 1);
+    else
+        containerRows = this.rows.slice(endRowIndex, startRowIndex + 1);
+
+    containerRows.each(function(i, item) {
+        var row = $(item);
+
+        if(endColumnIndex > startColumnIndex)
+            row.children().slice(startColumnIndex, endColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
+        else
+            row.children().slice(endColumnIndex, startColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
+    });
+}
+
+$.fn.disableSelection = function() {
+    $(this).attr('unselectable', 'on')
+           .css('-moz-user-select', 'none')
+           .each(function() { 
+               this.onselectstart = function() { return false; };
+            });
+};
