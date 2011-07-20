@@ -280,7 +280,7 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
         key = e.which,
         input = $(this);
 
-        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
             input.blur();
         } 
         else {
@@ -300,7 +300,7 @@ PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
         editor = $(this),
         selectedCells = _self.body.find('div.ui-sh-c.ui-state-highlight');
 
-        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+        if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
             selectedCells.children('.ui-sh-c-d').html(editor.val());
             selectedCells.find('input:first').val(editor.val());
             editor.val('');
