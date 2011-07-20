@@ -70,8 +70,9 @@ public class AutoCompleteRenderer extends InputRenderer {
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
         AutoComplete ac = (AutoComplete) component;
         List results = (List) ac.getCompleteMethod().invoke(context.getELContext(), new Object[]{query});
+        int maxResults = ac.getMaxResults();
         
-        if(ac.getMaxResults() != Integer.MAX_VALUE) {
+        if(maxResults != Integer.MAX_VALUE && results.size() > maxResults) {
             results = results.subList(0, ac.getMaxResults());
         }
 
