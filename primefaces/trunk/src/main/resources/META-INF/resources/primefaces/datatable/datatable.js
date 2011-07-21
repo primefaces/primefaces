@@ -458,7 +458,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
 
     //add to selection
     row.addClass('ui-state-highlight ui-selected');
-    this.selection.push(rowId);
+    this.addSelection(rowId);
 
     //save state
     this.writeSelections();
@@ -473,9 +473,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
     row.removeClass('ui-selected ui-state-highlight');
 
     //remove from selection
-    this.selection = $.grep(this.selection, function(r) {
-        return r != rowId;
-    });
+    this.removeSelection(rowId);
 
     //save state
     this.writeSelections();
@@ -522,12 +520,13 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
 /**
  *  Selects the corresping row of a radio based column selection
  */
-PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(radio) {
-    var row = $(radio).parent().parent(),
+PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
+    var radio = $(element),
+    row = radio.parents('tr:first'),
     rowId = row.attr('id').split('_row_')[1];
 
     this.selection = [];
-    this.selection.push(rowId);
+    this.addSelection(rowId);
 
     //save state
     this.writeSelections();
@@ -538,21 +537,14 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(radio) {
  */
 PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(element) {
     var checkbox = $(element),
-    row = checkbox.parent().parent(),
+    row = checkbox.parents('tr:first'),
     rowId = row.attr('id').split('_row_')[1],
     checked = checkbox.attr('checked');
 
-    if(checked) {
-        //add to selection
+    if(checked)
         this.selection.push(rowId);
-
-    } else {
-        //remove from selection
-        this.selection = $.grep(this.selection, function(r) {
-            return r != rowId;
-        });
-        
-    }
+    else
+        this.removeSelection(rowId);
 
     //save state
     this.writeSelections();
@@ -573,19 +565,17 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 
         //add to selection
         rows.each(function() {
-            _self.selection.push($(this).attr('id').split('_row_')[1]);
+            _self.addSelection($(this).attr('id').split('_row_')[1]);
         });
     }
     else {
         checkboxes.attr('checked', false);
         
         //remove from selection
-        rows.each(function(i) {
+        rows.each(function() {
             var rowId = $(this).attr('id').split('_row_')[1];
             
-            _self.selection = $.grep(_self.selection, function(r) {
-                return r != rowId;
-            });
+            _self.removeSelection(rowId);
         });
 
     }
@@ -969,4 +959,52 @@ PrimeFaces.widget.DataTable.prototype.hasBehavior = function(event) {
     }
     
     return false;
+}
+
+/**
+ * Remove given rowIndex from selection
+ */
+PrimeFaces.widget.DataTable.prototype.removeSelection = function(rowIndex) {
+    var selection = this.selection;
+    
+    $.each(selection, function(index, value) {
+        if(value === rowIndex) {
+            selection.remove(index);
+            
+            return false;       //break
+        } 
+        else {
+            return true;        //continue
+        }
+    });
+}
+
+/**
+ * Adds given rowIndex to selection if it doesn't exist already
+ */
+PrimeFaces.widget.DataTable.prototype.addSelection = function(rowIndex) {
+    if(!this.isSelected(rowIndex)) {
+        this.selection.push(rowIndex);
+    }
+}
+
+/**
+ * Finds if given rowIndex is in selection
+ */
+PrimeFaces.widget.DataTable.prototype.isSelected = function(rowIndex) {
+    var selection = this.selection,
+    selected = false;
+    
+    $.each(selection, function(index, value) {
+        if(value === rowIndex) {
+            selected = true;
+            
+            return false;       //break
+        } 
+        else {
+            return true;        //continue
+        }
+    });
+    
+    return selected;
 }
