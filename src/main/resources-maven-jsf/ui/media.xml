@@ -12,7 +12,7 @@
 	<rendererType>org.primefaces.component.MediaRenderer</rendererType>
 	<rendererClass>org.primefaces.component.media.MediaRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-    <description><![CDATA[Media component is used for embedding multimedia content such as videos and music to JSF views. Media renders <object /> or <embed /> html tags depending on the user client.]]></description>
+    <description>Media component is used for embedding multimedia content such as videos and music to JSF views. Media renders object or embed html tags depending on the user client.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
