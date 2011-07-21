@@ -33,7 +33,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		BreadCrumb breadCrumb = (BreadCrumb) component;
 		
-		if(breadCrumb.shouldBuildFromModel()) {
+		if(breadCrumb.isDynamic()) {
 			breadCrumb.buildMenuFromModel();
 		}
 

@@ -32,7 +32,7 @@ public class StackRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		Stack stack = (Stack) component;
 		
-		if(stack.shouldBuildFromModel()) {
+		if(stack.isDynamic()) {
 			stack.buildMenuFromModel();
 		}
 		

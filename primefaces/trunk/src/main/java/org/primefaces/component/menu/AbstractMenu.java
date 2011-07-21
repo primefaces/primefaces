@@ -21,20 +21,20 @@ import javax.faces.component.UIComponentBase;
 import org.primefaces.model.MenuModel;
 
 public abstract class AbstractMenu extends UIComponentBase {
-	
-	private final static String BUILT_FROM_MODEL_PARAM = "_builtFromModel";
-	
+		
 	public void buildMenuFromModel() {
 		MenuModel model = (MenuModel) getModel();
 		
+        getChildren().clear();
+        
 		if(model != null) {
-			for(UIComponent kid : model.getSubmenus())
+			for(UIComponent kid : model.getSubmenus()) {
 				getChildren().add(kid);
+            }
 			
-			for(UIComponent kid : model.getMenuItems())
+			for(UIComponent kid : model.getMenuItems()) {
 				getChildren().add(kid);
-			
-			markAsBuiltFromModel();
+            }
 		}
 	}
 	
@@ -42,17 +42,5 @@ public abstract class AbstractMenu extends UIComponentBase {
 	
 	public boolean isDynamic() {
 		return this.getValueExpression("model") != null;
-	}
-	
-	public boolean isBuiltFromModel() {
-		return getFacesContext().getViewRoot().getViewMap().containsKey(this.getClientId() + BUILT_FROM_MODEL_PARAM);
-	}
-	
-	public void markAsBuiltFromModel() {
-		getFacesContext().getViewRoot().getViewMap().put(this.getClientId() + BUILT_FROM_MODEL_PARAM, true);
-	}
-	
-	public boolean shouldBuildFromModel() {
-		return this.isDynamic() && !isBuiltFromModel();
 	}
 }
