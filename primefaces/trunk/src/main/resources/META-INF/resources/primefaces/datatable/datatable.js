@@ -563,28 +563,31 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(element) 
  */
 PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
     var checkbox = $(element),
-    checked = checkbox.attr('checked');
-
-    this.clearSelection();
+    checked = checkbox.attr('checked'),
+    rows = $(this.jqId + ' .ui-datatable-data tr'),
+    checkboxes = rows.children('td.ui-selection-column').find('input:checkbox'),
+    _self = this;
 
     if(checked) {
-        $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', true);
+        checkboxes.attr('checked', true);
 
-        if(this.getPaginator() != null) {
-            for(var i=0; i < this.getPaginator().getTotalRecords(); i++) {
-                this.selection.push(i);
-            }
-
-        } else {
-            var _self = this;
-            $(this.jqId + ' tbody.ui-datatable-data tr').each(function() {
-                _self.selection.push($(this).attr('id').split('_row_')[1]);
-            });
-        }
-
+        //add to selection
+        rows.each(function() {
+            _self.selection.push($(this).attr('id').split('_row_')[1]);
+        });
     }
     else {
-        $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox').attr('checked', false);
+        checkboxes.attr('checked', false);
+        
+        //remove from selection
+        rows.each(function(i) {
+            var rowId = $(this).attr('id').split('_row_')[1];
+            
+            _self.selection = $.grep(_self.selection, function(r) {
+                return r != rowId;
+            });
+        });
+
     }
 
     //save state
