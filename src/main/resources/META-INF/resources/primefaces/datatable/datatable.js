@@ -589,7 +589,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
  */
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
     var expander = $(expanderElement),
-    row = expander.parent().parent(),
+    row = expander.parent().parent().parent(),
     rowId = row.attr('id'),
     expanded = row.hasClass('ui-expanded-row'),
     _self = this;
