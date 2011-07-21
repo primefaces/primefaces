@@ -1,7 +1,6 @@
 .ui-datatable table {
 	border-collapse:collapse;
     width:100%;
-    table-layout: fixed;
 }
 
 .ui-datatable .ui-datatable-header,
@@ -140,6 +139,7 @@
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
     margin: -4px -10px;
+    *margin-left: 2px;
 }
 
 .ui-datatable .ui-filter-column .ui-column-resizer {
@@ -165,5 +165,6 @@
 .ui-datatable .ui-datatable-data td div.ui-dt-c,
 .ui-datatable tfoot td div.ui-dt-c {
     padding: 4px 10px;
+    overflow: hidden;
 }
 
