@@ -39,21 +39,26 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
 	}
 }
 
-PrimeFaces.widget.Inplace.prototype.show = function() {
-    this.toggle(this.content, this.display);
+PrimeFaces.widget.Inplace.prototype.show = function() {    
+    this.toggle(this.content, this.display, function() {
+        this.content.find(':input:text:visible:enabled:first').focus().select();
+    });
 }
 
 PrimeFaces.widget.Inplace.prototype.hide = function() {
     this.toggle(this.display, this.content);
 }
 
-PrimeFaces.widget.Inplace.prototype.toggle = function(elToShow, elToHide) {
+PrimeFaces.widget.Inplace.prototype.toggle = function(elToShow, elToHide, callback) {
     var _self = this;
 
     if(this.cfg.effect == 'fade') {
         elToHide.fadeOut(this.cfg.effectSpeed,
             function(){
                 elToShow.fadeIn(_self.cfg.effectSpeed);
+                
+                if(callback)
+                    callback.call(_self);
             });
     }
     else if(this.cfg.effect == 'slide') {
