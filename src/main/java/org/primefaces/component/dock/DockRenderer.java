@@ -32,7 +32,7 @@ public class DockRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Dock dock = (Dock) component;
 		
-		if(dock.shouldBuildFromModel()) {
+		if(dock.isDynamic()) {
 			dock.buildMenuFromModel();
 		}
 		

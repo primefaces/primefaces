@@ -30,9 +30,9 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		AbstractMenu menu = (AbstractMenu) component;
 
-		if(menu.shouldBuildFromModel()) {
-			menu.buildMenuFromModel();
-		}
+        if(menu.isDynamic()) {
+            menu.buildMenuFromModel();
+        }
 
 		encodeMarkup(context, menu);
 		encodeScript(context, menu);
