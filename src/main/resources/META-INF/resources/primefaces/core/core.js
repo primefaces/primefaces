@@ -483,3 +483,12 @@ jQuery.cookie = function (key, value, options) {
     var result, decode = options.raw ? function (s) {return s;} : decodeURIComponent;
     return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 };
+
+/**
+ * Extension to remove item(s) from an array
+ */
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
