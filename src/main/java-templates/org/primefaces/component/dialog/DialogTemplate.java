@@ -7,6 +7,13 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
+    public static final String CONTAINER_CLASS = "ui-dialog ui-widget ui-widget-content ui-corner-all";
+    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix";
+    public static final String TITLE_CLASS = "ui-dialog-title";
+    public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-close ui-corner-all";
+    public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
+    public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
+
     private final static String DEFAULT_EVENT = "close";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
