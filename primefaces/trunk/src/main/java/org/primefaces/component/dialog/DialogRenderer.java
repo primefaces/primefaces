@@ -61,8 +61,8 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getZindex() != 1000) writer.write(",zIndex:" + dialog.getZindex());
         if(!dialog.isResizable()) writer.write(",resizable:false");
         if(dialog.getMinWidth() != 150) writer.write(",minWidth:" + dialog.getMinWidth());
-        if(dialog.getShowEffect() != null) writer.write(",show:'" + dialog.getShowEffect() + "'");
-        if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
+        if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
+        if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
         if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
         if(!dialog.isClosable()) writer.write(",closable:false");
@@ -90,25 +90,74 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeMarkup(FacesContext facesContext, Dialog dialog) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = dialog.getClientId(facesContext);
-        String headerText = dialog.getHeader();
+    protected void encodeMarkup(FacesContext context, Dialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = dialog.getClientId(context);
+        String style = dialog.getStyle();
+        String styleClass = dialog.getStyleClass();
+        styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
+
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("style", "display:none", null);
-        if (headerText != null) {
-            writer.writeAttribute("title", headerText, null);
+        writer.writeAttribute("class", styleClass, null);
+        
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
         }
 
-        renderChildren(facesContext, dialog);
+        if(dialog.isShowHeader()) {
+            encodeHeader(context, dialog);
+        }
+        
+        encodeContent(context, dialog);
 
         writer.endElement("div");
     }
 
+    protected void encodeHeader(FacesContext context, Dialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String header = dialog.getHeader();
+        UIComponent headerFacet = dialog.getFacet("header");
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
+        
+        //title
+        writer.startElement("span", null);
+        if(headerFacet != null)
+            headerFacet.encodeAll(context);
+        else if(header != null)
+            writer.write(header);
+        writer.endElement("span");
+        
+        //close icon
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
+        writer.endElement("span");
+        
+        writer.endElement("a");
+        
+        writer.endElement("div");
+    }
+
+    protected void encodeContent(FacesContext context, Dialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+        
+        renderChildren(context, dialog);
+        
+        writer.endElement("div");
+    }
+    
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

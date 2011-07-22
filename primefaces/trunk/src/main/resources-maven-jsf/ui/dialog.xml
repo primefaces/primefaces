@@ -94,6 +94,12 @@
             <description>Minimum height of a resizable dialog. Default is 0.</description>
         </attribute>
         <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the dialog.</description>
+        </attribute>
+        <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -159,6 +165,9 @@
         </attribute>
     </attributes>
     <resources>
+        <resource>
+			<name>dialog/dialog.css</name>
+		</resource>
         <resource>
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>

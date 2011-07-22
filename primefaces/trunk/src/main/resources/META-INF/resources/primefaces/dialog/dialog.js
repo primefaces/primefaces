@@ -5,6 +5,71 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jqId);
+    this.closeIcon = $(this.jqId + ' .ui-dialog-titlebar .ui-dialog-titlebar-close');
+    
+    //options
+    this.cfg.position = this.cfg.position || 'center';
+    this.cfg.draggable = this.cfg.draggable || true;
+    
+    //events
+    this.bindEvents();
+    
+    //draggable
+    if(this.cfg.draggable) {
+        this.setupDraggable();
+    }
+}
+
+PrimeFaces.widget.Dialog.prototype.show = function() {
+    this.jq.css('z-index', '1000');
+
+    if(this.cfg.showEffect)
+        this.jq.show(this.cfg.showEffect);
+    else
+        this.jq.show();
+
+    this.focusFirstInput();
+}
+
+PrimeFaces.widget.Dialog.prototype.hide = function() {    
+    if(this.cfg.hideEffect)
+        this.jq.hide(this.cfg.hideEffect);
+    else
+        this.jq.hide();
+}
+
+PrimeFaces.widget.Dialog.prototype.focusFirstInput = function() {
+    this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
+}
+
+PrimeFaces.widget.Dialog.prototype.bindEvents = function() {   
+    var _self = this;
+    
+    this.closeIcon.mouseover(function() {
+        $(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        $(this).removeClass('ui-state-hover');
+    }).click(function(e) {
+        _self.hide();
+        
+        e.preventDefault();
+    });
+}
+
+PrimeFaces.widget.Dialog.prototype.setupDraggable = function() {    
+    this.jq.draggable({
+        handle: '.ui-dialog-titlebar'
+    });
+}
+
+/**
+ * PrimeFaces Dialog Widget
+ *
+PrimeFaces.widget.Dialog = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = jQuery(this.jqId);
     var _self = this,
     closable = this.cfg.closable;
@@ -52,20 +117,20 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {
     this.jq.dialog('close');
-}
+}*/
 
 /**
  * Invokes user provided callback
- */
+
 PrimeFaces.widget.Dialog.prototype.onShow = function(event, ui) {
     if(this.cfg.onShow) {
         this.cfg.onShow.call(this, event, ui);
     }
-}
+} */
 
 /**
  * Fires an ajax request to invoke a closeListener passing a CloseEvent
- */
+
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
 
     if(this.cfg.onHide) {
@@ -83,4 +148,4 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
 
 PrimeFaces.widget.Dialog.prototype.focusFirstInput = function() {
     this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
-}
+} */
