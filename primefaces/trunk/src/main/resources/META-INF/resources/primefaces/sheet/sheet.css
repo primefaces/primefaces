@@ -1,6 +1,5 @@
 .ui-sheet table {
 	border-collapse:collapse;
-    table-layout: fixed;
 }
 
 .ui-sheet .ui-sheet-caption {
@@ -67,6 +66,7 @@
 
 .ui-sheet div.ui-sh-c {
     padding: 4px 10px;
+    overflow: hidden;
 }
 
 .ui-sheet .ui-sh-c-e {
