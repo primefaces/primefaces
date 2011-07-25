@@ -16,9 +16,11 @@
 package org.primefaces.component.tabview;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -93,20 +95,19 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeMarkup(FacesContext facesContext, TabView tabView) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = tabView.getClientId(facesContext);
-        int activeIndex = tabView.getActiveIndex();
+    protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = tabView.getClientId(context);
 
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
         if(tabView.getStyle() != null) writer.writeAttribute("style", tabView.getStyle(), "style");
         if(tabView.getStyleClass() != null) writer.writeAttribute("class", tabView.getStyleClass(), "styleClass");
 
-        encodeHeaders(facesContext, tabView, activeIndex);
-        encodeContents(facesContext, tabView, activeIndex);
+        encodeHeaders(context, tabView);
+        encodeContents(context, tabView);
 
-        encodeActiveIndexHolder(facesContext, tabView);
+        encodeActiveIndexHolder(context, tabView);
 
         writer.endElement("div");
     }
@@ -123,62 +124,111 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeHeaders(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String var = tabView.getVar();
 
         writer.startElement("ul", null);
 
-        for (UIComponent kid : tabView.getChildren()) {
-            if (kid.isRendered() && kid instanceof Tab) {
-                Tab tab = (Tab) kid;
-
-                writer.startElement("li", null);
-                if(tab.getTitleStyle() != null) 
-                    writer.writeAttribute("style", tab.getTitleStyle(), null);
-                if(tab.getTitleStyleClass() != null) 
-                    writer.writeAttribute("class", tab.getTitleStyleClass(), null);
-
-                writer.startElement("a", null);
-                writer.writeAttribute("href", "#" + tab.getClientId(facesContext), null);
-                writer.startElement("em", null);
-                writer.write(tab.getTitle());
-                writer.endElement("em");
-                writer.endElement("a");
-
-                writer.endElement("li");
+        if(var == null) {
+            for(UIComponent kid : tabView.getChildren()) {
+                if(kid.isRendered() && kid instanceof Tab) {
+                    Tab tab = (Tab) kid;
+                    
+                    encodeTabHeader(context, tabView, tab, tab.getClientId(context));
+                }
             }
+        } 
+        else {
+            List list = tabView.getValue();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            Tab tab = (Tab) tabView.getChildren().get(0);
+            StringBuilder builder = new StringBuilder();
+            char separator = UINamingContainer.getSeparatorChar(context);
+            
+            for(int i = 0; i < list.size(); i++) {
+                requestMap.put(var, list.get(i));
+                String clientId = builder.append(tabView.getClientId(context)).append(separator).append(i).append(separator).append(tab.getId()).toString();
+                        
+                encodeTabHeader(context, tabView, tab, clientId);
+                builder.setLength(0);
+            }
+            
+            requestMap.remove(var);
         }
 
         writer.endElement("ul");
     }
+    
+    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //header container
+        writer.startElement("li", null);
+        if(tab.getTitleStyle() != null)  writer.writeAttribute("style", tab.getTitleStyle(), null);
+        if(tab.getTitleStyleClass() != null)  writer.writeAttribute("class", tab.getTitleStyleClass(), null);
 
-    protected void encodeContents(FacesContext facesContext, TabView tabView, int activeTabIndex) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        int i = 0;
+        //title
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#" + clientId, null);
+        writer.startElement("em", null);
+        writer.write(tab.getTitle());
+        writer.endElement("em");
+        writer.endElement("a");
 
-         for(UIComponent kid : tabView.getChildren()) {
-            if(kid.isRendered() && kid instanceof Tab) {
-                Tab tab = (Tab) kid;
-                writer.startElement("div", null);
-                writer.writeAttribute("id", tab.getClientId(facesContext), null);
+        writer.endElement("li");
+    }
 
-                if(tabView.isDynamic()) {
-                    if (i == activeTabIndex) {
-                        tab.encodeAll(facesContext);
-                    }
-                } else {
-                    tab.encodeAll(facesContext);
+    protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
+        String var = tabView.getVar();
+        int activeTabIndex = tabView.getActiveIndex();
+        
+        if(var == null) {
+            for(int i = 0; i < tabView.getChildCount(); i++) {
+                Tab tab = (Tab) tabView.getChildren().get(i);
+
+                if(tab.isRendered()) {
+                    encodeTabContent(context, tabView, tab, tab.getClientId(context), i, activeTabIndex);
                 }
-
-                writer.endElement("div");
-
-                i++;
             }
         }
+        else {
+            List list = tabView.getValue();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            Tab tab = (Tab) tabView.getChildren().get(0);
+            StringBuilder builder = new StringBuilder();
+            char separator = UINamingContainer.getSeparatorChar(context);
+            
+            for(int i = 0; i < list.size(); i++) {
+                requestMap.put(var, list.get(i));
+                String clientId = builder.append(tabView.getClientId(context)).append(separator).append(i).append(separator).append(tab.getId()).toString();
+                        
+                encodeTabContent(context, tabView, tab, clientId, i, activeTabIndex);
+                builder.setLength(0);
+            }
+        }
+        
+    }
+    
+    protected void encodeTabContent(FacesContext context, TabView tabView, Tab tab, String clientId, int index, int activeIndex) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+
+        if(tabView.isDynamic()) {
+            if(index == activeIndex)
+                tab.encodeAll(context);
+        } 
+        else {
+            tab.encodeAll(context);
+        }
+
+        writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd
     }
 
