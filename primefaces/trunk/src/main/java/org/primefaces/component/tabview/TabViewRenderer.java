@@ -178,6 +178,13 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.write(tab.getTitle());
         writer.endElement("a");
+        
+        //closable
+        if(tab.isClosable()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+            writer.endElement("span");
+        }
 
         writer.endElement("li");
     }

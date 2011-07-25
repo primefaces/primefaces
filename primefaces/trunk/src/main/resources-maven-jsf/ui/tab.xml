@@ -39,5 +39,12 @@
             <defaultValue>false</defaultValue>
             <description>Disables tab element if true.</description>
 		</attribute>
+        <attribute>
+			<name>closable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Makes the tab closable by displaying a close icon.</description>
+		</attribute>
 	</attributes>
 </component>

@@ -1,2 +1,3 @@
 - Appended dialog to parent instead of document body
+- Removed dialog.css from jquery-ui.css
 - Added PrimeFaces extensions to jquery-ui.css

@@ -1,5 +1,6 @@
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.event.TabCloseEvent;
 import javax.el.ValueExpression;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,9 +13,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 
-    private final static String DEFAULT_EVENT = "tabChange";
-
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
@@ -59,6 +58,22 @@ import org.primefaces.util.Constants;
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 super.queueEvent(changeEvent);
+            }
+            else if(eventName.equals("tabClose")) {
+                String tabClientId = params.get(clientId + "_closeTab");
+                TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
+
+                if(this.getVar() != null) {
+                    int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
+                    setRowIndex(tabindex);
+                    closeEvent.setData(this.getRowData());
+                    closeEvent.setTab((Tab) getChildren().get(0));
+                    setRowIndex(-1);
+                }
+
+                closeEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+                super.queueEvent(closeEvent);
             }
         }
         else {
@@ -124,9 +139,4 @@ import org.primefaces.util.Constants;
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
     }
