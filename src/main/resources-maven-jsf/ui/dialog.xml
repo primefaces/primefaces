@@ -170,14 +170,14 @@
             <description>Text of the footer.</description>
         </attribute>
         <attribute>
-            <name>minimize</name>
+            <name>minimizable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Specifies dialog is minimizable or not. Default is false.</description>
         </attribute>
         <attribute>
-            <name>maximize</name>
+            <name>maximizable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
