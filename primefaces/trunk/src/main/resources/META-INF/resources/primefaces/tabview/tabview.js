@@ -95,6 +95,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
     var params = {};
     params[this.id + '_contentLoad'] = true;
     params[this.id + '_newTab'] = panel.id;
+    params[this.id + '_tabindex'] = $(panel).index() - 1;
 
     options.params = params;
 
@@ -156,6 +157,7 @@ PrimeFaces.widget.TabView.prototype.fireTabChangeEvent = function(event, panel) 
             params: {}
         };
         ext.params[this.id + '_newTab'] = panel.id;
+        ext.params[this.id + '_tabindex'] = $(panel).index() - 1;
 
         tabChangeBehavior.call(this, event, ext);
     }
