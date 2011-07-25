@@ -12,7 +12,12 @@ import javax.faces.event.PhaseId;
     public static final String TITLE_CLASS = "ui-dialog-title";
     public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-close ui-corner-all";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
+    public static final String TITLE_BAR_MINIMIZE_CLASS = "ui-dialog-titlebar-minimize ui-corner-all";
+    public static final String MINIMIZE_ICON_CLASS = "ui-icon ui-icon-minus";
+    public static final String TITLE_BAR_MAXIMIZE_CLASS = "ui-dialog-titlebar-maximize ui-corner-all";
+    public static final String MAXIMIZE_ICON_CLASS = "ui-icon ui-icon-extlink";
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
+    public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-header ui-corner-all ui-helper-clearfix";
 
     private final static String DEFAULT_EVENT = "close";
 
