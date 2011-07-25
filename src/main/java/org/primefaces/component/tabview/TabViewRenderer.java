@@ -16,11 +16,9 @@
 package org.primefaces.component.tabview;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -133,34 +131,27 @@ public class TabViewRenderer extends CoreRenderer {
         if(var == null) {
             for(UIComponent kid : tabView.getChildren()) {
                 if(kid.isRendered() && kid instanceof Tab) {
-                    Tab tab = (Tab) kid;
-                    
-                    encodeTabHeader(context, tabView, tab, tab.getClientId(context));
+                    encodeTabHeader(context, (Tab) kid);
                 }
             }
         } 
         else {
-            List list = tabView.getValue();
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            int dataCount = tabView.getRowCount();
             Tab tab = (Tab) tabView.getChildren().get(0);
-            StringBuilder builder = new StringBuilder();
-            char separator = UINamingContainer.getSeparatorChar(context);
             
-            for(int i = 0; i < list.size(); i++) {
-                requestMap.put(var, list.get(i));
-                String clientId = builder.append(tabView.getClientId(context)).append(separator).append(i).append(separator).append(tab.getId()).toString();
-                        
-                encodeTabHeader(context, tabView, tab, clientId);
-                builder.setLength(0);
+            for(int i = 0; i < dataCount; i++) {
+                tabView.setRowIndex(i);
+                
+                encodeTabHeader(context, tab);
             }
             
-            requestMap.remove(var);
+            tabView.setRowIndex(-1);
         }
 
         writer.endElement("ul");
     }
     
-    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, String clientId) throws IOException {
+    protected void encodeTabHeader(FacesContext context, Tab tab) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         //header container
@@ -170,7 +161,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         //title
         writer.startElement("a", null);
-        writer.writeAttribute("href", "#" + clientId, null);
+        writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.startElement("em", null);
         writer.write(tab.getTitle());
         writer.endElement("em");
@@ -188,33 +179,30 @@ public class TabViewRenderer extends CoreRenderer {
                 Tab tab = (Tab) tabView.getChildren().get(i);
 
                 if(tab.isRendered()) {
-                    encodeTabContent(context, tabView, tab, tab.getClientId(context), i, activeTabIndex);
+                    encodeTabContent(context, tabView, tab, i, activeTabIndex);
                 }
             }
         }
         else {
-            List list = tabView.getValue();
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            int dataCount = tabView.getRowCount();
             Tab tab = (Tab) tabView.getChildren().get(0);
-            StringBuilder builder = new StringBuilder();
-            char separator = UINamingContainer.getSeparatorChar(context);
             
-            for(int i = 0; i < list.size(); i++) {
-                requestMap.put(var, list.get(i));
-                String clientId = builder.append(tabView.getClientId(context)).append(separator).append(i).append(separator).append(tab.getId()).toString();
-                        
-                encodeTabContent(context, tabView, tab, clientId, i, activeTabIndex);
-                builder.setLength(0);
+            for(int i = 0; i < dataCount; i++) {
+                tabView.setRowIndex(i);
+                
+                encodeTabContent(context, tabView, tab, i, activeTabIndex);
             }
+            
+            tabView.setRowIndex(-1);
         }
         
     }
     
-    protected void encodeTabContent(FacesContext context, TabView tabView, Tab tab, String clientId, int index, int activeIndex) throws IOException {
+    protected void encodeTabContent(FacesContext context, TabView tabView, Tab tab, int index, int activeIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("id", tab.getClientId(context), null);
 
         if(tabView.isDynamic()) {
             if(index == activeIndex)

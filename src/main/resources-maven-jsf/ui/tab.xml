@@ -10,7 +10,7 @@
 	<componentClass>org.primefaces.component.tabview.Tab</componentClass>
 	<componentType>org.primefaces.component.Tab</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>javax.faces.component.UIColumn</parent>
     <description>Tab is a generic container component used by other PrimeFaces components such as tabView or accordionPanel.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
