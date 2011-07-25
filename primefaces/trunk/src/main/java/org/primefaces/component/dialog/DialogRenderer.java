@@ -52,31 +52,20 @@ public class DialogRenderer extends CoreRenderer {
         writer.write("{");
         writer.write("autoOpen:" + dialog.isVisible());
         writer.write(",minHeight:" + dialog.getMinHeight());
-
-        if(dialog.getStyleClass() != null) writer.write(",dialogClass:'" + dialog.getStyleClass() + "'");
-        if(dialog.getWidth() != 300) writer.write(",width:" + dialog.getWidth());
-        if(dialog.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + dialog.getHeight());
-        if(!dialog.isDraggable()) writer.write(",draggable: false");
-        if(dialog.isModal()) writer.write(",modal: true");
-        if(dialog.getZindex() != 1000) writer.write(",zIndex:" + dialog.getZindex());
-        if(!dialog.isResizable()) writer.write(",resizable:false");
-        if(dialog.getMinWidth() != 150) writer.write(",minWidth:" + dialog.getMinWidth());
+        writer.write(",draggable:" + dialog.isDraggable());
+        writer.write(",modal:" + dialog.isModal());
+        writer.write(",resizable:" + dialog.isResizable());
+        writer.write(",width:" + dialog.getWidth());
+        writer.write(",height:" + dialog.getHeight());
+        writer.write(",zIndex:" + dialog.getZindex());
+        writer.write(",minWidth:" + dialog.getMinWidth());
+        writer.write(",closeOnEscape:" + dialog.isCloseOnEscape());
+        writer.write(",appendToBody:" + dialog.isAppendToBody());
+        writer.write(",closable:" + dialog.isClosable());
+        writer.write(",showHeader:" + dialog.isShowHeader());
         if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
         if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
-        if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
-        if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
-        if(!dialog.isClosable()) writer.write(",closable:false");
-        if(!dialog.isShowHeader()) writer.write(",showHeader:false");
-
-        //Position
-        String position = dialog.getPosition();
-        if (position != null) {
-            if (position.contains(",")) {
-                writer.write(",position:[" + position + "]");
-            } else {
-                writer.write(",position:'" + position + "'");
-            }
-        }
+        if (dialog.getPosition() != null) writer.write(",position:'" + dialog.getPosition() + "'");
 
         //Client side callbacks
         if(dialog.getOnShow() != null) writer.write(",onShow:function(event, ui) {" + dialog.getOnShow() + "}");
@@ -112,6 +101,8 @@ public class DialogRenderer extends CoreRenderer {
         
         encodeContent(context, dialog);
 
+        encodeFooter(context, dialog);
+
         writer.endElement("div");
     }
 
@@ -125,6 +116,7 @@ public class DialogRenderer extends CoreRenderer {
         
         //title
         writer.startElement("span", null);
+        writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
         if(headerFacet != null)
             headerFacet.encodeAll(context);
         else if(header != null)
@@ -132,19 +124,71 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
         
         //close icon
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
+        if(dialog.isClosable()){
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
+            writer.endElement("span");
+
+            writer.endElement("a");
+        }
         
-        writer.startElement("span", null);
-        writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
-        writer.endElement("span");
+        //maximize icon
+        if(dialog.isMaximize()){
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", Dialog.TITLE_BAR_MAXIMIZE_CLASS, null);
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Dialog.MAXIMIZE_ICON_CLASS, null);
+            writer.endElement("span");
+
+            writer.endElement("a");
+        }
         
-        writer.endElement("a");
+        //minimize icon
+        if(dialog.isMinimize()){
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", Dialog.TITLE_BAR_MINIMIZE_CLASS, null);
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Dialog.MINIMIZE_ICON_CLASS, null);
+            writer.endElement("span");
+
+            writer.endElement("a");
+            
+        }
+        
         
         writer.endElement("div");
     }
 
+    protected void encodeFooter(FacesContext context, Dialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String footer = dialog.getFooter();
+        UIComponent footerFacet = dialog.getFacet("footer");
+        
+        if( footer == null && footerFacet == null)
+            return;
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
+        
+        writer.startElement("span", null);
+        if(footerFacet != null)
+            footerFacet.encodeAll(context);
+        else if(footer != null)
+            writer.write(footer);
+        writer.endElement("span");
+        
+        writer.endElement("div");
+        
+    }
+    
     protected void encodeContent(FacesContext context, Dialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
