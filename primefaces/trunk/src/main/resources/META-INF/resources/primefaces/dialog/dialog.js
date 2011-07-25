@@ -77,43 +77,45 @@ PrimeFaces.widget.Dialog.prototype.overlay = function(){
     }
         
     if(this.cfg.closeOnEscape){
-        $(document).bind('keydown',function(e){
+        $(document).bind('keydown',function(e, ui){
             if(e.which == $.ui.keyCode.ESCAPE && _self.jq.hasClass('ui-dialog-selected'))
-                _self.hide();
+                _self.hide(e,ui);
         });
     }
 }
 
-PrimeFaces.widget.Dialog.prototype.show = function() {
+PrimeFaces.widget.Dialog.prototype.show = function(event, ui) {
         
     if(this.jq.is(':visible'))
         return;
         
     this.load();
     
-    var os = this.cfg.onShow || false;
-    
+    var _self = this;
     if(this.cfg.showEffect)
-        this.jq.show(this.cfg.showEffect, os );
-    else
-        this.jq.show('size', 1, os);
+        this.jq.show(this.cfg.showEffect, function(e, ui){_self.onShow(e,ui);} );
+    else{
+        this.jq.show();
+        this.onShow(event, ui);
+    }
     
     this.overlay();
     this.focusFirstInput();
 }
 
-PrimeFaces.widget.Dialog.prototype.hide = function() {   
+PrimeFaces.widget.Dialog.prototype.hide = function(event, ui) {   
     if(this.jq.is(':hidden'))
         return;
         
     this.save();
     
-    var oh = this.cfg.onHide || false;
-        
+    var _self = this;
     if(this.cfg.hideEffect)
-        this.jq.hide(this.cfg.hideEffect, oh);
-    else
-        this.jq.hide('size', 1, oh);
+        this.jq.hide(this.cfg.hideEffect, function(e, ui){_self.onHide(e,ui);});
+    else{
+        this.jq.hide();
+        this.onHide(event, ui);
+    }
         
     if(this.cfg.modal){
         this.modalPanel.hide();
@@ -138,9 +140,8 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
         $(this).removeClass('ui-state-hover');
     })
         
-    this.closeIcon.click(function(e) {
-        _self.hide();
-        
+    this.closeIcon.click(function(e, ui) {
+        _self.hide(e, ui);
         e.preventDefault();
     });
         
@@ -221,3 +222,27 @@ function calculatePosition(o, p){
       
     return result;
 }
+
+
+PrimeFaces.widget.Dialog.prototype.onShow = function(event, ui) {
+    if(this.cfg.onShow) {
+        this.cfg.onShow.call(this, event, ui);
+    }
+} 
+
+
+PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
+
+    if(this.cfg.onHide) {
+        this.cfg.onHide.call(this, event, ui);
+    }
+
+    if(this.cfg.behaviors) {
+        var closeBehavior = this.cfg.behaviors['close'];
+
+        if(closeBehavior) {
+            closeBehavior.call(this);
+        }
+    }
+}
+
