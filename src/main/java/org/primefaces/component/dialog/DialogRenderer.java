@@ -137,7 +137,7 @@ public class DialogRenderer extends CoreRenderer {
         }
         
         //maximize icon
-        if(dialog.isMaximize()){
+        if(dialog.isMaximizable()){
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.TITLE_BAR_MAXIMIZE_CLASS, null);
@@ -150,7 +150,7 @@ public class DialogRenderer extends CoreRenderer {
         }
         
         //minimize icon
-        if(dialog.isMinimize()){
+        if(dialog.isMinimizable()){
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.TITLE_BAR_MINIMIZE_CLASS, null);
