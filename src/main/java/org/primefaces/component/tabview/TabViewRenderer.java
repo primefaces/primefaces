@@ -176,9 +176,7 @@ public class TabViewRenderer extends CoreRenderer {
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        writer.startElement("em", null);
         writer.write(tab.getTitle());
-        writer.endElement("em");
         writer.endElement("a");
 
         writer.endElement("li");
