@@ -142,10 +142,10 @@ PrimeFaces.widget.TabView.prototype.add = function(url, label, index) {
     this.jq.tabs('add', url, label, index);
 }
 
-PrimeFaces.widget.TabView.prototype.remove = function(index) {
-    this.jq.tabs('remove', index);
-    
+PrimeFaces.widget.TabView.prototype.remove = function(index) {    
     this.fireTabCloseEvent(null, this.jq.children('.ui-tabs-panel').get(index));
+    
+    this.jq.tabs('remove', index);
 }
 
 PrimeFaces.widget.TabView.prototype.getLength = function() {
@@ -157,26 +157,30 @@ PrimeFaces.widget.TabView.prototype.getActiveIndex = function() {
 }
 
 PrimeFaces.widget.TabView.prototype.fireTabChangeEvent = function(event, panel) {
+    var _self = this;
+    
     if(this.hasBehavior('tabChange')) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
         ext = {
             params: {}
         };
         ext.params[this.id + '_newTab'] = panel.id;
-        ext.params[this.id + '_tabindex'] = $(panel).index() - 1;
+        ext.params[this.id + '_tabindex'] = $(_self.jqId).children('.ui-tabs-panel').index(panel);
 
         tabChangeBehavior.call(this, event, ext);
     }
 }
 
 PrimeFaces.widget.TabView.prototype.fireTabCloseEvent = function(event, panel) {
+    var _self = this;
+    
     if(this.hasBehavior('tabClose')) {
         var tabCloseBehavior = this.cfg.behaviors['tabClose'],
         ext = {
             params: {}
         };
         ext.params[this.id + '_closeTab'] = panel.id;
-        ext.params[this.id + '_tabindex'] = $(panel).index() - 1;
+        ext.params[this.id + '_tabindex'] = $(_self.jqId).children('.ui-tabs-panel').index(panel);
 
         tabCloseBehavior.call(this, event, ext);
     }
@@ -194,7 +198,7 @@ PrimeFaces.widget.TabView.prototype.bindCloseEvents = function() {
     var _self = this;
     $(this.jqId + ' .ui-tabs-nav li .ui-icon-close').click(function(e) {
         var element = $(this),
-        tabindex = element.parent().index() - 1;
+        tabindex = element.parent().index();
         
         _self.remove(tabindex);
     });
