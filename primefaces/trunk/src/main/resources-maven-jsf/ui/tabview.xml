@@ -11,7 +11,7 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.TabViewRenderer</rendererType>
     <rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
-    <parent>javax.faces.component.UIComponentBase</parent>
+    <parent>javax.faces.component.UIData</parent>
     <description>TabView is a tabbed panel component featuring client side tabs, dynamic content loading with ajax and content transition effects.</description>
      <interfaces>
 		<interface>
@@ -104,12 +104,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Name of collection iterator to use in dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>value</name>
 			<required>false</required>
 			<type>java.util.List</type>
             <description>List to iterate to display dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
     </attributes>
     <resources>
