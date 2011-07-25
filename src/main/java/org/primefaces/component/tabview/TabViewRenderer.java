@@ -44,13 +44,27 @@ public class TabViewRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
         String clientId = tabView.getClientId(context);
+        String var = tabView.getVar();
 
         if(tabView.isContentLoadRequest(context)) {
-            String tabClientId = params.get(clientId + "_newTab");
-            Tab tabToLoad = (Tab) tabView.findTab(tabClientId);
+            Tab tabToLoad = null;
             
-            tabToLoad.encodeAll(context);
-        } else {
+            if(var == null) {
+                String tabClientId = params.get(clientId + "_newTab");
+                tabToLoad = (Tab) tabView.findTab(tabClientId);
+                
+                tabToLoad.encodeAll(context);
+            } 
+            else {
+                int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
+                tabView.setRowIndex(tabindex);
+                tabToLoad = (Tab) tabView.getChildren().get(0);
+                tabToLoad.encodeAll(context);
+                tabView.setRowIndex(-1);
+            }
+            
+        } 
+        else {
             encodeMarkup(context, tabView);
             encodeScript(context, tabView);
         }
