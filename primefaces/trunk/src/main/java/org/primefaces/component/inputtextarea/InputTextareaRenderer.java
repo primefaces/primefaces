@@ -62,7 +62,8 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.write("autoResize:" + autoResize);
         writer.write(",maxHeight:" + inputTextarea.getMaxHeight());
         writer.write(",effectDuration:" + inputTextarea.getEffectDuration());
-
+        writer.write(",maxLength:" + inputTextarea.getMaxLength());
+        
         encodeClientBehaviors(context, inputTextarea);
 
         if(!themeForms()) {

@@ -10,7 +10,8 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  */
-;(function($) {
+;
+(function($) {
     /**
      * The autoResizable() function is used to animate auto-resizable textareas on a given selector. To change the default options,
      * simply pass the options in an object as the only argument to the autoResizable() function.
@@ -32,22 +33,22 @@
         // Filters the selectors to just textareas.
         return this.filter('textarea').each(function() {
             var textarea = $(this),
-                originalHeight = textarea.height(),
-                currentHeight = 0,
-                pasteListener = null,
-                animate = settings.animate,
-                animateDuration = settings.animateDuration,
-                maxHeight = settings.maxHeight,
-                onBeforeResize = settings.onBeforeResize,
-                onAfterResize = settings.onAfterResize,
-                padding = settings.padding,
-                paste = settings.paste,
-                pasteInterval = settings.pasteInterval;
+            originalHeight = textarea.height(),
+            currentHeight = 0,
+            pasteListener = null,
+            animate = settings.animate,
+            animateDuration = settings.animateDuration,
+            maxHeight = settings.maxHeight,
+            onBeforeResize = settings.onBeforeResize,
+            onAfterResize = settings.onAfterResize,
+            padding = settings.padding,
+            paste = settings.paste,
+            pasteInterval = settings.pasteInterval;
 
             // Creates a clone of the textarea, used to determine the textarea height.
             var clone = (function() {
                 var cssKeys = ['height', 'letterSpacing', 'lineHeight', 'textDecoration', 'width'],
-                    properties = {};
+                properties = {};
 
                 $.each(cssKeys, function(i, key) {
                     properties[key] = textarea.css(key);
@@ -81,7 +82,10 @@
                     newHeight = maxHeight;
                     textarea.css('overflow-y', 'auto');
                 } else {
-                    textarea.css({overflow: 'hidden', overflowY: 'hidden'});
+                    textarea.css({
+                        overflow: 'hidden', 
+                        overflowY: 'hidden'
+                    });
                 }
 
                 // Fires off the onBeforeResize event.
@@ -99,7 +103,9 @@
 
                 // Adjusts the height of the textarea.
                 if (animate && textarea.css('display') === 'block') {
-                    textarea.stop().animate({height: newHeight}, animateDuration, function() {
+                    textarea.stop().animate({
+                        height: newHeight
+                    }, animateDuration, function() {
                         if (onAfterResize !== null) {
                             onAfterResize.call(textarea);
                         }
@@ -134,15 +140,18 @@
             };
 
             // Hides scroll bars and disables WebKit resizing.
-            textarea.css({overflow: 'hidden', resize: 'none'});
+            textarea.css({
+                overflow: 'hidden', 
+                resize: 'none'
+            });
 
             // Binds the textarea event handlers.
             textarea.unbind('.autoResizable')
-                    .bind('keydown.autoResizable', autoResize)
-                    .bind('keyup.autoResizable', autoResize)
-                    .bind('change.autoResizable', autoResize)
-                    .bind('focus.autoResizable', init)
-                    .bind('blur.autoResizable', uninit);
+            .bind('keydown.autoResizable', autoResize)
+            .bind('keyup.autoResizable', autoResize)
+            .bind('change.autoResizable', autoResize)
+            .bind('focus.autoResizable', init)
+            .bind('blur.autoResizable', uninit);
         });
     };
 })(jQuery);
@@ -175,7 +184,8 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
-
+    var _self = this;
+    
     //Visuals
     if(this.cfg.theme != false) {
         PrimeFaces.skinInput(this.jq);
@@ -185,7 +195,19 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     if(this.cfg.autoResize) {
         this.jq.autoResizable({
             maxHeight: this.cfg.maxHeight
-            ,animateDuration: this.cfg.effectDuration
+            ,
+            animateDuration: this.cfg.effectDuration
+        });
+    }
+    
+    //max length
+    if(this.cfg.maxLength){
+        //backspace, tab, pageup/down, end, arrows..
+        var ignore = [8,9,33,34,35,36,37,38,39,40,46];
+        this.jq.keydown(function(e){
+            return $(this).val().length < _self.cfg.maxLength 
+            || $.inArray(e.which, ignore) !== -1
+            || e.metaKey;
         });
     }
 
@@ -368,17 +390,19 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
                 break;
             
             case keyCode.ALT: 
-            case 224:break;
-            case keyCode.TAB:_self.hide();
+            case 224:
+                break;
+            case keyCode.TAB:
+                _self.hide();
             default:
                 var letter = String.fromCharCode(e.keyCode).toLowerCase();
                 options = $(_self.input).children('option');
 
                 if( _self.highlightKeyPath != letter ){
 
-                     _self.highlightKeyPath += letter;
-                     _self.highlightItems = [];
-                     // find matches
+                    _self.highlightKeyPath += letter;
+                    _self.highlightItems = [];
+                    // find matches
                     for( var index = 0 ; index < options.length; index++){
                         if(options[index].text.toLowerCase().startsWith(_self.highlightKeyPath))
                             _self.highlightItems.push(items.eq(index));
@@ -387,7 +411,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
                 // no change
                 if(_self.highlightItems.length < 1)
-                        return;
+                    return;
 
                 if(_self.highlightItem ){
 
@@ -418,7 +442,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
                 //round
                 if(_self.highlightIndex == _self.highlightItems.length) {
-                            _self.highlightIndex = 0;
+                    _self.highlightIndex = 0;
                 }
 
                 _self.highlightItem = _self.highlightItems[_self.highlightIndex];
@@ -474,8 +498,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
     buttonWidth = this.jq.width();
     
     this.panel.css({
-       'top':  offset.top + this.jq.outerHeight(),
-       'left': offset.left
+        'top':  offset.top + this.jq.outerHeight(),
+        'left': offset.left
     });
     
     if(panelWidth < buttonWidth) {
@@ -704,15 +728,15 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     _self = this;
 
     options.each(function(i) {
-       var option = $(this),
-       selected = option.attr('selected'),
-       styleClass = 'ui-selectlistbox-item ui-corner-all';
+        var option = $(this),
+        selected = option.attr('selected'),
+        styleClass = 'ui-selectlistbox-item ui-corner-all';
 
-       if(selected) {
-           styleClass = styleClass + ' ui-state-active';
-       }
+        if(selected) {
+            styleClass = styleClass + ' ui-state-active';
+        }
        
-       listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
+        listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
     });
 
     var items = listContainer.children('li');
