@@ -168,20 +168,6 @@
             <description>Text of the footer.</description>
         </attribute>
         <attribute>
-            <name>minimizable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Specifies dialog is minimizable or not. Default is false.</description>
-        </attribute>
-        <attribute>
-            <name>maximizable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Specifies dialog is maximizable or not. Default false.</description>
-        </attribute>
-        <attribute>
             <name>dynamic</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
