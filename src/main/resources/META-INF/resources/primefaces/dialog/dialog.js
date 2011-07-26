@@ -169,8 +169,13 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
         $(this).removeClass('ui-state-hover');
     })
         
-    this.closeIcon.click(function(e, ui) {
-        _self.hide(e, ui);
+    this.closeIcon.click(function(e) {
+        _self.hide();
+        e.preventDefault();
+    });
+    
+    this.maximizeIcon.click(function(e) {
+        _self.toggleMaximize();
         e.preventDefault();
     });
 }
@@ -254,6 +259,42 @@ PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
         DM.maxZIndex = max;
         this.jq.zIndex(max);
     }
+}
+
+PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
+    if(this.maximized) {
+        this.restoreState();
+                
+        this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin');
+        this.maximized = false;
+    } 
+    else {
+        this.saveState();
+                
+        this.jq.css({
+            'width': $(window).width() - 6
+            ,'height': $(window).height()
+           }).offset({
+               top:0
+               ,left:0
+           }); 
+        
+        this.maximizeIcon.children('.ui-icon').addClass('ui-icon-newwin');
+        this.maximized = true;
+    }
+
+}
+
+PrimeFaces.widget.Dialog.prototype.saveState = function() {
+    this.state = {
+        offset: this.jq.offset()
+        ,width: this.jq.innerWidth()
+        ,height: this.jq.innerHeight()
+    };
+}
+
+PrimeFaces.widget.Dialog.prototype.restoreState = function() {
+    this.jq.offset(this.state.offset).width(this.state.width).height(this.state.height);
 }
 
 /**
