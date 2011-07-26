@@ -47,25 +47,24 @@ public class DialogRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
 
-        writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.Dialog('" + clientId + "',");
-
-        writer.write("{");
+        writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.Dialog('" + clientId + "', {");
+        
         writer.write("autoOpen:" + dialog.isVisible());
-        writer.write(",minHeight:" + dialog.getMinHeight());
-        writer.write(",draggable:" + dialog.isDraggable());
-        writer.write(",modal:" + dialog.isModal());
-        writer.write(",resizable:" + dialog.isResizable());
-        writer.write(",width:" + dialog.getWidth());
-        writer.write(",height:" + dialog.getHeight());
-        writer.write(",zIndex:" + dialog.getZindex());
-        writer.write(",minWidth:" + dialog.getMinWidth());
-        writer.write(",closeOnEscape:" + dialog.isCloseOnEscape());
-        writer.write(",appendToBody:" + dialog.isAppendToBody());
-        writer.write(",closable:" + dialog.isClosable());
-        writer.write(",showHeader:" + dialog.isShowHeader());
+        
+        if(!dialog.isDraggable()) writer.write(",draggable:false");
+        if(!dialog.isResizable()) writer.write(",resizable:false");
+        if(dialog.isModal()) writer.write(",modal:true");
+        if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
+        if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
+        if(dialog.getZindex() != Integer.MIN_VALUE) writer.write(",zindex:" + dialog.getZindex());
+        if(dialog.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + dialog.getMinWidth());
+        if(dialog.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + dialog.getMinHeight());
+        if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
+        if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
+        
         if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
         if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
-        if (dialog.getPosition() != null) writer.write(",position:'" + dialog.getPosition() + "'");
+        if(dialog.getPosition() != null) writer.write(",position:'" + dialog.getPosition() + "'");
 
         //Client side callbacks
         if(dialog.getOnShow() != null) writer.write(",onShow:function(event, ui) {" + dialog.getOnShow() + "}");
@@ -117,10 +116,12 @@ public class DialogRenderer extends CoreRenderer {
         //title
         writer.startElement("span", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
+        
         if(headerFacet != null)
             headerFacet.encodeAll(context);
         else if(header != null)
             writer.write(header);
+        
         writer.endElement("span");
         
         //close icon
@@ -160,9 +161,7 @@ public class DialogRenderer extends CoreRenderer {
             writer.endElement("span");
 
             writer.endElement("a");
-            
         }
-        
         
         writer.endElement("div");
     }
