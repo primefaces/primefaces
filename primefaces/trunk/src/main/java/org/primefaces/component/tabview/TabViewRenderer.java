@@ -183,7 +183,6 @@ public class TabViewRenderer extends CoreRenderer {
         if(tab.isClosable()) {
             writer.startElement("span", null);
             writer.writeAttribute("class", "ui-icon ui-icon-close", null);
-            writer.write("Remove Tab");
             writer.endElement("span");
         }
 
