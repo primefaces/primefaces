@@ -6,12 +6,13 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = $(this.jqId);
-    this.closeIcon = $(this.jqId + ' .ui-dialog-titlebar .ui-dialog-titlebar-close');
-    this.minimizeIcon = $(this.jqId + ' .ui-dialog-titlebar .ui-dialog-titlebar-minimize');
-    this.maximizeIcon = $(this.jqId + ' .ui-dialog-titlebar .ui-dialog-titlebar-maximize');
     this.content = this.jq.children('.ui-dialog-content');
+    this.titlebar = this.jq.children('.ui-dialog-titlebar');
     this.footer = this.jq.find('.ui-dialog-footer');
-    this.icons = this.jq.find('.ui-dialog-titlebar .ui-dialog-titlebar-close, .ui-dialog-titlebar .ui-dialog-titlebar-minimize, .ui-dialog-titlebar .ui-dialog-titlebar-maximize');
+    this.icons = this.titlebar.children('.ui-dialog-titlebar-icon');
+    this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
+    this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
+    this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
     
     //configuration
     this.cfg.width = this.cfg.width || 'auto';
