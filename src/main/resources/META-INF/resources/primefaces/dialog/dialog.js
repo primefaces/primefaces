@@ -14,6 +14,7 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
     this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
     this.visible = false;
+    this.blockEvents = 'focus mousedown mouseup keydown keypress click';
     
     //configuration
     this.cfg.width = this.cfg.width || 'auto';
@@ -26,11 +27,11 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.cfg.closeOnEscape = this.cfg.closeOnEscape == false ? false : true;
     this.cfg.position = this.cfg.position || 'center';
     
-    
-    //size
+    //size and zindex
     this.jq.css({
-        width : this.cfg.width,
-        height: this.cfg.height
+        'width': this.cfg.width,
+        'height': this.cfg.height,
+        'z-index': this.cfg.zindex 
     });
     
     //position
@@ -53,46 +54,48 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
         
     if(this.cfg.autoOpen){
         this.jq.show();
-        this.overlay();
     }
 }
 
-//renews dialog layout
-PrimeFaces.widget.Dialog.prototype.overlay = function(){
+PrimeFaces.widget.Dialog.prototype.enableModality = function(){
     var _self = this;
-    var s = $('.ui-dialog-selected');
-    if(!this.jq.hasClass('ui-dialog-selected') && s.length){
-        this.jq.css('z-index', parseInt(s.css('z-index')) + 1);
-        s.removeClass('ui-dialog-selected');
-    }
-    else{
-        var z = this.jq.css('z-index');
-        this.jq.css('z-index', (parseInt(z) || 1000));
-    }
-        
-    this.jq.addClass('ui-dialog-selected');
-        
-    if(this.cfg.modal){
-        if(!this.modalPanel){
-            this.modalPanel = $('<div class="ui-dialog-modal ui-widget-overlay"></div>');
-            $('body').append(this.modalPanel);
-        }
 
-        this.modalPanel.css('z-index', this.jq.css('z-index') - 1).show();
-        $(document).bind('keydown', function(e){
-            if (e.keyCode == $.ui.keyCode.TAB) {
-                e.preventDefault();
+    $(document.body).append('<div class="ui-widget-overlay"></div>').
+        children('.ui-widget-overlay').css({
+            'width': $(document).width()
+            ,'height': $(document).height()
+            ,'z-index': this.jq.css('z-index') - 1
+        });
+
+    //disable tabbing out of modal dialog
+    $(document).bind('keydown', function(event) {
+        if(event.keyCode == $.ui.keyCode.TAB) {
+            var tabbables = _self.content.find(':tabbable'),
+            first = tabbables.filter(':first'),
+            last  = tabbables.filter(':last');
+
+            if(event.target === last[0] && !event.shiftKey) {
+                first.focus(1);
+                return false;
+            } else if (event.target === first[0] && event.shiftKey) {
+                last.focus(1);
                 return false;
             }
-        });
-    }
-        
-    if(this.cfg.closeOnEscape) {
-        $(document).bind('keydown',function(e, ui){
-            if(e.which == $.ui.keyCode.ESCAPE && _self.jq.hasClass('ui-dialog-selected'))
-                _self.hide(e,ui);
-        });
-    }
+        }        
+    });
+
+    //stop events from targets outside of dialog
+    $(document).bind(this.blockEvents, function(event) {
+        if ($(event.target).zIndex() < _self.jq.zIndex()) {
+            return false;
+        }
+    });
+}
+
+
+PrimeFaces.widget.Dialog.prototype.disableModality = function(){
+    $(document.body).children('.ui-widget-overlay').remove();
+    $(document).unbind(this.blockEvents);
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
@@ -117,6 +120,9 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
     
     this.focusFirstInput();
     this.visible = true;
+    
+    if(this.cfg.modal)
+        this.enableModality();
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {   
@@ -138,13 +144,11 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
         if(this.onHide)
             this.onHide.call(this);
     }
-        
-    if(this.cfg.modal){
-        this.modalPanel.hide();
-        $(document).unbind('keydown');
-    }
     
     this.visible = false;
+    
+    if(this.cfg.modal)
+        this.disableModality();
 }
 
 PrimeFaces.widget.Dialog.prototype.focusFirstInput = function() {
@@ -155,7 +159,7 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
     var _self = this;
     
     this.jq.mousedown(function(){
-        _self.overlay();
+        //_self.overlay();
     });
 
     this.icons.mouseover(function() {
@@ -168,14 +172,6 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
         _self.hide(e, ui);
         e.preventDefault();
     });
-}
-     
-//saves positions&dimensions
-PrimeFaces.widget.Dialog.prototype.save = function() {
-    this.cfg.top = this.jq.offset().top - $(window).scrollTop();
-    this.cfg.left = this.jq.offset().left - $(window).scrollLeft();
-    this.cfg.width = this.jq.width();
-    this.cfg.height = this.jq.height();
 }
 
 PrimeFaces.widget.Dialog.prototype.setupDraggable = function() {    
