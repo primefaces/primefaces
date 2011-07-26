@@ -29,9 +29,6 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
         width : this.cfg.width,
         height: this.cfg.height
     });
-        
-    //options
-    this.jq.css(this.cfg.position = calculatePosition(this.jq, this.cfg.position));
  
     //events
     this.bindEvents();
@@ -93,30 +90,32 @@ PrimeFaces.widget.Dialog.prototype.overlay = function(){
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function(event, ui) {
+    if(this.jq.is(':visible')) {
+       return; 
+    }
         
-    if(this.jq.is(':visible'))
-        return;
-        
-    this.load();
-    
     var _self = this;
-    if(this.cfg.showEffect)
-        this.jq.show(this.cfg.showEffect, function(e, ui){_self.onShow(e,ui);} );
-    else{
+    if(this.cfg.showEffect) {
+        this.jq.show(this.cfg.showEffect, function(e, ui) {
+            _self.onShow(e,ui);
+        });
+    }    
+    else {
         this.jq.show();
         this.onShow(event, ui);
     }
     
-    this.overlay();
+    if(!this.positioned) {
+        this.initPosition();
+    }
+
     this.focusFirstInput();
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function(event, ui) {   
     if(this.jq.is(':hidden'))
         return;
-        
-    this.save();
-    
+            
     var _self = this;
     if(this.cfg.hideEffect)
         this.jq.hide(this.cfg.hideEffect, function(e, ui){_self.onHide(e,ui);});
@@ -152,13 +151,8 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
         _self.hide(e, ui);
         e.preventDefault();
     });
-        
-//      this.minimizeIcon.click(function(e) { e.preventDefault(); });
-        
-//      this.maximizeIcon.click(function(e) { e.preventDefault(); });
 }
-    
-    
+     
 //saves positions&dimensions
 PrimeFaces.widget.Dialog.prototype.save = function() {
     this.cfg.top = this.jq.offset().top - $(window).scrollTop();
@@ -166,24 +160,6 @@ PrimeFaces.widget.Dialog.prototype.save = function() {
     this.cfg.width = this.jq.width();
     this.cfg.height = this.jq.height();
 }
-    
-    
-//loads position&dimensions
-PrimeFaces.widget.Dialog.prototype.load = function() {
-    if(this.cfg.top)
-        this.jq.css({
-            top :  $(window).scrollTop()  + this.cfg.top, 
-            left :  $(window).scrollLeft()  + this.cfg.left
-        });
-    else
-        this.jq.css({
-            top : $(window).scrollTop() + ($(window).height() - this.jq.height())/2, 
-            left : $(window).scrollLeft() + ($(window).width() - this.jq.width())/2
-        });
-        
-    //next for width/height on minimize/maximize
-}
-
 
 PrimeFaces.widget.Dialog.prototype.setupDraggable = function() {    
     this.jq.draggable({
@@ -200,37 +176,6 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
         containment: 'body'
     });
 }
-    
-function calculatePosition(o, p){
-    if(!(o || q))
-        return false;
-    var w = $(window), 
-    st = w.scrollTop(),
-    sl = w.scrollLeft(),
-    wh = w.height(),
-    ww = w.width(),
-    ow = o.width(),
-    oh = o.height();
-        
-    var q = p.split(","),
-    result = {
-        top : st + ( parseInt(q[1] || '') || ((wh/1.3 - oh)/2)), 
-        left : sl + ( parseInt(q[0] || '') || (ww - ow)/2)
-        };
-        
-    if( p.indexOf('left') > -1)
-        result.left = sl + 10;
-    else if( p.indexOf('right') > -1)
-        result.left = sl + (ww - ow - 10);
-
-    if( p.indexOf('top') > -1)
-        result.top = st + 10;
-    else if( p.indexOf('bottom') > -1)
-        result.top = st + (wh - oh - 10);
-      
-    return result;
-}
-
 
 PrimeFaces.widget.Dialog.prototype.onShow = function(event, ui) {
     if(this.cfg.onShow) {
@@ -238,6 +183,37 @@ PrimeFaces.widget.Dialog.prototype.onShow = function(event, ui) {
     }
 } 
 
+PrimeFaces.widget.Dialog.prototype.initPosition = function() {
+    
+    if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
+        this.cfg.position = this.cfg.position.replace(',', ' ');
+        
+        this.jq.position({
+            my: 'center'
+            ,at: this.cfg.position
+            ,collision: 'fit'
+            ,of: window
+            ,using: function(pos) {
+                var topOffset = $(this).css(pos).offset().top;
+                if(topOffset < 0) {
+                    $(this).css('top', pos.top - topOffset);
+                }
+            }
+        });
+    }
+    else {
+        var coords = this.cfg.position.split(','),
+        x = $.trim(coords[0]),
+        y = $.trim(coords[1]);
+        
+        this.jq.offset({
+            top: y
+            ,left: x
+        });
+    }
+        
+    this.positioned = true;
+}
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
 
@@ -253,4 +229,3 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
         }
     }
 }
-
