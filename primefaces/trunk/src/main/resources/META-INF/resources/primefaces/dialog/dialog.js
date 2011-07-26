@@ -120,6 +120,7 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
     
     this.focusFirstInput();
     this.visible = true;
+    this.moveToTop();
     
     if(this.cfg.modal)
         this.enableModality();
@@ -159,7 +160,7 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
     var _self = this;
     
     this.jq.mousedown(function(){
-        //_self.overlay();
+        _self.moveToTop();
     });
 
     this.icons.mouseover(function() {
@@ -243,3 +244,22 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
         }
     }
 }
+
+PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
+    var DM = PrimeFaces.widget.DialogManager;
+    
+    if(this.jq.zIndex() <= DM.maxZIndex) {
+        var max = DM.maxZIndex + 1;
+        
+        DM.maxZIndex = max;
+        this.jq.zIndex(max);
+    }
+}
+
+/**
+ * PrimeFaces Dialog Manager
+ */
+PrimeFaces.widget.DialogManager = {
+    
+    maxZIndex : 1000
+};
