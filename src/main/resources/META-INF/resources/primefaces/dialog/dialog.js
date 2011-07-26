@@ -26,6 +26,7 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.cfg.zindex = this.cfg.zindex || 1000;
     this.cfg.closeOnEscape = this.cfg.closeOnEscape == false ? false : true;
     this.cfg.position = this.cfg.position || 'center';
+    this.parent = this.jq.parent();
     
     //size and zindex
     this.jq.css({
@@ -50,6 +51,11 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     
     if(this.cfg.appendToBody){
         this.jq.appendTo('body');
+    }
+    
+    //docking zone
+    if($(document.body).children('.ui-dialog-docking-zone').length == 0) {
+        $(document.body).append('<div class="ui-dialog-docking-zone"></div>')
     }
         
     if(this.cfg.autoOpen){
@@ -178,6 +184,11 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
         _self.toggleMaximize();
         e.preventDefault();
     });
+    
+    this.minimizeIcon.click(function(e) {
+        _self.toggleMinimize();
+        e.preventDefault();
+    });
 }
 
 PrimeFaces.widget.Dialog.prototype.setupDraggable = function() {    
@@ -194,6 +205,8 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
         alsoResize : this.footer.length > 0 ? this.content : false,
         containment: 'body'
     });
+    
+    this.resizers = this.jq.children('.ui-resizable-handle');
 }
 
 PrimeFaces.widget.Dialog.prototype.onShow = function(event, ui) {
@@ -265,7 +278,7 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
     if(this.maximized) {
         this.restoreState();
                 
-        this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin');
+        this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
         this.maximized = false;
     } 
     else {
@@ -279,10 +292,39 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
                ,left:0
            }); 
         
-        this.maximizeIcon.children('.ui-icon').addClass('ui-icon-newwin');
+        this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
         this.maximized = true;
     }
+}
 
+PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
+    var _self = this,
+    dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+    
+    if(this.minimized) {
+        this.jq.appendTo(this.parent).css({'position':'absolute', 'float':'none'});
+        this.restoreState();
+        this.content.show();
+        this.resizers.show();
+        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
+        this.minimized = false;
+    }
+    else {
+        this.saveState();
+        
+        this.jq.effect('transfer', {
+            to: dockingZone
+            ,className: 'ui-dialog-minimizing'
+        }, 500, 
+            function() {
+                _self.jq.appendTo(dockingZone).css('position', 'static');
+                _self.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
+                _self.content.hide();
+                _self.resizers.hide();
+                _self.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+                _self.minimized = true;
+            });
+    }
 }
 
 PrimeFaces.widget.Dialog.prototype.saveState = function() {
