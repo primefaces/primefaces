@@ -76,7 +76,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-
+        
         writer.write(tabView.resolveWidgetVar() + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
 
         writer.write("selected:" + tabView.getActiveIndex());
@@ -183,6 +183,7 @@ public class TabViewRenderer extends CoreRenderer {
         if(tab.isClosable()) {
             writer.startElement("span", null);
             writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+            writer.write("Remove Tab");
             writer.endElement("span");
         }
 
