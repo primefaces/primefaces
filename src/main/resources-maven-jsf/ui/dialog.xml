@@ -61,49 +61,47 @@
         <attribute>
             <name>width</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>300</defaultValue>
-            <description>Width of the dialog. Default is 300.</description>
+            <type>java.lang.String</type>
+            <description>Width of the dialog in pixels. Default is auto.</description>
         </attribute>
         <attribute>
             <name>height</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Width of the dialog. Default is min integer value.</description>
+            <type>java.lang.String</type>
+            <description>Height of the dialog.</description>
         </attribute>
         <attribute>
             <name>zindex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1000</defaultValue>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
             <description>Specifies zindex property. Default is 1000.</description>
         </attribute>
         <attribute>
             <name>minWidth</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>150</defaultValue>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
             <description>Minimum width of a resizable dialog. Default is 150.</description>
         </attribute>
         <attribute>
             <name>minHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>0</defaultValue>
-            <description>Minimum height of a resizable dialog. Default is 0.</description>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Minimum height of a resizable dialog. Default is 150.</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Inner style of the dialog.</description>
+            <description>Inline style of the dialog container.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of the dialog.</description>
+            <description>Style class of the dialog container.</description>
         </attribute>
         <attribute>
             <name>showEffect</name>
@@ -188,7 +186,8 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Specifies dialog content is lazy or not. Default is false.</description>
+            <description>Dynamic mode allows dialog to fetch it's contents before it's shown rather than on page load
+            which is useful to reduce initial page load times. Default is false.</description>
         </attribute>
     </attributes>
     <resources>
