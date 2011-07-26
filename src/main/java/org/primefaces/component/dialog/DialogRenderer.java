@@ -124,44 +124,14 @@ public class DialogRenderer extends CoreRenderer {
         
         writer.endElement("span");
         
-        //close icon
-        if(dialog.isClosable()){
-            writer.startElement("a", null);
-            writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
-
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
-            writer.endElement("span");
-
-            writer.endElement("a");
-        }
+        if(dialog.isClosable())
+            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS);
         
-        //maximize icon
-        if(dialog.isMaximizable()){
-            writer.startElement("a", null);
-            writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Dialog.TITLE_BAR_MAXIMIZE_CLASS, null);
-
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Dialog.MAXIMIZE_ICON_CLASS, null);
-            writer.endElement("span");
-
-            writer.endElement("a");
-        }
-        
-        //minimize icon
-        if(dialog.isMinimizable()){
-            writer.startElement("a", null);
-            writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Dialog.TITLE_BAR_MINIMIZE_CLASS, null);
-
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Dialog.MINIMIZE_ICON_CLASS, null);
-            writer.endElement("span");
-
-            writer.endElement("a");
-        }
+        if(dialog.isMaximizable())
+            encodeIcon(context, Dialog.TITLE_BAR_MAXIMIZE_CLASS, Dialog.CLOSE_ICON_CLASS);
+                    
+        if(dialog.isMinimizable())
+            encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS);
         
         writer.endElement("div");
     }
@@ -171,7 +141,7 @@ public class DialogRenderer extends CoreRenderer {
         String footer = dialog.getFooter();
         UIComponent footerFacet = dialog.getFacet("footer");
         
-        if( footer == null && footerFacet == null)
+        if(footer == null && footerFacet == null)
             return;
         
         writer.startElement("div", null);
@@ -197,6 +167,20 @@ public class DialogRenderer extends CoreRenderer {
         renderChildren(context, dialog);
         
         writer.endElement("div");
+    }
+    
+    protected void encodeIcon(FacesContext context, String anchorClass, String iconClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", anchorClass, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
     }
     
     @Override
