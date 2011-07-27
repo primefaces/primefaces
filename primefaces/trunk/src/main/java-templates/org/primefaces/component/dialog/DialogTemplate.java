@@ -17,7 +17,7 @@ import javax.faces.event.PhaseId;
     public static final String TITLE_BAR_MAXIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all";
     public static final String MAXIMIZE_ICON_CLASS = "ui-icon ui-icon-extlink";
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
-    public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-header ui-corner-all ui-helper-clearfix";
+    public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
 
     private final static String DEFAULT_EVENT = "close";
 
