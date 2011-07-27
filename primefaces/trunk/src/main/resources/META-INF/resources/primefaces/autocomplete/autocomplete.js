@@ -257,7 +257,7 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
     
     //complete callback
     if(this.cfg.oncomplete) {
-        options.complete = this.cfg.oncomplete;
+        options.oncomplete = this.cfg.oncomplete;
     }
 
     if(this.cfg.global === false) {
