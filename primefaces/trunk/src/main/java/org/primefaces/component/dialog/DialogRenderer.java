@@ -33,9 +33,13 @@ public class DialogRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Dialog dialog = (Dialog) component;
-
-        encodeMarkup(context, dialog);
-        encodeScript(context, dialog);
+        
+        if(dialog.isContentLoadRequest(context)) {
+            renderChildren(context, component);
+        } else {
+            encodeMarkup(context, dialog);
+            encodeScript(context, dialog);
+        }
     }
 
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
@@ -61,6 +65,7 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + dialog.getMinHeight());
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
         if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
+        if(dialog.isDynamic()) writer.write(",dynamic:true");
         
         if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
         if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
@@ -164,7 +169,9 @@ public class DialogRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
         
-        renderChildren(context, dialog);
+        if(!dialog.isDynamic()) {
+            renderChildren(context, dialog);
+        }
         
         writer.endElement("div");
     }

@@ -106,6 +106,14 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
        return;
     }
     
+    if(!this.loaded && this.cfg.dynamic) {
+        this.loadContents();
+    } else {
+        this._show();
+    }
+}
+
+PrimeFaces.widget.Dialog.prototype._show = function() {
     if(this.cfg.showEffect) {
         var _self = this;
             
@@ -356,16 +364,50 @@ PrimeFaces.widget.Dialog.prototype.saveState = function() {
     };
 }
 
-PrimeFaces.widget.Dialog.prototype.saveState = function() {
-    this.state = {
-        offset: this.jq.offset()
-        ,width: this.jq.innerWidth()
-        ,height: this.jq.innerHeight()
-    };
-}
-
 PrimeFaces.widget.Dialog.prototype.restoreState = function() {
     this.jq.offset(this.state.offset).width(this.state.width).height(this.state.height);
+}
+
+PrimeFaces.widget.Dialog.prototype.loadContents = function() {
+    var options = {
+        source: this.id,
+        process: this.id,
+        update: this.id
+    },
+    _self = this;
+
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement,
+        updates = xmlDoc.getElementsByTagName("update");
+
+        for(var i=0; i < updates.length; i++) {
+            var id = updates[i].attributes.getNamedItem("id").nodeValue,
+            content = updates[i].firstChild.data;
+
+            if(id == _self.id){
+                _self.content.html(content);
+                _self.loaded = true;
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+            }
+        }
+
+        PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+        
+        return true;
+    };
+    
+    options.oncomplete = function() {
+        _self._show();
+    };
+
+    var params = [];
+    params[this.id + '_contentLoad'] = true;
+
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
 
 /**
