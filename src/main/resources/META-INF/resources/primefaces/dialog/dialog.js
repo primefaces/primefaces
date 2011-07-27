@@ -304,13 +304,16 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
+    var animate = true,
+    dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+    
     if(this.maximized) {
         this.jq.css('visibility', 'hidden');
         this.toggleMaximize();
+        animate = false;
     }
     
-    var _self = this,
-    dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+    var _self = this;
     
     if(this.minimized) {
         this.jq.appendTo(this.parent).css({'position':'absolute', 'float':'none'});
@@ -323,20 +326,37 @@ PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
     else {
         this.saveState();
         
-        this.jq.effect('transfer', {
-            to: dockingZone
-            ,className: 'ui-dialog-minimizing'
-        }, 500, 
-            function() {
-                _self.jq.appendTo(dockingZone).css('position', 'static');
-                _self.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
-                _self.content.hide();
-                _self.resizers.hide();
-                _self.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
-                _self.minimized = true;
-                _self.jq.css('visibility', 'visible');
-            });
+        if(animate) {
+            this.jq.effect('transfer', {
+                            to: dockingZone
+                            ,className: 'ui-dialog-minimizing'
+                            }, 500, 
+                            function() {
+                                _self.dock(dockingZone);
+                            });
+        } 
+        else {
+            this.dock(dockingZone);
+        }
     }
+}
+
+PrimeFaces.widget.Dialog.prototype.dock = function(zone) {
+    this.jq.appendTo(zone).css('position', 'static');
+    this.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
+    this.content.hide();
+    this.resizers.hide();
+    this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+    this.minimized = true;
+    this.jq.css('visibility', 'visible');
+}
+
+PrimeFaces.widget.Dialog.prototype.saveState = function() {
+    this.state = {
+        offset: this.jq.offset()
+        ,width: this.jq.innerWidth()
+        ,height: this.jq.innerHeight()
+    };
 }
 
 PrimeFaces.widget.Dialog.prototype.saveState = function() {
