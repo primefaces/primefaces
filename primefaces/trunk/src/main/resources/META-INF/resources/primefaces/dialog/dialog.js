@@ -17,15 +17,15 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keypress.dialog click.dialog';
     
     //configuration
-    this.cfg.width = this.cfg.width || 'auto';
-    this.cfg.height = this.cfg.height || 'auto';
+    this.cfg.width = this.cfg.width||'auto';
+    this.cfg.height = this.cfg.height||'auto';
     this.cfg.draggable = this.cfg.draggable == false ? false : true;
     this.cfg.resizable = this.cfg.resizable == false ? false : true;
-    this.cfg.minWidth = this.cfg.minWidth || 150;
-    this.cfg.minHeight = this.cfg.minHeight || this.titlebar.outerHeight();
-    this.cfg.zindex = this.cfg.zindex || 1000;
+    this.cfg.minWidth = this.cfg.minWidth||150;
+    this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
+    this.cfg.zindex = this.cfg.zindex||1000;
     this.cfg.closeOnEscape = this.cfg.closeOnEscape == false ? false : true;
-    this.cfg.position = this.cfg.position || 'center';
+    this.cfg.position = this.cfg.position||'center';
     this.parent = this.jq.parent();
     
     //size and zindex
