@@ -90,5 +90,7 @@ public class PieChartRenderer extends BaseChartRenderer {
             writer.write(",sliceMargin:" + chart.getSliceMargin());
         if(chart.isFill() == false)
             writer.write(",fill:false");
+        if(chart.getSeriesColors() != null)
+            writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
     }
 }

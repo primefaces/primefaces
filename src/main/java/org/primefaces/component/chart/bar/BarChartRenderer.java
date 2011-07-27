@@ -138,6 +138,10 @@ public class BarChartRenderer extends BaseChartRenderer {
         if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
         if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
 
+        //colors
+        if(chart.getSeriesColors() != null)
+            writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
+        
         //other
         if(chart.isBreakOnNull()) writer.write(",breakOnNull:true");
     }

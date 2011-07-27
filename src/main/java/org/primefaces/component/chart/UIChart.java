@@ -39,7 +39,8 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
         ,styleClass
         ,style
         ,title
-        ,legendPosition;
+        ,legendPosition
+        ,seriesColors;
 
 		String toString;
 
@@ -97,6 +98,13 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.legendPosition, _legendPosition);
 	}
 	
+    public java.lang.String getSeriesColors() {
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.seriesColors, null);
+	}
+	public void setSeriesColors(java.lang.String _seriesColors) {
+		getStateHelper().put(PropertyKeys.seriesColors, _seriesColors);
+	}
+    
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
