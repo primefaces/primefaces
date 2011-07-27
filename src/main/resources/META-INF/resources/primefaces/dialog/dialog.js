@@ -275,6 +275,11 @@ PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
+    if(this.minimized) {
+        this.jq.css('visibility', 'hidden');
+        this.toggleMinimize();
+    }
+    
     if(this.maximized) {
         this.restoreState();
                 
@@ -292,12 +297,18 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
                ,left:0
            }); 
         
-        this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
+        this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
         this.maximized = true;
+        this.jq.css('visibility', 'visible');
     }
 }
 
 PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
+    if(this.maximized) {
+        this.jq.css('visibility', 'hidden');
+        this.toggleMaximize();
+    }
+    
     var _self = this,
     dockingZone = $(document.body).children('.ui-dialog-docking-zone');
     
@@ -323,6 +334,7 @@ PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
                 _self.resizers.hide();
                 _self.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
                 _self.minimized = true;
+                _self.jq.css('visibility', 'visible');
             });
     }
 }
