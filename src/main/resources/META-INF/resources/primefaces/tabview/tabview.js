@@ -11,7 +11,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
 
     //tab click handler
     this.cfg.select = function(event, ui) {
-        _self.onTabSelect(event, ui);
+        return _self.onTabSelect(event, ui);
     };
 
     //tab show handler
@@ -43,7 +43,9 @@ PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     
     //Call user onTabChange callback
     if(this.cfg.onTabChange) {
-        this.cfg.onTabChange.call(this, event, ui);
+        var result = this.cfg.onTabChange.call(this, event, ui);
+        if(result == false)
+            return false;
     }
     
     var panel = ui.panel,
@@ -57,6 +59,8 @@ PrimeFaces.widget.TabView.prototype.onTabSelect = function(event, ui) {
     } else {
         this.fireTabChangeEvent(event, panel);
     }
+    
+    return true;
 }
 
 /**
