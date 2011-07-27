@@ -79,3 +79,7 @@ import javax.faces.event.PhaseId;
     private boolean isRequestSource(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
     }
+
+    public boolean isContentLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
+    }
