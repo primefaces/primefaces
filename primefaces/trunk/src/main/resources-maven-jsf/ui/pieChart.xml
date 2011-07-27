@@ -51,6 +51,12 @@
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
+			<name>seriesColors</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
 			<name>diameter</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -68,6 +74,7 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
 		</attribute>
+        
 	</attributes>
 	<resources>
         <resource>
