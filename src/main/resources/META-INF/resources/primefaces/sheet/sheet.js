@@ -311,7 +311,7 @@ PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
     });
 
     //keyboard navigation for datacells
-    $(document).keydown(function(e) {
+    $(document).bind('keydown.sheet', function(e) {
         var target = $(e.target);
         if(!target.is('html') && !target.is(document.body)) {
             return;

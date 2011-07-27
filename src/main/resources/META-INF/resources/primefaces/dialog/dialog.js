@@ -14,7 +14,7 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
     this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
     this.visible = false;
-    this.blockEvents = 'focus mousedown mouseup keydown keypress click';
+    this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keypress.dialog click.dialog';
     
     //configuration
     this.cfg.width = this.cfg.width || 'auto';
@@ -73,8 +73,8 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function(){
             ,'z-index': this.jq.css('z-index') - 1
         });
 
-    //disable tabbing out of modal dialog
-    $(document).bind('keydown', function(event) {
+    //disable tabbing out of modal dialog and stop events from targets outside of dialog
+    $(document).bind('keydown.dialog', function(event) {
         if(event.keyCode == $.ui.keyCode.TAB) {
             var tabbables = _self.content.find(':tabbable'),
             first = tabbables.filter(':first'),
@@ -88,16 +88,13 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function(){
                 return false;
             }
         }        
-    });
-
-    //stop events from targets outside of dialog
-    $(document).bind(this.blockEvents, function(event) {
+    })
+    .bind(this.blockEvents, function(event) {
         if ($(event.target).zIndex() < _self.jq.zIndex()) {
             return false;
         }
     });
 }
-
 
 PrimeFaces.widget.Dialog.prototype.disableModality = function(){
     $(document.body).children('.ui-widget-overlay').remove();
