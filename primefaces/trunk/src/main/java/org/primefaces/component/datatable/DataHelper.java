@@ -142,7 +142,9 @@ class DataHelper {
 
             //Metadata for callback
             if(table.isPaginator()) {
-                RequestContext.getCurrentInstance().addCallbackParam("totalRecords", table.getRowCount());
+                RequestContext requestContext = RequestContext.getCurrentInstance();
+                if(requestContext != null)
+                    requestContext.addCallbackParam("totalRecords", table.getRowCount());
             }
             
         }
