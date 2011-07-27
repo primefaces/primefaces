@@ -12,12 +12,8 @@
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus, .ui-dialog .ui-dialog-titlebar-minimize:hover, .ui-dialog .ui-dialog-titlebar-minimize:focus, .ui-dialog .ui-dialog-titlebar-maximize:hover, .ui-dialog .ui-dialog-titlebar-maximize:focus   { padding: 0; }
 .ui-dialog-footer {
     padding: .4em 1em; 
-    position: relative;
-    border-left: medium none;
-    border-right: medium none;
-    border-top: medium none;
-    height: 14px;
-    margin-bottom: -1px;
+    border-width: 1px 0 0 0;
+    text-align:left;
 }
 .ui-dialog .ui-dialog-titlebar-close{
     margin-left: 3px;
@@ -31,4 +27,4 @@
 
 .ui-dialog-minimizing { 
     border: 2px dotted gray; 
-} 
+}
