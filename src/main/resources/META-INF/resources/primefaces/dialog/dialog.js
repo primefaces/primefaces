@@ -114,6 +114,9 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype._show = function() {
+    //to make show/hide work
+    this.jq.css('display', 'none').css('visibility', 'visible');
+    
     if(this.cfg.showEffect) {
         var _self = this;
             
@@ -248,9 +251,6 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
             ,left: x
         });
     }
-    
-    //Hide allocated space after dimensions are properly calculated
-    this.jq.css('display', 'none').css('visibility', 'visible');
 }
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
