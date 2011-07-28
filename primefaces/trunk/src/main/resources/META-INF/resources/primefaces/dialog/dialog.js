@@ -49,6 +49,10 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
         this.setupResizable();
     }
     
+    if(this.cfg.modal) {
+        this.syncWindowResize();
+    }
+    
     if(this.cfg.appendToBody){
         this.jq.appendTo('body');
     }
@@ -63,7 +67,7 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     }
 }
 
-PrimeFaces.widget.Dialog.prototype.enableModality = function(){
+PrimeFaces.widget.Dialog.prototype.enableModality = function() {
     var _self = this;
 
     $(document.body).append('<div class="ui-widget-overlay"></div>').
@@ -83,7 +87,8 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function(){
             if(event.target === last[0] && !event.shiftKey) {
                 first.focus(1);
                 return false;
-            } else if (event.target === first[0] && event.shiftKey) {
+            } 
+            else if (event.target === first[0] && event.shiftKey) {
                 last.focus(1);
                 return false;
             }
@@ -98,7 +103,16 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function(){
 
 PrimeFaces.widget.Dialog.prototype.disableModality = function(){
     $(document.body).children('.ui-widget-overlay').remove();
-    $(document).unbind(this.blockEvents);
+    $(document).unbind(this.blockEvents).unbind('keydown.dialog');
+}
+
+PrimeFaces.widget.Dialog.prototype.syncWindowResize = function() {
+    $(window).resize(function() {
+        $(document.body).children('.ui-widget-overlay').css({
+            'width': $(document).width()
+            ,'height': $(document).height()
+        });
+    });
 }
 
 PrimeFaces.widget.Dialog.prototype.show = function() {
@@ -120,7 +134,7 @@ PrimeFaces.widget.Dialog.prototype._show = function() {
     if(this.cfg.showEffect) {
         var _self = this;
             
-        this.jq.show(this.cfg.showEffect, function() {
+        this.jq.show(this.cfg.showEffect, null, 'normal', function() {
             if(_self.onShow)
                 _self.onShow.call(_self);
         });
@@ -148,7 +162,7 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
     if(this.cfg.hideEffect) {
         var _self = this;
     
-        this.jq.hide(this.cfg.hideEffect, function() {
+        this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
             if(_self.onHide)
                 _self.onHide.call(_self);
         });
@@ -422,17 +436,14 @@ PrimeFaces.widget.DialogManager = {
  * PrimeFaces ConfirmDialog Widget
  */
 PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
-    //default confirm dialog config
     cfg.draggable = false;
     cfg.resizable = false;
     cfg.autoOpen = false;
     cfg.modal = true;
-    cfg.showEffect = { effect : 'fade', duration: 'fast' };
-    cfg.hideEffect = { effect : 'fade', duration: 'fast' };
+    cfg.showEffect = 'fade';
+    cfg.hideEffect = 'fade';
     
-    //apply dialog init
-    PrimeFaces.widget.Dialog.call( this, id, cfg);
+    PrimeFaces.widget.Dialog.call(this, id, cfg);
 }
 
-//extend dialog
 PrimeFaces.widget.ConfirmDialog.prototype = PrimeFaces.widget.Dialog.prototype;

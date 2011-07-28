@@ -10,45 +10,8 @@
 .ui-dialog .ui-dialog-titlebar-close, .ui-dialog .ui-dialog-titlebar-minimize,.ui-dialog .ui-dialog-titlebar-maximize { position: relative;  float: right; margin: 0px; margin-top: -0.3em; top:0px; padding: 1px; }
 .ui-dialog .ui-dialog-titlebar-close span, .ui-dialog .ui-dialog-titlebar-minimize span, .ui-dialog .ui-dialog-titlebar-maximize span { display: block; margin: 1px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus, .ui-dialog .ui-dialog-titlebar-minimize:hover, .ui-dialog .ui-dialog-titlebar-minimize:focus, .ui-dialog .ui-dialog-titlebar-maximize:hover, .ui-dialog .ui-dialog-titlebar-maximize:focus   { padding: 0; }
-.ui-dialog-footer {
-    padding: .4em 1em; 
-    border-width: 1px 0 0 0;
-    text-align:left;
-}
-.ui-dialog .ui-dialog-titlebar-close{
-    margin-left: 3px;
-}
-
-.ui-dialog-docking-zone {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-}
-
-.ui-dialog-minimizing { 
-    border: 2px dotted gray; 
-}
-
-.ui-dialog-buttonpane{
-    padding: 0px;
-    margin: 0px;
-    padding-top: 10px;
-}
-
-.ui-confirmdialog{
-    padding: 0px;
-    margin: 0px;
-    width: 300px !important;
-}
-.ui-confirmdialog .ui-dialog-content{
-    padding: 10px ;
-    padding-top: 20px;
-    overflow: hidden;
-}
-
-.ui-confirmdialog .ui-dialog-buttonpane{
-    padding-left: 10px;
-}
-.ui-confirmdialog .ui-dialog-content span.ui-icon{
-    float: left; margin: -1px 7px 20px 0px;
-}
+.ui-dialog-footer {padding: .4em 1em; border-width: 1px 0 0 0;text-align:left;}
+.ui-dialog .ui-dialog-titlebar-close{margin-left: 3px;}
+.ui-dialog-docking-zone {position: fixed;bottom: 0;left: 0;}
+.ui-dialog-minimizing {border: 2px dotted gray;}
+.ui-confirm-dialog-severity {float: left; margin: 3px 7px 20px 0;}

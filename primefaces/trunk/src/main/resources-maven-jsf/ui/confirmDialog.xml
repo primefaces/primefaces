@@ -43,20 +43,18 @@
 			<defaultValue>alert</defaultValue>
             <description>Message severity for the dislayed icon. Default is alert.</description>
 		</attribute>
-		<attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>300</defaultValue>
-            <description>Width of the dialog in pixels. Default is 300.</description>
-		</attribute>
-		<attribute>
-			<name>height</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Width of the dialog in pixels. Default is auto.</description>
-		</attribute>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Height of the dialog.</description>
+        </attribute>
 		<attribute>
 			<name>zindex</name>
 			<required>false</required>
@@ -64,17 +62,17 @@
 			<defaultValue>1000</defaultValue>
             <description>zindex property to control overlapping with other elements. Default is 1000.</description>
 		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Style class of the dialog container.</description>
-		</attribute>
         <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Inner style of the dialog container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the dialog container.</description>
 		</attribute>
 		<attribute>
 			<name>closeOnEscape</name>
