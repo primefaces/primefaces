@@ -132,6 +132,14 @@ public class DialogRenderer extends CoreRenderer {
             encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS);
         }
         
+        if(dialog.isMaximizable()) {
+            encodeIcon(context, Dialog.TITLE_BAR_MAXIMIZE_CLASS, Dialog.MAXIMIZE_ICON_CLASS);
+        }
+                
+        if(dialog.isMinimizable()) {
+            encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS);
+        }
+        
         writer.endElement("div");
     }
 
