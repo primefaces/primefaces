@@ -59,7 +59,7 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     }
         
     if(this.cfg.autoOpen){
-        this.jq.show();
+        this.show();
     }
 }
 
