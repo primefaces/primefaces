@@ -44,20 +44,6 @@
             <description>Message severity for the dislayed icon. Default is alert.</description>
 		</attribute>
 		<attribute>
-			<name>draggable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-            <description>Controls draggability. Default is true.</description>
-		</attribute>
-		<attribute>
-			<name>modal</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is false.</description>
-		</attribute>
-		<attribute>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -84,23 +70,11 @@
 			<type>java.lang.String</type>
             <description>Style class of the dialog container.</description>
 		</attribute>
-		<attribute>
-			<name>showEffect</name>
+        <attribute>
+			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Effect to use when showing the dialog.</description>
-		</attribute>
-		<attribute>
-			<name>hideEffect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Effect to use when hiding the dialog.</description>
-		</attribute>
-		<attribute>
-			<name>position</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Defines where the dialog should be displayed.</description>
+            <description>Inner style of the dialog container.</description>
 		</attribute>
 		<attribute>
 			<name>closeOnEscape</name>
@@ -138,7 +112,10 @@
 			<name>core/core.js</name>
 		</resource>
 		<resource>
-			<name>confirmdialog/confirmdialog.js</name>
+			<name>dialog/dialog.js</name>
+		</resource>
+        <resource>
+			<name>dialog/dialog.css</name>
 		</resource>
 	</resources>
 </component>
