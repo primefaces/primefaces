@@ -250,6 +250,8 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                     PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
                 }
             }
+            
+            PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
 
             return true;
         }
