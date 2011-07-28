@@ -64,7 +64,6 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + dialog.getMinWidth());
         if(dialog.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + dialog.getMinHeight());
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
-        if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
         if(dialog.isDynamic()) writer.write(",dynamic:true");
         
         if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");

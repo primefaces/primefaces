@@ -24,7 +24,6 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     this.cfg.minWidth = this.cfg.minWidth||150;
     this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
     this.cfg.zindex = this.cfg.zindex||1000;
-    this.cfg.closeOnEscape = this.cfg.closeOnEscape == false ? false : true;
     this.cfg.position = this.cfg.position||'center';
     this.parent = this.jq.parent();
     
