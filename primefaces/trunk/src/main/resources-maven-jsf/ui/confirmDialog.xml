@@ -75,13 +75,6 @@
             <description>Style class of the dialog container.</description>
 		</attribute>
 		<attribute>
-			<name>closeOnEscape</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-            <description>Defines if dialog should be closed when escape key is pressed. Default is true.</description>
-		</attribute>
-		<attribute>
 			<name>closable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>

@@ -122,13 +122,6 @@
             <description>Defines where the dialog should be displayed.</description>
         </attribute>
         <attribute>
-            <name>closeOnEscape</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Defines where the dialog should be displayed. Default is true.</description>
-        </attribute>
-        <attribute>
             <name>closable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
