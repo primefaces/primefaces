@@ -417,3 +417,22 @@ PrimeFaces.widget.DialogManager = {
     
     maxZIndex : 1000
 };
+
+/**
+ * PrimeFaces ConfirmDialog Widget
+ */
+PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
+    //default confirm dialog config
+    cfg.draggable = false;
+    cfg.resizable = false;
+    cfg.autoOpen = false;
+    cfg.modal = true;
+    cfg.showEffect = { effect : 'fade', duration: 'fast' };
+    cfg.hideEffect = { effect : 'fade', duration: 'fast' };
+    
+    //apply dialog init
+    PrimeFaces.widget.Dialog.call( this, id, cfg);
+}
+
+//extend dialog
+PrimeFaces.widget.ConfirmDialog.prototype = PrimeFaces.widget.Dialog.prototype;

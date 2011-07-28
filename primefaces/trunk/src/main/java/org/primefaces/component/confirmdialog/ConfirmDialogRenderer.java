@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.dialog.Dialog;
 
 import org.primefaces.renderkit.CoreRenderer;
 
@@ -34,42 +35,54 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	}
 
 	protected void encodeMarkup(FacesContext context, ConfirmDialog dialog) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = dialog.getClientId(context);
-        String messageText = dialog.getMessage();
-        UIComponent messageFacet = dialog.getFacet("message");
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId , null);
-		if(dialog.getHeader() != null) {
-			writer.writeAttribute("title", dialog.getHeader(), null);
-		}
-		
-		//body		
-		writer.startElement("p", null);
-		
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = dialog.getClientId(context);
+        String style = dialog.getStyle();
+        String styleClass = dialog.getStyleClass();
+        styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
+
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+        
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+
+        encodeHeader(context, dialog);
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+          
 		//severity
 		writer.startElement("span", null);
-		writer.writeAttribute("style", "float: left; margin: 0pt 7px 20px 0pt;", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-" + dialog.getSeverity(), null);
 		writer.endElement("span");
 
+        
+        String messageText = dialog.getMessage();
+        UIComponent messageFacet = dialog.getFacet("message");
         if(messageFacet != null) {
             messageFacet.encodeAll(context);
         }
         else if(messageText != null) {
 			writer.write(dialog.getMessage());
 		}
-		writer.endElement("p");
-		
+        
+        writer.endElement("div");
+        
 		//buttons
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_buttons", null);
+        writer.writeAttribute("class", ConfirmDialog.BUTTONPANE_CLASS, style);
 		renderChildren(context, dialog);
 		writer.endElement("div");
-		
-		writer.endElement("div");
+        
+        writer.endElement("div");
 	}
+    
+    
 
 	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
@@ -85,29 +98,51 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		if(dialog.getStyleClass() != null) writer.write(",dialogClass:'" + dialog.getStyleClass() + "'");
 		if(dialog.getWidth() != 300) writer.write(",width:" + dialog.getWidth());
 		if(dialog.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + dialog.getHeight());
-		if(!dialog.isDraggable()) writer.write(",draggable:false");
-		if(dialog.isModal()) writer.write(",modal: true");
 		if(dialog.getZindex() != 1000) writer.write(",zIndex:" + dialog.getZindex());
-		if(dialog.getShowEffect() != null) writer.write(",show:'" + dialog.getShowEffect() + "'");
-		if(dialog.getHideEffect() != null) writer.write(",hide:'" + dialog.getHideEffect() + "'");
 		if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
 		if(!dialog.isClosable()) writer.write(",closable:false");
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
-		
-		//Position
-		String position = dialog.getPosition();	
-		if(position != null) {
-			if(position.contains(","))
-				writer.write(",position:[" + position + "]");
-			else
-				writer.write(",position:'" + position + "'");
-		}
-		
-		writer.write("});");
+
+        writer.write("});");
 
 		writer.endElement("script");
 	}
 
+    protected void encodeHeader(FacesContext context, ConfirmDialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String header = dialog.getHeader();
+        UIComponent headerFacet = dialog.getFacet("header");
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
+        
+        //title
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
+        
+        if(headerFacet != null)
+            headerFacet.encodeAll(context);
+        else if(header != null)
+            writer.write(header);
+        
+        writer.endElement("span");
+        
+        if(dialog.isClosable()){
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
+            writer.endElement("span");
+
+            writer.endElement("a");
+        }
+        
+        writer.endElement("div");
+    }
+
+    
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing

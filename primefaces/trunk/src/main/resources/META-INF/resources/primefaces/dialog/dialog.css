@@ -28,3 +28,27 @@
 .ui-dialog-minimizing { 
     border: 2px dotted gray; 
 }
+
+.ui-dialog-buttonpane{
+    padding: 0px;
+    margin: 0px;
+    padding-top: 10px;
+}
+
+.ui-confirmdialog{
+    padding: 0px;
+    margin: 0px;
+    width: 300px !important;
+}
+.ui-confirmdialog .ui-dialog-content{
+    padding: 10px ;
+    padding-top: 20px;
+    overflow: hidden;
+}
+
+.ui-confirmdialog .ui-dialog-buttonpane{
+    padding-left: 10px;
+}
+.ui-confirmdialog .ui-dialog-content span.ui-icon{
+    float: left; margin: -1px 7px 20px 0px;
+}
