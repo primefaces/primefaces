@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
 
-
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
@@ -51,39 +50,12 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         }
 
         encodeHeader(context, dialog);
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
-          
-		//severity
-		writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-icon ui-icon-" + dialog.getSeverity(), null);
-		writer.endElement("span");
-
-        
-        String messageText = dialog.getMessage();
-        UIComponent messageFacet = dialog.getFacet("message");
-        if(messageFacet != null) {
-            messageFacet.encodeAll(context);
-        }
-        else if(messageText != null) {
-			writer.write(dialog.getMessage());
-		}
-        
-        writer.endElement("div");
-        
-		//buttons
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_buttons", null);
-        writer.writeAttribute("class", ConfirmDialog.BUTTONPANE_CLASS, style);
-		renderChildren(context, dialog);
-		writer.endElement("div");
+        encodeContent(context, dialog);
+        encodeButtonPane(context, dialog);
         
         writer.endElement("div");
 	}
     
-    
-
 	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
@@ -91,19 +63,18 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		writer.startElement("script", dialog);
 		writer.writeAttribute("type", "text/javascript", null);
 		
+        writer.write("$(function() {");
 		writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.ConfirmDialog('" + clientId + "', {");
 		
-		writer.write("minHeight:0");
-		
-		if(dialog.getStyleClass() != null) writer.write(",dialogClass:'" + dialog.getStyleClass() + "'");
-		if(dialog.getWidth() != 300) writer.write(",width:" + dialog.getWidth());
-		if(dialog.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + dialog.getHeight());
+		writer.write("closable:" + dialog.isClosable());
+
+		if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
+		if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
 		if(dialog.getZindex() != 1000) writer.write(",zIndex:" + dialog.getZindex());
 		if(!dialog.isCloseOnEscape()) writer.write(",closeOnEscape:false");
-		if(!dialog.isClosable()) writer.write(",closable:false");
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
 
-        writer.write("});");
+        writer.write("});});");
 
 		writer.endElement("script");
 	}
@@ -141,8 +112,44 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         
         writer.endElement("div");
     }
-
     
+    protected void encodeContent(FacesContext context, ConfirmDialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String messageText = dialog.getMessage();
+        UIComponent messageFacet = dialog.getFacet("message");
+        String severityIcon = new StringBuilder().append("ui-icon ui-icon-").append(dialog.getSeverity()).append(" ").append(ConfirmDialog.SEVERITY_ICON_CLASS).toString();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+          
+        writer.startElement("p", null);
+        
+		//severity
+		writer.startElement("span", null);
+		writer.writeAttribute("class", severityIcon, null);
+		writer.endElement("span");
+
+        if(messageFacet != null)
+            messageFacet.encodeAll(context);
+        else if(messageText != null)
+			writer.write(dialog.getMessage());
+        
+        writer.endElement("p");
+        
+        writer.endElement("div");
+    }
+    
+    protected void encodeButtonPane(FacesContext context, ConfirmDialog dialog) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", ConfirmDialog.BUTTONPANE_CLASS, null);
+        
+		renderChildren(context, dialog);
+		
+        writer.endElement("div");
+    }
+
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
