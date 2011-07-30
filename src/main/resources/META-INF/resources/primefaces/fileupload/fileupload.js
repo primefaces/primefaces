@@ -2085,11 +2085,21 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     //create widget
     this.form.fileupload(this.cfg);
     
+    //start and complete callbacks
+    this.bindCallbacks();
+}
+
+PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     var _self = this;
-    this.form.bind('fileuploadalways', function(e, data) {
-        _self.handleResponse(e, data.jqXHR.responseXML);
+    
+    this.form.bind('fileuploadsend', function(e, data) {
+        if(_self.cfg.onstart) {
+            return _self.cfg.onstart.call(_self, e, data);
+        }
         
-    });
+    }).bind('fileuploadalways', function(e, data) {
+        _self.handleResponse(e, data.jqXHR.responseXML);
+    })
 }
 
 PrimeFaces.widget.FileUpload.prototype.handleResponse = function(e, response) {
