@@ -1882,36 +1882,31 @@
         
         _initEventHandlers: function () {
             $.blueimp.fileupload.prototype._initEventHandlers.call(this);
-            var filesList = this.element.find('.files'),
-                eventData = {fileupload: this};
-            filesList.find('.start button')
-                .live(
-                    'click.' + this.options.namespace,
+            var eventData = {fileupload: this};
+                
+            $(this.options.namespace + ' .files td.start button')
+                .die().live(
+                    'click',
                     eventData,
                     this._startHandler
                 );
-            filesList.find('.cancel button')
-                .live(
-                    'click.' + this.options.namespace,
+            
+            $(this.options.namespace + ' .files td.cancel button')
+                .die().live(
+                    'click',
                     eventData,
                     this._cancelHandler
                 );
-            filesList.find('.delete button')
-                .live(
-                    'click.' + this.options.namespace,
+                    
+            $(this.options.namespace + ' .files td.delete button')
+                .die().live(
+                    'click',
                     eventData,
                     this._deleteHandler
                 );
         },
         
-        _destroyEventHandlers: function () {
-            var filesList = this.element.find('.files');
-            filesList.find('.start button')
-                .die('click.' + this.options.namespace);
-            filesList.find('.cancel button')
-                .die('click.' + this.options.namespace);
-            filesList.find('.delete button')
-                .die('click.' + this.options.namespace);
+        _destroyEventHandlers: function () {                        
             $.blueimp.fileupload.prototype._destroyEventHandlers.call(this);
         },
 
@@ -2075,7 +2070,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.paramName = this.id;
     this.cfg.sequentialUploads = true;
     this.cfg.dataType = 'xml';
-    this.cfg.namespace = this.id;
+    this.cfg.namespace = this.jqId;
     
     //params
     this.cfg.formData = this.createPostData();
@@ -2084,7 +2079,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.dropZone = this.cfg.dnd ? this.jq : null;
     
     //create widget
-    if(this.form.data.fileupload) {
+    if(this.form.data().fileupload) {
         this.form.fileupload('destroy');
     }
     this.form.fileupload(this.cfg);
@@ -2096,14 +2091,15 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     var _self = this;
     
-    this.form.bind('fileuploadsend', function(e, data) {
-        if(_self.cfg.onstart) {
-            return _self.cfg.onstart.call(_self, e, data);
-        }
-        
-    }).bind('fileuploadalways', function(e, data) {
-        _self.handleResponse(e, data.jqXHR.responseXML);
-    })
+    this.form.unbind('fileuploadsend fileuploadalways')
+            .bind('fileuploadsend', function(e, data) {
+                if(_self.cfg.onstart) {
+                    return _self.cfg.onstart.call(_self, e, data);
+                }
+
+            }).bind('fileuploadalways', function(e, data) {
+                _self.handleResponse(e, data.jqXHR.responseXML);
+            });
 }
 
 PrimeFaces.widget.FileUpload.prototype.handleResponse = function(e, response) {
