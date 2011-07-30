@@ -78,14 +78,14 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Number of maximum bytes to allow. Default is max integer value.</description>
+            <description>File size limit in bytes. Default is unlimited.</description>
 		</attribute>
         <attribute>
 			<name>fileLimit</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Number of maximum files to allow. Default is max integer value.</description>
+            <description>Number of maximum files to allow. Default is unlimited.</description>
 		</attribute>
 		<attribute>
 			<name>showButtons</name>
@@ -141,10 +141,9 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<name>errorMessageDelay</name>
+			<name>fileLimitMessage</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+			<type>java.lang.String</type>
 		</attribute>
         <attribute>
 			<name>dragDropSupport</name>
