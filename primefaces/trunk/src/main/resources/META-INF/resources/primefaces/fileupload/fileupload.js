@@ -2053,10 +2053,10 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
                               '<td class="size">$' + '{sizef}</td>' + 
                               '{{if error}}' + 
                               '<td class="error" colspan="2">Error:' + 
-                                    '{{if error === "maxFileSize"}}File is too big' +
-                                    '{{else error === "minFileSize"}}File is too small' +
-                                    '{{else error === "acceptFileTypes"}}Filetype not allowed' +
-                                    '{{else error === "maxNumberOfFiles"}}Max number of files exceeded' +
+                                    '{{if error === "maxFileSize"}}' + this.INVALID_SIZE_MESSAGE +
+                                    '{{else error === "minFileSize"}}'+ this.INVALID_SIZE_MESSAGE +
+                                    '{{else error === "acceptFileTypes"}}'+ this.INVALID_FILE_MESSAGE +
+                                    '{{else error === "maxNumberOfFiles"}}' + this.FILE_LIMIT_MESSAGE +
                                     '{{else}}$' + '{error}' +
                                     '{{/if}}' +
                               '</td>' +
@@ -2114,3 +2114,7 @@ PrimeFaces.widget.FileUpload.prototype.createPostData = function() {
     
     return params;
 }
+
+PrimeFaces.widget.FileUpload.prototype.INVALID_SIZE_MESSAGE = 'Invalid file size.';
+PrimeFaces.widget.FileUpload.prototype.INVALID_FILE_MESSAGE = 'Invalid file type.';
+PrimeFaces.widget.FileUpload.prototype.FILE_LIMIT_MESSAGE = 'Max number of files exceeded.';

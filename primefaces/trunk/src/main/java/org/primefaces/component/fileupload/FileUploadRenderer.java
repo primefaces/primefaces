@@ -104,6 +104,16 @@ public class FileUploadRenderer extends CoreRenderer {
             if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
             
             if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(e, data) {" + fileUpload.getOncomplete() + ";}");
+            
+            //restrictions
+            if(fileUpload.getAllowTypes() != null) writer.write(",acceptFileTypes:" + fileUpload.getAllowTypes());
+            if(fileUpload.getSizeLimit() != Integer.MAX_VALUE) writer.write(",maxFileSize:" + fileUpload.getSizeLimit());
+            if(fileUpload.getFileLimit() != Integer.MAX_VALUE) writer.write(",maxNumberOfFiles:" + fileUpload.getFileLimit());
+            
+            //restriction messages
+            if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
+            if(fileUpload.getSizeExceedMessage() != null) writer.write(",sizeExceedMessage:'" + fileUpload.getSizeExceedMessage() + "'");
+            if(fileUpload.getFileLimitMessage() != null) writer.write(",fileLimitMessage:'" + fileUpload.getFileLimitMessage() + "'");
         }
 
 		writer.write("});});");
