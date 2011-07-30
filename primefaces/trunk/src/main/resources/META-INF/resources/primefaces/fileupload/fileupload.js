@@ -2072,6 +2072,13 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.dataType = 'xml';
     this.cfg.namespace = this.jqId;
     
+    //iframe content parser
+    $.ajaxSetup({
+        converters: {
+            'iframe xml': this.parseIFrameResponse
+        }
+    });
+    
     //params
     this.cfg.formData = this.createPostData();
     
@@ -2101,7 +2108,7 @@ PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
                 }
 
             }).bind('fileuploadalways', function(e, data) {
-                _self.handleResponse(e, data.jqXHR.responseXML);
+                _self.handleResponse(e, data.result);
             });
 }
 
@@ -2111,6 +2118,12 @@ PrimeFaces.widget.FileUpload.prototype.handleResponse = function(e, response) {
     }
     
     PrimeFaces.ajax.AjaxResponse(response);
+}
+
+PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
+    var responseText = $.trim(iframe.contents().text().replace(/(> -)|(>-)/g,'>'));
+    
+    return $.parseXML(responseText);
 }
 
 PrimeFaces.widget.FileUpload.prototype.createPostData = function() {
