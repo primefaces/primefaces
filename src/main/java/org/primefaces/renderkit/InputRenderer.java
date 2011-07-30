@@ -104,7 +104,8 @@ public class InputRenderer extends CoreRenderer {
             if(ve != null) {
                 Class<?> valueType = ve.getType(context.getELContext());
                 
-                return context.getApplication().createConverter(valueType);
+                if(valueType != null)
+                    return context.getApplication().createConverter(valueType);
             }
         }
 
