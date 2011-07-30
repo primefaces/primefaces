@@ -92,8 +92,16 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.FileUpload('" + clientId + "', {");
 
         writer.write("mode:'" + mode + "'");
-
+        
         if(!mode.equals("simple")) {
+            String update = fileUpload.getUpdate();
+            String process = fileUpload.getProcess();
+            
+            if(update != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
+            if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
+        }
+
+        /*if(!mode.equals("simple")) {
             String update = fileUpload.getUpdate();
             String process = fileUpload.getProcess();
             
@@ -106,16 +114,16 @@ public class FileUploadRenderer extends CoreRenderer {
             if(update != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
             if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
 
-            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(event, files, index, xhr, handler) {" + fileUpload.getOncomplete() + ";}");
+            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(event, files, index, xhr, handler) {" + fileUpload.getOncomplete() + ";}");*/
 
             //file restrictions
-            if(fileUpload.getAllowTypes() != null) writer.write(",allowTypes:'" + fileUpload.getAllowTypes() + "'");
+            /*if(fileUpload.getAllowTypes() != null) writer.write(",allowTypes:'" + fileUpload.getAllowTypes() + "'");
             if(fileUpload.getSizeLimit() != Integer.MAX_VALUE) writer.write(",sizeLimit:" + fileUpload.getSizeLimit());
             if(fileUpload.getFileLimit() != Integer.MAX_VALUE) writer.write(",fileLimit:" + fileUpload.getFileLimit());
             if(fileUpload.getSizeExceedMessage() != null) writer.write(",sizeExceedMessage:'" + fileUpload.getSizeExceedMessage() + "'");
             if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
-            if(fileUpload.getErrorMessageDelay() != Integer.MAX_VALUE) writer.write(",errorMessageDelay:" + fileUpload.getErrorMessageDelay());
-        }
+            if(fileUpload.getErrorMessageDelay() != Integer.MAX_VALUE) writer.write(",errorMessageDelay:" + fileUpload.getErrorMessageDelay());*/
+        //}
 
 		writer.write("});});");
 		
@@ -137,37 +145,46 @@ public class FileUploadRenderer extends CoreRenderer {
 
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
-		if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
-
+        
         writer.startElement("div", fileUpload);
-		writer.writeAttribute("id", clientId + "_browser", "id");
-        writer.writeAttribute("class", FileUpload.BROWSER_CLASS, null);
+        writer.writeAttribute("class", "fileupload-buttonbar", "styleClass");
+		if(fileUpload.getStyle() != null) 
+            writer.writeAttribute("style", fileUpload.getStyle(), "style");
 
-		encodeInputField(context, fileUpload, clientId + "_input");
+        writer.startElement("label", fileUpload);
+        writer.writeAttribute("class", "fileinput-button", null);
 
-        writer.startElement("button", null);
-        writer.write("Upload");
-        writer.endElement("button");
-
-        writer.startElement("div", null);
+        writer.startElement("span", null);
         writer.write(fileUpload.getLabel());
-        writer.endElement("div");
+        writer.endElement("span");
+        
+        encodeInputField(context, fileUpload, clientId + "_input");
 
+        writer.endElement("label");
         writer.endElement("div");
-
+        
+        //content
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "fileupload-content", null);
+        
         writer.startElement("table", null);
         writer.writeAttribute("id", clientId + "_files", null);
-        writer.writeAttribute("class", FileUpload.TABLE_CLASS, null);
+        writer.writeAttribute("class", "files", null);
         writer.endElement("table");
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "fileupload-progressbar", null);
+        writer.endElement("div");
+        
+        writer.endElement("div");
 
-        if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
+        /*if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
             writer.startElement("div", null);
             writer.writeAttribute("class", FileUpload.CONTROLS_CLASS, null);
             encodeButton(context, fileUpload, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS);
             encodeButton(context, fileUpload, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS);
             writer.endElement("div");
-        }
+        }*/
 
 		writer.endElement("div");
     }
