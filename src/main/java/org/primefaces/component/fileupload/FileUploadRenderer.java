@@ -126,15 +126,17 @@ public class FileUploadRenderer extends CoreRenderer {
 
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "id");
+        if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
         
         //buttonbar
         writer.startElement("div", fileUpload);
-        writer.writeAttribute("class", "fileupload-buttonbar", "styleClass");
-		if(fileUpload.getStyle() != null) 
+        writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, "styleClass");
+		if(fileUpload.getStyle() != null)
             writer.writeAttribute("style", fileUpload.getStyle(), "style");
 
         writer.startElement("label", fileUpload);
-        writer.writeAttribute("class", "fileinput-button", null);
+        writer.writeAttribute("class", FileUpload.CHOOSE_BUTTON_CLASS, null);
 
         writer.startElement("span", null);
         writer.write(fileUpload.getLabel());
@@ -145,20 +147,19 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("label");
         
         if(!fileUpload.isShowButtons() && !fileUpload.isAuto()) {
-            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "submit", "start");
-            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "button", "cancel");
-            encodeButton(context, fileUpload, fileUpload.getDeleteLabel(), "reset", "delete");
+            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "submit", FileUpload.UPLOAD_BUTTON_CLASS);
+            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "button", FileUpload.CANCEL_BUTTON_CLASS);
+            encodeButton(context, fileUpload, fileUpload.getDeleteLabel(), "reset", FileUpload.DELETE_BUTTON_CLASS);
         }
         
         writer.endElement("div");
         
         //content
         writer.startElement("div", null);
-        writer.writeAttribute("class", "fileupload-content", null);
+        writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
         
         writer.startElement("table", null);
-        writer.writeAttribute("id", clientId + "_files", null);
-        writer.writeAttribute("class", "files", null);
+        writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
         writer.endElement("table");
         
         writer.endElement("div");
@@ -180,6 +181,10 @@ public class FileUploadRenderer extends CoreRenderer {
         if(fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);
         }
+        
+        if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
+        if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
+        
 		writer.endElement("input");
     }
 
