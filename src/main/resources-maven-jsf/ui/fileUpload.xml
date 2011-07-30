@@ -64,8 +64,8 @@
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>Browse</defaultValue>
-            <description>Label of the browse button, default is 'Browse'</description>
+            <defaultValue>Choose</defaultValue>
+            <description>Label of the browse button, default is 'Choose'</description>
 		</attribute>
 		<attribute>
 			<name>allowTypes</name>
@@ -88,11 +88,11 @@
             <description>Number of maximum files to allow. Default is max integer value.</description>
 		</attribute>
 		<attribute>
-			<name>customUI</name>
+			<name>showButtons</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>When custom UI is turned on upload and cancel links won't be rendered. Default is false.</description>
+            <description>Defines visibility of upload, cancel and delete buttons in button bar. Default is true</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -123,6 +123,12 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>Cancel</defaultValue>
+		</attribute>
+        <attribute>
+			<name>deleteLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Delete</defaultValue>
 		</attribute>
         <attribute>
 			<name>sizeExceedMessage</name>

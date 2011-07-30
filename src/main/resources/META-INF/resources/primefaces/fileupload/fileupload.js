@@ -2035,3 +2035,82 @@
     });
 
 }(jQuery));
+
+/**
+ * PrimeFaces FileUpload Widget
+ */
+PrimeFaces.widget.FileUpload = function(id, cfg) {
+	this.id = id;
+	this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+    this.form = this.jq.parents('form:first');
+    
+    //upload template
+    this.cfg.uploadTemplate = '<tr class="template-upload{{if error}} ui-state-error{{/if}}">' + 
+                              '<td class="preview"></td>' +
+                              '<td class="name">$' + '{name}</td>' +
+                              '<td class="size">$' + '{sizef}</td>' + 
+                              '{{if error}}' + 
+                              '<td class="error" colspan="2">Error:' + 
+                                    '{{if error === "maxFileSize"}}File is too big' +
+                                    '{{else error === "minFileSize"}}File is too small' +
+                                    '{{else error === "acceptFileTypes"}}Filetype not allowed' +
+                                    '{{else error === "maxNumberOfFiles"}}Max number of files exceeded' +
+                                    '{{else}}$' + '{error}' +
+                                    '{{/if}}' +
+                              '</td>' +
+                              '{{else}}' +
+                              '<td class="progress"><div></div></td>' +
+                              '<td class="start"><button>Start</button></td>' +
+                              '{{/if}}' +
+                              '<td class="cancel"><button>Cancel</button></td>' +
+                              '</tr>';
+                          
+    //download template
+    this.cfg.downloadTemplate = '';
+    
+    //config
+    this.cfg.fileInput = $(PrimeFaces.escapeClientId(this.id + '_input'));
+    this.cfg.paramName = this.id;
+    this.cfg.sequentialUploads = true;
+    this.cfg.dataType = 'xml';
+    
+    //params
+    this.cfg.formData = this.createPostData();
+    
+    //dragdrop
+    this.cfg.dropZone = this.cfg.dnd ? this.jq : null;
+    
+    //create widget
+    this.form.fileupload(this.cfg);
+    
+    var _self = this;
+    this.form.bind('fileuploadalways', function(e, data) {
+        _self.handleResponse(e, data.jqXHR.responseXML);
+        
+    });
+}
+
+PrimeFaces.widget.FileUpload.prototype.handleResponse = function(e, response) {
+    if(this.cfg.oncomplete) {
+        this.cfg.oncomplete.call(this, e, response);
+    }
+    
+    PrimeFaces.ajax.AjaxResponse(response);
+}
+
+PrimeFaces.widget.FileUpload.prototype.createPostData = function() {
+    var process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id,
+    params = this.form.serializeArray();
+    
+    params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM, value: 'true'});
+    params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM, value: process});
+    params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM, value: this.id});
+
+    if(this.cfg.update) {
+        params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM, value: this.cfg.update});
+    }
+    
+    return params;
+}
