@@ -161,10 +161,6 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("class", "files", null);
         writer.endElement("table");
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "fileupload-progressbar", null);
-        writer.endElement("div");
-        
         writer.endElement("div");
 
 		writer.endElement("div");
