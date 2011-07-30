@@ -2075,6 +2075,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.paramName = this.id;
     this.cfg.sequentialUploads = true;
     this.cfg.dataType = 'xml';
+    this.cfg.namespace = this.id;
     
     //params
     this.cfg.formData = this.createPostData();
@@ -2083,6 +2084,9 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.dropZone = this.cfg.dnd ? this.jq : null;
     
     //create widget
+    if(this.form.data.fileupload) {
+        this.form.fileupload('destroy');
+    }
     this.form.fileupload(this.cfg);
     
     //start and complete callbacks
