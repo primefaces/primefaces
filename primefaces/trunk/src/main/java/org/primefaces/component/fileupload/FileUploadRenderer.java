@@ -97,33 +97,14 @@ public class FileUploadRenderer extends CoreRenderer {
             String update = fileUpload.getUpdate();
             String process = fileUpload.getProcess();
             
-            if(update != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
-            if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
-        }
-
-        /*if(!mode.equals("simple")) {
-            String update = fileUpload.getUpdate();
-            String process = fileUpload.getProcess();
+            writer.write(",autoUpload:" + fileUpload.isAuto());
+            writer.write(",dnd:" + fileUpload.isDragDropSupport());
             
-            writer.write(",auto:" + fileUpload.isAuto());
-            writer.write(",customUI:" + fileUpload.isCustomUI());
-            writer.write(",dragDropSupport:" + fileUpload.isDragDropSupport());
-            writer.write(",uploadLabel:'" + fileUpload.getUploadLabel() + "'");
-            writer.write(",cancelLabel:'" + fileUpload.getCancelLabel() + "'");
-
             if(update != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
             if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
-
-            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(event, files, index, xhr, handler) {" + fileUpload.getOncomplete() + ";}");*/
-
-            //file restrictions
-            /*if(fileUpload.getAllowTypes() != null) writer.write(",allowTypes:'" + fileUpload.getAllowTypes() + "'");
-            if(fileUpload.getSizeLimit() != Integer.MAX_VALUE) writer.write(",sizeLimit:" + fileUpload.getSizeLimit());
-            if(fileUpload.getFileLimit() != Integer.MAX_VALUE) writer.write(",fileLimit:" + fileUpload.getFileLimit());
-            if(fileUpload.getSizeExceedMessage() != null) writer.write(",sizeExceedMessage:'" + fileUpload.getSizeExceedMessage() + "'");
-            if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
-            if(fileUpload.getErrorMessageDelay() != Integer.MAX_VALUE) writer.write(",errorMessageDelay:" + fileUpload.getErrorMessageDelay());*/
-        //}
+            
+            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(e, data) {" + fileUpload.getOncomplete() + ";}");
+        }
 
 		writer.write("});});");
 		
@@ -146,6 +127,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
         
+        //buttonbar
         writer.startElement("div", fileUpload);
         writer.writeAttribute("class", "fileupload-buttonbar", "styleClass");
 		if(fileUpload.getStyle() != null) 
@@ -161,6 +143,13 @@ public class FileUploadRenderer extends CoreRenderer {
         encodeInputField(context, fileUpload, clientId + "_input");
 
         writer.endElement("label");
+        
+        if(!fileUpload.isShowButtons() && !fileUpload.isAuto()) {
+            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "submit", "start");
+            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "button", "cancel");
+            encodeButton(context, fileUpload, fileUpload.getDeleteLabel(), "reset", "delete");
+        }
+        
         writer.endElement("div");
         
         //content
@@ -177,14 +166,6 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("div");
         
         writer.endElement("div");
-
-        /*if(!fileUpload.isCustomUI() && !fileUpload.isAuto()) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", FileUpload.CONTROLS_CLASS, null);
-            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS);
-            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS);
-            writer.endElement("div");
-        }*/
 
 		writer.endElement("div");
     }
@@ -206,11 +187,11 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.endElement("input");
     }
 
-    protected void encodeButton(FacesContext facesContext, FileUpload fileUpload, String label, String styleClass) throws IOException {
+    protected void encodeButton(FacesContext facesContext, FileUpload fileUpload, String label, String type, String styleClass) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("button", null);
-        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("type", type, null);
 		writer.writeAttribute("class", styleClass, null);
         writer.write(label);
         writer.endElement("button");
