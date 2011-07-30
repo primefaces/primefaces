@@ -1,57 +1,3 @@
-/*.ui-fileupload-browser {
-    position: relative;
-    overflow: hidden;
-    direction: ltr;
-    cursor: pointer;
-    text-align: center;
-    width: 154px;
-    height: 30px;
-    line-height: 30px;
-}
-
-.ui-fileupload-browser input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    border: 300px solid transparent;
-    opacity: 0;
-    -ms-filter: 'alpha(opacity=0)';
-    filter: alpha(opacity=0);
-    -o-transform: translate(-300px, -300px) scale(10);
-    -moz-transform: translate(-800px, 0) scale(10);
-    cursor: pointer;
-}
-
-.ui-fileupload-browser iframe, .ui-fileupload-browser button {
-    display: none;
-}
-
-.ui-fileupload-preview img {
-    width: 80px;
-}
-
-.ui-fileupload-progress div {
-    width: 150px;
-    height: 15px;
-}
-
-.ui-fileupload-progress .ui-progressbar-value-ie {
-  background: url("#{resource['primefaces:fileupload/ie-anim.gif']}") repeat-x;
-}
-
-.ui-fileupload-start button, .ui-fileupload-cancel button {
-    cursor: pointer;
-}
-
-.ui-fileupload-controls {
-    display:none;
-}
-
-.ui-fileupload-upload-button {
-    margin-right:4px;
-}*/
-
 @charset 'UTF-8';
 /*
  * jQuery File Upload UI Plugin CSS 5.0.6
@@ -99,6 +45,7 @@
 
 .fileupload-buttonbar .ui-button {
   vertical-align: middle;
+  margin-right: 0.2em;
 }
 
 .fileupload-content {
@@ -112,7 +59,7 @@
 }
 
 .fileupload-content .ui-progressbar-value {
-  background: url(pbar-ani.gif);
+  background: url("#{resource['primefaces:fileupload/ie-anim.gif']}") repeat-x;
 }
 
 .fileupload-content .fileupload-progressbar {
