@@ -5,14 +5,13 @@ PrimeFaces.widget.CommandButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
+    this.jq = $(this.jqId);
 	
 	this.jq.button(this.cfg);
 	
-	//firefox focus fix
-	this.jq.mouseout(function() {
-		jQuery(this).removeClass('ui-state-focus');
-	});
+	if(this.jq.attr('title') === 'ui-button') {
+        this.jq.removeAttr('title');
+    }
 }
 
 PrimeFaces.widget.CommandButton.prototype.disable = function() {
@@ -23,18 +22,6 @@ PrimeFaces.widget.CommandButton.prototype.enable = function() {
     this.jq.button('enable');
 }
 
-/* 
- * LinkButton
- * @deprecated
- */
-PrimeFaces.widget.LinkButton = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
-	
-	jQuery(this.jqId).button(this.cfg);
-}
-
 /*
  * Button
  */
@@ -43,5 +30,9 @@ PrimeFaces.widget.Button = function(id, cfg) {
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
 
-	jQuery(this.jqId).button(this.cfg);
+	$(this.jqId).button(this.cfg);
+    
+    if(this.jq.attr('title') === 'ui-button') {
+        this.jq.removeAttr('title');
+    }
 }
