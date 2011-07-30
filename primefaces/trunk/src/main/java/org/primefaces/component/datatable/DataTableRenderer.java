@@ -223,8 +223,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement("table", null);
         encodeThead(context, table);
-        encodeTbody(context, table);
         encodeTFoot(context, table);
+        encodeTbody(context, table);
         writer.endElement("table");
     }
 
