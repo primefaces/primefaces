@@ -2086,6 +2086,9 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     
     //start and complete callbacks
     this.bindCallbacks();
+    
+    //show the UI
+    this.jq.css('visibility', 'visible');
 }
 
 PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {

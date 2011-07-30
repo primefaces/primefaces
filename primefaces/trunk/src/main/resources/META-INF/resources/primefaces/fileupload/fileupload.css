@@ -10,6 +10,10 @@
  * http://creativecommons.org/licenses/MIT/
  */
 
+ .ui-fileupload {
+     visibility: hidden;
+ }
+
 .fileupload-buttonbar .ui-button input {
   position: absolute;
   top: 0;
