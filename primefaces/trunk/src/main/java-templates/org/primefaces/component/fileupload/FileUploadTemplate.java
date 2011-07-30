@@ -1,10 +1,12 @@
 
     public final static String CONTAINER_CLASS = "ui-fileupload ui-widget";
-    public final static String BROWSER_CLASS = "ui-fileupload-browser ui-state-default ui-corner-all ui-helper-hidden";
-    public final static String TABLE_CLASS = "ui-fileupload-files";
-    public final static String CONTROLS_CLASS = "ui-fileupload-controls";
-    public final static String UPLOAD_BUTTON_CLASS = "ui-fileupload-upload-button";
-    public final static String CANCEL_BUTTON_CLASS = "ui-fileupload-cancel-button";
+    public final static String BUTTON_BAR_CLASS = "fileupload-buttonbar ui-widget-header ui-corner-top";
+    public final static String CONTENT_CLASS = "fileupload-content ui-widget-content ui-corner-bottom";
+    public final static String FILES_CLASS = "files";
+    public final static String CHOOSE_BUTTON_CLASS = "fileinput-button";
+    public final static String UPLOAD_BUTTON_CLASS = "start";
+    public final static String CANCEL_BUTTON_CLASS = "cancel";
+    public final static String DELETE_BUTTON_CLASS = "delete";
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
