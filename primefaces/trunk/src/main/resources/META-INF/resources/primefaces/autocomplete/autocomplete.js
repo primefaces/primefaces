@@ -146,6 +146,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             $(this).removeClass('ui-state-active');
             
             _self.search('');
+            _self.input.focus();
         }
     });
 
