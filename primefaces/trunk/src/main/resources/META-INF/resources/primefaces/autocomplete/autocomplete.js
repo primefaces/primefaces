@@ -252,7 +252,7 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                 }
             }
             
-            PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
             return true;
         }

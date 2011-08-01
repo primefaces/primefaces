@@ -210,9 +210,7 @@ PrimeFaces.ajax.AjaxUtils = {
         }
         else {
             //callback arguments
-            if(extensions.length >0) {
-                this.args = $.parseJSON(extensions.text());
-            }
+            this.args = extensions.length > 0 ? $.parseJSON(extensions.text()) : {};
 
             //scripts to execute
             for(var i=0; i < scripts.length; i++) {

@@ -376,28 +376,13 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
     var _self = this;
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
-
-        var paginator = _self.getPaginator();
-        if(paginator) {
-            var extensions = xmlDoc.getElementsByTagName("extension"),
-            totalRecords = _self.getPaginator().getTotalRecords();
-
-            for(var i=0; i < extensions.length; i++) {
-                if(extensions[i].attributes.getNamedItem("primefacesCallbackParam").nodeValue == 'totalRecords') {
-                    totalRecords = $.parseJSON(extensions[i].firstChild.data).totalRecords;
-
-                    //Reset paginator state
-                    paginator.setPage(1, true);
-                    paginator.setTotalRecords(totalRecords, true);
-                }
-            }
-        }
-
-        for(i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
+        
+        for(var i=0; i < updates.length; i++) {
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
@@ -406,7 +391,16 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
-
+        
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+        
+        //update paginator
+        var paginator = _self.getPaginator();
+        if(paginator) {
+            paginator.setPage(1, true);
+            paginator.setTotalRecords(this.args.totalRecords, true);
+        }
+        
         return true;
     };
     
@@ -724,27 +718,15 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     }
 
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update"),
-        extensions = xmlDoc.getElementsByTagName("extension");
-
-        this.args = {};
-        for(i=0; i < extensions.length; i++) {
-            var extension = extensions[i];
-
-            if(extension.getAttributeNode('primefacesCallbackParam')) {
-                var jsonObj = $.parseJSON(extension.firstChild.data);
-
-                for(var paramName in jsonObj) {
-                    if(paramName)
-                        this.args[paramName] = jsonObj[paramName];
-                }
-            }
-        }
-
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
+        
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+        
         for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 if(!this.args.validationFailed) {
