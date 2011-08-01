@@ -17,6 +17,7 @@ package org.primefaces.context;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
@@ -41,24 +42,45 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
             try {
                 //callback params
-                boolean validationFailed = FacesContext.getCurrentInstance().isValidationFailed();
+                Map<String, Object> params = requestContext.getCallbackParams();
                 
+                boolean validationFailed = FacesContext.getCurrentInstance().isValidationFailed();
                 if(validationFailed) {
                     requestContext.addCallbackParam("validationFailed", true);
                 }
                 
-                Map<String, Object> params = requestContext.getCallbackParams();
-
-                for(String paramName : params.keySet()) {
+                if(!params.isEmpty()) {
+                    StringBuilder jsonBuilder = new StringBuilder();
                     Map<String, String> callbackParamExtension = new HashMap<String, String>();
-                    callbackParamExtension.put("primefacesCallbackParam", paramName);
+                    callbackParamExtension.put("ln", "primefaces");
+                    callbackParamExtension.put("type", "args");
 
                     startExtension(callbackParamExtension);
-
-                    Object paramValue = params.get(paramName);
-                    String json = isBean(paramValue) ? "{\"" + paramName + "\":" + new JSONObject(paramValue).toString() + "}" : new JSONObject().put(paramName, paramValue).toString();
-                    write(json);
-
+                    
+                    jsonBuilder.append("{");
+                        
+                    for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+                        String paramName = it.next();
+                        Object paramValue = params.get(paramName);
+                        
+                        if(isBean(paramValue)) {
+                            jsonBuilder.append("\"").append(paramName).append("\":").append(new JSONObject(paramValue).toString());
+                        } 
+                        else {
+                            String json = new JSONObject().put(paramName, paramValue).toString();
+                            jsonBuilder.append(json.substring(1, json.length() - 1));
+                        }
+                        
+                        if(it.hasNext()) {
+                            jsonBuilder.append(",");
+                        }
+                    }
+                    
+                    jsonBuilder.append("}");
+                    
+                    write(jsonBuilder.toString());
+                    jsonBuilder.setLength(0);
+                    
                     endExtension();
                 }
 
@@ -66,9 +88,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 List<String> scripts = requestContext.getScriptsToExecute();
                 if(!scripts.isEmpty()) {
                     startEval();
+                    
                     for(String script : scripts) {
                         write(script + ";");
                     }
+                    
                     endEval();
                 }
                 
