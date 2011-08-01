@@ -12,21 +12,21 @@ PrimeFaces.widget.Wizard = function(id, cfg) {
 
     //Step controls
     if(this.cfg.showStepStatus) {
-        this.stepControls = jQuery(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
+        this.stepControls = $(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
     }
 
     //Navigation controls
     if(this.cfg.showNavBar) {
-        jQuery(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
-        jQuery(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
+        $(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
+        $(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
 
-        jQuery(this.backNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
-        jQuery(this.nextNav).mouseout(function() {jQuery(this).removeClass('ui-state-focus');});
+        $(this.backNav).mouseout(function() {$(this).removeClass('ui-state-focus');});
+        $(this.nextNav).mouseout(function() {$(this).removeClass('ui-state-focus');});
 
         if(currentStepIndex == 0)
-            jQuery(this.backNav).hide();
+            $(this.backNav).hide();
         else if(currentStepIndex == this.cfg.steps.length - 1)
-            jQuery(this.nextNav).hide();
+            $(this.nextNav).hide();
     }
 }
 
@@ -59,43 +59,30 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
         update:this.id,
         formId:this.cfg.formId,
         onsuccess: function(responseXML) {
-            var xmlDoc = responseXML.documentElement,
-            updates = xmlDoc.getElementsByTagName("update"),
-            extensions = xmlDoc.getElementsByTagName("extension");
+            var xmlDoc = $(responseXML.documentElement),
+            updates = xmlDoc.find('update');
 
-            //Retrieve validationFailed flag and currentStep id from callback params
-            var args = {};
-            for(var i=0; i < extensions.length; i++) {
-                var extension = extensions[i];
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
-                if(extension.getAttributeNode('primefacesCallbackParam')) {
-                    var jsonObj = jQuery.parseJSON(extension.firstChild.data);
+            _self.currentStep = this.args.currentStep;
 
-                    for(var paramName in jsonObj) {
-                        if(paramName)
-                            args[paramName] = jsonObj[paramName];
-                    }
-                }
-            }
-
-            _self.currentStep = args.currentStep;
-
-            for(i=0; i < updates.length; i++) {
-                var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                content = updates[i].firstChild.data;
+            for(var i=0; i < updates.length; i++) {
+                var update = updates.eq(i),
+                id = update.attr('id'),
+                content = update.text();
 
                 if(id == _self.id){
-                    if(!args.validationFailed) {
+                    if(!this.args.validationFailed) {
                         //update content
                         if(_self.cfg.effect) {
                             var _content = content;
-                            jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-                                jQuery(_self.content).html(_content);
-                                jQuery(_self.content).fadeIn();
+                            $(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
+                                $(_self.content).html(_content);
+                                $(_self.content).fadeIn();
 
                             });
                         } else {
-                            jQuery(_self.content).html(content);
+                            $(_self.content).html(content);
                         }
 
                         //update navigation controls
@@ -117,12 +104,12 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 
                         if(_self.cfg.showStepStatus) {
                             _self.stepControls.removeClass('ui-state-hover');
-                            jQuery(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
+                            $(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
                         }
 
                     } else {
                         //update content
-                        jQuery(_self.content).html(content);
+                        $(_self.content).html(content);
                     }
 
                 }
@@ -162,17 +149,17 @@ PrimeFaces.widget.Wizard.prototype.getStepIndex = function(step) {
 }
 
 PrimeFaces.widget.Wizard.prototype.showNextNav = function() {
-    jQuery(this.nextNav).fadeIn();
+    $(this.nextNav).fadeIn();
 }
 
 PrimeFaces.widget.Wizard.prototype.hideNextNav = function() {
-    jQuery(this.nextNav).fadeOut();
+    $(this.nextNav).fadeOut();
 }
 
 PrimeFaces.widget.Wizard.prototype.showBackNav = function() {
-    jQuery(this.backNav).fadeIn();
+    $(this.backNav).fadeIn();
 }
 
 PrimeFaces.widget.Wizard.prototype.hideBackNav = function() {
-    jQuery(this.backNav).fadeOut();
+    $(this.backNav).fadeOut();
 }
