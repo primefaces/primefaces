@@ -56,6 +56,9 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
         this.jq.appendTo('body');
     }
     
+    //to make show/hide work
+    this.jq.css('display', 'none').css('visibility', 'visible');
+    
     //docking zone
     if($(document.body).children('.ui-dialog-docking-zone').length == 0) {
         $(document.body).append('<div class="ui-dialog-docking-zone"></div>')
@@ -126,23 +129,20 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
     }
 }
 
-PrimeFaces.widget.Dialog.prototype._show = function() {
-    //to make show/hide work
-    this.jq.css('display', 'none').css('visibility', 'visible');
-    
+PrimeFaces.widget.Dialog.prototype._show = function() {    
     if(this.cfg.showEffect) {
         var _self = this;
             
         this.jq.show(this.cfg.showEffect, null, 'normal', function() {
-            if(_self.onShow)
-                _self.onShow.call(_self);
+            if(_self.cfg.onShow)
+                _self.cfg.onShow.call(_self);
         });
     }    
     else {
         this.jq.show();
         
-        if(this.onShow)    
-            this.onShow.call(this);
+        if(this.cfg.onShow)    
+            this.cfg.onShow.call(this);
     }
     
     this.focusFirstInput();
@@ -162,15 +162,13 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
         var _self = this;
     
         this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
-            if(_self.onHide)
-                _self.onHide.call(_self);
+            _self.onHide();
         });
     }
     else {
         this.jq.hide();
         
-        if(this.onHide)
-            this.onHide.call(this);
+        this.onHide();
     }
     
     this.visible = false;
@@ -230,12 +228,6 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
     this.resizers = this.jq.children('.ui-resizable-handle');
 }
 
-PrimeFaces.widget.Dialog.prototype.onShow = function(event, ui) {
-    if(this.cfg.onShow) {
-        this.cfg.onShow.call(this, event, ui);
-    }
-} 
-
 PrimeFaces.widget.Dialog.prototype.initPosition = function() {
     
     if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
@@ -267,7 +259,6 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
-
     if(this.cfg.onHide) {
         this.cfg.onHide.call(this, event, ui);
     }

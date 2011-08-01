@@ -71,8 +71,8 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.getPosition() != null) writer.write(",position:'" + dialog.getPosition() + "'");
 
         //Client side callbacks
-        if(dialog.getOnShow() != null) writer.write(",onShow:function(event, ui) {" + dialog.getOnShow() + "}");
-        if(dialog.getOnHide() != null) writer.write(",onHide:function(event, ui) {" + dialog.getOnHide() + "}");
+        if(dialog.getOnShow() != null) writer.write(",onShow:function() {" + dialog.getOnShow() + "}");
+        if(dialog.getOnHide() != null) writer.write(",onHide:function() {" + dialog.getOnHide() + "}");
 
         //Behaviors
         encodeClientBehaviors(context, dialog);
