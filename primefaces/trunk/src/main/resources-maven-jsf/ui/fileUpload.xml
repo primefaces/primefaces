@@ -131,7 +131,7 @@
             <defaultValue>Delete</defaultValue>
 		</attribute>
         <attribute>
-			<name>sizeExceedMessage</name>
+			<name>invalidSizeMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
