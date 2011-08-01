@@ -32,13 +32,14 @@ PrimeFaces.widget.GMap.prototype.getInfoWindow = function() {
 }
 
 PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
-    var xmlDoc = responseXML.documentElement,
-    updates = xmlDoc.getElementsByTagName("update"),
+    var xmlDoc = $(responseXML.documentElement),
+    updates = xmlDoc.find("update"),
     infoWindow = this.getInfoWindow();
 
     for(var i=0; i < updates.length; i++) {
-        var id = updates[i].attributes.getNamedItem("id").nodeValue,
-        content = updates[i].firstChild.data;
+        var update = updates.eq(i),
+        id = update.attr('id'),
+        content = update.text();
 
         if(id == infoWindow.id){
             infoWindow.setContent(content);
@@ -50,9 +51,9 @@ PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
         }
     }
 
-    PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+    PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
-    return false;
+    return true;
 }
 
 PrimeFaces.widget.GMap.prototype.configureMarkers = function() {
