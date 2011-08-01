@@ -121,12 +121,13 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
             update: _self.id,
             formId: _self.cfg.formId,
             onsuccess: function(responseXML) {
-                var xmlDoc = responseXML.documentElement,
-                updates = xmlDoc.getElementsByTagName("update");
+                var xmlDoc = $(responseXML.documentElement),
+                updates = xmlDoc.find("update");
 
                 for(var i=0; i < updates.length; i++) {
-                    var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                    data = updates[i].firstChild.data;
+                    var update = updates.eq(i),
+                    id = update.attr('id'),
+                    data = update.text();
 
                     if(id == _self.id){
                         var events = $.parseJSON(data).events;
@@ -142,6 +143,8 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                         PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
                     }
                 }
+                
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
                 return true;
             }
