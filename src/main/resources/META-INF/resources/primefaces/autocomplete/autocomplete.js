@@ -90,8 +90,13 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
                 case keyCode.UP:
                 case keyCode.LEFT:
                     if(highlightItem.length > 0) {
-                        highlightItem.removeClass('ui-state-highlight').prev().addClass('ui-state-highlight');
-                    } else {
+                        var prev = highlightItem.removeClass('ui-state-highlight').prev();
+                        if(prev.length > 0)
+                            prev.addClass('ui-state-highlight');
+                        else
+                            currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
+                    } 
+                    else {
                         currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
                     }
 
@@ -101,8 +106,13 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                     if(highlightItem.length > 0) {
-                        highlightItem.removeClass('ui-state-highlight').next().addClass('ui-state-highlight');
-                    } else {
+                        var next = highlightItem.removeClass('ui-state-highlight').next();
+                        if(next.length > 0)
+                            next.addClass('ui-state-highlight');
+                        else
+                            currentItems.eq(0).addClass('ui-state-highlight');
+                    } 
+                    else {
                         currentItems.eq(0).addClass('ui-state-highlight');
                     }
 
