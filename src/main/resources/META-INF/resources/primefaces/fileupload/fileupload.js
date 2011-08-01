@@ -2071,6 +2071,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.sequentialUploads = true;
     this.cfg.dataType = 'xml';
     this.cfg.namespace = this.jqId;
+    this.cfg.disabled = this.cfg.fileInput.is(':disabled');
     
     //iframe content parser
     $.ajaxSetup({
@@ -2083,7 +2084,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.cfg.formData = this.createPostData();
     
     //dragdrop
-    this.cfg.dropZone = this.cfg.dnd ? this.jq : null;
+    this.cfg.dropZone = this.cfg.dnd && !this.cfg.disabled ? this.jq : null;
     
     //create widget
     if(this.form.data().fileupload) {
@@ -2093,6 +2094,11 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     
     //start and complete callbacks
     this.bindCallbacks();
+    
+    //disable buttonbar
+    if(this.cfg.disabled) {
+        this.disable();
+    }
     
     //show the UI
     this.jq.css('visibility', 'visible');
@@ -2147,6 +2153,15 @@ PrimeFaces.widget.FileUpload.prototype.getMessage = function(customMsg, defaultM
 PrimeFaces.widget.FileUpload.prototype.destroy = function() {
     this.form.fileupload('destroy');
     this.form.unbind('fileuploadsend fileuploadalways');
+}
+
+PrimeFaces.widget.FileUpload.prototype.disable = function() {
+    this.jq.children('.fileupload-buttonbar').find('.ui-button')
+                        .addClass('ui-state-disabled')
+                        .unbind()
+                        .bind('click', function(e) {e.preventDefault();});
+    
+    this.cfg.fileInput.css('cursor', 'auto');
 }
 
 PrimeFaces.widget.FileUpload.prototype.INVALID_SIZE_MESSAGE = 'Invalid file size.';

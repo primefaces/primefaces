@@ -132,6 +132,7 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeAdvancedMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
+        boolean disabled = fileUpload.isDisabled();
         String styleClass = fileUpload.getStyleClass();
         styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
 
@@ -146,6 +147,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		if(fileUpload.getStyle() != null)
             writer.writeAttribute("style", fileUpload.getStyle(), "style");
 
+        //choose button
         writer.startElement("label", fileUpload);
         writer.writeAttribute("class", FileUpload.CHOOSE_BUTTON_CLASS, null);
 
@@ -189,12 +191,11 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "file", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-        if(fileUpload.isMultiple()) {
-            writer.writeAttribute("multiple", "multiple", null);
-        }
         
+        if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
         if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
         if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
+        if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         
 		writer.endElement("input");
     }
