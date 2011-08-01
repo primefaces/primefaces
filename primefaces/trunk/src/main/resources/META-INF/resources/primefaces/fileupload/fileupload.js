@@ -1794,7 +1794,7 @@
             ).remove().end().first()
                 .button({
                     text: false,
-                    icons: {primary: 'ui-icon-circle-arrow-e'}
+                    icons: {primary: 'ui-icon-arrowreturnthick-1-n'}
                 });
             tmpl.find('.cancel button').slice(1).remove().end().first()
                 .button({
@@ -1922,7 +1922,7 @@
                     .append(fileInput);
             });
             fileUploadButtonBar.find('.start')
-                .button({icons: {primary: 'ui-icon-circle-arrow-e'}})
+                .button({icons: {primary: 'ui-icon-arrowreturnthick-1-n'}})
                 .bind('click.' + ns, function (e) {
                     e.preventDefault();
                     filesList.find('.start button').click();
@@ -2087,7 +2087,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     
     //create widget
     if(this.form.data().fileupload) {
-        this.form.fileupload('destroy');
+        this.destroy();
     }
     this.form.fileupload(this.cfg);
     
@@ -2101,8 +2101,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     var _self = this;
     
-    this.form.unbind('fileuploadsend fileuploadalways')
-            .bind('fileuploadsend', function(e, data) {
+    this.form.bind('fileuploadsend', function(e, data) {
                 if(_self.cfg.onstart) {
                     return _self.cfg.onstart.call(_self, e, data);
                 }
@@ -2143,6 +2142,11 @@ PrimeFaces.widget.FileUpload.prototype.createPostData = function() {
 
 PrimeFaces.widget.FileUpload.prototype.getMessage = function(customMsg, defaultMsg) {
     return customMsg || defaultMsg; 
+}
+
+PrimeFaces.widget.FileUpload.prototype.destroy = function() {
+    this.form.fileupload('destroy');
+    this.form.unbind('fileuploadsend fileuploadalways');
 }
 
 PrimeFaces.widget.FileUpload.prototype.INVALID_SIZE_MESSAGE = 'Invalid file size.';
