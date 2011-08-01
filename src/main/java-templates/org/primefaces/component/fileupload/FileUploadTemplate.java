@@ -6,7 +6,6 @@
     public final static String CHOOSE_BUTTON_CLASS = "fileinput-button";
     public final static String UPLOAD_BUTTON_CLASS = "start";
     public final static String CANCEL_BUTTON_CLASS = "cancel";
-    public final static String DELETE_BUTTON_CLASS = "delete";
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
