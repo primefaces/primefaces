@@ -162,7 +162,6 @@ public class FileUploadRenderer extends CoreRenderer {
         if(!fileUpload.isShowButtons() && !fileUpload.isAuto()) {
             encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "submit", FileUpload.UPLOAD_BUTTON_CLASS);
             encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "button", FileUpload.CANCEL_BUTTON_CLASS);
-            encodeButton(context, fileUpload, fileUpload.getDeleteLabel(), "reset", FileUpload.DELETE_BUTTON_CLASS);
         }
         
         writer.endElement("div");

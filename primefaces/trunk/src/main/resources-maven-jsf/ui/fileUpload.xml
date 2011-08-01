@@ -125,12 +125,6 @@
             <defaultValue>Cancel</defaultValue>
 		</attribute>
         <attribute>
-			<name>deleteLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>Delete</defaultValue>
-		</attribute>
-        <attribute>
 			<name>invalidSizeMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
