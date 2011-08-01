@@ -206,7 +206,7 @@ PrimeFaces.ajax.AjaxUtils = {
         scripts = xmlDoc.find('eval');
 
         if(redirect.length > 0) {
-            window.location = redirect[0].attributes.getNamedItem("url").nodeValue;
+            window.location = redirect.eq(0).attr('url');
         }
         else {
             //callback arguments
