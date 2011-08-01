@@ -75,12 +75,13 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
     };
 
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
 
         for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 $(panel).html(content);
@@ -94,7 +95,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(event, panel) {
             }
         }
         
-        PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
         return true;
     };
