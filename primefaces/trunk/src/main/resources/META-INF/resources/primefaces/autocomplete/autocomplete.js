@@ -71,9 +71,9 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
                 }
 
                 _self.timeout = setTimeout(function() {
-                                    _self.search(value);
-                                }, 
-                                _self.cfg.delay);
+                    _self.search(value);
+                }, 
+                _self.cfg.delay);
             }
         }
  
@@ -89,31 +89,41 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             switch(e.which) {
                 case keyCode.UP:
                 case keyCode.LEFT:
+                    var prev;
                     if(highlightItem.length > 0) {
-                        var prev = highlightItem.removeClass('ui-state-highlight').prev();
-                        if(prev.length > 0)
+                        prev = highlightItem.removeClass('ui-state-highlight').prev();
+                        if(prev.length > 0){
                             prev.addClass('ui-state-highlight');
-                        else
-                            currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
+                            var diff = prev.offset().top - _self.panel.offset().top - prev.outerHeight(true) + prev.height();
+                            if( diff < 0 )
+                                _self.panel.scrollTop( _self.panel.scrollTop() + diff);
+                        }
                     } 
-                    else {
-                        currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
+                    
+                    if(!prev || prev.length == 0) {
+                        prev = currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
+                        _self.panel.scrollTop(prev.offset().top + prev.outerHeight(true) - _self.panel.offset().top - _self.panel.height());
                     }
 
                     e.preventDefault();
                     break;
-
+                    
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
+                    var next;
                     if(highlightItem.length > 0) {
-                        var next = highlightItem.removeClass('ui-state-highlight').next();
-                        if(next.length > 0)
+                        next = highlightItem.removeClass('ui-state-highlight').next();
+                        if(next.length > 0){
                             next.addClass('ui-state-highlight');
-                        else
-                            currentItems.eq(0).addClass('ui-state-highlight');
+                            var diff = next.offset().top + next.outerHeight(true) - _self.panel.offset().top;
+                            if( diff > _self.panel.height() )
+                                _self.panel.scrollTop(_self.panel.scrollTop() + (diff - _self.panel.height()));
+                       }
                     } 
-                    else {
+                    
+                    if(!next || next.length == 0) {
                         currentItems.eq(0).addClass('ui-state-highlight');
+                        _self.panel.scrollTop(0);
                     }
 
                     e.preventDefault();
@@ -127,13 +137,13 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
                     break;
 
                 case keyCode.ALT: 
-                case 224: 
+                case 224:
                     break;
 
-                case keyCode.TAB: 
+                case keyCode.TAB:
                     _self.hide();
                     break;
-             }
+            }
         }
          
     });
@@ -240,7 +250,7 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                         if(_self.cfg.forceSelection) {
                             _self.cachedResults = [];
                             items.each(function(i, item) {
-                               _self.cachedResults.push($(item).attr('data-item-label'));
+                                _self.cachedResults.push($(item).attr('data-item-label'));
                             });
                         }
                         
@@ -366,8 +376,8 @@ PrimeFaces.widget.AutoComplete.prototype.alignPanel = function() {
     var offset = this.input.offset();
     
     this.panel.css({
-       'top':  offset.top + this.input.outerHeight(),
-       'left': offset.left,
-       'width': this.input.innerWidth() + 'px'
+        'top':  offset.top + this.input.outerHeight(),
+        'left': offset.left,
+        'width': this.input.innerWidth() + 'px'
     });
 }
