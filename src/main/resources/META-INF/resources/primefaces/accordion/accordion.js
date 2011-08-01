@@ -76,7 +76,7 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(event, pane
 
         }
         
-        PrimeFaces.ajax.AjaxUtils.handleResponse(xmlDoc);
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
         return true;
     };
