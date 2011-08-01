@@ -31,6 +31,7 @@
 
 .fileinput-button {
   overflow: hidden;
+  *background-image: none !important;
 }
 
 /* Fix for IE 6: */
