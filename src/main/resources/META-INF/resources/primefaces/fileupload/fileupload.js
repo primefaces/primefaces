@@ -166,7 +166,7 @@
  */
 (function( jQuery, undefined ){
 	var oldManip = jQuery.fn.domManip, tmplItmAtt = "_tmplitem", htmlExpr = /^[^<]*(<[\w\W]+>)[^>]*$|\{\{\! /,
-		newTmplItems = {}, wrappedItems = {}, appendToTmplItems, topTmplItem = { key: 0, data: {} }, itemKey = 0, cloneIndex = 0, stack = [];
+		newTmplItems = {}, wrappedItems = {}, appendToTmplItems, topTmplItem = {key: 0, data: {}}, itemKey = 0, cloneIndex = 0, stack = [];
 
 	function newTmplItem( options, parentItem, fn, data ) {
 		// Returns a template item data structure for a new rendered instance of a template (a 'template item').
@@ -185,7 +185,7 @@
 			update: tiUpdate
 		};
 		if ( options ) {
-			jQuery.extend( newItem, options, { nodes: [], parent: parentItem });
+			jQuery.extend( newItem, options, {nodes: [], parent: parentItem});
 		}
 		if ( fn ) {
 			// Build the hierarchical content to be used during insertion into DOM
@@ -364,19 +364,19 @@
 	jQuery.extend( jQuery.tmpl, {
 		tag: {
 			"tmpl": {
-				_default: { $2: "null" },
+				_default: {$2: "null"},
 				open: "if($notnull_1){__=__.concat($item.nest($1,$2));}"
 				// tmpl target parameter can be of type function, so use $1, not $1a (so not auto detection of functions)
 				// This means that {{tmpl foo}} treats foo as a template (which IS a function).
 				// Explicit parens can be used if foo is a function that returns a template: {{tmpl foo()}}.
 			},
 			"wrap": {
-				_default: { $2: "null" },
+				_default: {$2: "null"},
 				open: "$item.calls(__,$1,$2);__=[];",
 				close: "call=$item.calls();__=call._.concat($item.wrap(call,__));"
 			},
 			"each": {
-				_default: { $2: "$index, $value" },
+				_default: {$2: "$index, $value"},
 				open: "if($notnull_1){$.each($1a,function($2){with(this){",
 				close: "}});}"
 			},
@@ -385,7 +385,7 @@
 				close: "}"
 			},
 			"else": {
-				_default: { $1: "true" },
+				_default: {$1: "true"},
 				open: "}else if(($notnull_1) && $1a){"
 			},
 			"html": {
@@ -394,7 +394,7 @@
 			},
 			"=": {
 				// Encoded expression evaluation. Abbreviated form is ${}.
-				_default: { $1: "$data" },
+				_default: {$1: "$data"},
 				open: "if($notnull_1){__.push($.encode($1a));}"
 			},
 			"!": {
@@ -606,7 +606,7 @@
 		if ( !content ) {
 			return stack.pop();
 		}
-		stack.push({ _: content, tmpl: tmpl, item:this, data: data, options: options });
+		stack.push({_: content, tmpl: tmpl, item:this, data: data, options: options});
 	}
 
 	function tiNest( tmpl, data, options ) {
@@ -2047,11 +2047,11 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
                               '<td class="name">$' + '{name}</td>' +
                               '<td class="size">$' + '{sizef}</td>' + 
                               '{{if error}}' + 
-                              '<td class="error" colspan="2">Error:' + 
-                                    '{{if error === "maxFileSize"}}' + this.INVALID_SIZE_MESSAGE +
-                                    '{{else error === "minFileSize"}}'+ this.INVALID_SIZE_MESSAGE +
-                                    '{{else error === "acceptFileTypes"}}'+ this.INVALID_FILE_MESSAGE +
-                                    '{{else error === "maxNumberOfFiles"}}' + this.FILE_LIMIT_MESSAGE +
+                              '<td class="error" colspan="2">' + 
+                                    '{{if error === "maxFileSize"}}' + this.getMessage(this.cfg.invalidSizeMessage, this.INVALID_SIZE_MESSAGE) +
+                                    '{{else error === "minFileSize"}}'+ this.getMessage(this.cfg.invalidSizeMessage, this.INVALID_SIZE_MESSAGE)  +
+                                    '{{else error === "acceptFileTypes"}}'+ this.getMessage(this.cfg.invalidFileMessage, this.INVALID_FILE_MESSAGE)  +
+                                    '{{else error === "maxNumberOfFiles"}}' + this.getMessage(this.cfg.fileLimitMessage, this.FILE_LIMIT_MESSAGE) +
                                     '{{else}}$' + '{error}' +
                                     '{{/if}}' +
                               '</td>' +
@@ -2139,6 +2139,10 @@ PrimeFaces.widget.FileUpload.prototype.createPostData = function() {
     }
     
     return params;
+}
+
+PrimeFaces.widget.FileUpload.prototype.getMessage = function(customMsg, defaultMsg) {
+    return customMsg || defaultMsg; 
 }
 
 PrimeFaces.widget.FileUpload.prototype.INVALID_SIZE_MESSAGE = 'Invalid file size.';

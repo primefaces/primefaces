@@ -113,7 +113,7 @@ public class FileUploadRenderer extends CoreRenderer {
             
             //restriction messages
             if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
-            if(fileUpload.getSizeExceedMessage() != null) writer.write(",sizeExceedMessage:'" + fileUpload.getSizeExceedMessage() + "'");
+            if(fileUpload.getInvalidSizeMessage() != null) writer.write(",invalidSizeMessage:'" + fileUpload.getInvalidSizeMessage() + "'");
             if(fileUpload.getFileLimitMessage() != null) writer.write(",fileLimitMessage:'" + fileUpload.getFileLimitMessage() + "'");
         }
 
