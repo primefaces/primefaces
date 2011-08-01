@@ -206,12 +206,12 @@ PrimeFaces.ajax.AjaxUtils = {
         scripts = xmlDoc.find('eval');
 
         if(redirect.length > 0) {
-            window.location = redirect.eq(0).attr('url');
+            window.location = redirect.attr('url');
         }
         else {
             //callback arguments
             if(extensions.length >0) {
-                this.args = $.parseJSON(extensions.eq(0).text());
+                this.args = $.parseJSON(extensions.text());
             }
 
             //scripts to execute
