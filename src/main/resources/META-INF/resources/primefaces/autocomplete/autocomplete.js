@@ -211,12 +211,13 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
         update: this.id,
         formId: this.cfg.formId,
         onsuccess: function(responseXML) {
-            var xmlDoc = responseXML.documentElement,
-            updates = xmlDoc.getElementsByTagName("update");
+            var xmlDoc = $(responseXML.documentElement),
+            updates = xmlDoc.find("update");
 
             for(var i=0; i < updates.length; i++) {
-                var id = updates[i].attributes.getNamedItem("id").nodeValue,
-                data = updates[i].firstChild.data;
+                var update = updates.eq(i),
+                id = update.attr('id'),
+                data = update.text();
 
                 if(id == _self.id) {
                     _self.panel.html(data);
