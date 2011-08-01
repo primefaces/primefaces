@@ -262,12 +262,13 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
     var _self = this;
     
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
 
         for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
@@ -278,6 +279,8 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
+        
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
         return true;
     };
@@ -317,12 +320,13 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 
     var _self = this;
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
 
         for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
@@ -338,6 +342,8 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
+        
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
         return true;
     };
@@ -629,12 +635,13 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
     _self = this;
 
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
 
         for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 row.after(content);
@@ -644,6 +651,8 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
         }
+        
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
         return true;
     };
