@@ -56,7 +56,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 		try {
 			List<FileItem> fileItems = servletFileUpload.parseRequest(request);
 			
-			for(FileItem item : fileItems) {
+			for(FileItem item : fileItems) {                
 				if(item.isFormField())
 					addFormParam(item);
 				else
@@ -100,7 +100,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 				return values.get(0);
 		}
 		else {
-			return null;
+			return super.getParameter(name);
 		}
 	}
 
@@ -113,6 +113,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
                 map.put(formParam, formParams.get(formParam).toArray(new String[0]));
             }
             
+            map.putAll(super.getParameterMap());
+            
             parameterMap = Collections.unmodifiableMap(map);
         }
 
@@ -123,7 +125,11 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 	public Enumeration getParameterNames() {
 		Set<String> paramNames = new LinkedHashSet<String>();
 		paramNames.addAll(formParams.keySet());
-		paramNames.addAll(fileParams.keySet());
+        
+        Enumeration<String> original = super.getParameterNames();
+        while(original.hasMoreElements()) {
+            paramNames.add(original.nextElement());
+        }
 		
 		return Collections.enumeration(paramNames);
 	}
@@ -138,7 +144,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 				return values.toArray(new String[values.size()]);
 		}
 		else {
-			return null;
+			return super.getParameterValues(name);
 		}
 	}
 	
