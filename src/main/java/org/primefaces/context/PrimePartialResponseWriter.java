@@ -41,7 +41,12 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
             try {
                 //callback params
-                requestContext.addCallbackParam("validationFailed", FacesContext.getCurrentInstance().isValidationFailed());
+                boolean validationFailed = FacesContext.getCurrentInstance().isValidationFailed();
+                
+                if(validationFailed) {
+                    requestContext.addCallbackParam("validationFailed", true);
+                }
+                
                 Map<String, Object> params = requestContext.getCallbackParams();
 
                 for(String paramName : params.keySet()) {
@@ -66,6 +71,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     }
                     endEval();
                 }
+                
             } catch (Exception exception) {
                 throw new AbortProcessingException(exception);
             } finally {
