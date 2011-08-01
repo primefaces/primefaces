@@ -55,12 +55,13 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(event, pane
     };
 
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-        updates = xmlDoc.getElementsByTagName("update");
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
 
         for(var i=0; i < updates.length; i++) {
-            var id = updates[i].attributes.getNamedItem("id").nodeValue,
-            content = updates[i].firstChild.data;
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
 
             if(id == _self.id){
                 $(panel).html(content);
@@ -68,7 +69,6 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(event, pane
                 if(_self.cfg.cache) {
                     _self.markAsLoaded(panel);
                 }
-
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
