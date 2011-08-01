@@ -201,32 +201,22 @@ PrimeFaces.ajax.AjaxUtils = {
      *  Handles response handling tasks after updating the dom
      **/
     handleResponse: function(xmlDoc) {
-        var redirect = xmlDoc.getElementsByTagName("redirect"),
-        extensions = xmlDoc.getElementsByTagName("extension"),
-        scripts = xmlDoc.getElementsByTagName("eval");
+        var redirect = xmlDoc.find('redirect'),
+        extensions = xmlDoc.find('extension[ln="primefaces"]'),
+        scripts = xmlDoc.find('eval');
 
         if(redirect.length > 0) {
             window.location = redirect[0].attributes.getNamedItem("url").nodeValue;
         }
         else {
-            //callbsack arguments
-            this.args = {};
-            for(var i=0; i < extensions.length; i++) {
-                var extension = extensions[i];
-
-                if(extension.getAttributeNode('primefacesCallbackParam')) {
-                    var jsonObj = $.parseJSON(extension.firstChild.data);
-
-                    for(var paramName in jsonObj) {
-                        if(paramName)
-                            this.args[paramName] = jsonObj[paramName];
-                    }
-                }
+            //callback arguments
+            if(extensions.length >0) {
+                this.args = $.parseJSON(extensions.eq(0).text());
             }
 
             //scripts to execute
-            for(i=0; i < scripts.length; i++) {
-                $.globalEval(scripts[i].firstChild.data);
+            for(var i=0; i < scripts.length; i++) {
+                $.globalEval(scripts.eq(i).text());
             }
             
         }
@@ -386,12 +376,13 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
 }
 
 PrimeFaces.ajax.AjaxResponse = function(responseXML) {
-    var xmlDoc = responseXML.documentElement,
-    updates = xmlDoc.getElementsByTagName("update");
+    var xmlDoc = $(responseXML.documentElement),
+    updates = xmlDoc.find('update');
 
     for(var i=0; i < updates.length; i++) {
-        var id = updates[i].attributes.getNamedItem("id").nodeValue,
-        content = updates[i].firstChild.data;
+        var update = updates.eq(i),
+        id = update.attr('id'),
+        content = update.text();
 
         PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
     }
