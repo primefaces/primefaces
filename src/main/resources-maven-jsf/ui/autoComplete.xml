@@ -122,6 +122,16 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+            <name>panelStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </attributes>
     <resources>
         <resource>

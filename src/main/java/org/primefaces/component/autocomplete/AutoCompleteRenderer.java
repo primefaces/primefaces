@@ -179,10 +179,17 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String styleClass = ac.getPanelStyleClass();
+        styleClass = styleClass == null ? AutoComplete.PANEL_CLASS : AutoComplete.PANEL_CLASS + " " + styleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
-        writer.writeAttribute("class", AutoComplete.PANEL_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
+        
+        if(ac.getPanelStyle() != null) {
+            writer.writeAttribute("style", ac.getPanelStyle(), null);
+        }
+        
         writer.endElement("div");
     }
     
