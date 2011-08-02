@@ -29,6 +29,7 @@ PrimeFaces.widget.Button = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jqId);
 
 	$(this.jqId).button(this.cfg);
     
