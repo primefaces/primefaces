@@ -298,14 +298,14 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
             _self.triggers.removeClass('ui-state-hover');
         }
     }).click(function(e) {
-
+        
         if(!_self.disabled) {
             if(_self.panel.is(":hidden"))
                 _self.show();
             else
                 _self.hide();
         }
-
+        _self.labelContainer.focus();
         e.preventDefault();
     });
 
@@ -361,26 +361,46 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         switch (e.which) {
             case keyCode.UP:
             case keyCode.LEFT:
-                var highlightedItem = items.filter('.ui-state-active'),
-                previousItem = highlightedItem.prev();
+                var highlightedItem = items.filter('.ui-state-active'), prev;
+                if(highlightedItem.length > 0) {
+                    prev = highlightedItem.removeClass('ui-state-active').prev();
+                    if(prev.length > 0){
+                        prev.addClass('ui-state-active');
+                        var diff = prev.offset().top - _self.panel.offset().top - prev.outerHeight(true) + prev.height();
+                        if( diff < 0 )
+                            _self.panel.scrollTop( _self.panel.scrollTop() + diff);
+                    }
+                } 
 
-                if(previousItem.length > 0) {
-                    highlightedItem.removeClass('ui-state-active');
-                    previousItem.addClass('ui-state-active');
+                if(!prev || prev.length == 0) {
+                    prev = items.eq(items.length - 1).addClass('ui-state-active');
+                    _self.panel.scrollTop(prev.offset().top + prev.outerHeight(true) - _self.panel.offset().top - _self.panel.height());
                 }
+
+                e.preventDefault();
                 break;
 
             case keyCode.DOWN:
             case keyCode.RIGHT:
-                var highlightedItem = items.filter('.ui-state-active'),
-                nextItem = highlightedItem.next();
+                var highlightedItem = items.filter('.ui-state-active'), next;
+                if(highlightedItem.length > 0) {
+                    next = highlightedItem.removeClass('ui-state-active').next();
+                    if(next.length > 0){
+                        next.addClass('ui-state-active');
+                        var diff = next.offset().top + next.outerHeight(true) - _self.panel.offset().top;
+                        if( diff > _self.panel.height() )
+                            _self.panel.scrollTop(_self.panel.scrollTop() + (diff - _self.panel.height()));
+                    }
+                } 
 
-                if(nextItem.length > 0) {
-                    highlightedItem.removeClass('ui-state-active');
-                    nextItem.addClass('ui-state-active');
+                if(!next || next.length == 0) {
+                    next = items.eq(0).addClass('ui-state-active');
+                    _self.panel.scrollTop(0);                
                 }
-                break;
 
+                e.preventDefault();
+                break;
+                
             case keyCode.ENTER:
             case keyCode.NUMPAD_ENTER:
                 if(_self.panel.is(":visible"))
