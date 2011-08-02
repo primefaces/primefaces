@@ -70,6 +70,8 @@ import org.primefaces.model.SortOrder;
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-datatable-resizable"; 
     public static final String COLUMN_CONTENT_WRAPPER = "ui-dt-c"; 
+    public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
+    public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit", "colResize"));
 
