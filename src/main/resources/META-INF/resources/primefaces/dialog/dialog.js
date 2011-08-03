@@ -122,11 +122,12 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
        return;
     }
     
-    this.restorePosition();
-    
+    this.restoreState();
+        
     if(!this.loaded && this.cfg.dynamic) {
         this.loadContents();
-    } else {
+    } 
+    else {
         this._show();
     }
 }
@@ -159,9 +160,7 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
     if(!this.visible) {
        return;
     }
-    
-    this.savePosition();
-            
+
     if(this.cfg.hideEffect) {
         var _self = this;
     
@@ -260,6 +259,8 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
             ,left: x
         });
     }
+    
+    this.saveState();
 }
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
@@ -274,6 +275,8 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
             closeBehavior.call(this);
         }
     }
+    
+    this.saveState();
 }
 
 PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
@@ -364,42 +367,32 @@ PrimeFaces.widget.Dialog.prototype.dock = function(zone) {
     this.jq.css('visibility', 'visible');
 }
 
-
-PrimeFaces.widget.Dialog.prototype.savePosition = function(){
-    var w = $(window);
-    this.pos = {
-        top: this.jq.offset().top
-        ,left: this.jq.offset().left
-        ,scrollTop : w.scrollTop()
-        ,scrollLeft: w.scrollLeft()
-    };
-}
-
-PrimeFaces.widget.Dialog.prototype.restorePosition = function(){
-    var w = $(window);
-    if(this.pos)
-        this.jq.css({
-            top : this.pos.top + (w.scrollTop() - this.pos.scrollTop), 
-            left : this.pos.left + (w.scrollLeft() - this.pos.scrollLeft)
-            })
-    else
-        this.jq.offset({
-            top : (this.jq.offset().top + w.scrollTop()), 
-            left : (this.jq.offset().left + w.scrollLeft())
-            });
-}
-
-
 PrimeFaces.widget.Dialog.prototype.saveState = function() {
+    var win = $(window);
+    
     this.state = {
         offset: this.jq.offset()
         ,width: this.jq.innerWidth()
         ,height: this.jq.innerHeight()
+        ,scrollTop: win.scrollTop()
+        ,scrollLeft: win.scrollLeft()
     };
 }
 
 PrimeFaces.widget.Dialog.prototype.restoreState = function() {
-    this.jq.offset(this.state.offset).width(this.state.width).height(this.state.height);    
+    var win = $(window),
+    offset = this.jq.offset(),
+    scrollTop = this.state.scrollTop,
+    scrollLeft = this.state.scrollLeft,
+    winScrollTop = win.scrollTop(),
+    winScrollLeft = win.scrollLeft();
+    
+    this.jq.offset({
+            top: offset.top + (winScrollTop - scrollTop)
+            ,left: offset.left + (winScrollLeft - scrollLeft)
+         })
+        .width(this.state.width)
+        .height(this.state.height);
 }
 
 PrimeFaces.widget.Dialog.prototype.loadContents = function() {
