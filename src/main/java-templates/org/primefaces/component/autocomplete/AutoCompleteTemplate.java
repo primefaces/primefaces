@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
@@ -47,6 +48,19 @@ import javax.faces.event.PhaseId;
         }
     }
 
+    private List suggestions = null;
+
+    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+		super.broadcast(event);
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		MethodExpression me = getCompleteMethod();
+		
+		if(me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
+			suggestions = (List) me.invoke(facesContext.getELContext(), new Object[] {((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
+		}
+	}
+
     @Override
     public void validate(FacesContext context) {
         super.validate(context);
@@ -74,4 +88,8 @@ import javax.faces.event.PhaseId;
         }
 
         return columns;
+    }
+
+    public List getSuggestions() {
+        return this.suggestions;
     }

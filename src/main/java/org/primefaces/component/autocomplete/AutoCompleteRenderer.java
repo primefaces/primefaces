@@ -23,7 +23,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
+import org.primefaces.event.AutoCompleteEvent;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -49,6 +51,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         
         decodeBehaviors(context, autoComplete);
+        
+        //AutoComplete event
+        String query = params.get(clientId + "_query");
+        if(query != null) {
+            AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(autoComplete, query);
+            autoCompleteEvent.setPhaseId(autoComplete.isImmediate() ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+            autoComplete.queueEvent(autoCompleteEvent);
+        }
     }
 
     @Override
@@ -69,7 +79,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
         AutoComplete ac = (AutoComplete) component;
-        List results = (List) ac.getCompleteMethod().invoke(context.getELContext(), new Object[]{query});
+        List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
         
         if(maxResults != Integer.MAX_VALUE && results.size() > maxResults) {
