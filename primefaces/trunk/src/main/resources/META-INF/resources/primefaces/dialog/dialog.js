@@ -122,6 +122,8 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
        return;
     }
     
+    this.restorePosition();
+    
     if(!this.loaded && this.cfg.dynamic) {
         this.loadContents();
     } else {
@@ -129,7 +131,7 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
     }
 }
 
-PrimeFaces.widget.Dialog.prototype._show = function() {    
+PrimeFaces.widget.Dialog.prototype._show = function() {
     if(this.cfg.showEffect) {
         var _self = this;
             
@@ -157,6 +159,8 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
     if(!this.visible) {
        return;
     }
+    
+    this.savePosition();
             
     if(this.cfg.hideEffect) {
         var _self = this;
@@ -360,6 +364,32 @@ PrimeFaces.widget.Dialog.prototype.dock = function(zone) {
     this.jq.css('visibility', 'visible');
 }
 
+
+PrimeFaces.widget.Dialog.prototype.savePosition = function(){
+    var w = $(window);
+    this.pos = {
+        top: this.jq.offset().top
+        ,left: this.jq.offset().left
+        ,scrollTop : w.scrollTop()
+        ,scrollLeft: w.scrollLeft()
+    };
+}
+
+PrimeFaces.widget.Dialog.prototype.restorePosition = function(){
+    var w = $(window);
+    if(this.pos)
+        this.jq.css({
+            top : this.pos.top + (w.scrollTop() - this.pos.scrollTop), 
+            left : this.pos.left + (w.scrollLeft() - this.pos.scrollLeft)
+            })
+    else
+        this.jq.offset({
+            top : (this.jq.offset().top + w.scrollTop()), 
+            left : (this.jq.offset().left + w.scrollLeft())
+            });
+}
+
+
 PrimeFaces.widget.Dialog.prototype.saveState = function() {
     this.state = {
         offset: this.jq.offset()
@@ -369,7 +399,7 @@ PrimeFaces.widget.Dialog.prototype.saveState = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.restoreState = function() {
-    this.jq.offset(this.state.offset).width(this.state.width).height(this.state.height);
+    this.jq.offset(this.state.offset).width(this.state.width).height(this.state.height);    
 }
 
 PrimeFaces.widget.Dialog.prototype.loadContents = function() {
