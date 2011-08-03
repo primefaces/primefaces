@@ -245,6 +245,26 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
             _self.cells.filter('.ui-state-highlight').removeClass('ui-state-highlight');
             _self.selectCell(cell);
         }
+        
+        cell = cell.parent();
+        var bTable = _self.body.children('table:first'),
+        yScrolled = _self.body.height() < bTable.height(),
+        xScrolled = _self.body.width() < bTable.width();
+        
+        // up/down nav with scrolling
+        var diff = cell.offset().top + cell.outerHeight(true) - _self.body.offset().top;
+        if( diff > _self.body.height() )
+            _self.body.scrollTop(_self.body.scrollTop() + (diff - _self.body.height()) + (xScrolled ? 16 : 0));
+        else if( (diff -= cell.outerHeight(true)*2 - cell.height()) < 0 )
+            _self.body.scrollTop( _self.body.scrollTop() + diff);
+        
+        
+        // left/right nav with scrolling
+        diff = cell.offset().left + cell.outerWidth(true) - _self.body.offset().left;
+        if( diff > _self.body.width() )
+            _self.body.scrollLeft(_self.body.scrollLeft() + (diff - _self.body.width()) + (yScrolled ? 16 : 0));
+        else if( (diff -= cell.outerWidth(true)*2 - cell.width()) < 0 )
+            _self.body.scrollLeft( _self.body.scrollLeft() + diff);
     })
     .dblclick(function(e) {
         var cell = $(this),
@@ -364,24 +384,28 @@ PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.DOWN:
-                    _self.cursor = _self.cursor.parents('tr:first').next().children().eq(_self.cursor.parent().index()).children('div.ui-sh-c');
+                    var next = _self.cursor.parents('tr:first').next().children().eq(_self.cursor.parent().index()).children('div.ui-sh-c');
+                    if(next && next.length){
+                        _self.cursor = next;
+                        if(shift)
+                            _self.selectCells(origin, _self.cursor);
+                        else
+                            _self.cursor.click();
+                    }
                     
-                    if(shift)
-                        _self.selectCells(origin, _self.cursor);
-                    else
-                        _self.cursor.click();
-                                        
                     e.preventDefault();
                 break;
 
                 case keyCode.UP:
-                    _self.cursor = _self.cursor.parents('tr:first').prev().children().eq(_self.cursor.parent().index()).children('div.ui-sh-c');
+                    var prev = _self.cursor.parents('tr:first').prev().children().eq(_self.cursor.parent().index()).children('div.ui-sh-c');
+                    if(prev && prev.length){
+                        _self.cursor = prev;
+                        if(shift)
+                            _self.selectCells(origin, _self.cursor);
+                        else
+                            _self.cursor.click();
+                    }  
                     
-                    if(shift)
-                        _self.selectCells(origin, _self.cursor);
-                    else
-                        _self.cursor.click();
-                                        
                     e.preventDefault();
                 break;
                 
