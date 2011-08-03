@@ -121,9 +121,7 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
     if(this.visible) {
        return;
     }
-    
-    this.restoreState();
-        
+
     if(!this.loaded && this.cfg.dynamic) {
         this.loadContents();
     } 
@@ -260,7 +258,8 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
         });
     }
     
-    this.saveState();
+    //replace auto with pixels
+    this.jq.width(this.jq.innerWidth());
 }
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
@@ -275,8 +274,6 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
             closeBehavior.call(this);
         }
     }
-    
-    this.saveState();
 }
 
 PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
@@ -297,13 +294,13 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
     }
     
     if(this.maximized) {
-        this.restoreState();
+        this.restoreState(true);
                 
         this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
         this.maximized = false;
     } 
     else {
-        this.saveState();
+        this.saveState(true);
                 
         this.jq.css({
             'width': $(window).width() - 6
@@ -332,15 +329,15 @@ PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
     var _self = this;
     
     if(this.minimized) {
-        this.jq.appendTo(this.parent).css({'position':'absolute', 'float':'none'});
-        this.restoreState();
+        this.jq.appendTo(this.parent).css({'position':'fixed', 'float':'none'});
+        this.restoreState(false);
         this.content.show();
         this.resizers.show();
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
         this.minimized = false;
     }
     else {
-        this.saveState();
+        this.saveState(false);
         
         if(animate) {
             this.jq.effect('transfer', {
@@ -367,32 +364,21 @@ PrimeFaces.widget.Dialog.prototype.dock = function(zone) {
     this.jq.css('visibility', 'visible');
 }
 
-PrimeFaces.widget.Dialog.prototype.saveState = function() {
-    var win = $(window);
-    
+PrimeFaces.widget.Dialog.prototype.saveState = function(includeOffset) {
     this.state = {
-        offset: this.jq.offset()
-        ,width: this.jq.innerWidth()
-        ,height: this.jq.innerHeight()
-        ,scrollTop: win.scrollTop()
-        ,scrollLeft: win.scrollLeft()
+        width: this.jq.width()
+        ,height: this.jq.height()
     };
+    
+    if(includeOffset)
+        this.state.offset = this.jq.offset();
 }
 
-PrimeFaces.widget.Dialog.prototype.restoreState = function() {
-    var win = $(window),
-    offset = this.jq.offset(),
-    scrollTop = this.state.scrollTop,
-    scrollLeft = this.state.scrollLeft,
-    winScrollTop = win.scrollTop(),
-    winScrollLeft = win.scrollLeft();
-    
-    this.jq.offset({
-            top: offset.top + (winScrollTop - scrollTop)
-            ,left: offset.left + (winScrollLeft - scrollLeft)
-         })
-        .width(this.state.width)
-        .height(this.state.height);
+PrimeFaces.widget.Dialog.prototype.restoreState = function(includeOffset) {
+    this.jq.width(this.state.width).height(this.state.height);
+        
+    if(includeOffset)
+        this.jq.offset(this.state.offset);   
 }
 
 PrimeFaces.widget.Dialog.prototype.loadContents = function() {
