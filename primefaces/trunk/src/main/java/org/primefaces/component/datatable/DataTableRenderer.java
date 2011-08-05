@@ -150,6 +150,11 @@ public class DataTableRenderer extends CoreRenderer {
             writer.write(",resizableColumns:true");
         }
         
+        //ContextMenu
+        if(table.hasContextMenu()) {
+            writer.write(",contextMenu:true");
+        }
+        
         //Behaviors
         encodeClientBehaviors(context, table);
 
@@ -621,7 +626,8 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         //Preselection
-        boolean selected = table.getSelectedRowIndexes().contains(rowIndex);
+        //boolean selected = table.getSelectedRowIndexes().contains(rowIndex);
+        boolean selected = false;
 
         ResponseWriter writer = context.getResponseWriter();
 
