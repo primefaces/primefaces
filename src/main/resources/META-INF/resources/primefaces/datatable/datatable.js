@@ -428,33 +428,27 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
     }
 }
 
-/**
- * Row select handler
- *
- * - Unselects a row if it's already selected
- * - For single selection, clears previous selection
- */
 PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
     
     //Check if rowclick triggered this event not an element in row content
     if($(event.target).is('td,div,span')) {
         
-        var row = $(rowElement);
+        var row = $(rowElement),
+        selected = row.hasClass('ui-selected');
 
-        if(row.hasClass('ui-selected'))
-           this.unselectRow(row);
+        if(selected)
+            this.unselectRow(event, row);
         else
-           this.selectRow(row);
-       
+            this.selectRow(event, row);
     }
     
 }
 
-PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
+PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
     var rowId = row.attr('id').split('_row_')[1];
 
     //unselect previous selection
-    if(this.isSingleSelection()) {
+    if(this.isSingleSelection() || (this.isMultipleSelection() && !event.metaKey)) {
         row.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight'); 
         this.selection = [];
     }
@@ -469,19 +463,24 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row) {
     this.fireRowSelectEvent(rowId);
 }
 
-PrimeFaces.widget.DataTable.prototype.unselectRow = function(row) {
+PrimeFaces.widget.DataTable.prototype.unselectRow = function(event, row) {
     var rowId = row.attr('id').split('_row_')[1];
 
-    //remove visual style
-    row.removeClass('ui-selected ui-state-highlight');
+    if(event.metaKey) {
+        //remove visual style
+        row.removeClass('ui-selected ui-state-highlight');
 
-    //remove from selection
-    this.removeSelection(rowId);
+        //remove from selection
+        this.removeSelection(rowId);
 
-    //save state
-    this.writeSelections();
+        //save state
+        this.writeSelections();
 
-    this.fireRowUnselectEvent(rowId);
+        this.fireRowUnselectEvent(rowId);
+    }
+    else if(this.isMultipleSelection()){
+        this.selectRow(event, row);
+    }
 }
 
 /**
@@ -798,6 +797,10 @@ PrimeFaces.widget.DataTable.prototype.writeSelections = function() {
  */
 PrimeFaces.widget.DataTable.prototype.isSingleSelection = function() {
     return this.cfg.selectionMode == 'single';
+}
+
+PrimeFaces.widget.DataTable.prototype.isMultipleSelection = function() {
+    return this.cfg.selectionMode == 'multiple';
 }
 
 /**
