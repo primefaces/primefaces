@@ -231,6 +231,9 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
 
 PrimeFaces.widget.Dialog.prototype.initPosition = function() {
     
+    //replace auto with pixels (IE7 hack : default 300px)
+    this.jq.width( (!parseInt(this.jq.get(0).style.width) && $.browser.msie && $.browser.version.indexOf('7') == 0) ? 300 : this.jq.innerWidth());
+    
     if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
         this.cfg.position = this.cfg.position.replace(',', ' ');
         
@@ -258,8 +261,6 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
         });
     }
     
-    //replace auto with pixels
-    this.jq.width(this.jq.innerWidth());
 }
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
