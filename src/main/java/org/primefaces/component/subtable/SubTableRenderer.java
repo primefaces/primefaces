@@ -116,6 +116,7 @@ public class SubTableRenderer extends CoreRenderer {
                 Row footerRow = (Row) child;
 
                 writer.startElement("tr", null);
+                writer.writeAttribute("class", "ui-widget-header", null);
 
                 for(UIComponent footerRowChild : footerRow.getChildren()) {
                     if(footerRowChild.isRendered() && footerRowChild instanceof Column) {
