@@ -3,6 +3,7 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.component.row.Row;
+import org.primefaces.component.subtable.SubTable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -496,4 +497,13 @@ import org.primefaces.model.SortOrder;
         String clientId = this.getClientId(context);
 
         return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_updateBody");
+    }
+
+    public SubTable getSubTable() {
+        for(UIComponent kid : getChildren()) {
+            if(kid instanceof SubTable)
+                return (SubTable) kid;
+        }
+        
+        return null;
     }
