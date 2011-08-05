@@ -558,6 +558,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
+        SubTable subTable = table.getSubTable();
         
         if(table.isLazy()) {
             table.loadLazyData();
@@ -575,9 +576,12 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_data", null);
         writer.writeAttribute("class", tbodyClass, null);
 
-        if(hasData) {            
+        if(hasData) {
             for(int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, clientId, i, rowIndexVar);
+                if(subTable != null)
+                    encodeSubTable(context, table, subTable, i, rowIndexVar);
+                else
+                    encodeRow(context, table, clientId, i, rowIndexVar);
             }
         }
         else if(emptyMessage != null){
@@ -643,9 +647,6 @@ public class DataTableRenderer extends CoreRenderer {
                 }
                 else if(kid instanceof Columns) {
                     encodeDynamicCell(context, table, (Columns) kid);
-                } 
-                else if(kid instanceof SubTable) {
-                    kid.encodeAll(context);
                 }
             }
         }
@@ -969,5 +970,23 @@ public class DataTableRenderer extends CoreRenderer {
 
     protected void sort(FacesContext context, DataTable table) {
         dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), null);
+    }
+
+    private void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
+        table.setRowIndex(rowIndex);
+        if(!table.isRowAvailable()) {
+            return;
+        }
+
+        //Row index var
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+        }
+        
+        subTable.encodeAll(context);
+        
+        if(rowIndexVar != null) {
+			context.getExternalContext().getRequestMap().remove(rowIndexVar);
+		}
     }
 }
