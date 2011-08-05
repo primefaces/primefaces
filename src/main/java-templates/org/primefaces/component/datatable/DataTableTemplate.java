@@ -4,6 +4,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
+import org.primefaces.component.contextmenu.ContextMenu;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -506,4 +507,14 @@ import org.primefaces.model.SortOrder;
         }
         
         return null;
+    }
+
+    public void enableContextMenu() {
+        getStateHelper().put("contextmenu", true);
+    }
+
+    public boolean hasContextMenu() {
+        Object value = getStateHelper().get("contextmenu");
+
+        return value == null ? false : true;
     }

@@ -21,6 +21,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 
@@ -90,7 +91,12 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 
 			if(forComponent == null)
 				throw new FacesException("Cannot find component '" + _for + "' in view.");
-			else {
+			else 
+            {
+                if(forComponent instanceof DataTable) {
+                    ((DataTable) forComponent).enableContextMenu();
+                }
+                
                 return forComponent.getClientId(context);
 			}
 		}

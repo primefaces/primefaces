@@ -9,3 +9,4 @@ PrimeFaces Extensions
 - Set ui-widget-header for menubar and ui-widget-content for menu (wijmo.js #3461)
 - Add disabled check on menuitem activate (wijmo.js #3153)
 - Add disabled check on menuitem hover (wijmo.js #3486) 
+- Add live event binding to menu triggers (wijmo.js #3362)

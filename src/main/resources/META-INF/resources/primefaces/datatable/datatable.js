@@ -110,12 +110,11 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
     //Row mouseover, mouseout, click
     if(this.cfg.selectionMode) {
         var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
-        selector = this.jqId + ' tbody.ui-datatable-data tr';
+        rows = $(this.jqId + ' tbody.ui-datatable-data tr');
 
-        $(selector)
-            .css('cursor', 'pointer')
-            .die()
-            .live('mouseover', function() {
+        rows.css('cursor', 'pointer')
+            .die('mouseover.datatable mouseout.datatable contextmenu.datatable ' + selectEvent + '.datatable')
+            .live('mouseover.datatable', function() {
                 var element = $(this);
 
                 if(!element.hasClass('ui-selected')) {
@@ -123,7 +122,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 }
 
             })
-            .live('mouseout', function() {
+            .live('mouseout.datatable', function() {
                 var element = $(this);
 
                 if(!element.hasClass('ui-selected')) {
@@ -131,9 +130,17 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 }
 
             })
-            .live(selectEvent, function(event) {
+            .live(selectEvent + '.datatable', function(event) {
                 _self.onRowClick(event, this);
             });
+       
+       //context-menu
+       if(this.cfg.contextMenu) {
+           rows.live('contextmenu.datatable', function(event) {
+               _self.onRowClick(event, this);
+               event.preventDefault();
+           });
+       }
             
     }
     //Radio-Checkbox based rowselection

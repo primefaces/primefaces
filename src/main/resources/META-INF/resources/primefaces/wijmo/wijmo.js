@@ -3366,29 +3366,28 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				menuContainer = self.domObject.menucontainer,
 				namespace = ".wijmenu";
 
-            if (triggerEle.is("iframe")) {
-                triggerEle = $(triggerEle.get(0).contentWindow.document);
-            }
+            var triggers = $(this.options.trigger);    
+                
             switch (event) {
             case "click":
-                triggerEle.bind(event + namespace, function (e) {
+                triggers.die(event + namespace).live(event + namespace, function (e) {
                     if (o.mode !== "popup") {
                         self._displaySubmenu(e, triggerEle, menuContainer);
                     }
                 });
                 break;
             case "mouseenter":
-                triggerEle.bind(event + namespace, function (e) {
+                triggers.die(event + namespace).live(event + namespace, function (e) {
                     self._displaySubmenu(e, triggerEle, menuContainer);
                 });
                 break;
             case "dblclick":
-                triggerEle.bind(event + namespace, function (e) {
+                triggers.die(event + namespace).live(event + namespace, function (e) {
                     self._displaySubmenu(e, triggerEle, menuContainer);
                 });
                 break;
             case "rtclick":
-				triggerEle.bind("contextmenu" + namespace, function (e) {
+				triggers.die("contextmenu" + namespace).live("contextmenu" + namespace, function (e) {
 					menuContainer.hide();
                     self._displaySubmenu(e, triggerEle, menuContainer);
                     e.preventDefault();
