@@ -360,7 +360,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             }
             
             //focus behavior source if validationFailed
-            if(this.args.validationFailed) {
+            if(this.args.validationFailed && this.behaviorSource) {
                 $(PrimeFaces.escapeClientId(this.behaviorSource)).focus();
             }
             
