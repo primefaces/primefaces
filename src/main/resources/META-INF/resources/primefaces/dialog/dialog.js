@@ -18,6 +18,9 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     
     //configuration
     this.cfg.width = this.cfg.width||'auto';
+    if(this.cfg.width == 'auto' && $.browser.msie && parseInt($.browser.version, 10) == 7) {
+        this.cfg.width = 300;
+    }
     this.cfg.height = this.cfg.height||'auto';
     this.cfg.draggable = this.cfg.draggable == false ? false : true;
     this.cfg.resizable = this.cfg.resizable == false ? false : true;
@@ -230,9 +233,6 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.initPosition = function() {
-    
-    //replace auto with pixels (IE7 hack : default 300px)
-    this.jq.width( (!parseInt(this.jq.get(0).style.width) && $.browser.msie && $.browser.version.indexOf('7') == 0) ? 300 : this.jq.innerWidth());
     
     if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
         this.cfg.position = this.cfg.position.replace(',', ' ');
