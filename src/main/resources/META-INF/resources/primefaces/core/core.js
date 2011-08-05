@@ -262,10 +262,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     postParams = postParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
 
     //source
-    if(typeof cfg.source == 'string')
-        postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
-    else
-        postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source.id;
+    postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
 
     //process
     var process = [];
