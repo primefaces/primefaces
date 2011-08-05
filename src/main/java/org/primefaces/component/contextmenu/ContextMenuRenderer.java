@@ -38,14 +38,15 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
+        writer.write("$(function() {");
         
 		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',");
-		writer.write("{target:" + trigger);
-        writer.write(",zindex:" + menu.getZindex());
+        
+        writer.write("{zindex:" + menu.getZindex());
+        writer.write(",animation:{animated:'" + menu.getEffect() + "', duration:" + menu.getEffectDuration() + "}");
 
-        writer.write(",animation:{animated:'" + menu.getEffect() + "',duration:" + menu.getEffectDuration() + "}");
-
+        if(trigger != null) writer.write(",target:'" + trigger + "'");
+        
         if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
         if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
 
@@ -90,11 +91,8 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 			if(forComponent == null)
 				throw new FacesException("Cannot find component '" + _for + "' in view.");
 			else {
-                return "'" +  forComponent.getClientId(context) + "'";
+                return forComponent.getClientId(context);
 			}
-		}
-		else {
-			trigger = "document";
 		}
 
 		return trigger;

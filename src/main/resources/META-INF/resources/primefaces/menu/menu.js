@@ -117,8 +117,20 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     //configuration
     this.cfg.orientation = 'vertical';
     this.cfg.triggerEvent = 'rtclick';
-    this.cfg.trigger = typeof this.cfg.target == 'string' ? PrimeFaces.escapeClientId(this.cfg.target) : this.cfg.target;
+    
+    //trigger
+    if(this.cfg.target) {
+        this.cfg.target = PrimeFaces.escapeClientId(this.cfg.target);
 
+        if($(this.cfg.target).hasClass('ui-datatable'))
+            this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
+        else
+            this.cfg.trigger = this.cfg.target;
+    }
+    else {
+        this.cfg.trigger = document;
+    }
+    
     this.cfg.position = {
             my: 'left top'
             ,using: function(to) {
