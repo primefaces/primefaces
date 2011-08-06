@@ -2086,15 +2086,15 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     //dragdrop
     this.cfg.dropZone = this.cfg.dnd && !this.cfg.disabled ? this.jq : null;
     
+    //start and complete callbacks
+    this.bindCallbacks();
+    
     //create widget
     if(this.form.data().fileupload) {
         this.destroy();
     }
     this.form.fileupload(this.cfg);
-    
-    //start and complete callbacks
-    this.bindCallbacks();
-    
+        
     //disable buttonbar
     if(this.cfg.disabled) {
         this.disable();
@@ -2107,22 +2107,20 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
 PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     var _self = this;
     
-    this.form.bind('fileuploadsend', function(e, data) {
-                if(_self.cfg.onstart) {
-                    return _self.cfg.onstart.call(_self, e, data);
-                }
-
-            }).bind('fileuploadalways', function(e, data) {
-                _self.handleResponse(e, data.result);
-            });
-}
-
-PrimeFaces.widget.FileUpload.prototype.handleResponse = function(e, response) {
-    if(this.cfg.oncomplete) {
-        this.cfg.oncomplete.call(this, e, response);
-    }
+    //mark as ajax request
+    this.cfg.beforeSend = function(xhr) {
+       xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+    };
     
-    PrimeFaces.ajax.AjaxResponse(response);
+    this.cfg.success = function(response) {
+        PrimeFaces.ajax.AjaxResponse(response);
+    };
+    
+    this.cfg.complete = function(jqXHR, textStatus) {
+        if(_self.cfg.oncomplete) {
+            _self.cfg.oncomplete.call(this, jqXHR, textStatus);
+        }
+    };
 }
 
 PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
@@ -2152,7 +2150,6 @@ PrimeFaces.widget.FileUpload.prototype.getMessage = function(customMsg, defaultM
 
 PrimeFaces.widget.FileUpload.prototype.destroy = function() {
     this.form.fileupload('destroy');
-    this.form.unbind('fileuploadsend fileuploadalways');
 }
 
 PrimeFaces.widget.FileUpload.prototype.disable = function() {
