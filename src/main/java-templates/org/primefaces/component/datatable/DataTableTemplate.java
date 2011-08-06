@@ -508,13 +508,3 @@ import org.primefaces.model.SortOrder;
         
         return null;
     }
-
-    public void enableContextMenu() {
-        getStateHelper().put("contextmenu", true);
-    }
-
-    public boolean hasContextMenu() {
-        Object value = getStateHelper().get("contextmenu");
-
-        return value == null ? false : true;
-    }

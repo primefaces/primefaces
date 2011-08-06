@@ -92,13 +92,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 			if(forComponent == null)
 				throw new FacesException("Cannot find component '" + _for + "' in view.");
 			else 
-            {
-                if(forComponent instanceof DataTable) {
-                    ((DataTable) forComponent).enableContextMenu();
-                }
-                
                 return forComponent.getClientId(context);
-			}
 		}
 
 		return trigger;
