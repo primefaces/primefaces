@@ -128,19 +128,14 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 if(!element.hasClass('ui-selected')) {
                     element.removeClass('ui-state-highlight');
                 }
-
             })
             .live(selectEvent + '.datatable', function(event) {
                 _self.onRowClick(event, this);
-            });
-       
-       //context-menu
-       if(this.cfg.contextMenu) {
-           rows.live('contextmenu.datatable', function(event) {
+            })
+            .live('contextmenu.datatable', function(event) {
                _self.onRowClick(event, this);
                event.preventDefault();
-           });
-       }
+            });  
             
     }
     //Radio-Checkbox based rowselection

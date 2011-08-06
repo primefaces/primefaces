@@ -149,12 +149,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isResizableColumns()) {
             writer.write(",resizableColumns:true");
         }
-        
-        //ContextMenu
-        if(table.hasContextMenu()) {
-            writer.write(",contextMenu:true");
-        }
-        
+
         //Behaviors
         encodeClientBehaviors(context, table);
 
