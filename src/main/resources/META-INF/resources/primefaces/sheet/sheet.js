@@ -217,6 +217,28 @@ PrimeFaces.widget.Sheet.prototype.unselectCells = function(cells) {
 PrimeFaces.widget.Sheet.prototype.isSelected = function(cell) {
     return cell.hasClass('ui-state-highlight');
 }
+
+PrimeFaces.widget.Sheet.prototype.checkCellViewPort = function(cell) {
+        var _self = this,
+        bTable = _self.body.children('table:first'),
+        yScrolled = _self.body.height() < bTable.height(),
+        xScrolled = _self.body.width() < bTable.width();
+        
+        // check & align up/down overflow
+        var diff = cell.offset().top + cell.outerHeight(true) - _self.body.offset().top;
+        if( diff > _self.body.height() )
+            _self.body.scrollTop(_self.body.scrollTop() + (diff - _self.body.height()) + (xScrolled ? 16 : 0));
+        else if( (diff -= cell.outerHeight(true)*2 - cell.height()) < 0 )
+            _self.body.scrollTop( _self.body.scrollTop() + diff);
+        
+        
+        // check & align left/right overflow
+        diff = cell.offset().left + cell.outerWidth(true) - _self.body.offset().left;
+        if( diff > _self.body.width() )
+            _self.body.scrollLeft(_self.body.scrollLeft() + (diff - _self.body.width()) + (yScrolled ? 16 : 0));
+        else if( (diff -= cell.outerWidth(true)*2 - cell.width()) < 0 )
+            _self.body.scrollLeft( _self.body.scrollLeft() + diff);
+}
               
 PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     var _self = this;
@@ -246,25 +268,9 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
             _self.selectCell(cell);
         }
         
-        cell = cell.parent();
-        var bTable = _self.body.children('table:first'),
-        yScrolled = _self.body.height() < bTable.height(),
-        xScrolled = _self.body.width() < bTable.width();
-        
-        // up/down nav with scrolling
-        var diff = cell.offset().top + cell.outerHeight(true) - _self.body.offset().top;
-        if( diff > _self.body.height() )
-            _self.body.scrollTop(_self.body.scrollTop() + (diff - _self.body.height()) + (xScrolled ? 16 : 0));
-        else if( (diff -= cell.outerHeight(true)*2 - cell.height()) < 0 )
-            _self.body.scrollTop( _self.body.scrollTop() + diff);
-        
-        
-        // left/right nav with scrolling
-        diff = cell.offset().left + cell.outerWidth(true) - _self.body.offset().left;
-        if( diff > _self.body.width() )
-            _self.body.scrollLeft(_self.body.scrollLeft() + (diff - _self.body.width()) + (yScrolled ? 16 : 0));
-        else if( (diff -= cell.outerWidth(true)*2 - cell.width()) < 0 )
-            _self.body.scrollLeft( _self.body.scrollLeft() + diff);
+        //check cell in frame (with parent/td element)
+        _self.checkCellViewPort(cell.parent());
+
     })
     .dblclick(function(e) {
         var cell = $(this),
