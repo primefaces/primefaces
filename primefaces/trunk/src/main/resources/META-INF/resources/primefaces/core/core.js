@@ -358,7 +358,10 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             
             //focus behavior source if validationFailed
             if(this.args.validationFailed && this.behaviorSource) {
-                $(PrimeFaces.escapeClientId(this.behaviorSource)).focus();
+                var behaviorSource = $(PrimeFaces.escapeClientId(this.behaviorSource));
+                
+                if(behaviorSource.is(':input'))
+                    behaviorSource.focus();
             }
             
             PrimeFaces.debug('Response completed.');
