@@ -865,8 +865,7 @@
                 options.headers = $.extend(options.headers, {
                     'X-File-Name': file.name,
                     'X-File-Type': file.type,
-                    'X-File-Size': file.size,
-                    'Faces-Request': 'partial/ajax'
+                    'X-File-Size': file.size
                 });
                 if (!options.blob) {
                     // Non-chunked non-multipart upload:
