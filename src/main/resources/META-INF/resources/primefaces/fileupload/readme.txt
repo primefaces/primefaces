@@ -1,0 +1,2 @@
+- Fixed live event binding, line 1884
+- Added ajax header, line 860
