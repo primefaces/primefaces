@@ -27,6 +27,7 @@ public class TreeTableModel extends DataModel implements Serializable {
 	
 	private Object wrappedData = null;
 	private int rowIndex = -1;
+    private String rowKey = null;
 	private TreeNode root;
 	private List<TreeNode> list;
 	
@@ -44,9 +45,9 @@ public class TreeTableModel extends DataModel implements Serializable {
 			list.add(node);
 		}
 		
-		for(TreeNode child : node.getChildren()) {
-			index(child);
-		}
+        for(TreeNode child : node.getChildren()) {
+            index(child);
+        }
 	}
 	
 	@Override
@@ -90,7 +91,7 @@ public class TreeTableModel extends DataModel implements Serializable {
 
 	@Override
 	public void setRowIndex(int rowIndex) {
-		this.rowIndex = rowIndex;
+        this.rowIndex = rowIndex;
 	}
 
 	@Override
@@ -102,36 +103,22 @@ public class TreeTableModel extends DataModel implements Serializable {
 		return list.indexOf(node);
 	}
 	
-	public TreeNode findTreeNode(String path) {
+	public TreeNode findTreeNode(TreeNode searchRoot, String path) {
 		String[] paths = path.split(SEPARATOR);
 		
 		if(paths.length == 0)
 			return null;
 		
-		int currentIndex = Integer.parseInt(paths[0]);
-		setRowIndex(currentIndex);
-		TreeNode currentNode  = (TreeNode) getWrappedData();
+		int childIndex = Integer.parseInt(paths[0]);
+		searchRoot = searchRoot.getChildren().get(childIndex);
 
 		if(paths.length == 1) {
-			return currentNode;
+			return searchRoot;
 		} 
 		else {
-			String childPath = buildSubpath(paths);
+			String childPath = path.substring(2);
 				
-			return findTreeNode(childPath);
+			return findTreeNode(searchRoot, childPath);
 		}
-	}
-	
-	private String buildSubpath(String[] path) {
-		StringBuffer pathBuffer = new StringBuffer();
-		
-		for(int i=1; i < path.length; i++) {
-			pathBuffer.append(path[i]);
-			
-			if(i != (path.length-1))
-				pathBuffer.append(SEPARATOR);
-		}
-		
-		return pathBuffer.toString();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,156 +17,216 @@ package org.primefaces.component.treetable;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class TreeTableRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		TreeTable treeTable = (TreeTable) component;
-		
-		encodeMarkup(facesContext, treeTable);
-		encodeScript(facesContext, treeTable);
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		TreeTable tt = (TreeTable) component;
+        String clientId = tt.getClientId(context);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        
+        String nodeKey = params.get(clientId + "_expand");
+        if(nodeKey != null) {
+            tt.setRowKey(nodeKey);
+            TreeNode node = tt.getRowNode();
+            node.setExpanded(true);
+            
+            encodeTreeNode(context, tt, node, clientId, nodeKey);
+        } 
+        else {
+            encodeMarkup(context, tt);
+            encodeScript(context, tt); 
+        }
 	}
 	
-	protected void encodeScript(FacesContext facesContext, TreeTable treeTable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = treeTable.getClientId(facesContext);
-		String initialState = treeTable.isExpanded() ? "expanded" : "collapsed";
+	protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = tt.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(treeTable.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
-		writer.write("initialState:'" + initialState + "'");
-		
-		if(treeTable.isReadOnly()) {
-			writer.write(",expandable:false");
-		}
-		
+		writer.write(tt.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
+
 		writer.write("});");
 		
 		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, TreeTable treeTable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = treeTable.getClientId(facesContext);
-		String styleClass = treeTable.getStyleClass() == null ? TreeTable.CONTAINER_CLASS : TreeTable.CONTAINER_CLASS + " " + treeTable.getStyleClass();
-		
-		writer.startElement("table", treeTable);
-		writer.writeAttribute("id", clientId, "id");
+	protected void encodeMarkup(FacesContext context, TreeTable tt) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = tt.getClientId(context);
+		String styleClass = tt.getStyleClass() == null ? TreeTable.CONTAINER_CLASS : TreeTable.CONTAINER_CLASS + " " + tt.getStyleClass();
+	
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", styleClass, null);
-		if(treeTable.getStyle() != null) writer.writeAttribute("style", treeTable.getStyle(), null);
-		
-		encodeHeaders(facesContext, treeTable);
-		encodeRows(facesContext, treeTable);
-		
+		if(tt.getStyle() != null) 
+            writer.writeAttribute("style", tt.getStyle(), null);
+        
+        encodeFacet(context, tt, "header", TreeTable.HEADER_CLASS);
+        
+		writer.startElement("table", tt);
+
+        encodeThead(context, tt);
+		encodeTbody(context, tt);
+
 		writer.endElement("table");
+        
+        encodeFacet(context, tt, "footer", TreeTable.FOOTER_CLASS);
+        
+        writer.endElement("div");
 	}
 
-	protected void encodeHeaders(FacesContext facesContext, TreeTable treeTable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
+	protected void encodeThead(FacesContext context, TreeTable tt) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+
 		writer.startElement("thead", null);
 		writer.startElement("tr", null);
-		for(Iterator<UIComponent> iterator = treeTable.getChildren().iterator(); iterator.hasNext();) {
-			UIComponent kid = iterator.next();
+        
+		for(UIComponent kid : tt.getChildren()) {
 			
-			if(kid.isRendered() && kid instanceof Column) {
+			if(kid instanceof Column && kid.isRendered()) {
 				Column column = (Column) kid;
-				String columnStyleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                UIComponent header = column.getFacet("header");
+				String columnStyleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
+                String style = column.getStyle();
 
 				writer.startElement("th", null);
-				writer.writeAttribute("class", columnStyleClass, null);
-									
-				UIComponent header = column.getFacet("header");
-				if(header != null) {
-					if(ComponentUtils.isLiteralText(header))
-						writer.write(header.toString());
-					else
-						header.encodeAll(facesContext);
-				}
+                writer.writeAttribute("class", TreeTable.COLUMN_HEADER_CLASS, null);
+
+				writer.startElement("div", null);
+                writer.writeAttribute("class", columnStyleClass, null);
+                if(style != null)
+                    writer.writeAttribute("style", style, null);
+                
+                if(header != null) {
+                    header.encodeAll(context);
+                }
+                
+                writer.endElement("div");
 				
 				writer.endElement("th");
 			}
 		}
+        
 		writer.endElement("tr");
 		writer.endElement("thead");
 	}
-	
-	protected void encodeRows(FacesContext facesContext, TreeTable treeTable) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		TreeNode root = (TreeNode) treeTable.getValue();
-		String clientId = treeTable.getEscapedClientId(facesContext);
-		int rowKey = 0;
+       
+    protected void encodeTbody(FacesContext context, TreeTable tt) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		TreeNode root = (TreeNode) tt.getValue();
+        String clientId = tt.getClientId(context);
 		
 		writer.startElement("tbody", null);
 		writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
-		
+
 		if(root != null) {
+            int rowKey = 0;
 			for(Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
-				encodeTreeNode(facesContext, treeTable, iterator.next(), clientId, String.valueOf(rowKey), null);
+				encodeTreeNode(context, tt, iterator.next(), clientId, String.valueOf(rowKey));
 				rowKey++;
 			}
 		}
-		
-		treeTable.setRowIndex(-1);		//cleanup
+        
+        //cleanup
+        tt.setRowKey(null);
 		
 		writer.endElement("tbody");
 	}
 	
-	protected void encodeTreeNode(FacesContext facesContext, TreeTable treeTable, TreeNode treeNode, String clientId, String rowKey, String parentRowKey) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		int rowIndex = 0;
+	protected void encodeTreeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        tt.setRowKey(rowKey);
+        String nodeId = clientId + "_node_" + rowKey;
+        String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
+        int depth = rowKey.split(UITree.SEPARATOR).length - 1;
 		
 		writer.startElement("tr", null);
-		writer.writeAttribute("id", clientId + "_" + rowKey, null);
-		String styleClass = "ui-widget-content";
-		if(parentRowKey != null) {
-			styleClass += " child-of-" + clientId + "_" + parentRowKey;	
-		}
-		writer.writeAttribute("class", styleClass, null);
-		
-		treeTable.setRowIndex(treeTable.getRowIndex() + 1);
-		
-		for(Iterator<UIComponent> iterator = treeTable.getChildren().iterator(); iterator.hasNext();) {
-			UIComponent kid = iterator.next();
-			
-			if(kid.isRendered() && kid instanceof Column) {
+		writer.writeAttribute("id", nodeId, null);
+		writer.writeAttribute("class", TreeTable.ROW_CLASS, null);
+        
+		for(int i=0; i < tt.getChildren().size(); i++) {
+			UIComponent kid = (UIComponent) tt.getChildren().get(i);
+            
+			if(kid instanceof Column && kid.isRendered()) {
 				Column column = (Column) kid;
+                String styleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
+                String style = column.getStyle();
 
 				writer.startElement("td", null);
-				if(column.getStyleClass() != null)
-					writer.writeAttribute("class", column.getStyleClass(), null);
-				
-				column.encodeAll(facesContext);
-				
+                
+                writer.startElement("div", null);
+                writer.writeAttribute("class", styleClass, null);
+                
+                //icon
+                if(i == 0) {
+                    String padding = "padding-left:" + (depth * 15) + "px";
+                    style = style == null ? padding : style + ";" + padding;
+                    
+                    writer.writeAttribute("style", style, null);
+                    
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", icon, null);
+                    if(treeNode.getChildCount() == 0) {
+                        writer.writeAttribute("style", "visibility:hidden", null);
+                    }
+                    writer.endElement("span");
+                } 
+                else if(style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                
+                //content
+				column.encodeAll(context);
+                                
+                writer.endElement("div");
+
 				writer.endElement("td");
 			}
 		}
 		
 		writer.endElement("tr");
-		
-		for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
-			String nodeRowKey = rowKey + "_" + rowIndex;
-			encodeTreeNode(facesContext, treeTable, iterator.next(), clientId, nodeRowKey, rowKey);
-			rowIndex++;
-		}
+        
+        if(treeNode.isExpanded()) {
+            int childRowKey = 0;
+            for(TreeNode childNode : treeNode.getChildren()) {
+                encodeTreeNode(context, tt, childNode, clientId, String.valueOf(rowKey + UITree.SEPARATOR + childRowKey));
+                childRowKey++;
+            }
+        }
+	}
+    
+    protected void encodeFacet(FacesContext context, TreeTable tt, String name, String styleClass) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        UIComponent facet = tt.getFacet(name);
+
+        if(facet != null) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", styleClass, null);
+            facet.encodeAll(context);
+            writer.endElement("div");
+        }
 	}
 	
+    @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
 	}
 	
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
