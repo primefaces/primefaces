@@ -242,7 +242,7 @@ PrimeFaces.widget.Sheet.prototype.checkCellViewPort = function(cell) {
               
 PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     var _self = this;
-    this.cells = this.body.find('div.ui-sh-c'),
+    this.cells = this.body.find('div.ui-sh-c:not(.ui-sheet-index-cell)'),
     this.rows = this.body.find('tr');
     
     this.cells.disableSelection();
