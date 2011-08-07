@@ -200,15 +200,8 @@ PrimeFaces.widget.Sheet.prototype.updateCellInfoDisplay = function(cell) {
 PrimeFaces.widget.Sheet.prototype.selectCell = function(cell) {
     cell.addClass('ui-state-highlight');
     
-    if(cell.hasClass("ui-sheet-index-cell")){
-        this.cellInfoDisplay.html("");
-        this.editor.val("");
-    }
-    else{
-        this.editor.val(cell.find('input').val());
-        this.updateCellInfoDisplay(cell);
-    }
-    
+    this.editor.val(cell.find('input').val());
+    this.updateCellInfoDisplay(cell);
     this.origin = cell;
     this.cursor = cell;
 }
@@ -285,17 +278,15 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
         padding = cell.innerWidth() - cell.width(),
         newWidth = oldWidth + padding;
         
-        if(!cell.hasClass("ui-sheet-index-cell")){
-            //change cell structure to allocate all the space
-            cell.data('oldWidth', oldWidth)
-            .removeClass('ui-state-highlight')
-            .css('padding', '0px')
-            .width(newWidth);
+        //change cell structure to allocate all the space
+        cell.data('oldWidth', oldWidth)
+        .removeClass('ui-state-highlight')
+        .css('padding', '0px')
+        .width(newWidth);
 
-            //switch to edit mode    
-            cell.children('.ui-sh-c-d').hide();
-            cell.children('.ui-sh-c-e').show().children('input:first').focus();
-        }
+        //switch to edit mode    
+        cell.children('.ui-sh-c-d').hide();
+        cell.children('.ui-sh-c-e').show().children('input:first').focus();
     });
 
     //events for input controls in data cells
