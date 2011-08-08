@@ -102,13 +102,13 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 	this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
+    this.jq = $(this.jqId + '_menu');
 
     //mouse tracking
     if(!PrimeFaces.widget.ContextMenu.mouseTracking) {
         PrimeFaces.widget.ContextMenu.mouseTracking = true;
 
-        jQuery(document).mousemove(function(e){
+        $(document).mousemove(function(e){
             PrimeFaces.widget.ContextMenu.pageX = e.pageX;
             PrimeFaces.widget.ContextMenu.pageY = e.pageY;
         });
@@ -134,7 +134,7 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     this.cfg.position = {
             my: 'left top'
             ,using: function(to) {
-                jQuery(this).css({
+                $(this).css({
                     top: PrimeFaces.widget.ContextMenu.pageY,
                     left: PrimeFaces.widget.ContextMenu.pageX
                 });
