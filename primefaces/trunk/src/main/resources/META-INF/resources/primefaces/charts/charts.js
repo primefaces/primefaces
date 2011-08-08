@@ -10,7 +10,10 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     var rendererCfg = {
         diameter : this.cfg.diameter,
         sliceMargin : this.cfg.sliceMargin,
-        fill: this.cfg.fill
+        fill: this.cfg.fill,
+        shadow : this.cfg.shadow,
+        showDataLabels : this.cfg.showDataLabels,
+        dataLabelFormatString : this.cfg.dataFormat || "percent"
     }
 
     //renderer configuration
@@ -126,8 +129,95 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
 }
 
-PrimeFaces.widget.ChartUtils = {
+/**
+ * PrimeFaces AreaChart Widget
+ */
+PrimeFaces.widget.AreaChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = this.id.replace(/:/g,"\\:");
 
+
+    //render chart
+    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+}
+
+/**
+ * PrimeFaces DonutChart Widget
+ */
+PrimeFaces.widget.DonutChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = this.id.replace(/:/g,"\\:");
+
+    //renderer options
+    var rendererCfg = {
+        diameter : this.cfg.diameter,
+        sliceMargin : this.cfg.sliceMargin,
+        fill: this.cfg.fill,
+        shadow : this.cfg.shadow,
+        showDataLabels : this.cfg.showDataLabels,
+        dataLabelFormatString : this.cfg.dataFormat || "percent"
+    }
+
+    //renderer configuration
+    this.cfg.seriesDefaults = {
+        renderer: $.jqplot.DonutRenderer,
+        rendererOptions: rendererCfg
+    };
+
+    //events
+    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+    //highlighter
+    PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+    this.cfg.highlighter = {show:false}; //default highlighter 
+
+    //render chart
+    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+}
+
+/**
+ * PrimeFaces BubbleChart Widget
+ */
+PrimeFaces.widget.BubbleChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = this.id.replace(/:/g,"\\:");
+
+
+    //render chart
+    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+}
+
+/**
+ * PrimeFaces OhlcChart Widget
+ */
+PrimeFaces.widget.BlockChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = this.id.replace(/:/g,"\\:");
+
+
+    //render chart
+    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+}
+
+/**
+ * PrimeFaces OhlcChart Widget
+ */
+PrimeFaces.widget.OhlcChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = this.id.replace(/:/g,"\\:");
+
+
+    //render chart
+    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+}
+
+PrimeFaces.widget.ChartUtils = {
+    
     bindItemSelectListener : function(chart) {
         $('#' + chart.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
             if(neighbor && chart.cfg.behaviors) {
