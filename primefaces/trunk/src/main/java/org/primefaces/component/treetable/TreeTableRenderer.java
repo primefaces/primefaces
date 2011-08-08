@@ -31,6 +31,11 @@ import org.primefaces.renderkit.CoreRenderer;
 public class TreeTableRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		TreeTable tt = (TreeTable) component;
         String clientId = tt.getClientId(context);
@@ -58,6 +63,9 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(tt.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
+        writer.write("selection:'none'");
+        
+        encodeClientBehaviors(context, tt);
 
 		writer.write("});");
 		

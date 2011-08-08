@@ -18,14 +18,14 @@ PrimeFaces.widget.TreeTable.prototype.bindEvents = function() {
             node = toggler.parents('tr:first');
             
             if(toggler.hasClass('ui-icon-triangle-1-e'))
-                _self.expandNode(node);
+                _self.expandNode(e, node);
             else {
-                _self.collapseNode(node);
+                _self.collapseNode(e, node);
             }
         });
 }
 
-PrimeFaces.widget.TreeTable.prototype.expandNode = function(node) {
+PrimeFaces.widget.TreeTable.prototype.expandNode = function(e, node) {
     var options = {
         source: this.id,
         process: this.id,
@@ -63,11 +63,38 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(node) {
     
     options.params = params;
     
-    PrimeFaces.ajax.AjaxRequest(options);
+    if(this.hasBehavior('expand')) {
+        var expandBehavior = this.cfg.behaviors['expand'];
+        
+        expandBehavior.call(this, e, options);
+    }
+    else {
+        PrimeFaces.ajax.AjaxRequest(options);
+    }
 }
 
-PrimeFaces.widget.TreeTable.prototype.collapseNode = function(node) {
+PrimeFaces.widget.TreeTable.prototype.collapseNode = function(e, node) {
     node.siblings('[id^="' + node.attr('id') + '"]').remove();
 
     node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+    
+    if(this.hasBehavior('collapse')) {
+        var collapseBehavior = this.cfg.behaviors['collapse'],
+        nodeKey = node.attr('id').split('_node_')[1];
+        
+        var options = {
+            params : {}
+        };
+        options.params[this.id + '_collapse'] = nodeKey;
+        
+        collapseBehavior.call(this, e, options);
+    }
+}
+
+PrimeFaces.widget.TreeTable.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }
