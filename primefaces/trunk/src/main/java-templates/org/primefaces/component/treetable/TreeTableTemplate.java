@@ -57,12 +57,27 @@ import java.lang.StringBuilder;
                 TreeNode node = this.getRowNode();
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
-            } else if(eventName.equals("collapse")) {
+            } 
+            else if(eventName.equals("collapse")) {
                 String nodeKey = params.get(clientId + "_collapse");
                 this.setRowKey(nodeKey);
                 TreeNode node = this.getRowNode();
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
+            } 
+            else if(eventName.equals("select")) {
+                String nodeKey = params.get(clientId + "_instantSelect");
+                this.setRowKey(nodeKey);
+                TreeNode node = this.getRowNode();
+
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
+            }  
+            else if(eventName.equals("unselect")) {
+                String nodeKey = params.get(clientId + "_instantUnselect");
+                this.setRowKey(nodeKey);
+                TreeNode node = this.getRowNode();
+
+                wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
             }
  
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
