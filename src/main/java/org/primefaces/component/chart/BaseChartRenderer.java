@@ -51,6 +51,8 @@ public class BaseChartRenderer extends CoreRenderer {
         if(chart.getTitle() != null) {
             writer.write(",title:'" + chart.getTitle() + "'");
         }
+        
+        writer.write(",shadow:" + chart.isShadow());
 
         if(legendPosition != null) {
             writer.write(",legend:{");
