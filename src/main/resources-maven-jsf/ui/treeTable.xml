@@ -28,12 +28,14 @@
             <name>value</name>
             <required>false</required>
             <type>org.primefaces.model.TreeNode</type>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
             <literal>true</literal>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
 		<attribute>
 			<name>style</name>
@@ -46,6 +48,19 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+            <name>selection</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>TreeNode array to reference the selections.</description>
+		</attribute>
+        <attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>none</defaultValue>
+            <description>Defines the selectionMode, valid values are "none"(default), "single" and "multiple".</description>
 		</attribute>
 	</attributes>
 	<resources>

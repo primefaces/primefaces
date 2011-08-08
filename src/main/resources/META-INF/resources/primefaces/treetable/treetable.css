@@ -47,3 +47,7 @@
     margin-top: -2px;
     cursor: pointer;
 }
+
+.ui-treetable .ui-treetable-data tr.ui-state-highlight {
+    cursor: pointer;
+}

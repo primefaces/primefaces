@@ -32,7 +32,42 @@ public class TreeTableRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        decodeSelection(context, component);
+            
         decodeBehaviors(context, component);
+    }
+
+    protected void decodeSelection(FacesContext context, UIComponent component) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        TreeTable tt = (TreeTable) component;
+        String selectionMode = tt.getSelectionMode();
+        
+        //decode selection
+        if(selectionMode != null) {
+            String selectionValue = params.get(tt.getClientId(context) + "_selection");
+            
+            if(!isValueBlank(selectionValue)) {
+                if(selectionMode.equals("single")) {
+                    tt.setRowKey(selectionValue);
+
+                    tt.setSelection(tt.getRowNode());
+                } 
+                else {
+                    String[] rowKeys = selectionValue.split(",");
+                    TreeNode[] selection = new TreeNode[rowKeys.length];
+
+                    for(int i = 0; i < rowKeys.length; i++) {
+                       tt.setRowKey(rowKeys[i]);
+
+                       selection[i] = tt.getRowNode();
+                    }
+
+                    tt.setSelection(selection);
+                }
+
+                tt.setRowKey(null);     //cleanup
+            }
+        }
     }
 
     @Override
@@ -63,7 +98,7 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(tt.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
-        writer.write("selection:'none'");
+        writer.write("selectionMode:'" + tt.getSelectionMode() + "'");
         
         encodeClientBehaviors(context, tt);
 
@@ -93,6 +128,10 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.endElement("table");
         
         encodeFacet(context, tt, "footer", TreeTable.FOOTER_CLASS);
+        
+        if(tt.isSelectionEnabled()) {
+            encodeSelectionHolder(context, tt);
+        }
         
         writer.endElement("div");
 	}
@@ -161,10 +200,16 @@ public class TreeTableRenderer extends CoreRenderer {
             String nodeId = clientId + "_node_" + rowKey;
             String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
             int depth = rowKey.split(UITree.SEPARATOR).length - 1;
+            boolean selected = treeNode.isSelected();
+            String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
+            
+            if(selected) {
+                tt.getSelectedRowKeys().add(rowKey);
+            }
 
             writer.startElement("tr", null);
             writer.writeAttribute("id", nodeId, null);
-            writer.writeAttribute("class", TreeTable.ROW_CLASS, null);
+            writer.writeAttribute("class", rowStyleClass, null);
 
             for(int i=0; i < tt.getChildren().size(); i++) {
                 UIComponent kid = (UIComponent) tt.getChildren().get(i);
@@ -243,4 +288,16 @@ public class TreeTableRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+
+    private void encodeSelectionHolder(FacesContext context, TreeTable tt) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String name = tt.getClientId(context) + "_selection";
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("id", name, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("value", tt.getSelectedRowKeysAsString(), null);
+        writer.endElement("input");
+    }
 }
