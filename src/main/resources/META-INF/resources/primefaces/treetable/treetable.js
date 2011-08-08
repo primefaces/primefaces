@@ -67,7 +67,7 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(node) {
 }
 
 PrimeFaces.widget.TreeTable.prototype.collapseNode = function(node) {
-    node.siblings('[id^="' + PrimeFaces.escapeClientId(node.attr('id')) + '"]').remove();
-    
-    node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+    node.siblings('[id^="' + node.attr('id') + '"]').remove();
+
+    node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
 }
