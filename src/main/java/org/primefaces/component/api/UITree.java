@@ -26,6 +26,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
+import org.primefaces.component.column.Column;
 import org.primefaces.model.TreeNode;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
@@ -38,6 +39,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             
     protected enum PropertyKeys {
 		var
+        ,state
 		,value;
 
 		String toString;
@@ -158,89 +160,128 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     @Override
     public void processDecodes(FacesContext context) {
         pushComponentToEL(context, this);
-        iterate(context, PhaseId.APPLY_REQUEST_VALUES);
-        decode(context);
+        
+        processNodes(context, PhaseId.APPLY_REQUEST_VALUES);
+        
+        try {
+            decode(context);
+        }
+        catch(RuntimeException e) {
+            context.renderResponse();
+            throw e;
+        }
+        
         popComponentFromEL(context);
     }
     
-    private void iterate(FacesContext context, PhaseId phaseId) {
-        setRowKey(null);
-        if (getFacetCount() > 0) {
-            for (UIComponent facet : getFacets().values()) {
-                if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                    facet.processDecodes(context);
-                } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                    facet.processValidators(context);
-                } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                    facet.processUpdates(context);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            }
-        }
-
-        setRowKey(null);
-        if (getChildCount() > 0) {
-            for (UIComponent column : getChildren()) {
-                if (!(column instanceof UIColumn) || !column.isRendered()) {
-                    continue;
-                }
-                if (column.getFacetCount() > 0) {
-                    for (UIComponent columnFacet : column.getFacets().values()) {
-                        if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                            columnFacet.processDecodes(context);
-                        } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                            columnFacet.processValidators(context);
-                        } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                            columnFacet.processUpdates(context);
-                        } else {
-                            throw new IllegalArgumentException();
-                        }
-                    }
-                }
-            }
-        }
+    @Override
+    public void processValidators(FacesContext context) {
+        pushComponentToEL(context, this);
+        
+        processNodes(context, PhaseId.PROCESS_VALIDATIONS);
+        
+        popComponentFromEL(context);
+    }
+    
+    @Override
+    public void processUpdates(FacesContext context) {
+        pushComponentToEL(context, this);
+        
+        processNodes(context, PhaseId.UPDATE_MODEL_VALUES);
+        
+        popComponentFromEL(context);
+    }
+    
+    private void processNodes(FacesContext context, PhaseId phaseId) {
+              
+        processFacets(context, phaseId);
+        processColumnFacets(context, phaseId);
         
         TreeNode root = getValue();
         if(root != null) {
-            int _rowKey = 0;
-			for(Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
-				processChildren(context, phaseId, iterator.next(), String.valueOf(_rowKey));
-                _rowKey++;
-			}
+            processNode(context, phaseId, root, null);
 		}
 
         setRowKey(null);
     }
     
-    private void processChildren(FacesContext context, PhaseId phaseId, TreeNode treeNode, String nodeKey) {
-        setRowKey(nodeKey);
+    private void processNode(FacesContext context, PhaseId phaseId, TreeNode treeNode, String rowKey) {
+        processColumnChildren(context, phaseId, treeNode, rowKey);
         
-        for(UIComponent column : getChildren()) {
-            if (!(column instanceof UIColumn) || !column.isRendered()) {
-                continue;
+        //process child nodes if node is expanded or node itself is the root
+        if(treeNode.isExpanded() || treeNode.getParent() == null) {
+            int childIndex = 0;
+            for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
+                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+
+                processNode(context, phaseId, iterator.next(), childRowKey);
+
+                childIndex++;
             }
-            for (UIComponent grandkid : column.getChildren()) {
-                if (!grandkid.isRendered()) {
-                    continue;
-                }
-                if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                    grandkid.processDecodes(context);
-                } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                    grandkid.processValidators(context);
-                } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                    grandkid.processUpdates(context);
-                } else {
+        }
+    }
+        
+    protected void processFacets(FacesContext context, PhaseId phaseId) {
+        setRowKey(null);
+        
+        if(getFacetCount() > 0) {
+            for(UIComponent facet : getFacets().values()) {
+                if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                    facet.processDecodes(context);
+                else if (phaseId == PhaseId.PROCESS_VALIDATIONS)
+                    facet.processValidators(context);
+                else if (phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                    facet.processUpdates(context);
+                else
                     throw new IllegalArgumentException();
+            }
+        }
+    }
+    
+    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
+        setRowKey(null);
+        
+        for(UIComponent child : getChildren()) {
+            if(child instanceof Column && child.isRendered()) {
+                Column column = (Column) child;
+                
+                if(column.getFacetCount() > 0) {
+                    for(UIComponent columnFacet : column.getFacets().values()) {
+                        if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                            columnFacet.processDecodes(context);
+                        else if (phaseId == PhaseId.PROCESS_VALIDATIONS)
+                            columnFacet.processValidators(context);
+                        else if (phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                            columnFacet.processUpdates(context);
+                        else
+                            throw new IllegalArgumentException();
+                    }
                 }
             }
         }
+    }
+    
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode treeNode, String nodeKey) {
+        setRowKey(nodeKey);
         
-        if(treeNode.isExpanded()) {
-            int childRowKey = 0;
-            for(TreeNode childNode : treeNode.getChildren()) {
-                processChildren(context, phaseId, childNode, String.valueOf(nodeKey + UITree.SEPARATOR + childRowKey));
-                childRowKey++;
+        if(nodeKey == null)
+            return;
+        
+        for(UIComponent child : getChildren()) {
+            if(child instanceof Column && child.isRendered()) {
+                for(UIComponent grandkid : child.getChildren()) {
+                    if(!grandkid.isRendered())
+                        continue;
+                    
+                    if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                        grandkid.processDecodes(context);
+                    else if(phaseId == PhaseId.PROCESS_VALIDATIONS)
+                        grandkid.processValidators(context);
+                    else if(phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                        grandkid.processUpdates(context);
+                    else
+                        throw new IllegalArgumentException();
+                }
             }
         }
     }

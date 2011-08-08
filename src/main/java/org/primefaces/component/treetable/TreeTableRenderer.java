@@ -42,7 +42,7 @@ public class TreeTableRenderer extends CoreRenderer {
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
             
-            encodeTreeNode(context, tt, node, clientId, nodeKey);
+            encodeNode(context, tt, node, clientId, nodeKey);
         } 
         else {
             encodeMarkup(context, tt);
@@ -134,11 +134,7 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
 
 		if(root != null) {
-            int rowKey = 0;
-			for(Iterator<TreeNode> iterator = root.getChildren().iterator(); iterator.hasNext();) {
-				encodeTreeNode(context, tt, iterator.next(), clientId, String.valueOf(rowKey));
-				rowKey++;
-			}
+            encodeNode(context, tt, root, clientId, null);
 		}
         
         //cleanup
@@ -146,68 +142,75 @@ public class TreeTableRenderer extends CoreRenderer {
 		
 		writer.endElement("tbody");
 	}
-	
-	protected void encodeTreeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        tt.setRowKey(rowKey);
-        String nodeId = clientId + "_node_" + rowKey;
-        String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
-        int depth = rowKey.split(UITree.SEPARATOR).length - 1;
-		
-		writer.startElement("tr", null);
-		writer.writeAttribute("id", nodeId, null);
-		writer.writeAttribute("class", TreeTable.ROW_CLASS, null);
+    
+    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey) throws IOException {
         
-		for(int i=0; i < tt.getChildren().size(); i++) {
-			UIComponent kid = (UIComponent) tt.getChildren().get(i);
-            
-			if(kid instanceof Column && kid.isRendered()) {
-				Column column = (Column) kid;
-                String styleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
-                String style = column.getStyle();
+        if(rowKey != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            tt.setRowKey(rowKey);
+            String nodeId = clientId + "_node_" + rowKey;
+            String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
+            int depth = rowKey.split(UITree.SEPARATOR).length - 1;
 
-				writer.startElement("td", null);
-                
-                writer.startElement("div", null);
-                writer.writeAttribute("class", styleClass, null);
-                
-                //icon
-                if(i == 0) {
-                    String padding = "padding-left:" + (depth * 15) + "px";
-                    style = style == null ? padding : style + ";" + padding;
-                    
-                    writer.writeAttribute("style", style, null);
-                    
-                    writer.startElement("span", null);
-                    writer.writeAttribute("class", icon, null);
-                    if(treeNode.getChildCount() == 0) {
-                        writer.writeAttribute("style", "visibility:hidden", null);
+            writer.startElement("tr", null);
+            writer.writeAttribute("id", nodeId, null);
+            writer.writeAttribute("class", TreeTable.ROW_CLASS, null);
+
+            for(int i=0; i < tt.getChildren().size(); i++) {
+                UIComponent kid = (UIComponent) tt.getChildren().get(i);
+
+                if(kid instanceof Column && kid.isRendered()) {
+                    Column column = (Column) kid;
+                    String styleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
+                    String style = column.getStyle();
+
+                    writer.startElement("td", null);
+
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", styleClass, null);
+
+                    //icon
+                    if(i == 0) {
+                        String padding = "padding-left:" + (depth * 15) + "px";
+                        style = style == null ? padding : style + ";" + padding;
+
+                        writer.writeAttribute("style", style, null);
+
+                        writer.startElement("span", null);
+                        writer.writeAttribute("class", icon, null);
+                        if(treeNode.getChildCount() == 0) {
+                            writer.writeAttribute("style", "visibility:hidden", null);
+                        }
+                        writer.endElement("span");
+                    } 
+                    else if(style != null) {
+                        writer.writeAttribute("style", style, null);
                     }
-                    writer.endElement("span");
-                } 
-                else if(style != null) {
-                    writer.writeAttribute("style", style, null);
-                }
-                
-                //content
-				column.encodeAll(context);
-                                
-                writer.endElement("div");
 
-				writer.endElement("td");
-			}
-		}
-		
-		writer.endElement("tr");
+                    //content
+                    column.encodeAll(context);
+
+                    writer.endElement("div");
+
+                    writer.endElement("td");
+                }
+            }
+
+            writer.endElement("tr");
+        }
         
-        if(treeNode.isExpanded()) {
-            int childRowKey = 0;
-            for(TreeNode childNode : treeNode.getChildren()) {
-                encodeTreeNode(context, tt, childNode, clientId, String.valueOf(rowKey + UITree.SEPARATOR + childRowKey));
-                childRowKey++;
+        //render child nodes if node is expanded or node itself is the root
+        if(treeNode.isExpanded() || treeNode.getParent() == null) {
+            int childIndex = 0;
+            for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
+                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
+
+                encodeNode(context, tt, iterator.next(), clientId, childRowKey);
+
+                childIndex++;
             }
         }
-	}
+    }
     
     protected void encodeFacet(FacesContext context, TreeTable tt, String name, String styleClass) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
