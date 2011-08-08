@@ -123,7 +123,7 @@ PrimeFaces.widget.TreeTable.prototype.collapseNode = function(e, node) {
 PrimeFaces.widget.TreeTable.prototype.onRowClick = function(e, node) {
     
     //Check if rowclick triggered this event not an element in row content
-    if($(e.target).is('td,div,span')) {
+    if($(e.target).is('div.ui-tt-c')) {
         var selected = node.hasClass('ui-selected');
 
         if(selected)
@@ -148,6 +148,8 @@ PrimeFaces.widget.TreeTable.prototype.selectNode = function(e, node) {
 
     //save state
     this.writeSelections();
+    
+    this.fireSelectNodeEvent(e, nodeKey);
 }
 
 PrimeFaces.widget.TreeTable.prototype.unselectNode = function(e, node) {
@@ -162,12 +164,13 @@ PrimeFaces.widget.TreeTable.prototype.unselectNode = function(e, node) {
 
         //save state
         this.writeSelections();
+        
+        this.fireUnselectNodeEvent(e, nodeKey);
     }
     else if(this.isMultipleSelection()){
         this.selectRow(e, node);
     }
 }
-
 
 PrimeFaces.widget.TreeTable.prototype.hasBehavior = function(event) {
     if(this.cfg.behaviors) {
@@ -235,4 +238,30 @@ PrimeFaces.widget.TreeTable.prototype.isMultipleSelection = function() {
  */
 PrimeFaces.widget.TreeTable.prototype.writeSelections = function() {
     this.jqSelection.val(this.selection.join(','));
+}
+
+PrimeFaces.widget.TreeTable.prototype.fireSelectNodeEvent = function(e, nodeKey) {
+    if(this.hasBehavior('select')) {
+        var selectBehavior = this.cfg.behaviors['select'],
+        options = {
+            params : {}
+        };
+        
+        options.params[this.id + '_instantSelect'] = nodeKey;
+        
+        selectBehavior.call(this, e, options);
+    }
+}
+
+PrimeFaces.widget.TreeTable.prototype.fireUnselectNodeEvent = function(e, nodeKey) {
+    if(this.hasBehavior('unselect')) {
+        var unselectBehavior = this.cfg.behaviors['unselect'],
+        options = {
+            params : {}
+        };
+        
+        options.params[this.id + '_instantUnselect'] = nodeKey;
+        
+        unselectBehavior.call(this, e, options);
+    }
 }
