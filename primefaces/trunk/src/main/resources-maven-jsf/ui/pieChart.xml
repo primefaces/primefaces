@@ -74,6 +74,25 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
 		</attribute>
+        <attribute>
+			<name>shadow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+                        <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>showDataLabels</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether data information will be showed on chart. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>dataFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Sprintf format for data label.</description>
+        </attribute>
         
 	</attributes>
 	<resources>
