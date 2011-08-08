@@ -90,6 +90,10 @@ public class PieChartRenderer extends BaseChartRenderer {
             writer.write(",sliceMargin:" + chart.getSliceMargin());
         if(chart.isFill() == false)
             writer.write(",fill:false");
+        if(chart.isShowDataLabels())
+            writer.write(",showDataLabels:true");
+        if(chart.getDataFormat() !=null)
+            writer.write(",dataFormat:'" + chart.getDataFormat() +"'");
         if(chart.getSeriesColors() != null)
             writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
     }
