@@ -100,6 +100,7 @@ public class TreeTableRenderer extends CoreRenderer {
 			if(kid instanceof Column && kid.isRendered()) {
 				Column column = (Column) kid;
                 UIComponent header = column.getFacet("header");
+                String headerText = column.getHeaderText();
 				String columnStyleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
                 String style = column.getStyle();
 
@@ -111,9 +112,10 @@ public class TreeTableRenderer extends CoreRenderer {
                 if(style != null)
                     writer.writeAttribute("style", style, null);
                 
-                if(header != null) {
+                if(header != null) 
                     header.encodeAll(context);
-                }
+                else if(headerText != null)
+                    writer.write(headerText);
                 
                 writer.endElement("div");
 				
