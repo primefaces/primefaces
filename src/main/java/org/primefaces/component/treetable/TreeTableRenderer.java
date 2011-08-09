@@ -99,9 +99,9 @@ public class TreeTableRenderer extends CoreRenderer {
 		
 		writer.write(tt.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
         writer.write("selectionMode:'" + tt.getSelectionMode() + "'");
-        
+                
         encodeClientBehaviors(context, tt);
-
+        
 		writer.write("});");
 		
 		writer.endElement("script");
@@ -111,12 +111,16 @@ public class TreeTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tt.getClientId(context);
         boolean scrollable = tt.isScrollable();
-        String containerClass = scrollable ? TreeTable.SCROLLABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
-		String styleClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
+        
+        //Style class for container
+        String containerClass = TreeTable.CONTAINER_CLASS;
+        containerClass = tt.isResizableColumns() ? containerClass + " " + TreeTable.RESIZABLE_CONTAINER_CLASS : containerClass;
+        containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
+		containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
 	
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", styleClass, null);
+		writer.writeAttribute("class", containerClass, null);
 		if(tt.getStyle() != null) 
             writer.writeAttribute("style", tt.getStyle(), null);
         
@@ -208,6 +212,7 @@ public class TreeTableRenderer extends CoreRenderer {
                 style = (i == 0) ? style == null ? "padding-left:0px" : style + ";padding-left:0px" : style;
 
 				writer.startElement("th", null);
+                writer.writeAttribute("id", column.getClientId(context), null);
                 writer.writeAttribute("class", TreeTable.COLUMN_HEADER_CLASS, null);
 
 				writer.startElement("div", null);

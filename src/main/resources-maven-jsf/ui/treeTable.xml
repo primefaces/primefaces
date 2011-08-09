@@ -83,6 +83,13 @@
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
             <description>Width in pixels for scrollable data.</description>
 		</attribute>
+        <attribute>
+			<name>resizableColumns</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Decides whether treeTable columns are resizable or not, defaults to false.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
@@ -93,6 +100,9 @@
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/ui/jquery-ui.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>

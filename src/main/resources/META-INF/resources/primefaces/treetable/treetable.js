@@ -7,12 +7,18 @@ PrimeFaces.widget.TreeTable = function(id, cfg) {
     this.jq = $(this.jqId);
 	this.cfg = cfg;
     this.cfg.scrollable = this.jq.hasClass('ui-treetable-scrollable');
+    this.cfg.resizable = this.jq.hasClass('ui-treetable-resizable');
     
     this.bindEvents();
     
     //scrolling
     if(this.cfg.scrollable) {
         this.setupScrolling();
+    }
+    
+    //scrolling
+    if(this.cfg.resizable) {
+        this.setupResize();
     }
     
     //selection
@@ -302,4 +308,99 @@ PrimeFaces.widget.TreeTable.prototype.align = function() {
     });
 
     headerTogglerColumnContent.width(headerTogglerColumnContent.width() + (maxTogglerColumnWidth - headerTogglerColumnContent.innerWidth()) );
+}
+
+PrimeFaces.widget.TreeTable.prototype.setupResize = function() {
+    //Add resizers and resizer helper
+    $(this.jqId + ' thead tr th div.ui-tt-c').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
+
+    //Variables
+    var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
+    resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
+    columnHeaders = $(this.jqId + ' thead th'),
+    columnFooters = $(this.jqId + ' tfoot td'),
+    scrollHeader = $(this.jqId + ' .ui-treetable-scrollable-header'),
+    scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
+    table = $(this.jqId + ' table'),
+    tbody = $(this.jqId + ' tbody'),
+    thead = $(this.jqId + ' thead'),  
+    tfoot = $(this.jqId + ' tfoot'),
+    _self = this;
+     
+    //State cookie
+    this.columnWidthsCookie = this.id + '_tt_columnWidths';
+    
+    //Main resize events
+    resizers.draggable({
+        axis: 'x',
+        start: function(event, ui) {
+            var height = _self.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
+
+            //Set height of resizer helper
+            resizerHelper.height(height);
+            resizerHelper.show();
+        },
+        drag: function(event, ui) {
+            resizerHelper.offset(
+                {
+                    left: ui.helper.offset().left + ui.helper.width() / 2, 
+                    top: thead.offset().top + thead.height()
+                });  
+        },
+        stop: function(event, ui) {
+            var columnHeaderWrapper = ui.helper.parent(),
+            columnHeader = columnHeaderWrapper.parent(),
+            oldPos = ui.originalPosition.left,
+            newPos = ui.position.left,
+            change = (newPos - oldPos),
+            newWidth = columnHeaderWrapper.width() + change;
+            
+            ui.helper.css('left','');
+            resizerHelper.hide();
+            
+            columnHeaderWrapper.width(newWidth);
+                        
+            tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
+            tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+
+            scrollHeader.scrollLeft(scrollBody.scrollLeft());
+
+            //Save state
+            var columnWidths = [];
+            columnHeaders.each(function(i, item) {
+                columnWidths.push($(item).children('div').width());
+            });
+            PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+            
+            //Invoke colResize behavior
+            if(_self.hasBehavior('colResize')) {
+                var colResizeBehavior = _self.cfg.behaviors['colResize'];
+                
+                var ext = {
+                    params: {}
+                };
+                ext.params[_self.id + '_columnId'] = columnHeader.attr('id');
+                ext.params[_self.id + '_width'] = newWidth;
+                ext.params[_self.id + '_height'] = columnHeader.height();
+                
+                colResizeBehavior.call(_self, event, ext);
+                
+            }
+        },
+        containment: this.jq
+    });
+    
+    //Restore widths on postback
+    var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
+    if(widths) {
+        widths = widths.split(',');
+        for(var i = 0; i < widths.length; i++) {
+            var width = widths[i];
+            
+            columnHeaders.eq(i).children('div').width(width);
+            $(this.jqId + ' tbody').find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
+            columnFooters.eq(i).children('div').width(width);
+        }
+    }
 }
