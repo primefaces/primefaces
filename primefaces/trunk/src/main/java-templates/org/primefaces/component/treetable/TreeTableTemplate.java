@@ -25,6 +25,12 @@ import java.lang.StringBuilder;
     public final static String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
     public final static String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e";
     public final static String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s";
+    public static final String SCROLLABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-scrollable ui-widget ";
+    public static final String SCROLLABLE_HEADER_CLASS = "ui-widget-header ui-treetable-scrollable-header";
+    public static final String SCROLLABLE_HEADER_BOX_CLASS = "ui-treetable-scrollable-header-box";
+    public static final String SCROLLABLE_BODY_CLASS = "ui-treetable-scrollable-body";
+    public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-treetable-scrollable-footer";
+    public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
 
