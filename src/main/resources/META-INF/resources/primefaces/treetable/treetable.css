@@ -51,3 +51,30 @@
 .ui-treetable .ui-treetable-data tr.ui-state-highlight {
     cursor: pointer;
 }
+
+.ui-treetable-scrollable {}
+
+.ui-treetable-scrollable-body {
+    overflow:auto;
+}
+.ui-treetable-scrollable-header,
+.ui-treetable-scrollable-footer {
+    overflow: hidden;
+    border:0px none;
+}
+
+.ui-treetable-scrollable .ui-treetable-scrollable-body table,
+.ui-treetable-scrollable .ui-treetable-scrollable-header table,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer table {
+    width:auto;
+}
+.ui-treetable-scrollable .ui-treetable-scrollable-header,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer {
+    position: relative;
+} 
+            
+.ui-treetable-scrollable .ui-treetable-scrollable-header-box,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer-box {
+    float:left;
+    padding-right: 40px;
+}

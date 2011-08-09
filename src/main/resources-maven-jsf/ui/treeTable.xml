@@ -62,6 +62,27 @@
             <defaultValue>none</defaultValue>
             <description>Defines the selectionMode, valid values are "none"(default), "single" and "multiple".</description>
 		</attribute>
+        <attribute>
+			<name>scrollable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes data scrollable with fixed header. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>scrollHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height in pixels for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>scrollWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width in pixels for scrollable data.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

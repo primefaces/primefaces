@@ -4,10 +4,18 @@
 PrimeFaces.widget.TreeTable = function(id, cfg) {
 	this.id = id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
 	this.cfg = cfg;
+    this.cfg.scrollable = this.jq.hasClass('ui-treetable-scrollable');
     
     this.bindEvents();
     
+    //scrolling
+    if(this.cfg.scrollable) {
+        this.setupScrolling();
+    }
+    
+    //selection
     if(this.cfg.selectionMode != 'none') {
         this.jqSelection = $(this.jqId + '_selection');
         var selectionValue = this.jqSelection.val();
@@ -74,12 +82,12 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(e, node) {
 
             if(id == _self.id){
                 node.replaceWith(content);
+                _self.align();
+                node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
             }
-            
-            node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
         }
 
         PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
@@ -264,4 +272,34 @@ PrimeFaces.widget.TreeTable.prototype.fireUnselectNodeEvent = function(e, nodeKe
         
         unselectBehavior.call(this, e, options);
     }
+}
+
+PrimeFaces.widget.TreeTable.prototype.setupScrolling = function() {
+    var scrollHeader = $(this.jqId + ' .ui-treetable-scrollable-header'),
+    scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
+    scrollFooter = $(this.jqId + ' .ui-treetable-scrollable-footer');
+        
+    scrollBody.scroll(function() {
+        scrollHeader.scrollLeft(scrollBody.scrollLeft());
+        scrollFooter.scrollLeft(scrollBody.scrollLeft());
+    });
+}
+
+/**
+ * Aligns first column width after toggling
+ */
+PrimeFaces.widget.TreeTable.prototype.align = function() {
+    var togglerColumns = $(this.jqId + ' .ui-treetable-data tr td:nth-child(1)'),
+    headerTogglerColumnContent = $(this.jqId + ' .ui-treetable-scrollable-header .ui-tt-c:first');
+
+    var maxTogglerColumnWidth = togglerColumns.width();
+
+    togglerColumns.children('.ui-tt-c').each(function(i, item) {
+        var content = $(this),
+        offset = maxTogglerColumnWidth - content.innerWidth();
+
+        content.width(content.width() + offset);
+    });
+
+    headerTogglerColumnContent.width(headerTogglerColumnContent.width() + (maxTogglerColumnWidth - headerTogglerColumnContent.innerWidth()) );
 }
