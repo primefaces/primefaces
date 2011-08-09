@@ -122,7 +122,13 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		
 		return children.size() == 0;
 	}
-	
+
+    public void remove() {
+        this.getChildren().clear();
+        parent.getChildren().remove(this);
+        this.parent = null;
+    }
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

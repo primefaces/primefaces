@@ -47,7 +47,7 @@ PrimeFaces.widget.TreeTable.prototype.bindEvents = function() {
         });
         
     //selection
-    $(this.jqId + ' .ui-treetable-data tr').die('click.treetable')
+    $(this.jqId + ' .ui-treetable-data tr').die('mouseover.treetable mouseout.treetable click.treetable contextmenu.treetable')
             .live('mouseover.treetable', function(e) {
                 var element = $(this);
 
@@ -65,6 +65,10 @@ PrimeFaces.widget.TreeTable.prototype.bindEvents = function() {
             .live('click.treetable', function(e) {
                 _self.onRowClick(e, $(this));
                 e.preventDefault();
+            })            
+            .live('contextmenu.treetable', function(event) {
+               _self.onRowClick(event, $(this));
+               event.preventDefault();
             });
 }
 
@@ -88,8 +92,11 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(e, node) {
 
             if(id == _self.id){
                 node.replaceWith(content);
-                _self.align();
                 node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+                
+                if(_self.cfg.scrollable) {
+                    _self.align();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
@@ -292,12 +299,13 @@ PrimeFaces.widget.TreeTable.prototype.setupScrolling = function() {
 }
 
 /**
- * Aligns first column width after toggling
+ * Aligns first column width after toggling for scrollable table
  */
 PrimeFaces.widget.TreeTable.prototype.align = function() {
     var togglerColumns = $(this.jqId + ' .ui-treetable-data tr td:nth-child(1)'),
-    headerTogglerColumnContent = $(this.jqId + ' .ui-treetable-scrollable-header .ui-tt-c:first');
-
+    headerTogglerColumnContent = $(this.jqId + ' .ui-treetable-scrollable-header .ui-tt-c:first'),
+    footerTogglerColumnContent = $(this.jqId + ' .ui-treetable-scrollable-footer .ui-tt-c:first');
+    
     var maxTogglerColumnWidth = togglerColumns.width();
 
     togglerColumns.children('.ui-tt-c').each(function(i, item) {
@@ -308,6 +316,8 @@ PrimeFaces.widget.TreeTable.prototype.align = function() {
     });
 
     headerTogglerColumnContent.width(headerTogglerColumnContent.width() + (maxTogglerColumnWidth - headerTogglerColumnContent.innerWidth()) );
+    footerTogglerColumnContent.width(footerTogglerColumnContent.width() + (maxTogglerColumnWidth - footerTogglerColumnContent.innerWidth()) );
+    
 }
 
 PrimeFaces.widget.TreeTable.prototype.setupResize = function() {
