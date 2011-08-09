@@ -28,7 +28,7 @@ public class DonutChartModel extends ChartModel implements Serializable {
         data = new ArrayList<Map<String, Number>>();
     }
 
-    public DonutChartModel(ArrayList<Map<String, Number>> data) {
+    public DonutChartModel(List<Map<String, Number>> data) {
         this.data = data;
     }
     
