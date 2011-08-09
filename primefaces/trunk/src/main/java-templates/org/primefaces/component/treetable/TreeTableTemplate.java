@@ -2,6 +2,7 @@ import org.primefaces.model.TreeTableModel;
 import org.primefaces.model.TreeNode;
 import javax.faces.model.DataModel;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 import java.util.Collection;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,6 +67,7 @@ import java.lang.StringBuilder;
                 TreeNode node = this.getRowNode();
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             } 
             else if(eventName.equals("collapse")) {
                 String nodeKey = params.get(clientId + "_collapse");
@@ -73,6 +75,7 @@ import java.lang.StringBuilder;
                 TreeNode node = this.getRowNode();
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             } 
             else if(eventName.equals("select")) {
                 String nodeKey = params.get(clientId + "_instantSelect");
@@ -80,6 +83,7 @@ import java.lang.StringBuilder;
                 TreeNode node = this.getRowNode();
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }  
             else if(eventName.equals("unselect")) {
                 String nodeKey = params.get(clientId + "_instantUnselect");
@@ -87,6 +91,7 @@ import java.lang.StringBuilder;
                 TreeNode node = this.getRowNode();
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("colResize")) {
                 String columnId = params.get(clientId + "_columnId");
@@ -94,9 +99,10 @@ import java.lang.StringBuilder;
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
  
-            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            
 
             super.queueEvent(wrapperEvent);
         }
@@ -110,8 +116,19 @@ import java.lang.StringBuilder;
     }
 
     @Override
+    public void processDecodes(FacesContext context) {
+        if(isToggleRequest(context)) {
+            this.decode(context);
+            context.renderResponse();
+        } else {
+            super.processDecodes(context);
+            System.out.println("Processing");
+        }
+    }
+
+    @Override
     public void processUpdates(FacesContext context) {
-		super.processUpdates(context);
+        super.processUpdates(context);
 
         if(isSelectionEnabled()) {
             String selectionMode = getSelectionMode();
@@ -139,9 +156,9 @@ import java.lang.StringBuilder;
                 }
             }
 
-			this.getValueExpression("selection").setValue(context.getELContext(), selection);
-			setSelection(null);
-		}
+            this.getValueExpression("selection").setValue(context.getELContext(), selection);
+            setSelection(null);
+        }
 	}
 
     public Object getLocalSelectedNodes() {
@@ -187,4 +204,11 @@ import java.lang.StringBuilder;
         }
 
         return false;
+    }
+
+    private boolean isToggleRequest(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+
+        return params.get(clientId + "_expand") != null || params.get(clientId + "_collapse") != null;
     }
