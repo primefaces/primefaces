@@ -78,3 +78,29 @@
     float:left;
     padding-right: 40px;
 }
+
+.ui-treetable .ui-column-resizer {
+    width:8px;
+    height:22px;
+    float:right;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    margin: -4px -10px;
+    *margin-left: 2px;
+}
+
+.ui-treetable .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-treetable.ui-treetable-resizable {
+    overflow: auto;
+}
+
+.ui-treetable.ui-treetable-resizable table {
+    width: auto;
+}
