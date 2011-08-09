@@ -9,7 +9,7 @@ PrimeFaces.widget.TreeTable = function(id, cfg) {
     this.cfg.scrollable = this.jq.hasClass('ui-treetable-scrollable');
     this.cfg.resizable = this.jq.hasClass('ui-treetable-resizable');
     
-    this.bindEvents();
+    this.bindToggleEvents();
     
     //scrolling
     if(this.cfg.scrollable) {
@@ -27,10 +27,12 @@ PrimeFaces.widget.TreeTable = function(id, cfg) {
         var selectionValue = this.jqSelection.val();
         
         this.selection = selectionValue === "" ? [] : selectionValue.split(',');
+        
+        this.bindSelectionEvents();
     }
 }
 
-PrimeFaces.widget.TreeTable.prototype.bindEvents = function() {
+PrimeFaces.widget.TreeTable.prototype.bindToggleEvents = function() {
     var _self = this;
     
     //expand and collapse
@@ -45,8 +47,11 @@ PrimeFaces.widget.TreeTable.prototype.bindEvents = function() {
                 _self.collapseNode(e, node);
             }
         });
-        
-    //selection
+}
+
+PrimeFaces.widget.TreeTable.prototype.bindSelectionEvents = function() {
+    var _self = this;
+    
     $(this.jqId + ' .ui-treetable-data tr').die('mouseover.treetable mouseout.treetable click.treetable contextmenu.treetable')
             .live('mouseover.treetable', function(e) {
                 var element = $(this);
