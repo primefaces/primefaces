@@ -151,7 +151,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
             writer.startElement("tbody", menu);
             encodeOptionsAsTable(context, menu, selectItems);
-            writer.startElement("tbody", menu);
+            writer.endElement("tbody");
             writer.endElement("table");
         } else {
             writer.startElement("ul", menu);
