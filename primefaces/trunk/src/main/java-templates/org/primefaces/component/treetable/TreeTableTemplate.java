@@ -122,7 +122,6 @@ import java.lang.StringBuilder;
             context.renderResponse();
         } else {
             super.processDecodes(context);
-            System.out.println("Processing");
         }
     }
 

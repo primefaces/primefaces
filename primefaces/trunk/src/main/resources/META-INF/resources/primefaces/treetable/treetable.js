@@ -144,7 +144,7 @@ PrimeFaces.widget.TreeTable.prototype.collapseNode = function(e, node) {
 PrimeFaces.widget.TreeTable.prototype.onRowClick = function(e, node) {
     
     //Check if rowclick triggered this event not an element in row content
-    if($(e.target).is('div.ui-tt-c')) {
+    if($(e.target).is('div.ui-tt-c,td')) {
         var selected = node.hasClass('ui-selected');
 
         if(selected)
