@@ -175,3 +175,16 @@ import java.lang.StringBuilder;
         
         return null;
     }
+
+    public boolean hasFooterColumn() {
+        for(UIComponent child : getChildren()) {
+            if(child instanceof Column && child.isRendered()) {
+                Column column = (Column) child;
+
+                if(column.getFacet("footer") != null || column.getFooterText() != null)
+                    return true;
+            }
+        }
+
+        return false;
+    }

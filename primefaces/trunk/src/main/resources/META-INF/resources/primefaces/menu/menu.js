@@ -120,10 +120,13 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     
     //trigger
     if(this.cfg.target) {
-        this.cfg.target = PrimeFaces.escapeClientId(this.cfg.target);
+        this.cfg.target = PrimeFaces.escapeClientId(this.cfg.target),
+        jqTarget = $(this.cfg.target);
 
-        if($(this.cfg.target).hasClass('ui-datatable'))
+        if(jqTarget.hasClass('ui-datatable'))
             this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
+        else if(jqTarget.hasClass('ui-treetable'))
+            this.cfg.trigger = this.cfg.target + ' .ui-treetable-data tr';
         else
             this.cfg.trigger = this.cfg.target;
     }

@@ -181,6 +181,23 @@ public class TreeTableRenderer extends CoreRenderer {
         encodeTbody(context, tt);
         writer.endElement("table");
         writer.endElement("div");
+        
+        //footer
+        writer.startElement("div", null);
+        writer.writeAttribute("class", TreeTable.SCROLLABLE_FOOTER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
+        
+        writer.startElement("table", null);
+        encodeTfoot(context, tt);
+        writer.endElement("table");
+        
+        writer.endElement("div");
+        writer.endElement("div");
     }
     
     protected void encodeRegularMarkup(FacesContext context, TreeTable tt) throws IOException {
@@ -189,8 +206,9 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.startElement("table", tt);
 
         encodeThead(context, tt);
+        encodeTfoot(context, tt);
 		encodeTbody(context, tt);
-
+        
 		writer.endElement("table");
     }
 
@@ -339,6 +357,53 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.endElement("div");
         }
 	}
+    
+    protected void encodeTfoot(FacesContext context, TreeTable tt) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if(!tt.hasFooterColumn())
+            return;
+
+        writer.startElement("tfoot", null);
+
+        writer.startElement("tr", null);
+
+        for(int i = 0; i < tt.getChildCount(); i++) {
+            UIComponent kid = tt.getChildren().get(i);
+			
+			if(kid instanceof Column && kid.isRendered()) {
+				Column column = (Column) kid;
+                UIComponent footer = column.getFacet("footer");
+                String footerText = column.getHeaderText();
+                
+				String columnStyleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
+                String style = column.getStyle();
+                style = (i == 0) ? style == null ? "padding-left:0px" : style + ";padding-left:0px" : style;
+
+				writer.startElement("td", null);
+                writer.writeAttribute("id", column.getClientId(context), null);
+                writer.writeAttribute("class", TreeTable.COLUMN_HEADER_CLASS, null);
+
+				writer.startElement("div", null);
+                writer.writeAttribute("class", columnStyleClass, null);
+                if(style != null)
+                    writer.writeAttribute("style", style, null);
+                
+                if(footer != null) 
+                    footer.encodeAll(context);
+                else if(footerText != null)
+                    writer.write(footerText);
+                
+                writer.endElement("div");
+				
+				writer.endElement("td");
+			}
+		}
+
+        writer.endElement("tr");
+        
+        writer.endElement("tfoot");
+    }
 	
     @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
