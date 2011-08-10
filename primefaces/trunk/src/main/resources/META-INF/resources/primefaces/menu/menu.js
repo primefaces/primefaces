@@ -127,6 +127,8 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
             this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
         else if(jqTarget.hasClass('ui-treetable'))
             this.cfg.trigger = this.cfg.target + ' .ui-treetable-data tr';
+        else if(jqTarget.hasClass('ui-tree'))
+            this.cfg.trigger = this.cfg.target + ' .ui-tree-node-content';
         else
             this.cfg.trigger = this.cfg.target;
     }
