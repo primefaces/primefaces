@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
 	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
-	<parent>javax.faces.component.UIPanel</parent>
+	<parent>org.primefaces.component.api.UITree</parent>
     <description>Tree is is used for displaying hierarchical data and creating site navigations.</description>
     <interfaces>
 		<interface>
@@ -29,12 +29,14 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
             <description>A TreeNode instance as the backing model.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
 			<name>var</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Name of the request-scoped variable that'll be used to refer each treenode data during rendering.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
 			<name>dynamic</name>
@@ -55,19 +57,6 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Javascript event to process when a tree node is clicked.</description>
-		</attribute>
-		<attribute>
-			<name>expanded</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>When set to true, all nodes will be displayed as expanded on initial page load. Default is false.</description>
-		</attribute>
-		<attribute>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Id(s) of component(s) to update after node selection.</description>
 		</attribute>
 		<attribute>
 			<name>selection</name>

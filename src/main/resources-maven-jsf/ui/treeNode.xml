@@ -8,7 +8,7 @@
 	<componentClass>org.primefaces.component.tree.UITreeNode</componentClass>
 	<componentType>org.primefaces.component.UITreeNode</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>javax.faces.component.UIColumn</parent>
     <description>TreeNode is used with Tree component to represent a node in tree.</description>
 	<attributes>
 		&standard_uicomponent_attributes;

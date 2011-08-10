@@ -18,9 +18,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
-import org.primefaces.model.TreeExplorer;
-import org.primefaces.model.TreeExplorerImpl;
-import org.primefaces.model.TreeModel;
 import org.primefaces.model.TreeNode;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop"));;;
@@ -28,8 +25,6 @@ import org.primefaces.model.TreeNode;
     private List<String> selectedRowKeys = new ArrayList<String>();
 
 	private Map<String,UITreeNode> nodes;
-
-    private TreeExplorer treeExplorer = new TreeExplorerImpl();
 
 	public UITreeNode getUITreeNodeByType(String type) {
 		UITreeNode node = getTreeNodes().get(type);
@@ -148,41 +143,43 @@ import org.primefaces.model.TreeNode;
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
-            TreeModel model = new TreeModel((TreeNode) getValue());
-            model.setRowIndex(-1);
             FacesEvent wrapperEvent = null;
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("expand")) {
-                TreeNode nodeToExpand = treeExplorer.findTreeNode(params.get(clientId + "_expandNode"), model);
-                wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), nodeToExpand);
+                this.setRowKey(params.get(clientId + "_expandNode"));
+
+                wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("collapse")) {
-                TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_collapseNode"), model);
-                wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+                this.setRowKey(params.get(clientId + "_collapseNode"));
+
+                wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("select")) {
-                TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_instantSelection"), model);
-                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+                String rowKey = params.get(clientId + "_instantSelection");
+
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("unselect")) {
-                TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_instantUnselection"), model);
-                wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+                String rowKey = params.get(clientId + "_instantUnselection");
+
+                wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             } 
             else if(eventName.equals("dragdrop")) {
-                String draggedNodeId = params.get(clientId + "_draggedNode");
-                String droppedNodeId = params.get(clientId + "_droppedNode");
+                String draggedNodeKey = params.get(clientId + "_draggedNode");
+                String droppedNodeKey = params.get(clientId + "_droppedNode");
 
-                model.setRowIndex(-1);
-                TreeNode draggedNode = treeExplorer.findTreeNode(draggedNodeId, model);
+                this.setRowKey(draggedNodeKey);
+                TreeNode draggedNode = this.getRowNode();
 
-                model.setRowIndex(-1);
-                TreeNode droppedNode = treeExplorer.findTreeNode(droppedNodeId, model);
+                this.setRowKey(droppedNodeKey);
+                TreeNode droppedNode = this.getRowNode();
 
                 //update model
                 TreeNode oldParent = draggedNode.getParent();
@@ -190,11 +187,13 @@ import org.primefaces.model.TreeNode;
                 droppedNode.addChild(draggedNode);
 
                 //fire dragdrop event
-                wrapperEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), draggedNodeId, droppedNodeId, draggedNode);
+                wrapperEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), draggedNodeKey, droppedNodeKey);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             
             super.queueEvent(wrapperEvent);
+            
+            this.setRowKey(null);
         }
         else {
             super.queueEvent(event);
@@ -216,4 +215,10 @@ import org.primefaces.model.TreeNode;
         } else {
             super.processDecodes(context);
         }
+    }
+
+    public boolean isCheckboxSelection() {
+        String selectionMode = this.getSelectionMode();
+        
+        return selectionMode != null && selectionMode.equals("checkbox");
     }

@@ -22,35 +22,32 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UITree;
 
-import org.primefaces.model.TreeExplorer;
-import org.primefaces.model.TreeExplorerImpl;
-import org.primefaces.model.TreeModel;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class TreeRenderer extends CoreRenderer {
-	
-	private TreeExplorer treeExplorer;
-	
-	public TreeRenderer() {
-		treeExplorer = new TreeExplorerImpl();
-	}
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
-		Tree tree = (Tree) component;
+        Tree tree = (Tree) component;
+        
+        decodeSelection(context, tree);
+        
+        decodeBehaviors(context, tree);
+	}
+    
+    public void decodeSelection(FacesContext context, Tree tree) {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String clientId = tree.getClientId(context);
-        TreeModel model = new TreeModel((TreeNode) tree.getValue());
         
         if(tree.getSelectionMode() != null) {
             String selection = params.get(clientId + "_selection");
             
-            String instantUnselection = params.get(clientId + "_instantUnselection");
             boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
 
-            if(selection.equals("")) {
+            if(isValueBlank(selection)) {
                 if(isSingle)
                     tree.setSelection(null);
                 else
@@ -60,49 +57,46 @@ public class TreeRenderer extends CoreRenderer {
                 String[] selectedRowKeys = selection.split(",");
 
                 if(isSingle) {
-                    TreeNode selectedNode = treeExplorer.findTreeNode(selectedRowKeys[0], model);
-                    tree.setSelection(selectedNode);
+                    tree.setRowKey(selectedRowKeys[0]);
+                    tree.setSelection(tree.getRowNode());
                 }
                 else {
                     TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
 
                     for(int i = 0 ; i < selectedRowKeys.length; i++) {
-                        selectedNodes[i] = treeExplorer.findTreeNode(selectedRowKeys[i], model);
-                        model.setRowIndex(-1);  //reset
+                        tree.setRowKey(selectedRowKeys[i]);
+                        selectedNodes[i] = tree.getRowNode();
                     }
 
                     tree.setSelection(selectedNodes);
                 }
+                
+                tree.setRowKey(null);
             }
         }
-        
-        decodeBehaviors(context, component);
-	}
+    }
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;
 
         if(tree.isNodeExpandRequest(context)) {
-            encodeDynamicNode(context, tree);
+            String clientId = tree.getClientId(context);
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String rowKey = params.get(clientId + "_expandNode");
+            tree.setRowKey(rowKey);
+            TreeNode node = tree.getRowNode();
+            node.setExpanded(true);
+            
+            encodeTreeNodeChildren(context, tree, node, clientId, rowKey, tree.isDynamic(), tree.isCheckboxSelection());
+            tree.setRowKey(null);
         }
         else {
             encodeMarkup(context, tree);
             encodeScript(context, tree);
         }
 	}
-	
-	public void encodeDynamicNode(FacesContext context, Tree tree) throws IOException {
-        TreeModel model = new TreeModel((TreeNode) tree.getValue());
-        model.setRowIndex(-1);  //reset
-        boolean checkbox = tree.getSelectionMode() != null && tree.getSelectionMode().equals("checkbox");
-
-        String rowKey = context.getExternalContext().getRequestParameterMap().get(tree.getClientId(context) + "_expandNode");
-        TreeNode treeNode = treeExplorer.findTreeNode(rowKey, model);
-
-        encodeTreeNodeChildren(context, tree, treeNode, rowKey, true, false, checkbox);
-	}
-	
+		
 	protected void encodeScript(FacesContext context, Tree tree) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tree.getClientId(context);
@@ -115,7 +109,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.write("$(function() {");
 
         writer.write(tree.resolveWidgetVar() + " = new PrimeFaces.widget.Tree('" + clientId + "', {");
-
         writer.write("dynamic:" + dynamic);
 
         if(dynamic) {
@@ -150,31 +143,27 @@ public class TreeRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tree.getClientId(context);
         TreeNode root = (TreeNode) tree.getValue();
-        int rowIndex = 0;
         boolean dynamic = tree.isDynamic();
         boolean selectable = tree.getSelectionMode() != null;
+        boolean checkbox = selectable && tree.getSelectionMode().equals("checkbox");
         
         //container class
         String containerClass = Tree.CONTAINER_CLASS;
         containerClass = selectable ? containerClass + " " + Tree.SELECTABLE_CLASS : containerClass;
 		containerClass = tree.getStyleClass() == null ? containerClass : containerClass + " " + tree.getStyleClass();
-        
-        boolean checkbox = tree.getSelectionMode() != null && tree.getSelectionMode().equals("checkbox");
-        
+
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
-		if(tree.getStyle() != null) writer.writeAttribute("style", tree.getStyle(), null);
+		if(tree.getStyle() != null) 
+            writer.writeAttribute("style", tree.getStyle(), null);
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         if(root != null) {
-            for(TreeNode child : root.getChildren()) {
-                encodeTreeNode(context, tree, child, String.valueOf(rowIndex), dynamic, checkbox);
-
-                rowIndex++;
-            }
+            root.setExpanded(true);
+            encodeTreeNode(context, tree, root, clientId, null, dynamic, checkbox);
         }
 
 		writer.endElement("ul");
@@ -186,96 +175,102 @@ public class TreeRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
-	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String rowKey, boolean dynamic, boolean checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        context.getExternalContext().getRequestMap().put(tree.getVar(), node.getData());
-        boolean isLeaf = node.isLeaf();
-        boolean expanded = node.isExpanded();
-        String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
-        String nodeId = tree.getClientId() + "_node_" + rowKey;
-        UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
-
-        boolean selected = node.isSelected();
-        if(selected) {
-            tree.getSelectedRowKeys().add(rowKey);
-        }
-
-        String nodeClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
-        if(uiTreeNode.getStyleClass() != null) {
-            nodeClass = nodeClass + " " + uiTreeNode.getStyleClass();
-        }
-        nodeClass = nodeClass + " " + uiTreeNode.getType();
+	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox) throws IOException {
         
-        
-		writer.startElement("li", null);
-            writer.writeAttribute("id", nodeId, null);
-            writer.writeAttribute("class", nodeClass, null);
+        if(rowKey != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            tree.setRowKey(rowKey);
+            boolean isLeaf = node.isLeaf();
+            boolean expanded = node.isExpanded();
+            String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
+            String nodeId = clientId + "_node_" + rowKey;
+            UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
 
-            //label
-            writer.startElement("div", null);
-            writer.writeAttribute("class", Tree.NODE_CLASS, null);
-
-                //node content
-                String nodeContentClass = selected && !checkbox ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
-                writer.startElement("span", null);
-                writer.writeAttribute("class", nodeContentClass, null);
-
-                    //state icon
-                    if(!isLeaf) {
-                        writer.startElement("span", null);
-                        writer.writeAttribute("class", iconClass, null);
-                        writer.endElement("span");
-                    }
-
-                    //node icon
-                    writer.startElement("span", null);
-                    String icon = uiTreeNode.getIconToRender(expanded);
-                    if(icon != null) {
-                        writer.writeAttribute("class", icon, null);
-                    }
-                    writer.endElement("span");
-
-                    //checkbox
-                    if(checkbox) {
-                        encodeCheckbox(context, tree, node, selected);
-                    }
-
-                    //content
-                    writer.startElement("span", null);
-                    writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
-                    uiTreeNode.encodeAll(context);
-                    writer.endElement("span");
-
-                writer.endElement("span");
-
-            writer.endElement("div");
-
-            //children
-            if(!isLeaf && !dynamic) {
-                encodeTreeNodeChildren(context, tree, node, rowKey, dynamic, expanded, checkbox);
+            //preselection
+            boolean selected = node.isSelected();
+            if(selected) {
+                tree.getSelectedRowKeys().add(rowKey);
             }
 
-        writer.endElement("li");
+            //style class of node container
+            String containerClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
+            containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + "" + uiTreeNode.getStyleClass();
+            containerClass = containerClass + " " + uiTreeNode.getType();
+
+            writer.startElement("li", null);
+                writer.writeAttribute("id", nodeId, null);
+                writer.writeAttribute("class", containerClass, null);
+
+                //label
+                writer.startElement("div", null);
+                writer.writeAttribute("class", Tree.NODE_CLASS, null);
+
+                    //node content
+                    String nodeContentClass = selected ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", nodeContentClass, null);
+
+                        //state icon
+                        if(!isLeaf) {
+                            writer.startElement("span", null);
+                            writer.writeAttribute("class", iconClass, null);
+                            writer.endElement("span");
+                        }
+
+                        //node icon
+                        writer.startElement("span", null);
+                        String icon = uiTreeNode.getIconToRender(expanded);
+                        if(icon != null) {
+                            writer.writeAttribute("class", icon, null);
+                        }
+                        writer.endElement("span");
+
+                        //checkbox
+                        if(checkbox) {
+                            encodeCheckbox(context, tree, node, selected);
+                        }
+
+                        //content
+                        writer.startElement("span", null);
+                        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+                        uiTreeNode.encodeAll(context);
+                        writer.endElement("span");
+
+                    writer.endElement("span");
+
+                writer.endElement("div");
+
+                //children nodes
+                boolean shouldRender = (dynamic && expanded) || !dynamic;
+                
+                writer.startElement("ul", null);
+                writer.writeAttribute("class", Tree.NODES_CLASS , null);
+                
+                if(!expanded)
+                    writer.writeAttribute("style", "display:none", null);
+                
+                if(shouldRender)
+                    encodeTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox);
+                
+                writer.endElement("ul");
+
+            writer.endElement("li");
+        } 
+        else {
+            encodeTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox);
+        }
 	}
+    
+    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox) throws IOException {     
 
-    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String parentRowKey, boolean dynamic, boolean expanded, boolean checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        int rowIndex = 0;
+        int childIndex = 0;
+        for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
+            String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
-        writer.startElement("ul", null);
-        writer.writeAttribute("class", Tree.NODES_CLASS , null);
+            encodeTreeNode(context, tree, iterator.next(), clientId, childRowKey, dynamic, checkbox);
 
-        if(!expanded) {
-            writer.writeAttribute("style", "display:none", null);
+            childIndex++;
         }
-
-        for(TreeNode childNode : node.getChildren()) {
-            String childRowKey = parentRowKey + "_" + rowIndex;
-            encodeTreeNode(context, tree, childNode, childRowKey, dynamic, checkbox);
-            rowIndex++;
-        }
-
-        writer.endElement("ul");
     }
 
     protected void encodeIconStates(FacesContext context, Tree tree) throws IOException {
