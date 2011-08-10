@@ -13,7 +13,7 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         fill: this.cfg.fill,
         shadow : this.cfg.shadow,
         showDataLabels : this.cfg.showDataLabels,
-        dataLabelFormatString : this.cfg.dataFormat || "percent"
+        dataLabels : this.cfg.dataFormat || "percent"
     }
 
     //renderer configuration
@@ -40,7 +40,8 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
-
+    this.cfg.seriesDefaults = {};
+    
     //axes
     this.cfg.axes = {
         xaxis:{
@@ -59,11 +60,17 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     }
 
     if(this.cfg.breakOnNull) {
-        this.cfg.seriesDefaults = {
-            breakOnNull: true
-        }
+        this.seriesDefaults.breakOnNull =  true;
     }
 
+    if(this.cfg.fillToZero){
+        this.cfg.seriesDefaults.fillToZero = true;
+        this.cfg.seriesDefaults.fill = true;
+    }
+    else if(this.cfg.fill){
+        this.cfg.seriesDefaults.fill = true;
+    }
+    
     this.cfg.highlighter = { show : true, formatString : '%s, %s', showTooltip : true};
 
     //events
@@ -130,19 +137,6 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
 }
 
 /**
- * PrimeFaces AreaChart Widget
- */
-PrimeFaces.widget.AreaChart = function(id, cfg) {
-    this.id = id;
-    this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
-
-
-    //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
-}
-
-/**
  * PrimeFaces DonutChart Widget
  */
 PrimeFaces.widget.DonutChart = function(id, cfg) {
@@ -157,7 +151,7 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
         fill: this.cfg.fill,
         shadow : this.cfg.shadow,
         showDataLabels : this.cfg.showDataLabels,
-        dataLabelFormatString : this.cfg.dataFormat || "percent"
+        dataLabels : this.cfg.dataFormat || "percent"
     }
 
     //renderer configuration

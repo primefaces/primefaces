@@ -142,6 +142,13 @@ public class LineChartRenderer extends BaseChartRenderer {
         if(chart.getSeriesColors() != null)
             writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
         
+        if(chart.isFillToZero()) writer.write(",fillToZero:true");
+        else if(chart.isFill()) writer.write(",fill:true");
+        
+        if(chart.isStacked()) writer.write(",stackSeries:true");
+        
+        writer.write(",showMarkers:" + chart.isShowMarkers());
+        
         //other
         if(chart.isBreakOnNull()) writer.write(",breakOnNull:true");
     }

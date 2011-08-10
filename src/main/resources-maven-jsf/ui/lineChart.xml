@@ -92,6 +92,37 @@
 			<type>java.lang.Boolean</type>
                         <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+       <attribute>
+			<name>fill</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+       <attribute>
+			<name>stacked</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+       <attribute>
+			<name>showMarkers</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
+       <attribute>
+			<name>fillToZero</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+       <attribute>
+            <name>enhancedLegend</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines legend action whether hides/shows related series on click.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
