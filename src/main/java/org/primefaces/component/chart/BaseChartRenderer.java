@@ -52,7 +52,8 @@ public class BaseChartRenderer extends CoreRenderer {
             writer.write(",title:'" + chart.getTitle() + "'");
         }
         
-        writer.write(",shadow:" + chart.isShadow());
+        if(!chart.isShadow())
+            writer.write(",shadow:false");
 
         if(chart.getSeriesColors() != null)
             writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
