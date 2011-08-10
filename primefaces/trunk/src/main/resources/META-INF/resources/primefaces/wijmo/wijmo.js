@@ -3400,24 +3400,24 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             else {
                 switch(event) {
                     case "click":
-                        triggers.bind(event + namespace, function (e) {
+                        triggers.unbind(event + namespace).bind(event + namespace, function (e) {
                             if (o.mode !== "popup") {
                                 self._displaySubmenu(e, triggerEle, menuContainer);
                             }
                         });
                         break;
                     case "mouseenter":
-                        triggers.bind(event + namespace, function (e) {
+                        triggers.unbind(event + namespace).bind(event + namespace, function (e) {
                             self._displaySubmenu(e, triggerEle, menuContainer);
                         });
                         break;
                     case "dblclick":
-                        triggers.bind(event + namespace, function (e) {
+                        triggers.unbind(event + namespace).bind(event + namespace, function (e) {
                             self._displaySubmenu(e, triggerEle, menuContainer);
                         });
                         break;
                     case "rtclick":
-                        triggers.bind("contextmenu" + namespace, function (e) {
+                        triggers.unbind(event + namespace).bind("contextmenu" + namespace, function (e) {
                             menuContainer.hide();
                             self._displaySubmenu(e, triggerEle, menuContainer);
                             e.preventDefault();

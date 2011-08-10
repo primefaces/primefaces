@@ -151,7 +151,8 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 
     this.jq.wijmenu(this.cfg);
 
-    this.element = this.jq.parent().parent();   //overlay element
+    //Apply config to the container element
+    this.element = this.jq.parent().parent();   
     this.element.css('z-index', this.cfg.zindex);
 
     if(this.cfg.style)
