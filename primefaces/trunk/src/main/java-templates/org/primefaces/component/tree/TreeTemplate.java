@@ -160,13 +160,13 @@ import org.primefaces.model.TreeNode;
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("select")) {
-                String rowKey = params.get(clientId + "_instantSelection");
+                setRowKey(params.get(clientId + "_instantSelection"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("unselect")) {
-                String rowKey = params.get(clientId + "_instantUnselection");
+                setRowKey(params.get(clientId + "_instantUnselection"));
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
