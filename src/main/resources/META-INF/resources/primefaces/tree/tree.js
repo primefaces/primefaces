@@ -73,11 +73,11 @@ PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, node) {
         if(this.cfg.onNodeClick) {
             this.cfg.onNodeClick.call(this, node);
         }
-
+        
         if(this.isNodeSelected(node))
-            this.unselectNode(node);
+            this.unselectNode(e, node);
         else
-            this.selectNode(node);
+            this.selectNode(e, node);
     }
 }
 
@@ -233,26 +233,25 @@ PrimeFaces.widget.Tree.prototype.saveClientState = function() {
 }
 
 PrimeFaces.widget.Tree.prototype.restoreClientState = function() {
-    var expandedNodes = PrimeFaces.getCookie(this.cookieName);
+    var expandedNodes = PrimeFaces.getCookie(this.cookieName),
+    _self = this;
     
     if(expandedNodes) {
         expandedNodes = expandedNodes.split(',');
 
-        for(var i in expandedNodes) {
-            var node = $(PrimeFaces.escapeClientId(expandedNodes[i]));
-
-            this.showNodeChildren(node);
-        }
+        $.each(expandedNodes, function(i, item) {
+            _self.showNodeChildren($(PrimeFaces.escapeClientId(item)));
+        });
     }
 }
 
-PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
+PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
 
     if(this.isCheckboxSelection()) {
         this.toggleCheckbox(node, true);
     }
     else {
-        if(this.isSingleSelection()) {
+        if(this.isSingleSelection() || (this.isMultipleSelection() && !e.metaKey)) {
             //clean all selections
             this.selections = [];
             this.jq.find('.ui-tree-node-content.ui-state-highlight').removeClass('ui-state-highlight');
@@ -268,23 +267,27 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(node) {
     this.fireNodeSelectEvent(node);
 }
 
-PrimeFaces.widget.Tree.prototype.unselectNode = function(node) {
+PrimeFaces.widget.Tree.prototype.unselectNode = function(e, node) {
     var nodeId = this.getNodeId(node);
 
     //select node
     if(this.isCheckboxSelection()) {
         this.toggleCheckbox(node, false);
     }
-    else {
+    else if(e.metaKey) {
+        //remove visual style    
         node.find('.ui-tree-node-content:first').removeClass('ui-state-highlight');
 
         //remove from selection
         this.removeFromSelection(nodeId);
+        
+        this.writeSelections();
+
+        this.fireNodeUnselectEvent(node);
+    } 
+    else if(this.isMultipleSelection()){
+        this.selectNode(e, node);
     }
-
-    this.writeSelections();
-
-    this.fireNodeUnselectEvent(node);
 }
 
 PrimeFaces.widget.Tree.prototype.writeSelections = function() {    
@@ -331,6 +334,10 @@ PrimeFaces.widget.Tree.prototype.isNodeSelected = function(node) {
 
 PrimeFaces.widget.Tree.prototype.isSingleSelection = function() {
     return this.cfg.selectionMode == 'single';
+}
+
+PrimeFaces.widget.Tree.prototype.isMultipleSelection = function() {
+    return this.cfg.selectionMode == 'multiple';
 }
 
 PrimeFaces.widget.Tree.prototype.isCheckboxSelection = function() {
