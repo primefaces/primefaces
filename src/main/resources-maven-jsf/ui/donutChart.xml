@@ -91,7 +91,14 @@
             <name>dataFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Sprintf format for data label.</description>
+            <description>Defines data information type on highlighter or slices. Default is percent.</description>
+        </attribute>
+        <attribute>
+            <name>enhancedLegend</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines legend action whether hides/shows related series on click.</description>
         </attribute>
     </attributes>
     <resources>
