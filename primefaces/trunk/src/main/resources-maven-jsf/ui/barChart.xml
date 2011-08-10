@@ -104,6 +104,13 @@
 			<type>java.lang.Boolean</type>
                         <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+            <name>enhancedLegend</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines legend action whether hides/shows related series on click.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
