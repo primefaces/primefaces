@@ -3366,33 +3366,64 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 				menuContainer = self.domObject.menucontainer,
 				namespace = ".wijmenu";
 
-            var triggers = $(this.options.trigger);    
+            var triggers = $(this.options.trigger);
+            
+            if(typeof this.options.trigger == 'string') {
                 
-            switch (event) {
-            case "click":
-                triggers.die(event + namespace).live(event + namespace, function (e) {
-                    if (o.mode !== "popup") {
-                        self._displaySubmenu(e, triggerEle, menuContainer);
+                switch(event) {
+                    case "click":
+                        triggers.die(event + namespace).live(event + namespace, function (e) {
+                            if (o.mode !== "popup") {
+                                self._displaySubmenu(e, triggerEle, menuContainer);
+                            }
+                        });
+                        break;
+                    case "mouseenter":
+                        triggers.die(event + namespace).live(event + namespace, function (e) {
+                            self._displaySubmenu(e, triggerEle, menuContainer);
+                        });
+                        break;
+                    case "dblclick":
+                        triggers.die(event + namespace).live(event + namespace, function (e) {
+                            self._displaySubmenu(e, triggerEle, menuContainer);
+                        });
+                        break;
+                    case "rtclick":
+                        triggers.die("contextmenu" + namespace).live("contextmenu" + namespace, function (e) {
+                            menuContainer.hide();
+                            self._displaySubmenu(e, triggerEle, menuContainer);
+                            e.preventDefault();
+                        });
+                        break;
                     }
-                });
-                break;
-            case "mouseenter":
-                triggers.die(event + namespace).live(event + namespace, function (e) {
-                    self._displaySubmenu(e, triggerEle, menuContainer);
-                });
-                break;
-            case "dblclick":
-                triggers.die(event + namespace).live(event + namespace, function (e) {
-                    self._displaySubmenu(e, triggerEle, menuContainer);
-                });
-                break;
-            case "rtclick":
-				triggers.die("contextmenu" + namespace).live("contextmenu" + namespace, function (e) {
-					menuContainer.hide();
-                    self._displaySubmenu(e, triggerEle, menuContainer);
-                    e.preventDefault();
-                });
-                break;
+            } 
+            else {
+                switch(event) {
+                    case "click":
+                        triggers.bind(event + namespace, function (e) {
+                            if (o.mode !== "popup") {
+                                self._displaySubmenu(e, triggerEle, menuContainer);
+                            }
+                        });
+                        break;
+                    case "mouseenter":
+                        triggers.bind(event + namespace, function (e) {
+                            self._displaySubmenu(e, triggerEle, menuContainer);
+                        });
+                        break;
+                    case "dblclick":
+                        triggers.bind(event + namespace, function (e) {
+                            self._displaySubmenu(e, triggerEle, menuContainer);
+                        });
+                        break;
+                    case "rtclick":
+                        triggers.bind("contextmenu" + namespace, function (e) {
+                            menuContainer.hide();
+                            self._displaySubmenu(e, triggerEle, menuContainer);
+                            e.preventDefault();
+                        });
+                        break;
+                    }
             }
 
         },
