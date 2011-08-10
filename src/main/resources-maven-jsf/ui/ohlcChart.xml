@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>ohlcChart</tag>
+    <tagClass>org.primefaces.component.chart.ohlc.OhlcChartTag</tagClass>
+    <componentClass>org.primefaces.component.chart.ohlc.OhlcChart</componentClass>
+    <componentType>org.primefaces.component.chart.OhlcChart</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.chart.OhlcChartRenderer</rendererType>
+    <rendererClass>org.primefaces.component.chart.ohlc.OhlcChartRenderer</rendererClass>
+    <parent>org.primefaces.component.chart.UIChart</parent>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.chart.OhlcChartModel</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>legendPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>seriesColors</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>enhancedLegend</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines legend action whether hides/shows related series on click.</description>
+        </attribute>
+        <attribute>
+            <name>candleStick</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>charts/charts.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>charts/jqplot.js</name>
+        </resource>
+        <resource>
+            <name>core/core.js</name>
+        </resource>
+        <resource>
+            <name>charts/charts.js</name>
+        </resource>
+    </resources>
+</component>
