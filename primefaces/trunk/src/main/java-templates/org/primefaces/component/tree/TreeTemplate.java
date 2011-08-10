@@ -16,6 +16,7 @@ import java.lang.StringBuilder;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeExplorer;
 import org.primefaces.model.TreeExplorerImpl;
@@ -156,18 +157,22 @@ import org.primefaces.model.TreeNode;
             if(eventName.equals("expand")) {
                 TreeNode nodeToExpand = treeExplorer.findTreeNode(params.get(clientId + "_expandNode"), model);
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), nodeToExpand);
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("collapse")) {
                 TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_collapseNode"), model);
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("select")) {
                 TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_instantSelection"), model);
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("unselect")) {
                 TreeNode nodeToCollapse = treeExplorer.findTreeNode(params.get(clientId + "_instantUnselection"), model);
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), nodeToCollapse);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             } 
             else if(eventName.equals("dragdrop")) {
                 String draggedNodeId = params.get(clientId + "_draggedNode");
@@ -186,12 +191,29 @@ import org.primefaces.model.TreeNode;
 
                 //fire dragdrop event
                 wrapperEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), draggedNodeId, droppedNodeId, draggedNode);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-
-            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            
             super.queueEvent(wrapperEvent);
         }
         else {
             super.queueEvent(event);
+        }
+    }
+
+    private boolean isToggleRequest(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+
+        return params.get(clientId + "_expandNode") != null || params.get(clientId + "_collapseNode") != null;
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if(isToggleRequest(context)) {
+            this.decode(context);
+            context.renderResponse();
+        } else {
+            super.processDecodes(context);
         }
     }
