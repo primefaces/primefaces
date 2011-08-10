@@ -152,13 +152,18 @@ public class TreeRenderer extends CoreRenderer {
         TreeNode root = (TreeNode) tree.getValue();
         int rowIndex = 0;
         boolean dynamic = tree.isDynamic();
-        String styleClass = tree.getStyleClass();
-        styleClass = styleClass == null ? Tree.STYLE_CLASS : Tree.STYLE_CLASS + " " + styleClass;
+        boolean selectable = tree.getSelectionMode() != null;
+        
+        //container class
+        String containerClass = Tree.CONTAINER_CLASS;
+        containerClass = selectable ? containerClass + " " + Tree.SELECTABLE_CLASS : containerClass;
+		containerClass = tree.getStyleClass() == null ? containerClass : containerClass + " " + tree.getStyleClass();
+        
         boolean checkbox = tree.getSelectionMode() != null && tree.getSelectionMode().equals("checkbox");
         
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", containerClass, null);
 		if(tree.getStyle() != null) writer.writeAttribute("style", tree.getStyle(), null);
 
         writer.startElement("ul", null);
@@ -174,7 +179,7 @@ public class TreeRenderer extends CoreRenderer {
 
 		writer.endElement("ul");
 
-        if(tree.getSelectionMode() != null) {
+        if(selectable) {
             encodeSelectionHolder(context, tree);
         }
 

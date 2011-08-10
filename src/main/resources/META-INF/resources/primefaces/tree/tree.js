@@ -48,18 +48,22 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function() {
 
     //selection hover
     if(selectionMode) {
-        var clickTargetSelector = selectionMode == 'checkbox' ? this.jqId  + ' .ui-tree-checkbox-box' : this.jqId  + ' .ui-tree-node-content';
+        var clickTargetSelector = this.jqId  + ' .ui-tree-node-content';
 
         $(clickTargetSelector)
-            .die()
-            .live('mouseover', function() {
+            .die('mouseover.tree mouseout.tree click.tree contextmenu.tree')
+            .live('mouseover.tree', function() {
                 $(this).addClass('ui-state-hover');
             })
-            .live('mouseout', function() {
+            .live('mouseout.tree', function() {
                 $(this).removeClass('ui-state-hover');
             })
-            .live('click', function(e) {
+            .live('click.tree', function(e) {
                 _self.onNodeClick(e, $(this).parents('li:first'));
+            })
+            .live('contextmenu.tree', function(e) {
+                _self.onNodeClick(e, $(this).parents('li:first'));
+                e.preventDefault();
             });
     }
 }
