@@ -59,12 +59,13 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-
+        
         writer.startElement("span", menu);
 		writer.writeAttribute("id", clientId, "id");
 
 		writer.startElement("ul", null);
 		writer.writeAttribute("id", clientId + "_menu", null);
+        writer.writeAttribute("style", "display:none", null);
 
 		for(UIComponent child : menu.getChildren()) {
 			MenuItem item = (MenuItem) child;
@@ -77,7 +78,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		}
 
 		writer.endElement("ul");
-
+        
         writer.endElement("span");
 	}
 
