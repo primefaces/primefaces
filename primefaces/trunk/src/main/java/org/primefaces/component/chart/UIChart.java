@@ -40,6 +40,7 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
         ,style
         ,title
         ,legendPosition
+        ,enhancedLegend
         ,shadow
         ,seriesColors;
 
@@ -103,6 +104,13 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
 	public void setShadow(boolean _shadow) {
 		getStateHelper().put(PropertyKeys.shadow, _shadow);
+	}
+        
+	public boolean isEnhancedLegend() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.enhancedLegend, true);
+	}
+	public void setEnhancedLegend(boolean _enhancedLegend) {
+		getStateHelper().put(PropertyKeys.enhancedLegend, _enhancedLegend);
 	}
 	
     public java.lang.String getSeriesColors() {
