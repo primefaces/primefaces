@@ -81,7 +81,7 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
 }
 
 /**
- * PrimeFaces LineChart Widget
+ * PrimeFaces BarChart Widget
  */
 PrimeFaces.widget.BarChart = function(id, cfg) {
     this.id = id;
@@ -208,6 +208,21 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
           <tr><td>close:</td><td>%s</td></tr></table>'
    }
 
+    //render chart
+    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+}
+
+/**
+ * PrimeFaces MeterGaugeChart Widget
+ */
+PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = this.id.replace(/:/g,"\\:");
+
+    if(this.cfg.seriesColors)
+        this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
+    
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
 }
