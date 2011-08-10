@@ -42,4 +42,8 @@ public interface TreeNode {
     public boolean isSelected();
 
     public void setSelected(boolean value);
+    
+    public boolean isSelectable();
+	
+	public void setSelectable(boolean selectable);
 }
