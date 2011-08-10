@@ -179,20 +179,12 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
 
-
-    //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
-}
-
-/**
- * PrimeFaces OhlcChart Widget
- */
-PrimeFaces.widget.BlockChart = function(id, cfg) {
-    this.id = id;
-    this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
-
-
+    //default values
+    this.cfg.seriesDefaults.rendererOptions.bubbleAlpha = this.cfg.seriesDefaults.rendererOptions.bubbleAlpha || 0.7;
+    this.cfg.seriesDefaults.rendererOptions.highlightAlpha = 0.8;
+    this.cfg.highlighter = {show:false};
+    this.cfg.seriesDefaults.shadow = this.cfg.shadow;
+    
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
 }
@@ -204,7 +196,17 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = this.id.replace(/:/g,"\\:");
-
+    
+    this.cfg.highlighter = {
+          tooltipAxes: 'xy',
+          yvalues: 4,
+          formatString:'<table class="jqplot-highlighter"> \
+          <tr><td>value:</td><td>%s</td></tr> \
+          <tr><td>open:</td><td>%s</td></tr> \
+          <tr><td>hi:</td><td>%s</td></tr> \
+          <tr><td>low:</td><td>%s</td></tr> \
+          <tr><td>close:</td><td>%s</td></tr></table>'
+   }
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
