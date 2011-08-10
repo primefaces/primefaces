@@ -54,6 +54,9 @@ public class BaseChartRenderer extends CoreRenderer {
         
         writer.write(",shadow:" + chart.isShadow());
 
+        if(chart.getSeriesColors() != null)
+            writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
+        
         if(legendPosition != null) {
             writer.write(",legend:{");
             writer.write("show:true");
