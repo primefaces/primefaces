@@ -73,8 +73,6 @@ public class DonutChartRenderer extends BaseChartRenderer {
             writer.write(",showDataLabels:true");
         if(chart.getDataFormat() !=null)
             writer.write(",dataFormat:'" + chart.getDataFormat()+"'");
-        if(chart.getSeriesColors() != null)
-            writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
     }
 
     protected void encodeData(FacesContext context, DonutChart chart) throws IOException {

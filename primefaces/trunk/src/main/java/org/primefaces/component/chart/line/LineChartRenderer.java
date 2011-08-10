@@ -138,10 +138,6 @@ public class LineChartRenderer extends BaseChartRenderer {
         if(chart.getMinY() != Double.MIN_VALUE) writer.write(",minY:" + chart.getMinY());
         if(chart.getMaxY() != Double.MAX_VALUE) writer.write(",maxY:" + chart.getMaxY());
 
-        //colors
-        if(chart.getSeriesColors() != null)
-            writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
-        
         if(chart.isFillToZero()) writer.write(",fillToZero:true");
         else if(chart.isFill()) writer.write(",fill:true");
         
