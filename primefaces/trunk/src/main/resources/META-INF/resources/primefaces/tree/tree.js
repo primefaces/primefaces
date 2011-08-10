@@ -86,7 +86,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
 
     if(this.cfg.dynamic) {
 
-        if(this.cfg.cache && node.children('.ui-tree-nodes').length > 0) {
+        if(this.cfg.cache && node.children('.ui-tree-nodes').children().length > 0) {
             this.showNodeChildren(node);
             
             return;
@@ -109,7 +109,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
                 content = update.text();
                 
                 if(id == _self.id){
-                    node.append(content);
+                    node.children('.ui-tree-nodes').append(content);
 
                     if(_self.cfg.dragdrop) {
                         _self.setupDragDrop(node.find('.ui-tree-node-label'), node.find('.ui-tree-node-content'));
