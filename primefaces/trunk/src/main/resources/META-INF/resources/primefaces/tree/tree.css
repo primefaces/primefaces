@@ -108,6 +108,6 @@
     cursor: pointer;
 }
 
-.ui-tree-selectable .ui-tree-node-content {
+.ui-tree-selectable .ui-tree-selectable-node {
     cursor: pointer;
 }

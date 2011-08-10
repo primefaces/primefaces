@@ -85,6 +85,7 @@ import org.primefaces.model.TreeNode;
 
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-helper-clearfix ui-corner-all";
     public static String SELECTABLE_CLASS = "ui-tree-selectable";
+    public static String SELECTABLE_NODE_CLASS = "ui-tree-selectable-node";
     public static String ROOT_NODES_CLASS = "ui-tree-nodes ui-helper-reset";
     public static String PARENT_CLASS = "ui-tree-parent";
     public static String NODE_CLASS = "ui-tree-node ui-state-default";

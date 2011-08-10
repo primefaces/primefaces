@@ -48,7 +48,7 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function() {
 
     //selection hover
     if(selectionMode) {
-        var clickTargetSelector = this.jqId  + ' .ui-tree-node-content';
+        var clickTargetSelector = this.jqId  + ' .ui-tree-selectable-node';
 
         $(clickTargetSelector)
             .die('mouseover.tree mouseout.tree click.tree contextmenu.tree')

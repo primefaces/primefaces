@@ -207,6 +207,8 @@ public class TreeRenderer extends CoreRenderer {
 
                     //node content
                     String nodeContentClass = selected ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
+                    nodeContentClass = node.isSelectable() ? nodeContentClass + " " + Tree.SELECTABLE_NODE_CLASS : nodeContentClass;
+                    
                     writer.startElement("span", null);
                     writer.writeAttribute("class", nodeContentClass, null);
 
