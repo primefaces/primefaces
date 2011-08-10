@@ -127,16 +127,19 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
             return true;
         };
         
-        options.oncomplete = function() {
-            _self.fireExpandEvent(node);
-        }
-
         var params = {};
         params[this.id + '_expandNode'] = _self.getNodeId(node);
 
         options.params = params;
 
-        PrimeFaces.ajax.AjaxRequest(options);
+        if(this.hasBehavior('expand')) {
+            var expandBehavior = this.cfg.behaviors['expand'];
+
+            expandBehavior.call(this, node, options);
+        }
+        else {
+            PrimeFaces.ajax.AjaxRequest(options);
+        }
     }
     else {
         this.showNodeChildren(node);
@@ -479,4 +482,12 @@ PrimeFaces.widget.Tree.prototype.preselectCheckboxPropagation = function() {
         if(node.find('.ui-tree-checkbox-icon.ui-icon-check').length > 0)
             $(this).addClass('ui-icon ui-icon-minus');
     });
+}
+
+PrimeFaces.widget.Tree.prototype.hasBehavior = function(event) {
+    if(this.cfg.behaviors) {
+        return this.cfg.behaviors[event] != undefined;
+    }
+    
+    return false;
 }
