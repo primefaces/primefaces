@@ -42,6 +42,4 @@ public interface TreeNode {
     public boolean isSelected();
 
     public void setSelected(boolean value);
-    
-    public void remove();
 }

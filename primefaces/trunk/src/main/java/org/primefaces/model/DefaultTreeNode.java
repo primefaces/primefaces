@@ -120,14 +120,8 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		if(children == null)
 			return true;
 		
-		return children.size() == 0;
+		return children.isEmpty();
 	}
-
-    public void remove() {
-        this.getChildren().clear();
-        parent.getChildren().remove(this);
-        this.parent = null;
-    }
 
 	@Override
 	public int hashCode() {
