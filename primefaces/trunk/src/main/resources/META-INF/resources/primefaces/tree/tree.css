@@ -107,3 +107,7 @@
 .ui-tree .ui-tree-icon {
     cursor: pointer;
 }
+
+.ui-tree-selectable .ui-tree-node-content {
+    cursor: pointer;
+}
