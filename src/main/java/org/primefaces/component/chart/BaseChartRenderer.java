@@ -57,6 +57,7 @@ public class BaseChartRenderer extends CoreRenderer {
         if(legendPosition != null) {
             writer.write(",legend:{");
             writer.write("show:true");
+            if(chart.isEnhancedLegend()) writer.write(",renderer: $.jqplot.EnhancedLegendRenderer");
             writer.write(",location:'" + legendPosition + "'}");
         }
     }
