@@ -117,6 +117,30 @@
             <defaultValue>false</defaultValue>
 		</attribute>
        <attribute>
+			<name>xLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+                        <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>yLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+                        <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>xAngle</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+                        <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>yAngle</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+                        <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+       <attribute>
             <name>enhancedLegend</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

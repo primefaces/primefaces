@@ -58,11 +58,35 @@ public class BaseChartRenderer extends CoreRenderer {
         if(chart.getSeriesColors() != null)
             writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
         
+        
         if(legendPosition != null) {
             writer.write(",legend:{");
             writer.write("show:true");
             if(chart.isEnhancedLegend()) writer.write(",renderer: $.jqplot.EnhancedLegendRenderer");
             writer.write(",location:'" + legendPosition + "'}");
         }
+        
+        writer.write(",axes:{");
+        writer.write("xaxis:{");
+        if(chart.getXaxisLabel() != null){
+            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
+            writer.write("label:'" + chart.getXaxisLabel() + "',");
+        }
+        if(chart.getXaxisAngle() != 0){
+            writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
+            writer.write("tickOptions:{ angle:" + chart.getXaxisAngle() + "}");
+        }
+        writer.write("}");
+        
+        writer.write(",yaxis:{");
+        if(chart.getYaxisLabel() != null){
+            writer.write("label:'" + chart.getYaxisLabel() + "',");
+            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
+        }
+        if(chart.getYaxisAngle() != 0){
+            writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
+            writer.write("tickOptions:{ angle:" + chart.getYaxisAngle() + "}");
+        }
+        writer.write("}}");
     }
 }
