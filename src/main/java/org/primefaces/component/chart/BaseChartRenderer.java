@@ -54,6 +54,9 @@ public class BaseChartRenderer extends CoreRenderer {
         
         if(!chart.isShadow())
             writer.write(",shadow:false");
+        
+        if(chart.isResizable())
+            writer.write(",resizable:true");
 
         if(chart.getSeriesColors() != null)
             writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
