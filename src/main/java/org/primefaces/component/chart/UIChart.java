@@ -35,13 +35,17 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 
     protected enum PropertyKeys {
         widgetVar
-		,value
+	,value
         ,styleClass
         ,style
         ,title
         ,legendPosition
         ,enhancedLegend
         ,shadow
+        ,xaxisLabel
+        ,yaxisLabel
+        ,xaxisAngle
+        ,yaxisAngle
         ,seriesColors;
 
 		String toString;
@@ -91,6 +95,34 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
 	public void setTitle(String _title) {
 		getStateHelper().put(PropertyKeys.title, _title);
+	}
+        
+    public String getXaxisLabel() {
+		return (String) getStateHelper().eval(PropertyKeys.xaxisLabel, null);
+	}
+	public void setXaxisLabel(String _xLabel) {
+		getStateHelper().put(PropertyKeys.xaxisLabel, _xLabel);
+	}
+        
+    public String getYaxisLabel() {
+		return (String) getStateHelper().eval(PropertyKeys.yaxisLabel, null);
+	}
+	public void setYaxisLabel(String _yLabel) {
+		getStateHelper().put(PropertyKeys.yaxisLabel, _yLabel);
+	}
+        
+    public Integer getYaxisAngle() {
+		return (Integer) getStateHelper().eval(PropertyKeys.yaxisAngle, 0);
+	}
+	public void setYaxisAngle(Integer _yAngle) {
+		getStateHelper().put(PropertyKeys.yaxisAngle, _yAngle);
+	}
+        
+    public Integer getXaxisAngle() {
+		return (Integer) getStateHelper().eval(PropertyKeys.xaxisAngle, 0);
+	}
+	public void setXaxisAngle(Integer _xAngle) {
+		getStateHelper().put(PropertyKeys.xaxisAngle, _xAngle);
 	}
 
     public String getLegendPosition() {

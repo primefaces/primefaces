@@ -86,6 +86,30 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
         </attribute>
+        <attribute>
+            <name>xLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>yLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>xAngle</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>yAngle</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
     </attributes>
     <resources>
         <resource>

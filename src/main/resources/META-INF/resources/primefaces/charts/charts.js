@@ -43,16 +43,17 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     this.cfg.seriesDefaults = {};
     
     //axes
-    this.cfg.axes = {
-        xaxis:{
-            min:this.cfg.minX,
-            max:this.cfg.maxX
-        },
-        yaxis:{
-            min:this.cfg.minY,
-            max:this.cfg.maxY
-        }
-    };
+    this.cfg.axes = this.cfg.axes || {};
+    this.cfg.axes.xaxis = this.cfg.axes.xaxis || {};
+    this.cfg.axes.yaxis = this.cfg.axes.yaxis || {};
+    
+    this.cfg.axes.xaxis.min = this.cfg.minX;
+    this.cfg.axes.xaxis.max = this.cfg.maxX;
+
+    this.cfg.axes.yaxis.min = this.cfg.minY;
+    this.cfg.axes.yaxis.max = this.cfg.maxY;
+
+   
 
     if(this.cfg.categories) {
         this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
@@ -114,15 +115,21 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
         max: this.cfg.max
     }
 
-    this.cfg.axes = {};
-
+    this.cfg.axes = this.cfg.axes || {};
+    this.cfg.axes.xaxis = this.cfg.axes.xaxis || {};
+    this.cfg.axes.yaxis = this.cfg.axes.yaxis || {};
+    
     if(this.cfg.orientation == 'vertical') {
-    	this.cfg.axes.xaxis = categoryAxis;
-        this.cfg.axes.yaxis = valueAxis;
+    	this.cfg.axes.xaxis.renderer = categoryAxis.renderer;
+    	this.cfg.axes.xaxis.ticks = categoryAxis.ticks;
+        this.cfg.axes.yaxis.min = valueAxis.min;
+        this.cfg.axes.yaxis.max = valueAxis.max;
     }
     else {
-    	this.cfg.axes.yaxis = categoryAxis;
-        this.cfg.axes.xaxis = valueAxis;
+    	this.cfg.axes.yaxis.renderer = categoryAxis.renderer;
+    	this.cfg.axes.yaxis.ticks = categoryAxis.ticks;
+        this.cfg.axes.xaxis.min = valueAxis.min;
+        this.cfg.axes.xaxis.max = valueAxis.max;
     }
 
     //events
@@ -184,6 +191,9 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     this.cfg.seriesDefaults.rendererOptions.highlightAlpha = 0.8;
     this.cfg.highlighter = {show:false};
     this.cfg.seriesDefaults.shadow = this.cfg.shadow;
+    
+    //events
+    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
     
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
