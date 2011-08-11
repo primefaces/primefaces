@@ -28,6 +28,9 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     //highlighter
     PrimeFaces.widget.ChartUtils.bindHighlighter(this);
     this.cfg.highlighter = {show:false}; //default highlighter 
+    
+    if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -76,6 +79,9 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
 
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+    
+    if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -139,6 +145,9 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     PrimeFaces.widget.ChartUtils.bindHighlighter(this);
     this.cfg.highlighter = {show:false}; //default highlighter off
     
+    if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
+    
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
 }
@@ -174,6 +183,9 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
     PrimeFaces.widget.ChartUtils.bindHighlighter(this);
     this.cfg.highlighter = {show:false}; //default highlighter 
 
+    if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
+
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
 }
@@ -194,6 +206,9 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+    
+    if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -217,6 +232,9 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
           <tr><td>low:</td><td>%s</td></tr> \
           <tr><td>close:</td><td>%s</td></tr></table>'
    }
+   
+   if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
 
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -232,6 +250,9 @@ PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
 
     if(this.cfg.seriesColors)
         this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
+    
+    if(this.cfg.resizable)
+        PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
     this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
@@ -254,6 +275,20 @@ PrimeFaces.widget.ChartUtils = {
                     itemSelectCallback.call(chart, ev, ext);
                 }
             }
+        });
+    },
+    
+    makeResizable : function(chart){
+        var jq = $(PrimeFaces.escapeClientId(chart.id)),
+        rs = $("<div class='ui-widget-content'></div>");
+        
+        rs.insertBefore(jq);
+        jq.appendTo(rs);
+        
+        rs.resizable({helper:'ui-resizable-helper'}).bind('resizestop', function(event, ui) {
+            jq.height(rs.height());
+            jq.width(rs.width());
+            chart.plot.replot({resetAxes:true});
         });
     },
     
