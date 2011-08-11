@@ -207,6 +207,9 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
     
+    //highlighter
+    PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+    
     if(this.cfg.resizable)
         PrimeFaces.widget.ChartUtils.makeResizable(this);
     
@@ -288,7 +291,9 @@ PrimeFaces.widget.ChartUtils = {
         rs.resizable({helper:'ui-resizable-helper'}).bind('resizestop', function(event, ui) {
             jq.height(rs.height());
             jq.width(rs.width());
-            chart.plot.replot({resetAxes:true});
+            chart.plot.replot();
+            PrimeFaces.widget.ChartUtils.bindHighlighter(chart);
+            PrimeFaces.widget.ChartUtils.bindItemSelectListener(chart);
         });
     },
     
