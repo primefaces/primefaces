@@ -21,7 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
-import org.primefaces.component.chart.meterGauge.MeterGaugeChart;
 import org.primefaces.model.chart.MeterGaugeChartModel;
 
 public class MeterGaugeChartRenderer extends BaseChartRenderer {
