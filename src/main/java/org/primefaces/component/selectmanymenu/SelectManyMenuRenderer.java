@@ -150,7 +150,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, menu);
         Converter converter = getConverter(context, menu);
-        Object value = menu.getValue();
+        List value = (List) menu.getValue();
 
         for(SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
@@ -159,7 +159,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
             writer.startElement("option", null);
             writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
 
-            if(value != null && value.equals(itemValue)) {
+            if(value != null && value.contains(itemValue)) {
                 writer.writeAttribute("selected", "selected", null);
             }
 
