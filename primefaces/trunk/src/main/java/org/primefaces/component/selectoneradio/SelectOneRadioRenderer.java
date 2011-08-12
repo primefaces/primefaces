@@ -90,7 +90,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String clientId, String containerClientId, boolean checked, boolean disabled, String label, String formattedValue) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String clientId, String containerClientId, boolean checked, boolean disabled, String label, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -100,7 +100,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
         writer.writeAttribute("id", containerClientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "radio", null);
-        writer.writeAttribute("value", formattedValue, null);
+        writer.writeAttribute("value", value, null);
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
@@ -138,38 +138,9 @@ public class SelectOneRadioRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		SelectOneRadio radio = (SelectOneRadio) component;
-		String value = (String) submittedValue;
-		Converter converter = radio.getConverter();
-
-		//first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, radio, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = radio.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, radio, value);
-                }
-            }
-		}
-
-		return value;
-	}
-
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, radio);
-        Converter converter = getConverter(context, radio);
-        Object value = radio.getValue();
         String layout = radio.getLayout();
         boolean pageDirection = layout != null && layout.equals("pageDirection");
 
@@ -181,7 +152,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
                 writer.startElement("tr", null);
             }
 
-            encodeOption(context, radio, value, converter, itemLabel, itemValue);
+            encodeOption(context, radio, itemLabel, itemValue);
 
             if(pageDirection) {
                 writer.endElement("tr");
@@ -189,14 +160,22 @@ public class SelectOneRadioRenderer extends InputRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneRadio radio, String itemLabel, Object itemValue) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectOneRadio radio = (SelectOneRadio) component;
-        String formattedValue = getOptionAsString(context, component, converter, value);
-        String clientId = component.getClientId(context);
-        String containerClientId = component.getContainerClientId(context);
-        boolean checked = componentValue != null && componentValue.equals(value);
+        Object value = radio.getValue();
+        Converter converter = getConverter(context, radio);
+        
+        String convertedValue = getOptionAsString(context, radio, converter, itemValue);
+        String clientId = radio.getClientId(context);
+        String containerClientId = radio.getContainerClientId(context);
         boolean disabled = radio.isDisabled();
+        Class type = getValueType(context, radio);
+        
+        if(itemValue != null && !itemValue.equals("")) {
+            itemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
+        }
+        
+        boolean checked = value != null && value.equals(itemValue);
 
         writer.startElement("td", null);
 
@@ -208,14 +187,21 @@ public class SelectOneRadioRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
 
-        encodeOptionInput(context, radio, clientId, containerClientId, checked, disabled, label, formattedValue);
+        encodeOptionInput(context, radio, clientId, containerClientId, checked, disabled, itemLabel, convertedValue);
         encodeOptionOutput(context, radio, checked);
 
         writer.endElement("div");
         writer.endElement("td");
 
         writer.startElement("td", null);
-        encodeOptionLabel(context, radio, containerClientId, label);
+        encodeOptionLabel(context, radio, containerClientId, itemLabel);
         writer.endElement("td");
+    }
+    
+    protected Class getValueType(FacesContext context, UIInput input) {
+        ValueExpression ve = input.getValueExpression("value");
+        Class type = ve == null ? String.class : ve.getType(context.getELContext());
+        
+        return type == null ? String.class : type;
     }
 }
