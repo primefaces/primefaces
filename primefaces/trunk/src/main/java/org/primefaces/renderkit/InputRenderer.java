@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.el.ValueExpression;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
@@ -115,7 +114,6 @@ public class InputRenderer extends CoreRenderer {
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
 		UIInput input = (UIInput) component;
-		String value = (String) submittedValue;
 		Converter converter = getConverter(context, input);
 
 		if(converter != null) {
