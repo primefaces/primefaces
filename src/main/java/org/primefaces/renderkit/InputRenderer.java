@@ -73,7 +73,15 @@ public class InputRenderer extends CoreRenderer {
                         }
                     } else {
                         for(Iterator it = collection.iterator(); it.hasNext();) {
-                            selectItems.add((SelectItem) it.next());
+                            Object object = it.next();
+                            
+                            if(object instanceof SelectItem) {
+                                selectItems.add((SelectItem) it.next());
+                            }
+                            else if(object instanceof Enum) {
+                                Enum e = (Enum) object;
+                                selectItems.add(new SelectItem(e.name(), e.name()));
+                            }
                         }
                     }                    
                 }
