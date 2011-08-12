@@ -17,6 +17,7 @@ package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
 import java.util.List;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -58,6 +59,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
         List<SelectItem> selectItems = getSelectItems(context, menu);
         String clientId = menu.getClientId(context);
         boolean disabled = menu.isDisabled();
+        Class type = getValueType(context, menu);
+                
         String style = menu.getStyle();
         String styleclass = menu.getStyleClass();
         styleclass = styleclass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleclass;
@@ -69,15 +72,15 @@ public class SelectOneMenuRenderer extends InputRenderer {
         if(style != null)
             writer.writeAttribute("style", style, "style");
 
-        encodeInput(context, menu, clientId, selectItems);
-        encodeLabel(context, menu, selectItems);
+        encodeInput(context, menu, clientId, selectItems, type);
+        encodeLabel(context, menu, selectItems, type);
         encodeMenuIcon(context, menu);
-        encodePanel(context, menu, selectItems);
+        encodePanel(context, menu, selectItems, type);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems) throws IOException {
+    protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
         
@@ -90,16 +93,16 @@ public class SelectOneMenuRenderer extends InputRenderer {
         if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
-        encodeSelectItems(context, menu, selectItems);
+        encodeSelectItems(context, menu, selectItems, type);
 
         writer.endElement("select");
 
         writer.endElement("div");
     }
 
-    protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String label = getSelectedLabel(context, menu, selectItems);
+        String label = getSelectedLabel(context, menu, selectItems, type);
         
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
@@ -133,7 +136,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodePanel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = menu.getVar() != null;
         int height = calculatePanelHeight(menu, selectItems.size());
@@ -150,20 +153,20 @@ public class SelectOneMenuRenderer extends InputRenderer {
             writer.startElement("table", menu);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
             writer.startElement("tbody", menu);
-            encodeOptionsAsTable(context, menu, selectItems);
+            encodeOptionsAsTable(context, menu, selectItems, type);
             writer.endElement("tbody");
             writer.endElement("table");
         } else {
             writer.startElement("ul", menu);
             writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
-            encodeOptionsAsList(context, menu, selectItems);
+            encodeOptionsAsList(context, menu, selectItems, type);
             writer.endElement("ul");
         }
         
         writer.endElement("div");
     }
 
-    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = menu.getVar();
         List<Column> columns = menu.getColums();
@@ -172,8 +175,14 @@ public class SelectOneMenuRenderer extends InputRenderer {
         for(SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
             
-            context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
+            if(itemValue != null && !itemValue.equals("")) {
+                itemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
+            }
+            
             boolean selected = (value != null && value.equals(itemValue));
+            
+            context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
+            
             String rowStyleClass = selected ? SelectOneMenu.ROW_CLASS + " ui-state-active" : SelectOneMenu.ROW_CLASS;
             
             writer.startElement("tr", null);
@@ -198,7 +207,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         context.getExternalContext().getRequestMap().put(var, null);
     }
 
-    protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menu.getValue();
 
@@ -207,6 +216,10 @@ public class SelectOneMenuRenderer extends InputRenderer {
             Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
+            
+            if(itemValue != null && !itemValue.equals("")) {
+                itemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
+            }
 
             boolean selected = (i==0 && value==null) || (value != null && value.equals(itemValue));
             String itemStyleClass = selected ? SelectOneMenu.ITEM_CLASS + " ui-state-active" : SelectOneMenu.ITEM_CLASS;
@@ -234,7 +247,8 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         writer.write("effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400)writer.write(",effectDuration:" + menu.getEffectDuration());
+        if(menu.getEffectDuration() != 400)
+            writer.write(",effectDuration:" + menu.getEffectDuration());
 
         encodeClientBehaviors(context, menu);
 
@@ -243,19 +257,23 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.endElement("script");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = getConverter(context, menu);
         Object value = menu.getValue();
-
+        
         for(SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
+            
+            if(itemValue != null && !itemValue.equals("")) {
+                itemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
+            }
 
             writer.startElement("option", null);
             writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
 
-            if((value == null && itemValue.equals("")) || (value != null && value.equals(itemValue))) {
+            if(value != null && value.equals(itemValue)) {
                 writer.writeAttribute("selected", "selected", null);
             }
 
@@ -265,7 +283,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         }
     }
 
-	protected String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items) {
+	protected String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items, Class type) {
 		Object value = menu.getValue();
         String label = null;
 
@@ -274,7 +292,12 @@ public class SelectOneMenuRenderer extends InputRenderer {
         } 
         else {
             for(SelectItem item : items) {
-                if(item.getValue().equals(value)) {
+                Object itemValue = item.getValue();
+                if(itemValue != null && !itemValue.equals("")) {
+                    itemValue = context.getApplication().getExpressionFactory().coerceToType(item.getValue(), type);
+                }
+                
+                if(value.equals(itemValue)) {
                     label = item.getLabel();
                     break;
                 }
@@ -307,4 +330,11 @@ public class SelectOneMenuRenderer extends InputRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+    
+    protected Class getValueType(FacesContext context, SelectOneMenu menu) {
+        ValueExpression ve = menu.getValueExpression("value");
+        Class type = ve == null ? String.class : ve.getType(context.getELContext());
+        
+        return type == null ? String.class : type;
+    }
 }
