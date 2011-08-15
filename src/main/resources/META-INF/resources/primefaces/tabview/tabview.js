@@ -35,18 +35,29 @@ PrimeFaces.widget.TabView.prototype.bindEvents = function() {
                 }
             })
             .live('click.tabview', function(e) {
-                var element = $(this),
-                index = element.index();
+                var element = $(this);
                 
-                if(!element.hasClass('ui-state-disabled') && index != _self.cfg.selected) {
-                    element.addClass('ui-state-focus ui-tabs-selected ui-state-active')
-                            .siblings('.ui-state-active').removeClass('ui-state-focus ui-tabs-selected ui-state-active');
-                            
-                    _self.select(index);
+                if($(e.target).is(':not(.ui-icon-close)')) {
+                    var index = element.index();
+
+                    if(!element.hasClass('ui-state-disabled') && index != _self.cfg.selected) {
+                        element.addClass('ui-state-focus ui-tabs-selected ui-state-active')
+                                .siblings('.ui-state-active').removeClass('ui-state-focus ui-tabs-selected ui-state-active');
+
+                        _self.select(index);
+                    }
                 }
                 
                 e.preventDefault();
             });
+            
+    //Closable tabs
+    $(this.jqId + ' .ui-tabs-nav li .ui-icon-close')
+        .die('click.tabview')
+        .live('click.tabview', function(e) {
+            _self.remove($(this).parent().index());
+            e.preventDefault();
+        });
 }
 
 /**
@@ -170,18 +181,30 @@ PrimeFaces.widget.TabView.prototype.add = function(url, label, index) {
     this.jq.tabs('add', url, label, index);
 }
 
+/**
+ * Removes a tab with given index
+ */
 PrimeFaces.widget.TabView.prototype.remove = function(index) {    
-    this.fireTabCloseEvent(null, this.jq.children('.ui-tabs-panel').get(index));
+    var header = this.jq.children('.ui-tabs-nav').children().eq(index),
+    panel = this.jq.children('.ui-tabs-panel').eq(index);
     
-    this.jq.tabs('remove', index);
+    this.fireTabCloseEvent(panel.attr('id'), index);
+    
+    header.remove();
+    panel.remove();
+    
+    //active next tab if active tab is removed
+    if(index == this.cfg.selected && this.getLength() > 0) {
+       this.select(index);
+    }
 }
 
 PrimeFaces.widget.TabView.prototype.getLength = function() {
-    return this.jq.tabs('length');
+    return this.jq.children('.ui-tabs-nav').children().length;
 }
 
 PrimeFaces.widget.TabView.prototype.getActiveIndex = function() {
-    return this.jq.tabs('option', 'selected');
+    return this.cfg.selected;
 }
 
 PrimeFaces.widget.TabView.prototype.fireTabChangeEvent = function(panel) {
@@ -199,7 +222,7 @@ PrimeFaces.widget.TabView.prototype.fireTabChangeEvent = function(panel) {
     }
 }
 
-PrimeFaces.widget.TabView.prototype.fireTabCloseEvent = function(panel) {
+PrimeFaces.widget.TabView.prototype.fireTabCloseEvent = function(id, index) {
     var _self = this;
     
     if(this.hasBehavior('tabClose')) {
@@ -207,10 +230,10 @@ PrimeFaces.widget.TabView.prototype.fireTabCloseEvent = function(panel) {
         ext = {
             params: {}
         };
-        ext.params[this.id + '_closeTab'] = panel.id;
-        ext.params[this.id + '_tabindex'] = $(_self.jqId).children('.ui-tabs-panel').index(panel) - 1;
+        ext.params[this.id + '_closeTab'] = id
+        ext.params[this.id + '_tabindex'] = index;
 
-        tabCloseBehavior.call(this, panel, ext);
+        tabCloseBehavior.call(this, null, ext);
     }
 }
 
@@ -220,14 +243,4 @@ PrimeFaces.widget.TabView.prototype.hasBehavior = function(event) {
     }
     
     return false;
-}
-
-PrimeFaces.widget.TabView.prototype.bindCloseEvents = function() {
-    var _self = this;
-    $(this.jqId + ' .ui-tabs-nav li .ui-icon-close').click(function(e) {
-        var element = $(this),
-        tabindex = element.parent().index();
-        
-        _self.remove(tabindex);
-    });
 }
