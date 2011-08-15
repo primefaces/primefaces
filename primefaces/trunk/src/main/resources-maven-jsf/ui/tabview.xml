@@ -66,13 +66,13 @@
             <name>onTabChange</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to execute when a tab isclicked.</description>
+            <description>Client side callback to execute when a tab is clicked.</description>
         </attribute>
         <attribute>
             <name>onTabShow</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to execute when a tab isshown.</description>
+            <description>Client side callback to execute when a tab is shown.</description>
         </attribute>
         <attribute>
 			<name>style</name>

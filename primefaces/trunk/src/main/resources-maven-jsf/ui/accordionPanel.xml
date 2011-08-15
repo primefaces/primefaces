@@ -47,51 +47,23 @@
             <description>Style class of the container element.</description>
 		</attribute>
 		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Disables or enables the accordion panel.</description>
-		</attribute>
-		<attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>slide</defaultValue>
-            <description>Effect to use when toggling the tabs. Default is slide.</description>
-		</attribute>
-		<attribute>
-			<name>autoHeight</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-            <description>When enabled, tab with highest content is used to calculate the height. Default is true.</description>
-		</attribute>
-		<attribute>
 			<name>collapsible</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
             <description>Defines if accordion panel can be collapsed all together.</description>
 		</attribute>
-		<attribute>
-			<name>fillSpace</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>When enabled, accordion panel fills the height of it's parent container.</description>
-		</attribute>
-		<attribute>
-			<name>event</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Client side event to toggle the tabs. Default is click.</description>
-		</attribute>
         <attribute>
             <name>onTabChange</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to invoke when active tab changes.</description>
+            <description>Client side callback to execute when a tab is clicked.</description>
+        </attribute>
+        <attribute>
+            <name>onTabShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is shown.</description>
         </attribute>
         <attribute>
             <name>dynamic</name>
