@@ -63,12 +63,6 @@
             </description>
         </attribute>
         <attribute>
-            <name>event</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Dom event to use to activate a tab.</description>
-        </attribute>
-        <attribute>
             <name>onTabChange</name>
             <required>false</required>
             <type>java.lang.String</type>
