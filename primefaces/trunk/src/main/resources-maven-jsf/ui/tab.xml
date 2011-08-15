@@ -46,5 +46,11 @@
             <defaultValue>false</defaultValue>
             <description>Makes the tab closable by displaying a close icon.</description>
 		</attribute>
+        <attribute>
+			<name>titletip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Tooltip of the tab header.</description>
+		</attribute>
 	</attributes>
 </component>
