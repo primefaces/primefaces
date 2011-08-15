@@ -94,11 +94,6 @@ public class TabViewRenderer extends CoreRenderer {
             writer.write(",duration:'" + tabView.getEffectDuration() + "'");
             writer.write("}");
         }
-
-        String disabledTabs = tabView.findDisabledTabs();
-        
-        if(disabledTabs.length() > 0)
-            writer.write(",disabled:[" + disabledTabs + "]");
         
         encodeClientBehaviors(context, tabView);
 
@@ -110,11 +105,15 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
+        String styleClass = tabView.getStyleClass();
+        styleClass = styleClass == null ? TabView.CONTAINER_CLASS : TabView.CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
-        if(tabView.getStyle() != null) writer.writeAttribute("style", tabView.getStyle(), "style");
-        if(tabView.getStyleClass() != null) writer.writeAttribute("class", tabView.getStyleClass(), "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        
+        if(tabView.getStyle() != null) 
+            writer.writeAttribute("style", tabView.getStyle(), "style");
 
         encodeHeaders(context, tabView);
         encodeContents(context, tabView);
@@ -139,13 +138,17 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = tabView.getVar();
+        int activeIndex = tabView.getActiveIndex();
 
         writer.startElement("ul", null);
+        writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
 
         if(var == null) {
+            int i = 0;
             for(UIComponent kid : tabView.getChildren()) {
                 if(kid.isRendered() && kid instanceof Tab) {
-                    encodeTabHeader(context, (Tab) kid);
+                    encodeTabHeader(context, (Tab) kid, (i == activeIndex));
+                    i++;
                 }
             }
         } 
@@ -156,7 +159,7 @@ public class TabViewRenderer extends CoreRenderer {
             for(int i = 0; i < dataCount; i++) {
                 tabView.setRowIndex(i);
                 
-                encodeTabHeader(context, tab);
+                encodeTabHeader(context, tab, (i == activeIndex));
             }
             
             tabView.setRowIndex(-1);
@@ -165,13 +168,17 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
     
-    protected void encodeTabHeader(FacesContext context, Tab tab) throws IOException {
+    protected void encodeTabHeader(FacesContext context, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.TAB_HEADER_CLASS;
+        String styleClass = tab.getTitleStyleClass();
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         
         //header container
         writer.startElement("li", null);
+        writer.writeAttribute("class", styleClass, null);
         if(tab.getTitleStyle() != null)  writer.writeAttribute("style", tab.getTitleStyle(), null);
-        if(tab.getTitleStyleClass() != null)  writer.writeAttribute("class", tab.getTitleStyleClass(), null);
+        if(tab.getTitletip() != null)  writer.writeAttribute("title", tab.getTitletip(), null);
 
         //title
         writer.startElement("a", null);
@@ -191,14 +198,15 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
         String var = tabView.getVar();
-        int activeTabIndex = tabView.getActiveIndex();
+        int activeIndex = tabView.getActiveIndex();
+        boolean dynamic = tabView.isDynamic();
         
         if(var == null) {
-            for(int i = 0; i < tabView.getChildCount(); i++) {
-                Tab tab = (Tab) tabView.getChildren().get(i);
-
-                if(tab.isRendered()) {
-                    encodeTabContent(context, tabView, tab, i, activeTabIndex);
+            int i = 0;
+            for(UIComponent kid : tabView.getChildren()) {
+                if(kid.isRendered() && kid instanceof Tab) {
+                    encodeTabContent(context, (Tab) kid, (i == activeIndex), dynamic);
+                    i++;
                 }
             }
         }
@@ -209,7 +217,7 @@ public class TabViewRenderer extends CoreRenderer {
             for(int i = 0; i < dataCount; i++) {
                 tabView.setRowIndex(i);
                 
-                encodeTabContent(context, tabView, tab, i, activeTabIndex);
+                encodeTabContent(context, tab, (i == activeIndex), dynamic);
             }
             
             tabView.setRowIndex(-1);
@@ -217,14 +225,16 @@ public class TabViewRenderer extends CoreRenderer {
         
     }
     
-    protected void encodeTabContent(FacesContext context, TabView tabView, Tab tab, int index, int activeIndex) throws IOException {
+    protected void encodeTabContent(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.TAB_CONTENT_CLASS;
         
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
+        writer.writeAttribute("class", styleClass, null);
 
-        if(tabView.isDynamic()) {
-            if(index == activeIndex)
+        if(dynamic) {
+            if(active)
                 tab.encodeAll(context);
         } 
         else {
