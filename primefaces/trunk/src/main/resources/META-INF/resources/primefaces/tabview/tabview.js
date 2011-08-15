@@ -7,6 +7,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = $(this.jqId);
     this.stateHolder = $(this.jqId + '_activeIndex');
+    this.cfg.selected = this.stateHolder.val();
     
     this.bindEvents();
 	
@@ -186,15 +187,11 @@ PrimeFaces.widget.TabView.prototype.isLoaded = function(panel) {
 }
 
 PrimeFaces.widget.TabView.prototype.disable = function(index) {
-    this.jq.tabs('disable', index);
+    this.jq.children('.ui-tabs-nav').children().eq(index).addClass('ui-state-disabled');
 }
 
 PrimeFaces.widget.TabView.prototype.enable = function(index) {
-    this.jq.tabs('enable', index);
-}
-
-PrimeFaces.widget.TabView.prototype.add = function(url, label, index) {
-    this.jq.tabs('add', url, label, index);
+    this.jq.children('.ui-tabs-nav').children().eq(index).removeClass('ui-state-disabled');
 }
 
 /**
