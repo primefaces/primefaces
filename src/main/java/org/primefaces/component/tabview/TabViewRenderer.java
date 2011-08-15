@@ -83,7 +83,6 @@ public class TabViewRenderer extends CoreRenderer {
         writer.write(",dynamic:" + tabView.isDynamic());
         writer.write(",cache:" + tabView.isCache());
 
-        if(tabView.isCollapsible()) writer.write(",collapsible:true");
         if(tabView.getEvent() != null) writer.write(",event:'" + tabView.getEvent() + "'");
         if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(index) {" + tabView.getOnTabChange() + "}");
         if(tabView.getOnTabShow() != null) writer.write(",onTabShow:function(index) {" + tabView.getOnTabShow() + "}");

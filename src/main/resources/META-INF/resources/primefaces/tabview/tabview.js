@@ -7,7 +7,6 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = $(this.jqId);
     this.stateHolder = $(this.jqId + '_activeIndex');
-    var _self = this;
     
     this.bindEvents();
 	

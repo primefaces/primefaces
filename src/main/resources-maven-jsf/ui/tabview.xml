@@ -63,13 +63,6 @@
             </description>
         </attribute>
         <attribute>
-            <name>collapsible</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Specifies if all tabs can be collapsed. Default is false.</description>
-        </attribute>
-        <attribute>
             <name>event</name>
             <required>false</required>
             <type>java.lang.String</type>
