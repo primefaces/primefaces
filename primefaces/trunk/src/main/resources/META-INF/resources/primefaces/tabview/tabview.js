@@ -97,19 +97,19 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
 }
 
 PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
-    var oldPanel = this.jq.children('.ui-tabs-panel:not(.ui-tabs-hide)'),
+    var oldPanel = this.jq.children('.ui-tabs-panel:visible'),
     _self = this;
     
     if(this.cfg.effect) {
         oldPanel.hide(this.cfg.effect.name, null, this.cfg.effect.duration, function() {
-            $(this).addClass('ui-tabs-hide');
+            $(this).hide();
             
-            newPanel.css('display', 'none').removeClass('ui-tabs-hide').show(_self.cfg.effect.name, null, _self.cfg.effect.duration);
+            newPanel.show(_self.cfg.effect.name, null, _self.cfg.effect.duration);
         });
     }
     else {
-        oldPanel.addClass('ui-tabs-hide');
-        newPanel.removeClass('ui-tabs-hide');
+        oldPanel.hide();
+        newPanel.show();
     }
 }
 
