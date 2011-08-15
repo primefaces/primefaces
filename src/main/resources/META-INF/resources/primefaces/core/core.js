@@ -356,6 +356,10 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
                 cfg.oncomplete.call(this, xhr, status, this.args);
             }
             
+            if(ext.oncomplete) {
+                ext.oncomplete.call(this, xhr, status, this.args);
+            }
+            
             //focus behavior source if validationFailed
             if(this.args.validationFailed && this.behaviorSource) {
                 var behaviorSource = $(PrimeFaces.escapeClientId(this.behaviorSource));
