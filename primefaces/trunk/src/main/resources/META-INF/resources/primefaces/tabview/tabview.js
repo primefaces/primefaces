@@ -83,13 +83,7 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
     } 
     else {
         this.show(newPanel);
-        
-        //Call user onTabShow callback
-        if(this.cfg.onTabShow) {
-            this.cfg.onTabShow.call(this, index);
-        }
-        
-        //invoke ajax callback if defined
+
         this.fireTabChangeEvent(newPanel);
     }
     
@@ -118,6 +112,11 @@ PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
         
         newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
         newPanel.show();
+    }
+    
+    //Call user onTabShow callback
+    if(this.cfg.onTabShow) {
+        this.cfg.onTabShow.call(this, newPanel);
     }
 }
 
@@ -161,11 +160,6 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
     
     options.oncomplete = function() {
         _self.show(newPanel);
-        
-        //Call user onTabShow callback
-        if(_self.cfg.onTabShow) {
-            _self.cfg.onTabShow.call(_self, tabindex);
-        }
     };
 
 
