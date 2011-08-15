@@ -125,6 +125,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 				Tab tab = (Tab) child;
                 boolean active = (i == activeIndex);
                 String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
+                headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
                 String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
                 String contentStyle = active ? "display:block" : "display:none";
 				
