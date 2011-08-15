@@ -92,27 +92,6 @@ import javax.faces.component.visit.VisitResult;
         }
     }
 
-    public String findDisabledTabs(){
-        StringBuilder disabledTabs = new StringBuilder();
-
-        for(int i = 0 ; i < this.getChildren().size(); i++){
-            UIComponent kid = this.getChildren().get(i);
-
-            if(kid.isRendered() && kid instanceof Tab) {
-                Tab tab = (Tab) kid;
-                
-                if(tab.isDisabled()){
-                    if(disabledTabs.length() > 0) {
-                        disabledTabs.append(",");
-                    }
-
-                    disabledTabs.append(i);
-                }
-            }
-        }
-        return disabledTabs.toString();
-    }
-
     @Override
     public void processDecodes(FacesContext context) {
         if(isRequestSource(context)) {
