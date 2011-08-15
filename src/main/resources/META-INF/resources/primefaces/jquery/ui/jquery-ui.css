@@ -253,3 +253,4 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  **/
 .ui-tabs .ui-tabs-nav li { display: block; }
 .ui-tabs .ui-tabs-nav li .ui-icon { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+.ui-accordion .ui-accordion-header.ui-state-disabled, .ui-accordion .ui-accordion-header.ui-state-disabled a { cursor: default; }
