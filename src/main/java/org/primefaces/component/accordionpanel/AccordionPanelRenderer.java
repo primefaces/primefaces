@@ -54,30 +54,28 @@ public class AccordionPanelRenderer extends CoreRenderer {
             Tab tabToLoad = (Tab) acco.findTab(tabClientId);
 
             tabToLoad.encodeAll(context);
-        }else {
+        }
+        else {
             encodeMarkup(context, acco);
             encodeScript(context, acco);
         }
-		
 	}
 	
-	protected void encodeMarkup(FacesContext context, AccordionPanel accordionPanel) throws IOException {
+	protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		String clientId = accordionPanel.getClientId(context);
+		String clientId = acco.getClientId(context);
+        String styleClass = acco.getStyleClass();
+        styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		if(accordionPanel.getStyle() != null) writer.writeAttribute("style", accordionPanel.getStyle(), null);
-		if(accordionPanel.getStyleClass() != null) writer.writeAttribute("class", accordionPanel.getStyleClass(), null);
+        writer.writeAttribute("class", styleClass, null);
+		if(acco.getStyle() != null)
+            writer.writeAttribute("style", acco.getStyle(), null);
 
-        writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_acco", null);
+		encodeTabs(context, acco);
 
-		encodeTabs(context, accordionPanel);
-  
-        writer.endElement("div");
-
-        encodeStateHolder(context, accordionPanel);
+        encodeStateHolder(context, acco);
 
 		writer.endElement("div");
 	}
@@ -85,27 +83,17 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
-        int activeIndex = acco.getActiveIndex();
         boolean dynamic = acco.isDynamic();
  		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
-		writer.write("active:" + (activeIndex == -1 ? false : activeIndex));
-        writer.write(",dynamic:" + dynamic);
-		writer.write(",animated:'" + acco.getEffect() + "'");
+        writer.write("dynamic:" + dynamic);
 		
-		if(acco.getEvent() != null) writer.write(",event:'" + acco.getEvent() + "'");
-		if(!acco.isAutoHeight()) writer.write(",autoHeight:false");
+        if(dynamic) writer.write(",cache:" + acco.isCache());
 		if(acco.isCollapsible()) writer.write(",collapsible:true");
-		if(acco.isFillSpace()) writer.write(",fillSpace:true");
-		if(acco.isDisabled()) writer.write(",disabled:true");
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
-
-        if(dynamic) {
-            writer.write(",cache:" + acco.isCache());
-        }
 
         encodeClientBehaviors(context, acco);
 		
@@ -130,36 +118,49 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         int activeIndex = acco.getActiveIndex();
+        int i = 0;
 		
-		for(int i=0; i < acco.getChildCount(); i++) {
-			UIComponent kid = acco.getChildren().get(i);
-			
-			if(kid.isRendered() && kid instanceof Tab) {
-				Tab tab = (Tab) kid;
+		for(UIComponent child : acco.getChildren()) {
+			if(child.isRendered() && child instanceof Tab) {
+				Tab tab = (Tab) child;
+                boolean active = (i == activeIndex);
+                String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
+                String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
+                String contentStyle = active ? "display:block" : "display:none";
 				
-				//title
+				//header container
 				writer.startElement("h3", null);
+                writer.writeAttribute("class", headerClass, null);
+                
+                //icon
+                writer.startElement("span", null);
+                writer.writeAttribute("class", iconClass, null);
+                writer.endElement("span");
+                
 				writer.startElement("a", null);
 				writer.writeAttribute("href", "#", null);
-				if(tab.getTitle() != null) {
-					writer.write(tab.getTitle());
-				}
+                writer.writeAttribute("tabindex", "-1", null);
+                if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+				if(tab.getTitle() != null) writer.write(tab.getTitle());
+                
 				writer.endElement("a");
+                
 				writer.endElement("h3");
 				
 				//content
 				writer.startElement("div", null);
-                writer.writeAttribute("id", kid.getClientId(context), null);
+                writer.writeAttribute("id", child.getClientId(context), null);
+                writer.writeAttribute("class", AccordionPanel.TAB_CONTENT_CLASS, null);
+                writer.writeAttribute("style", contentStyle, null);
 
-                if(acco.isDynamic()) {
-                    if(i == activeIndex)
-                        tab.encodeAll(context);
-                }
-                else {
+                if(acco.isDynamic() && active)
                     tab.encodeAll(context);
-                }
+                else
+                    tab.encodeAll(context);
                 
 				writer.endElement("div");
+                
+                i++;
 			}
 		}
 	}
