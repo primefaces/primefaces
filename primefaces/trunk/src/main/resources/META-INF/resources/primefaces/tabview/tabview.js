@@ -70,18 +70,18 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
             return false;
     }
     
-    var panel = this.jq.children('.ui-tabs-panel').eq(index),
-    shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+    var newPanel = this.jq.children('.ui-tabs-panel').eq(index),
+    shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
     
     //update state
     this.stateHolder.val(index);
     this.cfg.selected = index;
         
     if(shouldLoad) {
-        this.loadDynamicTab(panel);
+        this.loadDynamicTab(newPanel);
     } 
     else {
-        panel.removeClass('ui-tabs-hide').siblings('.ui-tabs-panel:not(ui-tabs-hide)').addClass('ui-tabs-hide');
+        this.show(newPanel);
         
         //Call user onTabShow callback
         if(this.cfg.onTabShow) {
@@ -89,23 +89,40 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
         }
         
         //invoke ajax callback if defined
-        this.fireTabChangeEvent(panel);
+        this.fireTabChangeEvent(newPanel);
     }
     
     return true;
 }
 
+PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
+    var oldPanel = this.jq.children('.ui-tabs-panel:not(.ui-tabs-hide)'),
+    _self = this;
+    
+    if(this.cfg.effect) {
+        oldPanel.hide(this.cfg.effect.name, null, this.cfg.effect.duration, function() {
+            $(this).addClass('ui-tabs-hide');
+            
+            newPanel.css('display', 'none').removeClass('ui-tabs-hide').show(_self.cfg.effect.name, null, _self.cfg.effect.duration);
+        });
+    }
+    else {
+        oldPanel.addClass('ui-tabs-hide');
+        newPanel.removeClass('ui-tabs-hide');
+    }
+}
+
 /**
  * Loads tab contents with ajax
  */
-PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
+PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
     var _self = this,
     options = {
         source: this.id,
         process: this.id,
         update: this.id
     },
-    tabindex = panel.index() - 1;
+    tabindex = newPanel.index() - 1;
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = $(responseXML.documentElement),
@@ -117,10 +134,10 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
             content = update.text();
 
             if(id == _self.id){
-                panel.html(content);
+                newPanel.html(content);
 
                 if(_self.cfg.cache) {
-                    _self.markAsLoaded(panel);
+                    _self.markAsLoaded(newPanel);
                 }
             }
             else {
@@ -134,7 +151,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
     };
     
     options.oncomplete = function() {
-        panel.removeClass('ui-tabs-hide').siblings('.ui-tabs-panel:not(ui-tabs-hide)').addClass('ui-tabs-hide');
+        _self.show(newPanel);
         
         //Call user onTabShow callback
         if(_self.cfg.onTabShow) {
@@ -145,7 +162,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
-    params[this.id + '_newTab'] = panel.attr('id');
+    params[this.id + '_newTab'] = newPanel.attr('id');
     params[this.id + '_tabindex'] = tabindex;
 
     options.params = params;
@@ -153,7 +170,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(panel) {
     if(this.hasBehavior('tabChange')) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'];
         
-        tabChangeBehavior.call(this, panel, options);
+        tabChangeBehavior.call(this, newPanel, options);
     }
     else {
         PrimeFaces.ajax.AjaxRequest(options);
