@@ -178,22 +178,6 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
     }
 }
 
-PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {
-    panel.data('loaded', true);
-}
-
-PrimeFaces.widget.TabView.prototype.isLoaded = function(panel) {
-    return panel.data('loaded') == true;
-}
-
-PrimeFaces.widget.TabView.prototype.disable = function(index) {
-    this.jq.children('.ui-tabs-nav').children().eq(index).addClass('ui-state-disabled');
-}
-
-PrimeFaces.widget.TabView.prototype.enable = function(index) {
-    this.jq.children('.ui-tabs-nav').children().eq(index).removeClass('ui-state-disabled');
-}
-
 /**
  * Removes a tab with given index
  */
@@ -256,4 +240,20 @@ PrimeFaces.widget.TabView.prototype.hasBehavior = function(event) {
     }
     
     return false;
+}
+
+PrimeFaces.widget.TabView.prototype.markAsLoaded = function(panel) {
+    panel.data('loaded', true);
+}
+
+PrimeFaces.widget.TabView.prototype.isLoaded = function(panel) {
+    return panel.data('loaded') == true;
+}
+
+PrimeFaces.widget.TabView.prototype.disable = function(index) {
+    this.jq.children('.ui-tabs-nav').children().eq(index).addClass('ui-state-disabled');
+}
+
+PrimeFaces.widget.TabView.prototype.enable = function(index) {
+    this.jq.children('.ui-tabs-nav').children().eq(index).removeClass('ui-state-disabled');
 }
