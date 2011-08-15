@@ -41,9 +41,6 @@ PrimeFaces.widget.TabView.prototype.bindEvents = function() {
                     var index = element.index();
 
                     if(!element.hasClass('ui-state-disabled') && index != _self.cfg.selected) {
-                        element.addClass('ui-state-focus ui-tabs-selected ui-state-active')
-                                .siblings('.ui-state-active').removeClass('ui-state-focus ui-tabs-selected ui-state-active');
-
                         _self.select(index);
                     }
                 }
@@ -56,6 +53,7 @@ PrimeFaces.widget.TabView.prototype.bindEvents = function() {
         .die('click.tabview')
         .live('click.tabview', function(e) {
             _self.remove($(this).parent().index());
+            
             e.preventDefault();
         });
 }
@@ -97,7 +95,10 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
 }
 
 PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
-    var oldPanel = this.jq.children('.ui-tabs-panel:visible'),
+    var headers = this.jq.children('.ui-tabs-nav').children(),
+    oldHeader = headers.filter('.ui-state-active'),
+    newHeader = headers.eq(newPanel.index() - 1),
+    oldPanel = this.jq.children('.ui-tabs-panel:visible'),
     _self = this;
     
     if(this.cfg.effect) {
@@ -108,7 +109,10 @@ PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
         });
     }
     else {
+        oldHeader.removeClass('ui-state-focus ui-tabs-selected ui-state-active');
         oldPanel.hide();
+        
+        newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
         newPanel.show();
     }
 }
@@ -191,8 +195,9 @@ PrimeFaces.widget.TabView.prototype.remove = function(index) {
     panel.remove();
     
     //active next tab if active tab is removed
-    if(index == this.cfg.selected && this.getLength() > 0) {
-       this.select(index);
+    if(index == this.cfg.selected) {
+        var newIndex = this.cfg.selected == this.getLength() ? this.cfg.selected - 1: this.cfg.selected;
+        this.select(newIndex);
     }
 }
 
