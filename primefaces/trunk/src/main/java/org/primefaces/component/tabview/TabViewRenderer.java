@@ -196,9 +196,13 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String var = tabView.getVar();
         int activeIndex = tabView.getActiveIndex();
         boolean dynamic = tabView.isDynamic();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", TabView.PANELS_CLASS, null);
         
         if(var == null) {
             int i = 0;
@@ -222,6 +226,7 @@ public class TabViewRenderer extends CoreRenderer {
             tabView.setRowIndex(-1);
         }
         
+        writer.endElement("div");
     }
     
     protected void encodeTabContent(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {

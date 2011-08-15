@@ -6,14 +6,16 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = $(this.jqId);
+    this.navContainer = this.jq.children('.ui-tabs-nav');
+    this.panelContainer = this.jq.children('.ui-tabs-panels');
     this.stateHolder = $(this.jqId + '_activeIndex');
-    this.cfg.selected = this.stateHolder.val();
+    this.cfg.selected = parseInt(this.stateHolder.val());
     
     this.bindEvents();
 	
     //Cache initial active tab
     if(this.cfg.dynamic && this.cfg.cache) {
-        this.markAsLoaded(this.jq.children('.ui-tabs-panel').eq(this.cfg.selected));
+        this.markAsLoaded(this.panelContainer.children().eq(this.cfg.selected));
     }
 }
 
@@ -69,7 +71,7 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
             return false;
     }
     
-    var newPanel = this.jq.children('.ui-tabs-panel').eq(index),
+    var newPanel = this.panelContainer.children().eq(index),
     shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
     
     //update state
@@ -95,16 +97,18 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
 }
 
 PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
-    var headers = this.jq.children('.ui-tabs-nav').children(),
+    var headers = this.navContainer.children(),
     oldHeader = headers.filter('.ui-state-active'),
-    newHeader = headers.eq(newPanel.index() - 1),
-    oldPanel = this.jq.children('.ui-tabs-panel:visible'),
+    newHeader = headers.eq(newPanel.index()),
+    oldPanel = this.panelContainer.children('.ui-tabs-panel:visible'),
     _self = this;
     
     if(this.cfg.effect) {
         oldPanel.hide(this.cfg.effect.name, null, this.cfg.effect.duration, function() {
+            oldHeader.removeClass('ui-state-focus ui-tabs-selected ui-state-active');
             $(this).hide();
             
+            newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
             newPanel.show(_self.cfg.effect.name, null, _self.cfg.effect.duration);
         });
     }
@@ -127,7 +131,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
         process: this.id,
         update: this.id
     },
-    tabindex = newPanel.index() - 1;
+    tabindex = newPanel.index();
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = $(responseXML.documentElement),
@@ -186,10 +190,10 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
  * Removes a tab with given index
  */
 PrimeFaces.widget.TabView.prototype.remove = function(index) {    
-    var header = this.jq.children('.ui-tabs-nav').children().eq(index),
-    panel = this.jq.children('.ui-tabs-panel').eq(index);
+    var header = this.navContainer.children().eq(index),
+    panel = this.panelsContainer.children().eq(index);
     
-    this.fireTabCloseEvent(panel.attr('id'), index);
+    this.fireTabCloseEvent(panel);
     
     header.remove();
     panel.remove();
@@ -202,7 +206,7 @@ PrimeFaces.widget.TabView.prototype.remove = function(index) {
 }
 
 PrimeFaces.widget.TabView.prototype.getLength = function() {
-    return this.jq.children('.ui-tabs-nav').children().length;
+    return this.navContainer.children().length;
 }
 
 PrimeFaces.widget.TabView.prototype.getActiveIndex = function() {
@@ -218,22 +222,20 @@ PrimeFaces.widget.TabView.prototype.fireTabChangeEvent = function(panel) {
             params: {}
         };
         ext.params[this.id + '_newTab'] = panel.attr('id');
-        ext.params[this.id + '_tabindex'] = $(_self.jqId).children('.ui-tabs-panel').index(panel) - 1;
+        ext.params[this.id + '_tabindex'] = panel.index();
 
         tabChangeBehavior.call(this, panel, ext);
     }
 }
 
-PrimeFaces.widget.TabView.prototype.fireTabCloseEvent = function(id, index) {
-    var _self = this;
-    
+PrimeFaces.widget.TabView.prototype.fireTabCloseEvent = function(panel) {    
     if(this.hasBehavior('tabClose')) {
         var tabCloseBehavior = this.cfg.behaviors['tabClose'],
         ext = {
             params: {}
         };
-        ext.params[this.id + '_closeTab'] = id
-        ext.params[this.id + '_tabindex'] = index;
+        ext.params[this.id + '_closeTab'] = panel.attr('id')
+        ext.params[this.id + '_tabindex'] = panel.index();
 
         tabCloseBehavior.call(this, null, ext);
     }
@@ -256,9 +258,9 @@ PrimeFaces.widget.TabView.prototype.isLoaded = function(panel) {
 }
 
 PrimeFaces.widget.TabView.prototype.disable = function(index) {
-    this.jq.children('.ui-tabs-nav').children().eq(index).addClass('ui-state-disabled');
+    this.navContainer.children().eq(index).addClass('ui-state-disabled');
 }
 
 PrimeFaces.widget.TabView.prototype.enable = function(index) {
-    this.jq.children('.ui-tabs-nav').children().eq(index).removeClass('ui-state-disabled');
+    this.navContainer.children().eq(index).removeClass('ui-state-disabled');
 }
