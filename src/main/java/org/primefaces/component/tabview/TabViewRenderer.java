@@ -73,16 +73,16 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
+        boolean dynamic = tabView.isDynamic();
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         
         writer.write(tabView.resolveWidgetVar() + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
 
-        writer.write("selected:" + tabView.getActiveIndex());
-        writer.write(",dynamic:" + tabView.isDynamic());
-        writer.write(",cache:" + tabView.isCache());
+        writer.write("dynamic:" + dynamic);
 
+        if(dynamic) writer.write(",cache:" + tabView.isCache());
         if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(index) {" + tabView.getOnTabChange() + "}");
         if(tabView.getOnTabShow() != null) writer.write(",onTabShow:function(index) {" + tabView.getOnTabShow() + "}");
 
@@ -170,6 +170,7 @@ public class TabViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.TAB_HEADER_CLASS;
         String styleClass = tab.getTitleStyleClass();
+        styleClass = tab.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         
         //header container
