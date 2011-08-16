@@ -129,6 +129,7 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
     var params = {};
     params[this.id + '_contentLoad'] = true;
     params[this.id + '_newTab'] = panel.attr('id');
+    params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
 
     options.params = params;
     
@@ -152,6 +153,8 @@ PrimeFaces.widget.AccordionPanel.prototype.fireTabChangeEvent = function(panel) 
             params: {}
         };
         ext.params[this.id + '_newTab'] = panel.attr('id');
+        ext.params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
+
 
         tabChangeBehavior.call(this, null, ext);
     }
