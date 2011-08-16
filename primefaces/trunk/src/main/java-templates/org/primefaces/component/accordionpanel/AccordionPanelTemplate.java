@@ -15,7 +15,7 @@ import org.primefaces.util.Constants;
     private final static String DEFAULT_EVENT = "tabChange";
 
     public final static String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-accordion-icons";
-    public final static String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-corner-all ui-state-active ui-corner-top";
+    public final static String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
     public final static String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-corner-all";
     public final static String TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public final static String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
