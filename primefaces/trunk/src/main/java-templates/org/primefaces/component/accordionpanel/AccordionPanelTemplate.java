@@ -11,6 +11,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
 
     private final static String DEFAULT_EVENT = "tabChange";
 
@@ -77,6 +81,15 @@ import org.primefaces.util.Constants;
         if(isRequestSource(context)) {
             this.decode(context);
         }
+        else if(this.getVar() == null) {
+            Iterator kids = getFacetsAndChildren();
+            while (kids.hasNext()) {
+                UIComponent kid = (UIComponent) kids.next();
+                kid.processDecodes(context);
+            }
+
+            this.decode(context);
+        }
         else {
             super.processDecodes(context);
         }
@@ -84,22 +97,42 @@ import org.primefaces.util.Constants;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(isRequestSource(context)) {
+            return;
+        }
+        else if(this.getVar() == null) {
+            Iterator kids = getFacetsAndChildren();
+            while (kids.hasNext()) {
+                UIComponent kid = (UIComponent) kids.next();
+                kid.processValidators(context);
+            }
+        }
+        else {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!isRequestSource(context)) {
-            super.processUpdates(context);
-        }
-
         ValueExpression expr = this.getValueExpression("activeIndex");
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
         }
+
+        if(isRequestSource(context)) {
+            return;
+        }
+        else if(this.getVar() == null) {
+            Iterator kids = getFacetsAndChildren();
+            while (kids.hasNext()) {
+                UIComponent kid = (UIComponent) kids.next();
+                kid.processUpdates(context);
+            }
+        }
+        else {
+            super.processUpdates(context);
+        }        
     }
 
     protected void resetActiveIndex() {
@@ -114,4 +147,42 @@ import org.primefaces.util.Constants;
     @Override
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
+    }
+
+    @Override
+    public boolean visitTree(VisitContext context,  VisitCallback callback) {
+    
+        if(this.getVar() == null) {
+            if (!isVisitable(context))
+                return false;
+
+            FacesContext facesContext = context.getFacesContext();
+            pushComponentToEL(facesContext, null);
+
+            try {
+                VisitResult result = context.invokeVisitCallback(this, callback);
+
+                if (result == VisitResult.COMPLETE)
+                  return true;
+
+                if (result == VisitResult.ACCEPT) {
+                    Iterator<UIComponent> kids = this.getFacetsAndChildren();
+
+                    while(kids.hasNext()) {
+                        boolean done = kids.next().visitTree(context, callback);
+
+                        if (done)
+                            return true;
+                    }
+                }
+            }
+            finally {
+                popComponentFromEL(facesContext);
+            }
+
+            return false;
+        }
+        else {
+            return super.visitTree(context, callback);
+        }
     }
