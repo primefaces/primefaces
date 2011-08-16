@@ -356,7 +356,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
                 cfg.oncomplete.call(this, xhr, status, this.args);
             }
             
-            if(ext.oncomplete) {
+            if(ext && ext.oncomplete) {
                 ext.oncomplete.call(this, xhr, status, this.args);
             }
             
