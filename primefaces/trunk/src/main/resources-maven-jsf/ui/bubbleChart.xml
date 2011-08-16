@@ -87,25 +87,25 @@
             <defaultValue>true</defaultValue>
         </attribute>
         <attribute>
-            <name>xLabel</name>
+            <name>xaxisLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>yLabel</name>
+            <name>yaxisLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>xAngle</name>
+            <name>xaxisAngle</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>yAngle</name>
+            <name>yaxisAngle</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <ignoreInComponent>true</ignoreInComponent>
