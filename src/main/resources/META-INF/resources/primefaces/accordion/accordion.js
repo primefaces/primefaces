@@ -73,10 +73,15 @@ PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
 
 PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
     //deactivate current
-    this.headers.filter('.ui-state-active').removeClass('ui-state-active').next().slideUp();
+    var oldHeader = this.headers.filter('.ui-state-active');
+    oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+    oldHeader.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().slideUp();
     
     //activate selected
-    panel.slideDown().prev().addClass('ui-state-active').removeClass('ui-state-hover');
+    var newHeader = panel.prev();
+    newHeader.addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
+             .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+    panel.slideDown();
     
     //Call user onTabShow callback
     if(this.cfg.onTabShow) {
