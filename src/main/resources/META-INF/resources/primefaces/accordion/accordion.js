@@ -25,12 +25,12 @@ PrimeFaces.widget.AccordionPanel.prototype.bindEvents = function() {
     
     this.headers.mouseover(function() {
         var element = $(this);
-        if(!element.hasClass('ui-state-active') && !element.hasClass('ui-state-disabled')) {
+        if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
             element.addClass('ui-state-hover');
         }
     }).mouseout(function() {
         var element = $(this);
-        if(!element.hasClass('ui-state-active') && !element.hasClass('ui-state-disabled')) {
+        if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
             element.removeClass('ui-state-hover');
         }
     }).click(function(e) {
