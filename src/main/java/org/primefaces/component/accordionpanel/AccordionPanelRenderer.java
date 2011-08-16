@@ -166,12 +166,14 @@ public class AccordionPanelRenderer extends CoreRenderer {
         
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
+        headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
         String contentStyle = active ? "display:block" : "display:none";
 
         //header container
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
+        if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
 
         //icon
         writer.startElement("span", null);
