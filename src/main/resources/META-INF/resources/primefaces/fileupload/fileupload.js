@@ -2138,8 +2138,6 @@ PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
             responseText += '<update id="' + id + '">' + content + '</update>';
         });
         responseText += '</changes></partial-response>';
-        
-        alert(responseText);
     } 
     //IE
     else {
