@@ -2128,7 +2128,7 @@ PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
     responseText = null;
     
     //Somehow firefox and opera ignores xml root element so we add it ourselves
-    if($.browser.mozilla || $.browser.opera) {
+    if($.browser.mozilla||$.browser.opera) {
         responseText = '<?xml version="1.0" encoding="UTF-8"?><partial-response><changes>';
         response.find('update').each(function(i, item) {
             var update = $(item),
