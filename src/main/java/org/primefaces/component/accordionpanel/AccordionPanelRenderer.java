@@ -104,7 +104,6 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		
         if(acco.isMultiple()) writer.write(",multiple:true");
         if(dynamic) writer.write(",cache:" + acco.isCache());
-		if(acco.isCollapsible()) writer.write(",collapsible:true");
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
 
         encodeClientBehaviors(context, acco);

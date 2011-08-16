@@ -45,13 +45,6 @@
 			<type>java.lang.String</type>
             <description>Style class of the container element.</description>
 		</attribute>
-		<attribute>
-			<name>collapsible</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Defines if accordion panel can be collapsed all together.</description>
-		</attribute>
         <attribute>
             <name>onTabChange</name>
             <required>false</required>
