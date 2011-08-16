@@ -29,9 +29,9 @@
 		<attribute>
 			<name>activeIndex</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-            <description>Index of the active tab. Default is zero.</description>
+			<type>java.lang.String</type>
+            <defaultValue>0</defaultValue>
+            <description>Index of the active tab or a comma separated string of indexes when multiple mode is on. Default is zero.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -91,6 +91,13 @@
 			<type>java.util.List</type>
             <description>List to iterate to display dynamic number of tabs.</description>
             <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>multiple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Enables activating multiple tabs, default is false.</description>
 		</attribute>
 	</attributes>
 	<resources>

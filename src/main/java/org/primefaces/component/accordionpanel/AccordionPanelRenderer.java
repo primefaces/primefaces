@@ -31,13 +31,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	public void decode(FacesContext context, UIComponent component) {
 		AccordionPanel acco = (AccordionPanel) component;
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String activeIndex = params.get(acco.getClientId(context) + "_active");
+        String active = params.get(acco.getClientId(context) + "_active");
 		
-		if(activeIndex != null) {
-            if(activeIndex.equals("false"))         //collapsed all
-                acco.setActiveIndex(-1);
-            else
-                acco.setActiveIndex(Integer.valueOf(activeIndex));
+		if(active != null) {
+            //collapsed all
+            if(isValueBlank(active)) {                
+                acco.setActiveIndex(null);
+            }
+            else {
+                acco.setActiveIndex(active);
+            }
 		}
         
         decodeBehaviors(context, component);
@@ -99,6 +102,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
         writer.write("dynamic:" + dynamic);
 		
+        if(acco.isMultiple()) writer.write(",multiple:true");
         if(dynamic) writer.write(",cache:" + acco.isCache());
 		if(acco.isCollapsible()) writer.write(",collapsible:true");
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
@@ -125,15 +129,18 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	
 	protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
         boolean dynamic = acco.isDynamic();
-        int activeIndex = acco.getActiveIndex();
+        boolean multiple = acco.isMultiple();
         String var = acco.getVar();
+        String activeIndex = acco.getActiveIndex();
 
         if(var == null) {
             int i = 0;
             
             for(UIComponent child : acco.getChildren()) {
-                if(child.isRendered() && child instanceof Tab) {
-                    encodeTab(context, (Tab) child, (i == activeIndex), dynamic);
+                if(child.isRendered() && child instanceof Tab) {  
+                    boolean active = multiple ? activeIndex.indexOf(String.valueOf(i)) != -1 : activeIndex.equals(String.valueOf(i));
+                            
+                    encodeTab(context, (Tab) child, active, dynamic);
 
                     i++;
                 }
@@ -145,8 +152,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
             
             for(int i = 0; i < dataCount; i++) {
                 acco.setRowIndex(i);
+                boolean active = multiple ? activeIndex.indexOf(String.valueOf(i)) != -1 : activeIndex.equals(String.valueOf(i));
                 
-                encodeTab(context, tab, (i == activeIndex), dynamic);
+                encodeTab(context, tab, active, dynamic);
             }
             
             acco.setRowIndex(-1);
