@@ -2124,7 +2124,27 @@ PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
 }
 
 PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
-    var responseText = $.trim(iframe.contents().text().replace(/(> -)|(>-)/g,'>'));
+    var response = iframe.contents(),
+    responseText = null;
+    
+    //Somehow firefox and opera ignores xml root element so we add it ourselves
+    if($.browser.mozilla || $.browser.opera) {
+        responseText = '<?xml version="1.0" encoding="UTF-8"?><partial-response><changes>';
+        response.find('update').each(function(i, item) {
+            var update = $(item),
+            id = update.attr('id'),
+            content = '<![CDATA[' + update.text() + ']]>';
+            
+            responseText += '<update id="' + id + '">' + content + '</update>';
+        });
+        responseText += '</changes></partial-response>';
+        
+        alert(responseText);
+    } 
+    //IE
+    else {
+        responseText = $.trim(iframe.contents().text().replace(/(> -)|(>-)/g,'>'));
+    }
     
     return $.parseXML(responseText);
 }
