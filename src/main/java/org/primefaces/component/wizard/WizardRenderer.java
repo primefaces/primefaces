@@ -230,6 +230,9 @@ public class WizardRenderer extends CoreRenderer {
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", styleClass, null);
+                if(tab.getTitletip() != null) 
+                    writer.writeAttribute("title", tab.getTitletip(), null);
+                
                 writer.write(tab.getTitle());
                 writer.endElement("li");
             }
