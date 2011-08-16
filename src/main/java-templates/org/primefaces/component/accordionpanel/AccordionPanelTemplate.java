@@ -54,6 +54,15 @@ import org.primefaces.util.Constants;
             if(eventName.equals("tabChange")) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
+
+                if(this.getVar() != null) {
+                    int index = Integer.parseInt(params.get(clientId + "_tabindex"));
+                    setRowIndex(index);
+                    changeEvent.setData(this.getRowData());
+                    changeEvent.setTab((Tab) getChildren().get(0));
+                    setRowIndex(-1);
+                }
+
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(changeEvent);
             }

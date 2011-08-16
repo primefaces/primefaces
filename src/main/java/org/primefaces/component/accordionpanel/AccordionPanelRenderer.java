@@ -48,12 +48,20 @@ public class AccordionPanelRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		AccordionPanel acco = (AccordionPanel) component;
         String clientId = acco.getClientId(context);
+        String var = acco.getVar();
 
         if(acco.isContentLoadRequest(context)) {
-            String tabClientId = params.get(clientId + "_newTab");
-            Tab tabToLoad = (Tab) acco.findTab(tabClientId);
-
-            tabToLoad.encodeAll(context);
+            if(var == null) {
+                String tabClientId = params.get(clientId + "_newTab");
+                
+                acco.findTab(tabClientId).encodeAll(context);
+            }
+            else {
+                int index = Integer.parseInt(params.get(clientId + "_tabindex"));
+                acco.setRowIndex(index);
+                acco.getChildren().get(0).encodeAll(context);
+                acco.setRowIndex(-1);
+            }
         }
         else {
             encodeMarkup(context, acco);
@@ -116,55 +124,75 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+        boolean dynamic = acco.isDynamic();
         int activeIndex = acco.getActiveIndex();
-        int i = 0;
-		
-		for(UIComponent child : acco.getChildren()) {
-			if(child.isRendered() && child instanceof Tab) {
-				Tab tab = (Tab) child;
-                boolean active = (i == activeIndex);
-                String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
-                headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
-                String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
-                String contentStyle = active ? "display:block" : "display:none";
-				
-				//header container
-				writer.startElement("h3", null);
-                writer.writeAttribute("class", headerClass, null);
-                
-                //icon
-                writer.startElement("span", null);
-                writer.writeAttribute("class", iconClass, null);
-                writer.endElement("span");
-                
-				writer.startElement("a", null);
-				writer.writeAttribute("href", "#", null);
-                writer.writeAttribute("tabindex", "-1", null);
-                if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
-				if(tab.getTitle() != null) writer.write(tab.getTitle());
-                
-				writer.endElement("a");
-                
-				writer.endElement("h3");
-				
-				//content
-				writer.startElement("div", null);
-                writer.writeAttribute("id", child.getClientId(context), null);
-                writer.writeAttribute("class", AccordionPanel.TAB_CONTENT_CLASS, null);
-                writer.writeAttribute("style", contentStyle, null);
+        String var = acco.getVar();
 
-                if(acco.isDynamic() && active)
-                    tab.encodeAll(context);
-                else
-                    tab.encodeAll(context);
+        if(var == null) {
+            int i = 0;
+            
+            for(UIComponent child : acco.getChildren()) {
+                if(child.isRendered() && child instanceof Tab) {
+                    encodeTab(context, (Tab) child, (i == activeIndex), dynamic);
+
+                    i++;
+                }
+            }
+        } 
+        else {
+            int dataCount = acco.getRowCount();
+            Tab tab = (Tab) acco.getChildren().get(0);
+            
+            for(int i = 0; i < dataCount; i++) {
+                acco.setRowIndex(i);
                 
-				writer.endElement("div");
-                
-                i++;
-			}
-		}
+                encodeTab(context, tab, (i == activeIndex), dynamic);
+            }
+            
+            acco.setRowIndex(-1);
+        }
 	}
+ 
+    protected void encodeTab(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
+        headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
+        String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
+        String contentStyle = active ? "display:block" : "display:none";
+
+        //header container
+        writer.startElement("h3", null);
+        writer.writeAttribute("class", headerClass, null);
+
+        //icon
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("tabindex", "-1", null);
+        if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+        if(tab.getTitle() != null) writer.write(tab.getTitle());
+
+        writer.endElement("a");
+
+        writer.endElement("h3");
+
+        //content
+        writer.startElement("div", null);
+        writer.writeAttribute("id", tab.getClientId(context), null);
+        writer.writeAttribute("class", AccordionPanel.TAB_CONTENT_CLASS, null);
+        writer.writeAttribute("style", contentStyle, null);
+
+        if(dynamic && active)
+            tab.encodeAll(context);
+        else
+            tab.encodeAll(context);
+
+        writer.endElement("div");
+    }
 
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

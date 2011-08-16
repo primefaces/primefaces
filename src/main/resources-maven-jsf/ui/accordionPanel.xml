@@ -11,10 +11,9 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
 	<rendererClass>org.primefaces.component.accordionpanel.AccordionPanelRenderer</rendererClass>
-	<parent>javax.faces.component.UIPanel</parent>
+	<parent>javax.faces.component.UIData</parent>
     <description>
       AccordionPanel is a container component that displays content in stacked format.
-      It consists of one or more tabs and each tab can group any other jsf components.
     </description>
     <interfaces>
 		<interface>
@@ -79,6 +78,20 @@
             <defaultValue>true</defaultValue>
             <description>Defines if activating a dynamic tab should load the contents from server again.</description>
         </attribute>
+        <attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of collection iterator to use in dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>java.util.List</type>
+            <description>List to iterate to display dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
