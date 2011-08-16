@@ -24,7 +24,6 @@
   opacity: 0;
   filter: alpha(opacity=0);
   -o-transform: translate(250px, -50px) scale(1);
-  -moz-transform: translate(-300px, 0) scale(4);
   direction: ltr;
   cursor: pointer;
 }
