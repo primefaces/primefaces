@@ -11,7 +11,7 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.panels = this.jq.children('.ui-accordion-content');
     
     //options
-    this.cfg.active = parseInt(this.stateHolder.val());
+    this.cfg.active = this.cfg.multiple ? this.stateHolder.val().split(',') : this.stateHolder.val();
     
     this.bindEvents();
     
@@ -35,16 +35,24 @@ PrimeFaces.widget.AccordionPanel.prototype.bindEvents = function() {
         }
     }).click(function(e) {
         var element = $(this);
-        if(!element.hasClass('ui-state-active') && !element.hasClass('ui-state-disabled')) {
+        if(!element.hasClass('ui-state-disabled')) {
             var tabIndex = element.index() / 2;
             
-            _self.select(tabIndex);
+            if(element.hasClass('ui-state-active')) {
+                _self.unselect(tabIndex);
+            }
+            else {
+                _self.select(tabIndex);
+            }
         }
         
         e.preventDefault();
     });
 }
 
+/**
+ *  Activates a tab with given index
+ */
 PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
     //Call user onTabChange callback
     if(this.cfg.onTabChange) {
@@ -57,8 +65,12 @@ PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
     shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
     //update state
-    this.stateHolder.val(index);
-    this.cfg.active = index;
+    if(this.cfg.multiple)
+        this.addToSelection(index);
+    else
+        this.cfg.active = index;
+    
+    this.saveState();
     
     if(shouldLoad) {
         this.loadDynamicTab(panel);
@@ -71,11 +83,28 @@ PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
     return true;
 }
 
+/**
+ *  Deactivates a tab with given index
+ */
+PrimeFaces.widget.AccordionPanel.prototype.unselect = function(index) {
+    var panel = this.panels.eq(index),
+    header = panel.prev();
+    
+    header.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+    header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
+    panel.slideUp();
+    
+    this.removeFromSelection(index);
+    this.saveState();
+}
+
 PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
     //deactivate current
-    var oldHeader = this.headers.filter('.ui-state-active');
-    oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-    oldHeader.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().slideUp();
+    if(!this.cfg.multiple) {
+        var oldHeader = this.headers.filter('.ui-state-active');
+        oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        oldHeader.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().slideUp();
+    }
     
     //activate selected
     var newHeader = panel.prev();
@@ -183,4 +212,21 @@ PrimeFaces.widget.AccordionPanel.prototype.hasBehavior = function(event) {
     }
     
     return false;
+}
+
+PrimeFaces.widget.AccordionPanel.prototype.addToSelection = function(nodeId) {
+    this.cfg.active.push(nodeId);
+}
+
+PrimeFaces.widget.AccordionPanel.prototype.removeFromSelection = function(nodeId) {
+    this.cfg.active = $.grep(this.cfg.active, function(r) {
+        return r != nodeId;
+    });
+}
+
+PrimeFaces.widget.AccordionPanel.prototype.saveState = function() {
+    if(this.cfg.multiple)
+        this.stateHolder.val(this.cfg.active.join(','));
+    else
+        this.stateHolder.val(this.cfg.active);
 }
