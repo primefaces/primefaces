@@ -137,9 +137,10 @@ PrimeFaces.ajax.AjaxUtils = {
     },
 	
     updateState: function(value) {
-        var viewstateValue = $.trim(value);
+        var viewstateValue = $.trim(value),
+        forms = this.portlet ? this.portlet.find('form') : $('form');
         
-        $("form").each(function() {
+        forms.each(function() {
             var form = $(this),
             formViewStateElement = form.children("input[name='javax.faces.ViewState']").get(0);
 
@@ -163,9 +164,9 @@ PrimeFaces.ajax.AjaxUtils = {
         return serializedParams;
     },
 
-    updateElement: function(id, content) {
+    updateElement: function(id, content) {        
         if(id == PrimeFaces.VIEW_STATE) {
-            PrimeFaces.ajax.AjaxUtils.updateState(content);
+            PrimeFaces.ajax.AjaxUtils.updateState.call(this, content);
         }
         else {
             $(PrimeFaces.escapeClientId(id)).replaceWith(content);
@@ -252,8 +253,10 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     encodedURLfield = form.children("input[name='javax.faces.encodedURL']");
 
     //portlet support
+    var portletContainer = null;
     if(encodedURLfield.length > 0) {
         postURL = encodedURLfield.val();
+        portletContainer = form.parents('section.portlet:first');   //liferay portlet container
     }
     
     PrimeFaces.debug('URL to post ' + postURL + '.');
@@ -315,6 +318,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         cache : false,
         dataType : "xml",
         data : postParams,
+        portlet: portletContainer,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
            this.behaviorSource = cfg.event ? cfg.source : undefined;
@@ -392,7 +396,7 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
         id = update.attr('id'),
         content = update.text();
 
-        PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
     }
 
     PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
