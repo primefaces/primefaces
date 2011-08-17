@@ -36,18 +36,22 @@ public class FeedReaderRenderer extends CoreRenderer {
         FeedReader reader = (FeedReader) component;
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String var = reader.getVar();
+        int size = reader.getSize();
         
         try {
+            int i = 0;
             URL feedSource = new URL(reader.getValue());
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(feedSource));
 
             for(Object f : feed.getEntries()) {
-                SyndEntry entry = (SyndEntry) f;
+                if(i == size)
+                    break;
                 
+                SyndEntry entry = (SyndEntry) f;
                 requestMap.put(var, entry);
-
                 renderChildren(context, reader);
+                i++;
             }
             
             requestMap.remove(var);
