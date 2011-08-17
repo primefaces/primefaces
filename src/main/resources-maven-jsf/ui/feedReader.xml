@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
-<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>rssReader</tag>
-	<tagClass>org.primefaces.component.rssreader.RSSReaderTag</tagClass>
-	<componentClass>org.primefaces.component.rssreader.RSSReader</componentClass>
-	<componentType>org.primefaces.component.RSSReader</componentType>
+	<tag>feedReader</tag>
+	<tagClass>org.primefaces.component.feedreader.FeedReaderTag</tagClass>
+	<componentClass>org.primefaces.component.feedreader.FeedReader</componentClass>
+	<componentType>org.primefaces.component.FeedReader</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.RSSReaderRenderer</rendererType>
-	<rendererClass>org.primefaces.component.rssreader.RSSReaderRenderer</rendererClass>
+	<rendererType>org.primefaces.component.FeedReaderRenderer</rendererType>
+	<rendererClass>org.primefaces.component.feedreader.FeedReaderRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
-    <description>RSSReader displays content from a feed.</description>
+    <description>feedReader displays content from a feed.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
         <attribute>
@@ -26,6 +25,13 @@
 			<required>true</required>
 			<type>java.lang.String</type>
             <description>Iterator to refer each item in feed.</description>
+		</attribute>
+        <attribute>
+			<name>size</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Number of items to display.</description>
 		</attribute>
 	</attributes>
 </component>
