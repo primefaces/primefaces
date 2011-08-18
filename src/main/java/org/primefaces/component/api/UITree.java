@@ -107,7 +107,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 			return searchRoot;
 		} 
 		else {
-			String relativeRowKey = rowKey.replaceFirst("[0-9]+_", "");
+			String relativeRowKey = rowKey.substring(rowKey.indexOf(SEPARATOR) + 1);
 				
 			return findTreeNode(searchRoot, relativeRowKey);
 		}
