@@ -40,7 +40,7 @@ import org.primefaces.model.SortOrder;
     public static final String COLUMN_HEADER_CONTAINER_CLASS = "ui-header-column";
     public static final String COLUMN_FOOTER_CLASS = "ui-state-default";
     public static final String COLUMN_FOOTER_CONTAINER_CLASS = "ui-footer-column";
-    public static final String DATA_CLASS = "ui-datatable-data";
+    public static final String DATA_CLASS = "ui-datatable-data ui-widget-content";
     public static final String EMPTY_DATA_CLASS = "ui-datatable-data-empty";
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-tl ui-corner-tr";

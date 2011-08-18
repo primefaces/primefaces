@@ -109,24 +109,23 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
 
     //Row mouseover, mouseout, click
     if(this.cfg.selectionMode) {
-        var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
-        rows = $(this.jqId + ' tbody.ui-datatable-data tr');
+        var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
 
-        rows.css('cursor', 'pointer')
+        $(this.jqId + ' tbody.ui-datatable-data tr').css('cursor', 'pointer')
             .die('mouseover.datatable mouseout.datatable contextmenu.datatable ' + selectEvent + '.datatable')
             .live('mouseover.datatable', function() {
                 var element = $(this);
 
-                if(!element.hasClass('ui-selected')) {
-                    element.addClass('ui-state-highlight');
+                if(!element.hasClass('ui-state-highlight')) {
+                    element.addClass('ui-state-hover');
                 }
 
             })
             .live('mouseout.datatable', function() {
                 var element = $(this);
 
-                if(!element.hasClass('ui-selected')) {
-                    element.removeClass('ui-state-highlight');
+                if(!element.hasClass('ui-state-highlight')) {
+                    element.removeClass('ui-state-hover');
                 }
             })
             .live(selectEvent + '.datatable', function(event) {
@@ -135,7 +134,8 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
             .live('contextmenu.datatable', function(event) {
                _self.onRowClick(event, this);
                event.preventDefault();
-            });  
+            })
+            .disableSelection();
             
     }
     //Radio-Checkbox based rowselection
@@ -156,8 +156,6 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 });
         }
     }
-
-    
 }
 
 /**
@@ -431,33 +429,70 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 }
 
 PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
-    
     //Check if rowclick triggered this event not an element in row content
-    if($(event.target).is('td,div,span')) {
-        
+    if($(event.target).is('.ui-dt-c,td')) {
         var row = $(rowElement),
-        selected = row.hasClass('ui-selected');
+        selected = row.hasClass('ui-state-highlight');
 
         if(selected)
             this.unselectRow(event, row);
         else
             this.selectRow(event, row);
     }
-    
 }
 
 PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
-    var rowId = row.attr('id').split('_row_')[1];
+    var rowId = row.attr('id').split('_row_')[1],
+    _self = this;
 
-    //unselect previous selection
-    if(this.isSingleSelection() || (this.isMultipleSelection() && !event.metaKey)) {
-        row.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight'); 
+    //unselect previous selection if this is single selection or multiple one with no keys
+    if(this.isSingleSelection() || (this.isMultipleSelection() && (!event.metaKey && !event.shiftKey))) {
+        row.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
         this.selection = [];
     }
+    
+    if(this.isMultipleSelection() && event.shiftKey) {
+        var rows = $(this.tbody).children();
+        this.originRow = this.originRow || rows.eq(0);
+        var originIndex = this.originRow.index();
 
-    //add to selection
-    row.addClass('ui-state-highlight ui-selected');
-    this.addSelection(rowId);
+        //unselect previously selected rows with shift
+        if(this.cursor) {
+            var oldCursorIndex = this.cursor.index(),
+            rowsToUnselect = oldCursorIndex > originIndex ? rows.slice(originIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, originIndex + 1);
+            
+            rowsToUnselect.each(function(i, item) {
+                var r = $(item),
+                rid = r.attr('id').split('_row_')[1];
+
+                r.removeClass('ui-state-highlight');
+                _self.removeSelection(rid);
+            });
+        }
+        
+        //select rows between cursor and origin
+        this.cursor = row;
+
+        var cursorIndex = this.cursor.index(),
+        rowsToSelect = cursorIndex > originIndex ? rows.slice(originIndex, cursorIndex + 1) : rows.slice(cursorIndex, originIndex + 1);
+
+        rowsToSelect.each(function(i, item) {
+            var r = $(item),
+            rid = r.attr('id').split('_row_')[1];
+
+            r.removeClass('ui-state-hover').addClass('ui-state-highlight');
+            _self.addSelection(rid);
+        });
+        
+    }
+    else {
+        this.originRow = row;
+        this.cursor = null;
+                
+        //add to selection
+        row.removeClass('ui-state-hover').addClass('ui-state-highlight');
+        this.addSelection(rowId);
+    }
 
     //save state
     this.writeSelections();
@@ -470,7 +505,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(event, row) {
 
     if(event.metaKey) {
         //remove visual style
-        row.removeClass('ui-selected ui-state-highlight');
+        row.removeClass('ui-state-highlight');
 
         //remove from selection
         this.removeSelection(rowId);

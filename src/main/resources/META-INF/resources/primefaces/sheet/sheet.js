@@ -450,11 +450,3 @@ PrimeFaces.widget.Sheet.prototype.selectCells = function(origin, cursor) {
             row.children().slice(endColumnIndex, startColumnIndex + 1).children('div.ui-sh-c').addClass('ui-state-highlight');
     });
 }
-
-$.fn.disableSelection = function() {
-    $(this).attr('unselectable', 'on')
-           .css('-moz-user-select', 'none')
-           .each(function() { 
-               this.onselectstart = function() { return false; };
-            });
-};
