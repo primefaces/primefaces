@@ -630,7 +630,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
         
         if(selected && table.getSelectionMode() != null) {
-            rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
+            rowStyleClass = rowStyleClass + " ui-state-highlight";
         }
 
         if(userRowStyleClass != null) {
