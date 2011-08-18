@@ -453,7 +453,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
     
     if(this.isMultipleSelection() && event.shiftKey) {
         var rows = $(this.tbody).children();
-        this.originRow = this.originRow || rows.eq(0);
+        this.originRow = this.originRow||rows.eq(0);
         var originIndex = this.originRow.index();
 
         //unselect previously selected rows with shift
