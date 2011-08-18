@@ -193,12 +193,17 @@ $.extend(Keypad.prototype, {
 		}
 		inst.saveReadonly = field.attr('readonly');
 		field.addClass(this.markerClassName).
-			attr('readonly', (this._get(inst, 'keypadOnly') ? 'readonly' : '')).
 			bind('setData.keypad', function(event, key, value) {
 				inst.settings[key] = value;
 			}).bind('getData.keypad', function(event, key) {
 				return this._get(inst, key);
 			});
+        
+        //Fix for #2399
+        if(this._get(inst, 'keypadOnly')) {
+            field.attr('readonly', 'readonly');
+        }
+            
 		$.data(target, PROP_NAME, inst);
 	},
 
@@ -890,13 +895,13 @@ PrimeFaces.widget.Keyboard = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
+    this.jq = $(this.jqId);
 
 	if(this.cfg.layoutTemplate)
 		this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
 	else
 		this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
-	
+
 	this.jq.keypad(this.cfg);
 
     //Client Behaviors
@@ -914,29 +919,29 @@ PrimeFaces.widget.KeyboardUtils = {
 
 	layouts : {
 		qwertyBasic : 
-		 	[jQuery.keypad.qwertyAlphabetic[0] + jQuery.keypad.CLOSE,  
-			jQuery.keypad.HALF_SPACE + jQuery.keypad.qwertyAlphabetic[1] + 
-			jQuery.keypad.HALF_SPACE + jQuery.keypad.CLEAR, 
-			jQuery.keypad.SPACE + jQuery.keypad.qwertyAlphabetic[2] + 
-			jQuery.keypad.SHIFT + jQuery.keypad.BACK],
+		 	[$.keypad.qwertyAlphabetic[0] + $.keypad.CLOSE,  
+			$.keypad.HALF_SPACE + $.keypad.qwertyAlphabetic[1] + 
+			$.keypad.HALF_SPACE + $.keypad.CLEAR, 
+			$.keypad.SPACE + $.keypad.qwertyAlphabetic[2] + 
+			$.keypad.SHIFT + $.keypad.BACK],
 		
-		qwerty : jQuery.keypad.qwertyLayout,
+		qwerty : $.keypad.qwertyLayout,
 		
 		alphabetic :
-			['abcdefghij' + jQuery.keypad.CLOSE, 
-	        'klmnopqrst' + jQuery.keypad.CLEAR, 
-	        'uvwxyz' + jQuery.keypad.SPACE + jQuery.keypad.SPACE + 
-	        jQuery.keypad.SHIFT + jQuery.keypad.BACK]
+			['abcdefghij' + $.keypad.CLOSE, 
+	        'klmnopqrst' + $.keypad.CLEAR, 
+	        'uvwxyz' + $.keypad.SPACE + $.keypad.SPACE + 
+	        $.keypad.SHIFT + $.keypad.BACK]
 	},
 
 	controls : {
-		close : jQuery.keypad.CLOSE,
-		clear : jQuery.keypad.CLEAR,
-		back : jQuery.keypad.BACK,
-		shift : jQuery.keypad.SHIFT,
-		spacebar : jQuery.keypad.SPACE_BAR,
-		space : jQuery.keypad.SPACE,
-		halfspace : jQuery.keypad.HALF_SPACE	
+		close : $.keypad.CLOSE,
+		clear : $.keypad.CLEAR,
+		back : $.keypad.BACK,
+		shift : $.keypad.SHIFT,
+		spacebar : $.keypad.SPACE_BAR,
+		space : $.keypad.SPACE,
+		halfspace : $.keypad.HALF_SPACE	
 	},
 
 	getPresetLayout : function(name) {
