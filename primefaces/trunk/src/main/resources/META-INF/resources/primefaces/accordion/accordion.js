@@ -9,6 +9,7 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.stateHolder = $(this.jqId + '_active');
     this.headers = this.jq.children('.ui-accordion-header');
     this.panels = this.jq.children('.ui-accordion-content');
+    this.headers.children('a').disableSelection();
     
     //options
     this.cfg.active = this.cfg.multiple ? this.stateHolder.val().split(',') : this.stateHolder.val();
