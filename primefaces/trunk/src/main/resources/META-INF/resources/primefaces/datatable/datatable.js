@@ -143,16 +143,16 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
         
         if(this.cfg.columnSelectionMode == 'single') {
             $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:radio')
-                .die()
+                .die('click')
                 .live('click', function() {
                     _self.selectRowWithRadio(this);
                 });
         }
         else {
             $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox')
-                .die()
+                .die('click')
                 .live('click', function() {
-                    _self.selectRowWithCheckbox(this);
+                    _self.clickRowWithCheckbox(this);
                 });
         }
     }
@@ -569,24 +569,31 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
 
     //save state
     this.writeSelections();
+    
+    this.fireRowSelectEvent(rowId);
 }
 
 /**
  *  Selects the corresping row of a checkbox based column selection
  */
-PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(element) {
+PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
     var checkbox = $(element),
     row = checkbox.parents('tr:first'),
     rowId = row.attr('id').split('_row_')[1],
     checked = checkbox.attr('checked');
 
-    if(checked)
-        this.selection.push(rowId);
-    else
+    if(checked) {
+        this.addSelection(rowId);
+        this.writeSelections();
+        this.fireRowSelectEvent(rowId);
+    }
+    else {
         this.removeSelection(rowId);
+        this.writeSelections();
+        this.fireRowUnselectEvent(rowId);
+    }
 
-    //save state
-    this.writeSelections();
+    
 }
 
 /**
