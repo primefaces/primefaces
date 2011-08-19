@@ -15,12 +15,9 @@
  */
 package org.primefaces.component.feedreader;
 
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+
 import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -38,20 +35,13 @@ public class FeedReaderRenderer extends CoreRenderer {
         String var = reader.getVar();
         int size = reader.getSize();
         
+        
         try {
-            int i = 0;
-            URL feedSource = new URL(reader.getValue());
-            SyndFeedInput input = new SyndFeedInput();
-            SyndFeed feed = input.build(new XmlReader(feedSource));
-
-            for(Object f : feed.getEntries()) {
-                if(i == size)
-                    break;
-                
-                SyndEntry entry = (SyndEntry) f;
-                requestMap.put(var, entry);
+            List entries = new FeedInput().parse(reader.getValue(), size);
+            
+            for(Object f : entries) {
+                requestMap.put(var, f);
                 renderChildren(context, reader);
-                i++;
             }
             
             requestMap.remove(var);
