@@ -32,14 +32,7 @@ public class SliderRenderer extends CoreRenderer{
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        Slider slider = (Slider) component;
-        String clientId = slider.getClientId(context);
-
-        if(params.containsKey(clientId + "_ajaxSlide")) {
-            int value = Integer.parseInt(params.get(clientId + "_ajaxSlideValue"));
-            slider.queueEvent(new SlideEndEvent(slider, value));
-        }
+        decodeBehaviors(context, component);
     }
 
     @Override
@@ -82,28 +75,12 @@ public class SliderRenderer extends CoreRenderer{
 		
 		if(slider.isDisabled()) writer.write(",disabled:true");
 		if(output != null) writer.write(",output:'" + output.getClientId(context) + "'");
-        if(slider.getOnSlideStart() != null) writer.write(",onSlideStart:function(event, ui) {" + slider.getOnSlideStart() + "}");
-        if(slider.getOnSlide() != null) writer.write(",onSlide:function(event, ui) {" + slider.getOnSlide() + "}");
-        if(slider.getOnSlideEnd() != null) writer.write(",onSlideEnd:function(event, ui) {" + slider.getOnSlideEnd() + "}");
+                if(slider.getOnSlideStart() != null) writer.write(",onSlideStart:function(event, ui) {" + slider.getOnSlideStart() + "}");
+                if(slider.getOnSlide() != null) writer.write(",onSlide:function(event, ui) {" + slider.getOnSlide() + "}");
+                if(slider.getOnSlideEnd() != null) writer.write(",onSlideEnd:function(event, ui) {" + slider.getOnSlideEnd() + "}");
 
-        //Ajax Slider configuration
-        MethodExpression me = slider.getSlideEndListener();
-        String onSlideEndUpdate = slider.getOnSlideEndUpdate();
-
-        if(me != null || onSlideEndUpdate != null) {
-            UIComponent form = ComponentUtils.findParentForm(context, slider);
-            if(form == null) {
-                throw new FacesException("Slider: '" + clientId + "' needs to be enclosed in a form when ajax mode is enabled");
-            }
-
-            writer.write(",ajaxSlide:true");
-            writer.write(",formId:'" + form.getClientId(context) + "'");
-            writer.write(",url:'" + getActionURL(context) + "'");
-            
-            if(onSlideEndUpdate != null)
-                writer.write(",onSlideEndUpdate:'" + ComponentUtils.findClientIds(context, slider, onSlideEndUpdate) + "'");
-        }
-		
+		encodeClientBehaviors(context, slider);
+                
 		writer.write("});");
 	
 		writer.endElement("script");
