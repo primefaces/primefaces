@@ -16,15 +16,16 @@
 package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
-public class SlideEndEvent extends FacesEvent {
+public class SlideEndEvent extends AjaxBehaviorEvent {
 
     private int value;
 
-	public SlideEndEvent(UIComponent component, int value) {
-		super(component);
+	public SlideEndEvent(UIComponent component, Behavior behavior, int value) {
+		super(component , behavior);
         this.value = value;
 	}
 

@@ -19,6 +19,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+		<interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -107,19 +110,6 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute when slide ends.</description>
 		</attribute>
-        <attribute>
-            <name>slideEndListener</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <method-signature>void slideEndListener(org.primefaces.event.SlideEndEvent)</method-signature>
-            <description>Server side method to execute when slide ends.</description>
-        </attribute>
-        <attribute>
-            <name>onSlideEndUpdate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Component(s) to update after ajax sliding.</description>
-        </attribute>
 	</attributes>
 	<resources>
 		<resource>
