@@ -231,6 +231,10 @@ PrimeFaces.widget.DataTable.prototype.loadLiveRows = function() {
                 if(_self.scrollOffset == _self.cfg.scrollLimit) {
                     _self.shouldLiveScroll = false;
                 }
+                
+                if(_self.cfg.resizableColumns) {
+                    _self.restoreColumnWidths();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
@@ -333,13 +337,16 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
-
+                
                 //reset paginator
                 var paginator = _self.getPaginator();
                 if(paginator) {
                    paginator.setPage(1, true);
                 }
-
+                
+                if(_self.cfg.resizableColumns) {
+                    _self.restoreColumnWidths();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
@@ -347,6 +354,8 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
         }
         
         PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+        
+        
 
         return true;
     };
@@ -408,6 +417,10 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
         if(paginator) {
             paginator.setPage(1, true);
             paginator.setTotalRecords(this.args.totalRecords, true);
+        }
+
+        if(_self.cfg.resizableColumns) {
+            _self.restoreColumnWidths();
         }
         
         return true;
@@ -907,12 +920,9 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Variables
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
     resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
-    columnHeaders = $(this.jqId + ' thead th'),
-    columnFooters = $(this.jqId + ' tfoot td'),
     scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     table = $(this.jqId + ' table'),
-    tbody = $(this.jqId + ' tbody'),
     thead = $(this.jqId + ' thead'),  
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
@@ -943,7 +953,8 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             oldPos = ui.originalPosition.left,
             newPos = ui.position.left,
             change = (newPos - oldPos),
-            newWidth = columnHeaderWrapper.width() + change;
+            newWidth = columnHeaderWrapper.width() + change
+            tbody = $(_self.jqId + ' tbody');
             
             ui.helper.css('left','');
             resizerHelper.hide();
@@ -956,11 +967,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             scrollHeader.scrollLeft(scrollBody.scrollLeft());
 
             //Save state
-            var columnWidths = [];
-            columnHeaders.each(function(i, item) {
-                columnWidths.push($(item).children('div').width());
-            });
-            PrimeFaces.setCookie(_self.columnWidthsCookie, columnWidths.join(','));
+            _self.saveColumnWidths();
             
             //Invoke colResize behavior
             if(_self.hasBehavior('colResize')) {
@@ -980,16 +987,32 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
         containment: this.jq
     });
     
-    //Restore widths on postback
-    var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
+    this.restoreColumnWidths();
+}
+
+PrimeFaces.widget.DataTable.prototype.saveColumnWidths = function() {
+    var columnWidths = [],
+    columnHeaders = this.cfg.scrollable ? this.jq.find('.ui-datatable-scrollable-header thead th') : this.jq.find('table thead th');
+    
+    columnHeaders.each(function(i, item) {
+        columnWidths.push($(item).children('.ui-dt-c').width());
+    });
+    PrimeFaces.setCookie(this.columnWidthsCookie, columnWidths.join(','));
+}
+
+PrimeFaces.widget.DataTable.prototype.restoreColumnWidths = function() {
+    var widths = PrimeFaces.getCookie(this.columnWidthsCookie),
+    columnHeaders = this.cfg.scrollable ? this.jq.find('.ui-datatable-scrollable-header thead th') : this.jq.find('table thead th'),
+    columnFooters = this.cfg.scrollable ? this.jq.find('.ui-datatable-scrollable-footer tfoot td') : this.jq.find('table tfoot td');
+    
     if(widths) {
         widths = widths.split(',');
         for(var i = 0; i < widths.length; i++) {
             var width = widths[i];
             
-            columnHeaders.eq(i).children('div').width(width);
-            $(this.jqId + ' tbody').find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
-            columnFooters.eq(i).children('div').width(width);
+            columnHeaders.eq(i).children('.ui-dt-c').width(width);
+            $(this.jqId + ' tbody.ui-datatable-data').find('tr td:nth-child(' + (i + 1) + ')').children('.ui-dt-c').width(width);
+            columnFooters.eq(i).children('.ui-dt-c').width(width);
         }
     }
 }
