@@ -141,7 +141,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(table.isScrollable()) {
             writer.write(",scrollable:true");
             writer.write(",liveScroll:" + table.isLiveScroll());
-            writer.write(",scrollStep:" + table.getRows());
+            writer.write(",scrollStep:" + table.getScrollRows());
             writer.write(",scrollLimit:" + table.getRowCount());
         }
 
