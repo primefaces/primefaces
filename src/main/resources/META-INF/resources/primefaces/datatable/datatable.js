@@ -229,7 +229,7 @@ PrimeFaces.widget.DataTable.prototype.loadLiveRows = function() {
                 if(_self.scrollOffset == _self.cfg.scrollLimit) {
                     _self.shouldLiveScroll = false;
                 }
-                
+
                 if(_self.cfg.resizableColumns) {
                     _self.restoreColumnWidths();
                 }
