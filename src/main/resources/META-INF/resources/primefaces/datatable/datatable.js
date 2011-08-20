@@ -70,7 +70,8 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
         )
         .click(function(event) {
 
-            if($(event.target).is(':not(th,span,div)')) {
+            //Stop event if target is a clickable element inside header
+            if($(event.target).is(':not(th,span,.ui-dt-c)')) {
                 return;
             }
 
@@ -440,8 +441,8 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 }
 
 PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
-    //Check if rowclick triggered this event not an element in row content
-    if($(event.target).is('.ui-dt-c,td')) {
+    //Check if rowclick triggered this event not a clickable element in row content
+    if($(event.target).is('.ui-dt-c,td,span')) {
         var row = $(rowElement),
         selected = row.hasClass('ui-state-highlight');
 
