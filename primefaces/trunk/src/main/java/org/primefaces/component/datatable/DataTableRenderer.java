@@ -578,10 +578,12 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(hasData) {
             for(int i = first; i < (first + rowCountToRender); i++) {
-                if(subTable != null)
+                if(subTable != null) {
                     encodeSubTable(context, table, subTable, i, rowIndexVar);
-                else
+                }
+                else {
                     encodeRow(context, table, clientId, i, rowIndexVar);
+                }
             }
         }
         else if(emptyMessage != null){
@@ -619,17 +621,24 @@ public class DataTableRenderer extends CoreRenderer {
         if(rowIndexVar != null) {
             context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
         }
+        
+        String rowKey = null;
+        if(table.isSelectionEnabled()) {
+            rowKey = table.getRowKey(table.getRowData());
+        } 
+        else {
+            rowKey = String.valueOf(rowIndex);
+        }
 
         //Preselection
-        //boolean selected = table.getSelectedRowIndexes().contains(rowIndex);
-        boolean selected = false;
+        boolean selected = table.getSelectedRowKeys().contains(rowKey);
 
         ResponseWriter writer = context.getResponseWriter();
 
         String userRowStyleClass = table.getRowStyleClass();
         String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
         
-        if(selected && table.getSelectionMode() != null) {
+        if(selected) {
             rowStyleClass = rowStyleClass + " ui-state-highlight";
         }
 
@@ -638,7 +647,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.startElement("tr", null);
-        writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
+        writer.writeAttribute("id", clientId + "_row_" + rowKey, null);
         writer.writeAttribute("class", rowStyleClass, null);
 
         for(UIComponent kid : table.getChildren()) {
@@ -843,7 +852,7 @@ public class DataTableRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
-        writer.writeAttribute("value", table.getSelectedRowIndexesAsString(), null);
+        writer.writeAttribute("value", table.getSelectedRowKeysAsString(), null);
 		writer.endElement("input");
 	}
 	

@@ -35,6 +35,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.BeanPropertyComparator;
+import org.primefaces.model.PrimeDataModel;
 import org.primefaces.model.SortOrder;
 
 class DataHelper {
@@ -227,14 +228,6 @@ class DataHelper {
         
 		String selection = params.get(clientId + "_selection");
         
-        if(!isValueBlank(selection)) {
-            String[] rowKeys = selection.split(",");
-            
-            for(String rowKey : rowKeys) {
-                table.addSelectedRowIndex(Integer.parseInt(rowKey.trim()));
-            }
-        }
-
 		if(table.isSingleSelectionMode())
 			decodeSingleSelection(table, selection);
 		else
@@ -249,10 +242,7 @@ class DataHelper {
 			table.setSelection(null);
 		} 
         else {
-            int selectedRowIndex = Integer.parseInt(selection);
-
-            table.setRowIndex(selectedRowIndex);
-            table.setSelection(table.getRowData());
+            table.setSelection(table.getRowData(selection));
         }
 	}
 
@@ -264,13 +254,11 @@ class DataHelper {
 			table.setSelection(data);   
 		}
         else {
-            String[] rowSelectValues = selection.split(",");
-            Object data = Array.newInstance(clazz.getComponentType(), rowSelectValues.length);
+            String[] rowKeys = selection.split(",");
+            Object data = Array.newInstance(clazz.getComponentType(), rowKeys.length);
 
-            for(int i = 0; i < rowSelectValues.length; i++) {
-                table.setRowIndex(Integer.parseInt(rowSelectValues[i]));
-
-                Array.set(data, i, table.getRowData());
+            for(int i = 0; i < rowKeys.length; i++) {
+                Array.set(data, i, table.getRowData(rowKeys[i]));
             }
 
             table.setSelection(data);

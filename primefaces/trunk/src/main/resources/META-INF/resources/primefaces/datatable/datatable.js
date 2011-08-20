@@ -544,7 +544,7 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
             var ext = {
                 params: {}
             };
-            ext.params[this.id + '_instantSelectedRowIndex'] = rowId;
+            ext.params[this.id + '_instantSelectedRowKey'] = rowId;
             
             selectBehavior.call(this, rowId, ext);
         }
@@ -562,7 +562,7 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
             var ext = {
                 params: {}
             };
-            ext.params[this.id + '_instantUnselectedRowIndex'] = rowId;
+            ext.params[this.id + '_instantUnselectedRowKey'] = rowId;
             
             unselectBehavior.call(this, rowId, ext);
         }
@@ -577,8 +577,13 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
     row = radio.parents('tr:first'),
     rowId = row.attr('id').split('_row_')[1];
 
+    //clean previous selection
     this.selection = [];
+    row.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
+    
+    //add to selection
     this.addSelection(rowId);
+    row.addClass('ui-state-highlight');
 
     //save state
     this.writeSelections();
@@ -597,11 +602,13 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
 
     if(checked) {
         this.addSelection(rowId);
+        row.addClass('ui-state-highlight');
         this.writeSelections();
         this.fireRowSelectEvent(rowId);
     }
     else {
         this.removeSelection(rowId);
+        row.removeClass('ui-state-highlight');
         this.writeSelections();
         this.fireRowUnselectEvent(rowId);
     }

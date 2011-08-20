@@ -398,7 +398,7 @@ public class CoreRenderer extends Renderer {
                String clientId = component.getClientId();
 
                if(behaviorSource != null && clientId.startsWith(behaviorSource)) {
-                   for (ClientBehavior behavior: behaviorsForEvent) {
+                   for(ClientBehavior behavior: behaviorsForEvent) {
                        behavior.decode(context, component);
                    }
                }
