@@ -82,14 +82,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Minimum width of a resizable dialog. Default is 150.</description>
+            <description>Minimum width of a resizable dialog. Default is unl.</description>
         </attribute>
         <attribute>
             <name>minHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Minimum height of a resizable dialog. Default is 150.</description>
+            <description>Minimum height of a resizable dialog. Default is height of titlebar.</description>
         </attribute>
         <attribute>
             <name>style</name>
