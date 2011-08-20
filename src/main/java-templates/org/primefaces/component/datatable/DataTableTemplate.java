@@ -34,6 +34,10 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.SelectableDataModel;
+import java.lang.reflect.Array;
+import javax.faces.model.DataModel;
+import javax.faces.FacesException;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -269,15 +273,13 @@ import org.primefaces.model.SortOrder;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("rowSelect")) {
-                int selectedRowIndex = Integer.parseInt(params.get(clientId + "_instantSelectedRowIndex"));
-                this.setRowIndex(selectedRowIndex);
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData()); 
+                String rowKey = params.get(clientId + "_instantSelectedRowKey");
+                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("rowUnselect")) {
-                int unselectedRowIndex = Integer.parseInt(params.get(clientId + "_instantUnselectedRowIndex"));
-                this.setRowIndex(unselectedRowIndex);
-                wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+                String rowKey = params.get(clientId + "_instantUnselectedRowKey");
+                wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey));
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("page")) {
@@ -507,4 +509,56 @@ import org.primefaces.model.SortOrder;
         }
         
         return null;
+    }
+
+    public String getRowKey(Object object) {
+        DataModel model = getDataModel();
+        if(!(model instanceof SelectableDataModel)) {
+            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
+        }
+        
+        return ((SelectableDataModel) getDataModel()).getRowKey(object);
+    }
+
+    public Object getRowData(String rowKey) {
+        DataModel model = getDataModel();
+        if(!(model instanceof SelectableDataModel)) {
+            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
+        }
+
+        return ((SelectableDataModel) getDataModel()).getRowData(rowKey);
+    }
+
+    private List<String> selectedRowKeys = null;
+
+    List<String> getSelectedRowKeys() {
+        if(selectedRowKeys == null) {
+            Object selection = this.getSelection();
+            selectedRowKeys = new ArrayList<String>();
+
+            if(isSelectionEnabled() && selection != null) {
+                if(this.isSingleSelectionMode()) {
+                    selectedRowKeys.add(this.getRowKey(selection));
+                } 
+                else {
+                    for(int i = 0; i < Array.getLength(selection); i++)
+                        selectedRowKeys.add(this.getRowKey(Array.get(selection, i)));
+                }
+            }
+        }
+        
+        return selectedRowKeys;
+    }
+
+    String getSelectedRowKeysAsString() {
+        StringBuilder builder = new StringBuilder();
+        for(Iterator<String> iter = getSelectedRowKeys().iterator(); iter.hasNext();) {
+            builder.append(iter.next());
+
+            if(iter.hasNext()) {
+                builder.append(",");
+            }
+        }
+
+        return builder.toString();
     }
