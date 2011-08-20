@@ -401,10 +401,15 @@ public class DataTableRenderer extends CoreRenderer {
 
             writer.startElement("th", null);
             writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
-
+            
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+            
             if(header != null) {
                 header.encodeAll(context);
             }
+            
+            writer.endElement("div");
 
             writer.endElement("th");
         }
