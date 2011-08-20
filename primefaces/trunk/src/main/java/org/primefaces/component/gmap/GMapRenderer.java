@@ -26,11 +26,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 
+import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Polygon;
 import org.primefaces.model.map.Polyline;
+import org.primefaces.model.map.Rectangle;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class GMapRenderer extends CoreRenderer {
@@ -126,6 +128,10 @@ public class GMapRenderer extends CoreRenderer {
 				encodePolylines(context, map);
 			if(!model.getPolygons().isEmpty()) 
 				encodePolygons(context, map);
+			if(!model.getCircles().isEmpty()) 
+				encodeCircles(context, map);
+			if(!model.getRectangles().isEmpty()) 
+				encodeRectangles(context, map);
 		}
         
         GMapInfoWindow infoWindow = map.getInfoWindow();
@@ -223,6 +229,70 @@ public class GMapRenderer extends CoreRenderer {
 			writer.write("})");
 			
 			if(polygons.hasNext())
+				writer.write(",");
+		}
+		
+		writer.write("]");
+	}
+        
+	protected void encodeCircles(FacesContext context, GMap map) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		MapModel model = map.getModel();
+		
+		writer.write(",circles:[");
+		
+		for(Iterator<Circle> circles = model.getCircles().iterator(); circles.hasNext();) {
+			Circle circle = (Circle) circles.next();
+			
+			writer.write("new google.maps.Circle({");
+			writer.write("id:'" + circle.getId() + "'");
+                        
+			writer.write(",center:new google.maps.LatLng(" + circle.getCenter().getLat() + ", " + circle.getCenter().getLng() + ")");
+			writer.write(",radius:" + circle.getRadius());
+                        
+			writer.write(",strokeOpacity:" + circle.getStrokeOpacity());
+			writer.write(",strokeWeight:" + circle.getStrokeWeight());
+			writer.write(",fillOpacity:" + circle.getFillOpacity());
+			
+			if(circle.getStrokeColor() != null) writer.write(",strokeColor:'" + circle.getStrokeColor() + "'");
+			if(circle.getFillColor() != null) writer.write(",fillColor:'" + circle.getFillColor() + "'");
+			
+			writer.write("})");
+			
+			if(circles.hasNext())
+				writer.write(",");
+		}
+		
+		writer.write("]");
+	}
+        
+	protected void encodeRectangles(FacesContext context, GMap map) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		MapModel model = map.getModel();
+		
+		writer.write(",rectangles:[");
+		
+		for(Iterator<Rectangle> rectangles = model.getRectangles().iterator(); rectangles.hasNext();) {
+			Rectangle rectangle = (Rectangle) rectangles.next();
+			
+			writer.write("new google.maps.Rectangle({");
+			writer.write("id:'" + rectangle.getId() + "'");
+			
+                        LatLng ne = rectangle.getBounds().getNorthEast();
+                        LatLng sw = rectangle.getBounds().getSouthWest();
+                        
+			writer.write(",bounds:new google.maps.LatLngBounds( new google.maps.LatLng(" + ne.getLat() + "," + ne.getLng() +"), new google.maps.LatLng(" + sw.getLat() + "," + sw.getLng() +"))");
+			
+			writer.write(",strokeOpacity:" + rectangle.getStrokeOpacity());
+			writer.write(",strokeWeight:" + rectangle.getStrokeWeight());
+			writer.write(",fillOpacity:" + rectangle.getFillOpacity());
+			
+			if(rectangle.getStrokeColor() != null) writer.write(",strokeColor:'" + rectangle.getStrokeColor() + "'");
+			if(rectangle.getFillColor() != null) writer.write(",fillColor:'" + rectangle.getFillColor() + "'");
+			
+			writer.write("})");
+			
+			if(rectangles.hasNext())
 				writer.write(",");
 		}
 		

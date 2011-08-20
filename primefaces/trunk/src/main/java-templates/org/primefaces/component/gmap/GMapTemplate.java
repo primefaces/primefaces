@@ -51,7 +51,7 @@ import org.primefaces.context.RequestContext;
                 LatLng northeast = new LatLng(Double.valueOf(northeastLoc[0]), Double.valueOf(northeastLoc[1]));
                 LatLng southwest = new LatLng(Double.valueOf(southwestLoc[0]), Double.valueOf(southwestLoc[1]));
 
-                wrapperEvent = new StateChangeEvent(this, behaviorEvent.getBehavior(), new LatLngBounds(center, northeast, southwest), zoomLevel);
+                wrapperEvent = new StateChangeEvent(this, behaviorEvent.getBehavior(), new LatLngBounds(northeast, southwest), zoomLevel, center);
             }
             else if(eventName.equals("pointSelect")) {
                 String[] latlng = params.get(clientId + "_pointLatLng").split(",");

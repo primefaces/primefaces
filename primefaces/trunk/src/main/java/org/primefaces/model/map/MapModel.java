@@ -26,6 +26,10 @@ public interface MapModel {
 	public List<Polyline> getPolylines();
 	
 	public List<Polygon> getPolygons();
+        
+        public List<Circle> getCircles();
+        
+        public List<Rectangle> getRectangles();
 	
 	public Overlay findOverlay(String id);
 }
