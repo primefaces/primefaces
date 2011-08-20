@@ -52,8 +52,8 @@ public class WatermarkRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(function() {");
-		writer.write("jQuery('" + target.toString() + "').watermark('" + watermark.getValue() + "', {className:'ui-watermark'});");
+		writer.write("$(function() {");
+		writer.write("$('" + target.toString() + "').watermark('" + watermark.getValue() + "');");
 		writer.write("});");
 		
 		writer.endElement("script");
