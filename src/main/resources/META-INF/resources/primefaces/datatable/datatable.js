@@ -134,9 +134,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
             .live('contextmenu.datatable', function(event) {
                _self.onRowClick(event, this);
                event.preventDefault();
-            })
-            .disableSelection();
-            
+            });
     }
     //Radio-Checkbox based rowselection
     else if(this.cfg.columnSelectionMode) {
