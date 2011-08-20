@@ -20,6 +20,7 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesListener;
 
+import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 
 public class StateChangeEvent extends AjaxBehaviorEvent {
@@ -28,10 +29,13 @@ public class StateChangeEvent extends AjaxBehaviorEvent {
 	
 	private int zoomLevel;
 
-	public StateChangeEvent(UIComponent component, Behavior behavior, LatLngBounds bounds, int zoomLevel) {
+	private LatLng center;
+
+	public StateChangeEvent(UIComponent component, Behavior behavior, LatLngBounds bounds, int zoomLevel, LatLng center) {
 		super(component, behavior);
 		this.bounds = bounds;
 		this.zoomLevel = zoomLevel;
+                this.center = center;
 	}
 
 	@Override
@@ -51,4 +55,12 @@ public class StateChangeEvent extends AjaxBehaviorEvent {
 	public int getZoomLevel() {
 		return zoomLevel;
 	}
+        
+        public LatLng getCenter() {
+            return center;
+        }
+
+        public void setCenter(LatLng center) {
+            this.center = center;
+        }
 }
