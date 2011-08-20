@@ -393,7 +393,7 @@ public class CoreRenderer extends Renderer {
         if(null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
-            if(behaviors.size() > 0) {
+            if(behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
                String behaviorSource = params.get("javax.faces.source");
                String clientId = component.getClientId();
 
