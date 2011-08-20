@@ -17,24 +17,13 @@ package org.primefaces.model.map;
 
 public class LatLngBounds {
 	
-	private LatLng center;
-
 	private LatLng northEast;
 	
 	private LatLng southWest;
 	
-	public LatLngBounds(LatLng center, LatLng northEast, LatLng southWest) {
-		this.center = center;
+	public LatLngBounds(LatLng northEast, LatLng southWest) {
 		this.northEast = northEast;
 		this.southWest = southWest;
-	}
-
-	public LatLng getCenter() {
-		return center;
-	}
-
-	public void setCenter(LatLng center) {
-		this.center = center;
 	}
 
 	public LatLng getNorthEast() {
