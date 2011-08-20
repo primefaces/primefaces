@@ -572,7 +572,7 @@ public class DataTableRenderer extends CoreRenderer {
         int rows = table.getRows();
 		int first = table.getFirst();
         int rowCount = table.getRowCount();
-        int rowCountToRender = rows == 0 ? rowCount : rows;
+        int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? table.getScrollRows() : rowCount) : rows;
         boolean hasData = rowCount > 0;
 
         String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
@@ -961,10 +961,8 @@ public class DataTableRenderer extends CoreRenderer {
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         String clientId = table.getClientId(context);
         String rowIndexVar = table.getRowIndexVar();
-        String selectionMode = table.getSelectionMode();
-        Object selection = table.getSelection();
 
-        for(int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
+        for(int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
             encodeRow(context, table, clientId, i, rowIndexVar);
         }
     }

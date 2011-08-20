@@ -189,6 +189,12 @@
             <defaultValue>ascending</defaultValue>
             <description>Sets sorting order. Default is "ascending"</description>
 		</attribute>
+        <attribute>
+			<name>scrollRows</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
