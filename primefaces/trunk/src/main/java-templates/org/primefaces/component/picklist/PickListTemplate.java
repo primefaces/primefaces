@@ -8,7 +8,7 @@ import javax.faces.application.FacesMessage;
     public static final String TARGET_CLASS = LIST_CLASS + " ui-picklist-target";
     public static final String SOURCE_CONTROLS = "ui-picklist-source-controls";
     public static final String TARGET_CONTROLS = "ui-picklist-target-controls";
-    public static final String ITEM_CLASS = "ui-state-default ui-picklist-item ui-corner-all";
+    public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
     public static final String BUTTON_CLASS = "ui-picklist-button";
     public static final String ADD_BUTTON_CLASS = BUTTON_CLASS + " ui-picklist-button-add";
     public static final String ADD_ALL_BUTTON_CLASS = BUTTON_CLASS + " ui-picklist-button-add-all";
