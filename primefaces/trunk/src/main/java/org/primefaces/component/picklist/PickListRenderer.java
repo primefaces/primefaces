@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.component.column.Column;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
@@ -188,11 +189,37 @@ public class PickListRenderer extends CoreRenderer {
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
 			context.getExternalContext().getRequestMap().put(var, item);
-			String value = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : (String) pickList.getItemValue();
+			String value = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
 			
 			writer.startElement("li", null);
             writer.writeAttribute("class", PickList.ITEM_CLASS, null);
-			writer.write(pickList.getItemLabel());
+			
+            if(pickList.getChildCount() > 0) {
+                writer.startElement("table", null);
+                writer.startElement("tbody", null);
+                writer.startElement("tr", null);
+                        
+                 for(UIComponent kid : pickList.getChildren()) {
+                     if(kid instanceof Column && kid.isRendered()) {
+                         Column column = (Column) kid;
+                         
+                         writer.startElement("td", null);
+                         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+                         if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                         
+                         kid.encodeAll(context);
+                         writer.endElement("td");
+                     }
+                 }
+                 
+                writer.endElement("tr");
+                writer.endElement("tbody");
+                writer.endElement("table");
+            }
+            else {
+                writer.writeText(pickList.getItemLabel(), null);
+            }
+                
 			writer.endElement("li");
 			
 			state.append(value);
@@ -248,4 +275,14 @@ public class PickListRenderer extends CoreRenderer {
 				model.add(convertedValue);
 		}
 	}
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

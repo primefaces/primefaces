@@ -32,3 +32,8 @@
     padding:4px 10px 4px 10px;
     border-bottom:0px none;
 }
+
+.ui-picklist table {
+    width:100%;
+    border-collapse:collapse;
+}
