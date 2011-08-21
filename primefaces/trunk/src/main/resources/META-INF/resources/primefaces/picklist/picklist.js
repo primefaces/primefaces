@@ -42,7 +42,7 @@ PrimeFaces.widget.PickList = function(id, cfg) {
                                 var element = $(this);
                                 
                                 if(!e.metaKey) {
-                                    element.siblings('.ui.state-highlight').removeClass('ui-state-highlight');
+                                    element.siblings('.ui-state-highlight').removeClass('ui-state-highlight');
                                 }
                                 
                                 element.removeClass('ui-state-hover').addClass('ui-state-highlight');
