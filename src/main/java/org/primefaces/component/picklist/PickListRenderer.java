@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,24 +71,11 @@ public class PickListRenderer extends CoreRenderer {
 
         //Target List Reorder Buttons
         if(pickList.isShowSourceControls()) {
-            writer.startElement("td", null);
-            writer.writeAttribute("class", PickList.SOURCE_CONTROLS, null);
-            encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS);
-            encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS);
-            encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS);
-            encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS);
-            writer.endElement("td");
+            encodeListControls(context, pickList, PickList.SOURCE_CONTROLS);
         }
-
+ 
 		//Source List
-		writer.startElement("td", null);
-        UIComponent sourceCaption = pickList.getFacet("sourceCaption");
-        boolean hasSourceCaption = sourceCaption != null;
-        if(hasSourceCaption) {
-            encodeCaption(context, sourceCaption);
-        }
-		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), hasSourceCaption);
-		writer.endElement("td");
+		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"));
 
 		//Buttons
 		writer.startElement("td", null);
@@ -99,24 +86,11 @@ public class PickListRenderer extends CoreRenderer {
 		writer.endElement("td");
 
 		//Target List
-		writer.startElement("td", null);
-        UIComponent targetCaption = pickList.getFacet("targetCaption");
-        boolean hasTargetCaption = targetCaption != null;
-        if(hasTargetCaption) {
-            encodeCaption(context, targetCaption);
-        }
-		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), hasTargetCaption);
-		writer.endElement("td");
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"));
 
         //Target List Reorder Buttons
         if(pickList.isShowTargetControls()) {
-            writer.startElement("td", null);
-            writer.writeAttribute("class", PickList.TARGET_CONTROLS, null);
-            encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS);
-            encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS);
-            encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS);
-            encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS);
-            writer.endElement("td");
+            encodeListControls(context, pickList, PickList.TARGET_CONTROLS);
         }
 
 		writer.endElement("tr");
@@ -125,9 +99,9 @@ public class PickListRenderer extends CoreRenderer {
 		writer.endElement("table");
 	}
 	
-	protected void encodeScript(FacesContext facesContext, PickList pickList) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = pickList.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = pickList.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -147,6 +121,18 @@ public class PickListRenderer extends CoreRenderer {
 		
 		writer.endElement("script");
 	}
+    
+    protected void encodeListControls(FacesContext context, PickList pickList, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("td", null);
+        writer.writeAttribute("class", PickList.SOURCE_CONTROLS, null);
+        encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS);
+        writer.endElement("td");
+    }
 
     protected void encodeCaption(FacesContext context, UIComponent caption) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -157,8 +143,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 	
-	protected void encodeButton(FacesContext facesContext, PickList pickList, String label, String styleClass) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeButton(FacesContext context, PickList pickList, String label, String styleClass) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
@@ -167,9 +153,18 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("button");
 	}
 	
-	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, boolean hasCaption) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        styleClass += hasCaption ? " ui-corner-bl ui-corner-br" : " ui-corner-all";
+	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+                
+        writer.startElement("td", null);
+        
+        if(caption != null) {
+            encodeCaption(context, caption);
+            styleClass += " ui-corner-bottom";
+        }
+        else {
+            styleClass += " ui-corner-all";
+        }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
@@ -179,6 +174,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("ul");
 		
 		encodeListStateHolder(context, listId, values);
+        
+        writer.endElement("ul");
 	}
 	
 	@SuppressWarnings("unchecked")

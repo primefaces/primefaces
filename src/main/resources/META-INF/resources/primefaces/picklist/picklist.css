@@ -23,6 +23,8 @@
 
 .ui-picklist .ui-picklist-item {
     cursor:pointer;
+    border:0px none;
+    font-weight: inherit;
 }
 
 .ui-picklist .ui-picklist-caption {
