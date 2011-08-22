@@ -33,19 +33,30 @@ PrimeFaces.widget.PickList = function(id, cfg) {
 
         //Visual selection and Double click transfer
         this.items.mouseover(function(e) {
-                                $(this).addClass('ui-state-hover');
+                                var element = $(this);
+                                
+                                if(!element.hasClass('ui-state-highlight'))
+                                    $(this).addClass('ui-state-hover');
                             })
                   .mouseout(function(e) {
-                                $(this).removeClass('ui-state-hover');
+                                var element = $(this);
+                                
+                                if(!element.hasClass('ui-state-highlight'))
+                                    $(this).removeClass('ui-state-hover');
                             })
                   .mousedown(function(e) {
                                 var element = $(this);
                                 
                                 if(!e.metaKey) {
-                                    element.siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+                                    element.removeClass('ui-state-hover').addClass('ui-state-highlight')
+                                            .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
                                 }
-                                
-                                element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+                                else {
+                                    if(element.hasClass('ui-state-highlight'))
+                                        element.removeClass('ui-state-highlight');
+                                    else
+                                        element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+                                }
                             })
                   .dblclick(function() {
                                 $(this).hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
@@ -211,7 +222,7 @@ PrimeFaces.widget.PickList.prototype.saveState = function() {
 PrimeFaces.widget.PickList.prototype.transfer = function(element, to) {
     var _self = this;
 
-    $(element).appendTo(to).show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {_self.saveState();});
+    $(element).appendTo(to).removeClass('ui-state-highlight').show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {_self.saveState();});
 }
 
 PrimeFaces.widget.PickList.prototype.saveListState = function(list, holder) {
