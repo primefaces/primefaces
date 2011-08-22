@@ -19,12 +19,12 @@ PrimeFaces.widget.GMap = function(id, cfg) {
 		this.configurePolygons();
 	}
 	
-        //add circles
+    //add circles
 	if(this.cfg.circles) {
 		this.configureCircles();
 	}
 	
-        //add rectangles
+    //add rectangles
 	if(this.cfg.rectangles) {
 		this.configureRectangles();
 	}
@@ -200,7 +200,6 @@ PrimeFaces.widget.GMap.prototype.addOverlay = function(overlay) {
 }
 
 PrimeFaces.widget.GMap.prototype.addOverlays = function(overlays) {
-    
     var _self = this;
     
     $.each(overlays, function(index, item){

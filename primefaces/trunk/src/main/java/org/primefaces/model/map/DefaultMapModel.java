@@ -29,9 +29,9 @@ public class DefaultMapModel implements MapModel, Serializable {
 	
 	private List<Polygon> polygons;
         
-        private List<Circle> circles;
+    private List<Circle> circles;
         
-        private List<Rectangle> rectangles;
+    private List<Rectangle> rectangles;
 	
 	private final static String MARKER_ID_PREFIX = "marker";
 	
@@ -41,7 +41,7 @@ public class DefaultMapModel implements MapModel, Serializable {
         
 	private final static String CIRCLE_ID_PREFIX = "circle_";
 	
-        private final static String RECTANGLE_ID_PREFIX = "rectangle_";
+    private final static String RECTANGLE_ID_PREFIX = "rectangle_";
 	
 	public DefaultMapModel() {
 		markers = new ArrayList<Marker>();
@@ -63,11 +63,11 @@ public class DefaultMapModel implements MapModel, Serializable {
 		return polygons;
 	}
 	
-        public List<Circle> getCircles() {
+    public List<Circle> getCircles() {
 		return circles;
 	}
         
-        public List<Rectangle> getRectangles() {
+    public List<Rectangle> getRectangles() {
 		return rectangles;
 	}
 

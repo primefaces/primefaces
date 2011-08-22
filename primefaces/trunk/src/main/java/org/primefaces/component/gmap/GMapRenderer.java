@@ -278,8 +278,8 @@ public class GMapRenderer extends CoreRenderer {
 			writer.write("new google.maps.Rectangle({");
 			writer.write("id:'" + rectangle.getId() + "'");
 			
-                        LatLng ne = rectangle.getBounds().getNorthEast();
-                        LatLng sw = rectangle.getBounds().getSouthWest();
+            LatLng ne = rectangle.getBounds().getNorthEast();
+            LatLng sw = rectangle.getBounds().getSouthWest();
                         
 			writer.write(",bounds:new google.maps.LatLngBounds( new google.maps.LatLng(" + ne.getLat() + "," + ne.getLng() +"), new google.maps.LatLng(" + sw.getLat() + "," + sw.getLng() +"))");
 			
