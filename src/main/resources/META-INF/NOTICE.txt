@@ -2,9 +2,7 @@ This product includes software developed by YAHOO! (http://developer.yahoo.com/y
 This product includes software developed by John Resig (http://http://jquery.com)
 This product includes software developed by jQuery UI (http://jqueryui.com)
 This product includes software developed by Jack Moore (http://colorpowered.com/colorbox)
-This product includes software developed by Nicholas C. Zakas (http://github.com/paulirish/yui-misc/tree)
 This product includes software developed by Paul Irish (http://paulirish.com/2009/jquery-idletimer-plugin)
-This product includes software developed by Hieu Pham (http://www.hieu.co.uk/ImageSwitch)
 This product includes software developed by Fyneworks.com (http://www.fyneworks.com)
 This product includes software developed by Josh Bush (http://digitalbush.com/projects/masked-input-plugin)
 This product includes software developed by Stefan Petre (http://interface.eyecon.ro)
@@ -13,7 +11,6 @@ This product includes software developed by Jarel Remick (http://net.tutsplus.co
 This product includes software developed by Craig Thompson (http://craigsworks.com/projects/qtip/)
 This product includes software developed by Marco van Hylckama Vlieg (http://www.i-marco.nl/weblog/yui-accordion/)
 This product includes software developed by CompareNetworks Inc (http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html)
-This product includes software developed by Ronnie Garcia and Travis Nickels (http://www.uploadify.com)
 This product includes software developed by Tzury Bar Yochay (http://code.google.com/p/js-hotkeys/)
 This product includes software developed by Adam Shaw (http://arshaw.com/fullcalendar/)
 This product includes software developed by Keith Wood (http://keith-wood.name/keypad.html)
@@ -21,10 +18,8 @@ This product includes software developed by Fabrizio Balliano and Kevin Dalman (
 This product includes software developed by Hervé GOUCHET (http://www.rvdevsign.net/ressources/javascript/jpassword-plugin-jquery.html)
 This product includes software developed by Eros Fratini (http://plugins.jquery.com/project/jqPrint)
 This product includes software developed by Venkatakrishnan Ganesh (http://plugins.jquery.com/project/wterm)
-This product includes software developed by Chris Coyier (http://css-tricks.com/anythingslider-jquery-plugin/)
 This product includes software developed by Todd Northrop (http://jquery-watermark.googlecode.com/)
 This product includes software developed by catchmyframe.com (http://www.catchmyfame.com)
-This product includes software developed by Robert Plummer (http://www.visop-dev.com/jquerysheet.html)
 This product includes software developed by Kelly Hallman (http://deepliquid.com/content/Jcrop.html)
 This product includes software developed by David Hellsing (http://galleria.aino.se/)
 This product includes software developed by M. Alsup (http://jquery.malsup.com/cycle/)
@@ -36,14 +31,3 @@ This product includes software developed by Sebastian Tschan (https://github.com
 This product includes software developed by Klaus Hartl (http://plugins.jquery.com/files/jquery.cookie.js.txt)
 This product includes software developed by G Scott Olson (http://www.gscottolson.com/blackbirdjs/)
 This product includes software developed by Mnemograph LLC (http://timeglider.com/jquery/)
-
-
-
-
-
-
-
-
-
-
-
