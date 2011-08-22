@@ -79,6 +79,8 @@ public class GMapRenderer extends CoreRenderer {
 		writer.write("mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());
 		writer.write(",center:new google.maps.LatLng(" + map.getCenter() + ")");
 		writer.write(",zoom:" + map.getZoom());
+        
+        if(!map.isFitBounds())writer.write(",fitBounds:false");
 
         //Overlays
 		encodeOverlays(context, map);

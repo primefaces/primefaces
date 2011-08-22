@@ -3,7 +3,8 @@ PrimeFaces.widget.GMap = function(id, cfg) {
 	this.cfg = cfg;
 	
 	this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
-	
+	this.cfg.fitBounds = !(this.cfg.fitBounds === false);
+    
 	//conf markers
 	if(this.cfg.markers) {
 		this.configureMarkers();
@@ -31,6 +32,10 @@ PrimeFaces.widget.GMap = function(id, cfg) {
 	
 	//general map events
 	this.configureEventListeners();
+    
+    //fit auto bounds
+    if(this.cfg.fitBounds && this.viewport)
+        this.map.fitBounds(this.viewport);
 }
 
 PrimeFaces.widget.GMap.prototype.getMap = function() {
@@ -72,6 +77,10 @@ PrimeFaces.widget.GMap.prototype.configureMarkers = function() {
 	for(var i=0; i < this.cfg.markers.length; i++) {
 		var marker = this.cfg.markers[i];
 		marker.setMap(this.map);
+
+        //extend viewport
+        if(this.cfg.fitBounds)
+            this.extendView(marker);
 
         //overlay select
         google.maps.event.addListener(marker, 'click', function(event) {
@@ -205,11 +214,30 @@ PrimeFaces.widget.GMap.prototype.addOverlays = function(overlays) {
     $.each(overlays, function(index, item){
         item.setMap(_self.map);
 
+        _self.extendView(item);
+
         //bind overlay click event
         google.maps.event.addListener(item, 'click', function(event) {
             _self.fireOverlaySelectEvent(event, item);
         });
     })
+}
+
+PrimeFaces.widget.GMap.prototype.extendView = function(overlay){
+    if( this.cfg.fitBounds && overlay){
+        var _self = this;
+        this.viewport = this.viewport || new google.maps.LatLngBounds();
+        if(overlay instanceof google.maps.Marker)
+            this.viewport.extend(overlay.getPosition());
+        
+        else if(overlay instanceof google.maps.Circle || overlay instanceof google.maps.Rectangle)
+            this.viewport.union(overlay.getBounds());
+        
+        else if(overlay instanceof google.maps.Polyline || overlay instanceof google.maps.Polygon)
+            overlay.getPath().forEach(function(item, index){
+                _self.viewport.extend(item);
+            });
+    }
 }
 
 PrimeFaces.widget.GMap.prototype.checkResize = function() {

@@ -109,6 +109,13 @@
 			<type>java.lang.String</type>
             <description>Javascript callback to execute when a point on map is clicked.</description>
 		</attribute>
+        <attribute>
+			<name>fitBounds</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines setting center and zoom values auto by included overlays on startup. Default value is true.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
