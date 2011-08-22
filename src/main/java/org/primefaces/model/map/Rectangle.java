@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,67 +17,67 @@ package org.primefaces.model.map;
 
 public class Rectangle extends Overlay {
 
-        private LatLngBounds bounds;
+    private LatLngBounds bounds;
+    
+    private String strokeColor;
+    
+    private double strokeOpacity = 1.0;
+    
+    private int strokeWeight = 1;
+    
+    private String fillColor;
+    
+    private double fillOpacity = 1.0;
 
-        private String strokeColor;
-	
-	private double strokeOpacity = 1.0;
-	
-	private int strokeWeight = 1;
-	
-	private String fillColor;
-	
-	private double fillOpacity = 1.0;
-	
-	public Rectangle(LatLngBounds bounds) {
-            this.bounds = bounds;
-	}
-        
-        public LatLngBounds getBounds() {
-            return bounds;
-        }
+    public Rectangle(LatLngBounds bounds) {
+        this.bounds = bounds;
+    }
 
-        public void setBounds(LatLngBounds bounds) {
-            this.bounds = bounds;
-        }
-	
-	public String getStrokeColor() {
-		return strokeColor;
-	}
+    public LatLngBounds getBounds() {
+        return bounds;
+    }
 
-	public void setStrokeColor(String strokeColor) {
-		this.strokeColor = strokeColor;
-	}
+    public void setBounds(LatLngBounds bounds) {
+        this.bounds = bounds;
+    }
 
-	public double getStrokeOpacity() {
-		return strokeOpacity;
-	}
+    public String getStrokeColor() {
+        return strokeColor;
+    }
 
-	public void setStrokeOpacity(double strokeOpacity) {
-		this.strokeOpacity = strokeOpacity;
-	}
+    public void setStrokeColor(String strokeColor) {
+        this.strokeColor = strokeColor;
+    }
 
-	public int getStrokeWeight() {
-		return strokeWeight;
-	}
+    public double getStrokeOpacity() {
+        return strokeOpacity;
+    }
 
-	public void setStrokeWeight(int strokeWeight) {
-		this.strokeWeight = strokeWeight;
-	}
-	
-	public String getFillColor() {
-		return fillColor;
-	}
+    public void setStrokeOpacity(double strokeOpacity) {
+        this.strokeOpacity = strokeOpacity;
+    }
 
-	public void setFillColor(String fillColor) {
-		this.fillColor = fillColor;
-	}
+    public int getStrokeWeight() {
+        return strokeWeight;
+    }
 
-	public double getFillOpacity() {
-		return fillOpacity;
-	}
-	
-	public void setFillOpacity(double fillOpacity) {
-		this.fillOpacity = fillOpacity;
-	}
+    public void setStrokeWeight(int strokeWeight) {
+        this.strokeWeight = strokeWeight;
+    }
+
+    public String getFillColor() {
+        return fillColor;
+    }
+
+    public void setFillColor(String fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    public double getFillOpacity() {
+        return fillOpacity;
+    }
+
+    public void setFillOpacity(double fillOpacity) {
+        this.fillOpacity = fillOpacity;
+    }
 }
