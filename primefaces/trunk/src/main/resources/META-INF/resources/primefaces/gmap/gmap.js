@@ -4,6 +4,7 @@ PrimeFaces.widget.GMap = function(id, cfg) {
 	
 	this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
 	this.cfg.fitBounds = !(this.cfg.fitBounds === false);
+    this.viewport = this.map.getBounds();
     
 	//conf markers
 	if(this.cfg.markers) {
