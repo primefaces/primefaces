@@ -17,7 +17,7 @@ package org.primefaces.model;
 
 public interface SelectableDataModel<T> {
     
-    public String getRowKey(T object);
+    public Object getRowKey(T object);
     
     public T getRowData(String rowKey);
 }

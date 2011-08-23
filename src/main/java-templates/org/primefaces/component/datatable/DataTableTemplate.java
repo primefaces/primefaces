@@ -395,32 +395,6 @@ import javax.faces.FacesException;
         getStateHelper().put("filters", filters);
     }
 
-    private List<Integer> selectedRowIndexes = new ArrayList<Integer>();
-
-    public void addSelectedRowIndex(Integer rowIndex) {
-        selectedRowIndexes.add(rowIndex);
-    }
-
-    public List<Integer> getSelectedRowIndexes() {
-        return selectedRowIndexes;
-    }
-
-    public void clearSelectedRowIndexes() {
-        this.selectedRowIndexes.clear();
-    }
-
-    public String getSelectedRowIndexesAsString() {
-        StringBuilder sb = new StringBuilder();
-        for(Iterator<Integer> iter = selectedRowIndexes.iterator(); iter.hasNext();) {
-            sb.append(iter.next());
-
-            if(iter.hasNext())
-                sb.append(",");
-        }
-
-        return sb.toString();
-    }
-
     public void resetValue() {
         setValue(null);
     }
@@ -511,7 +485,7 @@ import javax.faces.FacesException;
         return null;
     }
 
-    public String getRowKey(Object object) {
+    public Object getRowKeyFromModel(Object object) {
         DataModel model = getDataModel();
         if(!(model instanceof SelectableDataModel)) {
             throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
@@ -521,28 +495,64 @@ import javax.faces.FacesException;
     }
 
     public Object getRowData(String rowKey) {
-        DataModel model = getDataModel();
-        if(!(model instanceof SelectableDataModel)) {
-            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
-        }
+        boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+        
+        if(hasRowKeyVe) {
+            Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+            String var = this.getVar();
+            Collection data = (Collection) this.getValue();
 
-        return ((SelectableDataModel) getDataModel()).getRowData(rowKey);
+            for(Iterator it = data.iterator(); it.hasNext();) {
+                Object object = it.next();
+                requestMap.put(var, object);
+
+                if(this.getRowKey().equals(rowKey)) {
+                    return object;
+                }
+            }
+            
+            throw new FacesException("Cannot find data with given rowKey:" + rowKey);
+        } 
+        else {
+            DataModel model = getDataModel();
+            if(!(model instanceof SelectableDataModel)) {
+                throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled or you need to define rowKey attribute");
+            }
+
+            return ((SelectableDataModel) getDataModel()).getRowData(rowKey);
+        }
     }
 
-    private List<String> selectedRowKeys = null;
+    private List<Object> selectedRowKeys = null;
 
-    List<String> getSelectedRowKeys() {
+    List<Object> getSelectedRowKeys() {
         if(selectedRowKeys == null) {
             Object selection = this.getSelection();
-            selectedRowKeys = new ArrayList<String>();
+            selectedRowKeys = new ArrayList<Object>();
+            boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+            String var = this.getVar();
+            Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
             if(isSelectionEnabled() && selection != null) {
                 if(this.isSingleSelectionMode()) {
-                    selectedRowKeys.add(this.getRowKey(selection));
+                    if(hasRowKeyVe) {
+                        requestMap.put(var, selection);
+                        selectedRowKeys.add(this.getRowKey());
+                    }
+                    else {
+                        selectedRowKeys.add(this.getRowKeyFromModel(selection));
+                    }
                 } 
                 else {
-                    for(int i = 0; i < Array.getLength(selection); i++)
-                        selectedRowKeys.add(this.getRowKey(Array.get(selection, i)));
+                    for(int i = 0; i < Array.getLength(selection); i++) {
+                        if(hasRowKeyVe) {
+                            requestMap.put(var, Array.get(selection, i));
+                            selectedRowKeys.add(this.getRowKey());
+                        }
+                        else {
+                            selectedRowKeys.add(this.getRowKeyFromModel(Array.get(selection, i)));
+                        }    
+                    }
                 }
             }
         }
@@ -552,7 +562,7 @@ import javax.faces.FacesException;
 
     String getSelectedRowKeysAsString() {
         StringBuilder builder = new StringBuilder();
-        for(Iterator<String> iter = getSelectedRowKeys().iterator(); iter.hasNext();) {
+        for(Iterator<Object> iter = getSelectedRowKeys().iterator(); iter.hasNext();) {
             builder.append(iter.next());
 
             if(iter.hasNext()) {

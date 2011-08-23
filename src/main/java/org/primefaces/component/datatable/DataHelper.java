@@ -17,17 +17,17 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import org.primefaces.component.column.Column;
@@ -35,7 +35,6 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.BeanPropertyComparator;
-import org.primefaces.model.PrimeDataModel;
 import org.primefaces.model.SortOrder;
 
 class DataHelper {
@@ -232,18 +231,13 @@ class DataHelper {
 			decodeSingleSelection(table, selection);
 		else
 			decodeMultipleSelection(table, selection);
-        
-        //clear
-        table.setRowIndex(-1);
 	}
 
     void decodeSingleSelection(DataTable table, String selection) {
-		if(isValueBlank(selection)) {
+		if(isValueBlank(selection))
 			table.setSelection(null);
-		} 
-        else {
+        else
             table.setSelection(table.getRowData(selection));
-        }
 	}
 
 	void decodeMultipleSelection(DataTable table, String selection) {
@@ -256,11 +250,11 @@ class DataHelper {
         else {
             String[] rowKeys = selection.split(",");
             Object data = Array.newInstance(clazz.getComponentType(), rowKeys.length);
-
+            
             for(int i = 0; i < rowKeys.length; i++) {
                 Array.set(data, i, table.getRowData(rowKeys[i]));
             }
-
+            
             table.setSelection(data);
 		}
 	}
