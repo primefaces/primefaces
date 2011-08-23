@@ -29,7 +29,7 @@ public class PrimeDataModel<T> extends ListDataModel implements SelectableDataMo
         setWrappedData(data);
     }
     
-    public String getRowKey(T object) {
+    public Object getRowKey(T object) {
         throw new UnsupportedOperationException("Must be implemented");
     }
     
