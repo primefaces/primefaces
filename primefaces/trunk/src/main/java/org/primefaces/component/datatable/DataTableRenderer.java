@@ -213,7 +213,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         if(table.isSelectionEnabled()) {
             encodeSelectionHolder(context, table);
-            table.clearSelectedRowIndexes();
         }
 
         writer.endElement("div");
@@ -627,12 +626,17 @@ public class DataTableRenderer extends CoreRenderer {
             context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
         }
         
-        String rowKey = null;
+        Object rowKey = null;
         if(table.isSelectionEnabled()) {
-            rowKey = table.getRowKey(table.getRowData());
-        } 
+            //try rowKey attribute
+            rowKey = table.getRowKey();
+            
+            //ask selectable datamodel
+            if(rowKey == null)
+                rowKey = table.getRowKeyFromModel(table.getRowData());
+        }
         else {
-            rowKey = String.valueOf(rowIndex);
+            rowKey = rowIndex;
         }
 
         //Preselection

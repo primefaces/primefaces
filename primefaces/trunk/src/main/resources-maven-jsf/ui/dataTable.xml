@@ -195,6 +195,12 @@
 			<type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
 		</attribute>
+        <attribute>
+			<name>rowKey</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Unique identifier of row data.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
