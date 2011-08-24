@@ -56,7 +56,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String query = params.get(clientId + "_query");
         if(query != null) {
             AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(autoComplete, query);
-            autoCompleteEvent.setPhaseId(autoComplete.isImmediate() ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+            autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             autoComplete.queueEvent(autoCompleteEvent);
         }
     }

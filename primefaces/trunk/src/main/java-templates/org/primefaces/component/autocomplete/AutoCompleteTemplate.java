@@ -58,8 +58,12 @@ import javax.faces.event.PhaseId;
 		
 		if(me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
 			suggestions = (List) me.invoke(facesContext.getELContext(), new Object[] {((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
-            if(suggestions == null)
+            
+            if(suggestions == null) {
                 suggestions = new ArrayList();
+            }
+
+            facesContext.renderResponse();
 		}
 	}
 
