@@ -212,12 +212,9 @@ public class CoreRenderer extends Renderer {
         String process = source.getProcess();
         if(process == null) {
             process = "@all";
-        } else {
+        } 
+        else {
             process = ComponentUtils.findClientIds(context, component, process);
-            
-            //add @this   
-            if(process.indexOf(clientId) == -1)
-                process = process + " " + clientId;
         }
         req.append(",process:'").append(process).append("'");
 
