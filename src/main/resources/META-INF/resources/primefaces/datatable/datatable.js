@@ -741,14 +741,17 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
  * Displays in-cell editors for given row
  */
 PrimeFaces.widget.DataTable.prototype.showEditors = function(element) {
-    $(element).parents('tr:first').addClass('ui-state-highlight').children('td.ui-editable-column').each(function() {
-       var column = $(this);
+    var element = $(element);
+    
+    element.parents('tr:first').addClass('ui-state-highlight').children('td.ui-editable-column').each(function() {
+        var column = $(this);
 
-       column.find('span.ui-cell-editor-output').hide();
-       column.find('span.ui-cell-editor-input').show();
+        column.find('span.ui-cell-editor-output').hide();
+        column.find('span.ui-cell-editor-input').show();
 
-       $(element).hide();
-       $(element).siblings().show();
+        if(element.hasClass('ui-icon-pencil')) {
+            element.hide().siblings().show();
+        }
     });
 }
 
