@@ -138,7 +138,7 @@ PrimeFaces.ajax.AjaxUtils = {
 	
     updateState: function(value) {
         var viewstateValue = $.trim(value),
-        forms = this.portlet.forms ? this.portlet.forms : $('form');
+        forms = this.portletForms ? this.portletForms : $('form');
         
         forms.each(function() {
             var form = $(this),
@@ -253,10 +253,10 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     encodedURLfield = form.children("input[name='javax.faces.encodedURL']");
 
     //portlet support
-    var portletForms = null;
+    var pForms = null;
     if(encodedURLfield.length > 0) {
         postURL = encodedURLfield.val();
-        portletForms = $('form[action="' + form.attr('action') + '"]'); //find forms of the portlet
+        pForms = $('form[action="' + form.attr('action') + '"]');   //find forms of the portlet
     }
     
     PrimeFaces.debug('URL to post ' + postURL + '.');
@@ -318,9 +318,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         cache : false,
         dataType : "xml",
         data : postParams,
-        portlet: {
-            forms: portletForms
-        },
+        portletForms: pForms,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
            this.behaviorSource = cfg.event ? cfg.source : undefined;
