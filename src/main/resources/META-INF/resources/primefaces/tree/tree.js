@@ -19,11 +19,6 @@ PrimeFaces.widget.Tree = function(id, cfg) {
 
     this.bindEvents();
 
-    if(!this.cfg.dynamic) {
-        this.cookieName = this.id + '_state';
-        this.restoreClientState();
-    }
-
     if(this.cfg.dragdrop) {
         this.setupDragDrop(this.jq.find('.ui-tree-node-label'), this.jq.find('.ui-tree-node-content'));
     }
@@ -53,10 +48,16 @@ PrimeFaces.widget.Tree.prototype.bindEvents = function() {
         $(clickTargetSelector)
             .die('mouseover.tree mouseout.tree click.tree contextmenu.tree')
             .live('mouseover.tree', function() {
-                $(this).addClass('ui-state-hover');
+                var element = $(this);
+                
+                if(!element.hasClass('ui-state-highlight'))
+                    $(this).addClass('ui-state-hover');
             })
             .live('mouseout.tree', function() {
-                $(this).removeClass('ui-state-hover');
+                var element = $(this);
+                
+                if(!element.hasClass('ui-state-highlight'))
+                    $(this).removeClass('ui-state-hover');
             })
             .live('click.tree', function(e) {
                 _self.onNodeClick(e, $(this).parents('li:first'));
@@ -143,7 +144,6 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
     }
     else {
         this.showNodeChildren(node);
-        this.saveClientState();
         this.fireExpandEvent(node);
     }
 }
@@ -178,13 +178,8 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
     var childNodeContainer = node.children('.ui-tree-nodes');
     childNodeContainer.hide();
         
-    if(_self.cfg.dynamic) {
-        if(!_self.cfg.cache) {
-            childNodeContainer.remove();
-        }
-    }
-    else {
-        _self.saveClientState();
+    if(_self.cfg.dynamic && !_self.cfg.cache) {
+        childNodeContainer.remove();
     }
     
     _self.fireCollapseEvent(node);
@@ -219,35 +214,6 @@ PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node) {
     node.children('.ui-tree-nodes').show();
 }
 
-PrimeFaces.widget.Tree.prototype.saveClientState = function() {
-    var _self = this,
-    expandedNodes = [];
-    
-    $(this.jq).find('li').each(function() {
-        var node = $(this),
-        icon = node.find('.ui-tree-icon:first');
-
-        if(icon.hasClass('ui-icon-triangle-1-s')) {
-            expandedNodes.push(node.attr('id'));
-        }
-    });
-
-    PrimeFaces.setCookie(this.cookieName, expandedNodes.join(','));
-}
-
-PrimeFaces.widget.Tree.prototype.restoreClientState = function() {
-    var expandedNodes = PrimeFaces.getCookie(this.cookieName),
-    _self = this;
-    
-    if(expandedNodes) {
-        expandedNodes = expandedNodes.split(',');
-
-        $.each(expandedNodes, function(i, item) {
-            _self.showNodeChildren($(PrimeFaces.escapeClientId(item)));
-        });
-    }
-}
-
 PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
 
     if(this.isCheckboxSelection()) {
@@ -260,7 +226,7 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
             this.jq.find('.ui-tree-node-content.ui-state-highlight').removeClass('ui-state-highlight');
         }
 
-        node.find('.ui-tree-node-content:first').addClass('ui-state-highlight');
+        node.find('.ui-tree-node-content:first').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getNodeId(node));
     }
