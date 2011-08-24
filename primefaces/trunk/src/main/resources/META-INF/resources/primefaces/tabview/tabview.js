@@ -185,7 +185,7 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
  */
 PrimeFaces.widget.TabView.prototype.remove = function(index) {    
     var header = this.navContainer.children().eq(index),
-    panel = this.panelsContainer.children().eq(index);
+    panel = this.panelContainer.children().eq(index);
     
     this.fireTabCloseEvent(panel);
     
