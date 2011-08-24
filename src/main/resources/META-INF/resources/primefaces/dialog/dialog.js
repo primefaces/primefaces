@@ -216,8 +216,9 @@ PrimeFaces.widget.Dialog.prototype.bindEvents = function() {
 
 PrimeFaces.widget.Dialog.prototype.setupDraggable = function() {    
     this.jq.draggable({
+        cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
         handle: '.ui-dialog-titlebar',
-        containment : 'body'
+        containment : 'document'
     });
 }
 PrimeFaces.widget.Dialog.prototype.setupResizable = function() {    
@@ -226,7 +227,7 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
         minWidth : this.cfg.minWidth,
         minHeight : this.cfg.minHeight,
         alsoResize : this.footer.length > 0 ? this.content : false,
-        containment: 'body'
+        containment: 'document'
     });
     
     this.resizers = this.jq.children('.ui-resizable-handle');
