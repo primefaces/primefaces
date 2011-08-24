@@ -33,9 +33,11 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     //size and zindex
     this.jq.css({
         'width': this.cfg.width,
-        'height': this.cfg.height,
+        'height': 'auto',
         'z-index': this.cfg.zindex 
     });
+    
+    this.content.height(this.cfg.height);
     
     //position
     this.initPosition();
