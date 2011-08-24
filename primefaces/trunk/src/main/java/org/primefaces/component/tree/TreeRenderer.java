@@ -182,6 +182,7 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(rowKey);
             boolean isLeaf = node.isLeaf();
             boolean expanded = node.isExpanded();
+            boolean selectable = node.isSelectable();
             String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
             String nodeId = clientId + "_node_" + rowKey;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
@@ -207,7 +208,7 @@ public class TreeRenderer extends CoreRenderer {
 
                     //node content
                     String nodeContentClass = selected ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
-                    nodeContentClass = node.isSelectable() ? nodeContentClass + " " + Tree.SELECTABLE_NODE_CLASS : nodeContentClass;
+                    nodeContentClass = selectable ? nodeContentClass + " " + Tree.SELECTABLE_NODE_CLASS : nodeContentClass;
                     
                     writer.startElement("span", null);
                     writer.writeAttribute("class", nodeContentClass, null);
@@ -228,7 +229,7 @@ public class TreeRenderer extends CoreRenderer {
                         writer.endElement("span");
 
                         //checkbox
-                        if(checkbox) {
+                        if(checkbox && selectable) {
                             encodeCheckbox(context, tree, node, selected);
                         }
 
