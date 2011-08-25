@@ -13,12 +13,14 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
     this.prevButton = this.header.children('.ui-carousel-prev-button');
     this.nextButton = this.header.children('.ui-carousel-next-button');
     this.pageLinks = this.header.find('.ui-carousel-page-links .ui-carousel-page-link');
+    this.dropdown = this.header.children('.ui-carousel-dropdown');
     
     //configuration
     this.cfg.numVisible = this.cfg.numVisible || 3;
-    this.cfg.effectDuration = this.cfg.effectDuration || 500;
     this.cfg.pageLinks = this.cfg.pageLinks || 3;
     this.cfg.effect = this.cfg.effect || 'slide';
+    this.cfg.effectDuration = this.cfg.effectDuration || 500;
+    this.cfg.easing = this.cfg.easing || 'easeInOutCirc';
     this.cfg.pageCount = Math.ceil(this.items.length / this.cfg.numVisible);
     this.cfg.firstVisible = (this.cfg.firstVisible || 0) % this.items.length;
     this.cfg.page = (this.cfg.firstVisible / this.cfg.numVisible) + 1;
@@ -56,37 +58,6 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
 }
 
 /**
- * Creates dropdown navigation bar for given n
- */
-PrimeFaces.widget.Carousel.prototype.getDropDown = function(n){
-    var s = $('<select></select>').addClass('ui-widget ui-carousel-dropdown'),
-    _self = this;
-
-    for(var i=0; i<n; i++){
-        var o = $('<option>'+ this.cfg.dropdownTemplate.replace(/{page}/i,(i+1)) +'</option>').attr('value', i);
-        if(this.page == i)
-            o.attr('selected', 'selected');
-        s.append(o);
-    }
-
-    return s.change(function(e){
-        _self.go(parseInt($(this).val()));
-    });
-}
-
-/**
- * Creates navigation buttons for given n
- */
-PrimeFaces.widget.Carousel.prototype.createPageLinks = function(n) {
-    this.header.append('<div class="ui-carousel-nav></div>');
-    var pageLinksContainer = this.header.children('.ui-carousel-nav');
-
-    for(var i=0; i < n; i++) {
-        pageLinksContainer.append($('<a class=""></a>'));
-    }
-}
-
-/**
  * Returns browser specific computed style property value.
  */
 PrimeFaces.widget.Carousel.prototype.getProperty = function(item, prop){
@@ -99,7 +70,7 @@ PrimeFaces.widget.Carousel.prototype.getProperty = function(item, prop){
 PrimeFaces.widget.Carousel.prototype.startAutoPlay = function(){
     var _self = this;
     if(this.cfg.autoPlayInterval){
-        setInterval( function(){
+        setInterval(function() {
             _self.next();
         }, this.cfg.autoPlayInterval);
     }
@@ -113,7 +84,12 @@ PrimeFaces.widget.Carousel.prototype.bindEvents = function(){
   
     this.pageLinks.click(function(e) {
         if(!_self.animating)
-            _self.setPage($(this).index());
+            _self.setPage($(this).index() + 1);
+    });
+    
+    this.dropdown.change(function(e) {
+        if(!_self.animating)
+            _self.setPage(parseInt($(this).val()));
     });
   
     this.prevButton.click(function(e) {
@@ -192,19 +168,16 @@ PrimeFaces.widget.Carousel.prototype.fade = function(val){
     });
 }
 
-/**
- * Slide animation for list transition.
- */
 PrimeFaces.widget.Carousel.prototype.slide = function(val){
     var _self = this,
-    ao = this.cfg.vertical ? {
+    animateOption = this.cfg.vertical ? {
         top : val
     } : {
         left : val
     };
   
     this.list.animate( 
-        ao, 
+        animateOption, 
         {
             duration: this.cfg.effectDuration,
             easing: this.cfg.easing,
@@ -233,7 +206,7 @@ PrimeFaces.widget.Carousel.prototype.prev = function(){
  */
 PrimeFaces.widget.Carousel.prototype.setPage = function(index) {    
     if(this.cfg.isCircular)
-        this.cfg.page = index > -1 ? index%(this.pageCount + 1) : this.pageCount + (index%(this.pageCount||1)) + 1;
+        this.cfg.page = index > this.cfg.pageCount ? 1 : index < 1 ? this.cfg.pageCount : index;
     else
         this.cfg.page  = index;
   
@@ -258,6 +231,8 @@ PrimeFaces.widget.Carousel.prototype.setPage = function(index) {
 PrimeFaces.widget.Carousel.prototype.checkButtons = function() {
     this.pageLinks.filter('.ui-icon-radio-on').removeClass('ui-icon-radio-on');
     this.pageLinks.eq(this.cfg.page - 1).addClass('ui-icon-radio-on');
+    
+    this.dropdown.val(this.cfg.page);
   
     //no bound
     if(this.cfg.isCircular)

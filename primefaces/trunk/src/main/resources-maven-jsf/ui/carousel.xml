@@ -60,7 +60,6 @@
 			<name>easing</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>easeInOutCirc</defaultValue>
             <description>Name of the animation effect. Default is easeInOutCirc.</description>
 		</attribute>
         <attribute>
@@ -74,6 +73,7 @@
 			<name>dropdownTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <defaultValue>{page}</defaultValue>
             <description>Text format of the pager dropdown elements. Default is "{page}".</description>
 		</attribute>
 		<attribute>
