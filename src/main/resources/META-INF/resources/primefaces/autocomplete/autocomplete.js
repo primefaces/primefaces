@@ -263,13 +263,13 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                         if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
                             _self.panel.css('height', _self.cfg.scrollHeight + 'px');
                         }
-                    } 
+                    }
                     else {
                         _self.panel.hide();
                     }
                 } 
                 else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, data);
+                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
                 }
             }
             

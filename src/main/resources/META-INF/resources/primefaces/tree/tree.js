@@ -119,7 +119,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
                     _self.showNodeChildren(node);
                 }
                 else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
             }
             

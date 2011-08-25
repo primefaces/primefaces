@@ -63,7 +63,7 @@ PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
             infoWindow.open(this.getMap(), this.selectedOverlay);
         }
         else {
-            PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+            PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
         }
     }
 
