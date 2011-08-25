@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ import org.primefaces.renderkit.CoreRenderer;
 public class CarouselRenderer extends CoreRenderer {
 	
 	@Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
+	public void decode(FacesContext context, UIComponent component) {
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		Carousel carousel = (Carousel) component;
-		String clientId = carousel.getClientId(facesContext);
+		String clientId = carousel.getClientId(context);
 		String firstParam = clientId + "_first";
 		
 		if(params.containsKey(firstParam)) {
@@ -39,135 +39,73 @@ public class CarouselRenderer extends CoreRenderer {
 	}
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Carousel carousel = (Carousel) component;
 		
-		encodeMarkup(facesContext, carousel);
-		encodeScript(facesContext, carousel);
+		encodeMarkup(context, carousel);
+		encodeScript(context, carousel);
 	}
 	
-	private void encodeScript(FacesContext facesContext, Carousel carousel) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = carousel.getClientId(facesContext);
-		String widgetVar = carousel.resolveWidgetVar();
+	private void encodeScript(FacesContext context, Carousel carousel) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = carousel.getClientId(context);
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
+		writer.write(carousel.resolveWidgetVar() + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
 		writer.write("isCircular:" + carousel.isCircular());
 		
 		if(carousel.getFirst() != 0) writer.write(",firstVisible:" + carousel.getFirst());
-		if(carousel.isVertical()) writer.write(",isVertical:" + carousel.isVertical());
+		if(carousel.isVertical()) writer.write(",vertical:true");
 		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());
 		if(carousel.getAutoPlayInterval() != 0) writer.write(",autoPlayInterval:" + carousel.getAutoPlayInterval());
-		if(carousel.getRevealAmount() != 0) writer.write(",revealAmount:" + carousel.getRevealAmount());
-		writer.write(",dropdownTemplate:'" + carousel.getDropdownTemplate() + "'"); 
-		writer.write(",pageLinks:" + carousel.getPageLinks());
-		writer.write(",speed:" + carousel.getSpeed());
-		writer.write(",animate:" + carousel.isAnimate());
-		writer.write(",effect:'" + carousel.getEffect() + "'");
-		writer.write(",easing:'" + carousel.getEasing() + "'");
+        if(carousel.getDropdownTemplate() != null) writer.write(",dropDownTemplate:'" + carousel.getDropdownTemplate() + "'");
+        if(carousel.getEffectDuration() != Integer.MIN_VALUE) writer.write(",effectDuration:" + carousel.getEffectDuration());
+        if(carousel.getPageLinks() != 3) writer.write(",pageLinks:" + carousel.getPageLinks());
+        if(carousel.getEffect() != null) {
+            writer.write(",effect:'" + carousel.getEffect() + "'");
+            writer.write(",easing:'" + carousel.getEasing() + "'");
+        }
 
-		writer.write("});");
-		
-		if(carousel.isCircular() && carousel.getAutoPlayInterval() != 0) {
-			writer.write(widgetVar + ".startAutoPlay();");
-		}		
-		
+        writer.write("});");
+			
 		writer.endElement("script");
 	}
+    
+    protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = carousel.getClientId(context);
 
-    
-    protected void encodeCarouselFooter(FacesContext facesContext, Carousel carousel) throws IOException {
-        
-        if(carousel.getFacet("footer") == null && carousel.getFooterText() == null)
-          return;
-      
-        ResponseWriter writer = facesContext.getResponseWriter();
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-carousel-footer ui-widget-header ui-corner-all", null);
-
-        //Footer content
-        UIComponent facet = carousel.getFacet("footer");
-        String text = carousel.getFooterText();
-        if(facet != null) {
-            facet.encodeAll(facesContext);
-        } else if(text != null) {
-            writer.write(text);
-        }
-
-        writer.endElement("div");
-    }
-    
-    
-    protected void encodeCarouselHeader(FacesContext facesContext, Carousel carousel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        //header container
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-widget-header ui-corner-all ui-carousel-header", null);
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-carousel-header-content", null);
-        
-        //Footer content
-        UIComponent facet = carousel.getFacet("header");
-        String text = carousel.getHeaderText();
-        if(facet != null) {
-            facet.encodeAll(facesContext);
-        } else if(text != null) {
-            writer.write(text);
-        }
-        
-        writer.endElement("div");
-        
-        //next button
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-carousel-button ui-carousel-next-button ui-icon" + (carousel.isVertical() ? " ui-icon-circle-triangle-s" : " ui-icon-circle-triangle-e"), null);
-        writer.endElement("span");
-
-        //prev button
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-carousel-button ui-carousel-prev-button ui-icon" + (carousel.isVertical() ? " ui-icon-circle-triangle-n" : " ui-icon-circle-triangle-w"), null);
-        writer.endElement("span");
-        writer.endElement("div");
-    }
-    
-    
-    
-    
-	protected void encodeMarkup(FacesContext facesContext, Carousel carousel) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = carousel.getClientId(facesContext);
-		String itemStyleClass = "ui-widget-content ui-corner-all";
-		if(carousel.getItemStyleClass() != null) itemStyleClass += " " + carousel.getItemStyleClass(); 
-		
-        //wrapper
+        //container
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all ui-carousel", null);
-        
+        writer.writeAttribute("class", Carousel.CONTAINER_CLASS, null);
         if(carousel.getStyle() != null) 
-			writer.writeAttribute("style", carousel.getStyle(), "style");
+            writer.writeAttribute("style", carousel.getStyle(), "style");
 
-        //header
-        encodeCarouselHeader(facesContext, carousel);
+        encodeHeader(context, carousel);
+        encodeContent(context, carousel);
+        encodeFooter(context, carousel);
         
+		encodeStateField(context, clientId + "_first", String.valueOf(carousel.getFirst()));
+		
+		writer.endElement("div");
+	}
+    
+    protected void encodeContent(FacesContext context, Carousel carousel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         
-        //data container
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_container", null);
-        writer.writeAttribute("class", (carousel.isVertical() ? "ui-carousel-vertical-container " : "") + "ui-widget ui-carousel-container", null);
+        String itemStyleClass = carousel.getItemStyleClass();
+        itemStyleClass = itemStyleClass == null ? Carousel.ITEM_CLASS : Carousel.ITEM_CLASS + " " + itemStyleClass;
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", carousel.isVertical() ? Carousel.VERTICAL_VIEWPORT_CLASS : Carousel.VIEWPORT_CLASS, null);
+
+		writer.startElement("ul", null);
 		
-        //data list
-		writer.startElement("ol", null);
-		
-		if(carousel.getVar() != null) {
-			carousel.setRowIndex(-1);
-			
-			for (int i=0; i < carousel.getRowCount(); i++) {
+		if(carousel.getVar() != null) {			
+			for(int i=0; i < carousel.getRowCount(); i++) {
 				carousel.setRowIndex(i);
 				
 				writer.startElement("li", null);
@@ -175,40 +113,132 @@ public class CarouselRenderer extends CoreRenderer {
 				if(carousel.getItemStyle() != null) 
 					writer.writeAttribute("style", carousel.getItemStyle(), "itemStyle");
 				
-				renderChildren(facesContext, carousel);
+				renderChildren(context, carousel);
 				
 				writer.endElement("li");
 			}
 			
-			carousel.setRowIndex(-1); 	//reset and clear
+			carousel.setRowIndex(-1); 	//clear
 			
-		} else {
+		} 
+        else {
 			for(UIComponent kid : carousel.getChildren()) {
-				writer.startElement("li", null);
-				writer.writeAttribute("class", itemStyleClass, "itemStyleClass");
-				if(carousel.getItemStyle() != null) 
-					writer.writeAttribute("style", carousel.getItemStyle(), "itemStyle");
-				
-				renderChild(facesContext, kid);
-				
-				writer.endElement("li");
+                if(kid.isRendered()) {
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", itemStyleClass, "itemStyleClass");
+                    if(carousel.getItemStyle() != null) 
+                        writer.writeAttribute("style", carousel.getItemStyle(), "itemStyle");
+
+                    renderChild(context, kid);
+
+                    writer.endElement("li");
+                }
 			}
 		}
 		
-		writer.endElement("ol");
+		writer.endElement("ul");
 		
 		writer.endElement("div");
-		
-        //footer
-        encodeCarouselFooter(facesContext, carousel);
+    }
+
+    protected void encodeHeader(FacesContext context, Carousel carousel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean vertical = carousel.isVertical();
+        int rows = carousel.getRows();
+        int numVisible = rows == 0 ? 3 : rows;
+        int pageCount = (int) (Math.ceil(carousel.getRowCount() / (1d * numVisible)));
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
+
+        //title
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.HEADER_TITLE_CLASS, null);
         
-		encodeHiddenStateField(facesContext, clientId + "_first", String.valueOf(carousel.getFirst()));
-		
-		writer.endElement("div");
-	}
-	
-	private void encodeHiddenStateField(FacesContext facesContext, String id, String value) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+        UIComponent facet = carousel.getFacet("header");
+        String text = carousel.getHeaderText();
+        if(facet != null)
+            facet.encodeAll(context);
+        else if(text != null)
+            writer.write(text);
+        
+        writer.endElement("div");
+        
+        //next button
+        writer.startElement("span", null);
+        writer.writeAttribute("class", vertical ? Carousel.VERTICAL_NEXT_BUTTON : Carousel.HORIZONTAL_NEXT_BUTTON, null);
+        writer.endElement("span");
+
+        //prev button
+        writer.startElement("span", null);
+        writer.writeAttribute("class", vertical ? Carousel.VERTICAL_PREV_BUTTON : Carousel.HORIZONTAL_PREV_BUTTON, null);
+        writer.endElement("span");
+        
+        //pageLinks
+        if(pageCount <= carousel.getPageLinks()) {
+            encodePageLinks(context, carousel, pageCount);
+        } 
+        else {
+            encodeDropDown(context, carousel, pageCount);
+        }
+
+        writer.endElement("div");
+    }
+    
+    protected void encodePageLinks(FacesContext context, Carousel carousel, int pageCount) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.PAGE_LINKS_CONTAINER_CLASS, null);
+        
+        for(int i = 0; i < pageCount; i++) {
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", Carousel.PAGE_LINK_CLASS, null);
+            writer.endElement("a");
+        }
+        
+        writer.endElement("div");
+    }
+    
+     protected void encodeDropDown(FacesContext context, Carousel carousel, int pageCount) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.PAGE_LINKS_CONTAINER_CLASS, null);
+        
+        for(int i = 0; i < pageCount; i++) {
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", Carousel.PAGE_LINK_CLASS, null);
+            writer.endElement("a");
+        }
+        
+        writer.endElement("div");
+    }
+    
+    protected void encodeFooter(FacesContext context, Carousel carousel) throws IOException {
+        UIComponent facet = carousel.getFacet("footer");
+        String text = carousel.getFooterText();
+        
+        if(facet == null && text == null)
+          return;
+      
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.FOOTER_CLASS, null);
+
+        if(facet != null)
+            facet.encodeAll(context);
+        else if(text != null)
+            writer.write(text);
+
+        writer.endElement("div");
+    }
+
+	protected void encodeStateField(FacesContext context, String id, String value) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", id, null);
@@ -218,11 +248,13 @@ public class CarouselRenderer extends CoreRenderer {
 		writer.endElement("input");
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
 	
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    @Override
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Rendering happens on encodeEnd
-	}
+	}   
 }

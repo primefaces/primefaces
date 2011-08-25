@@ -1,5 +1,11 @@
-/* all looong data collapser */
-.ui-carousel-container ol{
+.ui-carousel {
+  visibility: hidden;
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+}
+
+.ui-carousel-viewport ul {
   list-style: none outside none;
   margin: 0;
   padding:0;
@@ -8,31 +14,27 @@
   left: 0;
 }
 
-/* data packages*/
-.ui-carousel-container ol li{
+.ui-carousel-viewport ul li {
   margin: 1px;
   padding: 0;
   float: left;
 }
 
-/* after header data container*/
-.ui-carousel-container{
+.ui-carousel-viewport {
   overflow: hidden;
   position: relative;
   border: 0;
 }
 
-/* vertical alignment */
-.ui-carousel-vertical-container ol li{
+.ui-carousel-vertical-viewport ul li {
   float: none !important;
 }
 
-.ui-carousel-vertical-container ol{
+.ui-carousel-vertical-viewport ul {
   width: auto !important;
 }
 
-/*footer*/
-.ui-carousel-footer{
+.ui-carousel-footer {
   margin: 1px 1px 0px 1px;
   height: 16px;
   padding-top: 9px;
@@ -43,7 +45,7 @@
 }
 
 /* header */
-.ui-carousel-header{
+.ui-carousel-header {
   margin: 0 1px;
   height: 16px;
   overflow: hidden;
@@ -53,45 +55,33 @@
   padding-left: 10px;
 }
 
-.ui-carousel-header .ui-carousel-header-content{
+.ui-carousel-header .ui-carousel-header-title {
   display: inline-block;
   width: 30%;
   padding-top: 2px;
   overflow: hidden;
 }
 
-/* root parent */
-.ui-carousel{
-  visibility: hidden;
-  position: relative;
-  display: inline-block;
-  padding: 1px;
-}
-
-/*dropdown pager*/
-.ui-carousel-dropdown{
+.ui-carousel-dropdown {
   float: right;
   margin: 0px 10px;
 }
 
-/* next prev buttons */
-.ui-carousel-button{
+.ui-carousel-button {
   float: right;
   margin: 2px;
 }
 
-/* page navigation buttons*/
-.ui-carousel-nav-button{
+.ui-carousel-page-link {
   float: left;
   margin: 0 2px;
 }
 
-.ui-carousel-nav-button, .ui-carousel-button{
+.ui-carousel-page-link, .ui-carousel-button {
   cursor: pointer;
 }
 
-/* page navigation button container */
-.ui-carousel-nav{
+.ui-carousel-page-links {
   margin: 0px 9px;
   margin-top: 1px;
   display: inline-table;
@@ -99,6 +89,6 @@
 }
 
 /* ie7 hack*/
-.ui-carousel-nav, .ui-carousel-button, .ui-carousel-dropdown{
+.ui-carousel-page-links, .ui-carousel-button, .ui-carousel-dropdown {
   *margin-top:-1.4em ;
 }
