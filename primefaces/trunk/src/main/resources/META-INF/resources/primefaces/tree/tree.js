@@ -179,7 +179,7 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
     childNodeContainer.hide();
         
     if(_self.cfg.dynamic && !_self.cfg.cache) {
-        childNodeContainer.remove();
+        childNodeContainer.empty();
     }
     
     _self.fireCollapseEvent(node);
