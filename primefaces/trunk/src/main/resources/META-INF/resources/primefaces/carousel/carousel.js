@@ -14,6 +14,7 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
     this.nextButton = this.header.children('.ui-carousel-next-button');
     this.pageLinks = this.header.find('.ui-carousel-page-links .ui-carousel-page-link');
     this.dropdown = this.header.children('.ui-carousel-dropdown');
+    this.state = $(this.jqId + '_first');
     
     //configuration
     this.cfg.numVisible = this.cfg.numVisible || 3;
@@ -211,6 +212,8 @@ PrimeFaces.widget.Carousel.prototype.setPage = function(index) {
         this.cfg.page  = index;
   
     this.checkButtons();
+    
+    this.state.val((this.cfg.page - 1) * this.cfg.numVisible);
     
     var newPosition = this.getPagePosition(this.cfg.page);
   

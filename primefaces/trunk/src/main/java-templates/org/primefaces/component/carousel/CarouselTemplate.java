@@ -24,4 +24,11 @@
 
         return i;
     }
+
+    public int getFirstVisible() {
+		return (java.lang.Integer) getStateHelper().eval("firsVisible", 0);
+	}
+	public void setFirstVisible(int _firstVisible) {
+		getStateHelper().put("firsVisible", _firstVisible);
+	}
     

@@ -34,13 +34,17 @@ public class CarouselRenderer extends CoreRenderer {
 		String firstParam = clientId + "_first";
 		
 		if(params.containsKey(firstParam)) {
-			carousel.setFirst(Integer.parseInt(params.get(firstParam)));
+			carousel.setFirstVisible(Integer.parseInt(params.get(firstParam)));
 		}
 	}
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Carousel carousel = (Carousel) component;
+        
+        //workaround for proper event processing
+        carousel.setFirstVisible(carousel.getFirst());
+        carousel.setFirst(0);
 		
 		encodeMarkup(context, carousel);
 		encodeScript(context, carousel);
@@ -54,9 +58,9 @@ public class CarouselRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write(carousel.resolveWidgetVar() + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
-		writer.write("isCircular:" + carousel.isCircular());
+        writer.write("firstVisible:" + carousel.getFirstVisible());
 		
-		if(carousel.getFirst() != 0) writer.write(",firstVisible:" + carousel.getFirst());
+		if(carousel.isCircular()) writer.write("isCircular:" + carousel.isCircular());
 		if(carousel.isVertical()) writer.write(",vertical:true");
 		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());
 		if(carousel.getAutoPlayInterval() != 0) writer.write(",autoPlayInterval:" + carousel.getAutoPlayInterval());
@@ -85,8 +89,8 @@ public class CarouselRenderer extends CoreRenderer {
         encodeHeader(context, carousel);
         encodeContent(context, carousel);
         encodeFooter(context, carousel);
-        
-		encodeStateField(context, clientId + "_first", String.valueOf(carousel.getFirst()));
+
+		encodeStateField(context, carousel);
 		
 		writer.endElement("div");
 	}
@@ -102,7 +106,7 @@ public class CarouselRenderer extends CoreRenderer {
 
 		writer.startElement("ul", null);
 		
-		if(carousel.getVar() != null) {			
+		if(carousel.getVar() != null) {		
 			for(int i=0; i < carousel.getRowCount(); i++) {
 				carousel.setRowIndex(i);
 				
@@ -237,14 +241,15 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-	protected void encodeStateField(FacesContext context, String id, String value) throws IOException {
+	protected void encodeStateField(FacesContext context, Carousel carousel) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        String id = carousel.getClientId(context) + "_first";
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
 		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("value", value, null);
+		writer.writeAttribute("value", carousel.getFirst(), null);
 		writer.endElement("input");
 	}
 
