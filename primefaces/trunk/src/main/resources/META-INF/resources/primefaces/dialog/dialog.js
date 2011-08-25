@@ -407,7 +407,7 @@ PrimeFaces.widget.Dialog.prototype.loadContents = function() {
                 _self.loaded = true;
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
 

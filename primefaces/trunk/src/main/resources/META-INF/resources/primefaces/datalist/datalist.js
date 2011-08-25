@@ -50,7 +50,7 @@ PrimeFaces.widget.DataList.prototype.handlePagination = function(newState) {
 
                 }
                 else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
             }
             

@@ -236,7 +236,7 @@ PrimeFaces.widget.DataTable.prototype.loadLiveRows = function() {
                 }
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
         
@@ -282,7 +282,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 _self.getPaginator().setState(newState);
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
         
@@ -348,7 +348,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                 }
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
         
@@ -405,7 +405,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
                 $(_self.tbody).replaceWith(content);
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
         
@@ -713,7 +713,7 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
                 row.next().fadeIn();
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
         
@@ -816,7 +816,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
                 }
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
 

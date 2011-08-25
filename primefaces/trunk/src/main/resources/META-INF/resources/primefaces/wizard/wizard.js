@@ -114,7 +114,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
 
                 }
                 else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
             }
 

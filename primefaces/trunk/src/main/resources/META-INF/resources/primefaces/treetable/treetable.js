@@ -104,7 +104,7 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(e, node) {
                 }
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
 

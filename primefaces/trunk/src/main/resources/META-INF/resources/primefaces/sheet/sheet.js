@@ -148,7 +148,7 @@ PrimeFaces.widget.Sheet.prototype.sort = function(columnId, order) {
                 _self.bindDynamicEvents();
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
         }
         

@@ -147,9 +147,8 @@ PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
                 }
             }
             else {
-                PrimeFaces.ajax.AjaxUtils.updateElement(id, content);
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
             }
-
         }
         
         PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
