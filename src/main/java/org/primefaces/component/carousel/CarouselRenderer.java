@@ -63,10 +63,8 @@ public class CarouselRenderer extends CoreRenderer {
         if(carousel.getDropdownTemplate() != null) writer.write(",dropDownTemplate:'" + carousel.getDropdownTemplate() + "'");
         if(carousel.getEffectDuration() != Integer.MIN_VALUE) writer.write(",effectDuration:" + carousel.getEffectDuration());
         if(carousel.getPageLinks() != 3) writer.write(",pageLinks:" + carousel.getPageLinks());
-        if(carousel.getEffect() != null) {
-            writer.write(",effect:'" + carousel.getEffect() + "'");
-            writer.write(",easing:'" + carousel.getEasing() + "'");
-        }
+        if(carousel.getEffect() != null) writer.write(",effect:'" + carousel.getEffect() + "'");
+        if(carousel.getEasing() != null) writer.write(",easing:'" + carousel.getEasing() + "'");
 
         writer.write("});");
 			
@@ -146,7 +144,7 @@ public class CarouselRenderer extends CoreRenderer {
         boolean vertical = carousel.isVertical();
         int rows = carousel.getRows();
         int numVisible = rows == 0 ? 3 : rows;
-        int pageCount = (int) (Math.ceil(carousel.getRowCount() / (1d * numVisible)));
+        int pageCount = carousel.getVar() != null ? (int) (Math.ceil(carousel.getRowCount() / (1d * numVisible))) : carousel.getRenderedChildCount();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
@@ -203,18 +201,20 @@ public class CarouselRenderer extends CoreRenderer {
     
      protected void encodeDropDown(FacesContext context, Carousel carousel, int pageCount) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String template = carousel.getDropdownTemplate();
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.PAGE_LINKS_CONTAINER_CLASS, null);
+        writer.startElement("select", null);
+        writer.writeAttribute("name", carousel.getClientId(context) + "_dropdown", null);
+        writer.writeAttribute("class", Carousel.DROPDOWN_CLASS, null);
         
         for(int i = 0; i < pageCount; i++) {
-            writer.startElement("a", null);
-            writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Carousel.PAGE_LINK_CLASS, null);
-            writer.endElement("a");
+            writer.startElement("option", null);
+            writer.writeAttribute("value", i + 1, null);
+            writer.write(template.replaceAll("\\{page\\}", String.valueOf(i + 1)));
+            writer.endElement("option");
         }
         
-        writer.endElement("div");
+        writer.endElement("select");
     }
     
     protected void encodeFooter(FacesContext context, Carousel carousel) throws IOException {
