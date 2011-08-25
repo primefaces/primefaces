@@ -175,4 +175,41 @@ public class AjaxBehavior extends ClientBehaviorBase {
             }
         }
     }
+    
+    @Override
+    public Object saveState(FacesContext context) {
+        Object superState = super.saveState(context);
+        
+        Object[] values;
+
+        if(initialStateMarked()) {
+            if(superState == null)
+                values = null;
+            else
+                values = new Object[] {superState};
+        } 
+        else {
+            values = new Object[2];
+      
+            values[0] = superState;
+            values[1] = listener;
+        }
+
+        return values;
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+        if(state != null) {
+
+            Object[] values = (Object[]) state;
+            super.restoreState(context, values[0]);
+
+            if(values.length != 1) {
+                listener = (MethodExpression) values[1];
+
+                clearInitialState();
+            }
+        }
+    }
 }
