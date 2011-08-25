@@ -2,322 +2,280 @@
  * PrimeFaces Carousel Widget
  */
 PrimeFaces.widget.Carousel = function(id, cfg) {
- 
-  this.id = id;
-  this.cfg = cfg;
-  this.jqId = PrimeFaces.escapeClientId(id);
-  this.jq = $(this.jqId);
-  this.container = this.jq.find('.ui-carousel-container');
-  this.header = this.jq.find('.ui-carousel-header'),
-  this.list = this.container.find('ol');
-  this.items = this.container.find('ol li');
-  this.prevButton = this.header.find('.ui-carousel-prev-button');
-  this.nextButton = this.header.find('.ui-carousel-next-button');
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jqId);
+    this.viewport = this.jq.children('.ui-carousel-viewport');
+    this.header = this.jq.children('.ui-carousel-header'),
+    this.list = this.viewport.children('ul');
+    this.items = this.list.children('.ui-carousel-item');
+    this.prevButton = this.header.children('.ui-carousel-prev-button');
+    this.nextButton = this.header.children('.ui-carousel-next-button');
+    this.pageLinks = this.header.find('.ui-carousel-page-links .ui-carousel-page-link');
     
-  var item = this.items.filter(':first').get(0);
-  this.oneWidth = parseInt( this.getProperty(item,"width")) + parseInt(this.getProperty(item,"margin-left")) + parseInt(this.getProperty(item,"margin-right")) +  ((parseInt(this.getProperty(item,"border-left-width")) + parseInt(this.getProperty(item,"border-right-width"))));
-  this.oneHeight= parseInt(this.getProperty(item,"height")) + Math.max(parseInt(this.getProperty(item,"margin-top")), parseInt(this.getProperty(item,"margin-bottom"))) + ((parseInt(this.getProperty(item,"border-top-width")) + parseInt(this.getProperty(item,"border-bottom-width"))));
+    //configuration
+    this.cfg.numVisible = this.cfg.numVisible || 3;
+    this.cfg.effectDuration = this.cfg.effectDuration || 500;
+    this.cfg.pageLinks = this.cfg.pageLinks || 3;
+    this.cfg.effect = this.cfg.effect || 'slide';
+    this.cfg.pageCount = Math.ceil(this.items.length / this.cfg.numVisible);
+    this.cfg.firstVisible = (this.cfg.firstVisible || 0) % this.items.length;
+    this.cfg.page = (this.cfg.firstVisible / this.cfg.numVisible) + 1;
+    this.animating = false;
+    
+    var firstItem = this.items.filter(':first').get(0);
+    this.cfg.itemOuterWidth = parseInt(this.getProperty(firstItem, 'width')) + parseInt(this.getProperty(firstItem, 'margin-left')) + parseInt(this.getProperty(firstItem, 'margin-right')) +  ((parseInt(this.getProperty(firstItem, 'border-left-width')) + parseInt(this.getProperty(firstItem, 'border-right-width'))));
+    this.cfg.itemOuterHeight = parseInt(this.getProperty(firstItem, 'height')) + Math.max(parseInt(this.getProperty(firstItem, 'margin-top')), parseInt(this.getProperty(firstItem, 'margin-bottom'))) + ((parseInt(this.getProperty(firstItem, 'border-top-width')) + parseInt(this.getProperty(firstItem, 'border-bottom-width'))));
 
-  this.cfg.numVisible = this.cfg.numVisible || 3;
-  this.cfg.speed *=1000;
-  this.plus = (((this.cfg.revealAmount || 0)/100)%this.items.length) * ( this.cfg.isVertical ? this.oneHeight : this.oneWidth);
-  this.pageCount = this.items.length / (this.cfg.numVisible || 3 );
-  this.pageCount = this.pageCount%1 > 0 ? parseInt(this.pageCount) : this.pageCount-1;
-
-  //nav buttons
-  if(this.pageCount < this.cfg.pageLinks){
-    this.header.append(this.getNavigator(this.pageCount+1));
-    this.navButtons = this.header.find('.ui-carousel-nav-button');
-  }
-  else{
-    this.header.append(this.getDropDown(this.pageCount+1));
-    this.ddOptions = this.header.find('.ui-carousel-dropdown option');
-  }
-
-  //calculate container width/height
-  if(this.cfg.isVertical){
-    this.container.width(this.oneWidth);
-    this.container.height((this.cfg.numVisible * this.oneHeight) + (this.plus*2));
-  }
-  else{
-    this.container.width((this.cfg.numVisible * this.oneWidth) + (this.plus*2));
-    this.container.height(this.oneHeight);
-  }
+    //viewport width/height
+    if(this.cfg.vertical) {
+        this.viewport.width(this.cfg.itemOuterWidth);
+        this.viewport.height(this.cfg.numVisible * this.cfg.itemOuterHeight);
+    }
+    else{
+        this.viewport.width(this.cfg.numVisible * this.cfg.itemOuterWidth);
+        this.viewport.height(this.cfg.itemOuterHeight);
+    }
+    this.jq.width(this.viewport.outerWidth(true));
   
-  this.cfg.firstVisible = (this.cfg.firstVisible|| 0)%(this.items.length);
-  this.page = this.cfg.firstVisible/this.cfg.numVisible;
-  
-  //first align
-  this.setPosition(this.getItemPosition(this.cfg.firstVisible));//
-  this.jq.width(this.container.outerWidth(true));
+    //set offset position
+    this.setOffset(this.getItemPosition(this.cfg.firstVisible));
 
-  this.checkButtons();
+    this.checkButtons();
 
-  this.bindEvents();
-  this.jq.css({
-    visibility:'visible'
-  });
+    this.bindEvents();
+    
+    this.jq.css({
+        visibility: 'visible'
+    });
+    
+    if(this.cfg.autoPlayInterval) {
+        this.startAutoPlay();
+    }
 }
 
 /**
  * Creates dropdown navigation bar for given n
  */
 PrimeFaces.widget.Carousel.prototype.getDropDown = function(n){
-  var s = $('<select></select>').addClass('ui-widget ui-carousel-dropdown'),
-  _self = this;
+    var s = $('<select></select>').addClass('ui-widget ui-carousel-dropdown'),
+    _self = this;
 
-  for(var i=0; i<n; i++){
-    var o = $('<option>'+ this.cfg.dropdownTemplate.replace(/{page}/i,(i+1)) +'</option>').attr('value', i);
-    if(this.page == i)
-      o.attr('selected', 'selected');
-    s.append(o);
-  }
+    for(var i=0; i<n; i++){
+        var o = $('<option>'+ this.cfg.dropdownTemplate.replace(/{page}/i,(i+1)) +'</option>').attr('value', i);
+        if(this.page == i)
+            o.attr('selected', 'selected');
+        s.append(o);
+    }
 
-  return s.change(function(e){
-    _self.go(parseInt($(this).val()));
-  });
+    return s.change(function(e){
+        _self.go(parseInt($(this).val()));
+    });
 }
 
 /**
  * Creates navigation buttons for given n
  */
-PrimeFaces.widget.Carousel.prototype.getNavigator = function(n){
-  var nbc = $('<div></div>').addClass('ui-carousel-nav');
+PrimeFaces.widget.Carousel.prototype.createPageLinks = function(n) {
+    this.header.append('<div class="ui-carousel-nav></div>');
+    var pageLinksContainer = this.header.children('.ui-carousel-nav');
 
-  for(var i=0; i<n ; i++)
-    nbc.append($('<a></a>').addClass('ui-icon ui-carousel-nav-button ui-icon-radio-off'));
-
-  return nbc;
+    for(var i=0; i < n; i++) {
+        pageLinksContainer.append($('<a class=""></a>'));
+    }
 }
 
 /**
  * Returns browser specific computed style property value.
  */
 PrimeFaces.widget.Carousel.prototype.getProperty = function(item, prop){
-  return $.browser.msie ? item.currentStyle.getAttribute(prop) : document.defaultView.getComputedStyle(item, "").getPropertyValue(prop);
+    return $.browser.msie ? item.currentStyle.getAttribute(prop) : document.defaultView.getComputedStyle(item, "").getPropertyValue(prop);
 }
 
 /**
  * Autoplay startup.
  */
 PrimeFaces.widget.Carousel.prototype.startAutoPlay = function(){
-  var _self = this;
-  if(this.cfg.autoPlayInterval){
-    setInterval( function(){
-      _self.next();
-    }, this.cfg.autoPlayInterval);
-  }
+    var _self = this;
+    if(this.cfg.autoPlayInterval){
+        setInterval( function(){
+            _self.next();
+        }, this.cfg.autoPlayInterval);
+    }
 }
 
 /**
  * Binds related mouse/key events.
  */
 PrimeFaces.widget.Carousel.prototype.bindEvents = function(){
+    var _self = this;
   
-  var _self = this;
+    this.pageLinks.click(function(e) {
+        if(!_self.animating)
+            _self.setPage($(this).index());
+    });
   
-  this.navButtons ? this.navButtons.click(function(){
-    if(_self.animating)
-      return;
-    else
-      _self.animating = true;
-    
-    _self.go($(this).index());
-  }) : false;
+    this.prevButton.click(function(e) {
+        if(!_self.prevButton.hasClass('ui-state-disabled') && !_self.animating)
+            _self.prev();
+    });
   
-  this.prevButton.click(function(){
-    
-    if(_self.animating)
-      return;
-    else
-      _self.animating = true;
-    
-    _self.prev();
-
-  });
-  
-  this.nextButton.click(function(){
-    if(_self.animating)
-      return;
-    else
-      _self.animating = true;
-    _self.next();
-  });
+    this.nextButton.click(function(){
+        if(!_self.nextButton.hasClass('ui-state-disabled') && !_self.animating)
+            _self.next();
+    });
 }
 
 /**
  * Calculates position of list for a page index.
  */
-PrimeFaces.widget.Carousel.prototype.getPagePosition = function(index){
-  return (-(index * (this.cfg.isVertical ? this.oneHeight : this.oneWidth) * this.cfg.numVisible) + this.plus);
+PrimeFaces.widget.Carousel.prototype.getPagePosition = function(index) {
+    return -((index - 1) * (this.cfg.vertical ? this.cfg.itemOuterHeight : this.cfg.itemOuterWidth) * this.cfg.numVisible);
 }
 
 /**
  * Calculates position of a given indexed item.
  */
 PrimeFaces.widget.Carousel.prototype.getItemPosition = function(index){
-  return (-(index * (this.cfg.isVertical ? this.oneHeight : this.oneWidth)) + this.plus);
+    return -(index * (this.cfg.vertical ? this.cfg.itemOuterHeight : this.cfg.itemOuterWidth));
 }
 
 /**
  * Returns instant position of list.
  */
 PrimeFaces.widget.Carousel.prototype.getPosition = function(){
-  return parseInt(this.list.css(this.cfg.isVertical ? 'top' : 'left'));
+    return parseInt(this.list.css(this.cfg.vertical ? 'top' : 'left'));
 };
 
 /**
  * Sets instant position of list.
  */
-PrimeFaces.widget.Carousel.prototype.setPosition = function(val){
-  this.list.css(this.cfg.isVertical ? {
-    top : val
-  } : {
-    left : val
-  });
-};
-
-/**
- * Transition of position for a given value and defined animation config.
- */
-PrimeFaces.widget.Carousel.prototype.changePosition = function(val){
-  if(this.getPosition() == val){
-    this.animating = false;
-    return;
-  }
-    
-  if(this.cfg.animate)
-    if(this.cfg.effect == 'fade')
-      this.fade(val);
-    else
-      this.slide(val);
-  else{
-    this.setPosition(val);
-    this.animating = false;
-  }
+PrimeFaces.widget.Carousel.prototype.setOffset = function(val) {
+    this.list.css(this.cfg.vertical ? {
+        'top' : val
+    } : {
+        'left' : val
+    });
 };
 
 /**
  * Fade animation for list transition.
  */
 PrimeFaces.widget.Carousel.prototype.fade = function(val){
-  var _self = this;
-  this.list.animate(
-  {
-    opacity: 0
-  }, 
-  {
-    duration: this.cfg.speed/2,
-    specialEasing: {
-      opacity : this.cfg.easing
-    },
-    complete: function() {
-      _self.setPosition(val);
-      $(this).animate( 
-      {
-        opacity: 1
-      }, 
-      {
-        duration: _self.cfg.speed/2,
+    var _self = this;
+    this.list.animate(
+    {
+        opacity: 0
+    }, 
+    {
+        duration: this.cfg.effectDuration / 2,
         specialEasing: {
-          opacity : _self.cfg.easing
+            opacity : this.cfg.easing
         },
         complete: function() {
-          _self.animating = false;
+            _self.setOffset(val);
+            $(this).animate( 
+            {
+                opacity: 1
+            }, 
+            {
+                duration: _self.cfg.effectDuration / 2,
+                specialEasing: {
+                    opacity : _self.cfg.easing
+                },
+                complete: function() {
+                    _self.animating = false;
+                }
+            });
         }
-      });
-    }
-  });
+    });
 }
 
 /**
  * Slide animation for list transition.
  */
 PrimeFaces.widget.Carousel.prototype.slide = function(val){
-  var _self = this,
-  ao = this.cfg.isVertical ? {
-    top : val
-  } : {
-    left : val
-  };
+    var _self = this,
+    ao = this.cfg.vertical ? {
+        top : val
+    } : {
+        left : val
+    };
   
-  this.list.animate( 
-  ao, 
-  {
-    duration: this.cfg.speed,
-    easing: this.cfg.easing,
-    complete: function() {
-      _self.animating = false;
-    }
-  });
+    this.list.animate( 
+        ao, 
+        {
+            duration: this.cfg.effectDuration,
+            easing: this.cfg.easing,
+            complete: function() {
+                _self.animating = false;
+            }
+        });
 }
 
 /**
- * Next navigation of pageing.
+ * Go next page
  */
 PrimeFaces.widget.Carousel.prototype.next = function(){
-  return this.nextButton.disabled && !(this.animating = false) || this.go(this.page + 1);
+   this.setPage(this.cfg.page + 1);
 }
 
 /**
- * Previous navigation of pageing.
+ * Go previous page
  */
 PrimeFaces.widget.Carousel.prototype.prev = function(){
-  return this.prevButton.disabled && !(this.animating = false) || this.go(this.page - (this.page%1 == 0 ? 1 : 0));
+   this.setPage(this.cfg.page - 1);
 }
 
 /**
  * Navigation to a given page index.
  */
-PrimeFaces.widget.Carousel.prototype.go = function( index ){
-  index = parseInt(index);
-  if(this.cfg.isCircular)
-    this.page = index > -1 ? index%(this.pageCount + 1) : this.pageCount + (index%(this.pageCount||1)) + 1;
-  else{
-    this.page = index;
-  }
+PrimeFaces.widget.Carousel.prototype.setPage = function(index) {    
+    if(this.cfg.isCircular)
+        this.cfg.page = index > -1 ? index%(this.pageCount + 1) : this.pageCount + (index%(this.pageCount||1)) + 1;
+    else
+        this.cfg.page  = index;
   
-  this.checkButtons();
+    this.checkButtons();
+    
+    var newPosition = this.getPagePosition(this.cfg.page);
   
-  //scroll
-  return this.changePosition(this.getPagePosition(this.page));
+    if(this.getPosition() == newPosition) {
+        this.animating = false;
+        return;
+    }
+    
+    if(this.cfg.effect == 'fade')
+        this.fade(newPosition);
+    else
+        this.slide(newPosition);
 }
 
 /**
- * Look up navigation buttons for overflow constraints.
+ * Enables/Disables navigation controls
  */
-PrimeFaces.widget.Carousel.prototype.checkButtons = function(){
+PrimeFaces.widget.Carousel.prototype.checkButtons = function() {
+    this.pageLinks.filter('.ui-icon-radio-on').removeClass('ui-icon-radio-on');
+    this.pageLinks.eq(this.cfg.page - 1).addClass('ui-icon-radio-on');
   
-  //update dropdown or nav-buttons
-  if(this.navButtons){
-    this.navButtons.removeClass('ui-icon-radio-on');
-    this.navButtons.eq(this.page).addClass('ui-icon-radio-on');
-  }
-  else if(this.ddOptions){
-    this.ddOptions.filter(':eq(' + this.page + ')').attr('selected', 'selected');
-  }
+    //no bound
+    if(this.cfg.isCircular)
+        return;
   
-  //no bound
-  if(this.cfg.isCircular)
-    return;
+    //lower bound
+    if(this.cfg.page == 1){
+        this.prevButton.addClass('ui-state-disabled');
+    }
+    else{
+        this.prevButton.removeClass('ui-state-disabled');
+    }
   
-  //lower bound
-  if(this.page == 0){
-    this.prevButton.disabled = true;
-    this.prevButton.addClass('ui-state-disabled');
-  }
-  else{
-    this.prevButton.disabled = false;
-    this.prevButton.removeClass('ui-state-disabled');
-  }
-  
-  //upper bound
-  if(this.page > this.pageCount-1){
-    this.nextButton.disabled = true;
-    this.nextButton.addClass('ui-state-disabled');
-  }
-  else{
-    this.nextButton.disabled = false;
-    this.nextButton.removeClass('ui-state-disabled');
-  }
+    //upper bound
+    if(this.cfg.page >= this.cfg.pageCount){
+        this.nextButton.addClass('ui-state-disabled');
+    }
+    else{
+        this.nextButton.removeClass('ui-state-disabled');
+    }
 };

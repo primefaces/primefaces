@@ -34,7 +34,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>Sets vertical scrolling. Default is true.</description>
+            <description>Sets vertical scrolling. Default is false</description>
 		</attribute>
 		<attribute>
 			<name>autoPlayInterval</name>
@@ -48,34 +48,12 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>3</defaultValue>
-            <description>Sets max navigation button number. Higher number of pages uses dropdown for navigation. Default is 3.</description>
-		</attribute>
-		<attribute>
-			<name>revealAmount</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-            <description>The percentage of the previous and next item of the current item to be revealed. Default is 0.</description>
-		</attribute>
-		<attribute>
-			<name>animate</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-            <description>When enabled scrolling is animated, animation is turned on by default.</description>
-		</attribute>
-		<attribute>
-			<name>speed</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>0.5</defaultValue>
-            <description>Sets the speed of the scrolling animation. Default is 0.5.</description>
+            <description>Defines number of pageLinks of paginator.</description>
 		</attribute>
 		<attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>slide</defaultValue>
             <description>Name of the animation effect slide or fade. Default is slide.</description>
 		</attribute>
 		<attribute>
@@ -85,12 +63,18 @@
             <defaultValue>easeInOutCirc</defaultValue>
             <description>Name of the animation effect. Default is easeInOutCirc.</description>
 		</attribute>
+        <attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Sets the speed of the scrolling animation in milliseconds. Default is 500.</description>
+		</attribute>
 		<attribute>
 			<name>dropdownTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>{page}</defaultValue>
-            <description>Text format of the pager dropdown elements. Default is "{page}"</description>
+            <description>Text format of the pager dropdown elements. Default is "{page}".</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
