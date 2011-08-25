@@ -280,6 +280,10 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 $(_self.tbody).replaceWith(content);
 
                 _self.getPaginator().setState(newState);
+                
+                if(_self.cfg.resizableColumns) {
+                    _self.restoreColumnWidths();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -353,8 +357,6 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
         }
         
         PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
-        
-        
 
         return true;
     };
