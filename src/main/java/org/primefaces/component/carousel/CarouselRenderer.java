@@ -60,7 +60,7 @@ public class CarouselRenderer extends CoreRenderer {
 		writer.write(carousel.resolveWidgetVar() + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
         writer.write("firstVisible:" + carousel.getFirstVisible());
 		
-		if(carousel.isCircular()) writer.write("isCircular:" + carousel.isCircular());
+		if(carousel.isCircular()) writer.write(",isCircular:" + carousel.isCircular());
 		if(carousel.isVertical()) writer.write(",vertical:true");
 		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());
 		if(carousel.getAutoPlayInterval() != 0) writer.write(",autoPlayInterval:" + carousel.getAutoPlayInterval());
