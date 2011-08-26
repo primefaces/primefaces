@@ -17,13 +17,13 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
     this.state = $(this.jqId + '_first');
     
     //configuration
-    this.cfg.numVisible = this.cfg.numVisible || 3;
-    this.cfg.pageLinks = this.cfg.pageLinks || 3;
-    this.cfg.effect = this.cfg.effect || 'slide';
-    this.cfg.effectDuration = this.cfg.effectDuration || 500;
-    this.cfg.easing = this.cfg.easing || 'easeInOutCirc';
+    this.cfg.numVisible = this.cfg.numVisible||3;
+    this.cfg.pageLinks = this.cfg.pageLinks||3;
+    this.cfg.effect = this.cfg.effect||'slide';
+    this.cfg.effectDuration = this.cfg.effectDuration||500;
+    this.cfg.easing = this.cfg.easing||'easeInOutCirc';
     this.cfg.pageCount = Math.ceil(this.items.length / this.cfg.numVisible);
-    this.cfg.firstVisible = (this.cfg.firstVisible || 0) % this.items.length;
+    this.cfg.firstVisible = (this.cfg.firstVisible||0) % this.items.length;
     this.cfg.page = (this.cfg.firstVisible / this.cfg.numVisible) + 1;
     this.animating = false;
     
