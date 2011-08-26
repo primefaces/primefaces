@@ -23,20 +23,20 @@ PrimeFaces.widget.TabView.prototype.bindEvents = function() {
     var _self = this;
     
     //Tab header events
-    $(this.jqId + ' .ui-tabs-nav li').die('mouseover.tabview mouseout.tabview click.tabview')
-            .live('mouseover.tabview', function(e) {
+    this.navContainer.children('li')
+            .bind('mouseover.tabview', function(e) {
                 var element = $(this);
                 if(!element.hasClass('ui-state-disabled')) {
                     element.addClass('ui-state-hover');
                 }
             })
-            .live('mouseout.tabview', function(e) {
+            .bind('mouseout.tabview', function(e) {
                 var element = $(this);
                 if(!element.hasClass('ui-state-disabled')) {
                     element.removeClass('ui-state-hover');
                 }
             })
-            .live('click.tabview', function(e) {
+            .bind('click.tabview', function(e) {
                 var element = $(this);
                 
                 if($(e.target).is(':not(.ui-icon-close)')) {
@@ -51,9 +51,8 @@ PrimeFaces.widget.TabView.prototype.bindEvents = function() {
             });
             
     //Closable tabs
-    $(this.jqId + ' .ui-tabs-nav li .ui-icon-close')
-        .die('click.tabview')
-        .live('click.tabview', function(e) {
+    this.navContainer.find('li .ui-icon-close')
+        .bind('click.tabview', function(e) {
             _self.remove($(this).parent().index());
             
             e.preventDefault();
