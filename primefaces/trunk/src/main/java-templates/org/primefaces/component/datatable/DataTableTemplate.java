@@ -367,7 +367,7 @@ import javax.faces.FacesException;
             RequestContext requestContext = RequestContext.getCurrentInstance();
 
             if(requestContext != null) {
-                requestContext.addCallbackParam("totalRecords", data.size());
+                requestContext.addCallbackParam("totalRecords", model.getRowCount());
             }
         }
     }
@@ -532,7 +532,7 @@ import javax.faces.FacesException;
         if(hasRowKeyVe) {
             Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
             String var = this.getVar();
-            Collection data = (Collection) this.getValue();
+            Collection data = (Collection) getDataModel().getWrappedData();
 
             for(Iterator it = data.iterator(); it.hasNext();) {
                 Object object = it.next();
