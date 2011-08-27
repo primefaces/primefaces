@@ -5,6 +5,7 @@ import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
+import org.primefaces.context.RequestContext;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -352,7 +353,7 @@ import javax.faces.FacesException;
 
         return false;
     }
-    
+
     public void loadLazyData() {
         LazyDataModel model = (LazyDataModel) getDataModel();
         model.setPageSize(getRows());
@@ -360,6 +361,16 @@ import javax.faces.FacesException;
         List<?> data = model.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
 
         model.setWrappedData(data);
+        
+        //Update paginator for callback
+        if(this.isPaginator()) {
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+
+            if(requestContext != null) {
+                System.out.println("Updating paginator");
+                requestContext.addCallbackParam("totalRecords", data.size());
+            }
+        }
     }
 
     protected SortOrder convertSortOrder() {

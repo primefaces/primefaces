@@ -129,7 +129,7 @@ class DataHelper {
 
             for(String filterName : filterMap.keySet()) {
                 Column column = filterMap.get(filterName);
-                String filterValue = params.get(filterName).toLowerCase();
+                String filterValue = params.get(filterName);
 
                 if(!isValueBlank(filterValue)) {
                     String filterField = resolveField(column.getValueExpression("filterBy"));
@@ -139,14 +139,6 @@ class DataHelper {
             }
 
             table.setFilters(filters);
-
-            //Metadata for callback
-            if(table.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-                if(requestContext != null)
-                    requestContext.addCallbackParam("totalRecords", table.getRowCount());
-            }
-            
         }
         else {
             Map<String,Column> filterMap = table.getFilterMap();
