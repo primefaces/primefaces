@@ -24,7 +24,7 @@ import javax.faces.model.DataModel;
 /**
  * Custom lazy loading DataModel to deal with huge datasets
  */
-public abstract class LazyDataModel<T> extends DataModel implements Serializable {
+public abstract class LazyDataModel<T> extends DataModel implements SelectableDataModel<T>, Serializable {
 
 	private int rowIndex = -1;
 
@@ -81,4 +81,12 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
     }
 
     public abstract List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters);
+
+    public T getRowData(String rowKey) {
+        throw new UnsupportedOperationException("getRowData(String rowKey) must be implemented when basic rowKey algorithm is not used.");
+    }
+
+    public Object getRowKey(T object) {
+        throw new UnsupportedOperationException("getRowKey(T object) must be implemented when basic rowKey algorithm is not used.");
+    }
 }
