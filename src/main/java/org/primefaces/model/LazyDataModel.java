@@ -59,7 +59,7 @@ public abstract class LazyDataModel<T> extends DataModel implements SelectableDa
     }
     
     public void setRowIndex(int rowIndex) {
-        this.rowIndex = (rowIndex % pageSize);
+        this.rowIndex = rowIndex == -1 ? rowIndex : (rowIndex % pageSize);
     }
 
 	public Object getWrappedData() {
