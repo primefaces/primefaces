@@ -367,7 +367,6 @@ import javax.faces.FacesException;
             RequestContext requestContext = RequestContext.getCurrentInstance();
 
             if(requestContext != null) {
-                System.out.println("Updating paginator");
                 requestContext.addCallbackParam("totalRecords", data.size());
             }
         }
