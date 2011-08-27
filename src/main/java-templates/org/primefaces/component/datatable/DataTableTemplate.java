@@ -355,19 +355,23 @@ import javax.faces.FacesException;
     }
 
     public void loadLazyData() {
-        LazyDataModel model = (LazyDataModel) getDataModel();
-        model.setPageSize(getRows());
-
-        List<?> data = model.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
-
-        model.setWrappedData(data);
+        DataModel model = getDataModel();
         
-        //Update paginator for callback
-        if(this.isPaginator()) {
-            RequestContext requestContext = RequestContext.getCurrentInstance();
+        if(model instanceof LazyDataModel) {
+            LazyDataModel lazyModel = (LazyDataModel) model;
+            lazyModel.setPageSize(getRows());
 
-            if(requestContext != null) {
-                requestContext.addCallbackParam("totalRecords", model.getRowCount());
+            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
+
+            lazyModel.setWrappedData(data);
+
+            //Update paginator for callback
+            if(this.isPaginator()) {
+                RequestContext requestContext = RequestContext.getCurrentInstance();
+
+                if(requestContext != null) {
+                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
+                }
             }
         }
     }

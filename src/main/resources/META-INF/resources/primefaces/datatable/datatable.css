@@ -163,6 +163,7 @@
 
 .ui-datatable th div.ui-dt-c,
 .ui-datatable .ui-datatable-data td div.ui-dt-c,
+.ui-datatable .ui-datatable-data-empty td div.ui-dt-c,
 .ui-datatable tfoot td div.ui-dt-c {
     padding: 4px 10px;
     overflow: hidden;
