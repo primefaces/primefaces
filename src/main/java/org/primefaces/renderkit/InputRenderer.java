@@ -76,7 +76,7 @@ public class InputRenderer extends CoreRenderer {
                             Object object = it.next();
                             
                             if(object instanceof SelectItem) {
-                                selectItems.add((SelectItem) it.next());
+                                selectItems.add((SelectItem) object);
                             }
                             else if(object instanceof Enum) {
                                 Enum e = (Enum) object;
