@@ -456,7 +456,7 @@ PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
 }
 
 PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
-    var rowId = row.attr('id').split('_row_')[1],
+    var rowMeta = this.getRowMeta(row),
     _self = this;
 
     //unselect previous selection if this is single selection or multiple one with no keys
@@ -477,10 +477,10 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
             
             rowsToUnselect.each(function(i, item) {
                 var r = $(item),
-                rid = r.attr('id').split('_row_')[1];
+                rkey = _self.getRowMeta(r).key;
 
                 r.removeClass('ui-state-highlight');
-                _self.removeSelection(rid);
+                _self.removeSelection(rkey);
             });
         }
         
@@ -492,10 +492,10 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
 
         rowsToSelect.each(function(i, item) {
             var r = $(item),
-            rid = r.attr('id').split('_row_')[1];
+            rkey = _self.getRowMeta(r).key;
 
             r.removeClass('ui-state-hover').addClass('ui-state-highlight');
-            _self.addSelection(rid);
+            _self.addSelection(rkey);
         });
         
     }
@@ -505,29 +505,29 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
                 
         //add to selection
         row.removeClass('ui-state-hover').addClass('ui-state-highlight');
-        this.addSelection(rowId);
+        this.addSelection(rowMeta.key);
     }
 
     //save state
     this.writeSelections();
 
-    this.fireRowSelectEvent(rowId);
+    this.fireRowSelectEvent(rowMeta.key);
 }
 
 PrimeFaces.widget.DataTable.prototype.unselectRow = function(event, row) {
-    var rowId = row.attr('id').split('_row_')[1];
+    var rowMeta = this.getRowMeta(row);
 
     if(event.metaKey) {
         //remove visual style
         row.removeClass('ui-state-highlight');
 
         //remove from selection
-        this.removeSelection(rowId);
+        this.removeSelection(rowMeta.key);
 
         //save state
         this.writeSelections();
 
-        this.fireRowUnselectEvent(rowId);
+        this.fireRowUnselectEvent(rowMeta.key);
     }
     else if(this.isMultipleSelection()){
         this.selectRow(event, row);
@@ -537,7 +537,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(event, row) {
 /**
  *  Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
  */
-PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
+PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowKey) {
     if(this.cfg.behaviors) {
         var selectBehavior = this.cfg.behaviors['rowSelect'];
         
@@ -545,9 +545,9 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
             var ext = {
                 params: {}
             };
-            ext.params[this.id + '_instantSelectedRowKey'] = rowId;
+            ext.params[this.id + '_instantSelectedRowKey'] = rowKey;
             
-            selectBehavior.call(this, rowId, ext);
+            selectBehavior.call(this, rowKey, ext);
         }
     }
 }
@@ -555,7 +555,7 @@ PrimeFaces.widget.DataTable.prototype.fireRowSelectEvent = function(rowId) {
 /**
  *  Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
  */
-PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
+PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowKey) {
     if(this.cfg.behaviors) {
         var unselectBehavior = this.cfg.behaviors['rowUnselect'];
         
@@ -563,9 +563,9 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
             var ext = {
                 params: {}
             };
-            ext.params[this.id + '_instantUnselectedRowKey'] = rowId;
+            ext.params[this.id + '_instantUnselectedRowKey'] = rowKey;
             
-            unselectBehavior.call(this, rowId, ext);
+            unselectBehavior.call(this, rowKey, ext);
         }
     }
 }
@@ -576,20 +576,20 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowId) {
 PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
     var radio = $(element),
     row = radio.parents('tr:first'),
-    rowId = row.attr('id').split('_row_')[1];
+    rowMeta = this.getRowMeta(row);
 
     //clean previous selection
     this.selection = [];
     row.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
     
     //add to selection
-    this.addSelection(rowId);
+    this.addSelection(rowMeta.key);
     row.addClass('ui-state-highlight');
 
     //save state
     this.writeSelections();
     
-    this.fireRowSelectEvent(rowId);
+    this.fireRowSelectEvent(rowMeta.key);
 }
 
 /**
@@ -598,20 +598,20 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
 PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
     var checkbox = $(element),
     row = checkbox.parents('tr:first'),
-    rowId = row.attr('id').split('_row_')[1],
+    rowMeta = this.getRowMeta(row),
     checked = checkbox.attr('checked');
 
     if(checked) {
-        this.addSelection(rowId);
+        this.addSelection(rowMeta.key);
         row.addClass('ui-state-highlight');
         this.writeSelections();
-        this.fireRowSelectEvent(rowId);
+        this.fireRowSelectEvent(rowMeta.key);
     }
     else {
-        this.removeSelection(rowId);
+        this.removeSelection(rowMeta.key);
         row.removeClass('ui-state-highlight');
         this.writeSelections();
-        this.fireRowUnselectEvent(rowId);
+        this.fireRowUnselectEvent(rowMeta.key);
     }
 
     
@@ -632,7 +632,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 
         //add to selection
         rows.each(function() {
-            _self.addSelection($(this).attr('id').split('_row_')[1]);
+            _self.addSelection(_self.getRowMeta($(this)).key);
         });
     }
     else {
@@ -640,9 +640,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
         
         //remove from selection
         rows.each(function() {
-            var rowId = $(this).attr('id').split('_row_')[1];
-            
-            _self.removeSelection(rowId);
+            _self.removeSelection(_self.getRowMeta($(this)).key);
         });
 
     }
@@ -1082,4 +1080,14 @@ PrimeFaces.widget.DataTable.prototype.isSelected = function(rowIndex) {
     });
     
     return selected;
+}
+
+PrimeFaces.widget.DataTable.prototype.getRowMeta = function(row) {
+    var identifier = row.attr('id').split('_r_')[1].split('_'),
+    meta = {
+        index: identifier[0],
+        key: identifier[1]
+    };
+    
+    return meta;
 }

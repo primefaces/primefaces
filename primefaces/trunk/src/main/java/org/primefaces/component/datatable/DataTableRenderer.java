@@ -635,9 +635,9 @@ public class DataTableRenderer extends CoreRenderer {
             if(rowKey == null)
                 rowKey = table.getRowKeyFromModel(table.getRowData());
         }
-        else {
-            rowKey = rowIndex;
-        }
+        
+        String rowMeta = clientId + "_r_" + rowIndex;
+        rowMeta = rowKey == null ? rowMeta : rowMeta + "_" + rowKey;
 
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
@@ -656,7 +656,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.startElement("tr", null);
-        writer.writeAttribute("id", clientId + "_row_" + rowKey, null);
+        writer.writeAttribute("id", rowMeta, null);
         writer.writeAttribute("class", rowStyleClass, null);
 
         for(UIComponent kid : table.getChildren()) {
