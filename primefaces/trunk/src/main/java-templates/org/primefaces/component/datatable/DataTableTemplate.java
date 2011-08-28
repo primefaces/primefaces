@@ -542,7 +542,7 @@ import javax.faces.FacesException;
                 Object object = it.next();
                 requestMap.put(var, object);
 
-                if(this.getRowKey().equals(rowKey)) {
+                if(String.valueOf(this.getRowKey()).equals(rowKey)) {
                     return object;
                 }
             }
