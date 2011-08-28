@@ -43,11 +43,12 @@ import org.primefaces.model.TreeNode;
 		super.processUpdates(context);
         
         String selectionMode = this.getSelectionMode();
+        ValueExpression selectionVE = this.getValueExpression("selection");
 
-        if(selectionMode != null) {
+        if(selectionMode != null && selectionVE != null) {
 
             Object selection = this.getLocalSelectedNodes();
-            Object previousSelection = this.getValueExpression("selection").getValue(context.getELContext());
+            Object previousSelection = selectionVE.getValue(context.getELContext());
 
             if(selectionMode.equals("single")) {
                 if(previousSelection != null)
@@ -70,7 +71,7 @@ import org.primefaces.model.TreeNode;
                 }
             }
 
-			this.getValueExpression("selection").setValue(context.getELContext(), selection);
+			selectionVE.setValue(context.getELContext(), selection);
 			setSelection(null);
 		}
 	}
