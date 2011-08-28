@@ -300,8 +300,8 @@ import javax.faces.FacesException;
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("rowEdit")) {
-                int editedRowId = Integer.parseInt(params.get(clientId + "_editedRowId"));
-                setRowIndex(editedRowId);
+                int editedRowIndex = Integer.parseInt(params.get(clientId + "_editedRowIndex"));
+                setRowIndex(editedRowIndex);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowData());
             }
             else if(eventName.equals("colResize")) {
