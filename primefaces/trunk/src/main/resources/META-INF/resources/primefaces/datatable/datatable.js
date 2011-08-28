@@ -442,7 +442,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
     }
 }
 
-PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
+PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {    
     //Check if rowclick triggered this event not a clickable element in row content
     if($(event.target).is('.ui-dt-c,td,span')) {
         var row = $(rowElement),
@@ -452,6 +452,8 @@ PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
             this.unselectRow(event, row);
         else
             this.selectRow(event, row);
+        
+        PrimeFaces.clearSelection();
     }
 }
 
