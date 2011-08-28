@@ -50,6 +50,10 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
         key = e.which,
         shouldSearch = true;
         
+        if(_self.input.val() == '') {
+            _self.hinput.val('');
+        }
+        
         if(key == keyCode.UP 
             || key == keyCode.LEFT 
             || key == keyCode.DOWN 
@@ -59,7 +63,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             || key == keyCode.NUMPAD_ENTER) {
             shouldSearch = false;
         }
-
+        
         if(shouldSearch) {
             var value = _self.input.val();
         
