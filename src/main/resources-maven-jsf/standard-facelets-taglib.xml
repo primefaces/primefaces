@@ -52,49 +52,49 @@
 			org.primefaces.component.export.DataExporterTagHandler
 		</handler-class>
         <attribute>
-			<description></description>
+			<description>Server side id of the datatable whose data would be exported.</description>
 			<name>target</name>
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Export type: "xls","pdf","csv", "xml".</description>
 			<name>type</name>
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Filename of the generated export file, defaults to datatable server side id.</description>
 			<name>fileName</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Exports only current page instead of whole dataset.</description>
 			<name>pageOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Comma separated list(if more than one) of column indexes to be excluded from export.</description>
 			<name>excludeColumns</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>PreProcessor for the exported document.</description>
 			<name>preProcessor</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>PostProcessor for the exported document.</description>
 			<name>postProcessor</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Character encoding to use.</description>
 			<name>encoding</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -107,13 +107,13 @@
 			org.primefaces.component.filedownload.FileDownloadTagHandler
 		</handler-class>
         <attribute>
-			<description></description>
+			<description>A streamed content instance.</description>
 			<name>value</name>
 			<required>true</required>
 			<type>java.lang.Object</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Specifies display mode, valid values are "attachment" (default) and "inline".</description>
 			<name>contentDisposition</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -126,19 +126,19 @@
 			org.primefaces.component.collector.CollectorTagHandler
 		</handler-class>
         <attribute>
-			<description></description>
+			<description>Value to be used in collection operation.</description>
 			<name>value</name>
 			<required>true</required>
 			<type>java.lang.Object</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Reference to the Collection instance.</description>
 			<name>addTo</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Reference to the Collection instance.</description>
 			<name>removeFrom</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
@@ -152,73 +152,75 @@
             <handler-class>org.primefaces.component.behavior.ajax.AjaxBehaviorHandler</handler-class>
         </behavior>
 		<attribute>
-			<description></description>
+			<description>Method to process in partial request.</description>
 			<name>listener</name>
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Boolean value that determines the phaseId to execute listener. Default is false meaning "Invoke Application" phase, when true
+            phase is "Apply Request Values".</description>
 			<name>immediate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>When set to true, ajax requests are not queued.</description>
 			<name>async</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Component(s) to process in partial request. Defaults to @this.</description>
 			<name>process</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Component(s) to update with ajax.</description>
 			<name>update</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Client side callback execute before ajax request is begins.</description>
 			<name>onstart</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Client side callback execute when ajax request is completed and dom is updated.</description>
 			<name>oncomplete</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Client side callback execute when ajax requests returns with error response.</description>
 			<name>onerror</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Client side callback execute before dom is updated.</description>
 			<name>onsuccess</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description></description>
+			<description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
 			<name>global</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Disables ajax behavior.</description>
 			<name>disabled</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
         <attribute>
-			<description></description>
+			<description>Client side event to trigger ajax request. 
+            Default value is defined by parent ClientBehaviorHolder component the behavior is attached to.</description>
 			<name>event</name>
 			<required>false</required>
 			<type>java.lang.String</type>
