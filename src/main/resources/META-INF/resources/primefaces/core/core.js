@@ -105,6 +105,16 @@ PrimeFaces = {
             themeLink.attr('href', newThemeURL);
         }
     },
+    
+    clearSelection: function() {
+        var sel = window.getSelection ? window.getSelection() : document.selection;
+        if(sel) {
+            if(sel.removeAllRanges)
+                sel.removeAllRanges();
+            else if(sel.empty)
+                sel.empty();
+        }
+    },
 
     locales : {},
 	
