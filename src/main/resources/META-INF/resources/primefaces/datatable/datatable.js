@@ -825,7 +825,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
     var params = {};
     params[rowEditorId] = rowEditorId;
     params[this.id + '_rowEdit'] = true;
-    params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
+    params[this.id + '_editedRowIndex'] = this.getRowMeta(row).index;
     
     if(action === 'cancel') {
         params[this.id + '_rowEditCancel'] = true;
