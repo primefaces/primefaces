@@ -91,6 +91,7 @@ public class EditorRenderer extends CoreRenderer{
         if(editor.getWidth() != Integer.MIN_VALUE) writer.write(",width:" + editor.getWidth());
         if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
         if(editor.isDisabled()) writer.write(",disabled:true");
+        if(editor.getOnchange() != null) writer.write(",change:function(e){" + editor.getOnchange() + "}");
 
 		writer.write("});});");
 		

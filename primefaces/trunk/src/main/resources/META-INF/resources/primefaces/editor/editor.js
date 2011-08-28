@@ -1153,6 +1153,10 @@ PrimeFaces.widget.Editor.prototype.init = function() {
         if(this.cfg.disabled) {
             this.disable();
         }
+        
+        if(this.cfg.change) {
+            this.editor.change(this.cfg.change);
+        }
     }
 }
 

@@ -70,6 +70,12 @@
 			<type>java.lang.String</type>
             <description>Style class of the editor container.</description>
 		</attribute>
+        <attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when editor data changes.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
