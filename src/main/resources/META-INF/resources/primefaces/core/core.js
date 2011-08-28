@@ -331,7 +331,6 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         portletForms: pForms,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-           this.behaviorSource = cfg.event ? cfg.source : undefined;
         },
         error: function(xhr, status, errorThrown) {
             if(cfg.onerror) {
@@ -372,14 +371,6 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             
             if(ext && ext.oncomplete) {
                 ext.oncomplete.call(this, xhr, status, this.args);
-            }
-            
-            //focus behavior source if validationFailed
-            if(this.args.validationFailed && this.behaviorSource) {
-                var behaviorSource = $(PrimeFaces.escapeClientId(this.behaviorSource));
-                
-                if(behaviorSource.is(':input'))
-                    behaviorSource.focus();
             }
             
             PrimeFaces.debug('Response completed.');
