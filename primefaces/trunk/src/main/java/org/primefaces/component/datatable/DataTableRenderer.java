@@ -902,9 +902,9 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodeRowExpansion(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        int expandedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowId"));
+        int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
 
-        table.setRowIndex(expandedRowId);
+        table.setRowIndex(expandedRowIndex);
 
         writer.startElement("tr", null);
         writer.writeAttribute("style", "display:none", null);

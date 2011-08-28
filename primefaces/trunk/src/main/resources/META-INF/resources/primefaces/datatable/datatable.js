@@ -655,14 +655,14 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement) {
     var expander = $(expanderElement),
     row = expander.parents('tr:first'),
-    rowId = row.attr('id'),
+    rowIndex = this.getRowMeta(row).index,
     expanded = row.hasClass('ui-expanded-row'),
     _self = this;
     
     //Run toggle expansion if row is not being toggled already to prevent conflicts
-    if($.inArray(rowId, this.expansionProcess) == -1) {
+    if($.inArray(rowIndex, this.expansionProcess) == -1) {
         if(expanded) {
-            this.expansionProcess.push(rowId);
+            this.expansionProcess.push(rowIndex);
             expander.removeClass('ui-icon-circle-triangle-s');
             row.removeClass('ui-expanded-row');
 
@@ -670,12 +670,12 @@ PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement
                $(this).remove();
 
                _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
-                   return r != rowId;
+                   return r != rowIndex;
                });
             });
         }
         else {
-            this.expansionProcess.push(row.attr('id'));
+            this.expansionProcess.push(rowIndex);
             expander.addClass('ui-icon-circle-triangle-s');
             row.addClass('ui-expanded-row');
 
@@ -685,7 +685,6 @@ PrimeFaces.widget.DataTable.prototype.toggleExpansion = function(expanderElement
 }
 
 PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
-
     if(this.cfg.onExpandStart) {
         this.cfg.onExpandStart.call(this, row);
     }
@@ -696,7 +695,7 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
         update: this.id,
         formId: this.cfg.formId
     },
-    rowId = row.attr('id').split('_row_')[1],
+    rowIndex = this.getRowMeta(row).index,
     _self = this;
 
     options.onsuccess = function(responseXML) {
@@ -724,13 +723,13 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
     
     options.oncomplete = function() {
         _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
-           return r != row.attr('id');
+           return r != rowIndex;
        });
     };
 
     var params = {};
     params[this.id + '_rowExpansion'] = true;
-    params[this.id + '_expandedRowId'] = rowId;
+    params[this.id + '_expandedRowIndex'] = rowIndex;
 
     options.params = params;
 
@@ -740,8 +739,8 @@ PrimeFaces.widget.DataTable.prototype.loadExpandedRowContent = function(row) {
 /**
  * Displays in-cell editors for given row
  */
-PrimeFaces.widget.DataTable.prototype.showEditors = function(element) {
-    var element = $(element);
+PrimeFaces.widget.DataTable.prototype.showEditors = function(el) {
+    var element = $(el);
     
     element.parents('tr:first').addClass('ui-state-highlight').children('td.ui-editable-column').each(function() {
         var column = $(this);
