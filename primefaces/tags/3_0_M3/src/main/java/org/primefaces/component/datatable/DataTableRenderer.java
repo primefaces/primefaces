@@ -568,6 +568,10 @@ public class DataTableRenderer extends CoreRenderer {
             table.loadLazyData();
         }
         
+        if(table.isSelectionEnabled()) {
+            table.findSelectedRowKeys();
+        }
+        
         int rows = table.getRows();
 		int first = table.getFirst();
         int rowCount = table.getRowCount();
