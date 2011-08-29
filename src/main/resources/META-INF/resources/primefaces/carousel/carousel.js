@@ -84,8 +84,11 @@ PrimeFaces.widget.Carousel.prototype.bindEvents = function(){
     var _self = this;
   
     this.pageLinks.click(function(e) {
-        if(!_self.animating)
+        if(!_self.animating) {
             _self.setPage($(this).index() + 1);
+        }
+        
+        e.preventDefault();
     });
     
     this.dropdown.change(function(e) {
