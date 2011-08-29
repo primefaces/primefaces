@@ -174,12 +174,13 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         for(SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
+            Object coercedItemValue = null;
             
             if(itemValue != null && !itemValue.equals("")) {
-                itemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
+                coercedItemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
             }
             
-            boolean selected = (value != null && value.equals(itemValue));
+            boolean selected = (value != null && value.equals(coercedItemValue));
             
             context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
             
@@ -215,13 +216,14 @@ public class SelectOneMenuRenderer extends InputRenderer {
             SelectItem selectItem = selectItems.get(i);
             Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
+            Object coercedItemValue = null;
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
             
             if(itemValue != null && !itemValue.equals("")) {
-                itemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
+                coercedItemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
             }
 
-            boolean selected = (i==0 && value==null) || (value != null && value.equals(itemValue));
+            boolean selected = (i==0 && value==null) || (value != null && value.equals(coercedItemValue));
             String itemStyleClass = selected ? SelectOneMenu.ITEM_CLASS + " ui-state-active" : SelectOneMenu.ITEM_CLASS;
             
             writer.startElement("li", null);
