@@ -50,8 +50,8 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
         key = e.which,
         shouldSearch = true;
         
-        if(_self.input.val() == '') {
-            _self.hinput.val('');
+        if(_self.cfg.pojo) {
+            _self.hinput.val($(this).val());
         }
         
         if(key == keyCode.UP 
