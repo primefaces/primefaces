@@ -559,40 +559,40 @@ import javax.faces.FacesException;
         }
     }
 
-    private List<Object> selectedRowKeys = null;
+    private List<Object> selectedRowKeys = new ArrayList<Object>();
 
-    List<Object> getSelectedRowKeys() {
-        if(selectedRowKeys == null) {
-            Object selection = this.getSelection();
-            selectedRowKeys = new ArrayList<Object>();
-            boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
-            String var = this.getVar();
-            Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+    void findSelectedRowKeys() {
+        Object selection = this.getSelection();
+        selectedRowKeys = new ArrayList<Object>();
+        boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+        String var = this.getVar();
+        Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
-            if(isSelectionEnabled() && selection != null) {
-                if(this.isSingleSelectionMode()) {
+        if(isSelectionEnabled() && selection != null) {
+            if(this.isSingleSelectionMode()) {
+                if(hasRowKeyVe) {
+                    requestMap.put(var, selection);
+                    selectedRowKeys.add(this.getRowKey());
+                }
+                else {
+                    selectedRowKeys.add(this.getRowKeyFromModel(selection));
+                }
+            } 
+            else {
+                for(int i = 0; i < Array.getLength(selection); i++) {
                     if(hasRowKeyVe) {
-                        requestMap.put(var, selection);
+                        requestMap.put(var, Array.get(selection, i));
                         selectedRowKeys.add(this.getRowKey());
                     }
                     else {
-                        selectedRowKeys.add(this.getRowKeyFromModel(selection));
-                    }
-                } 
-                else {
-                    for(int i = 0; i < Array.getLength(selection); i++) {
-                        if(hasRowKeyVe) {
-                            requestMap.put(var, Array.get(selection, i));
-                            selectedRowKeys.add(this.getRowKey());
-                        }
-                        else {
-                            selectedRowKeys.add(this.getRowKeyFromModel(Array.get(selection, i)));
-                        }    
-                    }
+                        selectedRowKeys.add(this.getRowKeyFromModel(Array.get(selection, i)));
+                    }    
                 }
             }
         }
-        
+    }
+
+    List<Object> getSelectedRowKeys() {
         return selectedRowKeys;
     }
 
