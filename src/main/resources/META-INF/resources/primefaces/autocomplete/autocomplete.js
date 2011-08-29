@@ -49,11 +49,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
         var keyCode = $.ui.keyCode,
         key = e.which,
         shouldSearch = true;
-        
-        if(_self.cfg.pojo) {
-            _self.hinput.val($(this).val());
-        }
-        
+                
         if(key == keyCode.UP 
             || key == keyCode.LEFT 
             || key == keyCode.DOWN 
@@ -62,6 +58,9 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             || key == keyCode.ENTER
             || key == keyCode.NUMPAD_ENTER) {
             shouldSearch = false;
+        } 
+        else {
+            _self.hinput.val($(this).val());
         }
         
         if(shouldSearch) {
