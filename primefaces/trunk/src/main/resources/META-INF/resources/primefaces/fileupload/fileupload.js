@@ -2040,6 +2040,7 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.form = this.jq.parents('form:first');
+    var _self = this;
     
     //upload template
     this.cfg.uploadTemplate = '<tr class="template-upload{{if error}} ui-state-error{{/if}}">' + 
@@ -2081,7 +2082,9 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     });
     
     //params
-    this.cfg.formData = this.createPostData();
+    this.cfg.formData = function() {
+        return _self.createPostData();
+    };
     
     //dragdrop
     this.cfg.dropZone = this.cfg.dnd && !this.cfg.disabled ? this.jq : null;
