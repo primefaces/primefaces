@@ -37,6 +37,8 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
+        
+        writer.write("<meta http-equiv=\"X-UA-Compatible\" content=\"EmulateIE8\" />");
 
         //Theme
         String theme = null;
@@ -79,18 +81,6 @@ public class HeadRenderer extends Renderer {
         writer.endElement("head");
     }
 
-    private UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
-        UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
-        resource.setRendererType("javax.faces.resource.Stylesheet");
-        
-        Map<String, Object> attrs = resource.getAttributes();
-        attrs.put("name", resourceName);
-        attrs.put("library", library);
-        attrs.put("target", "head");
-       
-        return resource;
-    }
-
     protected void encodeTheme(FacesContext context, String library, String resource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.write("\n");
@@ -105,8 +95,6 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("rel", "stylesheet", null);
             writer.writeAttribute("href", themeResource.getRequestPath(), null);
             writer.endElement("link");
-        }
-
-        
+        }   
     }
 }
