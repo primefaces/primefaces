@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>3.0.M3-SNAPSHOT</version>
+    <version>3.0.RC1-SNAPSHOT</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 	
@@ -183,7 +183,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.2-SNAPSHOT</version>
+                <version>1.2</version>
                 <executions>
                     <execution>
                         <id>generate-ui</id>
@@ -354,7 +354,7 @@
                     <plugin>
                         <groupId>org.primefaces</groupId>
                         <artifactId>maven-jsf-plugin</artifactId>
-                        <version>1.2-SNAPSHOT</version>
+                        <version>1.2</version>
                         <executions>
                             <execution>
                                 <id>css-compressor</id>

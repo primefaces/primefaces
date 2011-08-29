@@ -3,5 +3,5 @@ Created-By: Prime Technology
 Bundle-ManifestVersion: 2
 Bundle-Name: primefaces
 Bundle-Description: Package PrimeFaces in an OSGi bundle
-Bundle-Version: 3.0.M3-SNAPSHOT
+Bundle-Version: 3.0.RC1-SNAPSHOT
 Bundle-SymbolicName: org.primefaces
