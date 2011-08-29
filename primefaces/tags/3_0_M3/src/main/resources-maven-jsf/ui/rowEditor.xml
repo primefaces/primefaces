@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>rowEditor</tag>
+	<tagClass>org.primefaces.component.roweditor.RowEditorTag</tagClass>
+	<componentClass>org.primefaces.component.roweditor.RowEditor</componentClass>
+	<componentType>org.primefaces.component.RowEditor</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.RowEditorRenderer</rendererType>
+	<rendererClass>org.primefaces.component.roweditor.RowEditorRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>RowToggler is a helper component for datatable.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>
