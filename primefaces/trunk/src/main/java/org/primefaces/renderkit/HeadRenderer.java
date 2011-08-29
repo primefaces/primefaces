@@ -17,7 +17,6 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.ListIterator;
-import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -37,9 +36,12 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
-        
-        writer.write("<meta http-equiv=\"X-UA-Compatible\" content=\"EmulateIE8\" />");
+    }
 
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         //Theme
         String theme = null;
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
@@ -67,16 +69,6 @@ public class HeadRenderer extends Renderer {
             UIComponent resource = (UIComponent) iter.next();
             resource.encodeAll(context);
         }
-    }
-
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //no-op
-    }
-
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
        
         writer.endElement("head");
     }
