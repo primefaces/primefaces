@@ -59,7 +59,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             || key == keyCode.NUMPAD_ENTER) {
             shouldSearch = false;
         } 
-        else {
+        else if(_self.cfg.pojo) {
             _self.hinput.val($(this).val());
         }
         
