@@ -288,26 +288,23 @@ public class SelectOneMenuRenderer extends InputRenderer {
 	protected String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items, Class type) {
 		Object value = menu.getValue();
         String label = null;
+        
+        for(SelectItem item : items) {
+            Object itemValue = item.getValue();
+            if(itemValue != null && !itemValue.equals("")) {
+                itemValue = context.getApplication().getExpressionFactory().coerceToType(item.getValue(), type);
+            }
 
-        if(value == null && !items.isEmpty()) {
-            label = items.get(0).getLabel();
-        } 
-        else {
-            for(SelectItem item : items) {
-                Object itemValue = item.getValue();
-                if(itemValue != null && !itemValue.equals("")) {
-                    itemValue = context.getApplication().getExpressionFactory().coerceToType(item.getValue(), type);
-                }
-                
-                if(value.equals(itemValue)) {
-                    label = item.getLabel();
-                    break;
-                }
+            if(value != null && value.equals(itemValue)) {
+                label = item.getLabel();
+                break;
             }
         }
-        
-        label = (isValueBlank(label)) ? "&nbsp;" : label;
 
+        if(label == null) {
+            label = !items.isEmpty() ? items.get(0).getLabel() : "&nbsp;";
+        }
+ 
         return label;
 	}
     
