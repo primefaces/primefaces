@@ -265,11 +265,11 @@
     </reporting>
 
     <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>Prime Technology Maven Repository</name>
-            <url>http://repository.prime.com.tr/</url>
-        </repository>
+   		<repository>
+			<id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+		</repository>
         <repository>
             <id>maven2-repository.dev.java.net</id>
             <name>Java.net Repository for Maven</name>
