@@ -240,16 +240,24 @@
                 </configuration>
             </plugin>
         </plugins>
-
+        
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-alpha-6</version>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>1.0-beta-6</version>
             </extension>
         </extensions>
 
     </build>
+    
+    <distributionManagement>
+   		<repository>
+			<id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>sftp://primefaces.org/var/www/repository</url>
+		</repository>
+    </distributionManagement>
 
     <reporting>
         <plugins>
@@ -283,11 +291,11 @@
     </repositories>
 
     <pluginRepositories>
-        <pluginRepository>
-            <id>prime-repo</id>
-            <name>Prime Technology Maven Repository</name>
-            <url>http://repository.prime.com.tr/</url>
-        </pluginRepository>
+   		<pluginRepository>
+			<id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+		</pluginRepository>
         <pluginRepository>
             <id>oss.sonatype.org-github-releases</id>
             <name>oss.sonatype.org - github-releases</name>
@@ -299,15 +307,6 @@
             <url>http://repository.codehaus.org</url>
         </pluginRepository>
     </pluginRepositories>
-
-    <distributionManagement>
-        <repository>
-            <id>prime-repo</id>
-            <name>Prime Teknoloji maven repository</name>
-            <url>ftp://prime.com.tr/public_html/repository</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-    </distributionManagement>
 
     <profiles>
         <profile>
