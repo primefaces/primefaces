@@ -189,7 +189,7 @@
                         <id>generate-ui</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <uri>http://primefaces.prime.com.tr/ui</uri>
+                            <uri>http://primefaces.org/ui</uri>
                             <shortName>p</shortName>
                             <jsfVersion>2</jsfVersion>
                             <templatesDir>src/main/java-templates</templatesDir>
@@ -207,7 +207,7 @@
                         <id>generate-mobile</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <uri>http://primefaces.prime.com.tr/mobile</uri>
+                            <uri>http://primefaces.org/mobile</uri>
                             <shortName>pm</shortName>
                             <jsfVersion>2</jsfVersion>
                             <componentConfigsDir>target/resources-maven-jsf/mobile</componentConfigsDir>
