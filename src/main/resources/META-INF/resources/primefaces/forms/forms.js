@@ -233,6 +233,7 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
+    this.tabindex = this.labelContainer.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
     this.items = this.itemContainer.find('.ui-selectonemenu-item');
 
@@ -241,6 +242,9 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     }
 
     this.bindEvents();
+
+    if(this.disabled)
+        this.labelContainer.attr("tabindex", -1);
 
     //Client Behaviors
     if(this.cfg.behaviors) {
@@ -515,11 +519,13 @@ PrimeFaces.widget.SelectOneMenu.prototype.hide = function() {
 PrimeFaces.widget.SelectOneMenu.prototype.disable = function() {
     this.disabled = true;
     this.jq.addClass('ui-state-disabled');
+    this.labelContainer.attr("tabindex", -1);
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.enable = function() {
     this.disabled = false;
     this.jq.removeClass('ui-state-disabled');
+    this.labelContainer.attr("tabindex", this.tabindex);
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.focus = function() {
