@@ -16,6 +16,8 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -30,23 +32,32 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.util.Constants;
 
+/**
+ * Renders head content based on the following order
+ * - first facet if defined
+ * - JSF-PF CSS resources
+ * - JSF-PF JS resources
+ * - h:head content (encoded by super class at encodeChildren)
+ * - last facet if defined
+ */
 public class HeadRenderer extends Renderer {
 
-	@Override
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
-    }
 
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+        //First facet
+        UIComponent first = component.getFacet("first");
+        if(first != null) {
+            first.encodeAll(context);
+        }
         
         //Theme
         String theme = null;
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
 
-       if(themeParamValue != null) {
+        if(themeParamValue != null) {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
@@ -56,37 +67,60 @@ public class HeadRenderer extends Renderer {
 
         if(theme == null || theme.equalsIgnoreCase("sam")) {
             encodeTheme(context, "primefaces", "themes/sam/theme.css");
-        }
-        else if(!theme.equalsIgnoreCase("none")) {
+        } else if(!theme.equalsIgnoreCase("none")) {
             encodeTheme(context, "primefaces-" + theme, "theme.css");
         }
 
-        //Resources
+        //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
-        while (iter.hasNext()) {
-            writer.write("\n");
+        List<UIComponent> styles = new ArrayList<UIComponent>();
+        List<UIComponent> scripts = new ArrayList<UIComponent>();
+        
+        while(iter.hasNext()) {
             UIComponent resource = (UIComponent) iter.next();
-            resource.encodeAll(context);
+            String name = (String) resource.getAttributes().get("name");
+
+            if(name.endsWith(".css"))
+                styles.add(resource);
+            else if(name.endsWith(".js"));
+                scripts.add(resource);
         }
-       
+        
+        for(UIComponent style : styles) {
+            style.encodeAll(context);
+        }
+        
+        for(UIComponent script : scripts) {
+            script.encodeAll(context);
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //Last facet
+        UIComponent last = component.getFacet("last");
+        if(last != null) {
+            last.encodeAll(context);
+        }
+        
         writer.endElement("head");
     }
 
     protected void encodeTheme(FacesContext context, String library, String resource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.write("\n");
 
         Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if(themeResource == null) {
             throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
-        }
-        else {
+        } else {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);
             writer.writeAttribute("rel", "stylesheet", null);
             writer.writeAttribute("href", themeResource.getRequestPath(), null);
             writer.endElement("link");
-        }   
+        }
     }
 }
