@@ -519,7 +519,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.disable = function() {
 
 PrimeFaces.widget.SelectOneMenu.prototype.enable = function() {
     this.disabled = false;
-    this.jq.removeclass('ui-state-disabled');
+    this.jq.removeClass('ui-state-disabled');
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.focus = function() {
