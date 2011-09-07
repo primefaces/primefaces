@@ -228,7 +228,7 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
         handles : 'n,s,e,w,ne,nw,se,sw',
         minWidth : this.cfg.minWidth,
         minHeight : this.cfg.minHeight,
-        alsoResize : this.footer.length > 0 ? this.content : false,
+        alsoResize : this.content,
         containment: 'document'
     });
     
