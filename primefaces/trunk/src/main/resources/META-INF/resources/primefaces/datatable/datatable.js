@@ -112,7 +112,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
     if(this.cfg.selectionMode) {
         var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
 
-        $(this.jqId + ' tbody.ui-datatable-data tr').css('cursor', 'pointer')
+        $(this.jqId + ' tbody.ui-datatable-data > tr').css('cursor', 'pointer')
             .die('mouseover.datatable mouseout.datatable contextmenu.datatable ' + selectEvent + '.datatable')
             .live('mouseover.datatable', function() {
                 var element = $(this);
