@@ -25,27 +25,21 @@
 			<name>channel</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-            <description>Unique channel name of the connection between subscriber and the server. Required.</description>
+            <description>Unique channel name of the connection between subscriber and the server.</description>
 		</attribute>
 		<attribute>
-			<name>onpublish</name>
-			<required>true</required>
+			<name>onmessage</name>
+			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Javascript event handler that is process when the server publishes data. Required.</description>
+            <description>Javascript event handler that is process when the server publishes data.</description>
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>yui/utilities/utilities.js</name>
-		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>push/push.js</name>
 		</resource>
 	</resources>
 </component>
