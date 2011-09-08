@@ -28,10 +28,11 @@ public class DefaultRequestContext extends RequestContext {
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String PARTIAL_UPDATE_TARGETS_KEY = "PARTIAL_UPDATE_TARGETS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
-    private Map<Object, Object> attributes;
+    private final static String PUSH_DATA_KEY = "PUSH_DATA";
+    private Map<String, Object> attributes;
 
     public DefaultRequestContext() {
-        this.attributes = new HashMap<Object, Object>();
+        this.attributes = new HashMap<String, Object>();
 
         setCurrentInstance(this);
     }
@@ -69,9 +70,19 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
+    public void push(String channel, Object data) {
+        Map<String,List<Object>> pushData = getPushData(); 
+        if(!pushData.containsKey(channel)) {
+            pushData.put(channel, new ArrayList<Object>());
+        }
+        
+        pushData.get(channel).add(data);
+    }
+    
+    @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCallbackParams() {
-        if (attributes.get(CALLBACK_PARAMS_KEY) == null) {
+        if(attributes.get(CALLBACK_PARAMS_KEY) == null) {
             attributes.put(CALLBACK_PARAMS_KEY, new HashMap<String, Object>());
         }
         return (Map<String, Object>) attributes.get(CALLBACK_PARAMS_KEY);
@@ -80,7 +91,7 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     @SuppressWarnings("unchecked")
     public List<String> getPartialUpdateTargets() {
-        if (attributes.get(PARTIAL_UPDATE_TARGETS_KEY) == null) {
+        if(attributes.get(PARTIAL_UPDATE_TARGETS_KEY) == null) {
             attributes.put(PARTIAL_UPDATE_TARGETS_KEY, new ArrayList());
         }
         return (List<String>) attributes.get(PARTIAL_UPDATE_TARGETS_KEY);
@@ -88,9 +99,17 @@ public class DefaultRequestContext extends RequestContext {
 
     @SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
-        if (attributes.get(EXECUTE_SCRIPT_KEY) == null) {
+        if(attributes.get(EXECUTE_SCRIPT_KEY) == null) {
             attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList());
         }
         return (List<String>) attributes.get(EXECUTE_SCRIPT_KEY);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String, List<Object>> getPushData() {
+        if(attributes.get(PUSH_DATA_KEY) == null) {
+            attributes.put(PUSH_DATA_KEY, new HashMap<String, List<Object>>());
+        }
+        return (Map<String, List<Object>>) attributes.get(PUSH_DATA_KEY);
     }
 }
