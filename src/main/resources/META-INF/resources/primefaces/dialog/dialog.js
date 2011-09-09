@@ -442,7 +442,6 @@ PrimeFaces.widget.DialogManager = {
 PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
     cfg.draggable = false;
     cfg.resizable = false;
-    cfg.autoOpen = false;
     cfg.modal = true;
     cfg.showEffect = 'fade';
     cfg.hideEffect = 'fade';
