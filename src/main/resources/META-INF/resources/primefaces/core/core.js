@@ -237,9 +237,11 @@ PrimeFaces.ajax.AjaxUtils = {
         //Handle push data
         if(this.pushData) {
             for(var channel in this.pushData) {
-                var message = JSON.stringify(this.pushData[channel].data);
-                
-                PrimeFaces.websockets[channel].send(message);
+                if(channel) {
+                    var message = JSON.stringify(this.pushData[channel].data);
+
+                    PrimeFaces.websockets[channel].send(message);
+                }
             }
         }
     }
@@ -514,13 +516,13 @@ Array.prototype.remove = function(from, to) {
  * Prime Push Widget
  */
 PrimeFaces.widget.PrimeWebSocket = function(cfg) {
-    this.ws = new WebSocket(cfg.url);
+    this.ws = $.browser.mozilla ? new MozWebSocket(cfg.url) : new WebSocket(cfg.url);
     this.cfg = cfg;
     
     var _self = this;
     
     this.ws.onmessage = function(evt) {
-        var pushData = $.parseJSON(evt.data).data;
+        var pushData = $.parseJSON(evt.data);
         
         if(_self.cfg.onmessage) {
             _self.cfg.onmessage.call(_self, evt, pushData);
