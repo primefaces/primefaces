@@ -173,6 +173,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
         if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
+        if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
 
         //icon
         writer.startElement("span", null);
@@ -182,8 +183,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
-        if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
-        if(tab.getTitle() != null) writer.write(tab.getTitle());
+        if(tab.getTitle() != null) 
+            writer.write(tab.getTitle());
 
         writer.endElement("a");
 
