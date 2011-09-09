@@ -68,6 +68,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		
 		writer.write("closable:" + dialog.isClosable());
 
+		if(dialog.isVisible()) writer.write(",autoOpen:true");
 		if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
 		if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
 		if(dialog.getZindex() != 1000) writer.write(",zIndex:" + dialog.getZindex());

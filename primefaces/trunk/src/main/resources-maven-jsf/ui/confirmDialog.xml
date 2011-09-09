@@ -88,6 +88,13 @@
             <defaultValue>false</defaultValue>
             <description>Appends dialog as a child of document body. Default is false.</description>
         </attribute>
+        <attribute>
+            <name>visible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Sets dialogs visibility. Default is false.</description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
