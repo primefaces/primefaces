@@ -702,43 +702,37 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     var _self = this;
 
     this.output.mouseover(function() {
-        if(!_self.cfg.disabled) {
-            jQuery(this).addClass('ui-state-hover');
+        var element = jQuery(this);
+        if(!element.parent().hasClass('ui-state-disabled')) {
+            element.addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        if(!_self.cfg.disabled) {
-            jQuery(this).removeClass('ui-state-hover');
+        var element = jQuery(this);
+        if(!element.parent().hasClass('ui-state-disabled')) {
+            element.removeClass('ui-state-hover');
         }
     }).click(function() {
-        if(!_self.cfg.disabled) {
-            var element = jQuery(this),
-            input = element.prev().children('input'),
-            checked = input.attr('checked');
+        var element = jQuery(this),
+        input = element.prev().children('input'),
+        checked = input.attr('checked');
 
-            if(checked) {
-                element.removeClass('ui-state-active');
-                input.removeAttr('checked');
-                element.children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
-            } else {
-                element.addClass('ui-state-active');
-                input.attr('checked', 'checked');
-                element.children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
-            }
-
-            input.change();
+        if(element.parent().hasClass('ui-state-disabled')) {
+            return;
+        }
+        else if(checked) {
+            _self.uncheck(_self.output.index(element));
+        } else {
+            _self.check(_self.output.index(element));
         }
     });
 
     this.labels.click(function(e) {
-        if(!_self.cfg.disabled) {
             e.preventDefault();
-
             var element = jQuery(this),
             input = jQuery(PrimeFaces.escapeClientId(element.attr('for'))),
             checkbox = input.parent().next();
 
             checkbox.click();
-        }
     });
 
     //Client Behaviors
@@ -747,14 +741,78 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     }
 }
 
-PrimeFaces.widget.SelectManyCheckbox.prototype.enable = function() {
-    this.jq.find('.ui-checkbox').removeClass('ui-state-disabled');
-    this.cfg.disabled = false;
+//index selector. extends JQuery find.
+$.fn.findByIndex = function(selector, index){
+    var elements = this.find(selector);
+    if(index == undefined)
+        return elements;
+    else if( typeof(index) == "number"){
+        return elements.eq(index);
+    }
+    else{
+        var arr = typeof(index) == "string" ? eval("[" + index + "]" ) : index;
+        return !arr.length ? elements : elements.filter(function(i){
+           return $.inArray(i, arr) > -1; 
+        });
+    }
 }
 
-PrimeFaces.widget.SelectManyCheckbox.prototype.disable = function() {
-    this.jq.find('.ui-checkbox').addClass('ui-state-disabled');
-    this.cfg.disabled = true;
+PrimeFaces.widget.SelectManyCheckbox.prototype.isChecked = function(index){
+    var result = true;
+    
+    this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
+        if(result)
+            result = $(item).prev().children('input').is(":checked");
+    });
+
+    return result;
+}
+
+PrimeFaces.widget.SelectManyCheckbox.prototype.isDisabled = function(index){
+    var result = true;
+    
+    this.jq.findByIndex('.ui-checkbox', index).each(function(i, item){
+        if(result)
+            result = $(item).hasClass("ui-state-disabled");
+    });
+
+    return result;
+}
+
+PrimeFaces.widget.SelectManyCheckbox.prototype.enable = function(index) {
+    var boxes = this.jq.findByIndex('.ui-checkbox', index);
+    boxes.removeClass('ui-state-disabled');
+}
+
+PrimeFaces.widget.SelectManyCheckbox.prototype.disable = function(index) {
+    var boxes = this.jq.findByIndex('.ui-checkbox', index);
+    boxes.addClass('ui-state-disabled');
+}
+
+//check custom checkbox(es)
+PrimeFaces.widget.SelectManyCheckbox.prototype.check = function(index) {
+    this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
+        var element = $(item),
+        input = element.prev().children('input');
+        if(input.is(":checked"))
+            return;
+        input.change();
+        input.attr('checked', 'checked');
+        element.children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
+    });
+}
+
+//uncheck custom checkbox(es)
+PrimeFaces.widget.SelectManyCheckbox.prototype.uncheck = function(index) {
+    this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
+        var element = $(item),
+        input = element.prev().children('input');
+        if(!input.is(":checked"))
+            return;
+        input.change();
+        input.removeAttr('checked');
+        element.children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
+    });
 }
 
 /**
