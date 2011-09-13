@@ -1,4 +1,4 @@
-package org.primefaces.examples;
+package org.primefaces.push;
 
 import java.io.IOException;
 import java.util.Map;
