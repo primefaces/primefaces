@@ -563,6 +563,7 @@ import javax.faces.FacesException;
 
     void findSelectedRowKeys() {
         Object selection = this.getSelection();
+        Collection data = (Collection) getDataModel().getWrappedData();
         selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
         String var = this.getVar();
@@ -570,6 +571,11 @@ import javax.faces.FacesException;
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {
+                
+                //removed
+                if(!data.contains(selection))
+                    return;
+                
                 if(hasRowKeyVe) {
                     requestMap.put(var, selection);
                     selectedRowKeys.add(this.getRowKey());
@@ -580,12 +586,18 @@ import javax.faces.FacesException;
             } 
             else {
                 for(int i = 0; i < Array.getLength(selection); i++) {
+                    Object item = Array.get(selection, i);
+                    
+                    //removed
+                    if(item == null || !data.contains(item))
+                        continue;
+                    
                     if(hasRowKeyVe) {
-                        requestMap.put(var, Array.get(selection, i));
+                        requestMap.put(var, item);
                         selectedRowKeys.add(this.getRowKey());
                     }
                     else {
-                        selectedRowKeys.add(this.getRowKeyFromModel(Array.get(selection, i)));
+                        selectedRowKeys.add(this.getRowKeyFromModel(item));
                     }    
                 }
             }
