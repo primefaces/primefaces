@@ -41,13 +41,15 @@ public class PushRenderer extends CoreRenderer {
                     .append(externalContext.getRequestContextPath())
                     .append("/prime-push/")
                     .append(push.getChannel());
+        
+        String url = context.getExternalContext().encodeActionURL(urlBuilder.toString());
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("$(function() {");
 		writer.write(widgetVar + " = new PrimeFaces.widget.PrimeWebSocket({");
-		writer.write("url:'" + urlBuilder.toString() + "'");
+		writer.write("url:'" + url + "'");
         writer.write(",channel:'" + push.getChannel() + "'");
 		writer.write(",onmessage:" + push.getOnmessage());
         writer.write(",autoConnect:" + push.isAutoConnect());
