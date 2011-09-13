@@ -58,12 +58,12 @@
             <scope>provided</scope>
         </dependency>
 		
-        <!-- Atmosphere (Comet) -->
+        <!-- Push -->
         <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-runtime</artifactId>
-            <version>0.5</version>
-            <scope>provided</scope>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-websocket</artifactId>
+          <version>8.0.0.v20110901</version>
+          <scope>provided</scope>
         </dependency>
         
         <!-- FeedReader -->

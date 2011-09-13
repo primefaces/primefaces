@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 
 public class PushRenderer extends CoreRenderer {
 
@@ -34,13 +35,10 @@ public class PushRenderer extends CoreRenderer {
         ExternalContext externalContext = context.getExternalContext();
         String widgetVar = push.resolveWidgetVar();
         
-        StringBuilder urlBuilder = new StringBuilder("ws://");
-        urlBuilder.append(externalContext.getRequestServerName())
-                    .append(":")
-                    .append(externalContext.getRequestServerPort())
-                    .append(externalContext.getRequestContextPath())
-                    .append("/prime-push/")
-                    .append(push.getChannel());
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(context.getExternalContext().getInitParameter(Constants.PUSH_SERVER_URL))
+                  .append(Constants.PUSH_PATH)
+                  .append(push.getChannel());
         
         String url = context.getExternalContext().encodeActionURL(urlBuilder.toString());
 		
