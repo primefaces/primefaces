@@ -50,6 +50,10 @@ public class PushRenderer extends CoreRenderer {
 		writer.write("url:'" + urlBuilder.toString() + "'");
         writer.write(",channel:'" + push.getChannel() + "'");
 		writer.write(",onmessage:" + push.getOnmessage());
+        writer.write(",autoConnect:" + push.isAutoConnect());
+        
+        encodeClientBehaviors(context, push);
+        
 		writer.write("});});");
 		
 		writer.endElement("script");

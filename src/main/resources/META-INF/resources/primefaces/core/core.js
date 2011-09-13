@@ -516,22 +516,37 @@ Array.prototype.remove = function(from, to) {
  * Prime Push Widget
  */
 PrimeFaces.widget.PrimeWebSocket = function(cfg) {
-    this.ws = $.browser.mozilla ? new MozWebSocket(cfg.url) : new WebSocket(cfg.url);
     this.cfg = cfg;
-    
-    var _self = this;
-    
-    this.ws.onmessage = function(evt) {
-        var pushData = $.parseJSON(evt.data);
-        
-        if(_self.cfg.onmessage) {
-            _self.cfg.onmessage.call(_self, evt, pushData);
-        }
-    };
-    
-    PrimeFaces.websockets[this.cfg.channel] = this;
+
+    if(this.cfg.autoConnect) {
+        this.connect();
+    }
 }
 
 PrimeFaces.widget.PrimeWebSocket.prototype.send = function(data) {
     this.ws.send(data);
+}
+
+PrimeFaces.widget.PrimeWebSocket.prototype.connect = function() {
+    this.ws = $.browser.mozilla ? new MozWebSocket(this.cfg.url) : new WebSocket(this.cfg.url);
+
+    var _self = this;
+
+    this.ws.onmessage = function(evt) {
+        var pushData = $.parseJSON(evt.data);
+
+        if(_self.cfg.onmessage) {
+            _self.cfg.onmessage.call(_self, evt, pushData);
+        }
+    };
+
+    this.ws.onclose = function() {
+        
+    };
+
+    PrimeFaces.websockets[this.cfg.channel] = this;
+}
+
+PrimeFaces.widget.PrimeWebSocket.prototype.close = function() {
+    this.ws.close();
 }
