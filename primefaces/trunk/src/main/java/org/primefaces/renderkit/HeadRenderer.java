@@ -36,6 +36,7 @@ import org.primefaces.util.Constants;
  * Renders head content based on the following order
  * - first facet if defined
  * - JSF-PF CSS resources
+ * - middle facet if defined
  * - JSF-PF JS resources
  * - h:head content (encoded by super class at encodeChildren)
  * - last facet if defined
@@ -89,6 +90,12 @@ public class HeadRenderer extends Renderer {
         
         for(UIComponent style : styles) {
             style.encodeAll(context);
+        }
+        
+        //Middle facet
+        UIComponent middle = component.getFacet("middle");
+        if(middle != null) {
+            middle.encodeAll(context);
         }
         
         for(UIComponent script : scripts) {
