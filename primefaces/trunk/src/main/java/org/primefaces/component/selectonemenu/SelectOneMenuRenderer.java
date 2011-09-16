@@ -192,7 +192,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
             if(itemValue instanceof String) {
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns.size(), null);
-                writer.write(selectItem.getLabel());
+                writer.writeText(selectItem.getLabel(), null);
                 writer.endElement("td");
             } else {
                 for(Column column : columns) {
@@ -279,7 +279,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
                 writer.writeAttribute("selected", "selected", null);
             }
 
-            writer.write(itemLabel);
+            writer.writeText(itemLabel, null);
 
             writer.endElement("option");
         }
