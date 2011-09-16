@@ -15,8 +15,8 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.active = true;
     
     //options
-    this.cfg.minLength = this.cfg.minLength ? this.cfg.minLength : 1;
-    this.cfg.delay = this.cfg.delay ? this.cfg.delay : 300;
+    this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
+    this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
     
     //visuals
     if(this.cfg.theme != false) {
