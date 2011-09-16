@@ -289,10 +289,10 @@ import javax.faces.FacesException;
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("sort")) {
-                boolean asc = Boolean.valueOf(params.get(clientId + "_sortDir"));
+                SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
                 Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, asc);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("filter")) {
