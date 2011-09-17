@@ -39,8 +39,7 @@ public class InputRenderer extends CoreRenderer {
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UISelectItem) {
                 UISelectItem uiSelectItem = (UISelectItem) child;
-
-				selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel()));
+				selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel(), uiSelectItem.getItemDescription(), uiSelectItem.isItemDisabled(), uiSelectItem.isItemEscaped(), uiSelectItem.isNoSelectionOption()));
 			}
             else if(child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
@@ -62,16 +61,7 @@ public class InputRenderer extends CoreRenderer {
                     Collection collection = (Collection) value;
                     String var = (String) uiSelectItems.getAttributes().get("var");
 
-                    if(var != null) {
-                        for(Iterator it = collection.iterator(); it.hasNext();) {
-                            Object object = it.next();
-                            context.getExternalContext().getRequestMap().put(var, object);
-                            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-
-                            selectItems.add(new SelectItem(itemValue, itemLabel));
-                        }
-                    } else {
+                    if(collection != null) {
                         for(Iterator it = collection.iterator(); it.hasNext();) {
                             Object object = it.next();
                             
@@ -81,6 +71,17 @@ public class InputRenderer extends CoreRenderer {
                             else if(object instanceof Enum) {
                                 Enum e = (Enum) object;
                                 selectItems.add(new SelectItem(e.name(), e.name()));
+                            }
+                            else{
+                                if(var != null)
+                                    context.getExternalContext().getRequestMap().put(var, object);
+                                String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
+                                Object itemValue = uiSelectItems.getAttributes().get("itemValue");
+                                String description = (String)uiSelectItems.getAttributes().get("itemDescription");
+                                Boolean disabled = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemDisabled")));
+                                Boolean escaped = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemEscaped")));
+                                Boolean noSelectionOption = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("noSelectionOption")));
+                                selectItems.add(new SelectItem(itemValue == null ? object : itemValue, itemLabel == null ? object.toString() : itemLabel, description, disabled, escaped,noSelectionOption));
                             }
                         }
                     }                    

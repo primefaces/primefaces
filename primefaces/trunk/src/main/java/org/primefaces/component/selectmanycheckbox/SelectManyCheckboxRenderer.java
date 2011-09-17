@@ -136,12 +136,15 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, String label) throws IOException {
+    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("label", null);
         writer.writeAttribute("for", containerClientId, null);
-        writer.write(label);
+        if(option.isEscape())
+            writer.writeText(option.getLabel(),null);
+        else
+            writer.write(option.getLabel());
         writer.endElement("label");
     }
 
@@ -172,14 +175,11 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         boolean pageDirection = layout != null && layout.equals("pageDirection");
 
         for(SelectItem selectItem : selectItems) {
-            Object itemValue = selectItem.getValue();
-            String itemLabel = selectItem.getLabel();
-
             if(pageDirection) {
                 writer.startElement("tr", null);
             }
 
-            encodeOption(context, checkbox, value, converter, itemLabel, itemValue);
+            encodeOption(context, checkbox, value, converter, selectItem);
 
             if(pageDirection) {
                 writer.endElement("tr");
@@ -187,14 +187,14 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, String label, Object value) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object componentValue, Converter converter, SelectItem option) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
-        String formattedValue = getOptionAsString(context, component, converter, value);
+        String formattedValue = getOptionAsString(context, component, converter, option.getValue());
         String clientId = component.getClientId(context);
         String containerClientId = component.getContainerClientId(context);
-        boolean checked = componentValue != null && ((List) componentValue).contains(value);
-        boolean disabled = checkbox.isDisabled();
+        boolean checked = componentValue != null && ((List) componentValue).contains(option.getValue());
+        boolean disabled = checkbox.isDisabled() || option.isDisabled();
 
         writer.startElement("td", null);
 
@@ -202,18 +202,18 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         if(disabled) {
             styleClass += " ui-state-disabled";
         }
-
+        
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
 
-        encodeOptionInput(context, checkbox, clientId, containerClientId, checked, disabled, label, formattedValue);
+        encodeOptionInput(context, checkbox, clientId, containerClientId, checked, disabled, option.getLabel(), formattedValue);
         encodeOptionOutput(context, checkbox, checked);
 
         writer.endElement("div");
         writer.endElement("td");
 
         writer.startElement("td", null);
-        encodeOptionLabel(context, checkbox, containerClientId, label);
+        encodeOptionLabel(context, checkbox, containerClientId, option);
         writer.endElement("td");
     }
 }
