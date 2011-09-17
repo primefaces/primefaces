@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>summaryRow</tag>
+	<tagClass>org.primefaces.component.summaryrow.SummaryRowTag</tagClass>
+	<componentClass>org.primefaces.component.summaryrow.SummaryRow</componentClass>
+	<componentType>org.primefaces.component.SummaryRow</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SummaryRowRenderer</rendererType>
+	<rendererClass>org.primefaces.component.summaryrow.SummaryRowRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>SummaryRow is a helper component for data grouping.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>

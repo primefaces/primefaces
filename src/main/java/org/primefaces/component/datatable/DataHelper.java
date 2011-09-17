@@ -257,4 +257,27 @@ class DataHelper {
         
         return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
     }
+    
+        
+    /**
+     * Finds if row to render is in same group of previous row
+     */
+    boolean isInSameGroup(FacesContext context, DataTable table, int rowIndex) {
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        String var = table.getVar();
+        Object previousRowData = table.getPreviousRowData();
+        
+        if(previousRowData != null) {
+            requestMap.put(var, previousRowData);
+            Object previousGroupByData = table.getSortBy();
+            
+            table.setRowIndex(rowIndex);
+            Object currentGroupByData = table.getSortBy();
+            
+            if(previousGroupByData != null && previousGroupByData.equals(currentGroupByData))
+                return true;
+        }
+        
+        return false;
+    }
 }
