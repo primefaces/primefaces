@@ -35,8 +35,8 @@ import org.primefaces.util.Constants;
 /**
  * Renders head content based on the following order
  * - first facet if defined
- * - JSF-PF CSS resources
  * - Theme CSS
+ * - JSF-PF CSS resources
  * - middle facet if defined
  * - JSF-PF JS resources
  * - h:head content (encoded by super class at encodeChildren)
@@ -71,10 +71,6 @@ public class HeadRenderer extends Renderer {
                 scripts.add(resource);
         }
         
-        for(UIComponent style : styles) {
-            style.encodeAll(context);
-        }
-        
         //Theme
         String theme = null;
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
@@ -92,6 +88,11 @@ public class HeadRenderer extends Renderer {
         } else if(!theme.equalsIgnoreCase("none")) {
             encodeTheme(context, "primefaces-" + theme, "theme.css");
         }
+        
+        //Styles
+        for(UIComponent style : styles) {
+            style.encodeAll(context);
+        }
 
         //Middle facet
         UIComponent middle = component.getFacet("middle");
@@ -99,6 +100,7 @@ public class HeadRenderer extends Renderer {
             middle.encodeAll(context);
         }
         
+        //Scripts
         for(UIComponent script : scripts) {
             script.encodeAll(context);
         }
