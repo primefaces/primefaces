@@ -32,6 +32,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
+import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -567,6 +568,7 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
         SubTable subTable = table.getSubTable();
+        SummaryRow summaryRow = table.getSummaryRow();
         
         if(table.isLazy()) {
             table.loadLazyData();
@@ -594,6 +596,11 @@ public class DataTableRenderer extends CoreRenderer {
                     encodeSubTable(context, table, subTable, i, rowIndexVar);
                 }
                 else {
+
+                    if(i != first && summaryRow != null && !dataHelper.isInSameGroup(context, table, i)) {
+                        summaryRow.encodeAll(context);
+                    }
+                    
                     encodeRow(context, table, clientId, i, rowIndexVar);
                 }
             }
@@ -678,12 +685,10 @@ public class DataTableRenderer extends CoreRenderer {
             }
         }
 
-        //Row index var
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
-        }
-
         writer.endElement("tr");
+        
+        //used for summaryRow if any
+        table.setPreviousRowData(table.getRowData());
     }
 
     protected void encodeRegularCell(FacesContext context, DataTable table, Column column, String clientId, boolean selected) throws IOException {
@@ -997,7 +1002,7 @@ public class DataTableRenderer extends CoreRenderer {
         dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), null);
     }
 
-    private void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
+    protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
             return;

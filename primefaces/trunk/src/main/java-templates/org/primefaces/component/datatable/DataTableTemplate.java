@@ -5,6 +5,7 @@ import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
+import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.context.RequestContext;
 import java.util.List;
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ import javax.faces.FacesException;
     public static final String COLUMN_CONTENT_WRAPPER = "ui-dt-c"; 
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
+    public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header"; 
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit", "colResize"));
 
@@ -619,4 +621,24 @@ import javax.faces.FacesException;
         }
 
         return builder.toString();
+    }
+
+    public SummaryRow getSummaryRow() {
+        for(UIComponent kid : getChildren()) {
+            if(kid.isRendered() && kid instanceof SummaryRow) {
+                return (SummaryRow) kid;
+            }
+        }
+
+        return null;
+    }
+
+    private Object previousRowData = null;
+
+    public Object getPreviousRowData() {
+        return this.previousRowData;
+    }
+
+    public void setPreviousRowData(Object rowData) {
+        this.previousRowData = rowData;
     }
