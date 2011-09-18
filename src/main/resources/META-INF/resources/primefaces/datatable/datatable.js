@@ -69,11 +69,13 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
             $(this).toggleClass('ui-state-hover');}
         )
         .click(function(event) {
-
+            
             //Stop event if target is a clickable element inside header
             if($(event.target).is(':not(th,span,.ui-dt-c)')) {
                 return;
             }
+            
+            PrimeFaces.clearSelection();
 
             var columnId = $(this).attr('id');
             
@@ -89,12 +91,14 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
 
                 _self.sort(columnId, "DESCENDING");
+                PrimeFaces.clearSelection();
             }
             else if(sortIcon.hasClass('ui-icon-triangle-1-s')) {
                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
 
                 _self.sort(columnId, "ASCENDING");
-            } else {
+            } 
+            else {
                 sortIcon.addClass('ui-icon-triangle-1-n');
 
                 _self.sort(columnId, "ASCENDING");
