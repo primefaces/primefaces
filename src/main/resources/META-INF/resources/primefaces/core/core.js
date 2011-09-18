@@ -543,6 +543,10 @@ PrimeFaces.widget.PrimeWebSocket.prototype.connect = function() {
     this.ws.onclose = function() {
         
     };
+    
+    this.ws.onerror = function(evt) {
+        alert(evt.data);
+    };
 
     PrimeFaces.websockets[this.cfg.channel] = this;
 }
