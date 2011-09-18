@@ -385,14 +385,14 @@ public class DataTableRenderer extends CoreRenderer {
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
         
-        writer.startElement("div", null);
+        writer.startElement("span", null);
         
         if(header != null)
             header.encodeAll(context);
         else if(headerText != null)
             writer.write(headerText);
         
-        writer.endElement("div");
+        writer.endElement("span");
     }
 
     protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
