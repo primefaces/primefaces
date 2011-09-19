@@ -152,6 +152,10 @@ public class TabViewRenderer extends CoreRenderer {
         } 
         else {
             int dataCount = tabView.getRowCount();
+            
+            //boundary check
+            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
+            
             Tab tab = (Tab) tabView.getChildren().get(0);
             
             for(int i = 0; i < dataCount; i++) {
@@ -215,6 +219,10 @@ public class TabViewRenderer extends CoreRenderer {
         }
         else {
             int dataCount = tabView.getRowCount();
+            
+            //boundary check
+            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
+            
             Tab tab = (Tab) tabView.getChildren().get(0);
             
             for(int i = 0; i < dataCount; i++) {
