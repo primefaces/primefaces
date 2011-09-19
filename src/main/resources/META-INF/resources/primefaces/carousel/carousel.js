@@ -28,8 +28,8 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
     this.animating = false;
     
     var firstItem = this.items.filter(':first').get(0);
-    this.cfg.itemOuterWidth = parseInt(this.getProperty(firstItem, 'width')) + parseInt(this.getProperty(firstItem, 'margin-left')) + parseInt(this.getProperty(firstItem, 'margin-right')) +  ((parseInt(this.getProperty(firstItem, 'border-left-width')) + parseInt(this.getProperty(firstItem, 'border-right-width'))));
-    this.cfg.itemOuterHeight = parseInt(this.getProperty(firstItem, 'height')) + Math.max(parseInt(this.getProperty(firstItem, 'margin-top')), parseInt(this.getProperty(firstItem, 'margin-bottom'))) + ((parseInt(this.getProperty(firstItem, 'border-top-width')) + parseInt(this.getProperty(firstItem, 'border-bottom-width'))));
+    this.cfg.itemOuterWidth = parseInt(this.getProperty(firstItem, 'width')) + parseInt(this.getProperty(firstItem, 'margin-Left')) + parseInt(this.getProperty(firstItem, 'margin-Right')) +  ((parseInt(this.getProperty(firstItem, 'border-Left-Width')) + parseInt(this.getProperty(firstItem, 'border-Right-Width'))));
+    this.cfg.itemOuterHeight = parseInt(this.getProperty(firstItem, 'height')) + Math.max(parseInt(this.getProperty(firstItem, 'margin-Top')), parseInt(this.getProperty(firstItem, 'margin-Bottom'))) + ((parseInt(this.getProperty(firstItem, 'border-Top-Width')) + parseInt(this.getProperty(firstItem, 'border-Bottom-Width'))));
 
     //viewport width/height
     if(this.cfg.vertical) {
@@ -62,7 +62,7 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
  * Returns browser specific computed style property value.
  */
 PrimeFaces.widget.Carousel.prototype.getProperty = function(item, prop){
-    return $.browser.msie ? item.currentStyle.getAttribute(prop) : document.defaultView.getComputedStyle(item, "").getPropertyValue(prop);
+    return $.browser.msie ? item.currentStyle.getAttribute(prop.replace(/-/g, "")) : document.defaultView.getComputedStyle(item, "").getPropertyValue(prop.toLowerCase());
 }
 
 /**
