@@ -126,7 +126,7 @@ public class OrderListRenderer extends CoreRenderer {
 			
 			writer.startElement("li", null);
             writer.writeAttribute("class", OrderList.ITEM_CLASS, null);
-            writer.writeAttribute("data-item-value", old.getItemValue(), null);
+            writer.writeAttribute("data-item-value", value, null);
 			
             if(old.getChildCount() > 0) {
                                 
@@ -230,4 +230,14 @@ public class OrderListRenderer extends CoreRenderer {
         
         return orderedList;
 	}
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }
