@@ -629,7 +629,7 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
 PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
     var checkbox = $(element),
     checked = checkbox.attr('checked'),
-    rows = $(this.jqId + ' .ui-datatable-data tr'),
+    rows = $(this.jqId + ' .ui-datatable-data > tr'),
     checkboxes = rows.children('td.ui-selection-column').find('input:checkbox'),
     _self = this;
 
@@ -648,7 +648,6 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
         rows.each(function() {
             _self.removeSelection(_self.getRowMeta($(this)).key);
         });
-
     }
 
     //save state
