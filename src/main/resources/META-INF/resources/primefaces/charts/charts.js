@@ -21,13 +21,27 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         renderer: $.jqplot.PieRenderer,
         rendererOptions: rendererCfg
     };
+    
+    this.cfg.highlighter = {show:false}; //ignore default highlighter 
 
+    if(!this.cfg.lazy) {
+        this.init();
+    }
+    
+}
+
+PrimeFaces.widget.PieChart.prototype.init = function(){
+    
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
+    
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
     //highlighter
     PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-    this.cfg.highlighter = {show:false}; //default highlighter 
     
     if(this.cfg.resizable)
         PrimeFaces.widget.ChartUtils.makeResizable(this);
@@ -77,6 +91,17 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     
     this.cfg.highlighter = { show : true, formatString : '%s, %s', showTooltip : true};
 
+    if(!this.cfg.lazy) {
+        this.init();
+    }
+}
+
+PrimeFaces.widget.LineChart.prototype.init = function(){
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
+    
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
     
@@ -137,13 +162,25 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
         this.cfg.axes.xaxis.min = valueAxis.min;
         this.cfg.axes.xaxis.max = valueAxis.max;
     }
+    
+    this.cfg.highlighter = {show:false}; //default highlighter off
 
+    if(!this.cfg.lazy) {
+        this.init();
+    }
+}
+
+PrimeFaces.widget.BarChart.prototype.init = function(){
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
+    
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
     
     //highlighter
     PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-    this.cfg.highlighter = {show:false}; //default highlighter off
     
     if(this.cfg.resizable)
         PrimeFaces.widget.ChartUtils.makeResizable(this);
@@ -175,13 +212,25 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
         renderer: $.jqplot.DonutRenderer,
         rendererOptions: rendererCfg
     };
+    
+    this.cfg.highlighter = {show:false}; //default highlighter 
+    
+    if(!this.cfg.lazy) {
+        this.init();
+    }
+}
 
+PrimeFaces.widget.DonutChart.prototype.init = function(){
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
+    
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
     //highlighter
     PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-    this.cfg.highlighter = {show:false}; //default highlighter 
 
     if(this.cfg.resizable)
         PrimeFaces.widget.ChartUtils.makeResizable(this);
@@ -203,6 +252,17 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     this.cfg.seriesDefaults.rendererOptions.highlightAlpha = 0.8;
     this.cfg.highlighter = {show:false};
     this.cfg.seriesDefaults.shadow = this.cfg.shadow;
+    
+    if(!this.cfg.lazy) {
+        this.init();
+    }
+}
+
+PrimeFaces.widget.BubbleChart.prototype.init = function(){
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
     
     //events
     PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
@@ -236,7 +296,18 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
           <tr><td>close:</td><td>%s</td></tr></table>'
    }
    
-   if(this.cfg.resizable)
+   if(!this.cfg.lazy) {
+        this.init();
+   }
+}
+
+PrimeFaces.widget.OhlcChart.prototype.init = function(){
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
+    
+    if(this.cfg.resizable)
         PrimeFaces.widget.ChartUtils.makeResizable(this);
 
     //render chart
@@ -253,6 +324,17 @@ PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
 
     if(this.cfg.seriesColors)
         this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
+    
+    if(!this.cfg.lazy) {
+        this.init();
+    }
+}
+
+PrimeFaces.widget.MeterGaugeChart.prototype.init = function(){
+    if(this.cfg.initialized)
+        return;
+    else
+        this.cfg.initialized = true;
     
     if(this.cfg.resizable)
         PrimeFaces.widget.ChartUtils.makeResizable(this);

@@ -100,7 +100,12 @@
             <type>java.lang.String</type>
             <description>Defines data information type on highlighter or slices. Default is percent.</description>
         </attribute>
-        
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

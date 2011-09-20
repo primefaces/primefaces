@@ -91,5 +91,7 @@ public class BaseChartRenderer extends CoreRenderer {
             writer.write("tickOptions:{ angle:" + chart.getYaxisAngle() + "}");
         }
         writer.write("}}");
+        
+        if(chart.isLazy()) writer.write(",lazy:true");
     }
 }
