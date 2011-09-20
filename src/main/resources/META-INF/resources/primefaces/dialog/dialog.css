@@ -1,5 +1,5 @@
 .ui-dialog { position: fixed; padding: 0px; overflow: hidden; visibility:hidden; }
-.ui-dialog .ui-dialog-titlebar { padding: .4em 1em; padding-right: 0px; position: relative;  }
+.ui-dialog .ui-dialog-titlebar { padding: .4em 1em; padding-right: 0px; position: relative; border:0px; }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; } 
 .ui-dialog .ui-dialog-content {position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
