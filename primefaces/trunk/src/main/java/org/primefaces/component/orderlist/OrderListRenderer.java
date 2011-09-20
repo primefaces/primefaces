@@ -85,11 +85,20 @@ public class OrderListRenderer extends CoreRenderer {
     protected void encodeList(FacesContext context, OrderList ol) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ol.getClientId(context);
+        UIComponent caption = ol.getFacet("caption");
+        String listStyleClass = OrderList.LIST_CLASS;
 
         writer.startElement("td", null);
+        
+        if(caption != null) {
+            encodeCaption(context, caption);
+            listStyleClass += " ui-corner-bottom";
+        } else {
+            listStyleClass += " ui-corner-all";
+        }
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", OrderList.LIST_CLASS, null);
+        writer.writeAttribute("class", listStyleClass, null);
 
         String values = encodeOptions(context, ol, (List) ol.getValue());
 
@@ -230,6 +239,15 @@ public class OrderListRenderer extends CoreRenderer {
         
         return orderedList;
 	}
+    
+    protected void encodeCaption(FacesContext context, UIComponent caption) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", OrderList.CAPTION_CLASS, null);
+        caption.encodeAll(context);
+        writer.endElement("div");
+    }
     
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
