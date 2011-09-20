@@ -92,6 +92,12 @@
             <type>java.lang.Integer</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
     <resources>
         <resource>
