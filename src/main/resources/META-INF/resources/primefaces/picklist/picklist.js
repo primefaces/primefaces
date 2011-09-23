@@ -233,11 +233,11 @@ PrimeFaces.widget.PickList.prototype.saveListState = function(list, holder) {
         var item = $(this),
         itemValue = pojo ? item.data('itemValue') : item.html();
 
-        values.push('"' + itemValue + '"');
+        values.push(itemValue);
     });
     
-    //set value as json array
-    holder.val('[' + values.join(',') + ']');
+    //set value as json string
+    holder.val(JSON.stringify(values));
 }
 
 /**
