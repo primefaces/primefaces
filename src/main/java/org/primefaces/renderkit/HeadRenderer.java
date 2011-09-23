@@ -65,10 +65,12 @@ public class HeadRenderer extends Renderer {
             UIComponent resource = (UIComponent) iter.next();
             String name = (String) resource.getAttributes().get("name");
 
-            if(name.endsWith(".css"))
-                styles.add(resource);
-            else if(name.endsWith(".js"));
-                scripts.add(resource);
+            if(name != null) {
+                if(name.endsWith(".css"))
+                    styles.add(resource);
+                else if(name.endsWith(".js"));
+                    scripts.add(resource);
+            }
         }
         
         //Theme
