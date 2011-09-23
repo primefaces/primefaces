@@ -287,7 +287,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         option.attr('selected', 'selected');
 
         _self.labelContainer.focus();
-        _self.label.html(label);
+        _self.label.text(label);
         _self.input.change();
         _self.hide();
     });
