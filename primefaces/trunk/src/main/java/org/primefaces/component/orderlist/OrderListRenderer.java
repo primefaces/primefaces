@@ -26,6 +26,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class OrderListRenderer extends CoreRenderer {
@@ -126,8 +128,8 @@ public class OrderListRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = old.getVar();
 		Converter converter = old.getConverter();
-		
-		StringBuilder state = new StringBuilder();
+		JSONArray jSONArray = new JSONArray();
+        
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
 			context.getExternalContext().getRequestMap().put(var, item);
@@ -166,16 +168,12 @@ public class OrderListRenderer extends CoreRenderer {
                 
 			writer.endElement("li");
 			
-			state.append(value);
-
-            if(it.hasNext()) {
-                state.append(",");
-            }
+			jSONArray.put(value);
 		}
 		
 		context.getExternalContext().getRequestMap().remove(var);
 		
-		return state.toString();
+		return jSONArray.toString();
 	}
     
     protected void encodeButton(FacesContext context, String label, String styleClass) throws IOException {
@@ -221,23 +219,30 @@ public class OrderListRenderer extends CoreRenderer {
     @Override
 	@SuppressWarnings("unchecked")
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		OrderList ol = (OrderList) component;
-        List orderedList = new ArrayList();
-        Converter converter = ol.getConverter();
-        String[] items = ((String) submittedValue).split(",");
-		
-		for(String item : items) {
-			if(isValueBlank(item))
-				continue;
-			
-			String val = item.trim();
-			Object convertedValue = converter != null ? converter.getAsObject(context, ol, val) : val;
-			
-			if(convertedValue != null)
-				orderedList.add(convertedValue);
-		}
-        
-        return orderedList;
+        try {
+            OrderList ol = (OrderList) component;
+            List orderedList = new ArrayList();
+            Converter converter = ol.getConverter();
+            JSONArray jSONArray = new JSONArray((String) submittedValue);
+
+            for(int i = 0; i < jSONArray.length(); i++) {
+                String item = jSONArray.getString(i);
+                
+                if(isValueBlank(item))
+                    continue;
+
+                String val = item.trim();
+                Object convertedValue = converter != null ? converter.getAsObject(context, ol, val) : val;
+
+                if(convertedValue != null)
+                    orderedList.add(convertedValue);
+            }
+
+            return orderedList;
+        }
+        catch(JSONException jSONException) {
+            throw new ConverterException(jSONException);
+        }
 	}
     
     protected void encodeCaption(FacesContext context, UIComponent caption) throws IOException {
