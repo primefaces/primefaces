@@ -26,6 +26,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
@@ -184,8 +186,8 @@ public class PickListRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = pickList.getVar();
 		Converter converter = pickList.getConverter();
-		
-		StringBuilder state = new StringBuilder();
+        JSONArray jSONArray = new JSONArray();
+        
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
 			context.getExternalContext().getRequestMap().put(var, item);
@@ -222,16 +224,12 @@ public class PickListRenderer extends CoreRenderer {
                 
 			writer.endElement("li");
 			
-			state.append(value);
-
-            if(it.hasNext()) {
-                state.append(",");
-            }
+			jSONArray.put(value);
 		}
 		
 		context.getExternalContext().getRequestMap().remove(var);
 		
-		return state.toString();
+		return jSONArray.toString();
 	}
 	
 	protected void encodeListStateHolder(FacesContext context, String clientId, String values) throws IOException {
@@ -247,29 +245,36 @@ public class PickListRenderer extends CoreRenderer {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException {
-		PickList pickList = (PickList) component;
-		String[] value = (String[]) submittedValue;
-		String[] sourceList = value[0].split(",");
-		String[] targetList = value[1].split(",");
-		DualListModel model = new DualListModel();
-		
-		doConvertValue(facesContext, pickList, sourceList, model.getSource());
-		doConvertValue(facesContext, pickList, targetList, model.getTarget());
-				
-		return model;
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        try {
+            PickList pickList = (PickList) component;
+            String[] value = (String[]) submittedValue;
+            JSONArray sourceList = new JSONArray(value[0]);
+            JSONArray targetList = new JSONArray(value[1]);
+            DualListModel model = new DualListModel();
+
+            doConvertValue(context, pickList, sourceList, model.getSource());
+            doConvertValue(context, pickList, targetList, model.getTarget());
+
+            return model;
+        }
+        catch(JSONException jSONException) {
+            throw new ConverterException(jSONException);
+        }
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void doConvertValue(FacesContext facesContext, PickList pickList, String[] values, List model) {
+	protected void doConvertValue(FacesContext context, PickList pickList, JSONArray jSONArray, List model) throws JSONException {
 		Converter converter = pickList.getConverter();
-		
-		for(String value : values) {
-			if(isValueBlank(value))
+
+        for(int i = 0; i < jSONArray.length(); i++) {
+            String item = jSONArray.getString(i);
+            
+			if(isValueBlank(item))
 				continue;
 			
-			String val = value.trim();
-			Object convertedValue = converter != null ? converter.getAsObject(facesContext, pickList, val) : val;
+			String val = item.trim();
+			Object convertedValue = converter != null ? converter.getAsObject(context, pickList, val) : val;
 			
 			if(convertedValue != null)
 				model.add(convertedValue);
