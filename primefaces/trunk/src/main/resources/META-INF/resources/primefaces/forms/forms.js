@@ -352,6 +352,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     this.highlightTimer = null;
 
     this.labelContainer.keydown(function(e) {
+        if(_self.disabled)
+            return;
         
         if(_self.highlightTimer != null)
             clearTimeout(_self.highlightTimer);
