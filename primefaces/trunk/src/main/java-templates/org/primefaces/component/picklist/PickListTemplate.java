@@ -28,10 +28,18 @@ import javax.faces.application.FacesMessage;
 			String requiredMessage = getRequiredMessage();
 			FacesMessage message = null;
 			
-			if(requiredMessage != null)
+			if(requiredMessage != null) {
 				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
-	        else
-	        	message = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{getClientId(facesContext)});
+            }
+            else {
+                String label = this.getLabel();
+                if(label == null) {
+                    label = this.getClientId(facesContext);
+                }
+
+	        	message = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{label});
+
+            }
 
 			facesContext.addMessage(getClientId(facesContext), message);
 	        setValid(false);
