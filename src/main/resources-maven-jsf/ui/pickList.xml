@@ -157,6 +157,12 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute when an item is transferred from one list to another.</description>
 		</attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>A localized user presentable name.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
