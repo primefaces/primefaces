@@ -66,12 +66,6 @@ PrimeFaces.widget.PickList = function(id, cfg) {
                                         _self.transfer(this, _self.sourceList);
                             });
                     });
-
-        //Pojo support
-        if(this.cfg.pojo) {
-            this.parseItemValues(this.sourceState, this.sourceList);
-            this.parseItemValues(this.targetState, this.targetList);
-        }
     }
 }
 
@@ -226,30 +220,14 @@ PrimeFaces.widget.PickList.prototype.transfer = function(element, to) {
 }
 
 PrimeFaces.widget.PickList.prototype.saveListState = function(list, holder) {
-    var values = [],
-    pojo = this.cfg.pojo;
+    var values = [];
     
     $(list).children('li.ui-picklist-item').each(function() {
-        var item = $(this),
-        itemValue = pojo ? item.data('itemValue') : item.html();
-
-        values.push(itemValue);
+        values.push('"' + $(this).data('item-value') + '"');
     });
     
     //set value as json string
-    holder.val(JSON.stringify(values));
-}
-
-/**
- * Parses item values and assigns to li elements
- */
-PrimeFaces.widget.PickList.prototype.parseItemValues = function(state, list) {
-    var itemValues = state.val().split(','),
-    itemElements = list.children('li');
-
-    for(var i in itemValues) {
-        $(itemElements.get(i)).data('itemValue', itemValues[i]);
-    }
+    holder.val(values.join(','));
 }
 
 /**
