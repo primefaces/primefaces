@@ -26,8 +26,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class OrderListRenderer extends CoreRenderer {
@@ -128,7 +126,7 @@ public class OrderListRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = old.getVar();
 		Converter converter = old.getConverter();
-		JSONArray jSONArray = new JSONArray();
+		StringBuilder builder = new StringBuilder();
         
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
@@ -168,12 +166,16 @@ public class OrderListRenderer extends CoreRenderer {
                 
 			writer.endElement("li");
 			
-			jSONArray.put(value);
+			builder.append("\"").append(value).append("\"");
+            
+            if(it.hasNext()) {
+                builder.append(",");
+            }
 		}
 		
 		context.getExternalContext().getRequestMap().remove(var);
 		
-		return jSONArray.toString();
+		return builder.toString();
 	}
     
     protected void encodeButton(FacesContext context, String label, String styleClass) throws IOException {
@@ -206,10 +208,10 @@ public class OrderListRenderer extends CoreRenderer {
 
 		writer.write(ol.resolveWidgetVar() + " = new PrimeFaces.widget.OrderList('" + clientId + "', {");
     
-        writer.write("pojo:" + (ol.getConverter() != null));
+        writer.write("iconOnly:" + ol.isIconOnly());
         
-        if(ol.getEffect() != null) writer.write(",effect:'" + ol.getEffect() + "'");
-        if(ol.isIconOnly()) writer.write(",iconOnly:true");
+        if(ol.getEffect() != null) 
+            writer.write(",effect:'" + ol.getEffect() + "'");
         
         writer.write("});");
 		
@@ -223,15 +225,16 @@ public class OrderListRenderer extends CoreRenderer {
             OrderList ol = (OrderList) component;
             List orderedList = new ArrayList();
             Converter converter = ol.getConverter();
-            JSONArray jSONArray = new JSONArray((String) submittedValue);
+            String[] values = ((String) submittedValue).split(",");
 
-            for(int i = 0; i < jSONArray.length(); i++) {
-                String item = jSONArray.getString(i);
-                
+            for(String item : values) {
                 if(isValueBlank(item))
                     continue;
 
+                //trim whitespaces and double quotes
                 String val = item.trim();
+                val = val.substring(1, val.length() - 1);
+            
                 Object convertedValue = converter != null ? converter.getAsObject(context, ol, val) : val;
 
                 if(convertedValue != null)
@@ -240,8 +243,8 @@ public class OrderListRenderer extends CoreRenderer {
 
             return orderedList;
         }
-        catch(JSONException jSONException) {
-            throw new ConverterException(jSONException);
+        catch(Exception exception) {
+            throw new ConverterException(exception);
         }
 	}
     

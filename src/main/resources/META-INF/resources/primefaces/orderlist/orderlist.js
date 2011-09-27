@@ -82,13 +82,10 @@ PrimeFaces.widget.OrderList.prototype.saveState = function() {
     var values = [];
     
     this.list.children('li.ui-orderlist-item').each(function() {
-        var item = $(this),
-        itemValue = item.data('item-value');
-
-        values.push(itemValue);
+        values.push('"' + $(this).data('item-value') + '"');
     });
     
-    this.state.val(JSON.stringify(values));
+    this.state.val(values.join(','));
 }
 
 PrimeFaces.widget.OrderList.prototype.moveUp = function(list) {

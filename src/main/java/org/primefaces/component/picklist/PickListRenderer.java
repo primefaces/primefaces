@@ -26,8 +26,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
@@ -110,8 +108,7 @@ public class PickListRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write(pickList.resolveWidgetVar() + " = new PrimeFaces.widget.PickList('" + clientId + "', {");
-        writer.write("pojo:" + (pickList.getConverter() != null));
-        writer.write(",effect:'" + pickList.getEffect() + "'");
+        writer.write("effect:'" + pickList.getEffect() + "'");
         writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
         writer.write(",iconOnly:" + pickList.isIconOnly());
         
@@ -186,7 +183,7 @@ public class PickListRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = pickList.getVar();
 		Converter converter = pickList.getConverter();
-        JSONArray jSONArray = new JSONArray();
+        StringBuilder builder = new StringBuilder();
         
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
@@ -195,6 +192,7 @@ public class PickListRenderer extends CoreRenderer {
 			
 			writer.startElement("li", null);
             writer.writeAttribute("class", PickList.ITEM_CLASS, null);
+            writer.writeAttribute("data-item-value", value, null);
 			
             if(pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
@@ -224,12 +222,16 @@ public class PickListRenderer extends CoreRenderer {
                 
 			writer.endElement("li");
 			
-			jSONArray.put(value);
+			builder.append("\"").append(value).append("\"");
+            
+            if(it.hasNext()) {
+                builder.append(",");
+            }
 		}
 		
 		context.getExternalContext().getRequestMap().remove(var);
 		
-		return jSONArray.toString();
+		return builder.toString();
 	}
 	
 	protected void encodeListStateHolder(FacesContext context, String clientId, String values) throws IOException {
@@ -249,31 +251,32 @@ public class PickListRenderer extends CoreRenderer {
         try {
             PickList pickList = (PickList) component;
             String[] value = (String[]) submittedValue;
-            JSONArray sourceList = new JSONArray(value[0]);
-            JSONArray targetList = new JSONArray(value[1]);
+            String[] sourceValue = value[0].split(",");
+            String[] targetValue = value[1].split(",");
             DualListModel model = new DualListModel();
 
-            doConvertValue(context, pickList, sourceList, model.getSource());
-            doConvertValue(context, pickList, targetList, model.getTarget());
+            doConvertValue(context, pickList, sourceValue, model.getSource());
+            doConvertValue(context, pickList, targetValue, model.getTarget());
 
             return model;
         }
-        catch(JSONException jSONException) {
-            throw new ConverterException(jSONException);
+        catch(Exception exception) {
+            throw new ConverterException(exception);
         }
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void doConvertValue(FacesContext context, PickList pickList, JSONArray jSONArray, List model) throws JSONException {
+	protected void doConvertValue(FacesContext context, PickList pickList, String[] values, List model) {
 		Converter converter = pickList.getConverter();
 
-        for(int i = 0; i < jSONArray.length(); i++) {
-            String item = jSONArray.getString(i);
-            
+        for(String item : values) {            
 			if(isValueBlank(item))
 				continue;
 			
+            //trim whitespaces and double quotes
 			String val = item.trim();
+            val = val.substring(1, val.length() - 1);
+                    
 			Object convertedValue = converter != null ? converter.getAsObject(context, pickList, val) : val;
 			
 			if(convertedValue != null)
