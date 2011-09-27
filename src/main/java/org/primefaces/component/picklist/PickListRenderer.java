@@ -176,6 +176,8 @@ public class PickListRenderer extends CoreRenderer {
 		encodeListStateHolder(context, listId, values);
         
         writer.endElement("ul");
+        
+        writer.endElement("td");
 	}
 	
 	@SuppressWarnings("unchecked")
