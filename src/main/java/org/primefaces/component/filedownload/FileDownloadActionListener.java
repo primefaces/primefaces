@@ -16,6 +16,8 @@
 package org.primefaces.component.filedownload;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -56,8 +58,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 			byte[] buffer = new byte[2048];
 	
 			int length;
-			while ((length = (content.getStream().read(buffer))) >= 0) {
-				response.getOutputStream().write(buffer, 0, length);
+            InputStream inputStream = content.getStream();
+            OutputStream outputStream = response.getOutputStream();
+            
+			while ((length = (inputStream.read(buffer))) >= 0) {
+				outputStream.write(buffer, 0, length);
 			}
 			
 			response.setStatus(200);
@@ -65,7 +70,8 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 			content.getStream().close();
 			response.getOutputStream().flush();
 			facesContext.responseComplete();
-		}catch (IOException e) {
+		}
+        catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
