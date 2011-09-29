@@ -78,11 +78,11 @@ PrimeFaces.widget.Spinner.prototype.repeat = function(interval, dir) {
 PrimeFaces.widget.Spinner.prototype.spin = function(step) {
     var newValue = this.value + step;
 
-    if(this.cfg.min && newValue < this.cfg.min) {
+    if(this.cfg.min != undefined && newValue < this.cfg.min) {
         newValue = this.cfg.min;
     }
 
-    if(this.cfg.max && newValue > this.cfg.max) {
+    if(this.cfg.max != undefined && newValue > this.cfg.max) {
         newValue = this.cfg.max;
     }
 
