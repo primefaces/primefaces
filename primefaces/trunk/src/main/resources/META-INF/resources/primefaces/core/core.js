@@ -27,14 +27,11 @@ PrimeFaces = {
     },
 
     attachBehaviors : function(element, behaviors) {
-        for(var event in behaviors) {
-            var domEvent = event,
-            handler = behaviors[domEvent];
-
-            element.bind(domEvent, function(e) {
-                handler.call(element, e);
+        $.each(behaviors, function(event, fn) {
+            element.bind(event, function(e) {
+                fn.call(element, e);
             });
-        }
+        });
     },
 
     getCookie : function(name) {
