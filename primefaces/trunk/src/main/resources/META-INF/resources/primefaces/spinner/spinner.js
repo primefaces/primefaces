@@ -11,8 +11,9 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
     this.downButton = this.jq.children('a.ui-spinner-down');
     this.decimalSeparator = this.findDecimalSeparator();
     this.decimalCount = this.findDecimalCount();
-    this.value = this.parse(this.input.val());
     var _self = this;
+    
+    this.setDefaultValue();
 
     if(this.cfg.disabled) {
         return;
@@ -75,11 +76,11 @@ PrimeFaces.widget.Spinner.prototype.repeat = function(interval, dir) {
 PrimeFaces.widget.Spinner.prototype.spin = function(step) {
     var newValue = this.value + step;
 
-    if(this.cfg.min !== undefined && newValue < this.cfg.min) {
+    if(this.cfg.min && newValue < this.cfg.min) {
         newValue = this.cfg.min;
     }
 
-    if(this.cfg.max !== undefined && newValue > this.cfg.max) {
+    if(this.cfg.max && newValue > this.cfg.max) {
         newValue = this.cfg.max;
     }
 
@@ -89,17 +90,26 @@ PrimeFaces.widget.Spinner.prototype.spin = function(step) {
     this.input.change();
 }
 
-PrimeFaces.widget.Spinner.prototype.parse = function(value) {
-    if(this.cfg.prefix)
-        value = value.split(this.cfg.prefix)[1];
+PrimeFaces.widget.Spinner.prototype.setDefaultValue = function() {
+    var value = this.input.val();
+    
+    if(value == '') {
+        if(this.cfg.min)
+            this.value = this.cfg.min;
+        else
+            this.value = 0;
+    } 
+    else {
+        if(this.cfg.prefix)
+            value = value.split(this.cfg.prefix)[1];
 
-    if(this.cfg.suffix)
-        value = value.split(this.cfg.suffix)[0];
+        if(this.cfg.suffix)
+            value = value.split(this.cfg.suffix)[0];
 
-    if(this.decimalSeparator) {
-        return parseFloat(value);
-    } else {
-        return parseInt(value);
+        if(this.decimalSeparator)
+            this.value =  parseFloat(value);
+        else
+            this.value = parseInt(value);
     }
 }
 

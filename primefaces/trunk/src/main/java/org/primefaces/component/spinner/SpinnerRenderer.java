@@ -38,11 +38,8 @@ public class SpinnerRenderer extends InputRenderer {
         decodeBehaviors(context, spinner);
 
 		String clientId = spinner.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if(submittedValue != null) {
-            spinner.setSubmittedValue(submittedValue);
-        }
+        spinner.setSubmittedValue(context.getExternalContext().getRequestParameterMap().get(clientId + "_input"));
 	}
 	
 	@Override
@@ -93,8 +90,9 @@ public class SpinnerRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(spinner.getStyle() != null)
+        if(spinner.getStyle() != null) {
             writer.writeAttribute("style", spinner.getStyle(), null);
+        }
 
 		encodeInput(context, spinner);
 
