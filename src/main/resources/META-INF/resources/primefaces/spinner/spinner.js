@@ -13,28 +13,30 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
     this.decimalCount = this.findDecimalCount();
     var _self = this;
     
-    this.setDefaultValue();
+    //grab value from input
+    this.refreshValue();
 
     if(this.cfg.disabled) {
         return;
     }
 
     //visuals
-    this.jq.children('.ui-spinner-button').mouseover(function() {
-        $(this).addClass('ui-state-hover');
-    }).mouseout(function() {
-        $(this).removeClass('ui-state-hover');
-    }).mouseup(function() {
-        clearInterval(_self.timer);
-        $(this).removeClass('ui-state-active');
-    }).mousedown(function() {
-        var element = $(this),
-        dir = element.hasClass('ui-spinner-up') ? 1 : -1;
+    this.jq.children('.ui-spinner-button')
+        .mouseover(function() {
+            $(this).addClass('ui-state-hover');
+        }).mouseout(function() {
+            $(this).removeClass('ui-state-hover');
+        }).mouseup(function() {
+            clearInterval(_self.timer);
+            $(this).removeClass('ui-state-active');
+        }).mousedown(function() {
+            var element = $(this),
+            dir = element.hasClass('ui-spinner-up') ? 1 : -1;
 
-        element.addClass('ui-state-active');
+            element.addClass('ui-state-active');
 
-        _self.repeat(null, dir);
-    });
+            _self.repeat(null, dir);
+        });
 
     //only allow numbers
     this.input.keypress(function (e){
@@ -47,9 +49,9 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
         }
     });
 
-    //repopulate value on blur if input is cleared
-    this.input.blur(function (e){
-        _self.input.val(_self.value);
+    //refresh the value if user enters input manually
+    this.input.keyup(function (e){
+        _self.refreshValue();
     });
 
     if(this.cfg.behaviors) {
@@ -90,7 +92,7 @@ PrimeFaces.widget.Spinner.prototype.spin = function(step) {
     this.input.change();
 }
 
-PrimeFaces.widget.Spinner.prototype.setDefaultValue = function() {
+PrimeFaces.widget.Spinner.prototype.refreshValue = function() {
     var value = this.input.val();
     
     if(value == '') {
