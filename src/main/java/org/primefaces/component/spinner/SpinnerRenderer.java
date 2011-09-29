@@ -37,9 +37,25 @@ public class SpinnerRenderer extends InputRenderer {
 
         decodeBehaviors(context, spinner);
 
-		String clientId = spinner.getClientId(context);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
+        String prefix = spinner.getPrefix();
+        String suffix = spinner.getSuffix();
+        
+        try {
+            
+            if(prefix != null)
+                submittedValue = submittedValue.substring(prefix.length());
+            else if(suffix != null)
+                submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
+            
+            }
+        catch(Exception e) {
+            
+        }
+        finally {
+            spinner.setSubmittedValue(submittedValue);
+        }
 
-        spinner.setSubmittedValue(context.getExternalContext().getRequestParameterMap().get(clientId + "_input"));
 	}
 	
 	@Override
@@ -112,17 +128,21 @@ public class SpinnerRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
 
-        if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-
 		String valueToRender = ComponentUtils.getStringValueToRender(context, spinner);
+        valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
+        valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix(): valueToRender;
+        
 		if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender, null);
 		}
+        
 		renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS);
 
         String inputClass = themeForms() ? Spinner.THEME_INPUT_CLASS : Spinner.PLAIN_INPUT_CLASS;
         writer.writeAttribute("class", inputClass, null);
+        
+        if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
 		writer.endElement("input");
     }
