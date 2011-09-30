@@ -336,9 +336,11 @@ PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
         this.jq.appendTo(this.parent).css({'position':'fixed', 'float':'none'});
         this.restoreState(false);
         this.content.show();
-        this.resizers.show();
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
         this.minimized = false;
+        
+        if(this.cfg.resizable)
+            this.resizers.show();
     }
     else {
         this.saveState(false);
@@ -362,10 +364,12 @@ PrimeFaces.widget.Dialog.prototype.dock = function(zone) {
     this.jq.appendTo(zone).css('position', 'static');
     this.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
     this.content.hide();
-    this.resizers.hide();
     this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
     this.minimized = true;
     this.jq.css('visibility', 'visible');
+    
+    if(this.cfg.resizable)
+        this.resizers.hide();
 }
 
 PrimeFaces.widget.Dialog.prototype.saveState = function(includeOffset) {
