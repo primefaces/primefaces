@@ -1,3 +1,6 @@
+/**
+ * PrimeFaces DataGrid Widget
+ */
 PrimeFaces.widget.DataGrid = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
@@ -35,19 +38,9 @@ PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
                 content = update.text();
 
                 if(id == _self.id){
-
-                    if(_self.cfg.effect) {
-                        var _data = content;
-                        $(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-                            jQuery(_self.content).html(_data);
-                            jQuery(_self.content).fadeIn(_self.cfg.effectSpeed);
-                        });
-                    } else {
-                        $(_self.content).html(content);
-                    }
+                    $(_self.content).html(content);
 
                     _self.getPaginator().setState(newState);
-
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);

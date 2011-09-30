@@ -118,10 +118,6 @@ public class DataGridRenderer extends CoreRenderer {
 
             writer.write("})");
 
-            if(grid.isEffect()) {
-                writer.write(",effect:true");
-                writer.write(",effectSpeed:'" + grid.getEffectSpeed() + "'");
-            }
         } else {
             writer.write("paginator:false");
         }

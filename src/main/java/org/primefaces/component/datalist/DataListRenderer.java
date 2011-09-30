@@ -119,11 +119,7 @@ public class DataListRenderer extends CoreRenderer {
             writer.write(",containers:['" + paginatorContainer + "']");
 
             writer.write("})");
-
-            if(list.isEffect()) {
-                writer.write(",effect:true");
-                writer.write(",effectSpeed:'" + list.getEffectSpeed() + "'");
-            }
+            
         } else {
             writer.write("paginator:false");
         }
