@@ -268,11 +268,11 @@ class DataHelper {
         Object previousRowData = table.getPreviousRowData();
         
         if(previousRowData != null) {
-            requestMap.put(var, previousRowData);
-            Object previousGroupByData = table.getSortBy();
-            
             table.setRowIndex(rowIndex);
             Object currentGroupByData = table.getSortBy();
+            
+            requestMap.put(var, previousRowData);
+            Object previousGroupByData = table.getSortBy();
             
             if(previousGroupByData != null && previousGroupByData.equals(currentGroupByData))
                 return true;
