@@ -92,20 +92,6 @@
             <description>Index of the current page. Default is 1.</description>
         </attribute>
         <attribute>
-            <name>effect</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Displays a fade animation during pagination. Default is true.</description>
-        </attribute>
-        <attribute>
-            <name>effectSpeed</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <defaultValue>normal</defaultValue>
-            <description>Speed of the pagination effect. Default is normal.</description>
-        </attribute>
-        <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>

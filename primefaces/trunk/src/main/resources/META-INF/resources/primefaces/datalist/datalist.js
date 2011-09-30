@@ -35,16 +35,7 @@ PrimeFaces.widget.DataList.prototype.handlePagination = function(newState) {
                 content = update.text();
 
                 if(id == _self.id){
-
-                    if(_self.cfg.effect) {
-                        var _data = content;
-                        jQuery(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-                            jQuery(_self.content).html(_data);
-                            jQuery(_self.content).fadeIn(_self.cfg.effectSpeed);
-                        });
-                    } else {
-                        jQuery(_self.content).html(content);
-                    }
+                    $(_self.content).html(content);
 
                     _self.getPaginator().setState(newState);
 
