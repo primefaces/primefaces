@@ -337,15 +337,9 @@ public class DataTableRenderer extends CoreRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null)
+        if(style != null) {
             writer.writeAttribute("style", style, null);
-        
-        if(isSortable) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", sortIcon, null);
-            writer.endElement("span");
         }
-
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
             writer.startElement("input", null);
@@ -360,18 +354,19 @@ public class DataTableRenderer extends CoreRenderer {
                 String filterPosition = column.getFilterPosition();
                 
                 if(filterPosition.equals("bottom")) {
-                    encodeColumnHeaderContent(context, column);
+                    encodeColumnHeaderContent(context, column, sortIcon);
                     encodeFilter(context, table, column);
                 }
                 else if(filterPosition.equals("top")) {
                     encodeFilter(context, table, column);
-                    encodeColumnHeaderContent(context, column);
-                } else {
+                    encodeColumnHeaderContent(context, column, sortIcon);
+                } 
+                else {
                     throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
                 }
             }
             else {
-                encodeColumnHeaderContent(context, column);
+                encodeColumnHeaderContent(context, column, sortIcon);
             }
         }
         
@@ -380,9 +375,15 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement("th");
     }
     
-    protected void encodeColumnHeaderContent(FacesContext context, Column column) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, Column column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
+        if(sortIcon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", sortIcon, null);
+            writer.endElement("span");
+        }
+                
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
         
