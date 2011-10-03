@@ -104,10 +104,14 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.menuitems = this.jq.find('.ui-menuitem');
-    var _self = this;
+    var _self = this,
+    documentTrigger = this.cfg.target === document;
+    
+    //defaults
+    this.cfg.effect = this.cfg.effect == 'none' ? undefined : this.cfg.effect;
         
     //trigger
-    this.cfg.target = this.cfg.target === document ? document : PrimeFaces.escapeClientId(this.cfg.target);
+    this.cfg.target = documentTrigger ? document : PrimeFaces.escapeClientId(this.cfg.target);
     var jqTarget = $(this.cfg.target);
 
     if(jqTarget.hasClass('ui-datatable'))
@@ -126,9 +130,17 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     this.jq.appendTo('body');
     
     //attach contextmenu
-    $(this.cfg.trigger).bind('contextmenu.ui-contextmenu', function(e) {
-        _self.show(e);   
-    });
+    if(documentTrigger) {
+        $(this.cfg.trigger).bind('contextmenu.ui-contextmenu', function(e) {
+            _self.show(e);   
+        });
+    } 
+    else {
+        $(this.cfg.trigger).live('contextmenu.ui-contextmenu', function(e) {
+            _self.show(e);   
+        });
+    }
+    
 }
 
 PrimeFaces.widget.ContextMenu.prototype.bindEvents = function() {

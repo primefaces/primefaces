@@ -43,7 +43,8 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Sets the effect for the menu display..</description>
+            <defaultValue>fade</defaultValue>
+            <description>Sets the effect for the menu display. Default is "fade".</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>

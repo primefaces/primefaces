@@ -46,7 +46,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         
         writer.write("target:" + target);
  
-        if(menu.getEffect() != null) {
+        if(!menu.getEffect().equals("none")) {
             writer.write(",effect:'" + menu.getEffect() + "'");
             writer.write(",effectDuration:" + menu.getEffectDuration());
         }
@@ -137,7 +137,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
                                 
 				if(menuItem.getTarget() != null) 
                     writer.writeAttribute("target", menuItem.getTarget(), null);
-			} 
+			}
             else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
 
