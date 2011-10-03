@@ -298,7 +298,7 @@ public class DataTableRenderer extends CoreRenderer {
         boolean isSortable = columnSortByVe != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
         String selectionMode = column.getSelectionMode();
-        String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
+        String sortIcon = isSortable ? DataTable.SORTABLE_COLUMN_ICON_CLASS : null;
         
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
