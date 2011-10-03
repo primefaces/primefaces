@@ -1,0 +1,52 @@
+.ui-contextmenu {
+    position: absolute;
+    display: none;
+    padding:0.3em;
+    width:150px;
+    z-index: 1;
+}
+
+.ui-contextmenu-list {
+    position:static;
+}
+
+.ui-contextmenu .ui-contextmenu-list .ui-menuitem {
+    border:none;
+}
+
+.ui-contextmenu .ui-contextmenu-list .ui-widget-header {
+    clear:both;
+    float:left;
+    width:98%;
+    font-size:12px;
+    margin:1px 0;
+}
+
+.ui-contextmenu .ui-menuitem {
+    width:100%;
+    float:left;
+    clear:both;
+    margin:1px 0;
+    padding:0;
+}
+
+.ui-contextmenu .ui-menuitem-link {
+    display:block;
+    width:92%;
+    outline:none;
+    text-decoration:none;
+    font-weight:400;
+    border:solid 1px transparent;
+    float:left;
+    line-height:16px;
+    padding:0.3em;
+}
+
+.ui-contextmenu .ui-menuitem-link .ui-menuitem-icon {
+    display:inline-block;
+    float:left;
+}
+
+.ui-contextmenu .ui-menuitem-text {
+    float:left;
+}

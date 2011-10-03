@@ -102,63 +102,80 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
 	this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId + '_menu');
-
-    //mouse tracking
-    if(!PrimeFaces.widget.ContextMenu.mouseTracking) {
-        PrimeFaces.widget.ContextMenu.mouseTracking = true;
-
-        $(document).mousemove(function(e){
-            PrimeFaces.widget.ContextMenu.pageX = e.pageX;
-            PrimeFaces.widget.ContextMenu.pageY = e.pageY;
-        });
-    }
-
-    //configuration
-    this.cfg.orientation = 'vertical';
-    this.cfg.triggerEvent = 'rtclick';
-    
-    //trigger
-    if(this.cfg.target) {
-        this.cfg.target = PrimeFaces.escapeClientId(this.cfg.target),
-        jqTarget = $(this.cfg.target);
-
-        if(jqTarget.hasClass('ui-datatable'))
-            this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
-        else if(jqTarget.hasClass('ui-treetable'))
-            this.cfg.trigger = this.cfg.target + ' .ui-treetable-data tr';
-        else if(jqTarget.hasClass('ui-tree'))
-            this.cfg.trigger = this.cfg.target + ' .ui-tree-node-content';
-        else
-            this.cfg.trigger = this.cfg.target;
-    }
-    else {
-        this.cfg.trigger = document;
-    }
-    
-    this.cfg.position = {
-            my: 'left top'
-            ,using: function(to) {
-                $(this).css({
-                    top: PrimeFaces.widget.ContextMenu.pageY,
-                    left: PrimeFaces.widget.ContextMenu.pageX
-                });
-            }
-        }
-
+    this.jq = $(this.jqId);
+    this.menuitems = this.jq.find('.ui-menuitem');
     var _self = this;
-    this.cfg.select = function(event, ui) {
-        _self.jq.wijmenu('deactivate');
-    };
+        
+    //trigger
+    this.cfg.target = this.cfg.target === document ? document : PrimeFaces.escapeClientId(this.cfg.target);
+    var jqTarget = $(this.cfg.target);
 
-    this.jq.wijmenu(this.cfg);
+    if(jqTarget.hasClass('ui-datatable'))
+        this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
+    else if(jqTarget.hasClass('ui-treetable'))
+        this.cfg.trigger = this.cfg.target + ' .ui-treetable-data tr';
+    else if(jqTarget.hasClass('ui-tree'))
+        this.cfg.trigger = this.cfg.target + ' .ui-tree-node-content';
+    else
+        this.cfg.trigger = this.cfg.target;
+    
+    //visuals
+    this.bindEvents();
+       
+    //append to body
+    this.jq.appendTo('body');
+    
+    //attach contextmenu
+    $(this.cfg.trigger).bind('contextmenu.ui-contextmenu', function(e) {
+        _self.show(e);   
+    });
+}
 
-    //Apply config to the container element
-    this.element = this.jq.parent().parent();   
-    this.element.css('z-index', this.cfg.zindex);
+PrimeFaces.widget.ContextMenu.prototype.bindEvents = function() {
+    var _self = this;
+    
+    //menuitem visuals
+    this.menuitems.mouseover(function(e) {
+        var element = $(this);
+        if(!element.hasClass('ui-state-disabled'))
+            element.addClass('ui-state-hover');
+        
+    }).mouseout(function(e) {
+        var element = $(this);
+        element.removeClass('ui-state-hover');
+    });
+    
+    //hide overlay when document is clicked
+    $(document.body).bind('click.ui-contextmenu', function (e) {
+        if(_self.jq.is(":hidden")) {
+            return;
+        }
+        
+        _self.hide();
+    });
+}
 
-    if(this.cfg.style)
-        this.element.attr('style', this.cfg.style);
-    if(this.cfg.styleClass)
-        this.element.addClass(this.cfg.styleClass);
+PrimeFaces.widget.ContextMenu.prototype.show = function(e) {
+    this.jq.css({
+        'left': e.pageX,
+        'top': e.pageY
+    });
+    
+    if(this.cfg.effect) {
+        this.jq.show(this.cfg.effect, {}, this.cfg.effectDuration);
+    } 
+    else {
+        this.jq.show();
+    }
+    
+    e.preventDefault();
+}
+
+PrimeFaces.widget.ContextMenu.prototype.hide = function(e) {
+    if(this.cfg.effect) {
+        this.jq.hide(this.cfg.effect, {}, this.cfg.effectDuration);
+    } 
+    else {
+        this.jq.hide();
+    }
 }
