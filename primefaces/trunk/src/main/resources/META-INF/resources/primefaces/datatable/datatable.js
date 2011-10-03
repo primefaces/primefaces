@@ -635,14 +635,19 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
 
     if(checked) {
         checkboxes.attr('checked', true);
+        rows.addClass('ui-state-highlight');
 
         //add to selection
         rows.each(function() {
+            var row = $(this);
+            
+            
             _self.addSelection(_self.getRowMeta($(this)).key);
         });
     }
     else {
         checkboxes.attr('checked', false);
+        rows.removeClass('ui-state-highlight');
         
         //remove from selection
         rows.each(function() {
