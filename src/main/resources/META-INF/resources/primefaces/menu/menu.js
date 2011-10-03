@@ -114,14 +114,18 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     this.cfg.target = documentTrigger ? document : PrimeFaces.escapeClientId(this.cfg.target);
     var jqTarget = $(this.cfg.target);
 
-    if(jqTarget.hasClass('ui-datatable'))
+    if(jqTarget.hasClass('ui-datatable')) {
         this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
-    else if(jqTarget.hasClass('ui-treetable'))
+    }
+    else if(jqTarget.hasClass('ui-treetable')) {
         this.cfg.trigger = this.cfg.target + ' .ui-treetable-data tr';
-    else if(jqTarget.hasClass('ui-tree'))
-        this.cfg.trigger = this.cfg.target + ' .ui-tree-node-content';
-    else
+    }
+    else if(jqTarget.hasClass('ui-tree')) {
+        this.cfg.trigger = this.cfg.target + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-node-content': '.ui-tree-node-content');
+    }
+    else {
         this.cfg.trigger = this.cfg.target;
+    }
     
     //visuals
     this.bindEvents();
@@ -132,12 +136,12 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     //attach contextmenu
     if(documentTrigger) {
         $(this.cfg.trigger).bind('contextmenu.ui-contextmenu', function(e) {
-            _self.show(e);   
+            _self.show(e);
         });
     } 
     else {
         $(this.cfg.trigger).live('contextmenu.ui-contextmenu', function(e) {
-            _self.show(e);   
+            _self.show(e);
         });
     }
     
@@ -167,7 +171,10 @@ PrimeFaces.widget.ContextMenu.prototype.bindEvents = function() {
     });
 }
 
-PrimeFaces.widget.ContextMenu.prototype.show = function(e) {
+PrimeFaces.widget.ContextMenu.prototype.show = function(e) {            
+    //hide all context menus
+    $(document.body).children('.ui-contextmenu:visible').hide();
+    
     this.jq.css({
         'left': e.pageX,
         'top': e.pageY
@@ -190,4 +197,8 @@ PrimeFaces.widget.ContextMenu.prototype.hide = function(e) {
     else {
         this.jq.hide();
     }
+}
+
+PrimeFaces.widget.ContextMenu.prototype.isVisible = function() {
+    return this.jq.is(':visible');
 }

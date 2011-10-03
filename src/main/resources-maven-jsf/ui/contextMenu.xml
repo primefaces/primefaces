@@ -59,6 +59,12 @@
 			<type>org.primefaces.model.MenuModel</type>
             <description>Menu model instance to create menu programmatically.</description>
 		</attribute>
+        <attribute>
+			<name>nodeType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Type of tree nodes to get attached.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -51,6 +51,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
             writer.write(",effectDuration:" + menu.getEffectDuration());
         }
         
+        if(menu.getNodeType() != null) 
+            writer.write(",nodeType:'" + menu.getNodeType() + "'");
+        
         writer.write("});});");
 		
 		writer.endElement("script");
