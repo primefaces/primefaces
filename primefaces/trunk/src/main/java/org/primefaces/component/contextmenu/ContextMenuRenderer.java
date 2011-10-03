@@ -25,53 +25,62 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.util.ComponentUtils;
 
 public class ContextMenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String widgetVar = menu.resolveWidgetVar();
 		String clientId = menu.getClientId(context);
-		String trigger = findTrigger(context, menu);
+		String target = findTarget(context, menu);
 		
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");
         
-		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',");
+		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',{");
         
-        writer.write("{zindex:" + menu.getZindex());
-        writer.write(",animation:{animated:'" + menu.getEffect() + "', duration:" + menu.getEffectDuration() + "}");
-
-        if(trigger != null) writer.write(",target:'" + trigger + "'");
+        writer.write("target:" + target);
+ 
+        if(menu.getEffect() != null) {
+            writer.write(",effect:'" + menu.getEffect() + "'");
+            writer.write(",effectDuration:" + menu.getEffectDuration());
+        }
         
-        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
-        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
-
         writer.write("});});");
 		
 		writer.endElement("script");
 	}
 	
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
+        String style = menu.getStyle();
+        String styleClass = menu.getStyleClass();
+        styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
         
-        writer.startElement("span", menu);
+        writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId + "_menu", null);
-        writer.writeAttribute("style", "display:none", null);
+        writer.writeAttribute("class", ContextMenu.LIST_CLASS, null);
 
 		for(UIComponent child : menu.getChildren()) {
 			MenuItem item = (MenuItem) child;
 
 			if(item.isRendered()) {
                 writer.startElement("li", null);
+                writer.writeAttribute("class", ContextMenu.MENUITEM_CLASS, null);
                 encodeMenuItem(context, item);
                 writer.endElement("li");
 			}
@@ -79,10 +88,10 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 
 		writer.endElement("ul");
         
-        writer.endElement("span");
+        writer.endElement("div");
 	}
 
-    protected String findTrigger(FacesContext context, ContextMenu menu) {
+    protected String findTarget(FacesContext context, ContextMenu menu) {
 		String trigger = null;
 		String _for = menu.getFor();
 
@@ -92,9 +101,74 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 			if(forComponent == null)
 				throw new FacesException("Cannot find component '" + _for + "' in view.");
 			else 
-                return forComponent.getClientId(context);
+                return "'" + forComponent.getClientId(context) + "'";
 		}
+        else {
+            return "document";
+        }
+	}
+    
+    @Override
+    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+		String clientId = menuItem.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        String icon = menuItem.getIcon();
 
-		return trigger;
+		if(menuItem.shouldRenderChildren()) {
+			renderChildren(context, menuItem);
+		}
+        else {
+            boolean disabled = menuItem.isDisabled();
+            String onclick = menuItem.getOnclick();
+            
+            writer.startElement("a", null);
+            String styleClass = menuItem.getStyleClass();
+            styleClass = styleClass == null ? ContextMenu.MENUITEM_LINK_CLASS : ContextMenu.MENUITEM_LINK_CLASS + " " + styleClass;
+            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            
+            writer.writeAttribute("class", styleClass, null);
+            
+            if(menuItem.getStyle() != null) 
+                writer.writeAttribute("style", menuItem.getStyle(), null);
+                        
+			if(menuItem.getUrl() != null) {
+                String href = disabled ? "javascript:void(0)" : getResourceURL(context, menuItem.getUrl());
+				writer.writeAttribute("href", href, null);
+                                
+				if(menuItem.getTarget() != null) 
+                    writer.writeAttribute("target", menuItem.getTarget(), null);
+			} 
+            else {
+				writer.writeAttribute("href", "javascript:void(0)", null);
+
+				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+				if(form == null) {
+					throw new FacesException("Menubar must be inside a form element");
+				}
+
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
+
+                onclick = onclick == null ? command : onclick + ";" + command;
+			}
+
+            if(onclick != null && !disabled) {
+                writer.writeAttribute("onclick", onclick, null);
+            }
+ 
+            if(icon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", icon + " " + ContextMenu.MENUITEM_ICON_CLASS, null);
+                writer.endElement("span");
+            }
+
+			if(menuItem.getValue() != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", ContextMenu.MENUITEM_TEXT_CLASS, null);
+                writer.write((String) menuItem.getValue());
+                writer.endElement("span");
+            }
+
+            writer.endElement("a");
+		}
 	}
 }

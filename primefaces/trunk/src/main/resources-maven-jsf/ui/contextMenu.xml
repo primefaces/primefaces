@@ -40,18 +40,10 @@
             <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>
-			<name>zindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>zindex property to control overlapping with other elements. Default is 1.</description>
-		</attribute>
-        <attribute>
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>fade</defaultValue>
-            <description>Sets the effect for the menu display. Default is fade.</description>
+            <description>Sets the effect for the menu display..</description>
 		</attribute>
 		<attribute>
 			<name>effectDuration</name>
@@ -71,17 +63,14 @@
         <resource>
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
-        <resource>
-			<name>wijmo/wijmo.css</name>
+         <resource>
+			<name>menu/menu.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
 			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-        <resource>
-			<name>wijmo/wijmo.js</name>
 		</resource>
         <resource>
 			<name>core/core.js</name>
