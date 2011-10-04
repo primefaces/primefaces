@@ -51,11 +51,9 @@ public class MenuRenderer extends BaseMenuRenderer {
            writer.write(",at:'" + menu.getAt() + "'");
 
             UIComponent trigger = menu.findComponent(menu.getTrigger());
-            if(trigger == null) {
-                throw new FacesException("Cannot find component: '" + menu.getTrigger() + "' in view.");
-            }
+            String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
             
-            writer.write(",trigger:'" + trigger.getClientId(context) + "'");
+            writer.write(",trigger:'" + triggerClientId + "'");
             writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
         }
 
