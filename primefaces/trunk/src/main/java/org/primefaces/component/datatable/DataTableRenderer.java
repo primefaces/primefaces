@@ -607,7 +607,8 @@ public class DataTableRenderer extends CoreRenderer {
                         summaryRow.encodeAll(context);
                     }
                     
-                    encodeRow(context, table, clientId, i, rowIndexVar);
+                    if(!encodeRow(context, table, clientId, i, rowIndexVar))
+                        break;
                 }
             }
         }
@@ -636,10 +637,10 @@ public class DataTableRenderer extends CoreRenderer {
 		}
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
+    protected boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
-            return;
+            return false;
         }
 
         //Row index var
@@ -695,6 +696,8 @@ public class DataTableRenderer extends CoreRenderer {
         
         //used for summaryRow if any
         table.setPreviousRowData(table.getRowData());
+        
+        return true;
     }
 
     protected void encodeRegularCell(FacesContext context, DataTable table, Column column, String clientId, boolean selected) throws IOException {
