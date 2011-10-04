@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.component.menu.Menu;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.util.ComponentUtils;
@@ -34,13 +35,15 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
 		String buttonId = clientId + "_button";
-        String menuId = clientId + "_menu";
+        String styleClass = button.getStyleClass();
+        styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass; 
 		
-		writer.startElement("span", button);
+		writer.startElement("div", button);
 		writer.writeAttribute("id", clientId, "id");
-        
-		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass(), "class");
-		if(button.getStyle() != null) writer.writeAttribute("style", button.getStyle(), "style");
+        writer.writeAttribute("class", styleClass, "class");
+
+		if(button.getStyle() != null) 
+            writer.writeAttribute("style", button.getStyle(), "style");
 
         //button
 		writer.startElement("button", null);
@@ -53,22 +56,26 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		writer.endElement("button");
 
         //menu
+        writer.startElement("div", null);
+		writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
+        
         writer.startElement("ul", null);
-		writer.writeAttribute("id", menuId, null);
+		writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
 		for(UIComponent child : button.getChildren()) {
 			MenuItem item = (MenuItem) child;
 
 			if(item.isRendered()) {
                 writer.startElement("li", item);
+                writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                 encodeMenuItem(context, item);
                 writer.endElement("li");
 			}
 		}
 
 		writer.endElement("ul");
-		
-		writer.endElement("span");
+		writer.endElement("div");
+        writer.endElement("div");
 	}
 
 	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -81,21 +88,18 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}
 		
-		String formClientId = form.getClientId(context);
-		
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
+        writer.write("$(function() {");
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
-
-        writer.write("animation:{animated:'" + button.getEffect() + "',duration:" + button.getEffectDuration() + "}");
-        writer.write(",zindex:" + button.getZindex());
+        writer.write("zindex:" + button.getZindex());
 
         if(button.isDisabled()) {
 			writer.write(",disabled:true");
 		}
 
- 		writer.write("});");
+ 		writer.write("});});");
 		
 		writer.endElement("script");
 	}
