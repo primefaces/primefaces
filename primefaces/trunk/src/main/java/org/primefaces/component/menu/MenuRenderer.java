@@ -45,12 +45,6 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.write("position:'" + position + "'");
         writer.write(",type:'" + menu.getType() + "'");
 
-        //effect
-        if(!menu.getEffect().equals("none")) {
-            writer.write(",effect:'" + menu.getEffect() + "'");
-            writer.write(",effectDuration:" + menu.getEffectDuration());
-        }
-
         //dynamic position
         if(position.equalsIgnoreCase("dynamic")) {
            writer.write(",my:'" + menu.getMy() + "'");
@@ -113,10 +107,13 @@ public class MenuRenderer extends BaseMenuRenderer {
             if(child.isRendered()) {
 
                 writer.startElement("li", null);
-
+                
                 if(child instanceof MenuItem) {
+                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     encodeMenuItem(context, (MenuItem) child);
-                } else if(child instanceof Submenu) {
+                } 
+                else if(child instanceof Submenu) {
+                    writer.writeAttribute("class", Menu.TIERED_SUBMENU_CLASS, null);
                     encodeTieredSubmenu(context, (Submenu) child);
                 }
 
@@ -133,25 +130,31 @@ public class MenuRenderer extends BaseMenuRenderer {
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "javascript:void(0)", null);
+        writer.writeAttribute("class", Menu.MENUITEM_LINK_CLASS, null);
 
         if(icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+            writer.writeAttribute("class", icon + " " + Menu.MENUITEM_ICON_CLASS, null);
             writer.endElement("span");
         }
 
         if(label != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", "wijmo-wijmenu-text", null);
+            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
             writer.write(submenu.getLabel());
             writer.endElement("span");
         }
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Menu.SUBMENU_ICON_CLASS, null);
+        writer.endElement("span");
 
         writer.endElement("a");
 
         //submenus and menuitems
 		if(submenu.getChildCount() > 0) {
 			writer.startElement("ul", null);
+            writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
 
 			encodeTieredMenuContent(context, submenu);
 
