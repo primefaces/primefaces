@@ -71,7 +71,9 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     this.bindEvents();
 }
 
-PrimeFaces.widget.Menu.prototype.bindEvents = function() {    
+PrimeFaces.widget.Menu.prototype.bindEvents = function() {  
+    var _self = this;
+    
     //menuitem visuals
     this.menuitems.mouseover(function(e) {
         var element = $(this);
@@ -82,26 +84,47 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
         var element = $(this);
         element.removeClass('ui-state-hover');
     });
+    
+    if(this.cfg.type == 'tiered') {
+        this.menuitems.filter('.ui-menu-parent').mouseover(function(e) {
+            var menuitem = $(this);
+            
+            //hide previous menus
+            menuitem.siblings().removeClass('ui-state-active').find('ul.ui-menu-child:visible').hide();
+            menuitem.children('.ui-menu-child:visible').find('ul.ui-menu-child').hide();
+            
+            //show submenu
+            var submenu = menuitem.children('ul.ui-menu-child');
+
+            submenu.css({
+                left: menuitem.outerWidth()
+                ,top: 0
+            });
+
+            submenu.show();
+                
+            e.stopPropagation();
+        });
+    }
+    
+    //hide overlay when outside is clicked
+    $(document.body).bind('click.ui-menu-tiered', function (e) {
+        if(_self.jq.is(":hidden")) {
+            return;
+        }
+
+        _self.jq.find('.ui-menu-child:visible').hide();
+    });
 }
 
 PrimeFaces.widget.Menu.prototype.show = function(e) {                
-    if(this.cfg.effect) {
-        this.jq.show(this.cfg.effect, {}, this.cfg.effectDuration);
-    } 
-    else {
-        this.jq.show();
-    }
+    this.jq.show();
     
     e.preventDefault();
 }
 
 PrimeFaces.widget.Menu.prototype.hide = function(e) {
-    if(this.cfg.effect) {
-        this.jq.hide(this.cfg.effect, {}, this.cfg.effectDuration);
-    } 
-    else {
-        this.jq.hide();
-    }
+    this.jq.hide();
 }
 
 /*

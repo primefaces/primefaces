@@ -33,6 +33,14 @@
     padding:0;
 }
 
+.ui-menu .ui-menuitem-parent {
+    width:100%;
+    float:left;
+    clear:both;
+    margin:1px 0;
+    padding:0;
+}
+
 .ui-menu .ui-menuitem-link {
     display:block;
     width:92%;
@@ -70,4 +78,20 @@
 .ui-contextmenu {
     position: absolute;
     display: none;
+}
+
+.ui-menu .ui-menu-parent .ui-menu-child {
+    display:none;
+    width:150px;
+    padding:0.3em;
+    position: absolute;
+}
+
+.ui-menu .ui-menu-parent {
+    position:relative;
+}
+
+.ui-menu .ui-menu-parent .ui-icon-triangle-1-e, 
+.ui-menubar .ui-menu-child .ui-icon-triangle-1-e {
+    float: right;
 }

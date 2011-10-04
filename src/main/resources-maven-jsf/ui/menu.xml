@@ -53,32 +53,11 @@
             <description>Defines positioning type of menu, either static or dynamic. Default is static.</description>
 		</attribute>
         <attribute>
-			<name>tiered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>(Deprecated: use type as tiered instead) Enabled nested tiered menus. Default is false.</description>
-		</attribute>
-        <attribute>
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>plain</defaultValue>
             <description>Type of menu, valid values are plain, tiered and sliding. Default is plain.</description>
-		</attribute>
-        <attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>fade</defaultValue>
-            <description>Effect to use when showing overlay menus, valid values are fade and slide. Default is fade.</description>
-		</attribute>
-		<attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>400</defaultValue>
-            <description>Duration of animation in milliseconds. Default is 400.</description>
 		</attribute>
         <attribute>
 			<name>style</name>
