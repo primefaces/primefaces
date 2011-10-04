@@ -134,31 +134,54 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
-    this.jqbutton = jQuery(this.jqId + '_button');
-    this.jqMenu = jQuery(this.jqId + '_menu');
+    this.jq = $(this.jqId);
+    this.button = this.jq.children('button');
+    this.menu = this.jq.children('.ui-menu');
+    this.menuitems = this.jq.find('.ui-menuitem');
 
-    //menu options
-    this.cfg.trigger = this.jqId + '_button';
-    this.cfg.orientation = 'vertical';
-    this.cfg.position = {
-        my: 'left top'
-        ,at: 'left bottom'
-    };
+    this.button.button({icons:{primary:'ui-icon-triangle-1-s'}});
 
+    this.bindEvents();
+    
+    this.menu.css('z-index', this.cfg.zindex);
+}
+
+PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {  
     var _self = this;
-    this.cfg.select = function(event, ui) {
-        _self.jqMenu.wijmenu('deactivate');
-    };
+    
+    //menuitem visuals
+    this.menuitems.mouseover(function(e) {
+        var element = $(this);
+        if(!element.hasClass('ui-state-disabled'))
+            element.addClass('ui-state-hover');
+        
+    }).mouseout(function(e) {
+        var element = $(this);
+        element.removeClass('ui-state-hover');
+    });
+    
+    //button event
+    this.button.click(function(e) {
+        _self.menu.css({
+            left:0,
+            top:_self.button.outerHeight()
+        });
+        
+        _self.menu.show();
+    });
+    
+    //hide overlay when outside is clicked
+    $(document.body).bind('click.ui-menubutton', function (e) {
+        if(_self.jq.is(":hidden")) {
+            return;
+        }
 
-    //crete button and menu
-    this.jqbutton.button({icons:{primary:'ui-icon-triangle-1-s'}});
-    this.jqMenu.wijmenu(this.cfg);
+        if(e.target === _self.button.get(0)) {
+            return;
+        }
 
-    if(this.cfg.disabled) {
-        this.jqbutton.button('disable');
-    }
-
-    this.jqMenu.parent().parent().css('z-index', this.cfg.zindex);      //overlay element
+        _self.menu.hide();
+    });
 }
 
 /*
