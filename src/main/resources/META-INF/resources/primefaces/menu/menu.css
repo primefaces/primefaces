@@ -1,20 +1,23 @@
-.ui-contextmenu {
-    position: absolute;
-    display: none;
-    padding:0.3em;
+.ui-menu {
     width:150px;
-    z-index: 1000;
+    padding:0.3em;
+    position:relative;
 }
 
-.ui-contextmenu-list {
+.ui-menu-dynamic {
+    position: absolute;
+    display: none;
+}
+
+.ui-menu-list {
     position:static;
 }
 
-.ui-contextmenu .ui-contextmenu-list .ui-menuitem {
+.ui-menu .ui-menu-list .ui-menuitem {
     border:none;
 }
 
-.ui-contextmenu .ui-contextmenu-list .ui-widget-header {
+.ui-menu .ui-menu-list .ui-widget-header {
     clear:both;
     float:left;
     width:98%;
@@ -22,7 +25,7 @@
     margin:1px 0;
 }
 
-.ui-contextmenu .ui-menuitem {
+.ui-menu .ui-menuitem {
     width:100%;
     float:left;
     clear:both;
@@ -30,7 +33,7 @@
     padding:0;
 }
 
-.ui-contextmenu .ui-menuitem-link {
+.ui-menu .ui-menuitem-link {
     display:block;
     width:92%;
     outline:none;
@@ -42,11 +45,24 @@
     padding:0.3em;
 }
 
-.ui-contextmenu .ui-menuitem-link .ui-menuitem-icon {
+.ui-menu .ui-menuitem-link .ui-menuitem-icon {
     display:inline-block;
     float:left;
 }
 
-.ui-contextmenu .ui-menuitem-text {
+.ui-menu .ui-menuitem-text {
     float:left;
+}
+
+.ui-menu .ui-widget-header h1,
+.ui-menu .ui-widget-header h2,
+.ui-menu .ui-widget-header h3,
+.ui-menu .ui-widget-header h4,
+.ui-menu .ui-widget-header h5,
+.ui-menu .ui-widget-header h6 {
+    float:left;
+    display:block;
+    font-size:1em;
+    margin:0 auto;
+    padding:0.3em 3%;
 }

@@ -5,7 +5,7 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
+    this.jq = $(this.jqId);
 
     if(!this.cfg.autoSubmenuDisplay) {
         this.cfg.trigger = this.jqId + ' li';
@@ -26,16 +26,15 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
 }
 
 /**
- * PrimeFaces Menubar Widget
+ * PrimeFaces Menu Widget
  */
 PrimeFaces.widget.Menu = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
-
-    this.cfg.orientation = 'vertical';
-
+    this.jq = $(this.jqId);
+    this.menuitems = this.jq.find('.ui-menuitem');
+    
     if(this.cfg.position == 'dynamic') {
         this.cfg.position = {
             my: this.cfg.my
@@ -45,20 +44,21 @@ PrimeFaces.widget.Menu = function(id, cfg) {
         this.cfg.trigger = PrimeFaces.escapeClientId(this.cfg.trigger);
     }
 
-    var _self = this;
-    this.cfg.select = function(event, ui) {
-        _self.jq.wijmenu('deactivate');
-    };
+    //visuals
+    this.bindEvents();
+}
 
-    this.jq.wijmenu(this.cfg);
-
-    this.element = this.jq.parent().parent();       //overlay element
-    this.element.css('z-index', this.cfg.zindex);
-
-    if(this.cfg.style)
-        this.element.attr('style', this.cfg.style);
-    if(this.cfg.styleClass)
-        this.element.addClass(this.cfg.styleClass);
+PrimeFaces.widget.Menu.prototype.bindEvents = function() {    
+    //menuitem visuals
+    this.menuitems.mouseover(function(e) {
+        var element = $(this);
+        if(!element.hasClass('ui-state-disabled'))
+            element.addClass('ui-state-hover');
+        
+    }).mouseout(function(e) {
+        var element = $(this);
+        element.removeClass('ui-state-hover');
+    });
 }
 
 /*

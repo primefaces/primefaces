@@ -17,6 +17,7 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.Iterator;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,41 +34,34 @@ public class MenuRenderer extends BaseMenuRenderer {
 		String clientId = menu.getClientId(context);
 		String widgetVar = menu.resolveWidgetVar();
         String position = menu.getPosition();
-        String type = menu.getType();
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
 		writer.write(widgetVar + " = new PrimeFaces.widget.Menu('" + clientId + "',{");
 
-        writer.write("position:'" + menu.getPosition() + "'");
-        writer.write(",zindex:" + menu.getZindex());
+        writer.write("position:'" + position + "'");
+        writer.write(",type:'" + menu.getType() + "'");
 
-        //animation
-        writer.write(",animation:{animated:'" + menu.getEffect() + "',duration:" + menu.getEffectDuration() + "}");
-
-        if(type.equalsIgnoreCase("sliding")) {
-            writer.write(",mode:'sliding'");
-            writer.write(",backLinkText:'" + menu.getBackLabel() + "'");
-            writer.write(",maxHeight:" + menu.getMaxHeight());
+        //effect
+        if(!menu.getEffect().equals("none")) {
+            writer.write(",effect:'" + menu.getEffect() + "'");
+            writer.write(",effectDuration:" + menu.getEffectDuration());
         }
-        
+
+        //dynamic position
         if(position.equalsIgnoreCase("dynamic")) {
            writer.write(",my:'" + menu.getMy() + "'");
            writer.write(",at:'" + menu.getAt() + "'");
 
             UIComponent trigger = menu.findComponent(menu.getTrigger());
-            if(trigger != null) {
-                writer.write(",trigger:'" + trigger.getClientId(context) + "'");
-                writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
+            if(trigger == null) {
+                throw new FacesException("Cannot find component: '" + menu.getTrigger() + "' in view.");
             }
-            else {
-                writer.write(",trigger:'" + menu.getTrigger() + "'");
-            }
+            
+            writer.write(",trigger:'" + trigger.getClientId(context) + "'");
+            writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
         }
-
-        if(menu.getStyleClass() != null) writer.write(",styleClass:'" + menu.getStyleClass() + "'");
-        if(menu.getStyle() != null) writer.write(",style:'" + menu.getStyle() + "'");
 
         writer.write("});");
 
@@ -78,13 +72,23 @@ public class MenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
-        boolean tiered = menu.isTiered() || !menu.getType().equalsIgnoreCase("plain");
+        boolean tiered = !menu.getType().equalsIgnoreCase("plain");
+        boolean dynamic = menu.getPosition().equals("dynamic");
+        
+        String style = menu.getStyle();
+        String styleClass = menu.getStyleClass();
+        String defaultStyleClass = dynamic ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
 
-        writer.startElement("span", menu);
+        writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
 
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId + "_menu", null);
+        writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if(tiered) {
             encodeTieredMenuContent(context, menu);
@@ -95,7 +99,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
 		writer.endElement("ul");
 
-        writer.endElement("span");
+        writer.endElement("div");
 	}
 
     protected void encodeTieredMenuContent(FacesContext context, UIComponent component) throws IOException {
@@ -163,9 +167,11 @@ public class MenuRenderer extends BaseMenuRenderer {
 
                 if(child instanceof MenuItem) {
                     writer.startElement("li", null);
+                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     encodeMenuItem(context, (MenuItem) child);
                     writer.endElement("li");
-                } else if(child instanceof Submenu) {
+                } 
+                else if(child instanceof Submenu) {
                     encodePlainSubmenu(context, (Submenu) child);
                 }
                 
@@ -179,6 +185,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("li", null);
+        writer.writeAttribute("class", Menu.SUBMENU_TITLE_CLASS, null);
         writer.startElement("h3", null);
         if(label != null) {
             writer.write(label);

@@ -56,7 +56,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             
             writer.startElement("a", null);
             String styleClass = menuItem.getStyleClass();
-            styleClass = styleClass == null ? MenuItem.STYLE_CLASS : MenuItem.STYLE_CLASS + " " + styleClass;
+            styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
             
             writer.writeAttribute("class", styleClass, null);
@@ -70,7 +70,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                                 
 				if(menuItem.getTarget() != null) 
                     writer.writeAttribute("target", menuItem.getTarget(), null);
-			} 
+			}
             else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
 
@@ -87,16 +87,16 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             if(onclick != null && !disabled) {
                 writer.writeAttribute("onclick", onclick, null);
             }
-
+ 
             if(icon != null) {
                 writer.startElement("span", null);
-                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+                writer.writeAttribute("class", icon + " " + AbstractMenu.MENUITEM_ICON_CLASS, null);
                 writer.endElement("span");
             }
 
 			if(menuItem.getValue() != null) {
                 writer.startElement("span", null);
-                writer.writeAttribute("class",  "wijmo-wijmenu-text", null);
+                writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
                 writer.write((String) menuItem.getValue());
                 writer.endElement("span");
             }

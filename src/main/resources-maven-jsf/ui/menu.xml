@@ -93,13 +93,6 @@
             <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>
-			<name>zindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>z-index property to control overlapping with other elements. Default is 1.</description>
-		</attribute>
-        <attribute>
 			<name>backLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -126,16 +119,13 @@
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
         <resource>
-			<name>wijmo/wijmo.css</name>
+			<name>menu/menu.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
 			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-        <resource>
-			<name>wijmo/wijmo.js</name>
 		</resource>
         <resource>
 			<name>core/core.js</name>

@@ -25,7 +25,6 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.util.ComponentUtils;
 
 public class ContextMenuRenderer extends BaseMenuRenderer {
 
@@ -109,69 +108,5 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         else {
             return "document";
         }
-	}
-    
-    @Override
-    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		String clientId = menuItem.getClientId(context);
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = menuItem.getIcon();
-
-		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, menuItem);
-		}
-        else {
-            boolean disabled = menuItem.isDisabled();
-            String onclick = menuItem.getOnclick();
-            
-            writer.startElement("a", null);
-            String styleClass = menuItem.getStyleClass();
-            styleClass = styleClass == null ? ContextMenu.MENUITEM_LINK_CLASS : ContextMenu.MENUITEM_LINK_CLASS + " " + styleClass;
-            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
-            
-            writer.writeAttribute("class", styleClass, null);
-            
-            if(menuItem.getStyle() != null) 
-                writer.writeAttribute("style", menuItem.getStyle(), null);
-                        
-			if(menuItem.getUrl() != null) {
-                String href = disabled ? "javascript:void(0)" : getResourceURL(context, menuItem.getUrl());
-				writer.writeAttribute("href", href, null);
-                                
-				if(menuItem.getTarget() != null) 
-                    writer.writeAttribute("target", menuItem.getTarget(), null);
-			}
-            else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
-
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Menubar must be inside a form element");
-				}
-
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
-
-                onclick = onclick == null ? command : onclick + ";" + command;
-			}
-
-            if(onclick != null && !disabled) {
-                writer.writeAttribute("onclick", onclick, null);
-            }
- 
-            if(icon != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", icon + " " + ContextMenu.MENUITEM_ICON_CLASS, null);
-                writer.endElement("span");
-            }
-
-			if(menuItem.getValue() != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", ContextMenu.MENUITEM_TEXT_CLASS, null);
-                writer.write((String) menuItem.getValue());
-                writer.endElement("span");
-            }
-
-            writer.endElement("a");
-		}
 	}
 }

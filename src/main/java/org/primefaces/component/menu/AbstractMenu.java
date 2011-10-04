@@ -22,6 +22,12 @@ import org.primefaces.model.MenuModel;
 
 public abstract class AbstractMenu extends UIComponentBase {
 		
+    public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
+    public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
+    public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
+    public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
+    public static final String MENUITEM_ICON_CLASS = "ui-menuitem-icon";
+    
 	public void buildMenuFromModel() {
 		MenuModel model = (MenuModel) getModel();
 		
