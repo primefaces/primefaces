@@ -56,7 +56,7 @@ public abstract class Exporter {
 	};
 
     public abstract void export(FacesContext facesContext, DataTable table,
-			String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,
+			String outputFileName, boolean pageOnly, boolean selectionOnly, int[] excludedColumnIndexes,
 			String encodingType, MethodExpression preProcessor,
 			MethodExpression postProcessor) throws IOException;
 
@@ -108,7 +108,7 @@ public abstract class Exporter {
             }
         }
         else if(component instanceof ValueHolder) {
-
+ 
 			if(component instanceof EditableValueHolder) {
 				Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
 				if (submittedValue != null) {

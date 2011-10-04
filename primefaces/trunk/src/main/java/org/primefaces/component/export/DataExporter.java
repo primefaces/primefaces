@@ -40,6 +40,8 @@ public class DataExporter implements ActionListener, StateHolder {
 	private ValueExpression encoding;
 	
 	private ValueExpression pageOnly;
+    
+	private ValueExpression selectionOnly;
 
 	private ValueExpression excludeColumns;
 	
@@ -49,11 +51,12 @@ public class DataExporter implements ActionListener, StateHolder {
 	
 	public DataExporter() {}
 
-	public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,ValueExpression exludeColumns, ValueExpression encoding, MethodExpression preProcessor, MethodExpression postProcessor) {
+	public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly, ValueExpression selectionOnly, ValueExpression exludeColumns, ValueExpression encoding, MethodExpression preProcessor, MethodExpression postProcessor) {
 		this.target = target;
 		this.type = type;
 		this.fileName = fileName;
 		this.pageOnly = pageOnly;
+		this.selectionOnly = selectionOnly;
 		this.excludeColumns = exludeColumns;
 		this.preProcessor = preProcessor;
 		this.postProcessor = postProcessor;
@@ -82,6 +85,11 @@ public class DataExporter implements ActionListener, StateHolder {
 			isPageOnly = pageOnly.isLiteralText() ? Boolean.valueOf(pageOnly.getValue(facesContext.getELContext()).toString()) : (Boolean) pageOnly.getValue(facesContext.getELContext());
 		}
 		
+        boolean isSelectionOnly = false;
+		if(selectionOnly != null) {
+			isSelectionOnly = selectionOnly.isLiteralText() ? Boolean.valueOf(selectionOnly.getValue(facesContext.getELContext()).toString()) : (Boolean) selectionOnly.getValue(facesContext.getELContext());
+		}
+		
 		try {
 			Exporter exporter = ExporterFactory.getExporterForType(exportAs);
 			UIComponent target = event.getComponent().findComponent(tableId);
@@ -91,7 +99,7 @@ public class DataExporter implements ActionListener, StateHolder {
 				throw new FacesException("Unsupported datasource target:\"" + target.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
 			
 			DataTable table = (DataTable) target;
-			exporter.export(facesContext, table, outputFileName, isPageOnly, excludedColumnIndexes, encodingType, preProcessor, postProcessor);
+			exporter.export(facesContext, table, outputFileName, isPageOnly, isSelectionOnly, excludedColumnIndexes, encodingType, preProcessor, postProcessor);
 			
 			facesContext.responseComplete();
 		} catch (IOException e) {
@@ -130,23 +138,25 @@ public class DataExporter implements ActionListener, StateHolder {
 		type = (ValueExpression) values[1];
 		fileName = (ValueExpression) values[2];
 		pageOnly = (ValueExpression) values[3];
-		excludeColumns = (ValueExpression) values[4];
-		preProcessor = (MethodExpression) values[5];
-		postProcessor = (MethodExpression) values[6];
-		encoding = (ValueExpression) values[7];
+		selectionOnly = (ValueExpression) values[4];
+		excludeColumns = (ValueExpression) values[5];
+		preProcessor = (MethodExpression) values[6];
+		postProcessor = (MethodExpression) values[7];
+		encoding = (ValueExpression) values[8];
 	}
 
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[8];
+		Object values[] = new Object[9];
 
 		values[0] = target;
 		values[1] = type;
 		values[2] = fileName;
 		values[3] = pageOnly;
-		values[4] = excludeColumns;
-		values[5] = preProcessor;
-		values[6] = postProcessor;
-		values[7] = encoding;
+		values[4] = selectionOnly;
+		values[5] = excludeColumns;
+		values[6] = preProcessor;
+		values[7] = postProcessor;
+		values[8] = encoding;
 		
 		return ((Object[]) values);
 	}

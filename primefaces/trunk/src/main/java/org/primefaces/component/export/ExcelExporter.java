@@ -16,6 +16,7 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.List;
 
 import javax.el.MethodExpression;
@@ -35,35 +36,26 @@ import org.primefaces.component.datatable.DataTable;
 public class ExcelExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
     	Workbook wb = new HSSFWorkbook();
     	Sheet sheet = wb.createSheet();
     	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-    	int numberOfColumns = columns.size();
         String rowIndexVar = table.getRowIndexVar();
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-    	int first = pageOnly ? table.getFirst() : 0;
-    	int rowsToExport = pageOnly ? (first + table.getRows()) : table.getRowCount();
     	int sheetRowIndex = 1;
 
         addFacetColumns(sheet, columns, ColumnType.HEADER, 0);
     	
-    	for(int i = first; i < rowsToExport; i++) {
-    		table.setRowIndex(i);
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-            }
-            
-			Row row = sheet.createRow(sheetRowIndex++);
-			
-			for(int j = 0; j < numberOfColumns; j++) {
-                addColumnValue(row, columns.get(j).getChildren(), j);
-			}
-		}
+        if(pageOnly)
+            sheetRowIndex += exportPageOnly(context, table, columns, sheet, sheetRowIndex);
+        else if(selectionOnly)
+            sheetRowIndex += exportSelectionOnly(context, table, columns, sheet, sheetRowIndex);
+        else
+            sheetRowIndex += exportAll(context, table, columns, sheet, sheetRowIndex);
+        
 
         if(hasColumnFooter(columns)) {
             addFacetColumns(sheet, columns, ColumnType.FOOTER, sheetRowIndex++);
@@ -82,6 +74,93 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(((HttpServletResponse)context.getExternalContext().getResponse()), wb, filename);
 	}
 	
+    private int exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet, int sheetRowIndex) {
+        String rowIndexVar = table.getRowIndexVar();
+        int numberOfColumns = columns.size();
+        
+        int first = table.getFirst();
+    	int rowsToExport = first + table.getRows();
+        
+        for(int i = first; i < rowsToExport; i++) {
+    		table.setRowIndex(i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+            }
+            
+			Row row = sheet.createRow(sheetRowIndex++);
+			
+			for(int j = 0; j < numberOfColumns; j++) {
+                addColumnValue(row, columns.get(j).getChildren(), j);
+			}
+		}
+        
+        return sheetRowIndex;
+    }
+    
+    private int exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet, int sheetRowIndex) {
+        int numberOfColumns = columns.size();
+        
+        Object selection = table.getSelection();
+        boolean selectionMode = table.getSelectionMode().equalsIgnoreCase("multiple");
+        
+    	int size = selection == null  ? 0 : selectionMode ? Array.getLength(selection) : 1;
+
+        for(int i = 0; i < size; i++) {
+            context.getExternalContext().getRequestMap().put(table.getVar(), selectionMode ? Array.get(selection, i) : selection );
+            
+			Row row = sheet.createRow(sheetRowIndex++);
+			
+			for(int j = 0; j < numberOfColumns; j++) {
+                addColumnValue(row, columns.get(j).getChildren(), j);
+			}
+		}
+        
+        return sheetRowIndex;
+    }
+    
+    private int exportAll(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet, int sheetRowIndex) {
+        String rowIndexVar = table.getRowIndexVar();
+        int numberOfColumns = columns.size();
+        
+        int first = 0;
+    	int size = table.getRowCount();
+        int rows = table.getRows();
+        boolean lazy = table.isLazy();
+        
+        //first align
+        table.setFirst(first);
+        if(lazy){
+            table.clearLazyCache();
+            table.loadLazyData();
+        }
+        
+        for(int i = 0; (first + i) < size; i++) {
+            
+            if(lazy && i == rows){
+                first += i ;
+                i = 0;
+                table.setFirst(first);
+                table.clearLazyCache();
+                table.loadLazyData();
+            }
+            
+    		table.setRowIndex(first + i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, first + i);
+            }
+            
+			Row row = sheet.createRow(sheetRowIndex++);
+			
+			for(int j = 0; j < numberOfColumns; j++) {
+                addColumnValue(row, columns.get(j).getChildren(), j);
+			}
+		}
+        
+        return sheetRowIndex;
+    }
+    
 	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
         Row rowHeader = sheet.createRow(rowIndex);
 
