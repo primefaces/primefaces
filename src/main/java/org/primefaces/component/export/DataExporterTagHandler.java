@@ -36,6 +36,7 @@ public class DataExporterTagHandler extends TagHandler {
 	private final TagAttribute type;
 	private final TagAttribute fileName;
 	private final TagAttribute pageOnly;
+	private final TagAttribute selectionOnly;
 	private final TagAttribute excludeColumns;
 	private final TagAttribute preProcessor;
 	private final TagAttribute postProcessor;
@@ -47,6 +48,7 @@ public class DataExporterTagHandler extends TagHandler {
 		this.type = getRequiredAttribute("type");
 		this.fileName = getRequiredAttribute("fileName");
 		this.pageOnly = getAttribute("pageOnly");
+		this.selectionOnly = getAttribute("selectionOnly");
 		this.excludeColumns = getAttribute("excludeColumns");
 		this.encoding = getAttribute("encoding");
 		this.preProcessor = getAttribute("preProcessor");
@@ -59,6 +61,7 @@ public class DataExporterTagHandler extends TagHandler {
 			ValueExpression typeVE = type.getValueExpression(faceletContext, Object.class);
 			ValueExpression fileNameVE = fileName.getValueExpression(faceletContext, Object.class);
 			ValueExpression pageOnlyVE = null;
+			ValueExpression selectionOnlyVE = null;
 			ValueExpression excludeColumnsVE = null;
 			ValueExpression encodingVE = null;
 			MethodExpression preProcessorME = null;
@@ -73,6 +76,9 @@ public class DataExporterTagHandler extends TagHandler {
 			if(pageOnly != null) {
 				pageOnlyVE = pageOnly.getValueExpression(faceletContext, Object.class);
 			}
+			if(selectionOnly != null) {
+				selectionOnlyVE = selectionOnly.getValueExpression(faceletContext, Object.class);
+			}
 			if(preProcessor != null) {
 				preProcessorME = preProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
 			}
@@ -81,7 +87,7 @@ public class DataExporterTagHandler extends TagHandler {
 			}
 			
 			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE,excludeColumnsVE,encodingVE, preProcessorME, postProcessorME));
+			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, excludeColumnsVE,encodingVE, preProcessorME, postProcessorME));
 		}
 	}
 

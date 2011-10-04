@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,7 +34,7 @@ import org.primefaces.component.datatable.DataTable;
 public class CSVExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os , encodingType);
@@ -43,20 +44,13 @@ public class CSVExporter extends Exporter {
     	
     	addFacetColumns(writer, columns, ColumnType.HEADER);
     	
-    	int first = pageOnly ? table.getFirst() : 0;
-    	int size = pageOnly ? (first + table.getRows()) : table.getRowCount();
-    	
-    	for(int i = first; i < size; i++) {
-    		table.setRowIndex(i);
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-            }
-            
-    		addColumnValues(writer, columns);
-			writer.write("\n");
-		}
-
+        if(pageOnly)
+            exportPageOnly(context, table, columns, writer);
+        else if(selectionOnly)
+            exportSelectionOnly(context, table, columns, writer);
+        else
+            exportAll(context, table, columns, writer);
+        
         if(hasColumnFooter(columns)) {
             addFacetColumns(writer, columns, ColumnType.FOOTER);
         }
@@ -78,6 +72,73 @@ public class CSVExporter extends Exporter {
         
         response.getOutputStream().flush();
 	}
+    
+    public void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, PrintWriter writer) throws IOException{
+        int first = table.getFirst();
+    	int size = first + table.getRows();
+        String rowIndexVar = table.getRowIndexVar();
+    	
+    	for(int i = first; i < size; i++) {
+    		table.setRowIndex(i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+            }
+            
+    		addColumnValues(writer, columns);
+			writer.write("\n");
+		}
+    }
+    
+    public void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, PrintWriter writer) throws IOException{
+        Object selection = table.getSelection();
+        boolean selectionMode = table.getSelectionMode().equalsIgnoreCase("multiple");
+        int size = selection == null  ? 0 : selectionMode ? Array.getLength(selection) : 1;
+    	
+    	for (int i = 0; i < size; i++) {
+    		context.getExternalContext().getRequestMap().put(table.getVar(), selectionMode ? Array.get(selection, i) : selection );
+            
+    		addColumnValues(writer, columns);
+			writer.write("\n");
+		}
+    }
+    
+    public void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, PrintWriter writer) throws IOException{
+        int first = 0;
+    	int size = table.getRowCount();
+        int rows = table.getRows();
+        boolean lazy = table.isLazy();
+        String rowIndexVar = table.getRowIndexVar();
+        String var = table.getVar().toLowerCase();
+    	
+        //first align
+        table.setFirst(first);
+        if(lazy){
+            table.clearLazyCache();
+            table.loadLazyData();
+        }
+        
+    	for(int i = 0; (first + i) < size; i++) {
+            
+            //lazy iteration
+            if(lazy && i == rows){
+                first += i ;
+                i = 0;
+                table.setFirst(first);
+                table.clearLazyCache();
+                table.loadLazyData();
+            }
+            
+    		table.setRowIndex(first + i);
+            
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, first + i);
+            }
+            
+    		addColumnValues(writer, columns);
+			writer.write("\n");
+		}
+    }
 	
 	private void addColumnValues(PrintWriter writer, List<UIColumn> columns) throws IOException {
 		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
