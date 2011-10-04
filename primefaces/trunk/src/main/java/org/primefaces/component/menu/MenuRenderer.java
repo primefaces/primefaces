@@ -37,6 +37,8 @@ public class MenuRenderer extends BaseMenuRenderer {
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
+        
+        writer.write("$(function() {");
 
 		writer.write(widgetVar + " = new PrimeFaces.widget.Menu('" + clientId + "',{");
 
@@ -63,7 +65,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
         }
 
-        writer.write("});");
+        writer.write("});});");
 
 		writer.endElement("script");
 	}

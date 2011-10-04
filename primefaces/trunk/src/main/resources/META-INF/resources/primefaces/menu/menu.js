@@ -34,14 +34,37 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.menuitems = this.jq.find('.ui-menuitem');
-    
-    if(this.cfg.position == 'dynamic') {
+    var _self = this;
+        
+    //dynamic position
+    if(this.cfg.position == 'dynamic') {        
+        this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
+        
         this.cfg.position = {
             my: this.cfg.my
             ,at: this.cfg.at
+            ,of: this.cfg.trigger
+            ,collision: 'none'
         }
+        
+        this.jq.position(this.cfg.position);
+        
+        this.cfg.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
+            _self.show(e);
+        });
+        
+        //hide overlay when outside is clicked
+        $(document.body).bind('click.ui-menu', function (e) {
+            if(_self.jq.is(":hidden")) {
+                return;
+            }
+            
+            if(e.target === _self.cfg.trigger.get(0)) {
+                return;
+            }
 
-        this.cfg.trigger = PrimeFaces.escapeClientId(this.cfg.trigger);
+            _self.hide();
+        });
     }
 
     //visuals
@@ -59,6 +82,26 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
         var element = $(this);
         element.removeClass('ui-state-hover');
     });
+}
+
+PrimeFaces.widget.Menu.prototype.show = function(e) {                
+    if(this.cfg.effect) {
+        this.jq.show(this.cfg.effect, {}, this.cfg.effectDuration);
+    } 
+    else {
+        this.jq.show();
+    }
+    
+    e.preventDefault();
+}
+
+PrimeFaces.widget.Menu.prototype.hide = function(e) {
+    if(this.cfg.effect) {
+        this.jq.hide(this.cfg.effect, {}, this.cfg.effectDuration);
+    } 
+    else {
+        this.jq.hide();
+    }
 }
 
 /*
@@ -106,9 +149,6 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
     this.menuitems = this.jq.find('.ui-menuitem');
     var _self = this,
     documentTrigger = this.cfg.target === document;
-    
-    //defaults
-    this.cfg.effect = this.cfg.effect == 'none' ? undefined : this.cfg.effect;
         
     //trigger
     this.cfg.target = documentTrigger ? document : PrimeFaces.escapeClientId(this.cfg.target);
