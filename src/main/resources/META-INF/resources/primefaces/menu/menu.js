@@ -61,7 +61,7 @@ PrimeFaces.widget.Menu = function(id, cfg) {
                 return;
             }
             
-            if(e.target === _self.cfg.trigger.get(0)) {
+            if(e.target === _self.cfg.trigger.get(0) || _self.cfg.trigger.find($(e.target)).length > 0) {
                 return;
             }
 
