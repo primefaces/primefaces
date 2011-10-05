@@ -74,47 +74,44 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 PrimeFaces.widget.Menu.prototype.bindEvents = function() {  
     var _self = this;
     
-    //menuitem visuals
-    this.menuitems.mouseover(function(e) {
-        var element = $(this);
-        if(!element.hasClass('ui-state-disabled'))
-            element.addClass('ui-state-hover');
-        
-    }).mouseout(function(e) {
-        var element = $(this);
-        element.removeClass('ui-state-hover');
-    });
-    
-    if(this.cfg.type == 'tiered') {
-        this.menuitems.filter('.ui-menu-parent').mouseover(function(e) {
-            var menuitem = $(this);
-            
-            //hide previous menus
-            menuitem.siblings().removeClass('ui-state-active').find('ul.ui-menu-child:visible').hide();
-            menuitem.children('.ui-menu-child:visible').find('ul.ui-menu-child').hide();
-            
-            //show submenu
-            var submenu = menuitem.children('ul.ui-menu-child');
+    this.menuitems.mouseenter(function(e) {
+        var menuitem = $(this);
 
+        if(menuitem.hasClass('ui-state-disabled')) {
+            return false;
+        }
+        
+        menuitem.addClass('ui-state-hover');
+        
+        if(_self.isTiered()) {
+            var submenu = menuitem.children('ul.ui-menu-child');
+            if(submenu.length == 0) {
+                return false;
+            }
+
+            //show submenu
             submenu.css({
                 left: menuitem.outerWidth()
                 ,top: 0
             });
 
             submenu.show();
-                
-            e.stopPropagation();
-        });
-    }
-    
-    //hide overlay when outside is clicked
-    $(document.body).bind('click.ui-menu-tiered', function (e) {
-        if(_self.jq.is(":hidden")) {
-            return;
         }
 
-        _self.jq.find('.ui-menu-child:visible').hide();
+    }).mouseleave(function(e) {
+        $(this).removeClass('ui-state-hover').find('.ui-menu-child:visible').hide();
     });
+    
+    if(this.isTiered()) {
+        //hide overlay when outside is clicked
+        $(document.body).bind('click.ui-menu-tiered', function (e) {
+            if(_self.jq.is(":hidden")) {
+                return;
+            }
+
+            _self.jq.find('.ui-menu-child:visible').hide();
+        });
+    }
 }
 
 PrimeFaces.widget.Menu.prototype.show = function(e) {                
@@ -125,6 +122,10 @@ PrimeFaces.widget.Menu.prototype.show = function(e) {
 
 PrimeFaces.widget.Menu.prototype.hide = function(e) {
     this.jq.hide();
+}
+
+PrimeFaces.widget.Menu.prototype.isTiered = function() {  
+    return this.cfg.type == 'tiered';
 }
 
 /*
