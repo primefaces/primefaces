@@ -116,7 +116,7 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
                 return;
             }
 
-            _self.jq.find('.ui-menu-child:visible').hide();
+            _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
         });
     }
 }
