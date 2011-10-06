@@ -79,7 +79,7 @@
     display:none;
     width:150px;
     padding:0.3em;
-    position: absolute;
+    position:absolute;
 }
 
 .ui-menu .ui-menu-parent {
@@ -88,9 +88,15 @@
 
 .ui-menu .ui-menu-parent .ui-icon-triangle-1-e, 
 .ui-menubar .ui-menu-child .ui-icon-triangle-1-e {
-    float: right;
+    float:right;
 }
 
 .ui-menubutton {
-    position: relative;
+    position:relative;
+    display:inline-block;
+    padding:0;
+}
+
+.ui-menubutton .ui-button {
+    margin:0;
 }
