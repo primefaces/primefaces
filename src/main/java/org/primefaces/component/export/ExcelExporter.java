@@ -155,7 +155,7 @@ public class ExcelExporter extends Exporter {
         else {
             for(int i = 0; i < rowCount; i++) {
                 table.setRowIndex(i);
-                if(table.isRowAvailable())
+                if(!table.isRowAvailable())
                     break;
 
                 if(rowIndexVar != null) {

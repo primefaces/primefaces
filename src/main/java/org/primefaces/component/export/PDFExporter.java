@@ -143,38 +143,53 @@ public class PDFExporter extends Exporter {
         String rowIndexVar = table.getRowIndexVar();
         int numberOfColumns = columns.size();
         
-        int first = 0;
-    	int size = table.getRowCount();
+        int first = table.getFirst();
+    	int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
         
-        //first align
-        table.setFirst(first);
-        if(lazy){
-            table.clearLazyCache();
+        if(lazy) {
+            for(int i = 0; i < rowCount; i++) {
+                if(i % rows == 0) {
+                    table.setFirst(i);
+                    table.loadLazyData();
+                }
+
+                table.setRowIndex(i);
+                if(!table.isRowAvailable())
+                    break;
+
+                if(rowIndexVar != null) {
+                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+                }
+
+                for(int j = 0; j < numberOfColumns; j++) {
+                    addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
+                }
+            }
+     
+            //restore
+            table.setFirst(first);
             table.loadLazyData();
         }
-        
-    	for(int i = 0; (first + i) < size; i++) {
-            
-            if(lazy && i == rows){
-                first += i ;
-                i = 0;
-                table.setFirst(first);
-                table.clearLazyCache();
-                table.loadLazyData();
-            }
-            
-    		table.setRowIndex(first + i);
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, first + i);
-            }
+        else {
+            for(int i = 0; i < rowCount; i++) {
+                table.setRowIndex(i);
+                if(!table.isRowAvailable())
+                    break;
 
-			for(int j = 0; j < numberOfColumns; j++) {				
-                addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
-			}
-		}
+                if(rowIndexVar != null) {
+                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+                }
+
+                for(int j = 0; j < numberOfColumns; j++) {
+                    addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
+                }
+            }
+            
+            //restore
+            table.setFirst(first);
+        }
     }
 	
 	private void addFacetColumns(PdfPTable pdfTable, List<UIColumn> columns, Font font, ColumnType columnType) {
