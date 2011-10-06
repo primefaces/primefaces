@@ -605,7 +605,7 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
     var checkbox = $(element),
     row = checkbox.parents('tr:first'),
     rowMeta = this.getRowMeta(row),
-    checked = checkbox.attr('checked');
+    checked = checkbox.is(':checked');
 
     if(checked) {
         this.addSelection(rowMeta.key);
@@ -638,10 +638,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
         rows.addClass('ui-state-highlight');
 
         //add to selection
-        rows.each(function() {
-            var row = $(this);
-            
-            
+        rows.each(function() {            
             _self.addSelection(_self.getRowMeta($(this)).key);
         });
     }
