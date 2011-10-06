@@ -607,8 +607,12 @@ public class DataTableRenderer extends CoreRenderer {
                         summaryRow.encodeAll(context);
                     }
                     
-                    if(!encodeRow(context, table, clientId, i, rowIndexVar))
+                    table.setRowIndex(i);
+                    if(!table.isRowAvailable()) {
                         break;
+                    }
+                    
+                    encodeRow(context, table, clientId, i, rowIndexVar);
                 }
             }
         }
@@ -638,11 +642,6 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     protected boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
-        table.setRowIndex(rowIndex);
-        if(!table.isRowAvailable()) {
-            return false;
-        }
-
         //Row index var
         if(rowIndexVar != null) {
             context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
@@ -978,8 +977,9 @@ public class DataTableRenderer extends CoreRenderer {
         int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowIndex"));
 
         table.setRowIndex(editedRowId);
-
-        encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
+        if(table.isRowAvailable()) {
+            encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
+        }
     }
 
     protected void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
@@ -989,7 +989,10 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
 
         for(int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
-            encodeRow(context, table, clientId, i, rowIndexVar);
+            table.setRowIndex(i);
+            if(table.isRowAvailable()) {
+                encodeRow(context, table, clientId, i, rowIndexVar);
+            }
         }
     }
     
