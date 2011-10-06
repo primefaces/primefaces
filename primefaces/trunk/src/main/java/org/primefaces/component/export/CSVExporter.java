@@ -80,6 +80,8 @@ public class CSVExporter extends Exporter {
     	
     	for(int i = first; i < size; i++) {
     		table.setRowIndex(i);
+            if(!table.isRowAvailable())
+                break;
             
             if(rowIndexVar != null) {
                 context.getExternalContext().getRequestMap().put(rowIndexVar, i);
