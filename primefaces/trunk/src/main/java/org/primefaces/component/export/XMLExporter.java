@@ -121,41 +121,56 @@ public class XMLExporter extends Exporter {
     }
     
     public void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, List<String> headers, PrintWriter writer) throws IOException{
-        int first = 0;
-    	int size = table.getRowCount();
+        String var = table.getVar().toLowerCase();
+        String rowIndexVar = table.getRowIndexVar();
+        
+        int first = table.getFirst();
+    	int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
-        String rowIndexVar = table.getRowIndexVar();
-        String var = table.getVar().toLowerCase();
-    	
-        //first align
-        table.setFirst(first);
-        if(lazy){
-            table.clearLazyCache();
+        
+        if(lazy) {
+            for(int i = 0; i < rowCount; i++) {
+                if(i % rows == 0) {
+                    table.setFirst(i);
+                    table.loadLazyData();
+                }
+
+                table.setRowIndex(i);
+                if(!table.isRowAvailable())
+                    break;
+
+                if(rowIndexVar != null) {
+                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+                }
+
+                writer.write("\t<" + var + ">\n");
+                addColumnValues(writer, columns, headers);
+                writer.write("\t</" + var + ">\n");
+            }
+     
+            //restore
+            table.setFirst(first);
             table.loadLazyData();
         }
-        
-    	for(int i = 0; (first + i) < size; i++) {
-            
-            //lazy iteration
-            if(lazy && i == rows){
-                first += i ;
-                i = 0;
-                table.setFirst(first);
-                table.clearLazyCache();
-                table.loadLazyData();
-            }
-            
-    		table.setRowIndex(first + i);
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, first + i);
-            }
+        else {
+            for(int i = 0; i < rowCount; i++) {
+                table.setRowIndex(i);
+                if(!table.isRowAvailable())
+                    break;
 
-    		writer.write("\t<" + var + ">\n");
-    		addColumnValues(writer, columns, headers);
-    		writer.write("\t</" + var + ">\n");
-		}
+                if(rowIndexVar != null) {
+                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+                }
+
+                writer.write("\t<" + var + ">\n");
+                addColumnValues(writer, columns, headers);
+                writer.write("\t</" + var + ">\n");
+            }
+            
+            //restore
+            table.setFirst(first);
+        }
     }
     
 	private void addColumnValues(PrintWriter writer, List<UIColumn> columns, List<String> headers) throws IOException {
