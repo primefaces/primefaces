@@ -179,8 +179,8 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
         if(_self.jq.is(":hidden")) {
             return;
         }
-
-        if(e.target === _self.button.get(0)) {
+        
+        if(e.target === _self.button.get(0) || _self.button.find($(e.target)).length > 0) {
             return;
         }
 
