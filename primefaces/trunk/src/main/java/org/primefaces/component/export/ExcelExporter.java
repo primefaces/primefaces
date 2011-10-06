@@ -45,20 +45,17 @@ public class ExcelExporter extends Exporter {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-    	int sheetRowIndex = 1;
-
         addFacetColumns(sheet, columns, ColumnType.HEADER, 0);
     	
         if(pageOnly)
-            sheetRowIndex += exportPageOnly(context, table, columns, sheet, sheetRowIndex);
+            exportPageOnly(context, table, columns, sheet);
         else if(selectionOnly)
-            sheetRowIndex += exportSelectionOnly(context, table, columns, sheet, sheetRowIndex);
+            exportSelectionOnly(context, table, columns, sheet);
         else
-            sheetRowIndex += exportAll(context, table, columns, sheet, sheetRowIndex);
+            exportAll(context, table, columns, sheet);
         
-
         if(hasColumnFooter(columns)) {
-            addFacetColumns(sheet, columns, ColumnType.FOOTER, sheetRowIndex++);
+            addFacetColumns(sheet, columns, ColumnType.FOOTER, sheet.getLastRowNum() + 1);
         }
     	
     	table.setRowIndex(-1);
@@ -74,15 +71,18 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(((HttpServletResponse)context.getExternalContext().getResponse()), wb, filename);
 	}
 	
-    private int exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet, int sheetRowIndex) {
+    protected void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
         String rowIndexVar = table.getRowIndexVar();
         int numberOfColumns = columns.size();
         
         int first = table.getFirst();
     	int rowsToExport = first + table.getRows();
+        int sheetRowIndex = 1;
         
         for(int i = first; i < rowsToExport; i++) {
     		table.setRowIndex(i);
+            if(!table.isRowAvailable())
+                break;
             
             if(rowIndexVar != null) {
                 context.getExternalContext().getRequestMap().put(rowIndexVar, i);
@@ -94,20 +94,19 @@ public class ExcelExporter extends Exporter {
                 addColumnValue(row, columns.get(j).getChildren(), j);
 			}
 		}
-        
-        return sheetRowIndex;
     }
     
-    private int exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet, int sheetRowIndex) {
+    protected void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
         int numberOfColumns = columns.size();
         
         Object selection = table.getSelection();
-        boolean selectionMode = table.getSelectionMode().equalsIgnoreCase("multiple");
+        boolean multiple = table.getSelectionMode().equalsIgnoreCase("multiple");
+        int sheetRowIndex = 1;
         
-    	int size = selection == null  ? 0 : selectionMode ? Array.getLength(selection) : 1;
+    	int size = selection == null  ? 0 : multiple ? Array.getLength(selection) : 1;
 
         for(int i = 0; i < size; i++) {
-            context.getExternalContext().getRequestMap().put(table.getVar(), selectionMode ? Array.get(selection, i) : selection );
+            context.getExternalContext().getRequestMap().put(table.getVar(), multiple ? Array.get(selection, i) : selection);
             
 			Row row = sheet.createRow(sheetRowIndex++);
 			
@@ -115,53 +114,67 @@ public class ExcelExporter extends Exporter {
                 addColumnValue(row, columns.get(j).getChildren(), j);
 			}
 		}
-        
-        return sheetRowIndex;
     }
     
-    private int exportAll(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet, int sheetRowIndex) {
+    protected void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
         String rowIndexVar = table.getRowIndexVar();
         int numberOfColumns = columns.size();
         
-        int first = 0;
-    	int size = table.getRowCount();
+        int first = table.getFirst();
+    	int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
+        int sheetRowIndex = 1;
         
-        //first align
-        table.setFirst(first);
-        if(lazy){
-            table.clearLazyCache();
+        if(lazy) {
+            for(int i = 0; i < rowCount; i++) {
+                if(i % rows == 0) {
+                    table.setFirst(i);
+                    table.loadLazyData();
+                }
+
+                table.setRowIndex(i);
+                if(!table.isRowAvailable())
+                    break;
+
+                if(rowIndexVar != null) {
+                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+                }
+
+                Row row = sheet.createRow(sheetRowIndex++);
+
+                for(int j = 0; j < numberOfColumns; j++) {
+                    addColumnValue(row, columns.get(j).getChildren(), j);
+                }
+            }
+     
+            //restore
+            table.setFirst(first);
             table.loadLazyData();
+        } 
+        else {
+            for(int i = 0; i < rowCount; i++) {
+                table.setRowIndex(i);
+                if(table.isRowAvailable())
+                    break;
+
+                if(rowIndexVar != null) {
+                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
+                }
+
+                Row row = sheet.createRow(sheetRowIndex++);
+
+                for(int j = 0; j < numberOfColumns; j++) {
+                    addColumnValue(row, columns.get(j).getChildren(), j);
+                }
+            }
+            
+            //restore
+            table.setFirst(first);
         }
-        
-        for(int i = 0; (first + i) < size; i++) {
-            
-            if(lazy && i == rows){
-                first += i ;
-                i = 0;
-                table.setFirst(first);
-                table.clearLazyCache();
-                table.loadLazyData();
-            }
-            
-    		table.setRowIndex(first + i);
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, first + i);
-            }
-            
-			Row row = sheet.createRow(sheetRowIndex++);
-			
-			for(int j = 0; j < numberOfColumns; j++) {
-                addColumnValue(row, columns.get(j).getChildren(), j);
-			}
-		}
-        
-        return sheetRowIndex;
     }
     
-	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
+	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
         Row rowHeader = sheet.createRow(rowIndex);
 
         for(int i = 0; i < columns.size(); i++) {            
@@ -169,15 +182,15 @@ public class ExcelExporter extends Exporter {
         }
     }
 	
-    private void addColumnValue(Row rowHeader, UIComponent component, int index) {
-        Cell cell = rowHeader.createCell(index);
+    protected void addColumnValue(Row row, UIComponent component, int index) {
+        Cell cell = row.createCell(index);
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
         cell.setCellValue(new HSSFRichTextString(value));
     }
     
-    private void addColumnValue(Row rowHeader, List<UIComponent> components, int index) {
-        Cell cell = rowHeader.createCell(index);
+    protected void addColumnValue(Row row, List<UIComponent> components, int index) {
+        Cell cell = row.createCell(index);
         StringBuilder builder = new StringBuilder();
         
         for(UIComponent component : components) {
@@ -192,7 +205,7 @@ public class ExcelExporter extends Exporter {
         cell.setCellValue(new HSSFRichTextString(builder.toString()));
     }
     
-    private void writeExcelToResponse(HttpServletResponse response, Workbook generatedExcel, String filename) throws IOException {
+    protected void writeExcelToResponse(HttpServletResponse response, Workbook generatedExcel, String filename) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Expires", "0");
         response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
