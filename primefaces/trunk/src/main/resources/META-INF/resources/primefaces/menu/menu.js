@@ -46,12 +46,10 @@ PrimeFaces.widget.Menu = function(id, cfg) {
             my: this.cfg.my
             ,at: this.cfg.at
             ,of: this.cfg.trigger
-            ,collision: 'none'
         }
         
-        this.jq.position(this.cfg.position);
-        
         this.cfg.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
+            _self.jq.css({left:'', top:''}).position(_self.cfg.position);
             _self.show(e);
         });
         
