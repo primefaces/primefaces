@@ -34,9 +34,11 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
@@ -107,9 +109,11 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
@@ -190,9 +194,11 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
@@ -250,9 +256,11 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
@@ -298,9 +306,11 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
@@ -351,9 +361,11 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
@@ -390,9 +402,11 @@ PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
