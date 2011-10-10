@@ -132,11 +132,6 @@ public class WizardRenderer extends CoreRenderer {
 
         writer.write(",initialStep:'" + wizard.getStep() + "'");
 
-        if (wizard.isEffect()) {
-            writer.write(",effect:true");
-            writer.write(",effectSpeed:'" + wizard.getEffectSpeed() + "'");
-        }
-
         writer.write("});});");
 
         writer.endElement("script");

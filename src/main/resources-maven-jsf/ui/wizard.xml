@@ -90,20 +90,6 @@
             <defaultValue>Back</defaultValue>
             <description>Label of back navigation button. Default is "Back".</description>
         </attribute>
-        <attribute>
-            <name>effect</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Specifies whether animation should be used or not during transition. Default is true.</description>
-        </attribute>
-        <attribute>
-            <name>effectSpeed</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <defaultValue>normal</defaultValue>
-            <description>Duration of effect. Default is normal.</description>
-        </attribute>
     </attributes>
     <resources>
         <resource>

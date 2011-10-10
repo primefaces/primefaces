@@ -74,16 +74,7 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                 if(id == _self.id){
                     if(!this.args.validationFailed) {
                         //update content
-                        if(_self.cfg.effect) {
-                            var _content = content;
-                            $(_self.content).fadeOut(_self.cfg.effectSpeed, function() {
-                                $(_self.content).html(_content);
-                                $(_self.content).fadeIn();
-
-                            });
-                        } else {
-                            $(_self.content).html(content);
-                        }
+                        $(_self.content).html(content);
 
                         //update navigation controls
                         var currentStepIndex = _self.getStepIndex(_self.currentStep);
@@ -99,7 +90,6 @@ PrimeFaces.widget.Wizard.prototype.loadStep = function(stepToGo, isBack) {
                                 _self.showBackNav();
                                 _self.showNextNav();
                             }
-
                         }
 
                         if(_self.cfg.showStepStatus) {
