@@ -104,7 +104,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		
         if(acco.isMultiple()) writer.write(",multiple:true");
         if(dynamic) writer.write(",cache:" + acco.isCache());
-        if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(event, ui) {" + acco.getOnTabChange() + "}");
+        if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(panel) {" + acco.getOnTabChange() + "}");
+        if(acco.getOnTabShow() != null) writer.write(",onTabShow: function(panel) {" + acco.getOnTabShow() + "}");
 
         encodeClientBehaviors(context, acco);
 		
@@ -167,7 +168,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
-        String contentStyle = active ? "display:block" : "display:none";
+        String contentClass = active ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
 
         //header container
         writer.startElement("h3", null);
@@ -193,8 +194,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         //content
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
-        writer.writeAttribute("class", AccordionPanel.TAB_CONTENT_CLASS, null);
-        writer.writeAttribute("style", contentStyle, null);
+        writer.writeAttribute("class", contentClass, null);
 
         if(dynamic && active)
             tab.encodeAll(context);

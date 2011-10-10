@@ -97,6 +97,9 @@
 		<resource>
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
+        		<resource>
+			<name>accordion/accordion.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
