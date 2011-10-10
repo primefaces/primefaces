@@ -10,6 +10,7 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.headers = this.jq.children('.ui-accordion-header');
     this.panels = this.jq.children('.ui-accordion-content');
     this.headers.children('a').disableSelection();
+    this.onshowHandlers = [];
     
     //options
     this.cfg.active = this.cfg.multiple ? this.stateHolder.val().split(',') : this.stateHolder.val();
@@ -19,6 +20,8 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     if(this.cfg.dynamic && this.cfg.cache) {
         this.markAsLoaded(this.panels.eq(this.cfg.active));
     }
+    
+    this.panels.data('widget', this);
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.bindEvents = function() {
@@ -55,15 +58,16 @@ PrimeFaces.widget.AccordionPanel.prototype.bindEvents = function() {
  *  Activates a tab with given index
  */
 PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
+    var panel = this.panels.eq(index);
+    
     //Call user onTabChange callback
     if(this.cfg.onTabChange) {
-        var result = this.cfg.onTabChange.call(this, index);
+        var result = this.cfg.onTabChange.call(this, panel);
         if(result == false)
             return false;
     }
     
-    var panel = this.panels.eq(index),
-    shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+    var shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
     //update state
     if(this.cfg.multiple)
@@ -100,6 +104,8 @@ PrimeFaces.widget.AccordionPanel.prototype.unselect = function(index) {
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
+    var _self = this;
+    
     //deactivate current
     if(!this.cfg.multiple) {
         var oldHeader = this.headers.filter('.ui-state-active');
@@ -111,12 +117,10 @@ PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
     var newHeader = panel.prev();
     newHeader.addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
              .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
-    panel.slideDown();
-    
-    //Call user onTabShow callback
-    if(this.cfg.onTabShow) {
-        this.cfg.onTabShow.call(this, panel);
-    }
+             
+    panel.slideDown('normal', function() {
+        _self.postTabShow(panel);
+    });
 }
 
 /**
@@ -229,4 +233,20 @@ PrimeFaces.widget.AccordionPanel.prototype.saveState = function() {
         this.stateHolder.val(this.cfg.active.join(','));
     else
         this.stateHolder.val(this.cfg.active);
+}
+
+PrimeFaces.widget.AccordionPanel.prototype.addOnshowHandler = function(fn) {
+    this.onshowHandlers.push(fn);
+}
+
+PrimeFaces.widget.AccordionPanel.prototype.postTabShow = function(newPanel) {            
+    //Call user onTabShow callback
+    if(this.cfg.onTabShow) {
+        this.cfg.onTabShow.call(this, newPanel);
+    }
+    
+    //execute onshowHandlers and remove successful ones
+    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+		return !fn.call();
+	});
 }
