@@ -162,13 +162,15 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
         element.removeClass('ui-state-hover');
     });
     
+    this.cfg.position = {
+        my: 'left top'
+        ,at: 'left bottom'
+        ,of: this.button
+    }
+    
     //button event
     this.button.click(function(e) {
-        _self.menu.css({
-            left:0,
-            top:_self.button.outerHeight()
-        });
-        
+        _self.menu.css({left:'', top:''}).position(_self.cfg.position);
         _self.menu.show();
     });
     
