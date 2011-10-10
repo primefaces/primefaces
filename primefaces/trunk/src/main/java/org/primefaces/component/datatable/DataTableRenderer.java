@@ -599,13 +599,8 @@ public class DataTableRenderer extends CoreRenderer {
                 }
                 else {
 
-                    if(summaryRow != null && i != first && !dataHelper.isInSameGroup(context, table, i)) {
-                        MethodExpression me = summaryRow.getListener();
-                        if(me != null) {
-                            me.invoke(context.getELContext(), new Object[]{table.getSortBy()});
-                        }
-                        summaryRow.encodeAll(context);
-                    }
+                    if(summaryRow != null && i != first && !dataHelper.isInSameGroup(context, table, i))
+                        encodeSummaryRow(context, table, summaryRow);
                     
                     table.setRowIndex(i);
                     if(!table.isRowAvailable()) {
@@ -613,6 +608,10 @@ public class DataTableRenderer extends CoreRenderer {
                     }
                     
                     encodeRow(context, table, clientId, i, rowIndexVar);
+                    
+                    //last summary
+                    if(summaryRow != null && i == (first + rowCountToRender - 1))
+                        encodeSummaryRow(context, table, summaryRow);
                 }
             }
         }
@@ -639,6 +638,14 @@ public class DataTableRenderer extends CoreRenderer {
 		if(rowIndexVar != null) {
 			context.getExternalContext().getRequestMap().remove(rowIndexVar);
 		}
+    }
+    
+    private void encodeSummaryRow(FacesContext context, DataTable table, SummaryRow summaryRow) throws IOException{
+        MethodExpression me = summaryRow.getListener();
+        if(me != null) {
+            me.invoke(context.getELContext(), new Object[]{table.getSortBy()});
+        }
+        summaryRow.encodeAll(context);
     }
 
     protected boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
