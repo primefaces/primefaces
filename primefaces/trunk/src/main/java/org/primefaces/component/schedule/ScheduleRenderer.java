@@ -37,54 +37,6 @@ public class ScheduleRenderer extends CoreRenderer {
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
-		/*Schedule schedule = (Schedule) component;
-		ScheduleModel model = (ScheduleModel) schedule.getValue();
-		String clientId = schedule.getClientId(context);
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-		if(params.containsKey(clientId + "_ajaxEvent")) {
-            
-			String selectedEventParam = clientId + "_selectedEventId";
-			String selectedDateParam = clientId + "_selectedDate";
-			String changedEventParam = clientId + "_changedEventId";
-			
-			//Event select
-			if(params.containsKey(selectedEventParam)) {
-				String eventId = params.get(selectedEventParam);
-				ScheduleEvent selectedEvent = model.getEvent(eventId);
-				schedule.queueEvent(new ScheduleEntrySelectEvent(schedule, selectedEvent));
-			}
-			//Date Select
-			else if(params.containsKey(selectedDateParam)) {
-				String dateAsString = params.get(selectedDateParam);
-				schedule.queueEvent(new DateSelectEvent(component, null, new Date(Long.valueOf(dateAsString))));
-			}
-			//Event dragdrop or resize
-			else if(params.containsKey(changedEventParam)) {
-				String eventId = params.get(changedEventParam);
-				ScheduleEvent changedEvent = model.getEvent(eventId);
-				int dayDelta = Integer.valueOf(params.get(clientId + "_dayDelta"));
-				int minuteDelta = Integer.valueOf(params.get(clientId + "_minuteDelta"));
-				Calendar calendar = Calendar.getInstance();
-				boolean isResize = params.containsKey(clientId + "_resized");
-				
-				if(!isResize) {
-					calendar.setTime(changedEvent.getStartDate());
-					calendar.roll(Calendar.DATE, dayDelta);
-					changedEvent.getStartDate().setTime(calendar.getTimeInMillis());
-				}
-				
-				calendar = Calendar.getInstance();
-				calendar.setTime(changedEvent.getEndDate());
-				calendar.roll(Calendar.DATE, dayDelta);
-				changedEvent.getEndDate().setTime(calendar.getTimeInMillis());
-				
-				if(isResize)
-					schedule.queueEvent(new ScheduleEntryResizeEvent(schedule, changedEvent, dayDelta, minuteDelta));
-				else
-					schedule.queueEvent(new ScheduleEntryMoveEvent(schedule, changedEvent, dayDelta, minuteDelta));
-			}
-		}*/
 	}
 
     @Override
@@ -93,7 +45,8 @@ public class ScheduleRenderer extends CoreRenderer {
 
         if(context.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(context))) {
             encodeEvents(context, schedule);
-        } else {
+        } 
+        else {
             encodeMarkup(context, schedule);
             encodeScript(context, schedule);
         }
