@@ -1074,6 +1074,9 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     //i18n and l7n
     this.configureLocale();
 
+    //image title
+    this.cfg.buttonText = this.jq.attr('title') || '';
+
     //Override locale pattern with user pattern
     if(this.cfg.pattern) {
         this.cfg.dateFormat = this.cfg.pattern;
@@ -1124,6 +1127,8 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
         }
     }
     
+    //button title
+    this.jq.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
 }
 
 PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
