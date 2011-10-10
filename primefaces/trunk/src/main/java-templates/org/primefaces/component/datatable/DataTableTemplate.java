@@ -624,13 +624,3 @@ import javax.faces.FacesException;
 
         return null;
     }
-
-    private Object previousRowData = null;
-
-    public Object getPreviousRowData() {
-        return this.previousRowData;
-    }
-
-    public void setPreviousRowData(Object rowData) {
-        this.previousRowData = rowData;
-    }

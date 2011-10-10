@@ -599,9 +599,6 @@ public class DataTableRenderer extends CoreRenderer {
                 }
                 else {
 
-                    if(summaryRow != null && i != first && !dataHelper.isInSameGroup(context, table, i))
-                        encodeSummaryRow(context, table, summaryRow);
-                    
                     table.setRowIndex(i);
                     if(!table.isRowAvailable()) {
                         break;
@@ -609,9 +606,10 @@ public class DataTableRenderer extends CoreRenderer {
                     
                     encodeRow(context, table, clientId, i, rowIndexVar);
                     
-                    //last summary
-                    if(summaryRow != null && i == (first + rowCountToRender - 1))
+                    if(summaryRow != null && !dataHelper.isInSameGroup(context, table, i)) {
+                        table.setRowIndex(i);   //restore
                         encodeSummaryRow(context, table, summaryRow);
+                    }
                 }
             }
         }
@@ -645,6 +643,7 @@ public class DataTableRenderer extends CoreRenderer {
         if(me != null) {
             me.invoke(context.getELContext(), new Object[]{table.getSortBy()});
         }
+        
         summaryRow.encodeAll(context);
     }
 
@@ -699,10 +698,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.endElement("tr");
-        
-        //used for summaryRow if any
-        table.setPreviousRowData(table.getRowData());
-        
+
         return true;
     }
 

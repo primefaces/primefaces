@@ -262,20 +262,20 @@ class DataHelper {
     /**
      * Finds if row to render is in same group of previous row
      */
-    boolean isInSameGroup(FacesContext context, DataTable table, int rowIndex) {
+    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex) {
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String var = table.getVar();
-        Object previousRowData = table.getPreviousRowData();
         
-        if(previousRowData != null) {
-            table.setRowIndex(rowIndex);
-            Object currentGroupByData = table.getSortBy();
-            
-            requestMap.put(var, previousRowData);
-            Object previousGroupByData = table.getSortBy();
-            
-            if(previousGroupByData != null && previousGroupByData.equals(currentGroupByData))
-                return true;
+        table.setRowIndex(currentRowIndex);
+        Object currentGroupByData = table.getSortBy();
+
+        table.setRowIndex(currentRowIndex + 1);
+        if(!table.isRowAvailable())
+            return false;
+        
+        Object nextGroupByData = table.getSortBy();
+        if(currentGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
+            return true;
         }
         
         return false;
