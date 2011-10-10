@@ -115,30 +115,24 @@
 			<name>xaxisLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-                        <ignoreInComponent>true</ignoreInComponent>
+        <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>yaxisLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-                        <ignoreInComponent>true</ignoreInComponent>
+        <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>xaxisAngle</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-                        <ignoreInComponent>true</ignoreInComponent>
+        <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>yaxisAngle</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-        <attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 	</attributes>
