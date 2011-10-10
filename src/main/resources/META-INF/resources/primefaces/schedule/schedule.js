@@ -23,8 +23,10 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId + '_container');
+    this.jq = $(this.jqId);
+    this.jqc = $(this.jqId + '_container');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
+    var _self = this;
 
 	this.setupEventSource();
 	
@@ -33,8 +35,26 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
 	if(this.cfg.editable) {
 		this.setupEventHandlers();
     }
-	
-	this.jq.fullCalendar(this.cfg);
+    
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
+        this.init();
+    }
+}
+
+PrimeFaces.widget.Schedule.prototype.init = function() {
+    if(!this.initialized) {
+        this.initialized = true;
+        
+        this.jqc.fullCalendar(this.cfg);
+    }
 }
 
 PrimeFaces.widget.Schedule.prototype.configureLocale = function() {
@@ -161,5 +181,5 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
 }
 
 PrimeFaces.widget.Schedule.prototype.update = function() {
-	this.jq.fullCalendar('refetchEvents');
+	this.jqc.fullCalendar('refetchEvents');
 }
