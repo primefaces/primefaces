@@ -90,7 +90,7 @@
 			<name>shadow</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-                        <ignoreInComponent>true</ignoreInComponent>
+        <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
        <attribute>
 			<name>fill</name>
