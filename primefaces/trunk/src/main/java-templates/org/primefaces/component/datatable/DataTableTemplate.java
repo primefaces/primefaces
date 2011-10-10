@@ -360,10 +360,14 @@ import javax.faces.FacesException;
         DataModel model = getDataModel();
         
         if(model instanceof LazyDataModel) {
+            int pageSize = getRows();
+            pageSize = pageSize == 0 ? getRowCount() : pageSize;
+            
             LazyDataModel lazyModel = (LazyDataModel) model;
-            lazyModel.setPageSize(getRows());
+            
+            lazyModel.setPageSize(pageSize);
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
+            List<?> data = lazyModel.load(getFirst(), pageSize, resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
 
             lazyModel.setWrappedData(data);
 
