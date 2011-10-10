@@ -52,13 +52,6 @@
             <description>Disables editor.</description>
 		</attribute>
         <attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Enables lazy initialization mode. Default is false.</description>
-		</attribute>
-        <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
