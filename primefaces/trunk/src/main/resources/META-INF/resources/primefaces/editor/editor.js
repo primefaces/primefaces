@@ -1149,9 +1149,11 @@ PrimeFaces.widget.Editor = function(id, cfg) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
-        hiddenParentWidget.addOnshowHandler(function() {
-            _self.init();
-        });
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
     }
 }
 
