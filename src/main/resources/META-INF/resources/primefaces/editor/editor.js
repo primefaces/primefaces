@@ -1138,16 +1138,26 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
-    this.jq = $(this.jqId + '_input');
+    this.jq = $(this.jqId);
+    this.jqInput = $(this.jqId + '_input');
+    var _self = this;
 
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
 }
 
 PrimeFaces.widget.Editor.prototype.init = function() {
     if(!this.initialized) {
-        this.editor = this.jq.cleditor(this.cfg)[0];
+        this.editor = this.jqInput.cleditor(this.cfg)[0];
         this.initialized = true;
 
         if(this.cfg.disabled) {
