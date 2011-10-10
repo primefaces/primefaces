@@ -46,7 +46,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
         ,yaxisLabel
         ,xaxisAngle
         ,yaxisAngle
-        ,resizable
         ,seriesColors;
 
 		String toString;
@@ -137,12 +136,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
 	public void setShadow(boolean _shadow) {
 		getStateHelper().put(PropertyKeys.shadow, _shadow);
-	}
-	public boolean isResizable() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, false);
-	}
-	public void setResizable(boolean _resizable) {
-		getStateHelper().put(PropertyKeys.resizable, _resizable);
 	}
         
 	public boolean isEnhancedLegend() {
