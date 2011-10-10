@@ -172,7 +172,7 @@ public class TabViewRenderer extends CoreRenderer {
     
     protected void encodeTabHeader(FacesContext context, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.TAB_HEADER_CLASS;
+        String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
         String styleClass = tab.getTitleStyleClass();
         styleClass = tab.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
@@ -239,14 +239,11 @@ public class TabViewRenderer extends CoreRenderer {
     
     protected void encodeTabContent(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
         
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
-        writer.writeAttribute("class", TabView.TAB_CONTENT_CLASS, null);
-        
-        if(!active) {
-            writer.writeAttribute("style", "display:none", null);
-        }
+        writer.writeAttribute("class", styleClass, null);
 
         if(dynamic) {
             if(active)

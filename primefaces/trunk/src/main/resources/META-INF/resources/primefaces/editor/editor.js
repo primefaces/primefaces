@@ -1142,23 +1142,22 @@ PrimeFaces.widget.Editor = function(id, cfg) {
     this.jqInput = $(this.jqId + '_input');
     var _self = this;
 
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.Editor.prototype.init = function() {
-    if(!this.initialized) {
+    if(this.jq.is(':visible')) {
         this.editor = this.jqInput.cleditor(this.cfg)[0];
-        this.initialized = true;
 
         if(this.cfg.disabled) {
             this.disable();
@@ -1167,6 +1166,11 @@ PrimeFaces.widget.Editor.prototype.init = function() {
         if(this.cfg.change) {
             this.editor.change(this.cfg.change);
         }
+        
+        return true;
+    } 
+    else {
+        return false;
     }
 }
 

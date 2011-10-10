@@ -27,33 +27,35 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
     
     this.cfg.highlighter = {show:false};            //ignore default highlighter 
 
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.PieChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
-    
-    //events
-    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+    if(this.jq.is(':visible')) {
+        //events
+        PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
-    //highlighter
-    PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+        //highlighter
+        PrimeFaces.widget.ChartUtils.bindHighlighter(this);
 
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 /**
@@ -98,30 +100,31 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
     
     this.cfg.highlighter = {show : true, formatString : '%s, %s', showTooltip : true};
 
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.LineChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
+    if(this.jq.is(':visible')) {
+        //events
+        PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
     
-    //events
-    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-    
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -180,33 +183,35 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     
     this.cfg.highlighter = {show:false}; //default highlighter off
 
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.BarChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
-    
-    //events
-    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-    
-    //highlighter
-    PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-        
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+    if(this.jq.is(':visible')) {
+        //events
+        PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+        //highlighter
+        PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+        return true;
+    } 
+    else {
+        return false;
+    }
 }
 
 /**
@@ -238,33 +243,35 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
     
     this.cfg.highlighter = {show:false}; //default highlighter 
     
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.DonutChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
-    
-    //events
-    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+    if(this.jq.is(':visible')) {
+        //events
+        PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
 
-    //highlighter
-    PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+        //highlighter
+        PrimeFaces.widget.ChartUtils.bindHighlighter(this);
 
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        
+        return true;
+    } 
+    else {
+        return false;
+    }
 }
 
 /**
@@ -284,33 +291,35 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     this.cfg.highlighter = {show:false};
     this.cfg.seriesDefaults.shadow = this.cfg.shadow;
     
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.BubbleChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
-    
-    //events
-    PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-    
-    //highlighter
-    PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-    
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+    if(this.jq.is(':visible')) {
+        //events
+        PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+        //highlighter
+        PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 /**
@@ -333,29 +342,31 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
           <tr><td>hi:</td><td>%s</td></tr> \
           <tr><td>low:</td><td>%s</td></tr> \
           <tr><td>close:</td><td>%s</td></tr></table>'
-   }
+    }
    
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.OhlcChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
-
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+    if(this.jq.is(':visible')) {
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        
+        return true;
+    } 
+    else {
+        return false;
+    }
 }
 
 /**
@@ -372,27 +383,29 @@ PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
     if(this.cfg.seriesColors)
         this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
     
-    if(this.jq.is(':not(:visible)')) {
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         hiddenParentWidget.addOnshowHandler(function() {
             _self.init();
         });
-    } 
-    else {
-        this.init();
     }
 }
 
 PrimeFaces.widget.MeterGaugeChart.prototype.init = function(){
-    if(this.cfg.initialized)
-        return;
-    else
-        this.cfg.initialized = true;
-    
-    //render chart
-    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+    if(this.jq.is(':visible')) {
+        //render chart
+        this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        
+        return true;
+    } 
+    else {
+        return false;
+    }
 }
 
 /**
