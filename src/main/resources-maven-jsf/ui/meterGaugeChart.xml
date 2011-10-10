@@ -80,12 +80,6 @@
             <type>java.lang.Integer</type>
             <defaultValue>85</defaultValue>
         </attribute>
-        <attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
     </attributes>
     <resources>
         <resource>

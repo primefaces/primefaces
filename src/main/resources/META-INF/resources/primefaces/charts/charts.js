@@ -4,7 +4,10 @@
 PrimeFaces.widget.PieChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
+    var _self = this;
 
     //renderer options
     var rendererCfg = {
@@ -22,16 +25,22 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         rendererOptions: rendererCfg
     };
     
-    this.cfg.highlighter = {show:false}; //ignore default highlighter 
+    this.cfg.highlighter = {show:false};            //ignore default highlighter 
 
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
-    
 }
 
 PrimeFaces.widget.PieChart.prototype.init = function(){
-    
     if(this.cfg.initialized)
         return;
     else
@@ -47,7 +56,7 @@ PrimeFaces.widget.PieChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
 
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
 /**
@@ -56,8 +65,11 @@ PrimeFaces.widget.PieChart.prototype.init = function(){
 PrimeFaces.widget.LineChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
     this.cfg.seriesDefaults = {};
+    var _self = this;
     
     //axes
     this.cfg.axes = this.cfg.axes || {};
@@ -69,8 +81,6 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
 
     this.cfg.axes.yaxis.min = this.cfg.minY;
     this.cfg.axes.yaxis.max = this.cfg.maxY;
-
-   
 
     if(this.cfg.categories) {
         this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
@@ -89,9 +99,17 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
         this.cfg.seriesDefaults.fill = true;
     }
     
-    this.cfg.highlighter = { show : true, formatString : '%s, %s', showTooltip : true};
+    this.cfg.highlighter = {show : true, formatString : '%s, %s', showTooltip : true};
 
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
 }
@@ -109,7 +127,7 @@ PrimeFaces.widget.LineChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
 /**
@@ -118,7 +136,10 @@ PrimeFaces.widget.LineChart.prototype.init = function(){
 PrimeFaces.widget.BarChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
+    var _self = this;
 
     var rendererCfg = {
     	barDirection:this.cfg.orientation,
@@ -165,7 +186,15 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
     
     this.cfg.highlighter = {show:false}; //default highlighter off
 
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
 }
@@ -186,7 +215,7 @@ PrimeFaces.widget.BarChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
 /**
@@ -195,7 +224,10 @@ PrimeFaces.widget.BarChart.prototype.init = function(){
 PrimeFaces.widget.DonutChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
+    var _self = this;
 
     //renderer options
     var rendererCfg = {
@@ -215,7 +247,15 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
     
     this.cfg.highlighter = {show:false}; //default highlighter 
     
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
 }
@@ -236,7 +276,7 @@ PrimeFaces.widget.DonutChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
 
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
 /**
@@ -245,7 +285,10 @@ PrimeFaces.widget.DonutChart.prototype.init = function(){
 PrimeFaces.widget.BubbleChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
+    var _self = this;
 
     //default values
     this.cfg.seriesDefaults.rendererOptions.bubbleAlpha = this.cfg.seriesDefaults.rendererOptions.bubbleAlpha || 0.7;
@@ -253,7 +296,15 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
     this.cfg.highlighter = {show:false};
     this.cfg.seriesDefaults.shadow = this.cfg.shadow;
     
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
 }
@@ -274,7 +325,7 @@ PrimeFaces.widget.BubbleChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
 /**
@@ -283,7 +334,10 @@ PrimeFaces.widget.BubbleChart.prototype.init = function(){
 PrimeFaces.widget.OhlcChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
+    var _self = this;
     
     this.cfg.highlighter = {
           tooltipAxes: 'xy',
@@ -296,9 +350,17 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
           <tr><td>close:</td><td>%s</td></tr></table>'
    }
    
-   if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
-   }
+    }
 }
 
 PrimeFaces.widget.OhlcChart.prototype.init = function(){
@@ -311,7 +373,7 @@ PrimeFaces.widget.OhlcChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
 
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
 /**
@@ -320,12 +382,23 @@ PrimeFaces.widget.OhlcChart.prototype.init = function(){
 PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = this.id.replace(/:/g,"\\:");
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqpId = this.id.replace(/:/g,"\\:");
+    this.jq = $(this.jqId);
+    var _self = this;
 
     if(this.cfg.seriesColors)
         this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
     
-    if(!this.cfg.lazy) {
+    if(this.jq.is(':not(:visible)')) {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        hiddenParentWidget.addOnshowHandler(function() {
+            _self.init();
+        });
+    } 
+    else {
         this.init();
     }
 }
@@ -340,13 +413,16 @@ PrimeFaces.widget.MeterGaugeChart.prototype.init = function(){
         PrimeFaces.widget.ChartUtils.makeResizable(this);
     
     //render chart
-    this.plot = $.jqplot(this.jqId, this.cfg.data, this.cfg);
+    this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 }
 
+/**
+ * Chart Utils
+ */
 PrimeFaces.widget.ChartUtils = {
     
     bindItemSelectListener : function(chart) {
-        $('#' + chart.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+        $(chart.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
             if(neighbor && chart.cfg.behaviors) {
                 var itemSelectCallback = chart.cfg.behaviors['itemSelect'];
                 if(itemSelectCallback) {
@@ -363,40 +439,46 @@ PrimeFaces.widget.ChartUtils = {
         });
     },
     
-    makeResizable : function(chart){
-        var jq = $(PrimeFaces.escapeClientId(chart.id)),
-        rs = $("<div class='ui-widget-content'></div>");
+    makeResizable : function(chart) {
+        var rs = $("<div class='ui-widget-content'></div>");
         
-        rs.insertBefore(jq);
-        jq.appendTo(rs);
+        rs.insertBefore(chart.jq);
+        chart.jq.appendTo(rs);
         
         rs.resizable({helper:'ui-resizable-helper'}).bind('resizestop', function(event, ui) {
-            jq.height(rs.height());
-            jq.width(rs.width());
+            chart.jq.height(rs.height());
+            chart.jq.width(rs.width());
             chart.plot.replot();
             PrimeFaces.widget.ChartUtils.bindHighlighter(chart);
             PrimeFaces.widget.ChartUtils.bindItemSelectListener(chart);
         });
     },
     
-    bindHighlighter : function(chart){
-      var _self = chart;
-      var panel = $('#' + chart.jqId);
-      panel.append($('<div class="ui-chart-tooltip" style="position:absolute;overflow:hidden;white-space:nowrap;display:none;background:#E5DACA;padding:4px; z-index:1000;"></div>').css({opacity : 0.8}));
-      var tooltip = panel.find('.ui-chart-tooltip');
-      panel.bind('jqplotDataHighlight',
-        function (ev, seriesIndex, pointIndex, data) {
-          var text = _self.cfg.categories ? _self.cfg.categories[pointIndex] + ' : ' : '';
-          text += (_self.cfg.series ? _self.cfg.series[seriesIndex].label + " : " : '') + data[0] + " : " +data[1];
-          tooltip.html(text).css({display : 'block'});
-        }
-      ).bind('jqplotDataUnhighlight',
-        function (ev, seriesIndex, pointIndex, data) {
-          tooltip.css({display : 'none'});
-      }).bind('jqplotMouseMove', 
-        function(ev, gridpos, datapos, neighbor, plot){
-          if (neighbor != null)
-            tooltip.css({left:(gridpos.x ), top:(gridpos.y - 5)});
-      });
+    bindHighlighter : function(chartWidget){      
+      chartWidget.jq.append($('<div class="ui-chart-tooltip" style="position:absolute;overflow:hidden;white-space:nowrap;display:none;background:#E5DACA;padding:4px; z-index:1000;"></div>').css({opacity : 0.8}));
+      
+      var tooltip = chartWidget.jq.find('.ui-chart-tooltip');
+      
+      chartWidget.jq.bind('jqplotDataHighlight',
+            function (ev, seriesIndex, pointIndex, data) {
+                var text = chartWidget.cfg.categories ? chartWidget.cfg.categories[pointIndex] + ' : ' : '';
+                text += (chartWidget.cfg.series ? chartWidget.cfg.series[seriesIndex].label + " : " : '') + data[0] + " : " +data[1];
+                tooltip.html(text).css({
+                    display : 'block'
+                });
+            }
+            ).bind('jqplotDataUnhighlight',
+            function (ev, seriesIndex, pointIndex, data) {
+                tooltip.css({
+                    display : 'none'
+                });
+            }).bind('jqplotMouseMove', 
+            function(ev, gridpos, datapos, neighbor, plot){
+                if (neighbor != null)
+                    tooltip.css({
+                        left:(gridpos.x ), 
+                        top:(gridpos.y - 5)
+                        });
+            });
     }
 }

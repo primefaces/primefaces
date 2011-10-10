@@ -47,8 +47,7 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
         ,xaxisAngle
         ,yaxisAngle
         ,resizable
-        ,seriesColors
-        ,lazy;
+        ,seriesColors;
 
 		String toString;
 
@@ -158,13 +157,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
 	public void setSeriesColors(java.lang.String _seriesColors) {
 		getStateHelper().put(PropertyKeys.seriesColors, _seriesColors);
-	}
-    
-    public boolean isLazy() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.lazy, false);
-	}
-	public void setLazy(boolean _lazy) {
-		getStateHelper().put(PropertyKeys.lazy, _lazy);
 	}
     
     @Override
