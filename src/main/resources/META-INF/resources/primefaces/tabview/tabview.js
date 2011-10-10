@@ -10,6 +10,7 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     this.panelContainer = this.jq.children('.ui-tabs-panels');
     this.stateHolder = $(this.jqId + '_activeIndex');
     this.cfg.selected = parseInt(this.stateHolder.val());
+    this.onshowHandlers = [];
     
     this.bindEvents();
 	
@@ -17,6 +18,8 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     if(this.cfg.dynamic && this.cfg.cache) {
         this.markAsLoaded(this.panelContainer.children().eq(this.cfg.selected));
     }
+    
+    this.panelContainer.children('.ui-tabs-panel').data('widget', this);
 }
 
 PrimeFaces.widget.TabView.prototype.bindEvents = function() {
@@ -79,7 +82,7 @@ PrimeFaces.widget.TabView.prototype.select = function(index) {
         
     if(shouldLoad) {
         this.loadDynamicTab(newPanel);
-    } 
+    }
     else {
         this.show(newPanel);
 
@@ -102,7 +105,9 @@ PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
             $(this).hide();
             
             newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
-            newPanel.show(_self.cfg.effect.name, null, _self.cfg.effect.duration);
+            newPanel.show(_self.cfg.effect.name, null, _self.cfg.effect.duration, function() {
+                _self.postTabShow(newPanel);
+            });
         });
     }
     else {
@@ -111,11 +116,8 @@ PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
         
         newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
         newPanel.show();
-    }
-    
-    //Call user onTabShow callback
-    if(this.cfg.onTabShow) {
-        this.cfg.onTabShow.call(this, newPanel);
+        
+        this.postTabShow(newPanel);
     }
 }
 
@@ -256,4 +258,20 @@ PrimeFaces.widget.TabView.prototype.disable = function(index) {
 
 PrimeFaces.widget.TabView.prototype.enable = function(index) {
     this.navContainer.children().eq(index).removeClass('ui-state-disabled');
+}
+
+PrimeFaces.widget.TabView.prototype.addOnshowHandler = function(fn) {
+    this.onshowHandlers.push(fn);
+}
+
+PrimeFaces.widget.TabView.prototype.postTabShow = function(newPanel) {    
+    //execute user defined callback
+    if(this.cfg.onTabShow) {
+        this.cfg.onTabShow.call(this, newPanel);
+    }
+    
+    //execute onshowHandlers and remove successful ones
+    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+		return !fn.call();
+	});
 }

@@ -19,10 +19,11 @@ import javax.faces.component.visit.VisitResult;
 
     public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-corner-all";
     public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all";
-    public static final String TAB_HEADER_CLASS = "ui-state-default ui-corner-top";
+    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-state-default ui-corner-top";
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-state-default ui-corner-top ui-tabs-selected ui-state-active";
     public static final String PANELS_CLASS = "ui-tabs-panels";
-    public static final String TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom ui-helper-hidden";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
 

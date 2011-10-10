@@ -158,18 +158,16 @@ PrimeFaces.widget.Dialog.prototype._show = function() {
         this.enableModality();
 }
 
-PrimeFaces.widget.Dialog.prototype.postShow = function() {
-    var _self = this;
-    
+PrimeFaces.widget.Dialog.prototype.postShow = function() {   
+    //execute user defined callback
     if(this.cfg.onShow) {
         this.cfg.onShow.call(this);
     }
             
-    //execute onshowHandlers 
-    while(this.onshowHandlers.length) {
-        this.onshowHandlers[0].call();
-        this.onshowHandlers.remove(0);
-    }
+    //execute onshowHandlers and remove successful ones
+    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+		return !fn.call();
+	});
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {   
