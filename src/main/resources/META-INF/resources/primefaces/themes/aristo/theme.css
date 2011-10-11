@@ -1175,101 +1175,14 @@ button.ui-button::-moz-focus-inner
     border: 0;
     padding: 0;
 }
-/* reset extra padding in Firefox */
-/*
- * jQuery UI Dialog @VERSION
- *
- * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Dialog#theming
- */
-.ui-dialog
-{
-    position: absolute;
-    padding: .2em;
-    width: 300px;
-    overflow: hidden;
+
+.ui-dialog {
     -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
 }
-.ui-dialog .ui-dialog-titlebar
-{
-    padding: .5em 1em .3em;
-    position: relative;
-}
-.ui-dialog .ui-dialog-title
-{
-    float: left;
-    margin: .1em 16px .2em 0;
-}
-.ui-dialog .ui-dialog-titlebar-close
-{
-    position: absolute;
-    right: .3em;
-    top: 50%;
-    width: 19px;
-    margin: -10px 0 0 0;
-    padding: 1px;
-    height: 18px;
-    -moz-border-radius: 10px;
-}
-.ui-dialog .ui-dialog-titlebar-close span
-{
-    display: block;
-    margin: 1px;
-}
-.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus
-{
-    padding: 0;
-}
-.ui-dialog .ui-dialog-content
-{
-    position: relative;
-    border: 0;
-    padding: .5em 1em;
-    background: none;
-    overflow: auto;
-    zoom: 1;
-}
-.ui-dialog .ui-dialog-buttonpane
-{
-    text-align: left;
-    border-width: 1px 0 0 0;
-    background-image: none;
-    margin: .5em 0 0 0;
-    padding: .3em 1em .5em .4em;
-}
-.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset
-{
-    float: right;
-}
-.ui-dialog .ui-dialog-buttonpane button
-{
-    margin: .5em .4em .5em 0;
-    cursor: pointer;
-}
-.ui-dialog .ui-resizable-se
-{
-    width: 14px;
-    height: 14px;
-    right: 3px;
-    bottom: 3px;
-}
-.ui-draggable .ui-dialog-titlebar
-{
-    cursor: move;
-}
 
-.ui-dialog
-{
-    padding: 0;
-}
-
-.ui-dialog .ui-dialog-titlebar
-{
+.ui-dialog .ui-dialog-titlebar {
     border-top: none;
     border-right: none;
     border-left: none;
@@ -1278,31 +1191,12 @@ button.ui-button::-moz-focus-inner
     border-radius: 0;
 }
 
-.ui-dialog .ui-dialog-titlebar-close
-{
-}
-
-/*
- * jQuery UI Slider @VERSION
- *
- * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Slider#theming
- */
-.ui-slider
-{
-    position: relative;
-    text-align: left;
+.ui-slider {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
-.ui-slider .ui-slider-handle
-{
-    position: absolute;
-    z-index: 2;
+.ui-slider .ui-slider-handle {
     width: 16px;
     height: 16px;
     cursor: default;
