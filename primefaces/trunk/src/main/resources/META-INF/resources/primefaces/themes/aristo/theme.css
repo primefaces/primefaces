@@ -1195,117 +1195,45 @@ button.ui-button::-moz-focus-inner
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-}
-.ui-slider .ui-slider-handle {
-    width: 16px;
-    height: 16px;
-    cursor: default;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-.ui-slider .ui-slider-range
-{
-    position: absolute;
-    z-index: 1;
-    font-size: .7em;
-    display: block;
-    border: 0;
-    background-position: 0 0;
-}
-
-
-.ui-slider
-{
     background: #cbcbcb;
     -moz-box-shadow: inset 0 2px 2px #8f8f8f;
     -webkit-box-shadow: inset 0 2px 2px #8f8f8f;
     box-shadow: inset 0 2px 2px #8f8f8f;
 }
-
-.ui-slider .ui-slider-range
-{
+.ui-slider .ui-slider-handle {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+.ui-slider .ui-slider-range {
     background: #a3cae0;
     -moz-box-shadow: inset 0 2px 2px #7d9aab;
     -webkit-box-shadow: inset 0 2px 2px #7d9aab;
     box-shadow: inset 0 2px 2px #7d9aab;
 }
 
-.ui-slider-vertical
-{
+.ui-slider-vertical {
     background: #cbcbcb;
     -moz-box-shadow: inset 0 2px 2px #8f8f8f;
     -webkit-box-shadow: inset 0 2px 2px #8f8f8f;
     box-shadow: inset 0 2px 2px #8f8f8f;
 }
 
-.ui-slider-vertical .ui-slider-range
-{
+.ui-slider-vertical .ui-slider-range {
     background: #a3cae0;
     -moz-box-shadow: inset 2px 0 2px #7d9aab;
     -webkit-box-shadow: inset 2px 0 2px #7d9aab;
     box-shadow: inset 2px 0 2px #7d9aab;
 }
 
-
-.ui-slider .ui-slider-handle span
-{
+.ui-slider .ui-slider-handle span {
     height: 16px !important;
     width: 16px !important;
     float: none !important;
     margin: 0 auto !important;
 }
 
-
-.ui-slider-horizontal
-{
-    height: .4em;
-}
-.ui-slider-horizontal .ui-slider-handle
-{
-    top: -.5em;
-    margin-left: -.6em;
-}
-.ui-slider-horizontal .ui-slider-range
-{
-    top: 0;
-    height: 100%;
-}
-.ui-slider-horizontal .ui-slider-range-min
-{
-    left: 0;
-}
-.ui-slider-horizontal .ui-slider-range-max
-{
-    right: 0;
-}
-
-.ui-slider-vertical
-{
-    width: .4em;
-    height: 100px;
-}
-.ui-slider-vertical .ui-slider-handle
-{
-    left: -.5em;
-    margin-left: 0;
-    margin-bottom: -.6em;
-}
-.ui-slider-vertical .ui-slider-range
-{
-    left: 0;
-    width: 100%;
-}
-.ui-slider-vertical .ui-slider-range-min
-{
-    bottom: 0;
-}
-.ui-slider-vertical .ui-slider-range-max
-{
-    top: 0;
-}
-.ui-slider .ui-slider-handle
-{
+.ui-slider .ui-slider-handle {
     background: #85b2cb;
     background: #85b2cb linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
     background: #85b2cb -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
