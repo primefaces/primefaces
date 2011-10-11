@@ -100,13 +100,13 @@ public class ExcelExporter extends Exporter {
         int numberOfColumns = columns.size();
         
         Object selection = table.getSelection();
-        boolean multiple = table.getSelectionMode().equalsIgnoreCase("multiple");
+        boolean single = table.isSingleSelectionMode();
         int sheetRowIndex = 1;
         
-    	int size = selection == null  ? 0 : multiple ? Array.getLength(selection) : 1;
+    	int size = selection == null  ? 0 : single ? 1 : Array.getLength(selection);
 
         for(int i = 0; i < size; i++) {
-            context.getExternalContext().getRequestMap().put(table.getVar(), multiple ? Array.get(selection, i) : selection);
+            context.getExternalContext().getRequestMap().put(table.getVar(), single ? selection : Array.get(selection, i));
             
 			Row row = sheet.createRow(sheetRowIndex++);
 			

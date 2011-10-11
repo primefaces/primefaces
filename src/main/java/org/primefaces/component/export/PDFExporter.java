@@ -126,12 +126,12 @@ public class PDFExporter extends Exporter {
         int numberOfColumns = columns.size();
         
         Object selection = table.getSelection();
-        boolean selectionMode = table.getSelectionMode().equalsIgnoreCase("multiple");
+        boolean single = table.isSingleSelectionMode();
         
-    	int size = selection == null  ? 0 : selectionMode ? Array.getLength(selection) : 1;
+    	int size = selection == null  ? 0 : single ? 1 : Array.getLength(selection);
         
         for(int i = 0; i < size; i++) {
-            context.getExternalContext().getRequestMap().put(table.getVar(), selectionMode ? Array.get(selection, i) : selection );
+            context.getExternalContext().getRequestMap().put(table.getVar(), single ? selection : Array.get(selection, i) );
 
 			for(int j = 0; j < numberOfColumns; j++) {				
                 addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
