@@ -107,12 +107,12 @@ public class XMLExporter extends Exporter {
     
     public void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, List<String> headers, PrintWriter writer) throws IOException{
         Object selection = table.getSelection();
-        boolean selectionMode = table.getSelectionMode().equalsIgnoreCase("multiple");
-        int size = selection == null  ? 0 : selectionMode ? Array.getLength(selection) : 1;
+        boolean single = table.isSingleSelectionMode();
+        int size = selection == null  ? 0 : single ?  1 : Array.getLength(selection);
         String var = table.getVar().toLowerCase();
     	
     	for (int i = 0; i < size; i++) {
-    		context.getExternalContext().getRequestMap().put(table.getVar(), selectionMode ? Array.get(selection, i) : selection );
+    		context.getExternalContext().getRequestMap().put(table.getVar(), single ? selection : Array.get(selection, i));
 
     		writer.write("\t<" + var + ">\n");
     		addColumnValues(writer, columns, headers);
