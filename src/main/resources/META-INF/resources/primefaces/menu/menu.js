@@ -75,13 +75,14 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
     var _self = this;
     
     this.menuitems.mouseenter(function(e) {
-        var menuitem = $(this);
+        var menuitem = $(this),
+        menuitemLink = menuitem.children('.ui-menuitem-link');
 
-        if(menuitem.hasClass('ui-state-disabled')) {
+        if(menuitemLink.hasClass('ui-state-disabled')) {
             return false;
         }
         
-        menuitem.addClass('ui-state-hover');
+        menuitemLink.addClass('ui-state-hover');
         
         if(_self.cfg.tiered) {
             var submenu = menuitem.children('ul.ui-menu-child');
@@ -99,8 +100,10 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
         }
 
     }).mouseleave(function(e) {
-        var menuitem = $(this);
-        menuitem.removeClass('ui-state-hover')
+        var menuitem = $(this),
+        menuitemLink = menuitem.children('.ui-menuitem-link');
+        
+        menuitemLink.removeClass('ui-state-hover')
         
         if(_self.cfg.tiered) {
             menuitem.find('.ui-menu-child:visible').hide();
