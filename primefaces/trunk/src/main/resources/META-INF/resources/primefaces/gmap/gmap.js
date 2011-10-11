@@ -1,8 +1,30 @@
+/**
+ * PrimeFaces Google Maps Widget
+ */
 PrimeFaces.widget.GMap = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+    var _self = this;
 	
-	this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
+	if(this.jq.is(':visible')) {
+        this.init();
+    }
+    else {
+        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                _self.init();
+            });
+        }
+    }
+}
+
+PrimeFaces.widget.GMap.prototype.init = function() {
+    this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
 	this.cfg.fitBounds = !(this.cfg.fitBounds === false);
     this.viewport = this.map.getBounds();
     
