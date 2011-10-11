@@ -185,10 +185,10 @@
     </attributes>
     <resources>
         <resource>
-			<name>dialog/dialog.css</name>
+			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>dialog/dialog.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
