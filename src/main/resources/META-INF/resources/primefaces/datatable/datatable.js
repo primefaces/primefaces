@@ -293,6 +293,16 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 if(_self.cfg.resizableColumns) {
                     _self.restoreColumnWidths();
                 }
+                
+                if(_self.checkAllToggler) {
+                    var checkedBoxes = $(_self.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox:checked'),
+                    rows = $(_self.jqId + ' tbody.ui-datatable-data > tr');
+                    
+                    if(checkedBoxes.length == rows.length)
+                        _self.checkAllToggler.attr('checked', 'checked');
+                    else
+                        _self.checkAllToggler.removeAttr('checked');
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -632,13 +642,13 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
  * Selects all rows with checkbox
  */
 PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
-    var checked = this.checkAllToggler.attr('checked'),
+    var checked = this.checkAllToggler.is(':checked'),
     rows = $(this.jqId + ' .ui-datatable-data > tr.ui-widget-content'),
     checkboxes = rows.children('td.ui-selection-column').find('input:checkbox'),
     _self = this;
 
     if(checked) {
-        checkboxes.attr('checked', true);
+        checkboxes.attr('checked', 'checked');
         rows.addClass('ui-state-highlight');
 
         //add to selection
@@ -647,7 +657,7 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
         });
     }
     else {
-        checkboxes.attr('checked', false);
+        checkboxes.removeAttr('checked');
         rows.removeClass('ui-state-highlight');
         
         //remove from selection
