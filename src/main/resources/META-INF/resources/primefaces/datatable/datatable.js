@@ -152,6 +152,11 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 });
         }
         else {
+            this.checkAllToggler = $(this.jqId + ' > table thead th.ui-selection-column input:checkbox');
+            this.checkAllToggler.bind('click', function() {
+                _self.toggleCheckAll();
+            });
+            
             $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox')
                 .die('click')
                 .live('click', function() {
@@ -626,9 +631,8 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
 /**
  * Selects all rows with checkbox
  */
-PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function(element) {
-    var checkbox = $(element),
-    checked = checkbox.attr('checked'),
+PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
+    var checked = this.checkAllToggler.attr('checked'),
     rows = $(this.jqId + ' .ui-datatable-data > tr.ui-widget-content'),
     checkboxes = rows.children('td.ui-selection-column').find('input:checkbox'),
     _self = this;

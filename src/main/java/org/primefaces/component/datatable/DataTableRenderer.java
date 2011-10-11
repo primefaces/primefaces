@@ -345,7 +345,6 @@ public class DataTableRenderer extends CoreRenderer {
             writer.startElement("input", null);
             writer.writeAttribute("type", "checkbox", null);
             writer.writeAttribute("name", clientId + "_checkAll", null);
-            writer.writeAttribute("onclick", table.resolveWidgetVar() + ".toggleCheckAll(this)", null);
             writer.endElement("input");
         }
         else {
