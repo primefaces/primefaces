@@ -6,6 +6,11 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
     this.jq = $(this.jqId);
+    
+    //prevent re-init
+    if(this.jq.data('widget'))
+        return;
+    
     this.stateHolder = $(this.jqId + '_active');
     this.headers = this.jq.children('.ui-accordion-header');
     this.panels = this.jq.children('.ui-accordion-content');
@@ -22,6 +27,7 @@ PrimeFaces.widget.AccordionPanel = function(id, cfg) {
     }
     
     this.panels.data('widget', this);
+    this.jq.data('widget', this);
 }
 
 PrimeFaces.widget.AccordionPanel.prototype.bindEvents = function() {
