@@ -112,6 +112,11 @@ PrimeFaces = {
                 sel.empty();
         }
     },
+    
+    extend: function(subClass, superClass) {
+        subClass.prototype = new superClass;
+        subClass.prototype.constructor = subClass;
+    },
 
     locales : {},
 	
@@ -133,6 +138,23 @@ PrimeFaces = {
 PrimeFaces.ajax = {};
 PrimeFaces.widget = {};
 PrimeFaces.websockets = {};
+
+/**
+ * BaseWidget for PrimeFaces Widgets to implement common tasks
+ */
+PrimeFaces.widget.BaseWidget = function() {}
+
+PrimeFaces.widget.BaseWidget.prototype.postConstruct = function() {
+    this.getScriptTag().remove();
+};
+
+PrimeFaces.widget.BaseWidget.prototype.getScriptTag = function() {
+    return this.getJQ().next('script');
+};
+
+PrimeFaces.widget.BaseWidget.prototype.getJQ = function() {
+    return this.jq;
+};
 
 PrimeFaces.ajax.AjaxUtils = {
 	

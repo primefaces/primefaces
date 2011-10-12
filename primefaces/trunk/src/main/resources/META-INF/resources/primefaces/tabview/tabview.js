@@ -20,7 +20,11 @@ PrimeFaces.widget.TabView = function(id, cfg) {
     }
     
     this.panelContainer.children('.ui-tabs-panel').data('widget', this);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.TabView, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.TabView.prototype.bindEvents = function() {
     var _self = this;
