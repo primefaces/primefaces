@@ -345,6 +345,9 @@ public class DataTableRenderer extends CoreRenderer {
             writer.startElement("input", null);
             writer.writeAttribute("type", "checkbox", null);
             writer.writeAttribute("name", clientId + "_checkAll", null);
+            if(column.isDisabledSelection()) {
+                writer.writeAttribute("disabled", "disabled", null);
+            }
             writer.endElement("input");
         }
         else {
@@ -949,23 +952,31 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String selectionMode = column.getSelectionMode();
         String name = clientId + "_selection";
+        boolean disabled = column.isDisabledSelection();
 
         if(selectionMode.equalsIgnoreCase("single")) {
             writer.startElement("input", null);
             writer.writeAttribute("type", "radio", null);
             writer.writeAttribute("name", name + "_radio", null);
-            if(selected) {
+            
+            if(selected)
                 writer.writeAttribute("checked", "checked", null);
-            }
+            
+            if(disabled)
+                writer.writeAttribute("disabled", "disabled", null);
+            
             writer.endElement("input");
             
         } else if(selectionMode.equalsIgnoreCase("multiple")) {
             writer.startElement("input", null);
             writer.writeAttribute("type", "checkbox", null);
             writer.writeAttribute("name", name + "_checkbox", null);
-            if(selected) {
+            if(selected)
                 writer.writeAttribute("checked", "checked", null);
-            }
+            
+            if(disabled)
+                writer.writeAttribute("disabled", "disabled", null);
+            
             writer.endElement("input");
 
         } else {

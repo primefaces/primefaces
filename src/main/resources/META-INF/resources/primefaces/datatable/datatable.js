@@ -294,11 +294,18 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                     _self.restoreColumnWidths();
                 }
                 
+                //update checkall checkbox if all enabled checkboxes are checked
                 if(_self.checkAllToggler) {
-                    var checkedBoxes = $(_self.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox:checked'),
-                    rows = $(_self.jqId + ' tbody.ui-datatable-data > tr');
-                    
-                    if(checkedBoxes.length == rows.length)
+                    var checkboxes = $(_self.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column input:checkbox'),
+                    uncheckedBoxes = $.grep(checkboxes, function(element) {
+                        var checkbox = $(element),
+                        disabled = checkbox.is(':disabled'),
+                        checked = checkbox.is(':checked');
+                        
+                        return !(checked || disabled); 
+                    });
+                                       
+                    if(uncheckedBoxes.length == 0)
                         _self.checkAllToggler.attr('checked', 'checked');
                     else
                         _self.checkAllToggler.removeAttr('checked');
@@ -643,26 +650,29 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
  */
 PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
     var checked = this.checkAllToggler.is(':checked'),
-    rows = $(this.jqId + ' .ui-datatable-data > tr.ui-widget-content'),
-    checkboxes = rows.children('td.ui-selection-column').find('input:checkbox'),
+    checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column').find('input:checkbox:not(:disabled)'),
     _self = this;
 
     if(checked) {
         checkboxes.attr('checked', 'checked');
-        rows.addClass('ui-state-highlight');
 
         //add to selection
-        rows.each(function() {            
-            _self.addSelection(_self.getRowMeta($(this)).key);
+        checkboxes.each(function() {
+            var row = $(this).parents('.ui-widget-content:first');
+            row.addClass('ui-state-highlight');
+            
+            _self.addSelection(_self.getRowMeta(row).key);
         });
     }
     else {
         checkboxes.removeAttr('checked');
-        rows.removeClass('ui-state-highlight');
         
         //remove from selection
-        rows.each(function() {
-            _self.removeSelection(_self.getRowMeta($(this)).key);
+        checkboxes.each(function() {
+            var row = $(this).parents('.ui-widget-content:first');
+            row.removeClass('ui-state-highlight');
+            
+            _self.removeSelection(_self.getRowMeta(row).key);
         });
     }
 
