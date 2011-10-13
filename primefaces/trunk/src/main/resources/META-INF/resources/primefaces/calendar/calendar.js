@@ -19,7 +19,7 @@
 
 (function($) {
 
-$.extend($.ui, { timepicker: { version: "0.9.6" } });
+$.extend($.ui, {timepicker: {version: "0.9.6"}});
 
 /* Time picker manager.
    Use the singleton instance of this class, $.timepicker, to interact with the time picker.
@@ -160,8 +160,8 @@ $.extend(Timepicker.prototype, {
 
 		if (o.altField)
 			tp_inst.$altInput = $(o.altField)
-				.css({ cursor: 'pointer' })
-				.focus(function(){ $input.trigger("focus"); });
+				.css({cursor: 'pointer'})
+				.focus(function(){$input.trigger("focus");});
 					
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
@@ -245,7 +245,7 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_getFormatPositions: function() {
 		var finds = this._defaults.timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|t{1,2}|z)/g),
-			orders = { h: -1, m: -1, s: -1, t: -1, z: -1 };
+			orders = {h: -1, m: -1, s: -1, t: -1, z: -1};
 
 		if (finds)
 			for (var i = 0; i < finds.length; i++)
@@ -591,11 +591,11 @@ $.extend(Timepicker.prototype, {
 				secMax  = (this._defaults.secondMax - (this._defaults.secondMax % this._defaults.stepSecond)).toFixed(0);
 
 			if(this.hour_slider)
-				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
+				this.hour_slider.slider("option", {min: this._defaults.hourMin, max: hourMax}).slider('value', this.hour);
 			if(this.minute_slider)
-				this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: minMax }).slider('value', this.minute);
+				this.minute_slider.slider("option", {min: this._defaults.minuteMin, max: minMax}).slider('value', this.minute);
 			if(this.second_slider)
-				this.second_slider.slider("option", { min: this._defaults.secondMin, max: secMax }).slider('value', this.second);
+				this.second_slider.slider("option", {min: this._defaults.secondMin, max: secMax}).slider('value', this.second);
 		}
 
 	},
@@ -662,7 +662,7 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_formatTime: function(time, format, ampm) {
 		if (ampm == undefined) ampm = this._defaults.ampm;
-		time = time || { hour: this.hour, minute: this.minute, second: this.second, ampm: this.ampm, timezone: this.timezone };
+		time = time || {hour: this.hour, minute: this.minute, second: this.second, ampm: this.ampm, timezone: this.timezone};
 		var tmptime = format || this._defaults.timeFormat.toString();
 
 		if (ampm) {
@@ -745,7 +745,7 @@ $.fn.extend({
 		o = o || {};
 		var tmp_args = arguments;
 
-		if (typeof o == 'object') tmp_args[0] = $.extend(o, { timeOnly: true });
+		if (typeof o == 'object') tmp_args[0] = $.extend(o, {timeOnly: true});
 
 		return $(this).each(function() {
 			$.fn.datetimepicker.apply($(this), tmp_args);
@@ -1067,8 +1067,9 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(id);
+    this.jq = $(this.jq);
     this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
-    this.jq = $(this.jqElId);
+    this.jqEl = $(this.jqElId);
     this.cfg.formId = this.jq.parents('form:first').attr('id');
     
     //i18n and l7n
@@ -1095,9 +1096,8 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
         this.cfg.beforeShowDay = $.datepicker.noWeekends;
     }
 
-    var hasTimePicker = this.hasTimePicker();
-
     //Setup timepicker
+    var hasTimePicker = this.hasTimePicker();
     if(hasTimePicker) {
         this.configureTimePicker();
     }
@@ -1106,30 +1106,34 @@ PrimeFaces.widget.Calendar = function(id, cfg) {
     if(!this.cfg.disabled) {
         if(hasTimePicker) {
             if(this.cfg.timeOnly)
-                this.jq.timepicker(this.cfg);
+                this.jqEl.timepicker(this.cfg);
             else
-                this.jq.datetimepicker(this.cfg);
+                this.jqEl.datetimepicker(this.cfg);
         }
         else {
-            this.jq.datepicker(this.cfg);
+            this.jqEl.datepicker(this.cfg);
         }
     }
 
     //Client behaviors and input skinning
     if(this.cfg.popup) {
         if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+            PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
         }
 
         //Visuals
         if(this.cfg.popup && this.cfg.theme != false) {
-            PrimeFaces.skinInput(this.jq);
+            PrimeFaces.skinInput(this.jqEl);
         }
     }
     
     //button title
-    this.jq.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
+    this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Calendar, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
     var localeSettings = PrimeFaces.locales[this.cfg.locale];
@@ -1179,17 +1183,17 @@ PrimeFaces.widget.Calendar.prototype.hasTimePicker = function() {
 }
 
 PrimeFaces.widget.Calendar.prototype.setDate = function(date) {
-    this.jq.datetimepicker('setDate', date);
+    this.jqEl.datetimepicker('setDate', date);
 }
 
 PrimeFaces.widget.Calendar.prototype.getDate = function() {
-    return this.jq.datetimepicker('getDate');
+    return this.jqEl.datetimepicker('getDate');
 }
 
 PrimeFaces.widget.Calendar.prototype.enable = function() {
-    this.jq.datetimepicker('enable');
+    this.jqEl.datetimepicker('enable');
 }
 
 PrimeFaces.widget.Calendar.prototype.disable = function() {
-    this.jq.datetimepicker('disable');
+    this.jqEl.datetimepicker('disable');
 }

@@ -787,12 +787,13 @@ PrimeFaces.widget.ColorPicker = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
     
     var _self = this,
     popup = this.cfg.mode == 'popup';
-
-    this.jq = popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
+    
+    this.jqEl = popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
 
     //options
     this.cfg.flat = !popup;
@@ -803,7 +804,7 @@ PrimeFaces.widget.ColorPicker = function(id, cfg) {
 		_self.input.val(hex);
 
         if(popup) {
-            $(_self.jqId + '_livePreview').css('backgroundColor', '#' + hex);
+            _self.livePreview.css('backgroundColor', '#' + hex);
         }
 	};
 
@@ -821,20 +822,21 @@ PrimeFaces.widget.ColorPicker = function(id, cfg) {
     }
 
     //create colorpicker
-    this.jq.ColorPicker(this.cfg);
+    this.jqEl.ColorPicker(this.cfg);
 
-    //post init
+    //popup ui
     if(popup) {
-        this.jq.button();
+        this.jqEl.button();
+        this.livePreview = $(this.jqId + '_livePreview');
+        
+        var zindex = this.cfg.zindex ? this.cfg.zindex : 10000,
+        overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
 
-        var overlay = this.getOverlay(),
-        zindex = this.cfg.zindex ? this.cfg.zindex : 10000;
-
-        overlay.appendTo($(this.jqId));
+        overlay.appendTo(this.jq);
         overlay.css('z-index', zindex);
     }
+    
+    this.postConstruct();
 }
 
-PrimeFaces.widget.ColorPicker.prototype.getOverlay = function() {
-    return $(PrimeFaces.escapeClientId(this.jq.data('colorpickerId')));
-}
+PrimeFaces.extend(PrimeFaces.widget.ColorPicker, PrimeFaces.widget.BaseWidget);

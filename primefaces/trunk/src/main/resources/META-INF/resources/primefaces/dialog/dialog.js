@@ -72,7 +72,11 @@ PrimeFaces.widget.Dialog = function(id, cfg) {
     }
     
     this.jq.data('widget', this);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Dialog, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Dialog.prototype.enableModality = function() {
     var _self = this;
@@ -441,6 +445,10 @@ PrimeFaces.widget.Dialog.prototype.loadContents = function() {
 
 PrimeFaces.widget.Dialog.prototype.addOnshowHandler = function(fn) {
     this.onshowHandlers.push(fn);
+}
+
+PrimeFaces.widget.Dialog.prototype.getScriptTag = function() {
+    return this.getJQ().prev('script');
 }
 
 /**

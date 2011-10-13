@@ -30,8 +30,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ConfirmDialog dialog = (ConfirmDialog) component;
 		
-		encodeMarkup(context, dialog);
 		encodeScript(context, dialog);
+        encodeMarkup(context, dialog);
 	}
 
 	protected void encodeMarkup(FacesContext context, ConfirmDialog dialog) throws IOException {

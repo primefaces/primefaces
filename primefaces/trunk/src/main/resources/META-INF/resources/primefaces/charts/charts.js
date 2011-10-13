@@ -40,7 +40,11 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.PieChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.PieChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
@@ -115,7 +119,11 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.LineChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.LineChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
@@ -200,7 +208,11 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.BarChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.BarChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
@@ -262,7 +274,11 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.DonutChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.DonutChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
@@ -312,7 +328,11 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.BubbleChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.BubbleChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
@@ -367,7 +387,11 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.OhlcChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.OhlcChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
@@ -408,7 +432,11 @@ PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.MeterGaugeChart, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.MeterGaugeChart.prototype.init = function(){
     if(this.jq.is(':visible')) {
