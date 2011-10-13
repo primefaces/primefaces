@@ -39,7 +39,11 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     //Panel management
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.AutoComplete, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
     var _self = this;
