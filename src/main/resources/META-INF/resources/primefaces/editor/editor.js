@@ -97,7 +97,7 @@
     },
 
     // imagesPath - returns the path to the images folder
-    imagesPath: function() { return imagesPath(); }
+    imagesPath: function() {return imagesPath();}
 
   };
 
@@ -713,8 +713,8 @@
     if (ie && command.toLowerCase() == "inserthtml")
       getRange(editor).pasteHTML(value);
     else {
-      try { success = editor.doc.execCommand(command, 0, value || null); }
-      catch (err) { description = err.description; success = false; }
+      try {success = editor.doc.execCommand(command, 0, value || null);}
+      catch (err) {description = err.description;success = false;}
       if (!success) {
         if ("cutcopypaste".indexOf(command) > -1)
           showMessage(editor, "For security reasons, your browser does not support the " +
@@ -1155,7 +1155,11 @@ PrimeFaces.widget.Editor = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Editor, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Editor.prototype.init = function() {
     if(this.jq.is(':visible')) {

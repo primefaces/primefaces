@@ -43,7 +43,11 @@ PrimeFaces.widget.DataTable = function(id, cfg) {
     if(this.cfg.resizableColumns) {
         this.setupResizableColumns();
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.DataTable, PrimeFaces.widget.BaseWidget);
 
 /**
  * Binds the change event listener and renders the paginator

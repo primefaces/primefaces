@@ -37,6 +37,7 @@ public class DraggableRenderer extends CoreRenderer {
         String dashboard = draggable.getDashboard();
 
         writer.startElement("script", draggable);
+        writer.writeAttribute("id", clientId + "_script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");

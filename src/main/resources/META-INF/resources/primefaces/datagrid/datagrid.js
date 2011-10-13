@@ -5,13 +5,18 @@ PrimeFaces.widget.DataGrid = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
     this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
     this.content = this.jqId + '_content';
 	
     if(this.cfg.paginator) {
         this.setupPaginator();
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.DataGrid, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.DataGrid.prototype.setupPaginator = function() {
     var paginator = this.getPaginator();
