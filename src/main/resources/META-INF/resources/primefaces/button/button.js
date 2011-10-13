@@ -1,5 +1,5 @@
 /* 
- * CommandButton
+ * PrimeFaces CommandButton Widget
  */
 PrimeFaces.widget.CommandButton = function(id, cfg) {
 	this.id = id;
@@ -12,7 +12,11 @@ PrimeFaces.widget.CommandButton = function(id, cfg) {
 	if(this.jq.attr('title') === 'ui-button') {
         this.jq.removeAttr('title');
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.CommandButton, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.CommandButton.prototype.disable = function() {
     this.jq.button('disable');
@@ -23,7 +27,7 @@ PrimeFaces.widget.CommandButton.prototype.enable = function() {
 }
 
 /*
- * Button
+ * PrimeFaces Button Widget
  */
 PrimeFaces.widget.Button = function(id, cfg) {
 	this.id = id;
@@ -36,4 +40,8 @@ PrimeFaces.widget.Button = function(id, cfg) {
     if(this.jq.attr('title') === 'ui-button') {
         this.jq.removeAttr('title');
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Button, PrimeFaces.widget.BaseWidget);

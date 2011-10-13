@@ -56,7 +56,11 @@ PrimeFaces.widget.Carousel = function(id, cfg) {
     if(this.cfg.autoPlayInterval) {
         this.startAutoPlay();
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Carousel, PrimeFaces.widget.BaseWidget);
 
 /**
  * Returns browser specific computed style property value.

@@ -54,7 +54,6 @@ public class AjaxStatusRenderer extends CoreRenderer {
 	
 	protected void encodeCallback(FacesContext context, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		String clientId = status.getClientId(context);
 		String fn = (String) status.getAttributes().get(callback);
 		
 		if(fn != null)

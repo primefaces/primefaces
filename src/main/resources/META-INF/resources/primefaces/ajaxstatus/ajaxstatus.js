@@ -1,17 +1,23 @@
 PrimeFaces.widget.AjaxStatus = function(id) {
     this.id = id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.AjaxStatus, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.AjaxStatus.prototype.bindFacet = function(eventName, facetToShow) {
     var _self = this;
-	jQuery(document).bind(eventName, function() {
-		jQuery(_self.jqId).children().hide();
+    
+	$(document).bind(eventName, function() {
+		$(_self.jqId).children().hide();
 	
-		jQuery(_self.jqId + '_' + facetToShow).show();
+		$(_self.jqId + '_' + facetToShow).show();
 	});
 }
 
 PrimeFaces.widget.AjaxStatus.prototype.bindCallback = function(eventName, fn) {
-	jQuery(document).bind(eventName, fn);
+	$(document).bind(eventName, fn);
 }
