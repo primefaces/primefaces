@@ -238,3 +238,21 @@
     };
     
 })(jQuery);
+
+/**
+ * PrimeFaces Breadcrumb Widget
+ */
+PrimeFaces.widget.Breadcrumb = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+    
+    this.cfg.overlayClass = 'ui-breadcrumb-chevron-overlay ui-icon ui-icon-triangle-1-e';
+    
+    this.jq.jBreadCrumb(this.cfg);
+    
+    this.postConstruct();
+}
+
+PrimeFaces.extend(PrimeFaces.widget.Breadcrumb, PrimeFaces.widget.BaseWidget);
