@@ -58,8 +58,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 		String widgetVar = cropper.resolveWidgetVar();
 		String clientId = cropper.getClientId(context);
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);		
+        startScript(writer, clientId);	
 
         writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
 
@@ -91,7 +90,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         
 		writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException{

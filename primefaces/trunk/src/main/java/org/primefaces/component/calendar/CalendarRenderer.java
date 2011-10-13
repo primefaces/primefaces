@@ -106,10 +106,9 @@ public class CalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
        
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
-        writer.write("jQuery(function(){");
+        writer.write("$(function(){");
 
         writer.write(calendar.resolveWidgetVar() + " = new PrimeFaces.widget.Calendar('" + clientId + "', {");
 
@@ -177,7 +176,7 @@ public class CalendarRenderer extends InputRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     @Override

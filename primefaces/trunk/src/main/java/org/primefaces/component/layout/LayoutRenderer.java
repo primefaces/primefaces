@@ -61,9 +61,8 @@ public class LayoutRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = layout.getClientId(context);
-
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
         writer.write(layout.resolveWidgetVar() + " = new PrimeFaces.widget.Layout('" + clientId + "', {");
@@ -82,7 +81,7 @@ public class LayoutRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeUnits(FacesContext context, Layout layout) throws IOException {

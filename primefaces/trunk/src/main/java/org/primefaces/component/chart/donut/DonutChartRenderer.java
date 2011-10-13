@@ -41,8 +41,7 @@ public class DonutChartRenderer extends BaseChartRenderer {
         DonutChart chart = (DonutChart) uichart;
         String clientId = chart.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function(){");
 
@@ -56,7 +55,7 @@ public class DonutChartRenderer extends BaseChartRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeOptions(FacesContext context, DonutChart chart) throws IOException {

@@ -71,8 +71,7 @@ public class ButtonRenderer extends CoreRenderer {
 		String clientId = button.getClientId(context);
 		boolean hasValue = (button.getValue() != null);
 
-		writer.startElement("script", button);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.Button('" + clientId + "', {");
 
@@ -85,7 +84,7 @@ public class ButtonRenderer extends CoreRenderer {
 
 		writer.write("});");
 
-		writer.endElement("script");
+		endScript(writer);
     }
 
     protected String buildOnclick(FacesContext context, Button button) {

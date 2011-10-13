@@ -49,8 +49,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
         int expandedEndItems = preview ? breadCrumb.getExpandedEndItems() : childCount;
         int expandedBeginningItems = preview ? breadCrumb.getExpandedBeginningItems() : childCount;
         
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write(breadCrumb.resolveWidgetVar() + " = new PrimeFaces.widget.Breadcrumb('" + clientId + "',{");
 
@@ -64,7 +63,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		        
 		writer.write("});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, BreadCrumb breadCrumb) throws IOException {

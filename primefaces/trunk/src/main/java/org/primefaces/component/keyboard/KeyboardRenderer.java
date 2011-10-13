@@ -57,8 +57,7 @@ public class KeyboardRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = keyboard.getClientId(context);
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		startScript(writer, clientId);
 
 		writer.write(keyboard.resolveWidgetVar() + " = new PrimeFaces.widget.Keyboard('" + clientId + "', {");
 		writer.write("showOn:'" + keyboard.getShowMode() + "'");
@@ -89,7 +88,7 @@ public class KeyboardRenderer extends InputRenderer {
 	
 		writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, Keyboard keyboard) throws IOException {

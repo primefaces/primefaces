@@ -81,11 +81,9 @@ public class FileUploadRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
-        
         String mode = fileUpload.getMode();
 				
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function(){");
 		
@@ -119,7 +117,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, FileUpload fileUpload) throws IOException {

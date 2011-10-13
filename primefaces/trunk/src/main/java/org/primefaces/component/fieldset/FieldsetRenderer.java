@@ -92,8 +92,7 @@ public class FieldsetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
         
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(fieldset.resolveWidgetVar() + " = new PrimeFaces.widget.Fieldset('" + clientId + "', {");
 
@@ -107,7 +106,7 @@ public class FieldsetRenderer extends CoreRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeLegend(FacesContext context, Fieldset fieldset) throws IOException {

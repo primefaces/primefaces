@@ -114,8 +114,7 @@ public class InplaceRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inplace.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 		
@@ -135,7 +134,7 @@ public class InplaceRenderer extends CoreRenderer {
 
 		writer.write("});});");
         
-		writer.endElement("script");
+		endScript(writer);
 	}
 
     protected void encodeEditor(FacesContext context, Inplace inplace) throws IOException {

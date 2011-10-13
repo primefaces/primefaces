@@ -403,4 +403,14 @@ public class CoreRenderer extends Renderer {
             }
         }
     }
+    
+    protected void startScript(ResponseWriter writer, String clientId) throws IOException {
+        writer.startElement("script", null);
+        writer.writeAttribute("id", clientId + "_script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+    }
+    
+    protected void endScript(ResponseWriter writer) throws IOException {
+        writer.endElement("script");
+    }
 }

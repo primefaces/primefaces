@@ -60,8 +60,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
 		
-		writer.startElement("script", dialog);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
         writer.write("$(function() {");
 		writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.ConfirmDialog('" + clientId + "', {");
@@ -76,7 +75,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
     protected void encodeHeader(FacesContext context, ConfirmDialog dialog) throws IOException {

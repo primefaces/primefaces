@@ -41,8 +41,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 		PieChart chart = (PieChart) uichart;
 		String clientId = chart.getClientId(context);
 				
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
 		writer.write("$(function(){");
 
@@ -56,7 +55,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 
 		writer.write("});});");
         
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeData(FacesContext context, PieChart chart) throws IOException {

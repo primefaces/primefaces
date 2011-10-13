@@ -36,8 +36,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		String clientId = menu.getClientId(context);
 		String target = findTarget(context, menu);
 		
-		writer.startElement("script", menu);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
         
@@ -55,7 +54,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         
         writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
     @Override

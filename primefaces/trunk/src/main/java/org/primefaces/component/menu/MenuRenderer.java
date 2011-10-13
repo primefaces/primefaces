@@ -17,7 +17,6 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.Iterator;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,8 +34,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 		String widgetVar = menu.resolveWidgetVar();
         String position = menu.getPosition();
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		startScript(writer, clientId);
         
         writer.write("$(function() {");
 
@@ -59,7 +57,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

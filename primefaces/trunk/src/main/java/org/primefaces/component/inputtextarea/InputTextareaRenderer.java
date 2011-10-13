@@ -54,8 +54,7 @@ public class InputTextareaRenderer extends InputRenderer {
 		String clientId = inputTextarea.getClientId(context);
         boolean autoResize = inputTextarea.isAutoResize();
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(inputTextarea.resolveWidgetVar() + " = new PrimeFaces.widget.InputTextarea('" + clientId + "',{");
 
@@ -72,7 +71,7 @@ public class InputTextareaRenderer extends InputRenderer {
 
         writer.write("});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {

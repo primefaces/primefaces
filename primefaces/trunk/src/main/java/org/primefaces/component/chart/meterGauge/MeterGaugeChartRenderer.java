@@ -38,8 +38,7 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
         MeterGaugeChart chart = (MeterGaugeChart) uichart;
         String clientId = chart.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function(){");
 
@@ -51,10 +50,9 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
-     
     protected void encodeOptions(FacesContext context, MeterGaugeChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MeterGaugeChartModel model = (MeterGaugeChartModel)chart.getValue();

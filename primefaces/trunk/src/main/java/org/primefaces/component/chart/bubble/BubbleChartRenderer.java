@@ -38,8 +38,7 @@ public class BubbleChartRenderer extends BaseChartRenderer {
         BubbleChart chart = (BubbleChart) uichart;
         String clientId = chart.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function(){");
 
@@ -53,7 +52,7 @@ public class BubbleChartRenderer extends BaseChartRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeOptions(FacesContext context, BubbleChart chart) throws IOException {

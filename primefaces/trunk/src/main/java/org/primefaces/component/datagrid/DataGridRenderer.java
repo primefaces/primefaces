@@ -86,8 +86,7 @@ public class DataGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId();
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() { ");
 
@@ -124,7 +123,7 @@ public class DataGridRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeTable(FacesContext context, DataGrid grid) throws IOException {

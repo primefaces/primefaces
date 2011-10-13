@@ -102,8 +102,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         String value = (String) colorPicker.getValue();
         String effect = colorPicker.getEffect();
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		startScript(writer, clientId);
 
         writer.write("$(function() {");
         
@@ -119,6 +118,6 @@ public class ColorPickerRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 }

@@ -88,8 +88,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}
 		
-		writer.startElement("script", button);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
@@ -101,6 +100,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
  		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 }

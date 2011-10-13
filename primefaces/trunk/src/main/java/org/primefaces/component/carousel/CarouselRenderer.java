@@ -54,8 +54,7 @@ public class CarouselRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = carousel.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
 		writer.write(carousel.resolveWidgetVar() + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
         writer.write("firstVisible:" + carousel.getFirstVisible());
@@ -72,7 +71,7 @@ public class CarouselRenderer extends CoreRenderer {
 
         writer.write("});");
 			
-		writer.endElement("script");
+		endScript(writer);
 	}
     
     protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {

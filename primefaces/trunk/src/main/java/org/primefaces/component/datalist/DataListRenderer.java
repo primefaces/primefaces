@@ -88,8 +88,7 @@ public class DataListRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = list.getClientId();
         
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() { ");
 
@@ -126,7 +125,7 @@ public class DataListRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeList(FacesContext context, DataList list) throws IOException {

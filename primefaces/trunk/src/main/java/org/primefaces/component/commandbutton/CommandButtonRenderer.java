@@ -102,8 +102,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		String type = button.getType();
 		boolean hasValue = (button.getValue() != null);
 		
-		writer.startElement("script", button);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.CommandButton('" + clientId + "', {");
 		
@@ -116,7 +115,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		
 		writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected String buildNonAjaxRequest(FacesContext context, CommandButton button, String formId) {

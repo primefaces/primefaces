@@ -36,9 +36,7 @@ public class DraggableRenderer extends CoreRenderer {
         String target = findTarget(facesContext, draggable);
         String dashboard = draggable.getDashboard();
 
-        writer.startElement("script", draggable);
-        writer.writeAttribute("id", clientId + "_script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -93,7 +91,7 @@ public class DraggableRenderer extends CoreRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected String findTarget(FacesContext facesContext, Draggable draggable) {

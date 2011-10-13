@@ -38,8 +38,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		String clientId = status.getClientId(context);
 		String widgetVar = status.resolveWidgetVar();
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
 		writer.write(widgetVar + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');");
 		
@@ -49,7 +48,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		encodeCallback(context, status, widgetVar, "ajaxSuccess", "onsuccess", AjaxStatus.SUCCESS_FACET);
 		encodeCallback(context, status, widgetVar, "ajaxComplete", "oncomplete", AjaxStatus.COMPLETE_FACET);
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected void encodeCallback(FacesContext context, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {

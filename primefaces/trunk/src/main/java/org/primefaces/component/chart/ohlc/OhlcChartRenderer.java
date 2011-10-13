@@ -25,7 +25,7 @@ import org.primefaces.model.chart.OhlcChartModel;
 
 public class OhlcChartRenderer extends BaseChartRenderer {
 
-       @Override
+   @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OhlcChart chart = (OhlcChart) component;
 
@@ -38,8 +38,7 @@ public class OhlcChartRenderer extends BaseChartRenderer {
         OhlcChart chart = (OhlcChart) uichart;
         String clientId = chart.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function(){");
 
@@ -53,9 +52,8 @@ public class OhlcChartRenderer extends BaseChartRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
-
      
     protected void encodeOptions(FacesContext context, OhlcChart chart) throws IOException {
         

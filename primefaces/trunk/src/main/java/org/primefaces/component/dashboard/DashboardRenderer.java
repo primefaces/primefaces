@@ -75,8 +75,7 @@ public class DashboardRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dashboard.getClientId(context);
         
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
 		writer.write(dashboard.resolveWidgetVar() + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
 		writer.write("disabled:" + dashboard.isDisabled());
@@ -85,7 +84,7 @@ public class DashboardRenderer extends CoreRenderer {
         
 		writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected Panel findWidget(String id, Dashboard dashboard) {
