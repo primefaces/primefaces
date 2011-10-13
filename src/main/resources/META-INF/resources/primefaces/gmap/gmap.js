@@ -21,7 +21,11 @@ PrimeFaces.widget.GMap = function(id, cfg) {
             });
         }
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.GMap, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.GMap.prototype.init = function() {
     this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);

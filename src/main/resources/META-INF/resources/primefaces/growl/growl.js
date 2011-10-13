@@ -205,7 +205,7 @@
 				e.animate({
 					opacity: 0
 				}, fade_out_speed, function(){
-					e.animate({ height: 0 }, 300, function(){
+					e.animate({height: 0}, 300, function(){
 						Gritter._countRemoveWrapper(unique_id, e);
 					})
 				})
@@ -285,7 +285,7 @@
 		_restoreItemIfFading: function(e, unique_id){
 			
 			clearTimeout(this['_int_id_' + unique_id]);
-			e.stop().css({ opacity: '' });
+			e.stop().css({opacity: ''});
 		    
 		},
 		
@@ -400,9 +400,14 @@
  */
 PrimeFaces.widget.Growl = function(id, msgs) {
     this.id = id;
+    this.jq = $(PrimeFaces.escapeClientId(this.id));
 
     this.show(msgs);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Growl, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Growl.prototype.show = function(msgs) {
     if($('.ui-growl-item-container').length > 0) {

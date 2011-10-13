@@ -32,10 +32,11 @@ public class EffectRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		Effect effect = (Effect) component;
+        String clientId = effect.getClientId(context);
 		String parentClientId = effect.getParent().getClientId(context);
 		String effectedComponentClientId = null;
         String event = effect.getEvent();
-        String timeoutKey = "window.effect_" + effect.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+        String timeoutKey = "window.effect_" + clientId.replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
 		
 		if(effect.getFor() != null) {
 			UIComponent target = effect.findComponent(effect.getFor());
@@ -50,10 +51,13 @@ public class EffectRenderer extends CoreRenderer {
 		String animation = getEffectBuilder(effect, effectedComponentClientId).build();
 		
 		writer.startElement("script", null);
+        writer.writeAttribute("id", clientId + "_script", event);
 		writer.writeAttribute("type", "text/javascript", null);
+        
 		writer.write("$(function() {");
 
         writer.write("clearTimeout(" + timeoutKey + ");");
+        
         writer.write(timeoutKey + " = setTimeout(function() {");
 
 		if(event.equals("load")) {
@@ -65,8 +69,10 @@ public class EffectRenderer extends CoreRenderer {
 
         writer.write("}," + effect.getDelay() + ");");
 
+        writer.write("$(PrimeFaces.escapeClientId('" + clientId + "_script')).remove()");
+        
         writer.write("});");
-		
+        
 		writer.endElement("script");
 	}
 	

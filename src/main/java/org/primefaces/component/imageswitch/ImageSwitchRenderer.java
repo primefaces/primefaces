@@ -50,7 +50,7 @@ public class ImageSwitchRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
+        writer.write("$(function() {");
 
 		writer.write(imageSwitch.resolveWidgetVar() + " = new PrimeFaces.widget.ImageSwitch('" + clientId + "',{");
 		writer.write("fx:'" + imageSwitch.getEffect() + "'");

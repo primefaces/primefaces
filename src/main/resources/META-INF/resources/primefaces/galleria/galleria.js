@@ -300,8 +300,8 @@ $(window).load(function(){
 	**		RETURNS - int
 	*/
 		function extraWidth(el) {
-			if(!el) { return 0; }
-			if(el.length==0) { return 0; }
+			if(!el) {return 0;}
+			if(el.length==0) {return 0;}
 			el = el.eq(0);
 			var ew = 0;
 			ew += getInt(el.css('paddingLeft'));
@@ -318,8 +318,8 @@ $(window).load(function(){
 	**		RETURN - int
 	*/
 		function extraHeight(el) {
-			if(!el) { return 0; }
-			if(el.length==0) { return 0; }
+			if(!el) {return 0;}
+			if(el.length==0) {return 0;}
 			el = el.eq(0);
 			var eh = 0;
 			eh += getInt(el.css('paddingTop'));
@@ -464,9 +464,9 @@ $(window).load(function(){
 
 			if(opts.show_filmstrip) {
 				switch(opts.filmstrip_position) {
-					case 'top': j_panel_wrapper.css({top:wrapper_height+opts.frame_gap+'px'}); break;
-					case 'left': j_panel_wrapper.css({left:wrapper_width+opts.frame_gap+'px'}); break;
-					default: break;
+					case 'top':j_panel_wrapper.css({top:wrapper_height+opts.frame_gap+'px'});break;
+					case 'left':j_panel_wrapper.css({left:wrapper_width+opts.frame_gap+'px'});break;
+					default:break;
 				}
 			}
 
@@ -652,36 +652,36 @@ $(window).load(function(){
 
 			// If there are no panels, make pointer transparent (nothing to point to)
 			// This is not the optimal solution, but we need the pointer to exist as a reference for transition animations
-			if(!opts.show_panels) { pointer.css('borderColor',transColor); }
+			if(!opts.show_panels) {pointer.css('borderColor',transColor);}
 			switch(opts.filmstrip_position) {
-				case 'top': pointer.css({
+				case 'top':pointer.css({
 								top:wrapper_height+'px',
 								left:((gallery_width-wrapper_width)/2)+(slide_method=='strip'?0:((f_frame_width+opts.frame_gap)*iterator))+((f_frame_width/2)-(pointer_width/2))+'px',
 								borderBottomColor:transColor,
 								borderRightColor:transColor,
 								borderLeftColor:transColor
-							}); break;
-				case 'bottom': pointer.css({
+							});break;
+				case 'bottom':pointer.css({
 									bottom:wrapper_height+'px',
 									left:((gallery_width-wrapper_width)/2)+(slide_method=='strip'?0:((f_frame_width+opts.frame_gap)*iterator))+((f_frame_width/2)-(pointer_width/2))+'px',
 									borderTopColor:transColor,
 									borderRightColor:transColor,
 									borderLeftColor:transColor
-								}); break;
-				case 'left': pointer.css({
+								});break;
+				case 'left':pointer.css({
 								left:wrapper_width+'px',
 								top:(f_frame_height/2)-(pointer_height)+(slide_method=='strip'?0:((f_frame_height+opts.frame_gap)*iterator))+'px',
 								borderBottomColor:transColor,
 								borderRightColor:transColor,
 								borderTopColor:transColor
-							}); break;
-				case 'right': pointer.css({
+							});break;
+				case 'right':pointer.css({
 								right:wrapper_width+'px',
 								top:(f_frame_height/2)-(pointer_height)+(slide_method=='strip'?0:((f_frame_height+opts.frame_gap)*iterator))+'px',
 								borderBottomColor:transColor,
 								borderLeftColor:transColor,
 								borderTopColor:transColor
-							}); break;
+							});break;
 			}
 
 			j_pointer = $('.ui-galleria-pointer',j_gallery);
@@ -760,7 +760,7 @@ $(window).load(function(){
 	*/
 		function getInt(i) {
 			i = parseInt(i,10);
-			if(isNaN(i)) { i = 0; }
+			if(isNaN(i)) {i = 0;}
 			return i;
 		};
 
@@ -913,7 +913,7 @@ $(window).load(function(){
 			filmstrip_orientation = (opts.filmstrip_position=='top'||opts.filmstrip_position=='bottom'?'horizontal':'vertical');
 
 			// Do not show captions on vertical filmstrips (override user set option)
-			if(filmstrip_orientation=='vertical') { opts.show_captions = false; }
+			if(filmstrip_orientation=='vertical') {opts.show_captions = false;}
 
 
 			// Make sure pointer does not extend past width of frame
@@ -964,7 +964,7 @@ $(window).load(function(){
 			}
 
 			// If the user doesn't want a filmstrip, delete it
-			if(!opts.show_filmstrip) { j_filmstrip.remove(); }
+			if(!opts.show_filmstrip) {j_filmstrip.remove();}
 			else {
 				// Wrap the frame images (and links, if applicable) in container divs
 				// These divs will handle cropping and zooming of the images
@@ -1021,7 +1021,7 @@ $(window).load(function(){
 			}
 
 			// Do not show pointer if there are multiple rows in the filmstrip
-			if(Math.ceil(item_count/strip_size) > 1) { opts.pointer_size = 0; }
+			if(Math.ceil(item_count/strip_size) > 1) {opts.pointer_size = 0;}
 
 			// Define dimensions of pointer <div>
 			pointer_height = opts.pointer_size;
@@ -1347,4 +1347,12 @@ PrimeFaces.widget.Galleria = function(id, cfg) {
     this.jq = $(this.jqId);
 
     this.jq.galleryView(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Galleria, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.Galleria.prototype.getScriptTag = function() {
+    return $(this.jqId).next('script');
+};

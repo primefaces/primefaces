@@ -105,7 +105,7 @@ $.Jcrop = function(obj,opt)
 	// Initialize some jQuery objects {{{
 
 	var $origimg = $(obj);
-	var $img = $origimg.clone().removeAttr('id').css({ position: 'absolute' });
+	var $img = $origimg.clone().removeAttr('id').css({position: 'absolute'});
 
 	$img.width($origimg.width());
 	$img.height($origimg.height());
@@ -157,7 +157,7 @@ $.Jcrop = function(obj,opt)
 
 	var bound = options.boundary;
 	var $trk = newTracker().width(boundx+(bound*2)).height(boundy+(bound*2))
-		.css({ position: 'absolute', top: px(-bound), left: px(-bound), zIndex: 290 })
+		.css({position: 'absolute', top: px(-bound), left: px(-bound), zIndex: 290})
 		.mousedown(newSelection);
 
 	/* }}} */
@@ -222,10 +222,10 @@ $.Jcrop = function(obj,opt)
 			var c = getFixed();
 			switch(ord)
 			{
-				case 'ne': return [ c.x2, c.y ];
-				case 'nw': return [ c.x, c.y ];
-				case 'se': return [ c.x2, c.y2 ];
-				case 'sw': return [ c.x, c.y2 ];
+				case 'ne':return [ c.x2, c.y ];
+				case 'nw':return [ c.x, c.y ];
+				case 'se':return [ c.x2, c.y2 ];
+				case 'sw':return [ c.x, c.y2 ];
 			}
 		};
 		/*}}}*/
@@ -245,8 +245,8 @@ $.Jcrop = function(obj,opt)
 				real_ratio = rwa / rha,
 				xx, yy
 			;
-			if (max_x == 0) { max_x = boundx * 10 }
-			if (max_y == 0) { max_y = boundy * 10 }
+			if (max_x == 0) {max_x = boundx * 10}
+			if (max_y == 0) {max_y = boundy * 10}
 			if (real_ratio < aspect)
 			{
 				yy = y2;
@@ -371,22 +371,22 @@ $.Jcrop = function(obj,opt)
 			if (xmin && (Math.abs(xsize) < xmin))
 				x2 = (xsize > 0) ? (x1 + xmin) : (x1 - xmin);
 
-			if (x1 < 0) { x2 -= x1; x1 -= x1; }
-			if (y1 < 0) { y2 -= y1; y1 -= y1; }
-			if (x2 < 0) { x1 -= x2; x2 -= x2; }
-			if (y2 < 0) { y1 -= y2; y2 -= y2; }
-			if (x2 > boundx) { var delta = x2 - boundx; x1 -= delta; x2 -= delta; }
-			if (y2 > boundy) { var delta = y2 - boundy; y1 -= delta; y2 -= delta; }
-			if (x1 > boundx) { var delta = x1 - boundy; y2 -= delta; y1 -= delta; }
-			if (y1 > boundy) { var delta = y1 - boundy; y2 -= delta; y1 -= delta; }
+			if (x1 < 0) {x2 -= x1;x1 -= x1;}
+			if (y1 < 0) {y2 -= y1;y1 -= y1;}
+			if (x2 < 0) {x1 -= x2;x2 -= x2;}
+			if (y2 < 0) {y1 -= y2;y2 -= y2;}
+			if (x2 > boundx) {var delta = x2 - boundx;x1 -= delta;x2 -= delta;}
+			if (y2 > boundy) {var delta = y2 - boundy;y1 -= delta;y2 -= delta;}
+			if (x1 > boundx) {var delta = x1 - boundy;y2 -= delta;y1 -= delta;}
+			if (y1 > boundy) {var delta = y1 - boundy;y2 -= delta;y1 -= delta;}
 
 			return makeObj(flipCoords(x1,y1,x2,y2));
 		};
 		/*}}}*/
 		function makeObj(a)/*{{{*/
 		{
-			return { x: a[0], y: a[1], x2: a[2], y2: a[3],
-				w: a[2] - a[0], h: a[3] - a[1] };
+			return {x: a[0], y: a[1], x2: a[2], y2: a[3],
+				w: a[2] - a[0], h: a[3] - a[1]};
 		};
 		/*}}}*/
 
@@ -444,7 +444,7 @@ $.Jcrop = function(obj,opt)
 		function insertBorder(type)/*{{{*/
 		{
 			var jq = $('<div />')
-				.css({position: 'absolute', opacity: options.borderOpacity })
+				.css({position: 'absolute', opacity: options.borderOpacity})
 				.addClass(cssClass(type));
 			$img_holder.append(jq);
 			return jq;
@@ -467,7 +467,7 @@ $.Jcrop = function(obj,opt)
 		function insertHandle(ord)/*{{{*/
 		{
 			return dragDiv(ord,hdep++)
-				.css({ top: px(-hhs+1), left: px(-hhs+1), opacity: options.handleOpacity })
+				.css({top: px(-hhs+1), left: px(-hhs+1), opacity: options.handleOpacity})
 				.addClass(cssClass('handle'));
 		};
 		/*}}}*/
@@ -480,12 +480,12 @@ $.Jcrop = function(obj,opt)
 
 			switch(ord)
 			{
-				case 'n': case 's': w = pct(100); break;
-				case 'e': case 'w': h = pct(100); break;
+				case 'n': case 's':w = pct(100);break;
+				case 'e': case 'w':h = pct(100);break;
 			}
 
 			return dragDiv(ord,hdep++).width(w).height(h)
-				.css({ top: px(-t+1), left: px(-l+1)});
+				.css({top: px(-t+1), left: px(-l+1)});
 		};
 		/*}}}*/
 		function createHandles(li)/*{{{*/
@@ -503,25 +503,25 @@ $.Jcrop = function(obj,opt)
 				x, y;
 
 			'e' in handle &&
-				handle.e.css({ top: px(midvert), left: px(east) }) &&
-				handle.w.css({ top: px(midvert) }) &&
-				handle.s.css({ top: px(south), left: px(midhoriz) }) &&
-				handle.n.css({ left: px(midhoriz) });
+				handle.e.css({top: px(midvert), left: px(east)}) &&
+				handle.w.css({top: px(midvert)}) &&
+				handle.s.css({top: px(south), left: px(midhoriz)}) &&
+				handle.n.css({left: px(midhoriz)});
 
 			'ne' in handle &&
-				handle.ne.css({ left: px(east) }) &&
-				handle.se.css({ top: px(south), left: px(east) }) &&
-				handle.sw.css({ top: px(south) });
+				handle.ne.css({left: px(east)}) &&
+				handle.se.css({top: px(south), left: px(east)}) &&
+				handle.sw.css({top: px(south)});
 
 			'b' in handle &&
-				handle.b.css({ top: px(south) }) &&
-				handle.r.css({ left: px(east) });
+				handle.b.css({top: px(south)}) &&
+				handle.r.css({left: px(east)});
 		};
 		/*}}}*/
 		function moveto(x,y)/*{{{*/
 		{
-			$img2.css({ top: px(-y), left: px(-x) });
-			$sel.css({ top: px(y), left: px(x) });
+			$img2.css({top: px(-y), left: px(-x)});
+			$sel.css({top: px(y), left: px(x)});
 		};
 		/*}}}*/
 		function resize(w,h)/*{{{*/
@@ -542,7 +542,7 @@ $.Jcrop = function(obj,opt)
 
 		// Internal Methods
 		function updateVisible()/*{{{*/
-			{ if (awake) return update(); };
+			{if (awake) return update();};
 		/*}}}*/
 		function update()/*{{{*/
 		{
@@ -552,8 +552,8 @@ $.Jcrop = function(obj,opt)
 			moveto(c.x,c.y);
 
 			options.drawBorders &&
-				borders['right'].css({ left: px(c.w-1) }) &&
-					borders['bottom'].css({ top: px(c.h-1) });
+				borders['right'].css({left: px(c.w-1)}) &&
+					borders['bottom'].css({top: px(c.h-1)});
 
 			seehandles && moveHandles(c);
 			awake || show();
@@ -615,7 +615,7 @@ $.Jcrop = function(obj,opt)
 		/*}}}*/
 
 		var $track = newTracker().mousedown(createDragger('move'))
-				.css({ cursor: 'move', position: 'absolute', zIndex: 360 })
+				.css({cursor: 'move', position: 'absolute', zIndex: 360})
 
 		$img_holder.append($track);
 		disableHandles();
@@ -625,9 +625,9 @@ $.Jcrop = function(obj,opt)
 			update: update,
 			release: release,
 			refresh: refresh,
-			setCursor: function (cursor) { $track.css('cursor',cursor); },
+			setCursor: function (cursor) {$track.css('cursor',cursor);},
 			enableHandles: enableHandles,
-			enableOnly: function() { seehandles = true; },
+			enableOnly: function() {seehandles = true;},
 			showHandles: showHandles,
 			disableHandles: disableHandles,
 			animMode: animMode,
@@ -709,7 +709,7 @@ $.Jcrop = function(obj,opt)
 		};
 		/* }}} */
 
-		function setCursor(t) { $trk.css('cursor',t); };
+		function setCursor(t) {$trk.css('cursor',t);};
 
 		$img.before($trk);
 		return {
@@ -721,7 +721,7 @@ $.Jcrop = function(obj,opt)
 	var KeyManager = function()/*{{{*/
 	{
 		var $keymgr = $('<input type="radio" />')
-				.css({ position: 'absolute', left: '-30px' })
+				.css({position: 'absolute', left: '-30px'})
 				.keypress(parseKey)
 				.blur(onBlur),
 
@@ -764,14 +764,14 @@ $.Jcrop = function(obj,opt)
 			var nudge = shift_down ? 10 : 1;
 			switch(e.keyCode)
 			{
-				case 37: doNudge(e,-nudge,0); break;
-				case 39: doNudge(e,nudge,0); break;
-				case 38: doNudge(e,0,-nudge); break;
-				case 40: doNudge(e,0,nudge); break;
+				case 37:doNudge(e,-nudge,0);break;
+				case 39:doNudge(e,nudge,0);break;
+				case 38:doNudge(e,0,-nudge);break;
+				case 40:doNudge(e,0,nudge);break;
 
-				case 27: Selection.release(); break;
+				case 27:Selection.release();break;
 
-				case 9: return true;
+				case 9:return true;
 			}
 
 			return nothing(e);
@@ -788,9 +788,9 @@ $.Jcrop = function(obj,opt)
 	// }}}
 	// Internal Methods {{{
 
-	function px(n) { return '' + parseInt(n) + 'px'; };
-	function pct(n) { return '' + parseInt(n) + '%'; };
-	function cssClass(cl) { return options.baseClass + '-' + cl; };
+	function px(n) {return '' + parseInt(n) + 'px';};
+	function pct(n) {return '' + parseInt(n) + '%';};
+	function cssClass(cl) {return options.baseClass + '-' + cl;};
 	function getPos(obj)/*{{{*/
 	{
 		// Updated in v0.9.4 to use built-in dimensions plugin
@@ -836,17 +836,17 @@ $.Jcrop = function(obj,opt)
 		return function(pos) {
 			if (!options.aspectRatio) switch(mode)
 			{
-				case 'e': pos[1] = f.y2; break;
-				case 'w': pos[1] = f.y2; break;
-				case 'n': pos[0] = f.x2; break;
-				case 's': pos[0] = f.x2; break;
+				case 'e':pos[1] = f.y2;break;
+				case 'w':pos[1] = f.y2;break;
+				case 'n':pos[0] = f.x2;break;
+				case 's':pos[0] = f.x2;break;
 			}
 			else switch(mode)
 			{
-				case 'e': pos[1] = f.y+1; break;
-				case 'w': pos[1] = f.y+1; break;
-				case 'n': pos[0] = f.x+1; break;
-				case 's': pos[0] = f.x+1; break;
+				case 'e':pos[1] = f.y+1;break;
+				case 'w':pos[1] = f.y+1;break;
+				case 'n':pos[0] = f.x+1;break;
+				case 's':pos[0] = f.x+1;break;
 			}
 			Coords.setCurrent(pos);
 			Selection.update();
@@ -871,14 +871,14 @@ $.Jcrop = function(obj,opt)
 	{
 		switch(ord)
 		{
-			case 'n': return 'sw';
-			case 's': return 'nw';
-			case 'e': return 'nw';
-			case 'w': return 'ne';
-			case 'ne': return 'sw';
-			case 'nw': return 'se';
-			case 'se': return 'nw';
-			case 'sw': return 'ne';
+			case 'n':return 'sw';
+			case 's':return 'nw';
+			case 'e':return 'nw';
+			case 'w':return 'ne';
+			case 'ne':return 'sw';
+			case 'nw':return 'se';
+			case 'se':return 'nw';
+			case 'sw':return 'ne';
 		};
 	};
 	/*}}}*/
@@ -965,7 +965,7 @@ $.Jcrop = function(obj,opt)
 	function newTracker()
 	{
 		var trk = $('<div></div>').addClass(cssClass('tracker'));
-		$.browser.msie && trk.css({ opacity: 0, backgroundColor: 'white' });
+		$.browser.msie && trk.css({opacity: 0, backgroundColor: 'white'});
 		return trk;
 	};
 
@@ -1020,7 +1020,7 @@ $.Jcrop = function(obj,opt)
 		}();
 
 		function animateStart()
-			{ window.setTimeout(animator,interv); };
+			{window.setTimeout(animator,interv);};
 
 		animateStart();
 	};
@@ -1150,8 +1150,8 @@ $.Jcrop = function(obj,opt)
 
 		focus: KeyManager.watchKeys,
 
-		getBounds: function() { return [ boundx * xscale, boundy * yscale ]; },
-		getWidgetSize: function() { return [ boundx, boundy ]; },
+		getBounds: function() {return [ boundx * xscale, boundy * yscale ];},
+		getWidgetSize: function() {return [ boundx, boundy ];},
 
 		release: Selection.release,
 		destroy: destroy
@@ -1168,7 +1168,7 @@ $.fn.Jcrop = function(options)/*{{{*/
 	{
 		var loadsrc = options.useImg || from.src;
 		var img = new Image();
-		img.onload = function() { $.Jcrop(from,options); };
+		img.onload = function() {$.Jcrop(from,options);};
 		img.src = loadsrc;
 	};
 	/*}}}*/
@@ -1204,18 +1204,23 @@ PrimeFaces.widget.ImageCropper = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.image = PrimeFaces.escapeClientId(this.cfg.image);
-    this.jqCoords = this.jqId + '_coords';
+    this.jq = $(this.jqId);
+    this.image = $(PrimeFaces.escapeClientId(this.cfg.image));
+    this.jqCoords = $(this.jqId + '_coords');
 
     var _self = this;
-    this.cfg.onSelect = function(c) { _self.saveCoords(c); };
-    this.cfg.onChange = function(c) { _self.saveCoords(c); };
+    this.cfg.onSelect = function(c) {_self.saveCoords(c);};
+    this.cfg.onChange = function(c) {_self.saveCoords(c);};
 
-	jQuery(this.image).Jcrop(this.cfg);
+	this.image.Jcrop(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.ImageCropper, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.ImageCropper.prototype.saveCoords = function(c) {
     var cropCoords = c.x + "_" + c.y + "_" + c.w + "_" + c.h;
 
-    jQuery(this.jqCoords).val(cropCoords);
+    this.jqCoords.val(cropCoords);
 }
