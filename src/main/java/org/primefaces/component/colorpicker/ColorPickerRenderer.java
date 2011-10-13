@@ -58,7 +58,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
-        writer.writeAttribute("id", colorPicker.getClientId(context), "id");
+        writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if(colorPicker.getStyle() != null)
             writer.writeAttribute("style", colorPicker.getStyle(), "style");
@@ -76,9 +76,10 @@ public class ColorPickerRenderer extends CoreRenderer {
             writer.write("\">Live Preview</span>");
 
             writer.endElement("button");
-        } else {
+        } 
+        else {
             writer.startElement("div", null);
-            writer.writeAttribute("id", colorPicker.getClientId(context) + "_inline", "id");
+            writer.writeAttribute("id", clientId + "_inline", "id");
             writer.endElement("div");
         }
 

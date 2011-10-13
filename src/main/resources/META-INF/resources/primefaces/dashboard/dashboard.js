@@ -3,13 +3,13 @@
  */
 PrimeFaces.widget.Dashboard = function(id, cfg) {
 	this.id = id;
+    this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
-	this.cfg = cfg;
+    this.jq = $(this.jqId);
 	this.cfg.connectWith = this.COLUMN_CLASS;
 	this.cfg.placeholder = this.PLACEHOLDER_CLASS;
 	this.cfg.forcePlaceholderSize = true;
 	this.cfg.revert=true;
-	this.jq = $(this.jqId + " " + this.COLUMN_CLASS);
 
     var _self = this;
 	
@@ -44,8 +44,12 @@ PrimeFaces.widget.Dashboard = function(id, cfg) {
     } 
 	
 	
-	this.jq.sortable(this.cfg);
+	$(this.jqId + " " + this.COLUMN_CLASS).sortable(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Dashboard, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Dashboard.prototype.COLUMN_CLASS = '.ui-dashboard-column';
 

@@ -23,7 +23,11 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
         this.jq.parent().parent().attr('style', this.cfg.style);
     if(this.cfg.styleClass)
         this.jq.parent().parent().addClass(this.cfg.styleClass);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Menubar, PrimeFaces.widget.BaseWidget);
 
 /**
  * PrimeFaces Menu Widget
@@ -69,7 +73,11 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 
     //visuals
     this.bindEvents();
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Menu, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Menu.prototype.bindEvents = function() {  
     var _self = this;
@@ -149,7 +157,11 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
     this.bindEvents();
     
     this.menu.css('z-index', this.cfg.zindex);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.MenuButton, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {  
     var _self = this;
@@ -237,8 +249,12 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
             _self.show(e);
         });
     }
+
     
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.ContextMenu, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.ContextMenu.prototype.bindEvents = function() {
     var _self = this;
