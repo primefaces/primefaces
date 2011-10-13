@@ -2105,7 +2105,11 @@ PrimeFaces.widget.FileUpload = function(id, cfg) {
     
     //show the UI
     this.jq.css('visibility', 'visible');
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.FileUpload, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     var _self = this;

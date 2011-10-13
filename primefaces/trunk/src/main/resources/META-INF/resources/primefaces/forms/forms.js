@@ -163,7 +163,7 @@ PrimeFaces.widget.InputText = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
+    this.jq = $(this.jqId);
 
     //Client behaviors
     if(this.cfg.behaviors) {
@@ -174,7 +174,11 @@ PrimeFaces.widget.InputText = function(cfg) {
     if(this.cfg.theme != false) {
         PrimeFaces.skinInput(this.jq);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.InputText, PrimeFaces.widget.BaseWidget);
 
 /**
  * PrimeFaces InputTextarea Widget
@@ -183,7 +187,7 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
+    this.jq = $(this.jqId);
     var _self = this;
     
     //Visuals
@@ -215,7 +219,11 @@ PrimeFaces.widget.InputTextarea = function(id, cfg) {
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.InputTextarea, PrimeFaces.widget.BaseWidget);
 
 /**
  * PrimeFaces SelectOneMenu Widget

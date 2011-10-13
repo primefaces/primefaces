@@ -17,14 +17,17 @@ PrimeFaces.widget.Fieldset = function(id, cfg) {
         this.stateHolder = $(this.jqId + '_collapsed');
 
         //Add clickable legend state behavior
-        var _legend = this.legend;
         this.legend.click(function(e) {_self.toggle(e);})
-                           .mouseover(function() {_legend.toggleClass('ui-state-hover');})
-                           .mouseout(function() {_legend.toggleClass('ui-state-hover');})
-                           .mousedown(function() {_legend.toggleClass('ui-state-active');})
-                           .mouseup(function() {_legend.toggleClass('ui-state-active');})
+                           .mouseover(function() {_self._legend.toggleClass('ui-state-hover');})
+                           .mouseout(function() {_self._legend.toggleClass('ui-state-hover');})
+                           .mousedown(function() {_self._legend.toggleClass('ui-state-active');})
+                           .mouseup(function() {_self._legend.toggleClass('ui-state-active');})
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Fieldset, PrimeFaces.widget.BaseWidget);
 
 /**
  * Toggles the content

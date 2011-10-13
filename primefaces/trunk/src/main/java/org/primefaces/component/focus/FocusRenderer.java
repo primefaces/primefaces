@@ -72,7 +72,7 @@ public class FocusRenderer extends CoreRenderer {
 		String clientId = forComponent.getClientId(context);
 		
 		writer.write("$(function(){");
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
+		writer.write("$(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
 		writer.write("});");
 	}
 	

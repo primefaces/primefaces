@@ -1,5 +1,5 @@
 /**
- * PrimeFaces Droppable Widget
+ * PrimeFaces Draggable Widget
  */
 PrimeFaces.widget.Draggable = function(id, cfg) {
     this.id = id;
@@ -9,9 +9,18 @@ PrimeFaces.widget.Draggable = function(id, cfg) {
 	
     this.jq.draggable(this.cfg);
     
-    $(this.jqId + '_script').remove();
+    this.postConstruct();
 }
 
+PrimeFaces.extend(PrimeFaces.widget.Draggable, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.Draggable.prototype.getScriptTag = function() {
+    return $(this.jqId + '_script');
+}
+
+/**
+ * PrimeFaces Droppable Widget
+ */
 PrimeFaces.widget.Droppable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
@@ -22,7 +31,13 @@ PrimeFaces.widget.Droppable = function(id, cfg) {
     	
     this.jq.droppable(this.cfg);
     
-    $(this.jqId + '_script').remove();
+    this.postConstruct();
+}
+
+PrimeFaces.extend(PrimeFaces.widget.Droppable, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.Droppable.prototype.getScriptTag = function() {
+    return $(this.jqId + '_script');
 }
 
 PrimeFaces.widget.Droppable.prototype.bindDropListener = function() {

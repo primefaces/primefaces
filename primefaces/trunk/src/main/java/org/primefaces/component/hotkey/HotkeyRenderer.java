@@ -48,8 +48,8 @@ public class HotkeyRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
-		writer.write("jQuery(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
+        writer.write("$(function() {");
+		writer.write("$(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
 	
 		if(hotkey.getHandler() == null) {
 			UIComponent form = ComponentUtils.findParentForm(context,hotkey);

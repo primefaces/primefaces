@@ -37,7 +37,11 @@ PrimeFaces.widget.Inplace = function(id, cfg) {
             this.editor.children('.ui-inplace-cancel').button({icons: {primary: "ui-icon-close"},text:false}).click(function(e) {_self.cancel(e);});
         }
 	}
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Inplace, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Inplace.prototype.show = function() {    
     this.toggle(this.content, this.display, function() {
