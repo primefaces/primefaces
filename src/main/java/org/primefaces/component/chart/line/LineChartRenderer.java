@@ -42,8 +42,7 @@ public class LineChartRenderer extends BaseChartRenderer {
 		LineChart chart = (LineChart) uichart;
 		String clientId = chart.getClientId(context);
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write("$(function(){");
 
@@ -55,7 +54,7 @@ public class LineChartRenderer extends BaseChartRenderer {
 
 		writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
     protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {

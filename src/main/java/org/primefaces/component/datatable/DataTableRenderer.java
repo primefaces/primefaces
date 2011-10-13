@@ -103,8 +103,7 @@ public class DataTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
 
-		writer.startElement("script", table);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
         
         writer.write("$(function() {");
 
@@ -157,7 +156,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, DataTable table) throws IOException{

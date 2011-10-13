@@ -38,9 +38,7 @@ public class DroppableRenderer extends CoreRenderer {
         String target = findTarget(context, droppable).getClientId(context);
         String clientId = droppable.getClientId(context);
 
-        writer.startElement("script", droppable);
-        writer.writeAttribute("id", clientId + "_script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -59,7 +57,7 @@ public class DroppableRenderer extends CoreRenderer {
         
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected UIComponent findTarget(FacesContext facesContext, Droppable droppable) {

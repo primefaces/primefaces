@@ -47,8 +47,7 @@ public class ImageSwitchRenderer extends CoreRenderer {
 
         writer.endElement("div");
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -58,7 +57,7 @@ public class ImageSwitchRenderer extends CoreRenderer {
 		writer.write(",timeout:" + slideshowSpeed);
 		writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 }

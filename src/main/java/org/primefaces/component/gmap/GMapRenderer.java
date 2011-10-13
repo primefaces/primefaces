@@ -68,8 +68,7 @@ public class GMapRenderer extends CoreRenderer {
         String widgetVar = map.resolveWidgetVar();
         GMapInfoWindow infoWindow = map.getInfoWindow();
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -115,7 +114,7 @@ public class GMapRenderer extends CoreRenderer {
 		
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeOverlays(FacesContext context, GMap map) throws IOException {

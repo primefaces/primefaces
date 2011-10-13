@@ -46,8 +46,7 @@ public class DialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -79,7 +78,7 @@ public class DialogRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeMarkup(FacesContext context, Dialog dialog) throws IOException {

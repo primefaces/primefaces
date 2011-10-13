@@ -78,8 +78,7 @@ public class EditorRenderer extends CoreRenderer{
 		String clientId = editor.getClientId(facesContext);
 		String widgetVar = editor.resolveWidgetVar();
 		
-		writer.startElement("script", editor);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 		
@@ -93,7 +92,7 @@ public class EditorRenderer extends CoreRenderer{
 
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
     
     @Override

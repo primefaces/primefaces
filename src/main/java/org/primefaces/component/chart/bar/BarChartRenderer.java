@@ -41,8 +41,7 @@ public class BarChartRenderer extends BaseChartRenderer {
 		BarChart chart = (BarChart) uichart;
 		String clientId = chart.getClientId(context);
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write("$(function(){");
 
@@ -54,7 +53,7 @@ public class BarChartRenderer extends BaseChartRenderer {
 
 		writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
     protected void encodeOptions(FacesContext context, BarChart chart) throws IOException {

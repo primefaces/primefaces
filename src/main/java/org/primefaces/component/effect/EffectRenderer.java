@@ -50,9 +50,7 @@ public class EffectRenderer extends CoreRenderer {
 		
 		String animation = getEffectBuilder(effect, effectedComponentClientId).build();
 		
-		writer.startElement("script", null);
-        writer.writeAttribute("id", clientId + "_script", event);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
         
 		writer.write("$(function() {");
 
@@ -73,7 +71,7 @@ public class EffectRenderer extends CoreRenderer {
         
         writer.write("});");
         
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {

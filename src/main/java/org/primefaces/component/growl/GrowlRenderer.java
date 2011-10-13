@@ -38,8 +38,7 @@ public class GrowlRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		writer.endElement("span");
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         if(isAjaxRequest(context)) {
             writer.write(widgetVar + ".show(");
@@ -52,7 +51,7 @@ public class GrowlRenderer extends CoreRenderer {
             writer.write(");});");
         }
 	
-		writer.endElement("script");
+		endScript(writer);
 
         if(growl.isAutoUpdate()) {
             addToAutoUpdate(clientId);

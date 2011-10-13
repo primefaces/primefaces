@@ -40,7 +40,7 @@ public class ImageCompareRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).beforeAfter({");
+		writer.write("$(PrimeFaces.escapeClientId('" + clientId + "')).beforeAfter({");
 		writer.write("handle:'" + getResourceRequestPath(fc, "imagecompare/handle.gif") + "'");
         writer.write(",lt:'" + getResourceRequestPath(fc, "imagecompare/lt-small.png") + "'");
         writer.write(",rt:'" + getResourceRequestPath(fc, "imagecompare/rt-small.png") + "'");

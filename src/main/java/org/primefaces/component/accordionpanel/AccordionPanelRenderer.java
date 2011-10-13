@@ -96,8 +96,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		String clientId = acco.getClientId(context);
         boolean dynamic = acco.isDynamic();
  		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
 		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
         writer.write("dynamic:" + dynamic);
@@ -111,7 +110,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		
 		writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {

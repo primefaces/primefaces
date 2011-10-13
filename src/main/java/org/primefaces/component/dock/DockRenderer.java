@@ -54,11 +54,9 @@ public class DockRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = dock.getClientId(facesContext);
 		String position = dock.getPosition();
-		
 		String containerClass = ".ui-dock-container-" + position;
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
 		writer.write(dock.resolveWidgetVar() + " = new PrimeFaces.widget.Dock('" + clientId + "', {");
 		writer.write("maxWidth: " + dock.getMaxWidth());
@@ -70,7 +68,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.write(",halign: '" + dock.getHalign() + "'");
 		writer.write("});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext facesContext, Dock dock) throws IOException {
