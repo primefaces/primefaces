@@ -39,6 +39,7 @@ public class DroppableRenderer extends CoreRenderer {
         String clientId = droppable.getClientId(context);
 
         writer.startElement("script", droppable);
+        writer.writeAttribute("id", clientId + "_script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");

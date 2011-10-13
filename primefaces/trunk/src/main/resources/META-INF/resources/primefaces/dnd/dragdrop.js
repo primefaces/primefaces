@@ -4,19 +4,25 @@
 PrimeFaces.widget.Draggable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
 	
     this.jq.draggable(this.cfg);
+    
+    $(this.jqId + '_script').remove();
 }
 
 PrimeFaces.widget.Droppable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
 	
     this.bindDropListener();
     	
     this.jq.droppable(this.cfg);
+    
+    $(this.jqId + '_script').remove();
 }
 
 PrimeFaces.widget.Droppable.prototype.bindDropListener = function() {
