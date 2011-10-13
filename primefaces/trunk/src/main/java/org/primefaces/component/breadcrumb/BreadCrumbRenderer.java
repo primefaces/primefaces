@@ -30,36 +30,33 @@ import org.primefaces.util.ComponentUtils;
 public class BreadCrumbRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		BreadCrumb breadCrumb = (BreadCrumb) component;
 		
 		if(breadCrumb.isDynamic()) {
 			breadCrumb.buildMenuFromModel();
 		}
 
-		encodeMarkup(facesContext, breadCrumb);
-		encodeScript(facesContext, breadCrumb);
+		encodeMarkup(context, breadCrumb);
+		encodeScript(context, breadCrumb);
 	}
 
-	protected void encodeScript(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = breadCrumb.getClientId(facesContext);
-
+	protected void encodeScript(FacesContext context, BreadCrumb breadCrumb) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = breadCrumb.getClientId(context);
+        boolean preview = breadCrumb.isPreview();
+        int childCount = breadCrumb.getChildCount();
+        int expandedEndItems = preview ? breadCrumb.getExpandedEndItems() : childCount;
+        int expandedBeginningItems = preview ? breadCrumb.getExpandedBeginningItems() : childCount;
+        
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "')).jBreadCrumb({");
-		writer.write("overlayClass:'ui-breadcrumb-chevron-overlay ui-icon ui-icon-triangle-1-e'");
-		
-		if(!breadCrumb.isPreview()) {
-			int childCount = breadCrumb.getChildCount();
-			writer.write(",endElementsToLeaveOpen:" + childCount);
-			writer.write(",beginingElementsToLeaveOpen:" + childCount);
-		} else {
-			if(breadCrumb.getExpandedEndItems() != 1) writer.write(",endElementsToLeaveOpen:" + breadCrumb.getExpandedEndItems());
-			if(breadCrumb.getExpandedBeginningItems() != 1) writer.write(",beginingElementsToLeaveOpen:" + breadCrumb.getExpandedBeginningItems());
-		}
-		
+		writer.write(breadCrumb.resolveWidgetVar() + " = new PrimeFaces.widget.Breadcrumb('" + clientId + "',{");
+
+        writer.write("endElementsToLeaveOpen:" + expandedEndItems);
+        writer.write(",beginingElementsToLeaveOpen:" + expandedBeginningItems);
+      
 		if(breadCrumb.getPreviewWidth() != 5) writer.write(",previewWidth:" + breadCrumb.getPreviewWidth());
 		if(breadCrumb.getExpandEffectDuration() != 800) writer.write(",timeExpansionAnimation:" + breadCrumb.getExpandEffectDuration());
 		if(breadCrumb.getCollapseEffectDuration() != 500) writer.write(",timeCompressionAnimation:" + breadCrumb.getCollapseEffectDuration());
@@ -70,9 +67,9 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.endElement("script");
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, BreadCrumb breadCrumb) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = breadCrumb.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, BreadCrumb breadCrumb) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = breadCrumb.getClientId(context);
 		String defaultStyleClass = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-corner-all";
 		String styleClass = breadCrumb.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + " " + breadCrumb.getStyleClass();
 
@@ -90,7 +87,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 			if(child.isRendered() && child instanceof MenuItem) {
 				writer.startElement("li", null);
 
-				encodeMenuItem(facesContext, (MenuItem) child);
+				encodeMenuItem(context, (MenuItem) child);
 
                 if(iterator.hasNext()) {
                     writer.startElement("span", null);
@@ -107,13 +104,13 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeMenuItem(FacesContext facesContext, MenuItem menuItem) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		if(menuItem.shouldRenderChildren()) {
-			renderChildren(facesContext, menuItem);
+			renderChildren(context, menuItem);
 		} else {
-			String clientId = menuItem.getClientId(facesContext);
+			String clientId = menuItem.getClientId(context);
 			
 			writer.startElement("a", null);
 			writer.writeAttribute("id", clientId, null);
@@ -122,19 +119,19 @@ public class BreadCrumbRenderer extends CoreRenderer {
 			if(menuItem.getStyleClass() != null) writer.writeAttribute("class", menuItem.getStyleClass(), null);
 			
 			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(facesContext, menuItem.getUrl()), null);
+				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
 				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
 				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
 			} else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
 				
-				UIComponent form = ComponentUtils.findParentForm(facesContext, menuItem);
+				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 				if(form == null) {
 					throw new FacesException("Breadcrumb must be inside a form element");
 				}
 				
-				String formClientId = form.getClientId(facesContext);
-				String command = menuItem.isAjax() ? buildAjaxRequest(facesContext, menuItem) : buildNonAjaxRequest(facesContext, menuItem, formClientId, clientId);
+				String formClientId = form.getClientId(context);
+				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
 				
 				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
 				
@@ -148,7 +145,7 @@ public class BreadCrumbRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		// Do nothing
 	}
 

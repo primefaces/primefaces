@@ -12,8 +12,14 @@
 	<rendererClass>org.primefaces.component.breadcrumb.BreadCrumbRenderer</rendererClass>
 	<parent>org.primefaces.component.menu.AbstractMenu</parent>
     <description>Breadcrumb is a navigation component that provides contextual information about page hierarchy in the workflow.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
+        &widget_var_attribute;
 		<attribute>
 			<name>model</name>
 			<required>false</required>
