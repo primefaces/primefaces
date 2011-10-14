@@ -2,10 +2,11 @@ PrimeFaces.widget.Wizard = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
     this.content = this.jqId + '_content';
     this.backNav = this.jqId + '_back';
     this.nextNav = this.jqId + '_next';
-    this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
     
     this.currentStep = this.cfg.initialStep;
     var currentStepIndex = this.getStepIndex(this.currentStep);
@@ -28,7 +29,11 @@ PrimeFaces.widget.Wizard = function(id, cfg) {
         else if(currentStepIndex == this.cfg.steps.length - 1)
             $(this.nextNav).hide();
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Wizard, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Wizard.prototype.back = function() {
     if(this.cfg.onback) {

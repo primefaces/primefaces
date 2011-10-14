@@ -30,7 +30,11 @@ PrimeFaces.widget.TreeTable = function(id, cfg) {
         
         this.bindSelectionEvents();
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.TreeTable, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.TreeTable.prototype.bindToggleEvents = function() {
     var _self = this;

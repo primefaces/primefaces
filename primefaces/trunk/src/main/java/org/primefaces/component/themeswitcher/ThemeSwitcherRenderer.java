@@ -28,9 +28,9 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
 	protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         ThemeSwitcher ts = (ThemeSwitcher) menu;
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        String clientId = ts.getClientId(context);
+        
+        startScript(writer, clientId);
 		
 		writer.write("$(function(){");
 		
@@ -44,6 +44,6 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
 		
 		writer.write("});});");
         
-		writer.endElement("script");
+		endScript(writer);
 	}
 }

@@ -58,8 +58,7 @@ public class RatingRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = rating.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -73,7 +72,7 @@ public class RatingRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     private void encodeMarkup(FacesContext context, Rating rating) throws IOException {

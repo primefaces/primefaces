@@ -523,13 +523,17 @@ jQuery.cookie = function (key, value, options) {
 };
 
 /**
- * Extension to remove item(s) from an array
+ * Utilities
  */
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
   this.length = from < 0 ? this.length + from : from;
   return this.push.apply(this, rest);
 };
+
+String.prototype.startsWith = function(str){
+    return (this.indexOf(str) === 0);
+}
 
 /**
  * Prime Push Widget

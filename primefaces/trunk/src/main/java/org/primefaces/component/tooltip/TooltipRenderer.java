@@ -63,8 +63,7 @@ public class TooltipRenderer extends CoreRenderer {
         String clientId = tooltip.getClientId(context);
 		String target = getTarget(context, tooltip);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 		
         writer.write("$(function() {");
 			
@@ -78,7 +77,7 @@ public class TooltipRenderer extends CoreRenderer {
         		
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected String getTarget(FacesContext context, Tooltip tooltip) {

@@ -25,7 +25,11 @@ PrimeFaces.widget.Sheet = function(id, cfg) {
     this.setupSorting();
     
     this.setupResizableColumns();
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Sheet, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper

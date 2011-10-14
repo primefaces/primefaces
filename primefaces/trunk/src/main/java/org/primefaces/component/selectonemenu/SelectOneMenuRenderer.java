@@ -242,8 +242,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
 
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectOneMenu('" + clientId + "',{");
 
@@ -256,7 +255,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {

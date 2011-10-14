@@ -44,8 +44,7 @@ public class StackRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = stack.getClientId(facesContext);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -58,7 +57,7 @@ public class StackRenderer extends CoreRenderer {
         
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext facesContext, Stack stack) throws IOException {
