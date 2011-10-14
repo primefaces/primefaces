@@ -9,7 +9,11 @@ PrimeFaces.widget.ProgressBar = function(id, cfg) {
     }
 	
     this.jq.progressbar(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.ProgressBar, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
     this.jq.progressbar('value', value);

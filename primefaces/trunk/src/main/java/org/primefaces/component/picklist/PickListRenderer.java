@@ -104,8 +104,7 @@ public class PickListRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = pickList.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write(pickList.resolveWidgetVar() + " = new PrimeFaces.widget.PickList('" + clientId + "', {");
         writer.write("effect:'" + pickList.getEffect() + "'");
@@ -119,7 +118,7 @@ public class PickListRenderer extends CoreRenderer {
 
         writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
     
     protected void encodeListControls(FacesContext context, PickList pickList, String styleClass) throws IOException {

@@ -60,8 +60,7 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.Panel('" + clientId + "', {");
         writer.write("visible:" + panel.isVisible());
@@ -87,7 +86,8 @@ public class PanelRenderer extends CoreRenderer {
         encodeClientBehaviors(context, panel);
 
         writer.write("});");
-        writer.endElement("script");
+        
+        endScript(writer);
     }
 
     protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {

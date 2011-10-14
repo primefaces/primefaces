@@ -203,19 +203,19 @@ public class OrderListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = ol.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write(ol.resolveWidgetVar() + " = new PrimeFaces.widget.OrderList('" + clientId + "', {");
     
         writer.write("iconOnly:" + ol.isIconOnly());
         
-        if(ol.getEffect() != null) 
+        if(ol.getEffect() != null) {
             writer.write(",effect:'" + ol.getEffect() + "'");
+        }
         
         writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
     }
     
     @Override

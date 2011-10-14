@@ -512,4 +512,8 @@ PrimeFaces.widget.Ring = function(id, cfg) {
     this.jq = jQuery(this.jqId);
 
     this.jq.roundabout(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Ring, PrimeFaces.widget.BaseWidget);

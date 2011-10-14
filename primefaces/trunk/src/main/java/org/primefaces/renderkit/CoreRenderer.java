@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import javax.faces.FacesException;
 
@@ -406,7 +405,7 @@ public class CoreRenderer extends Renderer {
     
     protected void startScript(ResponseWriter writer, String clientId) throws IOException {
         writer.startElement("script", null);
-        writer.writeAttribute("id", clientId + "_script", null);
+        writer.writeAttribute("id", clientId + "_s", null);
         writer.writeAttribute("type", "text/javascript", null);
     }
     

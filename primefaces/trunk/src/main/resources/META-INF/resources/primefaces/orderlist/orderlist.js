@@ -25,7 +25,11 @@ PrimeFaces.widget.OrderList = function(id, cfg) {
             _self.onDragDrop(event, ui);
         }
     });
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.OrderList, PrimeFaces.widget.BaseWidget);
 
 /**
  * Visuals

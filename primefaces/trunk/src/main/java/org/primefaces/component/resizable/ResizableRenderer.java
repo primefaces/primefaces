@@ -24,7 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class ResizableRenderer extends CoreRenderer {
 
@@ -41,8 +40,7 @@ public class ResizableRenderer extends CoreRenderer {
 		UIComponent target = findTarget(context, resizable);
         String targetId = target.getClientId(context);
 
-		writer.startElement("script", resizable);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         //If it is an image wait until the image is loaded
         if(target instanceof UIGraphic)
@@ -85,7 +83,7 @@ public class ResizableRenderer extends CoreRenderer {
 		
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
     protected UIComponent findTarget(FacesContext context, Resizable resizable) {

@@ -49,13 +49,20 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
     else {
         this.init();
     }
+    
+    this.postConstruct();
 }
 
+PrimeFaces.extend(PrimeFaces.widget.Schedule, PrimeFaces.widget.BaseWidget);
+
 PrimeFaces.widget.Schedule.prototype.init = function() {
-    if(!this.initialized) {
-        this.initialized = true;
-        
+    if(this.jq.is(':visible')) {
         this.jqc.fullCalendar(this.cfg);
+        
+        return true;
+    } 
+    else {
+        return false;
     }
 }
 

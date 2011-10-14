@@ -57,8 +57,7 @@ public class InputMaskRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(inputMask.resolveWidgetVar() + " = new PrimeFaces.widget.InputMask('" + clientId + "', {");
 
@@ -76,7 +75,7 @@ public class InputMaskRenderer extends InputRenderer {
 
 		writer.write("});");
 	
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {

@@ -58,9 +58,8 @@ public class PasswordRenderer extends InputRenderer {
 		String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
+        startScript(writer, clientId);
+        
 		writer.write("$(function(){");
 
 		writer.write(password.resolveWidgetVar() + " = new PrimeFaces.widget.Password('" + clientId + "', {");
@@ -88,7 +87,7 @@ public class PasswordRenderer extends InputRenderer {
 
 		writer.write("});});");
         
-		writer.endElement("script");
+		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, Password password) throws IOException {

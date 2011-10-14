@@ -66,8 +66,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         String clientId = progressBar.getClientId(context);
         boolean isAjax = progressBar.isAjax();
 
-        writer.startElement("script", progressBar);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -91,6 +90,6 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 }
