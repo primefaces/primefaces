@@ -1151,7 +1151,7 @@ PrimeFaces.widget.Editor = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
