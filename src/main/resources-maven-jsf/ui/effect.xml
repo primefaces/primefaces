@@ -12,8 +12,14 @@
 	<rendererClass>org.primefaces.component.effect.EffectRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>Effect component is based on the jQuery UI effects library.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
+        &widget_var_attribute;
 		<attribute>
 			<name>event</name>
 			<required>true</required>
@@ -56,6 +62,9 @@
 		</resource>
         <resource>
 			<name>core/core.js</name>
+		</resource>
+        <resource>
+			<name>effect/effect.js</name>
 		</resource>
 	</resources>
 </component>

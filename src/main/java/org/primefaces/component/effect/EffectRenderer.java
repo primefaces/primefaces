@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,43 +33,35 @@ public class EffectRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Effect effect = (Effect) component;
         String clientId = effect.getClientId(context);
-		String parentClientId = effect.getParent().getClientId(context);
-		String effectedComponentClientId = null;
+		String target = null;
+        String source = component.getParent().getClientId(context);
         String event = effect.getEvent();
+        int delay = effect.getDelay();
         String timeoutKey = "window.effect_" + clientId.replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
 		
 		if(effect.getFor() != null) {
-			UIComponent target = effect.findComponent(effect.getFor());
-			if(target != null)
-				effectedComponentClientId = target.getClientId(context);
+			UIComponent _for = effect.findComponent(effect.getFor());
+			if(_for != null)
+				target = _for.getClientId(context);
 			else
 				throw new FacesException("Cannot find component \"" + effect.getFor() + "\" in view.");
 		} else {
-			effectedComponentClientId = parentClientId;
+			target = effect.getParent().getClientId(context);
 		}
 		
-		String animation = getEffectBuilder(effect, effectedComponentClientId).build();
+		String animation = getEffectBuilder(effect, target).build();
 		
         startScript(writer, clientId);
         
 		writer.write("$(function() {");
-
-        writer.write("clearTimeout(" + timeoutKey + ");");
         
-        writer.write(timeoutKey + " = setTimeout(function() {");
+        writer.write(effect.resolveWidgetVar() + " = new PrimeFaces.widget.Effect('" + clientId + "', {");
+        writer.write("source:'" + source + "'");
+        writer.write(",event:'" + event + "'");
+        writer.write(",fn:function() {" + animation + "}");
+        writer.write(",delay:" + delay);
 
-		if(event.equals("load")) {
-			writer.write(animation);
-		} else {
-            writer.write("$(PrimeFaces.escapeClientId('" + parentClientId + "'))");
-            writer.write(".bind('" + effect.getEvent() + "', function() {" + animation + "});");
-		}
-
-        writer.write("}," + effect.getDelay() + ");");
-
-        writer.write("$(PrimeFaces.escapeClientId('" + clientId + "_script')).remove()");
-        
-        writer.write("});");
+        writer.write("});});");
         
 		endScript(writer);
 	}
