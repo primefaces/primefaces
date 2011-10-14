@@ -99,3 +99,35 @@
 .ui-menubutton .ui-button {
     margin:0;
 }
+
+.ui-menu-slider .ui-menu-list{
+    width : 100% !important;
+}
+
+.ui-menu-slider .ui-menu-child{
+    width : 100%;
+    top: 0px;
+    background: none !important;
+    box-shadow: none !important;
+    border : none !important;
+}
+
+.ui-menu-slider .ui-menu-parent{
+    position: static !important;
+}
+
+.ui-menu-slider{
+    position: relative;
+    display: none;
+}
+
+.ui-menu .ui-menu-backward .ui-icon {
+    float : left;
+}
+
+.ui-menu .ui-menu-backward {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+}

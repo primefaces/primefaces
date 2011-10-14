@@ -42,7 +42,16 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         writer.write("position:'" + position + "'");
         writer.write(",type:'" + menu.getType() + "'");
+        
+        if(menu.getEffect() != null)
+            writer.write(",effect:'" + menu.getEffect() + "'");
 
+        if(menu.getEffectDuration() > Integer.MIN_VALUE)
+            writer.write(",effectDuration:" + menu.getEffectDuration());
+
+        if(menu.getEasing() != null)
+            writer.write(",easing:'" + menu.getEasing() + "'");
+        
         //dynamic position
         if(position.equalsIgnoreCase("dynamic")) {
            writer.write(",my:'" + menu.getMy() + "'");
@@ -65,6 +74,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
         boolean tiered = !menu.getType().equalsIgnoreCase("plain");
+        boolean sliding = menu.getType().equalsIgnoreCase("sliding");
         boolean dynamic = menu.getPosition().equals("dynamic");
         
         String style = menu.getStyle();
@@ -79,6 +89,10 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        if(sliding){
+            writer.startElement("div", menu);
+            writer.writeAttribute("class", Menu.WRAPPER_CLASS, "wrapper");
+        }
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
@@ -91,6 +105,18 @@ public class MenuRenderer extends BaseMenuRenderer {
 
 		writer.endElement("ul");
 
+        if(sliding){
+            writer.endElement("div");
+            writer.startElement("div", menu);
+            writer.writeAttribute("class", Menu.BACKWARD_CLASS, style);
+            
+            writer.startElement("span", menu);
+            writer.writeAttribute("class", Menu.BACKWARD_ICON_CLASS, style);
+            writer.endElement("span");
+            
+            writer.write("back");
+            writer.endElement("div");
+        }
         writer.endElement("div");
 	}
 
