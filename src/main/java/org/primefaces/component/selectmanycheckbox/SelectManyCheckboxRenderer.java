@@ -80,8 +80,7 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
 
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(checkbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectManyCheckbox({id:'" + clientId + "'");
 
@@ -91,7 +90,7 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     @Override

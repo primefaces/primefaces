@@ -14,7 +14,7 @@
 /*# AVOID COLLISIONS #*/
 
 	// IE6 Background Image Fix
-	if ($.browser.msie) try { document.execCommand("BackgroundImageCache", false, true)} catch(e) { };
+	if ($.browser.msie) try {document.execCommand("BackgroundImageCache", false, true)} catch(e) { };
 	// Thanks to http://www.visualjquery.com/rating/rating_redux.html
 
 	// plugin initialization
@@ -59,7 +59,7 @@
 
 			// FIX: http://code.google.com/p/jquery-star-rating-plugin/issues/detail?id=23
 			var raters = context.data('rating');
-			if(!raters || raters.call!=$.fn.rating.calls) raters = { count:0, call:$.fn.rating.calls };
+			if(!raters || raters.call!=$.fn.rating.calls) raters = {count:0, call:$.fn.rating.calls};
 			var rater = raters[eid];
 
 			// if rater is available, verify that the control still exists
@@ -78,7 +78,7 @@
 					{}/* new object */,
 					options || {} /* current call options */,
 					($.metadata? input.metadata(): ($.meta?input.data():null)) || {}, /* metadata options */
-					{ count:0, stars: [], inputs: [] }
+					{count:0, stars: [], inputs: []}
 				);
 
 				// increment number of rating controls
@@ -135,7 +135,7 @@
 				.width(spw)
 				// move the star left by using a negative margin
 				// this is work-around to IE's stupid box model (position:relative doesn't work)
-				.find('a').css({ 'margin-left':'-'+ (spi*spw) +'px' })
+				.find('a').css({'margin-left':'-'+ (spi*spw) +'px'})
 			};
 
 			// readOnly?
@@ -204,7 +204,7 @@
 		calls: 0,
 
 		focus: function(){
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			if(!control.focus) return this; // quick fail if not required
 			// find data for event
 			var input = $(this).data('rating.input') || $( this.tagName=='INPUT' ? this : null );
@@ -213,7 +213,7 @@
 		}, // $.fn.rating.focus
 
 		blur: function(){
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			if(!control.blur) return this; // quick fail if not required
 			// find data for event
 			var input = $(this).data('rating.input') || $( this.tagName=='INPUT' ? this : null );
@@ -222,7 +222,7 @@
 		}, // $.fn.rating.blur
 
 		fill: function(){ // fill to the current mouse position.
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			// do not execute when control is in read-only mode
 			if(control.readOnly) return;
 			// Reset all stars and highlight them up to this element
@@ -231,7 +231,7 @@
 		},// $.fn.rating.fill
 
 		drain: function() { // drain all the stars.
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			// do not execute when control is in read-only mode
 			if(control.readOnly) return;
 			// Reset all stars
@@ -239,7 +239,7 @@
 		},// $.fn.rating.drain
 
 		draw: function(){ // set value and stars to reflect current selection
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			// Clear all stars
 			this.rating('drain');
 			// Set control value
@@ -270,7 +270,7 @@
 					// ***** line which is calling callback
 					// ***** /LIST OF MODIFICATION *****
 
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			// do not execute when control is in read-only mode
 			if(control.readOnly) return;
 			// clear selection
@@ -318,7 +318,7 @@
 
 
 		readOnly: function(toggle, disable){ // make the control read-only (still submits value)
-			var control = this.data('rating'); if(!control) return this;
+			var control = this.data('rating');if(!control) return this;
 			// setread-only status
 			control.readOnly = toggle || toggle==undefined ? true : false;
 			// enable/disable control value submission
@@ -389,7 +389,8 @@ PrimeFaces.widget.Rating = function(cfg) {
     this.id = cfg.id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + ' input');
+    this.jq = $(this.jqId);
+    this.jqInput = $(this.jqId + ' input');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
     this.value = this.getValue();
     var _self = this;
@@ -412,21 +413,25 @@ PrimeFaces.widget.Rating = function(cfg) {
         }
     };
 	
-    this.jq.rating(this.cfg);
+    this.jqInput.rating(this.cfg);
+    
+    this.postConstruct();
 }
 
+PrimeFaces.extend(PrimeFaces.widget.Rating, PrimeFaces.widget.BaseWidget);
+
 PrimeFaces.widget.Rating.prototype.getValue = function() {
-    return jQuery(this.jqId + ' input:radio:checked').val();
+    return $(this.jq).find('input:radio:checked').val();
 }
 
 PrimeFaces.widget.Rating.prototype.setValue = function(value) {
-    this.jq.rating('select', value);
+    this.jqInput.rating('select', value);
 }
 
 PrimeFaces.widget.Rating.prototype.enable = function() {
-    this.jq.rating('enable');
+    this.jqInput.rating('enable');
 }
 
 PrimeFaces.widget.Rating.prototype.disable = function() {
-    this.jq.rating('disable');
+    this.jqInput.rating('disable');
 }

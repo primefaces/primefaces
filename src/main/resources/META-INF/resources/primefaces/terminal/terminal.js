@@ -457,7 +457,11 @@ PrimeFaces.widget.Terminal = function(id, cfg) {
     this.cfg.formId = this.jq.parents('form:first').attr('id');
 	
 	this.jq.wterm(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Terminal, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Terminal.prototype.focus = function() {
     $(this.jqId + ' input').eq(0).focus();

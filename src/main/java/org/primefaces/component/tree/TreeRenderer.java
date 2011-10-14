@@ -103,8 +103,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
 			
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -136,7 +135,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, Tree tree) throws IOException {

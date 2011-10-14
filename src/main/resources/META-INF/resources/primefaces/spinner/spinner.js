@@ -61,7 +61,11 @@ PrimeFaces.widget.Spinner = function(id, cfg) {
     if(this.cfg.theme != false) {
         PrimeFaces.skinInput(this.input);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Spinner, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Spinner.prototype.repeat = function(interval, dir) {
     var _self = this,

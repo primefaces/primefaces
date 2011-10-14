@@ -28,32 +28,31 @@ import org.primefaces.util.ComponentUtils;
 public class TerminalRenderer extends CoreRenderer {
 
 	@Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Terminal terminal = (Terminal) component;
 
-        if(facesContext.getExternalContext().getRequestParameterMap().containsKey(terminal.getClientId(facesContext))) {
-            handleCommand(facesContext, component);
+        if(context.getExternalContext().getRequestParameterMap().containsKey(terminal.getClientId(context))) {
+            handleCommand(context, component);
         } else {
-            encodeMarkup(facesContext, terminal);
-            encodeScript(facesContext, terminal);
+            encodeMarkup(context, terminal);
+            encodeScript(context, terminal);
         }
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Terminal terminal) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = terminal.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, Terminal terminal) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = terminal.getClientId(context);
 		
 		writer.startElement("div", terminal);
 		writer.writeAttribute("id", clientId, "id");
 		writer.endElement("div");
 	}
 
-	protected void encodeScript(FacesContext facesContext, Terminal terminal) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = terminal.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = terminal.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
         
@@ -66,14 +65,14 @@ public class TerminalRenderer extends CoreRenderer {
 
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
-	protected void handleCommand(FacesContext facesContext, UIComponent component) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void handleCommand(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		Terminal terminal = (Terminal) component;
-        String clientId = terminal.getClientId(facesContext);
-		String argsParam = facesContext.getExternalContext().getRequestParameterMap().get(clientId + "_args");
+        String clientId = terminal.getClientId(context);
+		String argsParam = context.getExternalContext().getRequestParameterMap().get(clientId + "_args");
 		String tokens[] = argsParam.split(",");
 		String command = tokens[0];
 		String[] args;
@@ -88,7 +87,7 @@ public class TerminalRenderer extends CoreRenderer {
         }
 		
 		MethodExpression commandHandler = terminal.getCommandHandler();
-		String result = (String) commandHandler.invoke (facesContext.getELContext(), new Object[]{command, args});
+		String result = (String) commandHandler.invoke (context.getELContext(), new Object[]{command, args});
 		
 		writer.write(result);
 	}

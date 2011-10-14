@@ -76,8 +76,7 @@ public class SelectOneListboxRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
 
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(listbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectListbox('" + clientId + "',{");
         writer.write("selection:'single'");
@@ -88,7 +87,7 @@ public class SelectOneListboxRenderer extends InputRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, Class type) throws IOException {

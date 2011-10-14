@@ -58,8 +58,7 @@ public class SliderRenderer extends CoreRenderer{
 		UIComponent input = getTarget(context, slider, slider.getFor());
 		UIComponent output = getTarget(context, slider, slider.getDisplay());
 
-		writer.startElement("script", slider);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
 		writer.write(slider.resolveWidgetVar() + " = new PrimeFaces.widget.Slider('" + clientId + "', {");
 		writer.write("value:" + ComponentUtils.getStringValueToRender(context, input));
@@ -80,7 +79,7 @@ public class SliderRenderer extends CoreRenderer{
                 
 		writer.write("});");
 	
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected UIComponent getTarget(FacesContext context, Slider slider, String target) {

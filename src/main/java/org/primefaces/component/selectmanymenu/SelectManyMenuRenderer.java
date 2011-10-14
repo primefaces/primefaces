@@ -80,8 +80,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
 
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectListbox('" + clientId + "',{");
         
@@ -93,7 +92,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId) throws IOException {

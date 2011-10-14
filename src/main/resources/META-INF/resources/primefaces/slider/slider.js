@@ -4,10 +4,11 @@
 PrimeFaces.widget.Slider = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-    this.jq = jQuery(PrimeFaces.escapeClientId(this.id));
-	this.input = jQuery(PrimeFaces.escapeClientId(this.cfg.input));
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+	this.input = $(PrimeFaces.escapeClientId(this.cfg.input));
 	if(this.cfg.output) {
-		this.output = jQuery(PrimeFaces.escapeClientId(this.cfg.output));
+		this.output = $(PrimeFaces.escapeClientId(this.cfg.output));
 	}
     var _self = this;
     
@@ -38,7 +39,11 @@ PrimeFaces.widget.Slider = function(id, cfg) {
     this.input.keyup(function(){
       _self.setValue(_self.input.val());
     });
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Slider, PrimeFaces.widget.BaseWidget);
     
 PrimeFaces.widget.Slider.prototype.onSlide = function(event, ui) {
     //User callback

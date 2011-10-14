@@ -31,7 +31,11 @@ PrimeFaces.widget.Tooltip = function(id, cfg) {
     
     //remove target's title
     this.target.removeAttr('title');
+
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Tooltip, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Tooltip.prototype.bindEvents = function() {
     var _self = this;

@@ -84,8 +84,7 @@ public class WizardRenderer extends CoreRenderer {
             throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
         }
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("$(function() {");
 
@@ -134,7 +133,7 @@ public class WizardRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {

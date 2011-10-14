@@ -71,13 +71,12 @@ public class SheetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = sheet.getClientId(context);
         
-        writer.startElement("script", sheet);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
         
         writer.write(sheet.resolveWidgetVar() + " = new PrimeFaces.widget.Sheet('" + clientId + "',{");
         writer.write("});");
 
-		writer.endElement("script");
+		endScript(writer);
     }
     
     protected void encodeCaption(FacesContext context, Sheet sheet) throws IOException {

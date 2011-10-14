@@ -22,7 +22,11 @@ PrimeFaces.widget.Tree = function(id, cfg) {
     if(this.cfg.dragdrop) {
         this.setupDragDrop(this.jq.find('.ui-tree-node-label'), this.jq.find('.ui-tree-node-content'));
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Tree, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Tree.prototype.bindEvents = function() {
     var _self = this,

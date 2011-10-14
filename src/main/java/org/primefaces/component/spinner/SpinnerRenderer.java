@@ -69,9 +69,8 @@ public class SpinnerRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = spinner.getClientId(context);
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+
+        startScript(writer, clientId);
 
 		writer.write("$(function(){");
 
@@ -93,7 +92,7 @@ public class SpinnerRenderer extends InputRenderer {
  		
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {

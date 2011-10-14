@@ -262,11 +262,11 @@ PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
     //Panel management
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
+    
+    this.postConstruct();
 }
 
-String.prototype.startsWith = function(str){
-    return (this.indexOf(str) === 0);
-}
+PrimeFaces.extend(PrimeFaces.widget.SelectOneMenu, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
@@ -625,7 +625,11 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.SelectOneRadio, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.SelectOneRadio.prototype.enable = function() {
     this.jq.find('.ui-radiobutton').removeClass('ui-state-disabled');
@@ -682,7 +686,11 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.SelectBooleanCheckbox, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.SelectBooleanCheckbox.prototype.isDisabled = function() {
     return this.jq.hasClass('ui-state-disabled');
@@ -749,7 +757,11 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.SelectManyCheckbox, PrimeFaces.widget.BaseWidget);
 
 //index selector. extends JQuery find.
 $.fn.findByIndex = function(selector, index){
@@ -806,6 +818,7 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.check = function(index) {
         input = element.prev().children('input');
         if(input.is(":checked"))
             return;
+        
         input.change();
         input.attr('checked', 'checked');
         element.children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
@@ -819,6 +832,7 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.uncheck = function(index) {
         input = element.prev().children('input');
         if(!input.is(":checked"))
             return;
+        
         input.change();
         input.removeAttr('checked');
         element.children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
@@ -890,7 +904,11 @@ PrimeFaces.widget.SelectListbox = function(id, cfg) {
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.SelectListbox, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.SelectListbox.prototype.enable = function() {
     this.jq.removeClass('ui-state-disabled');

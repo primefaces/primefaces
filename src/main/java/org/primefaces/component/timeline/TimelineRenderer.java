@@ -56,8 +56,7 @@ public class TimelineRenderer extends CoreRenderer {
         List<Timeline> model = tl.getValue();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
         
         writer.write("$(function() {");
 
@@ -102,7 +101,7 @@ public class TimelineRenderer extends CoreRenderer {
         
         writer.write("});});");
         
-        writer.endElement("script");
+        endScript(writer);
     }
     
     public void encodeEvent(FacesContext context, TimelineEvent event, SimpleDateFormat formatter, String timelineId) throws IOException {

@@ -34,7 +34,11 @@ PrimeFaces.widget.ThemeSwitcher = function(id, cfg) {
     //panel management
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.ThemeSwitcher, PrimeFaces.widget.BaseWidget);
         
 PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
 

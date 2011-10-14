@@ -49,13 +49,12 @@ public class WatermarkRenderer extends CoreRenderer {
 			throw new FacesException("Either for or forElement options must be used to define a watermark");
 		}
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, watermark.getClientId(context));
 		
 		writer.write("$(function() {");
 		writer.write("$('" + target.toString() + "').watermark('" + watermark.getValue() + "');");
 		writer.write("});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 }

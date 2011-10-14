@@ -75,8 +75,7 @@ public class TabViewRenderer extends CoreRenderer {
         String clientId = tabView.getClientId(context);
         boolean dynamic = tabView.isDynamic();
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
         
         writer.write(tabView.resolveWidgetVar() + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
 
@@ -97,7 +96,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.write("});");
 
-        writer.endElement("script");
+        endScript(writer);
     }
 
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {

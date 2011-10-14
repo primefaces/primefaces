@@ -387,4 +387,8 @@ PrimeFaces.widget.Timeline = function(id, cfg) {
     this.cfg.icon_folder = '';
     
     this.jq.timeline(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Timeline, PrimeFaces.widget.BaseWidget);
