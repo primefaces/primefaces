@@ -39,6 +39,7 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     this.jq = $(this.jqId);
     this.menuitems = this.jq.find('.ui-menuitem');
     this.cfg.tiered = this.cfg.type == 'tiered';
+    this.cfg.sliding = this.cfg.type == 'sliding';
 
     var _self = this;
         
@@ -69,6 +70,18 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 
             _self.hide();
         });
+    }
+
+    if(this.cfg.sliding){
+        this.viewport = this.jq.innerWidth();
+        this.wrapper = this.jq.children('div.ui-menu-slider:first');
+        this.cfg.effect = this.cfg.effect || 'slide';
+        this.cfg.easing = this.cfg.easing || 'easeInOutCirc';
+        this.cfg.effectDuration = this.cfg.effectDuration || 500;
+        this.level = 0;
+        
+        this.jq.css({overflow : 'hidden'}).find('ul.ui-menu-child').css({ left : this.viewport});
+        this.wrapper.css({display : 'block'});
     }
 
     //visuals
@@ -106,7 +119,6 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
 
             submenu.show();
         }
-
     }).mouseleave(function(e) {
         var menuitem = $(this),
         menuitemLink = menuitem.children('.ui-menuitem-link');
@@ -128,6 +140,107 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
             _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
         });
     }
+    else if(this.cfg.sliding){
+        this.menuitems.click(function(e){
+            if(_self.animating)
+                return;
+            
+            var menuitem = $(this), 
+            parents = menuitem.parents('ul.ui-menu-list').length,
+            submenu = menuitem.children('ul.ui-menu-child');
+            
+            //invalid event
+            if(!submenu.length || _self.level != parents - 1)
+                return;
+
+            _self.currentSubMenu = submenu.css({display : 'block'});
+            _self.forward();
+       });
+       
+       this.back = this.wrapper.siblings('div.ui-menu-backward').click(function(e){
+           _self.backward();
+       });
+    }
+}
+
+PrimeFaces.widget.Menu.prototype.forward = function(){
+    if(this.level == 0){
+        this.back.css({display : 'block'});
+    }
+
+    if(this.cfg.effect == 'fade')
+        this.fade(++this.level);
+    else
+        this.slide(++this.level);
+}
+
+PrimeFaces.widget.Menu.prototype.backward = function(){
+    if(!this.level)
+        return;
+    if(this.level == 1){
+        this.back.css({display : 'none'});
+    }
+    
+    var _self = this, back = function(){
+        _self.currentSubMenu.css({display : 'none'});
+        _self.currentSubMenu = _self.currentSubMenu.parents('ul.ui-menu-child:first');
+    }
+    
+    if(this.cfg.effect == 'fade')
+        this.fade(--this.level, back);
+    else
+        this.slide(--this.level, back);
+}
+
+PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
+    var _self = this;
+    this.animating = true;
+    
+    this.wrapper.animate( 
+    {
+        left : -level * _self.viewport
+    },
+    {
+        duration: this.cfg.effectDuration,
+        easing: this.cfg.easing,
+        complete: function() {
+            _self.animating = false;
+            if(fn) fn.call();
+        }
+    });
+}
+
+PrimeFaces.widget.Menu.prototype.fade = function(level, fn){
+    var _self = this;
+    this.animating = true;
+    
+    this.wrapper.animate(
+    {   
+        opacity: 0
+    }, 
+    {   
+        duration: this.cfg.effectDuration / 2,
+        specialEasing: {
+            opacity : this.cfg.easing
+        },
+        complete: function() {
+            _self.wrapper.css({left : -level * _self.viewport});
+            $(this).animate(
+            {
+                opacity: 1
+            }, 
+            {
+                duration: _self.cfg.effectDuration / 2,
+                specialEasing: {
+                    opacity : _self.cfg.easing
+                },
+                complete: function() {
+                    _self.animating = false;
+                    if(fn) fn.call();
+                }
+            });
+        }
+    });
 }
 
 PrimeFaces.widget.Menu.prototype.show = function(e) {                
@@ -249,7 +362,6 @@ PrimeFaces.widget.ContextMenu = function(id, cfg) {
             _self.show(e);
         });
     }
-
     
     this.postConstruct();
 }

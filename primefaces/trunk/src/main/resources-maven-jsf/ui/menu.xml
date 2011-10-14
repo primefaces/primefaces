@@ -92,6 +92,25 @@
             <defaultValue>click</defaultValue>
             <description>Event name of component that will show the dynamic positioned menu. Default is click.</description>
 		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the animation effect slide or fade. Default is slide.</description>
+		</attribute>
+		<attribute>
+			<name>easing</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the animation effect. Default is easeInOutCirc.</description>
+		</attribute>
+        <attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Sets the speed of animation in milliseconds. Default is 500.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
