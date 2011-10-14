@@ -31,12 +31,6 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-			<name>easing</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>easeOutQuad</defaultValue>
-		</attribute>
-        <attribute>
 			<name>scrollMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -48,16 +42,13 @@
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
         <resource>
-			<name>wijmo/wijmo.css</name>
+			<name>scrollpanel/scrollpanel.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
 			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-        <resource>
-			<name>wijmo/wijmo.js</name>
 		</resource>
         <resource>
 			<name>core/core.js</name>

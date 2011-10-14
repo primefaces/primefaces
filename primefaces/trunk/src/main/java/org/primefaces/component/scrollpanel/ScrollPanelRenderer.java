@@ -36,37 +36,117 @@ public class ScrollPanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
+        styleClass = ScrollPanel.SCROLL_PANEL_CLASS + (styleClass == null ? "" : styleClass);
 
-        writer.startElement("div", panel);
+        writer.startElement("div", panel); 
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("style", style + ";overflow:hidden", "style");
-        if(styleClass != null) {
-            writer.writeAttribute("class", styleClass, "styleClass");
-        }
+        
+        if(style != null)
+            writer.writeAttribute("style", style, "style");
+        
+        writer.writeAttribute("class", styleClass, "styleClass");
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTAINER_CLASS, "container");
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_WRAPPER_CLASS, "wrapper");
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, "content");
         
         renderChildren(context, panel);
-
+        
+        writer.endElement("div");
+        writer.endElement("div");
+        
+        //horizontal bar
+        encodeScrollBar(context, panel, false);
+        
+        //vertical bar
+        encodeScrollBar(context, panel, true);
+        
+        //container
+        writer.endElement("div");
+        
+        //scrollpanel
         writer.endElement("div");
     }
-
+    
+    protected void encodeScrollBar(FacesContext context, ScrollPanel panel, boolean vertical) throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
+        
+        String barClass, gripClass, buttonUpClass, buttonDownClass, iconUpClass, iconDownClass;
+        
+        if(vertical){
+            barClass = ScrollPanel.SCROLL_PANEL_VBAR_CLASS;
+            gripClass = ScrollPanel.SCROLL_PANEL_HGRIP_CLASS;
+            buttonUpClass = ScrollPanel.SCROLL_PANEL_BTOP_CLASS;
+            buttonDownClass = ScrollPanel.SCROLL_PANEL_BBOTTOM_CLASS;
+            iconUpClass = ScrollPanel.SCROLL_PANEL_INORTH_CLASS;
+            iconDownClass = ScrollPanel.SCROLL_PANEL_ISOUTH_CLASS;
+        }
+        else{
+            barClass = ScrollPanel.SCROLL_PANEL_HBAR_CLASS;
+            gripClass = ScrollPanel.SCROLL_PANEL_VGRIP_CLASS;
+            buttonUpClass = ScrollPanel.SCROLL_PANEL_BLEFT_CLASS;
+            buttonDownClass = ScrollPanel.SCROLL_PANEL_BRIGHT_CLASS;
+            iconUpClass = ScrollPanel.SCROLL_PANEL_IWEST_CLASS;
+            iconDownClass = ScrollPanel.SCROLL_PANEL_IEAST_CLASS;
+        }
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", barClass, "scrollbars");
+        
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_HANDLE_CLASS, "barhandler");
+            
+        writer.startElement("span", panel);
+        writer.writeAttribute("class", gripClass, "grips");
+        writer.endElement("span");
+        
+        writer.endElement("div");
+        
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", buttonUpClass, "buttonup");
+            
+        writer.startElement("span", panel);
+        writer.writeAttribute("class", iconUpClass, "iconup");
+        writer.endElement("span");
+        
+        writer.endElement("div");
+        
+        
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", buttonDownClass, "buttondown");
+            
+        writer.startElement("span", panel);
+        writer.writeAttribute("class", iconDownClass, "icondown");
+        writer.endElement("span");
+        
+        writer.endElement("div");
+        
+        
+        writer.endElement("div");//scrollbar
+    }
+    
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
-
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-
-        //writer.write("jQuery(function() {");
+        
+        startScript(writer, clientId);
+		
+		writer.write("$(function(){");
 
         writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.ScrollPanel('" + clientId + "',{");
 
         writer.write("scrollMode:'" + panel.getScrollMode() + "'");
-        writer.write(",easing:'" + panel.getEasing() + "'");
 
-        //writer.write("});});");
-        writer.write("});");
+        writer.write("});});");
         
-        writer.endElement("script");
+        endScript(writer);
     }
 
     @Override
