@@ -46,7 +46,7 @@
 			<name>autoConnect</name>
 			<required>true</required>
 			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
+            <defaultValue>false</defaultValue>
             <description>Defines if client should connect to the channel on page load.</description>
 		</attribute>
 	</attributes>
