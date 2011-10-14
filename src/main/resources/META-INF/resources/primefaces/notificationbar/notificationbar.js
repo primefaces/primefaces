@@ -1,7 +1,8 @@
 PrimeFaces.widget.NotificationBar = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-	this.jq = $(PrimeFaces.escapeClientId(this.id));
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+	this.jq = $(this.jqId);
     var _self = this;
 	
     //relocate
@@ -16,7 +17,11 @@ PrimeFaces.widget.NotificationBar = function(id, cfg) {
     this.jq.children('.ui-notificationbar-close').click(function() {
         _self.hide();
     });
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.NotificationBar, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.NotificationBar.prototype.show = function() {
 	if(this.cfg.effect === 'slide')

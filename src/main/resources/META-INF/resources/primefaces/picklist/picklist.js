@@ -72,7 +72,11 @@ PrimeFaces.widget.PickList = function(id, cfg) {
                             });
                     });
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.PickList, PrimeFaces.widget.BaseWidget);
 
 /**
  * Creates button controls using progressive enhancement

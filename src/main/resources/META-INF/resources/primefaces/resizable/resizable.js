@@ -1,7 +1,8 @@
 PrimeFaces.widget.Resizable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 
     if(this.cfg.ajaxResize) {
         this.cfg.formId = $(this.target).parents('form:first').attr('id');
@@ -29,9 +30,12 @@ PrimeFaces.widget.Resizable = function(id, cfg) {
         }
     }
 
-    this.jq.resizable(this.cfg);
+    this.jqTarget.resizable(this.cfg);
     
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Resizable, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
     if(this.cfg.behaviors) {

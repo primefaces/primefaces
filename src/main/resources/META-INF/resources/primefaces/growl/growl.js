@@ -400,7 +400,7 @@
  */
 PrimeFaces.widget.Growl = function(id, msgs) {
     this.id = id;
-    this.jq = $(PrimeFaces.escapeClientId(this.id));
+    this.jqId = PrimeFaces.escapeClientId(this.id);
 
     this.show(msgs);
     

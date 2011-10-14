@@ -29,7 +29,11 @@ PrimeFaces.widget.Panel = function(id, cfg) {
     if(!this.cfg.visible) {
         $(this.jqId).css('display','none');
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Panel, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Panel.prototype.toggle = function() {
     if(this.cfg.collapsed) {

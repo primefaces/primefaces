@@ -106,9 +106,8 @@ public class ScheduleRenderer extends CoreRenderer {
 		if(form == null) {
 			throw new FacesException("Schedule: '" + clientId + "' must be inside a form");
 		}
-		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+
+        startScript(writer, clientId);
 		
 		writer.write("$(function() {");
 
@@ -156,7 +155,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		
 		writer.write("});});");
 		
-		writer.endElement("script");		
+		endScript(writer);        		
 	}
 
 	protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {

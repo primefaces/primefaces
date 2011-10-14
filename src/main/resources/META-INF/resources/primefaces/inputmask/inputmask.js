@@ -44,10 +44,10 @@
 					begin = 0 - range.duplicate().moveStart('character', -100000);
 					end = begin + range.text.length;
 				}
-				return { begin: begin, end: end };
+				return {begin: begin, end: end};
 			}
 		},
-		unmask: function() { return this.trigger("unmask"); },
+		unmask: function() {return this.trigger("unmask");},
 		mask: function(mask, settings) {
 			if (!mask && this.length > 0) {
 				var input = $(this[0]);
@@ -82,7 +82,7 @@
 
 			return this.each(function() {
 				var input = $(this);
-				var buffer = $.map(mask.split(""), function(c, i) { if (c != '?') return defs[c] ? settings.placeholder : c });
+				var buffer = $.map(mask.split(""), function(c, i) {if (c != '?') return defs[c] ? settings.placeholder : c});
 				var ignore = false;  			//Variable for ignoring control keys
 				var focusText = input.val();
 
@@ -180,7 +180,7 @@
 					}
 				};
 
-				function writeBuffer() { return input.val(buffer.join('')).val(); };
+				function writeBuffer() {return input.val(buffer.join('')).val();};
 
 				function checkVal(allow) {
 					//try to place characters where they belong
@@ -241,7 +241,7 @@
 					.bind("keydown.mask", keydownEvent)
 					.bind("keypress.mask", keypressEvent)
 					.bind(pasteEventName, function() {
-						setTimeout(function() { input.caret(checkVal(true)); }, 0);
+						setTimeout(function() {input.caret(checkVal(true));}, 0);
 					});
 
 				checkVal(); //Perform initial check for existing values
@@ -270,4 +270,8 @@ PrimeFaces.widget.InputMask = function(id, cfg) {
     if(this.cfg.theme != false) {
         PrimeFaces.skinInput(this.jq);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.InputMask, PrimeFaces.widget.BaseWidget);

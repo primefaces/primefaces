@@ -787,5 +787,9 @@ PrimeFaces.widget.LightBox = function(id, cfg) {
         this.cfg.href = this.jqId + '_inline';
     }
 
-    jQuery(this.jqId + ' a').colorbox(this.cfg);
+    $(this.jqId + ' > a').colorbox(this.cfg);
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.LightBox, PrimeFaces.widget.BaseWidget);

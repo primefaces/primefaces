@@ -149,7 +149,7 @@ PrimeFaces.widget.BaseWidget.prototype.postConstruct = function() {
 };
 
 PrimeFaces.widget.BaseWidget.prototype.getScriptTag = function() {
-    return $(PrimeFaces.escapeClientId(this.id) + '_script');
+    return $(this.jqId + '_s');
 };
 
 PrimeFaces.widget.BaseWidget.prototype.getJQ = function() {

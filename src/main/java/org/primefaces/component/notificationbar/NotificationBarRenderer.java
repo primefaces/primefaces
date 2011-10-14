@@ -54,8 +54,7 @@ public class NotificationBarRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = bar.getClientId(facesContext);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		startScript(writer, clientId);
 		
 		writer.write("$(function() {");
 
@@ -64,12 +63,13 @@ public class NotificationBarRenderer extends CoreRenderer {
 		writer.write(",effect:'" + bar.getEffect() + "'");
 		writer.write(",effectSpeed:'" + bar.getEffectSpeed() + "'");
 		
-		if(bar.isAutoDisplay())
+		if(bar.isAutoDisplay()) {
 			writer.write(",autoDisplay:true");
+        }
 		
 		writer.write("});});");
 		
-		writer.endElement("script");
+		endScript(writer);
 	}
 
     @Override

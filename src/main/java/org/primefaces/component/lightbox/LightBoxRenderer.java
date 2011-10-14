@@ -67,8 +67,7 @@ public class LightBoxRenderer extends CoreRenderer {
         LightBox lb = (LightBox) component;
 		String clientId = lb.getClientId(context);
         
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write(lb.resolveWidgetVar() + " = new PrimeFaces.widget.LightBox('" + clientId + "', {");
 
@@ -97,6 +96,6 @@ public class LightBoxRenderer extends CoreRenderer {
 
 		writer.write("});");
 
-		writer.endElement("script");
+		endScript(writer);
     }
 }

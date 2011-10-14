@@ -70,8 +70,7 @@ public class RingRenderer extends CoreRenderer {
         String clientId = ring.getClientId(context);
         String easing = ring.getEasing();
 
-        writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+        startScript(writer, clientId);
 
         writer.write("jQuery(function() {");
 
@@ -83,7 +82,7 @@ public class RingRenderer extends CoreRenderer {
 
         writer.write("});});");
 
-        writer.endElement("script");
+        endScript(writer);
 	}
 
     @Override

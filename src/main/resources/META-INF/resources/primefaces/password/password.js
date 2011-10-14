@@ -60,4 +60,8 @@ PrimeFaces.widget.Password = function(id, cfg) {
     if(this.cfg.theme != false) {
         PrimeFaces.skinInput(this.jq);
     }
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Password, PrimeFaces.widget.BaseWidget);
