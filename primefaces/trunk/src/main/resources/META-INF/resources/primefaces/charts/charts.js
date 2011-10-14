@@ -36,7 +36,7 @@ PrimeFaces.widget.PieChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
@@ -115,7 +115,7 @@ PrimeFaces.widget.LineChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
@@ -204,7 +204,7 @@ PrimeFaces.widget.BarChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
@@ -270,7 +270,7 @@ PrimeFaces.widget.DonutChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
@@ -324,7 +324,7 @@ PrimeFaces.widget.BubbleChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
@@ -383,7 +383,7 @@ PrimeFaces.widget.OhlcChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }
@@ -428,7 +428,7 @@ PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }

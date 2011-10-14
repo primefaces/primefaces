@@ -20,7 +20,7 @@ PrimeFaces.widget.ScrollPanel = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     }

@@ -42,7 +42,7 @@ PrimeFaces.widget.Schedule = function(id, cfg) {
         
         if(hiddenParentWidget) {
             hiddenParentWidget.addOnshowHandler(function() {
-                _self.init();
+                return _self.init();
             });
         }
     } 
