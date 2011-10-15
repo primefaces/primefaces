@@ -37,7 +37,10 @@ public class DefaultTreeNode implements TreeNode, Serializable {
     
     private boolean selectable = true;
 	
-	public DefaultTreeNode() {}
+	public DefaultTreeNode() {
+        this.type = DEFAULT_TYPE;
+        children = new ArrayList<TreeNode>();
+    }
 
 	public DefaultTreeNode(Object data, TreeNode parent) {
 		this.type = DEFAULT_TYPE;
