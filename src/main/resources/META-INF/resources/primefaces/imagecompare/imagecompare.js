@@ -131,3 +131,21 @@
     	}
 	});
 })(jQuery);
+
+/**
+ * PrimeFaces ImageCompare Widget 
+ */
+ PrimeFaces.widget.ImageCompare = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jq = $(this.jqId);
+    
+    this.cfg.showFullLinks = false;
+    
+    this.jq.beforeAfter(this.cfg);
+    
+    this.postConstruct();
+ }
+ 
+ PrimeFaces.extend(PrimeFaces.widget.ImageCompare, PrimeFaces.widget.BaseWidget);
