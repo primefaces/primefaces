@@ -122,11 +122,6 @@ public class DefaultTreeNode implements TreeNode, Serializable {
         this.selectable = selectable;
     }
     
-	public void addChild(TreeNode treeNode) {
-		treeNode.setParent(this);
-		children.add(treeNode);
-	}
-
 	public int getChildCount() {
 		return children.size();
 	}

@@ -33,8 +33,6 @@ public interface TreeNode {
 	
 	public void setExpanded(boolean expanded);
 
-	public void addChild(TreeNode treeNode);
-
 	public int getChildCount();
 	
 	public boolean isLeaf();
