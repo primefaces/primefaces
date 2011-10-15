@@ -36,6 +36,13 @@ public class CSVExporter extends Exporter {
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        
+        response.setContentType("text/csv");
+    	response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
+        
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os , encodingType);
 		PrintWriter writer = new PrintWriter(osw);	
@@ -60,13 +67,7 @@ public class CSVExporter extends Exporter {
         if(rowIndexVar != null) {
             context.getExternalContext().getRequestMap().remove(rowIndexVar);
         }
-    	
-    	response.setContentType("text/csv");
-    	response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
-        
+    	        
         writer.flush();
         writer.close();
         
