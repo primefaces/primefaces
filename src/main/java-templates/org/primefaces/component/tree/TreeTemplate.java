@@ -184,9 +184,7 @@ import org.primefaces.model.TreeNode;
                 TreeNode droppedNode = this.getRowNode();
 
                 //update model
-                TreeNode oldParent = draggedNode.getParent();
-                oldParent.getChildren().remove(draggedNode);
-                droppedNode.addChild(draggedNode);
+                draggedNode.setParent(droppedNode);
 
                 //fire dragdrop event
                 wrapperEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), draggedNodeKey, droppedNodeKey);
