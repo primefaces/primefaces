@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,48 +26,47 @@ import org.primefaces.renderkit.CoreRenderer;
 public class ImageCompareRenderer extends CoreRenderer {
 	
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ImageCompare compare = (ImageCompare) component;
 		
-		encodeMarkup(facesContext, compare);
-		encodeScript(facesContext, compare);
+		encodeMarkup(context, compare);
+		encodeScript(context, compare);
 	}
 	
-	protected void encodeScript(FacesContext fc, ImageCompare compare) throws IOException {
-		ResponseWriter writer = fc.getResponseWriter();
-		String clientId = compare.getClientId(fc);
+	protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = compare.getClientId(context);
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		startScript(writer, clientId);
 		
-		writer.write("$(PrimeFaces.escapeClientId('" + clientId + "')).beforeAfter({");
-		writer.write("handle:'" + getResourceRequestPath(fc, "imagecompare/handle.gif") + "'");
-        writer.write(",lt:'" + getResourceRequestPath(fc, "imagecompare/lt-small.png") + "'");
-        writer.write(",rt:'" + getResourceRequestPath(fc, "imagecompare/rt-small.png") + "'");
-		writer.write(",showFullLinks : false");
+        writer.write(compare.resolveWidgetVar() + " = new PrimeFaces.widget.ImageCompare('" + clientId + "',{");
+		writer.write("handle:'" + getResourceRequestPath(context, "imagecompare/handle.gif") + "'");
+        writer.write(",lt:'" + getResourceRequestPath(context, "imagecompare/lt-small.png") + "'");
+        writer.write(",rt:'" + getResourceRequestPath(context, "imagecompare/rt-small.png") + "'");
 		writer.write("});");
-		writer.endElement("script");
+        
+		endScript(writer);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, ImageCompare compare) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("div", compare);
-		writer.writeAttribute("id", compare.getClientId(facesContext), "id");
-		renderImage(facesContext, compare, "before", compare.getLeftImage());
-		renderImage(facesContext, compare, "fter", compare.getRightImage());
+		writer.writeAttribute("id", compare.getClientId(context), "id");
+		renderImage(context, compare, "before", compare.getLeftImage());
+		renderImage(context, compare, "fter", compare.getRightImage());
 		writer.endElement("div");
 	}
 
 	
-	private void renderImage(FacesContext facesContext, ImageCompare compare, String type, String src) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	private void renderImage(FacesContext context, ImageCompare compare, String type, String src) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("div", compare);
 		
 		writer.startElement("img", null);
 		writer.writeAttribute("alt", type, null);
-		writer.writeAttribute("src", getResourceURL(facesContext, src), null);
+		writer.writeAttribute("src", getResourceURL(context, src), null);
 		writer.writeAttribute("width", compare.getWidth(), null);
 		writer.writeAttribute("height", compare.getHeight(), null);
 		writer.endElement("img");
