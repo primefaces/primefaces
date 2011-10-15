@@ -37,7 +37,6 @@ public class EffectRenderer extends CoreRenderer {
         String source = component.getParent().getClientId(context);
         String event = effect.getEvent();
         int delay = effect.getDelay();
-        String timeoutKey = "window.effect_" + clientId.replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
 		
 		if(effect.getFor() != null) {
 			UIComponent _for = effect.findComponent(effect.getFor());
@@ -46,7 +45,7 @@ public class EffectRenderer extends CoreRenderer {
 			else
 				throw new FacesException("Cannot find component \"" + effect.getFor() + "\" in view.");
 		} else {
-			target = effect.getParent().getClientId(context);
+			target = source;
 		}
 		
 		String animation = getEffectBuilder(effect, target).build();
