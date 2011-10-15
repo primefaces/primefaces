@@ -48,7 +48,7 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		children = new ArrayList<TreeNode>();
 		this.parent = parent;
 		if(this.parent != null)
-			this.parent.addChild(this);
+			this.parent.getChildren().add(this);
 	}
 	
 	public DefaultTreeNode(String type, Object data, TreeNode parent) {
@@ -57,7 +57,7 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		children = new ArrayList<TreeNode>();
 		this.parent = parent;
 		if(this.parent != null)
-			this.parent.addChild(this);
+			this.parent.getChildren().add(this);
 	}
 	
 	public String getType() {
@@ -89,7 +89,9 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	}
 	
 	public void setParent(TreeNode parent) {
-        this.parent.addChild(this);
+        this.parent.getChildren().remove(this);
+        this.parent = parent;
+        this.parent.getChildren().add(this);
 	}
 	
 	public boolean isExpanded() {
