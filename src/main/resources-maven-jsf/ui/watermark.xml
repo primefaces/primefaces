@@ -14,8 +14,14 @@
 	<rendererClass>org.primefaces.component.watermark.WatermarkRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>Watermark displays a hint on an input field.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
+        &widget_var_attribute;
 		<attribute>
 			<name>value</name>
 			<required>true</required>

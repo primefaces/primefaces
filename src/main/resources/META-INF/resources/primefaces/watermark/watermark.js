@@ -292,7 +292,7 @@ $.fn.watermark = $.fn.watermark || function (text, options) {
 	}
 	
 	if (typeof(options.useNative) !== "function") {
-		options.useNative = options.useNative? function () { return true; } : function () { return false; };
+		options.useNative = options.useNative? function () {return true;} : function () {return false;};
 	}
 	
 	return this.each(
@@ -362,7 +362,7 @@ $.fn.watermark = $.fn.watermark || function (text, options) {
 						}
 					).bind("dragend",
 						function () {
-							window.setTimeout(function () { $wm.blur(); }, 1);
+							window.setTimeout(function () {$wm.blur();}, 1);
 						}
 					);
 					$input.blur(
@@ -400,7 +400,7 @@ $.fn.watermark = $.fn.watermark || function (text, options) {
 						}
 					).bind("dragend",
 						function () {
-							window.setTimeout(function () { $.watermark._show($input); }, 1);
+							window.setTimeout(function () {$.watermark._show($input);}, 1);
 						}
 					).bind("drop",
 						// Firefox makes this lovely function necessary because the dropped text
@@ -563,3 +563,20 @@ if ($.watermark.runOnce) {
 })(jQuery, window);
 
 $.watermark.options.className = 'ui-watermark';
+
+/**
+ * PrimeFaces Watermark Widget 
+ */
+ PrimeFaces.widget.Watermark = function(id, cfg) {
+    this.id = id;
+    this.cfg = cfg;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
+    this.jqTargetId = PrimeFaces.escapeClientId(this.cfg.target);
+    this.target = $(this.jqTargetId + ',' + this.jqTargetId + ' input:text');
+   
+    this.target.watermark(this.cfg.value);
+    
+    this.postConstruct();
+ }
+ 
+ PrimeFaces.extend(PrimeFaces.widget.Watermark, PrimeFaces.widget.BaseWidget);

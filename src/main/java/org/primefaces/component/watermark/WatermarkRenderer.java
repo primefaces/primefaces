@@ -31,7 +31,7 @@ public class WatermarkRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		Watermark watermark = (Watermark) component;
-		StringBuilder target = new StringBuilder();
+		String target = null;
 		
 		if(watermark.getFor() != null) {
 			String _for = watermark.getFor();	
@@ -39,21 +39,23 @@ public class WatermarkRenderer extends CoreRenderer {
 			if(forComponent == null) {
 				throw new FacesException("Cannot find component \"" + _for + "\" in view.");
 			}
-			String jqId = ComponentUtils.escapeJQueryId(forComponent.getClientId(context));
-
-            target.append(jqId).append(",").append(jqId).append(" input");
-			
-		} else if(watermark.getForElement() != null) {
-			target.append(watermark.getForElement());
-		} else {
-			throw new FacesException("Either for or forElement options must be used to define a watermark");
+            
+			target = forComponent.getClientId(context);
+		} 
+        else if(watermark.getForElement() != null) {
+			target = watermark.getForElement();
+		} 
+        else {
+			throw new FacesException("Either for or forElement options must be used to define a watermark.");
 		}
 		
         startScript(writer, watermark.getClientId(context));
 		
 		writer.write("$(function() {");
-		writer.write("$('" + target.toString() + "').watermark('" + watermark.getValue() + "');");
-		writer.write("});");
+        writer.write(watermark.resolveWidgetVar() + " = new PrimeFaces.widget.Watermark('" + watermark.getClientId(context) + "',{");
+        writer.write("value:'" + watermark.getValue() + "'");
+        writer.write(",target:'" + target + "'");
+		writer.write("});});");
 		
 		endScript(writer);
 	}
