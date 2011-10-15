@@ -155,10 +155,12 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
 
             _self.currentSubMenu = submenu.css({display : 'block'});
             _self.forward();
+            e.stopPropagation();
        });
        
        this.back = this.wrapper.siblings('div.ui-menu-backward').click(function(e){
            _self.backward();
+           e.stopPropagation();
        });
     }
 }
