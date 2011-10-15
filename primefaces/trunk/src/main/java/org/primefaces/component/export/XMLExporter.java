@@ -37,6 +37,12 @@ public class XMLExporter extends Exporter {
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        
+        response.setContentType("text/xml");
+    	response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
     	
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
@@ -72,12 +78,6 @@ public class XMLExporter extends Exporter {
             context.getExternalContext().getRequestMap().remove(rowIndexVar);
         }
     	
-    	response.setContentType("text/xml");
-    	response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
-        
         writer.flush();
         writer.close();
         
