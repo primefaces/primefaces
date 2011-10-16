@@ -133,20 +133,20 @@ PrimeFaces.widget.ScrollPanel.prototype.initScroll = function(s){
     this.bindEvents(s);
 }
 
-
 PrimeFaces.widget.ScrollPanel.prototype.bindEvents = function(s){
     var scroll = s, _self = this;
     
     //visuals
-    $(scroll.hand, scroll.up, scroll.down)
-    .mouseover(function() {
-        $(this).addClass('ui-state-hover');
-    }).mouseout(function() {
-        $(this).removeClass('ui-state-hover');
-    }).mouseup(function() {
-        $(this).removeClass('ui-state-active');
-    }).mousedown(function() {
-        $(this).addClass('ui-state-active');
+    $.each([scroll.hand, scroll.up, scroll.down], function(i, e){
+        e.mouseover(function() {
+            $(this).addClass('ui-state-hover');
+        }).mouseout(function() {
+            $(this).removeClass('ui-state-hover');
+        }).mouseup(function() {
+            $(this).removeClass('ui-state-active');
+        }).mousedown(function() {
+            $(this).addClass('ui-state-active');
+        });
     });
     
     //wheel
@@ -155,8 +155,8 @@ PrimeFaces.widget.ScrollPanel.prototype.bindEvents = function(s){
             event.preventDefault();
     });
     scroll.bar.bind("mousewheel",  function(event, move){ 
-        scroll.dir === 'x' ? _self.scrollWithRatio( 'x', move, true) : _self.scrollWithRatio('y', move, true);
-            event.preventDefault();
+        _self.scrollWithRatio( scroll.dir, move, true);
+        event.preventDefault();
     });
     
     //drag
@@ -178,8 +178,60 @@ PrimeFaces.widget.ScrollPanel.prototype.bindEvents = function(s){
             $(e.target).removeClass("ui-state-active");
         }
     });
+    
+    //buttons
+    var mouseInterval, mouseDown = false, mouseCount = 0;
+    scroll.up.mousedown(function(e){
+        mouseDown = true;
+        mouseCount = 0;
+        mouseInterval = setInterval(function(){
+            mouseCount++;
+            _self.scrollWithRatio(scroll.dir, 2, true);
+        }, 10);
+        
+        e.preventDefault();
+    }).mouseenter(function(){
+        if(mouseDown)
+            $(this).mousedown();
+    }).mouseup(function(){
+        mouseDown = false;
+        clearInterval(mouseInterval);
+    }).mouseleave(function(){
+        clearInterval(mouseInterval);
+        $(this).removeClass('ui-state-active');
+    }).click(function(){
+        if(mouseCount < 5)
+            _self.scrollWithRatio(scroll.dir, 20, true)
+    });
+    
+    scroll.down.mousedown(function(e){
+        mouseDown = true;
+        mouseCount = 0;
+        mouseInterval = setInterval(function(){
+            mouseCount++;
+            _self.scrollWithRatio(scroll.dir, -2, true);
+        }, 10);
+        
+        e.preventDefault();
+    }).mouseenter(function(){
+        if(mouseDown)
+            $(this).mousedown();
+    }).mouseup(function(){
+        mouseDown = false;
+        clearInterval(mouseInterval);
+    }).mouseleave(function(){
+        clearInterval(mouseInterval);
+        $(this).removeClass('ui-state-active');
+    }).click(function(){
+        if(mouseCount < 5)
+            _self.scrollWithRatio(scroll.dir, -20, true)
+    });
+    
+    $(window).bind('mouseup.scrollpanel', function(){
+        clearInterval(mouseInterval);
+        mouseDown = false;
+    });
 }
-
 
 PrimeFaces.widget.ScrollPanel.prototype.scrollTo = function(x, y) {
     this.scrollX(x);
