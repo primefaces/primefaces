@@ -43,50 +43,45 @@ PrimeFaces.widget.ScrollPanel.prototype.init = function(){
     containerHeight = this.jq.height();
     this.container.css({width: containerWidth, height: containerHeight});
     
-    if(this.cfg.scrollMode === 'native'){
-        this.container.css({overflow: 'auto'});
-    }
-    else{
-        var xScrolled = contentWidth > containerWidth,
-        yScrolled = contentHeight > containerHeight,
-        hbar = this.container.children('.ui-scrollpanel-hbar'),
-        vbar = this.container.children('.ui-scrollpanel-vbar'),
-        
-        wrapperWidth = containerWidth - (yScrolled ? vbar.width() : 0),
-        wrapperHeight = containerHeight - (xScrolled ? hbar.height() : 0);
-        this.wrapper.css({width: wrapperWidth, height: wrapperHeight});
-        
-        if(xScrolled){
-            this.h = {
-                bar  : hbar,
-                hand : hbar.children('.ui-scrollpanel-handle'),
-                grip : hbar.find('.ui-scrollpanel-handle > span.ui-icon-grip-solid-vertical'),
-                up   : hbar.children('.ui-scrollpanel-bl'),
-                down : hbar.children('.ui-scrollpanel-br'),
-                wlen : wrapperWidth,
-                diff : contentWidth - wrapperWidth,
-                dir  : 'x'
-            };
-            
-            this.initScroll(this.h);
-        }
+    var xScrolled = contentWidth > containerWidth,
+    yScrolled = contentHeight > containerHeight,
+    hbar = this.container.children('.ui-scrollpanel-hbar'),
+    vbar = this.container.children('.ui-scrollpanel-vbar'),
 
-        if(yScrolled){
-            this.v = {
-                bar  : vbar,
-                hand : vbar.children('.ui-scrollpanel-handle'),
-                grip : vbar.find('.ui-scrollpanel-handle > span.ui-icon-grip-solid-horizontal'),
-                up   : vbar.children('.ui-scrollpanel-bt'),
-                down : vbar.children('.ui-scrollpanel-bb'),
-                wlen : wrapperHeight,
-                diff : contentHeight - wrapperHeight,
-                dir  : 'y'
-            };
-            
-            this.initScroll(this.v);
-        }
+    wrapperWidth = containerWidth - (yScrolled ? vbar.width() : 0),
+    wrapperHeight = containerHeight - (xScrolled ? hbar.height() : 0);
+    this.wrapper.css({width: wrapperWidth, height: wrapperHeight});
+
+    if(xScrolled){
+        this.h = {
+            bar  : hbar,
+            hand : hbar.children('.ui-scrollpanel-handle'),
+            grip : hbar.find('.ui-scrollpanel-handle > span.ui-icon-grip-solid-vertical'),
+            up   : hbar.children('.ui-scrollpanel-bl'),
+            down : hbar.children('.ui-scrollpanel-br'),
+            wlen : wrapperWidth,
+            diff : contentWidth - wrapperWidth,
+            dir  : 'x'
+        };
+
+        this.initScroll(this.h);
     }
-    
+
+    if(yScrolled){
+        this.v = {
+            bar  : vbar,
+            hand : vbar.children('.ui-scrollpanel-handle'),
+            grip : vbar.find('.ui-scrollpanel-handle > span.ui-icon-grip-solid-horizontal'),
+            up   : vbar.children('.ui-scrollpanel-bt'),
+            down : vbar.children('.ui-scrollpanel-bb'),
+            wlen : wrapperHeight,
+            diff : contentHeight - wrapperHeight,
+            dir  : 'y'
+        };
+
+        this.initScroll(this.v);
+    }
+
     return true;
 }
 
