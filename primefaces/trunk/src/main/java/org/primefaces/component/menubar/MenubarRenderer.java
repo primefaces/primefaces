@@ -16,39 +16,26 @@
 package org.primefaces.component.menubar;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.submenu.Submenu;
+import org.primefaces.component.menu.Menu;
 
 public class MenubarRenderer extends BaseMenuRenderer {
-
-    private final static Logger logger = Logger.getLogger(MenubarRenderer.class.getName());
 
 	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
         Menubar menubar = (Menubar) abstractMenu;
 		String clientId = menubar.getClientId(context);
-		String widgetVar = menubar.resolveWidgetVar();
 		
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+		startScript(writer, clientId);
 
-		writer.write(widgetVar + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");
+		writer.write(menubar.resolveWidgetVar() + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");
 
         writer.write("autoSubmenuDisplay:" + menubar.isAutoSubmenuDisplay());
-
-        writer.write(",animation:{animated:'" + menubar.getEffect() + "',duration:" + menubar.getEffectDuration() + "}");
-
-        if(menubar.getStyleClass() != null) writer.write(",styleClass:'" + menubar.getStyleClass() + "'");
-        if(menubar.getStyle() != null) writer.write(",style:'" + menubar.getStyle() + "'");
 		
         writer.write("});");
 
@@ -59,81 +46,24 @@ public class MenubarRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Menubar menubar = (Menubar) abstractMenu;
 		String clientId = menubar.getClientId(context);
+        String style = menubar.getStyle();
+        String styleClass = menubar.getStyleClass();
+        styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", menubar);
-        writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
 
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId + "_menu", null);
+        writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-		encodeMenuContent(context, menubar);
+		encodeTieredMenuContent(context, menubar);
 		
 		writer.endElement("ul");
 
         writer.endElement("div");
-	}
-
-    protected void encodeMenuContent(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered()) {
-
-                writer.startElement("li", null);
-
-                if(child instanceof MenuItem) {
-                    encodeMenuItem(context, (MenuItem) child);
-                } else if(child instanceof Submenu) {
-                    encodeSubmenu(context, (Submenu) child);
-                }
-                
-                writer.endElement("li");
-            }
-        }
-    }
-	
-	protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-		UIComponent labelFacet = submenu.getFacet("label");
-        String icon = submenu.getIcon();
-
-        //title
-		if(labelFacet == null) {
-            String label = submenu.getLabel();
-            
-			writer.startElement("a", null);
-			writer.writeAttribute("href", "javascript:void(0)", null);
-
-            if(icon != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
-                writer.endElement("span");
-            }
-
-            if(label != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", "wijmo-wijmenu-text", null);
-                writer.write(submenu.getLabel());
-                writer.endElement("span");
-            }
-			
-			writer.endElement("a");
-		}
-        else {
-            //backwards compatibility
-            logger.info("label facet of a menubar item is deprecated, use a menuitem instead instead of a submenu.");
-            encodeMenuItem(context, (MenuItem) labelFacet);
-		}
-
-        //submenus and menuitems
-		if(submenu.getChildCount() > 0) {
-			writer.startElement("ul", null);
-			
-			encodeMenuContent(context, submenu);
-			
-			writer.endElement("ul");
-		}
 	}
 }

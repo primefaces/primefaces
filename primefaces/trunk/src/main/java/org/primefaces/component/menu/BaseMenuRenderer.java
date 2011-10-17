@@ -16,11 +16,13 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
+import java.util.Iterator;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.submenu.Submenu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -102,6 +104,70 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             }
 
             writer.endElement("a");
+		}
+	}
+    
+    protected void encodeTieredMenuContent(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
+            UIComponent child = (UIComponent) iterator.next();
+
+            if(child.isRendered()) {
+
+                writer.startElement("li", null);
+                
+                if(child instanceof MenuItem) {
+                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    encodeMenuItem(context, (MenuItem) child);
+                } 
+                else if(child instanceof Submenu) {
+                    writer.writeAttribute("class", Menu.TIERED_SUBMENU_CLASS, null);
+                    encodeTieredSubmenu(context, (Submenu) child);
+                }
+
+                writer.endElement("li");
+            }
+        }
+    }
+    
+    protected void encodeTieredSubmenu(FacesContext context, Submenu submenu) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+        String icon = submenu.getIcon();
+        String label = submenu.getLabel();
+
+        //title
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "javascript:void(0)", null);
+        writer.writeAttribute("class", Menu.MENUITEM_LINK_CLASS, null);
+
+        if(icon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", icon + " " + Menu.MENUITEM_ICON_CLASS, null);
+            writer.endElement("span");
+        }
+
+        if(label != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
+            writer.write(submenu.getLabel());
+            writer.endElement("span");
+        }
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Menu.SUBMENU_ICON_CLASS, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+
+        //submenus and menuitems
+		if(submenu.getChildCount() > 0) {
+			writer.startElement("ul", null);
+            writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
+
+			encodeTieredMenuContent(context, submenu);
+
+			writer.endElement("ul");
 		}
 	}
 

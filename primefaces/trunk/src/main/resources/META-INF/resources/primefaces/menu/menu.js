@@ -7,22 +7,6 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     
-    if(!this.cfg.autoSubmenuDisplay) {
-        this.cfg.trigger = this.jqId + ' li';
-        this.cfg.triggerEvent = 'click';
-    }
-
-    var _self = this;
-    this.cfg.select = function(event, ui) {
-        _self.jq.wijmenu('deactivate');
-    };
-
-    this.jq.wijmenu(this.cfg);
-
-    if(this.cfg.style)
-        this.jq.parent().parent().attr('style', this.cfg.style);
-    if(this.cfg.styleClass)
-        this.jq.parent().parent().addClass(this.cfg.styleClass);
     
     this.postConstruct();
 }
