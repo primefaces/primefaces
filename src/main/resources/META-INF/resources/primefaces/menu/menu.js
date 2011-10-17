@@ -6,12 +6,56 @@ PrimeFaces.widget.Menubar = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    
-    
+    this.menuitems = this.jq.find('.ui-menuitem');
+    this.zIndex = 10000;
+
+    this.bindEvents();
+
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.Menubar, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
+    var _self = this;
+
+    this.menuitems.mouseenter(function() {
+        var menuitem = $(this),
+        menuitemLink = menuitem.children('.ui-menuitem-link');
+
+        if(!menuitemLink.hasClass('ui-state-disabled')) {
+            menuitemLink.addClass('ui-state-hover');
+        }
+
+        var submenu = menuitem.children('ul.ui-menu-child');
+        if(submenu.length == 1) {
+            submenu.css('zIndex', _self.zIndex++);
+
+            if(!menuitem.parent().hasClass('ui-menu-child')) {    //root menuitem
+                submenu.css({
+                    'left': 0
+                    ,'top': menuitem.outerHeight()
+                });
+            } 
+            else {                                              //submenu menuitem
+                submenu.css({
+                    'left': menuitem.outerWidth()
+                    ,'top': 0
+                });
+            }
+
+            submenu.show();
+        }
+    })
+    .mouseleave(function() {
+        var menuitem = $(this),
+        menuitemLink = menuitem.children('.ui-menuitem-link');
+
+        menuitemLink.removeClass('ui-state-hover');
+
+        menuitem.find('.ui-menu-child:visible').hide();
+    });
+}
 
 /**
  * PrimeFaces Menu Widget
@@ -91,17 +135,14 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
         
         if(_self.cfg.tiered) {
             var submenu = menuitem.children('ul.ui-menu-child');
-            if(submenu.length == 0) {
-                return false;
+            if(submenu.length == 1) {
+                submenu.css({
+                    left: menuitem.outerWidth()
+                    ,top: 0
+                });
+
+                submenu.show();
             }
-
-            //show submenu
-            submenu.css({
-                left: menuitem.outerWidth()
-                ,top: 0
-            });
-
-            submenu.show();
         }
     }).mouseleave(function(e) {
         var menuitem = $(this),
