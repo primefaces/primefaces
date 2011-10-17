@@ -147,15 +147,23 @@ public class MenuRenderer extends BaseMenuRenderer {
     protected void encodePlainSubmenu(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
+        String style = submenu.getStyle();
+        String styleClass = submenu.getStyleClass();
+        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
 
         //title
         writer.startElement("li", null);
-        writer.writeAttribute("class", Menu.SUBMENU_TITLE_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        
         writer.startElement("h3", null);
         if(label != null) {
             writer.write(label);
         }
         writer.endElement("h3");
+        
         writer.endElement("li");
 
         encodePlainMenuContent(context, submenu);

@@ -29,5 +29,17 @@
 			<type>java.lang.String</type>
             <description>Icon of a submenu, see menuitem to see how it is used.</description>
 		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the menu.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the submenu.</description>
+		</attribute>
 	</attributes>
 </component>
