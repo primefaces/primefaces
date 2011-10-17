@@ -101,7 +101,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			if(menuItem.getValue() != null) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
-                writer.write((String) menuItem.getValue());
+                writer.writeText((String) menuItem.getValue(), "value");
                 writer.endElement("span");
             }
 
@@ -162,7 +162,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
         if(label != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.write(submenu.getLabel());
+            writer.writeText(submenu.getLabel(), "value");
             writer.endElement("span");
         }
         

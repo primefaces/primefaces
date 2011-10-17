@@ -22,12 +22,13 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.BaseMenuRenderer;
 
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class BreadCrumbRenderer extends CoreRenderer {
+public class BreadCrumbRenderer extends BaseMenuRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -41,8 +42,10 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		encodeScript(context, breadCrumb);
 	}
 
-	protected void encodeScript(FacesContext context, BreadCrumb breadCrumb) throws IOException {
+    @Override
+	protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        BreadCrumb breadCrumb = (BreadCrumb) menu;
 		String clientId = breadCrumb.getClientId(context);
         boolean preview = breadCrumb.isPreview();
         int childCount = breadCrumb.getChildCount();
@@ -66,8 +69,9 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		endScript(writer);
 	}
 
-	protected void encodeMarkup(FacesContext context, BreadCrumb breadCrumb) throws IOException {
+	protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        BreadCrumb breadCrumb = (BreadCrumb) menu;
 		String clientId = breadCrumb.getClientId(context);
 		String defaultStyleClass = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-corner-all";
 		String styleClass = breadCrumb.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + " " + breadCrumb.getStyleClass();
@@ -103,46 +107,6 @@ public class BreadCrumbRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, menuItem);
-		} else {
-			String clientId = menuItem.getClientId(context);
-			
-			writer.startElement("a", null);
-			writer.writeAttribute("id", clientId, null);
-			
-			if(menuItem.getStyle() != null) writer.writeAttribute("style", menuItem.getStyle(), null);
-			if(menuItem.getStyleClass() != null) writer.writeAttribute("class", menuItem.getStyleClass(), null);
-			
-			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-			} else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
-				
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Breadcrumb must be inside a form element");
-				}
-				
-				String formClientId = form.getClientId(context);
-				String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, formClientId, clientId);
-				
-				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
-				
-				writer.writeAttribute("onclick", command, null);
-			}
-			
-			if(menuItem.getValue() != null) writer.write((String) menuItem.getValue());
-			
-			writer.endElement("a");
-		}
-	}
-
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		// Do nothing

@@ -160,7 +160,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         
         writer.startElement("h3", null);
         if(label != null) {
-            writer.write(label);
+            writer.writeText(label, "value");
         }
         writer.endElement("h3");
         
