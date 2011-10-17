@@ -57,6 +57,8 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             String onclick = menuItem.getOnclick();
             
             writer.startElement("a", null);
+            writer.writeAttribute("id", menuItem.getClientId(context), null);
+            
             String styleClass = menuItem.getStyleClass();
             styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
