@@ -45,7 +45,7 @@
 			<name>jquery/ui/jquery-ui.css</name>
 		</resource>
         <resource>
-			<name>menu/menu.js</name>
+			<name>menu/menu.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
