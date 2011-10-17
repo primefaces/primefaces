@@ -1,9 +1,11 @@
-/* PrimeFaces ScrollPanel Widget */
+/* 
+ * PrimeFaces ScrollPanel Widget 
+ */
 PrimeFaces.widget.ScrollPanel = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
+    this.jq = $(this.jqId);
 
     this.container = this.jq.children('.ui-scrollpanel-container');
     this.wrapper = this.container.children('.ui-scrollpanel-wrapper');

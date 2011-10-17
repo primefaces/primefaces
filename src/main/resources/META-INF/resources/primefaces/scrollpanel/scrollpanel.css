@@ -4,6 +4,10 @@
     background-image: none;
 }
 
+.ui-scrollpanel-native {
+    overflow: auto;
+}
+
 .ui-scrollpanel-container {
     overflow: hidden;
     position: relative;

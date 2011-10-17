@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,41 +34,42 @@ public class ScrollPanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, ScrollPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
+        boolean nativeMode = panel.getMode().equals("native");
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = ScrollPanel.SCROLL_PANEL_CLASS + (styleClass == null ? "" : styleClass);
+        String defaultStyleClass = nativeMode ? ScrollPanel.SCROLL_PANEL_NATIVE_CLASS : ScrollPanel.SCROLL_PANEL_CLASS;
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", panel); 
         writer.writeAttribute("id", clientId, "id");
-        
-        if(style != null)
+        writer.writeAttribute("class", defaultStyleClass, "styleClass");
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
+        }
         
-        writer.writeAttribute("class", styleClass, "styleClass");
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTAINER_CLASS, "container");
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_WRAPPER_CLASS, "wrapper");
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, "content");
-        
-        renderChildren(context, panel);
-        
-        writer.endElement("div");
-        writer.endElement("div");
-        
-        //horizontal bar
-        encodeScrollBar(context, panel, false);
-        
-        //vertical bar
-        encodeScrollBar(context, panel, true);
-        
-        //container
-        writer.endElement("div");
-        
+        if(nativeMode) {
+            renderChildren(context, panel);
+        } 
+        else {
+            writer.startElement("div", panel);
+            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTAINER_CLASS, "container");
+
+            writer.startElement("div", panel);
+            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_WRAPPER_CLASS, "wrapper");
+
+            writer.startElement("div", panel);
+            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, "content");
+            renderChildren(context, panel);
+            writer.endElement("div");
+            
+            writer.endElement("div");
+
+            encodeScrollBar(context, panel, false);
+            encodeScrollBar(context, panel, true);
+
+            writer.endElement("div");
+        }
+
         //scrollpanel
         writer.endElement("div");
     }
@@ -98,55 +99,47 @@ public class ScrollPanelRenderer extends CoreRenderer {
         writer.startElement("div", panel);
         writer.writeAttribute("class", barClass, "scrollbars");
         
-        
         writer.startElement("div", panel);
         writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_HANDLE_CLASS, "barhandler");
-            
         writer.startElement("span", panel);
         writer.writeAttribute("class", gripClass, "grips");
         writer.endElement("span");
-        
         writer.endElement("div");
-        
         
         writer.startElement("div", panel);
         writer.writeAttribute("class", buttonUpClass, "buttonup");
-            
         writer.startElement("span", panel);
         writer.writeAttribute("class", iconUpClass, "iconup");
         writer.endElement("span");
-        
         writer.endElement("div");
         
         
         writer.startElement("div", panel);
         writer.writeAttribute("class", buttonDownClass, "buttondown");
-            
         writer.startElement("span", panel);
         writer.writeAttribute("class", iconDownClass, "icondown");
-        writer.endElement("span");
-        
+        writer.endElement("span");        
         writer.endElement("div");
         
-        
-        writer.endElement("div");//scrollbar
+        writer.endElement("div");
     }
     
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = panel.getClientId(context);
+        boolean nativeMode = panel.getMode().equals("native");
         
-        startScript(writer, clientId);
-		
-		writer.write("$(function(){");
+        if(!nativeMode) {
+            String clientId = panel.getClientId(context);
 
-        writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.ScrollPanel('" + clientId + "',{");
+            startScript(writer, clientId);
 
-        writer.write("scrollMode:'" + panel.getScrollMode() + "'");
+            writer.write("$(function(){");
+            writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.ScrollPanel('" + clientId + "',{");
+            writer.write("mode:'" + panel.getMode() + "'");
+            writer.write("});});");
 
-        writer.write("});});");
-        
-        endScript(writer);
+            endScript(writer);
+        }
     }
 
     @Override

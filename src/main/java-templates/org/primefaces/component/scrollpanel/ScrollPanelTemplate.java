@@ -1,6 +1,7 @@
 
 
     public static final String SCROLL_PANEL_CLASS = "ui-scrollpanel ui-widget ui-widget-content ui-corner-all";
+    public static final String SCROLL_PANEL_NATIVE_CLASS = "ui-scrollpanel ui-scrollpanel-native ui-widget ui-widget-content ui-corner-all";
     public static final String SCROLL_PANEL_CONTAINER_CLASS = "ui-scrollpanel-container";
     public static final String SCROLL_PANEL_WRAPPER_CLASS = "ui-scrollpanel-wrapper";
     public static final String SCROLL_PANEL_CONTENT_CLASS = "ui-scrollpanel-content";
