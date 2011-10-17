@@ -1,3 +1,6 @@
+    
+    <name>primefaces</name>
+    
     <factory>
         <partial-view-context-factory>
             org.primefaces.context.PrimePartialViewContextFactory
