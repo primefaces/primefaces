@@ -121,10 +121,20 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                 
                 if(child instanceof MenuItem) {
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    
                     encodeMenuItem(context, (MenuItem) child);
                 } 
                 else if(child instanceof Submenu) {
-                    writer.writeAttribute("class", Menu.TIERED_SUBMENU_CLASS, null);
+                    Submenu submenu = (Submenu) child;
+                    String style = submenu.getStyle();
+                    String styleClass = submenu.getStyleClass();
+                    styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+        
+                    writer.writeAttribute("class", styleClass, null);
+                    if(style != null) {
+                        writer.writeAttribute("style", style, null);
+                    }
+                    
                     encodeTieredSubmenu(context, (Submenu) child);
                 }
 
