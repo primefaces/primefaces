@@ -131,3 +131,66 @@
     position: absolute;
     bottom: 0;
 }
+
+/** Menubar **/
+.ui-menubar {
+    width:auto;
+}
+
+.ui-menubar .ui-menuitem {
+    width:auto;
+    clear:none;
+    margin-right:3px;
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem {
+    width:100%;
+}
+
+.ui-menubar .ui-menu-child {
+    top:25px;
+    left:0;
+}
+
+.ui-menubar .ui-menuitem-link {
+    width:auto;
+    padding:0.4em 0.3em;
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem-link {
+    width:92%;
+}
+
+.ui-menubar .ui-widget-header {
+    clear:none;
+    width:auto;
+    margin:0 3px 0 0;
+}
+
+.ui-menubar .ui-widget-header h1,
+.ui-menubar .ui-widget-header h2,
+.ui-menubar .ui-widget-header h3,
+.ui-menubar .ui-widget-header h4,
+.ui-menubar .ui-widget-header h5,
+.ui-menubar .ui-widget-header h6 {
+    padding:0.4em 0.3em;
+}
+
+.ui-menubar .ui-menu-separator {
+    height:auto;
+    clear:none;
+    width:1px;
+    text-indent:-9999px;
+    margin:0 3px 0 0;
+    padding:0.4em 0;
+}
+
+.ui-menubar .ui-menu-child .ui-menu-separator {
+    clear:both;
+    float:left;
+    height:1px;
+    text-indent:-9999px;
+    width:98%;
+    margin:1px 0;
+    padding:0;
+}

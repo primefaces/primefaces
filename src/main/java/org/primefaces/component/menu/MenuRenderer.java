@@ -93,6 +93,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.startElement("div", menu);
             writer.writeAttribute("class", Menu.WRAPPER_CLASS, "wrapper");
         }
+        
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
@@ -117,71 +118,8 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.write("back");
             writer.endElement("div");
         }
-        writer.endElement("div");
-	}
-
-    protected void encodeTieredMenuContent(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered()) {
-
-                writer.startElement("li", null);
-                
-                if(child instanceof MenuItem) {
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    encodeMenuItem(context, (MenuItem) child);
-                } 
-                else if(child instanceof Submenu) {
-                    writer.writeAttribute("class", Menu.TIERED_SUBMENU_CLASS, null);
-                    encodeTieredSubmenu(context, (Submenu) child);
-                }
-
-                writer.endElement("li");
-            }
-        }
-    }
-
-	protected void encodeTieredSubmenu(FacesContext context, Submenu submenu) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-        String icon = submenu.getIcon();
-        String label = submenu.getLabel();
-
-        //title
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "javascript:void(0)", null);
-        writer.writeAttribute("class", Menu.MENUITEM_LINK_CLASS, null);
-
-        if(icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", icon + " " + Menu.MENUITEM_ICON_CLASS, null);
-            writer.endElement("span");
-        }
-
-        if(label != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.write(submenu.getLabel());
-            writer.endElement("span");
-        }
         
-        writer.startElement("span", null);
-        writer.writeAttribute("class", Menu.SUBMENU_ICON_CLASS, null);
-        writer.endElement("span");
-
-        writer.endElement("a");
-
-        //submenus and menuitems
-		if(submenu.getChildCount() > 0) {
-			writer.startElement("ul", null);
-            writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-
-			encodeTieredMenuContent(context, submenu);
-
-			writer.endElement("ul");
-		}
+        writer.endElement("div");
 	}
 
     protected void encodePlainMenuContent(FacesContext context, UIComponent component) throws IOException{
