@@ -103,8 +103,8 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     if(this.cfg.sliding){
         this.viewport = this.jq.innerWidth();
         this.wrapper = this.jq.children('div.ui-menu-slider:first');
-        this.cfg.effect = this.cfg.effect || 'slide';
-        this.cfg.easing = this.cfg.easing || 'easeInOutCirc';
+        this.cfg.effect = this.cfg.effect||'slide';
+        this.cfg.easing = this.cfg.easing||'easeInOutCirc';
         this.cfg.effectDuration = this.cfg.effectDuration || 500;
         this.level = 0;
         
@@ -175,7 +175,7 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
             submenu = menuitem.children('ul.ui-menu-child');
             
             //invalid event
-            if(!submenu.length || _self.level != parents - 1)
+            if(!submenu.length||_self.level!=parents-1)
                 return;
 
             _self.currentSubMenu = submenu.css({display : 'block'});
