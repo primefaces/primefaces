@@ -106,7 +106,7 @@ public class PasswordRenderer extends InputRenderer {
 		writer.writeAttribute("type", "password", null);
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(context, password);
-		if(valueToRender != null) {
+		if(valueToRender != null && password.isRedisplay()) {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 		
