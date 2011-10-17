@@ -16,7 +16,6 @@
 package org.primefaces.component.menubar;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -33,10 +32,7 @@ public class MenubarRenderer extends BaseMenuRenderer {
 		
 		startScript(writer, clientId);
 
-		writer.write(menubar.resolveWidgetVar() + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");
-
-        writer.write("autoSubmenuDisplay:" + menubar.isAutoSubmenuDisplay());
-		
+		writer.write(menubar.resolveWidgetVar() + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");		
         writer.write("});");
 
 		writer.endElement("script");	
