@@ -145,6 +145,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if(themeForms()) {
             String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
+            styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
+            
             writer.writeAttribute("class", styleClass, null);
         }
 
