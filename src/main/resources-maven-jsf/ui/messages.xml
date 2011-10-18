@@ -12,6 +12,11 @@
 	<rendererClass>org.primefaces.component.messages.MessagesRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>Message is a pre-skinned extended version of the standard JSF message component.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AutoUpdatable</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>

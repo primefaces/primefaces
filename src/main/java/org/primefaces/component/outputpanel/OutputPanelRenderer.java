@@ -46,10 +46,6 @@ public class OutputPanelRenderer extends CoreRenderer {
 		renderChildren(context, panel);
 		
 		writer.endElement(tagName);
-
-        if(panel.isAutoUpdate()) {
-            addToAutoUpdate(clientId);
-        }
 	}
 
     @Override
