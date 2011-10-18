@@ -26,7 +26,6 @@ import javax.faces.context.FacesContext;
 public class DefaultRequestContext extends RequestContext {
 
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
-    private final static String PARTIAL_UPDATE_TARGETS_KEY = "PARTIAL_UPDATE_TARGETS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
     private final static String PUSH_DATA_KEY = "PUSH_DATA";
     private Map<String, Object> attributes;
@@ -56,12 +55,12 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void addPartialUpdateTarget(String target) {
-        getPartialUpdateTargets().add(target);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(target);
     }
 
     @Override
     public void addPartialUpdateTargets(Collection<String> collection) {
-       getPartialUpdateTargets().addAll(collection);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().addAll(collection);
     }
 
     @Override
@@ -86,15 +85,6 @@ public class DefaultRequestContext extends RequestContext {
             attributes.put(CALLBACK_PARAMS_KEY, new HashMap<String, Object>());
         }
         return (Map<String, Object>) attributes.get(CALLBACK_PARAMS_KEY);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<String> getPartialUpdateTargets() {
-        if(attributes.get(PARTIAL_UPDATE_TARGETS_KEY) == null) {
-            attributes.put(PARTIAL_UPDATE_TARGETS_KEY, new ArrayList());
-        }
-        return (List<String>) attributes.get(PARTIAL_UPDATE_TARGETS_KEY);
     }
 
     @SuppressWarnings("unchecked")

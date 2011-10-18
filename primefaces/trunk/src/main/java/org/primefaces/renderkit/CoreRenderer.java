@@ -359,20 +359,6 @@ public class CoreRenderer extends Renderer {
         return value == null ? true : Boolean.valueOf(value);
     }
 
-    protected void addToAutoUpdate(String clientId) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String,Object> viewMap = context.getViewRoot().getViewMap();
-        Collection<String> autoUpdateIds = (Collection<String>) viewMap.get(Constants.AUTO_UPDATE);
-
-        if(autoUpdateIds == null) {
-            autoUpdateIds = new HashSet<String>();
-        }
-        
-        autoUpdateIds.add(clientId);
-
-        viewMap.put(Constants.AUTO_UPDATE, autoUpdateIds);
-    }
-
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
 
         if(!(component instanceof ClientBehaviorHolder)) {

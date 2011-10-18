@@ -26,6 +26,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PostRestoreStateEvent;
+import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.PreRenderViewEvent;
+import org.primefaces.event.AutoUpdateComponentListener;
 
 import org.primefaces.renderkit.CoreRenderer;
 
@@ -68,10 +72,6 @@ public class MessagesRenderer extends CoreRenderer {
 		}
 		
 		writer.endElement("div");
-
-        if(uiMessages.isAutoUpdate()) {
-            addToAutoUpdate(clientId);
-        }
 	}
 
 	private void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {

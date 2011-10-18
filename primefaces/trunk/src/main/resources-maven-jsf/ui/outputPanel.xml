@@ -12,7 +12,12 @@
 	<rendererClass>org.primefaces.component.outputpanel.OutputPanelRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
     <description>OutputPanel is a display only element that's useful in various cases such as adding placeholders to a page.</description>
-	<attributes>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AutoUpdatable</name>
+		</interface>
+	</interfaces>
+    <attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>style</name>

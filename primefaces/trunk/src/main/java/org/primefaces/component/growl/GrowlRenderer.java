@@ -52,10 +52,6 @@ public class GrowlRenderer extends CoreRenderer {
         }
 	
 		endScript(writer);
-
-        if(growl.isAutoUpdate()) {
-            addToAutoUpdate(clientId);
-        }
 	}
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
