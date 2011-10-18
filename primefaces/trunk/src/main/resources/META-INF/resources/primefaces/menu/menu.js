@@ -102,10 +102,8 @@ PrimeFaces.widget.Menu = function(id, cfg) {
 
     if(this.cfg.sliding){
         this.viewport = this.jq.innerWidth();
-        this.wrapper = this.jq.children('div.ui-menu-slider:first');
-        this.cfg.effect = this.cfg.effect||'slide';
+        this.wrapper = this.jq.children('div.ui-menu-sliding-wrapper:first');
         this.cfg.easing = this.cfg.easing||'easeInOutCirc';
-        this.cfg.effectDuration = this.cfg.effectDuration || 500;
         this.level = 0;
         
         this.jq.css({overflow : 'hidden'}).find('ul.ui-menu-child').css({ left : this.viewport});
@@ -195,10 +193,7 @@ PrimeFaces.widget.Menu.prototype.forward = function(){
         this.back.css({display : 'block'});
     }
 
-    if(this.cfg.effect == 'fade')
-        this.fade(++this.level);
-    else
-        this.slide(++this.level);
+    this.slide(++this.level);
 }
 
 PrimeFaces.widget.Menu.prototype.backward = function(){
@@ -213,10 +208,7 @@ PrimeFaces.widget.Menu.prototype.backward = function(){
         _self.currentSubMenu = _self.currentSubMenu.parents('ul.ui-menu-child:first');
     }
     
-    if(this.cfg.effect == 'fade')
-        this.fade(--this.level, back);
-    else
-        this.slide(--this.level, back);
+    this.slide(--this.level, back);
 }
 
 PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
@@ -228,44 +220,10 @@ PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
         left : -level * _self.viewport
     },
     {
-        duration: this.cfg.effectDuration,
         easing: this.cfg.easing,
         complete: function() {
             _self.animating = false;
             if(fn) fn.call();
-        }
-    });
-}
-
-PrimeFaces.widget.Menu.prototype.fade = function(level, fn){
-    var _self = this;
-    this.animating = true;
-    
-    this.wrapper.animate(
-    {   
-        opacity: 0
-    }, 
-    {   
-        duration: this.cfg.effectDuration / 2,
-        specialEasing: {
-            opacity : this.cfg.easing
-        },
-        complete: function() {
-            _self.wrapper.css({left : -level * _self.viewport});
-            $(this).animate(
-            {
-                opacity: 1
-            }, 
-            {
-                duration: _self.cfg.effectDuration / 2,
-                specialEasing: {
-                    opacity : _self.cfg.easing
-                },
-                complete: function() {
-                    _self.animating = false;
-                    if(fn) fn.call();
-                }
-            });
         }
     });
 }

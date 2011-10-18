@@ -79,37 +79,17 @@
             <description>Text for back link, only applies to sliding menus. Default is "Back"</description>
 		</attribute>
         <attribute>
-			<name>maxHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>200</defaultValue>
-            <description>Maximum height for menu, only applies to sliding menu. Default is 200.</description>
-		</attribute>
-        <attribute>
 			<name>triggerEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>click</defaultValue>
             <description>Event name of component that will show the dynamic positioned menu. Default is click.</description>
 		</attribute>
-        <attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Name of the animation effect slide or fade. Default is slide.</description>
-		</attribute>
 		<attribute>
 			<name>easing</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Name of the animation effect. Default is easeInOutCirc.</description>
-		</attribute>
-        <attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Sets the speed of animation in milliseconds. Default is 500.</description>
+            <description>Type of easing on sliding animation. Default is easeInOutCirc.</description>
 		</attribute>
 	</attributes>
 	<resources>
