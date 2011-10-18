@@ -40,20 +40,6 @@
             <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>fade</defaultValue>
-            <description>Sets the effect for the menu display. Default is "fade".</description>
-		</attribute>
-		<attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>400</defaultValue>
-            <description>Sets the effect duration in milliseconds. Default is 400.</description>
-		</attribute>
-        <attribute>
 			<name>model</name>
 			<required>false</required>
 			<type>org.primefaces.model.MenuModel</type>

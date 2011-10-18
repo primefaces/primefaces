@@ -40,15 +40,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 
         writer.write("$(function() {");
         
-		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',{");
-        
+		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',{");        
         writer.write("target:" + target);
  
-        if(!menu.getEffect().equals("none")) {
-            writer.write(",effect:'" + menu.getEffect() + "'");
-            writer.write(",effectDuration:" + menu.getEffectDuration());
-        }
-        
         if(menu.getNodeType() != null) 
             writer.write(",nodeType:'" + menu.getNodeType() + "'");
         
