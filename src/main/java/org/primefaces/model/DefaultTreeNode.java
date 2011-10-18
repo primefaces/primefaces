@@ -89,7 +89,10 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	}
 	
 	public void setParent(TreeNode parent) {
-        this.parent.getChildren().remove(this);
+        if(this.parent != null) {
+            this.parent.getChildren().remove(this);
+        }
+        
         this.parent = parent;
         this.parent.getChildren().add(this);
 	}
