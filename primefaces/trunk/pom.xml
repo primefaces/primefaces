@@ -346,10 +346,63 @@
                         <configuration>
                             <nosuffix>true</nosuffix>
                             <linebreakpos>-1</linebreakpos>
+                            <gzip>true</gzip>
                             <excludes>
                                 <exclude>**/*.css</exclude>
                                 <exclude>**/yui/**</exclude>
                             </excludes>
+                            <aggregations>
+                                <aggregation>
+                                    <insertNewLine>true</insertNewLine>
+                                    <removeIncluded>true</removeIncluded>
+                                    <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
+                                    <includes>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/button/button.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/effect/effect.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
+                                    </includes>
+                                </aggregation>
+                                <aggregation>
+                                    <insertNewLine>true</insertNewLine>
+                                    <removeIncluded>true</removeIncluded>
+                                    <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.css</output>
+                                    <includes>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/ui/jquery-ui.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
+                                    </includes>
+                                </aggregation>
+                            </aggregations>
                         </configuration>
                     </plugin>
 
