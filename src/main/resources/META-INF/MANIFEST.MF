@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Created-By: Prime Technology
-Bundle-ManifestVersion: 2
-Bundle-Name: primefaces
-Bundle-Description: Package PrimeFaces in an OSGi bundle
-Bundle-Version: 3.0.M4-SNAPSHOT
-Bundle-SymbolicName: org.primefaces
