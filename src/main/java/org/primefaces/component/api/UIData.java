@@ -20,5 +20,4 @@ import javax.faces.context.FacesContext;
 
 public class UIData extends javax.faces.component.UIData {
 
-    
 }
