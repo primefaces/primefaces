@@ -428,23 +428,13 @@ PrimeFaces.widget.ContextMenu.prototype.show = function(e) {
         'top': e.pageY
     });
     
-    if(this.cfg.effect) {
-        this.jq.show(this.cfg.effect, {}, this.cfg.effectDuration);
-    } 
-    else {
-        this.jq.show();
-    }
+   this.jq.show();
     
     e.preventDefault();
 }
 
 PrimeFaces.widget.ContextMenu.prototype.hide = function(e) {
-    if(this.cfg.effect) {
-        this.jq.hide(this.cfg.effect, {}, this.cfg.effectDuration);
-    } 
-    else {
-        this.jq.hide();
-    }
+    this.jq.fadeOut('fast');
 }
 
 PrimeFaces.widget.ContextMenu.prototype.isVisible = function() {
