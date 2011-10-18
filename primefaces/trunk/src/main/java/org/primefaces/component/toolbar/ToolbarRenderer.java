@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ToolbarRenderer extends CoreRenderer {
@@ -34,29 +35,56 @@ public class ToolbarRenderer extends CoreRenderer {
         writer.startElement("div", toolbar);
         writer.writeAttribute("id", toolbar.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null)
+        if(style != null) {
             writer.writeAttribute("style", style, null);
+        }
 
         for(UIComponent child : toolbar.getChildren()) {
-            if(child instanceof ToolbarGroup) {
+            if(child.isRendered() && child instanceof ToolbarGroup) {
                 ToolbarGroup group = (ToolbarGroup) child;
+
                 String defaultGroupClass = "ui-toolbar-group-" + group.getAlign();
                 String groupClass = group.getStyleClass();
                 String groupStyle = group.getStyle();
                 groupClass = groupClass == null ? defaultGroupClass : defaultGroupClass + " " + groupClass;
-                
+
                 writer.startElement("div", null);
                 writer.writeAttribute("class", groupClass, style);
-                if(groupStyle != null)
+                if(groupStyle != null) {
                     writer.writeAttribute("style", groupStyle, null);
+                }
 
-                group.encodeAll(context);
+                for(UIComponent groupChild : group.getChildren()) {
+                    if(groupChild instanceof Separator)
+                        encodeSeparator(context, (Separator) groupChild);
+                    else
+                        groupChild.encodeAll(context);
+                }
 
                 writer.endElement("div");
             }
         }
 
         writer.endElement("div");
+    }
+    
+    public void encodeSeparator(FacesContext context, Separator separator) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String style = separator.getStyle();
+        String styleClass = separator.getStyleClass();
+        styleClass = styleClass == null ? Toolbar.SEPARATOR_CLASS : Toolbar.SEPARATOR_CLASS + " " + styleClass;
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Toolbar.SEPARATOR_ICON_CLASS, null);
+        writer.endElement("span");
+        
+        writer.endElement("span");
     }
 
     @Override
