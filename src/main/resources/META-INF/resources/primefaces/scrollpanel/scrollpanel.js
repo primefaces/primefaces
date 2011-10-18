@@ -224,7 +224,7 @@ PrimeFaces.widget.ScrollPanel.prototype.bindEvents = function(s){
             _self.scrollWithRatio(scroll.dir, -20, true)
     });
     
-    $(window).bind('mouseup.scrollpanel', function(){
+    $(document.body).bind('mouseup.scrollpanel', function(){
         clearInterval(mouseInterval);
         mouseDown = false;
     });
