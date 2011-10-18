@@ -210,10 +210,11 @@ PrimeFaces.widget.PickList.prototype.saveState = function() {
 
 PrimeFaces.widget.PickList.prototype.transfer = function(item, from, to, type) {    
     var _self = this;
-        
-    item.appendTo(to).removeClass('ui-state-highlight').show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {_self.saveState();});
     
-    this.fireOnTransferEvent(item, from, to, type);
+    item.appendTo(to).removeClass('ui-state-highlight').show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
+        _self.saveState();
+        _self.fireOnTransferEvent(item, from, to, type);
+    });
 }
 
 PrimeFaces.widget.PickList.prototype.saveListState = function(list, holder) {

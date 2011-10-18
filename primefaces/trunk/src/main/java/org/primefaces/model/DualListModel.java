@@ -29,4 +29,28 @@ public class DualListModel<T> implements Serializable {
 	public void setTarget(List<T> target) {
 		this.target = target;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        
+        if(getClass() != obj.getClass())
+            return false;
+        
+        final DualListModel<T> other = (DualListModel<T>) obj;
+        
+        if(this.source != other.source && (this.source == null || !this.source.equals(other.source)))
+            return false;
+        if(this.target != other.target && (this.target == null || !this.target.equals(other.target)))
+            return false;
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
 }
