@@ -101,24 +101,15 @@
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
     </attributes>
-    <resources>
+	<resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
-		</resource>
-        <resource>
-			<name>tabview/tabview.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
+        <resource>
+			<name>primefaces.js</name>
 		</resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>tabview/tabview.js</name>
-        </resource>
-    </resources>
+	</resources>
 </component>

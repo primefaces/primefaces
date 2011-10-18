@@ -94,23 +94,14 @@
 		</attribute>
 	</attributes>
 	<resources>
-		<resource>
-			<name>jquery/ui/jquery-ui.css</name>
-		</resource>
-        		<resource>
-			<name>accordion/accordion.css</name>
+        <resource>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>	
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>accordion/accordion.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>
