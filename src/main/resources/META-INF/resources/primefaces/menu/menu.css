@@ -201,3 +201,12 @@
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
 }
+
+.ui-menu .ui-separator {
+    width:98%;
+    float:left;
+    clear:both;
+    margin:1px 0 0 0;
+    padding:0;
+    border-top: 0px none;
+}

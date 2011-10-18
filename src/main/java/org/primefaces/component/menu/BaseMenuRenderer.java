@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -117,12 +118,11 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 
             if(child.isRendered()) {
 
-                writer.startElement("li", null);
-                
                 if(child instanceof MenuItem) {
+                    writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    
                     encodeMenuItem(context, (MenuItem) child);
+                    writer.endElement("li");
                 } 
                 else if(child instanceof Submenu) {
                     Submenu submenu = (Submenu) child;
@@ -130,15 +130,17 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                     String styleClass = submenu.getStyleClass();
                     styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
         
+                    writer.startElement("li", null);
                     writer.writeAttribute("class", styleClass, null);
                     if(style != null) {
                         writer.writeAttribute("style", style, null);
                     }
-                    
                     encodeTieredSubmenu(context, (Submenu) child);
+                    writer.endElement("li");
+                } 
+                else if(child instanceof Separator) {
+                    encodeSeparator(context, (Separator) child);
                 }
-
-                writer.endElement("li");
             }
         }
     }
@@ -181,6 +183,22 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 
 			writer.endElement("ul");
 		}
+	}
+    
+    protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String style = separator.getStyle();
+        String styleClass = separator.getStyleClass();
+        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : Menu.SEPARATOR_CLASS + " " + styleClass;
+
+        //title
+        writer.startElement("li", null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        
+        writer.endElement("li");
 	}
 
     @Override
