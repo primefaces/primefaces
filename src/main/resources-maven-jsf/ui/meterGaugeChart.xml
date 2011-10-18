@@ -81,21 +81,18 @@
             <defaultValue>85</defaultValue>
         </attribute>
     </attributes>
-    <resources>
+	<resources>
         <resource>
-            <name>charts/charts.css</name>
-        </resource>
-        <resource>
-            <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-            <name>charts/jqplot.js</name>
-        </resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>charts/charts.js</name>
-        </resource>
-    </resources>
+			<name>charts/charts.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>charts/charts.js</name>
+		</resource>
+	</resources>
 </component>
