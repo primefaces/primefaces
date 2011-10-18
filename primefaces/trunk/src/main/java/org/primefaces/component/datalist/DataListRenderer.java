@@ -61,6 +61,10 @@ public class DataListRenderer extends CoreRenderer {
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
 
+        if(hasPaginator) {
+            list.calculatePage();
+        }
+        
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");

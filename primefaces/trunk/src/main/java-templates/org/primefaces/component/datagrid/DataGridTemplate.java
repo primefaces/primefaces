@@ -34,3 +34,16 @@
             super.processDecodes(context);
         }
 	}
+
+    public void calculatePage() {
+        int rows = this.getRows();
+        int currentPage = this.getPage();
+        int numberOfPages = (int) Math.ceil(this.getRowCount() * 1d / rows);
+
+        if(currentPage > numberOfPages && numberOfPages > 0) {
+            currentPage = numberOfPages;
+
+            this.setPage(currentPage);
+            this.setFirst((currentPage-1) * rows);
+        }
+    }

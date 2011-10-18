@@ -59,6 +59,10 @@ public class DataGridRenderer extends CoreRenderer {
         String paginatorPosition = grid.getPaginatorPosition();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
 
+        if(hasPaginator) {
+            grid.calculatePage();
+        }
+        
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
