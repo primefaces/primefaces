@@ -101,36 +101,74 @@
 }
 
 .ui-menu.ui-menu-sliding{
-    overflow-x : hidden;
-    overflow-y : scroll;
+    overflow: hidden;
+    position: relative;
+    padding: .3em;
+    border-radius : 4px;
+    display: block; 
 }
 
-.ui-menu.ui-menu-sliding .ui-menu-sliding-wrapper .ui-menu-child{
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll{
+    border : medium none;
+    padding: 0;
+    outline: medium none;
+    border-radius : 4px;
+    background: transparent;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state{
+    overflow: hidden;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper{
+    overflow: hidden;
+    position: absolute;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content{
+    display: block;
+    height: auto;
+    width: auto;
+    position: relative;
     top: 0px;
-    background: none;
-    box-shadow: none;
-    border : none;
-    width : 100%;
 }
 
-.ui-menu.ui-menu-sliding .ui-menu-sliding-wrapper .ui-menu-parent{
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content > div{
+    position: relative;
+}
+
+.ui-menu.ui-menu-sliding ul{
+    position: absolute;
+    box-shadow : none;
+    border-width: 0;
+    height: auto;
+    width: 100%; 
+    background: inherit;
+    top : 0;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content ul li{
+    clear: both;
+    float: left;
+    margin: 1px 0;
+    padding: 0;
+    background: none;
     position: static;
 }
 
-.ui-menu.ui-menu-sliding .ui-menu-sliding-wrapper{
-    position: relative;
+.ui-menu.ui-menu-sliding .ui-menu-backward{
+    margin : 0;
+    padding: 0;
     display: none;
-}
-
-.ui-menu .ui-menu-backward .ui-icon {
-    float : left;
-}
-
-.ui-menu .ui-menu-backward {
-    display: none;
+    background: transparent;
     cursor: pointer;
-    position: absolute;
-    bottom: 0;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-backward .ui-icon{
+    float: left;
 }
 
 /** Menubar **/

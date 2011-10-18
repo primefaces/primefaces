@@ -90,7 +90,14 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         if(sliding){
             writer.startElement("div", menu);
+            writer.writeAttribute("class", Menu.MENU_SLIDING_SCROLL_CLASS, "scroll");
+            writer.startElement("div", menu);
+            writer.writeAttribute("class", Menu.MENU_SLIDING_STATE_CLASS, "state");
+            writer.startElement("div", menu);
             writer.writeAttribute("class", Menu.MENU_SLIDING_WRAPPER_CLASS, "wrapper");
+            writer.startElement("div", menu);
+            writer.writeAttribute("class", Menu.MENU_SLIDING_CONTENT_CLASS, "sliding_content");
+            writer.startElement("div", menu);
         }
         
 		writer.startElement("ul", null);
@@ -106,6 +113,10 @@ public class MenuRenderer extends BaseMenuRenderer {
 		writer.endElement("ul");
 
         if(sliding){
+            writer.endElement("div");
+            writer.endElement("div");
+            writer.endElement("div");
+            writer.endElement("div");
             writer.endElement("div");
             writer.startElement("div", menu);
             writer.writeAttribute("class", Menu.BACKWARD_CLASS, style);

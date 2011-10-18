@@ -101,13 +101,38 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     }
 
     if(this.cfg.sliding){
-        this.viewport = this.jq.innerWidth();
-        this.wrapper = this.jq.children('div.ui-menu-sliding-wrapper:first');
+//        this.viewport = this.jq.innerWidth();
+        this.scroll = this.jq.children('div.ui-menu-sliding-scroll:first');
+        this.state = this.scroll.children('div.ui-menu-sliding-state:first');
+        this.wrapper = this.state.children('div.ui-menu-sliding-wrapper:first');
+        this.content = this.wrapper.children('div.ui-menu-sliding-content:first');
+        this.heighter = this.content.children('div:first');
+        this.rootList = this.heighter.children('ul:first');
+        this.backButton = this.jq.children('.ui-menu-backward');
+        
+        
+
         this.cfg.easing = this.cfg.easing||'easeInOutCirc';
         this.level = 0;
         
-        this.jq.css({overflow : 'hidden'}).find('ul.ui-menu-child').css({ left : this.viewport});
-        this.wrapper.css({display : 'block'});
+        
+        this.scroll.css({width : this.jq.width(), height : this.jq.height() - 18});
+        this.state.css({width : this.jq.width(), height : this.jq.height() - 18});
+        
+        this.width = this.scroll.width();
+        
+//        this.wrapper.css({width : this.state.width(), height : this.state.height()});
+        
+        this.wrapper.css({width : this.state.width()});
+        this.rootList.find("ul.ui-menu-child").css({left : this.width, width : this.width});
+        
+        this.heighter.css({height : this.rootList.height() - 18});
+        
+        if(this.wrapper.height() > this.state.height())
+            this.wrapper.css({width : this.state.width() - 18});
+        else
+            this.wrapper.css({width : this.state.width()});
+        
     }
 
     //visuals
@@ -181,7 +206,7 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
             e.stopPropagation();
        });
        
-       this.back = this.wrapper.siblings('div.ui-menu-backward').click(function(e){
+       this.backButton.click(function(e){
            _self.backward();
            e.stopPropagation();
        });
@@ -189,25 +214,18 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.Menu.prototype.forward = function(){
-    if(this.level == 0){
-        this.back.css({display : 'block'});
-    }
-
     this.slide(++this.level);
 }
 
 PrimeFaces.widget.Menu.prototype.backward = function(){
     if(!this.level)
         return;
-    if(this.level == 1){
-        this.back.css({display : 'none'});
-    }
     
-    var _self = this, back = function(){
-        _self.currentSubMenu.css({display : 'none'});
-        _self.currentSubMenu = _self.currentSubMenu.parents('ul.ui-menu-child:first');
-    }
+    var prev = this.currentSubMenu, back = function(){
+        prev.css({display : 'none'});
+    };
     
+    this.currentSubMenu = this.currentSubMenu.parents('ul.ui-menu-list:first');
     this.slide(--this.level, back);
 }
 
@@ -215,15 +233,31 @@ PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
     var _self = this;
     this.animating = true;
     
-    this.wrapper.animate( 
+    if(level == 0){
+        this.backButton.css({display : 'none'});
+    }
+
+    //scroll control
+    this.heighter.height(this.currentSubMenu.outerHeight(true));
+    if(this.wrapper.height() > this.state.height())
+        this.wrapper.css({width : this.state.width() - 18});
+    else
+        this.wrapper.css({width : this.state.width()});
+    
+    this.currentSubMenu.css({width : this.wrapper.width()});
+    
+    this.rootList.animate( 
     {
-        left : -level * _self.viewport
+        left : -level * _self.width
     },
     {
         easing: this.cfg.easing,
         complete: function() {
             _self.animating = false;
             if(fn) fn.call();
+            
+            if(_self.level > 0)
+                _self.backButton.css({display : 'block'});
         }
     });
 }
