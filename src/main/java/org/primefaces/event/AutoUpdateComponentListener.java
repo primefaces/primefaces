@@ -28,8 +28,9 @@ public class AutoUpdateComponentListener implements SystemEventListener {
 
     public void processEvent(SystemEvent cse) throws AbortProcessingException {
         AutoUpdatable component = (AutoUpdatable) cse.getSource();
-        if(component.isAutoUpdate()) {
-            FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        if(component.isAutoUpdate() && context.getRenderKit().getResponseStateManager().isPostback(context)) {
             context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
         }
     }
