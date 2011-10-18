@@ -24,7 +24,7 @@ import javax.faces.model.DataModel;
 /**
  * Custom lazy loading DataModel to deal with huge datasets
  */
-public abstract class LazyDataModel<T> extends DataModel implements SelectableDataModel<T>, Serializable {
+public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
 	private int rowIndex = -1;
 
@@ -50,7 +50,7 @@ public abstract class LazyDataModel<T> extends DataModel implements SelectableDa
 		return rowCount;
 	}
 
-	public Object getRowData() {
+	public T getRowData() {
         return data.get(rowIndex);
 	}
 
