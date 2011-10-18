@@ -49,16 +49,23 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
+        String name = command.getName();
 
         //script
         writer.startElement("script", command);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(command.getName() + " = function() {");
+        writer.write(name + " = function() {");
 
         writer.write(buildAjaxRequest(context, command));
 
-        writer.write("}");
+        writer.write("}\n");
+        
+        if(command.isAutoRun()) {
+            writer.write("$(function() {");
+            writer.write(name + "();");
+            writer.write("});");
+        }
 
         writer.endElement("script");
     }
