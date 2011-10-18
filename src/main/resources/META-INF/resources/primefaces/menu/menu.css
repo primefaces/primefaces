@@ -100,23 +100,24 @@
     margin:0;
 }
 
-.ui-menu-slider .ui-menu-list{
-    width : 100% !important;
+.ui-menu.ui-menu-sliding{
+    overflow-x : hidden;
+    overflow-y : scroll;
 }
 
-.ui-menu-slider .ui-menu-child{
-    width : 100%;
+.ui-menu.ui-menu-sliding .ui-menu-sliding-wrapper .ui-menu-child{
     top: 0px;
-    background: none !important;
-    box-shadow: none !important;
-    border : none !important;
+    background: none;
+    box-shadow: none;
+    border : none;
+    width : 100%;
 }
 
-.ui-menu-slider .ui-menu-parent{
-    position: static !important;
+.ui-menu.ui-menu-sliding .ui-menu-sliding-wrapper .ui-menu-parent{
+    position: static;
 }
 
-.ui-menu-slider{
+.ui-menu.ui-menu-sliding .ui-menu-sliding-wrapper{
     position: relative;
     display: none;
 }

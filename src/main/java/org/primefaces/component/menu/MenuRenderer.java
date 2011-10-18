@@ -43,12 +43,6 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.write("position:'" + position + "'");
         writer.write(",type:'" + menu.getType() + "'");
         
-        if(menu.getEffect() != null)
-            writer.write(",effect:'" + menu.getEffect() + "'");
-
-        if(menu.getEffectDuration() > Integer.MIN_VALUE)
-            writer.write(",effectDuration:" + menu.getEffectDuration());
-
         if(menu.getEasing() != null)
             writer.write(",easing:'" + menu.getEasing() + "'");
         
@@ -82,6 +76,10 @@ public class MenuRenderer extends BaseMenuRenderer {
         String defaultStyleClass = dynamic ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
 
+        if(sliding){
+            styleClass += " " + Menu.MENU_SLIDING_CLASS;
+        }
+        
         writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -91,7 +89,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         if(sliding){
             writer.startElement("div", menu);
-            writer.writeAttribute("class", Menu.WRAPPER_CLASS, "wrapper");
+            writer.writeAttribute("class", Menu.MENU_SLIDING_WRAPPER_CLASS, "wrapper");
         }
         
 		writer.startElement("ul", null);
