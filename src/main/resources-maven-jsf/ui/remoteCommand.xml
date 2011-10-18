@@ -76,6 +76,13 @@
             <defaultValue>false</defaultValue>
             <description>When set to true, ajax requests are not queued.</description>
         </attribute>
+        <attribute>
+            <name>autoRun</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set to true, command will be invoked on page load.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
