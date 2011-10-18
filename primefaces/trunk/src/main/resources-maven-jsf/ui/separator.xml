@@ -24,7 +24,7 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>Inline style of the separator.</defaultValue>
+            <description>Inline style of the separator.</description>
 		</attribute>
         <attribute>
 			<name>styleClass</name>

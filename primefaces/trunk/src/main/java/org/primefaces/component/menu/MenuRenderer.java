@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 
 public class MenuRenderer extends BaseMenuRenderer {
@@ -137,7 +138,9 @@ public class MenuRenderer extends BaseMenuRenderer {
                 else if(child instanceof Submenu) {
                     encodePlainSubmenu(context, (Submenu) child);
                 }
-                
+                else if(child instanceof Separator) {
+                    encodeSeparator(context, (Separator) child);
+                }
             }
         }
     }
