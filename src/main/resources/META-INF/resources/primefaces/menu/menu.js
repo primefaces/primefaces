@@ -75,8 +75,9 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     if(this.cfg.position == 'dynamic') {        
         this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
         
-        if($(document.body).children(this.jqId).length);
+        if($(document.body).children(this.jqId).length == 0) {
             this.jq.appendTo(document.body);
+        }
         
         this.cfg.position = {
             my: this.cfg.my
@@ -281,14 +282,14 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
     this.menu = this.jq.children('.ui-menu');
     this.menuitems = this.jq.find('.ui-menuitem');
 
-    if($(document.body).children(this.menuId).length);
-            this.menu.appendTo(document.body);
-
     this.button.button({icons:{primary:'ui-icon-triangle-1-s'}});
 
     this.bindEvents();
     
     this.menu.css('z-index', this.cfg.zindex);
+    
+    $(document.body).children(this.menuId).remove();
+    this.menu.appendTo(document.body);
     
     this.postConstruct();
 }
