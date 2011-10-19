@@ -287,15 +287,19 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     }).click(function() {
         var element = $(this),
         option = $(options.get(element.index())),
-        label = option.text() == '' ? '&nbsp;' : option.text();
-
+        label = option.text();
+        
         _self.items.removeClass('ui-state-active ui-state-hover');
         element.addClass('ui-state-active');
 
         option.attr('selected', 'selected');
+        
+        if(label && $.trim(label))
+            _self.label.text(label);
+        else
+            _self.label.html('&nbsp;');
 
         _self.labelContainer.focus();
-        _self.label.text(label);
         _self.input.change();
         _self.hide();
     });
