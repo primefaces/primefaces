@@ -57,7 +57,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>messages/messages.css</name>
+			<name>primefaces.css</name>
 		</resource>
 	</resources>
 </component>

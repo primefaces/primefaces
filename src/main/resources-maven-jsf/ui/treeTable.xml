@@ -91,24 +91,15 @@
             <description>Decides whether treeTable columns are resizable or not, defaults to false.</description>
 		</attribute>
 	</attributes>
-	<resources>
-		<resource>
-			<name>treetable/treetable.css</name>
-		</resource>
+    <resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>treetable/treetable.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

@@ -49,7 +49,7 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>core/core.js</name>
+			<name>primefaces/primefaces.js</name>
 		</resource>
         <resource>
 			<name>watermark/watermark.js</name>

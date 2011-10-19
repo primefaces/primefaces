@@ -29,7 +29,7 @@
 	</attributes>
     <resources>
 		<resource>
-			<name>toolbar/toolbar.css</name>
+			<name>primefaces.css</name>
 		</resource>
     </resources>
 </component>

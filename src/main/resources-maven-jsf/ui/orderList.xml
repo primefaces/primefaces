@@ -109,24 +109,15 @@
             <description>Location of the order controls, valid values are "left" (default), "right" and none.</description>
 		</attribute>
 	</attributes>
-	<resources>
-		<resource>
-			<name>orderlist/orderlist.css</name>
-		</resource>
+    <resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>orderlist/orderlist.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

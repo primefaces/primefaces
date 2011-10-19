@@ -90,24 +90,15 @@
             <description>Makes tree nodes draggable/droppable when true. Default is false.</description>
 		</attribute>
 	</attributes>
-	<resources>
+	    <resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
-		</resource>
-         <resource>
-			<name>tree/tree.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-        <resource>
-			<name>tree/tree.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

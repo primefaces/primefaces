@@ -266,9 +266,17 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/toolbar/toolbar.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
@@ -295,11 +303,21 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/resizable/resizable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/slider/slider.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
