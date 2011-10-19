@@ -57,7 +57,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>stack/assets/stack.css</name>
+			<name>stack/stack.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
