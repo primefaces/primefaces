@@ -348,7 +348,7 @@ PrimeFaces.widget.TreeTable.prototype.setupResize = function() {
     _self = this;
      
     //State cookie
-    this.columnWidthsCookie = this.id + '_tt_columnWidths';
+    this.columnWidthsCookie = location.href + this.id + '_tt_columnWidths';
     
     //Main resize events
     resizers.draggable({
