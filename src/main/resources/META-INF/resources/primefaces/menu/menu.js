@@ -70,10 +70,13 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     this.cfg.sliding = this.cfg.type == 'sliding';
 
     var _self = this;
-        
+    
     //dynamic position
     if(this.cfg.position == 'dynamic') {        
         this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
+        
+        if($(document.body).children(this.jqId).length);
+            this.jq.appendTo(document.body);
         
         this.cfg.position = {
             my: this.cfg.my
@@ -101,7 +104,6 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     }
 
     if(this.cfg.sliding){
-//        this.viewport = this.jq.innerWidth();
         this.scroll = this.jq.children('div.ui-menu-sliding-scroll:first');
         this.state = this.scroll.children('div.ui-menu-sliding-state:first');
         this.wrapper = this.state.children('div.ui-menu-sliding-wrapper:first');
@@ -109,19 +111,14 @@ PrimeFaces.widget.Menu = function(id, cfg) {
         this.heighter = this.content.children('div:first');
         this.rootList = this.heighter.children('ul:first');
         this.backButton = this.jq.children('.ui-menu-backward');
-        
-        
 
         this.cfg.easing = this.cfg.easing||'easeInOutCirc';
         this.level = 0;
-        
         
         this.scroll.css({width : this.jq.width(), height : this.jq.height() - 18});
         this.state.css({width : this.jq.width(), height : this.jq.height() - 18});
         
         this.width = this.scroll.width();
-        
-//        this.wrapper.css({width : this.state.width(), height : this.state.height()});
         
         this.wrapper.css({width : this.state.width()});
         this.rootList.find("ul.ui-menu-child").css({left : this.width, width : this.width});
@@ -132,7 +129,6 @@ PrimeFaces.widget.Menu = function(id, cfg) {
             this.wrapper.css({width : this.state.width() - 18});
         else
             this.wrapper.css({width : this.state.width()});
-        
     }
 
     //visuals
@@ -271,7 +267,7 @@ PrimeFaces.widget.Menu.prototype.show = function(e) {
 PrimeFaces.widget.Menu.prototype.hide = function(e) {
     this.jq.hide();
 }
-
+            
 /*
  * PrimeFaces MenuButton Widget
  */
@@ -279,10 +275,14 @@ PrimeFaces.widget.MenuButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = PrimeFaces.escapeClientId(id);
+    this.menuId = this.jqId + '_menu';
     this.jq = $(this.jqId);
     this.button = this.jq.children('button');
     this.menu = this.jq.children('.ui-menu');
     this.menuitems = this.jq.find('.ui-menuitem');
+
+    if($(document.body).children(this.menuId).length);
+            this.menu.appendTo(document.body);
 
     this.button.button({icons:{primary:'ui-icon-triangle-1-s'}});
 

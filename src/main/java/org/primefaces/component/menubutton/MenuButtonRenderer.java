@@ -35,6 +35,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
 		String buttonId = clientId + "_button";
+		String menuId = clientId + "_menu";
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass; 
 		
@@ -57,6 +58,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         //menu
         writer.startElement("div", null);
+        writer.writeAttribute("id", menuId, null);
 		writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
         
         writer.startElement("ul", null);

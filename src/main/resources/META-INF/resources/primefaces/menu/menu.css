@@ -7,6 +7,7 @@
 .ui-menu-dynamic {
     position: absolute;
     display: none;
+    z-index: 100000;
 }
 
 .ui-menu-list {
