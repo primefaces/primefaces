@@ -15,12 +15,16 @@
  */
 package org.primefaces.component.api;
 
+import java.util.Collection;
 import java.util.Iterator;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -192,7 +196,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         popComponentFromEL(context);
     }
     
-    private void processNodes(FacesContext context, PhaseId phaseId) {
+    protected void processNodes(FacesContext context, PhaseId phaseId) {
               
         processFacets(context, phaseId);
         processColumnFacets(context, phaseId);
@@ -205,8 +209,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         setRowKey(null);
     }
     
-    private void processNode(FacesContext context, PhaseId phaseId, TreeNode treeNode, String rowKey) {
-        processColumnChildren(context, phaseId, treeNode, rowKey);
+    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode treeNode, String rowKey) {
+        processColumnChildren(context, phaseId, rowKey);
         
         //process child nodes if node is expanded or node itself is the root
         if(treeNode.isExpanded() || treeNode.getParent() == null) {
@@ -261,7 +265,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
     
-    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode treeNode, String nodeKey) {
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
         setRowKey(nodeKey);
         
         if(nodeKey == null)
@@ -285,6 +289,112 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
         }
     }
+    
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback) {
+        if(!isVisitable(context))
+            return false;
+
+        FacesContext facesContext = context.getFacesContext();
+
+        String oldRowKey= getRowKey();
+        setRowKey(null);
+        
+        pushComponentToEL(facesContext, null);
+
+        try {
+            VisitResult result = context.invokeVisitCallback(this, callback);
+
+            if(result == VisitResult.COMPLETE)
+                return true;
+
+            if((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
+                if(visitFacets(context, callback))
+                    return true;
+
+                if(visitNodes(context, callback))
+                    return true;
+            }
+        }
+        finally {
+            popComponentFromEL(facesContext);
+            setRowKey(oldRowKey);
+        }
+
+        return false;
+    }
+    
+    protected boolean doVisitChildren(VisitContext context) {
+        Collection<String> idsToVisit = context.getSubtreeIdsToVisit(this);
+
+        return (!idsToVisit.isEmpty());
+    }
+    
+    protected boolean visitFacets(VisitContext context, VisitCallback callback) {
+        if(getFacetCount() > 0) {
+            for(UIComponent facet : getFacets().values()) {
+                if(facet.visitTree(context, callback))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+    
+    private boolean visitColumns(VisitContext context, VisitCallback callback, String rowKey) {   
+        setRowKey(rowKey);
+        
+        if(rowKey == null)
+            return false;
+        
+        if(getChildCount() > 0) {
+            for(UIComponent child : getChildren()) {
+                if(child instanceof UIColumn) {
+                    if(child.visitTree(context, callback)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    protected boolean visitNodes(VisitContext context, VisitCallback callback) {
+        TreeNode root = getValue();
+        if(root != null) {
+            if(visitNode(context, callback, root, null)) {
+                return true;
+            }
+		}
+
+        setRowKey(null);
+        
+        return false;
+    }
+    
+    protected boolean visitNode(VisitContext context, VisitCallback callback, TreeNode treeNode, String rowKey) {
+        if(visitColumns(context, callback, rowKey)) {
+            return true;
+        }
+        
+        //visit child nodes if node is expanded or node itself is the root
+        if((treeNode.isExpanded() || treeNode.getParent() == null)) {
+            int childIndex = 0;
+            for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
+                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+
+                if(visitNode(context, callback, iterator.next(), childRowKey)) {
+                    return true;
+                }
+
+                childIndex++;
+            }
+        }
+        
+        return false;
+    }
+
 }
 
 class WrapperEvent extends FacesEvent {
