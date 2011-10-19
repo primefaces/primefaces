@@ -64,18 +64,15 @@
             <description>Defines initial visibility state of content. Default is false.</description>
         </attribute>
 	</attributes>
-	<resources>
+	    <resources>
         <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>fieldset/fieldset.css</name>
-		</resource>
-        <resource>
-			<name>fieldset/fieldset.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

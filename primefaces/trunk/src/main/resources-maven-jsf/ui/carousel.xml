@@ -113,18 +113,15 @@
             <description>Shortcut for footer facet.</description>
 		</attribute>
 	</attributes>
-	<resources>
-		<resource>
-			<name>carousel/carousel.css</name>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>core/core.js</name>
+			<name>primefaces.js</name>
 		</resource>
-		<resource>
-			<name>carousel/carousel.js</name>
-		</resource>
-	</resources>
+    </resources>
 </component>

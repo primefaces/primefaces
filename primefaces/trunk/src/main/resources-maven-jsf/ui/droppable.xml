@@ -80,17 +80,11 @@
         </attribute>
     </attributes>
     <resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
         <resource>
-            <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-            <name>jquery/ui/jquery-ui.js</name>
-        </resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>dnd/dragdrop.js</name>
-        </resource>
-    </resources>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
 </component>

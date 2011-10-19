@@ -164,7 +164,7 @@
 	</attributes>
 	<resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>fileupload/fileupload.css</name>
@@ -172,11 +172,8 @@
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-        <resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
 		<resource>
-			<name>core/core.js</name>
+			<name>primefaces.js</name>
 		</resource>
 		<resource>
 			<name>fileupload/fileupload.js</name>

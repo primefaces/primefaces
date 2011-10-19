@@ -114,7 +114,7 @@
             <name>hotkey/jquery.hotkeys.js</name>
         </resource>
         <resource>
-            <name>core/core.js</name>
+            <name>primefaces.js</name>
         </resource>
     </resources>
 </component>

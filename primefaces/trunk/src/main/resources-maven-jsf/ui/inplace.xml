@@ -111,24 +111,15 @@
             <description></description>
 		</attribute>
 	</attributes>
-	<resources>
-		<resource>
-			<name>inplace/inplace.css</name>
-		</resource>
+    <resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-         <resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>inplace/inplace.js</name>
+        <resource>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>
