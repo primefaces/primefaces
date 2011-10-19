@@ -287,7 +287,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
             writer.startElement("tr", null);
             writer.writeAttribute("id", nodeId, null);
-            writer.writeAttribute("class", rowStyleClass, null);
+            writer.writeAttribute("class", rowStyleClass + " " + treeNode.getType(), null);
 
             for(int i=0; i < tt.getChildren().size(); i++) {
                 UIComponent kid = (UIComponent) tt.getChildren().get(i);
