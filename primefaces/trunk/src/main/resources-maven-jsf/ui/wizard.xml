@@ -93,22 +93,13 @@
     </attributes>
     <resources>
         <resource>
-            <name>wizard/wizard.css</name>
-        </resource>
-        <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
+        <resource>
+			<name>primefaces.js</name>
 		</resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>wizard/wizard.js</name>
-        </resource>
-    </resources>
+	</resources>
 </component>

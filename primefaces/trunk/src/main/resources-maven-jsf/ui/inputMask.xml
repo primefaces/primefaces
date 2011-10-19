@@ -38,18 +38,15 @@
             <description>PlaceHolder in mask template.</description>
 		</attribute>
 	</attributes>
-	<resources>
+	    <resources>
         <resource>
-			<name>forms/forms.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
         <resource>
-			<name>inputmask/inputmask.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

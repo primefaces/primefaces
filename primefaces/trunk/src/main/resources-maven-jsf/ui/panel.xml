@@ -111,22 +111,13 @@
     </attributes>
     <resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-            <name>panel/panel.css</name>
-        </resource>
-        <resource>
-            <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-			<name>jquery/ui/jquery-ui.js</name>
+			<name>primefaces.js</name>
 		</resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>panel/panel.js</name>
-        </resource>
-    </resources>
+	</resources>
 </component>

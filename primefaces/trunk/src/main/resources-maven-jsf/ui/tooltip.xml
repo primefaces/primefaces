@@ -74,24 +74,15 @@
             <description>Style class of the tooltip.</description>
 		</attribute>
 	</attributes>
-	<resources>
+    <resources>
         <resource>
-			<name>tooltip/tooltip.css</name>
-		</resource>
-        <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>tooltip/tooltip.js</name>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

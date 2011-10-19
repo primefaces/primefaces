@@ -71,21 +71,15 @@
             <description>Client side callback to execute when progress ends.</description>
         </attribute>
     </attributes>
-    <resources>
-        <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
+			<name>primefaces.js</name>
 		</resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>progressbar/progressbar.js</name>
-        </resource>
-    </resources>
+	</resources>
 </component>
