@@ -44,7 +44,7 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
     _self = this;
     
     //State cookie
-    this.columnWidthsCookie = this.id + '_columnWidths';
+    this.columnWidthsCookie = location.href + this.id + '_columnWidths';
     
     //Main resize events
     resizers.draggable({

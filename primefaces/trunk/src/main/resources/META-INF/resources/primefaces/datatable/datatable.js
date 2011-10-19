@@ -971,7 +971,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     _self = this;
      
     //State cookie
-    this.columnWidthsCookie = this.id + '_columnWidths';
+    this.columnWidthsCookie = location.href + '_' + this.id + '_columnWidths';
     
     //Main resize events
     resizers.draggable({
