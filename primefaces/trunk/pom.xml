@@ -264,6 +264,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
@@ -302,6 +303,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/effect/effect.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>

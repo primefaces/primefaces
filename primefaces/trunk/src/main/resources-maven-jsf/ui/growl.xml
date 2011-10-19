@@ -91,16 +91,13 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>growl/growl.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>primefaces.js</name>
-		</resource>
-		<resource>
-			<name>growl/growl.js</name>
 		</resource>
 	</resources>
 </component>
