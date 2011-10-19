@@ -91,7 +91,7 @@
 	</attributes>
 	<resources>
 		<resource>
-			<name>growl/assets/growl.css</name>
+			<name>growl/growl.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
