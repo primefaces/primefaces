@@ -64,6 +64,9 @@
 		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
 		<resource>
 			<name>dock/assets/dock.css</name>
 		</resource>
@@ -71,7 +74,7 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>core/core.js</name>
+			<name>primefaces.js</name>
 		</resource>
 		<resource>
 			<name>dock/dock.js</name>

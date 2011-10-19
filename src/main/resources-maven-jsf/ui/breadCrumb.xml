@@ -89,6 +89,9 @@
 		</attribute>
 	</attributes>
 	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
 		<resource>
 			<name>breadcrumb/breadcrumb.css</name>
 		</resource>

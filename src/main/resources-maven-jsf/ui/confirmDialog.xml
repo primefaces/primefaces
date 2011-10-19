@@ -96,24 +96,15 @@
             <description>Sets dialogs visibility. Default is false.</description>
         </attribute>
 	</attributes>
-	<resources>
-		<resource>
-			<name>jquery/ui/jquery-ui.css</name>
-		</resource>
+		<resources>
         <resource>
-			<name>dialog/dialog.css</name>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>dialog/dialog.js</name>
+        <resource>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

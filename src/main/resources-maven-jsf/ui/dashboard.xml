@@ -50,21 +50,15 @@
             <description>Style class of the dashboard container.</description>
 		</attribute>
 	</attributes>
-	<resources>
-		<resource>
-			<name>dashboard/dashboard.css</name>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
-		<resource>
-			<name>jquery/ui/jquery-ui.js</name>
-		</resource>
-		<resource>
-			<name>core/core.js</name>
-		</resource>
-		<resource>
-			<name>dashboard/dashboard.js</name>
+        <resource>
+			<name>primefaces.js</name>
 		</resource>
 	</resources>
 </component>

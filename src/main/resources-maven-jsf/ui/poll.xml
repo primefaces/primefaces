@@ -116,10 +116,7 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>poll/poll.js</name>
+            <name>primefaces.js</name>
         </resource>
     </resources>
 </component>

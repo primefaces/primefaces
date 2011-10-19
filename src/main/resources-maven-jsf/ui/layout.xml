@@ -90,16 +90,16 @@
     </attributes>
     <resources>
         <resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
             <name>layout/layout.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>jquery/ui/jquery-ui.js</name>
-        </resource>
-        <resource>
-            <name>core/core.js</name>
+            <name>primefaces.js</name>
         </resource>
         <resource>
             <name>layout/layout.js</name>
