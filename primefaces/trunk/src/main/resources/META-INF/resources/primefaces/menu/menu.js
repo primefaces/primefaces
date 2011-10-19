@@ -75,9 +75,8 @@ PrimeFaces.widget.Menu = function(id, cfg) {
     if(this.cfg.position == 'dynamic') {        
         this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
         
-        if($(document.body).children(this.jqId).length == 0) {
-            this.jq.appendTo(document.body);
-        }
+        $(document.body).children(this.jqId).remove();
+        this.jq.appendTo(document.body);
         
         this.cfg.position = {
             my: this.cfg.my
