@@ -68,7 +68,7 @@
 			<name>primefaces.css</name>
 		</resource>
 		<resource>
-			<name>dock/assets/dock.css</name>
+			<name>dock/dock.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
