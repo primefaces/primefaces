@@ -38,7 +38,7 @@ import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core/core.js")
+	@ResourceDependency(library="primefaces", name="primefaces.js")
 })
 public class AjaxBehavior extends ClientBehaviorBase {
 
