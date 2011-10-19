@@ -64,3 +64,7 @@
       return $($('<div></div>').html(this.clone())).html();
     }
 })(jQuery);
+
+/**
+ * PrimeFaces Printer Widget
+ */

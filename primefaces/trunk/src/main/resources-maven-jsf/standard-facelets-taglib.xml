@@ -226,3 +226,16 @@
 			<type>java.lang.String</type>
 		</attribute>
     </tag>
+    
+    <tag>
+        <tag-name>printer</tag-name>
+        <behavior>
+            <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        </behavior>
+		<attribute>
+			<description>Id of the component to print.</description>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+    </tag>

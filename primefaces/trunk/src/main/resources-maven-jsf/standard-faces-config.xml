@@ -35,3 +35,8 @@
         <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
         <behavior-class>org.primefaces.component.behavior.ajax.AjaxBehavior</behavior-class>
     </behavior>
+    
+    <behavior>
+        <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        <behavior-class>org.primefaces.component.behavior.printer.PrinterBehavior</behavior-class>
+    </behavior>
