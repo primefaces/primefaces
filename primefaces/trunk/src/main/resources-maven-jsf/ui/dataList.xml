@@ -112,25 +112,19 @@
     </attributes>
     <resources>
         <resource>
-			<name>jquery/ui/jquery-ui.css</name>
+			<name>primefaces.css</name>
 		</resource>
-        <resource>
-            <name>paginator/paginator.css</name>
-        </resource>
-        <resource>
-            <name>jquery/jquery.js</name>
-        </resource>
-        <resource>
-            <name>yui/utilities/utilities.js</name>
-        </resource>
-        <resource>
-            <name>paginator/paginator.js</name>
-        </resource>
-        <resource>
-            <name>core/core.js</name>
-        </resource>
-        <resource>
-            <name>datalist/datalist.js</name>
-        </resource>
-    </resources>
+		<resource>
+			<name>paginator/paginator.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>paginator/paginator.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
 </component>
