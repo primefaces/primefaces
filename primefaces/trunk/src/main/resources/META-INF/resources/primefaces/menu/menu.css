@@ -104,7 +104,7 @@
 .ui-menu.ui-menu-sliding{
     overflow: hidden;
     position: relative;
-    padding: .3em;
+    padding: .3em .3em .5em .3em;
     border-radius : 4px;
     display: block; 
 }
@@ -164,6 +164,7 @@
     margin : 0;
     padding: 0;
     display: none;
+    height : 16px;
     background: transparent;
     cursor: pointer;
 }
