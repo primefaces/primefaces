@@ -288,7 +288,7 @@ PrimeFaces.widget.Menu.prototype.show = function(e) {
 }
 
 PrimeFaces.widget.Menu.prototype.hide = function(e) {
-    this.jq.hide();
+    this.jq.fadeOut('fast');
 }
             
 /*
@@ -354,7 +354,7 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
             return;
         }
 
-        _self.menu.hide();
+        _self.menu.fadeOut('fast');
     });
 }
 
