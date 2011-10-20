@@ -114,7 +114,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         writer.startElement("label", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
 
-        if(label == null || label.isEmpty() || label.trim().isEmpty() || label.equals("&nbsp;"))
+        if(isValueBlank(label) || label.equals("&nbsp;"))
             writer.write("&nbsp;");
         else
             writer.writeText(label, null);
