@@ -183,14 +183,16 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
             if(_self.slidingCfg.animating)
                 return;
             
-            var menuitem = $(this), 
+            var menuitem = $(this),
+            parents = menuitem.parents('ul.ui-menu-list').length,
             submenu = menuitem.children('ul.ui-menu-child');
             
-            //invalid event
-            if(submenu.length > 0) {
-                _self.slidingCfg.currentSubMenu = submenu.css({display : 'block'});
-                _self.forward();
-            }
+            //invalid menuitem target
+            if(submenu.length < 1||_self.slidingCfg.level!=parents-1)
+                return;
+            
+            _self.slidingCfg.currentSubMenu = submenu.css({display : 'block'});
+            _self.forward();
             
             e.stopPropagation();
        });
@@ -213,16 +215,14 @@ PrimeFaces.widget.Menu.prototype.setupSliding = function() {
     this.slidingCfg.backButton = this.jq.children('.ui-menu-backward');
     this.slidingCfg.easing= 'easeInOutCirc';
     this.slidingCfg.level = 0;
-
-    this.slidingCfg.scroll.css({width : this.jq.width(), height : this.jq.height() - 18});
-    this.slidingCfg.state.css({width : this.jq.width(), height : this.jq.height() - 18});
-
-    this.slidingCfg.width = this.slidingCfg.scroll.width();
-
+    
+    var viewportWidth = this.jq.width(), viewportHeight = this.jq.height() - this.slidingCfg.backButton.height();
+    this.slidingCfg.scroll.css({width : viewportWidth, height : viewportHeight});
+    this.slidingCfg.state.css({width : viewportWidth, height : viewportHeight});
     this.slidingCfg.wrapper.css({width : this.slidingCfg.state.width()});
-    this.slidingCfg.rootList.find("ul.ui-menu-child").css({left : this.slidingCfg.width, width : this.slidingCfg.width});
-
+    this.slidingCfg.rootList.find("ul.ui-menu-child").css({left : viewportWidth, width : viewportWidth - 18});
     this.slidingCfg.heighter.css({height : this.slidingCfg.rootList.height()});
+    this.slidingCfg.width = viewportWidth;
 
     if(this.slidingCfg.wrapper.height() > this.slidingCfg.state.height())
         this.slidingCfg.wrapper.css({width : this.slidingCfg.state.width() - 18});
@@ -248,21 +248,34 @@ PrimeFaces.widget.Menu.prototype.backward = function(){
 }
 
 PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
-    var _self = this;
+    var _self = this, 
+    currentHeight = _self.slidingCfg.currentSubMenu.outerHeight(true), 
+    stateWidth = this.slidingCfg.state.width(),
+    longer = currentHeight > this.slidingCfg.heighter.height();
+    
     this.slidingCfg.animating = true;
     
     if(level == 0){
         this.slidingCfg.backButton.css({display : 'none'});
     }
-
-    //scroll control
-    this.slidingCfg.heighter.height(this.slidingCfg.currentSubMenu.outerHeight(true));
-    if(this.slidingCfg.wrapper.height() > this.slidingCfg.state.height())
-        this.slidingCfg.wrapper.css({width : this.slidingCfg.state.width() - 18});
-    else
-        this.slidingCfg.wrapper.css({width : this.slidingCfg.state.width()});
     
-    this.slidingCfg.currentSubMenu.css({width : this.slidingCfg.wrapper.width()});
+    if(longer){
+        _self.slidingCfg.heighter.height(currentHeight);
+        var scrolled = this.slidingCfg.wrapper.height() > this.slidingCfg.state.height();
+        if(scrolled){
+            stateWidth = stateWidth - 18;
+        }
+    }
+    
+    if(currentHeight > this.slidingCfg.state.height()){
+        this.slidingCfg.state.css({'overflow' : 'hidden', 'overflow-y' : 'auto'});
+    }
+    else{
+        this.slidingCfg.state.css({'overflow' : 'hidden'});
+    }
+    
+    this.slidingCfg.wrapper.css({width : stateWidth});
+    _self.slidingCfg.state.scrollTop(0);
     
     this.slidingCfg.rootList.animate( 
     {
@@ -272,6 +285,21 @@ PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
         easing: this.slidingCfg.easing,
         complete: function() {
             _self.slidingCfg.animating = false;
+            
+            if(!longer){
+                _self.slidingCfg.heighter.height(currentHeight);
+                var scrolled = _self.slidingCfg.wrapper.height() > _self.slidingCfg.state.height();
+                if(scrolled){
+                    stateWidth = _self.slidingCfg.state.width() - 18;
+                }
+                else{
+                    stateWidth =  _self.slidingCfg.state.width();
+                }
+                _self.slidingCfg.wrapper.css({width : stateWidth});
+            }
+            
+            _self.slidingCfg.currentSubMenu.css({width : stateWidth});
+
             if(fn) 
                 fn.call();
             
