@@ -54,6 +54,11 @@ PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
         menuitemLink.removeClass('ui-state-hover');
 
         menuitem.find('.ui-menu-child:visible').hide();
+    })
+    .click(function(e) {
+        _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
+        
+        e.stopPropagation();
     });
 }
 
