@@ -1,10 +1,10 @@
 /**
  * PrimeFaces DataTable Widget
  */
-PrimeFaces.widget.DataTable = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.DataTable = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.tbody = this.jqId + '_data';
 

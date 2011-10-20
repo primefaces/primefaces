@@ -106,15 +106,16 @@ public class DataTableRenderer extends CoreRenderer {
         startScript(writer, clientId);
         
         writer.write("$(function() {");
-
-        writer.write(table.resolveWidgetVar() + " = new PrimeFaces.widget.DataTable('" + clientId + "',{");
+        
+        writer.write("PrimeFaces.cw('DataTable','" + table.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         //Connection
         UIComponent form = ComponentUtils.findParentForm(context, table);
         if(form == null) {
             throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
         }
-        writer.write("formId:'" + form.getClientId(context) + "'");
+        writer.write(",formId:'" + form.getClientId(context) + "'");
 
         //Pagination
         if(table.isPaginator()) {

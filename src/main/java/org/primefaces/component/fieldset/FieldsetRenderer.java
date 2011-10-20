@@ -94,11 +94,12 @@ public class FieldsetRenderer extends CoreRenderer {
         boolean toggleable = fieldset.isToggleable();
         
         startScript(writer, clientId);
-
-        writer.write(fieldset.resolveWidgetVar() + " = new PrimeFaces.widget.Fieldset('" + clientId + "', {");
-        writer.write("toggleable:" + toggleable);
+        
+        writer.write("PrimeFaces.cw('Fieldset','" + fieldset.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
         
         if(toggleable) {
+            writer.write(",toggleable:true");
             writer.write(",collapsed:" + fieldset.isCollapsed());
             writer.write(",toggleSpeed:" + fieldset.getToggleSpeed());
         }

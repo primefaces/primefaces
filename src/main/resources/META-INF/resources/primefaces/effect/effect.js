@@ -1,10 +1,10 @@
 /**
  * PrimeFaces Effect Widget
  */
-PrimeFaces.widget.Effect = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Effect = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
     var _self = this;
     

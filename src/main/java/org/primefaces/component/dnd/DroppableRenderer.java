@@ -41,9 +41,10 @@ public class DroppableRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-        writer.write(droppable.resolveWidgetVar() + " = new PrimeFaces.widget.Droppable('" + clientId + "', {");
-        writer.write("target:'" + target + "'");
+        
+        writer.write("PrimeFaces.cw('Droppable','" + droppable.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",target:'" + target + "'");
 
         if(droppable.isDisabled()) writer.write(",disabled:true");
         if(droppable.getHoverStyleClass() != null) writer.write(",hoverClass:'" + droppable.getHoverStyleClass() + "'");

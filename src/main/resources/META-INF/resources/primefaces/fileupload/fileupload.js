@@ -2034,9 +2034,9 @@
 /**
  * PrimeFaces FileUpload Widget
  */
-PrimeFaces.widget.FileUpload = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.FileUpload = function(cfg) {
 	this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.form = this.jq.parents('form:first');

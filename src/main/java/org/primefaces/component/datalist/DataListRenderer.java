@@ -96,10 +96,11 @@ public class DataListRenderer extends CoreRenderer {
 
         writer.write("$(function() { ");
 
-        writer.write(list.resolveWidgetVar() + " = new PrimeFaces.widget.DataList('" + clientId + "',{");
-
+        writer.write("PrimeFaces.cw('DataList','" + list.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
         if(list.isPaginator()) {
-            writer.write("paginator:new YAHOO.widget.Paginator({");
+            writer.write(",paginator:new YAHOO.widget.Paginator({");
             writer.write("rowsPerPage:" + list.getRows());
             writer.write(",totalRecords:" + list.getRowCount());
             writer.write(",initialPage:" + list.getPage());
@@ -121,10 +122,7 @@ public class DataListRenderer extends CoreRenderer {
 
             writer.write(",containers:['" + paginatorContainer + "']");
 
-            writer.write("})");
-            
-        } else {
-            writer.write("paginator:false");
+            writer.write("})");   
         }
 
         writer.write("});});");

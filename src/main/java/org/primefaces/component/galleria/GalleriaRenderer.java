@@ -75,10 +75,10 @@ public class GalleriaRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-		writer.write(galleria.resolveWidgetVar() + " = new PrimeFaces.widget.Galleria('" + clientId + "',{");
-
-        writer.write("panel_animation:'" + galleria.getEffect() + "'");
+        
+        writer.write("PrimeFaces.cw('Galleria','" + galleria.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",panel_animation:'" + galleria.getEffect() + "'");
         writer.write(",transition_speed:" + galleria.getEffectSpeed());
         writer.write(",transition_interval:" + galleria.getTransitionInterval());
 
@@ -92,7 +92,7 @@ public class GalleriaRenderer extends CoreRenderer {
         if(galleria.isShowCaptions()) writer.write(",show_captions:true");
         if(galleria.isShowOverlays()) writer.write(",show_overlays:true");
 
-        writer.write("});});");
+        writer.write("},'galleria');});");
 
         endScript(writer);
     }

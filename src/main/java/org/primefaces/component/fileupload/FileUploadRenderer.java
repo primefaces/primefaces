@@ -86,10 +86,10 @@ public class FileUploadRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function(){");
-		
-		writer.write(fileUpload.resolveWidgetVar() + " = new PrimeFaces.widget.FileUpload('" + clientId + "', {");
-
-        writer.write("mode:'" + mode + "'");
+        
+        writer.write("PrimeFaces.cw('FileUpload','" + fileUpload.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",mode:'" + mode + "'");
         
         if(!mode.equals("simple")) {
             String update = fileUpload.getUpdate();
@@ -115,7 +115,7 @@ public class FileUploadRenderer extends CoreRenderer {
             if(fileUpload.getFileLimitMessage() != null) writer.write(",fileLimitMessage:'" + fileUpload.getFileLimitMessage() + "'");
         }
 
-		writer.write("});});");
+		writer.write("},'fileupload');});");
 		
 		endScript(writer);
 	}
