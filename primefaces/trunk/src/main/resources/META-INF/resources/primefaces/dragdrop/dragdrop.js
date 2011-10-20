@@ -1,9 +1,9 @@
 /**
  * PrimeFaces Draggable Widget
  */
-PrimeFaces.widget.Draggable = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Draggable = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
 	
@@ -21,9 +21,9 @@ PrimeFaces.widget.Draggable.prototype.getScriptTag = function() {
 /**
  * PrimeFaces Droppable Widget
  */
-PrimeFaces.widget.Droppable = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Droppable = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
 	

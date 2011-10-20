@@ -39,48 +39,47 @@ public class DraggableRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-        writer.write(draggable.resolveWidgetVar() + " = new PrimeFaces.widget.Draggable('" + clientId + "',");
-
-        writer.write("{");
-        writer.write("target:'" + target + "'");
+        
+        writer.write("PrimeFaces.cw('Draggable','" + draggable.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",target:'" + target + "'");
         writer.write(",cursor:'" + draggable.getCursor() + "'");
 
         //Configuration
-        if (draggable.isDisabled())
+        if(draggable.isDisabled())
             writer.write(",disabled:true");
-        if (draggable.getAxis() != null)
+        if(draggable.getAxis() != null)
             writer.write(",axis:'" + draggable.getAxis() + "'");
-        if (draggable.getContainment() != null)
+        if(draggable.getContainment() != null)
             writer.write(",containment:'" + draggable.getContainment() + "'");
-        if (draggable.getHelper() != null)
+        if(draggable.getHelper() != null)
             writer.write(",helper:'" + draggable.getHelper() + "'");
-        if (draggable.isRevert())
+        if(draggable.isRevert())
             writer.write(",revert:'invalid'");
-        if (draggable.getZindex() != -1)
+        if(draggable.getZindex() != -1)
             writer.write(",zIndex:" + draggable.getZindex());
-        if (draggable.getHandle() != null)
+        if(draggable.getHandle() != null)
             writer.write(",handle:'" + draggable.getHandle() + "'");
-        if (draggable.getOpacity() != 1.0)
+        if(draggable.getOpacity() != 1.0)
             writer.write(",opacity:" + draggable.getOpacity());
-        if (draggable.getStack() != null)
+        if(draggable.getStack() != null)
             writer.write(",stack:'" + draggable.getStack() + "'");
-        if (draggable.getGrid() != null)
+        if(draggable.getGrid() != null)
             writer.write(",grid:[" + draggable.getGrid() + "]");
-        if (draggable.getScope() != null)
+        if(draggable.getScope() != null)
             writer.write(",scope:'" + draggable.getScope() + "'");
 
-        if (draggable.isSnap()) {
+        if(draggable.isSnap()) {
             writer.write(",snap:true");
             writer.write(",snapTolerance:" + draggable.getSnapTolerance());
-            if (draggable.getSnapMode() != null)
+            if(draggable.getSnapMode() != null)
                 writer.write(",snapMode:'" + draggable.getSnapMode() + "'");
         }
 
         //Dashboard support
-        if (dashboard != null) {
+        if(dashboard != null) {
             Dashboard db = (Dashboard) draggable.findComponent(dashboard);
-            if (db == null) {
+            if(db == null) {
                 throw new FacesException("Cannot find dashboard \"" + dashboard + "\" in view");
             }
 
@@ -97,9 +96,9 @@ public class DraggableRenderer extends CoreRenderer {
     protected String findTarget(FacesContext facesContext, Draggable draggable) {
         String _for = draggable.getFor();
 
-        if (_for != null) {
+        if(_for != null) {
             UIComponent component = draggable.findComponent(_for);
-            if (component == null)
+            if(component == null)
                 throw new FacesException("Cannot find component \"" + _for + "\" in view.");
             else
                 return component.getClientId(facesContext);

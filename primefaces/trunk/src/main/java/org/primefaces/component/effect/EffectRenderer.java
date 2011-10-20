@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -54,8 +53,9 @@ public class EffectRenderer extends CoreRenderer {
         
 		writer.write("$(function() {");
         
-        writer.write(effect.resolveWidgetVar() + " = new PrimeFaces.widget.Effect('" + clientId + "', {");
-        writer.write("source:'" + source + "'");
+        writer.write("PrimeFaces.cw('Effect','" + effect.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",source:'" + source + "'");
         writer.write(",event:'" + event + "'");
         writer.write(",fn:function() {" + animation + "}");
         writer.write(",delay:" + delay);

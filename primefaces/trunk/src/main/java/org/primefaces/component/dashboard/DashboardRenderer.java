@@ -76,9 +76,12 @@ public class DashboardRenderer extends CoreRenderer {
 		String clientId = dashboard.getClientId(context);
         
         startScript(writer, clientId);
+        
+        writer.write("PrimeFaces.cw('Dashboard','" + dashboard.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 		
-		writer.write(dashboard.resolveWidgetVar() + " = new PrimeFaces.widget.Dashboard('" + clientId + "', {");
-		writer.write("disabled:" + dashboard.isDisabled());
+        if(dashboard.isDisabled()) 
+            writer.write("disabled:true");
 
         encodeClientBehaviors(context, dashboard);
         

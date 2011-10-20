@@ -1340,9 +1340,9 @@ jQuery(window).bind("unload", function() {
 /**
  * PrimeFaces Galleria Widget
  */
-PrimeFaces.widget.Galleria = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Galleria = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 

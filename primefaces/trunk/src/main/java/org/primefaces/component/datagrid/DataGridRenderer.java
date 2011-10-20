@@ -93,11 +93,12 @@ public class DataGridRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() { ");
-
-        writer.write(grid.resolveWidgetVar() + " = new PrimeFaces.widget.DataGrid('" + clientId + "',{");
+        
+        writer.write("PrimeFaces.cw('DataGrid','" + grid.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         if(grid.isPaginator()) {
-            writer.write("paginator:new YAHOO.widget.Paginator({");
+            writer.write(",paginator:new YAHOO.widget.Paginator({");
             writer.write("rowsPerPage:" + grid.getRows());
             writer.write(",totalRecords:" + grid.getRowCount());
             writer.write(",initialPage:" + grid.getPage());
@@ -120,9 +121,6 @@ public class DataGridRenderer extends CoreRenderer {
             writer.write(",containers:['" + paginatorContainer + "']");
 
             writer.write("})");
-
-        } else {
-            writer.write("paginator:false");
         }
 
         writer.write("});});");

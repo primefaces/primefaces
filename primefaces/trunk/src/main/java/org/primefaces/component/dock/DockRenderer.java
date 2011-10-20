@@ -57,16 +57,17 @@ public class DockRenderer extends CoreRenderer {
 		String containerClass = ".ui-dock-container-" + position;
 		
         startScript(writer, clientId);
-		
-		writer.write(dock.resolveWidgetVar() + " = new PrimeFaces.widget.Dock('" + clientId + "', {");
-		writer.write("maxWidth: " + dock.getMaxWidth());
+        
+        writer.write("PrimeFaces.cw('Dock','" + dock.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",maxWidth: " + dock.getMaxWidth());
 		writer.write(",items: 'a'");
 		writer.write(",itemsText: 'span'");
 		writer.write(",container: '"+ containerClass + "'");
 		writer.write(",itemWidth: " + dock.getItemWidth());
 		writer.write(",proximity: " + dock.getProximity());
 		writer.write(",halign: '" + dock.getHalign() + "'");
-		writer.write("});");
+		writer.write("},'dock');");
 
 		endScript(writer);
 	}
