@@ -76,10 +76,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = dynamic ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
-
-        if(sliding){
-            styleClass += " " + Menu.MENU_SLIDING_CLASS;
-        }
+        styleClass = sliding ? styleClass + " " + Menu.MENU_SLIDING_CLASS: styleClass;
         
         writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
@@ -89,15 +86,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
 
         if(sliding){
-            writer.startElement("div", menu);
-            writer.writeAttribute("class", Menu.MENU_SLIDING_SCROLL_CLASS, "scroll");
-            writer.startElement("div", menu);
-            writer.writeAttribute("class", Menu.MENU_SLIDING_STATE_CLASS, "state");
-            writer.startElement("div", menu);
-            writer.writeAttribute("class", Menu.MENU_SLIDING_WRAPPER_CLASS, "wrapper");
-            writer.startElement("div", menu);
-            writer.writeAttribute("class", Menu.MENU_SLIDING_CONTENT_CLASS, "sliding_content");
-            writer.startElement("div", menu);
+            encodeSlidingMenuBegin(context, menu);
         }
         
 		writer.startElement("ul", null);
@@ -113,20 +102,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 		writer.endElement("ul");
 
         if(sliding){
-            writer.endElement("div");
-            writer.endElement("div");
-            writer.endElement("div");
-            writer.endElement("div");
-            writer.endElement("div");
-            writer.startElement("div", menu);
-            writer.writeAttribute("class", Menu.BACKWARD_CLASS, style);
-            
-            writer.startElement("span", menu);
-            writer.writeAttribute("class", Menu.BACKWARD_ICON_CLASS, style);
-            writer.endElement("span");
-            
-            writer.write("back");
-            writer.endElement("div");
+            encodeSlidingMenuEnd(context, menu);
         }
         
         writer.endElement("div");
@@ -180,4 +156,46 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         encodePlainMenuContent(context, submenu);
 	}
+    
+    protected void encodeSlidingMenuBegin(FacesContext context, Menu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //scroll
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", Menu.MENU_SLIDING_SCROLL_CLASS, null);
+        
+        //state
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", Menu.MENU_SLIDING_STATE_CLASS, "state");
+        
+        //wrapper
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", Menu.MENU_SLIDING_WRAPPER_CLASS, "wrapper");
+        
+        //content
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", Menu.MENU_SLIDING_CONTENT_CLASS, "sliding_content");
+        
+        //height
+        writer.startElement("div", menu);
+    }
+    
+    protected void encodeSlidingMenuEnd(FacesContext context, Menu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.endElement("div");       //scroll
+        writer.endElement("div");       //state
+        writer.endElement("div");       //wrapper
+        writer.endElement("div");       //content
+        writer.endElement("div");       //height
+        
+        //back navigator
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", Menu.BACKWARD_CLASS, null);
+        writer.startElement("span", menu);
+        writer.writeAttribute("class", Menu.BACKWARD_ICON_CLASS, null);
+        writer.endElement("span");
+        writer.write("back");
+        writer.endElement("div");
+    }
 }
