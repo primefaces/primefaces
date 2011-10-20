@@ -91,13 +91,14 @@ public class FieldsetRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
+        boolean toggleable = fieldset.isToggleable();
         
         startScript(writer, clientId);
 
         writer.write(fieldset.resolveWidgetVar() + " = new PrimeFaces.widget.Fieldset('" + clientId + "', {");
-
-        if(fieldset.isToggleable()) {
-            writer.write("toggleable:true");
+        writer.write("toggleable:" + toggleable);
+        
+        if(toggleable) {
             writer.write(",collapsed:" + fieldset.isCollapsed());
             writer.write(",toggleSpeed:" + fieldset.getToggleSpeed());
         }
@@ -118,7 +119,7 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.startElement("legend", null);
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
-            if (legend != null)
+            if(legend != null)
                 legend.encodeAll(context);
             else
                 writer.write(fieldset.getLegend());

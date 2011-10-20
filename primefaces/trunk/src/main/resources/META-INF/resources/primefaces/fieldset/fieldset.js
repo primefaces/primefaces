@@ -4,7 +4,7 @@
 PrimeFaces.widget.Fieldset = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.legend = this.jq.children('.ui-fieldset-legend');
 
@@ -18,10 +18,10 @@ PrimeFaces.widget.Fieldset = function(id, cfg) {
 
         //Add clickable legend state behavior
         this.legend.click(function(e) {_self.toggle(e);})
-                           .mouseover(function() {_self._legend.toggleClass('ui-state-hover');})
-                           .mouseout(function() {_self._legend.toggleClass('ui-state-hover');})
-                           .mousedown(function() {_self._legend.toggleClass('ui-state-active');})
-                           .mouseup(function() {_self._legend.toggleClass('ui-state-active');})
+                           .mouseover(function() {_self.legend.toggleClass('ui-state-hover');})
+                           .mouseout(function() {_self.legend.toggleClass('ui-state-hover');})
+                           .mousedown(function() {_self.legend.toggleClass('ui-state-active');})
+                           .mouseup(function() {_self.legend.toggleClass('ui-state-active');})
     }
     
     this.postConstruct();

@@ -1,16 +1,3 @@
-/*!
- * jQuery Animated Auto-Resizable Textarea Plugin v1.0
- *
- * Copyright (c) 2009 - 2010 Wayne Haffenden
- * http://www.waynehaffenden.com/Blog/jQuery-AutoResizable-Plugin
- *
- * $Id: jquery.autoResizable.js, v 1.0 2009-12-30 01:53:14Z whaffenden $
- *
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- */
-;
 (function($) {
     /**
      * The autoResizable() function is used to animate auto-resizable textareas on a given selector. To change the default options,
