@@ -56,7 +56,10 @@ PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
         menuitem.find('.ui-menu-child:visible').hide();
     })
     .click(function(e) {
-        _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
+        var menuitem = $(this);
+        if(menuitem.children('.ui-menu-child').length == 0) {
+            _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
+        }
         
         e.stopPropagation();
     });
@@ -190,13 +193,13 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
     });
     
     if(this.cfg.tiered) {
-        //hide overlay when outside is clicked
-        $(document.body).bind('click.ui-menu-tiered', function (e) {
-            if(_self.jq.is(":hidden")) {
-                return;
+        this.menuitems.click(function(e) {
+            var menuitem = $(this);
+            if(menuitem.children('.ui-menu-child').length == 0) {
+                _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
             }
 
-            _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
+            e.stopPropagation();
         });
     }
     else if(this.cfg.sliding){
