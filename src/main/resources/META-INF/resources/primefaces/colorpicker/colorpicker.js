@@ -783,9 +783,9 @@ if (!$.easing.easeout) {
 /**
  * PrimeFaces Color Picker Widget
  */
-PrimeFaces.widget.ColorPicker = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.ColorPicker = function(cfg) {
 	this.cfg = cfg;
+    this.id = this.cfg.id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');

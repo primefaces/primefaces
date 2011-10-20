@@ -72,11 +72,12 @@ public class ButtonRenderer extends CoreRenderer {
 		boolean hasValue = (button.getValue() != null);
 
         startScript(writer, clientId);
-
-		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.Button('" + clientId + "', {");
+        
+        writer.write("PrimeFaces.cw('Button','" + button.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
 		if(button.getImage() != null) {
-			writer.write("text:" + hasValue);
+			writer.write(",text:" + hasValue);
 			writer.write(",icons:{");
 			writer.write("primary:'" + button.getImage() + "'");
 			writer.write("}");

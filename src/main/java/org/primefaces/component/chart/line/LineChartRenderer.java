@@ -45,14 +45,15 @@ public class LineChartRenderer extends BaseChartRenderer {
         startScript(writer, clientId);
 
 		writer.write("$(function(){");
-
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.LineChart('" + clientId + "', { ");
+        
+        writer.write("PrimeFaces.cw('LineChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
         
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
 
-		writer.write("});});");
+		writer.write("},'charts');});");
 
 		endScript(writer);
 	}
@@ -64,7 +65,7 @@ public class LineChartRenderer extends BaseChartRenderer {
         boolean hasCategories = !categories.isEmpty();
 
         //data
-		writer.write("data:[" );
+		writer.write(",data:[" );
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = it.next();
 

@@ -40,7 +40,9 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		
         startScript(writer, clientId);
 		
-		writer.write(widgetVar + " = new PrimeFaces.widget.AjaxStatus('" + clientId + "');");
+        writer.write("PrimeFaces.cw('AjaxStatus','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write("});");
 		
 		encodeCallback(context, status, widgetVar, "ajaxSend", "onprestart", AjaxStatus.PRESTART_FACET);
 		encodeCallback(context, status, widgetVar, "ajaxStart", "onstart", AjaxStatus.START_FACET);

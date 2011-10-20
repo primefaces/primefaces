@@ -117,6 +117,31 @@ PrimeFaces = {
         subClass.prototype = new superClass;
         subClass.prototype.constructor = subClass;
     },
+    
+    cw : function(widgetConstructor, widgetVar, cfg, resource) {
+        PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
+    },
+    
+    createWidget : function(widgetConstructor, widgetVar, cfg, resource) {            
+        if(PrimeFaces.widget[widgetConstructor]) {
+            window[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
+        }
+        else {
+            var scriptURI = $('script[src*="/javax.faces.resource/primefaces.js"]').attr('src').replace('primefaces.js', resource + '/' + resource + '.css'),
+            cssURI = $('link[href*="/javax.faces.resource/primefaces.css"]').attr('href').replace('primefaces.css', resource + '/' + resource + '.js'),
+            cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';
+
+            //load css
+            $('head').append(cssResource);
+
+            //load script and initialize widget
+            $.getScript(location.protocol + '//' + location.host + scriptURI, function() {
+                setTimeout(function() {
+                    window[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
+                }, 100);
+            });
+        }
+    },
 
     locales : {},
 	

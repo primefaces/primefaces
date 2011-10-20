@@ -55,10 +55,15 @@ public class EditorRenderer extends CoreRenderer{
         String valueToRender = ComponentUtils.getStringValueToRender(context, editor);
         String inputId = clientId + "_input";
 
+        String style = editor.getStyle();
+        style = style == null ? "visibility:hidden" : "visibility:hidden;" + style;
+
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId , null);
-        if(editor.getStyle() != null) writer.writeAttribute("style", editor.getStyle(), null);
-        if(editor.getStyleClass() != null) writer.writeAttribute("class", editor.getStyleClass(), null);
+        writer.writeAttribute("style", style, null);
+        if(editor.getStyleClass() != null) {
+            writer.writeAttribute("class", editor.getStyleClass(), null);
+        }
         
 		writer.startElement("textarea", null);
 		writer.writeAttribute("id", inputId , null);
@@ -81,16 +86,16 @@ public class EditorRenderer extends CoreRenderer{
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-		
-		writer.write(widgetVar + " = new PrimeFaces.widget.Editor('" + clientId + "',{");
-        writer.write("disabled:" + editor.isDisabled());
-        
+        writer.write("PrimeFaces.cw('Editor','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+
+        if(editor.isDisabled()) writer.write("disabled:true");
         if(editor.getControls() != null) writer.write(",controls:'" + editor.getControls() + "'");
         if(editor.getWidth() != Integer.MIN_VALUE) writer.write(",width:" + editor.getWidth());
         if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
         if(editor.getOnchange() != null) writer.write(",change:function(e){" + editor.getOnchange() + "}");
 
-		writer.write("});});");
+		writer.write("},'editor');});");
 		
 		endScript(writer);
 	}

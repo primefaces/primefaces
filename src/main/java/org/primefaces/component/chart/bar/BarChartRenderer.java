@@ -45,13 +45,14 @@ public class BarChartRenderer extends BaseChartRenderer {
 
 		writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.BarChart('" + clientId + "', { ");
-
+        writer.write("PrimeFaces.cw('BarChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
 
-		writer.write("});});");
+		writer.write("},'charts');});");
 
 		endScript(writer);
 	}
@@ -63,7 +64,7 @@ public class BarChartRenderer extends BaseChartRenderer {
         List<String> categories = model.getCategories();
 
         //data
-		writer.write("data:[" );
+		writer.write(",data:[" );
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = it.next();
             int i = 1;

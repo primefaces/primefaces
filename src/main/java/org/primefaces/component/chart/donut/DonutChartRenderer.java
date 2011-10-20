@@ -45,7 +45,8 @@ public class DonutChartRenderer extends BaseChartRenderer {
 
         writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.DonutChart('" + clientId + "', { ");
+        writer.write("PrimeFaces.cw('DonutChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         encodeData(context, chart);
 
@@ -53,7 +54,7 @@ public class DonutChartRenderer extends BaseChartRenderer {
 
         encodeClientBehaviors(context, chart);
 
-        writer.write("});});");
+        writer.write("},'charts');});");
 
         endScript(writer);
     }
@@ -77,10 +78,10 @@ public class DonutChartRenderer extends BaseChartRenderer {
     protected void encodeData(FacesContext context, DonutChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("data:[");
+        writer.write(",data:[");
         List data = ((DonutChartModel) chart.getValue()).getData();
 
-        for( int i = 0; i < data.size() ; i++) {
+        for(int i = 0; i < data.size() ; i++) {
             writer.write( (i != 0 ? "," : "") + "[");
             Map<String, Number> s = (Map)data.get(i);
             for (Iterator<String> it = s.keySet().iterator(); it.hasNext();) {

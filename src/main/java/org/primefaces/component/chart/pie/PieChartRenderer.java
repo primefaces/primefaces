@@ -45,7 +45,8 @@ public class PieChartRenderer extends BaseChartRenderer {
 		
 		writer.write("$(function(){");
 
-        writer.write( chart.resolveWidgetVar() + " = new PrimeFaces.widget.PieChart('" + clientId + "', { " ); 
+        writer.write("PrimeFaces.cw('PieChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
         
         encodeData(context, chart);
 
@@ -53,7 +54,7 @@ public class PieChartRenderer extends BaseChartRenderer {
         
         encodeClientBehaviors(context, chart);
 
-		writer.write("});});");
+		writer.write("},'charts');});");
         
 		endScript(writer);
 	}
@@ -61,7 +62,7 @@ public class PieChartRenderer extends BaseChartRenderer {
 	protected void encodeData(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		writer.write("data:[[" );
+		writer.write(",data:[[" );
         PieChartModel model = (PieChartModel) chart.getValue();
 
         for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {

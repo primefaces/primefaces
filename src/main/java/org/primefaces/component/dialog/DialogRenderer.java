@@ -50,10 +50,10 @@ public class DialogRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
 
-        writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.Dialog('" + clientId + "', {");
-        
-        writer.write("autoOpen:" + dialog.isVisible());
-        
+        writer.write("PrimeFaces.cw('Dialog','" + dialog.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+                
+        if(dialog.isVisible()) writer.write(",autoOpen:true");
         if(!dialog.isDraggable()) writer.write(",draggable:false");
         if(!dialog.isResizable()) writer.write(",resizable:false");
         if(dialog.isModal()) writer.write(",modal:true");

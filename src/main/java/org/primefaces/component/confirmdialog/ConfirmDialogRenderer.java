@@ -63,9 +63,9 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         startScript(writer, clientId);
 		
         writer.write("$(function() {");
-		writer.write(dialog.resolveWidgetVar() + " = new PrimeFaces.widget.ConfirmDialog('" + clientId + "', {");
-		
-		writer.write("closable:" + dialog.isClosable());
+        
+        writer.write("PrimeFaces.cw('ConfirmDialog','" + dialog.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
 		if(dialog.isVisible()) writer.write(",autoOpen:true");
 		if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());

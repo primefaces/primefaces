@@ -98,9 +98,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
  		
         startScript(writer, clientId);
 		
-		writer.write(acco.resolveWidgetVar() + " = new PrimeFaces.widget.AccordionPanel('" + clientId + "', {");
-        writer.write("dynamic:" + dynamic);
-		
+        writer.write("PrimeFaces.cw('AccordionPanel','" + acco.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+                		
+        if(acco.isDynamic()) writer.write(",dynamic:true");
         if(acco.isMultiple()) writer.write(",multiple:true");
         if(dynamic) writer.write(",cache:" + acco.isCache());
         if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(panel) {" + acco.getOnTabChange() + "}");

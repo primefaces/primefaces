@@ -1153,10 +1153,10 @@ v)}}else{d=a.indexOf("<");g+=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d)}else
 /**
  * PrimeFaces Editor Widget
  */
-PrimeFaces.widget.Editor = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Editor = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.jqInput = $(this.jqId + '_input');
     var _self = this;
@@ -1191,6 +1191,9 @@ PrimeFaces.widget.Editor.prototype.init = function() {
         if(this.cfg.change) {
             this.editor.change(this.cfg.change);
         }
+        
+        //show container after progressive enhancement
+        this.jq.css('visibility', '');
         
         return true;
     } 
