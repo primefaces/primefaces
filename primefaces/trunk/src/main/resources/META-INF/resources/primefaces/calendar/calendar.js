@@ -1,10 +1,10 @@
 /**
  * PrimeFaces Calendar Widget
  */
-PrimeFaces.widget.Calendar = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Calendar = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jq);
     this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
     this.jqEl = $(this.jqElId);

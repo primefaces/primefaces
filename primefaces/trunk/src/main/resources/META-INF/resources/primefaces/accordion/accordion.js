@@ -1,10 +1,10 @@
 /**
  * PrimeFaces Accordion Widget
  */
-PrimeFaces.widget.AccordionPanel = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.AccordionPanel = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.cfg.id);
     this.jq = $(this.jqId);
     this.stateHolder = $(this.jqId + '_active');
     this.headers = this.jq.children('.ui-accordion-header');

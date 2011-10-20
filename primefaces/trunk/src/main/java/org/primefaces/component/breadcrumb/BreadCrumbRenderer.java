@@ -18,7 +18,6 @@ package org.primefaces.component.breadcrumb;
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -26,7 +25,6 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.util.ComponentUtils;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -53,10 +51,11 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         int expandedBeginningItems = preview ? breadCrumb.getExpandedBeginningItems() : childCount;
         
         startScript(writer, clientId);
+        
+        writer.write("PrimeFaces.cw('Breadcrumb','" + breadCrumb.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
-		writer.write(breadCrumb.resolveWidgetVar() + " = new PrimeFaces.widget.Breadcrumb('" + clientId + "',{");
-
-        writer.write("endElementsToLeaveOpen:" + expandedEndItems);
+        writer.write(",endElementsToLeaveOpen:" + expandedEndItems);
         writer.write(",beginingElementsToLeaveOpen:" + expandedBeginningItems);
       
 		if(breadCrumb.getPreviewWidth() != 5) writer.write(",previewWidth:" + breadCrumb.getPreviewWidth());
@@ -64,7 +63,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 		if(breadCrumb.getCollapseEffectDuration() != 500) writer.write(",timeCompressionAnimation:" + breadCrumb.getCollapseEffectDuration());
 		if(breadCrumb.getInitialCollapseEffectDuration() != 600) writer.write(",timeInitialCollapse:" + breadCrumb.getInitialCollapseEffectDuration());
 		        
-		writer.write("});");
+		writer.write("},'breadcrumb');");
 
 		endScript(writer);
 	}

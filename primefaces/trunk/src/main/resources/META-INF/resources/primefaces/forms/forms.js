@@ -914,10 +914,10 @@ PrimeFaces.widget.SelectListbox.prototype.disable = function() {
 /* 
  * PrimeFaces CommandButton Widget
  */
-PrimeFaces.widget.CommandButton = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.CommandButton = function(cfg) {
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 	
 	this.jq.button(this.cfg);
@@ -942,10 +942,10 @@ PrimeFaces.widget.CommandButton.prototype.enable = function() {
 /*
  * PrimeFaces Button Widget
  */
-PrimeFaces.widget.Button = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.Button = function(cfg) {
 	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 
 	$(this.jqId).button(this.cfg);

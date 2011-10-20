@@ -42,7 +42,8 @@ public class OhlcChartRenderer extends BaseChartRenderer {
 
         writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.OhlcChart('" + clientId + "', { ");
+        writer.write("PrimeFaces.cw('OhlcChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         encodeData(context, chart);
         
@@ -50,7 +51,7 @@ public class OhlcChartRenderer extends BaseChartRenderer {
 
         encodeClientBehaviors(context, chart);
 
-        writer.write("});});");
+        writer.write("},'charts');});");
 
         endScript(writer);
     }
@@ -73,6 +74,6 @@ public class OhlcChartRenderer extends BaseChartRenderer {
     }
 
     private void encodeData(FacesContext context, OhlcChart chart) throws IOException {
-        context.getResponseWriter().write("data:[" + ((OhlcChartModel)chart.getValue()).toString() + "]");
+        context.getResponseWriter().write(",data:[" + ((OhlcChartModel)chart.getValue()).toString() + "]");
     }
 }

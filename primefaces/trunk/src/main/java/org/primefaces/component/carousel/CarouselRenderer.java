@@ -55,10 +55,11 @@ public class CarouselRenderer extends CoreRenderer {
 		String clientId = carousel.getClientId(context);
 		
         startScript(writer, clientId);
-		
-		writer.write(carousel.resolveWidgetVar() + " = new PrimeFaces.widget.Carousel('" + clientId + "', {");
-        writer.write("firstVisible:" + carousel.getFirstVisible());
-		
+        
+        writer.write("PrimeFaces.cw('Carousel','" + carousel.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+	
+		if(carousel.getFirstVisible() != 0) writer.write(",firstVisible:" + carousel.getFirstVisible());
 		if(carousel.isCircular()) writer.write(",isCircular:" + carousel.isCircular());
 		if(carousel.isVertical()) writer.write(",vertical:true");
 		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());

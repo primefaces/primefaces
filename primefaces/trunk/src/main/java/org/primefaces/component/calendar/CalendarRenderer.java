@@ -110,9 +110,10 @@ public class CalendarRenderer extends InputRenderer {
 
         writer.write("$(function(){");
 
-        writer.write(calendar.resolveWidgetVar() + " = new PrimeFaces.widget.Calendar('" + clientId + "', {");
-
-        writer.write("popup:" + calendar.isPopup());
+        writer.write("PrimeFaces.cw('Calendar','" + calendar.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
+        writer.write(",popup:" + calendar.isPopup());
         writer.write(",locale:'" + calendar.calculateLocale(context).toString() + "'");
 
         if(!isValueBlank(value)) writer.write(",defaultDate:'" + value + "'");

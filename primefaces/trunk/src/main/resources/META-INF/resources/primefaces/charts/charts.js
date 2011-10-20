@@ -16963,9 +16963,9 @@ $.jqplot.config.enablePlugins = true;
 /**
  * PrimeFaces PieChart Widget
  */
-PrimeFaces.widget.PieChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.PieChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);
@@ -17029,9 +17029,9 @@ PrimeFaces.widget.PieChart.prototype.init = function(){
 /**
  * PrimeFaces LineChart Widget
  */
-PrimeFaces.widget.LineChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.LineChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);
@@ -17104,9 +17104,9 @@ PrimeFaces.widget.LineChart.prototype.init = function(){
 /**
  * PrimeFaces BarChart Widget
  */
-PrimeFaces.widget.BarChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.BarChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);
@@ -17197,9 +17197,9 @@ PrimeFaces.widget.BarChart.prototype.init = function(){
 /**
  * PrimeFaces DonutChart Widget
  */
-PrimeFaces.widget.DonutChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.DonutChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);
@@ -17263,9 +17263,9 @@ PrimeFaces.widget.DonutChart.prototype.init = function(){
 /**
  * PrimeFaces BubbleChart Widget
  */
-PrimeFaces.widget.BubbleChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.BubbleChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);
@@ -17317,9 +17317,9 @@ PrimeFaces.widget.BubbleChart.prototype.init = function(){
 /**
  * PrimeFaces OhlcChart Widget
  */
-PrimeFaces.widget.OhlcChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.OhlcChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);
@@ -17370,9 +17370,9 @@ PrimeFaces.widget.OhlcChart.prototype.init = function(){
 /**
  * PrimeFaces MeterGaugeChart Widget
  */
-PrimeFaces.widget.MeterGaugeChart = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.MeterGaugeChart = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqpId = this.id.replace(/:/g,"\\:");
     this.jq = $(this.jqId);

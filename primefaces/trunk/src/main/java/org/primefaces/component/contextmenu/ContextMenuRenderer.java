@@ -41,8 +41,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 
         writer.write("$(function() {");
         
-		writer.write(widgetVar + " = new PrimeFaces.widget.ContextMenu('" + clientId + "',{");        
-        writer.write("target:" + target);
+        writer.write("PrimeFaces.cw('ContextMenu','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");     
+        writer.write(",target:" + target);
  
         if(menu.getNodeType() != null) 
             writer.write(",nodeType:'" + menu.getNodeType() + "'");

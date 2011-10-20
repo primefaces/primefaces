@@ -1,9 +1,9 @@
 /**
  * PrimeFaces AutoComplete Widget
  */
-PrimeFaces.widget.AutoComplete = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.AutoComplete = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.panelId = this.jqId + '_panel';
@@ -13,6 +13,7 @@ PrimeFaces.widget.AutoComplete = function(id, cfg) {
     this.dropdown = this.jq.children('.ui-button');
     this.disabled = this.input.is(':disabled');
     this.active = true;
+    this.cfg.pojo = this.hinput.length == 1;
     
     //options
     this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;

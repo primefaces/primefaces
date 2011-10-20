@@ -104,10 +104,11 @@ public class CommandButtonRenderer extends CoreRenderer {
 		
         startScript(writer, clientId);
 
-		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.CommandButton('" + clientId + "', {");
-		
+        writer.write("PrimeFaces.cw('CommandButton','" + button.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
 		if(type.equals("image") || button.getImage() != null) {
-			writer.write("text:" + hasValue);
+			writer.write(",text:" + hasValue);
 			writer.write(",icons:{");
 			writer.write("primary:'" + button.getImage() + "'");
 			writer.write("}");

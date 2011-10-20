@@ -1,10 +1,10 @@
 /**
  * PrimeFaces Dialog Widget
  */
-PrimeFaces.widget.Dialog = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Dialog = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.content = this.jq.children('.ui-dialog-content');
     this.titlebar = this.jq.children('.ui-dialog-titlebar');
@@ -462,14 +462,14 @@ PrimeFaces.widget.DialogManager = {
 /**
  * PrimeFaces ConfirmDialog Widget
  */
-PrimeFaces.widget.ConfirmDialog = function(id, cfg) {
+PrimeFaces.widget.ConfirmDialog = function(cfg) {
     cfg.draggable = false;
     cfg.resizable = false;
     cfg.modal = true;
     cfg.showEffect = 'fade';
     cfg.hideEffect = 'fade';
     
-    PrimeFaces.widget.Dialog.call(this, id, cfg);
+    PrimeFaces.widget.Dialog.call(this, cfg);
 }
 
 PrimeFaces.widget.ConfirmDialog.prototype = PrimeFaces.widget.Dialog.prototype;

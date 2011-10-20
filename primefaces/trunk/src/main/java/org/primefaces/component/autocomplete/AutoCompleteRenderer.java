@@ -302,9 +302,9 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.write("$(function(){");
 
-        writer.write(ac.resolveWidgetVar() + " = new PrimeFaces.widget.AutoComplete('" + clientId + "', {");
-        writer.write("pojo:" + (ac.getVar() != null));
-
+        writer.write("PrimeFaces.cw('AutoComplete','" + ac.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
         //Configuration
         if(ac.getMinQueryLength() != 1) writer.write(",minLength:" + ac.getMinQueryLength());
         if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());

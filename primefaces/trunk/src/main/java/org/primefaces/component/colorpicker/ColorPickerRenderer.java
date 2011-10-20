@@ -106,8 +106,9 @@ public class ColorPickerRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
         
-		writer.write(colorPicker.resolveWidgetVar() + " = new PrimeFaces.widget.ColorPicker('" + clientId + "', {");
-        writer.write("mode:'" + colorPicker.getMode() + "'");
+        writer.write("PrimeFaces.cw('ColorPicker','" + colorPicker.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",mode:'" + colorPicker.getMode() + "'");
 
         if(value != null) writer.write(",color:'" + value + "'");
         if(!effect.equals("none")) {
@@ -116,7 +117,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         }
         if(colorPicker.getZindex() != Integer.MAX_VALUE) writer.write(",zindex:" + colorPicker.getZindex());
 
-        writer.write("});});");
+        writer.write("},'colorpicker');});");
 
         endScript(writer);
     }

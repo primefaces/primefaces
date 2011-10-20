@@ -242,9 +242,9 @@
 /**
  * PrimeFaces Breadcrumb Widget
  */
-PrimeFaces.widget.Breadcrumb = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Breadcrumb = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     

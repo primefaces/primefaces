@@ -1,6 +1,6 @@
-.ui-editor {border:1px solid #999; padding:0 1px 1px; background-color:white}
+.ui-editor {border:1px solid #999; padding:0 1px 1px; background-color:white;}
 .ui-editor  iframe {border:none; margin:0; padding:0}
-.ui-editor  textarea {border:none; margin:0; padding:0; overflow-y:scroll; font:10pt Arial,Verdana; resize:none; outline:none /* webkit grip focus */}
+.ui-editor  textarea {border:none; margin:0; padding:0; overflow-y:scroll; font:10pt Arial,Verdana; resize:none; outline:none; /* webkit grip focus */}
 .ui-editor-toolbar {background: url("#{resource['primefaces:editor/images/toolbar.gif']}") repeat}
 .ui-editor-group {float:left; height:26px}
 .ui-editor-button {float:left; width:24px; height:24px; margin:1px 0 1px 0; background: url("#{resource['primefaces:editor/images/buttons.gif']}")}

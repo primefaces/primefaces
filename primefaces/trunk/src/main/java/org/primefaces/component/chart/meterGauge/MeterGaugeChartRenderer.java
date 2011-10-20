@@ -25,7 +25,7 @@ import org.primefaces.model.chart.MeterGaugeChartModel;
 
 public class MeterGaugeChartRenderer extends BaseChartRenderer {
 
-       @Override
+   @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         MeterGaugeChart chart = (MeterGaugeChart) component;
 
@@ -42,13 +42,14 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
 
         writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.MeterGaugeChart('" + clientId + "', { ");
+        writer.write("PrimeFaces.cw('MeterGaugeChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
 
-        writer.write("});});");
+        writer.write("},'charts');});");
 
         endScript(writer);
     }
@@ -57,7 +58,7 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
         ResponseWriter writer = context.getResponseWriter();
         MeterGaugeChartModel model = (MeterGaugeChartModel)chart.getValue();
         
-        writer.write("data:[[" + model.getValue() + "]]");
+        writer.write(",data:[[" + model.getValue() + "]]");
         
         encodeCommonConfig(context, chart);
         

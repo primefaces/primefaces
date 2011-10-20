@@ -42,7 +42,8 @@ public class BubbleChartRenderer extends BaseChartRenderer {
 
         writer.write("$(function(){");
 
-        writer.write(chart.resolveWidgetVar() + " = new PrimeFaces.widget.BubbleChart('" + clientId + "', { ");
+        writer.write("PrimeFaces.cw('BubbleChart','" + chart.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         encodeData(context, chart);
         
@@ -50,7 +51,7 @@ public class BubbleChartRenderer extends BaseChartRenderer {
 
         encodeClientBehaviors(context, chart);
 
-        writer.write("});});");
+        writer.write("},'charts');});");
 
         endScript(writer);
     }
@@ -78,6 +79,6 @@ public class BubbleChartRenderer extends BaseChartRenderer {
     }
 
     private void encodeData(FacesContext context, BubbleChart chart) throws IOException {
-        context.getResponseWriter().write("data:[" + ((BubbleChartModel)chart.getValue()).toString() + "]");
+        context.getResponseWriter().write(",data:[" + ((BubbleChartModel) chart.getValue()).toString() + "]");
     }
 }
