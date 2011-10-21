@@ -55,10 +55,10 @@ public class InputTextareaRenderer extends InputRenderer {
         boolean autoResize = inputTextarea.isAutoResize();
 
         startScript(writer, clientId);
-
-        writer.write(inputTextarea.resolveWidgetVar() + " = new PrimeFaces.widget.InputTextarea('" + clientId + "',{");
-
-        writer.write("autoResize:" + autoResize);
+        
+        writer.write("PrimeFaces.cw('InputTextarea','" + inputTextarea.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",autoResize:" + autoResize);
         writer.write(",maxHeight:" + inputTextarea.getMaxHeight());
         writer.write(",effectDuration:" + inputTextarea.getEffectDuration());
         writer.write(",maxLength:" + inputTextarea.getMaxLength());

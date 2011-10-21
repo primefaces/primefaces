@@ -56,9 +56,8 @@ public class InputTextRenderer extends InputRenderer {
 		String clientId = inputText.getClientId(context);
 
         startScript(writer, clientId);
-
-        writer.write(inputText.resolveWidgetVar() + " = new PrimeFaces.widget.InputText({");
-
+        
+        writer.write("PrimeFaces.cw('InputText','" + inputText.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
 
         encodeClientBehaviors(context, inputText);

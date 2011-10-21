@@ -41,9 +41,10 @@ public class IdleMonitorRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");
-
-        writer.write(monitor.resolveWidgetVar() + " = new PrimeFaces.widget.IdleMonitor('" + clientId + "', {");
-        writer.write("timeout:" + monitor.getTimeout());
+        
+        writer.write("PrimeFaces.cw('IdleMonitor','" + monitor.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",timeout:" + monitor.getTimeout());
 
         //client side callbacks
         if(monitor.getOnidle() != null) writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
@@ -52,7 +53,7 @@ public class IdleMonitorRenderer extends CoreRenderer {
         //behaviors
         encodeClientBehaviors(context, monitor);
 
-        writer.write("});});");
+        writer.write("},'idlemonitor');});");
 
         writer.endElement("script");
     }

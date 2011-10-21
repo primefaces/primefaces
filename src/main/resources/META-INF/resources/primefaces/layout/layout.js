@@ -4355,9 +4355,9 @@ debugData( test, pane );
 /**
  * PrimeFaces Layout Widget
  */
-PrimeFaces.widget.Layout = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Layout = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
 
     if(this.cfg.full) {                                                 //full

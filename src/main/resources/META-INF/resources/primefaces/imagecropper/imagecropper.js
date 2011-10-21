@@ -1200,9 +1200,9 @@ $.fn.Jcrop = function(options)/*{{{*/
 /**
  * PrimeFaces ImageCropper Widget
  */
-PrimeFaces.widget.ImageCropper = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.ImageCropper = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.image = $(PrimeFaces.escapeClientId(this.cfg.image));

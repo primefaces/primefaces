@@ -38,12 +38,13 @@ public class ImageCompareRenderer extends CoreRenderer {
 		String clientId = compare.getClientId(context);
 		
 		startScript(writer, clientId);
-		
-        writer.write(compare.resolveWidgetVar() + " = new PrimeFaces.widget.ImageCompare('" + clientId + "',{");
-		writer.write("handle:'" + getResourceRequestPath(context, "imagecompare/handle.gif") + "'");
+        
+        writer.write("PrimeFaces.cw('ImageCompare','" + compare.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",handle:'" + getResourceRequestPath(context, "imagecompare/handle.gif") + "'");
         writer.write(",lt:'" + getResourceRequestPath(context, "imagecompare/lt-small.png") + "'");
         writer.write(",rt:'" + getResourceRequestPath(context, "imagecompare/rt-small.png") + "'");
-		writer.write("});");
+		writer.write("},'imagecompare');");
         
 		endScript(writer);
 	}

@@ -111,10 +111,10 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>hotkey/hotkey.js</name>
+            <name>primefaces.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>hotkey/hotkey.js</name>
         </resource>
     </resources>
 </component>

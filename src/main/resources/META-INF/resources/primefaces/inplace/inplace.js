@@ -1,9 +1,9 @@
 /**
  * PrimeFaces Inplace Widget
  */
-PrimeFaces.widget.Inplace = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Inplace = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.display = $(this.jqId + '_display');
