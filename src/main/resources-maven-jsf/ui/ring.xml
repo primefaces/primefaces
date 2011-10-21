@@ -50,8 +50,5 @@
 		<resource>
 			<name>ring/ring.js</name>
 		</resource>
-        <resource>
-			<name>easing/easing.js</name>
-		</resource>
 	</resources>
 </component>
