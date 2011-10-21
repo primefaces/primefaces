@@ -58,9 +58,10 @@ public class KeyboardRenderer extends InputRenderer {
 		String clientId = keyboard.getClientId(context);
 
 		startScript(writer, clientId);
-
-		writer.write(keyboard.resolveWidgetVar() + " = new PrimeFaces.widget.Keyboard('" + clientId + "', {");
-		writer.write("showOn:'" + keyboard.getShowMode() + "'");
+        
+        writer.write("PrimeFaces.cw('Keyboard','" + keyboard.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",showOn:'" + keyboard.getShowMode() + "'");
 		writer.write(",showAnim:'" + keyboard.getEffect() + "'");
 		
 		if(keyboard.isButtonImageOnly()) writer.write(",buttonImageOnly:true");

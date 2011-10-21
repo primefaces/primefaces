@@ -65,13 +65,14 @@ public class LayoutRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-        writer.write(layout.resolveWidgetVar() + " = new PrimeFaces.widget.Layout('" + clientId + "', {");
-        
-        writer.write("full:" + layout.isFullPage());
+        writer.write("PrimeFaces.cw('Layout','" + layout.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+                
+        if(layout.isFullPage()) 
+            writer.write(",full:true");
 
-        if(layout.isNested()) {
+        if(layout.isNested())
             writer.write(",parent:'" + layout.getParent().getClientId(context) + "'");
-        }
 
         encodeUnits(context, layout);
 
@@ -79,7 +80,7 @@ public class LayoutRenderer extends CoreRenderer {
 
         encodeClientBehaviors(context, layout);
 
-        writer.write("});});");
+        writer.write("},'layout');});");
 
         endScript(writer);
     }

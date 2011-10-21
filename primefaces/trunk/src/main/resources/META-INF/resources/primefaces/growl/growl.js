@@ -398,11 +398,12 @@
 /**
  * PrimeFaces Growl Widget
  */
-PrimeFaces.widget.Growl = function(id, msgs) {
-    this.id = id;
+PrimeFaces.widget.Growl = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id
     this.jqId = PrimeFaces.escapeClientId(this.id);
 
-    this.show(msgs);
+    this.show(this.cfg.msgs);
     
     this.postConstruct();
 }

@@ -1334,10 +1334,10 @@ $.fn.cycle.transitions.wipe = function($cont, $slides, opts) {
 /**
  * PrimeFaces ImageSwitch Widget
  */
-PrimeFaces.widget.ImageSwitch = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.ImageSwitch = function(cfg) {
     this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 
     this.jq.cycle(this.cfg);

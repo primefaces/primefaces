@@ -71,11 +71,12 @@ public class GMapRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-		writer.write(widgetVar + " = new PrimeFaces.widget.GMap('" + clientId + "',{");
+        
+        writer.write("PrimeFaces.cw('GMap','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
 		
 		//Required configuration
-		writer.write("mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());
+		writer.write(",mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());
 		writer.write(",center:new google.maps.LatLng(" + map.getCenter() + ")");
 		writer.write(",zoom:" + map.getZoom());
         

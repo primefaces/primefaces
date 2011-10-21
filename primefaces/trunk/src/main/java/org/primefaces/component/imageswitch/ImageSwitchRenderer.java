@@ -50,12 +50,13 @@ public class ImageSwitchRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-		writer.write(imageSwitch.resolveWidgetVar() + " = new PrimeFaces.widget.ImageSwitch('" + clientId + "',{");
-		writer.write("fx:'" + imageSwitch.getEffect() + "'");
+        
+        writer.write("PrimeFaces.cw('ImageSwitch','" + imageSwitch.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",fx:'" + imageSwitch.getEffect() + "'");
 		writer.write(",speed:" + imageSwitch.getSpeed());
 		writer.write(",timeout:" + slideshowSpeed);
-		writer.write("});});");
+		writer.write("},'imageswitch');});");
 
 		endScript(writer);
 	}

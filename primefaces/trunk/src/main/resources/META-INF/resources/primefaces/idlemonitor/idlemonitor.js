@@ -162,9 +162,9 @@ $.idleTimer = function(newTimeout){
 /**
  * PrimeFaces IdleMonitor Widget
  */
-PrimeFaces.widget.IdleMonitor = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.IdleMonitor = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
 
     var _self = this;
 	

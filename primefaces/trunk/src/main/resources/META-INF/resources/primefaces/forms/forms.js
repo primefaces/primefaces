@@ -147,8 +147,8 @@
  * PrimeFaces InputText Widget
  */
 PrimeFaces.widget.InputText = function(cfg) {
-    this.id = cfg.id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 
@@ -170,9 +170,9 @@ PrimeFaces.extend(PrimeFaces.widget.InputText, PrimeFaces.widget.BaseWidget);
 /**
  * PrimeFaces InputTextarea Widget
  */
-PrimeFaces.widget.InputTextarea = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.InputTextarea = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     var _self = this;

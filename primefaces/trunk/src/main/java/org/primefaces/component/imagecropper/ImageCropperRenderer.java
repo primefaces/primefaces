@@ -60,11 +60,11 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         startScript(writer, clientId);	
 
-        writer.write("jQuery(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
-
-		writer.write(widgetVar + " = new PrimeFaces.widget.ImageCropper('" + clientId + "', {");
-
-        writer.write("image:'" + clientId + "_image'");
+        writer.write("$(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
+        
+        writer.write("PrimeFaces.cw('ImageCropper','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",image:'" + clientId + "_image'");
         
         if(cropper.getMinSize() != null) writer.write(",minSize:[" + cropper.getMinSize() + "]");
         if(cropper.getMaxSize() != null) writer.write(",maxSize:[" + cropper.getMaxSize() + "]");
@@ -88,7 +88,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
 
         
-		writer.write("});});");
+		writer.write("},'imagecropper');});");
 
 		endScript(writer);
 	}

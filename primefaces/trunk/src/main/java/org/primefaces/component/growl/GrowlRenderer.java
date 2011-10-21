@@ -44,11 +44,14 @@ public class GrowlRenderer extends CoreRenderer {
             writer.write(widgetVar + ".show(");
             encodeMessages(context, growl);
             writer.write(");");
-        } else {
+        } 
+        else {
             writer.write("$(function(){");
-            writer.write(widgetVar + " = new PrimeFaces.widget.Growl('" + clientId +"',");
+            
+            writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
+            writer.write("id:'" + clientId + "',msgs:");
             encodeMessages(context, growl);
-            writer.write(");});");
+            writer.write("});});");
         }
 	
 		endScript(writer);

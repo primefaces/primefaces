@@ -1,9 +1,9 @@
 /**
  * PrimeFaces Google Maps Widget
  */
-PrimeFaces.widget.GMap = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+PrimeFaces.widget.GMap = function(cfg) {
+    this.cfg = cfg;
+	this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     var _self = this;
