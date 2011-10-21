@@ -254,6 +254,19 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                     
                     var items = _self.panel.find('.ui-autocomplete-item');
                     
+                    //highlight first item
+                    items.eq(0).addClass('ui-state-highlight');
+                    
+                    //highlight query string
+                    items.each(function() {
+                      var text = '<span class="ui-autocomplete-query">';
+                          + value 
+                          + '</span>'
+                          + this.textContent.substring(value.length);
+                      
+                      this.innerHTML = text;
+                    });
+                    
                     if(items.length > 0) {
                         if(_self.cfg.forceSelection) {
                             _self.cachedResults = [];
