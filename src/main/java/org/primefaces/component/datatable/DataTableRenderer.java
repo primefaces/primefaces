@@ -837,19 +837,16 @@ public class DataTableRenderer extends CoreRenderer {
         else
             paginatorContainers = "'" + clientId + "_paginator" + paginatorPosition + "'";
 
-        writer.write(",paginator:new YAHOO.widget.Paginator({");
-        writer.write("rowsPerPage:" + table.getRows());
+        writer.write(",paginator:{");
+        writer.write("id:[" + paginatorContainers + "]");
+        writer.write(",rowsPerPage:" + table.getRows());
         writer.write(",totalRecords:" + table.getRowCount());
         writer.write(",initialPage:" + table.getPage());
-        writer.write(",containers:[" + paginatorContainers + "]");
 
         if(table.getPageLinks() != 10) writer.write(",pageLinks:" + table.getPageLinks());
-        if(table.getPaginatorTemplate() != null) writer.write(",template:'" + table.getPaginatorTemplate() + "'");
-        if(table.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + table.getRowsPerPageTemplate() + "]");
-        if(table.getCurrentPageReportTemplate() != null)writer.write(",pageReportTemplate:'" + table.getCurrentPageReportTemplate() + "'");
         if(!table.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
 
-        writer.write("})");
+        writer.write("}");
     }
 
     protected void encodeSelectionConfig(FacesContext context, DataTable table) throws IOException {
@@ -865,6 +862,7 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
+        int pageCount = (int) Math.ceil(table.getRowCount() * 1d / table.getRows());
         
         String styleClass = "ui-paginator ui-paginator-" + position + " ui-widget-header";
 
@@ -876,9 +874,115 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_paginator" + position, null);
         writer.writeAttribute("class", styleClass, null);
+        
+        encodeCurrentPageReport(context, table, pageCount);
+        
+        //prev disabled ?
+        String extClass = table.getPage() == 1 ? " ui-state-disabled" : "";
+        
+        encodePaginatorLink(context, table, "first", extClass);
+        encodePaginatorLink(context, table, "prev", extClass);
+        
+        encodePageLinks(context, table, pageCount); //with page count
+        
+        //next disabled
+        extClass = table.getPage() * table.getRows() >= table.getRowCount() ? " ui-state-disabled" : "";
+        
+        encodePaginatorLink(context, table, "next", extClass);
+        encodePaginatorLink(context, table, "end", extClass);
+        
+        encodeRowsPerPageDropDown(context, table);
+        encodeJumpToPageDropDown(context, table, pageCount);
+
         writer.endElement("div");
     }
+    
+    protected void encodePageLinks(FacesContext context, DataTable table, int pageCount) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        int currentPage = table.getPage();
+        int pageLinks = table.getPageLinks();
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.PAGINATOR_PAGES_CLASS, null);
+        
+        for(int i = currentPage; i <= (pageCount > pageLinks ? pageLinks : pageCount); i++){
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.PAGINATOR_PAGE_CLASS + (currentPage == i ? " ui-state-active" : ""), null);
+            writer.writeText(i, null);
+            writer.endElement("span");
+        }
+            
+        writer.endElement("span");
+    }
+    
+    protected void encodeCurrentPageReport(FacesContext context, DataTable table, int pageCount) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.PAGINATOR_CURRENT_CLASS, null);
+            writer.writeText("(" + table.getPage() + " of " + pageCount + ")", null);
+        
+        writer.endElement("span");
+    }
+    
+    protected void encodePaginatorLink(FacesContext context, DataTable table, String type, String extClass) throws IOException { // first prev page next end
+        ResponseWriter writer = context.getResponseWriter();
+        
+        String linkClass = DataTable.PAGINATOR_LINK_CLASS + type + " " + extClass;
+        String iconClass = DataTable.PAGINATOR_ICON_CLASS + type;
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", linkClass, null);
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.writeText(type, null);
+            writer.endElement("span");
+        writer.endElement("span");
+    }   
+    
+    protected void encodeRowsPerPageDropDown(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("select", null);
+        writer.writeAttribute("class", DataTable.PAGINATOR_RPP_OPTIONS_CLASS, null);
+        writer.writeAttribute("value", table.getRows(), null);
+        
+        String[] options;
+        String template = table.getRowsPerPageTemplate();
+        if(template == null){
+            options = new String[]{ "10" };
+        }
+        else{
+            options = table.getRowsPerPageTemplate().split("[,\\s]+");
+        }
+        
+        for( String option : options){
+            writer.startElement("option", null);
+            writer.writeAttribute("value", Integer.parseInt(option), null);
+            writer.writeText(option, null);
+            writer.endElement("option");
+        }
+        
+        writer.endElement("select");
+    }
+    
+    protected void encodeJumpToPageDropDown(FacesContext context, DataTable table, int pageCount) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("select", null);
+        writer.writeAttribute("class", DataTable.PAGINATOR_JTP_CLASS, null);
+        writer.writeAttribute("value", table.getPage(), null);
+        
+        for(int i = 1; i <= pageCount; i++){
+            writer.startElement("option", null);
+            writer.writeAttribute("value", i, null);
+            writer.writeText(i, null);
+            writer.endElement("option");
+        }
+        
+        writer.endElement("select");
+    }
+    
     protected void encodeSelectionHolder(FacesContext context, DataTable table) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         String id = table.getClientId(context) + "_selection";

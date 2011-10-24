@@ -53,10 +53,9 @@ PrimeFaces.extend(PrimeFaces.widget.DataTable, PrimeFaces.widget.BaseWidget);
  * Binds the change event listener and renders the paginator
  */
 PrimeFaces.widget.DataTable.prototype.setupPaginator = function() {
-    var paginator = this.getPaginator();
-
-    paginator.subscribe('changeRequest', this.paginate, null, this);
-    paginator.render();
+    this.cfg.paginator.paginate = this.paginate;
+    this.cfg.paginator.dataRoot = this;
+    this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
 }
 
 /**
@@ -292,8 +291,6 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
 
-                _self.getPaginator().setState(newState);
-                
                 if(_self.cfg.resizableColumns) {
                     _self.restoreColumnWidths();
                 }
@@ -882,7 +879,7 @@ PrimeFaces.widget.DataTable.prototype.doRowEditRequest = function(element, actio
  * Returns the paginator instance if any defined
  */
 PrimeFaces.widget.DataTable.prototype.getPaginator = function() {
-    return this.cfg.paginator;
+    return this.paginator;
 }
 
 /**
