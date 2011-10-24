@@ -778,10 +778,10 @@
 /**
  * PrimeFaces LightBox Widget
  */
-PrimeFaces.widget.LightBox = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.LightBox = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
 
     if(this.cfg.inline) {
         this.cfg.href = this.jqId + '_inline';

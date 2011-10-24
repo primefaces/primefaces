@@ -62,7 +62,8 @@ public class RatingRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
 
-        writer.write(rating.resolveWidgetVar() + " = new PrimeFaces.widget.Rating({id:'" + clientId + "'");
+        writer.write("PrimeFaces.cw('Rating','" + rating.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
         
         if(rating.getOnRate() != null) {
             writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");
@@ -70,7 +71,7 @@ public class RatingRenderer extends CoreRenderer {
         
         encodeClientBehaviors(context, rating);
 
-        writer.write("});});");
+        writer.write("},'rating');});");
 
         endScript(writer);
     }

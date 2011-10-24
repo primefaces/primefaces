@@ -1,13 +1,13 @@
 /**
  * PrimeFaces Sheet Widget
  */
-PrimeFaces.widget.Sheet = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Sheet = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.header = this.jq.children('.ui-sheet-header');
     this.body = this.jq.children('.ui-sheet-body');
-    this.cfg = cfg;
     this.editor = $(this.jqId + ' .ui-sheet-editor-bar').find('.ui-sheet-editor');
     this.columnHeaders = this.header.find('thead th');
     this.cellInfoDisplay = $(this.jqId + ' .ui-sheet-editor-bar .ui-sheet-cell-info');

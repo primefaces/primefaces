@@ -73,10 +73,10 @@ public class SpinnerRenderer extends InputRenderer {
         startScript(writer, clientId);
 
 		writer.write("$(function(){");
-
-		writer.write(spinner.resolveWidgetVar() + " = new PrimeFaces.widget.Spinner('" + clientId + "',{");
-
-        writer.write("step:" + spinner.getStepFactor());
+        
+        writer.write("PrimeFaces.cw('Spinner','" + spinner.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",step:" + spinner.getStepFactor());
 		
 		if(spinner.getMin() != Double.MIN_VALUE) writer.write(",min:" + spinner.getMin());
 		if(spinner.getMax() != Double.MAX_VALUE) writer.write(",max:" + spinner.getMax());

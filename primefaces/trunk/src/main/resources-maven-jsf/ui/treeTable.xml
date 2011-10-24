@@ -59,8 +59,7 @@
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>none</defaultValue>
-            <description>Defines the selectionMode, valid values are "none"(default), "single" and "multiple".</description>
+            <description>Defines the selectionMode, valid values are "single" and "multiple".</description>
 		</attribute>
         <attribute>
 			<name>scrollable</name>

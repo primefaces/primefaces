@@ -67,8 +67,9 @@ public class TooltipRenderer extends CoreRenderer {
 		
         writer.write("$(function() {");
 			
-		writer.write(tooltip.resolveWidgetVar() + " = new PrimeFaces.widget.Tooltip('" + clientId + "', {");
-        writer.write("target:'" + target + "'");
+        writer.write("PrimeFaces.cw('Tooltip','" + tooltip.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",target:'" + target + "'");
         
         if(tooltip.getShowEvent() != null) writer.write(",showEvent:'" + tooltip.getShowEvent() + "'");
         if(tooltip.getHideEvent() != null) writer.write(",hideEvent:'" + tooltip.getHideEvent() + "'");

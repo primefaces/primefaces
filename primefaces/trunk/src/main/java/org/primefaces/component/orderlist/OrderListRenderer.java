@@ -205,13 +205,11 @@ public class OrderListRenderer extends CoreRenderer {
 		
         startScript(writer, clientId);
 
-		writer.write(ol.resolveWidgetVar() + " = new PrimeFaces.widget.OrderList('" + clientId + "', {");
-    
-        writer.write("iconOnly:" + ol.isIconOnly());
+        writer.write("PrimeFaces.cw('OrderList','" + ol.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");    
         
-        if(ol.getEffect() != null) {
-            writer.write(",effect:'" + ol.getEffect() + "'");
-        }
+        if(ol.isIconOnly()) writer.write("iconOnly:true");
+        if(ol.getEffect() != null) writer.write(",effect:'" + ol.getEffect() + "'");
         
         writer.write("});");
 		

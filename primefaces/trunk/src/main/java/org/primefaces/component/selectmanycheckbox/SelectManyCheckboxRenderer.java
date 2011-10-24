@@ -81,10 +81,12 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         String clientId = checkbox.getClientId(context);
 
         startScript(writer, clientId);
+        
+        writer.write("PrimeFaces.cw('SelectManyCheckbox','" + checkbox.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
-        writer.write(checkbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectManyCheckbox({id:'" + clientId + "'");
-
-        if(checkbox.isDisabled()) writer.write(",disabled: true");
+        if(checkbox.isDisabled()) 
+            writer.write(",disabled: true");
 
         encodeClientBehaviors(context, checkbox);
 

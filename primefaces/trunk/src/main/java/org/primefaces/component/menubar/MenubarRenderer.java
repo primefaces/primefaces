@@ -31,11 +31,12 @@ public class MenubarRenderer extends BaseMenuRenderer {
 		String clientId = menubar.getClientId(context);
 		
 		startScript(writer, clientId);
-
-		writer.write(menubar.resolveWidgetVar() + " = new PrimeFaces.widget.Menubar('" + clientId + "',{");		
+        
+        writer.write("PrimeFaces.cw('Menubar','" + menubar.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
         writer.write("});");
 
-		writer.endElement("script");	
+		endScript(writer);        	
 	}
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

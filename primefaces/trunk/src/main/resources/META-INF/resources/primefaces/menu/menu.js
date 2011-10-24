@@ -1,9 +1,9 @@
 /**
  * PrimeFaces Menubar Widget
  */
-PrimeFaces.widget.Menubar = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Menubar = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.menuitems = this.jq.find('.ui-menuitem');
@@ -68,9 +68,9 @@ PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
 /**
  * PrimeFaces Menu Widget
  */
-PrimeFaces.widget.Menu = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Menu = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.menuitems = this.jq.find('.ui-menuitem');
@@ -322,10 +322,10 @@ PrimeFaces.widget.Menu.prototype.hide = function(e) {
 /*
  * PrimeFaces MenuButton Widget
  */
-PrimeFaces.widget.MenuButton = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
-	this.jqId = PrimeFaces.escapeClientId(id);
+PrimeFaces.widget.MenuButton = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id;
+	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.menuId = this.jqId + '_menu';
     this.jq = $(this.jqId);
     this.button = this.jq.children('button');

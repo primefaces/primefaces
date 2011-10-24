@@ -1,6 +1,6 @@
-PrimeFaces.widget.NotificationBar = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.NotificationBar = function(cfg) {
 	this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
 	this.jq = $(this.jqId);
     var _self = this;

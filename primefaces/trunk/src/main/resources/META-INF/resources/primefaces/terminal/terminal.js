@@ -445,15 +445,14 @@
     }
   };
 
-})( jQuery );
+})(jQuery);
 
 
-PrimeFaces.widget.Terminal = function(id, cfg) {
-    this.id= id;
-	this.jqId = PrimeFaces.escapeClientId(id);
+PrimeFaces.widget.Terminal = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id;
+	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-	this.cfg = cfg;
-    this.cfg.id = id;
     this.cfg.formId = this.jq.parents('form:first').attr('id');
 	
 	this.jq.wterm(this.cfg);

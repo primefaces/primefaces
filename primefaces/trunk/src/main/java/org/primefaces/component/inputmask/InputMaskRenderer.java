@@ -59,9 +59,9 @@ public class InputMaskRenderer extends InputRenderer {
 		
         startScript(writer, clientId);
 
-        writer.write(inputMask.resolveWidgetVar() + " = new PrimeFaces.widget.InputMask('" + clientId + "', {");
-
-        writer.write("mask:'" + inputMask.getMask() + "'");
+        writer.write("PrimeFaces.cw('InputMask','" + inputMask.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",mask:'" + inputMask.getMask() + "'");
 
         if(inputMask.getPlaceHolder()!=null) {
 			writer.write(",placeholder:'" + inputMask.getPlaceHolder() + "'");

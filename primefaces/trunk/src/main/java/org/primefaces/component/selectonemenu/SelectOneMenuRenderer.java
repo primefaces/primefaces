@@ -243,10 +243,10 @@ public class SelectOneMenuRenderer extends InputRenderer {
         String clientId = menu.getClientId(context);
 
         startScript(writer, clientId);
-
-        writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectOneMenu('" + clientId + "',{");
-
-        writer.write("effect:'" + menu.getEffect() + "'");
+        
+        writer.write("PrimeFaces.cw('SelectOneMenu','" + menu.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",effect:'" + menu.getEffect() + "'");
         
         if(menu.getEffectDuration() != 400)
             writer.write(",effectDuration:" + menu.getEffectDuration());

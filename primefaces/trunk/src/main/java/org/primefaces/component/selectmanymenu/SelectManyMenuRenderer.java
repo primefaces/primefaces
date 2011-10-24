@@ -81,12 +81,13 @@ public class SelectManyMenuRenderer extends InputRenderer {
         String clientId = menu.getClientId(context);
 
         startScript(writer, clientId);
-
-        writer.write(menu.resolveWidgetVar() + " = new PrimeFaces.widget.SelectListbox('" + clientId + "',{");
         
-        writer.write("selection:'multiple'");
+        writer.write("PrimeFaces.cw('SelectListbox','" + menu.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");        
+        writer.write(",selection:'multiple'");
 
-        if(menu.isDisabled()) writer.write(",disabled:true");
+        if(menu.isDisabled()) 
+            writer.write(",disabled:true");
 
         encodeClientBehaviors(context, menu);
 

@@ -70,8 +70,9 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
 
-        writer.write(progressBar.resolveWidgetVar() + " = new PrimeFaces.widget.ProgressBar('" + clientId + "', {");
-        writer.write("value:" + progressBar.getValue());
+        writer.write("PrimeFaces.cw('ProgressBar','" + progressBar.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",value:" + progressBar.getValue());
         writer.write(",ajax:" + isAjax);
 
         if(isAjax) {

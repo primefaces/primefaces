@@ -105,9 +105,10 @@ public class PickListRenderer extends CoreRenderer {
 		String clientId = pickList.getClientId(context);
 		
         startScript(writer, clientId);
-
-		writer.write(pickList.resolveWidgetVar() + " = new PrimeFaces.widget.PickList('" + clientId + "', {");
-        writer.write("effect:'" + pickList.getEffect() + "'");
+        
+        writer.write("PrimeFaces.cw('PickList','" + pickList.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",effect:'" + pickList.getEffect() + "'");
         writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
         writer.write(",iconOnly:" + pickList.isIconOnly());
         

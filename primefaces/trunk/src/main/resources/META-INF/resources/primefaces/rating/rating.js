@@ -386,8 +386,8 @@
  * PrimeFaces Star Rating
  */
 PrimeFaces.widget.Rating = function(cfg) {
-    this.id = cfg.id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.jqInput = $(this.jqId + ' input');

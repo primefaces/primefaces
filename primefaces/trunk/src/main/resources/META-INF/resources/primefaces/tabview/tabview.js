@@ -1,10 +1,10 @@
 /**
  * PrimeFaces TabView Widget
  */
-PrimeFaces.widget.TabView = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.TabView = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.navContainer = this.jq.children('.ui-tabs-nav');
     this.panelContainer = this.jq.children('.ui-tabs-panels');

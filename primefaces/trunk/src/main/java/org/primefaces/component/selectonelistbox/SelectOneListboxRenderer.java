@@ -77,11 +77,13 @@ public class SelectOneListboxRenderer extends InputRenderer {
         String clientId = listbox.getClientId(context);
 
         startScript(writer, clientId);
+        
+        writer.write("PrimeFaces.cw('SelectListbox','" + listbox.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",selection:'single'");
 
-        writer.write(listbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectListbox('" + clientId + "',{");
-        writer.write("selection:'single'");
-
-        if(listbox.isDisabled()) writer.write(",disabled:true");
+        if(listbox.isDisabled()) 
+            writer.write(",disabled:true");
 
         encodeClientBehaviors(context, listbox);
 

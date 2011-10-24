@@ -1,9 +1,9 @@
 /**
  * PrimeFaces Tree Widget
  */
-PrimeFaces.widget.Tree = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Tree = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.cfg.formId = this.jq.parents('form:first').attr('id');

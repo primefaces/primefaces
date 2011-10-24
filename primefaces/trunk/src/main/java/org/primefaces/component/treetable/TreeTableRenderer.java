@@ -93,11 +93,16 @@ public class TreeTableRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tt.getClientId(context);
+        String selectionMode = tt.getSelectionMode();
 		
         startScript(writer, clientId);
-		
-		writer.write(tt.resolveWidgetVar() + " = new PrimeFaces.widget.TreeTable('" + clientId + "', {");
-        writer.write("selectionMode:'" + tt.getSelectionMode() + "'");
+        
+        writer.write("PrimeFaces.cw('TreeTable','" + tt.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
+        if(selectionMode != null) {
+            writer.write(",selectionMode:'" + selectionMode + "'");
+        }
                 
         encodeClientBehaviors(context, tt);
         

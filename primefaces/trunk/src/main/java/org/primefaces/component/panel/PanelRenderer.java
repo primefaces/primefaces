@@ -61,9 +61,9 @@ public class PanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
 
         startScript(writer, clientId);
-
-        writer.write(panel.resolveWidgetVar() + " = new PrimeFaces.widget.Panel('" + clientId + "', {");
-        writer.write("visible:" + panel.isVisible());
+        
+        writer.write("PrimeFaces.cw('Panel','" + panel.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
         //Toggle configuration
         if(panel.isToggleable()) {
@@ -98,6 +98,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         String styleClass = panel.getStyleClass() != null ? Panel.PANEL_CLASS + " " + panel.getStyleClass() : Panel.PANEL_CLASS;
+        styleClass = panel.isVisible() ? styleClass : styleClass + " ui-helper-hidden";
         writer.writeAttribute("class", styleClass, "styleClass");
         if(panel.getStyle() != null) {
             writer.writeAttribute("style", panel.getStyle(), "style");

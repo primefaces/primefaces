@@ -68,10 +68,11 @@ public class LightBoxRenderer extends CoreRenderer {
 		String clientId = lb.getClientId(context);
         
         startScript(writer, clientId);
+        
+        writer.write("PrimeFaces.cw('LightBox','" + lb.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
 
-        writer.write(lb.resolveWidgetVar() + " = new PrimeFaces.widget.LightBox('" + clientId + "', {");
-
-		writer.write("transition:'" + lb.getTransition() + "'");
+		writer.write(",transition:'" + lb.getTransition() + "'");
 
         if(lb.getSpeed() != 350) writer.write(",speed:" + lb.getSpeed());
 		if(lb.getWidth() != null) writer.write(",width:'" + lb.getWidth() + "'");
@@ -94,7 +95,7 @@ public class LightBoxRenderer extends CoreRenderer {
 		if(lb.getCurrentTemplate() != null) writer.write(",current:'" + lb.getCurrentTemplate() + "'");
 		if(lb.isGroup()) writer.write(",rel:'" + clientId + "'");
 
-		writer.write("});");
+		writer.write("},'lightbox');");
 
 		endScript(writer);
     }

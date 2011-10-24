@@ -72,15 +72,16 @@ public class RingRenderer extends CoreRenderer {
 
         startScript(writer, clientId);
 
-        writer.write("jQuery(function() {");
+        writer.write("$(function() {");
+        
+        writer.write("PrimeFaces.cw('Ring','" + ring.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",startingChild:" + ring.getFirst());
 
-        writer.write(ring.resolveWidgetVar() + " = new PrimeFaces.widget.Ring('" + clientId + "', {");
+        if(easing != null) 
+            writer.write(",easing:'" + easing + "'");
 
-        writer.write("startingChild:" + ring.getFirst());
-
-        if(easing != null) writer.write(",easing:'" + easing + "'");
-
-        writer.write("});});");
+        writer.write("},'ring');});");
 
         endScript(writer);
 	}

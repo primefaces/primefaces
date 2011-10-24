@@ -73,8 +73,9 @@ public class SheetRenderer extends CoreRenderer {
         
         startScript(writer, clientId);
         
-        writer.write(sheet.resolveWidgetVar() + " = new PrimeFaces.widget.Sheet('" + clientId + "',{");
-        writer.write("});");
+        writer.write("PrimeFaces.cw('Sheet','" + sheet.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write("},'sheet');");
 
 		endScript(writer);
     }

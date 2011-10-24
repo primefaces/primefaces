@@ -77,11 +77,14 @@ public class TabViewRenderer extends CoreRenderer {
 
         startScript(writer, clientId);
         
-        writer.write(tabView.resolveWidgetVar() + " = new PrimeFaces.widget.TabView('" + clientId + "', {");
-
-        writer.write("dynamic:" + dynamic);
-
-        if(dynamic) writer.write(",cache:" + tabView.isCache());
+        writer.write("PrimeFaces.cw('TabView','" + tabView.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        
+        if(dynamic) {
+            writer.write(",dynamic:true");
+            writer.write(",cache:" + tabView.isCache());
+        }
+        
         if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(index) {" + tabView.getOnTabChange() + "}");
         if(tabView.getOnTabShow() != null) writer.write(",onTabShow:function(index) {" + tabView.getOnTabShow() + "}");
 

@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class WatermarkRenderer extends CoreRenderer {
 
@@ -52,10 +51,11 @@ public class WatermarkRenderer extends CoreRenderer {
         startScript(writer, watermark.getClientId(context));
 		
 		writer.write("$(function() {");
-        writer.write(watermark.resolveWidgetVar() + " = new PrimeFaces.widget.Watermark('" + watermark.getClientId(context) + "',{");
-        writer.write("value:'" + watermark.getValue() + "'");
+        writer.write("PrimeFaces.cw('Watermark','" + watermark.resolveWidgetVar() + "',{");
+        writer.write("id:'" + watermark.getClientId(context) + "'");
+        writer.write(",value:'" + watermark.getValue() + "'");
         writer.write(",target:'" + target + "'");
-		writer.write("});});");
+		writer.write("},'watermark');});");
 		
 		endScript(writer);
 	}

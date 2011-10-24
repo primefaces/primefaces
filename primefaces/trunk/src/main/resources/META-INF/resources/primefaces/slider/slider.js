@@ -1,9 +1,9 @@
 /**
  * PrimeFaces Slider Widget
  */
-PrimeFaces.widget.Slider = function(id, cfg) {
-	this.id = id;
-	this.cfg = cfg;
+PrimeFaces.widget.Slider = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 	this.input = $(PrimeFaces.escapeClientId(this.cfg.input));

@@ -1,9 +1,9 @@
 /**
  * PrimeFaces PickList Widget
  */
-PrimeFaces.widget.PickList = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.PickList = function(cfg) {
 	this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.sourceList = this.jq.find('.ui-picklist-source');

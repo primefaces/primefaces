@@ -103,8 +103,5 @@
 		<resource>
 			<name>primefaces.js</name>
 		</resource>
-        <resource>
-			<name>themeswitcher/themeswitcher.js</name>
-		</resource>
 	</resources>
 </component>
