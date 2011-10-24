@@ -833,7 +833,7 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.uncheck = function(index) {
 /**
  * PrimeFaces SelectListbox Widget
  */
-PrimeFaces.widget.SelectListbox = function(id, cfg) {
+PrimeFaces.widget.SelectListbox = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);

@@ -138,7 +138,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
         encodeFacet(context, tt, "footer", TreeTable.FOOTER_CLASS);
         
-        if(tt.isSelectionEnabled()) {
+        if(tt.getSelectionMode() != null) {
             encodeSelectionHolder(context, tt);
         }
         
