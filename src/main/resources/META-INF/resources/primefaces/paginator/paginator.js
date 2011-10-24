@@ -99,8 +99,8 @@ PrimeFaces.widget.Paginator.prototype.bindPageLinkEvents = function(){
 PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
     var _self = this;
     
-    this.pageLinks.removeClass('ui-state-active').each(function(index, item){
-        if(parseInt(item.text()) - 1 == _self.cfg.page)
+    this.pageLinks.removeClass('ui-state-active').each(function(index, item) {
+        if(parseInt($(item).text()) - 1 == _self.cfg.page)
             $(item).addClass('ui-state-active');
     });
 }
