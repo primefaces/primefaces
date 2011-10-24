@@ -82,13 +82,6 @@ import javax.faces.FacesException;
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
-    public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages"; 
-    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default ui-corner-all"; 
-    public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current"; 
-    public static final String PAGINATOR_LINK_CLASS = "ui-state-default ui-corner-all ui-paginator-"; 
-    public static final String PAGINATOR_ICON_CLASS = "ui-icon ui-icon-seek-"; 
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options"; 
-    public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select"; 
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit", "colResize"));
 

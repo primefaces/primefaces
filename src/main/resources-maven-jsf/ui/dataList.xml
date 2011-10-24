@@ -44,24 +44,28 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Enables pagination. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>paginatorTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>Template of the paginator.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>rowsPerPageTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>Template of the rowsPerPage dropdown.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>currentPageReportTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>Template of the currentPageReport UI.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>pageLinks</name>
@@ -69,6 +73,7 @@
             <type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
             <description>Maximum number of page links to display. Default is 10.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>paginatorPosition</name>
@@ -76,6 +81,7 @@
             <type>java.lang.String</type>
             <defaultValue>both</defaultValue>
             <description>Position of the paginator. Default is both.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>paginatorAlwaysVisible</name>
@@ -83,6 +89,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Defines if paginator should be hidden if total data count is less than number of rows per page.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>page</name>
@@ -90,6 +97,7 @@
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
             <description>Index of the current page. Default is 1.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>style</name>
