@@ -70,9 +70,11 @@ public class TagCloudRenderer extends CoreRenderer {
         String clientId = tagCloud.getClientId(context);
         
         startScript(writer, clientId);
-
-		writer.write(tagCloud.resolveWidgetVar() + " = new PrimeFaces.widget.TagCloud('" + clientId + "', {});");
-
+        
+        writer.write("PrimeFaces.cw('TagCloud','" + tagCloud.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write("});");
+        
         endScript(writer);
     }
 }

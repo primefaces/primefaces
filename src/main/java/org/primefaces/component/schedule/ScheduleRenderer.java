@@ -110,13 +110,11 @@ public class ScheduleRenderer extends CoreRenderer {
         startScript(writer, clientId);
 		
 		writer.write("$(function() {");
-
-		writer.write(schedule.resolveWidgetVar() + " = new PrimeFaces.widget.Schedule('" + clientId +"'");
-		writer.write(",{");
-		
-		writer.write("defaultView:'"+ schedule.getView() + "'");
+        
+        writer.write("PrimeFaces.cw('Schedule','" + schedule.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");		
+		writer.write(",defaultView:'"+ schedule.getView() + "'");
 		writer.write(",locale:'"+ schedule.calculateLocale(context) + "'");
-		writer.write(",theme:true");
 		
 		if(schedule.isEditable()) {
 			writer.write(",editable:true");

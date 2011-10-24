@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class TerminalRenderer extends CoreRenderer {
 
@@ -56,14 +55,15 @@ public class TerminalRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
         
-		writer.write(terminal.resolveWidgetVar() + " = new PrimeFaces.widget.Terminal('" + clientId + "', {");
-		writer.write("PS1:'" + terminal.getPrompt() + "'");
+        writer.write("PrimeFaces.cw('Terminal','" + terminal.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",PS1:'" + terminal.getPrompt() + "'");
 
   		if(terminal.getWelcomeMessage() != null) writer.write(",WELCOME_MESSAGE:'" + terminal.getWelcomeMessage() + "'");
 		if(terminal.getWidth() != null) writer.write(",WIDTH:'" + terminal.getWidth() + "'");
 		if(terminal.getHeight() != null) writer.write(",HEIGHT:'" + terminal.getHeight() + "'");
 
-		writer.write("});});");
+		writer.write("},'terminal');});");
 		
 		endScript(writer);
 	}

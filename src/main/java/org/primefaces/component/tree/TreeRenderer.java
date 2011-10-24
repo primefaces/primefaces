@@ -106,9 +106,10 @@ public class TreeRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-        writer.write(tree.resolveWidgetVar() + " = new PrimeFaces.widget.Tree('" + clientId + "', {");
-        writer.write("dynamic:" + dynamic);
+        
+        writer.write("PrimeFaces.cw('Tree','" + tree.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",dynamic:" + dynamic);
 
         if(dynamic) {
             writer.write(",cache:" + tree.isCache());

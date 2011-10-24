@@ -215,9 +215,9 @@ PrimeFaces.extend(PrimeFaces.widget.InputTextarea, PrimeFaces.widget.BaseWidget)
 /**
  * PrimeFaces SelectOneMenu Widget
  */
-PrimeFaces.widget.SelectOneMenu = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.panelId = this.jqId + '_panel';
     this.jq = $(this.jqId);
@@ -556,8 +556,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
  * PrimeFaces SelectOneRadio Widget
  */
 PrimeFaces.widget.SelectOneRadio = function(cfg) {
-    this.id = cfg.id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
     this.output = this.jq.find('.ui-radiobutton-box');
@@ -636,8 +636,8 @@ PrimeFaces.widget.SelectOneRadio.prototype.disable = function() {
  * PrimeFaces SelectBooleanCheckbox Widget
  */
 PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
-    this.id = cfg.id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
     this.input = jQuery(this.jqId + '_input');
@@ -701,8 +701,8 @@ PrimeFaces.widget.SelectBooleanCheckbox.prototype.disable = function() {
  * PrimeFaces SelectManyCheckbox Widget
  */
 PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
-    this.id = cfg.id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
     this.output = this.jq.find('.ui-checkbox-box');
@@ -834,8 +834,8 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.uncheck = function(index) {
  * PrimeFaces SelectListbox Widget
  */
 PrimeFaces.widget.SelectListbox = function(id, cfg) {
-    this.id = id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');

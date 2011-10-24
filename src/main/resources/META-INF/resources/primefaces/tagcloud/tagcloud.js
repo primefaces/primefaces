@@ -1,9 +1,9 @@
 /**
  * PrimeFaces TagCloud Widget
  */
-PrimeFaces.widget.TagCloud = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.TagCloud = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jq = $(PrimeFaces.escapeClientId(this.id));
 
     this.jq.find('li').mouseover(function() {

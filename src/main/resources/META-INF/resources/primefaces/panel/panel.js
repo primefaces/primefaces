@@ -1,10 +1,10 @@
 /**
  * PrimeFaces Panel Widget
  */
-PrimeFaces.widget.Panel = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Panel = function(cfg) {
     this.cfg = cfg;
-    this.jqId = PrimeFaces.escapeClientId(id);
+    this.id = this.cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id);
 
     if(this.cfg.toggleable) {
         this.toggler = $(this.jqId + '_toggler');
@@ -24,10 +24,6 @@ PrimeFaces.widget.Panel = function(id, cfg) {
         this.visibleStateHolder = $(this.jqId + "_visible");
 
         this.setupMenuTrigger();
-    }
-	
-    if(!this.cfg.visible) {
-        $(this.jqId).css('display','none');
     }
     
     this.postConstruct();

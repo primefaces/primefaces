@@ -57,9 +57,10 @@ public class NotificationBarRenderer extends CoreRenderer {
 		startScript(writer, clientId);
 		
 		writer.write("$(function() {");
-
-		writer.write(bar.resolveWidgetVar() + " = new PrimeFaces.widget.NotificationBar('" + clientId + "',{");
-		writer.write("position:'" + bar.getPosition() + "'");
+        
+        writer.write("PrimeFaces.cw('NotificationBar','" + bar.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",position:'" + bar.getPosition() + "'");
 		writer.write(",effect:'" + bar.getEffect() + "'");
 		writer.write(",effectSpeed:'" + bar.getEffectSpeed() + "'");
 		

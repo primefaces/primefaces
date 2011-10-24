@@ -567,9 +567,9 @@ $.watermark.options.className = 'ui-watermark';
 /**
  * PrimeFaces Watermark Widget 
  */
- PrimeFaces.widget.Watermark = function(id, cfg) {
-    this.id = id;
+ PrimeFaces.widget.Watermark = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqTargetId = PrimeFaces.escapeClientId(this.cfg.target);
     this.target = $(this.jqTargetId + ',' + this.jqTargetId + ' input:text');

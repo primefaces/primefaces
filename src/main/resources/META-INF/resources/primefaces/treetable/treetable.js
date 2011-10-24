@@ -1,8 +1,9 @@
 /**
  * PrimeFaces TreeTable Widget
  */
-PrimeFaces.widget.TreeTable = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.TreeTable = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 	this.cfg = cfg;
@@ -22,7 +23,7 @@ PrimeFaces.widget.TreeTable = function(id, cfg) {
     }
     
     //selection
-    if(this.cfg.selectionMode != 'none') {
+    if(this.cfg.selectionMode) {
         this.jqSelection = $(this.jqId + '_selection');
         var selectionValue = this.jqSelection.val();
         

@@ -1,8 +1,9 @@
 /**
  * PrimeFaces Tooltip Widget
  */
-PrimeFaces.widget.Tooltip = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.Tooltip = function(cfg) {
+	this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     
     //remove previous element to support ajax updates

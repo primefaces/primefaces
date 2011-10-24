@@ -2,13 +2,14 @@
  * PrimeFaces OrderList Widget
  */
 PrimeFaces.widget.OrderList = function(id, cfg) {
-    this.id = id;
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.list = this.jq.find('.ui-orderlist-list'),
     this.items = this.list.children('.ui-orderlist-item');
     this.state = $(this.jqId + '_values');
+    this.cfg.effect = this.cfg.effect||'fade';
     var _self = this;
 
     this.setupButtons();

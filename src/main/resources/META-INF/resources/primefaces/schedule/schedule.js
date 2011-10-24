@@ -19,13 +19,14 @@
 /**
  * PrimeFaces Schedule Widget
  */
-PrimeFaces.widget.Schedule = function(id, cfg) {
-	this.id = id;
+PrimeFaces.widget.Schedule = function(cfg) {
 	this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.jqc = $(this.jqId + '_container');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
+    this.cfg.theme = true;
     var _self = this;
 
 	this.setupEventSource();

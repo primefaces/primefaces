@@ -377,8 +377,9 @@ E){var M=0;switch(E){case "left":M=30;break;case "right":M=-30;break;default:M=E
 /**
  * PrimeFaces TimeLine Widget
  */
-PrimeFaces.widget.Timeline = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Timeline = function(cfg) {
+    this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.cfg = cfg;

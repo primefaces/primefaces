@@ -61,13 +61,12 @@ public class PasswordRenderer extends InputRenderer {
         startScript(writer, clientId);
         
 		writer.write("$(function(){");
-
-		writer.write(password.resolveWidgetVar() + " = new PrimeFaces.widget.Password('" + clientId + "', {");
-
+        
+        writer.write("PrimeFaces.cw('Password','" + password.resolveWidgetVar() + "',{");
+        writer.write(",id:'" + clientId + "'");
         writer.write("feedback:" + feedback);
 
         if(feedback) {
-
             if(password.getMinLength() != 8) writer.write(",length:" + password.getMinLength());
             if(password.isInline()) writer.write(",flat:true");
             if(password.getLevel() != 1) writer.write(",type: " + password.getLevel());
@@ -85,7 +84,7 @@ public class PasswordRenderer extends InputRenderer {
             writer.write(",theme:false");
         }
 
-		writer.write("});});");
+		writer.write("},'password');});");
         
 		endScript(writer);
 	}

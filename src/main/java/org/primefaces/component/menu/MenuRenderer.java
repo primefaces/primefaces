@@ -38,10 +38,10 @@ public class MenuRenderer extends BaseMenuRenderer {
 		startScript(writer, clientId);
         
         writer.write("$(function() {");
-
-		writer.write(widgetVar + " = new PrimeFaces.widget.Menu('" + clientId + "',{");
-
-        writer.write("position:'" + position + "'");
+        
+        writer.write("PrimeFaces.cw('Menu','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",position:'" + position + "'");
         writer.write(",type:'" + menu.getType() + "'");
         
         if(menu.getEasing() != null)

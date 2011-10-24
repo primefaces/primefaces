@@ -1,6 +1,6 @@
-PrimeFaces.widget.Resizable = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Resizable = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 

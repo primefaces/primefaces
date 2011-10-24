@@ -47,15 +47,16 @@ public class StackRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-		writer.write(stack.resolveWidgetVar() + " = new PrimeFaces.widget.Stack('" + clientId + "', {");
-		writer.write("openSpeed:" + stack.getOpenSpeed());
+        
+        writer.write("PrimeFaces.cw('Stack','" + stack.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+		writer.write(",openSpeed:" + stack.getOpenSpeed());
 		writer.write(",closeSpeed:" + stack.getCloseSpeed());
 
         if(stack.isExpanded())
             writer.write(",expanded:" + true);
         
-		writer.write("});});");
+		writer.write("},'stack');});");
 		
 		endScript(writer);
 	}

@@ -59,9 +59,10 @@ public class TimelineRenderer extends CoreRenderer {
         startScript(writer, clientId);
         
         writer.write("$(function() {");
-
-		writer.write(tl.resolveWidgetVar() + " = new PrimeFaces.widget.Timeline('" + clientId +"', {");
-        writer.write("min_zoom:" + tl.getMinZoom());
+        
+        writer.write("PrimeFaces.cw('Timeline','" + tl.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",min_zoom:" + tl.getMinZoom());
         writer.write(",max_zoom:" + tl.getMaxZoom());
         
         if(!tl.isZoomable())
@@ -99,7 +100,7 @@ public class TimelineRenderer extends CoreRenderer {
             writer.write("]");
         }
         
-        writer.write("});});");
+        writer.write("},'timeline');});");
         
         endScript(writer);
     }

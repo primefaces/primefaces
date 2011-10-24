@@ -93,8 +93,10 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-		writer.write(button.resolveWidgetVar() + " = new PrimeFaces.widget.MenuButton('" + clientId + "', {");
-        writer.write("zindex:" + button.getZindex());
+        
+        writer.write("PrimeFaces.cw('MenuButton','" + button.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",zindex:" + button.getZindex());
 
         if(button.isDisabled()) {
 			writer.write(",disabled:true");

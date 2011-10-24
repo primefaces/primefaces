@@ -48,9 +48,9 @@ public class ResizableRenderer extends CoreRenderer {
         else
             writer.write("$(function(){");
 		
-		writer.write(resizable.resolveWidgetVar() + " = new PrimeFaces.widget.Resizable('"+ clientId + "',{");
-
-        writer.write("target:'" + targetId + "'");
+        writer.write("PrimeFaces.cw('Resizable','" + resizable.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",target:'" + targetId + "'");
 
         //Boundaries
         if(resizable.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + resizable.getMinWidth());

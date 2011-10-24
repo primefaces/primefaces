@@ -119,8 +119,9 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         String clientId = checkbox.getClientId(context);
 
         startScript(writer, clientId);
-
-        writer.write(checkbox.resolveWidgetVar() + " = new PrimeFaces.widget.SelectBooleanCheckbox({id:'" + clientId + "'");
+        
+        writer.write("PrimeFaces.cw('SelectBooleanCheckbox','" + checkbox.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
         
         encodeClientBehaviors(context, checkbox);
 

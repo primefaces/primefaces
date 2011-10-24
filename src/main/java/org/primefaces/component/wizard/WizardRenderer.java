@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,10 +87,10 @@ public class WizardRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-        writer.write(wizard.resolveWidgetVar() + " = new PrimeFaces.widget.Wizard('" + clientId + "',{");
-
-        writer.write("showStepStatus:" + wizard.isShowStepStatus());
+        
+        writer.write("PrimeFaces.cw('Wizard','" + wizard.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",showStepStatus:" + wizard.isShowStepStatus());
         writer.write(",showNavBar:" + wizard.isShowNavBar());
 
         if(wizard.getOnback() != null) {
