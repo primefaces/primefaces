@@ -1,5 +1,5 @@
 /*!
- * jQuery Mobile v1.0rc1
+ * jQuery Mobile v1.0rc2
  * http://jquerymobile.com/
  *
  * Copyright 2010, jQuery Project
@@ -38,11 +38,24 @@
 	font-family: Helvetica, Arial, sans-serif /*{a-bar-font}*/;
 }
 .ui-bar-a .ui-link-inherit {
-	color: 					#fff /*{a-bar-color}*/;
+	color: #fff /*{a-bar-color}*/;
 }
+
 .ui-bar-a .ui-link {
-	color: 					#7cc4e7 /*{global-link-color}*/;
+	color: #7cc4e7 /*{a-bar-link-color}*/;
 	font-weight: bold;
+}
+
+.ui-bar-a .ui-link:hover {
+	color: #2489CE /*{a-bar-link-hover}*/;
+}
+
+.ui-bar-a .ui-link:active {
+	color: #2489CE /*{a-bar-link-active}*/;
+}
+
+.ui-bar-a .ui-link:visited {
+    color: #2489CE /*{a-bar-link-visited}*/;
 }
 .ui-body-a {
 	border: 1px solid 		#2A2A2A /*{a-body-border}*/;
@@ -65,12 +78,26 @@
 	font-family: Helvetica, Arial, sans-serif /*{a-body-font}*/;
 }
 .ui-body-a .ui-link-inherit {
-	color: 					#fff /*{a-body-color}*/;
+	color: 	#fff /*{a-body-color}*/;
 }
+
 .ui-body-a .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{a-body-link-color}*/;
 	font-weight: bold;
 }
+
+.ui-body-a .ui-link:hover {
+	color: #2489CE /*{a-body-link-hover}*/;
+}
+
+.ui-body-a .ui-link:active {
+	color: #2489CE /*{a-body-link-active}*/;
+}
+
+.ui-body-a .ui-link:visited {
+    color: #2489CE /*{a-body-link-visited}*/;
+}
+
 .ui-br {
 	border-bottom: rgb(130,130,130);
 	border-bottom: rgba(130,130,130,.3);
@@ -157,13 +184,24 @@
 	font-family: Helvetica, Arial, sans-serif /*{b-bar-font}*/;
 }
 .ui-bar-b .ui-link-inherit {
-	color: 					#fff /*{b-bar-color}*/;
+	color: 	#fff /*{b-bar-color}*/;
 }
 .ui-bar-b .ui-link {
-	color: 					#7cc4e7 /*{global-link-color}*/;
+	color: #ddf0f8 /*{b-bar-link-color}*/;
 	font-weight: bold;
 }
 
+.ui-bar-b .ui-link:hover {
+	color: #ddf0f8 /*{b-bar-link-hover}*/;
+}
+
+.ui-bar-b .ui-link:active {
+	color: #ddf0f8 /*{b-bar-link-active}*/;
+}
+
+.ui-bar-b .ui-link:visited {
+    color: #ddf0f8 /*{b-bar-link-visited}*/;
+}
 .ui-body-b {
 	border: 1px solid 		#C6C6C6 /*{b-body-border}*/;
 	background: 			#cccccc /*{b-body-background-color}*/;
@@ -185,12 +223,26 @@
 	font-family: Helvetica, Arial, sans-serif /*{b-body-font}*/;
 }
 .ui-body-b .ui-link-inherit {
-	color: 					#333333 /*{b-body-color}*/;
+	color: 	#333333 /*{b-body-color}*/;
 }
+
 .ui-body-b .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{b-body-link-color}*/;
 	font-weight: bold;
 }
+
+.ui-body-b .ui-link:hover {
+	color: #2489CE /*{b-body-link-hover}*/;
+}
+
+.ui-body-b .ui-link:active {
+	color: #2489CE /*{b-body-link-active}*/;
+}
+
+.ui-body-b .ui-link:visited {
+    color: #2489CE /*{b-body-link-visited}*/;
+}
+
 .ui-btn-up-b {
 	border: 1px solid 		#145072 /*{b-bup-border}*/;
 	background: 			#2567ab /*{b-bup-background-color}*/;
@@ -264,9 +316,24 @@
 	background-image:         linear-gradient(top, #f0f0f0 /*{c-bar-background-start}*/, #e9eaeb /*{c-bar-background-end}*/);
 }
 
+.ui-bar-c .ui-link-inherit {
+	color: 	#3E3E3E /*{c-bar-color}*/;
+}
 .ui-bar-c .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #7cc4e7 /*{c-bar-link-color}*/;
 	font-weight: bold;
+}
+
+.ui-bar-c .ui-link:hover {
+	color: #2489CE /*{c-bar-link-hover}*/;
+}
+
+.ui-bar-c .ui-link:active {
+	color: #2489CE /*{c-bar-link-active}*/;
+}
+
+.ui-bar-c .ui-link:visited {
+    color: #2489CE /*{c-bar-link-visited}*/;
 }
 
 .ui-bar-c,
@@ -295,12 +362,26 @@
 .ui-body-c button {
 	font-family: Helvetica, Arial, sans-serif /*{c-body-font}*/;
 }
+
 .ui-body-c .ui-link-inherit {
-	color: 					#333333 /*{c-body-color}*/;
+	color: 	#333333 /*{c-body-color}*/;
 }
+
 .ui-body-c .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{c-body-link-color}*/;
 	font-weight: bold;
+}
+
+.ui-body-c .ui-link:hover {
+	color: #2489CE /*{c-body-link-hover}*/;
+}
+
+.ui-body-c .ui-link:active {
+	color: #2489CE /*{c-body-link-active}*/;
+}
+
+.ui-body-c .ui-link:visited {
+    color: #2489CE /*{c-body-link-visited}*/;
 }
 
 .ui-btn-up-c {
@@ -321,7 +402,7 @@
 }
 
 .ui-btn-hover-c {
-	border: 1px solid 		#bbb /*{c-bhover-border}*/;
+	border: 1px solid 		#bbbbbb /*{c-bhover-border}*/;
 	background: 			#dadada /*{c-bhover-background-color}*/;
 	font-weight: bold;
 	color: 					#101010 /*{c-bhover-color}*/;
@@ -382,13 +463,27 @@
 .ui-bar-d button {
 	font-family: Helvetica, Arial, sans-serif /*{d-bar-font}*/;
 }
+
 .ui-bar-d .ui-link-inherit {
-	color: 					#333 /*{d-bar-color}*/;
+	color: 	#333333 /*{d-bar-color}*/;
 }
 .ui-bar-d .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{d-bar-link-color}*/;
 	font-weight: bold;
 }
+
+.ui-bar-d .ui-link:hover {
+	color: #2489CE /*{d-bar-link-hover}*/;
+}
+
+.ui-bar-d .ui-link:active {
+	color: #2489CE /*{d-bar-link-active}*/;
+}
+
+.ui-bar-d .ui-link:visited {
+    color: #2489CE /*{d-bar-link-visited}*/;
+}
+
 .ui-body-d {
 	border: 1px solid 		#ccc /*{d-body-border}*/;
 	color: 					#333333 /*{d-body-color}*/;
@@ -408,13 +503,28 @@
 .ui-body-d button {
 	font-family: Helvetica, Arial, sans-serif /*{d-body-font}*/;
 }
+
 .ui-body-d .ui-link-inherit {
-	color: 					#333333 /*{d-body-color}*/;
+	color: 	#333333 /*{d-body-color}*/;
 }
+
 .ui-body-d .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{d-body-link-color}*/;
 	font-weight: bold;
 }
+
+.ui-body-d .ui-link:hover {
+	color: #2489CE /*{d-body-link-hover}*/;
+}
+
+.ui-body-d .ui-link:active {
+	color: #2489CE /*{d-body-link-active}*/;
+}
+
+.ui-body-d .ui-link:visited {
+    color: #2489CE /*{d-body-link-visited}*/;
+}
+
 .ui-btn-up-d {
 	border: 1px solid 		#ccc /*{d-bup-border}*/;
 	background: 			#fff /*{d-bup-background-color}*/;
@@ -495,12 +605,25 @@
 	font-family: Helvetica, Arial, sans-serif /*{e-bar-font}*/;
 }
 .ui-bar-e .ui-link-inherit {
-	color: 					#333 /*{e-bar-color}*/;
+	color: 	#333333 /*{e-bar-color}*/;
 }
 .ui-bar-e .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{e-bar-link-color}*/;
 	font-weight: bold;
 }
+
+.ui-bar-e .ui-link:hover {
+	color: #2489CE /*{e-bar-link-hover}*/;
+}
+
+.ui-bar-e .ui-link:active {
+	color: #2489CE /*{e-bar-link-active}*/;
+}
+
+.ui-bar-e .ui-link:visited {
+    color: #2489CE /*{e-bar-link-visited}*/;
+}
+
 .ui-body-e {
 	border: 1px solid 		#F7C942 /*{e-body-border}*/;
 	color: 					#333333 /*{e-body-color}*/;
@@ -521,12 +644,26 @@
 	font-family: Helvetica, Arial, sans-serif /*{e-body-font}*/;
 }
 .ui-body-e .ui-link-inherit {
-	color: 					#333333 /*{e-body-color}*/;
+	color: 	#333333 /*{e-body-color}*/;
 }
+
 .ui-body-e .ui-link {
-	color: 					#2489CE /*{global-link-color}*/;
+	color: #2489CE /*{e-body-link-color}*/;
 	font-weight: bold;
 }
+
+.ui-body-e .ui-link:hover {
+	color: #2489CE /*{e-body-link-hover}*/;
+}
+
+.ui-body-e .ui-link:active {
+	color: #2489CE /*{e-body-link-active}*/;
+}
+
+.ui-body-e .ui-link:visited {
+    color: #2489CE /*{e-body-link-visited}*/;
+}
+
 .ui-btn-up-e {
 	border: 1px solid 		#F7C942 /*{e-bup-border}*/;
 	background: 			#fadb4e /*{e-bup-background-color}*/;
@@ -592,24 +729,6 @@ a.ui-link-inherit {
 	text-decoration: none !important;
 }
 
-/* links and their different states
------------------------------------------------------------------------------------------------------------*/
-
-.ui-link{
-	color: #2489CE /*{global-link-color}*/
-}
-
-.ui-link:hover{
-	color: #2489CE /*{global-link-hover}*/
-}
-
-.ui-link:active{
-	color: #2489CE /*{global-link-active}*/
-}
-
-.ui-link:visited{
-    color: #2489CE /*{global-link-visited}*/
-}
 
 /* Active class used as the "on" state across all themes
 -----------------------------------------------------------------------------------------------------------*/
@@ -628,7 +747,6 @@ a.ui-link-inherit {
 	background-image:     -ms-linear-gradient(top, #85bae4 /*{global-active-background-start}*/, #5393c5 /*{global-active-background-end}*/); /* IE10 */
 	background-image:      -o-linear-gradient(top, #85bae4 /*{global-active-background-start}*/, #5393c5 /*{global-active-background-end}*/); /* Opera 11.10+ */
 	background-image:         linear-gradient(top, #85bae4 /*{global-active-background-start}*/, #5393c5 /*{global-active-background-end}*/);
-  	outline: none;
 	font-family: Helvetica, Arial, sans-serif /*{global-active-font}*/;
 }
 .ui-btn-active a.ui-link-inherit {
@@ -718,6 +836,7 @@ a.ui-link-inherit {
 }
 .ui-disabled,
 .ui-disabled a {
+	pointer-events: none;
 	cursor: default;
 }
 
@@ -1038,6 +1157,14 @@ a.ui-link-inherit {
 /* on ios4, setting focus on the page element causes flashing during transitions when there is an outline, so we turn off outlines */
 .ui-page { outline: none; }
 
+/*orientations from js are available */
+@media screen and (orientation: portrait){
+.ui-mobile, .ui-mobile .ui-page { min-height: 420px; }
+}
+@media screen and (orientation: landscape){
+.ui-mobile, .ui-mobile .ui-page { min-height: 300px; }
+}
+
 /* native overflow scrolling */
 .ui-page.ui-mobile-touch-overflow,
 .ui-mobile-touch-overflow.ui-native-fixed .ui-content {
@@ -1079,6 +1206,7 @@ a.ui-link-inherit {
 .ui-header .ui-btn-left { position: absolute; left: 10px; top: .4em;  }
 .ui-header .ui-btn-right { position: absolute; right: 10px; top: .4em; }
 .ui-header .ui-title, .ui-footer .ui-title { min-height: 1.1em; text-align: center; font-size: 16px; display: block; margin: .6em 90px .8em;  padding: 0;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; outline: 0 !important; }
+.ui-footer .ui-title { margin: .6em 15px .8em;  }
 
 /*content area*/
 .ui-content { border-width: 0; overflow: visible; overflow-x: hidden; padding: 15px; }
@@ -1130,6 +1258,10 @@ a.ui-link-inherit {
 
 /* non-js content hiding */
 .ui-nojs { position: absolute; left: -9999px; }
+
+/* accessible content hiding */
+.ui-hide-label label,
+.ui-hidden-accessible { position: absolute !important; left: -9999px; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }
 /*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
@@ -1470,14 +1602,15 @@ Built by David Kaneda and maintained by Jonathan Stark.
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
 */
 .ui-btn { display: block; text-align: center; cursor:pointer;  position: relative; margin: .5em 5px; padding: 0; }
-.ui-btn:focus, .ui-btn:active { outline: none; }
 .ui-header .ui-btn, .ui-footer .ui-btn, .ui-bar .ui-btn { display: inline-block; font-size: 13px; margin: 0; }
 .ui-btn-inline { display: inline-block; }
 .ui-btn-inner { padding: .6em 25px; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; position: relative; zoom: 1; }
+.ui-btn input, .ui-btn button { z-index: 2; }
 .ui-header .ui-btn-inner, .ui-footer .ui-btn-inner, .ui-bar .ui-btn-inner { padding: .4em 8px .5em; }
 .ui-btn-icon-notext { width: 24px; height: 24px; }
 .ui-btn-icon-notext .ui-btn-inner { padding: 2px 1px 2px 3px; }
-.ui-btn-icon-notext .ui-btn-text { position: absolute; left: -999px; }
+.ui-btn-text { position: relative; z-index: 1; }
+.ui-btn-icon-notext .ui-btn-text { position: absolute; left: -9999px; }
 .ui-btn-icon-left .ui-btn-inner { padding-left: 33px; }
 .ui-header .ui-btn-icon-left .ui-btn-inner,
 .ui-footer .ui-btn-icon-left .ui-btn-inner,
@@ -1496,7 +1629,7 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-bar .ui-btn-icon-bottom .ui-btn-inner { padding-bottom: 27px; }
 
 /*btn icon positioning*/
-.ui-btn-icon-notext .ui-icon { display: block; }
+.ui-btn-icon-notext .ui-icon { display: block; z-index: 0;}
 .ui-btn-icon-left .ui-icon, .ui-btn-icon-right .ui-icon { position: absolute; top: 50%; margin-top: -9px; }
 .ui-btn-icon-top .ui-icon, .ui-btn-icon-bottom .ui-icon { position: absolute; left: 50%;  margin-left: -9px; }
 .ui-btn-icon-left .ui-icon { left: 10px; }
@@ -1530,7 +1663,7 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-collapsible-heading a span.ui-btn { position: absolute; left: 6px; top: 50%; margin: -12px 0 0 0; width: 20px; height: 20px; padding: 1px 0px 1px 2px; text-indent: -9999px; }
 .ui-collapsible-heading a span.ui-btn .ui-btn-inner { padding: 10px 0; }
 .ui-collapsible-heading a span.ui-btn .ui-icon { left: 0; margin-top: -10px; }
-.ui-collapsible-heading-status { position:absolute; left:-9999px; }
+.ui-collapsible-heading-status { position:fixed; left:-9999px; }
 .ui-collapsible-content {
 	display: block;
 	margin:  0 -8px;
@@ -1551,13 +1684,15 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-controlgroup, fieldset.ui-controlgroup { padding: 0; margin: .5em 0 1em; }
 .ui-bar .ui-controlgroup { margin: 0 .3em; }
 .ui-controlgroup-label { font-size: 16px; line-height: 1.4; font-weight: normal; margin: 0 0 .3em; }
-.ui-controlgroup-controls { display: block; width: 95%;}
+.ui-controlgroup-controls { display: block; width: 100%;}
 .ui-controlgroup li { list-style: none; }
 .ui-controlgroup-vertical .ui-btn,
 .ui-controlgroup-vertical .ui-checkbox, .ui-controlgroup-vertical .ui-radio { margin: 0; border-bottom-width: 0;  }
+.ui-controlgroup-controls label.ui-select { position: absolute; left: -9999px; }
+
 .ui-controlgroup-vertical .ui-controlgroup-last { border-bottom-width: 1px; }
 .ui-controlgroup-horizontal { padding: 0; }
-.ui-controlgroup-horizontal .ui-btn { display: inline-block; margin: 0 -5px 0 0; }
+.ui-controlgroup-horizontal .ui-btn, .ui-controlgroup-horizontal .ui-select { display: inline-block; margin: 0 -5px 0 0; }
 .ui-controlgroup-horizontal .ui-checkbox, .ui-controlgroup-horizontal .ui-radio { float: left; margin: 0 -1px 0 0; }
 .ui-controlgroup-horizontal .ui-checkbox .ui-btn, .ui-controlgroup-horizontal .ui-radio .ui-btn,
 .ui-controlgroup-horizontal .ui-checkbox:last-child, .ui-controlgroup-horizontal .ui-radio:last-child { margin-right: 0; }
@@ -1569,16 +1704,19 @@ Built by David Kaneda and maintained by Jonathan Stark.
 */
 
 @media all and (min-width: 450px){
-	.ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
-	.ui-controlgroup-controls { width: 60%; display: inline-block; } 
+	.ui-field-contain .ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
+	.ui-field-contain .ui-controlgroup-controls { width: 60%; display: inline-block; }
+	.ui-field-contain .ui-controlgroup .ui-select { width: 100%; } 
+	.ui-field-contain .ui-controlgroup-horizontal .ui-select { width: auto; }
 }	/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
 */
 .ui-dialog { min-height: 480px; }
-.ui-dialog .ui-header, .ui-dialog .ui-content,  .ui-dialog .ui-footer { margin: 15px; position: relative; }
-.ui-dialog .ui-header, .ui-dialog .ui-footer { z-index: 10; width: auto; }
+.ui-dialog .ui-header, .ui-dialog .ui-content,  .ui-dialog .ui-footer { max-width: 500px; margin: 10% auto 0 auto; padding: 15px; width: 85%; position: relative; }
+.ui-dialog .ui-header { padding: 0 15px; }
+.ui-dialog .ui-header, .ui-dialog .ui-footer { z-index: 10; }
 .ui-dialog .ui-content, .ui-dialog .ui-footer { margin-top: -15px;  }/*
 * jQuery Mobile Framework
 * Copyright (c) jQuery Project
@@ -1621,8 +1759,8 @@ Built by David Kaneda and maintained by Jonathan Stark.
 label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margin: 0 0 .3em; display: block; }
 
 /*listbox*/
-.ui-select .ui-btn-text, .ui-selectmenu .ui-btn-text { display: block; min-height: 1em; }
-.ui-select .ui-btn-text { text-overflow: ellipsis; overflow: hidden;}
+.ui-select .ui-btn-text, .ui-selectmenu .ui-btn-text { display: block; min-height: 1em; overflow: hidden; }
+.ui-select .ui-btn-text { text-overflow: ellipsis; }
 
 .ui-selectmenu { position: absolute; padding: 0; z-index: 100 !important; width: 80%; max-width: 350px; padding: 6px; }
 .ui-selectmenu .ui-listview { margin: 0; }
@@ -1634,9 +1772,9 @@ label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margi
 .ui-li.ui-selectmenu-placeholder { display: none; }
 .ui-selectmenu .ui-header .ui-title { margin: 0.6em 46px 0.8em; }
 
-@media all and (min-width: 450px){
-	label.ui-select { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-	.ui-select { width: 60%; display: inline-block; }
+@media all and (min-width: 450px){	
+	.ui-field-contain label.ui-select { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+	.ui-field-contain .ui-select { width: 60%; display: inline-block; }
 }	
 
 /* when no placeholder is defined in a multiple select, the header height doesn't even extend past the close button.  this shim's content in there */
@@ -1646,22 +1784,25 @@ label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margi
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
 */
 label.ui-input-text { font-size: 16px; line-height: 1.4; display: block; font-weight: normal; margin: 0 0 .3em; }
-input.ui-input-text, textarea.ui-input-text { background-image: none; padding: .4em; line-height: 1.4; font-size: 16px; display: block; width: 95%; }
+input.ui-input-text, textarea.ui-input-text { background-image: none; padding: .4em 1.5%; line-height: 1.4; font-size: 16px; display: block; width: 97%; }
 input.ui-input-text { -webkit-appearance: none; }
 textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; -moz-transition: height 200ms linear; -o-transition: height 200ms linear; transition: height 200ms linear; }
-.ui-input-search { padding: 0 30px; width: 77%; background-image: none; position: relative; }
+.ui-input-search { padding: 0 30px; background-image: none; position: relative; }
 .ui-icon-searchfield:after { position: absolute; left: 7px; top: 50%; margin-top: -9px; content: ""; width: 18px; height: 18px; opacity: .5; }
 .ui-input-search input.ui-input-text { border: none; width: 98%; padding: .4em 0; margin: 0; display: block; background: transparent none; outline: 0 !important; }
-.ui-input-search .ui-input-clear { position: absolute; right: 0; top: 50%; margin-top: -14px; }
+.ui-input-search .ui-input-clear { position: absolute; right: 0; top: 50%; margin-top: -13px; }
 .ui-input-search .ui-input-clear-hidden { display: none; }
 
 /* orientation adjustments - incomplete!*/
 @media all and (min-width: 450px){
-	label.ui-input-text  { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0 }
-	input.ui-input-text, 
-	textarea.ui-input-text, 
-	.ui-input-search { width: 60%; display: inline-block; } 
-	.ui-input-search { width: 50%; }
+	.ui-field-contain label.ui-input-text  { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0 }
+	.ui-field-contain input.ui-input-text, 
+	.ui-field-contain textarea.ui-input-text, 
+	.ui-field-contain .ui-input-search { width: 60%; display: inline-block; } 
+	.ui-field-contain .ui-input-search { width: 50%; }
+	.ui-hide-label input.ui-input-text, 
+	.ui-hide-label textarea.ui-input-text, 
+	.ui-hide-label .ui-input-search { padding: .4em 1.5%; width: 97%; } 
 	.ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
 }/*
 * jQuery Mobile Framework
@@ -1673,7 +1814,6 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 .ui-content .ui-listview-inset { margin: 1em 0;  }
 .ui-listview, .ui-li { list-style:none; padding:0; }
 .ui-li, .ui-li.ui-field-contain { display: block; margin:0; position: relative; overflow: visible; text-align: left; border-width: 0; border-top-width: 1px; }
-.ui-li .ui-btn-text { position: relative; z-index: 1; }
 .ui-li .ui-btn-text a.ui-link-inherit { text-overflow: ellipsis; overflow: hidden; white-space: nowrap;  }
 .ui-li-divider, .ui-li-static { padding: .5em 15px; font-size: 14px; font-weight: bold;  }
 .ui-li-divider { counter-reset: listnumbering;  }
@@ -1688,6 +1828,7 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 .ui-li-has-count .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-count { padding-right: 45px; }
 .ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow { padding-right: 30px; }
 .ui-li-has-arrow.ui-li-has-count .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow.ui-li-has-count { padding-right: 75px; }
+.ui-li-has-count .ui-btn-text { padding-right: 15px; }
 .ui-li-heading { font-size: 16px; font-weight: bold; display: block; margin: .6em 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;  }
 .ui-li-desc {  font-size: 12px; font-weight: normal; display: block; margin: -.5em 0 .6em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .ui-li-thumb, .ui-li-icon { position: absolute; left: 1px; top: 0; max-height: 80px; max-width: 80px; }
@@ -1723,15 +1864,17 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) or GPL (GPL-LICENSE.txt) licenses.
 */
-label.ui-slider { display: block; }
-input.ui-slider-input  { display: inline-block; width: 50px; }
+label.ui-slider { font-size: 16px; line-height: 1.4;  font-weight: normal; margin: 0 0 .3em; display: block; }
+input.ui-slider-input,
+.ui-field-contain input.ui-slider-input { display: inline-block; width: 50px; }
 select.ui-slider-switch { display: none; }
 div.ui-slider { position: relative; display: inline-block; overflow: visible; height: 15px; padding: 0; margin: 0 2% 0 20px; top: 4px; width: 66%; }
+div.ui-slider-switch { width: 99.8%; }
 a.ui-slider-handle { position: absolute; z-index: 10;  top: 50%; width: 28px; height: 28px; margin-top: -15px; margin-left: -15px; }
 a.ui-slider-handle .ui-btn-inner { padding-left: 0; padding-right: 0; }
 @media all and (min-width: 480px){
-	label.ui-slider { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-	div.ui-slider { width: 45%; }
+	.ui-field-contain label.ui-slider { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+	.ui-field-contain div.ui-slider { width: 43%; }
 }	
 
 div.ui-slider-switch { height: 32px;  overflow: hidden; margin-left: 0; }
