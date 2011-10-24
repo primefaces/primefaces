@@ -50,7 +50,6 @@ class DataHelper {
 
 		table.setFirst(Integer.valueOf(firstParam));
 		table.setRows(Integer.valueOf(rowsParam));
-		table.setPage(Integer.valueOf(pageParam));
 	}
 
     void decodeSortRequest(FacesContext context, DataTable table) {
@@ -87,7 +86,6 @@ class DataHelper {
 
         //Reset state
 		table.setFirst(0);
-		table.setPage(1);
         
         ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
         table.setValueExpression("sortBy", sortByVE);
@@ -120,7 +118,6 @@ class DataHelper {
         if(table.isFilterRequest(context)) {
             //Reset state
             table.setFirst(0);
-            table.setPage(1);
         }
 
         if(table.isLazy()) {

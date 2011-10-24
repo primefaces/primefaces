@@ -40,8 +40,7 @@ public class UIData extends javax.faces.component.UIData {
 		,currentPageReportTemplate
 		,pageLinks
 		,paginatorPosition
-		,paginatorAlwaysVisible
-		,page;
+		,paginatorAlwaysVisible;
 
         String toString;
 
@@ -104,11 +103,28 @@ public class UIData extends javax.faces.component.UIData {
 	public void setPaginatorAlwaysVisible(boolean _paginatorAlwaysVisible) {
 		getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, _paginatorAlwaysVisible);
 	}
+    
+    public void calculatePage() {
+        int rows = this.getRows();
+        int first = this.getFirst();
+        int currentPage = (int) (first / rows);
+        int numberOfPages = (int) Math.ceil(this.getRowCount() * 1d / rows);
 
-	public int getPage() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.page, 1);
-	}
-	public void setPage(int _page) {
-		getStateHelper().put(PropertyKeys.page, _page);
-	}
+        if(currentPage > numberOfPages && numberOfPages > 0) {
+            currentPage = numberOfPages;
+
+            this.setFirst((currentPage-1) * rows);
+        }
+    }
+    
+    public int getPage() {
+        int rows = this.getRows();
+        int first = this.getFirst();
+        
+        if(rows == 0) {
+            rows = this.getRowCount();
+        }
+        
+        return (int) (first / rows);
+    }
 }
