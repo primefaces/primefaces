@@ -74,7 +74,7 @@ public class HeadRenderer extends Renderer {
         }
         
         //Theme
-        String theme = null;
+        String theme = "aristo";
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
 
         if(themeParamValue != null) {
@@ -85,11 +85,7 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
 
-        if(theme == null || theme.equalsIgnoreCase("aristo")) {
-            encodeTheme(context, "primefaces", "themes/aristo/theme.css");
-        } else if(!theme.equalsIgnoreCase("none")) {
-            encodeTheme(context, "primefaces-" + theme, "theme.css");
-        }
+        encodeTheme(context, "primefaces-" + theme, "theme.css");
         
         //Styles
         for(UIComponent style : styles) {
