@@ -1,9 +1,9 @@
 $(function() {
    $(document).bind('ajaxStart', function() {
-        $.mobile.pageLoading();
+        $.mobile.showPageLoadingMsg();
     });
 
     $(document).bind('ajaxComplete', function() {
-        $.mobile.pageLoading(true);
+        $.mobile.hidePageLoadingMsg();
     });
 });
