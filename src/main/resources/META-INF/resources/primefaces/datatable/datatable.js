@@ -53,8 +53,11 @@ PrimeFaces.extend(PrimeFaces.widget.DataTable, PrimeFaces.widget.BaseWidget);
  * Binds the change event listener and renders the paginator
  */
 PrimeFaces.widget.DataTable.prototype.setupPaginator = function() {
-    this.cfg.paginator.paginate = this.paginate;
-    this.cfg.paginator.dataRoot = this;
+    var _self = this;
+    this.cfg.paginator.paginate = function(newState) {
+        _self.paginate(newState);
+    };
+
     this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
 }
 
@@ -324,9 +327,8 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
 
     var params = {};
     params[this.id + "_paging"] = true;
-    params[this.id + "_first"] = newState.recordOffset;
-    params[this.id + "_rows"] = newState.rowsPerPage;
-    params[this.id + "_page"] = newState.page;
+    params[this.id + "_first"] = newState.first;
+    params[this.id + "_rows"] = newState.rows;
     params[this.id + "_updateBody"] = true;
 
     options.params = params;

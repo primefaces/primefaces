@@ -158,4 +158,26 @@ public class DataRenderer extends CoreRenderer {
         
         writer.endElement("select");
     }
+    
+    protected void encodePaginatorConfig(FacesContext context, UIData uidata) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = uidata.getClientId(context);
+        String paginatorPosition = uidata.getPaginatorPosition();
+        String paginatorContainers = null;
+        if(paginatorPosition.equalsIgnoreCase("both"))
+            paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
+        else
+            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
+
+        writer.write(",paginator:{");
+        writer.write("id:[" + paginatorContainers + "]");
+        writer.write(",rows:" + uidata.getRows());
+        writer.write(",rowCount:" + uidata.getRowCount());
+        writer.write(",page:" + uidata.getPage());
+
+        if(uidata.getPageLinks() != 10) writer.write(",pageLinks:" + uidata.getPageLinks());
+        if(!uidata.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
+
+        writer.write("}");
+    }
 }

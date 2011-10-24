@@ -827,28 +827,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePaginatorConfig(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = table.getClientId(context);
-        String paginatorPosition = table.getPaginatorPosition();
-        String paginatorContainers = null;
-        if(paginatorPosition.equalsIgnoreCase("both"))
-            paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
-        else
-            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
-
-        writer.write(",paginator:{");
-        writer.write("id:[" + paginatorContainers + "]");
-        writer.write(",rowsPerPage:" + table.getRows());
-        writer.write(",totalRecords:" + table.getRowCount());
-        writer.write(",page:" + table.getPage());
-
-        if(table.getPageLinks() != 10) writer.write(",pageLinks:" + table.getPageLinks());
-        if(!table.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
-
-        writer.write("}");
-    }
-
     protected void encodeSelectionConfig(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 

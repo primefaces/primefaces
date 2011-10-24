@@ -1,3 +1,6 @@
+/**
+ * PrimeFaces Paginator Widget
+ */
 PrimeFaces.widget.Paginator = function(cfg){
     this.cfg = cfg;
     this.jq = $();
@@ -17,7 +20,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.endLink   = this.jq.children('.ui-paginator-end');
     this.currentReport = this.jq.children('.ui-paginator-current');
     
-    this.cfg.pageCount = Math.ceil(this.cfg.totalRecords / this.cfg.rowsPerPage);
+    this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
     this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.pageLinks = this.cfg.pageLinks > this.cfg.pageCount ? this.cfg.pageCount : this.cfg.pageLinks;
 
@@ -37,19 +40,19 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
         $(this).removeClass('ui-state-hover');
     });
     
-    this.bindPageLinksEvents();
+    this.bindPageLinkEvents();
     
     //records per page selection
     this.rppSelect.change(function(e){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setRowsPerPage($(this).val());
+            _self.setRowsPerPage(parseInt($(this).val()));
         }
     });
     
     //jump to page
     this.jtpSelect.change(function(e){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setPage($(this).val());
+            _self.setPage(parseInt($(this).val()) - 1);
         }
     });
     
@@ -82,88 +85,75 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     });
 }
 
-
-
-PrimeFaces.widget.Paginator.prototype.bindPageLinksEvents = function(){
+PrimeFaces.widget.Paginator.prototype.bindPageLinkEvents = function(){
     var _self = this;
     
     this.pageLinks.click(function(e){
         var link = $(this);
         if(!link.hasClass('ui-state-active')){
-            _self.setPage(parseInt(link.text()));
+            _self.setPage(parseInt(link.text()) - 1);
         }
     });
 }
 
-PrimeFaces.widget.Paginator.prototype.checkPageLinks = function(){
+PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
     var _self = this;
     
     this.pageLinks.removeClass('ui-state-active').each(function(index, item){
-        
-        if(index%_self.cfg.pageLinks == _self.cfg.page - 1)
+        if(parseInt(item.text()) - 1 == _self.cfg.page)
             $(item).addClass('ui-state-active');
     });
 }
-PrimeFaces.widget.Paginator.prototype.checkLinks = function(){
-    this.checkPageLinks();
+
+PrimeFaces.widget.Paginator.prototype.updateUI = function(){
+    this.updatePageLinks();
     
+    //sync dropdowns
     this.rppSelect.val(this.cfg.rowsPerPage);
     this.jtpSelect.val(this.cfg.page);
     
-    if(this.cfg.page == 1){
+    if(this.cfg.page == 0) {
         this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.prevLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
     }
-    else{
+    else {
         this.firstLink.removeClass('ui-state-disabled');
         this.prevLink.removeClass('ui-state-disabled');
     }
     
-    if(this.cfg.page == this.cfg.pageCount){
+    if(this.cfg.page == (this.cfg.pageCount - 1)){
         this.nextLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.endLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
     }
-    else{
+    else {
         this.nextLink.removeClass('ui-state-disabled');
         this.endLink.removeClass('ui-state-disabled');
     }
     
+    //TODO: Levent, use currentPageTemplate here
     this.currentReport.text('(' + this.cfg.page + ' of ' + this.cfg.pageCount + ')');
 }
 
-PrimeFaces.widget.Paginator.prototype.setPage = function(page){    
+PrimeFaces.widget.Paginator.prototype.setPage = function(page) {    
     if(page >= 0 && page < this.cfg.pageCount && this.cfg.page != page){
         this.cfg.page = page;
-        this.setState();
+        
+        var newState = {
+            first: this.cfg.rows * (this.cfg.page),
+            rows: this.cfg.rows
+        };
+
+        this.cfg.paginate.call(this, newState);
+    
+        this.updateUI();
     }
 }
 
 PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
-    if(rpp){
-        var passed = this.cfg.rowsPerPage * (this.cfg.page - 1);
-        var newPageCount = Math.ceil(this.cfg.totalRecords / rpp);
-        this.cfg.page = passed / rpp + 1;
-        this.cfg.pageCount = newPageCount;
-        this.cfg.rowsPerPage = rpp;
-        this.setState();
-    }
-}
-
-PrimeFaces.widget.Paginator.prototype.setState = function(newState){
-    if(!newState){
-        
-        var offset = this.cfg.rowsPerPage * (this.cfg.page - 1);
-        newState = {
-            recordOffset : offset,
-            rowsPerPage : this.cfg.rowsPerPage,
-            page : this.cfg.page,
-            totalRecords : this.cfg.totalRecords,
-            paginator : this,
-            records : [offset, offset + this.cfg.rowsPerPage - 1]
-        };
-    }
+    var first = this.cfg.rows * this.cfg.page,
+    page = first / rpp;
     
-    this.cfg.paginate.call(this.cfg.dataRoot, newState);
+    this.cfg.rows = rpp;
     
-    this.checkLinks();
+    this.setPage(page);
 }
