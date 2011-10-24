@@ -1,9 +1,9 @@
 /**
  * PrimeFaces ThemeSwitcher Widget
  */
-PrimeFaces.widget.ThemeSwitcher = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.panelId = this.jqId + '_panel';
     this.jq = $(this.jqId);

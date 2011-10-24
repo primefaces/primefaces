@@ -63,8 +63,8 @@ public class PasswordRenderer extends InputRenderer {
 		writer.write("$(function(){");
         
         writer.write("PrimeFaces.cw('Password','" + password.resolveWidgetVar() + "',{");
-        writer.write(",id:'" + clientId + "'");
-        writer.write("feedback:" + feedback);
+        writer.write("id:'" + clientId + "'");
+        writer.write(",feedback:" + feedback);
 
         if(feedback) {
             if(password.getMinLength() != 8) writer.write(",length:" + password.getMinLength());

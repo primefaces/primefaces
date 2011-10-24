@@ -1,7 +1,7 @@
 /**
  *  PrimeFaces Spinner Widget
  */
-PrimeFaces.widget.Spinner = function(id, cfg) {
+PrimeFaces.widget.Spinner = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);

@@ -1,7 +1,7 @@
 /**
  * PrimeFaces OrderList Widget
  */
-PrimeFaces.widget.OrderList = function(id, cfg) {
+PrimeFaces.widget.OrderList = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);

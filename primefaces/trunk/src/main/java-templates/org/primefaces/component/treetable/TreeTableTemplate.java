@@ -102,17 +102,11 @@ import java.lang.StringBuilder;
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
  
-            
-
             super.queueEvent(wrapperEvent);
         }
         else {
             super.queueEvent(event);
         }
-    }
-
-    public boolean isSelectionEnabled() {
-        return (!this.getSelectionMode().equals("none"));
     }
 
     @Override
@@ -128,9 +122,9 @@ import java.lang.StringBuilder;
     @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
+        String selectionMode = this.getSelectionMode();
 
-        if(isSelectionEnabled()) {
-            String selectionMode = getSelectionMode();
+        if(selectionMode != null) {
             Object selection = this.getLocalSelectedNodes();
             Object previousSelection = this.getValueExpression("selection").getValue(context.getELContext());
 
