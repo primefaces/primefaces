@@ -3,13 +3,11 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.jq = $();
     
     var _self = this;
-    
     $.each(this.cfg.id, function(index, id){
-        var id = PrimeFaces.escapeClientId(id);
-        _self.jq = _self.jq.add($(id));
+        _self.jq = _self.jq.add($(PrimeFaces.escapeClientId(id)));
     });
     
-    this.pages     = this.jq.children('.ui-paginator-pages');
+    this.pagesContainer = this.jq.children('.ui-paginator-pages');
     this.pageLinks = this.pages.children('.ui-paginator-page');
     this.rppSelect = this.jq.children('.ui-paginator-rpp-options');
     this.jtpSelect = this.jq.children('.ui-paginator-jtp-select');
@@ -19,8 +17,8 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.endLink   = this.jq.children('.ui-paginator-end');
     this.currentReport = this.jq.children('.ui-paginator-current');
     
-    this.cfg.pageCount = Math.ceil(_self.cfg.totalRecords / _self.cfg.rowsPerPage);
-    this.cfg.pageLinks = this.cfg.pageLinks || 10;
+    this.cfg.pageCount = Math.ceil(this.cfg.totalRecords / this.cfg.rowsPerPage);
+    this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.pageLinks = this.cfg.pageLinks > this.cfg.pageCount ? this.cfg.pageCount : this.cfg.pageLinks;
 
     this.bindEvents();
@@ -28,15 +26,18 @@ PrimeFaces.widget.Paginator = function(cfg){
 
 PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     var _self = this;
+    
+    //hover for buttons
     this.jq.find('span.ui-state-default').mouseover(function(){
-        var item = $(this)
+        var item = $(this);
         if(!item.hasClass('ui-state-disabled'))
-            $(this).addClass('ui-state-hover');
+            item.addClass('ui-state-hover');
+        
     }).mouseout(function(){
         $(this).removeClass('ui-state-hover');
     });
     
-    this.bindEventsPageLinks();
+    this.bindPageLinksEvents();
     
     //records per page selection
     this.rppSelect.change(function(e){
@@ -83,8 +84,9 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
 
 
 
-PrimeFaces.widget.Paginator.prototype.bindEventsPageLinks = function(){
+PrimeFaces.widget.Paginator.prototype.bindPageLinksEvents = function(){
     var _self = this;
+    
     this.pageLinks.click(function(e){
         var link = $(this);
         if(!link.hasClass('ui-state-active')){
@@ -128,9 +130,11 @@ PrimeFaces.widget.Paginator.prototype.checkLinks = function(){
     
     this.currentReport.text('(' + this.cfg.initialPage + ' of ' + this.cfg.pageCount + ')');
 }
+
 PrimeFaces.widget.Paginator.prototype.setPage = function(page){
     //page control
     var newPage = parseInt(page||'');
+    
     if(newPage && newPage > 0 && newPage <= this.cfg.pageCount && this.cfg.initialPage != page){
         this.cfg.initialPage = page;
         this.setState();
