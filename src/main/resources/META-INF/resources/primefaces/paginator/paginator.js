@@ -63,14 +63,14 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     //Prev page link
     this.prevLink.click(function(){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setPage(_self.cfg.initialPage - 1);
+            _self.setPage(_self.cfg.page - 1);
         }
     });
     
     //Next page link
     this.nextLink.click(function(){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setPage(_self.cfg.initialPage + 1);
+            _self.setPage(_self.cfg.page + 1);
         }
     });
     
@@ -100,7 +100,7 @@ PrimeFaces.widget.Paginator.prototype.checkPageLinks = function(){
     
     this.pageLinks.removeClass('ui-state-active').each(function(index, item){
         
-        if(index%_self.cfg.pageLinks == _self.cfg.initialPage - 1)
+        if(index%_self.cfg.pageLinks == _self.cfg.page - 1)
             $(item).addClass('ui-state-active');
     });
 }
@@ -108,9 +108,9 @@ PrimeFaces.widget.Paginator.prototype.checkLinks = function(){
     this.checkPageLinks();
     
     this.rppSelect.val(this.cfg.rowsPerPage);
-    this.jtpSelect.val(this.cfg.initialPage);
+    this.jtpSelect.val(this.cfg.page);
     
-    if(this.cfg.initialPage == 1){
+    if(this.cfg.page == 1){
         this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.prevLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
     }
@@ -119,7 +119,7 @@ PrimeFaces.widget.Paginator.prototype.checkLinks = function(){
         this.prevLink.removeClass('ui-state-disabled');
     }
     
-    if(this.cfg.initialPage == this.cfg.pageCount){
+    if(this.cfg.page == this.cfg.pageCount){
         this.nextLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.endLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
     }
@@ -128,24 +128,21 @@ PrimeFaces.widget.Paginator.prototype.checkLinks = function(){
         this.endLink.removeClass('ui-state-disabled');
     }
     
-    this.currentReport.text('(' + this.cfg.initialPage + ' of ' + this.cfg.pageCount + ')');
+    this.currentReport.text('(' + this.cfg.page + ' of ' + this.cfg.pageCount + ')');
 }
 
-PrimeFaces.widget.Paginator.prototype.setPage = function(page){
-    //page control
-    var newPage = parseInt(page||'');
-    
-    if(newPage && newPage > 0 && newPage <= this.cfg.pageCount && this.cfg.initialPage != page){
-        this.cfg.initialPage = page;
+PrimeFaces.widget.Paginator.prototype.setPage = function(page){    
+    if(page >= 0 && page < this.cfg.pageCount && this.cfg.page != page){
+        this.cfg.page = page;
         this.setState();
     }
 }
 
 PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
     if(rpp){
-        var passed = this.cfg.rowsPerPage * (this.cfg.initialPage - 1);
+        var passed = this.cfg.rowsPerPage * (this.cfg.page - 1);
         var newPageCount = Math.ceil(this.cfg.totalRecords / rpp);
-        this.cfg.initialPage = passed / rpp + 1;
+        this.cfg.page = passed / rpp + 1;
         this.cfg.pageCount = newPageCount;
         this.cfg.rowsPerPage = rpp;
         this.setState();
@@ -155,11 +152,11 @@ PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
 PrimeFaces.widget.Paginator.prototype.setState = function(newState){
     if(!newState){
         
-        var offset = this.cfg.rowsPerPage * (this.cfg.initialPage - 1);
+        var offset = this.cfg.rowsPerPage * (this.cfg.page - 1);
         newState = {
             recordOffset : offset,
             rowsPerPage : this.cfg.rowsPerPage,
-            page : this.cfg.initialPage,
+            page : this.cfg.page,
             totalRecords : this.cfg.totalRecords,
             paginator : this,
             records : [offset, offset + this.cfg.rowsPerPage - 1]

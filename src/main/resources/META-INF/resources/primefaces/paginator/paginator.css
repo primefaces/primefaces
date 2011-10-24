@@ -26,10 +26,6 @@
     cursor: pointer;
 }
 
-.ui-paginator-page:hover {
-	text-decoration: underline;
-}
-
 .ui-paginator-current,
 .ui-paginator-rpp-options {
 	margin-left: 1em;
