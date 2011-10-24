@@ -27,7 +27,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.api.UIData;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -36,7 +35,6 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortOrder;
-import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -843,7 +841,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.write("id:[" + paginatorContainers + "]");
         writer.write(",rowsPerPage:" + table.getRows());
         writer.write(",totalRecords:" + table.getRowCount());
-        writer.write(",initialPage:" + table.getPage());
+        writer.write(",page:" + table.getPage());
 
         if(table.getPageLinks() != 10) writer.write(",pageLinks:" + table.getPageLinks());
         if(!table.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");

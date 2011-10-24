@@ -102,7 +102,7 @@ public class DataListRenderer extends CoreRenderer {
             writer.write(",paginator:new YAHOO.widget.Paginator({");
             writer.write("rowsPerPage:" + list.getRows());
             writer.write(",totalRecords:" + list.getRowCount());
-            writer.write(",initialPage:" + list.getPage());
+            writer.write(",page:" + list.getPage());
 
             if(list.getPageLinks() != 10) writer.write(",pageLinks:" + list.getPageLinks());
             if(list.getPaginatorTemplate() != null) writer.write(",template:'" + list.getPaginatorTemplate() + "'");

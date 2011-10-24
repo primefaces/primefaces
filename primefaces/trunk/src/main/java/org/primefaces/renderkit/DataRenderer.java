@@ -63,14 +63,15 @@ public class DataRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int currentPage = uidata.getPage();
         int pageLinks = uidata.getPageLinks();
+        int pageLinkCountToRender = (pageCount > pageLinks) ? pageLinks : pageCount;
         
         writer.startElement("span", null);
         writer.writeAttribute("class", UIData.PAGINATOR_PAGES_CLASS, null);
         
-        for(int i = currentPage; i <= (pageCount > pageLinks ? pageLinks : pageCount); i++){
+        for(int i = currentPage; i < pageLinkCountToRender; i++){
             writer.startElement("span", null);
             writer.writeAttribute("class", UIData.PAGINATOR_PAGE_CLASS + (currentPage == i ? " ui-state-active" : ""), null);
-            writer.writeText(i, null);
+            writer.writeText((i + 1), null);
             writer.endElement("span");
         }
             
@@ -148,10 +149,10 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("class", UIData.PAGINATOR_JTP_CLASS, null);
         writer.writeAttribute("value", uidata.getPage(), null);
         
-        for(int i = 1; i <= pageCount; i++){
+        for(int i = 0; i < pageCount; i++){
             writer.startElement("option", null);
             writer.writeAttribute("value", i, null);
-            writer.writeText(i, null);
+            writer.writeText((i+1), null);
             writer.endElement("option");
         }
         

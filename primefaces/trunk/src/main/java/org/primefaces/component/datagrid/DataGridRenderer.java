@@ -100,7 +100,7 @@ public class DataGridRenderer extends CoreRenderer {
             writer.write(",paginator:new YAHOO.widget.Paginator({");
             writer.write("rowsPerPage:" + grid.getRows());
             writer.write(",totalRecords:" + grid.getRowCount());
-            writer.write(",initialPage:" + grid.getPage());
+            writer.write(",page:" + grid.getPage());
 
             if(grid.getPageLinks() != 10) writer.write(",pageLinks:" + grid.getPageLinks());
             if(grid.getPaginatorTemplate() != null) writer.write(",template:'" + grid.getPaginatorTemplate() + "'");
