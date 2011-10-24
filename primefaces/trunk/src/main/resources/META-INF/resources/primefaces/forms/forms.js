@@ -542,9 +542,11 @@ PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
     panelWidth = this.panel.width(),
     buttonWidth = this.jq.width();
     
-    this.panel.css({
-        'top':  offset.top + this.jq.outerHeight(),
-        'left': offset.left
+    this.panel.css({left:'', top:''})
+    .position({
+        my: 'left top'
+        ,at: 'left bottom'
+        ,of: this.jq
     });
     
     if(panelWidth < buttonWidth) {
