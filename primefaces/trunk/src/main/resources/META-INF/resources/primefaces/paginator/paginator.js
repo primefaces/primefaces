@@ -8,7 +8,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     });
     
     this.pagesContainer = this.jq.children('.ui-paginator-pages');
-    this.pageLinks = this.pages.children('.ui-paginator-page');
+    this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
     this.rppSelect = this.jq.children('.ui-paginator-rpp-options');
     this.jtpSelect = this.jq.children('.ui-paginator-jtp-select');
     this.firstLink = this.jq.children('.ui-paginator-first');

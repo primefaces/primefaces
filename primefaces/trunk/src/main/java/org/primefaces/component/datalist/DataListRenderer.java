@@ -35,7 +35,6 @@ public class DataListRenderer extends CoreRenderer {
         if(list.isPagingRequest(facesContext)) {
             list.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             list.setRows(Integer.valueOf(params.get(clientId + "_rows")));
-            list.setPage(Integer.valueOf(params.get(clientId + "_page")));
         }
     }
 

@@ -77,14 +77,6 @@
             <description>Defines if paginator should be hidden if total data count is less than number of rows per page. Default is true.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-        <attribute>
-			<name>page</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>Index of the current page. Default is 1.</description>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
 		<attribute>
 			<name>scrollable</name>
 			<required>false</required>

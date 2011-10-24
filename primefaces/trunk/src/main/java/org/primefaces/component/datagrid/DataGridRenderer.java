@@ -35,7 +35,6 @@ public class DataGridRenderer extends CoreRenderer {
         if(grid.isPagingRequest(context)) {
             grid.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             grid.setRows(Integer.valueOf(params.get(clientId + "_rows")));
-            grid.setPage(Integer.valueOf(params.get(clientId + "_page")));
         }
     }
 
