@@ -1,15 +1,13 @@
-.ui-paginator {
-	display: block;
-	margin: 6px 0;
-	white-space: nowrap;
+.ui-paginator span{
+    display: inline-block;
 }
-
+                
 .ui-paginator-page,
 .ui-paginator-pages,
 .ui-paginator-next,
-.ui-paginator-last,
+.ui-paginator-end,
 .ui-paginator-first,
-.ui-paginator-previous,
+.ui-paginator-prev,
 .ui-paginator-current {
 	display: inline-block;
 	padding: 2px 6px;
@@ -20,6 +18,18 @@
 	outline: none;
 }
 
+.ui-paginator-page,
+.ui-paginator-next,
+.ui-paginator-end,
+.ui-paginator-first,
+.ui-paginator-prev{
+    cursor: pointer;
+}
+
+.ui-paginator-page:hover {
+	text-decoration: underline;
+}
+
 .ui-paginator-current,
 .ui-paginator-rpp-options {
 	margin-left: 1em;
@@ -27,9 +37,9 @@
 }
 
 .ui-paginator-next .ui-icon,
-.ui-paginator-previous .ui-icon,
+.ui-paginator-prev .ui-icon,
 .ui-paginator-first .ui-icon,
-.ui-paginator-last .ui-icon {
+.ui-paginator-end .ui-icon {
 	height: auto;
 	overflow: inherit;
 }
