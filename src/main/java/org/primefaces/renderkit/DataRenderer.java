@@ -115,13 +115,16 @@ public class DataRenderer extends CoreRenderer {
     
     protected void encodePaginatorLink(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", linkClass + (disabled ? " ui-state-disabled" : ""), null);
-            writer.startElement("span", null);
-            writer.writeAttribute("class", iconClass, null);
-            writer.writeText("p", null);
-            writer.endElement("span");
+        writer.writeAttribute("class", styleClass, null);
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.writeText("p", null);
+        writer.endElement("span");
+        
         writer.endElement("span");
     }
     

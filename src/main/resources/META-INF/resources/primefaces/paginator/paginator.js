@@ -18,7 +18,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.prevLink  = this.jq.children('.ui-paginator-prev');
     this.nextLink  = this.jq.children('.ui-paginator-next');
     this.endLink   = this.jq.children('.ui-paginator-end');
-    this.currentReport = this.jq.children('.ui-paginator-current');
+    this.currentPageReport = this.jq.children('.ui-paginator-current');
     
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
     this.cfg.pageLinks = this.cfg.pageLinks||10;
@@ -133,9 +133,8 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
         this.endLink.removeClass('ui-state-disabled');
     }
     
-    //TODO: Levent, use currentPageTemplate here
-    var text = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
-    this.currentReport.text(text);
+    var currentPageUI = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
+    this.currentPageReport.text(currentPageUI);
 }
 
 PrimeFaces.widget.Paginator.prototype.setPage = function(page) {    
