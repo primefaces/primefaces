@@ -144,6 +144,8 @@ PrimeFaces = {
     },
 
     locales : {},
+    
+    zindex : 1000,
 	
     PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 

@@ -96,7 +96,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         
         writer.write("PrimeFaces.cw('MenuButton','" + button.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",zindex:" + button.getZindex());
 
         if(button.isDisabled()) {
 			writer.write(",disabled:true");

@@ -27,15 +27,13 @@ PrimeFaces.widget.Dialog = function(cfg) {
     this.cfg.resizable = this.cfg.resizable == false ? false : true;
     this.cfg.minWidth = this.cfg.minWidth||150;
     this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
-    this.cfg.zindex = this.cfg.zindex||1000;
     this.cfg.position = this.cfg.position||'center';
     this.parent = this.jq.parent();
     
-    //size and zindex
+    //size
     this.jq.css({
         'width': this.cfg.width,
-        'height': 'auto',
-        'z-index': this.cfg.zindex 
+        'height': 'auto'
     });
     
     this.content.height(this.cfg.height);
@@ -106,7 +104,7 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function() {
         }        
     })
     .bind(this.blockEvents, function(event) {
-        if ($(event.target).zIndex() < _self.jq.zIndex()) {
+        if($(event.target).css('z-index') < _self.jq.css('z-index')) {
             return false;
         }
     });
@@ -296,14 +294,9 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
 }
 
 PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
-    var DM = PrimeFaces.widget.DialogManager;
+    PrimeFaces.zindex++;
     
-    if(this.jq.zIndex() <= DM.maxZIndex) {
-        var max = DM.maxZIndex + 1;
-        
-        DM.maxZIndex = max;
-        this.jq.zIndex(max);
-    }
+    this.jq.css('z-index', PrimeFaces.zindex);
 }
 
 PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
@@ -450,14 +443,6 @@ PrimeFaces.widget.Dialog.prototype.addOnshowHandler = function(fn) {
 PrimeFaces.widget.Dialog.prototype.getScriptTag = function() {
     return this.getJQ().prev('script');
 }
-
-/**
- * PrimeFaces Dialog Manager
- */
-PrimeFaces.widget.DialogManager = {
-    
-    maxZIndex : 1000
-};
 
 /**
  * PrimeFaces ConfirmDialog Widget

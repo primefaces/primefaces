@@ -319,10 +319,12 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
 
 PrimeFaces.widget.AutoComplete.prototype.show = function() {
     this.alignPanel();
-    this.panel.css('z-index', '100000');
+    
+    PrimeFaces.zindex++;
+    this.panel.css('z-index', PrimeFaces.zindex);
     
     if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-        this.panel.parent().css('z-index', '99999');
+        this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
     }
 
     if(this.cfg.effect)

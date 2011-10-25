@@ -55,13 +55,6 @@
             <type>java.lang.String</type>
             <description>Height of the dialog.</description>
         </attribute>
-		<attribute>
-			<name>zindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1000</defaultValue>
-            <description>zindex property to control overlapping with other elements. Default is 1000.</description>
-		</attribute>
         <attribute>
 			<name>style</name>
 			<required>false</required>

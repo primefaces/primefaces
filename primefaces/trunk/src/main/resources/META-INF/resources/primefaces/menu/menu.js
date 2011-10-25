@@ -7,7 +7,6 @@ PrimeFaces.widget.Menubar = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.menuitems = this.jq.find('.ui-menuitem');
-    this.zIndex = 10000;
 
     this.bindEvents();
 
@@ -29,7 +28,8 @@ PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
 
         var submenu = menuitem.children('ul.ui-menu-child');
         if(submenu.length == 1) {
-            submenu.css('zIndex', _self.zIndex++);
+            PrimeFaces.zindex++;
+            submenu.css('z-index', PrimeFaces.zindex);
 
             if(!menuitem.parent().hasClass('ui-menu-child')) {    //root menuitem
                 submenu.css({
@@ -309,8 +309,9 @@ PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
     });
 }
 
-PrimeFaces.widget.Menu.prototype.show = function(e) {                
-    this.jq.show();
+PrimeFaces.widget.Menu.prototype.show = function(e) {
+    PrimeFaces.zindex++;
+    this.jq.css('z-index', PrimeFaces.zindex).show();
     
     e.preventDefault();
 }
@@ -335,8 +336,6 @@ PrimeFaces.widget.MenuButton = function(cfg) {
     this.button.button({icons:{primary:'ui-icon-triangle-1-s'}});
 
     this.bindEvents();
-    
-    this.menu.css('z-index', this.cfg.zindex);
     
     $(document.body).children(this.menuId).remove();
     this.menu.appendTo(document.body);
@@ -368,7 +367,8 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     
     //button event
     this.button.click(function(e) {
-        _self.menu.css({left:'', top:''}).position(_self.cfg.position);
+        PrimeFaces.zindex++;
+        _self.menu.css({left:'', top:'','z-index': PrimeFaces.zindex}).position(_self.cfg.position);
         _self.menu.show();
     });
     
@@ -466,9 +466,12 @@ PrimeFaces.widget.ContextMenu.prototype.show = function(e) {
     //hide all context menus
     $(document.body).children('.ui-contextmenu:visible').hide();
     
+    PrimeFaces.zindex++;
+    
     this.jq.css({
         'left': e.pageX,
-        'top': e.pageY
+        'top': e.pageY,
+        'z-index': PrimeFaces.zindex
     });
     
    this.jq.show();
