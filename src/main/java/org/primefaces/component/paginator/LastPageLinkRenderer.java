@@ -24,6 +24,6 @@ public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorE
     public void render(FacesContext context, UIData uidata) throws IOException {
         boolean disabled = uidata.getPage() == uidata.getPageCount() - 1;
        
-        super.render(context, uidata, UIData.PAGINATOR_END_PAGE_LINK_CLASS, UIData.PAGINATOR_END_PAGE_ICON_CLASS, disabled);
+        super.render(context, uidata, UIData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled);
     }   
 }

@@ -5,7 +5,7 @@
 .ui-paginator-page,
 .ui-paginator-pages,
 .ui-paginator-next,
-.ui-paginator-end,
+.ui-paginator-last,
 .ui-paginator-first,
 .ui-paginator-prev,
 .ui-paginator-current {
@@ -20,7 +20,7 @@
 
 .ui-paginator-page,
 .ui-paginator-next,
-.ui-paginator-end,
+.ui-paginator-last,
 .ui-paginator-first,
 .ui-paginator-prev{
     cursor: pointer;
@@ -35,7 +35,7 @@
 .ui-paginator-next .ui-icon,
 .ui-paginator-prev .ui-icon,
 .ui-paginator-first .ui-icon,
-.ui-paginator-end .ui-icon {
+.ui-paginator-last .ui-icon {
 	height: auto;
 	overflow: inherit;
 }
