@@ -31,8 +31,8 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_PREV_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-prev"; 
     public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default ui-corner-all"; 
     public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next"; 
-    public static final String PAGINATOR_END_PAGE_LINK_CLASS = "ui-paginator-end ui-state-default ui-corner-all"; 
-    public static final String PAGINATOR_END_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end"; 
+    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all"; 
+    public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end"; 
     
     protected enum PropertyKeys {
         paginator

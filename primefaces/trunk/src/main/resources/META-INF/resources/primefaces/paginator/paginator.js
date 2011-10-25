@@ -17,7 +17,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.firstLink = this.jq.children('.ui-paginator-first');
     this.prevLink  = this.jq.children('.ui-paginator-prev');
     this.nextLink  = this.jq.children('.ui-paginator-next');
-    this.endLink   = this.jq.children('.ui-paginator-end');
+    this.lastLink   = this.jq.children('.ui-paginator-last');
     this.currentPageReport = this.jq.children('.ui-paginator-current');
     
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
@@ -78,7 +78,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     });
     
     //Last page link
-    this.endLink.click(function(){
+    this.lastLink.click(function(){
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(_self.cfg.pageCount - 1);
         }
@@ -126,11 +126,11 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     
     if(this.cfg.page == (this.cfg.pageCount - 1)){
         this.nextLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
-        this.endLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
+        this.lastLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
     }
     else {
         this.nextLink.removeClass('ui-state-disabled');
-        this.endLink.removeClass('ui-state-disabled');
+        this.lastLink.removeClass('ui-state-disabled');
     }
     
     var currentPageUI = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
