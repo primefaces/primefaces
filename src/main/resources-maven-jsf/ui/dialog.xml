@@ -71,13 +71,6 @@
             <description>Height of the dialog.</description>
         </attribute>
         <attribute>
-            <name>zindex</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Specifies zindex property. Default is 1000.</description>
-        </attribute>
-        <attribute>
             <name>minWidth</name>
             <required>false</required>
             <type>java.lang.Integer</type>

@@ -59,7 +59,6 @@ public class DialogRenderer extends CoreRenderer {
         if(dialog.isModal()) writer.write(",modal:true");
         if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
         if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
-        if(dialog.getZindex() != Integer.MIN_VALUE) writer.write(",zindex:" + dialog.getZindex());
         if(dialog.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + dialog.getMinWidth());
         if(dialog.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + dialog.getMinHeight());
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
