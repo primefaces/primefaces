@@ -23,7 +23,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
     this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.pageLinks = this.cfg.pageLinks > this.cfg.pageCount ? this.cfg.pageCount : this.cfg.pageLinks;
-
+    this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
     this.bindEvents();
 }
 
@@ -59,7 +59,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     //First page link
     this.firstLink.click(function(){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setPage(1);
+            _self.setPage(0);
         }
     });
     
@@ -80,7 +80,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     //Last page link
     this.endLink.click(function(){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setPage(_self.cfg.pageCount);
+            _self.setPage(_self.cfg.pageCount - 1);
         }
     });
 }
@@ -99,6 +99,9 @@ PrimeFaces.widget.Paginator.prototype.bindPageLinkEvents = function(){
 PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
     var _self = this;
     
+    //change page links dom
+    
+    
     this.pageLinks.removeClass('ui-state-active').each(function(index, item) {
         if(parseInt($(item).text()) - 1 == _self.cfg.page)
             $(item).addClass('ui-state-active');
@@ -109,8 +112,8 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     this.updatePageLinks();
     
     //sync dropdowns
-    this.rppSelect.val(this.cfg.rowsPerPage);
-    this.jtpSelect.val(this.cfg.page);
+    this.rppSelect.children('option[value=' + this.cfg.rows + ']').attr('selected', 'selected');
+    this.jtpSelect.children('option[value=' + this.cfg.page + ']').attr('selected', 'selected');
     
     if(this.cfg.page == 0) {
         this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
@@ -131,7 +134,8 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     }
     
     //TODO: Levent, use currentPageTemplate here
-    this.currentReport.text('(' + this.cfg.page + ' of ' + this.cfg.pageCount + ')');
+    var text = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
+    this.currentReport.text(text);
 }
 
 PrimeFaces.widget.Paginator.prototype.setPage = function(page) {    
@@ -151,9 +155,12 @@ PrimeFaces.widget.Paginator.prototype.setPage = function(page) {
 
 PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
     var first = this.cfg.rows * this.cfg.page,
-    page = first / rpp;
+    page = parseInt(first / rpp);
     
     this.cfg.rows = rpp;
     
+    this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
+    
+    this.cfg.page = -1;
     this.setPage(page);
 }

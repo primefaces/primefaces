@@ -44,13 +44,15 @@ public class DataRenderer extends CoreRenderer {
         
         encodeCurrentPageReport(context, uidata, pageCount);
         
-        encodeFirstPageLink(context, uidata);
-        encodePrevPageLink(context, uidata);
+        boolean prevDisabled = uidata.getPage() == 0;
+        encodeFirstPageLink(context, uidata, prevDisabled);
+        encodePrevPageLink(context, uidata, prevDisabled);
         
         encodePageLinks(context, uidata, pageCount);
         
-        encodeNextPageLink(context, uidata);
-        encodeEndPageLink(context, uidata);
+        boolean nextDisabled = uidata.getPage() == pageCount - 1;
+        encodeNextPageLink(context, uidata, nextDisabled);
+        encodeEndPageLink(context, uidata, nextDisabled);
         
         encodeRowsPerPageDropDown(context, uidata);
         
@@ -80,35 +82,42 @@ public class DataRenderer extends CoreRenderer {
     
     protected void encodeCurrentPageReport(FacesContext context, UIData uidata, int pageCount) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String text = uidata.getCurrentPageReportTemplate();
+        if(text == null){
+            text = "({currentPage} of {totalPage})";
+        }
+        
+        text = text.replaceAll("[{]currentPage[}]", Integer.toString(uidata.getPage() + 1));
+        text = text.replaceAll("[{]totalPage[}]", Integer.toString(pageCount));
 
         writer.startElement("span", null);
         writer.writeAttribute("class", UIData.PAGINATOR_CURRENT_CLASS, null);
-            writer.writeText("(" + uidata.getPage() + " of " + pageCount + ")", null);
+            writer.writeText(text, null);
         
         writer.endElement("span");
     }
     
-    protected void encodeFirstPageLink(FacesContext context, UIData uidata) throws IOException {
-        encodePaginatorLink(context, uidata, UIData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIData.PAGINATOR_FIRST_PAGE_ICON_CLASS);
+    protected void encodeFirstPageLink(FacesContext context, UIData uidata, boolean disabled) throws IOException {
+        encodePaginatorLink(context, uidata, UIData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled);
     }
     
-    protected void encodePrevPageLink(FacesContext context, UIData uidata) throws IOException {
-        encodePaginatorLink(context, uidata, UIData.PAGINATOR_PREV_PAGE_LINK_CLASS, UIData.PAGINATOR_PREV_PAGE_ICON_CLASS);
+    protected void encodePrevPageLink(FacesContext context, UIData uidata, boolean disabled) throws IOException {
+        encodePaginatorLink(context, uidata, UIData.PAGINATOR_PREV_PAGE_LINK_CLASS, UIData.PAGINATOR_PREV_PAGE_ICON_CLASS, disabled);
     }
         
-    protected void encodeNextPageLink(FacesContext context, UIData uidata) throws IOException {
-        encodePaginatorLink(context, uidata, UIData.PAGINATOR_NEXT_PAGE_LINK_CLASS, UIData.PAGINATOR_NEXT_PAGE_ICON_CLASS);
+    protected void encodeNextPageLink(FacesContext context, UIData uidata, boolean disabled) throws IOException {
+        encodePaginatorLink(context, uidata, UIData.PAGINATOR_NEXT_PAGE_LINK_CLASS, UIData.PAGINATOR_NEXT_PAGE_ICON_CLASS, disabled);
     }
             
-    protected void encodeEndPageLink(FacesContext context, UIData uidata) throws IOException {
-        encodePaginatorLink(context, uidata, UIData.PAGINATOR_END_PAGE_LINK_CLASS, UIData.PAGINATOR_END_PAGE_ICON_CLASS);
+    protected void encodeEndPageLink(FacesContext context, UIData uidata, boolean disabled) throws IOException {
+        encodePaginatorLink(context, uidata, UIData.PAGINATOR_END_PAGE_LINK_CLASS, UIData.PAGINATOR_END_PAGE_ICON_CLASS, disabled);
     }
     
-    protected void encodePaginatorLink(FacesContext context, UIData uidata, String linkClass, String iconClass) throws IOException {
+    protected void encodePaginatorLink(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", linkClass, null);
+        writer.writeAttribute("class", linkClass + (disabled ? " ui-state-disabled" : ""), null);
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
             writer.writeText("p", null);
@@ -118,6 +127,7 @@ public class DataRenderer extends CoreRenderer {
     
     protected void encodeRowsPerPageDropDown(FacesContext context, UIData uidata) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        int actualRows = uidata.getRows();
         
         writer.startElement("select", null);
         writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
@@ -133,8 +143,14 @@ public class DataRenderer extends CoreRenderer {
         }
         
         for( String option : options){
+            int rows = Integer.parseInt(option);
             writer.startElement("option", null);
-            writer.writeAttribute("value", Integer.parseInt(option), null);
+            writer.writeAttribute("value", rows, null);
+            
+            if(actualRows == rows){
+                writer.writeAttribute("selected", "selected", null);
+            }
+            
             writer.writeText(option, null);
             writer.endElement("option");
         }
@@ -144,6 +160,7 @@ public class DataRenderer extends CoreRenderer {
     
     protected void encodeJumpToPageDropDown(FacesContext context, UIData uidata, int pageCount) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        int currentPage = uidata.getPage();
         
         writer.startElement("select", null);
         writer.writeAttribute("class", UIData.PAGINATOR_JTP_CLASS, null);
@@ -152,6 +169,11 @@ public class DataRenderer extends CoreRenderer {
         for(int i = 0; i < pageCount; i++){
             writer.startElement("option", null);
             writer.writeAttribute("value", i, null);
+            
+            if(i == currentPage){
+                writer.writeAttribute("selected", "selected", null);
+            }
+            
             writer.writeText((i+1), null);
             writer.endElement("option");
         }
@@ -164,6 +186,8 @@ public class DataRenderer extends CoreRenderer {
         String clientId = uidata.getClientId(context);
         String paginatorPosition = uidata.getPaginatorPosition();
         String paginatorContainers = null;
+        String currentPageTemplate = uidata.getCurrentPageReportTemplate();
+        
         if(paginatorPosition.equalsIgnoreCase("both"))
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         else
@@ -174,6 +198,9 @@ public class DataRenderer extends CoreRenderer {
         writer.write(",rows:" + uidata.getRows());
         writer.write(",rowCount:" + uidata.getRowCount());
         writer.write(",page:" + uidata.getPage());
+        
+        if(currentPageTemplate != null)
+            writer.write(",currentPageTemplate:'" + currentPageTemplate + "'");
 
         if(uidata.getPageLinks() != 10) writer.write(",pageLinks:" + uidata.getPageLinks());
         if(!uidata.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
