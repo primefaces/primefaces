@@ -52,6 +52,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Template of the currentPageReport UI.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
 			<name>pageLinks</name>
