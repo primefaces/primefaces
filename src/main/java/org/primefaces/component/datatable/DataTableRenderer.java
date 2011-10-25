@@ -43,6 +43,7 @@ public class DataTableRenderer extends DataRenderer {
     protected DataHelper dataHelper;
 
     public DataTableRenderer() {
+        super();
         dataHelper = new DataHelper();
     }
 

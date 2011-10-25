@@ -21,6 +21,7 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header"; 
     public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages"; 
     public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default ui-corner-all"; 
+    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active ui-corner-all"; 
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current"; 
     public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options"; 
     public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select"; 
@@ -63,7 +64,7 @@ public class UIData extends javax.faces.component.UIData {
 	}
 
 	public java.lang.String getPaginatorTemplate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate, null);
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate, "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
 	}
 	public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
 		getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
@@ -77,7 +78,7 @@ public class UIData extends javax.faces.component.UIData {
 	}
 
 	public java.lang.String getCurrentPageReportTemplate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, null);
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPage})");
 	}
 	public void setCurrentPageReportTemplate(java.lang.String _currentPageReportTemplate) {
 		getStateHelper().put(PropertyKeys.currentPageReportTemplate, _currentPageReportTemplate);
@@ -126,5 +127,9 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         return (int) (first / rows);
+    }
+    
+    public int getPageCount() {
+        return (int) Math.ceil(this.getRowCount() * 1d / this.getRows());
     }
 }
