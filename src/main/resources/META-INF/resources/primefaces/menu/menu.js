@@ -28,8 +28,7 @@ PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
 
         var submenu = menuitem.children('ul.ui-menu-child');
         if(submenu.length == 1) {
-            PrimeFaces.zindex++;
-            submenu.css('z-index', PrimeFaces.zindex);
+            submenu.css('z-index', ++PrimeFaces.zindex);
 
             if(!menuitem.parent().hasClass('ui-menu-child')) {    //root menuitem
                 submenu.css({
@@ -310,8 +309,7 @@ PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
 }
 
 PrimeFaces.widget.Menu.prototype.show = function(e) {
-    PrimeFaces.zindex++;
-    this.jq.css('z-index', PrimeFaces.zindex).show();
+    this.jq.css('z-index', ++PrimeFaces.zindex).show();
     
     e.preventDefault();
 }
@@ -367,8 +365,7 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     
     //button event
     this.button.click(function(e) {
-        PrimeFaces.zindex++;
-        _self.menu.css({left:'', top:'','z-index': PrimeFaces.zindex}).position(_self.cfg.position);
+        _self.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex}).position(_self.cfg.position);
         _self.menu.show();
     });
     
@@ -465,13 +462,11 @@ PrimeFaces.widget.ContextMenu.prototype.bindEvents = function() {
 PrimeFaces.widget.ContextMenu.prototype.show = function(e) {            
     //hide all context menus
     $(document.body).children('.ui-contextmenu:visible').hide();
-    
-    PrimeFaces.zindex++;
-    
+        
     this.jq.css({
         'left': e.pageX,
         'top': e.pageY,
-        'z-index': PrimeFaces.zindex
+        'z-index': ++PrimeFaces.zindex
     });
     
    this.jq.show();

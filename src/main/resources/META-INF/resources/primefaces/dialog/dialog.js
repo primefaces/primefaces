@@ -294,9 +294,7 @@ PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
 }
 
 PrimeFaces.widget.Dialog.prototype.moveToTop = function() {
-    PrimeFaces.zindex++;
-    
-    this.jq.css('z-index', PrimeFaces.zindex);
+    this.jq.css('z-index', ++PrimeFaces.zindex);
 }
 
 PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
