@@ -54,6 +54,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 		try {
 			response.setContentType(content.getContentType());
 			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
+
 			
 			byte[] buffer = new byte[2048];
 	
@@ -61,17 +62,17 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             InputStream inputStream = content.getStream();
             OutputStream outputStream = response.getOutputStream();
             
-			while ((length = (inputStream.read(buffer))) >= 0) {
+			while ((length = (inputStream.read(buffer))) != -1) {
 				outputStream.write(buffer, 0, length);
 			}
 			
 			response.setStatus(200);
 			
-			content.getStream().close();
 			response.getOutputStream().flush();
+            content.getStream().close();
 			facesContext.responseComplete();
 		}
-        catch (IOException e) {
+        catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
