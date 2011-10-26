@@ -238,13 +238,17 @@ class DataHelper {
 		}
         else {
             String[] rowKeys = selection.split(",");
-            Object data = Array.newInstance(clazz.getComponentType(), rowKeys.length);
+            List selectionList = new ArrayList();
             
             for(int i = 0; i < rowKeys.length; i++) {
-                Array.set(data, i, table.getRowData(rowKeys[i]));
+                Object rowData = table.getRowData(rowKeys[i]);
+                
+                if(rowData != null)
+                    selectionList.add(rowData);
             }
-            
-            table.setSelection(data);
+
+            Object selectinArray = Array.newInstance(clazz.getComponentType(), selectionList.size());
+            table.setSelection(selectionList.toArray((Object[])selectinArray));
 		}
 	}
 

@@ -535,7 +535,7 @@ import javax.faces.FacesException;
                 }
             }
             
-            throw new FacesException("Cannot find data with given rowKey:" + rowKey);
+            return null;
         } 
         else {
             DataModel model = getDataModel();
