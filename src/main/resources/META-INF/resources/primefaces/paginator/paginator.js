@@ -17,12 +17,11 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.firstLink = this.jq.children('.ui-paginator-first');
     this.prevLink  = this.jq.children('.ui-paginator-prev');
     this.nextLink  = this.jq.children('.ui-paginator-next');
-    this.lastLink   = this.jq.children('.ui-paginator-last');
-    this.currentPageReport = this.jq.children('.ui-paginator-current');
+    this.endLink   = this.jq.children('.ui-paginator-last');
+    this.currentReport = this.jq.children('.ui-paginator-current');
     
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
     this.cfg.pageLinks = this.cfg.pageLinks||10;
-    this.cfg.pageLinks = this.cfg.pageLinks > this.cfg.pageCount ? this.cfg.pageCount : this.cfg.pageLinks;
     this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
     this.bindEvents();
 }
@@ -52,7 +51,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     //jump to page
     this.jtpSelect.change(function(e){
         if(!$(this).hasClass("ui-state-disabled")){
-            _self.setPage(parseInt($(this).val()) - 1);
+            _self.setPage(parseInt($(this).val()));
         }
     });
     
@@ -78,7 +77,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     });
     
     //Last page link
-    this.lastLink.click(function(){
+    this.endLink.click(function(){
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(_self.cfg.pageCount - 1);
         }
@@ -88,33 +87,116 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
 PrimeFaces.widget.Paginator.prototype.bindPageLinkEvents = function(){
     var _self = this;
     
-    this.pageLinks.click(function(e){
+    this.pageLinks.unbind('click').bind('click', function(e){
         var link = $(this);
         if(!link.hasClass('ui-state-active')){
             _self.setPage(parseInt(link.text()) - 1);
         }
-    });
+    }).mouseover(function(){
+        var item = $(this);
+        if(!item.hasClass('ui-state-disabled'))
+            item.addClass('ui-state-hover');
+        
+    }).mouseout(function(){
+        $(this).removeClass('ui-state-hover');
+    });;
 }
 
 PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
-    var _self = this;
+    var pageCountToRender = this.cfg.pageCount < this.cfg.pageLinks ? this.cfg.pageCount : this.cfg.pageLinks,
+    actualPageCount = this.pagesContainer.filter(':first').children().length,
+    pageLinksCut = pageCountToRender < actualPageCount,
+    pageLinksAdd = pageCountToRender > actualPageCount,
+    actualJtpCount = this.jtpSelect.filter(':first').children().length,
+    jtpCut = this.cfg.pageCount <= actualJtpCount,
+    _self = this;
     
-    //change page links dom
+    //page links dom update
+    if(actualPageCount != pageCountToRender ){
+        if(pageLinksCut){
+            this.pageLinks.each(function(index, item){
+                var link = $(item),
+                cursor = index%actualPageCount;
+
+                if(cursor >= pageCountToRender)
+                    link.remove();
+            });
+        }
+        else if(pageLinksAdd){
+            this.pageLinks.each(function(index, item){
+                var link = $(item),
+                cursor = index%actualPageCount;
+
+                if(cursor == actualPageCount - 1){
+                    var container = link.parent();
+                    for(var i = actualPageCount; i < pageCountToRender ; i++){
+                        var newLink = $('<span class="ui-paginator-page ui-state-default ui-corner-all">'+ (i+1) +'</span>');
+                        container.append(newLink);
+                    }
+                }
+            });
+        }
+    }
     
+    this.pageLinks.removeClass('ui-state-active');
+    this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
     
-    this.pageLinks.removeClass('ui-state-active').each(function(index, item) {
-        if(parseInt($(item).text()) - 1 == _self.cfg.page)
-            $(item).addClass('ui-state-active');
-    });
+    //shift
+    if(pageCountToRender < this.cfg.pageCount){
+        var firstPageShown = parseInt(this.pageLinks.filter(':first').text()),
+        shiftCount = parseInt(pageCountToRender / 2),
+        firstPageShould = this.cfg.page - shiftCount + 1,
+        even = pageCountToRender%2 == 0,
+        lastPageShould = this.cfg.page + shiftCount + 1 - (even ? 1 : 0);
+
+        if(firstPageShown != firstPageShould){
+            this.pageLinks.each(function(index, item){
+                var link = $(item),
+                cursor = index%pageCountToRender,
+                actualPage;
+
+
+                if(lastPageShould > _self.cfg.pageCount)
+                    actualPage = firstPageShould + cursor - shiftCount + (even ? 1 : 0);
+                else if(firstPageShould < 1)
+                    actualPage = cursor + 1;
+                else
+                    actualPage = firstPageShould + cursor;
+
+                link.text(actualPage);
+            });
+        }
+    }
+    
+    if(jtpCut){
+        this.jtpSelect.children('option').each(function(index, item){
+            var option = $(item);
+            if(option.val() >= _self.cfg.pageCount)
+                option.remove();
+        });
+    }
+    else{
+        this.jtpSelect.children('option').each(function(index, item){
+            var option = $(item);
+            if(option.val() == actualJtpCount - 1){
+                var parent = option.parent();
+                for(var i = actualJtpCount; i < _self.cfg.pageCount; i++){
+                    var newOption = $('<option value="' + i + '">' + (i+1) + "</option>");
+                    parent.append(newOption);
+                }
+            }
+        });
+    }
+    
+    this.pageLinks.filter('[innerHTML="'+(this.cfg.page + 1)+'"]').addClass('ui-state-active');
+    
+    this.bindPageLinkEvents();
 }
 
 PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     this.updatePageLinks();
     
     //sync dropdowns
-    this.rppSelect.children('option[value=' + this.cfg.rows + ']').attr('selected', 'selected');
-    this.jtpSelect.children('option[value=' + this.cfg.page + ']').attr('selected', 'selected');
-    
     if(this.cfg.page == 0) {
         this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.prevLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
@@ -126,15 +208,18 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     
     if(this.cfg.page == (this.cfg.pageCount - 1)){
         this.nextLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
-        this.lastLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
+        this.endLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
     }
     else {
         this.nextLink.removeClass('ui-state-disabled');
-        this.lastLink.removeClass('ui-state-disabled');
+        this.endLink.removeClass('ui-state-disabled');
     }
     
-    var currentPageUI = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
-    this.currentPageReport.text(currentPageUI);
+    var text = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
+    this.currentReport.text(text);
+    
+    this.rppSelect.attr('value', this.cfg.rows);
+    this.jtpSelect.attr('value', this.cfg.page);
 }
 
 PrimeFaces.widget.Paginator.prototype.setPage = function(page) {    
