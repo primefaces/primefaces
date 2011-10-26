@@ -39,6 +39,23 @@ PrimeFaces.widget.Calendar = function(cfg) {
     if(hasTimePicker) {
         this.configureTimePicker();
     }
+    
+    //Client behaviors, input skinning and z-index
+    if(this.cfg.popup) {
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
+        }
+
+        if(this.cfg.theme != false) {
+            PrimeFaces.skinInput(this.jqEl);
+        }
+        
+        this.cfg.beforeShow = function() {
+            setTimeout(function() {
+                $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
+            }, 250);
+        };
+    }
 
 	//Initialize calendar
     if(!this.cfg.disabled) {
@@ -53,18 +70,6 @@ PrimeFaces.widget.Calendar = function(cfg) {
         }
     }
 
-    //Client behaviors and input skinning
-    if(this.cfg.popup) {
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
-        }
-
-        //Visuals
-        if(this.cfg.popup && this.cfg.theme != false) {
-            PrimeFaces.skinInput(this.jqEl);
-        }
-    }
-    
     //button title
     this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
     
@@ -95,7 +100,6 @@ PrimeFaces.widget.Calendar.prototype.bindDateSelectListener = function() {
             }
         };
     }
-    
 }
 
 PrimeFaces.widget.Calendar.prototype.configureTimePicker = function() {
