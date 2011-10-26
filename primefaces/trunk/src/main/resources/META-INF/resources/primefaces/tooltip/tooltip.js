@@ -56,7 +56,7 @@ PrimeFaces.widget.Tooltip.prototype.show = function() {
     this.jq.css({
        'top':  offset.top + this.target.outerHeight(),
        'left': offset.left + this.target.outerWidth(),
-       'z-index': '100000'
+       'z-index': ++PrimeFaces.zindex
     });
     
     this.timeout = setTimeout(function() {
