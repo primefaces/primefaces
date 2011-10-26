@@ -246,7 +246,6 @@
                     <linebreakpos>-1</linebreakpos>
                     <excludes>
                         <exclude>**/*.css</exclude>
-                        <exclude>**/yui/**</exclude>
                     </excludes>
                     <aggregations>
                         <aggregation>
