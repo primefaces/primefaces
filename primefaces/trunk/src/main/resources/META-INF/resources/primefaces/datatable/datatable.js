@@ -7,6 +7,7 @@ PrimeFaces.widget.DataTable = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.tbody = this.jqId + '_data';
+    this.cfg.formId = this.jq.parents('form:first').attr('id');
 
     //Paginator
     if(this.cfg.paginator) {
