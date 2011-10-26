@@ -79,8 +79,8 @@ PrimeFaces.extend(PrimeFaces.widget.Dialog, PrimeFaces.widget.BaseWidget);
 PrimeFaces.widget.Dialog.prototype.enableModality = function() {
     var _self = this;
 
-    $(document.body).append('<div class="ui-widget-overlay"></div>').
-        children('.ui-widget-overlay').css({
+    $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>').
+        children(this.jqId + '_modal').css({
             'width': $(document).width()
             ,'height': $(document).height()
             ,'z-index': this.jq.css('z-index') - 1
@@ -111,7 +111,7 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.disableModality = function(){
-    $(document.body).children('.ui-widget-overlay').remove();
+    $(document.body).children(this.jqId + '_modal').remove();
     $(document).unbind(this.blockEvents).unbind('keydown.dialog');
 }
 
