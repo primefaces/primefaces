@@ -395,11 +395,14 @@ PrimeFaces.widget.AutoComplete.prototype.activate = function() {
 }
 
 PrimeFaces.widget.AutoComplete.prototype.alignPanel = function() {
-    var offset = this.input.offset();
-    
     this.panel.css({
-        'top':  offset.top + this.input.outerHeight(),
-        'left': offset.left,
-        'width': this.input.innerWidth() + 'px'
-    });
+                    left:'',
+                    top:'',
+                    'width': this.input.innerWidth() + 'px'
+              })
+              .position({
+                my: 'left top'
+                ,at: 'left bottom'
+                ,of: this.input
+              });
 }

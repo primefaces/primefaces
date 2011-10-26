@@ -538,8 +538,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.blur = function() {
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
-    var offset = this.jq.offset(),
-    panelWidth = this.panel.width(),
+    var panelWidth = this.panel.width(),
     buttonWidth = this.jq.width();
     
     this.panel.css({left:'', top:''})
