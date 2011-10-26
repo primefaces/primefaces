@@ -111,13 +111,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.write("PrimeFaces.cw('DataTable','" + table.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
 
-        //Connection
-        UIComponent form = ComponentUtils.findParentForm(context, table);
-        if(form == null) {
-            throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
-        }
-        writer.write(",formId:'" + form.getClientId(context) + "'");
-
         //Pagination
         if(table.isPaginator()) {
             encodePaginatorConfig(context, table);
