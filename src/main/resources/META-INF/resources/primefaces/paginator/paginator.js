@@ -248,3 +248,10 @@ PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
     this.cfg.page = -1;
     this.setPage(page);
 }
+
+PrimeFaces.widget.Paginator.prototype.setTotalRecords = function(rc){
+    this.cfg.rowCount = rc;
+    this.cfg.pageCount = Math.ceil(rc / this.cfg.rows);
+    this.cfg.page = 0;
+    this.updateUI();
+}
