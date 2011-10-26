@@ -17,7 +17,9 @@ PrimeFaces = {
     },
 	
     addSubmitParam : function(parent, name, value) {
-        $(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
+        var form = $(this.escapeClientId(parent));
+        form.children('input.ui-submit-param').remove();
+        form.append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\" class=\"ui-submit-param\"/>");
 	
         return this;
     },
