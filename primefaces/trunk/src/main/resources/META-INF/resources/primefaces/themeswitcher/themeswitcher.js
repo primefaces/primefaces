@@ -134,8 +134,7 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
 PrimeFaces.widget.ThemeSwitcher.prototype.show = function() {
     this.alignPanel();
 
-    PrimeFaces.zindex++;
-    this.panel.css('z-index', PrimeFaces.zindex);
+    this.panel.css('z-index', ++PrimeFaces.zindex);
     
     if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
         this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
