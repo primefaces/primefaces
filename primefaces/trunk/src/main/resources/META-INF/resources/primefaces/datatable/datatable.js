@@ -446,7 +446,6 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
         //update paginator
         var paginator = _self.getPaginator();
         if(paginator) {
-            paginator.setPage(1, true);
             paginator.setTotalRecords(this.args.totalRecords, true);
         }
 

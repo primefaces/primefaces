@@ -123,16 +123,10 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
             });
         }
         else if(pageLinksAdd){
-            this.pageLinks.each(function(index, item){
-                var link = $(item),
-                cursor = index%actualPageCount;
-
-                if(cursor == actualPageCount - 1){
-                    var container = link.parent();
-                    for(var i = actualPageCount; i < pageCountToRender ; i++){
-                        var newLink = $('<span class="ui-paginator-page ui-state-default ui-corner-all">'+ (i+1) +'</span>');
-                        container.append(newLink);
-                    }
+            this.pagesContainer.each(function(index, item){
+                for(var i = actualPageCount; i < pageCountToRender ; i++){
+                    var newLink = $('<span class="ui-paginator-page ui-state-default ui-corner-all">'+ (i+1) +'</span>');
+                    $(item).append(newLink);
                 }
             });
         }
@@ -176,14 +170,11 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
         });
     }
     else{
-        this.jtpSelect.children('option').each(function(index, item){
-            var option = $(item);
-            if(option.val() == actualJtpCount - 1){
-                var parent = option.parent();
-                for(var i = actualJtpCount; i < _self.cfg.pageCount; i++){
-                    var newOption = $('<option value="' + i + '">' + (i+1) + "</option>");
-                    parent.append(newOption);
-                }
+        this.jtpSelect.each(function(index, item){
+            var parent = $(item);
+            for(var i = actualJtpCount; i < _self.cfg.pageCount; i++){
+                var newOption = $('<option value="' + i + '">' + (i+1) + "</option>");
+                parent.append(newOption);
             }
         });
     }
