@@ -213,7 +213,7 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     this.jtpSelect.attr('value', this.cfg.page);
 }
 
-PrimeFaces.widget.Paginator.prototype.setPage = function(page) {    
+PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {    
     if(page >= 0 && page < this.cfg.pageCount && this.cfg.page != page){
         this.cfg.page = page;
         
@@ -222,7 +222,9 @@ PrimeFaces.widget.Paginator.prototype.setPage = function(page) {
             rows: this.cfg.rows
         };
 
-        this.cfg.paginate.call(this, newState);
+        if(!silent) {
+            this.cfg.paginate.call(this, newState);
+        }
     
         this.updateUI();
     }

@@ -374,7 +374,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                 //reset paginator
                 var paginator = _self.getPaginator();
                 if(paginator) {
-                   paginator.setPage(1, true);
+                   paginator.setPage(0, true);
                 }
                 
                 if(_self.cfg.resizableColumns) {
@@ -446,7 +446,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
         //update paginator
         var paginator = _self.getPaginator();
         if(paginator) {
-            paginator.setTotalRecords(this.args.totalRecords, true);
+            paginator.setTotalRecords(this.args.totalRecords);
         }
 
         if(_self.cfg.resizableColumns) {
