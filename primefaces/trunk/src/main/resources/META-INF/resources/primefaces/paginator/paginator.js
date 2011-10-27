@@ -20,6 +20,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.endLink   = this.jq.children('.ui-paginator-last');
     this.currentReport = this.jq.children('.ui-paginator-current');
     
+    this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
     this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
@@ -99,7 +100,7 @@ PrimeFaces.widget.Paginator.prototype.bindPageLinkEvents = function(){
         
     }).mouseout(function(){
         $(this).removeClass('ui-state-hover');
-    });;
+    });
 }
 
 PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
@@ -149,7 +150,6 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
                 cursor = index%pageCountToRender,
                 actualPage;
 
-
                 if(lastPageShould > _self.cfg.pageCount)
                     actualPage = firstPageShould + cursor - shiftCount + (even ? 1 : 0);
                 else if(firstPageShould < 1)
@@ -187,7 +187,7 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
 PrimeFaces.widget.Paginator.prototype.updateUI = function(){
     this.updatePageLinks();
     
-    //sync dropdowns
+    //update boundaries
     if(this.cfg.page == 0) {
         this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.prevLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
@@ -206,9 +206,11 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
         this.endLink.removeClass('ui-state-disabled');
     }
     
+    //update current page report
     var text = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
     this.currentReport.text(text);
     
+    //sync dropdowns
     this.rppSelect.attr('value', this.cfg.rows);
     this.jtpSelect.attr('value', this.cfg.page);
 }

@@ -36,7 +36,6 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class DataTableRenderer extends DataRenderer {
 
