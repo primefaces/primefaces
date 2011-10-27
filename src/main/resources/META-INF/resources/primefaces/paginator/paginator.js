@@ -21,7 +21,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.currentReport = this.jq.children('.ui-paginator-current');
     
     this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
-    this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
+    this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
     this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
     this.bindEvents();
@@ -246,7 +246,7 @@ PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
 
 PrimeFaces.widget.Paginator.prototype.setTotalRecords = function(rc){
     this.cfg.rowCount = rc;
-    this.cfg.pageCount = Math.ceil(rc / this.cfg.rows);
+    this.cfg.pageCount = Math.ceil(rc / this.cfg.rows)||1;
     this.cfg.page = 0;
     this.updateUI();
 }
