@@ -400,9 +400,13 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String columnVar = columns.getVar();
+        String columnIndexVar = columns.getColumnIndexVar();
+        int colIndex = 0;
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
 
         for(Object column : (Collection) columns.getValue()) {
-            context.getExternalContext().getRequestMap().put(columnVar, column);
+            requestMap.put(columnVar, column);
+            requestMap.put(columnIndexVar, colIndex);
             UIComponent header = columns.getFacet("header");
 
             writer.startElement("th", null);
@@ -418,6 +422,8 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("div");
 
             writer.endElement("th");
+            
+            colIndex++;
         }
 
         context.getExternalContext().getRequestMap().remove(columnVar);
@@ -745,11 +751,11 @@ public class DataTableRenderer extends DataRenderer {
         String columnVar = columns.getVar();
         String columnIndexVar = columns.getColumnIndexVar();
         int colIndex = 0;
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
 
         for(Object column : (Collection) columns.getValue()) {
-            context.getExternalContext().getRequestMap().put(columnVar, column);
-            context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
-            UIComponent header = columns.getFacet("header");
+            requestMap.put(columnVar, column);
+            requestMap.put(columnIndexVar, colIndex);
 
             writer.startElement("td", null);
             writer.startElement("div", null);
