@@ -27,13 +27,13 @@ PrimeFaces.widget.Dashboard = function(cfg) {
                     var ext = {
                         params: {}
                     }  
-                    ext.params[id + "_reordered"] = true;
-                    ext.params[id + "_widgetId"] = ui.item.attr('id');
-                    ext.params[id + "_itemIndex"] = itemIndex;
-                    ext.params[id + "_receiverColumnIndex"] = receiverColumnIndex;
+                    ext.params[this.id + "_reordered"] = true;
+                    ext.params[this.id + "_widgetId"] = ui.item.attr('id');
+                    ext.params[this.id + "_itemIndex"] = itemIndex;
+                    ext.params[this.id + "_receiverColumnIndex"] = receiverColumnIndex;
 
                     if(ui.sender) {
-                        ext.params[id + "_senderColumnIndex"] = ui.sender.parent().children().index(ui.sender);
+                        ext.params[this.id + "_senderColumnIndex"] = ui.sender.parent().children().index(ui.sender);
                     }
 
                     reorderBehavior.call(_self, e, ext);
@@ -42,7 +42,6 @@ PrimeFaces.widget.Dashboard = function(cfg) {
             };
         }
     } 
-	
 	
 	$(this.jqId + " " + this.COLUMN_CLASS).sortable(this.cfg);
     
