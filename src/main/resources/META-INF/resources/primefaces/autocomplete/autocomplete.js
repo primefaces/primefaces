@@ -260,12 +260,8 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
 
                         //highlight query string
                         items.each(function() {
-                          var text = '<span class="ui-autocomplete-query">'
-                              + value 
-                              + '</span>'
-                              + this.textContent.substring(value.length);
-
-                          this.innerHTML = text;
+                            var item = $(this);
+                            item.html(item.text().replace(value, '<span class="ui-autocomplete-query">' + value + '</span>'));
                         });
                         
                         if(_self.cfg.forceSelection) {
