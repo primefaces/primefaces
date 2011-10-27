@@ -19,10 +19,12 @@ PrimeFaces.widget.DataGrid = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.DataGrid, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.DataGrid.prototype.setupPaginator = function() {
-    var paginator = this.getPaginator();
+    var _self = this;
+    this.cfg.paginator.paginate = function(newState) {
+        _self.handlePagination(newState);
+    };
 
-    paginator.subscribe('changeRequest', this.handlePagination, null, this);
-    paginator.render();
+    this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
 }
 
 PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
@@ -44,8 +46,6 @@ PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
 
                 if(id == _self.id){
                     $(_self.content).html(content);
-
-                    _self.getPaginator().setState(newState);
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -60,9 +60,8 @@ PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
 
     var params = {};
     params[this.id + "_ajaxPaging"] = true;
-    params[this.id + "_first"] = newState.recordOffset;
-    params[this.id + "_rows"] = newState.rowsPerPage;
-    params[this.id + "_page"] = newState.page;
+    params[this.id + "_first"] = newState.first;
+    params[this.id + "_rows"] = newState.rows;
 
     options.params = params;
 
@@ -70,5 +69,5 @@ PrimeFaces.widget.DataGrid.prototype.handlePagination = function(newState) {
 }
 
 PrimeFaces.widget.DataGrid.prototype.getPaginator = function() {
-    return this.cfg.paginator;
+    return this.paginator;
 }

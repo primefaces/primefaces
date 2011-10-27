@@ -17,14 +17,12 @@ package org.primefaces.component.datalist;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.renderkit.DataRenderer;
 
-import org.primefaces.renderkit.CoreRenderer;
-
-public class DataListRenderer extends CoreRenderer {
+public class DataListRenderer extends DataRenderer {
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
@@ -69,7 +67,7 @@ public class DataListRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, "styleClass");
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
-            encodePaginatorContainer(facesContext, clientId + "_paginatorTop");
+            encodePaginatorMarkup(facesContext, list, "top");
         }
 
         writer.startElement("div", list);
@@ -81,7 +79,7 @@ public class DataListRenderer extends CoreRenderer {
         writer.endElement("div");
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
-            encodePaginatorContainer(facesContext, clientId + "_paginatorBottom");
+            encodePaginatorMarkup(facesContext, list, "bottom");
         }
 
         writer.endElement("div");
@@ -98,32 +96,11 @@ public class DataListRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('DataList','" + list.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         
+        //Pagination
         if(list.isPaginator()) {
-            writer.write(",paginator:new YAHOO.widget.Paginator({");
-            writer.write("rowsPerPage:" + list.getRows());
-            writer.write(",totalRecords:" + list.getRowCount());
-            writer.write(",page:" + list.getPage());
-
-            if(list.getPageLinks() != 10) writer.write(",pageLinks:" + list.getPageLinks());
-            if(list.getPaginatorTemplate() != null) writer.write(",template:'" + list.getPaginatorTemplate() + "'");
-            if(list.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + list.getRowsPerPageTemplate() + "]");
-            if(list.getCurrentPageReportTemplate() != null) writer.write(",pageReportTemplate:'" + list.getCurrentPageReportTemplate() + "'");
-            if(!list.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
-
-            String paginatorPosition = list.getPaginatorPosition();
-            String paginatorContainer = null;
-            if(paginatorPosition.equals("both"))
-                paginatorContainer = clientId + "_paginatorTop','" + clientId + "_paginatorBottom";
-            else if (paginatorPosition.equals("top"))
-                paginatorContainer = clientId + "_paginatorTop";
-            else if (paginatorPosition.equals("bottom"))
-                paginatorContainer = clientId + "_paginatorBottom";
-
-            writer.write(",containers:['" + paginatorContainer + "']");
-
-            writer.write("})");   
+            encodePaginatorConfig(facesContext, list);
         }
-
+        
         writer.write("});});");
 
         endScript(writer);
@@ -178,15 +155,6 @@ public class DataListRenderer extends CoreRenderer {
         }
 
         writer.endElement(listTag);
-    }
-
-    protected void encodePaginatorContainer(FacesContext facesContext, String id) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("id", id, "id");
-        writer.writeAttribute("class", "ui-paginator ui-widget-header ui-corner-all", null);
-        writer.endElement("div");
     }
     
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

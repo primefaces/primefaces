@@ -21,10 +21,9 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.renderkit.DataRenderer;
 
-import org.primefaces.renderkit.CoreRenderer;
-
-public class DataGridRenderer extends CoreRenderer {
+public class DataGridRenderer extends DataRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -67,7 +66,7 @@ public class DataGridRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, "styleClass");
 
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
-            encodePaginatorContainer(context, clientId + "_paginatorTop");
+            encodePaginatorMarkup(context, grid, "top");
         }
 
         writer.startElement("div", grid);
@@ -79,7 +78,7 @@ public class DataGridRenderer extends CoreRenderer {
         writer.endElement("div");
 
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
-            encodePaginatorContainer(context, clientId + "_paginatorBottom");
+            encodePaginatorMarkup(context, grid, "bottom");
         }
 
         writer.endElement("div");
@@ -95,33 +94,12 @@ public class DataGridRenderer extends CoreRenderer {
         
         writer.write("PrimeFaces.cw('DataGrid','" + grid.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-
+        
+        //Pagination
         if(grid.isPaginator()) {
-            writer.write(",paginator:new YAHOO.widget.Paginator({");
-            writer.write("rowsPerPage:" + grid.getRows());
-            writer.write(",totalRecords:" + grid.getRowCount());
-            writer.write(",page:" + grid.getPage());
-
-            if(grid.getPageLinks() != 10) writer.write(",pageLinks:" + grid.getPageLinks());
-            if(grid.getPaginatorTemplate() != null) writer.write(",template:'" + grid.getPaginatorTemplate() + "'");
-            if(grid.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + grid.getRowsPerPageTemplate() + "]");
-            if(grid.getCurrentPageReportTemplate() != null) writer.write(",pageReportTemplate:'" + grid.getCurrentPageReportTemplate() + "'");
-            if (!grid.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
-
-            String paginatorPosition = grid.getPaginatorPosition();
-            String paginatorContainer = null;
-            if(paginatorPosition.equals("both"))
-                paginatorContainer = clientId + "_paginatorTop','" + clientId + "_paginatorBottom";
-            else if (paginatorPosition.equals("top"))
-                paginatorContainer = clientId + "_paginatorTop";
-            else if (paginatorPosition.equals("bottom"))
-                paginatorContainer = clientId + "_paginatorBottom";
-
-            writer.write(",containers:['" + paginatorContainer + "']");
-
-            writer.write("})");
+            encodePaginatorConfig(context, grid);
         }
-
+        
         writer.write("});});");
 
         endScript(writer);
@@ -178,15 +156,6 @@ public class DataGridRenderer extends CoreRenderer {
 
         writer.endElement("tbody");
         writer.endElement("table");
-    }
-
-    protected void encodePaginatorContainer(FacesContext context, String id) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("id", id, "id");
-        writer.writeAttribute("class", "ui-paginator ui-widget-header ui-corner-all", null);
-        writer.endElement("div");
     }
 
     @Override
