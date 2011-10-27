@@ -123,6 +123,11 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isColumnSelectionEnabled()) {
             writer.write(",columnSelectionMode:'" + table.getColumnSelectionMode() + "'");
         }
+        
+        //Filtering
+        if(table.isFilteringEnabled()) {
+            writer.write(",filtering:true");
+        }
 
         //Row expansion
         if(table.getRowExpansion() != null) {
@@ -422,14 +427,11 @@ public class DataTableRenderer extends DataRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
 
-        String widgetVar = table.resolveWidgetVar(); 
         String filterId = column.getClientId(context) + "_filter";
-        String filterFunction = widgetVar + ".filter()";
         String filterStyleClass = column.getFilterStyleClass();
         filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
 
         if(column.getValueExpression("filterOptions") == null) {
-            String filterEvent = "on" + column.getFilterEvent();
             String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
 
             writer.startElement("input", null);
@@ -437,21 +439,20 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("name", filterId, null);
             writer.writeAttribute("class", filterStyleClass, null);
             writer.writeAttribute("value", filterValue , null);
-            writer.writeAttribute(filterEvent, filterFunction , null);
 
-            if(column.getFilterStyle() != null) {
+            if(column.getFilterStyle() != null)
                 writer.writeAttribute("style", column.getFilterStyle(), null);
-            }
+            
+            if(column.getFilterMaxLength() != Integer.MAX_VALUE)
+                writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
 
             writer.endElement("input");
-            
         }
         else {
             writer.startElement("select", null);
             writer.writeAttribute("id", filterId, null);
             writer.writeAttribute("name", filterId, null);
             writer.writeAttribute("class", filterStyleClass, null);
-            writer.writeAttribute("onchange", filterFunction, null);
 
             SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
 

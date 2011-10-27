@@ -26,6 +26,11 @@ PrimeFaces.widget.DataTable = function(cfg) {
 
         this.setupSelectionEvents();
     }
+    
+    //Filtering
+    if(this.cfg.filtering) {
+        this.setupFiltering();
+    }
 
     if(this.cfg.expansion) {
         this.expansionProcess = [];
@@ -111,6 +116,27 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
                 _self.sort(columnId, "ASCENDING");
             }
         });
+}
+
+/**
+ * Binds filter events to filters
+ */
+PrimeFaces.widget.DataTable.prototype.setupFiltering = function() {
+    var _self = this;
+    
+    $(this.jqId + ' thead:first th.ui-filter-column .ui-dt-c .ui-column-filter').each(function(index) {
+        var filter = $(this);
+        if(filter.is('input:text')) {
+            filter.keyup(function(e) {
+                _self.filter(e);
+            });
+        } 
+        else {
+            filter.change(function(e) {
+                _self.filter(e);
+            });
+        }
+    });
 }
 
 /**
@@ -411,11 +437,19 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 /**
  * Ajax filter
  */
-PrimeFaces.widget.DataTable.prototype.filter = function() {
+PrimeFaces.widget.DataTable.prototype.filter = function(e) {
+    if(e) {
+        var filterElement = $(e.target);
+
+        if(filterElement.is('input:text') && filterElement.val().length == filterElement.attr('maxlength')) {
+            return;
+        } 
+    }
+    
     if(this.isSelectionEnabled()) {
         this.clearSelection();
     }
-    
+
     var options = {
         source: this.id,
         update: this.id,

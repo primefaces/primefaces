@@ -57,13 +57,6 @@
 			<type>java.lang.String</type>
             <description>Style class of the filter element.</description>
 		</attribute>
-		<attribute>
-			<name>filterEvent</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>keyup</defaultValue>
-            <description>Dom event to trigger a filter request.</description>
-		</attribute>
         <attribute>
 			<name>filterOptions</name>
 			<required>false</required>
@@ -121,6 +114,13 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Disables row selection when true.</description>
+		</attribute>
+        <attribute>
+			<name>filterMaxLength</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Disables row selection when true.</description>
 		</attribute>
 	</attributes>
