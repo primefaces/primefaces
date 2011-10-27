@@ -65,23 +65,25 @@ public class InputRenderer extends CoreRenderer {
                         for(Iterator it = collection.iterator(); it.hasNext();) {
                             Object object = it.next();
                             
+                            if(var != null)
+                                    context.getExternalContext().getRequestMap().put(var, object);
+                            
+                            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
+                            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
+                            String description = (String)uiSelectItems.getAttributes().get("itemDescription");
+                            Boolean disabled = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemDisabled")));
+                            Boolean escaped = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemEscaped")));
+                            Boolean noSelectionOption = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("noSelectionOption")));
+                            
                             if(object instanceof SelectItem) {
                                 selectItems.add((SelectItem) object);
                             }
                             else if(object instanceof Enum) {
                                 Enum e = (Enum) object;
-                                selectItems.add(new SelectItem(e.name(), e.name()));
+                                selectItems.add(new SelectItem(itemValue == null ? e.name() : itemValue, itemLabel == null ? e.name() : itemLabel, description, disabled, escaped, noSelectionOption));
                             }
                             else{
-                                if(var != null)
-                                    context.getExternalContext().getRequestMap().put(var, object);
-                                String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                                Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-                                String description = (String)uiSelectItems.getAttributes().get("itemDescription");
-                                Boolean disabled = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemDisabled")));
-                                Boolean escaped = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemEscaped")));
-                                Boolean noSelectionOption = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("noSelectionOption")));
-                                selectItems.add(new SelectItem(itemValue == null ? object : itemValue, itemLabel == null ? object.toString() : itemLabel, description, disabled, escaped,noSelectionOption));
+                                selectItems.add(new SelectItem(itemValue == null ? object : itemValue, itemLabel == null ? object.toString() : itemLabel, description, disabled, escaped, noSelectionOption));
                             }
                         }
                     }                    
