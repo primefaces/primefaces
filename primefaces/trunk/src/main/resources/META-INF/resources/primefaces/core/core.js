@@ -129,8 +129,8 @@ PrimeFaces = {
             window[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
         }
         else {
-            var scriptURI = $('script[src*="/javax.faces.resource/primefaces.js"]').attr('src').replace('primefaces.js', resource + '/' + resource + '.css'),
-            cssURI = $('link[href*="/javax.faces.resource/primefaces.css"]').attr('href').replace('primefaces.css', resource + '/' + resource + '.js'),
+            var scriptURI = $('script[src*="/javax.faces.resource/primefaces.js"]').attr('src').replace('primefaces.js', resource + '/' + resource + '.js'),
+            cssURI = $('link[href*="/javax.faces.resource/primefaces.css"]').attr('href').replace('primefaces.css', resource + '/' + resource + '.css'),
             cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';
 
             //load css
