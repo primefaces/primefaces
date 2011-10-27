@@ -217,7 +217,10 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
         if(_self.cfg.pojo) {
             _self.hinput.val(item.attr('data-item-value'));            
         } 
-
+           
+        //mark item selected for @forceSelection behavior
+        _self.cfg.selected = true;
+        
         _self.invokeItemSelectBehavior(event);
     });
 }
@@ -229,6 +232,9 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
     
     var _self = this;
     
+    //init for item selected for @forceSelection behaviour
+    this.cfg.selected = false;
+        
     //start callback
     if(this.cfg.onstart) {
         this.cfg.onstart.call(this, value);
@@ -349,20 +355,10 @@ PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(eve
 PrimeFaces.widget.AutoComplete.prototype.setupForceSelection = function() {
     var _self = this;
 	
+    //apply @forceSelection
     this.input.blur(function() {
-        var value = $(this).val(),
-        valid = false;
-		
-        if(_self.cachedResults) {
-            for(var i = 0; i < _self.cachedResults.length; i++) {
-                if(_self.cachedResults[i] == value) {
-                    valid = true;
-                    break;
-                }
-            }
-        }
-		
-        if(!valid) {
+        var value = $(this).val();
+        if(!value || _self.cfg.selected === false) {
             $(this).val('');
         }
     });
