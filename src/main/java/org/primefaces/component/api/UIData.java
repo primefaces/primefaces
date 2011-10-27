@@ -106,10 +106,11 @@ public class UIData extends javax.faces.component.UIData {
 	}
     
     public void calculatePage() {
-        int rows = this.getRows();
+        int rows = this.getRowsToRender();
+        int rowCount = this.getRowCount();
         int first = this.getFirst();
         int currentPage = (int) (first / rows);
-        int numberOfPages = (int) Math.ceil(this.getRowCount() * 1d / rows);
+        int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
 
         if(currentPage > numberOfPages && numberOfPages > 0) {
             currentPage = numberOfPages;
@@ -119,17 +120,19 @@ public class UIData extends javax.faces.component.UIData {
     }
     
     public int getPage() {
-        int rows = this.getRows();
+        int rows = this.getRowsToRender();
         int first = this.getFirst();
-        
-        if(rows == 0) {
-            rows = this.getRowCount();
-        }
-        
+         
         return (int) (first / rows);
     }
     
     public int getPageCount() {
-        return (int) Math.ceil(this.getRowCount() * 1d / this.getRows());
+        return (int) Math.ceil(this.getRowCount() * 1d / this.getRowsToRender());
+    }
+    
+    public int getRowsToRender() {
+        int rows = this.getRows();
+        
+        return rows == 0 ? this.getRowCount() : rows;
     }
 }
