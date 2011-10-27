@@ -139,23 +139,22 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
     //shift
     if(pageCountToRender < this.cfg.pageCount){
         var firstPageShown = parseInt(this.pageLinks.filter(':first').text()),
+        lastPageShown = parseInt(this.pageLinks.filter(':last').text()),
         shiftCount = parseInt(pageCountToRender / 2),
         firstPageShould = this.cfg.page - shiftCount + 1,
         even = pageCountToRender%2 == 0,
         lastPageShould = this.cfg.page + shiftCount + 1 - (even ? 1 : 0);
-
-        if(firstPageShown != firstPageShould){
+    
+        if((firstPageShown > 1 && firstPageShould < firstPageShown)||(lastPageShown < this.cfg.pageCount && lastPageShould > lastPageShown)){
             this.pageLinks.each(function(index, item){
                 var link = $(item),
                 cursor = index%pageCountToRender,
-                actualPage;
+                actualPage = firstPageShould + cursor;
 
                 if(lastPageShould > _self.cfg.pageCount)
                     actualPage = firstPageShould + cursor - shiftCount + (even ? 1 : 0);
                 else if(firstPageShould < 1)
                     actualPage = cursor + 1;
-                else
-                    actualPage = firstPageShould + cursor;
 
                 link.text(actualPage);
             });
