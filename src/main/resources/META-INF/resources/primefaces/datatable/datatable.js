@@ -437,15 +437,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
 /**
  * Ajax filter
  */
-PrimeFaces.widget.DataTable.prototype.filter = function(e) {
-    if(e) {
-        var filterElement = $(e.target);
-
-        if(filterElement.is('input:text') && filterElement.val().length == filterElement.attr('maxlength')) {
-            return;
-        } 
-    }
-    
+PrimeFaces.widget.DataTable.prototype.filter = function() {
     if(this.isSelectionEnabled()) {
         this.clearSelection();
     }
