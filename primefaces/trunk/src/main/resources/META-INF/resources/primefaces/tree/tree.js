@@ -248,6 +248,8 @@ PrimeFaces.widget.Tree.prototype.unselectNode = function(e, node) {
     //select node
     if(this.isCheckboxSelection()) {
         this.toggleCheckbox(node, false);
+        this.writeSelections();
+        this.fireNodeUnselectEvent(node);
     }
     else if(e.metaKey) {
         //remove visual style    
