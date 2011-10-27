@@ -330,13 +330,16 @@ PrimeFaces.widget.MenuButton = function(cfg) {
     this.button = this.jq.children('button');
     this.menu = this.jq.children('.ui-menu');
     this.menuitems = this.jq.find('.ui-menuitem');
+    this.cfg.disabled = this.button.is(':disabled');
 
     this.button.button({icons:{primary:'ui-icon-triangle-1-s'}});
 
-    this.bindEvents();
-    
-    $(document.body).children(this.menuId).remove();
-    this.menu.appendTo(document.body);
+    if(!this.cfg.disabled) {
+        this.bindEvents();
+
+        $(document.body).children(this.menuId).remove();
+        this.menu.appendTo(document.body);
+    }
     
     this.postConstruct();
 }

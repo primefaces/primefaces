@@ -37,7 +37,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		String buttonId = clientId + "_button";
 		String menuId = clientId + "_menu";
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass; 
+        styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass;
+        boolean disabled = button.isDisabled();
 		
 		writer.startElement("div", button);
 		writer.writeAttribute("id", clientId, "id");
@@ -51,32 +52,37 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("id", buttonId, null);
 		writer.writeAttribute("name", buttonId, null);
 		writer.writeAttribute("type", "button", null);
+        if(disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 		if(button.getValue() != null) {
 			writer.write(button.getValue());
 		}
 		writer.endElement("button");
 
         //menu
-        writer.startElement("div", null);
-        writer.writeAttribute("id", menuId, null);
-		writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
-        
-        writer.startElement("ul", null);
-		writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
+        if(!disabled) {
+            writer.startElement("div", null);
+            writer.writeAttribute("id", menuId, null);
+            writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
 
-		for(UIComponent child : button.getChildren()) {
-			MenuItem item = (MenuItem) child;
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
-			if(item.isRendered()) {
-                writer.startElement("li", item);
-                writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                encodeMenuItem(context, item);
-                writer.endElement("li");
-			}
-		}
+            for(UIComponent child : button.getChildren()) {
+                MenuItem item = (MenuItem) child;
 
-		writer.endElement("ul");
-		writer.endElement("div");
+                if(item.isRendered()) {
+                    writer.startElement("li", item);
+                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    encodeMenuItem(context, item);
+                    writer.endElement("li");
+                }
+            }
+
+            writer.endElement("ul");
+            writer.endElement("div");
+        }
         writer.endElement("div");
 	}
 
@@ -96,11 +102,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         
         writer.write("PrimeFaces.cw('MenuButton','" + button.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-
-        if(button.isDisabled()) {
-			writer.write(",disabled:true");
-		}
-
  		writer.write("});});");
 		
 		endScript(writer);
