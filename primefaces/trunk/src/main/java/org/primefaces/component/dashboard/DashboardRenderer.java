@@ -49,7 +49,8 @@ public class DashboardRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
 		writer.writeAttribute("class", styleClass, "styleClass");
-		if(dashboard.getStyle() != null)  writer.writeAttribute("style", dashboard.getStyle(), "style");
+		if(dashboard.getStyle() != null) 
+            writer.writeAttribute("style", dashboard.getStyle(), "style");
 		
 		DashboardModel model = dashboard.getModel();
 		if(model != null) {
@@ -81,7 +82,7 @@ public class DashboardRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
 		
         if(dashboard.isDisabled()) 
-            writer.write("disabled:true");
+            writer.write(",disabled:true");
 
         encodeClientBehaviors(context, dashboard);
         
