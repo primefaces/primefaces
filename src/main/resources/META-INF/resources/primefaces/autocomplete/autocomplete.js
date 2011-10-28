@@ -347,21 +347,20 @@ PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(eve
 }
 
 PrimeFaces.widget.AutoComplete.prototype.setupForceSelection = function() {
+    this.cachedResults = [this.input.val()];
     var _self = this;
-	
+
     this.input.blur(function() {
         var value = $(this).val(),
         valid = false;
-		
-        if(_self.cachedResults) {
-            for(var i = 0; i < _self.cachedResults.length; i++) {
-                if(_self.cachedResults[i] == value) {
-                    valid = true;
-                    break;
-                }
+
+        for(var i = 0; i < _self.cachedResults.length; i++) {
+            if(_self.cachedResults[i] == value) {
+                valid = true;
+                break;
             }
         }
-		
+
         if(!valid) {
             $(this).val('');
         }
