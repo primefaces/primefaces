@@ -15,12 +15,16 @@
  */
 package org.primefaces.component.api;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -43,7 +47,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             
     protected enum PropertyKeys {
 		var
-        ,state
+        ,saved
 		,value;
 
 		String toString;
@@ -57,7 +61,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         @Override
 		public String toString() {
 			return ((this.toString != null) ? this.toString : super.toString());
-}
+        }
 	}
     
     public String getRowKey() {
@@ -65,7 +69,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void setRowKey(String rowKey) {
-        resetChildren();
+        saveDescendantState();
         
         this.rowKey = rowKey;
 
@@ -78,6 +82,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             
             FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put(getVar(), this.rowNode.getData());
         }
+
+        restoreDescendantState();
     }
     
     public TreeNode getRowNode() {
@@ -117,15 +123,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 		}
 	}
     
-    private void resetChildren() {        
-        for(UIComponent kid : getChildren()) {
-            if(kid instanceof UIColumn) {
-                for(UIComponent grandKid : kid.getChildren())
-                    grandKid.setId(grandKid.getId());   //reset clientId
-            }
-        }
-    }
-
     @Override
     public String getContainerClientId(FacesContext context) {
         String clientId = super.getContainerClientId(context);
@@ -164,6 +161,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     @Override
     public void processDecodes(FacesContext context) {
         pushComponentToEL(context, this);
+        
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+        if(saved == null) {
+            getStateHelper().remove(PropertyKeys.saved);
+        }
         
         processNodes(context, PhaseId.APPLY_REQUEST_VALUES);
         
@@ -290,6 +292,93 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
     
+    private void saveDescendantState() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        for(UIComponent child : getChildren()) {
+            saveDescendantState(child, context);
+        }
+    }
+    
+    private void saveDescendantState(UIComponent component, FacesContext context) {
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+        
+        if(component instanceof EditableValueHolder) {
+            EditableValueHolder input = (EditableValueHolder) component;
+            SavedState state = null;
+            String clientId = component.getClientId(context);
+            
+            if(saved == null) {
+                state = new SavedState();
+                getStateHelper().put(PropertyKeys.saved, clientId, state);
+            }
+            
+            if(state == null) {
+                state = saved.get(clientId);
+                
+                if(state == null) {
+                    state = new SavedState();
+                    getStateHelper().put(PropertyKeys.saved, clientId, state);
+                }
+            }
+            
+            state.setValue(input.getLocalValue());
+            state.setValid(input.isValid());
+            state.setSubmittedValue(input.getSubmittedValue());
+            state.setLocalValueSet(input.isLocalValueSet());
+        } 
+        
+        for(UIComponent uiComponent : component.getChildren()) {
+            saveDescendantState(uiComponent, context);
+        }
+
+        if(component.getFacetCount() > 0) {
+            for(UIComponent facet : component.getFacets().values()) {
+                saveDescendantState(facet, context);
+            }
+        }
+    }
+    
+    private void restoreDescendantState() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        for(UIComponent child : getChildren()) {
+            restoreDescendantState(child, context);
+        }
+    }
+
+    private void restoreDescendantState(UIComponent component, FacesContext context) {
+        //force id reset
+        String id = component.getId();
+        component.setId(id);
+        
+        Map<String, SavedState> saved = (Map<String,SavedState>) getStateHelper().get(PropertyKeys.saved);
+
+        if(component instanceof EditableValueHolder) {
+            EditableValueHolder input = (EditableValueHolder) component;
+            String clientId = component.getClientId(context);
+
+            SavedState state = saved.get(clientId);
+            if(state == null) {
+                state = new SavedState();
+            }
+            
+            input.setValue(state.getValue());
+            input.setValid(state.isValid());
+            input.setSubmittedValue(state.getSubmittedValue());
+            input.setLocalValueSet(state.isLocalValueSet());
+        }
+        for(UIComponent kid : component.getChildren()) {
+            restoreDescendantState(kid, context);
+        }
+        
+        if(component.getFacetCount() > 0) {
+            for(UIComponent facet : component.getFacets().values()) {
+                restoreDescendantState(facet, context);
+            }
+        }
+    }
+    
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
         if(!isVisitable(context))
@@ -395,6 +484,62 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
+}
+
+@SuppressWarnings({"SerializableHasSerializationMethods","NonSerializableFieldInSerializableClass"})
+class SavedState implements Serializable {
+
+    private static final long serialVersionUID = 4325654657465654768L;
+    
+    private Object submittedValue;
+    
+    private boolean submitted;
+
+    Object getSubmittedValue() {
+        return (this.submittedValue);
+    }
+
+    void setSubmittedValue(Object submittedValue) {
+        this.submittedValue = submittedValue;
+    }
+
+    private boolean valid = true;
+
+    boolean isValid() {
+        return (this.valid);
+    }
+
+    void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    private Object value;
+
+    Object getValue() {
+        return (this.value);
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    private boolean localValueSet;
+
+    boolean isLocalValueSet() {
+        return (this.localValueSet);
+    }
+
+    public void setLocalValueSet(boolean localValueSet) {
+        this.localValueSet = localValueSet;
+    }
+
+    public boolean getSubmitted() {
+        return this.submitted;
+    }
+
+    public void setSubmitted(boolean submitted) {
+        this.submitted = submitted;
+    }
 }
 
 class WrapperEvent extends FacesEvent {
