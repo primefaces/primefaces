@@ -1,6 +1,3 @@
-/**
- * PrimeFaces Paginator Widget
- */
 PrimeFaces.widget.Paginator = function(cfg){
     this.cfg = cfg;
     this.jq = $();
@@ -10,6 +7,7 @@ PrimeFaces.widget.Paginator = function(cfg){
         _self.jq = _self.jq.add($(PrimeFaces.escapeClientId(id)));
     });
     
+    //elements
     this.pagesContainer = this.jq.children('.ui-paginator-pages');
     this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
     this.rppSelect = this.jq.children('.ui-paginator-rpp-options');
@@ -20,26 +18,34 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.endLink   = this.jq.children('.ui-paginator-last');
     this.currentReport = this.jq.children('.ui-paginator-current');
     
+    //metadata
     this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
     this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
+    
+    if(this.pageLinks.length > 0) {
+        this.calculatePageLinkRange();
+    }
+    
+    //event bindings
     this.bindEvents();
 }
 
 PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     var _self = this;
     
-    //hover for buttons
-    this.jq.find('span.ui-state-default').mouseover(function(){
+    //visuals for first,prev,next,last buttons
+    this.jq.children('span.ui-state-default').mouseover(function(){
         var item = $(this);
-        if(!item.hasClass('ui-state-disabled'))
+        if(!item.hasClass('ui-state-disabled')) {
             item.addClass('ui-state-hover');
-        
+        }
     }).mouseout(function(){
         $(this).removeClass('ui-state-hover');
     });
     
+    //page links
     this.bindPageLinkEvents();
     
     //records per page selection
@@ -88,105 +94,24 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
 PrimeFaces.widget.Paginator.prototype.bindPageLinkEvents = function(){
     var _self = this;
     
-    this.pageLinks.unbind('click').bind('click', function(e){
+    this.pagesContainer.children('.ui-paginator-page').bind('click', function(e){
         var link = $(this);
-        if(!link.hasClass('ui-state-active')){
+
+        if(!link.hasClass('ui-state-disabled')&&!link.hasClass('ui-state-active')) {
             _self.setPage(parseInt(link.text()) - 1);
         }
     }).mouseover(function(){
         var item = $(this);
-        if(!item.hasClass('ui-state-disabled'))
+        if(!item.hasClass('ui-state-disabled')&&!item.hasClass('ui-state-active')) {
             item.addClass('ui-state-hover');
-        
+        }
     }).mouseout(function(){
         $(this).removeClass('ui-state-hover');
     });
 }
 
-PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
-    var pageCountToRender = this.cfg.pageCount < this.cfg.pageLinks ? this.cfg.pageCount : this.cfg.pageLinks,
-    actualPageCount = this.pagesContainer.filter(':first').children().length,
-    pageLinksCut = pageCountToRender < actualPageCount,
-    pageLinksAdd = pageCountToRender > actualPageCount,
-    actualJtpCount = this.jtpSelect.filter(':first').children().length,
-    jtpCut = this.cfg.pageCount <= actualJtpCount,
-    _self = this;
-    
-    //page links dom update
-    if(actualPageCount != pageCountToRender ){
-        if(pageLinksCut){
-            this.pageLinks.each(function(index, item){
-                var link = $(item),
-                cursor = index%actualPageCount;
-
-                if(cursor >= pageCountToRender)
-                    link.remove();
-            });
-        }
-        else if(pageLinksAdd){
-            this.pagesContainer.each(function(index, item){
-                for(var i = actualPageCount; i < pageCountToRender ; i++){
-                    var newLink = $('<span class="ui-paginator-page ui-state-default ui-corner-all">'+ (i+1) +'</span>');
-                    $(item).append(newLink);
-                }
-            });
-        }
-    }
-    
-    this.pageLinks.removeClass('ui-state-active');
-    this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
-    
-    //shift
-    if(pageCountToRender < this.cfg.pageCount||pageLinksCut||pageLinksAdd){
-        var firstPageShown = parseInt(this.pageLinks.filter(':first').text()),
-        lastPageShown = parseInt(this.pageLinks.filter(':last').text()),
-        shiftCount = parseInt(pageCountToRender / 2),
-        firstPageShould = this.cfg.page - shiftCount + 1,
-        even = pageCountToRender%2 == 0,
-        lastPageShould = this.cfg.page + shiftCount + 1 - (even ? 1 : 0);
-    
-        if((firstPageShown > 1 && firstPageShould < firstPageShown)||(lastPageShown < this.cfg.pageCount && lastPageShould > lastPageShown)){
-            this.pageLinks.each(function(index, item){
-                var link = $(item),
-                cursor = index%pageCountToRender,
-                actualPage = firstPageShould + cursor;
-
-                if(lastPageShould > _self.cfg.pageCount)
-                    actualPage = firstPageShould + cursor - shiftCount + (even ? 1 : 0);
-                else if(firstPageShould < 1)
-                    actualPage = cursor + 1;
-
-                link.text(actualPage);
-            });
-        }
-    }
-    
-    if(jtpCut){
-        this.jtpSelect.children('option').each(function(index, item){
-            var option = $(item);
-            if(option.val() >= _self.cfg.pageCount)
-                option.remove();
-        });
-    }
-    else{
-        this.jtpSelect.each(function(index, item){
-            var parent = $(item);
-            for(var i = actualJtpCount; i < _self.cfg.pageCount; i++){
-                var newOption = $('<option value="' + i + '">' + (i+1) + "</option>");
-                parent.append(newOption);
-            }
-        });
-    }
-    
-    this.pageLinks.filter('[innerHTML="'+(this.cfg.page + 1)+'"]').addClass('ui-state-active');
-    
-    this.bindPageLinkEvents();
-}
-
-PrimeFaces.widget.Paginator.prototype.updateUI = function(){
-    this.updatePageLinks();
-    
-    //update boundaries
+PrimeFaces.widget.Paginator.prototype.updateUI = function() {  
+    //boundaries
     if(this.cfg.page == 0) {
         this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
         this.prevLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
@@ -205,13 +130,45 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function(){
         this.endLink.removeClass('ui-state-disabled');
     }
     
-    //update current page report
+    //current page report
     var text = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
     this.currentReport.text(text);
     
-    //sync dropdowns
+    //dropdowns
     this.rppSelect.attr('value', this.cfg.rows);
     this.jtpSelect.attr('value', this.cfg.page);
+    
+    //page links
+    this.updatePageLinks();
+}
+
+PrimeFaces.widget.Paginator.prototype.updatePageLinks = function() {
+    var start, end, delta;
+    
+    //calculate visible page links
+    this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
+    var visiblePages = Math.min(this.cfg.pageLinks, this.cfg.pageCount);
+
+    //calculate range, keep current in middle if necessary
+    start = Math.max(0, Math.ceil(this.cfg.page - ((visiblePages) / 2)));
+    end = Math.min(this.cfg.pageCount - 1, start + visiblePages - 1);
+    
+    //check when approaching to last page
+    delta = this.cfg.pageLinks - (end - start + 1);
+    start = Math.max(0, start - delta);
+
+    //update dom
+    this.pagesContainer.children().remove();
+    for(var i = start; i <= end; i++) {
+        var styleClass = 'ui-paginator-page ui-state-default ui-corner-all';
+        if(this.cfg.page == i) {
+            styleClass += " ui-state-active";
+        }
+        
+        this.pagesContainer.append('<span class="' + styleClass + '">' + (i + 1) + '</span>')   
+    }
+    
+    this.bindPageLinkEvents();
 }
 
 PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {    
@@ -231,7 +188,7 @@ PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {
     }
 }
 
-PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
+PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp) {
     var first = this.cfg.rows * this.cfg.page,
     page = parseInt(first / rpp);
     
@@ -243,9 +200,13 @@ PrimeFaces.widget.Paginator.prototype.setRowsPerPage = function(rpp){
     this.setPage(page);
 }
 
-PrimeFaces.widget.Paginator.prototype.setTotalRecords = function(rc){
-    this.cfg.rowCount = rc;
-    this.cfg.pageCount = Math.ceil(rc / this.cfg.rows)||1;
+PrimeFaces.widget.Paginator.prototype.setTotalRecords = function(value) {
+    this.cfg.rowCount = value;
+    this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
     this.cfg.page = 0;
     this.updateUI();
+}
+
+PrimeFaces.widget.Paginator.prototype.getCurrentPage = function() {
+    return this.cfg.page;
 }
