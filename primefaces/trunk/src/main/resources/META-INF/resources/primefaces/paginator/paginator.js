@@ -45,42 +45,50 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     this.bindPageLinkEvents();
     
     //records per page selection
-    this.rppSelect.change(function(e){
+    this.rppSelect.change(function(e) {
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setRowsPerPage(parseInt($(this).val()));
         }
     });
     
     //jump to page
-    this.jtpSelect.change(function(e){
+    this.jtpSelect.change(function(e) {
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(parseInt($(this).val()));
         }
     });
     
     //First page link
-    this.firstLink.click(function(){
+    this.firstLink.click(function() {
+        PrimeFaces.clearSelection();
+        
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(0);
         }
     });
     
     //Prev page link
-    this.prevLink.click(function(){
+    this.prevLink.click(function() {
+        PrimeFaces.clearSelection();
+        
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(_self.cfg.page - 1);
         }
     });
     
     //Next page link
-    this.nextLink.click(function(){
+    this.nextLink.click(function() {
+        PrimeFaces.clearSelection();
+        
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(_self.cfg.page + 1);
         }
     });
     
     //Last page link
-    this.endLink.click(function(){
+    this.endLink.click(function() {
+        PrimeFaces.clearSelection();
+        
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(_self.cfg.pageCount - 1);
         }
@@ -167,7 +175,7 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function() {
     this.bindPageLinkEvents();
 }
 
-PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {    
+PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {
     if(page >= 0 && page < this.cfg.pageCount && this.cfg.page != page){
         this.cfg.page = page;
         
