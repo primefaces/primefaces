@@ -24,10 +24,6 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.cfg.pageLinks = this.cfg.pageLinks||10;
     this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
     
-    if(this.pageLinks.length > 0) {
-        this.calculatePageLinkRange();
-    }
-    
     //event bindings
     this.bindEvents();
 }
