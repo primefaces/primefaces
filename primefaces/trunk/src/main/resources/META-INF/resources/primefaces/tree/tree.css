@@ -8,7 +8,8 @@
     float: left;
 }
 
-.ui-tree .ui-tree-parent span {
+.ui-tree .ui-tree-parent span,
+.ui-tree .ui-tree-item span {
     float: left;
 }
 
