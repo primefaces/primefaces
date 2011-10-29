@@ -22,12 +22,12 @@ import org.primefaces.component.api.UIData;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        int actualRows = uidata.getRows();
-        
+    public void render(FacesContext context, UIData uidata) throws IOException {        
         String template = uidata.getRowsPerPageTemplate();
-        if(template != null){
+        
+        if(template != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            int actualRows = uidata.getRows();
             String[] options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
         
             writer.startElement("select", null);
@@ -49,6 +49,5 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
             writer.endElement("select");
         }
-    }
-    
+    }   
 }
