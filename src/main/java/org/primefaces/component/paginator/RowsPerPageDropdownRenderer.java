@@ -26,33 +26,29 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int actualRows = uidata.getRows();
         
-        writer.startElement("select", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
-        writer.writeAttribute("value", uidata.getRows(), null);
-        
-        String[] options;
         String template = uidata.getRowsPerPageTemplate();
-        if(template == null){
-            options = new String[]{ "10" };
-        }
-        else{
-            options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
-        }
+        if(template != null){
+            String[] options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
         
-        for( String option : options){
-            int rows = Integer.parseInt(option);
-            writer.startElement("option", null);
-            writer.writeAttribute("value", rows, null);
-            
-            if(actualRows == rows){
-                writer.writeAttribute("selected", "selected", null);
+            writer.startElement("select", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
+            writer.writeAttribute("value", uidata.getRows(), null);
+
+            for( String option : options){
+                int rows = Integer.parseInt(option);
+                writer.startElement("option", null);
+                writer.writeAttribute("value", rows, null);
+
+                if(actualRows == rows){
+                    writer.writeAttribute("selected", "selected", null);
+                }
+
+                writer.writeText(option, null);
+                writer.endElement("option");
             }
-            
-            writer.writeText(option, null);
-            writer.endElement("option");
+
+            writer.endElement("select");
         }
-        
-        writer.endElement("select");
     }
     
 }
