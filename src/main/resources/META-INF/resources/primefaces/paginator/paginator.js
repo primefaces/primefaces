@@ -137,7 +137,7 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function(){
     this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
     
     //shift
-    if(pageCountToRender < this.cfg.pageCount){
+    if(pageCountToRender < this.cfg.pageCount||pageLinksCut||pageLinksAdd){
         var firstPageShown = parseInt(this.pageLinks.filter(':first').text()),
         lastPageShown = parseInt(this.pageLinks.filter(':last').text()),
         shiftCount = parseInt(pageCountToRender / 2),
