@@ -207,13 +207,7 @@
 			<name>primefaces.css</name>
 		</resource>
 		<resource>
-			<name>paginator/paginator.css</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>paginator/paginator.js</name>
 		</resource>
 		<resource>
 			<name>primefaces.js</name>
