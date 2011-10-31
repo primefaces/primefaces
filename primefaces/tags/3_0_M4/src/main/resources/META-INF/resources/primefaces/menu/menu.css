@@ -1,0 +1,252 @@
+.ui-menu {
+    width:150px;
+    padding:0.3em;
+    position:relative;
+}
+
+.ui-menu-dynamic {
+    position: absolute;
+    display: none;
+    z-index: 100000;
+}
+
+.ui-menu-list {
+    position:static;
+}
+
+.ui-menu .ui-menu-list .ui-menuitem {
+    border:none;
+}
+
+.ui-menu .ui-menu-list .ui-widget-header {
+    clear:both;
+    float:left;
+    width:98%;
+    font-size:12px;
+    margin:1px 0;
+}
+
+.ui-menu .ui-menuitem {
+    width:100%;
+    float:left;
+    clear:both;
+    margin:1px 0;
+    padding:0;
+}
+
+.ui-menu .ui-menuitem-parent {
+    width:100%;
+    float:left;
+    clear:both;
+    margin:1px 0;
+    padding:0;
+}
+
+.ui-menu .ui-menuitem-link {
+    display:block;
+    width:92%;
+    outline:none;
+    text-decoration:none;
+    font-weight:400;
+    border:solid 1px transparent;
+    float:left;
+    line-height:16px;
+    padding:0.3em;
+}
+
+.ui-menu .ui-menuitem-link .ui-menuitem-icon {
+    display:inline-block;
+    float:left;
+}
+
+.ui-menu .ui-menuitem-text {
+    float:left;
+}
+
+.ui-menu .ui-widget-header h1,
+.ui-menu .ui-widget-header h2,
+.ui-menu .ui-widget-header h3,
+.ui-menu .ui-widget-header h4,
+.ui-menu .ui-widget-header h5,
+.ui-menu .ui-widget-header h6 {
+    float:left;
+    display:block;
+    font-size:1em;
+    margin:0 auto;
+    padding:0.3em 3%;
+}
+
+.ui-menu .ui-menu-parent .ui-menu-child {
+    display:none;
+    width:150px;
+    padding:0.3em;
+    position:absolute;
+}
+
+.ui-menu .ui-menu-parent {
+    position:relative;
+}
+
+.ui-menu .ui-menu-parent .ui-icon-triangle-1-e, 
+.ui-menubar .ui-menu-child .ui-icon-triangle-1-e {
+    float:right;
+}
+
+.ui-menubutton {
+    display:inline-block;
+    padding:0;
+}
+
+.ui-menubutton .ui-button {
+    margin:0;
+}
+
+.ui-menu.ui-menu-sliding{
+    overflow: hidden;
+    position: relative;
+    padding: .3em .3em .5em .3em;
+    border-radius : 4px;
+    display: block; 
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll{
+    border : medium none;
+    padding: 0;
+    outline: medium none;
+    border-radius : 4px;
+    background: transparent;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state{
+    overflow: hidden;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper{
+    overflow: hidden;
+    position: absolute;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content{
+    display: block;
+    height: auto;
+    width: auto;
+    position: relative;
+    top: 0px;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content > div{
+    position: relative;
+}
+
+.ui-menu.ui-menu-sliding ul{
+    position: absolute;
+    box-shadow : none;
+    border-width: 0;
+    height: auto;
+    width: 100%; 
+    background: inherit;
+    top : 0;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content ul li{
+    clear: both;
+    float: left;
+    margin: 1px 0;
+    padding: 0;
+    background: none;
+    position: static;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-backward{
+    margin : 0;
+    padding: 0;
+    display: none;
+    height : 16px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.ui-menu.ui-menu-sliding .ui-menu-backward .ui-icon{
+    float: left;
+}
+
+/** Menubar **/
+.ui-menubar {
+    width:auto;
+}
+
+.ui-menubar .ui-menuitem {
+    width:auto;
+    clear:none;
+    margin-right:3px;
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem {
+    width:100%;
+}
+
+.ui-menubar .ui-menu-child {
+    top:25px;
+    left:0;
+}
+
+.ui-menubar .ui-menuitem-link {
+    width:auto;
+    padding:0.4em 0.3em;
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem-link {
+    width:92%;
+}
+
+.ui-menubar .ui-widget-header {
+    clear:none;
+    width:auto;
+    margin:0 3px 0 0;
+}
+
+.ui-menubar .ui-widget-header h1,
+.ui-menubar .ui-widget-header h2,
+.ui-menubar .ui-widget-header h3,
+.ui-menubar .ui-widget-header h4,
+.ui-menubar .ui-widget-header h5,
+.ui-menubar .ui-widget-header h6 {
+    padding:0.4em 0.3em;
+}
+
+.ui-menubar .ui-menu-separator {
+    height:auto;
+    clear:none;
+    width:1px;
+    text-indent:-9999px;
+    margin:0 3px 0 0;
+    padding:0.4em 0;
+}
+
+.ui-menubar .ui-menu-child .ui-menu-separator {
+    clear:both;
+    float:left;
+    height:1px;
+    text-indent:-9999px;
+    width:98%;
+    margin:1px 0;
+    padding:0;
+}
+
+.ui-menu .ui-menu-child {
+    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+}
+
+.ui-menu .ui-separator {
+    width:98%;
+    float:left;
+    clear:both;
+    margin:1px 0 0 0;
+    padding:0;
+    border-top: 0px none;
+}

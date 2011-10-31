@@ -1,0 +1,31 @@
+.ui-stack { position: fixed; bottom: 28px; right: 40px; }
+.ui-stack > img { position: relative; cursor: pointer; padding-top: 35px; z-index: 2; }
+.ui-stack ul { list-style: none; position: absolute; top: 5px; cursor: pointer; z-index: 1; margin: 0; padding: 0;}
+.ui-stack ul li { position: absolute; }
+.ui-stack ul li img { border: 0; }
+.ui-stack ul li span { display: none; }
+.ui-stack .openStack li span {
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	display:block;
+	height: 14px;
+	position:absolute;
+	top: 17px;
+	right:60px;
+	line-height: 14px;
+	border: 0;
+	background-color:#000;
+	padding: 3px 10px;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	color: #fcfcfc;
+	text-align: center;
+	text-shadow: #000 1px 1px 1px;
+	opacity: .85;
+	filter: alpha(opacity = 85);
+}
+
+/* IE Fixes */
+.ui-stack { _position: absolute; }
+.ui-stack ul { _z-index:-1; _top:-15px; }
+.ui-stack ul li { *right:5px; }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>draggable</tag>
+    <tagClass>org.primefaces.component.dnd.DraggableTag</tagClass>
+    <componentClass>org.primefaces.component.dnd.Draggable</componentClass>
+    <componentType>org.primefaces.component.Draggable</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DraggableRenderer</rendererType>
+    <rendererClass>org.primefaces.component.dnd.DraggableRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>proxy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays proxy element instead of actual element. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>dragOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description></description>
+        </attribute>
+        <attribute>
+            <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id of the component to add draggable behavior.</description>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables or enables dragging.</description>
+        </attribute>
+        <attribute>
+            <name>axis</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Specifies drag axis, valid values are 'x' and 'y'.</description>
+        </attribute>
+        <attribute>
+            <name>containment</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Constraints dragging within the boundaries of containment element.</description>
+        </attribute>
+        <attribute>
+            <name>helper</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Helper element to display when dragging.</description>
+        </attribute>
+        <attribute>
+            <name>revert</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Reverts draggable to it's original position when not dropped onto a valid droppable. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>snap</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Draggable will snap to edge of near elements. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>snapMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Specifies the snap mode. Valid values are 'both', 'inner' and 'outer'.</description>
+        </attribute>
+        <attribute>
+            <name>snapTolerance</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>20</defaultValue>
+            <description>Distance from the snap element in pixels to trigger snap. Default is 20.</description>
+        </attribute>
+        <attribute>
+            <name>zindex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>-1</defaultValue>
+            <description>ZIndex to apply during dragging. Default is -1.</description>
+        </attribute>
+        <attribute>
+            <name>handle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Specifies a handle for dragging.</description>
+        </attribute>
+        <attribute>
+            <name>opacity</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
+            <defaultValue>1.0</defaultValue>
+            <description>Defines the opacity of the helper during dragging. Default is 1.0</description>
+        </attribute>
+        <attribute>
+            <name>stack</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>In stack mode, draggable overlap is controlled automatically using the provided selector, dragged item always overlays other draggables.</description>
+        </attribute>
+        <attribute>
+            <name>grid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Dragging happens in every x and y pixels.</description>
+        </attribute>
+        <attribute>
+            <name>scope</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Scope key to match draggables and droppables.</description>
+        </attribute>
+        <attribute>
+            <name>cursor</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>crosshair</defaultValue>
+            <description>CSS cursor to display in dragging. Default is crosshair.</description>
+        </attribute>
+        <attribute>
+            <name>dashboard</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id of the dashboard to connect with.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
