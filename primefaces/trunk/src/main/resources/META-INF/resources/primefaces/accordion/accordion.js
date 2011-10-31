@@ -210,10 +210,6 @@ PrimeFaces.widget.AccordionPanel.prototype.isLoaded = function(panel) {
     return panel.data('loaded') == true;
 }
 
-PrimeFaces.widget.AccordionPanel.prototype.collapseAll = function() {
-    this.jq.accordion('activate', false);
-}
-
 PrimeFaces.widget.AccordionPanel.prototype.hasBehavior = function(event) {
     if(this.cfg.behaviors) {
         return this.cfg.behaviors[event] != undefined;
