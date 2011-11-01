@@ -163,6 +163,13 @@
 			<type>java.lang.String</type>
             <description>A localized user presentable name.</description>
 		</attribute>
+        <attribute>
+			<name>itemDisabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Determines list items will be disabled or not. Default is false.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>
