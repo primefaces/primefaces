@@ -191,9 +191,10 @@ public class PickListRenderer extends CoreRenderer {
             Object item = it.next();
 			context.getExternalContext().getRequestMap().put(var, item);
 			String value = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
-			
-			writer.startElement("li", null);
-            writer.writeAttribute("class", PickList.ITEM_CLASS, null);
+            String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
+            
+            writer.startElement("li", null);
+            writer.writeAttribute("class", itemClass, null);
             writer.writeAttribute("data-item-value", value, null);
 			
             if(pickList.getChildCount() > 0) {
