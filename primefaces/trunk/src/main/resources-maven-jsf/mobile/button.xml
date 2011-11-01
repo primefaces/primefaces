@@ -12,8 +12,14 @@
 	<rendererType>org.primefaces.mobile.component.ButtonRenderer</rendererType>
 	<rendererClass>org.primefaces.mobile.component.button.ButtonRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+        <interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
 			<name>value</name>
 			<required>false</required>
