@@ -33,6 +33,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
+import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortOrder;
@@ -341,7 +342,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, clientId + "_checkAll", false, column.isDisabledSelection());
+            encodeCheckbox(context, table, false, column.isDisabledSelection());
         }
         else {
             if(hasFilter) {
@@ -908,31 +909,44 @@ public class DataTableRenderer extends DataRenderer {
         boolean disabled = column.isDisabledSelection();
 
         if(selectionMode.equalsIgnoreCase("single")) {
-            writer.startElement("input", null);
-            writer.writeAttribute("type", "radio", null);
-            writer.writeAttribute("name", name + "_radio", null);
-            
-            if(selected)
-                writer.writeAttribute("checked", "checked", null);
-            
-            if(disabled)
-                writer.writeAttribute("disabled", "disabled", null);
-            
-            writer.endElement("input");
+            encodeRadio(context, table, selected, disabled);
             
         } else if(selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, name + "_checkbox", selected, disabled);
+            encodeCheckbox(context, table, selected, disabled);
         } else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
 
     }
     
-    protected void encodeCheckbox(FacesContext context, DataTable table, String id, boolean checked, boolean disabled) throws IOException{
+    protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String styleClass = SelectOneRadio.RADIO_BUTTON_CLASS;
+        String outputClass = SelectOneRadio.RADIO_OUTPUT_CLASS;
+        String iconClass = SelectOneRadio.RADIO_ICON_CLASS;
+        
+        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+        outputClass = checked ? outputClass + " ui-state-active" : outputClass;
+        iconClass = checked ? iconClass + " " + SelectOneRadio.RADIO_CHECKED_ICON_CLASS : iconClass;
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", outputClass, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("div");
+        writer.endElement("div");
+    }
+
+    protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", id, "id");
         writer.writeAttribute("class", SelectBooleanCheckbox.STYLE_CLASS + (disabled ? " ui-state-disabled" : ""), "styleClass");
         
         String iconClass = SelectBooleanCheckbox.CHECKBOX_ICON_CLASS;
