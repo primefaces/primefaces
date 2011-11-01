@@ -185,16 +185,71 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 });
         }
         else {
-            this.checkAllToggler = $(this.jqId + ' > table thead th.ui-selection-column input:checkbox');
-            this.checkAllToggler.bind('click', function() {
-                _self.toggleCheckAll();
+            this.checkAllToggler = $(this.jqId + ' > table thead th.ui-selection-column .ui-checkbox .ui-checkbox-inputwrapper input:checkbox');
+            $(this.jqId + ' > table thead th.ui-selection-column .ui-checkbox .ui-checkbox-box').die('mouseover').live('mouseover', function() {
+                var box = $(this),
+                parent = box.parent();
+                if(!parent.hasClass('ui-state-disabled')) {
+                    box.addClass('ui-state-hover');
+                }
+            }).die('mouseout').live('mouseout', function() {
+                $(this).removeClass('ui-state-hover');
+            }).die('click').live('click', function() {
+                var box = $(this),
+                parent = box.parent(),
+                input = box.siblings('.ui-checkbox-inputwrapper:first').children('input:checkbox'),
+                icon = box.children('span.ui-checkbox-icon:first');
+                if(!parent.hasClass('ui-state-disabled')) {
+                    var checked = box.hasClass('ui-state-active');
+
+                    if(checked) {
+                        box.removeClass('ui-state-active');
+                        input.removeAttr('checked');
+                        icon.removeClass('ui-icon ui-icon-check');
+                    } else {
+                        box.addClass('ui-state-active');
+                        input.attr('checked', 'checked');
+                        icon.addClass('ui-icon ui-icon-check');
+                    }
+
+                    input.change();
+                    
+                    _self.toggleCheckAll();
+                }
             });
             
-            $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:checkbox')
-                .die('click')
-                .live('click', function() {
-                    _self.clickRowWithCheckbox(this);
-                });
+            //row selectors
+            $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-checkbox .ui-checkbox-box').die('mouseover').live('mouseover', function() {
+                var box = $(this),
+                parent = box.parent();
+                if(!parent.hasClass('ui-state-disabled')) {
+                    box.addClass('ui-state-hover');
+                }
+            }).die('mouseout').live('mouseout', function() {
+                $(this).removeClass('ui-state-hover');
+            }).die('click').live('click', function() {
+                var box = $(this),
+                parent = box.parent(),
+                input = box.siblings('.ui-checkbox-inputwrapper:first').children('input:checkbox'),
+                icon = box.children('span.ui-checkbox-icon:first');
+                if(!parent.hasClass('ui-state-disabled')) {
+                    var checked = box.hasClass('ui-state-active');
+
+                    if(checked) {
+                        box.removeClass('ui-state-active');
+                        input.removeAttr('checked');
+                        icon.removeClass('ui-icon ui-icon-check');
+                    } else {
+                        box.addClass('ui-state-active');
+                        input.attr('checked', 'checked');
+                        icon.addClass('ui-icon ui-icon-check');
+                    }
+
+                    input.change();
+                    
+                    _self.clickRowWithCheckbox(input);
+                }
+            });
         }
     }
 }
@@ -327,19 +382,17 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                 
                 //update checkall checkbox if all enabled checkboxes are checked
                 if(_self.checkAllToggler) {
-                    var checkboxes = $(_self.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column input:checkbox'),
+                    var checkboxes = $(_self.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column .ui-checkbox'),
                     uncheckedBoxes = $.grep(checkboxes, function(element) {
                         var checkbox = $(element),
-                        disabled = checkbox.is(':disabled'),
-                        checked = checkbox.is(':checked');
+                        disabled = checkbox.hasClass('ui-state-disabled'),
+                        checked = checkbox.children('.ui-checkbox-box').hasClass('ui-state-active');
                         
                         return !(checked || disabled); 
                     });
-                                       
-                    if(uncheckedBoxes.length == 0)
-                        _self.checkAllToggler.attr('checked', 'checked');
-                    else
-                        _self.checkAllToggler.removeAttr('checked');
+                     
+                    if(uncheckedBoxes.length == 0 ^ _self.checkAllToggler.is(':checked'))
+                        _self.checkAllToggler.parent().siblings('.ui-checkbox-box').click();
                 }
             }
             else {
@@ -652,9 +705,8 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
 /**
  *  Selects the corresping row of a checkbox based column selection
  */
-PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
-    var checkbox = $(element),
-    row = checkbox.parents('tr:first'),
+PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(checkbox) {
+    var row = checkbox.parents('tr:first'),
     rowMeta = this.getRowMeta(row),
     checked = checkbox.is(':checked');
 
@@ -670,8 +722,6 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
         this.writeSelections();
         this.fireRowUnselectEvent(rowMeta.key);
     }
-
-    
 }
 
 /**
@@ -679,31 +729,14 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(element) {
  */
 PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
     var checked = this.checkAllToggler.is(':checked'),
-    checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column').find('input:checkbox:not(:disabled)'),
-    _self = this;
+    checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column').find('.ui-checkbox:not(.ui-state-disabled) > .ui-checkbox-box');
 
-    if(checked) {
-        checkboxes.attr('checked', 'checked');
-
-        //add to selection
-        checkboxes.each(function() {
-            var row = $(this).parents('.ui-widget-content:first');
-            row.addClass('ui-state-highlight');
-            
-            _self.addSelection(_self.getRowMeta(row).key);
-        });
-    }
-    else {
-        checkboxes.removeAttr('checked');
-        
-        //remove from selection
-        checkboxes.each(function() {
-            var row = $(this).parents('.ui-widget-content:first');
-            row.removeClass('ui-state-highlight');
-            
-            _self.removeSelection(_self.getRowMeta(row).key);
-        });
-    }
+    checkboxes.each(function() {
+        var box = $(this),
+        alreadyChecked = box.hasClass('ui-state-active');
+        if(checked ^ alreadyChecked)
+            box.click();
+    });
 
     //save state
     this.writeSelections();
