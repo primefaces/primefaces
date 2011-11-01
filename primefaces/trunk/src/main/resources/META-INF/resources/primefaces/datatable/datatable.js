@@ -178,11 +178,35 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
     else if(this.cfg.columnSelectionMode) {
         
         if(this.cfg.columnSelectionMode == 'single') {
-            $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column input:radio')
-                .die('click')
-                .live('click', function() {
-                    _self.selectRowWithRadio(this);
-                });
+            var radios = $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-radiobutton .ui-radiobutton-box');
+            
+            radios.die('click').live('click', function() {
+                var radio = $(this),
+                parent = radio.parent(),
+                checked = radio.hasClass('ui-state-active');;
+                
+                if(!parent.hasClass('ui-state-disabled') && !checked) {
+                    //unselect all
+                    radios.removeClass('ui-state-active');
+                    radios.children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
+
+                    //select current
+                    radio.addClass('ui-state-active');
+                    radio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+
+                    _self.selectRowWithRadio(radio);
+                }
+            }).die('mouseover').live('mouseover', function() {
+                var radio = $(this);
+                if(!radio.parent().hasClass('ui-state-disabled')) {
+                    radio.addClass('ui-state-hover');
+                }
+            }).die('mouseout').live('mouseout', function() {
+                var radio = $(this);
+                if(!radio.parent().hasClass('ui-state-disabled')) {
+                    radio.removeClass('ui-state-hover');
+                }
+            });
         }
         else {
             this.checkAllToggler = $(this.jqId + ' > table thead th.ui-selection-column .ui-checkbox .ui-checkbox-box');
@@ -673,9 +697,8 @@ PrimeFaces.widget.DataTable.prototype.fireRowUnselectEvent = function(rowKey) {
 /**
  *  Selects the corresping row of a radio based column selection
  */
-PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(element) {
-    var radio = $(element),
-    row = radio.parents('tr:first'),
+PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(radio) {
+    var row = radio.parents('tr:first'),
     rowMeta = this.getRowMeta(row);
 
     //clean previous selection
