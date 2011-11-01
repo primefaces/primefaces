@@ -32,6 +32,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortOrder;
@@ -340,13 +341,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
-            writer.startElement("input", null);
-            writer.writeAttribute("type", "checkbox", null);
-            writer.writeAttribute("name", clientId + "_checkAll", null);
-            if(column.isDisabledSelection()) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
-            writer.endElement("input");
+            encodeCheckbox(context, table, clientId + "_checkAll", false, column.isDisabledSelection());
         }
         else {
             if(hasFilter) {
@@ -926,23 +921,52 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("input");
             
         } else if(selectionMode.equalsIgnoreCase("multiple")) {
-            writer.startElement("input", null);
-            writer.writeAttribute("type", "checkbox", null);
-            writer.writeAttribute("name", name + "_checkbox", null);
-            if(selected)
-                writer.writeAttribute("checked", "checked", null);
-            
-            if(disabled)
-                writer.writeAttribute("disabled", "disabled", null);
-            
-            writer.endElement("input");
-
+            encodeCheckbox(context, table, name + "_checkbox", selected, disabled);
         } else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
 
     }
+    
+    protected void encodeCheckbox(FacesContext context, DataTable table, String id, boolean checked, boolean disabled) throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
 
+        writer.startElement("div", null);
+        writer.writeAttribute("id", id, "id");
+        writer.writeAttribute("class", SelectBooleanCheckbox.STYLE_CLASS + (disabled ? " ui-state-disabled" : ""), "styleClass");
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectBooleanCheckbox.CHECKBOX_INPUT_WRAPPER_CLASS, null);
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("id", id + "_input", "id");
+        writer.writeAttribute("name", id + "_input", null);
+        writer.writeAttribute("type", "checkbox", null);
+        
+        if(checked) writer.writeAttribute("checked", "checked", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+
+        writer.endElement("input");
+        writer.endElement("div");
+        
+        String iconClass = SelectBooleanCheckbox.CHECKBOX_ICON_CLASS;
+        String outputClass = SelectBooleanCheckbox.CHECKBOX_OUTPUT_CLASS;
+        if(checked){
+            iconClass += " " + SelectBooleanCheckbox.CHECKBOX_CHECKED_ICON_CLASS;
+            outputClass += " ui-state-active"; 
+        }        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", outputClass, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("div");
+        
+        writer.endElement("div");
+    }
+    
     protected void encodeEditedRow(FacesContext context, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowIndex"));
