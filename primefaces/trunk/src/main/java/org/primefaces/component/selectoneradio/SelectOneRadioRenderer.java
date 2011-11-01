@@ -121,11 +121,11 @@ public class SelectOneRadioRenderer extends InputRenderer {
 
     protected void encodeOptionOutput(FacesContext context, SelectOneRadio radio, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = "ui-radiobutton-box ui-widget ui-corner-all ui-radiobutton-relative ui-state-default";
+        String styleClass = SelectOneRadio.RADIO_OUTPUT_CLASS;
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
 
-        String iconClass = "ui-radiobutton-icon";
-        iconClass = checked ? iconClass + " ui-icon ui-icon-bullet" : iconClass;
+        String iconClass = SelectOneRadio.RADIO_ICON_CLASS;
+        iconClass = checked ? iconClass + " " + SelectOneRadio.RADIO_CHECKED_ICON_CLASS : iconClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
@@ -178,7 +178,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
 
         writer.startElement("td", null);
 
-        String styleClass = "ui-radiobutton ui-widget";
+        String styleClass = SelectOneRadio.RADIO_BUTTON_CLASS;
         if(disabled) {
             styleClass += " ui-state-disabled";
         }
