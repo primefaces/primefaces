@@ -921,16 +921,20 @@ public class DataTableRenderer extends DataRenderer {
     
     protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = SelectOneRadio.RADIO_BUTTON_CLASS;
         String outputClass = SelectOneRadio.RADIO_OUTPUT_CLASS;
         String iconClass = SelectOneRadio.RADIO_ICON_CLASS;
         
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
-        outputClass = checked ? outputClass + " ui-state-active" : outputClass;
-        iconClass = checked ? iconClass + " " + SelectOneRadio.RADIO_CHECKED_ICON_CLASS : iconClass;
+        if(disabled){
+            outputClass += " ui-state-disabled";
+        }
+        
+        if(checked){
+            outputClass += " ui-state-active";
+            iconClass += " " + SelectOneRadio.RADIO_CHECKED_ICON_CLASS;
+        }
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", SelectOneRadio.RADIO_BUTTON_CLASS, null);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", outputClass, null);
@@ -945,16 +949,21 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", SelectBooleanCheckbox.STYLE_CLASS + (disabled ? " ui-state-disabled" : ""), "styleClass");
-        
         String iconClass = SelectBooleanCheckbox.CHECKBOX_ICON_CLASS;
         String outputClass = SelectBooleanCheckbox.CHECKBOX_OUTPUT_CLASS;
+        
+        if(disabled){
+            outputClass += " ui-state-disabled";
+        }
+        
         if(checked){
             iconClass += " " + SelectBooleanCheckbox.CHECKBOX_CHECKED_ICON_CLASS;
             outputClass += " ui-state-active"; 
-        }        
+        }
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectBooleanCheckbox.STYLE_CLASS, "styleClass");
+        
         writer.startElement("div", null);
         writer.writeAttribute("class", outputClass, null);
 
