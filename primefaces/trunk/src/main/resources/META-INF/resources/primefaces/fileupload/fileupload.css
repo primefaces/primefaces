@@ -26,6 +26,7 @@
   -o-transform: translate(250px, -50px) scale(1);
   direction: ltr;
   cursor: pointer;
+  z-index: 5000;
 }
 
 .fileinput-button {
