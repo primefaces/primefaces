@@ -182,10 +182,9 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
             
             radios.die('click').live('click', function() {
                 var radio = $(this),
-                parent = radio.parent(),
                 checked = radio.hasClass('ui-state-active');;
                 
-                if(!parent.hasClass('ui-state-disabled') && !checked) {
+                if(!radio.hasClass('ui-state-disabled') && !checked) {
                     //unselect all
                     radios.removeClass('ui-state-active');
                     radios.children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
@@ -198,31 +197,27 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 }
             }).die('mouseover').live('mouseover', function() {
                 var radio = $(this);
-                if(!radio.parent().hasClass('ui-state-disabled')) {
+                if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
                     radio.addClass('ui-state-hover');
                 }
             }).die('mouseout').live('mouseout', function() {
                 var radio = $(this);
-                if(!radio.parent().hasClass('ui-state-disabled')) {
-                    radio.removeClass('ui-state-hover');
-                }
+                radio.removeClass('ui-state-hover');
             });
         }
         else {
             this.checkAllToggler = $(this.jqId + ' > table thead th.ui-selection-column .ui-checkbox .ui-checkbox-box');
             this.checkAllToggler.die('mouseover').live('mouseover', function() {
-                var box = $(this),
-                parent = box.parent();
-                if(!parent.hasClass('ui-state-disabled')) {
+                var box = $(this);
+                if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
                     box.addClass('ui-state-hover');
                 }
             }).die('mouseout').live('mouseout', function() {
                 $(this).removeClass('ui-state-hover');
             }).die('click').live('click', function() {
                 var box = $(this),
-                parent = box.parent(),
                 icon = box.children('span.ui-checkbox-icon:first');
-                if(!parent.hasClass('ui-state-disabled')) {
+                if(!box.hasClass('ui-state-disabled')) {
                     var checked = box.hasClass('ui-state-active');
 
                     if(checked) {
@@ -239,18 +234,16 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
             
             //row selectors
             $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-checkbox .ui-checkbox-box').die('mouseover').live('mouseover', function() {
-                var box = $(this),
-                parent = box.parent();
-                if(!parent.hasClass('ui-state-disabled')) {
+                var box = $(this);
+                if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
                     box.addClass('ui-state-hover');
                 }
             }).die('mouseout').live('mouseout', function() {
                 $(this).removeClass('ui-state-hover');
             }).die('click').live('click', function() {
                 var box = $(this),
-                parent = box.parent(),
                 icon = box.children('span.ui-checkbox-icon:first');
-                if(!parent.hasClass('ui-state-disabled')) {
+                if(!box.hasClass('ui-state-disabled')) {
                     var checked = box.hasClass('ui-state-active');
 
                     if(checked) {
@@ -742,7 +735,7 @@ PrimeFaces.widget.DataTable.prototype.clickRowWithCheckbox = function(checkbox) 
  */
 PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
     var checked = this.checkAllToggler.hasClass('ui-state-active'),
-    checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column').find('.ui-checkbox:not(.ui-state-disabled) > .ui-checkbox-box');
+    checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column').find('.ui-checkbox > .ui-checkbox-box:not(.ui-state-disabled)');
 
     checkboxes.each(function() {
         var box = $(this),
