@@ -52,16 +52,17 @@ PrimeFaces.widget.PickList = function(cfg) {
         })
         .mousedown(function(e) {
             var element = $(this);
-
-            if(!e.metaKey) {
-                element.removeClass('ui-state-hover').addClass('ui-state-highlight')
-                .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
-            }
-            else {
-                if(element.hasClass('ui-state-highlight'))
-                    element.removeClass('ui-state-highlight');
-                else
-                    element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+            if(!element.hasClass('ui-state-disabled')){
+                if(!e.metaKey) {
+                    element.removeClass('ui-state-hover').addClass('ui-state-highlight')
+                    .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+                }
+                else {
+                    if(element.hasClass('ui-state-highlight'))
+                        element.removeClass('ui-state-highlight');
+                    else
+                        element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+                }
             }
         })
         .dblclick(function() {
