@@ -171,7 +171,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>1</defaultValue>
-            <description>Hour steps, default is 1 (for smooth, 1 would jump to each hour).</description>
+            <description>Hour steps, default is 1.</description>
         </attribute>
         <attribute>
             <name>stepMinute</name>
@@ -192,42 +192,42 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
-            <description>Sets least value for hour selection. Default is 0.</description>
+            <description>Minimum boundary for hour selection. Default is 0.</description>
         </attribute>
         <attribute>
             <name>maxHour</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>23</defaultValue>
-            <description>Sets top value for hour selection. Default is 23.</description>
+            <description>Maximum boundary for hour selection. Default is 23.</description>
         </attribute>
         <attribute>
             <name>minMinute</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
-            <description>Sets least value for minute selection. Default is 0.</description>
+            <description>Minimum boundary for minute selection. Default is 0.</description>
         </attribute>
         <attribute>
             <name>maxMinute</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>59</defaultValue>
-            <description>Sets top value for minute selection. Default is 59.</description>
+            <description>Maximum boundary for minute selection. Default is 59.</description>
         </attribute>
         <attribute>
             <name>minSecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>0</defaultValue>
-            <description>Sets least value for second selection. Default is 0.</description>
+            <description>Minimum boundary for second selection. Default is 0.</description>
         </attribute>
         <attribute>
             <name>maxSecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>59</defaultValue>
-            <description>Sets top value for second selection. Default is 59.</description>
+            <description>Maximum boundary for second selection. Default is 59.</description>
         </attribute>
     </attributes>
     <resources>
