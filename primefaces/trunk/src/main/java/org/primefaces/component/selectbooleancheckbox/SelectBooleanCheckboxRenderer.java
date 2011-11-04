@@ -98,7 +98,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
     protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = SelectBooleanCheckbox.CHECKBOX_OUTPUT_CLASS;
+        String styleClass = SelectBooleanCheckbox.CHECKBOX_BOX_CLASS;
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
 
         String iconClass = SelectBooleanCheckbox.CHECKBOX_ICON_CLASS;

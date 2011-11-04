@@ -121,7 +121,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
 
     protected void encodeOptionOutput(FacesContext context, SelectOneRadio radio, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = SelectOneRadio.RADIO_OUTPUT_CLASS;
+        String styleClass = SelectOneRadio.RADIO_BOX_CLASS;
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
 
         String iconClass = SelectOneRadio.RADIO_ICON_CLASS;
