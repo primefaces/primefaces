@@ -168,7 +168,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>Determines list items will be disabled or not. Default is false.</description>
+            <description>Specifies if an item can be picked or not.</description>
 		</attribute>
 	</attributes>
 	    <resources>
