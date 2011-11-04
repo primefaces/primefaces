@@ -17,12 +17,6 @@
 	<attributes>
 		&input_component_attributes;
 		<attribute>
-			<name>publicKey</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Public recaptcha key for a specific domain (deprecated)</description>
-		</attribute>
-		<attribute>
 			<name>theme</name>
 			<required>false</required>
 			<type>java.lang.String</type>
