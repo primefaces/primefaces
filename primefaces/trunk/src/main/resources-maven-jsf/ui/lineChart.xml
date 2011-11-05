@@ -128,18 +128,6 @@
 			<type>java.lang.String</type>
         <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-        <attribute>
-			<name>xaxisAngle</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-        <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-        <attribute>
-			<name>yaxisAngle</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-        <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
        <attribute>
             <name>enhancedLegend</name>
             <required>false</required>
