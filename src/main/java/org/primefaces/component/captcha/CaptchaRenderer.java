@@ -102,14 +102,6 @@ public class CaptchaRenderer extends CoreRenderer {
 	}
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {
-        String key = captcha.getPublicKey();
-        
-        if(key != null) {
-            logger.warning("PublicKey definition on captcha is deprecated, use primefaces.PUBLIC_CAPTCHA_KEY context-param instead");
-
-            return key;
-        } else {
-            return context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
-        }
+        return context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
     }
 }
