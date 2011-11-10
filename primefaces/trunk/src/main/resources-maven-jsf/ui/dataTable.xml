@@ -148,7 +148,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>Enables row selection on double click.</description>
+            <description>Client side callback to execute after ajax request to select a row ends. Default is false.</description>
 		</attribute>
         <attribute>
 			<name>liveScroll</name>
@@ -162,6 +162,12 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Style class for each row.</description>
+		</attribute>
+        <attribute>
+			<name>onExpandStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute before row expansion.</description>
 		</attribute>
         <attribute>
 			<name>resizableColumns</name>
