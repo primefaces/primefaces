@@ -5,12 +5,12 @@
 ]>
 <component>
     <tag>meterGaugeChart</tag>
-    <tagClass>org.primefaces.component.chart.meterGauge.MeterGaugeChartTag</tagClass>
-    <componentClass>org.primefaces.component.chart.meterGauge.MeterGaugeChart</componentClass>
+    <tagClass>org.primefaces.component.chart.metergauge.MeterGaugeChartTag</tagClass>
+    <componentClass>org.primefaces.component.chart.metergauge.MeterGaugeChart</componentClass>
     <componentType>org.primefaces.component.chart.MeterGaugeChart</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.chart.MeterGaugeChartRenderer</rendererType>
-    <rendererClass>org.primefaces.component.chart.meterGauge.MeterGaugeChartRenderer</rendererClass>
+    <rendererClass>org.primefaces.component.chart.metergauge.MeterGaugeChartRenderer</rendererClass>
     <parent>org.primefaces.component.chart.UIChart</parent>
     <interfaces>
         <interface>
