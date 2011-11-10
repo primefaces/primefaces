@@ -99,6 +99,12 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<description>When enabled, only selection would be exported.</description>
+			<name>selectionOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
 	
 	<tag>
