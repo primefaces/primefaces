@@ -23,13 +23,6 @@
 		&output_component_attributes;
 		&widget_var_attribute;
 		<attribute>
-			<name>global</name>
-			<required>false</required>`
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>A global tooltip converts each title attribute to a tooltip. Default is false.</description>
-		</attribute>
-		<attribute>
 			<name>showEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
