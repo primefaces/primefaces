@@ -34,12 +34,6 @@
             <description>Target type of url navigation.</description>
 		</attribute>
 		<attribute>
-			<name>helpText</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Text to display additional information.</description>
-		</attribute>
-		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
