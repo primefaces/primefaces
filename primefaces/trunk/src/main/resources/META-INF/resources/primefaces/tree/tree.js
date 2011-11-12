@@ -18,10 +18,6 @@ PrimeFaces.widget.Tree = function(cfg) {
     }
 
     this.bindEvents();
-
-    if(this.cfg.dragdrop) {
-        this.setupDragDrop(this.jq.find('.ui-tree-node-label'), this.jq.find('.ui-tree-node-content'));
-    }
     
     this.postConstruct();
 }
@@ -117,10 +113,6 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
                 
                 if(id == _self.id){
                     node.children('.ui-tree-nodes').append(content);
-
-                    if(_self.cfg.dragdrop) {
-                        _self.setupDragDrop(node.find('.ui-tree-node-label'), node.find('.ui-tree-node-content'));
-                    }
                     
                     _self.showNodeChildren(node);
                 }
@@ -381,71 +373,6 @@ PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
         }
 
     });
-}
-
-PrimeFaces.widget.Tree.prototype.setupDragDrop = function(draggables, droppables) {
-    var _self = this;
-
-    //make all labels draggable
-    draggables.draggable({
-        revert:'invalid',
-        helper: 'clone',
-        containment: this.jqId
-    });
-
-    //make all node contents droppable
-    droppables.droppable({
-        hoverClass: 'ui-state-hover',
-        drop: function(event, ui) {
-            var newParent = $(this).parents('li:first'),
-            draggedNode = ui.draggable.parents('li:first'),
-            newParentChildrenContainer = newParent.children('.ui-tree-nodes'),
-            oldParent = null;
-
-            //ignore self dragdrop
-            if(newParent.attr('id') == draggedNode.attr('id')) {
-                return;
-            }
-
-            //If newParent had no children before, make it a parent
-            if(newParentChildrenContainer.length == 0) {
-                newParent.append('<ul class="ui-tree-nodes ui-helper-reset ui-tree-child"></ul>')
-                .removeClass('ui-tree-item').addClass('ui-tree-parent')
-                .find('.ui-tree-node-content:first').prepend('<span class="ui-tree-icon ui-icon ui-icon-triangle-1-s"></span>');
-            }
-
-            //If old parent has no children left, make it a leaf
-            if(draggedNode.siblings().length == 0) {
-                oldParent = draggedNode.parents('li:first');
-                newParent.children('.ui-tree-nodes').append(draggedNode);
-                oldParent.removeClass('ui-tree-parent').addClass('ui-tree-item');
-                oldParent.find('.ui-tree-icon:first').remove();
-                oldParent.children('.ui-tree-nodes').remove();
-            }
-            else {
-                //append droppedNode to newParent
-                newParent.children('.ui-tree-nodes').append(draggedNode);
-            }
-
-            _self.fireDragDropEvent(draggedNode, newParent);
-        }
-    });
-}
-
-PrimeFaces.widget.Tree.prototype.fireDragDropEvent = function(draggedNode, newParent) {
-    if(this.cfg.behaviors) {
-        var dndBehavior = this.cfg.behaviors['dragdrop'];
-        
-        if(dndBehavior) {
-            var ext = {
-                params: {}
-            };
-            ext.params[this.id + '_draggedNode'] = this.getNodeId(draggedNode);
-            ext.params[this.id + '_droppedNode'] = this.getNodeId(newParent);
-            
-            dndBehavior.call(this, draggedNode, ext);
-        }
-    }
 }
 
 PrimeFaces.widget.Tree.prototype.preselectCheckboxPropagation = function() {

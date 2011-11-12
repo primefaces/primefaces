@@ -82,15 +82,8 @@
 			<type>java.lang.String</type>
             <description>Defines the selectionMode.</description>
 		</attribute>
-        <attribute>
-			<name>dragdrop</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Makes tree nodes draggable/droppable when true. Default is false.</description>
-		</attribute>
 	</attributes>
-	    <resources>
+    <resources>
         <resource>
 			<name>primefaces.css</name>
 		</resource>
