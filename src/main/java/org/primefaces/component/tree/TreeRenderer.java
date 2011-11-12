@@ -124,11 +124,6 @@ public class TreeRenderer extends CoreRenderer {
             writer.write(",onNodeClick:function(node) {" + tree.getOnNodeClick() + "}");
         }
 
-        //dragdrop
-        if(tree.isDragdrop()) {
-            writer.write(",dragdrop:true");
-        }
-
         //expand-collapse icon states for specific treenodes
         encodeIconStates(context, tree);
         

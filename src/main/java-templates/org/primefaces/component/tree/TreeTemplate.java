@@ -20,7 +20,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop"));;;
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse"));;;
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
@@ -173,23 +173,6 @@ import org.primefaces.model.TreeNode;
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             } 
-            else if(eventName.equals("dragdrop")) {
-                String draggedNodeKey = params.get(clientId + "_draggedNode");
-                String droppedNodeKey = params.get(clientId + "_droppedNode");
-
-                this.setRowKey(draggedNodeKey);
-                TreeNode draggedNode = this.getRowNode();
-
-                this.setRowKey(droppedNodeKey);
-                TreeNode droppedNode = this.getRowNode();
-
-                //update model
-                draggedNode.setParent(droppedNode);
-
-                //fire dragdrop event
-                wrapperEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), draggedNodeKey, droppedNodeKey);
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
-            }
             
             super.queueEvent(wrapperEvent);
             
