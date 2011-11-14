@@ -18,6 +18,7 @@ package org.primefaces.component.selectmanycheckbox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -194,7 +195,7 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         String formattedValue = getOptionAsString(context, component, converter, option.getValue());
         String clientId = component.getClientId(context);
         String containerClientId = component.getContainerClientId(context);
-        boolean checked = componentValue != null && ((List) componentValue).contains(option.getValue());
+        boolean checked = componentValue != null && ((Collection) componentValue).contains(option.getValue());
         boolean disabled = checkbox.isDisabled() || option.isDisabled();
 
         writer.startElement("td", null);
