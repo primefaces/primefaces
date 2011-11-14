@@ -52,8 +52,8 @@ public class SliderRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "range", null);
-        writer.writeAttribute("min", slider.getMinValue(), null);
-        writer.writeAttribute("max", slider.getMaxValue(), null);
+        writer.writeAttribute("min", slider.getMin(), null);
+        writer.writeAttribute("max", slider.getMax(), null);
 
         if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender , null);
