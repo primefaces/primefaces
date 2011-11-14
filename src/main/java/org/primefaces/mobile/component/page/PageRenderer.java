@@ -56,9 +56,9 @@ public class PageRenderer extends CoreRenderer {
             preinit.encodeAll(context);
         }
         
+        renderResource(context, "mobile/core.js", "javax.faces.resource.Script");
         renderResource(context, "mobile/mobile.js", "javax.faces.resource.Script");
         renderResource(context, "primefaces.js", "javax.faces.resource.Script");
-        renderResource(context, "mobile/core.js", "javax.faces.resource.Script");
 
         if(postinit != null) {
             postinit.encodeAll(context);
