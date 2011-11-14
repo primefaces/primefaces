@@ -31,6 +31,9 @@ public class FooterRenderer extends CoreRenderer {
         writer.startElement("div", footer);
         writer.writeAttribute("id", footer.getClientId(context), "id");
         writer.writeAttribute("data-role", "footer", null);
+        
+        if(footer.isFixed()) 
+            writer.writeAttribute("data-position", "fixed", null);
     }
 
     @Override
