@@ -15,9 +15,16 @@
 	<attributes>
 		&standard_uicomponent_attributes;
         <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title of the view.</description>
+        </attribute>
+        <attribute>
             <name>swatch</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Swatch of the view.</description>
         </attribute>
 	</attributes>
 </component>

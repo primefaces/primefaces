@@ -28,6 +28,7 @@ public class ViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         View view = (View) component;
         String swatch = view.getSwatch();
+        String title = view.getTitle();
 
         writer.startElement("div", view);
         writer.writeAttribute("id", view.getId(), "id");
@@ -36,6 +37,9 @@ public class ViewRenderer extends CoreRenderer {
 
         if(swatch != null)
             writer.writeAttribute("data-theme", swatch, null);
+        
+        if(title != null)
+            writer.writeAttribute("data-title", title, null);
     }
 
     @Override

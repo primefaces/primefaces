@@ -42,7 +42,7 @@ public class PageRenderer extends CoreRenderer {
         
         writer.startElement("meta", page);
         writer.writeAttribute("name", "viewport", null);
-        writer.writeAttribute("content", "width=device-width, minimum-scale=1, maximum-scale=1", null);
+        writer.writeAttribute("content", "width=device-width, initial-scale=1", null);
         writer.endElement("meta");
 
         writer.startElement("title", page);
