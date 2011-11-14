@@ -52,6 +52,20 @@ public class PageRenderer extends CoreRenderer {
         renderResource(context, "mobile/mobile.css", "javax.faces.resource.Stylesheet");
         renderResource(context, "jquery/jquery.js", "javax.faces.resource.Script");
 
+        //config options
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        
+        writer.write("$(document).bind('mobileinit', function(){");
+        writer.write("$.mobile.ajaxEnabled = false;");
+        if(page.getLoadingMessage() != null) writer.write("$.mobile.loadingMessage = '" + page.getLoadingMessage() + "';");
+        if(page.getDefaultPageTransition() != null) writer.write("$.mobile.defaultPageTransition = '" + page.getDefaultPageTransition() + "';");
+        if(page.getDefaultDialogTransition() != null) writer.write("$.mobile.defaultDialogTransition = '" + page.getDefaultDialogTransition() + "';");
+        
+        writer.write("});");
+        
+        writer.endElement("script");
+
         if(preinit != null) {
             preinit.encodeAll(context);
         }
