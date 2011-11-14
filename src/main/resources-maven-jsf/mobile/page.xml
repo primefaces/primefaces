@@ -20,5 +20,23 @@
 			<type>java.lang.String</type>
             <defaultValue></defaultValue>
 		</attribute>
+        <attribute>
+			<name>defaultPageTransition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue></defaultValue>
+		</attribute>
+        <attribute>
+			<name>defaultDialogTransition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue></defaultValue>
+		</attribute>
+        <attribute>
+			<name>loadingMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue></defaultValue>
+		</attribute>
 	</attributes>
 </component>
