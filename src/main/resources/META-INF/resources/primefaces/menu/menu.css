@@ -236,6 +236,11 @@
     padding:0;
 }
 
+/*IE7 hack*/
+.ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-e{
+    *float: none;
+}
+
 .ui-menu .ui-menu-child {
     -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
