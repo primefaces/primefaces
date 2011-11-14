@@ -17,13 +17,13 @@
 	<attributes>
 		&input_component_attributes;
 		<attribute>
-			<name>minValue</name>
+			<name>min</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
 		</attribute>
 		<attribute>
-			<name>maxValue</name>
+			<name>max</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>100</defaultValue>
