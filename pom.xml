@@ -159,7 +159,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.2.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>generate-ui</id>
@@ -185,6 +185,7 @@
                         <configuration>
                             <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
                             <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
+                            <standardRenderersConfig>src/main/resources-maven-jsf/standard-renderers.xml</standardRenderersConfig>
                             <jsfVersion>2</jsfVersion>
                         </configuration>
                         <goals>
@@ -307,7 +308,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.2.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>css-compressor</id>
