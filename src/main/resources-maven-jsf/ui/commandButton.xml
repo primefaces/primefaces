@@ -273,6 +273,12 @@
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when text within button is selected by user.</description>
 		</attribute>
+        <attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Icon of the button.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
