@@ -1,5 +1,5 @@
 .ui-fieldset, .ui-fieldset .ui-fieldset-legend {
-    padding:0.5em 1em;
+    padding:0.6em 1em;
 }
 
 .ui-fieldset-toggleable .ui-fieldset-legend {
@@ -8,5 +8,7 @@
 }
 
 .ui-fieldset .ui-fieldset-toggler {
+    padding-right: .1em;
+    margin-top: -0.1em;
     float:left;
 }

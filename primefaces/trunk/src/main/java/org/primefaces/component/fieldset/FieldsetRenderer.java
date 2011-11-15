@@ -120,19 +120,19 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.startElement("legend", null);
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
-            if(legend != null)
-                legend.encodeAll(context);
-            else
-                writer.write(fieldset.getLegend());
-
             if(fieldset.isToggleable()) {
                 String icon = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
                                
                 writer.startElement("span", null);
-                writer.writeAttribute("class", icon, null);
+                writer.writeAttribute("class", Fieldset.TOGGLER_CLASS + icon, null);
                 writer.endElement("span");
             }
 
+            if(legend != null)
+                legend.encodeAll(context);
+            else
+                writer.write(fieldset.getLegend());
+            
             writer.endElement("legend");
         }
     }
