@@ -9,6 +9,7 @@
 
     <application>
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
+        <navigation-handler>org.primefaces.mobile.navigation.MobileNavigationHandler</navigation-handler>
         <system-event-listener>
             <source-class>javax.faces.application.Application</source-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
