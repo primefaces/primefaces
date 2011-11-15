@@ -35,3 +35,8 @@
 	height: auto;
 	overflow: inherit;
 }
+
+/* IE7 Hack */
+.ui-paginator-pages {
+    *padding-bottom: 0px;
+}

@@ -28,7 +28,7 @@ public abstract class AbstractMenu extends UIComponentBase {
     public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
     public static final String MENUITEM_ICON_CLASS = "ui-menuitem-icon";
     public static final String TIERED_SUBMENU_CLASS = "ui-widget ui-menuitem ui-corner-all ui-menu-parent";
-    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-helper-reset";
+    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child";
     public static final String SUBMENU_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     
