@@ -38,7 +38,6 @@ public class CommandButtonRenderer extends CoreRenderer {
         }
         
 		String param = component.getClientId(context);
-		
 		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
 		}
@@ -48,10 +47,6 @@ public class CommandButtonRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		CommandButton button = (CommandButton) component;
 		
-		//myfaces fix
-		if(button.getType() == null)
-			button.setType("submit");
-		
 		encodeMarkup(context, button);
 		encodeScript(context, button);
 	}
@@ -60,11 +55,13 @@ public class CommandButtonRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
 		String type = button.getType();
+        String value = (String) button.getValue();
+        String icon = button.resolveIcon();
 
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, "name");
-		if(button.getStyleClass() != null) writer.writeAttribute("class", button.getStyleClass() , "styleClass");
+        writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
 		String onclick = button.getOnclick();
 		if(!type.equals("reset") && !type.equals("button")) {
@@ -87,11 +84,25 @@ public class CommandButtonRenderer extends CoreRenderer {
         if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
 		
-		if(button.getValue() != null) {
-			writer.writeText(button.getValue(), "value");
-		} else if(button.getImage() != null) {
-			writer.write("ui-button");
-		}
+        //icon
+        if(icon != null) {
+            String iconClass = CommandButton.ICON_CLASS + " " + icon;
+            
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.endElement("span");
+        }
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", CommandButton.TEXT_CLASS, null);
+        
+        if(value == null)
+            writer.write("ui-button");
+        else
+            writer.writeText(value, "value");
+        
+        writer.endElement("span");
 			
 		writer.endElement("button");
 	}
@@ -105,15 +116,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("PrimeFaces.cw('CommandButton','" + button.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-		if(type.equals("image") || button.getImage() != null) {
-			writer.write(",text:" + hasValue);
-			writer.write(",icons:{");
-			writer.write("primary:'" + button.getImage() + "'");
-			writer.write("}");
-		} 
-		
+        writer.write("id:'" + clientId + "'");		
 		writer.write("});");
 		
 		endScript(writer);
