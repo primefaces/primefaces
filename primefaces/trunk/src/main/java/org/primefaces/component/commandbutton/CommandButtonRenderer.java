@@ -86,7 +86,8 @@ public class CommandButtonRenderer extends CoreRenderer {
 		
         //icon
         if(icon != null) {
-            String iconClass = CommandButton.ICON_CLASS + " " + icon;
+            String defaultIconClass = button.getIconPos().equals("left") ? CommandButton.LEFT_ICON_CLASS : CommandButton.RIGHT_ICON_CLASS; 
+            String iconClass = defaultIconClass + " " + icon;
             
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
