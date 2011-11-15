@@ -930,7 +930,7 @@ PrimeFaces.widget.CommandButton = function(cfg) {
             el.addClass('ui-state-hover');
         
     }).mouseout(function() {
-        $(this).removeClass('ui-state-hover');
+        $(this).removeClass('ui-state-active ui-state-hover');
     }).mousedown(function() {
         var el = $(this);
         if(!_self.cfg.disabled)
@@ -946,11 +946,11 @@ PrimeFaces.widget.CommandButton = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.CommandButton, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.CommandButton.prototype.disable = function() {
-    this.jq.button('disable');
+    this.jq.addClass('ui-state-disabled').attr('disabled', 'disabled');
 }
 
 PrimeFaces.widget.CommandButton.prototype.enable = function() {
-    this.jq.button('enable');
+    this.jq.removeClass('ui-state-disabled').removeAttr('disabled');
 }
 
 /*
