@@ -279,6 +279,13 @@
 			<type>java.lang.String</type>
             <description>Icon of the button.</description>
 		</attribute>
+        <attribute>
+			<name>iconPos</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>left</defaultValue>
+            <description>Position of the icon, default value is left.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

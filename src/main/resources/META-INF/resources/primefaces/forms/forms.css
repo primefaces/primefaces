@@ -159,19 +159,7 @@
 } 
 
 .ui-button-icon-only { 
-    width: 2.2em; /* to make room for the icon, a width needs to be set here */
-} 
-
-button.ui-button-icon-only { 
-    width: 2.4em; /* button elements seem to need a little more width */
-}
-
-.ui-button-icons-only { 
-    width: 3.4em; 
-}
-
-button.ui-button-icons-only { 
-    width: 3.7em; 
+    width: 2.4em;
 } 
 
 /*button text element */
@@ -184,38 +172,23 @@ button.ui-button-icons-only {
     padding: .4em 1em; 
 }
 
-.ui-button-icon-only .ui-button-text, 
-.ui-button-icons-only .ui-button-text { 
+.ui-button-icon-only .ui-button-text { 
     padding: .4em; 
     text-indent: -9999999px; 
 }
 
-.ui-button-text-icon-primary .ui-button-text, 
-.ui-button-text-icons .ui-button-text { 
+.ui-button-text-icon-left .ui-button-text { 
     padding: .4em 1em .4em 2.1em; 
 }
 
-.ui-button-text-icon-secondary .ui-button-text, 
-.ui-button-text-icons .ui-button-text { 
+.ui-button-text-icon-right .ui-button-text { 
     padding: .4em 2.1em .4em 1em; 
-}
-
-.ui-button-text-icons .ui-button-text { 
-    padding-left: 2.1em; 
-    padding-right: 2.1em; 
-}
-
-/* no icon support for input elements, provide padding by default */
-input.ui-button { 
-    padding: .4em 1em; 
 }
 
 /*button icon element(s) */
 .ui-button-icon-only .ui-icon, 
-.ui-button-text-icon-primary .ui-icon, 
-.ui-button-text-icon-secondary .ui-icon, 
-.ui-button-text-icons .ui-icon, 
-.ui-button-icons-only .ui-icon { 
+.ui-button-text-icon-left .ui-icon, 
+.ui-button-text-icon-right .ui-icon { 
     position: absolute; 
     top: 50%; 
     margin-top: -8px; 
@@ -226,20 +199,11 @@ input.ui-button {
     margin-left: -8px; 
 }
 
-.ui-button-text-icon-primary .ui-button-icon-primary, 
-.ui-button-text-icons .ui-button-icon-primary, 
-.ui-button-icons-only .ui-button-icon-primary { 
+.ui-button-icon-left {
     left: .5em; 
 }
 
-.ui-button-text-icon-secondary .ui-button-icon-secondary,
-.ui-button-text-icons .ui-button-icon-secondary,
-.ui-button-icons-only .ui-button-icon-secondary { 
-    right: .5em; 
-}
-
-.ui-button-text-icons .ui-button-icon-secondary, 
-.ui-button-icons-only .ui-button-icon-secondary { 
+.ui-button-icon-right {
     right: .5em; 
 }
 
