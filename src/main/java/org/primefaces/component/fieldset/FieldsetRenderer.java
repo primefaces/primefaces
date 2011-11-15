@@ -121,10 +121,10 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
             if(fieldset.isToggleable()) {
-                String icon = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
+                String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
                                
                 writer.startElement("span", null);
-                writer.writeAttribute("class", Fieldset.TOGGLER_CLASS + icon, null);
+                writer.writeAttribute("class", togglerClass, null);
                 writer.endElement("span");
             }
 

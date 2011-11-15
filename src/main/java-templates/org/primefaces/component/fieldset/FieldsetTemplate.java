@@ -16,9 +16,8 @@ import javax.faces.event.PhaseId;
     public static final String TOGGLEABLE_FIELDSET_CLASS = FIELDSET_CLASS + " ui-fieldset-toggleable";
     public static final String CONTENT_CLASS = "ui-fieldset-content";
     public static final String LEGEND_CLASS = "ui-fieldset-legend ui-corner-all ui-state-default";
-    public static final String TOGGLER_CLASS = "ui-fieldset-toggler ui-icon";
-    public static final String TOGGLER_MINUS_CLASS = " ui-icon-minusthick";
-    public static final String TOGGLER_PLUS_CLASS = " ui-icon-plusthicks";
+    public static final String TOGGLER_MINUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-minusthick";
+    public static final String TOGGLER_PLUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-plusthicks";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("toggle"));
 
