@@ -133,19 +133,6 @@
                             <goal>transform</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>generate-mobile-metadata</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <xslFile>src/main/resources-maven-jsf/misc/resolve_entities.xsl</xslFile>
-                            <srcIncludes>**/*.xml</srcIncludes>
-                            <srcDir>src/main/resources-maven-jsf/mobile</srcDir>
-                            <destDir>target/resources-maven-jsf/mobile</destDir>
-                        </configuration>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -193,24 +180,10 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>generate-mobile</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <uri>http://primefaces.org/mobile</uri>
-                            <shortName>pm</shortName>
-                            <jsfVersion>2</jsfVersion>
-                            <componentConfigsDir>target/resources-maven-jsf/mobile</componentConfigsDir>
-                        </configuration>
-                        <goals>
-                            <goal>generate-components</goal>
-                            <goal>generate-facelets-taglib</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>generate-facesconfig</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <componentConfigsDir>target/resources-maven-jsf/ui,target/resources-maven-jsf/mobile</componentConfigsDir>
+                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
                             <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
                             <jsfVersion>2</jsfVersion>
                         </configuration>
