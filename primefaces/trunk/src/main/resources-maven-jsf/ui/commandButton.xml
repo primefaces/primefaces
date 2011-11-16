@@ -286,6 +286,13 @@
             <defaultValue>left</defaultValue>
             <description>Position of the icon, default value is left.</description>
 		</attribute>
+        <attribute>
+			<name>inline</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays button inline instead of fitting the content width, only used by mobile.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
