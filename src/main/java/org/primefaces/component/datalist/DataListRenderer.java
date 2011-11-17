@@ -57,7 +57,9 @@ public class DataListRenderer extends DataRenderer {
         boolean hasPaginator = list.isPaginator();
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
-
+        String title = list.getTitle();
+        String contentClass = title == null ? DataList.CONTENT_CLASS : DataList.CONTENT_CLASS + " ui-corner-bottom";
+        
         if(hasPaginator) {
             list.calculatePage();
         }
@@ -65,6 +67,13 @@ public class DataListRenderer extends DataRenderer {
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        
+        if(title != null) {
+            writer.startElement("div", list);
+            writer.writeAttribute("class", DataList.TITLE_CLASS, "styleClass");
+            writer.writeText(title, "title");
+            writer.endElement("div");
+        }
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(facesContext, list, "top");
@@ -72,7 +81,7 @@ public class DataListRenderer extends DataRenderer {
 
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId + "_content", "id");
-        writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
+        writer.writeAttribute("class", contentClass, "styleClass");
 
         encodeList(facesContext, list);
 
