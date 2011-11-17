@@ -86,7 +86,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		
         //icon
         if(icon != null) {
-            String defaultIconClass = button.getIconPos().equals("left") ? CommandButton.LEFT_ICON_CLASS : CommandButton.RIGHT_ICON_CLASS; 
+            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
             String iconClass = defaultIconClass + " " + icon;
             
             writer.startElement("span", null);
@@ -96,7 +96,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         
         //text
         writer.startElement("span", null);
-        writer.writeAttribute("class", CommandButton.TEXT_CLASS, null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         
         if(value == null)
             writer.write("ui-button");

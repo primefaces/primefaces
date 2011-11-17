@@ -42,14 +42,14 @@ public class ButtonRenderer extends CoreRenderer {
     public void encodeMarkup(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
+        String value = (String) button.getValue();
+        String icon = button.resolveIcon();
 
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("type", "button", null);
-		if(button.getStyleClass() != null) {
-			writer.writeAttribute("class", button.getStyleClass() , "styleClass");
-        }
+		writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
@@ -57,11 +57,27 @@ public class ButtonRenderer extends CoreRenderer {
         
 		writer.writeAttribute("onclick", buildOnclick(context, button), null);
 
-		if(button.getValue() != null) {
-			writer.write(button.getValue().toString());
-		} else if(button.getImage() != null) {
-			writer.write("ui-button");
-		}
+		//icon
+        if(icon != null) {
+            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
+            String iconClass = defaultIconClass + " " + icon;
+            
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.endElement("span");
+        }
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        
+        if(value == null)
+            writer.write("ui-button");
+        else
+            writer.writeText(value, "value");
+        
+        writer.endElement("span");
+			
 
 		writer.endElement("button");
     }
