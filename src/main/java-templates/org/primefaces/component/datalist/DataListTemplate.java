@@ -1,7 +1,7 @@
 import javax.faces.FacesException;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
-    public static final String TITLE_CLASS = "ui-datalist-title ui-widget-header ui-corner-top";
+    public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header ui-corner-top";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
 	public static final String LIST_CLASS = "ui-datalist-data";
 	public static final String LIST_ITEM_CLASS = "ui-datalist-item";
