@@ -915,25 +915,8 @@ PrimeFaces.widget.CommandButton = function(cfg) {
     this.id = this.cfg.id;
 	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
     
-    var _self = this;
-	
-	this.jq.mouseover(function(){
-        var el = $(this);
-        if(!_self.cfg.disabled)
-            el.addClass('ui-state-hover');
-        
-    }).mouseout(function() {
-        $(this).removeClass('ui-state-active ui-state-hover');
-    }).mousedown(function() {
-        var el = $(this);
-        if(!_self.cfg.disabled)
-            el.addClass('ui-state-active');
-        
-    }).mouseup(function() {
-        $(this).removeClass('ui-state-active');
-    });
+    PrimeFaces.skinButton(this.jq);
     
     this.postConstruct();
 }
@@ -957,11 +940,7 @@ PrimeFaces.widget.Button = function(cfg) {
 	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 
-	$(this.jqId).button(this.cfg);
-    
-    if(this.jq.attr('title') === 'ui-button') {
-        this.jq.removeAttr('title');
-    }
+	PrimeFaces.skinButton(this.jq);
     
     this.postConstruct();
 }

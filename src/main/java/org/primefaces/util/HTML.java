@@ -137,4 +137,12 @@ public class HTML {
     public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS, TEXTAREA_ATTRS);
 
     public static final String[] SELECT_ATTRS = ArrayUtils.concat(SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+
+    public final static String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
+    public final static String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";
+    public final static String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left";
+    public final static String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-right";
+    public final static String BUTTON_LEFT_ICON_CLASS = "ui-button-icon-left ui-icon";
+    public final static String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon";
+    public final static String BUTTON_TEXT_CLASS = "ui-button-text";
 }

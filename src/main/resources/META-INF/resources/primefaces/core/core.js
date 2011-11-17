@@ -58,6 +58,24 @@ PrimeFaces = {
                 $(this).removeClass('ui-state-focus');
         });
     },
+    
+    skinButton : function(button) {
+        button.mouseover(function(){
+            var el = $(this);
+            if(!button.hasClass('ui-state-disabled')) {
+                el.addClass('ui-state-hover');
+            }
+        }).mouseout(function() {
+            $(this).removeClass('ui-state-active ui-state-hover');
+        }).mousedown(function() {
+            var el = $(this);
+            if(!button.hasClass('ui-state-disabled')) {
+                el.addClass('ui-state-active');
+            }
+        }).mouseup(function() {
+            $(this).removeClass('ui-state-active');
+        });
+    },
 
     //ajax shortcut
     ab : function(cfg, ext) {
