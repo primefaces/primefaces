@@ -232,6 +232,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>

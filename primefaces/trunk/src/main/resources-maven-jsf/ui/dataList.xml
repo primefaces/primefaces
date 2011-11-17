@@ -26,6 +26,12 @@
         &data_component_attributes;
         &widget_var_attribute;
         <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Header text of the datalist.</description>
+        </attribute>
+        <attribute>
             <name>type</name>
             <required>false</required>
             <type>java.lang.String</type>
