@@ -211,6 +211,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
     protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Class type) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menu.getValue();
+        boolean selectionRemains = false;
 
         for(int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -223,8 +224,20 @@ public class SelectOneMenuRenderer extends InputRenderer {
                 coercedItemValue = context.getApplication().getExpressionFactory().coerceToType(itemValue, type);
             }
 
+            boolean disabled = selectItem.isDisabled();
             boolean selected = (i==0 && value==null) || (value != null && value.equals(coercedItemValue));
-            String itemStyleClass = selected ? SelectOneMenu.ITEM_CLASS + " ui-state-active" : SelectOneMenu.ITEM_CLASS;
+            String itemStyleClass = SelectOneMenu.ITEM_CLASS;
+            
+            if(disabled) {
+                itemStyleClass += " ui-state-disabled";
+                if(selected){
+                    selectionRemains = true;
+                }
+            }
+            else if(selected || selectionRemains){
+                itemStyleClass += " ui-state-active";
+                selectionRemains = false;
+            }
             
             writer.startElement("li", null);
             writer.writeAttribute("class", itemStyleClass, null);
@@ -262,6 +275,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = getConverter(context, menu);
         Object value = menu.getValue();
+        boolean selectionRemains = false;
         
         for(SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
@@ -274,8 +288,14 @@ public class SelectOneMenuRenderer extends InputRenderer {
             writer.startElement("option", null);
             writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
 
-            if(value != null && value.equals(itemValue)) {
-                writer.writeAttribute("selected", "selected", null);
+            if(value != null && value.equals(itemValue) || selectionRemains) {
+                if(selectItem.isDisabled()){
+                    selectionRemains = true;
+                }
+                else{
+                    writer.writeAttribute("selected", "selected", null);
+                    selectionRemains = false;
+                }
             }
 
             writer.writeText(itemLabel, null);
@@ -287,6 +307,7 @@ public class SelectOneMenuRenderer extends InputRenderer {
 	protected String getSelectedLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> items, Class type) {
 		Object value = menu.getValue();
         String label = null;
+        boolean selectionRemains = false;
         
         for(SelectItem item : items) {
             Object itemValue = item.getValue();
@@ -294,7 +315,10 @@ public class SelectOneMenuRenderer extends InputRenderer {
                 itemValue = context.getApplication().getExpressionFactory().coerceToType(item.getValue(), type);
             }
 
-            if(value != null && value.equals(itemValue)) {
+            if(item.isDisabled()){
+                selectionRemains = true;
+            }
+            else if((value != null && value.equals(itemValue)) || selectionRemains){
                 label = item.getLabel();
                 break;
             }
