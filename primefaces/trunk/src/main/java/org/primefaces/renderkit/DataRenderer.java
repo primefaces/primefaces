@@ -59,10 +59,10 @@ public class DataRenderer extends CoreRenderer {
         
         //add corners
         if(!isTop && uidata.getFooter() == null) {
-            styleClass = styleClass + " ui-corner-bl ui-corner-br";
+            styleClass = styleClass + " ui-corner-bottom";
         }
         else if(isTop && uidata.getHeader() == null) {
-            styleClass = styleClass + " ui-corner-tl ui-corner-tr";
+            styleClass = styleClass + " ui-corner-top";
         }
         
         writer.startElement("div", null);

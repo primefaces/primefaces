@@ -25,40 +25,39 @@ import org.primefaces.renderkit.DataRenderer;
 public class DataListRenderer extends DataRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+    public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
         String clientId = list.getClientId();
 
-        if(list.isPagingRequest(facesContext)) {
+        if(list.isPagingRequest(context)) {
             list.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             list.setRows(Integer.valueOf(params.get(clientId + "_rows")));
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
         String clientId = list.getClientId();
         boolean isAjaxPaging = params.containsKey(clientId + "_ajaxPaging");
 
         if (isAjaxPaging) {
-            encodeList(facesContext, list);
+            encodeList(context, list);
         } else {
-            encodeMarkup(facesContext, list);
-            encodeScript(facesContext, list);
+            encodeMarkup(context, list);
+            encodeScript(context, list);
         }
     }
 
-    protected void encodeMarkup(FacesContext facesContext, DataList list) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeMarkup(FacesContext context, DataList list) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean hasPaginator = list.isPaginator();
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
-        String title = list.getTitle();
-        String contentClass = title == null ? DataList.CONTENT_CLASS : DataList.CONTENT_CLASS + " ui-corner-bottom";
+        UIComponent header = list.getHeader();
         
         if(hasPaginator) {
             list.calculatePage();
@@ -68,34 +67,34 @@ public class DataListRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         
-        if(title != null) {
+        if(header != null) {
             writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.TITLE_CLASS, "styleClass");
-            writer.writeText(title, "title");
+            writer.writeAttribute("class", DataList.HEADER_CLASS, "styleClass");
+            header.encodeAll(context);
             writer.endElement("div");
         }
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
-            encodePaginatorMarkup(facesContext, list, "top");
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, list, "top");
         }
 
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId + "_content", "id");
-        writer.writeAttribute("class", contentClass, "styleClass");
+        writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
 
-        encodeList(facesContext, list);
+        encodeList(context, list);
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
-            encodePaginatorMarkup(facesContext, list, "bottom");
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+            encodePaginatorMarkup(context, list, "bottom");
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext facesContext, DataList list) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeScript(FacesContext context, DataList list) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         
         startScript(writer, clientId);
@@ -107,7 +106,7 @@ public class DataListRenderer extends DataRenderer {
         
         //Pagination
         if(list.isPaginator()) {
-            encodePaginatorConfig(facesContext, list);
+            encodePaginatorConfig(context, list);
         }
         
         writer.write("});});");
@@ -166,10 +165,12 @@ public class DataListRenderer extends DataRenderer {
         writer.endElement(listTag);
     }
     
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do Nothing
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
