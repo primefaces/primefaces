@@ -53,7 +53,8 @@ public class ButtonRenderer extends CoreRenderer {
 
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
-        if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(button.isDisabled()) 
+            writer.writeAttribute("disabled", "disabled", "disabled");
         
 		writer.writeAttribute("onclick", buildOnclick(context, button), null);
 
@@ -105,26 +106,36 @@ public class ButtonRenderer extends CoreRenderer {
     }
 
     protected String buildOnclick(FacesContext context, Button button) {
-        NavigationCase navCase = findNavigationCase(context, button);
-        String toViewId = navCase.getToViewId(context);
-        boolean isIncludeViewParams = isIncludeViewParams(button, navCase);
-        Map<String, List<String>> params = getParams(navCase, button);
-
-        String bookmarkableURL = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
-
-        //fragment
-        if(button.getFragment() != null) {
-            bookmarkableURL += "#" + button.getFragment();
-        }
-
-        StringBuilder onclick = new StringBuilder();
+        String href = button.getHref();
         String userOnclick = button.getOnclick();
+        StringBuilder onclick = new StringBuilder();
+        String url;
+        
         if(userOnclick != null) {
             onclick.append(userOnclick).append(";");
         }
+        
+        if(href != null) {
+            url = getResourceURL(context, href);
+        } 
+        else {
+            NavigationCase navCase = findNavigationCase(context, button);
+            String toViewId = navCase.getToViewId(context);
+            boolean isIncludeViewParams = isIncludeViewParams(button, navCase);
+            Map<String, List<String>> params = getParams(navCase, button);
 
-        onclick.append("window.location.href='").append(bookmarkableURL).append("';");
+            url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
+            //fragment
+            if(button.getFragment() != null) {
+                url += "#" + button.getFragment();
+            }
+        }
+        
+        if(url != null) {
+            onclick.append("window.location.href='").append(url).append("';");
+        }
+        
         return onclick.toString();
     }
 
