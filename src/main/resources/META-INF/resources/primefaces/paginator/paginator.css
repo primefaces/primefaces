@@ -1,3 +1,17 @@
+.ui-paginator {
+    margin:0px;
+    text-align: center;
+    padding:2px;
+}
+
+.ui-paginator-top {
+    border-bottom:0px none;
+}
+
+.ui-paginator-bottom {
+    border-top:0px none;
+}
+
 .ui-paginator-page,
 .ui-paginator-pages,
 .ui-paginator-next,

@@ -37,20 +37,6 @@
     overflow: hidden;
 }
 
-.ui-datatable .ui-paginator {
-    margin:0px;
-    text-align: center;
-    padding:2px;
-}
-
-.ui-datatable .ui-paginator-top {
-    border-bottom:0px none;
-}
-
-.ui-datatable .ui-paginator-bottom {
-    border-top:0px none;
-}
-
 .ui-datatable .ui-sortable-column {
     cursor: pointer;
 }
