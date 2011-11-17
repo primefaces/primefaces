@@ -230,7 +230,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.disabled = this.jq.hasClass('ui-state-disabled');
     this.tabindex = this.labelContainer.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
-    this.items = this.itemContainer.find('.ui-selectonemenu-item');
+    this.items = this.itemContainer.find('.ui-selectonemenu-item:not(.ui-state-disabled)');
 
     if(!this.cfg.effectDuration) {
         this.cfg.effectDuration = 400;
@@ -368,7 +368,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
             case keyCode.LEFT:
                 var highlightedItem = _self.items.filter('.ui-state-active'), prev;
                 if(highlightedItem.length > 0) 
-                    prev = highlightedItem.removeClass('ui-state-active').prev();
+                    prev = highlightedItem.removeClass('ui-state-active').prevAll(':not(.ui-state-disabled):first');
 
                 if(!prev || prev.length == 0) 
                     prev = _self.items.eq(_self.items.length - 1);
@@ -383,7 +383,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
                 var highlightedItem = _self.items.filter('.ui-state-active'), next;
                 
                 if(highlightedItem.length > 0) 
-                    next = highlightedItem.removeClass('ui-state-active').next();
+                    next = highlightedItem.removeClass('ui-state-active').nextAll(':not(.ui-state-disabled):first');
 
                 if(!next || next.length == 0) 
                     next = _self.items.eq(0);
@@ -508,11 +508,6 @@ PrimeFaces.widget.SelectOneMenu.prototype.hide = function() {
     if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
         this.panel.parent().css('z-index', '');
     }
-    
-    //rematch selection
-    this.items.removeClass("ui-state-active")
-        .eq($(this.input).children('option:selected').index())
-        .addClass("ui-state-active");
     
     this.panel.css('z-index', '').hide();
 }
