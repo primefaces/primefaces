@@ -228,6 +228,12 @@
             <defaultValue>left</defaultValue>
             <description>Position of the icon, default value is left.</description>
 		</attribute>
+        <attribute>
+			<name>href</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Resource to link to.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
