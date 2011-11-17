@@ -319,6 +319,7 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
                ,left:0
            }); 
         
+        this.content.width('auto');
         this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
         this.maximized = true;
     }
