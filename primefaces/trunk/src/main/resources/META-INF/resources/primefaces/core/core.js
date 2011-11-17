@@ -87,14 +87,6 @@ PrimeFaces = {
         $.mobile.changePage(to, cfg);
     },
     
-    //mobile
-    navigateBack : function(to, cfg) {
-        var options = cfg ? cfg : {};
-        options.reverse = true;
-            
-        $.mobile.changePage(to, options);
-    },
-    
     info: function(msg) {
         if(window.log) {
             log.info(msg);
