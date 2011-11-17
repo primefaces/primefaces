@@ -271,7 +271,7 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
         x = $.trim(coords[0]),
         y = $.trim(coords[1]);
         
-        this.jq.offset({
+        this.jq.fixedOffset({
             top: y
             ,left: x
         });
@@ -314,9 +314,9 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
         this.jq.css({
             'width': $(window).width() - 6
             ,'height': $(window).height()
-           }).offset({
+           }).fixedOffset({
                top:0
-               ,left:0
+               ,left:0 
            }); 
         
         this.content.width('auto');
@@ -382,14 +382,14 @@ PrimeFaces.widget.Dialog.prototype.saveState = function(includeOffset) {
     };
     
     if(includeOffset)
-        this.state.offset = this.jq.offset();
+        this.state.offset = this.jq.fixedOffset();
 }
 
 PrimeFaces.widget.Dialog.prototype.restoreState = function(includeOffset) {
     this.jq.width(this.state.width).height(this.state.height);
         
     if(includeOffset)
-        this.jq.offset(this.state.offset);   
+        this.jq.fixedOffset(this.state.offset);   
 }
 
 PrimeFaces.widget.Dialog.prototype.loadContents = function() {
@@ -457,3 +457,17 @@ PrimeFaces.widget.ConfirmDialog = function(cfg) {
 }
 
 PrimeFaces.widget.ConfirmDialog.prototype = PrimeFaces.widget.Dialog.prototype;
+
+$.fn.fixedOffset = function(offset) {
+    if(offset){
+        var w = $(window);
+        this.offset({
+            left : (offset.left||0) + w.scrollLeft(),
+            top  : (offset.top ||0) + w.scrollTop()
+        });
+    }
+    else{
+        var o = this.get(0);
+        return {top : o.offsetTop, left : o.offsetLeft};
+    }
+};
