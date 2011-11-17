@@ -84,7 +84,15 @@ PrimeFaces = {
 
     //mobile
     navigate : function(to, cfg) {
-        $.mobile.changePage($(PrimeFaces.escapeClientId(to)), cfg);
+        $.mobile.changePage(to, cfg);
+    },
+    
+    //mobile
+    navigateBack : function(to, cfg) {
+        var options = cfg ? cfg : {};
+        options.reverse = true;
+            
+        $.mobile.changePage(to, options);
     },
     
     info: function(msg) {
