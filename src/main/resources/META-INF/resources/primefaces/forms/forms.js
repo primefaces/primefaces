@@ -653,19 +653,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
         }
     }).click(function() {
         if(!_self.disabled) {
-            var checked = _self.output.hasClass('ui-state-active');
-
-            if(checked) {
-                _self.output.removeClass('ui-state-active');
-                _self.input.removeAttr('checked');
-                _self.icon.removeClass('ui-icon ui-icon-check');
-            } else {
-                _self.output.addClass('ui-state-active');
-                _self.input.attr('checked', 'checked');
-                _self.icon.addClass('ui-icon ui-icon-check');
-            }
-
-            _self.input.change();   //delegate event
+            _self.makeCheck(!_self.input.is(":checked"));
         }
     });
 
@@ -693,6 +681,34 @@ PrimeFaces.widget.SelectBooleanCheckbox.prototype.disable = function() {
     this.disabled = true;
 }
 
+//check/uncheck
+PrimeFaces.widget.SelectBooleanCheckbox.prototype.makeCheck = function(state) {
+    if(this.input.is(":checked") ^ !state)
+        return;
+
+    if(state){
+        this.input.attr('checked', 'checked');
+        this.output.addClass('ui-state-active').children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
+    }
+    else{
+        this.input.removeAttr('checked');
+        this.output.removeClass('ui-state-active').children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
+    }
+
+    this.input.change();
+}
+
+//check boolean checkbox
+PrimeFaces.widget.SelectBooleanCheckbox.prototype.check = function() {
+    this.makeCheck(true);
+}
+
+//uncheck boolean checkbox
+PrimeFaces.widget.SelectBooleanCheckbox.prototype.uncheck = function() {
+    this.makeCheck(false);
+}
+
+
 /**
  * PrimeFaces SelectManyCheckbox Widget
  */
@@ -719,15 +735,11 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     }).click(function() {
         var element = jQuery(this),
         input = element.prev().children('input'),
-        checked = input.attr('checked');
+        disabled = element.parent().hasClass('ui-state-disabled'),
+        checked = input.is(':checked');
 
-        if(element.parent().hasClass('ui-state-disabled')) {
-            return;
-        }
-        else if(checked) {
-            _self.uncheck(_self.output.index(element));
-        } else {
-            _self.check(_self.output.index(element));
+        if(!disabled) {
+            _self.makeCheck(_self.output.index(element), !checked);
         }
     });
 
@@ -798,32 +810,35 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.disable = function(index) {
     boxes.addClass('ui-state-disabled');
 }
 
-//check custom checkbox(es)
-PrimeFaces.widget.SelectManyCheckbox.prototype.check = function(index) {
+//check/uncheck custom checkbox(es)
+PrimeFaces.widget.SelectManyCheckbox.prototype.makeCheck = function(index, state) {
     this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
         var element = $(item),
         input = element.prev().children('input');
-        if(input.is(":checked"))
+        if(input.is(":checked") ^ !state)
             return;
         
+        if(state){
+            input.attr('checked', 'checked');
+            element.addClass('ui-state-active').children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
+        }
+        else{
+            input.removeAttr('checked');
+            element.removeClass('ui-state-active').children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
+        }
+        
         input.change();
-        input.attr('checked', 'checked');
-        element.children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
     });
+}
+
+//check custom checkbox(es)
+PrimeFaces.widget.SelectManyCheckbox.prototype.check = function(index) {
+   this.makeCheck(index, true);
 }
 
 //uncheck custom checkbox(es)
 PrimeFaces.widget.SelectManyCheckbox.prototype.uncheck = function(index) {
-    this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
-        var element = $(item),
-        input = element.prev().children('input');
-        if(!input.is(":checked"))
-            return;
-        
-        input.change();
-        input.removeAttr('checked');
-        element.children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
-    });
+    this.makeCheck(index, false)
 }
 
 /**
