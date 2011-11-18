@@ -16,8 +16,6 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.faces.component.UIComponent;
@@ -27,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.render.Renderer;
 import org.primefaces.renderkit.InputRenderer;
 
 public class SelectManyCheckboxRenderer extends InputRenderer {
@@ -98,23 +97,10 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
-		String[] values = (String[]) submittedValue;
-		Converter converter = getConverter(context, checkbox);
-        List list = null;
-
-        if(converter != null) {
-            list = new ArrayList();
-
-            for(String value : values) {
-                list.add(converter.getAsObject(context, checkbox, value));
-            }
-        }
-        else {
-            list = Arrays.asList(values);
-        }
-
-        return list;
+       
+        //use jsf default method
+        Renderer parentRenderer = context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox");
+        return parentRenderer.getConvertedValue(context, component, submittedValue);
 	}
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String clientId, String containerClientId, boolean checked, boolean disabled, String label, String formattedValue) throws IOException {
