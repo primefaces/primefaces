@@ -1,4 +1,6 @@
 import javax.faces.FacesException;
+import javax.faces.event.PhaseId;
+import javax.faces.component.UIColumn;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header ui-corner-top";
@@ -51,5 +53,45 @@ import javax.faces.FacesException;
         }
         else {
             super.processDecodes(context);
+
+            iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
         }
 	}
+
+    @Override
+    public void processValidators(FacesContext context) {
+		super.processDecodes(context);
+        
+        iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
+	}
+    
+    @Override
+    public void processUpdates(FacesContext context) {
+		super.processDecodes(context);
+        
+        iterateChildren(context, PhaseId.UPDATE_MODEL_VALUES);
+	}
+
+    protected void iterateChildren(FacesContext context, PhaseId phaseId) {
+        setRowIndex(-1);
+        if(getChildCount() > 0) {
+            for(UIComponent column : getChildren()) {
+                if(!(column instanceof UIColumn) || !column.isRendered()) {
+                    continue;
+                }
+                
+                if(column.getChildCount() > 0) {
+                    for(UIComponent grandkid : column.getChildren()) {
+                        if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                            grandkid.processDecodes(context);
+                        else if (phaseId == PhaseId.PROCESS_VALIDATIONS)
+                            grandkid.processValidators(context);
+                        else if (phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                            grandkid.processUpdates(context);
+                        else
+                            throw new IllegalArgumentException();
+                    }
+                }
+            }
+        }
+    }
