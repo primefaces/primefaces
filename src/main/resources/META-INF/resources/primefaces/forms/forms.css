@@ -11,11 +11,11 @@
 /**
  * Checkbox
  */
-.ui-checkbox {
+.ui-chkbox {
     display: inline-block;
 }
 
-.ui-checkbox .ui-checkbox-box {
+.ui-chkbox .ui-chkbox-box {
     float: left;
     width: 16px;
     height: 16px;
@@ -25,7 +25,7 @@
     margin-right: 3px;
 }
 
-.ui-checkbox .ui-checkbox-label {
+.ui-chkbox .ui-chkbox-label {
     cursor: pointer;
     display: block;
     margin: 0 3px;

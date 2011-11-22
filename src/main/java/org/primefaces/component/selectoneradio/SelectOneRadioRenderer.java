@@ -58,11 +58,13 @@ public class SelectOneRadioRenderer extends InputRenderer {
         String clientId = radio.getClientId(context);
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
+        styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
-        if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) 
+            writer.writeAttribute("style", style, "style");
 
         encodeSelectItems(context, radio);
 
