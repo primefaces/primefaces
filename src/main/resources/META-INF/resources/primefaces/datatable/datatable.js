@@ -7,6 +7,7 @@ PrimeFaces.widget.DataTable = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.tbody = this.jqId + '_data';
+    this.tbodyId = this.jqId + '_data';
     this.cfg.formId = this.jq.parents('form:first').attr('id');
 
     //Paginator
@@ -563,34 +564,27 @@ PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
     }
 }
 
-PrimeFaces.widget.DataTable.prototype.getRowReal = function(row){
-    if(typeof(row) === "number"||typeof(row) === "string"){
-        var index = parseInt(row);
-        if(index != null){
-            row = $(this.tbody).children('tr:eq('+index+')');
-        }
-        else return false;
-    }
+/**
+ * @param r {Row Index || Row Element}
+ */
+PrimeFaces.widget.DataTable.prototype.findRow = function(r) {
+    var row = r;
     
-    if(!row || !$(row).length)
-        return false;
+    if(PrimeFaces.isNumber(r)) {
+        row = $(this.tbodyId).children('tr:eq(' + r + ')');
+    }
     
     return row;
 }
 
-PrimeFaces.widget.DataTable.prototype.selectRow = function(row, event) {
-    row = this.getRowReal(row);
-    if( row === false){
-        return;
-    }
-
-    var rowMeta = this.getRowMeta(row),
+PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
+    var row = this.findRow(r),
+    rowMeta = this.getRowMeta(row),
     _self = this;
 
     //unselect previous selection if this is single selection or multiple one with no keys
-    if(this.isSingleSelection() || (this.isMultipleSelection() && (!event||(!event.metaKey && !event.shiftKey)))) {
-        row.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
-        this.selection = [];
+    if(this.isSingleSelection() || (this.isMultipleSelection() && event && !event.metaKey && !event.shiftKey)) {
+        this.unselectAllRows();
     }
     
     if(this.isMultipleSelection() && event && event.shiftKey) {
@@ -642,15 +636,11 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(row, event) {
     this.fireRowSelectEvent(rowMeta.key);
 }
 
-PrimeFaces.widget.DataTable.prototype.unselectRow = function(row, event) {
-    row = this.getRowReal(row);
-    if( row === false){
-        return;
-    }
-    
-    var rowMeta = this.getRowMeta(row);
+PrimeFaces.widget.DataTable.prototype.unselectRow = function(r, event) {
+    var row = this.findRow(r),
+    rowMeta = this.getRowMeta(row);
 
-    if(this.isMultipleSelection() && (event&&!event.metaKey)) {
+    if(this.isMultipleSelection() && event && !event.metaKey) {
         this.selectRow(row, event);
     }
     else{
@@ -760,6 +750,12 @@ PrimeFaces.widget.DataTable.prototype.unselectRowWithCheckbox = function(checkbo
     
     if(!silent)
         this.fireRowUnselectEvent(rowMeta.key);
+}
+
+PrimeFaces.widget.DataTable.prototype.unselectAllRows = function() {
+    $(this.tbodyId).children('tr.ui-state-highlight').removeClass('ui-state-highlight'); 
+    this.selection = [];
+    this.writeSelections();
 }
 
 /**
