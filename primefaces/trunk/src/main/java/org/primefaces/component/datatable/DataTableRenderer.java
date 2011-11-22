@@ -131,10 +131,7 @@ public class DataTableRenderer extends DataRenderer {
         //Filtering
         if(table.isFilteringEnabled()) {
             writer.write(",filtering:true");
-            
-            if(!table.getFilterEvent().equalsIgnoreCase("keyup")){
-                writer.write(",filterEvent:'" + table.getFilterEvent() + "'");
-            }
+            writer.write(",filterEvent:'" + table.getFilterEvent() + "'");
         }
 
         //Row expansion
