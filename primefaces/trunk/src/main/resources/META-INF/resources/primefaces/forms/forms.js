@@ -637,9 +637,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
-    this.output = this.jq.find('.ui-checkbox-box');
-    this.icon = this.output.find('.ui-checkbox-icon');
-    this.itemLabel = this.jq.find('.ui-checkbox-label');
+    this.output = this.jq.find('.ui-chkbox-box');
+    this.icon = this.output.find('.ui-chkbox-icon');
+    this.itemLabel = this.jq.find('.ui-chkbox-label');
     
     var _self = this;
 
@@ -681,14 +681,14 @@ PrimeFaces.widget.SelectBooleanCheckbox.prototype.toggle = function() {
 
 PrimeFaces.widget.SelectBooleanCheckbox.prototype.check = function() {
     this.input.attr('checked', 'checked');
-    this.output.addClass('ui-state-active').children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
+    this.output.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
     
     this.input.change();
 }
 
 PrimeFaces.widget.SelectBooleanCheckbox.prototype.uncheck = function() {
     this.input.removeAttr('checked');
-    this.output.removeClass('ui-state-active').children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
+    this.output.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
     
     this.input.change();
 }
@@ -701,7 +701,7 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = jQuery(this.jqId);
-    this.output = this.jq.find('.ui-checkbox-box');
+    this.output = this.jq.find('.ui-chkbox-box');
     this.labels = this.jq.find('label');
 
     var _self = this;
@@ -765,7 +765,7 @@ $.fn.findByIndex = function(selector, index){
 PrimeFaces.widget.SelectManyCheckbox.prototype.isChecked = function(index){
     var result = true;
     
-    this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
+    this.jq.findByIndex('.ui-chkbox-box', index).each(function(i, item){
         if(result)
             result = $(item).prev().children('input').is(":checked");
     });
@@ -776,7 +776,7 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.isChecked = function(index){
 PrimeFaces.widget.SelectManyCheckbox.prototype.isDisabled = function(index){
     var result = true;
     
-    this.jq.findByIndex('.ui-checkbox', index).each(function(i, item){
+    this.jq.findByIndex('.ui-chkbox', index).each(function(i, item){
         if(result)
             result = $(item).hasClass("ui-state-disabled");
     });
@@ -785,18 +785,18 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.isDisabled = function(index){
 }
 
 PrimeFaces.widget.SelectManyCheckbox.prototype.enable = function(index) {
-    var boxes = this.jq.findByIndex('.ui-checkbox', index);
+    var boxes = this.jq.findByIndex('.ui-chkbox', index);
     boxes.removeClass('ui-state-disabled');
 }
 
 PrimeFaces.widget.SelectManyCheckbox.prototype.disable = function(index) {
-    var boxes = this.jq.findByIndex('.ui-checkbox', index);
+    var boxes = this.jq.findByIndex('.ui-chkbox', index);
     boxes.addClass('ui-state-disabled');
 }
 
 //check/uncheck custom checkbox(es)
 PrimeFaces.widget.SelectManyCheckbox.prototype.makeCheck = function(index, state) {
-    this.jq.findByIndex('.ui-checkbox-box', index).each(function(i, item){
+    this.jq.findByIndex('.ui-chkbox-box', index).each(function(i, item){
         var element = $(item),
         input = element.prev().children('input');
         if(input.is(":checked") ^ !state)
@@ -804,11 +804,11 @@ PrimeFaces.widget.SelectManyCheckbox.prototype.makeCheck = function(index, state
         
         if(state){
             input.attr('checked', 'checked');
-            element.addClass('ui-state-active').children('.ui-checkbox-icon').addClass('ui-icon ui-icon-check');
+            element.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
         }
         else{
             input.removeAttr('checked');
-            element.removeClass('ui-state-active').children('.ui-checkbox-icon').removeClass('ui-icon ui-icon-check');
+            element.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
         }
         
         input.change();

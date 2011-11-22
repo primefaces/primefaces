@@ -146,12 +146,12 @@ public class HTML {
     public final static String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon";
     public final static String BUTTON_TEXT_CLASS = "ui-button-text";
     
-    public final static String CHECKBOX_CLASS = "ui-checkbox ui-widget";
-    public final static String CHECKBOX_BOX_CLASS = "ui-checkbox-box ui-widget ui-corner-all ui-state-default";
+    public final static String CHECKBOX_CLASS = "ui-chkbox ui-widget";
+    public final static String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
     public final static String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
-    public final static String CHECKBOX_ICON_CLASS = "ui-checkbox-icon";
+    public final static String CHECKBOX_ICON_CLASS = "ui-chkbox-icon";
     public final static String CHECKBOX_CHECKED_ICON_CLASS = "ui-icon ui-icon-check";
-    public final static String CHECKBOX_LABEL_CLASS = "ui-checkbox-label";
+    public final static String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
     
     public final static String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
     public final static String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-corner-all ui-radiobutton-relative ui-state-default";
