@@ -551,25 +551,45 @@ PrimeFaces.widget.DataTable.prototype.onRowClick = function(event, rowElement) {
         selected = row.hasClass('ui-state-highlight');
 
         if(selected)
-            this.unselectRow(event, row);
+            this.unselectRow(row, event);
         else
-            this.selectRow(event, row);
+            this.selectRow(row, event);
         
         PrimeFaces.clearSelection();
     }
 }
 
-PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
+PrimeFaces.widget.DataTable.prototype.getRowReal = function(row){
+    if(typeof(row) === "number"||typeof(row) === "string"){
+        var index = parseInt(row);
+        if(index != null){
+            row = $(this.tbody).children('tr:eq('+index+')');
+        }
+        else return false;
+    }
+    
+    if(!row || !$(row).length)
+        return false;
+    
+    return row;
+}
+
+PrimeFaces.widget.DataTable.prototype.selectRow = function(row, event) {
+    row = this.getRowReal(row);
+    if( row === false){
+        return;
+    }
+
     var rowMeta = this.getRowMeta(row),
     _self = this;
 
     //unselect previous selection if this is single selection or multiple one with no keys
-    if(this.isSingleSelection() || (this.isMultipleSelection() && (!event.metaKey && !event.shiftKey))) {
+    if(this.isSingleSelection() || (this.isMultipleSelection() && (!event||(!event.metaKey && !event.shiftKey)))) {
         row.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
         this.selection = [];
     }
     
-    if(this.isMultipleSelection() && event.shiftKey) {
+    if(this.isMultipleSelection() && event && event.shiftKey) {
         var rows = $(this.tbody).children();
         this.originRow = this.originRow||rows.eq(0);
         var originIndex = this.originRow.index();
@@ -618,10 +638,18 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(event, row) {
     this.fireRowSelectEvent(rowMeta.key);
 }
 
-PrimeFaces.widget.DataTable.prototype.unselectRow = function(event, row) {
+PrimeFaces.widget.DataTable.prototype.unselectRow = function(row, event) {
+    row = this.getRowReal(row);
+    if( row === false){
+        return;
+    }
+    
     var rowMeta = this.getRowMeta(row);
 
-    if(event.metaKey) {
+    if(this.isMultipleSelection() && (event&&!event.metaKey)) {
+        this.selectRow(row, event);
+    }
+    else{
         //remove visual style
         row.removeClass('ui-state-highlight');
 
@@ -632,9 +660,6 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(event, row) {
         this.writeSelections();
 
         this.fireRowUnselectEvent(rowMeta.key);
-    }
-    else if(this.isMultipleSelection()){
-        this.selectRow(event, row);
     }
 }
 
