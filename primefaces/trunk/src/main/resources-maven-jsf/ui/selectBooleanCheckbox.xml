@@ -52,6 +52,12 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <attribute>
+            <name>itemLabel</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <description>Label to display next to checkbox.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

@@ -7,32 +7,31 @@
 .ui-selectlistbox-item.ui-state-active {
     font-weight: normal;
 }
+
+/**
+ * Checkbox
+ */
 .ui-checkbox {
-    position: relative;
-    margin: 3px 0;
-    line-height: 16px;
-    width: 16px;
+    display: inline-block;
 }
-.ui-checkbox .ui-checkbox-inputwrapper {
-    width: 0;
-    height: 0;
-    overflow: hidden;
-}
+
 .ui-checkbox .ui-checkbox-box {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    float: left;
     width: 16px;
     height: 16px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    margin-right: 3px; }
-
-.ui-checkbox .ui-checkbox-relative {
-    position: relative;
-    float: left;
     margin-right: 3px;
+}
+
+.ui-checkbox .ui-checkbox-label {
+    cursor: pointer;
+    display: block;
+    margin: 0 3px;
+    outline: medium none;
+    z-index: 1;
+    float: left;
 }
 
 .ui-selectmanycheckbox label,
