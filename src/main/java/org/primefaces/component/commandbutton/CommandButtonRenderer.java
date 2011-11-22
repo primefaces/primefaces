@@ -16,6 +16,9 @@
 package org.primefaces.component.commandbutton;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -123,25 +126,33 @@ public class CommandButtonRenderer extends CoreRenderer {
 		endScript(writer);
 	}
 
-	protected String buildNonAjaxRequest(FacesContext context, CommandButton button, String formId) {
-        boolean hasParam = false;
+	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId) {		
         StringBuilder request = new StringBuilder();
-        
-        for(UIComponent component : button.getChildren()) {
-			if(component instanceof UIParameter) {
-                UIParameter param = (UIParameter) component;
-                
-                if(!hasParam) {
-                    request.append("PrimeFaces");
-                    hasParam = true;
-                }
+        Map<String,String> params = new HashMap<String, String>();
+		
+		for(UIComponent child : component.getChildren()) {
+			if(child instanceof UIParameter) {
+                UIParameter param = (UIParameter) child;
 
-                request.append(addSubmitParam(formId, param.getName(), String.valueOf(param.getValue())));
+                params.put(param.getName(), String.valueOf(param.getValue()));
 			}
 		}
+        
+        //append params
+        if(!params.isEmpty()) {
+            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+                String key = it.next();
+                String value = params.get(key);
 
-        request.append(";");
+                request.append("'").append(key).append("':'").append(value).append("'");
 
+                if(it.hasNext())
+                    request.append(",");
+            }
+            request.append("});");
+        }
+		
 		return request.toString();
 	}
 }

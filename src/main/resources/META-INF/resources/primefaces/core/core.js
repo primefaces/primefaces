@@ -16,11 +16,14 @@ PrimeFaces = {
         $.watermark.showAll();
     },
 	
-    addSubmitParam : function(parent, name, value) {
+    addSubmitParam : function(parent, params) {
         var form = $(this.escapeClientId(parent));
         form.children('input.ui-submit-param').remove();
-        form.append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\" class=\"ui-submit-param\"/>");
-	
+
+        for(var key in params) {
+            form.append("<input type=\"hidden\" name=\"" + key + "\" value=\"" + params[key] + "\" class=\"ui-submit-param\"/>");
+        }
+
         return this;
     },
 
