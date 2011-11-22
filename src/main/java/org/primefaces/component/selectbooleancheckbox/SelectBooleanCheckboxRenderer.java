@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.HTML;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
@@ -60,8 +61,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? SelectBooleanCheckbox.STYLE_CLASS : SelectBooleanCheckbox.STYLE_CLASS + " " + styleClass;
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");
@@ -71,7 +71,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         }
 
         encodeInput(context, checkbox, clientId, checked, disabled);
-        encodeOutput(context, checkbox, checked);
+        encodeOutput(context, checkbox, checked, disabled);
         encodeItemLabel(context, checkbox, clientId);
 
         writer.endElement("div");
@@ -82,7 +82,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         
         writer.startElement("div", checkbox);
-        writer.writeAttribute("class", SelectBooleanCheckbox.CHECKBOX_INPUT_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", HTML.CHECKBOX_INPUT_WRAPPER_CLASS, null);
         
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");
@@ -98,13 +98,14 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked) throws IOException {
+    protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = SelectBooleanCheckbox.CHECKBOX_BOX_CLASS;
+        String styleClass = HTML.CHECKBOX_BOX_CLASS;
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
+        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
-        String iconClass = SelectBooleanCheckbox.CHECKBOX_ICON_CLASS;
-        iconClass = checked ? iconClass + " " + SelectBooleanCheckbox.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
+        String iconClass = HTML.CHECKBOX_ICON_CLASS;
+        iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
@@ -123,7 +124,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             ResponseWriter writer = context.getResponseWriter();
             
             writer.startElement("span", null);
-            writer.writeAttribute("class", SelectBooleanCheckbox.LABEL_CLASS, null);
+            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
             writer.writeText(label, "itemLabel");
             writer.endElement("span");
         }

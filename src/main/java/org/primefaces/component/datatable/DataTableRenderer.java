@@ -38,6 +38,8 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.HTML;
+import org.w3c.dom.html.HTMLCollection;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -920,14 +922,14 @@ public class DataTableRenderer extends DataRenderer {
     
     protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = SelectOneRadio.RADIO_BOX_CLASS;
-        String iconClass = SelectOneRadio.RADIO_ICON_CLASS;
+        String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
+        String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
         boxClass = checked ? boxClass + " ui-state-active" : boxClass;
-        iconClass = checked ? iconClass + " " + SelectOneRadio.RADIO_CHECKED_ICON_CLASS : iconClass;
+        iconClass = checked ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", SelectOneRadio.RADIO_BUTTON_CLASS, null);
+        writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);
@@ -942,14 +944,14 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = SelectBooleanCheckbox.CHECKBOX_BOX_CLASS;
-        String iconClass = SelectBooleanCheckbox.CHECKBOX_ICON_CLASS;
+        String boxClass = HTML.CHECKBOX_BOX_CLASS;
+        String iconClass = HTML.CHECKBOX_ICON_CLASS;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
         boxClass = checked ? boxClass + " ui-state-active" : boxClass;
-        iconClass = checked ? iconClass + " " + SelectBooleanCheckbox.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
+        iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", SelectBooleanCheckbox.STYLE_CLASS, "styleClass");
+        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, "styleClass");
         
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

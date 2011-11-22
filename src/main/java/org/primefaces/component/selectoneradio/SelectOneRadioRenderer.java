@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.HTML;
 
 public class SelectOneRadioRenderer extends InputRenderer {
 
@@ -57,13 +58,11 @@ public class SelectOneRadioRenderer extends InputRenderer {
         String clientId = radio.getClientId(context);
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
-        styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null)
-            writer.writeAttribute("style", style, "style");
+        if(style != null) writer.writeAttribute("style", style, "style");
+        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
 
         encodeSelectItems(context, radio);
 
@@ -93,7 +92,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-radiobutton-inputwrapper", null);
+        writer.writeAttribute("class", HTML.RADIOBUTTON_INPUT_WRAPPER_CLASS, null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", containerClientId, null);
@@ -121,11 +120,11 @@ public class SelectOneRadioRenderer extends InputRenderer {
 
     protected void encodeOptionOutput(FacesContext context, SelectOneRadio radio, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = SelectOneRadio.RADIO_BOX_CLASS;
+        String styleClass = HTML.RADIOBUTTON_BOX_CLASS;
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
 
-        String iconClass = SelectOneRadio.RADIO_ICON_CLASS;
-        iconClass = checked ? iconClass + " " + SelectOneRadio.RADIO_CHECKED_ICON_CLASS : iconClass;
+        String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
+        iconClass = checked ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
@@ -178,7 +177,7 @@ public class SelectOneRadioRenderer extends InputRenderer {
 
         writer.startElement("td", null);
 
-        String styleClass = SelectOneRadio.RADIO_BUTTON_CLASS;
+        String styleClass = HTML.RADIOBUTTON_CLASS;
         if(disabled) {
             styleClass += " ui-state-disabled";
         }
