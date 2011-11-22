@@ -201,6 +201,13 @@
 			<type>java.lang.Object</type>
             <description>Unique identifier of row data.</description>
 		</attribute>
+        <attribute>
+			<name>filterEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>keyup</defaultValue>
+            <description>Client side input text event to fire datatable filtering.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
