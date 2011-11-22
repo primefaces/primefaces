@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,11 +66,13 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null)
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
+        }
 
         encodeInput(context, checkbox, clientId, checked, disabled);
         encodeOutput(context, checkbox, checked);
+        encodeItemLabel(context, checkbox, clientId);
 
         writer.endElement("div");
     }
@@ -112,6 +114,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
+    }
+    
+    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
+        String label = checkbox.getItemLabel();
+        
+        if(label != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            
+            writer.startElement("span", null);
+            writer.writeAttribute("class", SelectBooleanCheckbox.LABEL_CLASS, null);
+            writer.writeText(label, "itemLabel");
+            writer.endElement("span");
+        }
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
