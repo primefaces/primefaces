@@ -29,6 +29,7 @@ PrimeFaces.widget.DataTable = function(cfg) {
     
     //Filtering
     if(this.cfg.filtering) {
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.setupFiltering();
     }
 
@@ -128,7 +129,10 @@ PrimeFaces.widget.DataTable.prototype.setupFiltering = function() {
         var filter = $(this);
         if(filter.is('input:text')) {
             filter.keyup(function(e) {
-                _self.filter(e);
+                if(_self.cfg.filterEvent == 'keyup' ||
+                  (_self.cfg.filterEvent == 'enter' && e.which == $.ui.keyCode.ENTER)){
+                    _self.filter(e);
+                }
             });
         } 
         else {
