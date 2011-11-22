@@ -166,6 +166,10 @@ PrimeFaces = {
         }
     },
 
+    isNumber: function(value) {
+        return typeof value === 'number' && isFinite(value);
+    },
+
     locales : {},
     
     zindex : 1000,
