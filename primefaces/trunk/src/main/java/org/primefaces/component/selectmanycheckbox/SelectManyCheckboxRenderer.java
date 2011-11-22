@@ -27,6 +27,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.HTML;
 
 public class SelectManyCheckboxRenderer extends InputRenderer {
 
@@ -97,17 +98,14 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
 
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-       
-        //use jsf default method
-        Renderer parentRenderer = context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox");
-        return parentRenderer.getConvertedValue(context, component, submittedValue);
+        return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox").getConvertedValue(context, component, submittedValue);
 	}
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String clientId, String containerClientId, boolean checked, boolean disabled, String label, String formattedValue) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", HTML.CHECKBOX_INPUT_WRAPPER_CLASS, null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", containerClientId, null);
@@ -136,16 +134,17 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         writer.endElement("label");
     }
 
-    protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox checkbox, boolean checked) throws IOException {
+    protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = "ui-checkbox-box ui-widget ui-corner-all ui-checkbox-relative ui-state-default";
-        styleClass = checked ? styleClass + " ui-state-active" : styleClass;
-
-        String iconClass = "ui-checkbox-icon";
-        iconClass = checked ? iconClass + " ui-icon ui-icon-check" : iconClass;
-
+        String boxClass = HTML.CHECKBOX_BOX_CLASS;
+        boxClass = checked ? boxClass + " ui-state-active" : boxClass;
+        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        
+        String iconClass = HTML.CHECKBOX_ICON_CLASS;
+        iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
+        
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", boxClass, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
@@ -185,17 +184,12 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         boolean disabled = checkbox.isDisabled() || option.isDisabled();
 
         writer.startElement("td", null);
-
-        String styleClass = "ui-checkbox ui-widget";
-        if(disabled) {
-            styleClass += " ui-state-disabled";
-        }
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
         encodeOptionInput(context, checkbox, clientId, containerClientId, checked, disabled, option.getLabel(), formattedValue);
-        encodeOptionOutput(context, checkbox, checked);
+        encodeOptionOutput(context, checkbox, checked, disabled);
 
         writer.endElement("div");
         writer.endElement("td");
