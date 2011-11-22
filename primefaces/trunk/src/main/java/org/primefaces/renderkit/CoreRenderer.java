@@ -17,6 +17,7 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -269,35 +270,35 @@ public class CoreRenderer extends Renderer {
 	
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
         StringBuilder request = new StringBuilder();
-
-        request.append("PrimeFaces").append(addSubmitParam(formId, decodeParam, decodeParam));
+        Map<String,String> params = new HashMap<String, String>();
+        params.put(decodeParam, decodeParam);
 		
 		for(UIComponent child : component.getChildren()) {
 			if(child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
-                request.append(addSubmitParam(formId, param.getName(), String.valueOf(param.getValue())));
+                params.put(param.getName(), String.valueOf(param.getValue()));
 			}
 		}
-
-		request.append(".submit('").append(formId).append("');");
+        
+        //append params
+        request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+        for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            String key = it.next();
+            String value = params.get(key);
+            
+            request.append("'").append(key).append("':'").append(value).append("'");
+            
+            if(it.hasNext())
+                request.append(",");
+        }
+        request.append("})");
+        
+        request.append(".submit('").append(formId).append("');");
 		
 		return request.toString();
 	}
 
-    protected String addSubmitParam(String parent, String name, String value) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(".addSubmitParam('")
-                    .append(parent).append("','")
-                    .append(name)
-                    .append("','")
-                    .append(value)
-                    .append("')");
-
-        return builder.toString();
-    }
-	
 	protected String escapeText(String value) {
 		return value == null ? "" : value.replaceAll("'", "\\\\'");
 	}
