@@ -54,22 +54,25 @@ import javax.faces.component.UIColumn;
         else {
             super.processDecodes(context);
 
-            iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
+            if(getVar() == null)
+                iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
         }
 	}
 
     @Override
     public void processValidators(FacesContext context) {
-		super.processDecodes(context);
+		super.processValidators(context);
         
-        iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
+        if(getVar() == null)
+            iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
 	}
     
     @Override
     public void processUpdates(FacesContext context) {
-		super.processDecodes(context);
+		super.processUpdates(context);
         
-        iterateChildren(context, PhaseId.UPDATE_MODEL_VALUES);
+        if(getVar() == null)
+            iterateChildren(context, PhaseId.UPDATE_MODEL_VALUES);
 	}
 
     protected void iterateChildren(FacesContext context, PhaseId phaseId) {
