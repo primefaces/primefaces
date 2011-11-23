@@ -27,6 +27,7 @@ import org.primefaces.component.menu.Menu;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
@@ -34,8 +35,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
-		String buttonId = clientId + "_button";
-		String menuId = clientId + "_menu";
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass;
         boolean disabled = button.isDisabled();
@@ -43,26 +42,55 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		writer.startElement("div", button);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
-
-		if(button.getStyle() != null) 
+        if(button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
+        }
 
-        //button
-		writer.startElement("button", null);
+        encodeButton(context, button, clientId + "_button");
+        if(!disabled) {
+            encodeMenu(context, button, clientId + "_menu");
+        }
+        
+        writer.endElement("div");
+	}
+   
+    protected void encodeButton(FacesContext context, MenuButton button, String buttonId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String value = button.getValue();
+        
+        writer.startElement("button", null);
 		writer.writeAttribute("id", buttonId, null);
 		writer.writeAttribute("name", buttonId, null);
 		writer.writeAttribute("type", "button", null);
-        if(disabled) {
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, buttonId);
+        if(button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-		if(button.getValue() != null) {
-			writer.write(button.getValue());
-		}
-		writer.endElement("button");
+        
+        //button icon
+        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s";
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        
+        if(value == null)
+            writer.write("ui-button");
+        else
+            writer.writeText(value, "value");
+        
+        writer.endElement("span");
 
-        //menu
-        if(!disabled) {
-            writer.startElement("div", null);
+		writer.endElement("button");
+    }
+    
+    protected void encodeMenu(FacesContext context, MenuButton button, String menuId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
             writer.writeAttribute("id", menuId, null);
             writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
 
@@ -82,9 +110,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
             writer.endElement("ul");
             writer.endElement("div");
-        }
-        writer.endElement("div");
-	}
+        
+    }
 
 	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
