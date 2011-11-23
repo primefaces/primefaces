@@ -14,7 +14,7 @@ PrimeFaces.widget.Calendar = function(cfg) {
     this.configureLocale();
 
     //image title
-    this.cfg.buttonText = this.jq.attr('title') || '';
+    this.cfg.buttonText = this.jqEl.attr('title') || '';
 
     //Override locale pattern with user pattern
     if(this.cfg.pattern) {
