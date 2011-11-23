@@ -5315,7 +5315,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
             ext.params[_self.id + '_movedEventId'] = calEvent.id;
             ext.params[_self.id + '_dayDelta'] = dayDelta;
             ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-
+            
             eventMoveBehavior.call(_self, calEvent, ext);
         }
 	}
@@ -5329,7 +5329,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
             ext.params[_self.id + '_resizedEventId'] = calEvent.id;
             ext.params[_self.id + '_dayDelta'] = dayDelta;
             ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-
+            
             eventResizeBehavior.call(_self, calEvent, ext);
         }
 	}

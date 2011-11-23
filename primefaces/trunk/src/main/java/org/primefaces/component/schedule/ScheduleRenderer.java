@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -30,7 +29,6 @@ import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class ScheduleRenderer extends CoreRenderer {
 
@@ -102,15 +100,10 @@ public class ScheduleRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = schedule.getClientId(context);
-		UIComponent form = ComponentUtils.findParentForm(context, schedule);
-		if(form == null) {
-			throw new FacesException("Schedule: '" + clientId + "' must be inside a form");
-		}
 
         startScript(writer, clientId);
 		
 		writer.write("$(function() {");
-        
         writer.write("PrimeFaces.cw('Schedule','" + schedule.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");		
 		writer.write(",defaultView:'"+ schedule.getView() + "'");
