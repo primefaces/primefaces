@@ -1789,7 +1789,7 @@
             // element and selects only the first for the jQuery collection:
             tmpl.find('.progress div').slice(1).remove().end().first()
                 .progressbar();
-            tmpl.find('.start button').slice(
+            /*tmpl.find('.start button').slice(
                 this.options.autoUpload ? 0 : 1
             ).remove().end().first()
                 .button({
@@ -1800,7 +1800,7 @@
                 .button({
                     text: false,
                     icons: {primary: 'ui-icon-cancel'}
-                });
+                });*/
             tmpl.find('.preview').each(function (index, node) {
                 that._loadImage(
                     files[index],
@@ -1916,7 +1916,7 @@
                 ns = this.options.namespace;
             fileUploadButtonBar
                 .addClass('ui-widget-header ui-corner-top');
-            this.element.find('.fileinput-button').each(function () {
+            /*this.element.find('.fileinput-button').each(function () {
                 var fileInput = $(this).find('input:file').detach();
                 $(this).button({icons: {primary: 'ui-icon-plusthick'}})
                     .append(fileInput);
@@ -1938,7 +1938,7 @@
                 .bind('click.' + ns, function (e) {
                     e.preventDefault();
                     filesList.find('.delete button').click();
-                });
+                });*/
         },
         
         _destroyFileUploadButtonBar: function () {
@@ -2040,6 +2040,9 @@ PrimeFaces.widget.FileUpload = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.form = this.jq.parents('form:first');
+    this.buttonBar = this.jq.children('.fileupload-buttonbar');
+    this.uploadContent = this.jq.children('.fileupload-content');
+
     var _self = this;
     
     //upload template
@@ -2058,9 +2061,13 @@ PrimeFaces.widget.FileUpload = function(cfg) {
                               '</td>' +
                               '{{else}}' +
                               '<td class="progress"><div></div></td>' +
-                              '<td class="start"><button>Start</button></td>' +
+                              '<td class="start"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
+                              '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-arrowreturnthick-1-n"></span>' +
+                              '<span class="ui-button-text">ui-button</span></button></td>' +
+                              '<td class="cancel"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
+                              '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-cancel"></span>' +
+                              '<span class="ui-button-text">ui-button</span></button></td>' +
                               '{{/if}}' +
-                              '<td class="cancel"><button>Cancel</button></td>' +
                               '</tr>';
                           
     //download template
@@ -2105,6 +2112,17 @@ PrimeFaces.widget.FileUpload = function(cfg) {
     
     //show the UI
     this.jq.css('visibility', 'visible');
+    
+    //bind events
+    PrimeFaces.skinButton(this.buttonBar.children('.ui-button'));
+    
+    this.buttonBar.children('.start.ui-button').click(function(e) {
+        _self.uploadContent.find('.start button').click();
+    });
+    
+    this.buttonBar.children('.cancel.ui-button').click(function(e) {
+        _self.uploadContent.find('.cancel button').click();
+    });
     
     this.postConstruct();
 }

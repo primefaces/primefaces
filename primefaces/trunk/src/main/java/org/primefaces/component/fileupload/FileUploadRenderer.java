@@ -28,6 +28,7 @@ import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadRenderer extends CoreRenderer {
@@ -130,36 +131,25 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeAdvancedMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
-        boolean disabled = fileUpload.isDisabled();
         String styleClass = fileUpload.getStyleClass();
         styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
 
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
+        if(fileUpload.getStyle() != null) 
+            writer.writeAttribute("style", fileUpload.getStyle(), "style");
         
         //buttonbar
         writer.startElement("div", fileUpload);
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, "styleClass");
-		if(fileUpload.getStyle() != null)
-            writer.writeAttribute("style", fileUpload.getStyle(), "style");
 
         //choose button
-        writer.startElement("label", fileUpload);
-        writer.writeAttribute("class", FileUpload.CHOOSE_BUTTON_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.write(fileUpload.getLabel());
-        writer.endElement("span");
+        encodeChooseButton(context, fileUpload);
         
-        encodeInputField(context, fileUpload, clientId + "_input");
-
-        writer.endElement("label");
-        
-        if(!fileUpload.isShowButtons() && !fileUpload.isAuto()) {
-            encodeButton(context, fileUpload, fileUpload.getUploadLabel(), "submit", FileUpload.UPLOAD_BUTTON_CLASS);
-            encodeButton(context, fileUpload, fileUpload.getCancelLabel(), "button", FileUpload.CANCEL_BUTTON_CLASS);
+        if(fileUpload.isShowButtons() && !fileUpload.isAuto()) {
+            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, "ui-icon-arrowreturnthick-1-n");
+            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, "ui-icon-cancel");
         }
         
         writer.endElement("div");
@@ -180,6 +170,29 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeSimpleMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
         encodeInputField(context, fileUpload, fileUpload.getClientId(context));
     }
+    
+    protected void encodeChooseButton(FacesContext context, FileUpload fileUpload) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = fileUpload.getClientId(context);
+        
+        writer.startElement("label", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS, null);
+        
+        //button icon
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.writeText(fileUpload.getLabel(), "value");
+        writer.endElement("span");
+
+        encodeInputField(context, fileUpload, clientId + "_input");
+        
+		writer.endElement("label");
+    }
 
     protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -196,14 +209,26 @@ public class FileUploadRenderer extends CoreRenderer {
         
 		writer.endElement("input");
     }
-
-    protected void encodeButton(FacesContext facesContext, FileUpload fileUpload, String label, String type, String styleClass) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-
+    
+        protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         writer.startElement("button", null);
-        writer.writeAttribute("type", type, null);
-		writer.writeAttribute("class", styleClass, null);
-        writer.write(label);
-        writer.endElement("button");
-	}
+		writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + styleClass, null);
+        
+        //button icon
+        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS ;
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass + " " + icon, null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.writeText(label, "value");
+        writer.endElement("span");
+
+		writer.endElement("button");
+    }
 }
