@@ -68,24 +68,26 @@ public class BaseChartRenderer extends CoreRenderer {
         
         writer.write(",axes:{");
         writer.write("xaxis:{");
+        writer.write("renderer: $.jqplot.LinearAxisRenderer");
         if(chart.getXaxisLabel() != null){
-            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
-            writer.write("label:'" + chart.getXaxisLabel() + "',");
+            writer.write(",labelRenderer: $.jqplot.CanvasAxisLabelRenderer");
+            writer.write(",label:'" + chart.getXaxisLabel() + "'");
         }
         if(chart.getXaxisAngle() != 0){
-            writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
-            writer.write("tickOptions:{ angle:" + chart.getXaxisAngle() + "}");
+            writer.write(",tickRenderer:$.jqplot.CanvasAxisTickRenderer");
+            writer.write(",tickOptions:{ angle:" + chart.getXaxisAngle() + "}");
         }
         writer.write("}");
         
         writer.write(",yaxis:{");
+        writer.write("renderer: $.jqplot.LinearAxisRenderer");
         if(chart.getYaxisLabel() != null){
-            writer.write("label:'" + chart.getYaxisLabel() + "',");
-            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
+            writer.write(",label:'" + chart.getYaxisLabel() + "'");
+            writer.write(",labelRenderer: $.jqplot.CanvasAxisLabelRenderer");
         }
         if(chart.getYaxisAngle() != 0){
-            writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
-            writer.write("tickOptions:{ angle:" + chart.getYaxisAngle() + "}");
+            writer.write(",tickRenderer:$.jqplot.CanvasAxisTickRenderer");
+            writer.write(",tickOptions:{ angle:" + chart.getYaxisAngle() + "}");
         }
         writer.write("}}");
     }
