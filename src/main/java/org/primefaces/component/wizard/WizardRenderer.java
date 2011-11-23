@@ -29,6 +29,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public class WizardRenderer extends CoreRenderer {
 
@@ -183,8 +184,8 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
 
-        encodeNavigator(facesContext, wizard, clientId + "_back", widgetVar + ".back()", wizard.getBackLabel(), "ui-wizard-nav-back");
-        encodeNavigator(facesContext, wizard, clientId + "_next", widgetVar + ".next()", wizard.getNextLabel(), "ui-wizard-nav-next");
+        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), "ui-icon-arrowthick-1-w");
+        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), "ui-icon-arrowthick-1-e");
 
         writer.endElement("div");
     }
@@ -235,16 +236,33 @@ public class WizardRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String onclick, String label, String styleClass) throws IOException {
+    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String label, String icon) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("button", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("onclick", onclick, null);
-        writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", styleClass, null);
-        writer.write(label);
-        writer.endElement("button");
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+		writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, null);
+
+        //button icon
+        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS + " " + icon;
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        
+        if(label == null)
+            writer.write("ui-button");
+        else
+            writer.writeText(label, "value");
+        
+        writer.endElement("span");
+
+		writer.endElement("button");
     }
 
     @Override

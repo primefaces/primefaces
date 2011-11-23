@@ -4,9 +4,10 @@ PrimeFaces.widget.Wizard = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.content = this.jqId + '_content';
-    this.backNav = this.jqId + '_back';
-    this.nextNav = this.jqId + '_next';
+    this.backNav = $(this.jqId + '_back');
+    this.nextNav = $(this.jqId + '_next');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
+    var _self = this;
     
     this.currentStep = this.cfg.initialStep;
     var currentStepIndex = this.getStepIndex(this.currentStep);
@@ -18,16 +19,18 @@ PrimeFaces.widget.Wizard = function(cfg) {
 
     //Navigation controls
     if(this.cfg.showNavBar) {
-        $(this.backNav).button({icons:{primary: 'ui-icon-arrowthick-1-w'}});
-        $(this.nextNav).button({icons:{primary: 'ui-icon-arrowthick-1-e'}});
-
-        $(this.backNav).mouseout(function() {$(this).removeClass('ui-state-focus');});
-        $(this.nextNav).mouseout(function() {$(this).removeClass('ui-state-focus');});
+        //visuals
+        PrimeFaces.skinInput(this.backNav);
+        PrimeFaces.skinInput(this.nextNav);
+        
+        //events
+        this.backNav.click(function() {_self.back();});
+        this.nextNav.click(function() {_self.next();});
 
         if(currentStepIndex == 0)
-            $(this.backNav).hide();
+            this.backNav.hide();
         else if(currentStepIndex == this.cfg.steps.length - 1)
-            $(this.nextNav).hide();
+            this.nextNav.hide();
     }
     
     this.postConstruct();
@@ -144,17 +147,17 @@ PrimeFaces.widget.Wizard.prototype.getStepIndex = function(step) {
 }
 
 PrimeFaces.widget.Wizard.prototype.showNextNav = function() {
-    $(this.nextNav).fadeIn();
+    this.nextNav.fadeIn();
 }
 
 PrimeFaces.widget.Wizard.prototype.hideNextNav = function() {
-    $(this.nextNav).fadeOut();
+    this.nextNav.fadeOut();
 }
 
 PrimeFaces.widget.Wizard.prototype.showBackNav = function() {
-    $(this.backNav).fadeIn();
+    this.backNav.fadeIn();
 }
 
 PrimeFaces.widget.Wizard.prototype.hideBackNav = function() {
-    $(this.backNav).fadeOut();
+    this.backNav.fadeOut();
 }
