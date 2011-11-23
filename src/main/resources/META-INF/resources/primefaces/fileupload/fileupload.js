@@ -1889,14 +1889,30 @@
                     'click',
                     eventData,
                     this._startHandler
-                );
+                ).live('mouseover', function(){
+                    $(this).addClass('ui-state-hover');
+                }).live('mouseout', function(){
+                    $(this).removeClass('ui-state-active ui-state-hover');
+                }).live('mousedown', function(){
+                    $(this).addClass('ui-state-active');
+                }).live('mouseup',function(){
+                    $(this).removeClass('ui-state-active');
+                });
             
             $(this.options.namespace + ' .files td.cancel button')
                 .die().live(
                     'click',
                     eventData,
                     this._cancelHandler
-                );
+                ).live('mouseover', function(){
+                    $(this).addClass('ui-state-hover');
+                }).live('mouseout', function(){
+                    $(this).removeClass('ui-state-active ui-state-hover');
+                }).live('mousedown', function(){
+                    $(this).addClass('ui-state-active');
+                }).live('mouseup',function(){
+                    $(this).removeClass('ui-state-active');
+                });
                     
             $(this.options.namespace + ' .files td.delete button')
                 .die().live(
