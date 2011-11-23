@@ -83,30 +83,32 @@ PrimeFaces.widget.PickList = function(cfg) {
 
 PrimeFaces.extend(PrimeFaces.widget.PickList, PrimeFaces.widget.BaseWidget);
 
-/**
- * Creates button controls using progressive enhancement
- */
 PrimeFaces.widget.PickList.prototype.setupButtons = function() {
     var _self = this;
+        
+    //visuals
+    PrimeFaces.skinButton(this.jq.find('.ui-button'));
     
-    $(this.jqId + ' .ui-picklist-button-add').button({icons: {primary: "ui-icon-arrow-1-e"},text: (!this.cfg.iconOnly)}).click(function() {_self.add();});
-    $(this.jqId + ' .ui-picklist-button-add-all').button({icons: {primary: "ui-icon-arrowstop-1-e"},text: (!this.cfg.iconOnly)}).click(function() {_self.addAll();});
-    $(this.jqId + ' .ui-picklist-button-remove').button({icons: {primary: "ui-icon-arrow-1-w"},text: (!this.cfg.iconOnly)}).click(function() {_self.remove();});
-    $(this.jqId + ' .ui-picklist-button-remove-all').button({icons: {primary: "ui-icon-arrowstop-1-w"},text: (!this.cfg.iconOnly)}).click(function() {_self.removeAll();});
+    //events
+    $(this.jqId + ' .ui-picklist-button-add').click(function() {_self.add();});
+    $(this.jqId + ' .ui-picklist-button-add-all').click(function() {_self.addAll();});
+    $(this.jqId + ' .ui-picklist-button-remove').click(function() {_self.remove();});
+    $(this.jqId + ' .ui-picklist-button-remove-all').click(function() {_self.removeAll();});
 
     if(this.cfg.showSourceControls) {
-        $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').button({icons: {primary: "ui-icon-arrow-1-n"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveUp(_self.sourceList);});
-        $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').button({icons: {primary: "ui-icon-arrowstop-1-n"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveTop(_self.sourceList);});
-        $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').button({icons: {primary: "ui-icon-arrow-1-s"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveDown(_self.sourceList);});
-        $(this.jqId + ' .ui-picklist-source-controls  .ui-picklist-button-move-bottom').button({icons: {primary: "ui-icon-arrowstop-1-s"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveBottom(_self.sourceList);});
+        $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.sourceList);});
+        $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.sourceList);});
+        $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.sourceList);});
+        $(this.jqId + ' .ui-picklist-source-controls  .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.sourceList);});
     }
 
     if(this.cfg.showTargetControls) {
-        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').button({icons: {primary: "ui-icon-arrow-1-n"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveUp(_self.targetList);});
-        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').button({icons: {primary: "ui-icon-arrowstop-1-n"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveTop(_self.targetList);});
-        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').button({icons: {primary: "ui-icon-arrow-1-s"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveDown(_self.targetList);});
-        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').button({icons: {primary: "ui-icon-arrowstop-1-s"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveBottom(_self.targetList);});
+        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.targetList);});
+        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.targetList);});
+        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.targetList);});
+        $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.targetList);});
     }
+
 }
 
 PrimeFaces.widget.PickList.prototype.add = function() {
