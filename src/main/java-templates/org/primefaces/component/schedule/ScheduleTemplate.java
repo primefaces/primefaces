@@ -72,12 +72,14 @@ import org.primefaces.model.ScheduleEvent;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getStartDate());
-                calendar.roll(Calendar.DATE, dayDelta);
+                calendar.add(Calendar.DATE, dayDelta);
+                calendar.add(Calendar.MINUTE, minuteDelta);
                 movedEvent.getStartDate().setTime(calendar.getTimeInMillis());
 
                 calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getEndDate());
-				calendar.roll(Calendar.DATE, dayDelta);
+                calendar.add(Calendar.DATE, dayDelta);
+                calendar.add(Calendar.MINUTE, minuteDelta);
 				movedEvent.getEndDate().setTime(calendar.getTimeInMillis());
 
                 wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent, dayDelta, minuteDelta);
@@ -90,7 +92,8 @@ import org.primefaces.model.ScheduleEvent;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(resizedEvent.getEndDate());
-				calendar.roll(Calendar.DATE, dayDelta);
+				calendar.add(Calendar.DATE, dayDelta);
+                calendar.add(Calendar.MINUTE, minuteDelta);
 				resizedEvent.getEndDate().setTime(calendar.getTimeInMillis());
 
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
