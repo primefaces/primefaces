@@ -6,15 +6,11 @@ PrimeFaces.widget.Calendar = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jq);
-    this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
-    this.jqEl = $(this.jqElId);
-    this.cfg.formId = this.jq.parents('form:first').attr('id');
+    this.input = $(this.jqId + '_input');
+    this.jqEl = this.cfg.popup ? this.input : $(this.jqId + '_inline');
     
     //i18n and l7n
     this.configureLocale();
-
-    //image title
-    this.cfg.buttonText = this.jqEl.attr('title') || '';
 
     //Override locale pattern with user pattern
     if(this.cfg.pattern) {
@@ -23,11 +19,6 @@ PrimeFaces.widget.Calendar = function(cfg) {
 
     //Select listener
     this.bindDateSelectListener();
-
-    //Form field to use in inline mode
-    if(!this.cfg.popup) {
-        this.cfg.altField = $(this.jqId + '_input');
-    }
     
     //weekends
     if(this.cfg.disabledWeekends) {
@@ -71,7 +62,8 @@ PrimeFaces.widget.Calendar = function(cfg) {
     }
 
     //button title
-    this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
+    var buttonText = this.jqEl.attr('title')||'';
+    this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', buttonText);
     
     this.postConstruct();
 }
@@ -91,14 +83,33 @@ PrimeFaces.widget.Calendar.prototype.configureLocale = function() {
 PrimeFaces.widget.Calendar.prototype.bindDateSelectListener = function() {
     var _self = this;
 
-    if(this.cfg.behaviors) {
-        this.cfg.onSelect = function(dateText, input) {
-            var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
+    this.cfg.onSelect = function() {
+        if(_self.cfg.popup) {
+            _self.fireDateSelectEvent();
+        }
+        else {
+            var newDate = $.datepicker.formatDate(_self.cfg.pattern, _self.getDate()),
+            oldDate = _self.input.val();
 
-            if(dateSelectBehavior) {
-                dateSelectBehavior.call(_self);
+            if(oldDate == newDate) {
+                _self.setDate(null);
+                _self.input.val('');
             }
-        };
+            else {
+                _self.input.val(newDate);
+                _self.fireDateSelectEvent();
+            }
+        }
+    };
+}
+
+PrimeFaces.widget.Calendar.prototype.fireDateSelectEvent = function() {
+    if(this.cfg.behaviors) {
+        var dateSelectBehavior = this.cfg.behaviors['dateSelect'];
+
+        if(dateSelectBehavior) {
+            dateSelectBehavior.call(this);
+        }
     }
 }
 
