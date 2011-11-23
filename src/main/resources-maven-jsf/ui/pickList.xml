@@ -75,13 +75,6 @@
             <description>Speed of the animation. Default is fast.</description>
 		</attribute>
         <attribute>
-			<name>iconOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>When enabled picklist button controls only render icons and texts are displayed as tooltips. Default is false.</description>
-		</attribute>
-        <attribute>
 			<name>addLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>

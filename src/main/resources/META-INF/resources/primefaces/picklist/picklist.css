@@ -12,13 +12,9 @@
     padding: 2px;
 }
 
-.ui-picklist .ui-picklist-button {
+.ui-picklist .ui-button {
     display:block;
     margin-bottom:0.3em;
-}
-
-.ui-picklist .ui-picklist-button.ui-button-text-icon-primary {
-    width:100%;
 }
 
 .ui-picklist .ui-picklist-item {

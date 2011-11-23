@@ -29,6 +29,7 @@ import org.primefaces.component.column.Column;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 
 public class PickListRenderer extends CoreRenderer {
 	
@@ -80,10 +81,10 @@ public class PickListRenderer extends CoreRenderer {
 
 		//Buttons
 		writer.startElement("td", null);
-        encodeButton(context, pickList, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS);
-        encodeButton(context, pickList, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS);
-        encodeButton(context, pickList, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS);
-        encodeButton(context, pickList, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS);
+        encodeButton(context, pickList, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS);
 		writer.endElement("td");
 
 		//Target List
@@ -110,7 +111,6 @@ public class PickListRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",effect:'" + pickList.getEffect() + "'");
         writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
-        writer.write(",iconOnly:" + pickList.isIconOnly());
         
         if(pickList.isShowSourceControls()) writer.write(",showSourceControls:true");
         if(pickList.isShowTargetControls()) writer.write(",showTargetControls:true");
@@ -126,11 +126,11 @@ public class PickListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("td", null);
-        writer.writeAttribute("class", PickList.SOURCE_CONTROLS, null);
-        encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS);
-        encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS);
-        encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS);
-        encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS);
+        writer.writeAttribute("class", styleClass, null);
+        encodeButton(context, pickList, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
         writer.endElement("td");
     }
 
@@ -143,13 +143,25 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 	
-	protected void encodeButton(FacesContext context, PickList pickList, String label, String styleClass) throws IOException {
+	protected void encodeButton(FacesContext context, PickList pickList, String title, String styleClass, String icon) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", styleClass, null);
-        writer.write(label);
+		writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("title", title, null);
+        
+        //icon
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.write("ui-button");
+        writer.endElement("span");
+
         writer.endElement("button");
 	}
 	
