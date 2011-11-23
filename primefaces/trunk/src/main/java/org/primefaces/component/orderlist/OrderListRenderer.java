@@ -27,6 +27,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 
 public class OrderListRenderer extends CoreRenderer {
     
@@ -114,10 +115,10 @@ public class OrderListRenderer extends CoreRenderer {
         
         writer.startElement("td", null);
         writer.writeAttribute("class", OrderList.CONTROLS_CLASS, null);
-        encodeButton(context, ol.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS);
-        encodeButton(context, ol.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS);
-        encodeButton(context, ol.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS);
-        encodeButton(context, ol.getMoveBottomLabel(), OrderList.MOVE_BOTTOM_BUTTON_CLASS);
+        encodeButton(context, ol.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS, OrderList.MOVE_UP_BUTTON_ICON_CLASS);
+        encodeButton(context, ol.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS, OrderList.MOVE_TOP_BUTTON_ICON_CLASS);
+        encodeButton(context, ol.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS, OrderList.MOVE_DOWN_BUTTON_ICON_CLASS);
+        encodeButton(context, ol.getMoveBottomLabel(), OrderList.MOVE_BOTTOM_BUTTON_CLASS, OrderList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
         writer.endElement("td");
     }
     
@@ -178,13 +179,25 @@ public class OrderListRenderer extends CoreRenderer {
 		return builder.toString();
 	}
     
-    protected void encodeButton(FacesContext context, String label, String styleClass) throws IOException {
+    protected void encodeButton(FacesContext context, String title, String styleClass, String icon) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", styleClass, null);
-        writer.write(label);
+		writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("title", title, null);
+        
+        //icon
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.write("ui-button");
+        writer.endElement("span");
+
         writer.endElement("button");
 	}
     
@@ -208,8 +221,8 @@ public class OrderListRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('OrderList','" + ol.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");    
         
-        if(ol.isIconOnly()) writer.write(",iconOnly:true");
-        if(ol.getEffect() != null) writer.write(",effect:'" + ol.getEffect() + "'");
+        if(ol.getEffect() != null) 
+            writer.write(",effect:'" + ol.getEffect() + "'");
         
         writer.write("});");
 		

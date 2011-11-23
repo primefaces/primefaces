@@ -71,10 +71,12 @@ PrimeFaces.widget.OrderList.prototype.bindEvents = function() {
 PrimeFaces.widget.OrderList.prototype.setupButtons = function() {
     var _self = this;
     
-    $(this.jq).find(' .ui-orderlist-controls .ui-orderlist-button-move-up').button({icons: {primary: "ui-icon-arrow-1-n"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveUp(_self.sourceList);});
-    $(this.jq).find(' .ui-orderlist-controls .ui-orderlist-button-move-top').button({icons: {primary: "ui-icon-arrowstop-1-n"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveTop(_self.sourceList);});
-    $(this.jq).find(' .ui-orderlist-controls .ui-orderlist-button-move-down').button({icons: {primary: "ui-icon-arrow-1-s"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveDown(_self.sourceList);});
-    $(this.jq).find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').button({icons: {primary: "ui-icon-arrowstop-1-s"},text: (!this.cfg.iconOnly)}).click(function() {_self.moveBottom(_self.sourceList);});
+    PrimeFaces.skinButton(this.jq.find('.ui-button'));
+    
+    this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-up').click(function() {_self.moveUp(_self.sourceList);});
+    this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-top').click(function() {_self.moveTop(_self.sourceList);});
+    this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-down').click(function() {_self.moveDown(_self.sourceList);});
+    this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').click(function() {_self.moveBottom(_self.sourceList);});
 }
 
 PrimeFaces.widget.OrderList.prototype.onDragDrop = function(event, ui) {
