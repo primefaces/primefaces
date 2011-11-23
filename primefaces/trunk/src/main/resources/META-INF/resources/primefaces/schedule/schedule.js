@@ -1,20 +1,5214 @@
-/*
- * FullCalendar v1.4.5
+/**
+ * @preserve
+ * FullCalendar v1.5.2
  * http://arshaw.com/fullcalendar/
  *
  * Use fullcalendar.css for basic styling.
- * For event drag & drop, required jQuery UI draggable.
+ * For event drag & drop, requires jQuery UI draggable.
  * For event resizing, requires jQuery UI resizable.
  *
- * Copyright (c) 2009 Adam Shaw
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
+ * Copyright (c) 2011 Adam Shaw
+ * Dual licensed under the MIT and GPL licenses, located in
+ * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: Sun Feb 21 20:30:11 2010 -0800
+ * Date: Sun Aug 21 22:06:09 2011 -0700
  *
  */
-(function(D){var I=D.fullCalendar={};var f=I.views={};var F={defaultView:"month",aspectRatio:1.35,header:{left:"title",center:"",right:"today prev,next"},weekends:true,allDayDefault:true,lazyFetching:true,startParam:"start",endParam:"end",titleFormat:{month:"MMMM yyyy",week:"MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",day:"dddd, MMM d, yyyy"},columnFormat:{month:"ddd",week:"ddd M/d",day:"dddd M/d"},timeFormat:{"":"h(:mm)t"},isRTL:false,firstDay:0,monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],monthNamesShort:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],dayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],dayNamesShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],buttonText:{prev:"&nbsp;&#9668;&nbsp;",next:"&nbsp;&#9658;&nbsp;",prevYear:"&nbsp;&lt;&lt;&nbsp;",nextYear:"&nbsp;&gt;&gt;&nbsp;",today:"today",month:"month",week:"week",day:"day"},theme:false,buttonIcons:{prev:"circle-triangle-w",next:"circle-triangle-e"}};var b={header:{left:"next,prev today",center:"",right:"title"},buttonText:{prev:"&nbsp;&#9658;&nbsp;",next:"&nbsp;&#9668;&nbsp;",prevYear:"&nbsp;&gt;&gt;&nbsp;",nextYear:"&nbsp;&lt;&lt;&nbsp;"},buttonIcons:{prev:"circle-triangle-e",next:"circle-triangle-w"}};var M=I.setDefaults=function(ac){D.extend(true,F,ac)};D.fn.fullCalendar=function(af){if(typeof af=="string"){var ae=Array.prototype.slice.call(arguments,1),ag;this.each(function(){var ai=D.data(this,"fullCalendar");if(ai){var ah=ai[af].apply(this,ae);if(ag==m){ag=ah}}});if(ag!=m){return ag}return this}var ad=af.eventSources||[];delete af.eventSources;if(af.events){ad.push(af.events);delete af.events}ad.unshift([]);af=D.extend(true,{},F,(af.isRTL||af.isRTL==m&&F.isRTL)?b:{},af);var ac=af.theme?"ui":"fc";this.each(function(){var aI=this,ax=D(aI).addClass("fc"),aB,ar=D("<div class='fc-content "+ac+"-widget-content' style='position:relative'/>").prependTo(aI),al,aD=0,aJ=0,aN=new Date(),ap,ai,aQ={},aq;if(af.isRTL){ax.addClass("fc-rtl")}if(af.theme){ax.addClass("ui-widget")}if(af.year!=m&&af.year!=aN.getFullYear()){aN.setDate(1);aN.setMonth(0);aN.setFullYear(af.year)}if(af.month!=m&&af.month!=aN.getMonth()){aN.setDate(1);aN.setMonth(af.month)}if(af.date!=m){aN.setDate(af.date)}function an(aU){if(aU!=ap){aJ++;var aV=ai,aT;if(aV){if(aV.eventsChanged){ah();aV.eventDirty=aV.eventsChanged=false}if(aV.beforeHide){aV.beforeHide()}aa(ar,ar.height());aV.element.hide()}else{aa(ar,1)}ar.css("overflow","hidden");if(aQ[aU]){(ai=aQ[aU]).element.show()}else{ai=aQ[aU]=D.fullCalendar.views[aU](aT=aq=D("<div class='fc-view fc-view-"+aU+"' style='position:absolute'/>").appendTo(ar),af)}if(aj){aj.find("div.fc-button-"+ap).removeClass(ac+"-state-active");aj.find("div.fc-button-"+aU).addClass(ac+"-state-active")}ai.name=ap=aU;aC();ar.css("overflow","");if(aV){aa(ar,1)}if(!aT&&ai.afterShow){ai.afterShow()}aJ--}}function aC(aU){if(aG()){aJ++;if(al==m){aE()}if(!ai.start||aU||aN<ai.start||aN>=ai.end){ai.render(aN,aU||0);aH(true);if(!aA||!af.lazyFetching||ai.visStart<aA||ai.visEnd>aO){aF()}else{ai.renderEvents(az)}}else{if(ai.sizeDirty||ai.eventsDirty||!af.lazyFetching){ai.clearEvents();if(ai.sizeDirty){aH()}if(af.lazyFetching){ai.renderEvents(az)}else{aF()}}}aB=ax.outerWidth();ai.sizeDirty=false;ai.eventsDirty=false;if(aj){aj.find("h2.fc-header-title").html(ai.title);var aT=new Date();if(aT>=ai.start&&aT<ai.end){aj.find("div.fc-button-today").addClass(ac+"-state-disabled")}else{aj.find("div.fc-button-today").removeClass(ac+"-state-disabled")}}aJ--;ai.trigger("viewDisplay",aI)}}function aG(){return aI.offsetWidth!==0}function av(){return D("body")[0].offsetWidth!==0}function au(){ah();if(aG()){ai.clearEvents();ai.renderEvents(az);ai.eventsDirty=false}}function ah(){D.each(aQ,function(){this.eventsDirty=true})}function ay(){aR();if(aG()){aE();aH();ai.rerenderEvents();ai.sizeDirty=false}}function aR(){D.each(aQ,function(){this.sizeDirty=true})}var az=[],aA,aO;function aP(aW){az=[];aA=Q(ai.visStart);aO=Q(ai.visEnd);var aV=ad.length,aT=function(){if(--aV==0){if(aW){aW(az)}}},aU=0;for(;aU<ad.length;aU++){aw(ad[aU],aT)}}function aw(aY,aZ){var aU=ai.name,aX=Q(aN),aW=function(a0){if(aU==ai.name&&+aX==+aN&&D.inArray(aY,ad)!=-1){for(var a1=0;a1<a0.length;a1++){C(a0[a1],af);a0[a1].source=aY}az=az.concat(a0);if(aZ){aZ(a0)}}},aT=function(a0){aW(a0);ak()};if(typeof aY=="string"){var aV={};aV[af.startParam]=Math.round(aA.getTime()/1000);aV[af.endParam]=Math.round(aO.getTime()/1000);if(af.cacheParam){aV[af.cacheParam]=(new Date()).getTime()}ao();D.ajax({url:aY,dataType:"json",data:aV,cache:af.cacheParam||false,success:aT})}else{if(D.isFunction(aY)){ao();aY(Q(aA),Q(aO),aT)}else{aW(aY)}}}function aF(){aP(function(aT){ai.renderEvents(aT)})}var aS=0;function ao(){if(!aS++){ai.trigger("loading",aI,true)}}function ak(){if(!--aS){ai.trigger("loading",aI,false)}}var aL={render:function(){aE();aR();ah();aC()},changeView:an,getView:function(){return ai},getDate:function(){return aN},option:function(aT,aU){if(aU==m){return af[aT]}if(aT=="height"||aT=="contentHeight"||aT=="aspectRatio"){af[aT]=aU;ay()}},destroy:function(){D(window).unbind("resize",at);if(aj){aj.remove()}ar.remove();D.removeData(aI,"fullCalendar")},prev:function(){aC(-1)},next:function(){aC(1)},prevYear:function(){Y(aN,-1);aC()},nextYear:function(){Y(aN,1);aC()},today:function(){aN=new Date();aC()},gotoDate:function(aT,aV,aU){if(typeof aT=="object"){aN=Q(aT)}else{if(aT!=m){aN.setFullYear(aT)}if(aV!=m){aN.setMonth(aV)}if(aU!=m){aN.setDate(aU)}}aC()},incrementDate:function(aU,aT,aV){if(aU!=m){Y(aN,aU)}if(aT!=m){p(aN,aT)}if(aV!=m){y(aN,aV)}aC()},updateEvent:function(aX){var aV,aT=az.length,aY,aW=aX.start-aX._start,aU=aX.end?(aX.end-(aX._end||ai.defaultEventEnd(aX))):0;for(aV=0;aV<aT;aV++){aY=az[aV];if(aY._id==aX._id&&aY!=aX){aY.start=new Date(+aY.start+aW);if(aX.end){if(aY.end){aY.end=new Date(+aY.end+aU)}else{aY.end=new Date(+ai.defaultEventEnd(aY)+aU)}}else{aY.end=null}aY.title=aX.title;aY.url=aX.url;aY.allDay=aX.allDay;aY.className=aX.className;aY.editable=aX.editable;C(aY,af)}}C(aX,af);au()},renderEvent:function(aU,aT){C(aU,af);if(!aU.source){if(aT){(aU.source=ad[0]).push(aU)}az.push(aU)}au()},removeEvents:function(aU){if(!aU){az=[];for(var aT=0;aT<ad.length;aT++){if(typeof ad[aT]=="object"){ad[aT]=[]}}}else{if(!D.isFunction(aU)){var aV=aU+"";aU=function(aW){return aW._id==aV}}az=D.grep(az,aU,true);for(var aT=0;aT<ad.length;aT++){if(typeof ad[aT]=="object"){ad[aT]=D.grep(ad[aT],aU,true)}}}au()},clientEvents:function(aT){if(D.isFunction(aT)){return D.grep(az,aT)}else{if(aT){aT+="";return D.grep(az,function(aU){return aU._id==aT})}}return az},rerenderEvents:au,addEventSource:function(aT){ad.push(aT);aw(aT,au)},removeEventSource:function(aT){ad=D.grep(ad,function(aU){return aU!=aT});az=D.grep(az,function(aU){return aU.source!=aT});au()},refetchEvents:function(){aP(au)}};D.data(this,"fullCalendar",aL);var aj,aK=af.header;if(aK){aj=D("<table class='fc-header'/>").append(D("<tr/>").append(D("<td class='fc-header-left'/>").append(aM(aK.left))).append(D("<td class='fc-header-center'/>").append(aM(aK.center))).append(D("<td class='fc-header-right'/>").append(aM(aK.right)))).prependTo(ax)}function aM(aT){if(aT){var aU=D("<tr/>");D.each(aT.split(" "),function(aW){if(aW>0){aU.append("<td><span class='fc-header-space'/></td>")}var aV;D.each(this.split(","),function(aZ,aY){if(aY=="title"){aU.append("<td><h2 class='fc-header-title'>&nbsp;</h2></td>");if(aV){aV.addClass(ac+"-corner-right")}aV=null}else{var aX;if(aL[aY]){aX=aL[aY]}else{if(f[aY]){aX=function(){a0.removeClass(ac+"-state-hover");an(aY)}}}if(aX){if(aV){aV.addClass(ac+"-no-right")}var a0,a1=af.theme?i(af.buttonIcons,aY):null,a2=i(af.buttonText,aY);if(a1){a0=D("<div class='fc-button-"+aY+" ui-state-default'><a><span class='ui-icon ui-icon-"+a1+"'/></a></div>")}else{if(a2){a0=D("<div class='fc-button-"+aY+" "+ac+"-state-default'><a><span>"+a2+"</span></a></div>")}}if(a0){a0.click(function(){if(!a0.hasClass(ac+"-state-disabled")){aX()}}).mousedown(function(){a0.not("."+ac+"-state-active").not("."+ac+"-state-disabled").addClass(ac+"-state-down")}).mouseup(function(){a0.removeClass(ac+"-state-down")}).hover(function(){a0.not("."+ac+"-state-active").not("."+ac+"-state-disabled").addClass(ac+"-state-hover")},function(){a0.removeClass(ac+"-state-hover").removeClass(ac+"-state-down")}).appendTo(D("<td/>").appendTo(aU));if(aV){aV.addClass(ac+"-no-right")}else{a0.addClass(ac+"-corner-left")}aV=a0}}}});if(aV){aV.addClass(ac+"-corner-right")}});return D("<table/>").append(aU)}}function aE(){if(af.contentHeight){al=af.contentHeight}else{if(af.height){al=af.height-(aj?aj.height():0)-O(ar[0])}else{al=Math.round(ar.width()/Math.max(af.aspectRatio,0.5))}}}function aH(aT){aJ++;ai.setHeight(al,aT);if(aq){aq.css("position","relative");aq=null}ai.setWidth(ar.width(),aT);aJ--}function at(){if(!aJ){if(ai.start){var aT=++aD;setTimeout(function(){if(aT==aD&&!aJ&&aG()){if(aB!=(aB=ax.outerWidth())){aJ++;ay();ai.trigger("windowResize",aI);aJ--}}},200)}else{am()}}}D(window).resize(at);an(af.defaultView);if(!av()){am()}function am(){setTimeout(function(){if(!ai.start&&av()){aC()}},0)}});return this};var P=0;function C(ad,ac){ad._id=ad._id||(ad.id==m?"_fc"+P++:ad.id+"");if(ad.date){if(!ad.start){ad.start=ad.date}delete ad.date}ad._start=Q(ad.start=g(ad.start));ad.end=g(ad.end);if(ad.end&&ad.end<=ad.start){ad.end=null}ad._end=ad.end?Q(ad.end):null;if(ad.allDay==m){ad.allDay=ac.allDayDefault}if(ad.className){if(typeof ad.className=="string"){ad.className=ad.className.split(/\s+/)}}else{ad.className=[]}}M({weekMode:"fixed"});f.month=function(ad,ac){return new E(ad,ac,{render:function(ag,ak){if(ak){p(ag,ak);ag.setDate(1)}var aj=this.start=Q(ag,true);aj.setDate(1);this.end=p(Q(aj),1);var af=this.visStart=Q(aj),ae=this.visEnd=Q(this.end),ah=ac.weekends?0:1;if(ah){Z(af);Z(ae,-1,true)}y(af,-((af.getDay()-Math.max(ac.firstDay,ah)+7)%7));y(ae,(7-ae.getDay()+Math.max(ac.firstDay,ah))%7);var ai=Math.round((ae-af)/(S*7));if(ac.weekMode=="fixed"){y(ae,(6-ai)*7);ai=6}this.title=N(aj,this.option("titleFormat"),ac);this.renderGrid(ai,ac.weekends?7:5,this.option("columnFormat"),true)}})};f.basicWeek=function(ad,ac){return new E(ad,ac,{render:function(ag,ah){if(ah){y(ag,ah*7)}var af=this.visStart=Q(this.start=y(Q(ag),-((ag.getDay()-ac.firstDay+7)%7))),ae=this.visEnd=Q(this.end=y(Q(af),7));if(!ac.weekends){Z(af);Z(ae,-1,true)}this.title=u(af,y(Q(ae),-1),this.option("titleFormat"),ac);this.renderGrid(1,ac.weekends?7:5,this.option("columnFormat"),false)}})};f.basicDay=function(ad,ac){return new E(ad,ac,{render:function(ae,af){if(af){y(ae,af);if(!ac.weekends){Z(ae,af<0?-1:1)}}this.title=N(ae,this.option("titleFormat"),ac);this.start=this.visStart=Q(ae,true);this.end=this.visEnd=y(Q(this.start),1);this.renderGrid(1,1,this.option("columnFormat"),false)}})};var G;function E(af,aj,aG){var ag,at,ak,am,az,ay,aD,ax,an,aC,aI,aE,ad,ap=[],ai,aw=new J(function(aJ){return ad.find("td:eq("+((aJ-Math.max(at,ak)+aC)%aC)+") div div")}),au=D.extend(this,l,aG,{renderGrid:aB,renderEvents:ah,rerenderEvents:aF,clearEvents:aq,setHeight:ao,setWidth:ae,defaultEventEnd:function(aJ){return Q(aJ.start)}});au.init(af,aj);af.addClass("fc-grid");if(af.disableSelection){af.disableSelection()}function aB(aJ,aP,aM,aR){an=aJ;aC=aP;ag=aj.theme?"ui":"fc";ak=aj.weekends?0:1;at=aj.firstDay;if(am=aj.isRTL){az=-1;ay=aC-1}else{az=1;ay=0}var aN=au.start.getMonth(),aQ=w(new Date()),aU,aL,aK,aO=Q(au.visStart);if(!ad){var aT=D("<table/>").appendTo(af);aU="<thead><tr>";for(aL=0;aL<aC;aL++){aU+="<th class='fc-"+U[aO.getDay()]+" "+ag+"-state-default"+(aL==ay?" fc-leftmost":"")+"'>"+N(aO,aM,aj)+"</th>";y(aO,1);if(ak){Z(aO)}}aE=D(aU+"</tr></thead>").appendTo(aT);aU="<tbody>";aO=Q(au.visStart);for(aL=0;aL<an;aL++){aU+="<tr class='fc-week"+aL+"'>";for(aK=0;aK<aC;aK++){aU+="<td class='fc-"+U[aO.getDay()]+" "+ag+"-state-default fc-day"+(aL*aC+aK)+(aK==ay?" fc-leftmost":"")+(an>1&&aO.getMonth()!=aN?" fc-other-month":"")+(+aO==+aQ?" fc-today "+ag+"-state-highlight":" fc-not-today")+"'>"+(aR?"<div class='fc-day-number'>"+aO.getDate()+"</div>":"")+"<div class='fc-day-content'><div style='position:relative'>&nbsp;</div></div></td>";y(aO,1);if(ak){Z(aO)}}aU+="</tr>"}ad=D(aU+"</tbody>").appendTo(aT);ad.find("td").click(ac);ai=D("<div style='position:absolute;z-index:8;top:0;left:0'/>").appendTo(af)}else{aq();var aS=ad.find("tr").length;if(an<aS){ad.find("tr:gt("+(an-1)+")").remove()}else{if(an>aS){aU="";for(aL=aS;aL<an;aL++){aU+="<tr class='fc-week"+aL+"'>";for(aK=0;aK<aC;aK++){aU+="<td class='fc-"+U[aO.getDay()]+" "+ag+"-state-default fc-new fc-day"+(aL*aC+aK)+(aK==ay?" fc-leftmost":"")+"'>"+(aR?"<div class='fc-day-number'></div>":"")+"<div class='fc-day-content'><div style='position:relative'>&nbsp;</div></div></td>";y(aO,1);if(ak){Z(aO)}}aU+="</tr>"}ad.append(aU)}}ad.find("td.fc-new").removeClass("fc-new").click(ac);aO=Q(au.visStart);ad.find("td").each(function(){var aV=D(this);if(an>1){if(aO.getMonth()==aN){aV.removeClass("fc-other-month")}else{aV.addClass("fc-other-month")}}if(+aO==+aQ){aV.removeClass("fc-not-today").addClass("fc-today").addClass(ag+"-state-highlight")}else{aV.addClass("fc-not-today").removeClass("fc-today").removeClass(ag+"-state-highlight")}aV.find("div.fc-day-number").text(aO.getDate());y(aO,1);if(ak){Z(aO)}});if(an==1){aO=Q(au.visStart);aE.find("th").each(function(){D(this).text(N(aO,aM,aj));this.className=this.className.replace(/^fc-\w+(?= )/,"fc-"+U[aO.getDay()]);y(aO,1);if(ak){Z(aO)}});aO=Q(au.visStart);ad.find("td").each(function(){this.className=this.className.replace(/^fc-\w+(?= )/,"fc-"+U[aO.getDay()]);y(aO,1);if(ak){Z(aO)}})}}}function ac(aK){var aL=parseInt(this.className.match(/fc\-day(\d+)/)[1]),aJ=y(Q(au.visStart),Math.floor(aL/aC)*7+aL%aC);au.trigger("dayClick",this,aJ,true,aK)}function ao(aJ){ax=aJ;var aK=ad.find("tr td:first-child"),aP=ax-aE.height(),aN,aM;if(aj.weekMode=="variable"){aN=aM=Math.floor(aP/(an==1?2:6))}else{aN=Math.floor(aP/an);aM=aP-aN*(an-1)}if(G==m){var aL=ad.find("tr:first"),aO=aL.find("td:first");aO.height(aN);G=aN!=aO.height()}if(G){aK.slice(0,-1).height(aN);aK.slice(-1).height(aM)}else{h(aK.slice(0,-1),aN);h(aK.slice(-1),aM)}}function ae(aJ){aD=aJ;aw.clear();V(aE.find("th").slice(0,-1),aI=Math.floor(aD/aC))}function ah(aJ){au.reportEvents(ap=aJ);al(ar(aJ))}function aF(aJ){aq();al(ar(ap),aJ)}function aq(){au._clearEvents();ai.empty()}function ar(aS){var aL=Q(au.visStart),aJ=y(Q(aL),aC),aR=D.map(aS,aA),aQ,aT,aP,aK,aN,aO,aM=[];for(aQ=0;aQ<an;aQ++){aT=H(au.sliceSegs(aS,aR,aL,aJ));for(aP=0;aP<aT.length;aP++){aK=aT[aP];for(aN=0;aN<aK.length;aN++){aO=aK[aN];aO.row=aQ;aO.level=aP;aM.push(aO)}}y(aL,7);y(aJ,7)}return aM}function al(aJ,aK){c(aJ,an,au,0,aD,function(aL){return ad.find("tr:eq("+aL+")")},aw.left,aw.right,ai,aH,aK)}function aA(aK){if(aK.end){var aJ=Q(aK.end);return(aK.allDay||aJ.getHours()||aJ.getMinutes())?y(aJ,1):aJ}else{return y(Q(aK.start),1)}}function aH(aL,aK,aJ){au.eventElementHandlers(aL,aK);if(aL.editable||aL.editable==m&&aj.editable){av(aL,aK);if(aJ.isEnd){au.resizableDayEvent(aL,aK,aI)}}}function av(aL,aK){if(!aj.disableDragging&&aK.draggable){var aJ;aK.draggable({zIndex:9,delay:50,opacity:au.option("dragOpacity"),revertDuration:aj.dragRevertDuration,start:function(aN,aO){au.hideEvents(aL,aK);au.trigger("eventDragStart",aK,aL,aN,aO);aJ=new e(function(aP){aK.draggable("option","revert",!aP||!aP.rowDelta&&!aP.colDelta);if(aP){au.showOverlay(aP)}else{au.hideOverlay()}});ad.find("tr").each(function(){aJ.row(this)});var aM=ad.find("tr:first td");if(am){aM=D(aM.get().reverse())}aM.each(function(){aJ.col(this)});aJ.mouse(aN.pageX,aN.pageY)},drag:function(aM){aJ.mouse(aM.pageX,aM.pageY)},stop:function(aN,aO){au.hideOverlay();au.trigger("eventDragStop",aK,aL,aN,aO);var aM=aJ.cell;if(!aM||!aM.rowDelta&&!aM.colDelta){if(D.browser.msie){aK.css("filter","")}au.showEvents(aL,aK)}else{aK.find("a").removeAttr("href");au.eventDrop(this,aL,aM.rowDelta*7+aM.colDelta*az,0,aL.allDay,aN,aO)}}})}}}function c(ar,ak,ao,au,ay,aA,aq,aK,ag,aG,at){var af=ao.options,aj=af.isRTL,aw,aD=ar.length,aB,av,ae,ai,aF,an="",aE,ax,al,aJ={},ac={},aI,aH,am,ap,ah,aC,ad=[],az=[];for(aw=0;aw<aD;aw++){aB=ar[aw];av=aB.event;ae="fc-event fc-event-hori ";if(aj){if(aB.isStart){ae+="fc-corner-right "}if(aB.isEnd){ae+="fc-corner-left "}ai=aB.isEnd?aq(aB.end.getDay()-1):au;aF=aB.isStart?aK(aB.start.getDay()):ay}else{if(aB.isStart){ae+="fc-corner-left "}if(aB.isEnd){ae+="fc-corner-right "}ai=aB.isStart?aq(aB.start.getDay()):au;aF=aB.isEnd?aK(aB.end.getDay()-1):ay}an+="<div class='"+ae+av.className.join(" ")+"' style='position:absolute;z-index:8;left:"+ai+"px'><a"+(av.url?" href='"+K(av.url)+"'":"")+">"+(!av.allDay&&aB.isStart?"<span class='fc-event-time'>"+K(u(av.start,av.end,ao.option("timeFormat"),af))+"</span>":"")+"<span class='fc-event-title'>"+K(av.title)+"</span></a>"+((av.editable||av.editable==m&&af.editable)&&!af.disableResizing&&D.fn.resizable?"<div class='ui-resizable-handle ui-resizable-"+(aj?"w":"e")+"'></div>":"")+"</div>";aB.left=ai;aB.outerWidth=aF-ai}ag[0].innerHTML=an;aE=ag.children();for(aw=0;aw<aD;aw++){aB=ar[aw];ax=D(aE[aw]);av=aB.event;al=ao.trigger("eventRender",av,av,ax);if(al===false){ax.remove()}else{if(al&&al!==true){ax.remove();ax=D(al).css({position:"absolute",left:aB.left}).appendTo(ag)}aB.element=ax;if(av._id===at){aG(av,ax,aB)}else{ax[0]._fci=aw}ao.reportEventElement(av,ax)}}T(ag,ar,aG);for(aw=0;aw<aD;aw++){aB=ar[aw];if(ax=aB.element){aH=aJ[aI=aB.key=X(ax[0])];aB.hsides=aH==m?(aJ[aI]=B(ax[0],true)):aH}}for(aw=0;aw<aD;aw++){aB=ar[aw];if(ax=aB.element){ax[0].style.width=aB.outerWidth-aB.hsides+"px"}}for(aw=0;aw<aD;aw++){aB=ar[aw];if(ax=aB.element){aH=ac[aI=aB.key];aB.outerHeight=ax[0].offsetHeight+(aH==m?(ac[aI]=t(ax[0])):aH)}}for(aw=0,am=0;am<ak;am++){ap=ah=aC=0;while(aw<aD&&(aB=ar[aw]).row==am){if(aB.level!=ah){ap+=aC;aC=0;ah++}aC=Math.max(aC,aB.outerHeight||0);aB.top=ap;aw++}ad[am]=aA(am).find("td:first div.fc-day-content > div").height(ap+aC)}for(am=0;am<ak;am++){az[am]=ad[am][0].offsetTop}for(aw=0;aw<aD;aw++){aB=ar[aw];if(ax=aB.element){ax[0].style.top=az[aB.row]+aB.top+"px";av=aB.event;ao.trigger("eventAfterRender",av,av,ax)}}}M({allDaySlot:true,allDayText:"all-day",firstHour:6,slotMinutes:30,defaultEventMinutes:120,axisFormat:"h(:mm)tt",timeFormat:{agenda:"h:mm{ - h:mm}"},dragOpacity:{agenda:0.5},minTime:0,maxTime:24});f.agendaWeek=function(ad,ac){return new v(ad,ac,{render:function(ag,ah){if(ah){y(ag,ah*7)}var af=this.visStart=Q(this.start=y(Q(ag),-((ag.getDay()-ac.firstDay+7)%7))),ae=this.visEnd=Q(this.end=y(Q(af),7));if(!ac.weekends){Z(af);Z(ae,-1,true)}this.title=u(af,y(Q(ae),-1),this.option("titleFormat"),ac);this.renderAgenda(ac.weekends?7:5,this.option("columnFormat"))}})};f.agendaDay=function(ad,ac){return new v(ad,ac,{render:function(ae,af){if(af){y(ae,af);if(!ac.weekends){Z(ae,af<0?-1:1)}}this.title=N(ae,this.option("titleFormat"),ac);this.start=this.visStart=Q(ae,true);this.end=this.visEnd=y(Q(this.start),1);this.renderAgenda(1,this.option("columnFormat"))}})};function v(at,aB,aH){var ar,aA,ai,av,aV,ak,ah,aC,ax,aT,aY,aI,aJ=[],am,al,aZ,az,aw,aO,aW,aU,aG,ad,aP=new J(function(a0){return aV.find("td:eq("+a0+") div div")}),ap={},af=D.extend(this,l,aH,{renderAgenda:aE,renderEvents:aj,rerenderEvents:ag,clearEvents:aD,setHeight:aK,setWidth:aQ,beforeHide:function(){aI=aA.scrollTop()},afterShow:function(){aA.scrollTop(aI)},defaultEventEnd:function(a0){var a1=Q(a0.start);if(a0.allDay){return a1}return o(a1,aB.defaultEventMinutes)}});af.init(at,aB);at.addClass("fc-agenda");if(at.disableSelection){at.disableSelection()}function aE(a6,a3){ak=a6;aZ=aB.theme?"ui":"fc";aw=aB.weekends?0:1;az=aB.firstDay;if(aO=aB.isRTL){aW=-1;aU=ak-1}else{aW=1;aU=0}aG=a(aB.minTime);ad=a(aB.maxTime);var a0=aO?y(Q(af.visEnd),-1):Q(af.visStart),a5=Q(a0),a8=w(new Date());if(!ar){var a2,a1,a7=aB.slotMinutes%15==0,a9="<div class='fc-agenda-head' style='position:relative;z-index:4'><table style='width:100%'><tr class='fc-first"+(aB.allDaySlot?"":" fc-last")+"'><th class='fc-leftmost "+aZ+"-state-default'>&nbsp;</th>";for(a2=0;a2<ak;a2++){a9+="<th class='fc-"+U[a5.getDay()]+" "+aZ+"-state-default'>"+N(a5,a3,aB)+"</th>";y(a5,aW);if(aw){Z(a5,aW)}}a9+="<th class='"+aZ+"-state-default'>&nbsp;</th></tr>";if(aB.allDaySlot){a9+="<tr class='fc-all-day'><th class='fc-axis fc-leftmost "+aZ+"-state-default'>"+aB.allDayText+"</th><td colspan='"+ak+"' class='"+aZ+"-state-default'><div class='fc-day-content'><div style='position:relative'>&nbsp;</div></div></td><th class='"+aZ+"-state-default'>&nbsp;</th></tr><tr class='fc-divider fc-last'><th colspan='"+(ak+2)+"' class='"+aZ+"-state-default fc-leftmost'><div/></th></tr>"}a9+="</table></div>";ar=D(a9).appendTo(at);ar.find("td").click(ac);am=D("<div style='position:absolute;z-index:8;top:0;left:0'/>").appendTo(ar);a5=d();var a4=o(Q(a5),ad);o(a5,aG);a9="<table>";for(a2=0;a5<a4;a2++){a1=a5.getMinutes();a9+="<tr class='"+(a2==0?"fc-first":(a1==0?"":"fc-minor"))+"'><th class='fc-axis fc-leftmost "+aZ+"-state-default'>"+((!a7||a1==0)?N(a5,aB.axisFormat):"&nbsp;")+"</th><td class='fc-slot"+a2+" "+aZ+"-state-default'><div style='position:relative'>&nbsp;</div></td></tr>";o(a5,aB.slotMinutes)}a9+="</table>";aA=D("<div class='fc-agenda-body' style='position:relative;z-index:2;overflow:auto'/>").append(ai=D("<div style='position:relative;overflow:hidden'>").append(av=D(a9))).appendTo(at);aA.find("td").click(ac);al=D("<div style='position:absolute;z-index:8;top:0;left:0'/>").appendTo(ai);a5=Q(a0);a9="<div class='fc-agenda-bg' style='position:absolute;z-index:1'><table style='width:100%;height:100%'><tr class='fc-first'>";for(a2=0;a2<ak;a2++){a9+="<td class='fc-"+U[a5.getDay()]+" "+aZ+"-state-default "+(a2==0?"fc-leftmost ":"")+(+a5==+a8?aZ+"-state-highlight fc-today":"fc-not-today")+"'><div class='fc-day-content'><div>&nbsp;</div></div></td>";y(a5,aW);if(aw){Z(a5,aW)}}a9+="</tr></table></div>";aV=D(a9).appendTo(at)}else{aD();ar.find("tr:first th").slice(1,-1).each(function(){D(this).text(N(a5,a3,aB));this.className=this.className.replace(/^fc-\w+(?= )/,"fc-"+U[a5.getDay()]);y(a5,aW);if(aw){Z(a5,aW)}});a5=Q(a0);aV.find("td").each(function(){this.className=this.className.replace(/^fc-\w+(?= )/,"fc-"+U[a5.getDay()]);if(+a5==+a8){D(this).removeClass("fc-not-today").addClass("fc-today").addClass(aZ+"-state-highlight")}else{D(this).addClass("fc-not-today").removeClass("fc-today").removeClass(aZ+"-state-highlight")}y(a5,aW);if(aw){Z(a5,aW)}})}}function ao(){var a3=d(),a1=Q(a3);a1.setHours(aB.firstHour);var a2=an(a3,a1)+1,a0=function(){aA.scrollTop(a2)};a0();setTimeout(a0,0)}function aK(a0,a1){aY=a0;ap={};aA.height(a0-ar.height());ax=aA.find("tr:first div").height()+1;aV.css({top:ar.find("tr").height(),height:a0});if(a1){ao()}}function aQ(a0){aT=a0;aP.clear();aA.width(a0);av.width("");var a3=ar.find("tr:first th"),a1=aV.find("td"),a2=aA[0].clientWidth;av.width(a2);ah=0;V(ar.find("tr:lt(2) th:first").add(aA.find("tr:first th")).width("").each(function(){ah=Math.max(ah,D(this).outerWidth())}),ah);aC=Math.floor((a2-ah)/ak);V(a1.slice(0,-1),aC);V(a3.slice(1,-2),aC);V(a3.slice(-2,-1),a2-ah-aC*(ak-1));aV.css({left:ah,width:a2-ah})}function ac(a4){var a2=Math.floor((a4.pageX-aV.offset().left)/aC),a1=y(Q(af.visStart),aU+aW*a2),a5=this.className.match(/fc-slot(\d+)/);if(a5){var a3=parseInt(a5[1])*aB.slotMinutes,a0=Math.floor(a3/60);a1.setHours(a0);a1.setMinutes(a3%60+aG);af.trigger("dayClick",this,a1,false,a4)}else{af.trigger("dayClick",this,a1,true,a4)}}function aj(a4,a2){af.reportEvents(aJ=a4);var a3,a1=a4.length,a5=[],a0=[];for(a3=0;a3<a1;a3++){if(a4[a3].allDay){a5.push(a4[a3])}else{a0.push(a4[a3])}}aM(ae(a5),a2);aq(ay(a0),a2)}function ag(a0){aD();aj(aJ,a0)}function aD(){af._clearEvents();am.empty();al.empty()}function ae(a4){var a6=H(af.sliceSegs(a4,D.map(a4,aL),af.visStart,af.visEnd)),a3,a5=a6.length,a7,a2,a1,a0=[];for(a3=0;a3<a5;a3++){a7=a6[a3];for(a2=0;a2<a7.length;a2++){a1=a7[a2];a1.row=0;a1.level=a3;a0.push(a1)}}return a0}function ay(a9){var a8=o(Q(af.visStart),aG),a6=D.map(a9,aL),a7,a2,a5,a0,a3,a4,a1=[];for(a7=0;a7<ak;a7++){a2=H(af.sliceSegs(a9,a6,a8,o(Q(a8),ad-aG)));L(a2);for(a5=0;a5<a2.length;a5++){a0=a2[a5];for(a3=0;a3<a0.length;a3++){a4=a0[a3];a4.col=a7;a4.level=a5;a1.push(a4)}}y(a8,1,true)}return a1}function aM(a0,a1){if(aB.allDaySlot){c(a0,1,af,ah,aT,function(){return ar.find("tr.fc-all-day")},function(a2){return ah+aP.left(aR(a2))},function(a2){return ah+aP.right(aR(a2))},am,aX,a1);aK(aY)}}function aq(bd,be){var bi,bl=bd.length,bk,bg,a1,bb,a8,a7,a3,a9,a6,bf,a0,a4,ba="",bm,bj,a5,a2={},bp={},bo,bn,bh,bc;for(bi=0;bi<bl;bi++){bk=bd[bi];bg=bk.event;a1="fc-event fc-event-vert ";if(bk.isStart){a1+="fc-corner-top "}if(bk.isEnd){a1+="fc-corner-bottom "}bb=an(bk.start,bk.start);a8=an(bk.start,bk.end);a7=bk.col;a3=bk.level;a9=bk.forward||0;a6=ah+aP.left(a7*aW+aU);bf=ah+aP.right(a7*aW+aU)-a6;bf=Math.min(bf-6,bf*0.95);if(a3){a0=bf/(a3+a9+1)}else{if(a9){a0=((bf/(a9+1))-(12/2))*2}else{a0=bf}}a4=a6+(bf/(a3+a9+1)*a3)*aW+(aO?bf-a0:0);bk.top=bb;bk.left=a4;bk.outerWidth=a0;bk.outerHeight=a8-bb;ba+="<div class='"+a1+bg.className.join(" ")+"' style='position:absolute;z-index:8;top:"+bb+"px;left:"+a4+"px'><a"+(bg.url?" href='"+K(bg.url)+"'":"")+"><span class='fc-event-bg'></span><span class='fc-event-time'>"+K(u(bg.start,bg.end,af.option("timeFormat")))+"</span><span class='fc-event-title'>"+K(bg.title)+"</span></a>"+((bg.editable||bg.editable==m&&aB.editable)&&!aB.disableResizing&&D.fn.resizable?"<div class='ui-resizable-handle ui-resizable-s'>=</div>":"")+"</div>"}al[0].innerHTML=ba;bm=al.children();for(bi=0;bi<bl;bi++){bk=bd[bi];bg=bk.event;bj=D(bm[bi]);a5=af.trigger("eventRender",bg,bg,bj);if(a5===false){bj.remove()}else{if(a5&&a5!==true){bj.remove();bj=D(a5).css({position:"absolute",top:bk.top,left:bk.left}).appendTo(al)}bk.element=bj;if(bg._id===be){aN(bg,bj,bk)}else{bj[0]._fci=bi}af.reportEventElement(bg,bj)}}T(al,bd,aN);for(bi=0;bi<bl;bi++){bk=bd[bi];if(bj=bk.element){bn=a2[bo=bk.key=X(bj[0])];bk.vsides=bn==m?(a2[bo]=O(bj[0],true)):bn;bn=bp[bo];bk.hsides=bn==m?(bp[bo]=B(bj[0],true)):bn;bh=bj.find("span.fc-event-title");if(bh.length){bk.titleTop=bh[0].offsetTop}}}for(bi=0;bi<bl;bi++){bk=bd[bi];if(bj=bk.element){bj[0].style.width=bk.outerWidth-bk.hsides+"px";bj[0].style.height=(bc=bk.outerHeight-bk.vsides)+"px";bg=bk.event;if(bk.titleTop!=m&&bc-bk.titleTop<10){bj.find("span.fc-event-time").text(N(bg.start,af.option("timeFormat"))+" - "+bg.title);bj.find("span.fc-event-title").remove()}af.trigger("eventAfterRender",bg,bg,bj)}}}function aL(a1){if(a1.allDay){if(a1.end){var a0=Q(a1.end);return(a1.allDay||a0.getHours()||a0.getMinutes())?y(a0,1):a0}else{return y(Q(a1.start),1)}}if(a1.end){return Q(a1.end)}else{return o(Q(a1.start),aB.defaultEventMinutes)}}function aX(a2,a1,a0){af.eventElementHandlers(a2,a1);if(a2.editable||a2.editable==m&&aB.editable){au(a2,a1,a0.isStart);if(a0.isEnd){af.resizableDayEvent(a2,a1,aC)}}}function aN(a2,a1,a0){af.eventElementHandlers(a2,a1);if(a2.editable||a2.editable==m&&aB.editable){var a3=a1.find("span.fc-event-time");aF(a2,a1,a3);if(a0.isEnd){aS(a2,a1,a3)}}}function au(a5,a2,a0){if(!aB.disableDragging&&a2.draggable){var a4,a7,a3,a6=true,a1;a2.draggable({zIndex:9,opacity:af.option("dragOpacity","month"),revertDuration:aB.dragRevertDuration,start:function(a8,a9){af.hideEvents(a5,a2);af.trigger("eventDragStart",a2,a5,a8,a9);a4=a2.position();a7=a2.width();a3=function(){if(!a6){a2.width(a7).height("").draggable("option","grid",null);a6=true}};a1=new e(function(ba){a2.draggable("option","revert",!ba||!ba.rowDelta&&!ba.colDelta);if(ba){if(!ba.row){a3();af.showOverlay(ba)}else{if(a0&&a6){h(a2.width(aC-10),ax*Math.round((a5.end?((a5.end-a5.start)/W):aB.defaultEventMinutes)/aB.slotMinutes));a2.draggable("option","grid",[aC,1]);a6=false}af.hideOverlay()}}else{af.hideOverlay()}});a1.row(ar.find("td"));aV.find("td").each(function(){a1.col(this)});a1.row(aA);a1.mouse(a8.pageX,a8.pageY)},drag:function(a8,a9){a1.mouse(a8.pageX,a8.pageY)},stop:function(ba,bb){af.hideOverlay();af.trigger("eventDragStop",a2,a5,ba,bb);var a8=a1.cell,a9=aW*(a6?(a8?a8.colDelta:0):Math.floor((bb.position.left-a4.left)/aC));if(!a8||!a9&&!a8.rowDelta){a3();if(D.browser.msie){a2.css("filter","")}af.showEvents(a5,a2)}else{a2.find("a").removeAttr("href");af.eventDrop(this,a5,a9,a6?0:Math.round((a2.offset().top-ai.offset().top)/ax)*aB.slotMinutes+aG-(a5.start.getHours()*60+a5.start.getMinutes()),a6,ba,bb)}}})}}function aF(a0,a4,a6){if(!aB.disableDragging&&a4.draggable){var a1,a2,a3,a7,a8=false,a5;a4.draggable({zIndex:9,scroll:false,grid:[aC,ax],axis:ak==1?"y":false,opacity:af.option("dragOpacity"),revertDuration:aB.dragRevertDuration,start:function(a9,ba){af.hideEvents(a0,a4);af.trigger("eventDragStart",a4,a0,a9,ba);if(D.browser.msie){a4.find("span.fc-event-bg").hide()}a1=a4.position();a2=function(){if(a8){a6.css("display","");a4.draggable("option","grid",[aC,ax]);a8=false}};a3=0;a5=new e(function(bb){a4.draggable("option","revert",!bb);if(bb){if(!bb.row&&aB.allDaySlot){if(!a8){a8=true;a6.hide();a4.draggable("option","grid",null)}af.showOverlay(bb)}else{a2();af.hideOverlay()}}else{af.hideOverlay()}});if(aB.allDaySlot){a5.row(ar.find("td"))}aV.find("td").each(function(){a5.col(this)});a5.row(aA);a5.mouse(a9.pageX,a9.pageY)},drag:function(bc,bd){a7=Math.round((bd.position.top-a1.top)/ax);if(a7!=a3){if(!a8){var ba=a7*aB.slotMinutes,a9=o(Q(a0.start),ba),bb;if(a0.end){bb=o(Q(a0.end),ba)}a6.text(u(a9,bb,af.option("timeFormat")))}a3=a7}a5.mouse(bc.pageX,bc.pageY)},stop:function(bb,bc){af.hideOverlay();af.trigger("eventDragStop",a4,a0,bb,bc);var a9=a5.cell,ba=aW*(a8?(a9?a9.colDelta:0):Math.floor((bc.position.left-a1.left)/aC));if(!a9||!a7&&!ba){a2();if(D.browser.msie){a4.css("filter","").find("span.fc-event-bg").css("display","")}a4.css(a1);af.showEvents(a0,a4)}else{af.eventDrop(this,a0,ba,a8?0:a7*aB.slotMinutes,a8,bb,bc)}}})}}function aS(a2,a1,a3){if(!aB.disableResizing&&a1.resizable){var a4,a0;a1.resizable({handles:{s:"div.ui-resizable-s"},grid:ax,start:function(a5,a6){a4=a0=0;af.hideEvents(a2,a1);if(D.browser.msie&&D.browser.version=="6.0"){a1.css("overflow","hidden")}a1.css("z-index",9);af.trigger("eventResizeStart",this,a2,a5,a6)},resize:function(a5,a6){a4=Math.round((Math.max(ax,a1.height())-a6.originalSize.height)/ax);if(a4!=a0){a3.text(u(a2.start,(!a4&&!a2.end)?null:o(af.eventEnd(a2),aB.slotMinutes*a4),af.option("timeFormat")));a0=a4}},stop:function(a5,a6){af.trigger("eventResizeStop",this,a2,a5,a6);if(a4){af.eventResize(this,a2,0,aB.slotMinutes*a4,a5,a6)}else{a1.css("z-index",8);af.showEvents(a2,a1)}}})}}function an(a1,a5){a1=Q(a1,true);if(a5<o(Q(a1),aG)){return 0}if(a5>=o(Q(a1),ad)){return ai.height()}var a0=aB.slotMinutes,a4=a5.getHours()*60+a5.getMinutes()-aG,a3=Math.floor(a4/a0),a2=ap[a3];if(a2==m){a2=ap[a3]=aA.find("tr:eq("+a3+") td div")[0].offsetTop}return Math.max(0,Math.round(a2-1+ax*((a4%a0)/a0)))}function aR(a0){return((a0-Math.max(az,aw)+ak)%ak)*aW+aU}}function L(ag){var ae,ad,ac,ai,ah,af;for(ae=ag.length-1;ae>0;ae--){ai=ag[ae];for(ad=0;ad<ai.length;ad++){ah=ai[ad];for(ac=0;ac<ag[ae-1].length;ac++){af=ag[ae-1][ac];if(x(ah,af)){af.forward=Math.max(af.forward||0,(ah.forward||0)+1)}}}}}var l={init:function(ad,ac){this.element=ad;this.options=ac;this.eventsByID={};this.eventElements=[];this.eventElementsByID={}},trigger:function(ac,ad){if(this.options[ac]){return this.options[ac].apply(ad||this,Array.prototype.slice.call(arguments,2).concat([this]))}},eventEnd:function(ac){return ac.end?Q(ac.end):this.defaultEventEnd(ac)},reportEvents:function(af){var ae,ac=af.length,ag,ad=this.eventsByID={};for(ae=0;ae<ac;ae++){ag=af[ae];if(ad[ag._id]){ad[ag._id].push(ag)}else{ad[ag._id]=[ag]}}},reportEventElement:function(ad,ac){this.eventElements.push(ac);var ae=this.eventElementsByID;if(ae[ad._id]){ae[ad._id].push(ac)}else{ae[ad._id]=[ac]}},_clearEvents:function(){this.eventElements=[];this.eventElementsByID={}},showEvents:function(ad,ac){this._eee(ad,ac,"show")},hideEvents:function(ad,ac){this._eee(ad,ac,"hide")},_eee:function(af,ae,ah){var ag=this.eventElementsByID[af._id],ad,ac=ag.length;for(ad=0;ad<ac;ad++){if(ag[ad][0]!=ae[0]){ag[ad][ah]()}}},eventDrop:function(af,ad,ae,ag,al,ai,ah){var aj=this,ak=ad.allDay,ac=ad._id;aj.moveEvents(aj.eventsByID[ac],ae,ag,al);aj.trigger("eventDrop",af,ad,ae,ag,al,function(){aj.moveEvents(aj.eventsByID[ac],-ae,-ag,ak);aj.rerenderEvents()},ai,ah);aj.eventsChanged=true;aj.rerenderEvents(ac)},eventResize:function(aj,ah,ae,ad,ag,ai){var ac=this,af=ah._id;ac.elongateEvents(ac.eventsByID[af],ae,ad);ac.trigger("eventResize",aj,ah,ae,ad,function(){ac.elongateEvents(ac.eventsByID[af],-ae,-ad);ac.rerenderEvents()},ag,ai);ac.eventsChanged=true;ac.rerenderEvents(af)},moveEvents:function(ag,ae,ad,ah){ad=ad||0;for(var ai,ac=ag.length,af=0;af<ac;af++){ai=ag[af];if(ah!=m){ai.allDay=ah}o(y(ai.start,ae,true),ad);if(ai.end){ai.end=o(y(ai.end,ae,true),ad)}C(ai,this.options)}},elongateEvents:function(ag,ae,ad){ad=ad||0;for(var ah,ac=ag.length,af=0;af<ac;af++){ah=ag[af];ah.end=o(y(this.eventEnd(ah),ae,true),ad);C(ah,this.options)}},showOverlay:function(ac){if(!this.dayOverlay){this.dayOverlay=D("<div class='fc-cell-overlay' style='position:absolute;z-index:3;display:none'/>").appendTo(this.element)}var ad=this.element.offset();this.dayOverlay.css({top:ac.top-ad.top,left:ac.left-ad.left,width:ac.width,height:ac.height}).show()},hideOverlay:function(){if(this.dayOverlay){this.dayOverlay.hide()}},resizableDayEvent:function(af,ad,ae){var ac=this;if(!ac.options.disableResizing&&ad.resizable){ad.resizable({handles:ac.options.isRTL?{w:"div.ui-resizable-w"}:{e:"div.ui-resizable-e"},grid:ae,minWidth:ae/2,containment:ac.element.parent().parent(),start:function(ag,ah){ad.css("z-index",9);ac.hideEvents(af,ad);ac.trigger("eventResizeStart",this,af,ag,ah)},stop:function(ah,ai){ac.trigger("eventResizeStop",this,af,ah,ai);var ag=Math.round((ad.width()-ai.originalSize.width)/ae);if(ag){ac.eventResize(this,af,ag,0,ah,ai)}else{ad.css("z-index",8);ac.showEvents(af,ad)}}})}},eventElementHandlers:function(ae,ad){var ac=this;ad.click(function(af){if(!ad.hasClass("ui-draggable-dragging")&&!ad.hasClass("ui-resizable-resizing")){return ac.trigger("eventClick",this,ae,af)}}).hover(function(af){ac.trigger("eventMouseover",this,ae,af)},function(af){ac.trigger("eventMouseout",this,ae,af)})},option:function(ad,ae){var ac=this.options[ad];if(typeof ac=="object"){return i(ac,ae||this.name)}return ac},sliceSegs:function(ao,ai,ae,ah){var af=[],aj,al=ao.length,ad,am,ak,an,ap,ac,ag;for(aj=0;aj<al;aj++){ad=ao[aj];am=ad.start;ak=ai[aj];if(ak>ae&&am<ah){if(am<ae){an=Q(ae);ac=false}else{an=am;ac=true}if(ak>ah){ap=Q(ah);ag=false}else{ap=ak;ag=true}af.push({event:ad,start:an,end:ap,isStart:ac,isEnd:ag,msLength:ap-an})}}return af.sort(z)}};function T(ad,ac,ae){ad.unbind("mouseover").mouseover(function(ai){var ah=ai.target,aj,ag,af;while(ah!=this){aj=ah;ah=ah.parentNode}if((ag=aj._fci)!=m){aj._fci=m;af=ac[ag];ae(af.event,af.element,af);D(ai.target).trigger(ai)}ai.stopPropagation()})}function H(ae){var ai=[],ah,ac=ae.length,ad,ag,aj,af;for(ah=0;ah<ac;ah++){ad=ae[ah];ag=0;while(true){aj=false;if(ai[ag]){for(af=0;af<ai[ag].length;af++){if(x(ai[ag][af],ad)){aj=true;break}}}if(aj){ag++}else{break}}if(ai[ag]){ai[ag].push(ad)}else{ai[ag]=[ad]}}return ai}function z(ad,ac){return(ac.msLength-ad.msLength)*100+(ad.event.start-ac.event.start)}function x(ad,ac){return ad.end>ac.start&&ad.start<ac.end}var S=86400000,q=3600000,W=60000;function Y(ad,ae,ac){ad.setFullYear(ad.getFullYear()+ae);if(!ac){w(ad)}return ad}function p(af,ag,ae){if(+af){var ac=af.getMonth()+ag,ad=Q(af);ad.setDate(1);ad.setMonth(ac);af.setMonth(ac);if(!ae){w(af)}while(af.getMonth()!=ad.getMonth()){af.setDate(af.getDate()+(af<ad?1:-1))}}return af}function y(af,ag,ae){if(+af){var ac=af.getDate()+ag,ad=Q(af);ad.setHours(9);ad.setDate(ac);af.setDate(ac);if(!ae){w(af)}r(af,ad)}return af}I.addDays=y;function r(ad,ac){if(+ad){while(ad.getDate()!=ac.getDate()){ad.setTime(+ad+(ad<ac?1:-1)*q)}}}function o(ac,ad){ac.setMinutes(ac.getMinutes()+ad);return ac}function w(ac){ac.setHours(0);ac.setMinutes(0);ac.setSeconds(0);ac.setMilliseconds(0);return ac}function Q(ac,ad){if(ad){return w(new Date(+ac))}return new Date(+ac)}function d(){var ac=0,ad;do{ad=new Date(1970,ac++,1)}while(ad.getHours()!=0);return ad}function Z(ac,ad,ae){ad=ad||1;while(ac.getDay()==0||(ae&&ac.getDay()==1||!ae&&ac.getDay()==6)){y(ac,ad)}return ac}var g=I.parseDate=function(ac){if(typeof ac=="object"){return ac}if(typeof ac=="number"){return new Date(ac*1000)}if(typeof ac=="string"){if(ac.match(/^\d+$/)){return new Date(parseInt(ac)*1000)}return k(ac,true)||(ac?new Date(ac):null)}return null};var k=I.parseISO8601=function(ag,ad){var ac=ag.match(/^([0-9]{4})(-([0-9]{2})(-([0-9]{2})([T ]([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?$/);if(!ac){return null}var af=new Date(ac[1],0,1),ae=new Date(ac[1],0,1,9,0),ah=0;if(ac[3]){af.setMonth(ac[3]-1);ae.setMonth(ac[3]-1)}if(ac[5]){af.setDate(ac[5]);ae.setDate(ac[5])}r(af,ae);if(ac[7]){af.setHours(ac[7])}if(ac[8]){af.setMinutes(ac[8])}if(ac[10]){af.setSeconds(ac[10])}if(ac[12]){af.setMilliseconds(Number("0."+ac[12])*1000)}r(af,ae);if(!ad){if(ac[14]){ah=Number(ac[16])*60+Number(ac[17]);ah*=ac[15]=="-"?1:-1}ah-=af.getTimezoneOffset()}return new Date(+af+(ah*60*1000))};var a=I.parseTime=function(ae){if(typeof ae=="number"){return ae*60}if(typeof ae=="object"){return ae.getHours()*60+ae.getMinutes()}var ac=ae.match(/(\d+)(?::(\d+))?\s*(\w+)?/);if(ac){var ad=parseInt(ac[1]);if(ac[3]){ad%=12;if(ac[3].toLowerCase().charAt(0)=="p"){ad+=12}}return ad*60+(ac[2]?parseInt(ac[2]):0)}};var N=I.formatDate=function(ad,ae,ac){return u(ad,null,ae,ac)};var u=I.formatDates=function(ao,an,am,ap){ap=ap||F;var ad=ao,af=an,ag,ah=am.length,aj,ae,al,ai="";for(ag=0;ag<ah;ag++){aj=am.charAt(ag);if(aj=="'"){for(ae=ag+1;ae<ah;ae++){if(am.charAt(ae)=="'"){if(ad){if(ae==ag+1){ai+="'"}else{ai+=am.substring(ag+1,ae)}ag=ae}break}}}else{if(aj=="("){for(ae=ag+1;ae<ah;ae++){if(am.charAt(ae)==")"){var ac=N(ad,am.substring(ag+1,ae),ap);if(parseInt(ac.replace(/\D/,""))){ai+=ac}ag=ae;break}}}else{if(aj=="["){for(ae=ag+1;ae<ah;ae++){if(am.charAt(ae)=="]"){var ak=am.substring(ag+1,ae);var ac=N(ad,ak,ap);if(ac!=N(af,ak,ap)){ai+=ac}ag=ae;break}}}else{if(aj=="{"){ad=an;af=ao}else{if(aj=="}"){ad=ao;af=an}else{for(ae=ah;ae>ag;ae--){if(al=s[am.substring(ag,ae)]){if(ad){ai+=al(ad,ap)}ag=ae-1;break}}if(ae==ag){if(ad){ai+=aj}}}}}}}}return ai};var s={s:function(ac){return ac.getSeconds()},ss:function(ac){return R(ac.getSeconds())},m:function(ac){return ac.getMinutes()},mm:function(ac){return R(ac.getMinutes())},h:function(ac){return ac.getHours()%12||12},hh:function(ac){return R(ac.getHours()%12||12)},H:function(ac){return ac.getHours()},HH:function(ac){return R(ac.getHours())},d:function(ac){return ac.getDate()},dd:function(ac){return R(ac.getDate())},ddd:function(ad,ac){return ac.dayNamesShort[ad.getDay()]},dddd:function(ad,ac){return ac.dayNames[ad.getDay()]},M:function(ac){return ac.getMonth()+1},MM:function(ac){return R(ac.getMonth()+1)},MMM:function(ad,ac){return ac.monthNamesShort[ad.getMonth()]},MMMM:function(ad,ac){return ac.monthNames[ad.getMonth()]},yy:function(ac){return(ac.getFullYear()+"").substring(2)},yyyy:function(ac){return ac.getFullYear()},t:function(ac){return ac.getHours()<12?"a":"p"},tt:function(ac){return ac.getHours()<12?"am":"pm"},T:function(ac){return ac.getHours()<12?"A":"P"},TT:function(ac){return ac.getHours()<12?"AM":"PM"},u:function(ac){return N(ac,"yyyy-MM-dd'T'HH:mm:ss'Z'")},S:function(ad){var ac=ad.getDate();if(ac>10&&ac<20){return"th"}return["st","nd","rd"][ac%10-1]||"th"}};function V(ad,ae,ac){ad.each(function(ag,af){af.style.width=ae-B(af,ac)+"px"})}function h(ae,ac,ad){ae.each(function(ag,af){af.style.height=ac-O(af,ad)+"px"})}function B(ad,ac){return(parseFloat(jQuery.curCSS(ad,"paddingLeft",true))||0)+(parseFloat(jQuery.curCSS(ad,"paddingRight",true))||0)+(parseFloat(jQuery.curCSS(ad,"borderLeftWidth",true))||0)+(parseFloat(jQuery.curCSS(ad,"borderRightWidth",true))||0)+(ac?n(ad):0)}function n(ac){return(parseFloat(jQuery.curCSS(ac,"marginLeft",true))||0)+(parseFloat(jQuery.curCSS(ac,"marginRight",true))||0)}function O(ad,ac){return(parseFloat(jQuery.curCSS(ad,"paddingTop",true))||0)+(parseFloat(jQuery.curCSS(ad,"paddingBottom",true))||0)+(parseFloat(jQuery.curCSS(ad,"borderTopWidth",true))||0)+(parseFloat(jQuery.curCSS(ad,"borderBottomWidth",true))||0)+(ac?t(ad):0)}function t(ac){return(parseFloat(jQuery.curCSS(ac,"marginTop",true))||0)+(parseFloat(jQuery.curCSS(ac,"marginBottom",true))||0)}function aa(ac,ad){ad=typeof ad=="number"?ad+"px":ad;ac[0].style.cssText+=";min-height:"+ad+";_height:"+ad}var A;function ab(ad){if(A!==false){var ac;if(ad.is("th,td")){ad=(ac=ad).parent()}if(A==m&&ad.is("tr")){A=ad.position().top!=ad.children().position().top}if(A){return ad.parent().position().top+(ac?ad.position().top-ac.position().top:0)}}return 0}function e(ae){var ak=this,aj=[],ac=[],ai,ah,af,ag,al,ad;ak.row=function(am){ai=D(am);aj.push(ai.offset().top+ab(ai))};ak.col=function(am){ah=D(am);ac.push(ah.offset().left)};ak.mouse=function(am,ap){if(af==m){aj.push(aj[aj.length-1]+ai.outerHeight());ac.push(ac[ac.length-1]+ah.outerWidth());al=ad=-1}var an,ao;for(an=0;an<aj.length&&ap>=aj[an];an++){}for(ao=0;ao<ac.length&&am>=ac[ao];ao++){}an=an>=aj.length?-1:an-1;ao=ao>=ac.length?-1:ao-1;if(an!=al||ao!=ad){al=an;ad=ao;if(an==-1||ao==-1){ak.cell=null}else{if(af==m){af=an;ag=ao}ak.cell={row:an,col:ao,top:aj[an],left:ac[ao],width:ac[ao+1]-ac[ao],height:aj[an+1]-aj[an],isOrig:an==af&&ao==ag,rowDelta:an-af,colDelta:ao-ag}}ae(ak.cell)}}}var m,U=["sun","mon","tue","wed","thu","fri","sat"],j=Array.prototype.pop;function R(ac){return(ac<10?"0":"")+ac}function i(ag,ac){if(ag[ac]!=m){return ag[ac]}var af=ac.split(/(?=[A-Z])/),ae=af.length-1,ad;for(;ae>=0;ae--){ad=ag[af[ae].toLowerCase()];if(ad!=m){return ad}}return ag[""]}function K(ac){return ac.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/'/g,"&#039;").replace(/"/g,"&quot;")}function J(ad){var ac=this,ae={},ah={},ag={};function af(ai){return ae[ai]=ae[ai]||ad(ai)}ac.left=function(ai){return ah[ai]=ah[ai]==m?af(ai).position().left:ah[ai]};ac.right=function(ai){return ag[ai]=ag[ai]==m?ac.left(ai)+af(ai).width():ag[ai]};ac.clear=function(){ae={};ah={};ag={}}}function X(ac){return ac.id+"/"+ac.className+"/"+ac.style.cssText.replace(/(^|;)\s*(top|left|width|height)\s*:[^;]*/ig,"")}})(jQuery);
+ 
+(function($, undefined) {
+
+
+var defaults = {
+
+	// display
+	defaultView: 'month',
+	aspectRatio: 1.35,
+	header: {
+		left: 'title',
+		center: '',
+		right: 'today prev,next'
+	},
+	weekends: true,
+	
+	// editing
+	//editable: false,
+	//disableDragging: false,
+	//disableResizing: false,
+	
+	allDayDefault: true,
+	ignoreTimezone: true,
+	
+	// event ajax
+	lazyFetching: true,
+	startParam: 'start',
+	endParam: 'end',
+	
+	// time formats
+	titleFormat: {
+		month: 'MMMM yyyy',
+		week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
+		day: 'dddd, MMM d, yyyy'
+	},
+	columnFormat: {
+		month: 'ddd',
+		week: 'ddd M/d',
+		day: 'dddd M/d'
+	},
+	timeFormat: { // for event elements
+		'': 'h(:mm)t' // default
+	},
+	
+	// locale
+	isRTL: false,
+	firstDay: 0,
+	monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+	monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+	dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+	dayNamesShort: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+	buttonText: {
+		prev: '&nbsp;&#9668;&nbsp;',
+		next: '&nbsp;&#9658;&nbsp;',
+		prevYear: '&nbsp;&lt;&lt;&nbsp;',
+		nextYear: '&nbsp;&gt;&gt;&nbsp;',
+		today: 'today',
+		month: 'month',
+		week: 'week',
+		day: 'day'
+	},
+	
+	// jquery-ui theming
+	theme: false,
+	buttonIcons: {
+		prev: 'circle-triangle-w',
+		next: 'circle-triangle-e'
+	},
+	
+	//selectable: false,
+	unselectAuto: true,
+	
+	dropAccept: '*'
+	
+};
+
+// right-to-left defaults
+var rtlDefaults = {
+	header: {
+		left: 'next,prev today',
+		center: '',
+		right: 'title'
+	},
+	buttonText: {
+		prev: '&nbsp;&#9658;&nbsp;',
+		next: '&nbsp;&#9668;&nbsp;',
+		prevYear: '&nbsp;&gt;&gt;&nbsp;',
+		nextYear: '&nbsp;&lt;&lt;&nbsp;'
+	},
+	buttonIcons: {
+		prev: 'circle-triangle-e',
+		next: 'circle-triangle-w'
+	}
+};
+
+
+
+var fc = $.fullCalendar = { version: "1.5.2" };
+var fcViews = fc.views = {};
+
+
+$.fn.fullCalendar = function(options) {
+
+
+	// method calling
+	if (typeof options == 'string') {
+		var args = Array.prototype.slice.call(arguments, 1);
+		var res;
+		this.each(function() {
+			var calendar = $.data(this, 'fullCalendar');
+			if (calendar && $.isFunction(calendar[options])) {
+				var r = calendar[options].apply(calendar, args);
+				if (res === undefined) {
+					res = r;
+				}
+				if (options == 'destroy') {
+					$.removeData(this, 'fullCalendar');
+				}
+			}
+		});
+		if (res !== undefined) {
+			return res;
+		}
+		return this;
+	}
+	
+	
+	// would like to have this logic in EventManager, but needs to happen before options are recursively extended
+	var eventSources = options.eventSources || [];
+	delete options.eventSources;
+	if (options.events) {
+		eventSources.push(options.events);
+		delete options.events;
+	}
+	
+
+	options = $.extend(true, {},
+		defaults,
+		(options.isRTL || options.isRTL===undefined && defaults.isRTL) ? rtlDefaults : {},
+		options
+	);
+	
+	
+	this.each(function(i, _element) {
+		var element = $(_element);
+		var calendar = new Calendar(element, options, eventSources);
+		element.data('fullCalendar', calendar); // TODO: look into memory leak implications
+		calendar.render();
+	});
+	
+	
+	return this;
+	
+};
+
+
+// function for adding/overriding defaults
+function setDefaults(d) {
+	$.extend(true, defaults, d);
+}
+
+
+
+ 
+function Calendar(element, options, eventSources) {
+	var t = this;
+	
+	
+	// exports
+	t.options = options;
+	t.render = render;
+	t.destroy = destroy;
+	t.refetchEvents = refetchEvents;
+	t.reportEvents = reportEvents;
+	t.reportEventChange = reportEventChange;
+	t.rerenderEvents = rerenderEvents;
+	t.changeView = changeView;
+	t.select = select;
+	t.unselect = unselect;
+	t.prev = prev;
+	t.next = next;
+	t.prevYear = prevYear;
+	t.nextYear = nextYear;
+	t.today = today;
+	t.gotoDate = gotoDate;
+	t.incrementDate = incrementDate;
+	t.formatDate = function(format, date) { return formatDate(format, date, options) };
+	t.formatDates = function(format, date1, date2) { return formatDates(format, date1, date2, options) };
+	t.getDate = getDate;
+	t.getView = getView;
+	t.option = option;
+	t.trigger = trigger;
+	
+	
+	// imports
+	EventManager.call(t, options, eventSources);
+	var isFetchNeeded = t.isFetchNeeded;
+	var fetchEvents = t.fetchEvents;
+	
+	
+	// locals
+	var _element = element[0];
+	var header;
+	var headerElement;
+	var content;
+	var tm; // for making theme classes
+	var currentView;
+	var viewInstances = {};
+	var elementOuterWidth;
+	var suggestedViewHeight;
+	var absoluteViewElement;
+	var resizeUID = 0;
+	var ignoreWindowResize = 0;
+	var date = new Date();
+	var events = [];
+	var _dragElement;
+	
+	
+	
+	/* Main Rendering
+	-----------------------------------------------------------------------------*/
+	
+	
+	setYMD(date, options.year, options.month, options.date);
+	
+	
+	function render(inc) {
+		if (!content) {
+			initialRender();
+		}else{
+			calcSize();
+			markSizesDirty();
+			markEventsDirty();
+			renderView(inc);
+		}
+	}
+	
+	
+	function initialRender() {
+		tm = options.theme ? 'ui' : 'fc';
+		element.addClass('fc');
+		if (options.isRTL) {
+			element.addClass('fc-rtl');
+		}
+		if (options.theme) {
+			element.addClass('ui-widget');
+		}
+		content = $("<div class='fc-content' style='position:relative'/>")
+			.prependTo(element);
+		header = new Header(t, options);
+		headerElement = header.render();
+		if (headerElement) {
+			element.prepend(headerElement);
+		}
+		changeView(options.defaultView);
+		$(window).resize(windowResize);
+		// needed for IE in a 0x0 iframe, b/c when it is resized, never triggers a windowResize
+		if (!bodyVisible()) {
+			lateRender();
+		}
+	}
+	
+	
+	// called when we know the calendar couldn't be rendered when it was initialized,
+	// but we think it's ready now
+	function lateRender() {
+		setTimeout(function() { // IE7 needs this so dimensions are calculated correctly
+			if (!currentView.start && bodyVisible()) { // !currentView.start makes sure this never happens more than once
+				renderView();
+			}
+		},0);
+	}
+	
+	
+	function destroy() {
+		$(window).unbind('resize', windowResize);
+		header.destroy();
+		content.remove();
+		element.removeClass('fc fc-rtl ui-widget');
+	}
+	
+	
+	
+	function elementVisible() {
+		return _element.offsetWidth !== 0;
+	}
+	
+	
+	function bodyVisible() {
+		return $('body')[0].offsetWidth !== 0;
+	}
+	
+	
+	
+	/* View Rendering
+	-----------------------------------------------------------------------------*/
+	
+	// TODO: improve view switching (still weird transition in IE, and FF has whiteout problem)
+	
+	function changeView(newViewName) {
+		if (!currentView || newViewName != currentView.name) {
+			ignoreWindowResize++; // because setMinHeight might change the height before render (and subsequently setSize) is reached
+
+			unselect();
+			
+			var oldView = currentView;
+			var newViewElement;
+				
+			if (oldView) {
+				(oldView.beforeHide || noop)(); // called before changing min-height. if called after, scroll state is reset (in Opera)
+				setMinHeight(content, content.height());
+				oldView.element.hide();
+			}else{
+				setMinHeight(content, 1); // needs to be 1 (not 0) for IE7, or else view dimensions miscalculated
+			}
+			content.css('overflow', 'hidden');
+			
+			currentView = viewInstances[newViewName];
+			if (currentView) {
+				currentView.element.show();
+			}else{
+				currentView = viewInstances[newViewName] = new fcViews[newViewName](
+					newViewElement = absoluteViewElement =
+						$("<div class='fc-view fc-view-" + newViewName + "' style='position:absolute'/>")
+							.appendTo(content),
+					t // the calendar object
+				);
+			}
+			
+			if (oldView) {
+				header.deactivateButton(oldView.name);
+			}
+			header.activateButton(newViewName);
+			
+			renderView(); // after height has been set, will make absoluteViewElement's position=relative, then set to null
+			
+			content.css('overflow', '');
+			if (oldView) {
+				setMinHeight(content, 1);
+			}
+			
+			if (!newViewElement) {
+				(currentView.afterShow || noop)(); // called after setting min-height/overflow, so in final scroll state (for Opera)
+			}
+			
+			ignoreWindowResize--;
+		}
+	}
+	
+	
+	
+	function renderView(inc) {
+		if (elementVisible()) {
+			ignoreWindowResize++; // because renderEvents might temporarily change the height before setSize is reached
+
+			unselect();
+			
+			if (suggestedViewHeight === undefined) {
+				calcSize();
+			}
+			
+			var forceEventRender = false;
+			if (!currentView.start || inc || date < currentView.start || date >= currentView.end) {
+				// view must render an entire new date range (and refetch/render events)
+				currentView.render(date, inc || 0); // responsible for clearing events
+				setSize(true);
+				forceEventRender = true;
+			}
+			else if (currentView.sizeDirty) {
+				// view must resize (and rerender events)
+				currentView.clearEvents();
+				setSize();
+				forceEventRender = true;
+			}
+			else if (currentView.eventsDirty) {
+				currentView.clearEvents();
+				forceEventRender = true;
+			}
+			currentView.sizeDirty = false;
+			currentView.eventsDirty = false;
+			updateEvents(forceEventRender);
+			
+			elementOuterWidth = element.outerWidth();
+			
+			header.updateTitle(currentView.title);
+			var today = new Date();
+			if (today >= currentView.start && today < currentView.end) {
+				header.disableButton('today');
+			}else{
+				header.enableButton('today');
+			}
+			
+			ignoreWindowResize--;
+			currentView.trigger('viewDisplay', _element);
+		}
+	}
+	
+	
+	
+	/* Resizing
+	-----------------------------------------------------------------------------*/
+	
+	
+	function updateSize() {
+		markSizesDirty();
+		if (elementVisible()) {
+			calcSize();
+			setSize();
+			unselect();
+			currentView.clearEvents();
+			currentView.renderEvents(events);
+			currentView.sizeDirty = false;
+		}
+	}
+	
+	
+	function markSizesDirty() {
+		$.each(viewInstances, function(i, inst) {
+			inst.sizeDirty = true;
+		});
+	}
+	
+	
+	function calcSize() {
+		if (options.contentHeight) {
+			suggestedViewHeight = options.contentHeight;
+		}
+		else if (options.height) {
+			suggestedViewHeight = options.height - (headerElement ? headerElement.height() : 0) - vsides(content);
+		}
+		else {
+			suggestedViewHeight = Math.round(content.width() / Math.max(options.aspectRatio, .5));
+		}
+	}
+	
+	
+	function setSize(dateChanged) { // todo: dateChanged?
+		ignoreWindowResize++;
+		currentView.setHeight(suggestedViewHeight, dateChanged);
+		if (absoluteViewElement) {
+			absoluteViewElement.css('position', 'relative');
+			absoluteViewElement = null;
+		}
+		currentView.setWidth(content.width(), dateChanged);
+		ignoreWindowResize--;
+	}
+	
+	
+	function windowResize() {
+		if (!ignoreWindowResize) {
+			if (currentView.start) { // view has already been rendered
+				var uid = ++resizeUID;
+				setTimeout(function() { // add a delay
+					if (uid == resizeUID && !ignoreWindowResize && elementVisible()) {
+						if (elementOuterWidth != (elementOuterWidth = element.outerWidth())) {
+							ignoreWindowResize++; // in case the windowResize callback changes the height
+							updateSize();
+							currentView.trigger('windowResize', _element);
+							ignoreWindowResize--;
+						}
+					}
+				}, 200);
+			}else{
+				// calendar must have been initialized in a 0x0 iframe that has just been resized
+				lateRender();
+			}
+		}
+	}
+	
+	
+	
+	/* Event Fetching/Rendering
+	-----------------------------------------------------------------------------*/
+	
+	
+	// fetches events if necessary, rerenders events if necessary (or if forced)
+	function updateEvents(forceRender) {
+		if (!options.lazyFetching || isFetchNeeded(currentView.visStart, currentView.visEnd)) {
+			refetchEvents();
+		}
+		else if (forceRender) {
+			rerenderEvents();
+		}
+	}
+	
+	
+	function refetchEvents() {
+		fetchEvents(currentView.visStart, currentView.visEnd); // will call reportEvents
+	}
+	
+	
+	// called when event data arrives
+	function reportEvents(_events) {
+		events = _events;
+		rerenderEvents();
+	}
+	
+	
+	// called when a single event's data has been changed
+	function reportEventChange(eventID) {
+		rerenderEvents(eventID);
+	}
+	
+	
+	// attempts to rerenderEvents
+	function rerenderEvents(modifiedEventID) {
+		markEventsDirty();
+		if (elementVisible()) {
+			currentView.clearEvents();
+			currentView.renderEvents(events, modifiedEventID);
+			currentView.eventsDirty = false;
+		}
+	}
+	
+	
+	function markEventsDirty() {
+		$.each(viewInstances, function(i, inst) {
+			inst.eventsDirty = true;
+		});
+	}
+	
+
+
+	/* Selection
+	-----------------------------------------------------------------------------*/
+	
+
+	function select(start, end, allDay) {
+		currentView.select(start, end, allDay===undefined ? true : allDay);
+	}
+	
+
+	function unselect() { // safe to be called before renderView
+		if (currentView) {
+			currentView.unselect();
+		}
+	}
+	
+	
+	
+	/* Date
+	-----------------------------------------------------------------------------*/
+	
+	
+	function prev() {
+		renderView(-1);
+	}
+	
+	
+	function next() {
+		renderView(1);
+	}
+	
+	
+	function prevYear() {
+		addYears(date, -1);
+		renderView();
+	}
+	
+	
+	function nextYear() {
+		addYears(date, 1);
+		renderView();
+	}
+	
+	
+	function today() {
+		date = new Date();
+		renderView();
+	}
+	
+	
+	function gotoDate(year, month, dateOfMonth) {
+		if (year instanceof Date) {
+			date = cloneDate(year); // provided 1 argument, a Date
+		}else{
+			setYMD(date, year, month, dateOfMonth);
+		}
+		renderView();
+	}
+	
+	
+	function incrementDate(years, months, days) {
+		if (years !== undefined) {
+			addYears(date, years);
+		}
+		if (months !== undefined) {
+			addMonths(date, months);
+		}
+		if (days !== undefined) {
+			addDays(date, days);
+		}
+		renderView();
+	}
+	
+	
+	function getDate() {
+		return cloneDate(date);
+	}
+	
+	
+	
+	/* Misc
+	-----------------------------------------------------------------------------*/
+	
+	
+	function getView() {
+		return currentView;
+	}
+	
+	
+	function option(name, value) {
+		if (value === undefined) {
+			return options[name];
+		}
+		if (name == 'height' || name == 'contentHeight' || name == 'aspectRatio') {
+			options[name] = value;
+			updateSize();
+		}
+	}
+	
+	
+	function trigger(name, thisObj) {
+		if (options[name]) {
+			return options[name].apply(
+				thisObj || _element,
+				Array.prototype.slice.call(arguments, 2)
+			);
+		}
+	}
+	
+	
+	
+	/* External Dragging
+	------------------------------------------------------------------------*/
+	
+	if (options.droppable) {
+		$(document)
+			.bind('dragstart', function(ev, ui) {
+				var _e = ev.target;
+				var e = $(_e);
+				if (!e.parents('.fc').length) { // not already inside a calendar
+					var accept = options.dropAccept;
+					if ($.isFunction(accept) ? accept.call(_e, e) : e.is(accept)) {
+						_dragElement = _e;
+						currentView.dragStart(_dragElement, ev, ui);
+					}
+				}
+			})
+			.bind('dragstop', function(ev, ui) {
+				if (_dragElement) {
+					currentView.dragStop(_dragElement, ev, ui);
+					_dragElement = null;
+				}
+			});
+	}
+	
+
+}
+
+function Header(calendar, options) {
+	var t = this;
+	
+	
+	// exports
+	t.render = render;
+	t.destroy = destroy;
+	t.updateTitle = updateTitle;
+	t.activateButton = activateButton;
+	t.deactivateButton = deactivateButton;
+	t.disableButton = disableButton;
+	t.enableButton = enableButton;
+	
+	
+	// locals
+	var element = $([]);
+	var tm;
+	
+
+
+	function render() {
+		tm = options.theme ? 'ui' : 'fc';
+		var sections = options.header;
+		if (sections) {
+			element = $("<table class='fc-header' style='width:100%'/>")
+				.append(
+					$("<tr/>")
+						.append(renderSection('left'))
+						.append(renderSection('center'))
+						.append(renderSection('right'))
+				);
+			return element;
+		}
+	}
+	
+	
+	function destroy() {
+		element.remove();
+	}
+	
+	
+	function renderSection(position) {
+		var e = $("<td class='fc-header-" + position + "'/>");
+		var buttonStr = options.header[position];
+		if (buttonStr) {
+			$.each(buttonStr.split(' '), function(i) {
+				if (i > 0) {
+					e.append("<span class='fc-header-space'/>");
+				}
+				var prevButton;
+				$.each(this.split(','), function(j, buttonName) {
+					if (buttonName == 'title') {
+						e.append("<span class='fc-header-title'><h2>&nbsp;</h2></span>");
+						if (prevButton) {
+							prevButton.addClass(tm + '-corner-right');
+						}
+						prevButton = null;
+					}else{
+						var buttonClick;
+						if (calendar[buttonName]) {
+							buttonClick = calendar[buttonName]; // calendar method
+						}
+						else if (fcViews[buttonName]) {
+							buttonClick = function() {
+								button.removeClass(tm + '-state-hover'); // forget why
+								calendar.changeView(buttonName);
+							};
+						}
+						if (buttonClick) {
+							var icon = options.theme ? smartProperty(options.buttonIcons, buttonName) : null; // why are we using smartProperty here?
+							var text = smartProperty(options.buttonText, buttonName); // why are we using smartProperty here?
+							var button = $(
+								"<span class='fc-button fc-button-" + buttonName + " " + tm + "-state-default'>" +
+									"<span class='fc-button-inner'>" +
+										"<span class='fc-button-content'>" +
+											(icon ?
+												"<span class='fc-icon-wrap'>" +
+													"<span class='ui-icon ui-icon-" + icon + "'/>" +
+												"</span>" :
+												text
+												) +
+										"</span>" +
+										"<span class='fc-button-effect'><span></span></span>" +
+									"</span>" +
+								"</span>"
+							);
+							if (button) {
+								button
+									.click(function() {
+										if (!button.hasClass(tm + '-state-disabled')) {
+											buttonClick();
+										}
+									})
+									.mousedown(function() {
+										button
+											.not('.' + tm + '-state-active')
+											.not('.' + tm + '-state-disabled')
+											.addClass(tm + '-state-down');
+									})
+									.mouseup(function() {
+										button.removeClass(tm + '-state-down');
+									})
+									.hover(
+										function() {
+											button
+												.not('.' + tm + '-state-active')
+												.not('.' + tm + '-state-disabled')
+												.addClass(tm + '-state-hover');
+										},
+										function() {
+											button
+												.removeClass(tm + '-state-hover')
+												.removeClass(tm + '-state-down');
+										}
+									)
+									.appendTo(e);
+								if (!prevButton) {
+									button.addClass(tm + '-corner-left');
+								}
+								prevButton = button;
+							}
+						}
+					}
+				});
+				if (prevButton) {
+					prevButton.addClass(tm + '-corner-right');
+				}
+			});
+		}
+		return e;
+	}
+	
+	
+	function updateTitle(html) {
+		element.find('h2')
+			.html(html);
+	}
+	
+	
+	function activateButton(buttonName) {
+		element.find('span.fc-button-' + buttonName)
+			.addClass(tm + '-state-active');
+	}
+	
+	
+	function deactivateButton(buttonName) {
+		element.find('span.fc-button-' + buttonName)
+			.removeClass(tm + '-state-active');
+	}
+	
+	
+	function disableButton(buttonName) {
+		element.find('span.fc-button-' + buttonName)
+			.addClass(tm + '-state-disabled');
+	}
+	
+	
+	function enableButton(buttonName) {
+		element.find('span.fc-button-' + buttonName)
+			.removeClass(tm + '-state-disabled');
+	}
+
+
+}
+
+fc.sourceNormalizers = [];
+fc.sourceFetchers = [];
+
+var ajaxDefaults = {
+	dataType: 'json',
+	cache: false
+};
+
+var eventGUID = 1;
+
+
+function EventManager(options, _sources) {
+	var t = this;
+	
+	
+	// exports
+	t.isFetchNeeded = isFetchNeeded;
+	t.fetchEvents = fetchEvents;
+	t.addEventSource = addEventSource;
+	t.removeEventSource = removeEventSource;
+	t.updateEvent = updateEvent;
+	t.renderEvent = renderEvent;
+	t.removeEvents = removeEvents;
+	t.clientEvents = clientEvents;
+	t.normalizeEvent = normalizeEvent;
+	
+	
+	// imports
+	var trigger = t.trigger;
+	var getView = t.getView;
+	var reportEvents = t.reportEvents;
+	
+	
+	// locals
+	var stickySource = { events: [] };
+	var sources = [ stickySource ];
+	var rangeStart, rangeEnd;
+	var currentFetchID = 0;
+	var pendingSourceCnt = 0;
+	var loadingLevel = 0;
+	var cache = [];
+	
+	
+	for (var i=0; i<_sources.length; i++) {
+		_addEventSource(_sources[i]);
+	}
+	
+	
+	
+	/* Fetching
+	-----------------------------------------------------------------------------*/
+	
+	
+	function isFetchNeeded(start, end) {
+		return !rangeStart || start < rangeStart || end > rangeEnd;
+	}
+	
+	
+	function fetchEvents(start, end) {
+		rangeStart = start;
+		rangeEnd = end;
+		cache = [];
+		var fetchID = ++currentFetchID;
+		var len = sources.length;
+		pendingSourceCnt = len;
+		for (var i=0; i<len; i++) {
+			fetchEventSource(sources[i], fetchID);
+		}
+	}
+	
+	
+	function fetchEventSource(source, fetchID) {
+		_fetchEventSource(source, function(events) {
+			if (fetchID == currentFetchID) {
+				if (events) {
+					for (var i=0; i<events.length; i++) {
+						events[i].source = source;
+						normalizeEvent(events[i]);
+					}
+					cache = cache.concat(events);
+				}
+				pendingSourceCnt--;
+				if (!pendingSourceCnt) {
+					reportEvents(cache);
+				}
+			}
+		});
+	}
+	
+	
+	function _fetchEventSource(source, callback) {
+		var i;
+		var fetchers = fc.sourceFetchers;
+		var res;
+		for (i=0; i<fetchers.length; i++) {
+			res = fetchers[i](source, rangeStart, rangeEnd, callback);
+			if (res === true) {
+				// the fetcher is in charge. made its own async request
+				return;
+			}
+			else if (typeof res == 'object') {
+				// the fetcher returned a new source. process it
+				_fetchEventSource(res, callback);
+				return;
+			}
+		}
+		var events = source.events;
+		if (events) {
+			if ($.isFunction(events)) {
+				pushLoading();
+				events(cloneDate(rangeStart), cloneDate(rangeEnd), function(events) {
+					callback(events);
+					popLoading();
+				});
+			}
+			else if ($.isArray(events)) {
+				callback(events);
+			}
+			else {
+				callback();
+			}
+		}else{
+			var url = source.url;
+			if (url) {
+				var success = source.success;
+				var error = source.error;
+				var complete = source.complete;
+				var data = $.extend({}, source.data || {});
+				var startParam = firstDefined(source.startParam, options.startParam);
+				var endParam = firstDefined(source.endParam, options.endParam);
+				if (startParam) {
+					data[startParam] = Math.round(+rangeStart / 1000);
+				}
+				if (endParam) {
+					data[endParam] = Math.round(+rangeEnd / 1000);
+				}
+				pushLoading();
+				$.ajax($.extend({}, ajaxDefaults, source, {
+					data: data,
+					success: function(events) {
+						events = events || [];
+						var res = applyAll(success, this, arguments);
+						if ($.isArray(res)) {
+							events = res;
+						}
+						callback(events);
+					},
+					error: function() {
+						applyAll(error, this, arguments);
+						callback();
+					},
+					complete: function() {
+						applyAll(complete, this, arguments);
+						popLoading();
+					}
+				}));
+			}else{
+				callback();
+			}
+		}
+	}
+	
+	
+	
+	/* Sources
+	-----------------------------------------------------------------------------*/
+	
+
+	function addEventSource(source) {
+		source = _addEventSource(source);
+		if (source) {
+			pendingSourceCnt++;
+			fetchEventSource(source, currentFetchID); // will eventually call reportEvents
+		}
+	}
+	
+	
+	function _addEventSource(source) {
+		if ($.isFunction(source) || $.isArray(source)) {
+			source = { events: source };
+		}
+		else if (typeof source == 'string') {
+			source = { url: source };
+		}
+		if (typeof source == 'object') {
+			normalizeSource(source);
+			sources.push(source);
+			return source;
+		}
+	}
+	
+
+	function removeEventSource(source) {
+		sources = $.grep(sources, function(src) {
+			return !isSourcesEqual(src, source);
+		});
+		// remove all client events from that source
+		cache = $.grep(cache, function(e) {
+			return !isSourcesEqual(e.source, source);
+		});
+		reportEvents(cache);
+	}
+	
+	
+	
+	/* Manipulation
+	-----------------------------------------------------------------------------*/
+	
+	
+	function updateEvent(event) { // update an existing event
+		var i, len = cache.length, e,
+			defaultEventEnd = getView().defaultEventEnd, // getView???
+			startDelta = event.start - event._start,
+			endDelta = event.end ?
+				(event.end - (event._end || defaultEventEnd(event))) // event._end would be null if event.end
+				: 0;                                                      // was null and event was just resized
+		for (i=0; i<len; i++) {
+			e = cache[i];
+			if (e._id == event._id && e != event) {
+				e.start = new Date(+e.start + startDelta);
+				if (event.end) {
+					if (e.end) {
+						e.end = new Date(+e.end + endDelta);
+					}else{
+						e.end = new Date(+defaultEventEnd(e) + endDelta);
+					}
+				}else{
+					e.end = null;
+				}
+				e.title = event.title;
+				e.url = event.url;
+				e.allDay = event.allDay;
+				e.className = event.className;
+				e.editable = event.editable;
+				e.color = event.color;
+				e.backgroudColor = event.backgroudColor;
+				e.borderColor = event.borderColor;
+				e.textColor = event.textColor;
+				normalizeEvent(e);
+			}
+		}
+		normalizeEvent(event);
+		reportEvents(cache);
+	}
+	
+	
+	function renderEvent(event, stick) {
+		normalizeEvent(event);
+		if (!event.source) {
+			if (stick) {
+				stickySource.events.push(event);
+				event.source = stickySource;
+			}
+			cache.push(event);
+		}
+		reportEvents(cache);
+	}
+	
+	
+	function removeEvents(filter) {
+		if (!filter) { // remove all
+			cache = [];
+			// clear all array sources
+			for (var i=0; i<sources.length; i++) {
+				if ($.isArray(sources[i].events)) {
+					sources[i].events = [];
+				}
+			}
+		}else{
+			if (!$.isFunction(filter)) { // an event ID
+				var id = filter + '';
+				filter = function(e) {
+					return e._id == id;
+				};
+			}
+			cache = $.grep(cache, filter, true);
+			// remove events from array sources
+			for (var i=0; i<sources.length; i++) {
+				if ($.isArray(sources[i].events)) {
+					sources[i].events = $.grep(sources[i].events, filter, true);
+				}
+			}
+		}
+		reportEvents(cache);
+	}
+	
+	
+	function clientEvents(filter) {
+		if ($.isFunction(filter)) {
+			return $.grep(cache, filter);
+		}
+		else if (filter) { // an event ID
+			filter += '';
+			return $.grep(cache, function(e) {
+				return e._id == filter;
+			});
+		}
+		return cache; // else, return all
+	}
+	
+	
+	
+	/* Loading State
+	-----------------------------------------------------------------------------*/
+	
+	
+	function pushLoading() {
+		if (!loadingLevel++) {
+			trigger('loading', null, true);
+		}
+	}
+	
+	
+	function popLoading() {
+		if (!--loadingLevel) {
+			trigger('loading', null, false);
+		}
+	}
+	
+	
+	
+	/* Event Normalization
+	-----------------------------------------------------------------------------*/
+	
+	
+	function normalizeEvent(event) {
+		var source = event.source || {};
+		var ignoreTimezone = firstDefined(source.ignoreTimezone, options.ignoreTimezone);
+		event._id = event._id || (event.id === undefined ? '_fc' + eventGUID++ : event.id + '');
+		if (event.date) {
+			if (!event.start) {
+				event.start = event.date;
+			}
+			delete event.date;
+		}
+		event._start = cloneDate(event.start = parseDate(event.start, ignoreTimezone));
+		event.end = parseDate(event.end, ignoreTimezone);
+		if (event.end && event.end <= event.start) {
+			event.end = null;
+		}
+		event._end = event.end ? cloneDate(event.end) : null;
+		if (event.allDay === undefined) {
+			event.allDay = firstDefined(source.allDayDefault, options.allDayDefault);
+		}
+		if (event.className) {
+			if (typeof event.className == 'string') {
+				event.className = event.className.split(/\s+/);
+			}
+		}else{
+			event.className = [];
+		}
+		// TODO: if there is no start date, return false to indicate an invalid event
+	}
+	
+	
+	
+	/* Utils
+	------------------------------------------------------------------------------*/
+	
+	
+	function normalizeSource(source) {
+		if (source.className) {
+			// TODO: repeat code, same code for event classNames
+			if (typeof source.className == 'string') {
+				source.className = source.className.split(/\s+/);
+			}
+		}else{
+			source.className = [];
+		}
+		var normalizers = fc.sourceNormalizers;
+		for (var i=0; i<normalizers.length; i++) {
+			normalizers[i](source);
+		}
+	}
+	
+	
+	function isSourcesEqual(source1, source2) {
+		return source1 && source2 && getSourcePrimitive(source1) == getSourcePrimitive(source2);
+	}
+	
+	
+	function getSourcePrimitive(source) {
+		return ((typeof source == 'object') ? (source.events || source.url) : '') || source;
+	}
+
+
+}
+
+
+fc.addDays = addDays;
+fc.cloneDate = cloneDate;
+fc.parseDate = parseDate;
+fc.parseISO8601 = parseISO8601;
+fc.parseTime = parseTime;
+fc.formatDate = formatDate;
+fc.formatDates = formatDates;
+
+
+
+/* Date Math
+-----------------------------------------------------------------------------*/
+
+var dayIDs = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
+	DAY_MS = 86400000,
+	HOUR_MS = 3600000,
+	MINUTE_MS = 60000;
+	
+
+function addYears(d, n, keepTime) {
+	d.setFullYear(d.getFullYear() + n);
+	if (!keepTime) {
+		clearTime(d);
+	}
+	return d;
+}
+
+
+function addMonths(d, n, keepTime) { // prevents day overflow/underflow
+	if (+d) { // prevent infinite looping on invalid dates
+		var m = d.getMonth() + n,
+			check = cloneDate(d);
+		check.setDate(1);
+		check.setMonth(m);
+		d.setMonth(m);
+		if (!keepTime) {
+			clearTime(d);
+		}
+		while (d.getMonth() != check.getMonth()) {
+			d.setDate(d.getDate() + (d < check ? 1 : -1));
+		}
+	}
+	return d;
+}
+
+
+function addDays(d, n, keepTime) { // deals with daylight savings
+	if (+d) {
+		var dd = d.getDate() + n,
+			check = cloneDate(d);
+		check.setHours(9); // set to middle of day
+		check.setDate(dd);
+		d.setDate(dd);
+		if (!keepTime) {
+			clearTime(d);
+		}
+		fixDate(d, check);
+	}
+	return d;
+}
+
+
+function fixDate(d, check) { // force d to be on check's YMD, for daylight savings purposes
+	if (+d) { // prevent infinite looping on invalid dates
+		while (d.getDate() != check.getDate()) {
+			d.setTime(+d + (d < check ? 1 : -1) * HOUR_MS);
+		}
+	}
+}
+
+
+function addMinutes(d, n) {
+	d.setMinutes(d.getMinutes() + n);
+	return d;
+}
+
+
+function clearTime(d) {
+	d.setHours(0);
+	d.setMinutes(0);
+	d.setSeconds(0); 
+	d.setMilliseconds(0);
+	return d;
+}
+
+
+function cloneDate(d, dontKeepTime) {
+	if (dontKeepTime) {
+		return clearTime(new Date(+d));
+	}
+	return new Date(+d);
+}
+
+
+function zeroDate() { // returns a Date with time 00:00:00 and dateOfMonth=1
+	var i=0, d;
+	do {
+		d = new Date(1970, i++, 1);
+	} while (d.getHours()); // != 0
+	return d;
+}
+
+
+function skipWeekend(date, inc, excl) {
+	inc = inc || 1;
+	while (!date.getDay() || (excl && date.getDay()==1 || !excl && date.getDay()==6)) {
+		addDays(date, inc);
+	}
+	return date;
+}
+
+
+function dayDiff(d1, d2) { // d1 - d2
+	return Math.round((cloneDate(d1, true) - cloneDate(d2, true)) / DAY_MS);
+}
+
+
+function setYMD(date, y, m, d) {
+	if (y !== undefined && y != date.getFullYear()) {
+		date.setDate(1);
+		date.setMonth(0);
+		date.setFullYear(y);
+	}
+	if (m !== undefined && m != date.getMonth()) {
+		date.setDate(1);
+		date.setMonth(m);
+	}
+	if (d !== undefined) {
+		date.setDate(d);
+	}
+}
+
+
+
+/* Date Parsing
+-----------------------------------------------------------------------------*/
+
+
+function parseDate(s, ignoreTimezone) { // ignoreTimezone defaults to true
+	if (typeof s == 'object') { // already a Date object
+		return s;
+	}
+	if (typeof s == 'number') { // a UNIX timestamp
+		return new Date(s * 1000);
+	}
+	if (typeof s == 'string') {
+		if (s.match(/^\d+(\.\d+)?$/)) { // a UNIX timestamp
+			return new Date(parseFloat(s) * 1000);
+		}
+		if (ignoreTimezone === undefined) {
+			ignoreTimezone = true;
+		}
+		return parseISO8601(s, ignoreTimezone) || (s ? new Date(s) : null);
+	}
+	// TODO: never return invalid dates (like from new Date(<string>)), return null instead
+	return null;
+}
+
+
+function parseISO8601(s, ignoreTimezone) { // ignoreTimezone defaults to false
+	// derived from http://delete.me.uk/2005/03/iso8601.html
+	// TODO: for a know glitch/feature, read tests/issue_206_parseDate_dst.html
+	var m = s.match(/^([0-9]{4})(-([0-9]{2})(-([0-9]{2})([T ]([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?(Z|(([-+])([0-9]{2})(:?([0-9]{2}))?))?)?)?)?$/);
+	if (!m) {
+		return null;
+	}
+	var date = new Date(m[1], 0, 1);
+	if (ignoreTimezone || !m[13]) {
+		var check = new Date(m[1], 0, 1, 9, 0);
+		if (m[3]) {
+			date.setMonth(m[3] - 1);
+			check.setMonth(m[3] - 1);
+		}
+		if (m[5]) {
+			date.setDate(m[5]);
+			check.setDate(m[5]);
+		}
+		fixDate(date, check);
+		if (m[7]) {
+			date.setHours(m[7]);
+		}
+		if (m[8]) {
+			date.setMinutes(m[8]);
+		}
+		if (m[10]) {
+			date.setSeconds(m[10]);
+		}
+		if (m[12]) {
+			date.setMilliseconds(Number("0." + m[12]) * 1000);
+		}
+		fixDate(date, check);
+	}else{
+		date.setUTCFullYear(
+			m[1],
+			m[3] ? m[3] - 1 : 0,
+			m[5] || 1
+		);
+		date.setUTCHours(
+			m[7] || 0,
+			m[8] || 0,
+			m[10] || 0,
+			m[12] ? Number("0." + m[12]) * 1000 : 0
+		);
+		if (m[14]) {
+			var offset = Number(m[16]) * 60 + (m[18] ? Number(m[18]) : 0);
+			offset *= m[15] == '-' ? 1 : -1;
+			date = new Date(+date + (offset * 60 * 1000));
+		}
+	}
+	return date;
+}
+
+
+function parseTime(s) { // returns minutes since start of day
+	if (typeof s == 'number') { // an hour
+		return s * 60;
+	}
+	if (typeof s == 'object') { // a Date object
+		return s.getHours() * 60 + s.getMinutes();
+	}
+	var m = s.match(/(\d+)(?::(\d+))?\s*(\w+)?/);
+	if (m) {
+		var h = parseInt(m[1], 10);
+		if (m[3]) {
+			h %= 12;
+			if (m[3].toLowerCase().charAt(0) == 'p') {
+				h += 12;
+			}
+		}
+		return h * 60 + (m[2] ? parseInt(m[2], 10) : 0);
+	}
+}
+
+
+
+/* Date Formatting
+-----------------------------------------------------------------------------*/
+// TODO: use same function formatDate(date, [date2], format, [options])
+
+
+function formatDate(date, format, options) {
+	return formatDates(date, null, format, options);
+}
+
+
+function formatDates(date1, date2, format, options) {
+	options = options || defaults;
+	var date = date1,
+		otherDate = date2,
+		i, len = format.length, c,
+		i2, formatter,
+		res = '';
+	for (i=0; i<len; i++) {
+		c = format.charAt(i);
+		if (c == "'") {
+			for (i2=i+1; i2<len; i2++) {
+				if (format.charAt(i2) == "'") {
+					if (date) {
+						if (i2 == i+1) {
+							res += "'";
+						}else{
+							res += format.substring(i+1, i2);
+						}
+						i = i2;
+					}
+					break;
+				}
+			}
+		}
+		else if (c == '(') {
+			for (i2=i+1; i2<len; i2++) {
+				if (format.charAt(i2) == ')') {
+					var subres = formatDate(date, format.substring(i+1, i2), options);
+					if (parseInt(subres.replace(/\D/, ''), 10)) {
+						res += subres;
+					}
+					i = i2;
+					break;
+				}
+			}
+		}
+		else if (c == '[') {
+			for (i2=i+1; i2<len; i2++) {
+				if (format.charAt(i2) == ']') {
+					var subformat = format.substring(i+1, i2);
+					var subres = formatDate(date, subformat, options);
+					if (subres != formatDate(otherDate, subformat, options)) {
+						res += subres;
+					}
+					i = i2;
+					break;
+				}
+			}
+		}
+		else if (c == '{') {
+			date = date2;
+			otherDate = date1;
+		}
+		else if (c == '}') {
+			date = date1;
+			otherDate = date2;
+		}
+		else {
+			for (i2=len; i2>i; i2--) {
+				if (formatter = dateFormatters[format.substring(i, i2)]) {
+					if (date) {
+						res += formatter(date, options);
+					}
+					i = i2 - 1;
+					break;
+				}
+			}
+			if (i2 == i) {
+				if (date) {
+					res += c;
+				}
+			}
+		}
+	}
+	return res;
+};
+
+
+var dateFormatters = {
+	s	: function(d)	{ return d.getSeconds() },
+	ss	: function(d)	{ return zeroPad(d.getSeconds()) },
+	m	: function(d)	{ return d.getMinutes() },
+	mm	: function(d)	{ return zeroPad(d.getMinutes()) },
+	h	: function(d)	{ return d.getHours() % 12 || 12 },
+	hh	: function(d)	{ return zeroPad(d.getHours() % 12 || 12) },
+	H	: function(d)	{ return d.getHours() },
+	HH	: function(d)	{ return zeroPad(d.getHours()) },
+	d	: function(d)	{ return d.getDate() },
+	dd	: function(d)	{ return zeroPad(d.getDate()) },
+	ddd	: function(d,o)	{ return o.dayNamesShort[d.getDay()] },
+	dddd: function(d,o)	{ return o.dayNames[d.getDay()] },
+	M	: function(d)	{ return d.getMonth() + 1 },
+	MM	: function(d)	{ return zeroPad(d.getMonth() + 1) },
+	MMM	: function(d,o)	{ return o.monthNamesShort[d.getMonth()] },
+	MMMM: function(d,o)	{ return o.monthNames[d.getMonth()] },
+	yy	: function(d)	{ return (d.getFullYear()+'').substring(2) },
+	yyyy: function(d)	{ return d.getFullYear() },
+	t	: function(d)	{ return d.getHours() < 12 ? 'a' : 'p' },
+	tt	: function(d)	{ return d.getHours() < 12 ? 'am' : 'pm' },
+	T	: function(d)	{ return d.getHours() < 12 ? 'A' : 'P' },
+	TT	: function(d)	{ return d.getHours() < 12 ? 'AM' : 'PM' },
+	u	: function(d)	{ return formatDate(d, "yyyy-MM-dd'T'HH:mm:ss'Z'") },
+	S	: function(d)	{
+		var date = d.getDate();
+		if (date > 10 && date < 20) {
+			return 'th';
+		}
+		return ['st', 'nd', 'rd'][date%10-1] || 'th';
+	}
+};
+
+
+
+fc.applyAll = applyAll;
+
+
+/* Event Date Math
+-----------------------------------------------------------------------------*/
+
+
+function exclEndDay(event) {
+	if (event.end) {
+		return _exclEndDay(event.end, event.allDay);
+	}else{
+		return addDays(cloneDate(event.start), 1);
+	}
+}
+
+
+function _exclEndDay(end, allDay) {
+	end = cloneDate(end);
+	return allDay || end.getHours() || end.getMinutes() ? addDays(end, 1) : clearTime(end);
+}
+
+
+function segCmp(a, b) {
+	return (b.msLength - a.msLength) * 100 + (a.event.start - b.event.start);
+}
+
+
+function segsCollide(seg1, seg2) {
+	return seg1.end > seg2.start && seg1.start < seg2.end;
+}
+
+
+
+/* Event Sorting
+-----------------------------------------------------------------------------*/
+
+
+// event rendering utilities
+function sliceSegs(events, visEventEnds, start, end) {
+	var segs = [],
+		i, len=events.length, event,
+		eventStart, eventEnd,
+		segStart, segEnd,
+		isStart, isEnd;
+	for (i=0; i<len; i++) {
+		event = events[i];
+		eventStart = event.start;
+		eventEnd = visEventEnds[i];
+		if (eventEnd > start && eventStart < end) {
+			if (eventStart < start) {
+				segStart = cloneDate(start);
+				isStart = false;
+			}else{
+				segStart = eventStart;
+				isStart = true;
+			}
+			if (eventEnd > end) {
+				segEnd = cloneDate(end);
+				isEnd = false;
+			}else{
+				segEnd = eventEnd;
+				isEnd = true;
+			}
+			segs.push({
+				event: event,
+				start: segStart,
+				end: segEnd,
+				isStart: isStart,
+				isEnd: isEnd,
+				msLength: segEnd - segStart
+			});
+		}
+	} 
+	return segs.sort(segCmp);
+}
+
+
+// event rendering calculation utilities
+function stackSegs(segs) {
+	var levels = [],
+		i, len = segs.length, seg,
+		j, collide, k;
+	for (i=0; i<len; i++) {
+		seg = segs[i];
+		j = 0; // the level index where seg should belong
+		while (true) {
+			collide = false;
+			if (levels[j]) {
+				for (k=0; k<levels[j].length; k++) {
+					if (segsCollide(levels[j][k], seg)) {
+						collide = true;
+						break;
+					}
+				}
+			}
+			if (collide) {
+				j++;
+			}else{
+				break;
+			}
+		}
+		if (levels[j]) {
+			levels[j].push(seg);
+		}else{
+			levels[j] = [seg];
+		}
+	}
+	return levels;
+}
+
+
+
+/* Event Element Binding
+-----------------------------------------------------------------------------*/
+
+
+function lazySegBind(container, segs, bindHandlers) {
+	container.unbind('mouseover').mouseover(function(ev) {
+		var parent=ev.target, e,
+			i, seg;
+		while (parent != this) {
+			e = parent;
+			parent = parent.parentNode;
+		}
+		if ((i = e._fci) !== undefined) {
+			e._fci = undefined;
+			seg = segs[i];
+			bindHandlers(seg.event, seg.element, seg);
+			$(ev.target).trigger(ev);
+		}
+		ev.stopPropagation();
+	});
+}
+
+
+
+/* Element Dimensions
+-----------------------------------------------------------------------------*/
+
+
+function setOuterWidth(element, width, includeMargins) {
+	for (var i=0, e; i<element.length; i++) {
+		e = $(element[i]);
+		e.width(Math.max(0, width - hsides(e, includeMargins)));
+	}
+}
+
+
+function setOuterHeight(element, height, includeMargins) {
+	for (var i=0, e; i<element.length; i++) {
+		e = $(element[i]);
+		e.height(Math.max(0, height - vsides(e, includeMargins)));
+	}
+}
+
+
+// TODO: curCSS has been deprecated (jQuery 1.4.3 - 10/16/2010)
+
+
+function hsides(element, includeMargins) {
+	return hpadding(element) + hborders(element) + (includeMargins ? hmargins(element) : 0);
+}
+
+
+function hpadding(element) {
+	return (parseFloat($.curCSS(element[0], 'paddingLeft', true)) || 0) +
+	       (parseFloat($.curCSS(element[0], 'paddingRight', true)) || 0);
+}
+
+
+function hmargins(element) {
+	return (parseFloat($.curCSS(element[0], 'marginLeft', true)) || 0) +
+	       (parseFloat($.curCSS(element[0], 'marginRight', true)) || 0);
+}
+
+
+function hborders(element) {
+	return (parseFloat($.curCSS(element[0], 'borderLeftWidth', true)) || 0) +
+	       (parseFloat($.curCSS(element[0], 'borderRightWidth', true)) || 0);
+}
+
+
+function vsides(element, includeMargins) {
+	return vpadding(element) +  vborders(element) + (includeMargins ? vmargins(element) : 0);
+}
+
+
+function vpadding(element) {
+	return (parseFloat($.curCSS(element[0], 'paddingTop', true)) || 0) +
+	       (parseFloat($.curCSS(element[0], 'paddingBottom', true)) || 0);
+}
+
+
+function vmargins(element) {
+	return (parseFloat($.curCSS(element[0], 'marginTop', true)) || 0) +
+	       (parseFloat($.curCSS(element[0], 'marginBottom', true)) || 0);
+}
+
+
+function vborders(element) {
+	return (parseFloat($.curCSS(element[0], 'borderTopWidth', true)) || 0) +
+	       (parseFloat($.curCSS(element[0], 'borderBottomWidth', true)) || 0);
+}
+
+
+function setMinHeight(element, height) {
+	height = (typeof height == 'number' ? height + 'px' : height);
+	element.each(function(i, _element) {
+		_element.style.cssText += ';min-height:' + height + ';_height:' + height;
+		// why can't we just use .css() ? i forget
+	});
+}
+
+
+
+/* Misc Utils
+-----------------------------------------------------------------------------*/
+
+
+//TODO: arraySlice
+//TODO: isFunction, grep ?
+
+
+function noop() { }
+
+
+function cmp(a, b) {
+	return a - b;
+}
+
+
+function arrayMax(a) {
+	return Math.max.apply(Math, a);
+}
+
+
+function zeroPad(n) {
+	return (n < 10 ? '0' : '') + n;
+}
+
+
+function smartProperty(obj, name) { // get a camel-cased/namespaced property of an object
+	if (obj[name] !== undefined) {
+		return obj[name];
+	}
+	var parts = name.split(/(?=[A-Z])/),
+		i=parts.length-1, res;
+	for (; i>=0; i--) {
+		res = obj[parts[i].toLowerCase()];
+		if (res !== undefined) {
+			return res;
+		}
+	}
+	return obj[''];
+}
+
+
+function htmlEscape(s) {
+	return s.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/'/g, '&#039;')
+		.replace(/"/g, '&quot;')
+		.replace(/\n/g, '<br />');
+}
+
+
+function cssKey(_element) {
+	return _element.id + '/' + _element.className + '/' + _element.style.cssText.replace(/(^|;)\s*(top|left|width|height)\s*:[^;]*/ig, '');
+}
+
+
+function disableTextSelection(element) {
+	element
+		.attr('unselectable', 'on')
+		.css('MozUserSelect', 'none')
+		.bind('selectstart.ui', function() { return false; });
+}
+
+
+/*
+function enableTextSelection(element) {
+	element
+		.attr('unselectable', 'off')
+		.css('MozUserSelect', '')
+		.unbind('selectstart.ui');
+}
+*/
+
+
+function markFirstLast(e) {
+	e.children()
+		.removeClass('fc-first fc-last')
+		.filter(':first-child')
+			.addClass('fc-first')
+		.end()
+		.filter(':last-child')
+			.addClass('fc-last');
+}
+
+
+function setDayID(cell, date) {
+	cell.each(function(i, _cell) {
+		_cell.className = _cell.className.replace(/^fc-\w*/, 'fc-' + dayIDs[date.getDay()]);
+		// TODO: make a way that doesn't rely on order of classes
+	});
+}
+
+
+function getSkinCss(event, opt) {
+	var source = event.source || {};
+	var eventColor = event.color;
+	var sourceColor = source.color;
+	var optionColor = opt('eventColor');
+	var backgroundColor =
+		event.backgroundColor ||
+		eventColor ||
+		source.backgroundColor ||
+		sourceColor ||
+		opt('eventBackgroundColor') ||
+		optionColor;
+	var borderColor =
+		event.borderColor ||
+		eventColor ||
+		source.borderColor ||
+		sourceColor ||
+		opt('eventBorderColor') ||
+		optionColor;
+	var textColor =
+		event.textColor ||
+		source.textColor ||
+		opt('eventTextColor');
+	var statements = [];
+	if (backgroundColor) {
+		statements.push('background-color:' + backgroundColor);
+	}
+	if (borderColor) {
+		statements.push('border-color:' + borderColor);
+	}
+	if (textColor) {
+		statements.push('color:' + textColor);
+	}
+	return statements.join(';');
+}
+
+
+function applyAll(functions, thisObj, args) {
+	if ($.isFunction(functions)) {
+		functions = [ functions ];
+	}
+	if (functions) {
+		var i;
+		var ret;
+		for (i=0; i<functions.length; i++) {
+			ret = functions[i].apply(thisObj, args) || ret;
+		}
+		return ret;
+	}
+}
+
+
+function firstDefined() {
+	for (var i=0; i<arguments.length; i++) {
+		if (arguments[i] !== undefined) {
+			return arguments[i];
+		}
+	}
+}
+
+
+
+fcViews.month = MonthView;
+
+function MonthView(element, calendar) {
+	var t = this;
+	
+	
+	// exports
+	t.render = render;
+	
+	
+	// imports
+	BasicView.call(t, element, calendar, 'month');
+	var opt = t.opt;
+	var renderBasic = t.renderBasic;
+	var formatDate = calendar.formatDate;
+	
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addMonths(date, delta);
+			date.setDate(1);
+		}
+		var start = cloneDate(date, true);
+		start.setDate(1);
+		var end = addMonths(cloneDate(start), 1);
+		var visStart = cloneDate(start);
+		var visEnd = cloneDate(end);
+		var firstDay = opt('firstDay');
+		var nwe = opt('weekends') ? 0 : 1;
+		if (nwe) {
+			skipWeekend(visStart);
+			skipWeekend(visEnd, -1, true);
+		}
+		addDays(visStart, -((visStart.getDay() - Math.max(firstDay, nwe) + 7) % 7));
+		addDays(visEnd, (7 - visEnd.getDay() + Math.max(firstDay, nwe)) % 7);
+		var rowCnt = Math.round((visEnd - visStart) / (DAY_MS * 7));
+		if (opt('weekMode') == 'fixed') {
+			addDays(visEnd, (6 - rowCnt) * 7);
+			rowCnt = 6;
+		}
+		t.title = formatDate(start, opt('titleFormat'));
+		t.start = start;
+		t.end = end;
+		t.visStart = visStart;
+		t.visEnd = visEnd;
+		renderBasic(6, rowCnt, nwe ? 5 : 7, true);
+	}
+	
+	
+}
+
+fcViews.basicWeek = BasicWeekView;
+
+function BasicWeekView(element, calendar) {
+	var t = this;
+	
+	
+	// exports
+	t.render = render;
+	
+	
+	// imports
+	BasicView.call(t, element, calendar, 'basicWeek');
+	var opt = t.opt;
+	var renderBasic = t.renderBasic;
+	var formatDates = calendar.formatDates;
+	
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addDays(date, delta * 7);
+		}
+		var start = addDays(cloneDate(date), -((date.getDay() - opt('firstDay') + 7) % 7));
+		var end = addDays(cloneDate(start), 7);
+		var visStart = cloneDate(start);
+		var visEnd = cloneDate(end);
+		var weekends = opt('weekends');
+		if (!weekends) {
+			skipWeekend(visStart);
+			skipWeekend(visEnd, -1, true);
+		}
+		t.title = formatDates(
+			visStart,
+			addDays(cloneDate(visEnd), -1),
+			opt('titleFormat')
+		);
+		t.start = start;
+		t.end = end;
+		t.visStart = visStart;
+		t.visEnd = visEnd;
+		renderBasic(1, 1, weekends ? 7 : 5, false);
+	}
+	
+	
+}
+
+fcViews.basicDay = BasicDayView;
+
+//TODO: when calendar's date starts out on a weekend, shouldn't happen
+
+
+function BasicDayView(element, calendar) {
+	var t = this;
+	
+	
+	// exports
+	t.render = render;
+	
+	
+	// imports
+	BasicView.call(t, element, calendar, 'basicDay');
+	var opt = t.opt;
+	var renderBasic = t.renderBasic;
+	var formatDate = calendar.formatDate;
+	
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addDays(date, delta);
+			if (!opt('weekends')) {
+				skipWeekend(date, delta < 0 ? -1 : 1);
+			}
+		}
+		t.title = formatDate(date, opt('titleFormat'));
+		t.start = t.visStart = cloneDate(date, true);
+		t.end = t.visEnd = addDays(cloneDate(t.start), 1);
+		renderBasic(1, 1, 1, false);
+	}
+	
+	
+}
+
+setDefaults({
+	weekMode: 'fixed'
+});
+
+
+function BasicView(element, calendar, viewName) {
+	var t = this;
+	
+	
+	// exports
+	t.renderBasic = renderBasic;
+	t.setHeight = setHeight;
+	t.setWidth = setWidth;
+	t.renderDayOverlay = renderDayOverlay;
+	t.defaultSelectionEnd = defaultSelectionEnd;
+	t.renderSelection = renderSelection;
+	t.clearSelection = clearSelection;
+	t.reportDayClick = reportDayClick; // for selection (kinda hacky)
+	t.dragStart = dragStart;
+	t.dragStop = dragStop;
+	t.defaultEventEnd = defaultEventEnd;
+	t.getHoverListener = function() { return hoverListener };
+	t.colContentLeft = colContentLeft;
+	t.colContentRight = colContentRight;
+	t.dayOfWeekCol = dayOfWeekCol;
+	t.dateCell = dateCell;
+	t.cellDate = cellDate;
+	t.cellIsAllDay = function() { return true };
+	t.allDayRow = allDayRow;
+	t.allDayBounds = allDayBounds;
+	t.getRowCnt = function() { return rowCnt };
+	t.getColCnt = function() { return colCnt };
+	t.getColWidth = function() { return colWidth };
+	t.getDaySegmentContainer = function() { return daySegmentContainer };
+	
+	
+	// imports
+	View.call(t, element, calendar, viewName);
+	OverlayManager.call(t);
+	SelectionManager.call(t);
+	BasicEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+	var clearEvents = t.clearEvents;
+	var renderOverlay = t.renderOverlay;
+	var clearOverlays = t.clearOverlays;
+	var daySelectionMousedown = t.daySelectionMousedown;
+	var formatDate = calendar.formatDate;
+	
+	
+	// locals
+	
+	var head;
+	var headCells;
+	var body;
+	var bodyRows;
+	var bodyCells;
+	var bodyFirstCells;
+	var bodyCellTopInners;
+	var daySegmentContainer;
+	
+	var viewWidth;
+	var viewHeight;
+	var colWidth;
+	
+	var rowCnt, colCnt;
+	var coordinateGrid;
+	var hoverListener;
+	var colContentPositions;
+	
+	var rtl, dis, dit;
+	var firstDay;
+	var nwe;
+	var tm;
+	var colFormat;
+	
+	
+	
+	/* Rendering
+	------------------------------------------------------------*/
+	
+	
+	disableTextSelection(element.addClass('fc-grid'));
+	
+	
+	function renderBasic(maxr, r, c, showNumbers) {
+		rowCnt = r;
+		colCnt = c;
+		updateOptions();
+		var firstTime = !body;
+		if (firstTime) {
+			buildSkeleton(maxr, showNumbers);
+		}else{
+			clearEvents();
+		}
+		updateCells(firstTime);
+	}
+	
+	
+	
+	function updateOptions() {
+		rtl = opt('isRTL');
+		if (rtl) {
+			dis = -1;
+			dit = colCnt - 1;
+		}else{
+			dis = 1;
+			dit = 0;
+		}
+		firstDay = opt('firstDay');
+		nwe = opt('weekends') ? 0 : 1;
+		tm = opt('theme') ? 'ui' : 'fc';
+		colFormat = opt('columnFormat');
+	}
+	
+	
+	
+	function buildSkeleton(maxRowCnt, showNumbers) {
+		var s;
+		var headerClass = tm + "-widget-header";
+		var contentClass = tm + "-widget-content";
+		var i, j;
+		var table;
+		
+		s =
+			"<table class='fc-border-separate' style='width:100%' cellspacing='0'>" +
+			"<thead>" +
+			"<tr>";
+		for (i=0; i<colCnt; i++) {
+			s +=
+				"<th class='fc- " + headerClass + "'/>"; // need fc- for setDayID
+		}
+		s +=
+			"</tr>" +
+			"</thead>" +
+			"<tbody>";
+		for (i=0; i<maxRowCnt; i++) {
+			s +=
+				"<tr class='fc-week" + i + "'>";
+			for (j=0; j<colCnt; j++) {
+				s +=
+					"<td class='fc- " + contentClass + " fc-day" + (i*colCnt+j) + "'>" + // need fc- for setDayID
+					"<div>" +
+					(showNumbers ?
+						"<div class='fc-day-number'/>" :
+						''
+						) +
+					"<div class='fc-day-content'>" +
+					"<div style='position:relative'>&nbsp;</div>" +
+					"</div>" +
+					"</div>" +
+					"</td>";
+			}
+			s +=
+				"</tr>";
+		}
+		s +=
+			"</tbody>" +
+			"</table>";
+		table = $(s).appendTo(element);
+		
+		head = table.find('thead');
+		headCells = head.find('th');
+		body = table.find('tbody');
+		bodyRows = body.find('tr');
+		bodyCells = body.find('td');
+		bodyFirstCells = bodyCells.filter(':first-child');
+		bodyCellTopInners = bodyRows.eq(0).find('div.fc-day-content div');
+		
+		markFirstLast(head.add(head.find('tr'))); // marks first+last tr/th's
+		markFirstLast(bodyRows); // marks first+last td's
+		bodyRows.eq(0).addClass('fc-first'); // fc-last is done in updateCells
+		
+		dayBind(bodyCells);
+		
+		daySegmentContainer =
+			$("<div style='position:absolute;z-index:8;top:0;left:0'/>")
+				.appendTo(element);
+	}
+	
+	
+	
+	function updateCells(firstTime) {
+		var dowDirty = firstTime || rowCnt == 1; // could the cells' day-of-weeks need updating?
+		var month = t.start.getMonth();
+		var today = clearTime(new Date());
+		var cell;
+		var date;
+		var row;
+	
+		if (dowDirty) {
+			headCells.each(function(i, _cell) {
+				cell = $(_cell);
+				date = indexDate(i);
+				cell.html(formatDate(date, colFormat));
+				setDayID(cell, date);
+			});
+		}
+		
+		bodyCells.each(function(i, _cell) {
+			cell = $(_cell);
+			date = indexDate(i);
+			if (date.getMonth() == month) {
+				cell.removeClass('fc-other-month');
+			}else{
+				cell.addClass('fc-other-month');
+			}
+			if (+date == +today) {
+				cell.addClass(tm + '-state-highlight fc-today');
+			}else{
+				cell.removeClass(tm + '-state-highlight fc-today');
+			}
+			cell.find('div.fc-day-number').text(date.getDate());
+			if (dowDirty) {
+				setDayID(cell, date);
+			}
+		});
+		
+		bodyRows.each(function(i, _row) {
+			row = $(_row);
+			if (i < rowCnt) {
+				row.show();
+				if (i == rowCnt-1) {
+					row.addClass('fc-last');
+				}else{
+					row.removeClass('fc-last');
+				}
+			}else{
+				row.hide();
+			}
+		});
+	}
+	
+	
+	
+	function setHeight(height) {
+		viewHeight = height;
+		
+		var bodyHeight = viewHeight - head.height();
+		var rowHeight;
+		var rowHeightLast;
+		var cell;
+			
+		if (opt('weekMode') == 'variable') {
+			rowHeight = rowHeightLast = Math.floor(bodyHeight / (rowCnt==1 ? 2 : 6));
+		}else{
+			rowHeight = Math.floor(bodyHeight / rowCnt);
+			rowHeightLast = bodyHeight - rowHeight * (rowCnt-1);
+		}
+		
+		bodyFirstCells.each(function(i, _cell) {
+			if (i < rowCnt) {
+				cell = $(_cell);
+				setMinHeight(
+					cell.find('> div'),
+					(i==rowCnt-1 ? rowHeightLast : rowHeight) - vsides(cell)
+				);
+			}
+		});
+		
+	}
+	
+	
+	function setWidth(width) {
+		viewWidth = width;
+		colContentPositions.clear();
+		colWidth = Math.floor(viewWidth / colCnt);
+		setOuterWidth(headCells.slice(0, -1), colWidth);
+	}
+	
+	
+	
+	/* Day clicking and binding
+	-----------------------------------------------------------*/
+	
+	
+	function dayBind(days) {
+		days.click(dayClick)
+			.mousedown(daySelectionMousedown);
+	}
+	
+	
+	function dayClick(ev) {
+		if (!opt('selectable')) { // if selectable, SelectionManager will worry about dayClick
+			var index = parseInt(this.className.match(/fc\-day(\d+)/)[1]); // TODO: maybe use .data
+			var date = indexDate(index);
+			trigger('dayClick', this, date, true, ev);
+		}
+	}
+	
+	
+	
+	/* Semi-transparent Overlay Helpers
+	------------------------------------------------------*/
+	
+	
+	function renderDayOverlay(overlayStart, overlayEnd, refreshCoordinateGrid) { // overlayEnd is exclusive
+		if (refreshCoordinateGrid) {
+			coordinateGrid.build();
+		}
+		var rowStart = cloneDate(t.visStart);
+		var rowEnd = addDays(cloneDate(rowStart), colCnt);
+		for (var i=0; i<rowCnt; i++) {
+			var stretchStart = new Date(Math.max(rowStart, overlayStart));
+			var stretchEnd = new Date(Math.min(rowEnd, overlayEnd));
+			if (stretchStart < stretchEnd) {
+				var colStart, colEnd;
+				if (rtl) {
+					colStart = dayDiff(stretchEnd, rowStart)*dis+dit+1;
+					colEnd = dayDiff(stretchStart, rowStart)*dis+dit+1;
+				}else{
+					colStart = dayDiff(stretchStart, rowStart);
+					colEnd = dayDiff(stretchEnd, rowStart);
+				}
+				dayBind(
+					renderCellOverlay(i, colStart, i, colEnd-1)
+				);
+			}
+			addDays(rowStart, 7);
+			addDays(rowEnd, 7);
+		}
+	}
+	
+	
+	function renderCellOverlay(row0, col0, row1, col1) { // row1,col1 is inclusive
+		var rect = coordinateGrid.rect(row0, col0, row1, col1, element);
+		return renderOverlay(rect, element);
+	}
+	
+	
+	
+	/* Selection
+	-----------------------------------------------------------------------*/
+	
+	
+	function defaultSelectionEnd(startDate, allDay) {
+		return cloneDate(startDate);
+	}
+	
+	
+	function renderSelection(startDate, endDate, allDay) {
+		renderDayOverlay(startDate, addDays(cloneDate(endDate), 1), true); // rebuild every time???
+	}
+	
+	
+	function clearSelection() {
+		clearOverlays();
+	}
+	
+	
+	function reportDayClick(date, allDay, ev) {
+		var cell = dateCell(date);
+		var _element = bodyCells[cell.row*colCnt + cell.col];
+		trigger('dayClick', _element, date, allDay, ev);
+	}
+	
+	
+	
+	/* External Dragging
+	-----------------------------------------------------------------------*/
+	
+	
+	function dragStart(_dragElement, ev, ui) {
+		hoverListener.start(function(cell) {
+			clearOverlays();
+			if (cell) {
+				renderCellOverlay(cell.row, cell.col, cell.row, cell.col);
+			}
+		}, ev);
+	}
+	
+	
+	function dragStop(_dragElement, ev, ui) {
+		var cell = hoverListener.stop();
+		clearOverlays();
+		if (cell) {
+			var d = cellDate(cell);
+			trigger('drop', _dragElement, d, true, ev, ui);
+		}
+	}
+	
+	
+	
+	/* Utilities
+	--------------------------------------------------------*/
+	
+	
+	function defaultEventEnd(event) {
+		return cloneDate(event.start);
+	}
+	
+	
+	coordinateGrid = new CoordinateGrid(function(rows, cols) {
+		var e, n, p;
+		headCells.each(function(i, _e) {
+			e = $(_e);
+			n = e.offset().left;
+			if (i) {
+				p[1] = n;
+			}
+			p = [n];
+			cols[i] = p;
+		});
+		p[1] = n + e.outerWidth();
+		bodyRows.each(function(i, _e) {
+			if (i < rowCnt) {
+				e = $(_e);
+				n = e.offset().top;
+				if (i) {
+					p[1] = n;
+				}
+				p = [n];
+				rows[i] = p;
+			}
+		});
+		p[1] = n + e.outerHeight();
+	});
+	
+	
+	hoverListener = new HoverListener(coordinateGrid);
+	
+	
+	colContentPositions = new HorizontalPositionCache(function(col) {
+		return bodyCellTopInners.eq(col);
+	});
+	
+	
+	function colContentLeft(col) {
+		return colContentPositions.left(col);
+	}
+	
+	
+	function colContentRight(col) {
+		return colContentPositions.right(col);
+	}
+	
+	
+	
+	
+	function dateCell(date) {
+		return {
+			row: Math.floor(dayDiff(date, t.visStart) / 7),
+			col: dayOfWeekCol(date.getDay())
+		};
+	}
+	
+	
+	function cellDate(cell) {
+		return _cellDate(cell.row, cell.col);
+	}
+	
+	
+	function _cellDate(row, col) {
+		return addDays(cloneDate(t.visStart), row*7 + col*dis+dit);
+		// what about weekends in middle of week?
+	}
+	
+	
+	function indexDate(index) {
+		return _cellDate(Math.floor(index/colCnt), index%colCnt);
+	}
+	
+	
+	function dayOfWeekCol(dayOfWeek) {
+		return ((dayOfWeek - Math.max(firstDay, nwe) + colCnt) % colCnt) * dis + dit;
+	}
+	
+	
+	
+	
+	function allDayRow(i) {
+		return bodyRows.eq(i);
+	}
+	
+	
+	function allDayBounds(i) {
+		return {
+			left: 0,
+			right: viewWidth
+		};
+	}
+	
+	
+}
+
+function BasicEventRenderer() {
+	var t = this;
+	
+	
+	// exports
+	t.renderEvents = renderEvents;
+	t.compileDaySegs = compileSegs; // for DayEventRenderer
+	t.clearEvents = clearEvents;
+	t.bindDaySeg = bindDaySeg;
+	
+	
+	// imports
+	DayEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+	//var setOverflowHidden = t.setOverflowHidden;
+	var isEventDraggable = t.isEventDraggable;
+	var isEventResizable = t.isEventResizable;
+	var reportEvents = t.reportEvents;
+	var reportEventClear = t.reportEventClear;
+	var eventElementHandlers = t.eventElementHandlers;
+	var showEvents = t.showEvents;
+	var hideEvents = t.hideEvents;
+	var eventDrop = t.eventDrop;
+	var getDaySegmentContainer = t.getDaySegmentContainer;
+	var getHoverListener = t.getHoverListener;
+	var renderDayOverlay = t.renderDayOverlay;
+	var clearOverlays = t.clearOverlays;
+	var getRowCnt = t.getRowCnt;
+	var getColCnt = t.getColCnt;
+	var renderDaySegs = t.renderDaySegs;
+	var resizableDayEvent = t.resizableDayEvent;
+	
+	
+	
+	/* Rendering
+	--------------------------------------------------------------------*/
+	
+	
+	function renderEvents(events, modifiedEventId) {
+		reportEvents(events);
+		renderDaySegs(compileSegs(events), modifiedEventId);
+	}
+	
+	
+	function clearEvents() {
+		reportEventClear();
+		getDaySegmentContainer().empty();
+	}
+	
+	
+	function compileSegs(events) {
+		var rowCnt = getRowCnt(),
+			colCnt = getColCnt(),
+			d1 = cloneDate(t.visStart),
+			d2 = addDays(cloneDate(d1), colCnt),
+			visEventsEnds = $.map(events, exclEndDay),
+			i, row,
+			j, level,
+			k, seg,
+			segs=[];
+		for (i=0; i<rowCnt; i++) {
+			row = stackSegs(sliceSegs(events, visEventsEnds, d1, d2));
+			for (j=0; j<row.length; j++) {
+				level = row[j];
+				for (k=0; k<level.length; k++) {
+					seg = level[k];
+					seg.row = i;
+					seg.level = j; // not needed anymore
+					segs.push(seg);
+				}
+			}
+			addDays(d1, 7);
+			addDays(d2, 7);
+		}
+		return segs;
+	}
+	
+	
+	function bindDaySeg(event, eventElement, seg) {
+		if (isEventDraggable(event)) {
+			draggableDayEvent(event, eventElement);
+		}
+		if (seg.isEnd && isEventResizable(event)) {
+			resizableDayEvent(event, eventElement, seg);
+		}
+		eventElementHandlers(event, eventElement);
+			// needs to be after, because resizableDayEvent might stopImmediatePropagation on click
+	}
+	
+	
+	
+	/* Dragging
+	----------------------------------------------------------------------------*/
+	
+	
+	function draggableDayEvent(event, eventElement) {
+		var hoverListener = getHoverListener();
+		var dayDelta;
+		eventElement.draggable({
+			zIndex: 9,
+			delay: 50,
+			opacity: opt('dragOpacity'),
+			revertDuration: opt('dragRevertDuration'),
+			start: function(ev, ui) {
+				trigger('eventDragStart', eventElement, event, ev, ui);
+				hideEvents(event, eventElement);
+				hoverListener.start(function(cell, origCell, rowDelta, colDelta) {
+					eventElement.draggable('option', 'revert', !cell || !rowDelta && !colDelta);
+					clearOverlays();
+					if (cell) {
+						//setOverflowHidden(true);
+						dayDelta = rowDelta*7 + colDelta * (opt('isRTL') ? -1 : 1);
+						renderDayOverlay(
+							addDays(cloneDate(event.start), dayDelta),
+							addDays(exclEndDay(event), dayDelta)
+						);
+					}else{
+						//setOverflowHidden(false);
+						dayDelta = 0;
+					}
+				}, ev, 'drag');
+			},
+			stop: function(ev, ui) {
+				hoverListener.stop();
+				clearOverlays();
+				trigger('eventDragStop', eventElement, event, ev, ui);
+				if (dayDelta) {
+					eventDrop(this, event, dayDelta, 0, event.allDay, ev, ui);
+				}else{
+					eventElement.css('filter', ''); // clear IE opacity side-effects
+					showEvents(event, eventElement);
+				}
+				//setOverflowHidden(false);
+			}
+		});
+	}
+
+
+}
+
+fcViews.agendaWeek = AgendaWeekView;
+
+function AgendaWeekView(element, calendar) {
+	var t = this;
+	
+	
+	// exports
+	t.render = render;
+	
+	
+	// imports
+	AgendaView.call(t, element, calendar, 'agendaWeek');
+	var opt = t.opt;
+	var renderAgenda = t.renderAgenda;
+	var formatDates = calendar.formatDates;
+	
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addDays(date, delta * 7);
+		}
+		var start = addDays(cloneDate(date), -((date.getDay() - opt('firstDay') + 7) % 7));
+		var end = addDays(cloneDate(start), 7);
+		var visStart = cloneDate(start);
+		var visEnd = cloneDate(end);
+		var weekends = opt('weekends');
+		if (!weekends) {
+			skipWeekend(visStart);
+			skipWeekend(visEnd, -1, true);
+		}
+		t.title = formatDates(
+			visStart,
+			addDays(cloneDate(visEnd), -1),
+			opt('titleFormat')
+		);
+		t.start = start;
+		t.end = end;
+		t.visStart = visStart;
+		t.visEnd = visEnd;
+		renderAgenda(weekends ? 7 : 5);
+	}
+	
+
+}
+
+fcViews.agendaDay = AgendaDayView;
+
+function AgendaDayView(element, calendar) {
+	var t = this;
+	
+	
+	// exports
+	t.render = render;
+	
+	
+	// imports
+	AgendaView.call(t, element, calendar, 'agendaDay');
+	var opt = t.opt;
+	var renderAgenda = t.renderAgenda;
+	var formatDate = calendar.formatDate;
+	
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addDays(date, delta);
+			if (!opt('weekends')) {
+				skipWeekend(date, delta < 0 ? -1 : 1);
+			}
+		}
+		var start = cloneDate(date, true);
+		var end = addDays(cloneDate(start), 1);
+		t.title = formatDate(date, opt('titleFormat'));
+		t.start = t.visStart = start;
+		t.end = t.visEnd = end;
+		renderAgenda(1);
+	}
+	
+
+}
+
+setDefaults({
+	allDaySlot: true,
+	allDayText: 'all-day',
+	firstHour: 6,
+	slotMinutes: 30,
+	defaultEventMinutes: 120,
+	axisFormat: 'h(:mm)tt',
+	timeFormat: {
+		agenda: 'h:mm{ - h:mm}'
+	},
+	dragOpacity: {
+		agenda: .5
+	},
+	minTime: 0,
+	maxTime: 24
+});
+
+
+// TODO: make it work in quirks mode (event corners, all-day height)
+// TODO: test liquid width, especially in IE6
+
+
+function AgendaView(element, calendar, viewName) {
+	var t = this;
+	
+	
+	// exports
+	t.renderAgenda = renderAgenda;
+	t.setWidth = setWidth;
+	t.setHeight = setHeight;
+	t.beforeHide = beforeHide;
+	t.afterShow = afterShow;
+	t.defaultEventEnd = defaultEventEnd;
+	t.timePosition = timePosition;
+	t.dayOfWeekCol = dayOfWeekCol;
+	t.dateCell = dateCell;
+	t.cellDate = cellDate;
+	t.cellIsAllDay = cellIsAllDay;
+	t.allDayRow = getAllDayRow;
+	t.allDayBounds = allDayBounds;
+	t.getHoverListener = function() { return hoverListener };
+	t.colContentLeft = colContentLeft;
+	t.colContentRight = colContentRight;
+	t.getDaySegmentContainer = function() { return daySegmentContainer };
+	t.getSlotSegmentContainer = function() { return slotSegmentContainer };
+	t.getMinMinute = function() { return minMinute };
+	t.getMaxMinute = function() { return maxMinute };
+	t.getBodyContent = function() { return slotContent }; // !!??
+	t.getRowCnt = function() { return 1 };
+	t.getColCnt = function() { return colCnt };
+	t.getColWidth = function() { return colWidth };
+	t.getSlotHeight = function() { return slotHeight };
+	t.defaultSelectionEnd = defaultSelectionEnd;
+	t.renderDayOverlay = renderDayOverlay;
+	t.renderSelection = renderSelection;
+	t.clearSelection = clearSelection;
+	t.reportDayClick = reportDayClick; // selection mousedown hack
+	t.dragStart = dragStart;
+	t.dragStop = dragStop;
+	
+	
+	// imports
+	View.call(t, element, calendar, viewName);
+	OverlayManager.call(t);
+	SelectionManager.call(t);
+	AgendaEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+	var clearEvents = t.clearEvents;
+	var renderOverlay = t.renderOverlay;
+	var clearOverlays = t.clearOverlays;
+	var reportSelection = t.reportSelection;
+	var unselect = t.unselect;
+	var daySelectionMousedown = t.daySelectionMousedown;
+	var slotSegHtml = t.slotSegHtml;
+	var formatDate = calendar.formatDate;
+	
+	
+	// locals
+	
+	var dayTable;
+	var dayHead;
+	var dayHeadCells;
+	var dayBody;
+	var dayBodyCells;
+	var dayBodyCellInners;
+	var dayBodyFirstCell;
+	var dayBodyFirstCellStretcher;
+	var slotLayer;
+	var daySegmentContainer;
+	var allDayTable;
+	var allDayRow;
+	var slotScroller;
+	var slotContent;
+	var slotSegmentContainer;
+	var slotTable;
+	var slotTableFirstInner;
+	var axisFirstCells;
+	var gutterCells;
+	var selectionHelper;
+	
+	var viewWidth;
+	var viewHeight;
+	var axisWidth;
+	var colWidth;
+	var gutterWidth;
+	var slotHeight; // TODO: what if slotHeight changes? (see issue 650)
+	var savedScrollTop;
+	
+	var colCnt;
+	var slotCnt;
+	var coordinateGrid;
+	var hoverListener;
+	var colContentPositions;
+	var slotTopCache = {};
+	
+	var tm;
+	var firstDay;
+	var nwe;            // no weekends (int)
+	var rtl, dis, dit;  // day index sign / translate
+	var minMinute, maxMinute;
+	var colFormat;
+	
+
+	
+	/* Rendering
+	-----------------------------------------------------------------------------*/
+	
+	
+	disableTextSelection(element.addClass('fc-agenda'));
+	
+	
+	function renderAgenda(c) {
+		colCnt = c;
+		updateOptions();
+		if (!dayTable) {
+			buildSkeleton();
+		}else{
+			clearEvents();
+		}
+		updateCells();
+	}
+	
+	
+	
+	function updateOptions() {
+		tm = opt('theme') ? 'ui' : 'fc';
+		nwe = opt('weekends') ? 0 : 1;
+		firstDay = opt('firstDay');
+		if (rtl = opt('isRTL')) {
+			dis = -1;
+			dit = colCnt - 1;
+		}else{
+			dis = 1;
+			dit = 0;
+		}
+		minMinute = parseTime(opt('minTime'));
+		maxMinute = parseTime(opt('maxTime'));
+		colFormat = opt('columnFormat');
+	}
+	
+	
+	
+	function buildSkeleton() {
+		var headerClass = tm + "-widget-header";
+		var contentClass = tm + "-widget-content";
+		var s;
+		var i;
+		var d;
+		var maxd;
+		var minutes;
+		var slotNormal = opt('slotMinutes') % 15 == 0;
+		
+		s =
+			"<table style='width:100%' class='fc-agenda-days fc-border-separate' cellspacing='0'>" +
+			"<thead>" +
+			"<tr>" +
+			"<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
+		for (i=0; i<colCnt; i++) {
+			s +=
+				"<th class='fc- fc-col" + i + ' ' + headerClass + "'/>"; // fc- needed for setDayID
+		}
+		s +=
+			"<th class='fc-agenda-gutter " + headerClass + "'>&nbsp;</th>" +
+			"</tr>" +
+			"</thead>" +
+			"<tbody>" +
+			"<tr>" +
+			"<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
+		for (i=0; i<colCnt; i++) {
+			s +=
+				"<td class='fc- fc-col" + i + ' ' + contentClass + "'>" + // fc- needed for setDayID
+				"<div>" +
+				"<div class='fc-day-content'>" +
+				"<div style='position:relative'>&nbsp;</div>" +
+				"</div>" +
+				"</div>" +
+				"</td>";
+		}
+		s +=
+			"<td class='fc-agenda-gutter " + contentClass + "'>&nbsp;</td>" +
+			"</tr>" +
+			"</tbody>" +
+			"</table>";
+		dayTable = $(s).appendTo(element);
+		dayHead = dayTable.find('thead');
+		dayHeadCells = dayHead.find('th').slice(1, -1);
+		dayBody = dayTable.find('tbody');
+		dayBodyCells = dayBody.find('td').slice(0, -1);
+		dayBodyCellInners = dayBodyCells.find('div.fc-day-content div');
+		dayBodyFirstCell = dayBodyCells.eq(0);
+		dayBodyFirstCellStretcher = dayBodyFirstCell.find('> div');
+		
+		markFirstLast(dayHead.add(dayHead.find('tr')));
+		markFirstLast(dayBody.add(dayBody.find('tr')));
+		
+		axisFirstCells = dayHead.find('th:first');
+		gutterCells = dayTable.find('.fc-agenda-gutter');
+		
+		slotLayer =
+			$("<div style='position:absolute;z-index:2;left:0;width:100%'/>")
+				.appendTo(element);
+				
+		if (opt('allDaySlot')) {
+		
+			daySegmentContainer =
+				$("<div style='position:absolute;z-index:8;top:0;left:0'/>")
+					.appendTo(slotLayer);
+		
+			s =
+				"<table style='width:100%' class='fc-agenda-allday' cellspacing='0'>" +
+				"<tr>" +
+				"<th class='" + headerClass + " fc-agenda-axis'>" + opt('allDayText') + "</th>" +
+				"<td>" +
+				"<div class='fc-day-content'><div style='position:relative'/></div>" +
+				"</td>" +
+				"<th class='" + headerClass + " fc-agenda-gutter'>&nbsp;</th>" +
+				"</tr>" +
+				"</table>";
+			allDayTable = $(s).appendTo(slotLayer);
+			allDayRow = allDayTable.find('tr');
+			
+			dayBind(allDayRow.find('td'));
+			
+			axisFirstCells = axisFirstCells.add(allDayTable.find('th:first'));
+			gutterCells = gutterCells.add(allDayTable.find('th.fc-agenda-gutter'));
+			
+			slotLayer.append(
+				"<div class='fc-agenda-divider " + headerClass + "'>" +
+				"<div class='fc-agenda-divider-inner'/>" +
+				"</div>"
+			);
+			
+		}else{
+		
+			daySegmentContainer = $([]); // in jQuery 1.4, we can just do $()
+		
+		}
+		
+		slotScroller =
+			$("<div style='position:absolute;width:100%;overflow-x:hidden;overflow-y:auto'/>")
+				.appendTo(slotLayer);
+				
+		slotContent =
+			$("<div style='position:relative;width:100%;overflow:hidden'/>")
+				.appendTo(slotScroller);
+				
+		slotSegmentContainer =
+			$("<div style='position:absolute;z-index:8;top:0;left:0'/>")
+				.appendTo(slotContent);
+		
+		s =
+			"<table class='fc-agenda-slots' style='width:100%' cellspacing='0'>" +
+			"<tbody>";
+		d = zeroDate();
+		maxd = addMinutes(cloneDate(d), maxMinute);
+		addMinutes(d, minMinute);
+		slotCnt = 0;
+		for (i=0; d < maxd; i++) {
+			minutes = d.getMinutes();
+			s +=
+				"<tr class='fc-slot" + i + ' ' + (!minutes ? '' : 'fc-minor') + "'>" +
+				"<th class='fc-agenda-axis " + headerClass + "'>" +
+				((!slotNormal || !minutes) ? formatDate(d, opt('axisFormat')) : '&nbsp;') +
+				"</th>" +
+				"<td class='" + contentClass + "'>" +
+				"<div style='position:relative'>&nbsp;</div>" +
+				"</td>" +
+				"</tr>";
+			addMinutes(d, opt('slotMinutes'));
+			slotCnt++;
+		}
+		s +=
+			"</tbody>" +
+			"</table>";
+		slotTable = $(s).appendTo(slotContent);
+		slotTableFirstInner = slotTable.find('div:first');
+		
+		slotBind(slotTable.find('td'));
+		
+		axisFirstCells = axisFirstCells.add(slotTable.find('th:first'));
+	}
+	
+	
+	
+	function updateCells() {
+		var i;
+		var headCell;
+		var bodyCell;
+		var date;
+		var today = clearTime(new Date());
+		for (i=0; i<colCnt; i++) {
+			date = colDate(i);
+			headCell = dayHeadCells.eq(i);
+			headCell.html(formatDate(date, colFormat));
+			bodyCell = dayBodyCells.eq(i);
+			if (+date == +today) {
+				bodyCell.addClass(tm + '-state-highlight fc-today');
+			}else{
+				bodyCell.removeClass(tm + '-state-highlight fc-today');
+			}
+			setDayID(headCell.add(bodyCell), date);
+		}
+	}
+	
+	
+	
+	function setHeight(height, dateChanged) {
+		if (height === undefined) {
+			height = viewHeight;
+		}
+		viewHeight = height;
+		slotTopCache = {};
+	
+		var headHeight = dayBody.position().top;
+		var allDayHeight = slotScroller.position().top; // including divider
+		var bodyHeight = Math.min( // total body height, including borders
+			height - headHeight,   // when scrollbars
+			slotTable.height() + allDayHeight + 1 // when no scrollbars. +1 for bottom border
+		);
+		
+		dayBodyFirstCellStretcher
+			.height(bodyHeight - vsides(dayBodyFirstCell));
+		
+		slotLayer.css('top', headHeight);
+		
+		slotScroller.height(bodyHeight - allDayHeight - 1);
+		
+		slotHeight = slotTableFirstInner.height() + 1; // +1 for border
+		
+		if (dateChanged) {
+			resetScroll();
+		}
+	}
+	
+	
+	
+	function setWidth(width) {
+		viewWidth = width;
+		colContentPositions.clear();
+		
+		axisWidth = 0;
+		setOuterWidth(
+			axisFirstCells
+				.width('')
+				.each(function(i, _cell) {
+					axisWidth = Math.max(axisWidth, $(_cell).outerWidth());
+				}),
+			axisWidth
+		);
+		
+		var slotTableWidth = slotScroller[0].clientWidth; // needs to be done after axisWidth (for IE7)
+		//slotTable.width(slotTableWidth);
+		
+		gutterWidth = slotScroller.width() - slotTableWidth;
+		if (gutterWidth) {
+			setOuterWidth(gutterCells, gutterWidth);
+			gutterCells
+				.show()
+				.prev()
+				.removeClass('fc-last');
+		}else{
+			gutterCells
+				.hide()
+				.prev()
+				.addClass('fc-last');
+		}
+		
+		colWidth = Math.floor((slotTableWidth - axisWidth) / colCnt);
+		setOuterWidth(dayHeadCells.slice(0, -1), colWidth);
+	}
+	
+
+
+	function resetScroll() {
+		var d0 = zeroDate();
+		var scrollDate = cloneDate(d0);
+		scrollDate.setHours(opt('firstHour'));
+		var top = timePosition(d0, scrollDate) + 1; // +1 for the border
+		function scroll() {
+			slotScroller.scrollTop(top);
+		}
+		scroll();
+		setTimeout(scroll, 0); // overrides any previous scroll state made by the browser
+	}
+	
+	
+	function beforeHide() {
+		savedScrollTop = slotScroller.scrollTop();
+	}
+	
+	
+	function afterShow() {
+		slotScroller.scrollTop(savedScrollTop);
+	}
+	
+	
+	
+	/* Slot/Day clicking and binding
+	-----------------------------------------------------------------------*/
+	
+
+	function dayBind(cells) {
+		cells.click(slotClick)
+			.mousedown(daySelectionMousedown);
+	}
+
+
+	function slotBind(cells) {
+		cells.click(slotClick)
+			.mousedown(slotSelectionMousedown);
+	}
+	
+	
+	function slotClick(ev) {
+		if (!opt('selectable')) { // if selectable, SelectionManager will worry about dayClick
+			var col = Math.min(colCnt-1, Math.floor((ev.pageX - dayTable.offset().left - axisWidth) / colWidth));
+			var date = colDate(col);
+			var rowMatch = this.parentNode.className.match(/fc-slot(\d+)/); // TODO: maybe use data
+			if (rowMatch) {
+				var mins = parseInt(rowMatch[1]) * opt('slotMinutes');
+				var hours = Math.floor(mins/60);
+				date.setHours(hours);
+				date.setMinutes(mins%60 + minMinute);
+				trigger('dayClick', dayBodyCells[col], date, false, ev);
+			}else{
+				trigger('dayClick', dayBodyCells[col], date, true, ev);
+			}
+		}
+	}
+	
+	
+	
+	/* Semi-transparent Overlay Helpers
+	-----------------------------------------------------*/
+	
+
+	function renderDayOverlay(startDate, endDate, refreshCoordinateGrid) { // endDate is exclusive
+		if (refreshCoordinateGrid) {
+			coordinateGrid.build();
+		}
+		var visStart = cloneDate(t.visStart);
+		var startCol, endCol;
+		if (rtl) {
+			startCol = dayDiff(endDate, visStart)*dis+dit+1;
+			endCol = dayDiff(startDate, visStart)*dis+dit+1;
+		}else{
+			startCol = dayDiff(startDate, visStart);
+			endCol = dayDiff(endDate, visStart);
+		}
+		startCol = Math.max(0, startCol);
+		endCol = Math.min(colCnt, endCol);
+		if (startCol < endCol) {
+			dayBind(
+				renderCellOverlay(0, startCol, 0, endCol-1)
+			);
+		}
+	}
+	
+	
+	function renderCellOverlay(row0, col0, row1, col1) { // only for all-day?
+		var rect = coordinateGrid.rect(row0, col0, row1, col1, slotLayer);
+		return renderOverlay(rect, slotLayer);
+	}
+	
+
+	function renderSlotOverlay(overlayStart, overlayEnd) {
+		var dayStart = cloneDate(t.visStart);
+		var dayEnd = addDays(cloneDate(dayStart), 1);
+		for (var i=0; i<colCnt; i++) {
+			var stretchStart = new Date(Math.max(dayStart, overlayStart));
+			var stretchEnd = new Date(Math.min(dayEnd, overlayEnd));
+			if (stretchStart < stretchEnd) {
+				var col = i*dis+dit;
+				var rect = coordinateGrid.rect(0, col, 0, col, slotContent); // only use it for horizontal coords
+				var top = timePosition(dayStart, stretchStart);
+				var bottom = timePosition(dayStart, stretchEnd);
+				rect.top = top;
+				rect.height = bottom - top;
+				slotBind(
+					renderOverlay(rect, slotContent)
+				);
+			}
+			addDays(dayStart, 1);
+			addDays(dayEnd, 1);
+		}
+	}
+	
+	
+	
+	/* Coordinate Utilities
+	-----------------------------------------------------------------------------*/
+	
+	
+	coordinateGrid = new CoordinateGrid(function(rows, cols) {
+		var e, n, p;
+		dayHeadCells.each(function(i, _e) {
+			e = $(_e);
+			n = e.offset().left;
+			if (i) {
+				p[1] = n;
+			}
+			p = [n];
+			cols[i] = p;
+		});
+		p[1] = n + e.outerWidth();
+		if (opt('allDaySlot')) {
+			e = allDayRow;
+			n = e.offset().top;
+			rows[0] = [n, n+e.outerHeight()];
+		}
+		var slotTableTop = slotContent.offset().top;
+		var slotScrollerTop = slotScroller.offset().top;
+		var slotScrollerBottom = slotScrollerTop + slotScroller.outerHeight();
+		function constrain(n) {
+			return Math.max(slotScrollerTop, Math.min(slotScrollerBottom, n));
+		}
+		for (var i=0; i<slotCnt; i++) {
+			rows.push([
+				constrain(slotTableTop + slotHeight*i),
+				constrain(slotTableTop + slotHeight*(i+1))
+			]);
+		}
+	});
+	
+	
+	hoverListener = new HoverListener(coordinateGrid);
+	
+	
+	colContentPositions = new HorizontalPositionCache(function(col) {
+		return dayBodyCellInners.eq(col);
+	});
+	
+	
+	function colContentLeft(col) {
+		return colContentPositions.left(col);
+	}
+	
+	
+	function colContentRight(col) {
+		return colContentPositions.right(col);
+	}
+	
+	
+	
+	
+	function dateCell(date) { // "cell" terminology is now confusing
+		return {
+			row: Math.floor(dayDiff(date, t.visStart) / 7),
+			col: dayOfWeekCol(date.getDay())
+		};
+	}
+	
+	
+	function cellDate(cell) {
+		var d = colDate(cell.col);
+		var slotIndex = cell.row;
+		if (opt('allDaySlot')) {
+			slotIndex--;
+		}
+		if (slotIndex >= 0) {
+			addMinutes(d, minMinute + slotIndex * opt('slotMinutes'));
+		}
+		return d;
+	}
+	
+	
+	function colDate(col) { // returns dates with 00:00:00
+		return addDays(cloneDate(t.visStart), col*dis+dit);
+	}
+	
+	
+	function cellIsAllDay(cell) {
+		return opt('allDaySlot') && !cell.row;
+	}
+	
+	
+	function dayOfWeekCol(dayOfWeek) {
+		return ((dayOfWeek - Math.max(firstDay, nwe) + colCnt) % colCnt)*dis+dit;
+	}
+	
+	
+	
+	
+	// get the Y coordinate of the given time on the given day (both Date objects)
+	function timePosition(day, time) { // both date objects. day holds 00:00 of current day
+		day = cloneDate(day, true);
+		if (time < addMinutes(cloneDate(day), minMinute)) {
+			return 0;
+		}
+		if (time >= addMinutes(cloneDate(day), maxMinute)) {
+			return slotTable.height();
+		}
+		var slotMinutes = opt('slotMinutes'),
+			minutes = time.getHours()*60 + time.getMinutes() - minMinute,
+			slotI = Math.floor(minutes / slotMinutes),
+			slotTop = slotTopCache[slotI];
+		if (slotTop === undefined) {
+			slotTop = slotTopCache[slotI] = slotTable.find('tr:eq(' + slotI + ') td div')[0].offsetTop; //.position().top; // need this optimization???
+		}
+		return Math.max(0, Math.round(
+			slotTop - 1 + slotHeight * ((minutes % slotMinutes) / slotMinutes)
+		));
+	}
+	
+	
+	function allDayBounds() {
+		return {
+			left: axisWidth,
+			right: viewWidth - gutterWidth
+		}
+	}
+	
+	
+	function getAllDayRow(index) {
+		return allDayRow;
+	}
+	
+	
+	function defaultEventEnd(event) {
+		var start = cloneDate(event.start);
+		if (event.allDay) {
+			return start;
+		}
+		return addMinutes(start, opt('defaultEventMinutes'));
+	}
+	
+	
+	
+	/* Selection
+	---------------------------------------------------------------------------------*/
+	
+	
+	function defaultSelectionEnd(startDate, allDay) {
+		if (allDay) {
+			return cloneDate(startDate);
+		}
+		return addMinutes(cloneDate(startDate), opt('slotMinutes'));
+	}
+	
+	
+	function renderSelection(startDate, endDate, allDay) { // only for all-day
+		if (allDay) {
+			if (opt('allDaySlot')) {
+				renderDayOverlay(startDate, addDays(cloneDate(endDate), 1), true);
+			}
+		}else{
+			renderSlotSelection(startDate, endDate);
+		}
+	}
+	
+	
+	function renderSlotSelection(startDate, endDate) {
+		var helperOption = opt('selectHelper');
+		coordinateGrid.build();
+		if (helperOption) {
+			var col = dayDiff(startDate, t.visStart) * dis + dit;
+			if (col >= 0 && col < colCnt) { // only works when times are on same day
+				var rect = coordinateGrid.rect(0, col, 0, col, slotContent); // only for horizontal coords
+				var top = timePosition(startDate, startDate);
+				var bottom = timePosition(startDate, endDate);
+				if (bottom > top) { // protect against selections that are entirely before or after visible range
+					rect.top = top;
+					rect.height = bottom - top;
+					rect.left += 2;
+					rect.width -= 5;
+					if ($.isFunction(helperOption)) {
+						var helperRes = helperOption(startDate, endDate);
+						if (helperRes) {
+							rect.position = 'absolute';
+							rect.zIndex = 8;
+							selectionHelper = $(helperRes)
+								.css(rect)
+								.appendTo(slotContent);
+						}
+					}else{
+						rect.isStart = true; // conside rect a "seg" now
+						rect.isEnd = true;   //
+						selectionHelper = $(slotSegHtml(
+							{
+								title: '',
+								start: startDate,
+								end: endDate,
+								className: ['fc-select-helper'],
+								editable: false
+							},
+							rect
+						));
+						selectionHelper.css('opacity', opt('dragOpacity'));
+					}
+					if (selectionHelper) {
+						slotBind(selectionHelper);
+						slotContent.append(selectionHelper);
+						setOuterWidth(selectionHelper, rect.width, true); // needs to be after appended
+						setOuterHeight(selectionHelper, rect.height, true);
+					}
+				}
+			}
+		}else{
+			renderSlotOverlay(startDate, endDate);
+		}
+	}
+	
+	
+	function clearSelection() {
+		clearOverlays();
+		if (selectionHelper) {
+			selectionHelper.remove();
+			selectionHelper = null;
+		}
+	}
+	
+	
+	function slotSelectionMousedown(ev) {
+		if (ev.which == 1 && opt('selectable')) { // ev.which==1 means left mouse button
+			unselect(ev);
+			var dates;
+			hoverListener.start(function(cell, origCell) {
+				clearSelection();
+				if (cell && cell.col == origCell.col && !cellIsAllDay(cell)) {
+					var d1 = cellDate(origCell);
+					var d2 = cellDate(cell);
+					dates = [
+						d1,
+						addMinutes(cloneDate(d1), opt('slotMinutes')),
+						d2,
+						addMinutes(cloneDate(d2), opt('slotMinutes'))
+					].sort(cmp);
+					renderSlotSelection(dates[0], dates[3]);
+				}else{
+					dates = null;
+				}
+			}, ev);
+			$(document).one('mouseup', function(ev) {
+				hoverListener.stop();
+				if (dates) {
+					if (+dates[0] == +dates[1]) {
+						reportDayClick(dates[0], false, ev);
+					}
+					reportSelection(dates[0], dates[3], false, ev);
+				}
+			});
+		}
+	}
+	
+	
+	function reportDayClick(date, allDay, ev) {
+		trigger('dayClick', dayBodyCells[dayOfWeekCol(date.getDay())], date, allDay, ev);
+	}
+	
+	
+	
+	/* External Dragging
+	--------------------------------------------------------------------------------*/
+	
+	
+	function dragStart(_dragElement, ev, ui) {
+		hoverListener.start(function(cell) {
+			clearOverlays();
+			if (cell) {
+				if (cellIsAllDay(cell)) {
+					renderCellOverlay(cell.row, cell.col, cell.row, cell.col);
+				}else{
+					var d1 = cellDate(cell);
+					var d2 = addMinutes(cloneDate(d1), opt('defaultEventMinutes'));
+					renderSlotOverlay(d1, d2);
+				}
+			}
+		}, ev);
+	}
+	
+	
+	function dragStop(_dragElement, ev, ui) {
+		var cell = hoverListener.stop();
+		clearOverlays();
+		if (cell) {
+			trigger('drop', _dragElement, cellDate(cell), cellIsAllDay(cell), ev, ui);
+		}
+	}
+
+
+}
+
+function AgendaEventRenderer() {
+	var t = this;
+	
+	
+	// exports
+	t.renderEvents = renderEvents;
+	t.compileDaySegs = compileDaySegs; // for DayEventRenderer
+	t.clearEvents = clearEvents;
+	t.slotSegHtml = slotSegHtml;
+	t.bindDaySeg = bindDaySeg;
+	
+	
+	// imports
+	DayEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+	//var setOverflowHidden = t.setOverflowHidden;
+	var isEventDraggable = t.isEventDraggable;
+	var isEventResizable = t.isEventResizable;
+	var eventEnd = t.eventEnd;
+	var reportEvents = t.reportEvents;
+	var reportEventClear = t.reportEventClear;
+	var eventElementHandlers = t.eventElementHandlers;
+	var setHeight = t.setHeight;
+	var getDaySegmentContainer = t.getDaySegmentContainer;
+	var getSlotSegmentContainer = t.getSlotSegmentContainer;
+	var getHoverListener = t.getHoverListener;
+	var getMaxMinute = t.getMaxMinute;
+	var getMinMinute = t.getMinMinute;
+	var timePosition = t.timePosition;
+	var colContentLeft = t.colContentLeft;
+	var colContentRight = t.colContentRight;
+	var renderDaySegs = t.renderDaySegs;
+	var resizableDayEvent = t.resizableDayEvent; // TODO: streamline binding architecture
+	var getColCnt = t.getColCnt;
+	var getColWidth = t.getColWidth;
+	var getSlotHeight = t.getSlotHeight;
+	var getBodyContent = t.getBodyContent;
+	var reportEventElement = t.reportEventElement;
+	var showEvents = t.showEvents;
+	var hideEvents = t.hideEvents;
+	var eventDrop = t.eventDrop;
+	var eventResize = t.eventResize;
+	var renderDayOverlay = t.renderDayOverlay;
+	var clearOverlays = t.clearOverlays;
+	var calendar = t.calendar;
+	var formatDate = calendar.formatDate;
+	var formatDates = calendar.formatDates;
+	
+	
+	
+	/* Rendering
+	----------------------------------------------------------------------------*/
+	
+
+	function renderEvents(events, modifiedEventId) {
+		reportEvents(events);
+		var i, len=events.length,
+			dayEvents=[],
+			slotEvents=[];
+		for (i=0; i<len; i++) {
+			if (events[i].allDay) {
+				dayEvents.push(events[i]);
+			}else{
+				slotEvents.push(events[i]);
+			}
+		}
+		if (opt('allDaySlot')) {
+			renderDaySegs(compileDaySegs(dayEvents), modifiedEventId);
+			setHeight(); // no params means set to viewHeight
+		}
+		renderSlotSegs(compileSlotSegs(slotEvents), modifiedEventId);
+	}
+	
+	
+	function clearEvents() {
+		reportEventClear();
+		getDaySegmentContainer().empty();
+		getSlotSegmentContainer().empty();
+	}
+	
+	
+	function compileDaySegs(events) {
+		var levels = stackSegs(sliceSegs(events, $.map(events, exclEndDay), t.visStart, t.visEnd)),
+			i, levelCnt=levels.length, level,
+			j, seg,
+			segs=[];
+		for (i=0; i<levelCnt; i++) {
+			level = levels[i];
+			for (j=0; j<level.length; j++) {
+				seg = level[j];
+				seg.row = 0;
+				seg.level = i; // not needed anymore
+				segs.push(seg);
+			}
+		}
+		return segs;
+	}
+	
+	
+	function compileSlotSegs(events) {
+		var colCnt = getColCnt(),
+			minMinute = getMinMinute(),
+			maxMinute = getMaxMinute(),
+			d = addMinutes(cloneDate(t.visStart), minMinute),
+			visEventEnds = $.map(events, slotEventEnd),
+			i, col,
+			j, level,
+			k, seg,
+			segs=[];
+		for (i=0; i<colCnt; i++) {
+			col = stackSegs(sliceSegs(events, visEventEnds, d, addMinutes(cloneDate(d), maxMinute-minMinute)));
+			countForwardSegs(col);
+			for (j=0; j<col.length; j++) {
+				level = col[j];
+				for (k=0; k<level.length; k++) {
+					seg = level[k];
+					seg.col = i;
+					seg.level = j;
+					segs.push(seg);
+				}
+			}
+			addDays(d, 1, true);
+		}
+		return segs;
+	}
+	
+	
+	function slotEventEnd(event) {
+		if (event.end) {
+			return cloneDate(event.end);
+		}else{
+			return addMinutes(cloneDate(event.start), opt('defaultEventMinutes'));
+		}
+	}
+	
+	
+	// renders events in the 'time slots' at the bottom
+	
+	function renderSlotSegs(segs, modifiedEventId) {
+	
+		var i, segCnt=segs.length, seg,
+			event,
+			classes,
+			top, bottom,
+			colI, levelI, forward,
+			leftmost,
+			availWidth,
+			outerWidth,
+			left,
+			html='',
+			eventElements,
+			eventElement,
+			triggerRes,
+			vsideCache={},
+			hsideCache={},
+			key, val,
+			contentElement,
+			height,
+			slotSegmentContainer = getSlotSegmentContainer(),
+			rtl, dis, dit,
+			colCnt = getColCnt();
+			
+		if (rtl = opt('isRTL')) {
+			dis = -1;
+			dit = colCnt - 1;
+		}else{
+			dis = 1;
+			dit = 0;
+		}
+			
+		// calculate position/dimensions, create html
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			event = seg.event;
+			top = timePosition(seg.start, seg.start);
+			bottom = timePosition(seg.start, seg.end);
+			colI = seg.col;
+			levelI = seg.level;
+			forward = seg.forward || 0;
+			leftmost = colContentLeft(colI*dis + dit);
+			availWidth = colContentRight(colI*dis + dit) - leftmost;
+			availWidth = Math.min(availWidth-6, availWidth*.95); // TODO: move this to CSS
+			if (levelI) {
+				// indented and thin
+				outerWidth = availWidth / (levelI + forward + 1);
+			}else{
+				if (forward) {
+					// moderately wide, aligned left still
+					outerWidth = ((availWidth / (forward + 1)) - (12/2)) * 2; // 12 is the predicted width of resizer =
+				}else{
+					// can be entire width, aligned left
+					outerWidth = availWidth;
+				}
+			}
+			left = leftmost +                                  // leftmost possible
+				(availWidth / (levelI + forward + 1) * levelI) // indentation
+				* dis + (rtl ? availWidth - outerWidth : 0);   // rtl
+			seg.top = top;
+			seg.left = left;
+			seg.outerWidth = outerWidth;
+			seg.outerHeight = bottom - top;
+			html += slotSegHtml(event, seg);
+		}
+		slotSegmentContainer[0].innerHTML = html; // faster than html()
+		eventElements = slotSegmentContainer.children();
+		
+		// retrieve elements, run through eventRender callback, bind event handlers
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			event = seg.event;
+			eventElement = $(eventElements[i]); // faster than eq()
+			triggerRes = trigger('eventRender', event, event, eventElement);
+			if (triggerRes === false) {
+				eventElement.remove();
+			}else{
+				if (triggerRes && triggerRes !== true) {
+					eventElement.remove();
+					eventElement = $(triggerRes)
+						.css({
+							position: 'absolute',
+							top: seg.top,
+							left: seg.left
+						})
+						.appendTo(slotSegmentContainer);
+				}
+				seg.element = eventElement;
+				if (event._id === modifiedEventId) {
+					bindSlotSeg(event, eventElement, seg);
+				}else{
+					eventElement[0]._fci = i; // for lazySegBind
+				}
+				reportEventElement(event, eventElement);
+			}
+		}
+		
+		lazySegBind(slotSegmentContainer, segs, bindSlotSeg);
+		
+		// record event sides and title positions
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			if (eventElement = seg.element) {
+				val = vsideCache[key = seg.key = cssKey(eventElement[0])];
+				seg.vsides = val === undefined ? (vsideCache[key] = vsides(eventElement, true)) : val;
+				val = hsideCache[key];
+				seg.hsides = val === undefined ? (hsideCache[key] = hsides(eventElement, true)) : val;
+				contentElement = eventElement.find('div.fc-event-content');
+				if (contentElement.length) {
+					seg.contentTop = contentElement[0].offsetTop;
+				}
+			}
+		}
+		
+		// set all positions/dimensions at once
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			if (eventElement = seg.element) {
+				eventElement[0].style.width = Math.max(0, seg.outerWidth - seg.hsides) + 'px';
+				height = Math.max(0, seg.outerHeight - seg.vsides);
+				eventElement[0].style.height = height + 'px';
+				event = seg.event;
+				if (seg.contentTop !== undefined && height - seg.contentTop < 10) {
+					// not enough room for title, put it in the time header
+					eventElement.find('div.fc-event-time')
+						.text(formatDate(event.start, opt('timeFormat')) + ' - ' + event.title);
+					eventElement.find('div.fc-event-title')
+						.remove();
+				}
+				trigger('eventAfterRender', event, event, eventElement);
+			}
+		}
+					
+	}
+	
+	
+	function slotSegHtml(event, seg) {
+		var html = "<";
+		var url = event.url;
+		var skinCss = getSkinCss(event, opt);
+		var skinCssAttr = (skinCss ? " style='" + skinCss + "'" : '');
+		var classes = ['fc-event', 'fc-event-skin', 'fc-event-vert'];
+		if (isEventDraggable(event)) {
+			classes.push('fc-event-draggable');
+		}
+		if (seg.isStart) {
+			classes.push('fc-corner-top');
+		}
+		if (seg.isEnd) {
+			classes.push('fc-corner-bottom');
+		}
+		classes = classes.concat(event.className);
+		if (event.source) {
+			classes = classes.concat(event.source.className || []);
+		}
+		if (url) {
+			html += "a href='" + htmlEscape(event.url) + "'";
+		}else{
+			html += "div";
+		}
+		html +=
+			" class='" + classes.join(' ') + "'" +
+			" style='position:absolute;z-index:8;top:" + seg.top + "px;left:" + seg.left + "px;" + skinCss + "'" +
+			">" +
+			"<div class='fc-event-inner fc-event-skin'" + skinCssAttr + ">" +
+			"<div class='fc-event-head fc-event-skin'" + skinCssAttr + ">" +
+			"<div class='fc-event-time'>" +
+			htmlEscape(formatDates(event.start, event.end, opt('timeFormat'))) +
+			"</div>" +
+			"</div>" +
+			"<div class='fc-event-content'>" +
+			"<div class='fc-event-title'>" +
+			htmlEscape(event.title) +
+			"</div>" +
+			"</div>" +
+			"<div class='fc-event-bg'></div>" +
+			"</div>"; // close inner
+		if (seg.isEnd && isEventResizable(event)) {
+			html +=
+				"<div class='ui-resizable-handle ui-resizable-s'>=</div>";
+		}
+		html +=
+			"</" + (url ? "a" : "div") + ">";
+		return html;
+	}
+	
+	
+	function bindDaySeg(event, eventElement, seg) {
+		if (isEventDraggable(event)) {
+			draggableDayEvent(event, eventElement, seg.isStart);
+		}
+		if (seg.isEnd && isEventResizable(event)) {
+			resizableDayEvent(event, eventElement, seg);
+		}
+		eventElementHandlers(event, eventElement);
+			// needs to be after, because resizableDayEvent might stopImmediatePropagation on click
+	}
+	
+	
+	function bindSlotSeg(event, eventElement, seg) {
+		var timeElement = eventElement.find('div.fc-event-time');
+		if (isEventDraggable(event)) {
+			draggableSlotEvent(event, eventElement, timeElement);
+		}
+		if (seg.isEnd && isEventResizable(event)) {
+			resizableSlotEvent(event, eventElement, timeElement);
+		}
+		eventElementHandlers(event, eventElement);
+	}
+	
+	
+	
+	/* Dragging
+	-----------------------------------------------------------------------------------*/
+	
+	
+	// when event starts out FULL-DAY
+	
+	function draggableDayEvent(event, eventElement, isStart) {
+		var origWidth;
+		var revert;
+		var allDay=true;
+		var dayDelta;
+		var dis = opt('isRTL') ? -1 : 1;
+		var hoverListener = getHoverListener();
+		var colWidth = getColWidth();
+		var slotHeight = getSlotHeight();
+		var minMinute = getMinMinute();
+		eventElement.draggable({
+			zIndex: 9,
+			opacity: opt('dragOpacity', 'month'), // use whatever the month view was using
+			revertDuration: opt('dragRevertDuration'),
+			start: function(ev, ui) {
+				trigger('eventDragStart', eventElement, event, ev, ui);
+				hideEvents(event, eventElement);
+				origWidth = eventElement.width();
+				hoverListener.start(function(cell, origCell, rowDelta, colDelta) {
+					clearOverlays();
+					if (cell) {
+						//setOverflowHidden(true);
+						revert = false;
+						dayDelta = colDelta * dis;
+						if (!cell.row) {
+							// on full-days
+							renderDayOverlay(
+								addDays(cloneDate(event.start), dayDelta),
+								addDays(exclEndDay(event), dayDelta)
+							);
+							resetElement();
+						}else{
+							// mouse is over bottom slots
+							if (isStart) {
+								if (allDay) {
+									// convert event to temporary slot-event
+									eventElement.width(colWidth - 10); // don't use entire width
+									setOuterHeight(
+										eventElement,
+										slotHeight * Math.round(
+											(event.end ? ((event.end - event.start) / MINUTE_MS) : opt('defaultEventMinutes'))
+											/ opt('slotMinutes')
+										)
+									);
+									eventElement.draggable('option', 'grid', [colWidth, 1]);
+									allDay = false;
+								}
+							}else{
+								revert = true;
+							}
+						}
+						revert = revert || (allDay && !dayDelta);
+					}else{
+						resetElement();
+						//setOverflowHidden(false);
+						revert = true;
+					}
+					eventElement.draggable('option', 'revert', revert);
+				}, ev, 'drag');
+			},
+			stop: function(ev, ui) {
+				hoverListener.stop();
+				clearOverlays();
+				trigger('eventDragStop', eventElement, event, ev, ui);
+				if (revert) {
+					// hasn't moved or is out of bounds (draggable has already reverted)
+					resetElement();
+					eventElement.css('filter', ''); // clear IE opacity side-effects
+					showEvents(event, eventElement);
+				}else{
+					// changed!
+					var minuteDelta = 0;
+					if (!allDay) {
+						minuteDelta = Math.round((eventElement.offset().top - getBodyContent().offset().top) / slotHeight)
+							* opt('slotMinutes')
+							+ minMinute
+							- (event.start.getHours() * 60 + event.start.getMinutes());
+					}
+					eventDrop(this, event, dayDelta, minuteDelta, allDay, ev, ui);
+				}
+				//setOverflowHidden(false);
+			}
+		});
+		function resetElement() {
+			if (!allDay) {
+				eventElement
+					.width(origWidth)
+					.height('')
+					.draggable('option', 'grid', null);
+				allDay = true;
+			}
+		}
+	}
+	
+	
+	// when event starts out IN TIMESLOTS
+	
+	function draggableSlotEvent(event, eventElement, timeElement) {
+		var origPosition;
+		var allDay=false;
+		var dayDelta;
+		var minuteDelta;
+		var prevMinuteDelta;
+		var dis = opt('isRTL') ? -1 : 1;
+		var hoverListener = getHoverListener();
+		var colCnt = getColCnt();
+		var colWidth = getColWidth();
+		var slotHeight = getSlotHeight();
+		eventElement.draggable({
+			zIndex: 9,
+			scroll: false,
+			grid: [colWidth, slotHeight],
+			axis: colCnt==1 ? 'y' : false,
+			opacity: opt('dragOpacity'),
+			revertDuration: opt('dragRevertDuration'),
+			start: function(ev, ui) {
+				trigger('eventDragStart', eventElement, event, ev, ui);
+				hideEvents(event, eventElement);
+				origPosition = eventElement.position();
+				minuteDelta = prevMinuteDelta = 0;
+				hoverListener.start(function(cell, origCell, rowDelta, colDelta) {
+					eventElement.draggable('option', 'revert', !cell);
+					clearOverlays();
+					if (cell) {
+						dayDelta = colDelta * dis;
+						if (opt('allDaySlot') && !cell.row) {
+							// over full days
+							if (!allDay) {
+								// convert to temporary all-day event
+								allDay = true;
+								timeElement.hide();
+								eventElement.draggable('option', 'grid', null);
+							}
+							renderDayOverlay(
+								addDays(cloneDate(event.start), dayDelta),
+								addDays(exclEndDay(event), dayDelta)
+							);
+						}else{
+							// on slots
+							resetElement();
+						}
+					}
+				}, ev, 'drag');
+			},
+			drag: function(ev, ui) {
+				minuteDelta = Math.round((ui.position.top - origPosition.top) / slotHeight) * opt('slotMinutes');
+				if (minuteDelta != prevMinuteDelta) {
+					if (!allDay) {
+						updateTimeText(minuteDelta);
+					}
+					prevMinuteDelta = minuteDelta;
+				}
+			},
+			stop: function(ev, ui) {
+				var cell = hoverListener.stop();
+				clearOverlays();
+				trigger('eventDragStop', eventElement, event, ev, ui);
+				if (cell && (dayDelta || minuteDelta || allDay)) {
+					// changed!
+					eventDrop(this, event, dayDelta, allDay ? 0 : minuteDelta, allDay, ev, ui);
+				}else{
+					// either no change or out-of-bounds (draggable has already reverted)
+					resetElement();
+					eventElement.css('filter', ''); // clear IE opacity side-effects
+					eventElement.css(origPosition); // sometimes fast drags make event revert to wrong position
+					updateTimeText(0);
+					showEvents(event, eventElement);
+				}
+			}
+		});
+		function updateTimeText(minuteDelta) {
+			var newStart = addMinutes(cloneDate(event.start), minuteDelta);
+			var newEnd;
+			if (event.end) {
+				newEnd = addMinutes(cloneDate(event.end), minuteDelta);
+			}
+			timeElement.text(formatDates(newStart, newEnd, opt('timeFormat')));
+		}
+		function resetElement() {
+			// convert back to original slot-event
+			if (allDay) {
+				timeElement.css('display', ''); // show() was causing display=inline
+				eventElement.draggable('option', 'grid', [colWidth, slotHeight]);
+				allDay = false;
+			}
+		}
+	}
+	
+	
+	
+	/* Resizing
+	--------------------------------------------------------------------------------------*/
+	
+	
+	function resizableSlotEvent(event, eventElement, timeElement) {
+		var slotDelta, prevSlotDelta;
+		var slotHeight = getSlotHeight();
+		eventElement.resizable({
+			handles: {
+				s: 'div.ui-resizable-s'
+			},
+			grid: slotHeight,
+			start: function(ev, ui) {
+				slotDelta = prevSlotDelta = 0;
+				hideEvents(event, eventElement);
+				eventElement.css('z-index', 9);
+				trigger('eventResizeStart', this, event, ev, ui);
+			},
+			resize: function(ev, ui) {
+				// don't rely on ui.size.height, doesn't take grid into account
+				slotDelta = Math.round((Math.max(slotHeight, eventElement.height()) - ui.originalSize.height) / slotHeight);
+				if (slotDelta != prevSlotDelta) {
+					timeElement.text(
+						formatDates(
+							event.start,
+							(!slotDelta && !event.end) ? null : // no change, so don't display time range
+								addMinutes(eventEnd(event), opt('slotMinutes')*slotDelta),
+							opt('timeFormat')
+						)
+					);
+					prevSlotDelta = slotDelta;
+				}
+			},
+			stop: function(ev, ui) {
+				trigger('eventResizeStop', this, event, ev, ui);
+				if (slotDelta) {
+					eventResize(this, event, 0, opt('slotMinutes')*slotDelta, ev, ui);
+				}else{
+					eventElement.css('z-index', 8);
+					showEvents(event, eventElement);
+					// BUG: if event was really short, need to put title back in span
+				}
+			}
+		});
+	}
+	
+
+}
+
+
+function countForwardSegs(levels) {
+	var i, j, k, level, segForward, segBack;
+	for (i=levels.length-1; i>0; i--) {
+		level = levels[i];
+		for (j=0; j<level.length; j++) {
+			segForward = level[j];
+			for (k=0; k<levels[i-1].length; k++) {
+				segBack = levels[i-1][k];
+				if (segsCollide(segForward, segBack)) {
+					segBack.forward = Math.max(segBack.forward||0, (segForward.forward||0)+1);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+function View(element, calendar, viewName) {
+	var t = this;
+	
+	
+	// exports
+	t.element = element;
+	t.calendar = calendar;
+	t.name = viewName;
+	t.opt = opt;
+	t.trigger = trigger;
+	//t.setOverflowHidden = setOverflowHidden;
+	t.isEventDraggable = isEventDraggable;
+	t.isEventResizable = isEventResizable;
+	t.reportEvents = reportEvents;
+	t.eventEnd = eventEnd;
+	t.reportEventElement = reportEventElement;
+	t.reportEventClear = reportEventClear;
+	t.eventElementHandlers = eventElementHandlers;
+	t.showEvents = showEvents;
+	t.hideEvents = hideEvents;
+	t.eventDrop = eventDrop;
+	t.eventResize = eventResize;
+	// t.title
+	// t.start, t.end
+	// t.visStart, t.visEnd
+	
+	
+	// imports
+	var defaultEventEnd = t.defaultEventEnd;
+	var normalizeEvent = calendar.normalizeEvent; // in EventManager
+	var reportEventChange = calendar.reportEventChange;
+	
+	
+	// locals
+	var eventsByID = {};
+	var eventElements = [];
+	var eventElementsByID = {};
+	var options = calendar.options;
+	
+	
+	
+	function opt(name, viewNameOverride) {
+		var v = options[name];
+		if (typeof v == 'object') {
+			return smartProperty(v, viewNameOverride || viewName);
+		}
+		return v;
+	}
+
+	
+	function trigger(name, thisObj) {
+		return calendar.trigger.apply(
+			calendar,
+			[name, thisObj || t].concat(Array.prototype.slice.call(arguments, 2), [t])
+		);
+	}
+	
+	
+	/*
+	function setOverflowHidden(bool) {
+		element.css('overflow', bool ? 'hidden' : '');
+	}
+	*/
+	
+	
+	function isEventDraggable(event) {
+		return isEventEditable(event) && !opt('disableDragging');
+	}
+	
+	
+	function isEventResizable(event) { // but also need to make sure the seg.isEnd == true
+		return isEventEditable(event) && !opt('disableResizing');
+	}
+	
+	
+	function isEventEditable(event) {
+		return firstDefined(event.editable, (event.source || {}).editable, opt('editable'));
+	}
+	
+	
+	
+	/* Event Data
+	------------------------------------------------------------------------------*/
+	
+	
+	// report when view receives new events
+	function reportEvents(events) { // events are already normalized at this point
+		eventsByID = {};
+		var i, len=events.length, event;
+		for (i=0; i<len; i++) {
+			event = events[i];
+			if (eventsByID[event._id]) {
+				eventsByID[event._id].push(event);
+			}else{
+				eventsByID[event._id] = [event];
+			}
+		}
+	}
+	
+	
+	// returns a Date object for an event's end
+	function eventEnd(event) {
+		return event.end ? cloneDate(event.end) : defaultEventEnd(event);
+	}
+	
+	
+	
+	/* Event Elements
+	------------------------------------------------------------------------------*/
+	
+	
+	// report when view creates an element for an event
+	function reportEventElement(event, element) {
+		eventElements.push(element);
+		if (eventElementsByID[event._id]) {
+			eventElementsByID[event._id].push(element);
+		}else{
+			eventElementsByID[event._id] = [element];
+		}
+	}
+	
+	
+	function reportEventClear() {
+		eventElements = [];
+		eventElementsByID = {};
+	}
+	
+	
+	// attaches eventClick, eventMouseover, eventMouseout
+	function eventElementHandlers(event, eventElement) {
+		eventElement
+			.click(function(ev) {
+				if (!eventElement.hasClass('ui-draggable-dragging') &&
+					!eventElement.hasClass('ui-resizable-resizing')) {
+						return trigger('eventClick', this, event, ev);
+					}
+			})
+			.hover(
+				function(ev) {
+					trigger('eventMouseover', this, event, ev);
+				},
+				function(ev) {
+					trigger('eventMouseout', this, event, ev);
+				}
+			);
+		// TODO: don't fire eventMouseover/eventMouseout *while* dragging is occuring (on subject element)
+		// TODO: same for resizing
+	}
+	
+	
+	function showEvents(event, exceptElement) {
+		eachEventElement(event, exceptElement, 'show');
+	}
+	
+	
+	function hideEvents(event, exceptElement) {
+		eachEventElement(event, exceptElement, 'hide');
+	}
+	
+	
+	function eachEventElement(event, exceptElement, funcName) {
+		var elements = eventElementsByID[event._id],
+			i, len = elements.length;
+		for (i=0; i<len; i++) {
+			if (!exceptElement || elements[i][0] != exceptElement[0]) {
+				elements[i][funcName]();
+			}
+		}
+	}
+	
+	
+	
+	/* Event Modification Reporting
+	---------------------------------------------------------------------------------*/
+	
+	
+	function eventDrop(e, event, dayDelta, minuteDelta, allDay, ev, ui) {
+		var oldAllDay = event.allDay;
+		var eventId = event._id;
+		moveEvents(eventsByID[eventId], dayDelta, minuteDelta, allDay);
+		trigger(
+			'eventDrop',
+			e,
+			event,
+			dayDelta,
+			minuteDelta,
+			allDay,
+			function() {
+				// TODO: investigate cases where this inverse technique might not work
+				moveEvents(eventsByID[eventId], -dayDelta, -minuteDelta, oldAllDay);
+				reportEventChange(eventId);
+			},
+			ev,
+			ui
+		);
+		reportEventChange(eventId);
+	}
+	
+	
+	function eventResize(e, event, dayDelta, minuteDelta, ev, ui) {
+		var eventId = event._id;
+		elongateEvents(eventsByID[eventId], dayDelta, minuteDelta);
+		trigger(
+			'eventResize',
+			e,
+			event,
+			dayDelta,
+			minuteDelta,
+			function() {
+				// TODO: investigate cases where this inverse technique might not work
+				elongateEvents(eventsByID[eventId], -dayDelta, -minuteDelta);
+				reportEventChange(eventId);
+			},
+			ev,
+			ui
+		);
+		reportEventChange(eventId);
+	}
+	
+	
+	
+	/* Event Modification Math
+	---------------------------------------------------------------------------------*/
+	
+	
+	function moveEvents(events, dayDelta, minuteDelta, allDay) {
+		minuteDelta = minuteDelta || 0;
+		for (var e, len=events.length, i=0; i<len; i++) {
+			e = events[i];
+			if (allDay !== undefined) {
+				e.allDay = allDay;
+			}
+			addMinutes(addDays(e.start, dayDelta, true), minuteDelta);
+			if (e.end) {
+				e.end = addMinutes(addDays(e.end, dayDelta, true), minuteDelta);
+			}
+			normalizeEvent(e, options);
+		}
+	}
+	
+	
+	function elongateEvents(events, dayDelta, minuteDelta) {
+		minuteDelta = minuteDelta || 0;
+		for (var e, len=events.length, i=0; i<len; i++) {
+			e = events[i];
+			e.end = addMinutes(addDays(eventEnd(e), dayDelta, true), minuteDelta);
+			normalizeEvent(e, options);
+		}
+	}
+	
+
+}
+
+function DayEventRenderer() {
+	var t = this;
+
+	
+	// exports
+	t.renderDaySegs = renderDaySegs;
+	t.resizableDayEvent = resizableDayEvent;
+	
+	
+	// imports
+	var opt = t.opt;
+	var trigger = t.trigger;
+	var isEventDraggable = t.isEventDraggable;
+	var isEventResizable = t.isEventResizable;
+	var eventEnd = t.eventEnd;
+	var reportEventElement = t.reportEventElement;
+	var showEvents = t.showEvents;
+	var hideEvents = t.hideEvents;
+	var eventResize = t.eventResize;
+	var getRowCnt = t.getRowCnt;
+	var getColCnt = t.getColCnt;
+	var getColWidth = t.getColWidth;
+	var allDayRow = t.allDayRow;
+	var allDayBounds = t.allDayBounds;
+	var colContentLeft = t.colContentLeft;
+	var colContentRight = t.colContentRight;
+	var dayOfWeekCol = t.dayOfWeekCol;
+	var dateCell = t.dateCell;
+	var compileDaySegs = t.compileDaySegs;
+	var getDaySegmentContainer = t.getDaySegmentContainer;
+	var bindDaySeg = t.bindDaySeg; //TODO: streamline this
+	var formatDates = t.calendar.formatDates;
+	var renderDayOverlay = t.renderDayOverlay;
+	var clearOverlays = t.clearOverlays;
+	var clearSelection = t.clearSelection;
+	
+	
+	
+	/* Rendering
+	-----------------------------------------------------------------------------*/
+	
+	
+	function renderDaySegs(segs, modifiedEventId) {
+		var segmentContainer = getDaySegmentContainer();
+		var rowDivs;
+		var rowCnt = getRowCnt();
+		var colCnt = getColCnt();
+		var i = 0;
+		var rowI;
+		var levelI;
+		var colHeights;
+		var j;
+		var segCnt = segs.length;
+		var seg;
+		var top;
+		var k;
+		segmentContainer[0].innerHTML = daySegHTML(segs); // faster than .html()
+		daySegElementResolve(segs, segmentContainer.children());
+		daySegElementReport(segs);
+		daySegHandlers(segs, segmentContainer, modifiedEventId);
+		daySegCalcHSides(segs);
+		daySegSetWidths(segs);
+		daySegCalcHeights(segs);
+		rowDivs = getRowDivs();
+		// set row heights, calculate event tops (in relation to row top)
+		for (rowI=0; rowI<rowCnt; rowI++) {
+			levelI = 0;
+			colHeights = [];
+			for (j=0; j<colCnt; j++) {
+				colHeights[j] = 0;
+			}
+			while (i<segCnt && (seg = segs[i]).row == rowI) {
+				// loop through segs in a row
+				top = arrayMax(colHeights.slice(seg.startCol, seg.endCol));
+				seg.top = top;
+				top += seg.outerHeight;
+				for (k=seg.startCol; k<seg.endCol; k++) {
+					colHeights[k] = top;
+				}
+				i++;
+			}
+			rowDivs[rowI].height(arrayMax(colHeights));
+		}
+		daySegSetTops(segs, getRowTops(rowDivs));
+	}
+	
+	
+	function renderTempDaySegs(segs, adjustRow, adjustTop) {
+		var tempContainer = $("<div/>");
+		var elements;
+		var segmentContainer = getDaySegmentContainer();
+		var i;
+		var segCnt = segs.length;
+		var element;
+		tempContainer[0].innerHTML = daySegHTML(segs); // faster than .html()
+		elements = tempContainer.children();
+		segmentContainer.append(elements);
+		daySegElementResolve(segs, elements);
+		daySegCalcHSides(segs);
+		daySegSetWidths(segs);
+		daySegCalcHeights(segs);
+		daySegSetTops(segs, getRowTops(getRowDivs()));
+		elements = [];
+		for (i=0; i<segCnt; i++) {
+			element = segs[i].element;
+			if (element) {
+				if (segs[i].row === adjustRow) {
+					element.css('top', adjustTop);
+				}
+				elements.push(element[0]);
+			}
+		}
+		return $(elements);
+	}
+	
+	
+	function daySegHTML(segs) { // also sets seg.left and seg.outerWidth
+		var rtl = opt('isRTL');
+		var i;
+		var segCnt=segs.length;
+		var seg;
+		var event;
+		var url;
+		var classes;
+		var bounds = allDayBounds();
+		var minLeft = bounds.left;
+		var maxLeft = bounds.right;
+		var leftCol;
+		var rightCol;
+		var left;
+		var right;
+		var skinCss;
+		var html = '';
+		// calculate desired position/dimensions, create html
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			event = seg.event;
+			classes = ['fc-event', 'fc-event-skin', 'fc-event-hori'];
+			if (isEventDraggable(event)) {
+				classes.push('fc-event-draggable');
+			}
+			if (rtl) {
+				if (seg.isStart) {
+					classes.push('fc-corner-right');
+				}
+				if (seg.isEnd) {
+					classes.push('fc-corner-left');
+				}
+				leftCol = dayOfWeekCol(seg.end.getDay()-1);
+				rightCol = dayOfWeekCol(seg.start.getDay());
+				left = seg.isEnd ? colContentLeft(leftCol) : minLeft;
+				right = seg.isStart ? colContentRight(rightCol) : maxLeft;
+			}else{
+				if (seg.isStart) {
+					classes.push('fc-corner-left');
+				}
+				if (seg.isEnd) {
+					classes.push('fc-corner-right');
+				}
+				leftCol = dayOfWeekCol(seg.start.getDay());
+				rightCol = dayOfWeekCol(seg.end.getDay()-1);
+				left = seg.isStart ? colContentLeft(leftCol) : minLeft;
+				right = seg.isEnd ? colContentRight(rightCol) : maxLeft;
+			}
+			classes = classes.concat(event.className);
+			if (event.source) {
+				classes = classes.concat(event.source.className || []);
+			}
+			url = event.url;
+			skinCss = getSkinCss(event, opt);
+			if (url) {
+				html += "<a href='" + htmlEscape(url) + "'";
+			}else{
+				html += "<div";
+			}
+			html +=
+				" class='" + classes.join(' ') + "'" +
+				" style='position:absolute;z-index:8;left:"+left+"px;" + skinCss + "'" +
+				">" +
+				"<div" +
+				" class='fc-event-inner fc-event-skin'" +
+				(skinCss ? " style='" + skinCss + "'" : '') +
+				">";
+			if (!event.allDay && seg.isStart) {
+				html +=
+					"<span class='fc-event-time'>" +
+					htmlEscape(formatDates(event.start, event.end, opt('timeFormat'))) +
+					"</span>";
+			}
+			html +=
+				"<span class='fc-event-title'>" + htmlEscape(event.title) + "</span>" +
+				"</div>";
+			if (seg.isEnd && isEventResizable(event)) {
+				html +=
+					"<div class='ui-resizable-handle ui-resizable-" + (rtl ? 'w' : 'e') + "'>" +
+					"&nbsp;&nbsp;&nbsp;" + // makes hit area a lot better for IE6/7
+					"</div>";
+			}
+			html +=
+				"</" + (url ? "a" : "div" ) + ">";
+			seg.left = left;
+			seg.outerWidth = right - left;
+			seg.startCol = leftCol;
+			seg.endCol = rightCol + 1; // needs to be exclusive
+		}
+		return html;
+	}
+	
+	
+	function daySegElementResolve(segs, elements) { // sets seg.element
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var event;
+		var element;
+		var triggerRes;
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			event = seg.event;
+			element = $(elements[i]); // faster than .eq()
+			triggerRes = trigger('eventRender', event, event, element);
+			if (triggerRes === false) {
+				element.remove();
+			}else{
+				if (triggerRes && triggerRes !== true) {
+					triggerRes = $(triggerRes)
+						.css({
+							position: 'absolute',
+							left: seg.left
+						});
+					element.replaceWith(triggerRes);
+					element = triggerRes;
+				}
+				seg.element = element;
+			}
+		}
+	}
+	
+	
+	function daySegElementReport(segs) {
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				reportEventElement(seg.event, element);
+			}
+		}
+	}
+	
+	
+	function daySegHandlers(segs, segmentContainer, modifiedEventId) {
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		var event;
+		// retrieve elements, run through eventRender callback, bind handlers
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				event = seg.event;
+				if (event._id === modifiedEventId) {
+					bindDaySeg(event, element, seg);
+				}else{
+					element[0]._fci = i; // for lazySegBind
+				}
+			}
+		}
+		lazySegBind(segmentContainer, segs, bindDaySeg);
+	}
+	
+	
+	function daySegCalcHSides(segs) { // also sets seg.key
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		var key, val;
+		var hsideCache = {};
+		// record event horizontal sides
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				key = seg.key = cssKey(element[0]);
+				val = hsideCache[key];
+				if (val === undefined) {
+					val = hsideCache[key] = hsides(element, true);
+				}
+				seg.hsides = val;
+			}
+		}
+	}
+	
+	
+	function daySegSetWidths(segs) {
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				element[0].style.width = Math.max(0, seg.outerWidth - seg.hsides) + 'px';
+			}
+		}
+	}
+	
+	
+	function daySegCalcHeights(segs) {
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		var key, val;
+		var vmarginCache = {};
+		// record event heights
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				key = seg.key; // created in daySegCalcHSides
+				val = vmarginCache[key];
+				if (val === undefined) {
+					val = vmarginCache[key] = vmargins(element);
+				}
+				seg.outerHeight = element[0].offsetHeight + val;
+			}
+		}
+	}
+	
+	
+	function getRowDivs() {
+		var i;
+		var rowCnt = getRowCnt();
+		var rowDivs = [];
+		for (i=0; i<rowCnt; i++) {
+			rowDivs[i] = allDayRow(i)
+				.find('td:first div.fc-day-content > div'); // optimal selector?
+		}
+		return rowDivs;
+	}
+	
+	
+	function getRowTops(rowDivs) {
+		var i;
+		var rowCnt = rowDivs.length;
+		var tops = [];
+		for (i=0; i<rowCnt; i++) {
+			tops[i] = rowDivs[i][0].offsetTop; // !!?? but this means the element needs position:relative if in a table cell!!!!
+		}
+		return tops;
+	}
+	
+	
+	function daySegSetTops(segs, rowTops) { // also triggers eventAfterRender
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		var event;
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				element[0].style.top = rowTops[seg.row] + (seg.top||0) + 'px';
+				event = seg.event;
+				trigger('eventAfterRender', event, event, element);
+			}
+		}
+	}
+	
+	
+	
+	/* Resizing
+	-----------------------------------------------------------------------------------*/
+	
+	
+	function resizableDayEvent(event, element, seg) {
+		var rtl = opt('isRTL');
+		var direction = rtl ? 'w' : 'e';
+		var handle = element.find('div.ui-resizable-' + direction);
+		var isResizing = false;
+		
+		// TODO: look into using jquery-ui mouse widget for this stuff
+		disableTextSelection(element); // prevent native <a> selection for IE
+		element
+			.mousedown(function(ev) { // prevent native <a> selection for others
+				ev.preventDefault();
+			})
+			.click(function(ev) {
+				if (isResizing) {
+					ev.preventDefault(); // prevent link from being visited (only method that worked in IE6)
+					ev.stopImmediatePropagation(); // prevent fullcalendar eventClick handler from being called
+					                               // (eventElementHandlers needs to be bound after resizableDayEvent)
+				}
+			});
+		
+		handle.mousedown(function(ev) {
+			if (ev.which != 1) {
+				return; // needs to be left mouse button
+			}
+			isResizing = true;
+			var hoverListener = t.getHoverListener();
+			var rowCnt = getRowCnt();
+			var colCnt = getColCnt();
+			var dis = rtl ? -1 : 1;
+			var dit = rtl ? colCnt-1 : 0;
+			var elementTop = element.css('top');
+			var dayDelta;
+			var helpers;
+			var eventCopy = $.extend({}, event);
+			var minCell = dateCell(event.start);
+			clearSelection();
+			$('body')
+				.css('cursor', direction + '-resize')
+				.one('mouseup', mouseup);
+			trigger('eventResizeStart', this, event, ev);
+			hoverListener.start(function(cell, origCell) {
+				if (cell) {
+					var r = Math.max(minCell.row, cell.row);
+					var c = cell.col;
+					if (rowCnt == 1) {
+						r = 0; // hack for all-day area in agenda views
+					}
+					if (r == minCell.row) {
+						if (rtl) {
+							c = Math.min(minCell.col, c);
+						}else{
+							c = Math.max(minCell.col, c);
+						}
+					}
+					dayDelta = (r*7 + c*dis+dit) - (origCell.row*7 + origCell.col*dis+dit);
+					var newEnd = addDays(eventEnd(event), dayDelta, true);
+					if (dayDelta) {
+						eventCopy.end = newEnd;
+						var oldHelpers = helpers;
+						helpers = renderTempDaySegs(compileDaySegs([eventCopy]), seg.row, elementTop);
+						helpers.find('*').css('cursor', direction + '-resize');
+						if (oldHelpers) {
+							oldHelpers.remove();
+						}
+						hideEvents(event);
+					}else{
+						if (helpers) {
+							showEvents(event);
+							helpers.remove();
+							helpers = null;
+						}
+					}
+					clearOverlays();
+					renderDayOverlay(event.start, addDays(cloneDate(newEnd), 1)); // coordinate grid already rebuild at hoverListener.start
+				}
+			}, ev);
+			
+			function mouseup(ev) {
+				trigger('eventResizeStop', this, event, ev);
+				$('body').css('cursor', '');
+				hoverListener.stop();
+				clearOverlays();
+				if (dayDelta) {
+					eventResize(this, event, dayDelta, 0, ev);
+					// event redraw will clear helpers
+				}
+				// otherwise, the drag handler already restored the old events
+				
+				setTimeout(function() { // make this happen after the element's click event
+					isResizing = false;
+				},0);
+			}
+			
+		});
+	}
+	
+
+}
+
+//BUG: unselect needs to be triggered when events are dragged+dropped
+
+function SelectionManager() {
+	var t = this;
+	
+	
+	// exports
+	t.select = select;
+	t.unselect = unselect;
+	t.reportSelection = reportSelection;
+	t.daySelectionMousedown = daySelectionMousedown;
+	
+	
+	// imports
+	var opt = t.opt;
+	var trigger = t.trigger;
+	var defaultSelectionEnd = t.defaultSelectionEnd;
+	var renderSelection = t.renderSelection;
+	var clearSelection = t.clearSelection;
+	
+	
+	// locals
+	var selected = false;
+
+
+
+	// unselectAuto
+	if (opt('selectable') && opt('unselectAuto')) {
+		$(document).mousedown(function(ev) {
+			var ignore = opt('unselectCancel');
+			if (ignore) {
+				if ($(ev.target).parents(ignore).length) { // could be optimized to stop after first match
+					return;
+				}
+			}
+			unselect(ev);
+		});
+	}
+	
+
+	function select(startDate, endDate, allDay) {
+		unselect();
+		if (!endDate) {
+			endDate = defaultSelectionEnd(startDate, allDay);
+		}
+		renderSelection(startDate, endDate, allDay);
+		reportSelection(startDate, endDate, allDay);
+	}
+	
+	
+	function unselect(ev) {
+		if (selected) {
+			selected = false;
+			clearSelection();
+			trigger('unselect', null, ev);
+		}
+	}
+	
+	
+	function reportSelection(startDate, endDate, allDay, ev) {
+		selected = true;
+		trigger('select', null, startDate, endDate, allDay, ev);
+	}
+	
+	
+	function daySelectionMousedown(ev) { // not really a generic manager method, oh well
+		var cellDate = t.cellDate;
+		var cellIsAllDay = t.cellIsAllDay;
+		var hoverListener = t.getHoverListener();
+		var reportDayClick = t.reportDayClick; // this is hacky and sort of weird
+		if (ev.which == 1 && opt('selectable')) { // which==1 means left mouse button
+			unselect(ev);
+			var _mousedownElement = this;
+			var dates;
+			hoverListener.start(function(cell, origCell) { // TODO: maybe put cellDate/cellIsAllDay info in cell
+				clearSelection();
+				if (cell && cellIsAllDay(cell)) {
+					dates = [ cellDate(origCell), cellDate(cell) ].sort(cmp);
+					renderSelection(dates[0], dates[1], true);
+				}else{
+					dates = null;
+				}
+			}, ev);
+			$(document).one('mouseup', function(ev) {
+				hoverListener.stop();
+				if (dates) {
+					if (+dates[0] == +dates[1]) {
+						reportDayClick(dates[0], true, ev);
+					}
+					reportSelection(dates[0], dates[1], true, ev);
+				}
+			});
+		}
+	}
+
+
+}
+ 
+function OverlayManager() {
+	var t = this;
+	
+	
+	// exports
+	t.renderOverlay = renderOverlay;
+	t.clearOverlays = clearOverlays;
+	
+	
+	// locals
+	var usedOverlays = [];
+	var unusedOverlays = [];
+	
+	
+	function renderOverlay(rect, parent) {
+		var e = unusedOverlays.shift();
+		if (!e) {
+			e = $("<div class='fc-cell-overlay' style='position:absolute;z-index:3'/>");
+		}
+		if (e[0].parentNode != parent[0]) {
+			e.appendTo(parent);
+		}
+		usedOverlays.push(e.css(rect).show());
+		return e;
+	}
+	
+
+	function clearOverlays() {
+		var e;
+		while (e = usedOverlays.shift()) {
+			unusedOverlays.push(e.hide().unbind());
+		}
+	}
+
+
+}
+
+function CoordinateGrid(buildFunc) {
+
+	var t = this;
+	var rows;
+	var cols;
+	
+	
+	t.build = function() {
+		rows = [];
+		cols = [];
+		buildFunc(rows, cols);
+	};
+	
+	
+	t.cell = function(x, y) {
+		var rowCnt = rows.length;
+		var colCnt = cols.length;
+		var i, r=-1, c=-1;
+		for (i=0; i<rowCnt; i++) {
+			if (y >= rows[i][0] && y < rows[i][1]) {
+				r = i;
+				break;
+			}
+		}
+		for (i=0; i<colCnt; i++) {
+			if (x >= cols[i][0] && x < cols[i][1]) {
+				c = i;
+				break;
+			}
+		}
+		return (r>=0 && c>=0) ? { row:r, col:c } : null;
+	};
+	
+	
+	t.rect = function(row0, col0, row1, col1, originElement) { // row1,col1 is inclusive
+		var origin = originElement.offset();
+		return {
+			top: rows[row0][0] - origin.top,
+			left: cols[col0][0] - origin.left,
+			width: cols[col1][1] - cols[col0][0],
+			height: rows[row1][1] - rows[row0][0]
+		};
+	};
+
+}
+
+function HoverListener(coordinateGrid) {
+
+
+	var t = this;
+	var bindType;
+	var change;
+	var firstCell;
+	var cell;
+	
+	
+	t.start = function(_change, ev, _bindType) {
+		change = _change;
+		firstCell = cell = null;
+		coordinateGrid.build();
+		mouse(ev);
+		bindType = _bindType || 'mousemove';
+		$(document).bind(bindType, mouse);
+	};
+	
+	
+	function mouse(ev) {
+		var newCell = coordinateGrid.cell(ev.pageX, ev.pageY);
+		if (!newCell != !cell || newCell && (newCell.row != cell.row || newCell.col != cell.col)) {
+			if (newCell) {
+				if (!firstCell) {
+					firstCell = newCell;
+				}
+				change(newCell, firstCell, newCell.row-firstCell.row, newCell.col-firstCell.col);
+			}else{
+				change(newCell, firstCell);
+			}
+			cell = newCell;
+		}
+	}
+	
+	
+	t.stop = function() {
+		$(document).unbind(bindType, mouse);
+		return cell;
+	};
+	
+	
+}
+
+function HorizontalPositionCache(getElement) {
+
+	var t = this,
+		elements = {},
+		lefts = {},
+		rights = {};
+		
+	function e(i) {
+		return elements[i] = elements[i] || getElement(i);
+	}
+	
+	t.left = function(i) {
+		return lefts[i] = lefts[i] === undefined ? e(i).position().left : lefts[i];
+	};
+	
+	t.right = function(i) {
+		return rights[i] = rights[i] === undefined ? t.left(i) + e(i).width() : rights[i];
+	};
+	
+	t.clear = function() {
+		elements = {};
+		lefts = {};
+		rights = {};
+	};
+	
+}
+
+
+})(jQuery);
 
 /**
  * PrimeFaces Schedule Widget
