@@ -332,7 +332,7 @@ PrimeFaces.widget.MenuButton = function(cfg) {
     this.menuitems = this.jq.find('.ui-menuitem');
     this.cfg.disabled = this.button.is(':disabled');
 
-    this.button.button({icons:{primary:'ui-icon-triangle-1-s'}});
+    PrimeFaces.skinButton(this.button);
 
     if(!this.cfg.disabled) {
         this.bindEvents();
