@@ -10,6 +10,7 @@ PrimeFaces.widget.Dashboard = function(cfg) {
 	this.cfg.placeholder = this.PLACEHOLDER_CLASS;
 	this.cfg.forcePlaceholderSize = true;
 	this.cfg.revert=true;
+    this.cfg.handle='.ui-panel-titlebar';
 
     var _self = this;
 	
