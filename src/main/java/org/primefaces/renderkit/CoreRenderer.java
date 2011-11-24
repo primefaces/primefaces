@@ -299,10 +299,6 @@ public class CoreRenderer extends Renderer {
 		return request.toString();
 	}
 
-	protected String escapeText(String value) {
-		return value == null ? "" : value.replaceAll("'", "\\\\'");
-	}
-
     /**
      * Non-obstrusive way to apply client behaviors.
      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
@@ -397,4 +393,61 @@ public class CoreRenderer extends Renderer {
     protected void endScript(ResponseWriter writer) throws IOException {
         writer.endElement("script");
     }
+        
+    /**
+     * Duplicate code from json-simple project under apache license
+     * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
+     */
+    protected String escapeJSON(String text) {
+        if(text == null) {
+            return null;
+        }
+        
+        StringBuffer sb = new StringBuffer();
+        
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            switch (ch) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                default:
+                    //Reference: http://www.unicode.org/versions/Unicode5.1.0/
+                    if((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
+                        String ss = Integer.toHexString(ch);
+                        sb.append("\\u");
+                        for (int k = 0; k < 4 - ss.length(); k++) {
+                            sb.append('0');
+                        }
+                        sb.append(ss.toUpperCase());
+                    } else {
+                        sb.append(ch);
+                    }
+            }
+        }
+                
+        return sb.toString();
+    }
+
 }
