@@ -420,6 +420,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         dataType : "xml",
         data : postParams,
         portletForms: pForms,
+        source: cfg.source,
         beforeSend: function(xhr) {
            xhr.setRequestHeader('Faces-Request', 'partial/ajax');
         },
