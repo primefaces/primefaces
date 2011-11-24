@@ -606,3 +606,27 @@ import javax.faces.FacesException;
 
         return null;
     }
+
+    private int columnsCount = -1;
+
+    public int getColumnsCount() {
+        if(columnsCount == -1) {
+            columnsCount = 0;
+
+            for(UIComponent kid : getChildren()) {
+                if(kid.isRendered()) {
+                    if(kid instanceof Column) {
+                        columnsCount++;
+                    } else if(kid instanceof Columns) {
+                        Columns columns = (Columns) kid;
+                        Collection collection = (Collection) columns.getValue();
+                        if(collection != null) {
+                            columnsCount += collection.size();
+                        }
+                    }
+                } 
+            }
+        }
+
+        return columnsCount;
+    }
