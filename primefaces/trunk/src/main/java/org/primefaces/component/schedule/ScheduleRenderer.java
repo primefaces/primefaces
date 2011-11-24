@@ -81,7 +81,7 @@ public class ScheduleRenderer extends CoreRenderer {
 			
 			writer.write("{");
 			writer.write("\"id\": \"" + event.getId() + "\"");	
-			writer.write(",\"title\": \"" + escapeJSON(event.getTitle()) + "\"");
+			writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
 			writer.write(",\"start\": " + event.getStartDate().getTime());	
 			writer.write(",\"end\": " + event.getEndDate().getTime());	
 			writer.write(",\"allDay\":" + event.isAllDay());
