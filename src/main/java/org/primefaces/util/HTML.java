@@ -119,7 +119,15 @@ public class HTML {
 
 	public static String[] TEXTAREA_ATTRS = {
 		"cols",
-		"rows"
+		"rows",
+        "accesskey",
+		"alt",
+        "autocomplete",
+		"dir",
+		"lang",
+		"size",
+		"tabindex",
+		"title"
 	};
 	
 	public static String[] LINK_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
@@ -134,7 +142,7 @@ public class HTML {
 	
 	public static final String[] INPUT_TEXT_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
-    public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS, TEXTAREA_ATTRS);
+    public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(TEXTAREA_ATTRS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
     public static final String[] SELECT_ATTRS = ArrayUtils.concat(SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
