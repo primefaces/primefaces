@@ -33,6 +33,8 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 	private String styleClass;
 	
 	private Object data;
+    
+    private boolean editable = true;
 
 	public DefaultScheduleEvent() {}
 	
@@ -118,6 +120,14 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 	public void setData(Object data) {
 		this.data = data;
 	}
+    
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }   
 
     @Override
     public boolean equals(Object obj) {

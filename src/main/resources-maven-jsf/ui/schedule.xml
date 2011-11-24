@@ -78,13 +78,6 @@
             <description>Style class of the main container element of schedule.</description>
 		</attribute>
 		<attribute>
-			<name>editable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Defines whether calendar can be modified. Default is false.</description>
-		</attribute>
-		<attribute>
 			<name>draggable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
