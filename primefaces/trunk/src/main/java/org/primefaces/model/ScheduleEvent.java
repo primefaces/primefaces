@@ -34,4 +34,6 @@ public interface ScheduleEvent {
     public boolean isAllDay();
     
     public String getStyleClass();
+    
+    public boolean isEditable();
 }

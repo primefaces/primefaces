@@ -5227,9 +5227,7 @@ PrimeFaces.widget.Schedule = function(cfg) {
 	
     this.configureLocale();
 	
-	if(this.cfg.editable) {
-		this.setupEventHandlers();
-    }
+	this.setupEventHandlers();
     
     if(this.jq.is(':not(:visible)')) {
         var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
