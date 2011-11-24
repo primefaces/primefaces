@@ -19,11 +19,14 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
@@ -31,6 +34,7 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
@@ -164,6 +168,7 @@ public class DataTableRenderer extends DataRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
+        boolean hasPaginator = table.isPaginator();
 
         //style
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
@@ -173,10 +178,6 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isResizableColumns()) {
             containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS; 
         }
-        
-        //paginator
-        boolean hasPaginator = table.isPaginator();
-        String paginatorPosition = table.getPaginatorPosition();
         
         //default sort
         if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
@@ -194,19 +195,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
-            encodePaginatorMarkup(context, table, "top");
-        }
-
         if(scrollable) {
             encodeScrollableTable(context, table);
-
         } else {
             encodeRegularTable(context, table);
-        }
-
-        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
-            encodePaginatorMarkup(context, table, "bottom");
         }
 
         if(table.isSelectionEnabled()) {
@@ -520,6 +512,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("thead", null);
         
         encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS, "th");
+        
+        if(table.isPaginator() && !table.getPaginatorPosition().equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, table, "top", "th", org.primefaces.component.api.UIData.PAGINATOR_TOP_CONTAINER_CLASS);
+        }
 
         if(group != null && group.isRendered()) {
 
@@ -768,14 +764,10 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("footer");
-        boolean shouldRender = table.hasFooterColumn() || (group != null && group.isRendered());
-
-        if(!shouldRender)
-            return;
 
         writer.startElement("tfoot", null);
 
-        if(group != null) {
+        if(group != null && group.isRendered()) {
 
             for(UIComponent child : group.getChildren()) {
                 if(child.isRendered() && child instanceof Row) {
@@ -794,7 +786,7 @@ public class DataTableRenderer extends DataRenderer {
             }
 
         }
-        else {
+        else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);
 
             for(Column column : table.getColumns()) {
@@ -804,6 +796,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("tr");
         }
         
+        if(table.isPaginator() && !table.getPaginatorPosition().equalsIgnoreCase("top")) {
+            encodePaginatorMarkup(context, table, "bottom", "td", org.primefaces.component.api.UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS);
+        }
+ 
         encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS, "td");
         
         writer.endElement("tfoot");
@@ -821,6 +817,32 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("colspan", table.getColumns().size(), null);
 
         facet.encodeAll(context);
+        
+        writer.endElement(tag);
+        writer.endElement("tr");
+    }
+    
+    protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position, String tag, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = table.getClientId(context) + "_paginator_" + position; 
+
+        writer.startElement("tr", null);
+        writer.startElement(tag, null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("colspan", table.getColumns().size(), null);
+                      
+        Pattern pattern = Pattern.compile("\\{([^\\{]+?)\\}");
+        Matcher matcher = pattern.matcher(table.getPaginatorTemplate());
+        
+        while(matcher.find()) {
+            String key = matcher.group(1);
+            
+            PaginatorElementRenderer renderer = paginatorElements.get(key);
+            if(renderer != null) {
+                renderer.render(context, table);
+            }
+        }
         
         writer.endElement(tag);
         writer.endElement("tr");
