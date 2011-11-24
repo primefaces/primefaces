@@ -26,7 +26,6 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
@@ -814,7 +813,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("tr", null);
         writer.startElement(tag, null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("colspan", table.getColumns().size(), null);
+        writer.writeAttribute("colspan", table.getColumnsCount(), null);
 
         facet.encodeAll(context);
         
@@ -830,7 +829,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement(tag, null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("colspan", table.getColumns().size(), null);
+        writer.writeAttribute("colspan", table.getColumnsCount(), null);
                       
         Pattern pattern = Pattern.compile("\\{([^\\{]+?)\\}");
         Matcher matcher = pattern.matcher(table.getPaginatorTemplate());
