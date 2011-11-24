@@ -63,6 +63,14 @@ PrimeFaces.widget.GMap.prototype.init = function() {
     //fit auto bounds
     if(this.cfg.fitBounds && this.viewport)
         this.map.fitBounds(this.viewport);
+    
+    //bind infowindow domready for dynamic content.
+    if(this.cfg.infoWindow){
+        var _self = this;
+        google.maps.event.addListener(this.cfg.infoWindow, 'domready', function() {
+            _self.loadWindow(_self.cfg.infoWindowContent);
+        });
+    }
 }
 
 PrimeFaces.widget.GMap.prototype.getMap = function() {
@@ -71,6 +79,11 @@ PrimeFaces.widget.GMap.prototype.getMap = function() {
 
 PrimeFaces.widget.GMap.prototype.getInfoWindow = function() {
 	return this.cfg.infoWindow;
+}
+
+//load info window content
+PrimeFaces.widget.GMap.prototype.loadWindow = function(content){
+    this.jq.find(PrimeFaces.escapeClientId(this.getInfoWindow().id + '_content')).html(content||'');
 }
 
 PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
@@ -84,7 +97,8 @@ PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
         content = update.text();
 
         if(id == infoWindow.id){
-            infoWindow.setContent(content);
+            this.cfg.infoWindowContent = content;
+            infoWindow.setContent('<div id="' + id + '_content">' + content + '</div>');
 
             infoWindow.open(this.getMap(), this.selectedOverlay);
         }
