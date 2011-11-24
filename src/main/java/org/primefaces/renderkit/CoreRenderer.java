@@ -398,12 +398,12 @@ public class CoreRenderer extends Renderer {
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
      */
-    protected String escapeJSON(String text) {
+    protected String escapeText(String text) {
         if(text == null) {
             return null;
         }
         
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);

@@ -66,20 +66,20 @@ public class GrowlRenderer extends CoreRenderer {
 		while(messages.hasNext()) {
 			FacesMessage message = messages.next();
 			String severityImage = getImage(context, growl, message);
-			String summary = message.getSummary().replaceAll("'", "\\\\'");
-			String detail = message.getDetail().replaceAll("'", "\\\\'");
+			String summary = escapeText(message.getSummary());
+			String detail = escapeText(message.getDetail());
 
             writer.write("{");
 
 			if(growl.isShowSummary() && growl.isShowDetail())
-				writer.write("title:'" + summary + "',text:'" + detail + "'");
+				writer.write("title:\"" + summary + "\",text:\"" + detail + "\"");
 			else if(growl.isShowSummary() && !growl.isShowDetail())
-				writer.write("title:'" + summary + "',text:''");
+				writer.write("title:\"" + summary + "',text:\"\"");
 			else if(!growl.isShowSummary() && growl.isShowDetail())
-				writer.write("title:'',text:'" + detail + "'");
+				writer.write("title:\"\",text:\"" + detail + "\"");
 
 			if(!isValueBlank(severityImage))
-				writer.write(",image:'" + severityImage + "'");
+				writer.write(",image:\"" + severityImage + "\"");
 
 			if(growl.isSticky())
 				writer.write(",sticky:true");
