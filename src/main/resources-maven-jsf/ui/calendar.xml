@@ -229,6 +229,12 @@
             <defaultValue>59</defaultValue>
             <description>Maximum boundary for second selection. Default is 59.</description>
         </attribute>
+         <attribute>
+            <name>pagedate</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Sets the initial date when value is not populated.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

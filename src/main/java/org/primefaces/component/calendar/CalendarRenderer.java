@@ -116,7 +116,18 @@ public class CalendarRenderer extends InputRenderer {
         writer.write(",popup:" + calendar.isPopup());
         writer.write(",locale:'" + calendar.calculateLocale(context).toString() + "'");
 
-        if(!isValueBlank(value)) writer.write(",defaultDate:'" + value + "'");
+        //initial date
+        Object pagedate = calendar.getPagedate();
+        if(!isValueBlank(value)) {
+            writer.write(",defaultDate:'" + value + "'");
+        } 
+        else if(pagedate != null) {
+            if(pagedate instanceof Date)
+                writer.write(",defaultDate:'" + CalendarUtils.getDateAsString(calendar, pagedate) + "'");
+            else
+                writer.write(",defaultDate:'" + pagedate + "'");
+        }
+
         if(calendar.getPattern() != null) writer.write(",pattern:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
         if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
         if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMindate()) + "'");
