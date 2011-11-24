@@ -194,8 +194,6 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
-
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, table, "top");
         }
@@ -210,8 +208,6 @@ public class DataTableRenderer extends DataRenderer {
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, table, "bottom");
         }
-        
-        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
 
         if(table.isSelectionEnabled()) {
             encodeSelectionHolder(context, table);
@@ -522,6 +518,8 @@ public class DataTableRenderer extends DataRenderer {
         ColumnGroup group = table.getColumnGroup("header");
 
         writer.startElement("thead", null);
+        
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS, "th");
 
         if(group != null && group.isRendered()) {
 
@@ -806,21 +804,26 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("tr");
         }
         
+        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS, "td");
+        
         writer.endElement("tfoot");
     }
 
-    protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
+    protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass, String tag) throws IOException {
         if(facet == null)
             return;
         
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("div", null);
+        writer.startElement("tr", null);
+        writer.startElement(tag, null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("colspan", table.getColumns().size(), null);
 
         facet.encodeAll(context);
-
-        writer.endElement("div");
+        
+        writer.endElement(tag);
+        writer.endElement("tr");
     }
 
     protected void encodeSelectionConfig(FacesContext context, DataTable table) throws IOException {
