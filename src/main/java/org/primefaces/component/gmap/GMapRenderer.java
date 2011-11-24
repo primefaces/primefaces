@@ -168,7 +168,7 @@ public class GMapRenderer extends CoreRenderer {
 		writer.write("position:new google.maps.LatLng(" + marker.getLatlng().getLat() + ", " + marker.getLatlng().getLng() + ")");
 		
 		writer.write(",id:'" + marker.getId() + "'");
-		if(marker.getTitle() != null) writer.write(",title:'" + marker.getTitle() + "'");
+		if(marker.getTitle() != null) writer.write(",title:\"" + escapeText(marker.getTitle()) + "\"");
 		if(marker.getIcon() != null) writer.write(",icon:'" + marker.getIcon() + "'");
 		if(marker.getShadow() != null) writer.write(",shadow:'" + marker.getShadow() + "'");
 		if(marker.getCursor() != null) writer.write(",cursor:'" + marker.getCursor() + "'");
