@@ -20,8 +20,8 @@ PrimeFaces.widget.Wizard = function(cfg) {
     //Navigation controls
     if(this.cfg.showNavBar) {
         //visuals
-        PrimeFaces.skinInput(this.backNav);
-        PrimeFaces.skinInput(this.nextNav);
+        PrimeFaces.skinButton(this.backNav);
+        PrimeFaces.skinButton(this.nextNav);
         
         //events
         this.backNav.click(function() {_self.back();});
