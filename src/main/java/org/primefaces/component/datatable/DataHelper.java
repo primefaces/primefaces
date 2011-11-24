@@ -17,10 +17,8 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.el.MethodExpression;
@@ -114,6 +112,8 @@ class DataHelper {
     void decodeFilters(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+        boolean hasGlobalFilter = params.containsKey(globalFilterParam);
 
         if(table.isFilterRequest(context)) {
             //Reset state
@@ -134,18 +134,17 @@ class DataHelper {
                     filters.put(filterField, filterValue);
                 }
             }
+            
+            if(hasGlobalFilter) {
+                filters.put("globalFilter", params.get(globalFilterParam));
+            }
 
             table.setFilters(filters);
         }
         else {
             Map<String,Column> filterMap = table.getFilterMap();
             List filteredData = new ArrayList();
-
-            String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
-            boolean hasGlobalFilter = !isValueBlank(globalFilter);
-            if(hasGlobalFilter) {
-                globalFilter = globalFilter.toLowerCase();
-            }
+            String globalFilter = hasGlobalFilter ? params.get(globalFilterParam).toLowerCase() : null;
 
             for(int i = 0; i < table.getRowCount(); i++) {
                 table.setRowIndex(i);
