@@ -40,10 +40,10 @@
             <description>Sets maximum height of text area container. Default is 500.</description>
 		</attribute>
         <attribute>
-			<name>maxLength</name>
+			<name>maxlength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>0</defaultValue>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Sets maximum character number of text area container. Default is 0, means no limit.</description>
 		</attribute>
         <attribute>
