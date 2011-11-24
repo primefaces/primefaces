@@ -254,12 +254,7 @@ public class WizardRenderer extends CoreRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
-        if(label == null)
-            writer.write("ui-button");
-        else
-            writer.writeText(label, "value");
-        
+        writer.writeText(label, "value");
         writer.endElement("span");
 
 		writer.endElement("button");
