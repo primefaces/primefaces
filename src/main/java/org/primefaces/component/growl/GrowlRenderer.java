@@ -72,11 +72,11 @@ public class GrowlRenderer extends CoreRenderer {
             writer.write("{");
 
 			if(growl.isShowSummary() && growl.isShowDetail())
-				writer.write("title:\"" + summary + "\",text:\"" + detail + "\"");
+				writer.writeText("title:\"" + summary + "\",text:\"" + detail + "\"", null);
 			else if(growl.isShowSummary() && !growl.isShowDetail())
-				writer.write("title:\"" + summary + "',text:\"\"");
+				writer.writeText("title:\"" + summary + "',text:\"\"", null);
 			else if(!growl.isShowSummary() && growl.isShowDetail())
-				writer.write("title:\"\",text:\"" + detail + "\"");
+				writer.writeText("title:\"\",text:\"" + detail + "\"", null);
 
 			if(!isValueBlank(severityImage))
 				writer.write(",image:\"" + severityImage + "\"");
