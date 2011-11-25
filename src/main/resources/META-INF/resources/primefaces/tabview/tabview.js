@@ -19,7 +19,7 @@ PrimeFaces.widget.TabView = function(cfg) {
         this.markAsLoaded(this.panelContainer.children().eq(this.cfg.selected));
     }
     
-    this.panelContainer.children('.ui-tabs-panel').data('widget', this);
+    this.jq.data('widget', this);
     
     this.postConstruct();
 }
