@@ -22,7 +22,9 @@ public class Overlay implements Serializable {
 	private String id;
 	
 	private Object data;
-	
+    
+    private int zindex = Integer.MIN_VALUE;
+
 	public Overlay() {
 		
 	}
@@ -46,6 +48,14 @@ public class Overlay implements Serializable {
 	public void setData(Object data) {
 		this.data = data;
 	}
+
+    public int getZindex() {
+        return zindex;
+    }
+
+    public void setZindex(int zindex) {
+        this.zindex = zindex;
+    }
 
 	@Override
 	public int hashCode() {
