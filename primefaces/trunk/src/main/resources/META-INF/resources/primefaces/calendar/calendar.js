@@ -16,7 +16,7 @@ PrimeFaces.widget.Calendar = function(cfg) {
     if(this.cfg.pattern) {
         this.cfg.dateFormat = this.cfg.pattern;
     }
-
+    
     //Select listener
     this.bindDateSelectListener();
     
@@ -48,6 +48,9 @@ PrimeFaces.widget.Calendar = function(cfg) {
         };
     }
 
+    //image title
+    this.cfg.buttonText = this.jqEl.attr('title') || '';
+
 	//Initialize calendar
     if(!this.cfg.disabled) {
         if(hasTimePicker) {
@@ -62,8 +65,7 @@ PrimeFaces.widget.Calendar = function(cfg) {
     }
 
     //button title
-    var buttonText = this.jqEl.attr('title')||'';
-    this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', buttonText);
+    this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
     
     this.postConstruct();
 }
