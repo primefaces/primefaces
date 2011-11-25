@@ -12,6 +12,7 @@ import org.primefaces.util.MessageFactory;
 	protected void validateValue(FacesContext context, Object value) {
 		super.validateValue(context, value);
         String match = this.getMatch();
+        Object submittedValue = this.getSubmittedValue();
 
         if(isValid() && match != null) {
             Password matchWith = (Password) this.findComponent(match);
@@ -19,9 +20,7 @@ import org.primefaces.util.MessageFactory;
                 throw new FacesException("Cannot find component " + match + " in view.");
             }
 
-            Object matchValue = matchWith.getValue();
-
-            if(value != null && !value.equals(matchValue)) {
+            if(submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
                 this.setValid(false);
                 matchWith.setValid(false);
 
