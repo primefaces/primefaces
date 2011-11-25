@@ -154,6 +154,7 @@ public class HTML {
     public final static String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon";
     public final static String BUTTON_TEXT_CLASS = "ui-button-text";
     
+    public final static String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public final static String CHECKBOX_CLASS = "ui-chkbox ui-widget";
     public final static String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
     public final static String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";

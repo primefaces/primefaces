@@ -329,7 +329,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, false, column.isDisabledSelection());
+            encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
         }
         else {
             if(hasFilter) {
@@ -927,15 +927,13 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, Column column, boolean selected) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String selectionMode = column.getSelectionMode();
-        String name = clientId + "_selection";
         boolean disabled = column.isDisabledSelection();
 
         if(selectionMode.equalsIgnoreCase("single")) {
             encodeRadio(context, table, selected, disabled);
         } else if(selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, selected, disabled);
+            encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS);
         } else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
@@ -964,7 +962,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+    protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         String iconClass = HTML.CHECKBOX_ICON_CLASS;
@@ -973,7 +971,7 @@ public class DataTableRenderer extends DataRenderer {
         iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
         
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

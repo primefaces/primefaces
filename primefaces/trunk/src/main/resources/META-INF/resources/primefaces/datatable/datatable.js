@@ -211,7 +211,7 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
             });
         }
         else {
-            this.checkAllToggler = $(this.jqId + ' > table thead th.ui-selection-column .ui-chkbox .ui-chkbox-box');
+            this.checkAllToggler = $(this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box');
             
             //check-uncheck all
             this.checkAllToggler.die('mouseover').live('mouseover', function() {
