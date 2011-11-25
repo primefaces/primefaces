@@ -174,7 +174,7 @@ public class GMapRenderer extends CoreRenderer {
 		if(marker.getCursor() != null) writer.write(",cursor:'" + marker.getCursor() + "'");
 		if(marker.isDraggable()) writer.write(",draggable: true");
 		if(!marker.isVisible()) writer.write(",visible: false");
-		if(!marker.isFlat()) writer.write(",flat: true");
+		if(marker.isFlat()) writer.write(",flat: true");
 		
 		writer.write("})"); 
 	}
