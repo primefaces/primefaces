@@ -128,15 +128,11 @@ public class TreeTableRenderer extends CoreRenderer {
 		if(tt.getStyle() != null) 
             writer.writeAttribute("style", tt.getStyle(), null);
         
-        encodeFacet(context, tt, "header", TreeTable.HEADER_CLASS);
-        
         if(scrollable) {
             encodeScrollableMarkup(context, tt);
         } else {
             encodeRegularMarkup(context, tt);
         }
-
-        encodeFacet(context, tt, "footer", TreeTable.FOOTER_CLASS);
         
         if(tt.getSelectionMode() != null) {
             encodeSelectionHolder(context, tt);
@@ -221,6 +217,8 @@ public class TreeTableRenderer extends CoreRenderer {
 
 		writer.startElement("thead", null);
 		writer.startElement("tr", null);
+        
+        encodeFacet(context, tt, "header", TreeTable.HEADER_CLASS, "th");
         
 		for(int i = 0; i < tt.getChildCount(); i++) {
             UIComponent kid = tt.getChildren().get(i);
@@ -350,61 +348,65 @@ public class TreeTableRenderer extends CoreRenderer {
         }
     }
     
-    protected void encodeFacet(FacesContext context, TreeTable tt, String name, String styleClass) throws IOException {
+    protected void encodeFacet(FacesContext context, TreeTable tt, String name, String styleClass, String tag) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = tt.getFacet(name);
 
         if(facet != null) {
-            writer.startElement("div", null);
+            writer.startElement("tr", null);
+            writer.startElement(tag, null);
+            writer.writeAttribute("colspan", tt.getColumnsCount(), null);
             writer.writeAttribute("class", styleClass, null);
             facet.encodeAll(context);
-            writer.endElement("div");
+            writer.endElement("td");
+            writer.endElement("tr");
         }
 	}
     
     protected void encodeTfoot(FacesContext context, TreeTable tt) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if(!tt.hasFooterColumn())
-            return;
-
         writer.startElement("tfoot", null);
 
-        writer.startElement("tr", null);
+        encodeFacet(context, tt, "footer", TreeTable.FOOTER_CLASS, "td");
 
-        for(int i = 0; i < tt.getChildCount(); i++) {
-            UIComponent kid = tt.getChildren().get(i);
-			
-			if(kid instanceof Column && kid.isRendered()) {
-				Column column = (Column) kid;
-                UIComponent footer = column.getFacet("footer");
-                String footerText = column.getHeaderText();
-                
-				String columnStyleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
-                String style = column.getStyle();
-                style = (i == 0) ? style == null ? "padding-left:0px" : style + ";padding-left:0px" : style;
+        if(tt.hasFooterColumn()) {
+            writer.startElement("tr", null);
 
-				writer.startElement("td", null);
-                writer.writeAttribute("id", column.getClientId(context), null);
-                writer.writeAttribute("class", TreeTable.COLUMN_HEADER_CLASS, null);
+            for(int i = 0; i < tt.getChildCount(); i++) {
+                UIComponent kid = tt.getChildren().get(i);
 
-				writer.startElement("div", null);
-                writer.writeAttribute("class", columnStyleClass, null);
-                if(style != null)
-                    writer.writeAttribute("style", style, null);
-                
-                if(footer != null) 
-                    footer.encodeAll(context);
-                else if(footerText != null)
-                    writer.write(footerText);
-                
-                writer.endElement("div");
-				
-				writer.endElement("td");
-			}
-		}
+                if(kid instanceof Column && kid.isRendered()) {
+                    Column column = (Column) kid;
+                    UIComponent footer = column.getFacet("footer");
+                    String footerText = column.getHeaderText();
 
-        writer.endElement("tr");
+                    String columnStyleClass = column.getStyleClass() == null ? TreeTable.COLUMN_CONTENT_WRAPPER : TreeTable.COLUMN_CONTENT_WRAPPER + " " + column.getStyleClass();
+                    String style = column.getStyle();
+                    style = (i == 0) ? style == null ? "padding-left:0px" : style + ";padding-left:0px" : style;
+
+                    writer.startElement("td", null);
+                    writer.writeAttribute("id", column.getClientId(context), null);
+                    writer.writeAttribute("class", TreeTable.COLUMN_HEADER_CLASS, null);
+
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", columnStyleClass, null);
+                    if(style != null)
+                        writer.writeAttribute("style", style, null);
+
+                    if(footer != null) 
+                        footer.encodeAll(context);
+                    else if(footerText != null)
+                        writer.write(footerText);
+
+                    writer.endElement("div");
+
+                    writer.endElement("td");
+                }
+            }
+
+            writer.endElement("tr");
+        }
         
         writer.endElement("tfoot");
     }

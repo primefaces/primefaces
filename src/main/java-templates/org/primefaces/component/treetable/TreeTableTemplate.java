@@ -205,3 +205,19 @@ import java.lang.StringBuilder;
 
         return params.get(clientId + "_expand") != null || params.get(clientId + "_collapse") != null;
     }
+
+    private int columnsCount = -1;
+
+    public int getColumnsCount() {
+        if(columnsCount == -1) {
+            columnsCount = 0;
+
+            for(UIComponent kid : getChildren()) {
+                if(kid.isRendered() && kid instanceof Column) {
+                    columnsCount++;
+                } 
+            }
+        }
+
+        return columnsCount;
+    }
