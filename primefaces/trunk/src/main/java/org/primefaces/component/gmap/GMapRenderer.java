@@ -175,6 +175,7 @@ public class GMapRenderer extends CoreRenderer {
 		if(marker.isDraggable()) writer.write(",draggable: true");
 		if(!marker.isVisible()) writer.write(",visible: false");
 		if(marker.isFlat()) writer.write(",flat: true");
+		if(marker.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + marker.getZindex());
 		
 		writer.write("})"); 
 	}
@@ -197,7 +198,8 @@ public class GMapRenderer extends CoreRenderer {
 			writer.write(",strokeWeight:" + polyline.getStrokeWeight());
 			
 			if(polyline.getStrokeColor() != null) writer.write(",strokeColor:'" + polyline.getStrokeColor() + "'");
-			
+			if(polyline.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + polyline.getZindex());
+
 			writer.write("})");
 			
 			if(lines.hasNext())
@@ -227,8 +229,9 @@ public class GMapRenderer extends CoreRenderer {
 			
 			if(polygon.getStrokeColor() != null) writer.write(",strokeColor:'" + polygon.getStrokeColor() + "'");
 			if(polygon.getFillColor() != null) writer.write(",fillColor:'" + polygon.getFillColor() + "'");
-			
-			writer.write("})");
+			if(polygon.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + polygon.getZindex());
+	
+            writer.write("})");
 			
 			if(polygons.hasNext())
 				writer.write(",");
@@ -258,8 +261,9 @@ public class GMapRenderer extends CoreRenderer {
 			
 			if(circle.getStrokeColor() != null) writer.write(",strokeColor:'" + circle.getStrokeColor() + "'");
 			if(circle.getFillColor() != null) writer.write(",fillColor:'" + circle.getFillColor() + "'");
-			
-			writer.write("})");
+			if(circle.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + circle.getZindex());
+
+            writer.write("})");
 			
 			if(circles.hasNext())
 				writer.write(",");
@@ -291,8 +295,9 @@ public class GMapRenderer extends CoreRenderer {
 			
 			if(rectangle.getStrokeColor() != null) writer.write(",strokeColor:'" + rectangle.getStrokeColor() + "'");
 			if(rectangle.getFillColor() != null) writer.write(",fillColor:'" + rectangle.getFillColor() + "'");
-			
-			writer.write("})");
+			if(rectangle.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + rectangle.getZindex());
+
+            writer.write("})");
 			
 			if(rectangles.hasNext())
 				writer.write(",");
