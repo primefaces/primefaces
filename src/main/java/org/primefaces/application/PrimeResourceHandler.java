@@ -16,6 +16,7 @@
 package org.primefaces.application;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +80,8 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                 byte[] buffer = new byte[2048];
 
                 int length;
-                while ((length = (content.getStream().read(buffer))) >= 0) {
+                InputStream inputStream = content.getStream();
+                while ((length = (inputStream.read(buffer))) >= 0) {
                     response.getOutputStream().write(buffer, 0, length);
                 }
 
