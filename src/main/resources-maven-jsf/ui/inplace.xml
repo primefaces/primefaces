@@ -65,14 +65,12 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>false</defaultValue>
             <description>Inline style of the main container element.</description>
 		</attribute>
         <attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>false</defaultValue>
             <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>

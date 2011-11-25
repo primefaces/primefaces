@@ -9,6 +9,7 @@ PrimeFaces.widget.Inplace = function(cfg) {
     this.display = $(this.jqId + '_display');
     this.content = $(this.jqId + '_content');
     this.cfg.formId = this.jq.parents('form:first').attr('id');
+    this.onshowHandlers = [];
 
     var _self = this;
 	
@@ -38,6 +39,8 @@ PrimeFaces.widget.Inplace = function(cfg) {
         }
 	}
     
+    this.jq.data('widget', this);
+    
     this.postConstruct();
 }
 
@@ -61,6 +64,8 @@ PrimeFaces.widget.Inplace.prototype.toggle = function(elToShow, elToHide, callba
             function(){
                 elToShow.fadeIn(_self.cfg.effectSpeed);
                 
+                _self.postShow();
+                
                 if(callback)
                     callback.call(_self);
             });
@@ -69,12 +74,23 @@ PrimeFaces.widget.Inplace.prototype.toggle = function(elToShow, elToHide, callba
             elToHide.slideUp(this.cfg.effectSpeed,
                 function(){
                     elToShow.slideDown(_self.cfg.effectSpeed);
+                    
+                    _self.postShow();
             });
     }
     else if(this.cfg.effect == 'none') {
             elToHide.hide();
             elToShow.show();
+            
+            _self.postShow();
     }
+}
+
+PrimeFaces.widget.Inplace.prototype.postShow = function() {
+    //execute onshowHandlers and remove successful ones
+    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+		return !fn.call();
+	});
 }
 
 PrimeFaces.widget.Inplace.prototype.getDisplay = function() {
@@ -130,4 +146,8 @@ PrimeFaces.widget.Inplace.prototype.hasBehavior = function(event) {
     }
     
     return false;
+}
+
+PrimeFaces.widget.Inplace.prototype.addOnshowHandler = function(fn) {
+    this.onshowHandlers.push(fn);
 }
