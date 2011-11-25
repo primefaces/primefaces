@@ -159,6 +159,18 @@
 			<defaultValue>0</defaultValue>
             <description>Specifies first day of week, by default it's 0 corresponding to sunday.</description>
 		</attribute>
+        <attribute>
+			<name>axisFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Determines the time-text that will be displayed on the vertical axis of the agenda views.</description>
+		</attribute>
+        <attribute>
+			<name>timeFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Determines the time-text that will be displayed on each event.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
