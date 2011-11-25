@@ -17,7 +17,7 @@ PrimeFaces.widget.ScrollPanel = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
