@@ -115,8 +115,6 @@ public class InplaceRenderer extends CoreRenderer {
 		String clientId = inplace.getClientId(context);
 		
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
         
         writer.write("PrimeFaces.cw('Inplace','" + inplace.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
@@ -133,9 +131,9 @@ public class InplaceRenderer extends CoreRenderer {
         
         encodeClientBehaviors(context, inplace);
 
-		writer.write("});});");
+		writer.write("});");
         
-		endScript(writer);
+        endScript(writer);
 	}
 
     protected void encodeEditor(FacesContext context, Inplace inplace) throws IOException {
