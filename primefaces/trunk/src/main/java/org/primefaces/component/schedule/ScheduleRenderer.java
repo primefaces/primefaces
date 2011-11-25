@@ -136,7 +136,6 @@ public class ScheduleRenderer extends CoreRenderer {
 		if(!schedule.isShowWeekends()) writer.write(",weekends:false");
 		if(!schedule.isDraggable()) writer.write(",disableDragging:true");
 		if(!schedule.isResizable()) writer.write(",disableResizing:true");
-		if(schedule.getStartWeekday() != 0) writer.write(",firstDay:" + schedule.getStartWeekday());
         if(schedule.getAxisFormat() != null) writer.write(",axisFormat:'" + schedule.getAxisFormat() + "'");
         if(schedule.getTimeFormat() != null) writer.write(",timeFormat:'" + schedule.getTimeFormat() + "'");
         
