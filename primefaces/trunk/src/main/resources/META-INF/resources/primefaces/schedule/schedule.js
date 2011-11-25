@@ -5230,7 +5230,7 @@ PrimeFaces.widget.Schedule = function(cfg) {
 	this.setupEventHandlers();
     
     if(this.jq.is(':not(:visible)')) {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {

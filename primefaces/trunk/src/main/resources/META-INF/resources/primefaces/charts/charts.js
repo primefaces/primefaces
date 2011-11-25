@@ -16993,7 +16993,7 @@ PrimeFaces.widget.PieChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
@@ -17072,7 +17072,7 @@ PrimeFaces.widget.LineChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
@@ -17161,7 +17161,7 @@ PrimeFaces.widget.BarChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
@@ -17227,7 +17227,7 @@ PrimeFaces.widget.DonutChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
@@ -17281,7 +17281,7 @@ PrimeFaces.widget.BubbleChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
@@ -17340,7 +17340,7 @@ PrimeFaces.widget.OhlcChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
@@ -17385,7 +17385,7 @@ PrimeFaces.widget.MeterGaugeChart = function(cfg) {
         this.init();
     } 
     else {
-        var hiddenParent = this.jq.parents('.ui-helper-hidden:first'),
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
         hiddenParentWidget = hiddenParent.data('widget');
         
         if(hiddenParentWidget) {
