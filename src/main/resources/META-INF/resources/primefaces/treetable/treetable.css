@@ -59,7 +59,7 @@
 .ui-treetable-scrollable-header,
 .ui-treetable-scrollable-footer {
     overflow: hidden;
-    border:0px none;
+    border-bottom:0 none;
 }
 
 .ui-treetable-scrollable .ui-treetable-scrollable-body table,
