@@ -50,13 +50,17 @@ PrimeFaces.widget.Tooltip.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.Tooltip.prototype.show = function() {
-    var offset = this.target.offset(),
-    _self = this;
+    var _self = this;
     
     this.jq.css({
-       'top':  offset.top + this.target.outerHeight(),
-       'left': offset.left + this.target.outerWidth(),
-       'z-index': ++PrimeFaces.zindex
+        left:'', 
+        top:'',
+        'z-index': ++PrimeFaces.zindex
+    })
+    .position({
+        my: 'left top',
+        at: 'right bottom',
+        of: this.target
     });
     
     this.timeout = setTimeout(function() {
