@@ -98,7 +98,7 @@ public class InputTextareaRenderer extends InputRenderer {
 
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
-        String valueToRender = ComponentUtils.getStringValueToRender(context, inputTextarea);
+        String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
 		if(valueToRender != null) {
 			writer.writeText(valueToRender, "value");
 		}

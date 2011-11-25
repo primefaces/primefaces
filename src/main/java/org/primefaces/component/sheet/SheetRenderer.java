@@ -321,7 +321,7 @@ public class SheetRenderer extends CoreRenderer {
                 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", Sheet.CELL_DISPLAY_CLASS, null);
-                writer.write(ComponentUtils.getStringValueToRender(context, child.getChildren().get(0)));
+                writer.write(ComponentUtils.getValueToRender(context, child.getChildren().get(0)));
                 writer.endElement("span");
                 
                 writer.startElement("span", null);

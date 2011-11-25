@@ -131,7 +131,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         if(value != null) {
             if(ac.getVar() == null) {
-                writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac), null);
+                writer.writeAttribute("value", ComponentUtils.getValueToRender(context, ac), null);
             } else {
                 context.getExternalContext().getRequestMap().put(ac.getVar(), value);
                 writer.writeAttribute("value", ac.getItemLabel(), null);

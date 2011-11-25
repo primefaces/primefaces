@@ -96,7 +96,7 @@ public class InplaceRenderer extends CoreRenderer {
 			return label;
         }
 		else {
-            String value = ComponentUtils.getStringValueToRender(context, inplace.getChildren().get(0));
+            String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
 
             if(value == null || isValueBlank(value)) {
                 if(emptyLabel != null)

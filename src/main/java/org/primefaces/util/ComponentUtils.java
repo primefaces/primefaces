@@ -46,14 +46,12 @@ public class ComponentUtils {
 	 * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
 	 * terminates jsf lifecycle
 	 * - Finally the value of the component is retrieved from backing bean and if there's a converter, converted value is returned
-	 * 
-	 * - If the component is not a value holder, toString of component is used to support Facelets UIInstructions.
-	 * 
+	 *
 	 * @param context			FacesContext instance
 	 * @param component			UIComponent instance whose value will be returned
 	 * @return					End text
 	 */
-	public static String getStringValueToRender(FacesContext facesContext, UIComponent component) {
+	public static String getValueToRender(FacesContext facesContext, UIComponent component) {
 		if(component instanceof ValueHolder) {
 			
 			if(component instanceof EditableValueHolder) {
@@ -88,15 +86,9 @@ public class ComponentUtils {
 			
 			//No converter found just return the value as string
 			return value.toString();
-		} else {
-			//This would get the plain texts on UIInstructions when using Facelets
-			String value = component.toString();
-			
-			if(value != null)
-				return value.trim();
-			else
-				return "";
 		}
+        
+        return null;
 	}
 	
 	/**

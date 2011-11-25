@@ -79,7 +79,7 @@ public class RatingRenderer extends CoreRenderer {
     private void encodeMarkup(FacesContext context, Rating rating) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = rating.getClientId(context);
-        String valueToRender = ComponentUtils.getStringValueToRender(context, rating);
+        String valueToRender = ComponentUtils.getValueToRender(context, rating);
         Double value = isValueBlank(valueToRender) ? null : Double.valueOf(valueToRender);
 
         writer.startElement("span", rating);

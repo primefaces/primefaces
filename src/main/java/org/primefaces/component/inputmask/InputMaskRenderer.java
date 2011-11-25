@@ -90,7 +90,7 @@ public class InputMaskRenderer extends InputRenderer {
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "text", null);
 		
-		String valueToRender = ComponentUtils.getStringValueToRender(context, inputMask);
+		String valueToRender = ComponentUtils.getValueToRender(context, inputMask);
 		if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender , null);
 		}

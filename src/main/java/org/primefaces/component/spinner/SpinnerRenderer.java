@@ -127,7 +127,7 @@ public class SpinnerRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
 
-		String valueToRender = ComponentUtils.getStringValueToRender(context, spinner);
+		String valueToRender = ComponentUtils.getValueToRender(context, spinner);
         valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
         valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix(): valueToRender;
         
