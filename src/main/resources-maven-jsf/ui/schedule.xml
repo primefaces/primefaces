@@ -152,13 +152,6 @@
 			<type>java.lang.String</type>
             <description>Maximum time to display in a day view.</description>
 		</attribute>
-		<attribute>
-			<name>startWeekday</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-            <description>Specifies first day of week, by default it's 0 corresponding to sunday.</description>
-		</attribute>
         <attribute>
 			<name>axisFormat</name>
 			<required>false</required>

@@ -5263,6 +5263,7 @@ PrimeFaces.widget.Schedule.prototype.configureLocale = function() {
 	var lang = PrimeFaces.locales[this.cfg.locale];
 	                                                    
 	if(lang) {
+        this.cfg.firstDay = lang.firstDay;
 		this.cfg.monthNames = lang.monthNames;
 		this.cfg.monthNamesShort = lang.monthNamesShort;
 		this.cfg.dayNames = lang.dayNames;
