@@ -52,7 +52,7 @@ public class EditorRenderer extends CoreRenderer{
 	protected void encodeMarkup(FacesContext context, Editor editor) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = editor.getClientId(context);
-        String valueToRender = ComponentUtils.getStringValueToRender(context, editor);
+        String valueToRender = ComponentUtils.getValueToRender(context, editor);
         String inputId = clientId + "_input";
 
         String style = editor.getStyle();

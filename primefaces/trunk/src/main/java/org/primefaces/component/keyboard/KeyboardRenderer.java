@@ -104,7 +104,7 @@ public class KeyboardRenderer extends InputRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", type, null);
-		writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, keyboard), null);
+		writer.writeAttribute("value", ComponentUtils.getValueToRender(context, keyboard), null);
 
         renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
 
