@@ -915,7 +915,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content", null);
 
         writer.startElement("td", null);
-        writer.writeAttribute("colspan", table.getColumns().size(), null);
+        writer.writeAttribute("colspan", table.getColumnsCount(), null);
 
         table.getRowExpansion().encodeAll(context);
 
