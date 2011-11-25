@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 
@@ -43,6 +44,11 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         else {
             checkbox.setSubmittedValue("false");
         }
+	}
+    
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		return context.getRenderKit().getRenderer("javax.faces.SelectBoolean", "javax.faces.Checkbox").getConvertedValue(context, component, submittedValue);
 	}
 
     @Override
