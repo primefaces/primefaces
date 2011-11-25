@@ -31,6 +31,7 @@ import org.primefaces.util.HTML;
 
 public class SelectManyCheckboxRenderer extends InputRenderer {
 
+    
     @Override
     public void decode(FacesContext context, UIComponent component) {
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;

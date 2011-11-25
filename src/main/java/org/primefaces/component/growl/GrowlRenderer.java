@@ -74,7 +74,7 @@ public class GrowlRenderer extends CoreRenderer {
 			if(growl.isShowSummary() && growl.isShowDetail())
 				writer.writeText("title:\"" + summary + "\",text:\"" + detail + "\"", null);
 			else if(growl.isShowSummary() && !growl.isShowDetail())
-				writer.writeText("title:\"" + summary + "',text:\"\"", null);
+				writer.writeText("title:\"" + summary + "\",text:\"\"", null);
 			else if(!growl.isShowSummary() && growl.isShowDetail())
 				writer.writeText("title:\"\",text:\"" + detail + "\"", null);
 
