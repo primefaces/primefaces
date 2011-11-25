@@ -1,5 +1,6 @@
 .ui-treetable table {
 	border-collapse:collapse;
+    width:100%;
 }
 
 .ui-treetable .ui-treetable-header,
