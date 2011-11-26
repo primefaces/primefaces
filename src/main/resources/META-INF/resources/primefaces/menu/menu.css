@@ -4,7 +4,7 @@
     position:relative;
 }
 
-.ui-menu-dynamic {
+.ui-menu.ui-menu-dynamic, .ui-menu.ui-menu-sliding.ui-menu-dynamic {
     position: absolute;
     display: none;
     z-index: 100000;
@@ -153,7 +153,7 @@
     border-width: 0;
     height: auto;
     width: 100%; 
-    background: inherit;
+    background: none;
     top : 0;
 }
 
