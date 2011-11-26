@@ -56,8 +56,7 @@
             <name>pattern</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>MM/dd/yyyy</defaultValue>
-            <description>DateFormat pattern for localization. Default is MM/dd/yyyy</description>
+            <description>DateFormat pattern for localization.</description>
         </attribute>
         <attribute>
             <name>locale</name>

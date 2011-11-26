@@ -16,6 +16,7 @@
 package org.primefaces.component.calendar;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -105,6 +106,11 @@ public class CalendarRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Calendar calendar, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
+        Locale locale = calendar.calculateLocale(context);
+        String pattern = calendar.getPattern();
+        if(pattern == null) {
+            pattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
+        }
        
         startScript(writer, clientId);
 
@@ -114,7 +120,8 @@ public class CalendarRenderer extends InputRenderer {
         writer.write("id:'" + clientId + "'");
         
         writer.write(",popup:" + calendar.isPopup());
-        writer.write(",locale:'" + calendar.calculateLocale(context).toString() + "'");
+        writer.write(",locale:'" + locale.toString() + "'");
+        writer.write(",dateFormat:'" + CalendarUtils.convertPattern(pattern) + "'");
 
         //initial date
         Object pagedate = calendar.getPagedate();
@@ -128,7 +135,6 @@ public class CalendarRenderer extends InputRenderer {
                 writer.write(",defaultDate:'" + pagedate + "'");
         }
 
-        if(calendar.getPattern() != null) writer.write(",pattern:'" + CalendarUtils.convertPattern(calendar.getPattern()) + "'");
         if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
         if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMindate()) + "'");
         if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMaxdate()) + "'");
@@ -210,7 +216,11 @@ public class CalendarRenderer extends InputRenderer {
         try {
             Date convertedValue;
             Locale locale = calendar.calculateLocale(context);
-            SimpleDateFormat format = new SimpleDateFormat(calendar.getPattern(), locale);
+            String pattern = calendar.getPattern();
+            if(pattern == null) {
+                pattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
+            }
+            SimpleDateFormat format = new SimpleDateFormat(pattern, locale);
             format.setTimeZone(calendar.calculateTimeZone());
             convertedValue = format.parse(submittedValue);
             
