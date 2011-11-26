@@ -12,11 +12,6 @@ PrimeFaces.widget.Calendar = function(cfg) {
     //i18n and l7n
     this.configureLocale();
 
-    //Override locale pattern with user pattern
-    if(this.cfg.pattern) {
-        this.cfg.dateFormat = this.cfg.pattern;
-    }
-    
     //Select listener
     this.bindDateSelectListener();
     
@@ -90,7 +85,7 @@ PrimeFaces.widget.Calendar.prototype.bindDateSelectListener = function() {
             _self.fireDateSelectEvent();
         }
         else {
-            var newDate = $.datepicker.formatDate(_self.cfg.pattern, _self.getDate()),
+            var newDate = $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate()),
             oldDate = _self.input.val();
 
             if(oldDate == newDate) {
