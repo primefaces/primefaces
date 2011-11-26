@@ -104,8 +104,13 @@ PrimeFaces.widget.Menu = function(cfg) {
         this.cfg.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
             _self.jq.css({left:'', top:''}).position(_self.cfg.position);
             _self.show(e);
+            
+            //sliding rescue
+            if(_self.cfg.sliding && !_self.slidingCfg.heighter.height()){
+                _self.slidingCfg.heighter.css({height : _self.slidingCfg.rootList.height()});  
+            }
         });
-        
+            
         //hide overlay when outside is clicked
         $(document.body).bind('click.ui-menu', function (e) {
             if(_self.jq.is(":hidden")) {
