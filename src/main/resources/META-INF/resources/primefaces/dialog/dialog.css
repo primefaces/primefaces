@@ -7,8 +7,8 @@
 .ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
 .ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
 .ui-draggable .ui-dialog-titlebar { cursor: move; }
-.ui-dialog .ui-dialog-titlebar-close, .ui-dialog .ui-dialog-titlebar-minimize,.ui-dialog .ui-dialog-titlebar-maximize { position: relative;  float: right; margin: 0px; top:0px; padding: 1px; }
-.ui-dialog .ui-dialog-titlebar-close span, .ui-dialog .ui-dialog-titlebar-minimize span, .ui-dialog .ui-dialog-titlebar-maximize span { display: block; margin: 1px; }
+.ui-dialog .ui-dialog-titlebar-close, .ui-dialog .ui-dialog-titlebar-minimize,.ui-dialog .ui-dialog-titlebar-maximize { float: right; margin: 0px; top:0px; padding: 1px; }
+.ui-dialog .ui-dialog-titlebar-close span, .ui-dialog .ui-dialog-titlebar-minimize span, .ui-dialog .ui-dialog-titlebar-maximize span { display: block; margin: 0px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus, .ui-dialog .ui-dialog-titlebar-minimize:hover, .ui-dialog .ui-dialog-titlebar-minimize:focus, .ui-dialog .ui-dialog-titlebar-maximize:hover, .ui-dialog .ui-dialog-titlebar-maximize:focus   { padding: 0; }
 .ui-dialog-footer {padding: .4em 1em; border-width: 1px 0 0 0;text-align:left;}
 .ui-dialog-docking-zone {position: fixed;bottom: 0;left: 0;}
