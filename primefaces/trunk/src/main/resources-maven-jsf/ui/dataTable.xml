@@ -208,6 +208,18 @@
             <defaultValue>keyup</defaultValue>
             <description>Client side event to invoke datatable filtering for input fields.</description>
 		</attribute>
+        <attribute>
+			<name>tableStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the table element.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the table element.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

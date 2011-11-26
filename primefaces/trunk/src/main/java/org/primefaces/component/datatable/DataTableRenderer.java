@@ -211,6 +211,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("table", null);
+        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        
         encodeThead(context, table);
         encodeTFoot(context, table);
         encodeTbody(context, table);
@@ -241,6 +244,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        
         encodeThead(context, table);
         writer.endElement("table");
         
@@ -254,6 +260,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.startElement("table", null);
+        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        
         encodeTbody(context, table);
         writer.endElement("table");
         writer.endElement("div");
@@ -269,6 +278,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        
         encodeTFoot(context, table);
         writer.endElement("table");
         
