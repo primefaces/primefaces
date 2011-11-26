@@ -165,6 +165,9 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", TreeTable.SCROLLABLE_HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
+        if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
+        
         encodeThead(context, tt);
         writer.endElement("table");
         
@@ -178,6 +181,9 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.startElement("table", null);
+        if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
+        if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
+        
         encodeTbody(context, tt);
         writer.endElement("table");
         writer.endElement("div");
@@ -193,6 +199,9 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
+        if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
+        
         encodeTfoot(context, tt);
         writer.endElement("table");
         
@@ -204,6 +213,8 @@ public class TreeTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("table", tt);
+        if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
+        if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
 
         encodeThead(context, tt);
         encodeTfoot(context, tt);
