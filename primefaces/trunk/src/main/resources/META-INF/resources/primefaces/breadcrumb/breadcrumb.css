@@ -5,7 +5,7 @@
 .ui-breadcrumb ul{margin: 0;padding: 0;height: 21px;display: block;}
 .ui-breadcrumb ul li{display: block;float: left;position: relative;height: 21px;overflow: hidden;line-height: 21px;}
 .ui-breadcrumb ul li span{display: block;overflow: hidden;}
-.ui-breadcrumb ul li a{display: block;position: relative;height: 21px;line-height: 21px;overflow: hidden;float: left;}
+.ui-breadcrumb ul li a{display: block;position: relative;height: 21px;line-height: 21px;overflow: hidden;float: left; *cursor: pointer}
 .ui-breadcrumb ul li.first a{height: 16px !important;text-indent:-1000em;width:16px;padding: 0;margin-top: 2px;overflow: hidden;}
 .ui-breadcrumb ul li.preview{padding:0px 10px 0px 0px;}
 .ui-breadcrumb ul li.last{background: none;margin-right: 0;padding-right: 0;}
