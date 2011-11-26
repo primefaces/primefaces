@@ -37,3 +37,7 @@
     width:100%;
     border-collapse:collapse;
 }
+
+.ui-orderlist{
+    *position: relative; /*IE7 hack*/
+}
