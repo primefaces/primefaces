@@ -467,18 +467,30 @@ PrimeFaces.widget.ContextMenu.prototype.bindEvents = function() {
     });
 }
 
-PrimeFaces.widget.ContextMenu.prototype.show = function(e) {            
-    //hide all context menus
+PrimeFaces.widget.ContextMenu.prototype.show = function(e) {  
+    //hide other contextmenus if any
     $(document.body).children('.ui-contextmenu:visible').hide();
-        
+
+    var win = $(window),
+    left = e.pageX,
+    top = e.pageY,
+    width = this.jq.outerWidth(),
+    height = this.jq.outerHeight();
+
+    //collision detection for window boundaries
+    if((left + width) > (win.width())+ win.scrollLeft()) {
+        left = left - width;
+    }
+    if((top + height ) > (win.height() + win.scrollTop())) {
+        top = top - height;
+    }
+
     this.jq.css({
-        'left': e.pageX,
-        'top': e.pageY,
+        'left': left,
+        'top': top,
         'z-index': ++PrimeFaces.zindex
-    });
-    
-   this.jq.show();
-    
+    }).show();
+
     e.preventDefault();
 }
 
