@@ -39,7 +39,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass;
         boolean disabled = button.isDisabled();
 		
-		writer.startElement("div", button);
+		writer.startElement("span", button);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
         if(button.getStyle() != null) {
@@ -51,7 +51,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
             encodeMenu(context, button, clientId + "_menu");
         }
         
-        writer.endElement("div");
+        writer.endElement("span");
 	}
    
     protected void encodeButton(FacesContext context, MenuButton button, String buttonId) throws IOException {
