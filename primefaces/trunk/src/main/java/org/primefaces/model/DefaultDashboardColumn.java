@@ -44,10 +44,7 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
 	}
 	
 	public void addWidget(int index, String widgetId) {
-		if(index >= getWidgetCount())
-			widgets.add(widgetId);
-		else
-			widgets.set(index, widgetId);
+        widgets.add(index, widgetId);
 	}
 
 	public void reorderWidget(int index, String widgetId) {
