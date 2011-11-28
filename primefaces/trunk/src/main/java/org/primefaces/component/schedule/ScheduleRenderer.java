@@ -67,23 +67,30 @@ public class ScheduleRenderer extends CoreRenderer {
 			lazyModel.loadEvents(startDate, endDate);	//Lazy load events
 		}
 		
-		encodeEventsAsJSON(context, model);
+		encodeEventsAsJSON(context, schedule, model);
 	}
 	
-	protected void encodeEventsAsJSON(FacesContext context, ScheduleModel model) throws IOException {
+	protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(schedule.calculateTimeZone());
 
 		writer.write("{");
 		writer.write("\"events\" : [");
 		
 		for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
 			ScheduleEvent event = iterator.next();
+            calendar.setTime(event.getStartDate());
+            long startDateInMillis = calendar.getTimeInMillis();
+            
+            calendar.setTime(event.getEndDate());
+            long endDateInMillis = calendar.getTimeInMillis();
 			
 			writer.write("{");
 			writer.write("\"id\": \"" + event.getId() + "\"");	
 			writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
-			writer.write(",\"start\": " + event.getStartDate().getTime());	
-			writer.write(",\"end\": " + event.getEndDate().getTime());	
+			writer.write(",\"start\": " + startDateInMillis);	
+			writer.write(",\"end\": " + endDateInMillis);	
 			writer.write(",\"allDay\":" + event.isAllDay());
             writer.write(",\"editable\":" + event.isEditable());
 			if(event.getStyleClass() != null)
