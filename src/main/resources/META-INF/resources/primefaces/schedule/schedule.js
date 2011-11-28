@@ -5286,7 +5286,7 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
                 var ext = {
                     params: {}
                 };
-                ext.params[_self.id + '_selectedDate'] = dayDate.getTime();
+                ext.params[_self.id + '_selectedDate'] = dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset;
 
                 dateSelectBehavior.call(_self, dayDate, ext);
             }
@@ -5335,7 +5335,8 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
 }
 
 PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
-	var _self = this;
+	var _self = this,
+    offset = new Date().getTimezoneOffset()*60000 + this.cfg.offset;
 	
 	this.cfg.events = function(start, end, callback) {
         var options = {
@@ -5356,8 +5357,8 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
                         var events = $.parseJSON(data).events;
 
                         for(var j=0; j < events.length; j++) {
-                            events[j].start = new Date(events[j].start);
-                            events[j].end = new Date(events[j].end);
+                            events[j].start = new Date(events[j].start + offset);
+                            events[j].end = new Date(events[j].end + offset);
                         }
 
                         callback(events);
@@ -5374,8 +5375,8 @@ PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
         };
 
         var params = {};
-        params[_self.id + "_start"] = start.getTime();
-		params[_self.id + "_end"] = end.getTime();
+        params[_self.id + "_start"] = start.getTime() + offset;
+		params[_self.id + "_end"] = end.getTime() + offset;
 		
         options.params = params;
 
