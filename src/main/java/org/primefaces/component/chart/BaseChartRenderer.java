@@ -68,22 +68,31 @@ public class BaseChartRenderer extends CoreRenderer {
         
         writer.write(",axes:{");
         writer.write("xaxis:{");
-        if(chart.getXaxisLabel() != null){
+        
+        boolean xLabeled = chart.getXaxisLabel() != null;
+        if(xLabeled){
             writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
-            writer.write("label:'" + chart.getXaxisLabel() + "',");
+            writer.write("label:'" + chart.getXaxisLabel() + "'");
         }
         if(chart.getXaxisAngle() != 0){
+            if(xLabeled){
+                writer.write(",");
+            }
             writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
             writer.write("tickOptions:{ angle:" + chart.getXaxisAngle() + "}");
         }
         writer.write("}");
         
+        boolean yLabeled = chart.getYaxisLabel() != null;
         writer.write(",yaxis:{");
-        if(chart.getYaxisLabel() != null){
+        if(yLabeled){
             writer.write("label:'" + chart.getYaxisLabel() + "',");
-            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
+            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer");
         }
         if(chart.getYaxisAngle() != 0){
+            if(yLabeled){
+                writer.write(",");
+            }
             writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
             writer.write("tickOptions:{ angle:" + chart.getYaxisAngle() + "}");
         }
