@@ -11,7 +11,7 @@
  * Dual licensed under the MIT and GPL licenses, located in
  * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: 
+ * Date: Sun Aug 21 22:06:09 2011 -0700
  *
  */
  
@@ -5157,7 +5157,6 @@ function HoverListener(coordinateGrid) {
 	
 	
 	function mouse(ev) {
-		_fixUIEvent(ev);
 		var newCell = coordinateGrid.cell(ev.pageX, ev.pageY);
 		if (!newCell != !cell || newCell && (newCell.row != cell.row || newCell.col != cell.col)) {
 			if (newCell) {
@@ -5181,13 +5180,6 @@ function HoverListener(coordinateGrid) {
 	
 }
 
-
-function _fixUIEvent(event) { // jQuery 1.7 workaround (for issue 1168)
-	if (event.pageX === undefined) {
-		event.pageX = event.originalEvent.pageX;
-		event.pageY = event.originalEvent.pageY;
-	}
-}
 function HorizontalPositionCache(getElement) {
 
 	var t = this,
