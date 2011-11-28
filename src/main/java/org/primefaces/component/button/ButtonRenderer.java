@@ -115,6 +115,11 @@ public class ButtonRenderer extends CoreRenderer {
             onclick.append(userOnclick).append(";");
         }
         
+        String onclickBehaviors = getOnclickBehaviors(context, button);
+        if(onclickBehaviors != null) {
+            onclick.append(onclickBehaviors).append(";");
+        }
+        
         if(href != null) {
             url = getResourceURL(context, href);
         } 
