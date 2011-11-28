@@ -277,7 +277,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.write(",iconStates:{");
         
-        boolean checkPrevious = false;
+        boolean firstWritten = false;
         for(Iterator<String> it = nodes.keySet().iterator(); it.hasNext();) {
             String type = it.next();
             UITreeNode node = nodes.get(type);
@@ -285,15 +285,16 @@ public class TreeRenderer extends CoreRenderer {
             String collapsedIcon = node.getCollapsedIcon();
 
             if(expandedIcon != null && collapsedIcon != null) {
-                if(checkPrevious)
+                if(firstWritten) {
                     writer.write(",");
+                }
                 
                 writer.write("'" + node.getType() + "' : {");
                 writer.write("expandedIcon:'" + expandedIcon + "'");
                 writer.write(",collapsedIcon:'" + collapsedIcon + "'");
                 writer.write("}");
                 
-                checkPrevious = true;
+                firstWritten = true;
             }
         }
 
