@@ -251,6 +251,8 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
     
+    this.jq.width(this.panel.width() + 16);
+    
     this.postConstruct();
 }
 
