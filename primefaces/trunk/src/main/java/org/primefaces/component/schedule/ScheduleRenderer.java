@@ -86,7 +86,7 @@ public class ScheduleRenderer extends CoreRenderer {
 			writer.write(",\"end\": " + event.getEndDate().getTime());	
 			writer.write(",\"allDay\":" + event.isAllDay());
             writer.write(",\"editable\":" + event.isEditable());
-			if(event.getStyleClass() != null) 
+			if(event.getStyleClass() != null)
 				writer.write(",\"className\":\"" + event.getStyleClass() + "\"");
 			
 			writer.write("}");
@@ -109,6 +109,7 @@ public class ScheduleRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");		
 		writer.write(",defaultView:'"+ schedule.getView() + "'");
 		writer.write(",locale:'"+ schedule.calculateLocale(context) + "'");
+        writer.write(",offset:" + schedule.calculateTimeZone().getRawOffset());
 
 		if(schedule.getInitialDate() != null) {
 			Calendar c = Calendar.getInstance();

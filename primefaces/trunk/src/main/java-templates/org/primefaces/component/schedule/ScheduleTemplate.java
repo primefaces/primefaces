@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.TimeZone;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -39,12 +40,33 @@ import org.primefaces.model.ScheduleEvent;
 		return appropriateLocale;
 	}
 
+    private TimeZone appropriateTimeZone;
+
+    public java.util.TimeZone calculateTimeZone() {
+		if(appropriateTimeZone == null) {
+			Object usertimeZone = getTimeZone();
+			if(usertimeZone != null) {
+				if(usertimeZone instanceof String)
+					appropriateTimeZone =  TimeZone.getTimeZone((String) usertimeZone);
+				else if(usertimeZone instanceof java.util.TimeZone)
+					appropriateTimeZone = (TimeZone) usertimeZone;
+				else
+					throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
+			} else {
+				appropriateTimeZone = TimeZone.getDefault();
+			}
+		}
+		
+		return appropriateTimeZone;
+	}
+
 	@Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = this.getClientId(context);
+        TimeZone tz = calculateTimeZone();
 
         if(isSelfRequest(context)) {
 
@@ -52,7 +74,10 @@ import org.primefaces.model.ScheduleEvent;
             FacesEvent wrapperEvent = null;
 
             if(eventName.equals("dateSelect")) {
-                Date selectedDate = new Date(Long.valueOf(params.get(clientId + "_selectedDate")));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.valueOf(params.get(clientId + "_selectedDate")));
+                calendar.setTimeZone(tz);
+                Date selectedDate = calendar.getTime();
                 DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 dateSelectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
@@ -72,12 +97,14 @@ import org.primefaces.model.ScheduleEvent;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getStartDate());
+                calendar.setTimeZone(tz);
                 calendar.add(Calendar.DATE, dayDelta);
                 calendar.add(Calendar.MINUTE, minuteDelta);
                 movedEvent.getStartDate().setTime(calendar.getTimeInMillis());
 
                 calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getEndDate());
+                calendar.setTimeZone(tz);
                 calendar.add(Calendar.DATE, dayDelta);
                 calendar.add(Calendar.MINUTE, minuteDelta);
 				movedEvent.getEndDate().setTime(calendar.getTimeInMillis());
@@ -92,6 +119,7 @@ import org.primefaces.model.ScheduleEvent;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(resizedEvent.getEndDate());
+                calendar.setTimeZone(tz);
 				calendar.add(Calendar.DATE, dayDelta);
                 calendar.add(Calendar.MINUTE, minuteDelta);
 				resizedEvent.getEndDate().setTime(calendar.getTimeInMillis());

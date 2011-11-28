@@ -164,6 +164,12 @@
 			<type>java.lang.String</type>
             <description>Determines the time-text that will be displayed on each event.</description>
 		</attribute>
+        <attribute>
+            <name>timeZone</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
