@@ -228,7 +228,10 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasScrollWidth = scrollWidth != Integer.MIN_VALUE;
         StringBuilder style = new StringBuilder();
         
-        if(scrollHeight != Integer.MIN_VALUE)
+        String tableStyle = table.getStyle();
+        String tableStyleClass = table.getStyleClass();
+        
+        if(hasScrollHeight)
             style.append("height:").append(scrollHeight).append("px;");
         if(hasScrollWidth)
             style.append("width:").append(scrollWidth).append("px;");
@@ -244,8 +247,8 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
-        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
-        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
+        if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
         
         encodeThead(context, table);
         writer.endElement("table");
@@ -260,8 +263,12 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.startElement("table", null);
-        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
-        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        if(table.getRowCount() == 0) {
+            tableStyle = tableStyle == null ? "width:100%" : tableStyle + ";width:100%";
+        }
+        
+        if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
+        if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
         encodeTbody(context, table);
         writer.endElement("table");
@@ -278,8 +285,8 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
         
         writer.startElement("table", null);
-        if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
-        if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
+        if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
         
         encodeTFoot(context, table);
         writer.endElement("table");
