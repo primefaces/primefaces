@@ -842,6 +842,10 @@ public class DataTableRenderer extends DataRenderer {
     
     protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position, String tag, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        if(!table.isPaginatorAlwaysVisible() && table.getPageCount() <= 1) {
+            return;
+        }
+        
         String id = table.getClientId(context) + "_paginator_" + position; 
 
         writer.startElement("tr", null);

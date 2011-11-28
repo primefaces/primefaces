@@ -50,6 +50,10 @@ public class DataRenderer extends CoreRenderer {
     }
 
     protected void encodePaginatorMarkup(FacesContext context, UIData uidata, String position) throws IOException {
+        if(!uidata.isPaginatorAlwaysVisible() && uidata.getPageCount() <= 1) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         boolean isTop = position.equals("top");
         boolean hidden = !uidata.isPaginatorAlwaysVisible() && uidata.getPageCount() == 1;
