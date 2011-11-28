@@ -60,13 +60,17 @@ public class CommandButtonRenderer extends CoreRenderer {
 		String type = button.getType();
         String value = (String) button.getValue();
         String icon = button.resolveIcon();
+        
+        StringBuilder onclick = new StringBuilder();
+        if(button.getOnclick() != null) {
+            onclick.append(button.getOnclick()).append(";");
+        }
 
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-		String onclick = button.getOnclick();
 		if(!type.equals("reset") && !type.equals("button")) {
 			UIComponent form = ComponentUtils.findParentForm(context, button);
 			if(form == null) {
@@ -75,11 +79,17 @@ public class CommandButtonRenderer extends CoreRenderer {
 			
 			String formClientId = form.getClientId(context);		
 			String request = button.isAjax() ? buildAjaxRequest(context, button) + "return false;" : buildNonAjaxRequest(context, button, formClientId);
-			onclick = onclick != null ? onclick + ";" + request : request;
+			
+            onclick.append(request);
 		}
-		
-		if(!isValueBlank(onclick)) {
-			writer.writeAttribute("onclick", onclick, "onclick");
+        
+        String onclickBehaviors = getOnclickBehaviors(context, button);
+        if(onclickBehaviors != null) {
+            onclick.append(onclickBehaviors).append(";");
+        }
+
+		if(onclick.length() > 0) {
+			writer.writeAttribute("onclick", onclick.toString(), "onclick");
 		}
 		
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);

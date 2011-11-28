@@ -449,5 +449,27 @@ public class CoreRenderer extends Renderer {
                 
         return sb.toString();
     }
+    
+    protected String getOnclickBehaviors(FacesContext context, ClientBehaviorHolder cbh) {
+        List<ClientBehavior> behaviors = cbh.getClientBehaviors().get("action");
+        StringBuilder sb = new StringBuilder();
+        
+        if(behaviors != null && !behaviors.isEmpty()) {
+            UIComponent component = (UIComponent) cbh;
+            String clientId = component.getClientId(context);
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+            
+            for(Iterator<ClientBehavior> behaviorIter = behaviors.iterator(); behaviorIter.hasNext();) {
+                ClientBehavior behavior = behaviorIter.next();
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, "action", clientId, params);
+                String script = behavior.getScript(cbc);
+
+                if(script != null)
+                    sb.append(script).append(";");
+            }
+        }
+        
+        return sb.length() == 0 ? null : sb.toString();
+    }
 
 }
