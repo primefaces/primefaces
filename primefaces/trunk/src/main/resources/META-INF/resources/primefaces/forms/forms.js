@@ -251,7 +251,18 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
     
-    this.jq.width(this.panel.width() + 16);
+    var panelWidth = this.panel.width(),
+    jqWidth = this.jq.width();
+    
+    //align panel and label-menuicon
+    if(panelWidth > jqWidth) {
+        this.jq.width(panelWidth + this.menuIcon.width());
+        this.panel.width(this.jq.width());
+    }
+    else {
+        this.panel.width(jqWidth);
+        this.jq.width(jqWidth);     //replace auto with fixed width
+    }
     
     this.postConstruct();
 }
@@ -536,19 +547,12 @@ PrimeFaces.widget.SelectOneMenu.prototype.blur = function() {
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
-    var panelWidth = this.panel.width(),
-    buttonWidth = this.jq.width();
-    
     this.panel.css({left:'', top:''})
     .position({
         my: 'left top'
         ,at: 'left bottom'
         ,of: this.jq
     });
-    
-    if(panelWidth < buttonWidth) {
-        this.panel.width(buttonWidth);
-    }
 }
 
 /**
