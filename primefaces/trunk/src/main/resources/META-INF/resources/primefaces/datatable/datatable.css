@@ -160,3 +160,8 @@
     font-weight: inherit;
     *font-weight: normal; /*IE7 hack*/
 }
+
+.ui-datatable .ui-paginator,
+.ui-datatable .ui-paginator {
+    padding:2px;
+}
