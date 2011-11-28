@@ -55,18 +55,19 @@ public class DefaultDashboardModelTest {
 	
 	@Test
 	public void transferWidgets() {
-		//Move widget4 from column2 to column3 below widget6
+		//Move widget3 and widget5 from column2 to column3
 		DashboardColumn column2 = model.getColumn(1);
 		DashboardColumn column3 = model.getColumn(2);
 		
-		model.transferWidget(column2, column3, "widget4", 1);
-		assertEquals("widget3", column2.getWidget(0));
-		assertEquals("widget5", column2.getWidget(1));
-		assertEquals(2, column2.getWidgetCount());
+		model.transferWidget(column2, column3, "widget3", 0);
+        model.transferWidget(column2, column3, "widget5", 2);
+		assertEquals("widget4", column2.getWidget(0));
+		assertEquals(1, column2.getWidgetCount());
 		
-		assertEquals("widget6", column3.getWidget(0));
-		assertEquals("widget4", column3.getWidget(1));
-		assertEquals(2, column3.getWidgetCount());
+		assertEquals("widget3", column3.getWidget(0));
+		assertEquals("widget6", column3.getWidget(1));
+        assertEquals("widget5", column3.getWidget(2));
+		assertEquals(3, column3.getWidgetCount());
 	}
 	
 	@Before
