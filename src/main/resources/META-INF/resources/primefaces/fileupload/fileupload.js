@@ -2151,6 +2151,10 @@ PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     //mark as ajax request
     this.cfg.beforeSend = function(xhr) {
        xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+       
+       if(_self.cfg.onstart) {
+            _self.cfg.onstart.call(this);
+        }
     };
     
     this.cfg.success = function(response) {
@@ -2159,7 +2163,7 @@ PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
     
     this.cfg.complete = function(jqXHR, textStatus) {
         if(_self.cfg.oncomplete) {
-            _self.cfg.oncomplete.call(this, jqXHR, textStatus);
+            _self.cfg.oncomplete.call(this);
         }
     };
 }
