@@ -436,17 +436,17 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String filterId = column.getClientId(context) + "_filter";
+        String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
         filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
 
         if(column.getValueExpression("filterOptions") == null) {
-            String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
-
             writer.startElement("input", null);
             writer.writeAttribute("id", filterId, null);
             writer.writeAttribute("name", filterId, null);
             writer.writeAttribute("class", filterStyleClass, null);
             writer.writeAttribute("value", filterValue , null);
+            writer.writeAttribute("autocomplete", "off", null);
 
             if(column.getFilterStyle() != null)
                 writer.writeAttribute("style", column.getFilterStyle(), null);
@@ -465,8 +465,13 @@ public class DataTableRenderer extends DataRenderer {
             SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
 
             for(SelectItem item : itemsArray) {
+                Object itemValue = item.getValue();
+                
                 writer.startElement("option", null);
                 writer.writeAttribute("value", item.getValue(), null);
+                if(itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
+                    writer.writeAttribute("selected", "selected", null);
+                }
                 writer.write(item.getLabel());
                 writer.endElement("option");
             }
