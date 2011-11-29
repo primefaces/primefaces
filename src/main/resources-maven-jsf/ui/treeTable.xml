@@ -83,13 +83,6 @@
             <description>Width in pixels for scrollable data.</description>
 		</attribute>
         <attribute>
-			<name>resizableColumns</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Decides whether treeTable columns are resizable or not, defaults to false.</description>
-		</attribute>
-        <attribute>
 			<name>tableStyle</name>
 			<required>false</required>
 			<type>java.lang.String</type>

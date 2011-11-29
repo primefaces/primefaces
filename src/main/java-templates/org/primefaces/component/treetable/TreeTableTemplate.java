@@ -36,7 +36,7 @@ import java.lang.StringBuilder;
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable-resizable";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse"));
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
@@ -93,15 +93,7 @@ import java.lang.StringBuilder;
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if(eventName.equals("colResize")) {
-                String columnId = params.get(clientId + "_columnId");
-                int width = Integer.parseInt(params.get(clientId + "_width"));
-                int height = Integer.parseInt(params.get(clientId + "_height"));
-
-                wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
-            }
- 
+            
             super.queueEvent(wrapperEvent);
         }
         else {
