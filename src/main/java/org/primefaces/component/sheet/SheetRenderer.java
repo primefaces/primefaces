@@ -319,15 +319,15 @@ public class SheetRenderer extends CoreRenderer {
                     writer.writeAttribute("style", style, null);
                 }
                 
-                writer.startElement("span", null);
+                writer.startElement("div", null);
                 writer.writeAttribute("class", Sheet.CELL_DISPLAY_CLASS, null);
                 writer.write(ComponentUtils.getValueToRender(context, child.getChildren().get(0)));
-                writer.endElement("span");
+                writer.endElement("div");
                 
-                writer.startElement("span", null);
+                writer.startElement("div", null);
                 writer.writeAttribute("class", Sheet.CELL_EDIT_CLASS, null);
                 child.encodeAll(context);
-                writer.endElement("span");
+                writer.endElement("div");
 
                 writer.endElement("td");
             }
