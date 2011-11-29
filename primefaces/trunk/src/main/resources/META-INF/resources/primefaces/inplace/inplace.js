@@ -34,8 +34,14 @@ PrimeFaces.widget.Inplace = function(cfg) {
             this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
 
             this.editor = $(this.jqId + '_editor');
-            this.editor.children('.ui-inplace-save').button({icons: {primary: "ui-icon-check"},text:false}).click(function(e) {_self.save(e);});
-            this.editor.children('.ui-inplace-cancel').button({icons: {primary: "ui-icon-close"},text:false}).click(function(e) {_self.cancel(e);});
+            
+            var saveButton = this.editor.children('.ui-inplace-save'),
+            cancelButton = this.editor.children('.ui-inplace-cancel');
+            
+            PrimeFaces.skinButton(saveButton).skinButton(cancelButton);
+
+            saveButton.click(function(e) {_self.save(e)});
+            cancelButton.click(function(e) {_self.cancel(e)});
         }
 	}
     
