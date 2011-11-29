@@ -826,7 +826,7 @@ PrimeFaces.widget.ColorPicker = function(cfg) {
 
     //popup ui
     if(popup) {
-        this.jqEl.button();
+        PrimeFaces.skinButton(this.jqEl);
         this.livePreview = $(this.jqId + '_livePreview');
         
         var zindex = this.cfg.zindex ? this.cfg.zindex : 10000,
