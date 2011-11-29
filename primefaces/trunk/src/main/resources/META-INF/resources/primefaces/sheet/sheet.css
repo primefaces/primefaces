@@ -102,3 +102,8 @@
 .ui-sheet .ui-sortable-column-icon {
     float:right;
 }
+
+.ui-sheet .ui-sheet-editing {
+    padding:0 !important;
+    width:auto !important;
+}

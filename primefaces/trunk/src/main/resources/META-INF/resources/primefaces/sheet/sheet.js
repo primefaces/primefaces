@@ -53,6 +53,8 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
             //Set height of resizer helper
             resizerHelper.height(_self.body.height() + frozenHeaderRow.height());
             resizerHelper.show();
+            
+            _self.viewMode(_self.cells.filter('.ui-sheet-editing'));
         },
         drag: function(event, ui) {
             resizerHelper.offset(
@@ -74,8 +76,8 @@ PrimeFaces.widget.Sheet.prototype.setupResizableColumns = function() {
             
             columnHeaderWrapper.width(newWidth);
                         
-            _self.header.find('tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
-            _self.body.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+            _self.header.find('tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth).children('div').width(newWidth);
+            _self.body.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth).children('div').width(newWidth);
             
             //Save state
             _self.saveColumnWidths();
@@ -249,7 +251,7 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     this.cells = this.body.find('div.ui-sh-c:not(.ui-sheet-index-cell)'),
     this.rows = this.body.find('tr');
     
-    this.cells.disableSelection();
+    //this.cells.disableSelection();
 
     //events for data cells
     this.cells.click(function(e) {
@@ -277,49 +279,55 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
 
     })
     .dblclick(function(e) {
-        var cell = $(this),
-        oldWidth = cell.width(),
-        padding = cell.innerWidth() - cell.width(),
-        newWidth = oldWidth + padding;
+        var cell = $(this);
         
-        //change cell structure to allocate all the space
-        cell.data('oldWidth', oldWidth)
-        .removeClass('ui-state-highlight')
-        .css('padding', '0px')
-        .width(newWidth);
-
-        //switch to edit mode    
-        cell.children('.ui-sh-c-d').hide();
-        cell.children('.ui-sh-c-e').show().children('input:first').focus();
+        _self.editMode(cell);
     });
 
     //events for input controls in data cells
     this.cells.find('input').blur(function(e) {
-        //switch to display mode if anything other than editor is clicked
-        var input = $(this),
-        cell = input.parents('.ui-sh-c:first'),
-        editableContainer = cell.children('.ui-sh-c-e'),
-        editableValue = input.val();
-
-        cell.children('.ui-sh-c-d').html(editableValue).show();
-        editableContainer.hide();
-
-        //restore cell structure
-        cell.css('padding', '').width(cell.data('oldWidth')).removeData('oldWidth');
-
+        var cell = $(this).parents('.ui-sh-c:first');
+        
+        _self.viewMode(cell);
     }).keyup(function(e) {
         //switch to display mode when enter is pressed during editing
         var keyCode = $.ui.keyCode,
         key = e.which,
-        input = $(this);
+        input = $(this),
+        cell = $(this).parents('.ui-sh-c:first');
 
         if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-            input.blur();
+            _self.viewMode(cell);
         } 
         else {
             _self.editor.val(input.val());
         }
+        
+        e.preventDefault();
     });
+}
+
+PrimeFaces.widget.Sheet.prototype.editMode = function(cell) {
+    cell.addClass('ui-sheet-editing');
+
+    //switch to edit mode    
+    cell.children('.ui-sh-c-d').hide();
+    cell.children('.ui-sh-c-e').show().children('input:first').focus();
+}
+
+PrimeFaces.widget.Sheet.prototype.viewMode = function(cell) {
+    //switch to display mode if anything other than editor is clicked
+    if(cell.length > 0) {    
+        var input = cell.find('input'),
+        editableContainer = cell.children('.ui-sh-c-e'),
+        displayContainer = cell.children('.ui-sh-c-d'),
+        editableValue = input.val();
+
+        displayContainer.html(editableValue).show();
+        editableContainer.hide();
+
+        cell.removeClass('ui-sheet-editing');
+    }
 }
 
 PrimeFaces.widget.Sheet.prototype.bindStaticEvents = function() {
