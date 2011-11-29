@@ -572,7 +572,7 @@ $.watermark.options.className = 'ui-watermark';
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqTargetId = PrimeFaces.escapeClientId(this.cfg.target);
-    this.target = $(this.jqTargetId + ',' + this.jqTargetId + ' input:text');
+    this.target = $(this.jqTargetId + ',' + this.jqTargetId + ' input:text,' + this.jqTargetId + ' input:password');
    
     this.target.watermark(this.cfg.value);
     
