@@ -1219,10 +1219,9 @@ PrimeFaces.widget.DataTable.prototype.isSelected = function(rowIndex) {
 }
 
 PrimeFaces.widget.DataTable.prototype.getRowMeta = function(row) {
-    var identifier = row.attr('id').split('_r_')[1].split('_'),
-    meta = {
-        index: identifier[0],
-        key: identifier[1]
+    var meta = {
+        index: row.data('ri'),
+        key:  row.data('rk')
     };
     
     return meta;
