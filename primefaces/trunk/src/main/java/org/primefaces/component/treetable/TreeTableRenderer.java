@@ -118,7 +118,6 @@ public class TreeTableRenderer extends CoreRenderer {
         
         //Style class for container
         String containerClass = TreeTable.CONTAINER_CLASS;
-        containerClass = tt.isResizableColumns() ? containerClass + " " + TreeTable.RESIZABLE_CONTAINER_CLASS : containerClass;
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
 		containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
 	
