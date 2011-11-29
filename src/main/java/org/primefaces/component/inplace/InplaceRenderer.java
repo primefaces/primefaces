@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public class InplaceRenderer extends CoreRenderer {
 
@@ -143,21 +144,33 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute("id", inplace.getClientId(context) + "_editor", null);
         writer.writeAttribute("class", Inplace.EDITOR_CLASS, null);
 
-        encodeButton(context, inplace, inplace.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS);
-        encodeButton(context, inplace, inplace.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS);
+        encodeButton(context, inplace.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS, "ui-icon-check");
+        encodeButton(context, inplace.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS, "ui-icon-close");
 
         writer.endElement("span");
     }
     
-    protected void encodeButton(FacesContext context, Inplace inplace, String label, String styleClass) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    protected void encodeButton(FacesContext context, String title, String styleClass, String icon) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", styleClass, null);
-        writer.write(label);
+		writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("title", title, null);
+        
+        //icon
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.endElement("span");
+        
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.write("ui-button");
+        writer.endElement("span");
+
         writer.endElement("button");
-    }
+	}
 
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

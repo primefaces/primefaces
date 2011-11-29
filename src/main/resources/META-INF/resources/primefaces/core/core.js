@@ -78,6 +78,8 @@ PrimeFaces = {
         }).mouseup(function() {
             $(this).removeClass('ui-state-active');
         });
+        
+        return this;
     },
 
     //ajax shortcut
