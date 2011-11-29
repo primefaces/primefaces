@@ -102,8 +102,8 @@ public class FileUploadRenderer extends CoreRenderer {
             if(update != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
             if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
             
-            if(fileUpload.getOnstart() != null) writer.write(",onstart:function(e, start) {" + fileUpload.getOnstart() + ";}");
-            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function(e, data) {" + fileUpload.getOncomplete() + ";}");
+            if(fileUpload.getOnstart() != null) writer.write(",onstart:function() {" + fileUpload.getOnstart() + ";}");
+            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function() {" + fileUpload.getOncomplete() + ";}");
             
             //restrictions
             if(fileUpload.getAllowTypes() != null) writer.write(",acceptFileTypes:" + fileUpload.getAllowTypes());
