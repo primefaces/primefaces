@@ -309,6 +309,7 @@ public class DataTableRenderer extends DataRenderer {
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
+        columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
 
         if(isSortable) {
             String columnSortByExpression = columnSortByVe.getExpressionString();
@@ -333,19 +334,13 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         
+        if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
         
         //column content wrapper
-        String style = column.getStyle();
-        String styleClass = column.getStyleClass();
-        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
-        
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
-            writer.writeAttribute("style", style, null);
-        }
+        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER , null);
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
             encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
@@ -498,18 +493,17 @@ public class DataTableRenderer extends DataRenderer {
         
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
+        styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FOOTER_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
+        
+        if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
-        
-        if(style != null) 
-            writer.writeAttribute("style", style, null);
+        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
         
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -721,22 +715,17 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
 
         writer.startElement("td", null);
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
         if(column.getSelectionMode() != null) {
             writer.writeAttribute("class", DataTable.SELECTION_COLUMN_CLASS , null);
             
             writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass, null);
-            
-            if(style != null) {
-                writer.writeAttribute("style", style, null);
-            }
-
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             encodeColumnSelection(context, table, clientId, column, selected);
-            
             writer.endElement("div");
         }
         else {
@@ -746,12 +735,7 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass, null);
-            
-            if(style != null) {
-                writer.writeAttribute("style", style, null);
-            }
-            
+            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             column.encodeAll(context);
             writer.endElement("div");
         }

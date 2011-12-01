@@ -1059,7 +1059,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  */
 PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper
-    $(this.jqId + ' thead tr th div.ui-dt-c').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId + ' thead tr th').prepend('<div class="ui-column-resizer"></div>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
     //Variables
@@ -1093,12 +1093,12 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
                 });  
         },
         stop: function(event, ui) {
-            var columnHeaderWrapper = ui.helper.parent(),
-            columnHeader = columnHeaderWrapper.parent(),
+            var columnHeader = ui.helper.parent(),
+            columnHeaderWrapper = columnHeader.children('div.ui-dt-c'),
             oldPos = ui.originalPosition.left,
             newPos = ui.position.left,
             change = (newPos - oldPos),
-            newWidth = columnHeaderWrapper.width() + change
+            newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2)),
             tbody = $(_self.jqId + ' tbody');
             
             ui.helper.css('left','');
