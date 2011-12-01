@@ -154,8 +154,9 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
             var submenu = menuitem.children('ul.ui-menu-child');
             if(submenu.length == 1) {
                 submenu.css({
-                    left: menuitem.outerWidth()
-                    ,top: 0
+                    'left': menuitem.outerWidth()
+                    ,'top': 0
+                    ,'z-index': ++PrimeFaces.zindex
                 });
 
                 submenu.show();
