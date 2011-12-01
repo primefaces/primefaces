@@ -781,51 +781,49 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
     options = $(this.input).children('option'),
     _self = this;
 
+    //create elements for each option
     options.each(function(i) {
         var option = $(this),
-        selected = option.attr('selected'),
+        selected = option.is(':selected'),
+        disabled = option.is(':disabled'),
         styleClass = 'ui-selectlistbox-item ui-corner-all';
-
-        if(selected) {
-            styleClass = styleClass + ' ui-state-active';
-        }
-       
+        styleClass = disabled ? disabled + ' ui-state-disabled' : styleClass;
+        styleClass = selected ? styleClass + ' ui-state-active' : styleClass;
+        
         listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
     });
 
-    var items = listContainer.children('li');
+    var items = listContainer.children('li:not(.ui-state-disabled)');
 
     items.mouseover(function() {
-        var element = jQuery(this);
-        if(!_self.cfg.disabled && !element.hasClass('ui-state-active')) {
+        var element = $(this);
+        if(!element.hasClass('ui-state-active')) {
             $(this).addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        var element = jQuery(this);
-        if(!_self.cfg.disabled && !element.hasClass('ui-state-active')) {
-            $(this).removeClass('ui-state-hover');
+        $(this).removeClass('ui-state-hover');
+    }).click(function(e) {
+        var element = $(this),
+        option = $(options.get(element.index()));
+
+        //clear previous selections
+        if(_self.cfg.selection == 'single' || (_self.cfg.selection == 'multiple' && !e.metaKey)) {
+            items.removeClass('ui-state-active ui-state-hover');
+            options.removeAttr('selected');
         }
-    }).click(function() {
-        if(!_self.cfg.disabled) {
-            var element = jQuery(this),
-            option = jQuery(options.get(element.index()));
-
-            if(element.hasClass('ui-state-active')) {
-                element.removeClass('ui-state-active ui-state-hover');
-                option.removeAttr('selected');
-            }
-            else {
-                if(_self.cfg.selection == 'single') {
-                    items.removeClass('ui-state-active ui-state-hover');
-                    options.removeAttr('selected');
-                }
-
-                element.addClass('ui-state-active');
-                option.attr('selected', 'selected')
-            }
-
-            _self.input.change();
+        
+        if(_self.cfg.selection == 'multiple' && e.metaKey && element.hasClass('ui-state-active')) {
+            element.removeClass('ui-state-active');
+            option.removeAttr('selected');
+        } 
+        else {
+            element.addClass('ui-state-active').removeClass('ui-state-hover');
+            option.attr('selected', 'selected');
         }
+        
+        _self.input.change();
+        
+        PrimeFaces.clearSelection();
     });
 
     //Client Behaviors
@@ -834,18 +832,6 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
     }
     
     this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.SelectListbox, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.SelectListbox.prototype.enable = function() {
-    this.jq.removeClass('ui-state-disabled');
-    this.cfg.disabled = false;
-}
-
-PrimeFaces.widget.SelectListbox.prototype.disable = function() {
-    this.jq.addClass('ui-state-disabled');
-    this.cfg.disabled = true;
 }
 
 /* 

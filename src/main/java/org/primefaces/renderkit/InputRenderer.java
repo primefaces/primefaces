@@ -31,7 +31,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
-public class InputRenderer extends CoreRenderer {
+public abstract class InputRenderer extends CoreRenderer {
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();

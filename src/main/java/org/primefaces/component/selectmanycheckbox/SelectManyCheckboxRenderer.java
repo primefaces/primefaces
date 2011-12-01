@@ -16,46 +16,21 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import javax.el.ELException;
-import javax.el.ExpressionFactory;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
-import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.HTML;
 
-public class SelectManyCheckboxRenderer extends InputRenderer {
+public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
-
-        if(checkbox.isDisabled()) {
-            return;
-        }
-
-        decodeBehaviors(context, checkbox);
-
-        String clientId = checkbox.getClientId(context);
-        Map<String,String[]> params = context.getExternalContext().getRequestParameterValuesMap();
-        
-        if(params.containsKey(clientId)) {
-            checkbox.setSubmittedValue(params.get(clientId));
-        } else {
-            checkbox.setSubmittedValue(new String[0]);
-        }
-    }
-    
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox").getConvertedValue(context, component, submittedValue);
@@ -130,7 +105,6 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
     protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-
         writer.startElement("label", null);
         writer.writeAttribute("for", containerClientId, null);
         if(disabled)
@@ -226,82 +200,8 @@ public class SelectManyCheckboxRenderer extends InputRenderer {
         writer.endElement("td");
     }
     
-    protected Object getValues(UIComponent component) {
-        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
-        Object value = checkbox.getValue();
-
-        if(value == null) {
-            return null;
-        } else if (value instanceof Collection) {
-            return ((Collection) value).toArray();
-        } else if(value.getClass().isArray()) {
-            if(Array.getLength(value) == 0) {
-                return null;
-            }
-        } else if (!value.getClass().isArray()) {
-            throw new FacesException("Value of selectManyCheckbox must be an array or a collection");
-        }
-
-        return value;
-    }
-    
-    protected boolean isSelected(FacesContext context, UIComponent component, Object itemValue, Object valueArray, Converter converter) {
-        if(itemValue == null && valueArray == null) {
-            return true;
-        }
-        
-        if(valueArray != null) {
-            if(!valueArray.getClass().isArray()) {
-                return valueArray.equals(itemValue);
-            }
-            
-            int length = Array.getLength(valueArray);
-            for(int i = 0; i < length; i++) {
-                Object value = Array.get(valueArray, i);
-                
-                if(value == null && itemValue == null) {
-                    return true;
-                } 
-                else {
-                    if((value == null) ^ (itemValue == null)) {
-                        continue;
-                    }
-                    
-                    Object compareValue;
-                    if (converter == null) {
-                        compareValue = coerceToModelType(context, itemValue, value.getClass());
-                    } 
-                    else {
-                        compareValue = itemValue;
-                        
-                        if (compareValue instanceof String && !(value instanceof String)) {
-                            compareValue = converter.getAsObject(context, component, (String) compareValue);
-                        }
-                    }
-
-                    if (value.equals(compareValue)) {
-                        return (true);
-                    }
-                }
-            }
-        }
-        return false;
-
-    }
-    
-    protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
-        Object newValue;
-        try {
-            ExpressionFactory ef = ctx.getApplication().getExpressionFactory();
-            newValue = ef.coerceToType(value, itemValueType);
-        } 
-        catch (ELException ele) {
-            newValue = value;
-        } 
-        catch (IllegalArgumentException iae) {
-            newValue = value;
-        }
-
-        return newValue;
+    @Override
+    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
+        return selectMany.getClientId(context);
     }
 }
