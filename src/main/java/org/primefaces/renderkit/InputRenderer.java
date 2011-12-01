@@ -95,10 +95,12 @@ public class InputRenderer extends CoreRenderer {
 	}
 
 	protected String getOptionAsString(FacesContext context, UIInput component, Converter converter, Object value) {
-		if(converter != null)
-			return converter.getAsString(context, component, value);
-		else if(value == null)
+		if(value == null)
             return "";
+        else if(value instanceof String)
+            return (String) value;
+        else if(converter != null)
+			return converter.getAsString(context, component, value);
         else
             return value.toString();
 	}
