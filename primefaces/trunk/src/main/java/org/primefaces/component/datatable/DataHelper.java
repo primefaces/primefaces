@@ -153,7 +153,7 @@ class DataHelper {
 
                 for(String filterName : filterMap.keySet()) {
                     Column column = filterMap.get(filterName);
-                    String columnFilter = params.get(filterName).toLowerCase();
+                    String columnFilter = params.containsKey(filterName) ? params.get(filterName).toLowerCase() : null; 
                     String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
 
                     if(hasGlobalFilter && !globalMatch) {
