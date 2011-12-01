@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,25 @@
 package org.primefaces.component.selectmanymenu;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.lang.reflect.Array;
 import java.util.List;
+import javax.el.ELException;
+import javax.el.ExpressionFactory;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
-import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.renderkit.SelectManyRenderer;
 
-public class SelectManyMenuRenderer extends InputRenderer {
-
+public class SelectManyMenuRenderer extends SelectManyRenderer {
+    
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        SelectManyMenu menu = (SelectManyMenu) component;
-
-        if(menu.isDisabled()) {
-            return;
-        }
-
-        decodeBehaviors(context, menu);
-
-        String clientId = menu.getClientId(context);
-        String[] values = context.getExternalContext().getRequestParameterValuesMap().get(clientId + "_input");
-
-        if(values != null) {
-            menu.setSubmittedValue(values);
-        } else {
-            menu.setSubmittedValue(new String[0]);
-        }
-    }
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Menu").getConvertedValue(context, component, submittedValue);
+	}
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -99,7 +86,7 @@ public class SelectManyMenuRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
-
+        
         writer.startElement("div", menu);
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
@@ -108,7 +95,8 @@ public class SelectManyMenuRenderer extends InputRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
+        if(menu.getOnchange() != null)
+            writer.writeAttribute("onchange", menu.getOnchange(), null);
 
         encodeSelectItems(context, menu);
 
@@ -121,51 +109,55 @@ public class SelectManyMenuRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("ul", null);
-
+        //dom created by widget
         writer.endElement("ul");
     }
 
-    @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		SelectManyMenu menu = (SelectManyMenu) component;
-		String[] values = (String[]) submittedValue;
-		Converter converter = getConverter(context, menu);
-        List list = null;
-
-        if(converter != null) {
-            list = new ArrayList();
-
-            for(String value : values) {
-                list.add(converter.getAsObject(context, menu, value));
-            }
-        }
-        else {
-            list = Arrays.asList(values);
-        }
-
-        return list;
-	}
-
     protected void encodeSelectItems(FacesContext context, SelectManyMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, menu);
         Converter converter = getConverter(context, menu);
-        List value = (List) menu.getValue();
-
+        Object values = getValues(menu);
+        Object submittedValues = (Object[]) menu.getSubmittedValue();
+        
         for(SelectItem selectItem : selectItems) {
-            Object itemValue = selectItem.getValue();
-            String itemLabel = selectItem.getLabel();
-
-            writer.startElement("option", null);
-            writer.writeAttribute("value", getOptionAsString(context, menu, converter, itemValue), null);
-
-            if(value != null && value.contains(itemValue)) {
-                writer.writeAttribute("selected", "selected", null);
-            }
-
-            writer.write(itemLabel);
-
-            writer.endElement("option");
+            encodeOption(context, menu, values, submittedValues, converter, selectItem);
         }
     }
+    
+    protected void encodeOption(FacesContext context, SelectManyMenu menu, Object values, Object submittedValues, Converter converter, SelectItem option) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
+        boolean disabled = option.isDisabled() || menu.isDisabled();
+
+        Object valuesArray;
+        Object itemValue;
+        if(submittedValues != null) {
+            valuesArray = submittedValues;
+            itemValue = itemValueAsString;
+        } else {
+            valuesArray = values;
+            itemValue = option.getValue();
+        }
+
+        boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
+        if(option.isNoSelectionOption() && values != null && !selected) {
+            return;
+        }
+
+        writer.startElement("option", null);
+        writer.writeAttribute("value", itemValueAsString, null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(selected) writer.writeAttribute("selected", "selected", null);
+
+        writer.write(option.getLabel());
+
+        writer.endElement("option");
+    }
+
+    @Override
+    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
+        return selectMany.getClientId(context) + "_input";
+    }
+    
+    
 }

@@ -38,7 +38,7 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class CoreRenderer extends Renderer {
+public abstract class CoreRenderer extends Renderer {
 	
 	protected void renderChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		for (Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
