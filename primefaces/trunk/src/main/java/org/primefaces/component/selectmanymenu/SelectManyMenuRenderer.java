@@ -16,10 +16,7 @@
 package org.primefaces.component.selectmanymenu;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.List;
-import javax.el.ELException;
-import javax.el.ExpressionFactory;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
