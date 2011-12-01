@@ -93,8 +93,10 @@
     position:relative;
 }
 
-.ui-menu .ui-menu-parent .ui-icon-triangle-1-e, 
-.ui-menubar .ui-menu-child .ui-icon-triangle-1-e {
+.ui-menu .ui-menu-parent .ui-icon-triangle-1-e,
+.ui-menu .ui-menu-parent .ui-icon-triangle-1-s,
+.ui-menubar .ui-menu-child .ui-icon-triangle-1-s,
+.ui-menubar .ui-menu-child .ui-icon-triangle-1-s {
     float:right;
 }
 
@@ -223,7 +225,8 @@
 }
 
 /*IE7 hack*/
-.ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-e{
+.ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-e,
+.ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-s{
     *float: none;
 }
 
