@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.component.submenu.Submenu;
 
 public class MenubarRenderer extends BaseMenuRenderer {
 
@@ -35,7 +36,7 @@ public class MenubarRenderer extends BaseMenuRenderer {
         writer.write("PrimeFaces.cw('Menubar','" + menubar.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write("});");
-
+        
 		endScript(writer);        	
 	}
 
@@ -63,4 +64,14 @@ public class MenubarRenderer extends BaseMenuRenderer {
 
         writer.endElement("div");
 	}
+    
+    @Override
+    protected void encodeTieredSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String icon = submenu.getParent() instanceof Menubar ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", icon, null);
+        writer.endElement("span");
+    }
 }

@@ -21,6 +21,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.menubar.Menubar;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
@@ -168,9 +169,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             writer.endElement("span");
         }
         
-        writer.startElement("span", null);
-        writer.writeAttribute("class", Menu.SUBMENU_ICON_CLASS, null);
-        writer.endElement("span");
+        encodeTieredSubmenuIcon(context, submenu);
 
         writer.endElement("a");
 
@@ -184,6 +183,14 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			writer.endElement("ul");
 		}
 	}
+    
+    protected void encodeTieredSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Menu.SUBMENU_RIGHT_ICON_CLASS, null);
+        writer.endElement("span");
+    }
     
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();

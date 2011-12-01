@@ -31,7 +31,7 @@
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>Inline style of menubar.</defaultValue>
+            <description>Inline style of menubar.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
