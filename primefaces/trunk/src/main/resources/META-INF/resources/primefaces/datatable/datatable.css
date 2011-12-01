@@ -119,12 +119,12 @@
 
 .ui-datatable .ui-column-resizer {
     width:8px;
-    height:22px;
+    height:20px;
     float:right;
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: -4px -10px;
+    margin: 0px;
     *margin-left: 2px;
 }
 
@@ -145,6 +145,12 @@
 
 .ui-datatable.ui-datatable-resizable table {
     width: auto;
+}
+
+.ui-datatable th div.ui-dt-c {
+    display: inline-block;
+    zoom:1;
+    *display:inline;
 }
 
 .ui-datatable th div.ui-dt-c,
