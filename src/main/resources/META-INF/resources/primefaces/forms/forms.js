@@ -787,7 +787,7 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
         selected = option.is(':selected'),
         disabled = option.is(':disabled'),
         styleClass = 'ui-selectlistbox-item ui-corner-all';
-        styleClass = disabled ? disabled + ' ui-state-disabled' : styleClass;
+        styleClass = disabled ? styleClass + ' ui-state-disabled' : styleClass;
         styleClass = selected ? styleClass + ' ui-state-active' : styleClass;
         
         listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
