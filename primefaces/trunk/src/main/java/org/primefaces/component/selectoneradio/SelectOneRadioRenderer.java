@@ -177,7 +177,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 writer.startElement("tr", null);
             }
 
-            encodeOption(context, radio, values, submittedValues, converter, selectItem, idx);
+            encodeOption(context, radio, converter, selectItem, idx);
 
             if(pageDirection) {
                 writer.endElement("tr");
@@ -185,7 +185,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectOneRadio radio, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneRadio radio, Converter converter, SelectItem option, int idx) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
         String name = radio.getClientId(context);
