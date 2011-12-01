@@ -63,8 +63,6 @@ public class ComponentUtils {
 
 			ValueHolder valueHolder = (ValueHolder) component;
 			Object value = valueHolder.getValue();
-			if(value == null)
-				return "";
 			
 			//first ask the converter
 			if(valueHolder.getConverter() != null) {
@@ -84,8 +82,8 @@ public class ComponentUtils {
 				}
 			}
 			
-			//No converter found just return the value as string
-			return value.toString();
+			//No converter found just return the value
+			return (value == null) ? "" : value.toString();
 		}
         
         return null;
