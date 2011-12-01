@@ -1057,20 +1057,30 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
 /**
  * Add resize behavior to columns
  */
-PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
+ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper
-    $(this.jqId + ' thead tr th').prepend('<div class="ui-column-resizer"></div>');
+    $(this.jqId + ' thead tr th').prepend('<span class="ui-column-resizer">&nbsp;</span>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
     //Variables
     var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
-    resizers = $(this.jqId + ' thead th div.ui-column-resizer'),
+    resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
     scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
     scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
     table = $(this.jqId + ' table'),
     thead = $(this.jqId + ' thead'),  
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
+    
+    //move widths to wrappers
+    thead.find('div.ui-dt-c').each(function() {
+        var wrapper = $(this),
+        column = wrapper.parent();
+        
+        wrapper.width(column.width());
+        column.width('');
+        
+    });
      
     //State cookie
     this.columnWidthsCookie = location.href + '_' + this.id + '_columnWidths';
@@ -1105,6 +1115,7 @@ PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
             resizerHelper.hide();
             
             columnHeaderWrapper.width(newWidth);
+            columnHeader.css('width', '');
                         
             tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
             tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);

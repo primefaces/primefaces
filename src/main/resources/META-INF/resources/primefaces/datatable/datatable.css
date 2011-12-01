@@ -20,7 +20,7 @@
 .ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
-    padding:0px;
+    padding:4px 10px;
     margin:0px;
     overflow: hidden;
 }
@@ -32,7 +32,7 @@
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
-    padding:0px;
+    padding:4px 10px;
     margin:0px;
     overflow: hidden;
 }
@@ -124,7 +124,7 @@
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: 0px;
+    margin: -4px -10px -4px 0;
     *margin-left: 2px;
 }
 
@@ -157,7 +157,7 @@
 .ui-datatable .ui-datatable-data td div.ui-dt-c,
 .ui-datatable .ui-datatable-data-empty td div.ui-dt-c,
 .ui-datatable tfoot td div.ui-dt-c {
-    padding: 4px 10px;
+    padding: 0px;
     overflow: hidden;
 }
 
