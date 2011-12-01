@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.el.ELException;
+import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -136,4 +138,20 @@ public abstract class InputRenderer extends CoreRenderer {
             return submittedValue;
         }
 	}
+    
+    protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
+        Object newValue;
+        try {
+            ExpressionFactory ef = ctx.getApplication().getExpressionFactory();
+            newValue = ef.coerceToType(value, itemValueType);
+        } 
+        catch (ELException ele) {
+            newValue = value;
+        } 
+        catch (IllegalArgumentException iae) {
+            newValue = value;
+        }
+
+        return newValue;
+    }
 }

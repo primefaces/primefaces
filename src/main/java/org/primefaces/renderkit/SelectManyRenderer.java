@@ -106,22 +106,6 @@ public abstract class SelectManyRenderer extends InputRenderer {
         return false;
 
     }
-    
-    protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
-        Object newValue;
-        try {
-            ExpressionFactory ef = ctx.getApplication().getExpressionFactory();
-            newValue = ef.coerceToType(value, itemValueType);
-        } 
-        catch (ELException ele) {
-            newValue = value;
-        } 
-        catch (IllegalArgumentException iae) {
-            newValue = value;
-        }
-
-        return newValue;
-    }
-    
+        
     protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
 }

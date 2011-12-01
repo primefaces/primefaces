@@ -71,9 +71,6 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.write("PrimeFaces.cw('SelectManyCheckbox','" + checkbox.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
 
-        if(checkbox.isDisabled()) 
-            writer.write(",disabled: true");
-
         encodeClientBehaviors(context, checkbox);
 
         writer.write("});");
@@ -81,7 +78,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         endScript(writer);
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String label, String value) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
@@ -189,7 +186,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
-        encodeOptionInput(context, checkbox, id, name, selected, disabled, option.getLabel(), itemValueAsString);
+        encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
         encodeOptionOutput(context, checkbox, selected, disabled);
 
         writer.endElement("div");
