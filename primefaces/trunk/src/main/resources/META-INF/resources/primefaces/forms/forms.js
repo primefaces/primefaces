@@ -231,14 +231,25 @@ PrimeFaces.extend(PrimeFaces.widget.InputTextarea, PrimeFaces.widget.BaseWidget)
     this.disabled = this.jq.hasClass('ui-state-disabled');
     this.tabindex = this.labelContainer.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
-    this.items = this.itemContainer.find('.ui-selectonemenu-item:not(.ui-state-disabled)');
     this.options = this.input.children('option');
     this.cfg.effectDuration = this.cfg.effectDuration||400;
+    
+    var _self = this;
+
+    //disable options
+    this.options.filter(':disabled').each(function() {
+        _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
+    });
+    
+    //enabled items
+    this.items = this.itemContainer.find('.ui-selectonemenu-item:not(.ui-state-disabled)');
 
     //populate label and activate selected item
     var selectedOption = this.options.filter(':selected');
     this.label.html(selectedOption.text());
     this.items.eq(selectedOption.index()).addClass('ui-state-active');
+    
+
 
     this.bindEvents();
 
@@ -359,10 +370,16 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     });
     
     //key bindings
+    this.bindKeyEvents();
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
     this.highlightItems = [];
     this.highlightKeyPath = '';
     this.highlightItem = null;
     this.highlightTimer = null;
+    
+    var _self = this;
 
     this.labelContainer.keydown(function(e) {
         if(_self.disabled)
@@ -422,15 +439,14 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
                 _self.hide();
             default:
                 var letter = String.fromCharCode(e.keyCode).toLowerCase();
-                options = $(_self.input).children('option');
 
                 if( _self.highlightKeyPath != letter ){
 
                     _self.highlightKeyPath += letter;
                     _self.highlightItems = [];
                     // find matches
-                    for( var index = 0 ; index < options.length; index++){
-                        if(options[index].text.toLowerCase().startsWith(_self.highlightKeyPath))
+                    for( var index = 0 ; index < _self.options.length; index++){
+                        if(_self.options[index].text.toLowerCase().startsWith(_self.highlightKeyPath))
                             _self.highlightItems.push(_self.items.eq(index));
                     }
                 }
