@@ -405,9 +405,14 @@ public class DataTableRenderer extends DataRenderer {
             requestMap.put(columnVar, column);
             requestMap.put(columnIndexVar, colIndex);
             UIComponent header = columns.getFacet("header");
-
+            String style = columns.getStyle();
+            String styleClass = columns.getStyleClass() == null ? DataTable.COLUMN_HEADER_CLASS : DataTable.COLUMN_HEADER_CLASS + " " + columns.getStyleClass();
+            
             writer.startElement("th", null);
-            writer.writeAttribute("class", DataTable.COLUMN_HEADER_CLASS, null);
+            writer.writeAttribute("class", styleClass, null);
+            if(style != null) {
+                writer.writeAttribute("style", style, null);
+            }
             
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
