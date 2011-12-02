@@ -26,5 +26,17 @@
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the column.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the column.</description>
+		</attribute>
     </attributes>
 </component>
