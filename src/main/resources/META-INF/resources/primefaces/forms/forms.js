@@ -216,7 +216,7 @@ PrimeFaces.extend(PrimeFaces.widget.InputTextarea, PrimeFaces.widget.BaseWidget)
 /**
  * PrimeFaces SelectOneMenu Widget
  */
-PrimeFaces.widget.SelectOneMenu = function(cfg) {
+ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
@@ -232,29 +232,34 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.tabindex = this.labelContainer.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
     this.items = this.itemContainer.find('.ui-selectonemenu-item:not(.ui-state-disabled)');
+    this.options = this.input.children('option');
+    this.cfg.effectDuration = this.cfg.effectDuration||400;
 
-    if(!this.cfg.effectDuration) {
-        this.cfg.effectDuration = 400;
-    }
+    //populate label and activate selected item
+    var selectedOption = this.options.filter(':selected');
+    this.label.html(selectedOption.text());
+    this.items.eq(selectedOption.index()).addClass('ui-state-active');
 
     this.bindEvents();
 
-    if(this.disabled)
+    //disable tabbing if disabled
+    if(this.disabled) {
         this.labelContainer.attr("tabindex", -1);
+    }
 
     //Client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
     
-    //Panel management
+    //Append panel to body
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
     
+    //align panel and label-menuicon
     var panelWidth = this.panel.width(),
     jqWidth = this.jq.width();
     
-    //align panel and label-menuicon
     if(panelWidth > jqWidth) {
         this.jq.width(panelWidth + this.menuIcon.width());
         this.panel.width(this.jq.width());
@@ -270,9 +275,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.SelectOneMenu, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
-
-    var options = $(this.input).children('option'),
-    _self = this;
+    var _self = this;
 
     //Events for items
     this.items.mouseover(function() {
@@ -281,18 +284,15 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
             $(this).addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        var element = $(this);
-        if(!element.hasClass('ui-state-active')) {
-            $(this).removeClass('ui-state-hover');
-        }
+        $(this).removeClass('ui-state-hover');
     }).click(function() {
         var element = $(this),
-        option = $(options.get(element.index())),
+        option = _self.options.eq(element.index()),
         label = option.text();
         
-        _self.items.removeClass('ui-state-active ui-state-hover');
+        //select item
+        _self.items.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover');
         element.addClass('ui-state-active');
-
         option.attr('selected', 'selected');
         
         if(label && $.trim(label))
@@ -357,7 +357,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
             _self.triggers.removeClass('ui-state-focus');
         }
     });
-
+    
     //key bindings
     this.highlightItems = [];
     this.highlightKeyPath = '';
@@ -477,7 +477,6 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         e.preventDefault();
     });
 }
-
 
 PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item){
     if(!item || !item.length || item.length == 0)
