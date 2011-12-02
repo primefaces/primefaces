@@ -63,6 +63,5 @@ public class SelectRenderer extends InputRenderer {
             }
         }
         return false;
-
     }
 }

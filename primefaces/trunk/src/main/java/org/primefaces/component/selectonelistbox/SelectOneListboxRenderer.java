@@ -110,14 +110,14 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, listbox);
         Converter converter = getConverter(context, listbox);
         Object values = getValues(listbox);
-        Object submittedValues = (Object[]) listbox.getSubmittedValue();
+        Object submittedValues = getSubmittedValues(listbox);
         
         for(SelectItem selectItem : selectItems) {
-            encodeOption(context, listbox, values, submittedValues, converter, selectItem);
+            encodeOption(context, listbox, selectItem, values, submittedValues, converter);
         }
     }
     
-    protected void encodeOption(FacesContext context, SelectOneListbox listbox, Object values, Object submittedValues, Converter converter, SelectItem option) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();

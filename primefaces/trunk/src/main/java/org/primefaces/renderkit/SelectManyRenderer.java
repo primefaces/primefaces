@@ -60,7 +60,11 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         return value;
     }
     
-    
+    protected Object getSubmittedValues(UIComponent component) {
+        UISelectMany select = (UISelectMany) component;
         
+        return (Object[]) select.getSubmittedValue();
+    }
+            
     protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
 }
