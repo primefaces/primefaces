@@ -249,8 +249,6 @@ PrimeFaces.extend(PrimeFaces.widget.InputTextarea, PrimeFaces.widget.BaseWidget)
     this.label.html(selectedOption.text());
     this.items.eq(selectedOption.index()).addClass('ui-state-active');
     
-
-
     this.bindEvents();
 
     //disable tabbing if disabled
