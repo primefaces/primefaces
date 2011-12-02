@@ -114,7 +114,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         List<SelectItem> selectItems = getSelectItems(context, menu);
         Converter converter = getConverter(context, menu);
         Object values = getValues(menu);
-        Object submittedValues = (Object[]) menu.getSubmittedValue();
+        Object submittedValues = getSubmittedValues(menu);
         
         for(SelectItem selectItem : selectItems) {
             encodeOption(context, menu, values, submittedValues, converter, selectItem);

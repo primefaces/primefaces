@@ -16,8 +16,6 @@
 package org.primefaces.component.selectoneradio;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;

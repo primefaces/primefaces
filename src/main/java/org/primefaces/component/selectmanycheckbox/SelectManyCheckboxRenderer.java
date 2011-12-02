@@ -139,7 +139,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = getConverter(context, checkbox);
         Object values = getValues(checkbox);
-        Object submittedValues = (Object[]) checkbox.getSubmittedValue();
+        Object submittedValues = getSubmittedValues(checkbox);
         String layout = checkbox.getLayout();
         boolean pageDirection = layout != null && layout.equals("pageDirection");
 
