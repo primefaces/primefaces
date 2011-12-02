@@ -93,9 +93,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         
         writer.write("PrimeFaces.cw('SelectOneRadio','" + radio.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        
-        if(radio.isDisabled()) writer.write(",disabled: true");
-        if(radio.isUnselectable()) writer.write(",unselectable: true");
 
         encodeClientBehaviors(context, radio);
 

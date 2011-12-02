@@ -58,12 +58,6 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
-        <attribute>
-            <name>unselectable</name>
-            <required></required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
 	</attributes>
     <resources>
         <resource>
