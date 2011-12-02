@@ -22,16 +22,6 @@ import javax.faces.context.FacesContext;
 
 public abstract class SelectOneRenderer extends SelectRenderer {
     
-    protected Object getValues(UISelectOne selectOne) {
-        Object value = selectOne.getValue();
-        
-        if(value != null) {
-            return new Object[] {value};
-        }
-        
-        return null;
-    }
-    
     @Override
     public void decode(FacesContext context, UIComponent component) {
         UISelectOne selectOne = (UISelectOne) component;
@@ -48,5 +38,26 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         }
     }
     
+    protected Object getValues(UISelectOne selectOne) {
+        Object value = selectOne.getValue();
+        
+        if(value != null) {
+            return new Object[] {value};
+        }
+        
+        return null;
+    }
+    
+    protected Object getSubmittedValues(UIComponent component) {
+        UISelectOne select = (UISelectOne) component;
+        
+        Object val = select.getSubmittedValue();
+        if(val != null) {
+            return new Object[] { val };
+        }
+        
+        return null;
+    }
+
     protected abstract String getSubmitParam(FacesContext context, UISelectOne selectOne);
 }
