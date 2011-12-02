@@ -84,7 +84,7 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function() {
         });
 
     //disable tabbing out of modal dialog and stop events from targets outside of dialog
-    $(document).bind('keydown.dialog', function(event) {
+    $(document).bind('keypress.dialog', function(event) {
         if(event.keyCode == $.ui.keyCode.TAB) {
             var tabbables = _self.content.find(':tabbable'),
             first = tabbables.filter(':first'),
@@ -101,7 +101,7 @@ PrimeFaces.widget.Dialog.prototype.enableModality = function() {
         }        
     })
     .bind(this.blockEvents, function(event) {
-        if($(event.target).css('z-index') < _self.jq.css('z-index')) {
+        if ($(event.target).zIndex() < PrimeFaces.zindex) {
             return false;
         }
     });
