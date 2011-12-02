@@ -226,11 +226,12 @@ public class TreeTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("thead", null);
-		writer.startElement("tr", null);
         
         encodeFacet(context, tt, "header", TreeTable.HEADER_CLASS, "th");
         
-		for(int i = 0; i < tt.getChildCount(); i++) {
+		writer.startElement("tr", null);
+		
+        for(int i = 0; i < tt.getChildCount(); i++) {
             UIComponent kid = tt.getChildren().get(i);
 			
 			if(kid instanceof Column && kid.isRendered()) {
