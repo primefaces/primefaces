@@ -15,9 +15,12 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.Map;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
+import javax.faces.context.FacesContext;
 
-public class SelectOneRenderer extends InputRenderer {
+public abstract class SelectOneRenderer extends SelectRenderer {
     
     protected Object getValues(UISelectOne selectOne) {
         Object value = selectOne.getValue();
@@ -28,4 +31,22 @@ public class SelectOneRenderer extends InputRenderer {
         
         return null;
     }
+    
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        UISelectOne selectOne = (UISelectOne) component;
+
+        decodeBehaviors(context, selectOne);
+
+        String clientId = getSubmitParam(context, selectOne);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        if(params.containsKey(clientId)) {
+            selectOne.setSubmittedValue(params.get(clientId));
+        }
+        else {
+            selectOne.setSubmittedValue("");
+        }
+    }
+    
+    protected abstract String getSubmitParam(FacesContext context, UISelectOne selectOne);
 }

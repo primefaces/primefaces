@@ -18,15 +18,12 @@ package org.primefaces.renderkit;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
-import javax.el.ELException;
-import javax.el.ExpressionFactory;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 
-public abstract class SelectManyRenderer extends InputRenderer {
+public abstract class SelectManyRenderer extends SelectRenderer {
     
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -63,49 +60,7 @@ public abstract class SelectManyRenderer extends InputRenderer {
         return value;
     }
     
-    protected boolean isSelected(FacesContext context, UIComponent component, Object itemValue, Object valueArray, Converter converter) {
-        if(itemValue == null && valueArray == null) {
-            return true;
-        }
-        
-        if(valueArray != null) {
-            if(!valueArray.getClass().isArray()) {
-                return valueArray.equals(itemValue);
-            }
-            
-            int length = Array.getLength(valueArray);
-            for(int i = 0; i < length; i++) {
-                Object value = Array.get(valueArray, i);
-                
-                if(value == null && itemValue == null) {
-                    return true;
-                } 
-                else {
-                    if((value == null) ^ (itemValue == null)) {
-                        continue;
-                    }
-                    
-                    Object compareValue;
-                    if (converter == null) {
-                        compareValue = coerceToModelType(context, itemValue, value.getClass());
-                    } 
-                    else {
-                        compareValue = itemValue;
-                        
-                        if (compareValue instanceof String && !(value instanceof String)) {
-                            compareValue = converter.getAsObject(context, component, (String) compareValue);
-                        }
-                    }
-
-                    if (value.equals(compareValue)) {
-                        return (true);
-                    }
-                }
-            }
-        }
-        return false;
-
-    }
+    
         
     protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
 }
