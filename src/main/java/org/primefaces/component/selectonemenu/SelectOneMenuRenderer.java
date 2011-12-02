@@ -212,6 +212,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         startScript(writer, clientId);
         
+        writer.write("$(function(){");
         writer.write("PrimeFaces.cw('SelectOneMenu','" + menu.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",effect:'" + menu.getEffect() + "'");
@@ -221,7 +222,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         encodeClientBehaviors(context, menu);
 
-        writer.write("});");
+        writer.write("});});");
 
         endScript(writer);
     }
