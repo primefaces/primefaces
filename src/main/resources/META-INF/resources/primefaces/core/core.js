@@ -184,6 +184,31 @@ PrimeFaces = {
 			cache: true
         });
     },
+    
+    focus : function(id, context) {
+        var selector = ':not(:submit):not(:button):input:visible:enabled:first';
+
+        setTimeout(function() {
+            if(id) {
+                var jq = $(PrimeFaces.escapeClientId(id));
+
+                if(jq.is(selector)) {
+                    jq.focus();
+                } 
+                else {
+                    jq.find(selector).focus();
+                }
+            }
+            else if(context) {
+                var jq = $(PrimeFaces.escapeClientId(context));
+
+                jq.find(selector).focus();
+            }
+            else {
+                $(selector).focus();
+            }
+        }, 250);
+    },
 
     locales : {},
     

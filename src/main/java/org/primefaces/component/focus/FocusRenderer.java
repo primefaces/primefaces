@@ -27,7 +27,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 
 public class FocusRenderer extends CoreRenderer {
 
@@ -72,42 +71,36 @@ public class FocusRenderer extends CoreRenderer {
 		String clientId = forComponent.getClientId(context);
 		
 		writer.write("$(function(){");
-		writer.write("$(PrimeFaces.escapeClientId('" + clientId +"')).focus();");
+		writer.write("PrimeFaces.focus('" + clientId +"');");
 		writer.write("});");
 	}
 	
 	protected void encodeImplicitFocus(FacesContext context, Focus focus) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String clientId = findFirstInvalidClientId(context, focus);
+        String invalidClientId = findFirstInvalidComponentClientId(context, focus);
 
         writer.write("$(function(){");
 		
-		if(isPostBack() && clientId != null){
-            writer.write("setTimeout(function() {");
-            writer.write("var focusTarget = PrimeFaces.escapeClientId('" + clientId + "');");
-            writer.write("$(focusTarget + ',' + focusTarget + ' input').focus();");
-            writer.write("}, 500);");
+		if(invalidClientId != null){
+            writer.write("PrimeFaces.focus('" + invalidClientId +"');");
 		}
+        else if(focus.getContext() != null) {		
+            UIComponent focusContext = focus.findComponent(focus.getContext());
+
+            if(context == null)
+                throw new FacesException("Cannot find component " + focus.getContext() + " in view");
+            else {
+                writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) +"');");
+            }
+		} 
         else {
-			String selector = Focus.INPUT_SELECTOR;
-			
-			if(focus.getContext() != null) {
-				UIComponent focusContext = focus.findComponent(focus.getContext());
-				
-				if(context == null)
-					throw new FacesException("Cannot find component " + focus.getContext() + " in view");
-				else {
-					selector = ComponentUtils.escapeJQueryId(focusContext.getClientId(context)) + " " +  selector;
-				}
-			}
-			
-			writer.write("$('" + selector + "').focus();");
-		}
+            writer.write("PrimeFaces.focus();");
+        }
 
         writer.write("});");
 	}
 	
-	protected String findFirstInvalidClientId(FacesContext context, Focus focus) {
+	protected String findFirstInvalidComponentClientId(FacesContext context, Focus focus) {
 		int minSeverityOrdinal = severityOrdinals.get(focus.getMinSeverity());
 		
 		for(Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext();) {
