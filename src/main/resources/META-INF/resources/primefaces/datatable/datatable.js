@@ -43,6 +43,10 @@ PrimeFaces.widget.DataTable = function(cfg) {
         this.setupCellEditorEvents(rowEditors);
     }
     
+    if(this.cfg.scrollable||this.cfg.resizableColumns) {
+        this.alignColumnWidths();
+    }
+    
     if(this.cfg.scrollable) {
         this.setupScrolling();
     }
@@ -1071,17 +1075,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
     thead = $(this.jqId + ' thead'),  
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
-    
-    //move widths to wrappers
-    thead.find('div.ui-dt-c').each(function() {
-        var wrapper = $(this),
-        column = wrapper.parent();
-        
-        wrapper.width(column.width());
-        column.width('');
-        
-    });
-     
+         
     //State cookie
     this.columnWidthsCookie = location.href + '_' + this.id + '_columnWidths';
     
@@ -1236,4 +1230,17 @@ PrimeFaces.widget.DataTable.prototype.getRowMeta = function(row) {
     };
     
     return meta;
+}
+
+/**
+ * Moves widths of columns to column wrappers
+ */
+PrimeFaces.widget.DataTable.prototype.alignColumnWidths = function() {
+    this.jq.find('div.ui-dt-c').each(function() {
+        var wrapper = $(this),
+        column = wrapper.parent();
+        
+        wrapper.width(column.width());
+        column.width('');
+    });
 }
