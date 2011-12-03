@@ -15,6 +15,7 @@
  */
 package org.primefaces.renderkit;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,8 +48,18 @@ public abstract class InputRenderer extends CoreRenderer {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
 				Object value = uiSelectItems.getValue();
 
-                if(value instanceof SelectItem[]) {
-                    selectItems.addAll(Arrays.asList((SelectItem[]) value));
+                if(value instanceof SelectItem) {
+                    selectItems.add((SelectItem) value);
+                }
+                else if(value.getClass().isArray()) {
+                    for(int i = 0; i < Array.getLength(value); i++) {
+                        Object item = Array.get(value, i);
+                        
+                        if(item instanceof SelectItem)
+                            selectItems.add((SelectItem) item);
+                        else
+                            selectItems.add(createSelectItem(context, uiSelectItems, item));
+                    }
                 }
                 else if(value instanceof Map) {
                     Map map = (Map) value;
@@ -61,40 +72,41 @@ public abstract class InputRenderer extends CoreRenderer {
                 }
                 else if(value instanceof Collection) {
                     Collection collection = (Collection) value;
-                    String var = (String) uiSelectItems.getAttributes().get("var");
-
-                    if(collection != null) {
-                        for(Iterator it = collection.iterator(); it.hasNext();) {
-                            Object object = it.next();
-                            
-                            if(var != null)
-                                    context.getExternalContext().getRequestMap().put(var, object);
-                            
-                            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-                            String description = (String)uiSelectItems.getAttributes().get("itemDescription");
-                            Boolean disabled = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemDisabled")));
-                            Boolean escaped = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("itemEscaped")));
-                            Boolean noSelectionOption = Boolean.valueOf(((String)uiSelectItems.getAttributes().get("noSelectionOption")));
-                            
-                            if(object instanceof SelectItem) {
-                                selectItems.add((SelectItem) object);
-                            }
-                            else if(object instanceof Enum) {
-                                Enum e = (Enum) object;
-                                selectItems.add(new SelectItem(itemValue == null ? e.name() : itemValue, itemLabel == null ? e.name() : itemLabel, description, disabled, escaped, noSelectionOption));
-                            }
-                            else{
-                                selectItems.add(new SelectItem(itemValue == null ? object : itemValue, itemLabel == null ? object.toString() : itemLabel, description, disabled, escaped, noSelectionOption));
-                            }
-                        }
-                    }                    
+                    
+                    for(Iterator it = collection.iterator(); it.hasNext();) {
+                        selectItems.add(createSelectItem(context, uiSelectItems, it.next()));
+                    }               
                 }
 			}
         }
 
         return selectItems;
 	}
+    
+    protected SelectItem createSelectItem(FacesContext context, UISelectItems uiSelectItems, Object object) {
+        String var = (String) uiSelectItems.getAttributes().get("var");
+        
+        if(var != null) {
+            context.getExternalContext().getRequestMap().put(var, object);
+
+            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
+            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
+            String description = (String) uiSelectItems.getAttributes().get("itemDescription");
+            Boolean disabled = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemDisabled")));
+            Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemEscaped")));
+            Boolean noSelectionOption = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("noSelectionOption")));
+
+            if(itemValue == null)
+                itemValue = object;
+            if(itemLabel == null)
+                itemLabel = String.valueOf(object);
+
+            return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+        }
+        else {
+            return new SelectItem(object, String.valueOf(object));
+        }
+    }
 
 	protected String getOptionAsString(FacesContext context, UIInput component, Converter converter, Object value) {
 		if(value == null)
