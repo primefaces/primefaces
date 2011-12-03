@@ -277,6 +277,12 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
     scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer'),
     _self = this;
     
+    if(this.cfg.scrollWidth) {
+        scrollHeader.width(this.cfg.scrollWidth);
+        scrollBody.width(this.cfg.scrollWidth);
+        scrollFooter.width(this.cfg.scrollWidth);
+    }
+    
     if(this.cfg.liveScroll) {
         this.scrollOffset = this.cfg.scrollStep;
         this.shouldLiveScroll = true;       
