@@ -11,9 +11,10 @@ PrimeFaces.widget.TreeTable = function(cfg) {
     this.cfg.resizable = this.jq.hasClass('ui-treetable-resizable');
     
     this.bindToggleEvents();
-    
+        
     //scrolling
     if(this.cfg.scrollable) {
+        this.alignColumnWidths();
         this.setupScrolling();
     }
 
@@ -296,6 +297,12 @@ PrimeFaces.widget.TreeTable.prototype.setupScrolling = function() {
     var scrollHeader = $(this.jqId + ' .ui-treetable-scrollable-header'),
     scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
     scrollFooter = $(this.jqId + ' .ui-treetable-scrollable-footer');
+    
+    if(this.cfg.scrollWidth) {
+        scrollHeader.width(this.cfg.scrollWidth);
+        scrollBody.width(this.cfg.scrollWidth);
+        scrollFooter.width(this.cfg.scrollWidth);
+    }
         
     scrollBody.scroll(function() {
         scrollHeader.scrollLeft(scrollBody.scrollLeft());
@@ -322,4 +329,17 @@ PrimeFaces.widget.TreeTable.prototype.align = function() {
 
     headerTogglerColumnContent.width(headerTogglerColumnContent.width() + (maxTogglerColumnWidth - headerTogglerColumnContent.innerWidth()));
     footerTogglerColumnContent.width(footerTogglerColumnContent.width() + (maxTogglerColumnWidth - footerTogglerColumnContent.innerWidth()));   
+}
+
+/**
+ * Moves widths of columns to column wrappers
+ */
+PrimeFaces.widget.TreeTable.prototype.alignColumnWidths = function() {
+    this.jq.find('div.ui-tt-c').each(function() {
+        var wrapper = $(this),
+        column = wrapper.parent();
+        
+        wrapper.width(column.width());
+        column.width('');
+    });
 }
