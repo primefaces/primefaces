@@ -4367,7 +4367,29 @@ PrimeFaces.widget.Layout = function(cfg) {
     } else {                                                            //element
         this.jq = $(this.jqId);
     }
+    
+    var _self = this;
+    
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                return _self.init();
+            });
+        }
+    }
+    
+    this.postConstruct();
+}
 
+PrimeFaces.extend(PrimeFaces.widget.Layout, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.Layout.prototype.init = function() {
     var _self = this;
 
     //defaults
@@ -4392,11 +4414,7 @@ PrimeFaces.widget.Layout = function(cfg) {
     }
 
     this.bindEvents();
-    
-    this.postConstruct();
 }
-
-PrimeFaces.extend(PrimeFaces.widget.Layout, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Layout.prototype.bindEvents = function() {
     var _self = this,
