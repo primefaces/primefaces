@@ -207,7 +207,15 @@ public class SheetRenderer extends CoreRenderer {
                     writer.endElement("span");
                 }
                 
-                writer.write(Sheet.LETTERS[columnIndex]);
+                int letterIndex = columnIndex / 26;
+                if(letterIndex == 0) {
+                    writer.write(Sheet.LETTERS[columnIndex]);
+                } else {
+                    int first = letterIndex - 1;
+                    int second = columnIndex % 26;
+                    
+                    writer.write(Sheet.LETTERS[first] + Sheet.LETTERS[second]);
+                }
 
                 writer.endElement("th");
                 
