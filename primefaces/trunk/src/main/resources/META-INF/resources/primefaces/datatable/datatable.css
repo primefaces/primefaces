@@ -139,8 +139,9 @@
     display: none;
 }
 
-ui-datatable-resizable {
+.ui-datatable-resizable {
     padding-bottom:1px;     /*fix for webkit overlow*/
+    overflow:auto;
 }
 
 .ui-datatable.ui-datatable-resizable table {
