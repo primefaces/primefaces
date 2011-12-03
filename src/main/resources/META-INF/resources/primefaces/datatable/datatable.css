@@ -139,14 +139,12 @@
     display: none;
 }
 
-.ui-datatable.ui-datatable-resizable table {
-    width: auto;
+ui-datatable-resizable {
+    padding-bottom:1px;     /*fix for webkit overlow*/
 }
 
-.ui-datatable th div.ui-dt-c {
-    display: inline-block;
-    zoom:1;
-    *display:inline;
+.ui-datatable.ui-datatable-resizable table {
+    width: auto;
 }
 
 .ui-datatable th div.ui-dt-c,
