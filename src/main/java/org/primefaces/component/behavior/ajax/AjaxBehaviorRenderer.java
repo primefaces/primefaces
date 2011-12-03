@@ -55,15 +55,13 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
-        if(source == null) {
-            source = component.getClientId(fc);
-        }
+        source = source == null ? "this" : "'" + source + "'";
 
         StringBuilder req = new StringBuilder();
         req.append("PrimeFaces.ab(");
 
         //source
-        req.append("{source:").append("'").append(source).append("'");
+        req.append("{source:").append(source);
 
         //process
         String process = ajaxBehavior.getProcess() != null ? ComponentUtils.findClientIds(fc, component, ajaxBehavior.getProcess()) : clientId;
