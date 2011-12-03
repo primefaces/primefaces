@@ -95,10 +95,7 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isRequestSource(context)) {
-            this.decode(context);
-        }
-        else if(this.getVar() == null) {
+        if(this.getVar() == null) {
             Iterator kids = getFacetsAndChildren();
             while (kids.hasNext()) {
                 UIComponent kid = (UIComponent) kids.next();
@@ -114,10 +111,7 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(isRequestSource(context)) {
-            return;
-        }
-        else if(this.getVar() == null) {
+        if(this.getVar() == null) {
             Iterator kids = getFacetsAndChildren();
             while (kids.hasNext()) {
                 UIComponent kid = (UIComponent) kids.next();
@@ -137,10 +131,7 @@ import javax.faces.component.visit.VisitResult;
             resetActiveIndex();
         }
 
-        if(isRequestSource(context)) {
-            return;
-        }
-        else if(this.getVar() == null) {
+        if(this.getVar() == null) {
             Iterator kids = getFacetsAndChildren();
             while (kids.hasNext()) {
                 UIComponent kid = (UIComponent) kids.next();
