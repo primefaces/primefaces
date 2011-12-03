@@ -139,10 +139,6 @@
     display: none;
 }
 
-.ui-datatable.ui-datatable-resizable {
-    overflow: auto;
-}
-
 .ui-datatable.ui-datatable-resizable table {
     width: auto;
 }
