@@ -371,12 +371,21 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
        }
     }
 
-    var form = null;
+    var form = null,
+    sourceId = null;
+    
+    //source can be a client id or an element defined by this keyword
+    if(typeof(cfg.source) == 'string') {
+        sourceId = cfg.source;
+    } else {
+        sourceId = $(cfg.source).attr('id');
+    }
+    
     if(cfg.formId) {
         form = $(PrimeFaces.escapeClientId(cfg.formId));                    //Explicit form is defined
     }
     else {
-        form = $(PrimeFaces.escapeClientId(cfg.source)).parents('form:first');     //look for a parent of source
+        form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');     //look for a parent of source
 
         //source has no parent form so use first form in document
         if(form.length == 0) {
@@ -403,7 +412,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     postParams = postParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
 
     //source
-    postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + cfg.source;
+    postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + sourceId;
 
     //process
     var process = [];
