@@ -95,6 +95,10 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void processDecodes(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
         if(this.getVar() == null) {
             Iterator kids = getFacetsAndChildren();
             while (kids.hasNext()) {
@@ -111,6 +115,10 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void processValidators(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
         if(this.getVar() == null) {
             Iterator kids = getFacetsAndChildren();
             while (kids.hasNext()) {
@@ -125,6 +133,10 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void processUpdates(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
         ValueExpression expr = this.getValueExpression("activeIndex");
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
