@@ -250,14 +250,22 @@ class DataHelper {
             table.setSelection(selectionList.toArray((Object[])selectinArray));
 		}
 	}
-
-    String resolveField(ValueExpression expression) {
-        String expressionString = expression.getExpressionString();
-        expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
-        
-        return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
-    }
     
+    String resolveField(ValueExpression expression) {
+        Object newValue = expression.getValue(FacesContext.getCurrentInstance().getELContext());
+
+        if(newValue == null || !(newValue instanceof String)) {
+            String expressionString = expression.getExpressionString();
+            expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
+        
+            return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+        }
+        else {
+            String val = (String) newValue;
+            
+            return val.substring(val.indexOf(".") + 1);
+        }
+    }
         
     /**
      * Finds if row to render is in same group of previous row
