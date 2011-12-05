@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,17 +56,17 @@ public class ScheduleRenderer extends CoreRenderer {
 		ScheduleModel model = (ScheduleModel) schedule.getValue();
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		
-		String startDateParam = params.get(clientId + "_start");
-		String endDateParam = params.get(clientId + "_end");
+        if(model instanceof LazyScheduleModel) {
+            String startDateParam = params.get(clientId + "_start");
+            String endDateParam = params.get(clientId + "_end");
 
-		if(model instanceof LazyScheduleModel) {
-			Date startDate = new Date(Long.valueOf(startDateParam));
-			Date endDate = new Date(Long.valueOf(endDateParam));
-			
-			LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
-			lazyModel.clear();							//Clear old events
-			lazyModel.loadEvents(startDate, endDate);	//Lazy load events
-		}
+            Date startDate = new Date(Long.valueOf(startDateParam));
+            Date endDate = new Date(Long.valueOf(endDateParam));
+
+            LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
+            lazyModel.clear();							//Clear old events
+            lazyModel.loadEvents(startDate, endDate);	//Lazy load events
+        }
 		
 		encodeEventsAsJSON(context, schedule, model);
 	}
@@ -78,29 +79,31 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.write("{");
 		writer.write("\"events\" : [");
 		
-		for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
-			ScheduleEvent event = iterator.next();
-            calendar.setTime(event.getStartDate());
-            long startDateInMillis = calendar.getTimeInMillis();
-            
-            calendar.setTime(event.getEndDate());
-            long endDateInMillis = calendar.getTimeInMillis();
-			
-			writer.write("{");
-			writer.write("\"id\": \"" + event.getId() + "\"");	
-			writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
-			writer.write(",\"start\": " + startDateInMillis);	
-			writer.write(",\"end\": " + endDateInMillis);	
-			writer.write(",\"allDay\":" + event.isAllDay());
-            writer.write(",\"editable\":" + event.isEditable());
-			if(event.getStyleClass() != null)
-				writer.write(",\"className\":\"" + event.getStyleClass() + "\"");
-			
-			writer.write("}");
+        if(model != null) {
+            for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
+                ScheduleEvent event = iterator.next();
+                calendar.setTime(event.getStartDate());
+                long startDateInMillis = calendar.getTimeInMillis();
 
-			if(iterator.hasNext())
-				writer.write(",");
-		}
+                calendar.setTime(event.getEndDate());
+                long endDateInMillis = calendar.getTimeInMillis();
+
+                writer.write("{");
+                writer.write("\"id\": \"" + event.getId() + "\"");	
+                writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
+                writer.write(",\"start\": " + startDateInMillis);	
+                writer.write(",\"end\": " + endDateInMillis);	
+                writer.write(",\"allDay\":" + event.isAllDay());
+                writer.write(",\"editable\":" + event.isEditable());
+                if(event.getStyleClass() != null)
+                    writer.write(",\"className\":\"" + event.getStyleClass() + "\"");
+
+                writer.write("}");
+
+                if(iterator.hasNext())
+                    writer.write(",");
+            }
+        }
 		
 		writer.write("]}");	
 	}
