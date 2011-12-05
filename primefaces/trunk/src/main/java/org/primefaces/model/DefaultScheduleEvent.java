@@ -28,7 +28,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 	
 	private Date endDate;
 	
-	private boolean allDay = true;
+	private boolean allDay = false;
 	
 	private String styleClass;
 	
