@@ -366,7 +366,7 @@ PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
             if(checkedChildren.length > 0) {
                 icon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
             } else {
-                icon.removeClass('ui-icon ui-icon-minus');
+                icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
             }
 
             _self.removeFromSelection(nodeId);
