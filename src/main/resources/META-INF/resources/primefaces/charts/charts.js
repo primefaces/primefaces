@@ -17457,9 +17457,9 @@ PrimeFaces.widget.ChartUtils = {
             function(ev, gridpos, datapos, neighbor, plot){
                 if (neighbor != null)
                     tooltip.css({
-                        left:(gridpos.x ), 
+                        left:(gridpos.x + 15 ),
                         top:(gridpos.y - 5)
-                        });
+                    });
             });
     }
 }
