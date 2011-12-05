@@ -35,6 +35,7 @@ import java.lang.StringBuilder;
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-treetable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable-resizable";
+    public static String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse"));
 

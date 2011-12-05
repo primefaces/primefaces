@@ -143,9 +143,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = selectable && tree.getSelectionMode().equals("checkbox");
         
         //container class
-        String containerClass = Tree.CONTAINER_CLASS;
-        containerClass = selectable ? containerClass + " " + Tree.SELECTABLE_CLASS : containerClass;
-		containerClass = tree.getStyleClass() == null ? containerClass : containerClass + " " + tree.getStyleClass();
+        String containerClass = tree.getStyleClass() == null ? Tree.CONTAINER_CLASS : Tree.CONTAINER_CLASS + " " + tree.getStyleClass();
 
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
@@ -177,7 +175,7 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(rowKey);
             boolean isLeaf = node.isLeaf();
             boolean expanded = node.isExpanded();
-            boolean selectable = node.isSelectable();
+            boolean selectable = node.isSelectable() && (tree.getSelectionMode() != null);
             String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
             String nodeId = clientId + "_node_" + rowKey;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());

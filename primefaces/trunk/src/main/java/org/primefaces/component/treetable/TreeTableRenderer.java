@@ -268,15 +268,18 @@ public class TreeTableRenderer extends CoreRenderer {
 	}
     
     protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey) throws IOException {
-        
         if(rowKey != null) {
             ResponseWriter writer = context.getResponseWriter();
             tt.setRowKey(rowKey);
             String nodeId = clientId + "_node_" + rowKey;
             String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
             int depth = rowKey.split(UITree.SEPARATOR).length - 1;
+            boolean selectable = treeNode.isSelectable() && (tt.getSelectionMode() != null);
             boolean selected = treeNode.isSelected();
+            
             String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
+            rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
+            rowStyleClass = rowStyleClass + " " + treeNode.getType();
             
             if(selected) {
                 tt.getSelectedRowKeys().add(rowKey);
@@ -284,7 +287,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
             writer.startElement("tr", null);
             writer.writeAttribute("id", nodeId, null);
-            writer.writeAttribute("class", rowStyleClass + " " + treeNode.getType(), null);
+            writer.writeAttribute("class", rowStyleClass, null);
 
             for(int i=0; i < tt.getChildren().size(); i++) {
                 UIComponent kid = (UIComponent) tt.getChildren().get(i);
