@@ -412,10 +412,10 @@ PrimeFaces.widget.ContextMenu = function(cfg) {
         this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
     }
     else if(jqTarget.hasClass('ui-treetable')) {
-        this.cfg.trigger = this.cfg.target + ' .ui-treetable-data ' + (this.cfg.nodeType ? 'tr.' + this.cfg.nodeType : 'tr');
+        this.cfg.trigger = this.cfg.target + ' .ui-treetable-data ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node');
     }
     else if(jqTarget.hasClass('ui-tree')) {
-        this.cfg.trigger = this.cfg.target + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-node-content': '.ui-tree-node-content');
+        this.cfg.trigger = this.cfg.target + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node');
     }
     else {
         this.cfg.trigger = this.cfg.target;
