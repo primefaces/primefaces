@@ -313,6 +313,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         }
         
         _self.triggers.removeClass('ui-state-hover').addClass('ui-state-focus');
+        _self.labelContainer.focus();
         e.preventDefault();
     });
 
@@ -346,6 +347,11 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         if(!_self.disabled){
             _self.triggers.removeClass('ui-state-focus');
         }
+    });
+    
+    //on tab receive
+    this.input.focus(function() {
+       _self.labelContainer.focus();
     });
     
     //key bindings
@@ -418,7 +424,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
                    else
                         _self.selectItem(prev);
                 }
-
+                
                 e.preventDefault();
                 break;
 
@@ -447,9 +453,12 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
             
             case keyCode.ALT: 
             case 224:
+                e.preventDefault();
                 break;
             case keyCode.TAB:
-                _self.hide();
+                var highlightedItem = _self.items.filter('.ui-state-active');
+                
+                _self.selectItem(highlightedItem);
             default:
                 var letter = String.fromCharCode(e.keyCode).toLowerCase();
 
@@ -501,10 +510,12 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
 
                 _self.highlightOption = _self.highlightItems[_self.highlightIndex];
                 _self.selectItem(_self.highlightOption);
+                
+                e.preventDefault();
         };
-
+        
         e.preventDefault();
-    });
+    }); 
 }
                     
 PrimeFaces.widget.SelectOneMenu.prototype.alignScroller = function(item) {
