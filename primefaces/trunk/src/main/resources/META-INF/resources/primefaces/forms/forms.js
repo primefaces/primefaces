@@ -237,7 +237,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     var _self = this;
 
     //disable options
-    this.options.filter(':disabled').each(function() {
+    this.input.children('option:disabled').each(function() {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
     });
     
@@ -353,6 +353,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 PrimeFaces.widget.SelectOneMenu.prototype.highlightItem = function(item) {
     this.unhighlightItem(this.items.filter('.ui-state-active'));
     item.addClass('ui-state-active');
+    
+    this.alignScroller(item);
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.unhighlightItem = function(item) {
@@ -499,30 +501,19 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
         e.preventDefault();
     });
 }
-
-/*PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item){
-    if(!item || !item.length || item.length == 0)
-        return;
-    
-    var yScrolled = this.panel.height() < this.itemContainer.height();
-
-    //closed panel
-    if(this.panel.is(":hidden"))
-        item.click();
-    else{
-        this.items.removeClass("ui-state-active");
-        item.addClass('ui-state-active');
+                    
+PrimeFaces.widget.SelectOneMenu.prototype.alignScroller = function(item) {
+    if(this.panel.height() < this.itemContainer.height()){
+        var diff = item.offset().top + item.outerHeight(true) - this.panel.offset().top;
         
-        // check & align up/down overflow
-        if(yScrolled){
-            var diff = item.offset().top + item.outerHeight(true) - this.panel.offset().top;
-            if( diff > this.panel.height() )
-                this.panel.scrollTop(this.panel.scrollTop() + (diff - this.panel.height()));
-            else if( (diff -= item.outerHeight(true)*2 - item.height()) < 0 )
-                this.panel.scrollTop( this.panel.scrollTop() + diff);
+        if(diff > this.panel.height()) {
+            this.panel.scrollTop(this.panel.scrollTop() + (diff - this.panel.height()));
+        }
+        else if((diff -= item.outerHeight(true)*2 - item.height()) < 0) {
+            this.panel.scrollTop( this.panel.scrollTop() + diff);
         }
     }
-}*/
+}
 
 PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
     //highlight current
