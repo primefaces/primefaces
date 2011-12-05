@@ -301,13 +301,13 @@ PrimeFaces.widget.Dialog.prototype.toggleMaximize = function() {
     
     if(this.maximized) {
         this.jq.removeClass('ui-dialog-maximized');
-        this.restoreState(true);
+        this.restoreState();
                 
         this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
         this.maximized = false;
     } 
     else {
-        this.saveState(true);
+        this.saveState();
         
         var win = $(window);
                 
@@ -343,7 +343,7 @@ PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
     
     if(this.minimized) {
         this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
-        this.restoreState(false);
+        this.restoreState();
         this.content.show();
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
         this.minimized = false;
@@ -352,7 +352,7 @@ PrimeFaces.widget.Dialog.prototype.toggleMinimize = function() {
             this.resizers.show();
     }
     else {
-        this.saveState(false);
+        this.saveState();
         
         if(animate) {
             this.jq.effect('transfer', {
@@ -381,30 +381,26 @@ PrimeFaces.widget.Dialog.prototype.dock = function(zone) {
         this.resizers.hide();
 }
 
-PrimeFaces.widget.Dialog.prototype.saveState = function(includeOffset) {
+PrimeFaces.widget.Dialog.prototype.saveState = function() {
     this.state = {
         width: this.jq.width()
         ,height: this.jq.height()
     };
     
     var win = $(window);
-    if(includeOffset) {
-        this.state.offset = this.jq.offset();
-        this.state.windowScrollLeft = win.scrollLeft();
-        this.state.windowScrollTop = win.scrollTop();
-    }
+    this.state.offset = this.jq.offset();
+    this.state.windowScrollLeft = win.scrollLeft();
+    this.state.windowScrollTop = win.scrollTop();
 }
 
 PrimeFaces.widget.Dialog.prototype.restoreState = function(includeOffset) {
     this.jq.width(this.state.width).height(this.state.height);
         
-    if(includeOffset) {
-        var win = $(window);
-        this.jq.offset({
-           top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
-           ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
-        });
-    }
+    var win = $(window);
+    this.jq.offset({
+       top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
+       ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
+    });
 }
 
 PrimeFaces.widget.Dialog.prototype.loadContents = function() {
@@ -440,6 +436,7 @@ PrimeFaces.widget.Dialog.prototype.loadContents = function() {
     
     options.oncomplete = function() {
         _self._show();
+        _self.initPosition();
     };
 
     var params = [];
