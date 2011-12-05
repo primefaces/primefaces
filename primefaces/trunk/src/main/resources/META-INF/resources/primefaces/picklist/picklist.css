@@ -34,7 +34,7 @@
     border-collapse:collapse;
 }
 
-.ui-picklist tr{
-    /*IE7 draggable hack*/
+.ui-picklist > tbody{
+    /*IE7 hack*/
     *position: relative;
 }
