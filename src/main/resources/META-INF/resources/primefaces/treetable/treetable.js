@@ -53,7 +53,7 @@ PrimeFaces.widget.TreeTable.prototype.bindToggleEvents = function() {
 PrimeFaces.widget.TreeTable.prototype.bindSelectionEvents = function() {
     var _self = this;
     
-    $(this.jqId + ' .ui-treetable-data tr').die('mouseover.treetable mouseout.treetable click.treetable contextmenu.treetable')
+    $(this.jqId + ' .ui-treetable-data tr.ui-treetable-selectable-node').die('mouseover.treetable mouseout.treetable click.treetable contextmenu.treetable')
             .live('mouseover.treetable', function(e) {
                 var element = $(this);
 
