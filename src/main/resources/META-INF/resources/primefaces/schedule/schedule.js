@@ -5294,42 +5294,48 @@ PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
 	}
 
 	this.cfg.eventClick = function(calEvent, jsEvent, view) {
-        var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
-        if(eventSelectBehavior) {
-            var ext = {
-                params: {}
-            };
-            ext.params[_self.id + '_selectedEventId'] = calEvent.id;
+        if(_self.cfg.behaviors) {
+            var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
+            if(eventSelectBehavior) {
+                var ext = {
+                    params: {}
+                };
+                ext.params[_self.id + '_selectedEventId'] = calEvent.id;
 
-            eventSelectBehavior.call(_self, calEvent, ext);
+                eventSelectBehavior.call(_self, calEvent, ext);
+            }
         }
 	}
 	
 	this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-        var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
-        if(eventMoveBehavior) {
-            var ext = {
-                params: {}
-            };
-            ext.params[_self.id + '_movedEventId'] = calEvent.id;
-            ext.params[_self.id + '_dayDelta'] = dayDelta;
-            ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-            
-            eventMoveBehavior.call(_self, calEvent, ext);
+        if(_self.cfg.behaviors) {
+            var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
+            if(eventMoveBehavior) {
+                var ext = {
+                    params: {}
+                };
+                ext.params[_self.id + '_movedEventId'] = calEvent.id;
+                ext.params[_self.id + '_dayDelta'] = dayDelta;
+                ext.params[_self.id + '_minuteDelta'] = minuteDelta;
+
+                eventMoveBehavior.call(_self, calEvent, ext);
+            }
         }
 	}
 	
 	this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
-        var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
-        if(eventResizeBehavior) {
-            var ext = {
-                params: {}
-            };
-            ext.params[_self.id + '_resizedEventId'] = calEvent.id;
-            ext.params[_self.id + '_dayDelta'] = dayDelta;
-            ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-            
-            eventResizeBehavior.call(_self, calEvent, ext);
+        if(_self.cfg.behaviors) {
+            var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
+            if(eventResizeBehavior) {
+                var ext = {
+                    params: {}
+                };
+                ext.params[_self.id + '_resizedEventId'] = calEvent.id;
+                ext.params[_self.id + '_dayDelta'] = dayDelta;
+                ext.params[_self.id + '_minuteDelta'] = minuteDelta;
+
+                eventResizeBehavior.call(_self, calEvent, ext);
+            }
         }
 	}
 }
