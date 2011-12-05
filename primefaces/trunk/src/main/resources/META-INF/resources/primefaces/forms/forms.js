@@ -231,18 +231,16 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.disabled = this.jq.hasClass('ui-state-disabled');
     this.tabindex = this.labelContainer.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
-    this.options = this.input.children('option:not(:disabled)');
+    this.options = this.input.children('option');
+    this.items = this.itemContainer.find('.ui-selectonemenu-item');
     this.cfg.effectDuration = this.cfg.effectDuration||400;
     
     var _self = this;
 
     //disable options
-    this.input.children('option:disabled').each(function() {
+    this.options.filter(':disabled').each(function() {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
     });
-    
-    //enabled items
-    this.items = this.itemContainer.find('.ui-selectonemenu-item:not(.ui-state-disabled)');
 
     //populate label and activate selected item
     var selectedOption = this.options.filter(':selected');
@@ -288,9 +286,13 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
 
     //Events for items
     this.items.mouseover(function() {
-        _self.highlightItem($(this));
+        var item = $(this);
+        if(!item.hasClass('ui-state-disabled'))
+            _self.highlightItem(item);
     }).click(function() {
-        _self.selectItem($(this));
+        var item = $(this);
+        if(!item.hasClass('ui-state-disabled'))
+            _self.selectItem(item);
     });
 
     //Events to show/hide the panel
@@ -364,19 +366,22 @@ PrimeFaces.widget.SelectOneMenu.prototype.unhighlightItem = function(item) {
 PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item) {
     var option = this.options.eq(item.index()),
     optionLabel = option.text();
+    
+    if(!option.is(':selected')) {
+        //select item
+        this.unhighlightItem(this.items.filter('.ui-state-active'));
+        item.addClass('ui-state-active');
+        option.attr('selected', 'selected');
 
-    //select item
-    this.unhighlightItem(this.items.filter('.ui-state-active'));
-    item.addClass('ui-state-active');
-    option.attr('selected', 'selected');
-
-    if($.trim(optionLabel) != '')
-        this.label.text(optionLabel);
-    else
-        this.label.html('&nbsp;');
+        if($.trim(optionLabel) != '')
+            this.label.text(optionLabel);
+        else
+            this.label.html('&nbsp;');
+        
+        this.input.change();
+    }
 
     this.labelContainer.focus();
-    this.input.change();
     this.hide();
 }
 
