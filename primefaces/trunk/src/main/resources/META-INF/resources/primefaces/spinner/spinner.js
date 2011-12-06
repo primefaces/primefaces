@@ -38,13 +38,16 @@ PrimeFaces.widget.Spinner = function(cfg) {
             _self.repeat(null, dir);
         });
 
-    //only allow numbers
-    this.input.keypress(function (e){
-        var charCode = (e.which) ? e.which : e.keyCode;
-
-        if(charCode > 31 && (charCode < 48 || charCode > 57)) {
+    //only allow numbers and decimal keys
+    this.input.keypress(function (e) {
+        var charCode = (e.which) ? e.which : e.keyCode,
+        notNumber = charCode > 31 && (charCode < 48||charCode > 57),
+        decimalKey = (_self.decimalSeparator != null) && (charCode == 44||charCode == 46);
+        
+        if(notNumber && !decimalKey) {
             return false;
-        } else {
+        }
+        else {
             return true;
         }
     });
