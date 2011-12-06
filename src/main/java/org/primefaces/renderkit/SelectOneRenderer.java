@@ -24,6 +24,10 @@ public abstract class SelectOneRenderer extends SelectRenderer {
     
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        if(!shouldDecode(component)) {
+            return;
+        }
+        
         UISelectOne selectOne = (UISelectOne) component;
 
         decodeBehaviors(context, selectOne);

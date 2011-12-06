@@ -17,7 +17,6 @@ package org.primefaces.renderkit;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -165,5 +164,12 @@ public abstract class InputRenderer extends CoreRenderer {
         }
 
         return newValue;
+    }
+    
+    public static boolean shouldDecode(UIComponent component) {
+        boolean disabled = Boolean.valueOf(String.valueOf(component.getAttributes().get("disabled")));
+        boolean readonly = Boolean.valueOf(String.valueOf(component.getAttributes().get("readonly")));
+        
+        return !disabled && !readonly;
     }
 }

@@ -27,6 +27,10 @@ public abstract class SelectManyRenderer extends SelectRenderer {
     
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        if(!shouldDecode(component)) {
+            return;
+        }
+                
         UISelectMany selectMany = (UISelectMany) component;
 
         decodeBehaviors(context, selectMany);
