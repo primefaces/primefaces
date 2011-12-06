@@ -425,9 +425,11 @@ public class DataTableRenderer extends DataRenderer {
         String filterId = column.getClientId(context) + "_filter";
         String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
-        filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+        
 
         if(column.getValueExpression("filterOptions") == null) {
+            filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+            
             writer.startElement("input", null);
             writer.writeAttribute("id", filterId, null);
             writer.writeAttribute("name", filterId, null);
@@ -444,6 +446,8 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("input");
         }
         else {
+            filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+            
             writer.startElement("select", null);
             writer.writeAttribute("id", filterId, null);
             writer.writeAttribute("name", filterId, null);

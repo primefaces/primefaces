@@ -58,6 +58,7 @@ import javax.faces.FacesException;
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
     public static final String COLUMN_FILTER_CLASS = "ui-column-filter";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String EXPANDED_ROW_CLASS = "ui-expanded-row";
     public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
     public static final String ROW_TOGGLER_CLASS = "ui-row-toggler";
