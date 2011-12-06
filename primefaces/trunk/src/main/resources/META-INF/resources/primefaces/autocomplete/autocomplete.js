@@ -265,8 +265,8 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                             items.each(function() {
                                 var item = $(this),
                                 text = item.text(),
-                                index = value.length;
-                                item.html('<span class="ui-autocomplete-query">' + text.substr(0, index) + '</span>' + text.substr(index));
+                                queryIndex = value.length;
+                                item.html('<span class="ui-autocomplete-query">' + text.substr(0, queryIndex) + '</span>' + text.substr(queryIndex));
                             });
                         }
                         
