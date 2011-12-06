@@ -71,8 +71,9 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
         if(shouldSearch) {
             var value = _self.input.val();
         
-            if(!value.length)
+            if(!value.length) {
                 _self.hide();
+            }
             else if(value.length >= _self.cfg.minLength) {
 
                 //Cancel the search request if user types within the timeout
