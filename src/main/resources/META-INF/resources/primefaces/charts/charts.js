@@ -14,8 +14,27 @@
 
 
 // Known Issues:
+// Memory Leaks patch from http://explorercanvas.googlecode.com/svn/trunk/ 
+//  svn : r73
+// ------------------------------------------------------------------
+// Copyright 2006 Google Inc.
 //
-// * Patterns are not implemented.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+// Known Issues:
+//
+// * Patterns only support repeat.
 // * Radial gradient are not implemented. The VML version of these look very
 //   different from the canvas one.
 // * Clipping paths are not implemented.
@@ -557,6 +576,9 @@ if (!document.createElement('canvas').getContext) {
     // Different scaling between normal text and VML text. This was found using
     // trial and error to get the same size as non VML text.
     computedStyle.size *= 0.981;
+
+    // Fix for VML handling of bare font family names.  Add a '' around font family names.
+    computedStyle.family =  "'" + computedStyle.family.replace(/(\'|\")/g,'').replace(/\s*,\s*/g, "', '") + "'";
 
     return computedStyle;
   }
@@ -1225,8 +1247,7 @@ if (!document.createElement('canvas').getContext) {
         offset = {x: 0, y: 0},
         lineStr = [];
 
-    var fontStyle = getComputedStyle(processFontStyle(this.font),
-                                     this.element_);
+    var fontStyle = getComputedStyle(processFontStyle(this.font), this.element_);
 
     var fontStyleString = buildStyle(fontStyle);
 
@@ -1292,7 +1313,8 @@ if (!document.createElement('canvas').getContext) {
     var skewM = m[0][0].toFixed(3) + ',' + m[1][0].toFixed(3) + ',' +
                 m[0][1].toFixed(3) + ',' + m[1][1].toFixed(3) + ',0,0';
 
-    var skewOffset = mr(d.x / Z) + ',' + mr(d.y / Z);
+    var skewOffset = mr(d.x / Z + 1 - m[0][0]) + ',' + mr(d.y / Z - 2 * m[1][0]);
+
 
     lineStr.push('<g_vml_:skew on="t" matrix="', skewM ,'" ',
                  ' offset="', skewOffset, '" origin="', left ,' 0" />',
@@ -1369,7 +1391,7 @@ if (!document.createElement('canvas').getContext) {
       case null:
       case '':
         this.repetition_ = 'repeat';
-        break
+        break;
       case 'repeat-x':
       case 'repeat-y':
       case 'no-repeat':
@@ -1426,6 +1448,7 @@ if (!document.createElement('canvas').getContext) {
   CanvasGradient = CanvasGradient_;
   CanvasPattern = CanvasPattern_;
   DOMException = DOMException_;
+  G_vmlCanvasManager._version = 888;
 })();
 
 } // if
@@ -1437,7 +1460,7 @@ if (!document.createElement('canvas').getContext) {
  * 
  * About: Version
  * 
- * 1.0.0b2_r792 
+ * 1.0.0b2_r1012 
  * 
  * About: Copyright & License
  * 
@@ -1621,7 +1644,7 @@ if (!document.createElement('canvas').getContext) {
         }
     };
 
-    $.jqplot.version = "1.0.0b2_r792";
+    $.jqplot.version = "1.0.0b2_r1012";
 
     // canvas manager to reuse canvases on the plot.
     // Should help solve problem of canvases not being freed and
@@ -1680,7 +1703,7 @@ if (!document.createElement('canvas').getContext) {
         };
 
         this.freeCanvas = function(idx) {
-            if ($.jqplot.use_excanvas) {
+            if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
                 // excanvas can't be reused, but properly unset
                 window.G_vmlCanvasManager.uninitElement($.jqplot.CanvasManager.canvases[idx]);
                 $.jqplot.CanvasManager.canvases[idx] = null;
@@ -1705,11 +1728,12 @@ if (!document.createElement('canvas').getContext) {
     // Convienence function that won't hang IE or FF without FireBug.
     $.jqplot.log = function() {
         if (window.console) {
-            console.log.apply(console, arguments);
+            window.console.log.apply(window.console, arguments);
         }
     };
         
     $.jqplot.config = {
+        addDomReference: false,
         enablePlugins:false,
         defaultHeight:300,
         defaultWidth:400,
@@ -1725,7 +1749,12 @@ if (!document.createElement('canvas').getContext) {
         catchErrors: false,
         defaultTickFormatString: "%.1f",
         defaultColors: [ "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc", "#c747a3", "#cddf54", "#FBD178", "#26B4E3", "#bd70c7"],
-        defaultNegativeColors: [ "#498991", "#C08840", "#9F9274", "#546D61", "#646C4A", "#6F6621", "#6E3F5F", "#4F64B0", "#A89050", "#C45923", "#187399", "#945381", "#959E5C", "#C7AF7B", "#478396", "#907294"]
+        defaultNegativeColors: [ "#498991", "#C08840", "#9F9274", "#546D61", "#646C4A", "#6F6621", "#6E3F5F", "#4F64B0", "#A89050", "#C45923", "#187399", "#945381", "#959E5C", "#C7AF7B", "#478396", "#907294"],
+        dashLength: 4,
+        gapLength: 4,
+        dotGapLength: 2.5,
+        srcLocation: 'jqplot/src/',
+        pluginLocation: 'jqplot/src/plugins/'
     };
     
     
@@ -1752,7 +1781,13 @@ if (!document.createElement('canvas').getContext) {
             
     $.jqplot.support_canvas_text = function() {
         if (typeof $.jqplot.support_canvas_text.result == 'undefined') {
-            $.jqplot.support_canvas_text.result = !!(document.createElement('canvas').getContext && typeof document.createElement('canvas').getContext('2d').fillText == 'function'); 
+            if (window.G_vmlCanvasManager !== undefined && window.G_vmlCanvasManager._version > 887) {
+                $.jqplot.support_canvas_text.result = true;
+            }
+            else {
+                $.jqplot.support_canvas_text.result = !!(document.createElement('canvas').getContext && typeof document.createElement('canvas').getContext('2d').fillText == 'function');
+            }
+             
         }
         return $.jqplot.support_canvas_text.result;
     };
@@ -1919,16 +1954,13 @@ if (!document.createElement('canvas').getContext) {
         this.showLabel = true;
         // prop: min
         // minimum value of the axis (in data units, not pixels).
-        this.min=null;
+        this.min = null;
         // prop: max
         // maximum value of the axis (in data units, not pixels).
-        this.max=null;
+        this.max = null;
         // prop: autoscale
-        // Autoscale the axis min and max values to provide sensible tick spacing.
-        // If axis min or max are set, autoscale will be turned off.
-        // The numberTicks, tickInterval and pad options do work with 
-        // autoscale, although tickInterval has not been tested yet.
-        // padMin and padMax do nothing when autoscale is on.
+        // DEPRECATED
+        // the default scaling algorithm produces superior results.
         this.autoscale = false;
         // prop: pad
         // Padding to extend the range above and below the data bounds.
@@ -1972,8 +2004,19 @@ if (!document.createElement('canvas').getContext) {
         this.showTickMarks = true;
         // prop: showMinorTicks
         // Wether or not to show minor ticks.  This is renderer dependent.
-        // The default <$.jqplot.LinearAxisRenderer> does not have minor ticks.
         this.showMinorTicks = true;
+        // prop: drawMajorGridlines
+        // True to draw gridlines for major axis ticks.
+        this.drawMajorGridlines = true;
+        // prop: drawMinorGridlines
+        // True to draw gridlines for minor ticks.
+        this.drawMinorGridlines = false;
+        // prop: drawMajorTickMarks
+        // True to draw tick marks for major axis ticks.
+        this.drawMajorTickMarks = true;
+        // prop: drawMinorTickMarks
+        // True to draw tick marks for minor ticks.  This is renderer dependent.
+        this.drawMinorTickMarks = true;
         // prop: useSeriesColor
         // Use the color of the first series associated with this axis for the
         // tick marks and line bordering this axis.
@@ -2122,62 +2165,69 @@ if (!document.createElement('canvas').getContext) {
         var db = this._dataBounds;
         db.min = null;
         db.max = null;
+        var l, s, d;
         // check for when to force min 0 on bar series plots.
         var doforce = (this.show) ? true : false;
         for (var i=0; i<this._series.length; i++) {
-            var s = this._series[i];
-            var d = s._plotData;
-            var minyidx = 1, maxyidx = 1;
-
-            if (s._type != null && s._type == 'ohlc') {
-                minyidx = 3;
-                maxyidx = 2;
-            }
-            
-            for (var j=0; j<d.length; j++) { 
-                if (this.name == 'xaxis' || this.name == 'x2axis') {
-                    if ((d[j][0] != null && d[j][0] < db.min) || db.min == null) {
-                        db.min = d[j][0];
-                    }
-                    if ((d[j][0] != null && d[j][0] > db.max) || db.max == null) {
-                        db.max = d[j][0];
-                    }
-                }              
-                else {
-                    if ((d[j][minyidx] != null && d[j][minyidx] < db.min) || db.min == null) {
-                        db.min = d[j][minyidx];
-                    }
-                    if ((d[j][maxyidx] != null && d[j][maxyidx] > db.max) || db.max == null) {
-                        db.max = d[j][maxyidx];
-                    }
-                }              
-            }
-
-            // Hack to not pad out bottom of bar plots unless user has specified a padding.
-            // every series will have a chance to set doforce to false.  once it is set to 
-            // false, it cannot be reset to true.
-            // If any series attached to axis is not a bar, wont force 0.
-            if (doforce && s.renderer.constructor !== $.jqplot.BarRenderer) {
-                doforce = false;
-            }
-
-            else if (doforce && this._options.hasOwnProperty('forceTickAt0') && this._options.forceTickAt0 == false) {
-                doforce = false;
-            }
-
-            else if (doforce && s.renderer.constructor === $.jqplot.BarRenderer) {
-                if (s.barDirection == 'vertical' && this.name != 'xaxis' && this.name != 'x2axis') { 
-                    if (this._options.pad != null || this._options.padMin != null) {
-                        doforce = false;
-                    }
+            s = this._series[i];
+            if (s.show) {
+                d = s._plotData;
+                if (s._type === 'line' && s.renderer.bands.show && this.name.charAt(0) !== 'x') {
+                    d = [[0, s.renderer.bands._min], [1, s.renderer.bands._max]];
                 }
 
-                else if (s.barDirection == 'horizontal' && (this.name == 'xaxis' || this.name == 'x2axis')) {
-                    if (this._options.pad != null || this._options.padMin != null) {
-                        doforce = false;
-                    }
+                var minyidx = 1, maxyidx = 1;
+
+                if (s._type != null && s._type == 'ohlc') {
+                    minyidx = 3;
+                    maxyidx = 2;
+                }
+                
+                for (var j=0, l=d.length; j<l; j++) { 
+                    if (this.name == 'xaxis' || this.name == 'x2axis') {
+                        if ((d[j][0] != null && d[j][0] < db.min) || db.min == null) {
+                            db.min = d[j][0];
+                        }
+                        if ((d[j][0] != null && d[j][0] > db.max) || db.max == null) {
+                            db.max = d[j][0];
+                        }
+                    }              
+                    else {
+                        if ((d[j][minyidx] != null && d[j][minyidx] < db.min) || db.min == null) {
+                            db.min = d[j][minyidx];
+                        }
+                        if ((d[j][maxyidx] != null && d[j][maxyidx] > db.max) || db.max == null) {
+                            db.max = d[j][maxyidx];
+                        }
+                    }              
                 }
 
+                // Hack to not pad out bottom of bar plots unless user has specified a padding.
+                // every series will have a chance to set doforce to false.  once it is set to 
+                // false, it cannot be reset to true.
+                // If any series attached to axis is not a bar, wont force 0.
+                if (doforce && s.renderer.constructor !== $.jqplot.BarRenderer) {
+                    doforce = false;
+                }
+
+                else if (doforce && this._options.hasOwnProperty('forceTickAt0') && this._options.forceTickAt0 == false) {
+                    doforce = false;
+                }
+
+                else if (doforce && s.renderer.constructor === $.jqplot.BarRenderer) {
+                    if (s.barDirection == 'vertical' && this.name != 'xaxis' && this.name != 'x2axis') { 
+                        if (this._options.pad != null || this._options.padMin != null) {
+                            doforce = false;
+                        }
+                    }
+
+                    else if (s.barDirection == 'horizontal' && (this.name == 'xaxis' || this.name == 'x2axis')) {
+                        if (this._options.pad != null || this._options.padMin != null) {
+                            doforce = false;
+                        }
+                    }
+
+                }
             }
         }
 
@@ -2278,7 +2328,9 @@ if (!document.createElement('canvas').getContext) {
         // CSS style for the margin which will override any style sheet setting.
         // The default will be taken from the stylesheet.
         this.marginLeft = null;
-        
+        // prop: escapeHtml
+        // True to escape special characters with their html entity equivalents
+        // in legend text.  "<" becomes &lt; and so on, so html tags are not rendered.
         this.escapeHtml = false;
         this._series = [];
         
@@ -2450,6 +2502,10 @@ if (!document.createElement('canvas').getContext) {
         // prop: rendererOptions
         // renderer specific options passed to the renderer.
         this.rendererOptions = {};   
+        // prop: escapeHtml
+        // True to escape special characters with their html entity equivalents
+        // in title text.  "<" becomes &lt; and so on, so html tags are not rendered.
+        this.escapeHtml = false;
     }
     
     Title.prototype = new $.jqplot.ElemContainer();
@@ -2488,7 +2544,7 @@ if (!document.createElement('canvas').getContext) {
         // >        {yaxis: 'y2axis', shadow: false, label:'bad line'}
         // >    ]
         // > }
-        
+
         // prop: show
         // wether or not to draw the series.
         this.show = true;
@@ -2519,6 +2575,10 @@ if (!document.createElement('canvas').getContext) {
         // prop: color
         // css color spec for the series
         this.color;
+        // prop: negativeColor
+        // css color spec used for filled (area) plots that are filled to zero and
+        // the "useNegativeColors" option is true.
+        this.negativeColor;
         // prop: lineWidth
         // width of the line in pixels.  May have different meanings depending on renderer.
         this.lineWidth = 2.5;
@@ -2528,8 +2588,12 @@ if (!document.createElement('canvas').getContext) {
         // prop: lineCap
         // Canvas lineCap style at ends of line.
         this.lineCap = 'round';
-        // prop: shadow
-        // wether or not to draw a shadow on the line
+        // prop: linePattern
+        // line pattern 'dashed', 'dotted', 'solid', some combination
+        // of '-' and '.' characters such as '.-.' or a numerical array like 
+        // [draw, skip, draw, skip, ...] such as [1, 10] to draw a dotted line, 
+        // [1, 10, 20, 10] to draw a dot-dash line, and so on.
+        this.linePattern = 'solid';
         this.shadow = true;
         // prop: shadowAngle
         // Shadow angle in degrees
@@ -2660,6 +2724,16 @@ if (!document.createElement('canvas').getContext) {
             }
         }
         this.data = temp;
+
+        // parse the renderer options and apply default colors if not provided
+        if (!this.color && this.show) {
+            this.color = plot.colorGenerator.get(this.index);
+        }
+        if (!this.negativeColor && this.show) {
+            this.negativeColor = plot.negativeColorGenerator.get(this.index);
+        }
+
+
         if (!this.fillColor) {
             this.fillColor = this.color;
         }
@@ -2712,11 +2786,16 @@ if (!document.createElement('canvas').getContext) {
                 data = this._plotData;
             }
             gridData = options.gridData || this.renderer.makeGridData.call(this, data, plot);
+
+            if (this._type === 'line' && this.renderer.smooth && this.renderer._smoothedData.length) {
+                gridData = this.renderer._smoothedData;
+            }
+
             this.renderer.draw.call(this, sctx, gridData, options, plot);
         }
         
         for (j=0; j<$.jqplot.postDrawSeriesHooks.length; j++) {
-            $.jqplot.postDrawSeriesHooks[j].call(this, sctx, options);
+            $.jqplot.postDrawSeriesHooks[j].call(this, sctx, options, plot);
         }
         
         sctx = opts = plot = j = data = gridData = null;
@@ -2773,6 +2852,7 @@ if (!document.createElement('canvas').getContext) {
         }
         if (speed) {
             if (s.canvas._elem.is(':hidden')) {
+                s.canvas._elem.removeClass('jqplot-series-hidden');
                 if (s.shadowCanvas._elem) {
                     s.shadowCanvas._elem.fadeIn(speed);
                 }
@@ -2780,6 +2860,7 @@ if (!document.createElement('canvas').getContext) {
                 s.canvas._elem.nextAll('.jqplot-point-label.jqplot-series-'+s.index).fadeIn(speed);
             }
             else {
+                s.canvas._elem.addClass('jqplot-series-hidden');
                 if (s.shadowCanvas._elem) {
                     s.shadowCanvas._elem.fadeOut(speed);
                 }
@@ -2789,6 +2870,7 @@ if (!document.createElement('canvas').getContext) {
         }
         else {
             if (s.canvas._elem.is(':hidden')) {
+                s.canvas._elem.removeClass('jqplot-series-hidden');
                 if (s.shadowCanvas._elem) {
                     s.shadowCanvas._elem.show();
                 }
@@ -2796,6 +2878,7 @@ if (!document.createElement('canvas').getContext) {
                 s.canvas._elem.nextAll('.jqplot-point-label.jqplot-series-'+s.index).show();
             }
             else {
+                s.canvas._elem.addClass('jqplot-series-hidden');
                 if (s.shadowCanvas._elem) {
                     s.shadowCanvas._elem.hide();
                 }
@@ -2913,23 +2996,6 @@ if (!document.createElement('canvas').getContext) {
         }
         var elem;
 
-        // if (this._elem) {
-        //     // Memory Leaks patch
-        //     if ($.jqplot.use_excanvas) {
-        //         window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
-        //     }
-        // }
-        // else {
-        //     // don't use the canvas manager with excanvas.
-        //     if ($.jqplot.use_excanvas) {
-        //         elem = document.createElement('canvas');
-        //     }
-        //     else {
-        //         elem = plot.canvasManager.getCanvas();
-        //     }
-
-        // }
-
         elem = plot.canvasManager.getCanvas();
         
         // if new plotDimensions supplied, use them.
@@ -2958,7 +3024,7 @@ if (!document.createElement('canvas').getContext) {
     // Memory Leaks patch
     $.jqplot.GenericCanvas.prototype.resetCanvas = function() {
       if (this._elem) {
-        if ($.jqplot.use_excanvas) {
+        if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
            window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
         }
         
@@ -2971,22 +3037,27 @@ if (!document.createElement('canvas').getContext) {
     
     $.jqplot.HooksManager = function () {
         this.hooks =[];
+        this.args = [];
     };
     
-    $.jqplot.HooksManager.prototype.addOnce = function(fn) {
-        var havehook = false, i;
-        for (i=0; i<this.hooks.length; i++) {
+    $.jqplot.HooksManager.prototype.addOnce = function(fn, args) {
+        args = args || [];
+        var havehook = false;
+        for (var i=0, l=this.hooks.length; i<l; i++) {
             if (this.hooks[i][0] == fn) {
                 havehook = true;
             }
         }
         if (!havehook) {
             this.hooks.push(fn);
+            this.args.push(args);
         }
     };
     
-    $.jqplot.HooksManager.prototype.add = function(fn) {
+    $.jqplot.HooksManager.prototype.add = function(fn, args) {
+        args = args || [];
         this.hooks.push(fn);
+        this.args.push(args);
     };
     
     $.jqplot.EventListenerManager = function () {
@@ -2995,7 +3066,7 @@ if (!document.createElement('canvas').getContext) {
     
     $.jqplot.EventListenerManager.prototype.addOnce = function(ev, fn) {
         var havehook = false, h, i;
-        for (i=0; i<this.hooks.length; i++) {
+        for (var i=0, l=this.hooks.length; i<l; i++) {
             h = this.hooks[i];
             if (h[0] == ev && h[1] == fn) {
                 havehook = true;
@@ -3009,6 +3080,9 @@ if (!document.createElement('canvas').getContext) {
     $.jqplot.EventListenerManager.prototype.add = function(ev, fn) {
         this.hooks.push([ev, fn]);
     };
+
+
+    var _axisNames = ['yMidAxis', 'xaxis', 'yaxis', 'x2axis', 'y2axis', 'y3axis', 'y4axis', 'y5axis', 'y6axis', 'y7axis', 'y8axis', 'y9axis'];
 
     /**
      * Class: jqPlot
@@ -3025,6 +3099,25 @@ if (!document.createElement('canvas').getContext) {
         // >     title: 'A Plot'
         // > }
         //
+
+        // prop: animate
+        // True to animate the series on initial plot draw (renderer dependent).
+        // Actual animation functionality must be supported in the renderer.
+        this.animate = false;
+        // prop: animateReplot
+        // True to animate series after a call to the replot() method.
+        // Use with caution!  Replots can happen very frequently under
+        // certain circumstances (e.g. resizing, dragging points) and
+        // animation in these situations can cause problems.
+        this.animateReplot = false;
+        // prop: axes
+        // up to 4 axes are supported, each with it's own options, 
+        // See <Axis> for axis specific options.
+        this.axes = {xaxis: new Axis('xaxis'), yaxis: new Axis('yaxis'), x2axis: new Axis('x2axis'), y2axis: new Axis('y2axis'), y3axis: new Axis('y3axis'), y4axis: new Axis('y4axis'), y5axis: new Axis('y5axis'), y6axis: new Axis('y6axis'), y7axis: new Axis('y7axis'), y8axis: new Axis('y8axis'), y9axis: new Axis('y9axis'), yMidAxis: new Axis('yMidAxis')};
+        this.baseCanvas = new $.jqplot.GenericCanvas();
+        // true to intercept right click events and fire a 'jqplotRightClick' event.
+        // this will also block the context menu.
+        this.captureRightClick = false;
         // prop: data
         // user's data.  Data should *NOT* be specified in the options object,
         // but be passed in as the second argument to the $.jqplot() function.
@@ -3032,16 +3125,72 @@ if (!document.createElement('canvas').getContext) {
         // The data should be in the form of an array of 2D or 1D arrays like
         // > [ [[x1, y1], [x2, y2],...], [y1, y2, ...] ].
         this.data = [];
-        // prop dataRenderer
+        // prop: dataRenderer
         // A callable which can be used to preprocess data passed into the plot.
         // Will be called with 2 arguments, the plot data and a reference to the plot.
         this.dataRenderer;
-        // prop dataRendererOptions
+        // prop: dataRendererOptions
         // Options that will be passed to the dataRenderer.
         // Can be of any type.
         this.dataRendererOptions;
-        // prop noDataIndicator
+        this.defaults = {
+            // prop: axesDefaults
+            // default options that will be applied to all axes.
+            // see <Axis> for axes options.
+            axesDefaults: {},
+            axes: {xaxis:{}, yaxis:{}, x2axis:{}, y2axis:{}, y3axis:{}, y4axis:{}, y5axis:{}, y6axis:{}, y7axis:{}, y8axis:{}, y9axis:{}, yMidAxis:{}},
+            // prop: seriesDefaults
+            // default options that will be applied to all series.
+            // see <Series> for series options.
+            seriesDefaults: {},
+            series:[]
+        };
+        // prop: defaultAxisStart
+        // 1-D data series are internally converted into 2-D [x,y] data point arrays
+        // by jqPlot.  This is the default starting value for the missing x or y value.
+        // The added data will be a monotonically increasing series (e.g. [1, 2, 3, ...])
+        // starting at this value.
+        this.defaultAxisStart = 1;
+        // this.doCustomEventBinding = true;
+        // prop: drawIfHidden
+        // True to execute the draw method even if the plot target is hidden.
+        // Generally, this should be false.  Most plot elements will not be sized/
+        // positioned correclty if renderered into a hidden container.  To render into
+        // a hidden container, call the replot method when the container is shown.
+        this.drawIfHidden = false;
+        this.eventCanvas = new $.jqplot.GenericCanvas();
+        // prop: fillBetween
+        // Fill between 2 line series in a plot.
+        // Options object:
+        // {
+        //    series1: first index (0 based) of series in fill
+        //    series2: second index (0 based) of series in fill
+        //    color: color of fill [default fillColor of series1]
+        //    baseSeries:  fill will be drawn below this series (0 based index)
+        //    fill: false to turn off fill [default true].
+        //  }
+        this.fillBetween = {
+            series1: null,
+            series2: null,
+            color: null,
+            baseSeries: 0,
+            fill: true
+        };
+        // prop; fontFamily
+        // css spec for the font-family attribute.  Default for the entire plot.
+        this.fontFamily;
+        // prop: fontSize
+        // css spec for the font-size attribute.  Default for the entire plot.
+        this.fontSize;
+        // prop: grid
+        // See <Grid> for grid specific options.
+        this.grid = new Grid();
+        // prop: legend
+        // see <$.jqplot.TableLegendRenderer>
+        this.legend = new Legend();
+        // prop: noDataIndicator
         // Options to set up a mock plot with a data loading indicator if no data is specified.
+        this.negativeSeriesColors = $.jqplot.config.defaultNegativeColors;
         this.noDataIndicator = {    
             show: false,
             indicator: 'Loading Data...',
@@ -3060,100 +3209,50 @@ if (!document.createElement('canvas').getContext) {
                 }
             }
         };
-        // The id of the dom element to render the plot into
-        this.targetId = null;
-        // the jquery object for the dom target.
-        this.target = null; 
-        this.defaults = {
-            // prop: axesDefaults
-            // default options that will be applied to all axes.
-            // see <Axis> for axes options.
-            axesDefaults: {},
-            axes: {xaxis:{}, yaxis:{}, x2axis:{}, y2axis:{}, y3axis:{}, y4axis:{}, y5axis:{}, y6axis:{}, y7axis:{}, y8axis:{}, y9axis:{}},
-            // prop: seriesDefaults
-            // default options that will be applied to all series.
-            // see <Series> for series options.
-            seriesDefaults: {},
-            series:[]
-        };
+        // container to hold all of the merged options.  Convienence for plugins.
+        this.options = {};
+        this.previousSeriesStack = [];
+        // Namespece to hold plugins.  Generally non-renderer plugins add themselves to here.
+        this.plugins = {};
         // prop: series
         // Array of series object options.
         // see <Series> for series specific options.
         this.series = [];
-        // prop: axes
-        // up to 4 axes are supported, each with it's own options, 
-        // See <Axis> for axis specific options.
-        this.axes = {xaxis: new Axis('xaxis'), yaxis: new Axis('yaxis'), x2axis: new Axis('x2axis'), y2axis: new Axis('y2axis'), y3axis: new Axis('y3axis'), y4axis: new Axis('y4axis'), y5axis: new Axis('y5axis'), y6axis: new Axis('y6axis'), y7axis: new Axis('y7axis'), y8axis: new Axis('y8axis'), y9axis: new Axis('y9axis')};
-        // prop: grid
-        // See <Grid> for grid specific options.
-        this.grid = new Grid();
-        // prop: legend
-        // see <$.jqplot.TableLegendRenderer>
-        this.legend = new Legend();
-        this.baseCanvas = new $.jqplot.GenericCanvas();
         // array of series indicies. Keep track of order
         // which series canvases are displayed, lowest
         // to highest, back to front.
         this.seriesStack = [];
-        this.previousSeriesStack = [];
-        this.eventCanvas = new $.jqplot.GenericCanvas();
-        this._width = null;
-        this._height = null; 
-        this._plotDimensions = {height:null, width:null};
-        this._gridPadding = {top:null, right:null, bottom:null, left:null};
-        this._defaultGridPadding = {top:10, right:10, bottom:23, left:10};
-        // a shortcut for axis syncTicks options.  Not implemented yet.
-        this.syncXTicks = true;
-        // a shortcut for axis syncTicks options.  Not implemented yet.
-        this.syncYTicks = true;
         // prop: seriesColors
         // Ann array of CSS color specifications that will be applied, in order,
         // to the series in the plot.  Colors will wrap around so, if their
         // are more series than colors, colors will be reused starting at the
         // beginning.  For pie charts, this specifies the colors of the slices.
         this.seriesColors = $.jqplot.config.defaultColors;
-        this.negativeSeriesColors = $.jqplot.config.defaultNegativeColors;
         // prop: sortData
         // false to not sort the data passed in by the user.
         // Many bar, stakced and other graphs as well as many plugins depend on
         // having sorted data.
         this.sortData = true;
-        var seriesColorsIndex = 0;
+        // prop: stackSeries
+        // true or false, creates a stack or "mountain" plot.
+        // Not all series renderers may implement this option.
+        this.stackSeries = false;
+        // a shortcut for axis syncTicks options.  Not implemented yet.
+        this.syncXTicks = true;
+        // a shortcut for axis syncTicks options.  Not implemented yet.
+        this.syncYTicks = true;
+        // the jquery object for the dom target.
+        this.target = null; 
+        // The id of the dom element to render the plot into
+        this.targetId = null;
         // prop textColor
         // css spec for the css color attribute.  Default for the entire plot.
         this.textColor;
-        // prop; fontFamily
-        // css spec for the font-family attribute.  Default for the entire plot.
-        this.fontFamily;
-        // prop: fontSize
-        // css spec for the font-size attribute.  Default for the entire plot.
-        this.fontSize;
         // prop: title
         // Title object.  See <Title> for specific options.  As a shortcut, you
         // can specify the title option as just a string like: title: 'My Plot'
         // and this will create a new title object with the specified text.
         this.title = new Title();
-        // container to hold all of the merged options.  Convienence for plugins.
-        this.options = {};
-        // prop: stackSeries
-        // true or false, creates a stack or "mountain" plot.
-        // Not all series renderers may implement this option.
-        this.stackSeries = false;
-        // prop: defaultAxisStart
-        // 1-D data series are internally converted into 2-D [x,y] data point arrays
-        // by jqPlot.  This is the default starting value for the missing x or y value.
-        // The added data will be a monotonically increasing series (e.g. [1, 2, 3, ...])
-        // starting at this value.
-        this.defaultAxisStart = 1;
-        // array to hold the cumulative stacked series data.
-        // used to ajust the individual series data, which won't have access to other
-        // series data.
-        this._stackData = [];
-        // array that holds the data to be plotted. This will be the series data
-        // merged with the the appropriate data from _stackData according to the stackAxis.
-        this._plotData = [];
-        // Namespece to hold plugins.  Generally non-renderer plugins add themselves to here.
-        this.plugins = {};
         // Count how many times the draw method has been called while the plot is visible.
         // Mostly used to test if plot has never been dran (=0), has been successfully drawn
         // into a visible container once (=1) or draw more than once into a visible container.
@@ -3161,21 +3260,25 @@ if (!document.createElement('canvas').getContext) {
         // After plot has been visibly drawn once, it generally doesn't need redrawn if its
         // container is hidden and shown.
         this._drawCount = 0;
-        // this.doCustomEventBinding = true;
-        // prop: drawIfHidden
-        // True to execute the draw method even if the plot target is hidden.
-        // Generally, this should be false.  Most plot elements will not be sized/
-        // positioned correclty if renderered into a hidden container.  To render into
-        // a hidden container, call the replot method when the container is shown.
-        this.drawIfHidden = false;
-        // true to intercept right click events and fire a 'jqplotRightClick' event.
-        // this will also block the context menu.
-        this.captureRightClick = false;
-        this.themeEngine = new $.jqplot.ThemeEngine();
         // sum of y values for all series in plot.
         // used in mekko chart.
         this._sumy = 0;
         this._sumx = 0;
+        // array to hold the cumulative stacked series data.
+        // used to ajust the individual series data, which won't have access to other
+        // series data.
+        this._stackData = [];
+        // array that holds the data to be plotted. This will be the series data
+        // merged with the the appropriate data from _stackData according to the stackAxis.
+        this._plotData = [];
+        this._width = null;
+        this._height = null; 
+        this._plotDimensions = {height:null, width:null};
+        this._gridPadding = {top:null, right:null, bottom:null, left:null};
+        this._defaultGridPadding = {top:10, right:10, bottom:23, left:10};
+
+        this._addDomReference = $.jqplot.config.addDomReference;
+
         this.preInitHooks = new $.jqplot.HooksManager();
         this.postInitHooks = new $.jqplot.HooksManager();
         this.preParseOptionsHooks = new $.jqplot.HooksManager();
@@ -3194,10 +3297,15 @@ if (!document.createElement('canvas').getContext) {
         this.preDrawSeriesShadowHooks = new $.jqplot.HooksManager();
         this.postDrawSeriesShadowHooks = new $.jqplot.HooksManager();
         
-        this.colorGenerator = $.jqplot.ColorGenerator;
+        this.colorGenerator = new $.jqplot.ColorGenerator();
+        this.negativeColorGenerator = new $.jqplot.ColorGenerator();
 
         this.canvasManager = new $.jqplot.CanvasManager();
+
+        this.themeEngine = new $.jqplot.ThemeEngine();
         
+        var seriesColorsIndex = 0;
+
         // Group: methods
         //
         // method: init
@@ -3215,6 +3323,13 @@ if (!document.createElement('canvas').getContext) {
             
             this.targetId = '#'+target;
             this.target = $('#'+target);
+
+            //////
+            // Add a reference to plot
+            //////
+            if (this._addDomReference) {
+                this.target.data('jqplot_plot', this);
+            }
             // remove any error class that may be stuck on target.
             this.target.removeClass('jqplot-error');
             if (!this.target.get(0)) {
@@ -3374,9 +3489,19 @@ if (!document.createElement('canvas').getContext) {
                 this._sumx += this.series[i]._sumx;
             }
 
-            for (var name in this.axes) {
+            var name;
+            for (var i=0; i<12; i++) {
+                name = _axisNames[i];
                 this.axes[name]._plotDimensions = this._plotDimensions;
                 this.axes[name].init();
+                if (this.axes[name].borderColor == null) {
+                    if (name.charAt(0) !== 'x' && this.axes[name].useSeriesColor === true && this.axes[name].show) {
+                        this.axes[name].borderColor = this.axes[name]._series[0].color;
+                    }
+                    else {
+                        this.axes[name].borderColor = this.grid.borderColor;
+                    }
+                }
             }
             
             if (this.sortData) {
@@ -3428,45 +3553,6 @@ if (!document.createElement('canvas').getContext) {
             // reason, set it by other means.  Plot must not have
             // a display:none attribute, however.
             
-            //
-            // Wont have options here
-            /*
-            if (!this.target.height()) {
-                var h;
-                if (options && options.height) {
-                    h = parseInt(options.height, 10);
-                }
-                else if (this.target.attr('data-height')) {
-                    h = parseInt(this.target.attr('data-height'), 10);
-                }
-                else {
-                    h = parseInt($.jqplot.config.defaultHeight, 10);
-                }
-                this._height = h;
-                this.target.css('height', h+'px');
-            }
-            else {
-                this._height = this.target.height();
-            }
-            if (!this.target.width()) {
-                var w;
-                if (options && options.width) {
-                    w = parseInt(options.width, 10);
-                }
-                else if (this.target.attr('data-width')) {
-                    w = parseInt(this.target.attr('data-width'), 10);
-                }
-                else {
-                    w = parseInt($.jqplot.config.defaultWidth, 10);
-                }
-                this._width = w;
-                this.target.css('width', w+'px');
-            }
-            else {
-                this._width = this.target.width();
-            }
-            */
-            
             this._height = this.target.height();
             this._width = this.target.width();
             
@@ -3503,21 +3589,27 @@ if (!document.createElement('canvas').getContext) {
             this._sumx = 0;
             for (var i=0; i<this.series.length; i++) {
                 this.populatePlotData(this.series[i], i);
+                if (this.series[i]._type === 'line' && this.series[i].renderer.bands.show) {
+                    this.series[i].renderer.initBands.call(this.series[i], this.series[i].renderer.options, this);
+                }
                 this.series[i]._plotDimensions = this._plotDimensions;
                 this.series[i].canvas._plotDimensions = this._plotDimensions;
                 //this.series[i].init(i, this.grid.borderWidth);
                 this._sumy += this.series[i]._sumy;
                 this._sumx += this.series[i]._sumx;
             }
+
+            var name;
             
-            for (var name in this.axes) {
+            for (var j=0; j<12; j++) {
+                name = _axisNames[j];
                 // Memory Leaks patch : clear ticks elements
                 var t = this.axes[name]._ticks;
                 for (var i = 0; i < t.length; i++) {
                   var el = t[i]._elem;
                   if (el) {
                     // if canvas renderer
-                    if ($.jqplot.use_excanvas) {
+                    if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
                       window.G_vmlCanvasManager.uninitElement(el.get(0));
                     }
                     el.emptyForce();
@@ -3529,7 +3621,7 @@ if (!document.createElement('canvas').getContext) {
                 
                 this.axes[name]._plotDimensions = this._plotDimensions;
                 this.axes[name]._ticks = [];
-                this.axes[name].renderer.init.call(this.axes[name], {});
+                // this.axes[name].renderer.init.call(this.axes[name], {});
             }
             
             if (this.sortData) {
@@ -3545,10 +3637,6 @@ if (!document.createElement('canvas').getContext) {
         function sortData(series) {
             var d, sd, pd, ppd, ret;
             for (var i=0; i<series.length; i++) {
-                // d = series[i].data;
-                // sd = series[i]._stackData;
-                // pd = series[i]._plotData;
-                // ppd = series[i]._prevPlotData;
                 var check;
                 var bat = [series[i].data, series[i]._stackData, series[i]._plotData, series[i]._prevPlotData];
                 for (var n=0; n<4; n++) {
@@ -3563,9 +3651,6 @@ if (!document.createElement('canvas').getContext) {
                         }
                         if (check) {
                             d.sort(function(a,b) { return a[1] - b[1]; });
-                            // sd.sort(function(a,b) { return a[1] - b[1]; });
-                            // pd.sort(function(a,b) { return a[1] - b[1]; });
-                            // ppd.sort(function(a,b) { return a[1] - b[1]; });
                         }
                     }
                     else {
@@ -3577,9 +3662,6 @@ if (!document.createElement('canvas').getContext) {
                         }
                         if (check) {
                             d.sort(function(a,b) { return a[0] - b[0]; });
-                            // sd.sort(function(a,b) { return a[0] - b[0]; });
-                            // pd.sort(function(a,b) { return a[0] - b[0]; });
-                            // ppd.sort(function(a,b) { return a[0] - b[0]; });
                         }
                     }
                 }
@@ -3645,13 +3727,6 @@ if (!document.createElement('canvas').getContext) {
                 series._sumx += series.data[i][0];
             }
         };
-
-        // this.setData = function(seriesIndex, newdata) {
-        //     // if newdata is null, assume all data is passed in as first argument
-        //     if (newdata == null) {
-                
-        //     }
-        // };
         
         // function to safely return colors from the color array and wrap around at the end.
         this.getNextSeriesColor = (function(t) {
@@ -3677,25 +3752,45 @@ if (!document.createElement('canvas').getContext) {
                 $.jqplot.preParseOptionsHooks[i].call(this, options);
             }
             this.options = $.extend(true, {}, this.defaults, options);
-            this.stackSeries = this.options.stackSeries;
-            if (this.options.seriesColors) {
-                this.seriesColors = this.options.seriesColors;
+            var opts = this.options;
+            this.animate = opts.animate;
+            this.animateReplot = opts.animateReplot;
+            this.stackSeries = opts.stackSeries;
+            if ($.isPlainObject(opts.fillBetween)) {
+
+                var temp = ['series1', 'series2', 'color', 'baseSeries', 'fill'], 
+                    tempi;
+
+                for (var i=0, l=temp.length; i<l; i++) {
+                    tempi = temp[i];
+                    if (opts.fillBetween[tempi] != null) {
+                        this.fillBetween[tempi] = opts.fillBetween[tempi];
+                    }
+                }
             }
-            if (this.options.negativeSeriesColors) {
-                this.negativeSeriesColors = this.options.negativeSeriesColors;
+
+            if (opts.seriesColors) {
+                this.seriesColors = opts.seriesColors;
             }
-            if (this.options.captureRightClick) {
-                this.captureRightClick = this.options.captureRightClick;
+            if (opts.negativeSeriesColors) {
+                this.negativeSeriesColors = opts.negativeSeriesColors;
+            }
+            if (opts.captureRightClick) {
+                this.captureRightClick = opts.captureRightClick;
             }
             this.defaultAxisStart = (options && options.defaultAxisStart != null) ? options.defaultAxisStart : this.defaultAxisStart;
-            var cg = new this.colorGenerator(this.seriesColors);
+            this.colorGenerator.setColors(this.seriesColors);
+            this.negativeColorGenerator.setColors(this.negativeSeriesColors);
+            // var cg = new this.colorGenerator(this.seriesColors);
+            // var ncg = new this.colorGenerator(this.negativeSeriesColors);
             // this._gridPadding = this.options.gridPadding;
-            $.extend(true, this._gridPadding, this.options.gridPadding);
-            this.sortData = (this.options.sortData != null) ? this.options.sortData : this.sortData;
-            for (var n in this.axes) {
+            $.extend(true, this._gridPadding, opts.gridPadding);
+            this.sortData = (opts.sortData != null) ? opts.sortData : this.sortData;
+            for (var i=0; i<12; i++) {
+                var n = _axisNames[i];
                 var axis = this.axes[n];
-                axis._options = $.extend(true, {}, this.options.axesDefaults, this.options.axes[n]);
-                $.extend(true, axis, this.options.axesDefaults, this.options.axes[n]);
+                axis._options = $.extend(true, {}, opts.axesDefaults, opts.axes[n]);
+                $.extend(true, axis, opts.axesDefaults, opts.axes[n]);
                 axis._plotWidth = this._width;
                 axis._plotHeight = this._height;
             }
@@ -3732,6 +3827,7 @@ if (!document.createElement('canvas').getContext) {
                 return temp;
             };
 
+            var colorIndex = 0;
             for (var i=0; i<this.data.length; i++) {
                 var temp = new Series();
                 for (var j=0; j<$.jqplot.preParseSeriesOptionsHooks.length; j++) {
@@ -3740,9 +3836,9 @@ if (!document.createElement('canvas').getContext) {
                 for (var j=0; j<this.preParseSeriesOptionsHooks.hooks.length; j++) {
                     this.preParseSeriesOptionsHooks.hooks[j].call(temp, this.options.seriesDefaults, this.options.series[i]);
                 }
-                $.extend(true, temp, {seriesColors:this.seriesColors, negativeSeriesColors:this.negativeSeriesColors}, this.options.seriesDefaults, this.options.series[i]);
+                $.extend(true, temp, {seriesColors:this.seriesColors, negativeSeriesColors:this.negativeSeriesColors}, this.options.seriesDefaults, this.options.series[i], {rendererOptions:{animation:{show: this.animate}}});
                 var dir = 'vertical';
-                if (temp.renderer === $.jqplot.BarRenderer && temp.rendererOptions && temp.rendererOptions.barDirection == 'horizontal') {
+                if (temp.renderer === $.jqplot.BarRenderer && temp.rendererOptions && temp.rendererOptions.barDirection == 'horizontal' && temp.transposeData === true) {
                     dir = 'horizontal';
                 }
                 temp.data = normalizeData(this.data[i], dir, this.defaultAxisStart);
@@ -3764,10 +3860,15 @@ if (!document.createElement('canvas').getContext) {
                     temp._yaxis.show = true;
                 }
 
-                // parse the renderer options and apply default colors if not provided
-                if (!temp.color && temp.show != false) {
-                    temp.color = cg.next();
-                }
+                // // parse the renderer options and apply default colors if not provided
+                // if (!temp.color && temp.show != false) {
+                //     temp.color = cg.next();
+                //     colorIndex = cg.getIndex() - 1;;
+                // }
+                // if (!temp.negativeColor && temp.show != false) {
+                //     temp.negativeColor = ncg.get(colorIndex);
+                //     ncg.setIndex(colorIndex);
+                // }
                 if (!temp.label) {
                     temp.label = 'Series '+ (i+1).toString();
                 }
@@ -3785,18 +3886,11 @@ if (!document.createElement('canvas').getContext) {
             // copy the grid and title options into this object.
             $.extend(true, this.grid, this.options.grid);
             // if axis border properties aren't set, set default.
-            for (var n in this.axes) {
+            for (var i=0; i<12; i++) {
+                var n = _axisNames[i];
                 var axis = this.axes[n];
                 if (axis.borderWidth == null) {
                     axis.borderWidth =this.grid.borderWidth;
-                }
-                if (axis.borderColor == null) {
-                    if (n != 'xaxis' && n != 'x2axis' && axis.useSeriesColor === true && axis.show) {
-                        axis.borderColor = axis._series[0].color;
-                    }
-                    else {
-                        axis.borderColor = this.grid.borderColor;
-                    }
                 }
             }
             
@@ -3821,6 +3915,15 @@ if (!document.createElement('canvas').getContext) {
         // Releases all resources occupied by the plot
         this.destroy = function() {
             this.canvasManager.freeAllCanvases();
+            if (this.eventCanvas && this.eventCanvas._elem) {
+                this.eventCanvas._elem.unbind();
+            }
+            // Couple of posts on Stack Overflow indicate that empty() doesn't
+            // always cear up the dom and release memory.  Sometimes setting
+            // innerHTML property to null is needed.  Particularly on IE, may 
+            // have to directly set it to null, bypassing jQuery.
+            this.target.empty();
+
             this.target[0].innerHTML = '';
         };
         
@@ -3838,39 +3941,12 @@ if (!document.createElement('canvas').getContext) {
         //             optionally pass in list of axes to reset (e.g. ['xaxis', 'y2axis']) (default: false).
         this.replot = function(options) {
             var opts =  options || {};
-            var clear = opts.clear || true;
+            var clear = (opts.clear === false) ? false : true;
             var resetAxes = opts.resetAxes || false;
             this.target.trigger('jqplotPreReplot');
             
             if (clear) {
-                this.canvasManager.freeAllCanvases();
-                // Memory Leaks patch
-                // this.target.find("table.jqplot-table-legend,table.jqplot-legend").each( function() {
-                //     $(this).unbind();
-
-                //     $(this).find(".jqplot-seriesToggle").each( function() {
-                //         $(this).unbind();
-                //     });
-                //     $.gcCollect(this);
-                // });
-                
-                // this.target.find(".jqplot-title").each( function() {
-                //     $(this).unbind();
-                //     $.gcCollect(this);
-                // });
-                
-                // $.gcClear();
-
-                if (this._eventCanvas) {
-                    this.eventCanvas._elem.unbind();
-                }
-                this.target.unbind();
-
-                // Couple of posts on Stack Overflow indicate that empty() doesn't
-                // always cear up the dom and release memory.  Sometimes setting
-                // innerHTML property to null is needed.  Particularly on IE, may 
-                // have to directly set it to null, bypassing jQuery.
-                this.target.empty();
+                this.destroy();
             }
             this.reInitialize();
             if (resetAxes) {
@@ -3897,7 +3973,9 @@ if (!document.createElement('canvas').getContext) {
             if (clear) {
                 this.canvasManager.freeAllCanvases();
                 this.eventCanvas._elem.unbind();
-                this.target.unbind();
+                // Dont think I bind any events to the target, this shouldn't be necessary.
+                // It will remove user's events.
+                // this.target.unbind();
                 this.target.empty();
             }
              for (var ax in this.axes) {
@@ -3922,12 +4000,15 @@ if (!document.createElement('canvas').getContext) {
         this.draw = function(){
             if (this.drawIfHidden || this.target.is(':visible')) {
                 this.target.trigger('jqplotPreDraw');
-                var i, j;
-                for (i=0; i<$.jqplot.preDrawHooks.length; i++) {
+                var i,
+                    j,
+                    l,
+                    tempseries;
+                for (i=0, l=$.jqplot.preDrawHooks.length; i<l; i++) {
                     $.jqplot.preDrawHooks[i].call(this);
                 }
-                for (i=0; i<this.preDrawHooks.hooks.length; i++) {
-                    this.preDrawHooks.hooks[i].call(this);
+                for (i=0, l=this.preDrawHooks.length; i<l; i++) {
+                    this.preDrawHooks.hooks[i].apply(this, this.preDrawSeriesHooks.args[i]);
                 }
                 // create an underlying canvas to be used for special features.
                 this.target.append(this.baseCanvas.createElement({left:0, right:0, top:0, bottom:0}, 'jqplot-base-canvas', null, this));
@@ -3968,7 +4049,10 @@ if (!document.createElement('canvas').getContext) {
                 }
                 
                 var ax = this.axes;
-                for (var name in ax) {
+                var name;
+                // draw the yMidAxis first, so xaxis of pyramid chart can adjust itself if needed.
+                for (i=0; i<12; i++) {
+                    name = _axisNames[i];
                     this.target.append(ax[name].draw(this.baseCanvas._ctx, this));
                     ax[name].set();
                 }
@@ -3997,6 +4081,21 @@ if (!document.createElement('canvas').getContext) {
                 }
                 
                 // end of gridPadding adjustments.
+
+                // if user passed in gridDimensions option, check against calculated gridPadding
+                if (this.options.gridDimensions && $.isPlainObject(this.options.gridDimensions)) {
+                    var gdw = parseInt(this.options.gridDimensions.width, 10) || 0;
+                    var gdh = parseInt(this.options.gridDimensions.height, 10) || 0;
+                    var widthAdj = (this._width - gridPadding.left - gridPadding.right - gdw)/2;
+                    var heightAdj = (this._height - gridPadding.top - gridPadding.bottom - gdh)/2;
+
+                    if (heightAdj >= 0 && widthAdj >= 0) {
+                        gridPadding.top += heightAdj;
+                        gridPadding.bottom += heightAdj;
+                        gridPadding.left += widthAdj;
+                        gridPadding.right += widthAdj;
+                    }
+                }
                 var arr = ['top', 'bottom', 'left', 'right'];
                 for (var n in arr) {
                     if (this._gridPadding[arr[n]] == null && gridPadding[arr[n]] > 0) {
@@ -4015,28 +4114,31 @@ if (!document.createElement('canvas').getContext) {
                 for (i=8; i>0; i--) {
                     ax[ra[i-1]].pack({position:'absolute', top:0, right:this._gridPadding.right - rapad[i-1]}, {min:this._height - this._gridPadding.bottom, max: this._gridPadding.top});
                 }
-                // ax.y2axis.pack({position:'absolute', top:0, right:0}, {min:this._height - this._gridPadding.bottom, max: this._gridPadding.top});
+                var ltemp = (this._width - this._gridPadding.left - this._gridPadding.right)/2.0 + this._gridPadding.left - ax.yMidAxis.getWidth()/2.0;
+                ax.yMidAxis.pack({position:'absolute', top:0, left:ltemp, zIndex:9, textAlign: 'center'}, {min:this._height - this._gridPadding.bottom, max: this._gridPadding.top});
             
                 this.target.append(this.grid.createElement(this._gridPadding, this));
                 this.grid.draw();
                 
+                var series = this.series;
+                var seriesLength = series.length;
                 // put the shadow canvases behind the series canvases so shadows don't overlap on stacked bars.
-                for (i=0; i<this.series.length; i++) {
+                for (i=0, l=seriesLength; i<l; i++) {
                     // draw series in order of stacking.  This affects only
                     // order in which canvases are added to dom.
                     j = this.seriesStack[i];
-                    this.target.append(this.series[j].shadowCanvas.createElement(this._gridPadding, 'jqplot-series-shadowCanvas', null, this));
-                    this.series[j].shadowCanvas.setContext();
-                    this.series[j].shadowCanvas._elem.data('seriesIndex', j);
+                    this.target.append(series[j].shadowCanvas.createElement(this._gridPadding, 'jqplot-series-shadowCanvas', null, this));
+                    series[j].shadowCanvas.setContext();
+                    series[j].shadowCanvas._elem.data('seriesIndex', j);
                 }
                 
-                for (i=0; i<this.series.length; i++) {
+                for (i=0, l=seriesLength; i<l; i++) {
                     // draw series in order of stacking.  This affects only
                     // order in which canvases are added to dom.
                     j = this.seriesStack[i];
-                    this.target.append(this.series[j].canvas.createElement(this._gridPadding, 'jqplot-series-canvas', null, this));
-                    this.series[j].canvas.setContext();
-                    this.series[j].canvas._elem.data('seriesIndex', j);
+                    this.target.append(series[j].canvas.createElement(this._gridPadding, 'jqplot-series-canvas', null, this));
+                    series[j].canvas.setContext();
+                    series[j].canvas._elem.data('seriesIndex', j);
                 }
                 // Need to use filled canvas to capture events in IE.
                 // Also, canvas seems to block selection of other elements in document on FF.
@@ -4061,40 +4163,101 @@ if (!document.createElement('canvas').getContext) {
                 }
                 else {  // draw series before legend
                     this.drawSeries();
-                    if (this.series.length) {
-                        $(this.series[this.series.length-1].canvas._elem).after(legendElem);
+                    if (seriesLength) {
+                        $(series[seriesLength-1].canvas._elem).after(legendElem);
                     }
                     this.legend.pack(legendPadding);                
                 }
             
                 // register event listeners on the overlay canvas
-                for (var i=0; i<$.jqplot.eventListenerHooks.length; i++) {
+                for (var i=0, l=$.jqplot.eventListenerHooks.length; i<l; i++) {
                     // in the handler, this will refer to the eventCanvas dom element.
                     // make sure there are references back into plot objects.
                     this.eventCanvas._elem.bind($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
                 }
             
                 // register event listeners on the overlay canvas
-                for (var i=0; i<this.eventListenerHooks.hooks.length; i++) {
+                for (var i=0, l=this.eventListenerHooks.hooks.length; i<l; i++) {
                     // in the handler, this will refer to the eventCanvas dom element.
                     // make sure there are references back into plot objects.
                     this.eventCanvas._elem.bind(this.eventListenerHooks.hooks[i][0], {plot:this}, this.eventListenerHooks.hooks[i][1]);
                 }
 
-                for (var i=0; i<$.jqplot.postDrawHooks.length; i++) {
+                var fb = this.fillBetween;
+                if (fb.fill && fb.series1 !== fb.series2 && fb.series1 < seriesLength && fb.series2 < seriesLength && series[fb.series1]._type === 'line' && series[fb.series2]._type === 'line') {
+                    this.doFillBetweenLines();
+                }
+
+                for (var i=0, l=$.jqplot.postDrawHooks.length; i<l; i++) {
                     $.jqplot.postDrawHooks[i].call(this);
                 }
 
-                for (var i=0; i<this.postDrawHooks.hooks.length; i++) {
-                    this.postDrawHooks.hooks[i].call(this);
+                for (var i=0, l=this.postDrawHooks.hooks.length; i<l; i++) {
+                    this.postDrawHooks.hooks[i].apply(this, this.postDrawHooks.args[i]);
                 }
             
                 if (this.target.is(':visible')) {
                     this._drawCount += 1;
                 }
+
+                var temps, 
+                    tempr,
+                    sel,
+                    _els;
+                // ughh.  ideally would hide all series then show them.
+                for (i=0, l=seriesLength; i<l; i++) {
+                    temps = series[i];
+                    tempr = temps.renderer;
+                    sel = '.jqplot-point-label.jqplot-series-'+i;
+                    if (tempr.animation && tempr.animation._supported && tempr.animation.show && (this._drawCount < 2 || this.animateReplot)) {
+                        _els = this.target.find(sel);
+                        _els.stop(true, true).hide();
+                        temps.canvas._elem.stop(true, true).hide();
+                        temps.shadowCanvas._elem.stop(true, true).hide();
+                        temps.canvas._elem.jqplotEffect('blind', {mode: 'show', direction: tempr.animation.direction}, tempr.animation.speed);
+                        temps.shadowCanvas._elem.jqplotEffect('blind', {mode: 'show', direction: tempr.animation.direction}, tempr.animation.speed);
+                        _els.fadeIn(tempr.animation.speed*0.8);
+                    }
+                }
+                _els = null;
             
                 this.target.trigger('jqplotPostDraw', [this]);
             }
+        };
+
+        jqPlot.prototype.doFillBetweenLines = function () {
+            var fb = this.fillBetween;
+            var sid1 = fb.series1;
+            var sid2 = fb.series2;
+            // first series should always be lowest index
+            var id1 = (sid1 < sid2) ? sid1 : sid2;
+            var id2 = (sid2 >  sid1) ? sid2 : sid1;
+
+            var series1 = this.series[id1];
+            var series2 = this.series[id2];
+
+            if (series2.renderer.smooth) {
+                var tempgd = series2.renderer._smoothedData.slice(0).reverse();
+            }
+            else {
+                var tempgd = series2.gridData.slice(0).reverse();
+            }
+
+            if (series1.renderer.smooth) {
+                var gd = series1.renderer._smoothedData.concat(tempgd);
+            }
+            else {
+                var gd = series1.gridData.concat(tempgd);
+            }
+
+            var color = (fb.color !== null) ? fb.color : this.series[sid1].fillColor;
+            var baseSeries = (fb.baseSeries !== null) ? fb.baseSeries : id1;
+
+            // now apply a fill to the shape on the lower series shadow canvas,
+            // so it is behind both series.
+            var sr = this.series[baseSeries].renderer.shapeRenderer;
+            var opts = {fillStyle: color, fill: true, closePath: true};
+            sr.draw(series1.shadowCanvas._ctx, gd, opts);
         };
         
         this.bindCustomEvents = function() {
@@ -4119,8 +4282,8 @@ if (!document.createElement('canvas').getContext) {
             var plot = ev.data.plot;
             var go = plot.eventCanvas._elem.offset();
             var gridPos = {x:ev.pageX - go.left, y:ev.pageY - go.top};
-            var dataPos = {xaxis:null, yaxis:null, x2axis:null, y2axis:null, y3axis:null, y4axis:null, y5axis:null, y6axis:null, y7axis:null, y8axis:null, y9axis:null};
-            var an = ['xaxis', 'yaxis', 'x2axis', 'y2axis', 'y3axis', 'y4axis', 'y5axis', 'y6axis', 'y7axis', 'y8axis', 'y9axis'];
+            var dataPos = {xaxis:null, yaxis:null, x2axis:null, y2axis:null, y3axis:null, y4axis:null, y5axis:null, y6axis:null, y7axis:null, y8axis:null, y9axis:null, yMidAxis:null};
+            var an = ['xaxis', 'yaxis', 'x2axis', 'y2axis', 'y3axis', 'y4axis', 'y5axis', 'y6axis', 'y7axis', 'y8axis', 'y9axis', 'yMidAxis'];
             var ax = plot.axes;
             var n, axis;
             for (n=11; n>0; n--) {
@@ -4145,6 +4308,7 @@ if (!document.createElement('canvas').getContext) {
                 s = series[i];
                 switch (s.renderer.constructor) {
                     case $.jqplot.BarRenderer:
+                    case $.jqplot.PyramidRenderer:
                         x = gridpos.x;
                         y = gridpos.y;
                         for (j=0; j<s._barPoints.length; j++) {
@@ -4302,7 +4466,7 @@ if (!document.createElement('canvas').getContext) {
                         y = gridpos.y;
                         r = s.renderer;
                         if (s.show) {
-                            if (s.fill) {
+                            if ((s.fill || (s.renderer.bands.show && s.renderer.bands.fill)) && (!plot.plugins.highlighter || !plot.plugins.highlighter.show)) {
                                 // first check if it is in bounding box
                                 var inside = false;
                                 if (x>s._boundingBox[0][0] && x<s._boundingBox[1][0] && y>s._boundingBox[1][1] && y<s._boundingBox[0][1]) { 
@@ -4331,6 +4495,7 @@ if (!document.createElement('canvas').getContext) {
                                 break;
                                 
                             }
+
                             else {
                                 t = s.markerRenderer.size/2+s.neighborThreshold;
                                 threshold = (t > 0) ? t : 0;
@@ -4501,6 +4666,7 @@ if (!document.createElement('canvas').getContext) {
             var evt = jQuery.Event('jqplotMouseEnter');
             evt.pageX = ev.pageX;
             evt.pageY = ev.pageY;
+            evt.relatedTarget = ev.relatedTarget;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, null, p]);
         };
         
@@ -4510,6 +4676,7 @@ if (!document.createElement('canvas').getContext) {
             var evt = jQuery.Event('jqplotMouseLeave');
             evt.pageX = ev.pageX;
             evt.pageY = ev.pageY;
+            evt.relatedTarget = ev.relatedTarget;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, null, p]);
         };
         
@@ -4675,10 +4842,14 @@ if (!document.createElement('canvas').getContext) {
                 var sum = newrgb[0] + newrgb[1] + newrgb[2];
                 for (var j=0; j<3; j++) {
                     // when darkening, lowest color component can be is 60.
-                    newrgb[j] = (sum > 570) ?  newrgb[j] * 0.8 : newrgb[j] + 0.3 * (255 - newrgb[j]);
+                    newrgb[j] = (sum > 660) ?  newrgb[j] * 0.85 : 0.73 * newrgb[j] + 90;
                     newrgb[j] = parseInt(newrgb[j], 10);
+                    (newrgb[j] > 255) ? 255 : newrgb[j];
                 }
-                ret.push('rgb('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+')');
+                // newrgb[3] = (rgba[3] > 0.4) ? rgba[3] * 0.4 : rgba[3] * 1.5;
+                // newrgb[3] = (rgba[3] > 0.5) ? 0.8 * rgba[3] - .1 : rgba[3] + 0.2;
+                newrgb[3] = 0.3 + 0.35 * rgba[3];
+                ret.push('rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+','+newrgb[3]+')');
             }
         }
         else {
@@ -4687,10 +4858,16 @@ if (!document.createElement('canvas').getContext) {
             var sum = newrgb[0] + newrgb[1] + newrgb[2];
             for (var j=0; j<3; j++) {
                 // when darkening, lowest color component can be is 60.
-                newrgb[j] = (sum > 570) ?  newrgb[j] * 0.8 : newrgb[j] + 0.3 * (255 - newrgb[j]);
+                // newrgb[j] = (sum > 570) ?  newrgb[j] * 0.8 : newrgb[j] + 0.3 * (255 - newrgb[j]);
+                // newrgb[j] = parseInt(newrgb[j], 10);
+                newrgb[j] = (sum > 660) ?  newrgb[j] * 0.85 : 0.73 * newrgb[j] + 90;
                 newrgb[j] = parseInt(newrgb[j], 10);
+                (newrgb[j] > 255) ? 255 : newrgb[j];
             }
-            ret = 'rgb('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+')';
+            // newrgb[3] = (rgba[3] > 0.4) ? rgba[3] * 0.4 : rgba[3] * 1.5;
+            // newrgb[3] = (rgba[3] > 0.5) ? 0.8 * rgba[3] - .1 : rgba[3] + 0.2;
+            newrgb[3] = 0.3 + 0.35 * rgba[3];
+            ret = 'rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+','+newrgb[3]+')';
         }
         return ret;
     };
@@ -4731,6 +4908,14 @@ if (!document.createElement('canvas').getContext) {
         
         this.reset = function() {
             idx = 0;
+        };
+
+        this.getIndex = function() {
+            return idx;
+        };
+
+        this.setIndex = function(index) {
+            idx = index;
         };
     };
 
@@ -4808,7 +4993,155 @@ if (!document.createElement('canvas').getContext) {
         return ret;
     };
     
-    $.jqplot.colorKeywordMap = {aliceblue: 'rgb(240, 248, 255)', antiquewhite: 'rgb(250, 235, 215)', aqua: 'rgb( 0, 255, 255)', aquamarine: 'rgb(127, 255, 212)', azure: 'rgb(240, 255, 255)', beige: 'rgb(245, 245, 220)', bisque: 'rgb(255, 228, 196)', black: 'rgb( 0, 0, 0)', blanchedalmond: 'rgb(255, 235, 205)', blue: 'rgb( 0, 0, 255)', blueviolet: 'rgb(138, 43, 226)', brown: 'rgb(165, 42, 42)', burlywood: 'rgb(222, 184, 135)', cadetblue: 'rgb( 95, 158, 160)', chartreuse: 'rgb(127, 255, 0)', chocolate: 'rgb(210, 105, 30)', coral: 'rgb(255, 127, 80)', cornflowerblue: 'rgb(100, 149, 237)', cornsilk: 'rgb(255, 248, 220)', crimson: 'rgb(220, 20, 60)', cyan: 'rgb( 0, 255, 255)', darkblue: 'rgb( 0, 0, 139)', darkcyan: 'rgb( 0, 139, 139)', darkgoldenrod: 'rgb(184, 134, 11)', darkgray: 'rgb(169, 169, 169)', darkgreen: 'rgb( 0, 100, 0)', darkgrey: 'rgb(169, 169, 169)', darkkhaki: 'rgb(189, 183, 107)', darkmagenta: 'rgb(139, 0, 139)', darkolivegreen: 'rgb( 85, 107, 47)', darkorange: 'rgb(255, 140, 0)', darkorchid: 'rgb(153, 50, 204)', darkred: 'rgb(139, 0, 0)', darksalmon: 'rgb(233, 150, 122)', darkseagreen: 'rgb(143, 188, 143)', darkslateblue: 'rgb( 72, 61, 139)', darkslategray: 'rgb( 47, 79, 79)', darkslategrey: 'rgb( 47, 79, 79)', darkturquoise: 'rgb( 0, 206, 209)', darkviolet: 'rgb(148, 0, 211)', deeppink: 'rgb(255, 20, 147)', deepskyblue: 'rgb( 0, 191, 255)', dimgray: 'rgb(105, 105, 105)', dimgrey: 'rgb(105, 105, 105)', dodgerblue: 'rgb( 30, 144, 255)', firebrick: 'rgb(178, 34, 34)', floralwhite: 'rgb(255, 250, 240)', forestgreen: 'rgb( 34, 139, 34)', fuchsia: 'rgb(255, 0, 255)', gainsboro: 'rgb(220, 220, 220)', ghostwhite: 'rgb(248, 248, 255)', gold: 'rgb(255, 215, 0)', goldenrod: 'rgb(218, 165, 32)', gray: 'rgb(128, 128, 128)', grey: 'rgb(128, 128, 128)', green: 'rgb( 0, 128, 0)', greenyellow: 'rgb(173, 255, 47)', honeydew: 'rgb(240, 255, 240)', hotpink: 'rgb(255, 105, 180)', indianred: 'rgb(205, 92, 92)', indigo: 'rgb( 75, 0, 130)', ivory: 'rgb(255, 255, 240)', khaki: 'rgb(240, 230, 140)', lavender: 'rgb(230, 230, 250)', lavenderblush: 'rgb(255, 240, 245)', lawngreen: 'rgb(124, 252, 0)', lemonchiffon: 'rgb(255, 250, 205)', lightblue: 'rgb(173, 216, 230)', lightcoral: 'rgb(240, 128, 128)', lightcyan: 'rgb(224, 255, 255)', lightgoldenrodyellow: 'rgb(250, 250, 210)', lightgray: 'rgb(211, 211, 211)', lightgreen: 'rgb(144, 238, 144)', lightgrey: 'rgb(211, 211, 211)', lightpink: 'rgb(255, 182, 193)', lightsalmon: 'rgb(255, 160, 122)', lightseagreen: 'rgb( 32, 178, 170)', lightskyblue: 'rgb(135, 206, 250)', lightslategray: 'rgb(119, 136, 153)', lightslategrey: 'rgb(119, 136, 153)', lightsteelblue: 'rgb(176, 196, 222)', lightyellow: 'rgb(255, 255, 224)', lime: 'rgb( 0, 255, 0)', limegreen: 'rgb( 50, 205, 50)', linen: 'rgb(250, 240, 230)', magenta: 'rgb(255, 0, 255)', maroon: 'rgb(128, 0, 0)', mediumaquamarine: 'rgb(102, 205, 170)', mediumblue: 'rgb( 0, 0, 205)', mediumorchid: 'rgb(186, 85, 211)', mediumpurple: 'rgb(147, 112, 219)', mediumseagreen: 'rgb( 60, 179, 113)', mediumslateblue: 'rgb(123, 104, 238)', mediumspringgreen: 'rgb( 0, 250, 154)', mediumturquoise: 'rgb( 72, 209, 204)', mediumvioletred: 'rgb(199, 21, 133)', midnightblue: 'rgb( 25, 25, 112)', mintcream: 'rgb(245, 255, 250)', mistyrose: 'rgb(255, 228, 225)', moccasin: 'rgb(255, 228, 181)', navajowhite: 'rgb(255, 222, 173)', navy: 'rgb( 0, 0, 128)', oldlace: 'rgb(253, 245, 230)', olive: 'rgb(128, 128, 0)', olivedrab: 'rgb(107, 142, 35)', orange: 'rgb(255, 165, 0)', orangered: 'rgb(255, 69, 0)', orchid: 'rgb(218, 112, 214)', palegoldenrod: 'rgb(238, 232, 170)', palegreen: 'rgb(152, 251, 152)', paleturquoise: 'rgb(175, 238, 238)', palevioletred: 'rgb(219, 112, 147)', papayawhip: 'rgb(255, 239, 213)', peachpuff: 'rgb(255, 218, 185)', peru: 'rgb(205, 133, 63)', pink: 'rgb(255, 192, 203)', plum: 'rgb(221, 160, 221)', powderblue: 'rgb(176, 224, 230)', purple: 'rgb(128, 0, 128)', red: 'rgb(255, 0, 0)', rosybrown: 'rgb(188, 143, 143)', royalblue: 'rgb( 65, 105, 225)', saddlebrown: 'rgb(139, 69, 19)', salmon: 'rgb(250, 128, 114)', sandybrown: 'rgb(244, 164, 96)', seagreen: 'rgb( 46, 139, 87)', seashell: 'rgb(255, 245, 238)', sienna: 'rgb(160, 82, 45)', silver: 'rgb(192, 192, 192)', skyblue: 'rgb(135, 206, 235)', slateblue: 'rgb(106, 90, 205)', slategray: 'rgb(112, 128, 144)', slategrey: 'rgb(112, 128, 144)', snow: 'rgb(255, 250, 250)', springgreen: 'rgb( 0, 255, 127)', steelblue: 'rgb( 70, 130, 180)', tan: 'rgb(210, 180, 140)', teal: 'rgb( 0, 128, 128)', thistle: 'rgb(216, 191, 216)', tomato: 'rgb(255, 99, 71)', turquoise: 'rgb( 64, 224, 208)', violet: 'rgb(238, 130, 238)', wheat: 'rgb(245, 222, 179)', white: 'rgb(255, 255, 255)', whitesmoke: 'rgb(245, 245, 245)', yellow: 'rgb(255, 255, 0)', yellowgreen: 'rgb(154, 205, 50)'};
+    $.jqplot.colorKeywordMap = {
+        aliceblue: 'rgb(240, 248, 255)',
+        antiquewhite: 'rgb(250, 235, 215)',
+        aqua: 'rgb( 0, 255, 255)',
+        aquamarine: 'rgb(127, 255, 212)',
+        azure: 'rgb(240, 255, 255)',
+        beige: 'rgb(245, 245, 220)',
+        bisque: 'rgb(255, 228, 196)',
+        black: 'rgb( 0, 0, 0)',
+        blanchedalmond: 'rgb(255, 235, 205)',
+        blue: 'rgb( 0, 0, 255)',
+        blueviolet: 'rgb(138, 43, 226)',
+        brown: 'rgb(165, 42, 42)',
+        burlywood: 'rgb(222, 184, 135)',
+        cadetblue: 'rgb( 95, 158, 160)',
+        chartreuse: 'rgb(127, 255, 0)',
+        chocolate: 'rgb(210, 105, 30)',
+        coral: 'rgb(255, 127, 80)',
+        cornflowerblue: 'rgb(100, 149, 237)',
+        cornsilk: 'rgb(255, 248, 220)',
+        crimson: 'rgb(220, 20, 60)',
+        cyan: 'rgb( 0, 255, 255)',
+        darkblue: 'rgb( 0, 0, 139)',
+        darkcyan: 'rgb( 0, 139, 139)',
+        darkgoldenrod: 'rgb(184, 134, 11)',
+        darkgray: 'rgb(169, 169, 169)',
+        darkgreen: 'rgb( 0, 100, 0)',
+        darkgrey: 'rgb(169, 169, 169)',
+        darkkhaki: 'rgb(189, 183, 107)',
+        darkmagenta: 'rgb(139, 0, 139)',
+        darkolivegreen: 'rgb( 85, 107, 47)',
+        darkorange: 'rgb(255, 140, 0)',
+        darkorchid: 'rgb(153, 50, 204)',
+        darkred: 'rgb(139, 0, 0)',
+        darksalmon: 'rgb(233, 150, 122)',
+        darkseagreen: 'rgb(143, 188, 143)',
+        darkslateblue: 'rgb( 72, 61, 139)',
+        darkslategray: 'rgb( 47, 79, 79)',
+        darkslategrey: 'rgb( 47, 79, 79)',
+        darkturquoise: 'rgb( 0, 206, 209)',
+        darkviolet: 'rgb(148, 0, 211)',
+        deeppink: 'rgb(255, 20, 147)',
+        deepskyblue: 'rgb( 0, 191, 255)',
+        dimgray: 'rgb(105, 105, 105)',
+        dimgrey: 'rgb(105, 105, 105)',
+        dodgerblue: 'rgb( 30, 144, 255)',
+        firebrick: 'rgb(178, 34, 34)',
+        floralwhite: 'rgb(255, 250, 240)',
+        forestgreen: 'rgb( 34, 139, 34)',
+        fuchsia: 'rgb(255, 0, 255)',
+        gainsboro: 'rgb(220, 220, 220)',
+        ghostwhite: 'rgb(248, 248, 255)',
+        gold: 'rgb(255, 215, 0)',
+        goldenrod: 'rgb(218, 165, 32)',
+        gray: 'rgb(128, 128, 128)',
+        grey: 'rgb(128, 128, 128)',
+        green: 'rgb( 0, 128, 0)',
+        greenyellow: 'rgb(173, 255, 47)',
+        honeydew: 'rgb(240, 255, 240)',
+        hotpink: 'rgb(255, 105, 180)',
+        indianred: 'rgb(205, 92, 92)',
+        indigo: 'rgb( 75, 0, 130)',
+        ivory: 'rgb(255, 255, 240)',
+        khaki: 'rgb(240, 230, 140)',
+        lavender: 'rgb(230, 230, 250)',
+        lavenderblush: 'rgb(255, 240, 245)',
+        lawngreen: 'rgb(124, 252, 0)',
+        lemonchiffon: 'rgb(255, 250, 205)',
+        lightblue: 'rgb(173, 216, 230)',
+        lightcoral: 'rgb(240, 128, 128)',
+        lightcyan: 'rgb(224, 255, 255)',
+        lightgoldenrodyellow: 'rgb(250, 250, 210)',
+        lightgray: 'rgb(211, 211, 211)',
+        lightgreen: 'rgb(144, 238, 144)',
+        lightgrey: 'rgb(211, 211, 211)',
+        lightpink: 'rgb(255, 182, 193)',
+        lightsalmon: 'rgb(255, 160, 122)',
+        lightseagreen: 'rgb( 32, 178, 170)',
+        lightskyblue: 'rgb(135, 206, 250)',
+        lightslategray: 'rgb(119, 136, 153)',
+        lightslategrey: 'rgb(119, 136, 153)',
+        lightsteelblue: 'rgb(176, 196, 222)',
+        lightyellow: 'rgb(255, 255, 224)',
+        lime: 'rgb( 0, 255, 0)',
+        limegreen: 'rgb( 50, 205, 50)',
+        linen: 'rgb(250, 240, 230)',
+        magenta: 'rgb(255, 0, 255)',
+        maroon: 'rgb(128, 0, 0)',
+        mediumaquamarine: 'rgb(102, 205, 170)',
+        mediumblue: 'rgb( 0, 0, 205)',
+        mediumorchid: 'rgb(186, 85, 211)',
+        mediumpurple: 'rgb(147, 112, 219)',
+        mediumseagreen: 'rgb( 60, 179, 113)',
+        mediumslateblue: 'rgb(123, 104, 238)',
+        mediumspringgreen: 'rgb( 0, 250, 154)',
+        mediumturquoise: 'rgb( 72, 209, 204)',
+        mediumvioletred: 'rgb(199, 21, 133)',
+        midnightblue: 'rgb( 25, 25, 112)',
+        mintcream: 'rgb(245, 255, 250)',
+        mistyrose: 'rgb(255, 228, 225)',
+        moccasin: 'rgb(255, 228, 181)',
+        navajowhite: 'rgb(255, 222, 173)',
+        navy: 'rgb( 0, 0, 128)',
+        oldlace: 'rgb(253, 245, 230)',
+        olive: 'rgb(128, 128, 0)',
+        olivedrab: 'rgb(107, 142, 35)',
+        orange: 'rgb(255, 165, 0)',
+        orangered: 'rgb(255, 69, 0)',
+        orchid: 'rgb(218, 112, 214)',
+        palegoldenrod: 'rgb(238, 232, 170)',
+        palegreen: 'rgb(152, 251, 152)',
+        paleturquoise: 'rgb(175, 238, 238)',
+        palevioletred: 'rgb(219, 112, 147)',
+        papayawhip: 'rgb(255, 239, 213)',
+        peachpuff: 'rgb(255, 218, 185)',
+        peru: 'rgb(205, 133, 63)',
+        pink: 'rgb(255, 192, 203)',
+        plum: 'rgb(221, 160, 221)',
+        powderblue: 'rgb(176, 224, 230)',
+        purple: 'rgb(128, 0, 128)',
+        red: 'rgb(255, 0, 0)',
+        rosybrown: 'rgb(188, 143, 143)',
+        royalblue: 'rgb( 65, 105, 225)',
+        saddlebrown: 'rgb(139, 69, 19)',
+        salmon: 'rgb(250, 128, 114)',
+        sandybrown: 'rgb(244, 164, 96)',
+        seagreen: 'rgb( 46, 139, 87)',
+        seashell: 'rgb(255, 245, 238)',
+        sienna: 'rgb(160, 82, 45)',
+        silver: 'rgb(192, 192, 192)',
+        skyblue: 'rgb(135, 206, 235)',
+        slateblue: 'rgb(106, 90, 205)',
+        slategray: 'rgb(112, 128, 144)',
+        slategrey: 'rgb(112, 128, 144)',
+        snow: 'rgb(255, 250, 250)',
+        springgreen: 'rgb( 0, 255, 127)',
+        steelblue: 'rgb( 70, 130, 180)',
+        tan: 'rgb(210, 180, 140)',
+        teal: 'rgb( 0, 128, 128)',
+        thistle: 'rgb(216, 191, 216)',
+        tomato: 'rgb(255, 99, 71)',
+        turquoise: 'rgb( 64, 224, 208)',
+        violet: 'rgb(238, 130, 238)',
+        wheat: 'rgb(245, 222, 179)',
+        white: 'rgb(255, 255, 255)',
+        whitesmoke: 'rgb(245, 245, 245)',
+        yellow: 'rgb(255, 255, 0)',
+        yellowgreen: 'rgb(154, 205, 50)'
+    };
 
     
 
@@ -4913,7 +5246,7 @@ if (!document.createElement('canvas').getContext) {
         // prop: showLabel
         // wether or not to show the label.
         this.showLabel = true;
-        this.label = '';
+        this.label = null;
         this.value = null;
         this._styles = {};
         // prop: formatter
@@ -4961,7 +5294,7 @@ if (!document.createElement('canvas').getContext) {
     };
     
     $.jqplot.AxisTickRenderer.prototype.draw = function() {
-        if (!this.label) {
+        if (this.label === null) {
             this.label = this.prefix + this.formatter(this.formatString, this.value);
         }
         var style = {position: 'absolute'};
@@ -5042,7 +5375,7 @@ if (!document.createElement('canvas').getContext) {
         var elem;
         // Memory Leaks patch
         if (this._elem) {
-          if ($.jqplot.use_excanvas) {
+          if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
             elem = this._elem.get(0);
             window.G_vmlCanvasManager.uninitElement(elem);
             elem = null;
@@ -5085,235 +5418,259 @@ if (!document.createElement('canvas').getContext) {
         ctx.fillStyle = this.backgroundColor || this.background;
         ctx.fillRect(this._left, this._top, this._width, this._height);
         
-        if (true) {
-            ctx.save();
-            ctx.lineJoin = 'miter';
-            ctx.lineCap = 'butt';
-            ctx.lineWidth = this.gridLineWidth;
-            ctx.strokeStyle = this.gridLineColor;
-            var b, e, s, m;
-            var ax = ['xaxis', 'yaxis', 'x2axis', 'y2axis'];
-            for (var i=4; i>0; i--) {
-                var name = ax[i-1];
-                var axis = axes[name];
-                var ticks = axis._ticks;
-                if (axis.show) {
-                    for (var j=ticks.length; j>0; j--) {
-                        var t = ticks[j-1];
-                        if (t.show) {
-                            var pos = Math.round(axis.u2p(t.value)) + 0.5;
-                            switch (name) {
-                                case 'xaxis':
-                                    // draw the grid line
-                                    if (t.showGridline && this.drawGridlines) {
-                                        drawLine(pos, this._top, pos, this._bottom);
+        ctx.save();
+        ctx.lineJoin = 'miter';
+        ctx.lineCap = 'butt';
+        ctx.lineWidth = this.gridLineWidth;
+        ctx.strokeStyle = this.gridLineColor;
+        var b, e, s, m;
+        var ax = ['xaxis', 'yaxis', 'x2axis', 'y2axis'];
+        for (var i=4; i>0; i--) {
+            var name = ax[i-1];
+            var axis = axes[name];
+            var ticks = axis._ticks;
+            var numticks = ticks.length;
+            if (axis.show) {
+                if (axis.drawBaseline) {
+                    var bopts = {};
+                    if (axis.baselineWidth !== null) {
+                        bopts.lineWidth = axis.baselineWidth;
+                    }
+                    if (axis.baselineColor !== null) {
+                        bopts.strokeStyle = axis.baselineColor;
+                    }
+                    switch (name) {
+                        case 'xaxis':
+                            drawLine (this._left, this._bottom, this._right, this._bottom, bopts);
+                            break;
+                        case 'yaxis':
+                            drawLine (this._left, this._bottom, this._left, this._top, bopts);
+                            break;
+                        case 'x2axis':
+                            drawLine (this._left, this._bottom, this._right, this._bottom, bopts);
+                            break;
+                        case 'y2axis':
+                            drawLine (this._right, this._bottom, this._right, this._top, bopts);
+                            break;
+                    }
+                }
+                for (var j=numticks; j>0; j--) {
+                    var t = ticks[j-1];
+                    if (t.show) {
+                        var pos = Math.round(axis.u2p(t.value)) + 0.5;
+                        switch (name) {
+                            case 'xaxis':
+                                // draw the grid line if we should
+                                if (t.showGridline && this.drawGridlines && ((!t.isMinorTick && axis.drawMajorGridlines) || (t.isMinorTick && axis.drawMinorGridlines)) ) {
+                                    drawLine(pos, this._top, pos, this._bottom);
+                                }
+                                // draw the mark
+                                if (t.showMark && t.mark && ((!t.isMinorTick && axis.drawMajorTickMarks) || (t.isMinorTick && axis.drawMinorTickMarks)) ) {
+                                    s = t.markSize;
+                                    m = t.mark;
+                                    var pos = Math.round(axis.u2p(t.value)) + 0.5;
+                                    switch (m) {
+                                        case 'outside':
+                                            b = this._bottom;
+                                            e = this._bottom+s;
+                                            break;
+                                        case 'inside':
+                                            b = this._bottom-s;
+                                            e = this._bottom;
+                                            break;
+                                        case 'cross':
+                                            b = this._bottom-s;
+                                            e = this._bottom+s;
+                                            break;
+                                        default:
+                                            b = this._bottom;
+                                            e = this._bottom+s;
+                                            break;
                                     }
-                                    
-                                    // draw the mark
-	                                if (t.showMark && t.mark) {
-                                        s = t.markSize;
-                                        m = t.mark;
-                                        var pos = Math.round(axis.u2p(t.value)) + 0.5;
-                                        switch (m) {
-                                            case 'outside':
-                                                b = this._bottom;
-                                                e = this._bottom+s;
-                                                break;
-                                            case 'inside':
-                                                b = this._bottom-s;
-                                                e = this._bottom;
-                                                break;
-                                            case 'cross':
-                                                b = this._bottom-s;
-                                                e = this._bottom+s;
-                                                break;
-                                            default:
-                                                b = this._bottom;
-                                                e = this._bottom+s;
-                                                break;
-                                        }
-                                        // draw the shadow
-                                        if (this.shadow) {
-                                            this.renderer.shadowRenderer.draw(ctx, [[pos,b],[pos,e]], {lineCap:'butt', lineWidth:this.gridLineWidth, offset:this.gridLineWidth*0.75, depth:2, fill:false, closePath:false});
-                                        }
-                                        // draw the line
-                                        drawLine(pos, b, pos, e);
+                                    // draw the shadow
+                                    if (this.shadow) {
+                                        this.renderer.shadowRenderer.draw(ctx, [[pos,b],[pos,e]], {lineCap:'butt', lineWidth:this.gridLineWidth, offset:this.gridLineWidth*0.75, depth:2, fill:false, closePath:false});
                                     }
-                                    break;
-                                case 'yaxis':
-                                    // draw the grid line
-                                    if (t.showGridline && this.drawGridlines) {
-                                        drawLine(this._right, pos, this._left, pos);
+                                    // draw the line
+                                    drawLine(pos, b, pos, e);
+                                }
+                                break;
+                            case 'yaxis':
+                                // draw the grid line
+                                if (t.showGridline && this.drawGridlines && ((!t.isMinorTick && axis.drawMajorGridlines) || (t.isMinorTick && axis.drawMinorGridlines)) ) {
+                                    drawLine(this._right, pos, this._left, pos);
+                                }
+                                // draw the mark
+                                if (t.showMark && t.mark && ((!t.isMinorTick && axis.drawMajorTickMarks) || (t.isMinorTick && axis.drawMinorTickMarks)) ) {
+                                    s = t.markSize;
+                                    m = t.mark;
+                                    var pos = Math.round(axis.u2p(t.value)) + 0.5;
+                                    switch (m) {
+                                        case 'outside':
+                                            b = this._left-s;
+                                            e = this._left;
+                                            break;
+                                        case 'inside':
+                                            b = this._left;
+                                            e = this._left+s;
+                                            break;
+                                        case 'cross':
+                                            b = this._left-s;
+                                            e = this._left+s;
+                                            break;
+                                        default:
+                                            b = this._left-s;
+                                            e = this._left;
+                                            break;
+                                            }
+                                    // draw the shadow
+                                    if (this.shadow) {
+                                        this.renderer.shadowRenderer.draw(ctx, [[b, pos], [e, pos]], {lineCap:'butt', lineWidth:this.gridLineWidth*1.5, offset:this.gridLineWidth*0.75, fill:false, closePath:false});
                                     }
-                                    // draw the mark
-                                    if (t.showMark && t.mark) {
-                                        s = t.markSize;
-                                        m = t.mark;
-                                        var pos = Math.round(axis.u2p(t.value)) + 0.5;
-                                        switch (m) {
-                                            case 'outside':
-                                                b = this._left-s;
-                                                e = this._left;
-                                                break;
-                                            case 'inside':
-                                                b = this._left;
-                                                e = this._left+s;
-                                                break;
-                                            case 'cross':
-                                                b = this._left-s;
-                                                e = this._left+s;
-                                                break;
-                                            default:
-                                                b = this._left-s;
-                                                e = this._left;
-                                                break;
-                                                }
-                                        // draw the shadow
-                                        if (this.shadow) {
-                                            this.renderer.shadowRenderer.draw(ctx, [[b, pos], [e, pos]], {lineCap:'butt', lineWidth:this.gridLineWidth*1.5, offset:this.gridLineWidth*0.75, fill:false, closePath:false});
-                                        }
-                                        drawLine(b, pos, e, pos, {strokeStyle:axis.borderColor});
+                                    drawLine(b, pos, e, pos, {strokeStyle:axis.borderColor});
+                                }
+                                break;
+                            case 'x2axis':
+                                // draw the grid line
+                                if (t.showGridline && this.drawGridlines && ((!t.isMinorTick && axis.drawMajorGridlines) || (t.isMinorTick && axis.drawMinorGridlines)) ) {
+                                    drawLine(pos, this._bottom, pos, this._top);
+                                }
+                                // draw the mark
+                                if (t.showMark && t.mark && ((!t.isMinorTick && axis.drawMajorTickMarks) || (t.isMinorTick && axis.drawMinorTickMarks)) ) {
+                                    s = t.markSize;
+                                    m = t.mark;
+                                    var pos = Math.round(axis.u2p(t.value)) + 0.5;
+                                    switch (m) {
+                                        case 'outside':
+                                            b = this._top-s;
+                                            e = this._top;
+                                            break;
+                                        case 'inside':
+                                            b = this._top;
+                                            e = this._top+s;
+                                            break;
+                                        case 'cross':
+                                            b = this._top-s;
+                                            e = this._top+s;
+                                            break;
+                                        default:
+                                            b = this._top-s;
+                                            e = this._top;
+                                            break;
+                                            }
+                                    // draw the shadow
+                                    if (this.shadow) {
+                                        this.renderer.shadowRenderer.draw(ctx, [[pos,b],[pos,e]], {lineCap:'butt', lineWidth:this.gridLineWidth, offset:this.gridLineWidth*0.75, depth:2, fill:false, closePath:false});
                                     }
-                                    break;
-                                case 'x2axis':
-                                    // draw the grid line
-                                    if (t.showGridline && this.drawGridlines) {
-                                        drawLine(pos, this._bottom, pos, this._top);
+                                    drawLine(pos, b, pos, e);
+                                }
+                                break;
+                            case 'y2axis':
+                                // draw the grid line
+                                if (t.showGridline && this.drawGridlines && ((!t.isMinorTick && axis.drawMajorGridlines) || (t.isMinorTick && axis.drawMinorGridlines)) ) {
+                                    drawLine(this._left, pos, this._right, pos);
+                                }
+                                // draw the mark
+                                if (t.showMark && t.mark && ((!t.isMinorTick && axis.drawMajorTickMarks) || (t.isMinorTick && axis.drawMinorTickMarks)) ) {
+                                    s = t.markSize;
+                                    m = t.mark;
+                                    var pos = Math.round(axis.u2p(t.value)) + 0.5;
+                                    switch (m) {
+                                        case 'outside':
+                                            b = this._right;
+                                            e = this._right+s;
+                                            break;
+                                        case 'inside':
+                                            b = this._right-s;
+                                            e = this._right;
+                                            break;
+                                        case 'cross':
+                                            b = this._right-s;
+                                            e = this._right+s;
+                                            break;
+                                        default:
+                                            b = this._right;
+                                            e = this._right+s;
+                                            break;
+                                            }
+                                    // draw the shadow
+                                    if (this.shadow) {
+                                        this.renderer.shadowRenderer.draw(ctx, [[b, pos], [e, pos]], {lineCap:'butt', lineWidth:this.gridLineWidth*1.5, offset:this.gridLineWidth*0.75, fill:false, closePath:false});
                                     }
-                                    // draw the mark
-                                    if (t.showMark && t.mark) {
-                                        s = t.markSize;
-                                        m = t.mark;
-                                        var pos = Math.round(axis.u2p(t.value)) + 0.5;
-                                        switch (m) {
-                                            case 'outside':
-                                                b = this._top-s;
-                                                e = this._top;
-                                                break;
-                                            case 'inside':
-                                                b = this._top;
-                                                e = this._top+s;
-                                                break;
-                                            case 'cross':
-                                                b = this._top-s;
-                                                e = this._top+s;
-                                                break;
-                                            default:
-                                                b = this._top-s;
-                                                e = this._top;
-                                                break;
-                                                }
-                                        // draw the shadow
-                                        if (this.shadow) {
-                                            this.renderer.shadowRenderer.draw(ctx, [[pos,b],[pos,e]], {lineCap:'butt', lineWidth:this.gridLineWidth, offset:this.gridLineWidth*0.75, depth:2, fill:false, closePath:false});
-                                        }
-                                        drawLine(pos, b, pos, e);
-                                    }
-                                    break;
-                                case 'y2axis':
-                                    // draw the grid line
-                                    if (t.showGridline && this.drawGridlines) {
-                                        drawLine(this._left, pos, this._right, pos);
-                                    }
-                                    // draw the mark
-                                    if (t.showMark && t.mark) {
-                                        s = t.markSize;
-                                        m = t.mark;
-                                        var pos = Math.round(axis.u2p(t.value)) + 0.5;
-                                        switch (m) {
-                                            case 'outside':
-                                                b = this._right;
-                                                e = this._right+s;
-                                                break;
-                                            case 'inside':
-                                                b = this._right-s;
-                                                e = this._right;
-                                                break;
-                                            case 'cross':
-                                                b = this._right-s;
-                                                e = this._right+s;
-                                                break;
-                                            default:
-                                                b = this._right;
-                                                e = this._right+s;
-                                                break;
-                                                }
-                                        // draw the shadow
-                                        if (this.shadow) {
-                                            this.renderer.shadowRenderer.draw(ctx, [[b, pos], [e, pos]], {lineCap:'butt', lineWidth:this.gridLineWidth*1.5, offset:this.gridLineWidth*0.75, fill:false, closePath:false});
-                                        }
-                                        drawLine(b, pos, e, pos, {strokeStyle:axis.borderColor});
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                                    drawLine(b, pos, e, pos, {strokeStyle:axis.borderColor});
+                                }
+                                break;
+                            default:
+                                break;
                         }
+                    }
+                }
+                t = null;
+            }
+            axis = null;
+            ticks = null;
+        }
+        // Now draw grid lines for additional y axes
+        //////
+        // TO DO: handle yMidAxis
+        //////
+        ax = ['y3axis', 'y4axis', 'y5axis', 'y6axis', 'y7axis', 'y8axis', 'y9axis', 'yMidAxis'];
+        for (var i=7; i>0; i--) {
+            var axis = axes[ax[i-1]];
+            var ticks = axis._ticks;
+            if (axis.show) {
+                var tn = ticks[axis.numberTicks-1];
+                var t0 = ticks[0];
+                var left = axis.getLeft();
+                var points = [[left, tn.getTop() + tn.getHeight()/2], [left, t0.getTop() + t0.getHeight()/2 + 1.0]];
+                // draw the shadow
+                if (this.shadow) {
+                    this.renderer.shadowRenderer.draw(ctx, points, {lineCap:'butt', fill:false, closePath:false});
+                }
+                // draw the line
+                drawLine(points[0][0], points[0][1], points[1][0], points[1][1], {lineCap:'butt', strokeStyle:axis.borderColor, lineWidth:axis.borderWidth});
+                // draw the tick marks
+                for (var j=ticks.length; j>0; j--) {
+                    var t = ticks[j-1];
+                    s = t.markSize;
+                    m = t.mark;
+                    var pos = Math.round(axis.u2p(t.value)) + 0.5;
+                    if (t.showMark && t.mark) {
+                        switch (m) {
+                            case 'outside':
+                                b = left;
+                                e = left+s;
+                                break;
+                            case 'inside':
+                                b = left-s;
+                                e = left;
+                                break;
+                            case 'cross':
+                                b = left-s;
+                                e = left+s;
+                                break;
+                            default:
+                                b = left;
+                                e = left+s;
+                                break;
+                        }
+                        points = [[b,pos], [e,pos]];
+                        // draw the shadow
+                        if (this.shadow) {
+                            this.renderer.shadowRenderer.draw(ctx, points, {lineCap:'butt', lineWidth:this.gridLineWidth*1.5, offset:this.gridLineWidth*0.75, fill:false, closePath:false});
+                        }
+                        // draw the line
+                        drawLine(b, pos, e, pos, {strokeStyle:axis.borderColor});
                     }
                     t = null;
                 }
-                axis = null;
-                ticks = null;
+                t0 = null;
             }
-            // Now draw grid lines for additional y axes
-            ax = ['y3axis', 'y4axis', 'y5axis', 'y6axis', 'y7axis', 'y8axis', 'y9axis'];
-            for (var i=7; i>0; i--) {
-                var axis = axes[ax[i-1]];
-                var ticks = axis._ticks;
-                if (axis.show) {
-                    var tn = ticks[axis.numberTicks-1];
-                    var t0 = ticks[0];
-                    var left = axis.getLeft();
-                    var points = [[left, tn.getTop() + tn.getHeight()/2], [left, t0.getTop() + t0.getHeight()/2 + 1.0]];
-                    // draw the shadow
-                    if (this.shadow) {
-                        this.renderer.shadowRenderer.draw(ctx, points, {lineCap:'butt', fill:false, closePath:false});
-                    }
-                    // draw the line
-                    drawLine(points[0][0], points[0][1], points[1][0], points[1][1], {lineCap:'butt', strokeStyle:axis.borderColor, lineWidth:axis.borderWidth});
-                    // draw the tick marks
-                    for (var j=ticks.length; j>0; j--) {
-                        var t = ticks[j-1];
-                        s = t.markSize;
-                        m = t.mark;
-                        var pos = Math.round(axis.u2p(t.value)) + 0.5;
-                        if (t.showMark && t.mark) {
-                            switch (m) {
-                                case 'outside':
-                                    b = left;
-                                    e = left+s;
-                                    break;
-                                case 'inside':
-                                    b = left-s;
-                                    e = left;
-                                    break;
-                                case 'cross':
-                                    b = left-s;
-                                    e = left+s;
-                                    break;
-                                default:
-                                    b = left;
-                                    e = left+s;
-                                    break;
-                            }
-                            points = [[b,pos], [e,pos]];
-                            // draw the shadow
-                            if (this.shadow) {
-                                this.renderer.shadowRenderer.draw(ctx, points, {lineCap:'butt', lineWidth:this.gridLineWidth*1.5, offset:this.gridLineWidth*0.75, fill:false, closePath:false});
-                            }
-                            // draw the line
-                            drawLine(b, pos, e, pos, {strokeStyle:axis.borderColor});
-                        }
-                        t = null;
-                    }
-                    t0 = null;
-                }
-                axis = null;
-                ticks =  null;
-            }
-            
-            ctx.restore();
+            axis = null;
+            ticks =  null;
         }
+        
+        ctx.restore();
         
         function drawLine(bx, by, ex, ey, opts) {
             ctx.save();
@@ -5393,7 +5750,7 @@ if (!document.createElement('canvas').getContext) {
             if (this.fontSize) {
                 styles['fontSize'] = this.fontSize;
             }
-            if (this.textAlign) {
+            if (typeof this.textAlign === 'string') {
                 styles['textAlign'] = this.textAlign;
             }
             else {
@@ -5410,7 +5767,12 @@ if (!document.createElement('canvas').getContext) {
             }
 
             this._elem.css(styles);
-            this._elem.text(this.text);
+            if (this.escapeHtml) {
+                this._elem.text(this.text);
+            }
+            else {
+                this._elem.html(this.text);
+            }
 
 
             // styletext += (this._plotWidth) ? 'width:'+this._plotWidth+'px;' : '';
@@ -5433,6 +5795,116 @@ if (!document.createElement('canvas').getContext) {
         // nothing to do here
     };
   
+
+    var dotlen = 0.1;
+
+    $.jqplot.LinePattern = function (ctx, pattern) {
+
+		var defaultLinePatterns = {
+			dotted: [ dotlen, $.jqplot.config.dotGapLength ],
+			dashed: [ $.jqplot.config.dashLength, $.jqplot.config.gapLength ],
+			solid: null
+		};   	
+
+        if (typeof pattern === 'string') {
+            if (pattern[0] === '.' || pattern[0] === '-') {
+                var s = pattern;
+                pattern = [];
+                for (var i=0, imax=s.length; i<imax; i++) {
+                    if (s[i] === '.') {
+                        pattern.push( dotlen );
+                    }
+                    else if (s[i] === '-') {
+                        pattern.push( $.jqplot.config.dashLength );
+                    }
+                    else {
+                        continue;
+                    }
+                    pattern.push( $.jqplot.config.gapLength );
+                }
+            }
+            else {
+                pattern = defaultLinePatterns[pattern];
+            }
+        }
+
+        if (!(pattern && pattern.length)) {
+            return ctx;
+        }
+
+        var patternIndex = 0;
+        var patternDistance = pattern[0];
+        var px = 0;
+        var py = 0;
+        var pathx0 = 0;
+        var pathy0 = 0;
+
+        var moveTo = function (x, y) {
+            ctx.moveTo( x, y );
+            px = x;
+            py = y;
+            pathx0 = x;
+            pathy0 = y;
+        };
+
+        var lineTo = function (x, y) {
+            var scale = ctx.lineWidth;
+            var dx = x - px;
+            var dy = y - py;
+            var dist = Math.sqrt(dx*dx+dy*dy);
+            if ((dist > 0) && (scale > 0)) {
+                dx /= dist;
+                dy /= dist;
+                while (true) {
+                    var dp = scale * patternDistance;
+                    if (dp < dist) {
+                        px += dp * dx;
+                        py += dp * dy;
+                        if ((patternIndex & 1) == 0) {
+                            ctx.lineTo( px, py );
+                        }
+                        else {
+                            ctx.moveTo( px, py );
+                        }
+                        dist -= dp;
+                        patternIndex++;
+                        if (patternIndex >= pattern.length) {
+                            patternIndex = 0;
+                        }
+                        patternDistance = pattern[patternIndex];
+                    }
+                    else {
+                        px = x;
+                        py = y;
+                        if ((patternIndex & 1) == 0) {
+                            ctx.lineTo( px, py );
+                        }
+                        else {
+                            ctx.moveTo( px, py );
+                        }
+                        patternDistance -= dist / scale;
+                        break;
+                    }
+                }
+            }
+        };
+
+        var beginPath = function () {
+            ctx.beginPath();
+        };
+
+        var closePath = function () {
+            lineTo( pathx0, pathy0 );
+        };
+
+        return {
+            moveTo: moveTo,
+            lineTo: lineTo,
+            beginPath: beginPath,
+            closePath: closePath
+        };
+    };
+
     // Class: $.jqplot.LineRenderer
     // The default line renderer for jqPlot, this class has no options beyond the <Series> class.
     // Draws series as a line.
@@ -5443,8 +5915,94 @@ if (!document.createElement('canvas').getContext) {
     
     // called with scope of series.
     $.jqplot.LineRenderer.prototype.init = function(options, plot) {
+        // Group: Properties
+        //
         options = options || {};
         this._type='line';
+        this.renderer.animation = {
+            show: false,
+            direction: 'left',
+            speed: 2500,
+            _supported: true
+        };
+        // prop: smooth
+        // True to draw a smoothed (interpolated) line through the data points
+        // with automatically computed number of smoothing points.
+        // Set to an integer number > 2 to specify number of smoothing points
+        // to use between each data point.
+        this.renderer.smooth = false;  // true or a number > 2 for smoothing.
+        this.renderer.tension = null; // null to auto compute or a number typically > 6.  Fewer points requires higher tension.
+        // prop: constrainSmoothing
+        // True to use a more accurate smoothing algorithm that will
+        // not overshoot any data points.  False to allow overshoot but
+        // produce a smoother looking line.
+        this.renderer.constrainSmoothing = true;
+        // this is smoothed data in grid coordinates, like gridData
+        this.renderer._smoothedData = [];
+        // this is smoothed data in plot units (plot coordinates), like plotData.
+        this.renderer._smoothedPlotData = [];
+        this.renderer._hiBandGridData = [];
+        this.renderer._lowBandGridData = [];
+        this.renderer._hiBandSmoothedData = [];
+        this.renderer._lowBandSmoothedData = [];
+
+        // prop: bandData
+        // Data used to draw error bands or confidence intervals above/below a line.
+        //
+        // bandData can be input in 3 forms.  jqPlot will figure out which is the
+        // low band line and which is the high band line for all forms:
+        // 
+        // A 2 dimensional array like [[yl1, yl2, ...], [yu1, yu2, ...]] where
+        // [yl1, yl2, ...] are y values of the lower line and
+        // [yu1, yu2, ...] are y values of the upper line.
+        // In this case there must be the same number of y data points as data points
+        // in the series and the bands will inherit the x values of the series.
+        //
+        // A 2 dimensional array like [[[xl1, yl1], [xl2, yl2], ...], [[xh1, yh1], [xh2, yh2], ...]]
+        // where [xl1, yl1] are x,y data points for the lower line and
+        // [xh1, yh1] are x,y data points for the high line.
+        // x values do not have to correspond to the x values of the series and can
+        // be of any arbitrary length.
+        //
+        // Can be of form [[yl1, yu1], [yl2, yu2], [yl3, yu3], ...] where
+        // there must be 3 or more arrays and there must be the same number of arrays
+        // as there are data points in the series.  In this case, 
+        // [yl1, yu1] specifies the lower and upper y values for the 1st
+        // data point and so on.  The bands will inherit the x
+        // values from the series.
+        this.renderer.bandData = [];
+
+        // Group: bands
+        // Banding around line, e.g error bands or confidence intervals.
+        this.renderer.bands = {
+            // prop: show
+            // true to show the bands.  If bandData or interval is
+            // supplied, show will be set to true by default.
+            show: false,
+            hiData: [],
+            lowData: [],
+            // prop: color
+            // color of lines at top and bottom of bands [default: series color].
+            color: this.color,
+            // prop: showLines
+            // True to show lines at top and bottom of bands [default: false].
+            showLines: false,
+            // prop: fill
+            // True to fill area between bands [default: true].
+            fill: true,
+            // prop: fillColor
+            // css color spec for filled area.  [default: series color].
+            fillColor: null,
+            _min: null,
+            _max: null,
+            // prop: interval
+            // User specified interval above and below line for bands [default: '3%''].
+            // Can be a value like 3 or a string like '3%' 
+            // or an upper/lower array like [1, -2] or ['2%', '-1.5%']
+            interval: '3%'
+        };
+
+
         var lopts = {highlightMouseOver: options.highlightMouseOver, highlightMouseDown: options.highlightMouseDown, highlightColor: options.highlightColor};
         
         delete (options.highlightMouseOver);
@@ -5452,26 +6010,60 @@ if (!document.createElement('canvas').getContext) {
         delete (options.highlightColor);
         
         $.extend(true, this.renderer, options);
+
+        this.renderer.options = options;
+
+        // if we are given some band data, and bands aren't explicity set to false in options, turn them on.
+        if (this.renderer.bandData.length > 1 && (!options.bands || options.bands.show == null)) {
+            this.renderer.bands.show = true;
+        }
+
+        // if we are given an interval, and bands aren't explicity set to false in options, turn them on.
+        else if (options.bands && options.bands.show == null && options.bands.interval != null) {
+            this.renderer.bands.show = true;
+        }
+
+        // if plot is filled, turn off bands.
+        if (this.fill) {
+            this.renderer.bands.show = false;
+        }
+
+        if (this.renderer.bands.show) {
+            this.renderer.initBands.call(this, this.renderer.options, plot);
+        }
+
+
+        // smoothing is not compatible with stacked lines, disable
+        if (this._stack) {
+            this.renderer.smooth = false;
+        }
+
         // set the shape renderer options
-        var opts = {lineJoin:this.lineJoin, lineCap:this.lineCap, fill:this.fill, isarc:false, strokeStyle:this.color, fillStyle:this.fillColor, lineWidth:this.lineWidth, closePath:this.fill};
+        var opts = {lineJoin:this.lineJoin, lineCap:this.lineCap, fill:this.fill, isarc:false, strokeStyle:this.color, fillStyle:this.fillColor, lineWidth:this.lineWidth, linePattern:this.linePattern, closePath:this.fill};
         this.renderer.shapeRenderer.init(opts);
+
+        var shadow_offset = options.shadowOffset;
         // set the shadow renderer options
-        // scale the shadowOffset to the width of the line.
-        if (this.lineWidth > 2.5) {
-            var shadow_offset = this.shadowOffset* (1 + (Math.atan((this.lineWidth/2.5))/0.785398163 - 1)*0.6);
-            // var shadow_offset = this.shadowOffset;
+        if (shadow_offset == null) {
+            // scale the shadowOffset to the width of the line.
+            if (this.lineWidth > 2.5) {
+                shadow_offset = 1.25 * (1 + (Math.atan((this.lineWidth/2.5))/0.785398163 - 1)*0.6);
+                // var shadow_offset = this.shadowOffset;
+            }
+            // for skinny lines, don't make such a big shadow.
+            else {
+                shadow_offset = 1.25 * Math.atan((this.lineWidth/2.5))/0.785398163;
+            }
         }
-        // for skinny lines, don't make such a big shadow.
-        else {
-            var shadow_offset = this.shadowOffset*Math.atan((this.lineWidth/2.5))/0.785398163;
-        }
-        var sopts = {lineJoin:this.lineJoin, lineCap:this.lineCap, fill:this.fill, isarc:false, angle:this.shadowAngle, offset:shadow_offset, alpha:this.shadowAlpha, depth:this.shadowDepth, lineWidth:this.lineWidth, closePath:this.fill};
+        
+        var sopts = {lineJoin:this.lineJoin, lineCap:this.lineCap, fill:this.fill, isarc:false, angle:this.shadowAngle, offset:shadow_offset, alpha:this.shadowAlpha, depth:this.shadowDepth, lineWidth:this.lineWidth, linePattern:this.linePattern, closePath:this.fill};
         this.renderer.shadowRenderer.init(sopts);
         this._areaPoints = [];
         this._boundingBox = [[],[]];
         
-        if (!this.isTrendline && this.fill) {
-        
+        if (!this.isTrendline && this.fill || this.renderer.bands.show) {
+            // Group: Properties
+            //        
             // prop: highlightMouseOver
             // True to highlight area on a filled plot when moused over.
             // This must be false to enable highlightMouseDown to highlight when clicking on an area on a filled plot.
@@ -5491,7 +6083,8 @@ if (!document.createElement('canvas').getContext) {
             $.extend(true, this, {highlightMouseOver: lopts.highlightMouseOver, highlightMouseDown: lopts.highlightMouseDown, highlightColor: lopts.highlightColor});
             
             if (!this.highlightColor) {
-                this.highlightColor = $.jqplot.computeHighlightColors(this.fillColor);
+                var fc = (this.renderer.bands.show) ? this.renderer.bands.fillColor : this.fillColor;
+                this.highlightColor = $.jqplot.computeHighlightColors(fc);
             }
             // turn off (disable) the highlighter plugin
             if (this.highlighter) {
@@ -5511,8 +6104,448 @@ if (!document.createElement('canvas').getContext) {
         }
 
     };
+
+    $.jqplot.LineRenderer.prototype.initBands = function(options, plot) {
+        // use bandData if no data specified in bands option
+        //var bd = this.renderer.bandData;
+        var bd = options.bandData || [];
+        var bands = this.renderer.bands;
+        bands.hiData = [];
+        bands.lowData = [];
+        var data = this.data;
+        bands._max = null;
+        bands._min = null;
+        // If 2 arrays, and each array greater than 2 elements, assume it is hi and low data bands of y values.
+        if (bd.length == 2) {
+            // Do we have an array of x,y values?
+            // like [[[1,1], [2,4], [3,3]], [[1,3], [2,6], [3,5]]]
+            if ($.isArray(bd[0][0])) {
+                // since an arbitrary array of points, spin through all of them to determine max and min lines.
+
+                var p;
+                var bdminidx = 0, bdmaxidx = 0;
+                for (var i = 0, l = bd[0].length; i<l; i++) {
+                    p = bd[0][i];
+                    if ((p[1] != null && p[1] > bands._max) || bands._max == null) {
+                        bands._max = p[1];
+                    }
+                    if ((p[1] != null && p[1] < bands._min) || bands._min == null) {
+                        bands._min = p[1];
+                    }
+                }
+                for (var i = 0, l = bd[1].length; i<l; i++) {
+                    p = bd[1][i];
+                    if ((p[1] != null && p[1] > bands._max) || bands._max == null) {
+                        bands._max = p[1];
+                        bdmaxidx = 1;
+                    }
+                    if ((p[1] != null && p[1] < bands._min) || bands._min == null) {
+                        bands._min = p[1];
+                        bdminidx = 1;
+                    }
+                }
+
+                if (bdmaxidx === bdminidx) {
+                    bands.show = false;
+                }
+
+                bands.hiData = bd[bdmaxidx];
+                bands.lowData = bd[bdminidx];
+            }
+            // else data is arrays of y values
+            // like [[1,4,3], [3,6,5]]
+            // must have same number of band data points as points in series
+            else if (bd[0].length === data.length && bd[1].length === data.length) {
+                var hi = (bd[0][0] > bd[1][0]) ? 0 : 1;
+                var low = (hi) ? 0 : 1;
+                for (var i=0, l=data.length; i < l; i++) {
+                    bands.hiData.push([data[i][0], bd[hi][i]]);
+                    bands.lowData.push([data[i][0], bd[low][i]]);
+                }
+            }
+
+            // we don't have proper data array, don't show bands.
+            else {
+                bands.show = false;
+            }
+        }
+
+        // if more than 2 arrays, have arrays of [ylow, yhi] values.
+        // note, can't distinguish case of [[ylow, yhi], [ylow, yhi]] from [[ylow, ylow], [yhi, yhi]]
+        // this is assumed to be of the latter form.
+        else if (bd.length > 2 && !$.isArray(bd[0][0])) {
+            var hi = (bd[0][0] > bd[0][1]) ? 0 : 1;
+            var low = (hi) ? 0 : 1;
+            for (var i=0, l=bd.length; i<l; i++) {
+                bands.hiData.push([data[i][0], bd[i][hi]]);
+                bands.lowData.push([data[i][0], bd[i][low]]);
+            }
+        }
+
+        // don't have proper data, auto calculate
+        else {
+            var intrv = bands.interval;
+            var a = null;
+            var b = null;
+            var afunc = null;
+            var bfunc = null;
+
+            if ($.isArray(intrv)) {
+                a = intrv[0];
+                b = intrv[1];
+            }
+            else {
+                a = intrv;
+            }
+
+            if (isNaN(a)) {
+                // we have a string
+                if (a.charAt(a.length - 1) === '%') {
+                    afunc = 'multiply';
+                    a = parseFloat(a)/100 + 1;
+                }
+            }
+
+            else {
+                a = parseFloat(a);
+                afunc = 'add';
+            }
+
+            if (b !== null && isNaN(b)) {
+                // we have a string
+                if (b.charAt(b.length - 1) === '%') {
+                    bfunc = 'multiply';
+                    b = parseFloat(b)/100 + 1;
+                }
+            }
+
+            else if (b !== null) {
+                b = parseFloat(b);
+                bfunc = 'add';
+            }
+
+            if (a !== null) {
+                if (b === null) {
+                    b = -a;
+                    bfunc = afunc;
+                    if (bfunc === 'multiply') {
+                        b += 2;
+                    }
+                }
+
+                // make sure a always applies to hi band.
+                if (a < b) {
+                    var temp = a;
+                    a = b;
+                    b = temp;
+                    temp = afunc;
+                    afunc = bfunc;
+                    bfunc = temp;
+                }
+
+                for (var i=0, l = data.length; i < l; i++) {
+                    switch (afunc) {
+                        case 'add':
+                            bands.hiData.push([data[i][0], data[i][1] + a]);
+                            break;
+                        case 'multiply':
+                            bands.hiData.push([data[i][0], data[i][1] * a]);
+                            break;
+                    }
+                    switch (bfunc) {
+                        case 'add':
+                            bands.lowData.push([data[i][0], data[i][1] + b]);
+                            break;
+                        case 'multiply':
+                            bands.lowData.push([data[i][0], data[i][1] * b]);
+                            break;
+                    }
+                }
+            }
+
+            else {
+                bands.show = false;
+            }
+        }
+
+        var hd = bands.hiData;
+        var ld = bands.lowData;
+        for (var i = 0, l = hd.length; i<l; i++) {
+            if ((hd[i][1] != null && hd[i][1] > bands._max) || bands._max == null) {
+                bands._max = hd[i][1];
+            }
+        }
+        for (var i = 0, l = ld.length; i<l; i++) {
+            if ((ld[i][1] != null && ld[i][1] < bands._min) || bands._min == null) {
+                bands._min = ld[i][1];
+            }
+        }
+
+        // one last check for proper data
+        // these don't apply any more since allowing arbitrary x,y values
+        // if (bands.hiData.length != bands.lowData.length) {
+        //     bands.show = false;
+        // }
+
+        // if (bands.hiData.length != this.data.length) {
+        //     bands.show = false;
+        // }
+
+        if (bands.fillColor === null) {
+            var c = $.jqplot.getColorComponents(bands.color);
+            // now adjust alpha to differentiate fill
+            c[3] = c[3] * 0.5;
+            bands.fillColor = 'rgba(' + c[0] +', '+ c[1] +', '+ c[2] +', '+ c[3] + ')';
+        }
+    };
+
+    function getSteps (d, f) {
+        return (3.4182054+f) * Math.pow(d, -0.3534992);
+    }
+
+    function computeSteps (d1, d2) {
+        var s = Math.sqrt(Math.pow((d2[0]- d1[0]), 2) + Math.pow ((d2[1] - d1[1]), 2));
+        return 5.7648 * Math.log(s) + 7.4456;
+    }
+
+    function tanh (x) {
+        var a = (Math.exp(2*x) - 1) / (Math.exp(2*x) + 1);
+        return a;
+    }
+
+    //////////
+    // computeConstrainedSmoothedData
+    // An implementation of the constrained cubic spline interpolation
+    // method as presented in:
+    //
+    // Kruger, CJC, Constrained Cubic Spine Interpolation for Chemical Engineering Applications
+    // http://www.korf.co.uk/spline.pdf
+    //
+    // The implementation below borrows heavily from the sample Visual Basic
+    // implementation by CJC Kruger found in http://www.korf.co.uk/spline.xls
+    //
+    /////////
+
+    // called with scope of series
+    function computeConstrainedSmoothedData (gd) {
+        var smooth = this.renderer.smooth;
+        var dim = this.canvas.getWidth();
+        var xp = this._xaxis.series_p2u;
+        var yp = this._yaxis.series_p2u; 
+        var steps =null;
+        var _steps = null;
+        var dist = gd.length/dim;
+        var _smoothedData = [];
+        var _smoothedPlotData = [];
+
+        if (!isNaN(parseFloat(smooth))) {
+            steps = parseFloat(smooth);
+        }
+        else {
+            steps = getSteps(dist, 0.5);
+        }
+
+        var yy = [];
+        var xx = [];
+
+        for (var i=0, l = gd.length; i<l; i++) {
+            yy.push(gd[i][1]);
+            xx.push(gd[i][0]);
+        }
+
+        function dxx(x1, x0) {
+            if (x1 - x0 == 0) {
+                return Math.pow(10,10);
+            }
+            else {
+                return x1 - x0;
+            }
+        }
+
+        var A, B, C, D;
+        // loop through each line segment.  Have # points - 1 line segments.  Nmber segments starting at 1.
+        var nmax = gd.length - 1;
+        for (var num = 1, gdl = gd.length; num<gdl; num++) {
+            var gxx = [];
+            var ggxx = [];
+            // point at each end of segment.
+            for (var j = 0; j < 2; j++) {
+                var i = num - 1 + j; // point number, 0 to # points.
+
+                if (i == 0 || i == nmax) {
+                    gxx[j] = Math.pow(10, 10);
+                }
+                else if (yy[i+1] - yy[i] == 0 || yy[i] - yy[i-1] == 0) {
+                    gxx[j] = 0;
+                }
+                else if (((xx[i+1] - xx[i]) / (yy[i+1] - yy[i]) + (xx[i] - xx[i-1]) / (yy[i] - yy[i-1])) == 0 ) {
+                    gxx[j] = 0;
+                }
+                else if ( (yy[i+1] - yy[i]) * (yy[i] - yy[i-1]) < 0 ) {
+                    gxx[j] = 0;
+                }
+
+                else {
+                    gxx[j] = 2 / (dxx(xx[i + 1], xx[i]) / (yy[i + 1] - yy[i]) + dxx(xx[i], xx[i - 1]) / (yy[i] - yy[i - 1]));
+                }
+            }
+
+            // Reset first derivative (slope) at first and last point
+            if (num == 1) {
+                // First point has 0 2nd derivative
+                gxx[0] = 3 / 2 * (yy[1] - yy[0]) / dxx(xx[1], xx[0]) - gxx[1] / 2;
+            }
+            else if (num == nmax) {
+                // Last point has 0 2nd derivative
+                gxx[1] = 3 / 2 * (yy[nmax] - yy[nmax - 1]) / dxx(xx[nmax], xx[nmax - 1]) - gxx[0] / 2;
+            }   
+
+            // Calc second derivative at points
+            ggxx[0] = -2 * (gxx[1] + 2 * gxx[0]) / dxx(xx[num], xx[num - 1]) + 6 * (yy[num] - yy[num - 1]) / Math.pow(dxx(xx[num], xx[num - 1]), 2);
+            ggxx[1] = 2 * (2 * gxx[1] + gxx[0]) / dxx(xx[num], xx[num - 1]) - 6 * (yy[num] - yy[num - 1]) / Math.pow(dxx(xx[num], xx[num - 1]), 2);
+
+            // Calc constants for cubic interpolation
+            D = 1 / 6 * (ggxx[1] - ggxx[0]) / dxx(xx[num], xx[num - 1]);
+            C = 1 / 2 * (xx[num] * ggxx[0] - xx[num - 1] * ggxx[1]) / dxx(xx[num], xx[num - 1]);
+            B = (yy[num] - yy[num - 1] - C * (Math.pow(xx[num], 2) - Math.pow(xx[num - 1], 2)) - D * (Math.pow(xx[num], 3) - Math.pow(xx[num - 1], 3))) / dxx(xx[num], xx[num - 1]);
+            A = yy[num - 1] - B * xx[num - 1] - C * Math.pow(xx[num - 1], 2) - D * Math.pow(xx[num - 1], 3);
+
+            var increment = (xx[num] - xx[num - 1]) / steps;
+            var temp, tempx;
+
+            for (var j = 0, l = steps; j < l; j++) {
+                temp = [];
+                tempx = xx[num - 1] + j * increment;
+                temp.push(tempx);
+                temp.push(A + B * tempx + C * Math.pow(tempx, 2) + D * Math.pow(tempx, 3));
+                _smoothedData.push(temp);
+                _smoothedPlotData.push([xp(temp[0]), yp(temp[1])]);
+            }
+        }
+
+        _smoothedData.push(gd[i]);
+        _smoothedPlotData.push([xp(gd[i][0]), yp(gd[i][1])]);
+
+        return [_smoothedData, _smoothedPlotData];
+    }
+
+    ///////
+    // computeHermiteSmoothedData
+    // A hermite spline smoothing of the plot data.
+    // This implementation is derived from the one posted
+    // by krypin on the jqplot-users mailing list:
+    //
+    // http://groups.google.com/group/jqplot-users/browse_thread/thread/748be6a445723cea?pli=1
+    //
+    // with a blog post:
+    //
+    // http://blog.statscollector.com/a-plugin-renderer-for-jqplot-to-draw-a-hermite-spline/
+    //
+    // and download of the original plugin:
+    //
+    // http://blog.statscollector.com/wp-content/uploads/2010/02/jqplot.hermiteSplineRenderer.js
+    //////////
+
+    // called with scope of series
+    function computeHermiteSmoothedData (gd) {
+        var smooth = this.renderer.smooth;
+        var tension = this.renderer.tension;
+        var dim = this.canvas.getWidth();
+        var xp = this._xaxis.series_p2u;
+        var yp = this._yaxis.series_p2u; 
+        var steps =null;
+        var _steps = null;
+        var a = null;
+        var a1 = null;
+        var a2 = null;
+        var slope = null;
+        var slope2 = null;
+        var temp = null;
+        var t, s, h1, h2, h3, h4;
+        var TiX, TiY, Ti1X, Ti1Y;
+        var pX, pY, p;
+        var sd = [];
+        var spd = [];
+        var dist = gd.length/dim;
+        var min, max, stretch, scale, shift;
+        var _smoothedData = [];
+        var _smoothedPlotData = [];
+        if (!isNaN(parseFloat(smooth))) {
+            steps = parseFloat(smooth);
+        }
+        else {
+            steps = getSteps(dist, 0.5);
+        }
+        if (!isNaN(parseFloat(tension))) {
+            tension = parseFloat(tension);
+        }
+
+        for (var i=0, l = gd.length-1; i < l; i++) {
+
+            if (tension === null) {
+                slope = Math.abs((gd[i+1][1] - gd[i][1]) / (gd[i+1][0] - gd[i][0]));
+
+                min = 0.3;
+                max = 0.6;
+                stretch = (max - min)/2.0;
+                scale = 2.5;
+                shift = -1.4;
+
+                temp = slope/scale + shift;
+
+                a1 = stretch * tanh(temp) - stretch * tanh(shift) + min;
+
+                // if have both left and right line segments, will use  minimum tension. 
+                if (i > 0) {
+                    slope2 = Math.abs((gd[i][1] - gd[i-1][1]) / (gd[i][0] - gd[i-1][0]));
+                }
+                temp = slope2/scale + shift;
+
+                a2 = stretch * tanh(temp) - stretch * tanh(shift) + min;
+
+                a = (a1 + a2)/2.0;
+
+            }
+            else {
+                a = tension;
+            }
+            for (t=0; t < steps; t++) {
+                s = t / steps;
+                h1 = (1 + 2*s)*Math.pow((1-s),2);
+                h2 = s*Math.pow((1-s),2);
+                h3 = Math.pow(s,2)*(3-2*s);
+                h4 = Math.pow(s,2)*(s-1);     
+                
+                if (gd[i-1]) {  
+                    TiX = a * (gd[i+1][0] - gd[i-1][0]); 
+                    TiY = a * (gd[i+1][1] - gd[i-1][1]);
+                } else {
+                    TiX = a * (gd[i+1][0] - gd[i][0]); 
+                    TiY = a * (gd[i+1][1] - gd[i][1]);                                  
+                }
+                if (gd[i+2]) {  
+                    Ti1X = a * (gd[i+2][0] - gd[i][0]); 
+                    Ti1Y = a * (gd[i+2][1] - gd[i][1]);
+                } else {
+                    Ti1X = a * (gd[i+1][0] - gd[i][0]); 
+                    Ti1Y = a * (gd[i+1][1] - gd[i][1]);                                 
+                }
+                
+                pX = h1*gd[i][0] + h3*gd[i+1][0] + h2*TiX + h4*Ti1X;
+                pY = h1*gd[i][1] + h3*gd[i+1][1] + h2*TiY + h4*Ti1Y;
+                p = [pX, pY];
+
+                _smoothedData.push(p);
+                _smoothedPlotData.push([xp(pX), yp(pY)]);
+            }
+        }
+        _smoothedData.push(gd[l]);
+        _smoothedPlotData.push([xp(gd[l][0]), yp(gd[l][1])]);
+
+        return [_smoothedData, _smoothedPlotData];
+    }
     
-    // Method: setGridData
+    // setGridData
     // converts the user data values to grid coordinates and stores them
     // in the gridData array.
     // Called with scope of a series.
@@ -5524,16 +6557,26 @@ if (!document.createElement('canvas').getContext) {
         var pdata = this._prevPlotData;
         this.gridData = [];
         this._prevGridData = [];
-        for (var i=0; i<this.data.length; i++) {
+        this.renderer._smoothedData = [];
+        this.renderer._smoothedPlotData = [];
+        this.renderer._hiBandGridData = [];
+        this.renderer._lowBandGridData = [];
+        this.renderer._hiBandSmoothedData = [];
+        this.renderer._lowBandSmoothedData = [];
+        var bands = this.renderer.bands;
+        var hasNull = false;
+        for (var i=0, l=this.data.length; i < l; i++) {
             // if not a line series or if no nulls in data, push the converted point onto the array.
             if (data[i][0] != null && data[i][1] != null) {
                 this.gridData.push([xp.call(this._xaxis, data[i][0]), yp.call(this._yaxis, data[i][1])]);
             }
             // else if there is a null, preserve it.
             else if (data[i][0] == null) {
+                hasNull = true;
                 this.gridData.push([null, yp.call(this._yaxis, data[i][1])]);
             }
             else if (data[i][1] == null) {
+                hasNull = true;
                 this.gridData.push([xp.call(this._xaxis, data[i][0]), null]);
             }
             // if not a line series or if no nulls in data, push the converted point onto the array.
@@ -5548,9 +6591,59 @@ if (!document.createElement('canvas').getContext) {
                 this._prevGridData.push([xp.call(this._xaxis, pdata[i][0]), null]);
             }
         }
+
+        // don't do smoothing or bands on broken lines.
+        if (hasNull) {
+            this.renderer.smooth = false;
+            if (this._type === 'line') {
+                bands.show = false;
+            }
+        }
+
+        if (this._type === 'line' && bands.show) {
+            for (var i=0, l=bands.hiData.length; i<l; i++) {
+                this.renderer._hiBandGridData.push([xp.call(this._xaxis, bands.hiData[i][0]), yp.call(this._yaxis, bands.hiData[i][1])]);
+            }
+            for (var i=0, l=bands.lowData.length; i<l; i++) {
+                this.renderer._lowBandGridData.push([xp.call(this._xaxis, bands.lowData[i][0]), yp.call(this._yaxis, bands.lowData[i][1])]);
+            }
+        }
+
+        // calculate smoothed data if enough points and no nulls
+        if (this._type === 'line' && this.renderer.smooth && this.gridData.length > 2) {
+            var ret;
+            if (this.renderer.constrainSmoothing) {
+                ret = computeConstrainedSmoothedData.call(this, this.gridData);
+                this.renderer._smoothedData = ret[0];
+                this.renderer._smoothedPlotData = ret[1];
+
+                if (bands.show) {
+                    ret = computeConstrainedSmoothedData.call(this, this.renderer._hiBandGridData);
+                    this.renderer._hiBandSmoothedData = ret[0];
+                    ret = computeConstrainedSmoothedData.call(this, this.renderer._lowBandGridData);
+                    this.renderer._lowBandSmoothedData = ret[0];
+                }
+
+                ret = null;
+            }
+            else {
+                ret = computeHermiteSmoothedData.call(this, this.gridData);
+                this.renderer._smoothedData = ret[0];
+                this.renderer._smoothedPlotData = ret[1];
+
+                if (bands.show) {
+                    ret = computeHermiteSmoothedData.call(this, this.renderer._hiBandGridData);
+                    this.renderer._hiBandSmoothedData = ret[0];
+                    ret = computeHermiteSmoothedData.call(this, this.renderer._lowBandGridData);
+                    this.renderer._lowBandSmoothedData = ret[0];
+                }
+
+                ret = null;
+            }
+        }
     };
     
-    // Method: makeGridData
+    // makeGridData
     // converts any arbitrary data values to grid coordinates and
     // returns them.  This method exists so that plugins can use a series'
     // linerenderer to generate grid data points without overwriting the
@@ -5562,6 +6655,14 @@ if (!document.createElement('canvas').getContext) {
         var yp = this._yaxis.series_u2p;
         var gd = [];
         var pgd = [];
+        this.renderer._smoothedData = [];
+        this.renderer._smoothedPlotData = [];
+        this.renderer._hiBandGridData = [];
+        this.renderer._lowBandGridData = [];
+        this.renderer._hiBandSmoothedData = [];
+        this.renderer._lowBandSmoothedData = [];
+        var bands = this.renderer.bands;
+        var hasNull = false;
         for (var i=0; i<data.length; i++) {
             // if not a line series or if no nulls in data, push the converted point onto the array.
             if (data[i][0] != null && data[i][1] != null) {
@@ -5569,10 +6670,61 @@ if (!document.createElement('canvas').getContext) {
             }
             // else if there is a null, preserve it.
             else if (data[i][0] == null) {
+                hasNull = true;
                 gd.push([null, yp.call(this._yaxis, data[i][1])]);
             }
             else if (data[i][1] == null) {
+                hasNull = true;
                 gd.push([xp.call(this._xaxis, data[i][0]), null]);
+            }
+        }
+
+        // don't do smoothing or bands on broken lines.
+        if (hasNull) {
+            this.renderer.smooth = false;
+            if (this._type === 'line') {
+                bands.show = false;
+            }
+        }
+
+        if (this._type === 'line' && bands.show) {
+            for (var i=0, l=bands.hiData.length; i<l; i++) {
+                this.renderer._hiBandGridData.push([xp.call(this._xaxis, bands.hiData[i][0]), yp.call(this._yaxis, bands.hiData[i][1])]);
+            }
+            for (var i=0, l=bands.lowData.length; i<l; i++) {
+                this.renderer._lowBandGridData.push([xp.call(this._xaxis, bands.lowData[i][0]), yp.call(this._yaxis, bands.lowData[i][1])]);
+            }
+        }
+
+        if (this._type === 'line' && this.renderer.smooth && gd.length > 2) {
+            var ret;
+            if (this.renderer.constrainSmoothing) {
+                ret = computeConstrainedSmoothedData.call(this, gd);
+                this.renderer._smoothedData = ret[0];
+                this.renderer._smoothedPlotData = ret[1];
+
+                if (bands.show) {
+                    ret = computeConstrainedSmoothedData.call(this, this.renderer._hiBandGridData);
+                    this.renderer._hiBandSmoothedData = ret[0];
+                    ret = computeConstrainedSmoothedData.call(this, this.renderer._lowBandGridData);
+                    this.renderer._lowBandSmoothedData = ret[0];
+                }
+
+                ret = null;
+            }
+            else {
+                ret = computeHermiteSmoothedData.call(this, gd);
+                this.renderer._smoothedData = ret[0];
+                this.renderer._smoothedPlotData = ret[1];
+
+                if (bands.show) {
+                    ret = computeHermiteSmoothedData.call(this, this.renderer._hiBandGridData);
+                    this.renderer._hiBandSmoothedData = ret[0];
+                    ret = computeHermiteSmoothedData.call(this, this.renderer._lowBandGridData);
+                    this.renderer._lowBandSmoothedData = ret[0];
+                }
+
+                ret = null;
             }
         }
         return gd;
@@ -5580,9 +6732,10 @@ if (!document.createElement('canvas').getContext) {
     
 
     // called within scope of series.
-    $.jqplot.LineRenderer.prototype.draw = function(ctx, gd, options) {
+    $.jqplot.LineRenderer.prototype.draw = function(ctx, gd, options, plot) {
         var i;
-        var opts = (options != undefined) ? options : {};
+        // get a copy of the options, so we don't modify the original object.
+        var opts = $.extend(true, {}, options);
         var shadow = (opts.shadow != undefined) ? opts.shadow : this.shadow;
         var showLine = (opts.showLine != undefined) ? opts.showLine : this.showLine;
         var fill = (opts.fill != undefined) ? opts.fill : this.fill;
@@ -5593,10 +6746,9 @@ if (!document.createElement('canvas').getContext) {
             if (showLine) {
                 // if we fill, we'll have to add points to close the curve.
                 if (fill) {
-                    if (this.fillToZero) {
+                    if (this.fillToZero) { 
                         // have to break line up into shapes at axis crossings
-                        var negativeColors = new $.jqplot.ColorGenerator(this.negativeSeriesColors);
-                        var negativeColor = negativeColors.get(this.index);
+                        var negativeColor = this.negativeColor;
                         if (! this.useNegativeColors) {
                             negativeColor = opts.fillStyle;
                         }
@@ -5611,9 +6763,12 @@ if (!document.createElement('canvas').getContext) {
                         if (this.index == 0 || !this._stack) {
                         
                             var tempgd = [];
+                            var pd = (this.renderer.smooth) ? this.renderer._smoothedPlotData : this._plotData;
                             this._areaPoints = [];
                             var pyzero = this._yaxis.series_u2p(this.fillToValue);
                             var pxzero = this._xaxis.series_u2p(this.fillToValue);
+
+                            opts.closePath = true;
                             
                             if (this.fillAxis == 'y') {
                                 tempgd.push([gd[0][0], pyzero]);
@@ -5623,8 +6778,8 @@ if (!document.createElement('canvas').getContext) {
                                     tempgd.push(gd[i]);
                                     this._areaPoints.push(gd[i]);
                                     // do we have an axis crossing?
-                                    if (this._plotData[i][1] * this._plotData[i+1][1] < 0) {
-                                        if (this._plotData[i][1] < 0) {
+                                    if (pd[i][1] * pd[i+1][1] < 0) {
+                                        if (pd[i][1] < 0) {
                                             isnegative = true;
                                             opts.fillStyle = negativeColor;
                                         }
@@ -5646,7 +6801,7 @@ if (!document.createElement('canvas').getContext) {
                                         // this._areaPoints = [[xintercept, pyzero]];
                                     }   
                                 }
-                                if (this._plotData[gd.length-1][1] < 0) {
+                                if (pd[gd.length-1][1] < 0) {
                                     isnegative = true;
                                     opts.fillStyle = negativeColor;
                                 }
@@ -5659,7 +6814,7 @@ if (!document.createElement('canvas').getContext) {
                                 tempgd.push([gd[gd.length-1][0], pyzero]); 
                                 this._areaPoints.push([gd[gd.length-1][0], pyzero]); 
                             }
-                            // now draw this shape and shadow.
+                            // now draw the last area.
                             if (shadow) {
                                 this.renderer.shadowRenderer.draw(ctx, tempgd, opts);
                             }
@@ -5728,6 +6883,9 @@ if (!document.createElement('canvas').getContext) {
                         // }
                         // now draw the markers
                         if (this.markerRenderer.show) {
+                            if (this.renderer.smooth) {
+                                fasgd = this.gridData;
+                            }
                             for (i=0; i<fasgd.length; i++) {
                                 this.markerRenderer.draw(fasgd[i][0], fasgd[i][1], ctx, opts.markerOptions);
                             }
@@ -5735,6 +6893,32 @@ if (!document.createElement('canvas').getContext) {
                     }
                 }
                 else {
+
+                    if (this.renderer.bands.show) {
+                        var bdat;
+                        var bopts = $.extend(true, {}, opts);
+                        if (this.renderer.bands.showLines) {
+                            bdat = (this.renderer.smooth) ? this.renderer._hiBandSmoothedData : this.renderer._hiBandGridData;
+                            this.renderer.shapeRenderer.draw(ctx, bdat, opts);
+                            bdat = (this.renderer.smooth) ? this.renderer._lowBandSmoothedData : this.renderer._lowBandGridData;
+                            this.renderer.shapeRenderer.draw(ctx, bdat, bopts);
+                        }
+
+                        if (this.renderer.bands.fill) {
+                            if (this.renderer.smooth) {
+                                bdat = this.renderer._hiBandSmoothedData.concat(this.renderer._lowBandSmoothedData.reverse());
+                            }
+                            else {
+                                bdat = this.renderer._hiBandGridData.concat(this.renderer._lowBandGridData.reverse());
+                            }
+                            this._areaPoints = bdat;
+                            bopts.closePath = true;
+                            bopts.fill = true;
+                            bopts.fillStyle = this.renderer.bands.fillColor;
+                            this.renderer.shapeRenderer.draw(ctx, bdat, bopts);
+                        }
+                    }
+
                     if (shadow) {
                         this.renderer.shadowRenderer.draw(ctx, gd, opts);
                     }
@@ -5759,10 +6943,19 @@ if (!document.createElement('canvas').getContext) {
                     ymin = p[1];
                 }
             }
+
+            if (this.type === 'line' && this.renderer.bands.show) {
+                ymax = this._yaxis.series_u2p(this.renderer.bands._min);
+                ymin = this._yaxis.series_u2p(this.renderer.bands._max);
+            }
+
             this._boundingBox = [[xmin, ymax], [xmax, ymin]];
         
             // now draw the markers
             if (this.markerRenderer.show && !fill) {
+                if (this.renderer.smooth) {
+                    gd = this.gridData;
+                }
                 for (i=0; i<gd.length; i++) {
                     if (gd[i][0] != null && gd[i][1] != null) {
                         this.markerRenderer.draw(gd[i][0], gd[i][1], ctx, opts.markerOptions);
@@ -5789,7 +6982,6 @@ if (!document.createElement('canvas').getContext) {
                 }
             }
         }
-        this.target.bind('mouseout', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }  
     
     // called within context of plot
@@ -5807,6 +6999,7 @@ if (!document.createElement('canvas').getContext) {
         
         this.eventCanvas._elem.before(this.plugins.lineRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-lineRenderer-highlight-canvas', this._plotDimensions, this));
         this.plugins.lineRenderer.highlightCanvas.setContext();
+        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     } 
     
     function highlight (plot, sidx, pidx, points) {
@@ -5816,6 +7009,10 @@ if (!document.createElement('canvas').getContext) {
         s._highlightedPoint = pidx;
         plot.plugins.lineRenderer.highlightedSeriesIndex = sidx;
         var opts = {fillStyle: s.highlightColor};
+        if (s.type === 'line' && s.renderer.bands.show) {
+            opts.fill = true;
+            opts.closePath = true;
+        }
         s.renderer.shapeRenderer.draw(canvas._ctx, points, opts);
         canvas = null;
     }
@@ -5902,7 +7099,6 @@ if (!document.createElement('canvas').getContext) {
     
     // class: $.jqplot.LinearAxisRenderer
     // The default jqPlot axis renderer, creating a numeric axis.
-    // The renderer has no additional options beyond the <Axis> object.
     $.jqplot.LinearAxisRenderer = function() {
     };
     
@@ -5920,6 +7116,15 @@ if (!document.createElement('canvas').getContext) {
         // prop: breakTickLabel
         // Label to use at the axis break if breakPoints are specified.
         this.breakTickLabel = "&asymp;";
+        // prop: drawBaseline
+        // True to draw the axis baseline.
+        this.drawBaseline = true;
+        // prop: baselineWidth
+        // width of the baseline in pixels.
+        this.baselineWidth = null;
+        // prop: baselineColor
+        // CSS color spec for the baseline.
+        this.baselineColor = null;
         // prop: forceTickAt0
         // This will ensure that there is always a tick mark at 0.
         // If data range is strictly positive or negative,
@@ -5938,8 +7143,24 @@ if (!document.createElement('canvas').getContext) {
         // This has know effect when any of the following options
         // are set:  autoscale, min, max, numberTicks or tickInterval.
         this.forceTickAt100 = false;
+        // prop: tickInset
+        // Controls the amount to inset the first and last ticks from 
+        // the edges of the grid, in multiples of the tick interval.
+        // 0 is no inset, 0.5 is one half a tick interval, 1 is a full
+        // tick interval, etc.
+        this.tickInset = 0;
+        // prop: minorTicks
+        // Number of ticks to add between "major" ticks.
+        // Major ticks are ticks supplied by user or auto computed.
+        // Minor ticks cannot be created by user.
+        this.minorTicks = 0;
+        // prop: alignTicks
+        // true to align tick marks across opposed axes
+        // such as from the y2axis to yaxis.
+        this.alignTicks = false;
         this._autoFormatString = '';
         this._overrideFormatString = false;
+        this._scalefact = 1.0;
         $.extend(true, this, options);
         if (this.breakPoints) {
             if (!$.isArray(this.breakPoints)) {
@@ -5948,6 +7169,9 @@ if (!document.createElement('canvas').getContext) {
             else if (this.breakPoints.length < 2 || this.breakPoints[1] <= this.breakPoints[0]) {
                 this.breakPoints = null;
             }
+        }
+        if (this.numberTicks != null && this.numberTicks < 2) {
+            this.numberTicks = 2;
         }
         this.resetDataBounds();
     };
@@ -5958,7 +7182,7 @@ if (!document.createElement('canvas').getContext) {
             // populate the axis label and value properties.
             // createTicks is a method on the renderer, but
             // call it within the scope of the axis.
-            this.renderer.createTicks.call(this);
+            this.renderer.createTicks.call(this, plot);
             // fill a div with axes labels in the right direction.
             // Need to pregenerate each axis to get it's bounds and
             // position it and the labels correctly on the plot.
@@ -5974,7 +7198,7 @@ if (!document.createElement('canvas').getContext) {
             
             this._elem = $(document.createElement('div'));
             this._elem.addClass('jqplot-axis jqplot-'+this.name);
-            this._elem.css('posiiton', 'absolute');
+            this._elem.css('position', 'absolute');
 
             
             if (this.name == 'xaxis' || this.name == 'x2axis') {
@@ -6009,10 +7233,10 @@ if (!document.createElement('canvas').getContext) {
     
     // called with scope of an axis
     $.jqplot.LinearAxisRenderer.prototype.reset = function() {
-        this.min = this._min;
-        this.max = this._max;
-        this.tickInterval = this._tickInterval;
-        this.numberTicks = this._numberTicks;
+        this.min = this._options.min;
+        this.max = this._options.max;
+        this.tickInterval = this._options.tickInterval;
+        this.numberTicks = this._options.numberTicks;
         this._autoFormatString = '';
         if (this._overrideFormatString && this.tickOptions && this.tickOptions.formatString) {
             this.tickOptions.formatString = '';
@@ -6078,14 +7302,15 @@ if (!document.createElement('canvas').getContext) {
     };    
     
     // called with scope of axis
-    $.jqplot.LinearAxisRenderer.prototype.createTicks = function() {
+    $.jqplot.LinearAxisRenderer.prototype.createTicks = function(plot) {
         // we're are operating on an axis here
         var ticks = this._ticks;
         var userTicks = this.ticks;
         var name = this.name;
         // databounds were set on axis initialization.
         var db = this._dataBounds;
-        var dim, interval;
+        var dim = (this.name.charAt(0) === 'x') ? this._plotDimensions.width : this._plotDimensions.height;
+        var interval;
         var min, max;
         var pos1, pos2;
         var tt, i;
@@ -6094,6 +7319,9 @@ if (!document.createElement('canvas').getContext) {
         var userMax = this.max;
         var userNT = this.numberTicks;
         var userTI = this.tickInterval;
+
+        var threshold = 30;
+        this._scalefact =  (Math.max(dim, threshold+1) - threshold)/300.0;
         
         // if we already have ticks, use them.
         // ticks must be in order of increasing value.
@@ -6103,7 +7331,7 @@ if (!document.createElement('canvas').getContext) {
             for (i=0; i<userTicks.length; i++){
                 var ut = userTicks[i];
                 var t = new this.tickRenderer(this.tickOptions);
-                if (ut.constructor == Array) {
+                if ($.isArray(ut)) {
                     t.value = ut[0];
                     if (this.breakPoints) {
                         if (ut[0] == this.breakPoints[0]) {
@@ -6125,6 +7353,12 @@ if (!document.createElement('canvas').getContext) {
                         t.label = ut[1];
                     }
                     t.setTick(ut[0], this.name);
+                    this._ticks.push(t);
+                }
+
+                else if ($.isPlainObject(ut)) {
+                    $.extend(true, t, ut);
+                    t.axis = this.name;
                     this._ticks.push(t);
                 }
                 
@@ -6160,19 +7394,19 @@ if (!document.createElement('canvas').getContext) {
             else {
                 dim = this._plotDimensions.height;
             }
-            
-            // // if min, max and number of ticks specified, user can't specify interval.
-            // if (!this.autoscale && this.min != null && this.max != null && this.numberTicks != null) {
-            //     console.log('doing this');
-            //     this.tickInterval = null;
-            // }
-            
-            // if max, min, and interval specified and interval won't fit, ignore interval.
-            // if (this.min != null && this.max != null && this.tickInterval != null) {
-            //     if (parseInt((this.max-this.min)/this.tickInterval, 10) != (this.max-this.min)/this.tickInterval) {
-            //         this.tickInterval = null;
-            //     }
-            // }
+
+            var _numberTicks = this.numberTicks;
+
+            // if aligning this axis, use number of ticks from previous axis.
+            // Do I need to reset somehow if alignTicks is changed and then graph is replotted??
+            if (this.alignTicks) {
+                if (this.name === 'x2axis' && plot.axes.xaxis.show) {
+                    _numberTicks = plot.axes.xaxis.numberTicks;
+                }
+                else if (this.name.charAt(0) === 'y' && this.name !== 'yaxis' && this.name !== 'yMidAxis' && plot.axes.yaxis.show) {
+                    _numberTicks = plot.axes.yaxis.numberTicks;
+                }
+            }
         
             min = ((this.min != null) ? this.min : db.min);
             max = ((this.max != null) ? this.max : db.max);
@@ -6181,14 +7415,12 @@ if (!document.createElement('canvas').getContext) {
             var rmin, rmax;
             var temp;
 
+            if (this.tickOptions == null || !this.tickOptions.formatString) {
+                this._overrideFormatString = true;
+            }
+
             // Doing complete autoscaling
-            if (this.min == null && this.max == null && this.numberTicks == null && this.tickInterval == null && !this.autoscale) {
-                // check to see if we can override tick format string with autocalculated one
-                if (this.tickOptions == null || !this.tickOptions.formatString) {
-                    this._overrideFormatString = true;
-                }
-
-
+            if (this.min == null && this.max == null && this.tickInterval == null && !this.autoscale) {
                 // Check if user must have tick at 0 or 100 and ensure they are in range.
                 // The autoscaling algorithm will always place ticks at 0 and 100 if they are in range.
                 if (this.forceTickAt0) {
@@ -6209,37 +7441,30 @@ if (!document.createElement('canvas').getContext) {
                     }
                 }
 
-                // console.log(this.name);
-                var threshold = 30;
-                var tdim = Math.max(dim, threshold+1);
-                var scalefact =  (tdim-threshold)/300.0;
-                // scalefact = 1;
-                var ret = $.jqplot.LinearTickGenerator(min, max, scalefact); 
+                // var threshold = 30;
+                // var tdim = Math.max(dim, threshold+1);
+                // this._scalefact =  (tdim-threshold)/300.0;
+                var ret = $.jqplot.LinearTickGenerator(min, max, this._scalefact, _numberTicks); 
                 // calculate a padded max and min, points should be less than these
                 // so that they aren't too close to the edges of the plot.
                 // User can adjust how much padding is allowed with pad, padMin and PadMax options. 
                 var tumin = min + range*(this.padMin - 1);
                 var tumax = max - range*(this.padMax - 1);
 
-                if (min <=tumin || max >= tumax) {
+                // if they're equal, we shouldn't have to do anything, right?
+                // if (min <=tumin || max >= tumax) {
+                if (min <tumin || max > tumax) {
                     tumin = min - range*(this.padMin - 1);
                     tumax = max + range*(this.padMax - 1);
-                    ret = $.jqplot.LinearTickGenerator(tumin, tumax, scalefact);
+                    ret = $.jqplot.LinearTickGenerator(tumin, tumax, this._scalefact, _numberTicks);
                 }
-
-
-                // if (ret[2] > max_number_ticks) {
-                //     ret[4] = Math.ceil(r[2]/max_number_ticks) * ret[4];
-                    
-                // }
 
                 this.min = ret[0];
                 this.max = ret[1];
+                // if numberTicks specified, it should return the same.
                 this.numberTicks = ret[2];
                 this._autoFormatString = ret[3];
-                //this.tickInterval = Math.abs(this.max - this.min)/(this.numberTicks - 1);
                 this.tickInterval = ret[4];
-                // console.log('numberticks: %s, interval: %s', ret[2], ret[4]);
             }
 
             // User has specified some axis scale related option, can use auto algorithm
@@ -6393,23 +7618,40 @@ if (!document.createElement('canvas').getContext) {
                             this.max = this.min + rrange;
                         }
                     }
+
+                    // Compute a somewhat decent format string if it is needed.
+                    // get precision of interval and determine a format string.
+                    var sf = $.jqplot.getSignificantFigures(this.tickInterval);
+
+                    var fstr;
+
+                    // if we have only a whole number, use integer formatting
+                    if (sf.digitsLeft >= sf.significantDigits) {
+                        fstr = '%d';
+                    }
+
+                    else {
+                        var temp = Math.max(0, 5 - sf.digitsLeft);
+                        temp = Math.min(temp, sf.digitsRight);
+                        fstr = '%.'+ temp + 'f';
+                    }
+
+                    this._autoFormatString = fstr;
                 }
                 
                 // Use the default algorithm which pads each axis to make the chart
                 // centered nicely on the grid.
                 else {
+
                     rmin = (this.min != null) ? this.min : min - range*(this.padMin - 1);
                     rmax = (this.max != null) ? this.max : max + range*(this.padMax - 1);
-                    this.min = rmin;
-                    this.max = rmax;
-                    range = this.max - this.min;
+                    range = rmax - rmin;
         
                     if (this.numberTicks == null){
                         // if tickInterval is specified by user, we will ignore computed maximum.
                         // max will be equal or greater to fit even # of ticks.
                         if (this.tickInterval != null) {
-                            this.numberTicks = Math.ceil((this.max - this.min)/this.tickInterval)+1;
-                            this.max = this.min + this.tickInterval*(this.numberTicks-1);
+                            this.numberTicks = Math.ceil((rmax - rmin)/this.tickInterval)+1;
                         }
                         else if (dim > 100) {
                             this.numberTicks = parseInt(3+(dim-100)/75, 10);
@@ -6422,6 +7664,35 @@ if (!document.createElement('canvas').getContext) {
                     if (this.tickInterval == null) {
                         this.tickInterval = range / (this.numberTicks-1);
                     }
+                    
+                    if (this.max == null) {
+                        rmax = rmin + this.tickInterval*(this.numberTicks - 1);
+                    }        
+                    if (this.min == null) {
+                        rmin = rmax - this.tickInterval*(this.numberTicks - 1);
+                    }
+
+                    // get precision of interval and determine a format string.
+                    var sf = $.jqplot.getSignificantFigures(this.tickInterval);
+
+                    var fstr;
+
+                    // if we have only a whole number, use integer formatting
+                    if (sf.digitsLeft >= sf.significantDigits) {
+                        fstr = '%d';
+                    }
+
+                    else {
+                        var temp = Math.max(0, 5 - sf.digitsLeft);
+                        temp = Math.min(temp, sf.digitsRight);
+                        fstr = '%.'+ temp + 'f';
+                    }
+
+
+                    this._autoFormatString = fstr;
+
+                    this.min = rmin;
+                    this.max = rmax;
                 }
                 
                 if (this.renderer.constructor == $.jqplot.LinearAxisRenderer && this._autoFormatString == '') {
@@ -6505,16 +7776,32 @@ if (!document.createElement('canvas').getContext) {
                 this.tickOptions.formatString = this._autoFormatString;
             }
 
+            var t, to;
             for (var i=0; i<this.numberTicks; i++){
                 tt = this.min + i * this.tickInterval;
-                var t = new this.tickRenderer(this.tickOptions);
+                t = new this.tickRenderer(this.tickOptions);
                 // var t = new $.jqplot.AxisTickRenderer(this.tickOptions);
 
                 t.setTick(tt, this.name);
                 this._ticks.push(t);
+
+                if (i < this.numberTicks - 1) {
+                    for (var j=0; j<this.minorTicks; j++) {
+                        tt += this.tickInterval/(this.minorTicks+1);
+                        to = $.extend(true, {}, this.tickOptions, {name:this.name, value:tt, label:'', isMinorTick:true});
+                        t = new this.tickRenderer(to);
+                        this._ticks.push(t);
+                    }
+                }
                 t = null;
             }
         }
+
+        if (this.tickInset) {
+            this.min = this.min - this.tickInset * this.tickInterval;
+            this.max = this.max + this.tickInset * this.tickInterval;
+        }
+
         ticks = null;
     };
     
@@ -6797,67 +8084,305 @@ if (!document.createElement('canvas').getContext) {
     // use the magnitude of the interval to determine the number of digits to show.
     function bestFormatString (interval)
     {
+        var fstr;
         interval = Math.abs(interval);
-        if (interval > 1) {return '%d';}
+        if (interval >= 10) {
+            fstr = '%d';
+        }
 
-        var expv = -Math.floor(Math.log(interval)/Math.LN10);
-        return '%.' + expv + 'f'; 
+        else if (interval > 1) {
+            if (interval === parseInt(interval, 10)) {
+                fstr = '%d';
+            }
+            else {
+                fstr = '%.1f';
+            }
+        }
+
+        else {
+            var expv = -Math.floor(Math.log(interval)/Math.LN10);
+            fstr = '%.' + expv + 'f';
+        }
+        
+        return fstr; 
+    }
+
+    var _factors = [0.1, 0.2, 0.3, 0.4, 0.5, 0.8, 1, 2, 3, 4, 5];
+
+    var _getLowerFactor = function(f) {
+        var i = _factors.indexOf(f);
+        if (i > 0) {
+            return _factors[i-1];
+        }
+        else {
+            return _factors[_factors.length - 1] / 100;
+        }
+    };
+
+    var _getHigherFactor = function(f) {
+        var i = _factors.indexOf(f);
+        if (i < _factors.length-1) {
+            return _factors[i+1];
+        }
+        else {
+            return _factors[0] * 100;
+        }
+    };
+
+    // Given a fixed minimum and maximum and a target number ot ticks
+    // figure out the best interval and 
+    // return min, max, number ticks, format string and tick interval
+    function bestConstrainedInterval(min, max, nttarget) {
+        // run through possible number to ticks and see which interval is best
+        var low = Math.floor(nttarget/2);
+        var hi = Math.ceil(nttarget*1.5);
+        var badness = Number.MAX_VALUE;
+        var r = (max - min);
+        var temp;
+        var sd;
+        var bestNT;
+        var fsd;
+        var fs;
+        var gsf = $.jqplot.getSignificantFigures;
+        var currentNT;
+        var bestPrec;
+
+        for (var i=0, l=hi-low+1; i<l; i++) {
+            currentNT = low + i;
+            temp = r/(currentNT-1);
+            sd = gsf(temp);
+
+            temp = Math.abs(nttarget - currentNT) + sd.digitsRight;
+            if (temp < badness) {
+                badness = temp;
+                bestNT = currentNT;
+                bestPrec = sd.digitsRight;
+            }
+            else if (temp === badness) {
+                // let nicer ticks trump number ot ticks
+                if (sd.digitsRight < bestPrec) {
+                    bestNT = currentNT;
+                    bestPrec = sd.digitsRight;
+                }
+            }
+
+        }
+
+        fsd = Math.max(bestPrec, Math.max(gsf(min).digitsRight, gsf(max).digitsRight));
+        if (fsd === 0) {
+            fs = '%d';
+        }
+        else {
+            fs = '%.' + fsd + 'f';
+        }
+        temp = r / (bestNT - 1);
+        // min, max, number ticks, format string, tick interval
+        return [min, max, bestNT, fs, temp];
     }
 
     // This will return an interval of form 2 * 10^n, 5 * 10^n or 10 * 10^n
+    // it is based soley on the range and number of ticks.  So if user specifies
+    // number of ticks, use this.
+    function bestInterval(range, numberTicks) {
+        numberTicks = numberTicks || 7;
+        var minimum = range / (numberTicks - 1);
+        var magnitude = Math.pow(10, Math.floor(Math.log(minimum) / Math.LN10));
+        var residual = minimum / magnitude;
+        var interval;
+        // "nicest" ranges are 1, 2, 5 or powers of these.
+        // for magnitudes below 1, only allow these. 
+        if (magnitude < 1) {
+            if (residual > 5) {
+                interval = 10 * magnitude;
+            }
+            else if (residual > 2) {
+                interval = 5 * magnitude;
+            }
+            else if (residual > 1) {
+                interval = 2 * magnitude;
+            }
+            else {
+                interval = magnitude;
+            }
+        }
+        // for large ranges (whole integers), allow intervals like 3, 4 or powers of these.
+        // this helps a lot with poor choices for number of ticks. 
+        else {
+            if (residual > 5) {
+                interval = 10 * magnitude;
+            }
+            else if (residual > 4) {
+                interval = 5 * magnitude;
+            }
+            else if (residual > 3) {
+                interval = 4 * magnitude;
+            }
+            else if (residual > 2) {
+                interval = 3 * magnitude;
+            }
+            else if (residual > 1) {
+                interval = 2 * magnitude;
+            }
+            else {
+                interval = magnitude;
+            }
+        }
+
+        return interval;
+    }
+
+    // This will return an interval of form 2 * 10^n, 5 * 10^n or 10 * 10^n
+    // it is based soley on the range of data, number of ticks must be computed later.
     function bestLinearInterval(range, scalefact) {
+        scalefact = scalefact || 1;
         var expv = Math.floor(Math.log(range)/Math.LN10);
         var magnitude = Math.pow(10, expv);
         // 0 < f < 10
         var f = range / magnitude;
-        // console.log('f: %s, scaled: %s ', f, f/scalefact);
+        var fact;
         // for large plots, scalefact will decrease f and increase number of ticks.
         // for small plots, scalefact will increase f and decrease number of ticks.
         f = f/scalefact;
 
         // for large plots, smaller interval, more ticks.
-        if (f<=0.38) {return 0.1*magnitude;}
-        if (f<=1.6) {return 0.2*magnitude;}
-        if (f<=4.0) {return 0.5*magnitude;}
-        if (f<=8.0) {return magnitude;}
+        if (f<=0.38) {
+            fact = 0.1;
+        }
+        else if (f<=1.6) {
+            fact = 0.2;
+        }
+        else if (f<=4.0) {
+            fact = 0.5;
+        }
+        else if (f<=8.0) {
+            fact = 1.0;
+        }
         // for very small plots, larger interval, less ticks in number ticks
-        if (f<=16.0) {return 2*magnitude;}
-        return 5*magnitude; 
+        else if (f<=16.0) {
+            fact = 2;
+        }
+        else {
+            fact = 5;
+        } 
+
+        return fact*magnitude; 
+    }
+
+    function bestLinearComponents(range, scalefact) {
+        var expv = Math.floor(Math.log(range)/Math.LN10);
+        var magnitude = Math.pow(10, expv);
+        // 0 < f < 10
+        var f = range / magnitude;
+        var interval;
+        var fact;
+        // for large plots, scalefact will decrease f and increase number of ticks.
+        // for small plots, scalefact will increase f and decrease number of ticks.
+        f = f/scalefact;
+
+        // for large plots, smaller interval, more ticks.
+        if (f<=0.38) {
+            fact = 0.1;
+        }
+        else if (f<=1.6) {
+            fact = 0.2;
+        }
+        else if (f<=4.0) {
+            fact = 0.5;
+        }
+        else if (f<=8.0) {
+            fact = 1.0;
+        }
+        // for very small plots, larger interval, less ticks in number ticks
+        else if (f<=16.0) {
+            fact = 2;
+        }
+        // else if (f<=20.0) {
+        //     fact = 3;
+        // }
+        // else if (f<=24.0) {
+        //     fact = 4;
+        // }
+        else {
+            fact = 5;
+        } 
+
+        interval = fact * magnitude;
+
+        return [interval, fact, magnitude];
     }
 
     // Given the min and max for a dataset, return suitable endpoints
     // for the graphing, a good number for the number of ticks, and a
     // format string so that extraneous digits are not displayed.
     // returned is an array containing [min, max, nTicks, format]
-    $.jqplot.LinearTickGenerator = function(axis_min, axis_max, scalefact) {
+    $.jqplot.LinearTickGenerator = function(axis_min, axis_max, scalefact, numberTicks) {
         // if endpoints are equal try to include zero otherwise include one
-        if (axis_min == axis_max) {
-        axis_max = (axis_max) ? 0 : 1;
+        if (axis_min === axis_max) {
+            axis_max = (axis_max) ? 0 : 1;
         }
 
         scalefact = scalefact || 1.0;
 
         // make sure range is positive
         if (axis_max < axis_min) {
-        var a = axis_max;
-        axis_max = axis_min;
-        axis_min = a;
+            var a = axis_max;
+            axis_max = axis_min;
+            axis_min = a;
         }
 
-        var ss = bestLinearInterval(axis_max - axis_min, scalefact);
         var r = [];
+        var ss = bestLinearInterval(axis_max - axis_min, scalefact);
+        
+        if (numberTicks == null) {
 
-        // Figure out the axis min, max and number of ticks
-        // the min and max will be some multiple of the tick interval,
-        // 1*10^n, 2*10^n or 5*10^n.  This gaurantees that, if the
-        // axis min is negative, 0 will be a tick.
-        r[0] = Math.floor(axis_min / ss) * ss;  // min
-        r[1] = Math.ceil(axis_max / ss) * ss;   // max
-        r[2] = Math.round((r[1]-r[0])/ss+1.0);    // number of ticks
-        r[3] = bestFormatString(ss);            // format string
-        r[4] = ss;                              // tick Interval
+            // Figure out the axis min, max and number of ticks
+            // the min and max will be some multiple of the tick interval,
+            // 1*10^n, 2*10^n or 5*10^n.  This gaurantees that, if the
+            // axis min is negative, 0 will be a tick.
+            r[0] = Math.floor(axis_min / ss) * ss;  // min
+            r[1] = Math.ceil(axis_max / ss) * ss;   // max
+            r[2] = Math.round((r[1]-r[0])/ss+1.0);  // number of ticks
+            r[3] = bestFormatString(ss);            // format string
+            r[4] = ss;                              // tick Interval
+        }
+
+        else {
+            var tempr = [];
+
+            // Figure out the axis min, max and number of ticks
+            // the min and max will be some multiple of the tick interval,
+            // 1*10^n, 2*10^n or 5*10^n.  This gaurantees that, if the
+            // axis min is negative, 0 will be a tick.
+            tempr[0] = Math.floor(axis_min / ss) * ss;  // min
+            tempr[1] = Math.ceil(axis_max / ss) * ss;   // max
+            tempr[2] = Math.round((tempr[1]-tempr[0])/ss+1.0);    // number of ticks
+            tempr[3] = bestFormatString(ss);            // format string
+            tempr[4] = ss;                              // tick Interval
+
+            // first, see if we happen to get the right number of ticks
+            if (tempr[2] === numberTicks) {
+                r = tempr;
+            }
+
+            else {
+
+                var newti = bestInterval(tempr[1] - tempr[0], numberTicks);
+
+                r[0] = tempr[0];
+                r[2] = numberTicks;
+                r[4] = newti;
+                r[3] = bestFormatString(newti);
+                r[1] = r[0] + (r[2] - 1) * r[4];        // max
+            }
+        }
+
         return r;
     };
+
+    $.jqplot.LinearTickGenerator.bestLinearInterval = bestLinearInterval;
+    $.jqplot.LinearTickGenerator.bestInterval = bestInterval;
+    $.jqplot.LinearTickGenerator.bestLinearComponents = bestLinearComponents;
+    $.jqplot.LinearTickGenerator.bestConstrainedInterval = bestConstrainedInterval;
 
 
     // class: $.jqplot.MarkerRenderer
@@ -7111,21 +8636,29 @@ if (!document.createElement('canvas').getContext) {
         ctx.save();
         var opts = (options != null) ? options : {};
         var fill = (opts.fill != null) ? opts.fill : this.fill;
+        var fillRect = (opts.fillRect != null) ? opts.fillRect : this.fillRect;
         var closePath = (opts.closePath != null) ? opts.closePath : this.closePath;
         var offset = (opts.offset != null) ? opts.offset : this.offset;
         var alpha = (opts.alpha != null) ? opts.alpha : this.alpha;
         var depth = (opts.depth != null) ? opts.depth : this.depth;
         var isarc = (opts.isarc != null) ? opts.isarc : this.isarc;
+        var linePattern = (opts.linePattern != null) ? opts.linePattern : this.linePattern;
         ctx.lineWidth = (opts.lineWidth != null) ? opts.lineWidth : this.lineWidth;
         ctx.lineJoin = (opts.lineJoin != null) ? opts.lineJoin : this.lineJoin;
         ctx.lineCap = (opts.lineCap != null) ? opts.lineCap : this.lineCap;
         ctx.strokeStyle = opts.strokeStyle || this.strokeStyle || 'rgba(0,0,0,'+alpha+')';
         ctx.fillStyle = opts.fillStyle || this.fillStyle || 'rgba(0,0,0,'+alpha+')';
         for (var j=0; j<depth; j++) {
+            var ctxPattern = $.jqplot.LinePattern(ctx, linePattern);
             ctx.translate(Math.cos(this.angle*Math.PI/180)*offset, Math.sin(this.angle*Math.PI/180)*offset);
-            ctx.beginPath();
+            ctxPattern.beginPath();
             if (isarc) {
                 ctx.arc(points[0], points[1], points[2], points[3], points[4], true);                
+            }
+            else if (fillRect) {
+                if (fillRect) {
+                    ctx.fillRect(points[0], points[1], points[2], points[3]);
+                }
             }
             else if (points && points.length){
                 var move = true;
@@ -7133,11 +8666,11 @@ if (!document.createElement('canvas').getContext) {
                     // skip to the first non-null point and move to it.
                     if (points[i][0] != null && points[i][1] != null) {
                         if (move) {
-                            ctx.moveTo(points[i][0], points[i][1]);
+                            ctxPattern.moveTo(points[i][0], points[i][1]);
                             move = false;
                         }
                         else {
-                            ctx.lineTo(points[i][0], points[i][1]);
+                            ctxPattern.lineTo(points[i][0], points[i][1]);
                         }
                     }
                     else {
@@ -7147,7 +8680,7 @@ if (!document.createElement('canvas').getContext) {
                 
             }
             if (closePath) {
-                ctx.closePath();
+                ctxPattern.closePath();
             }
             if (fill) {
                 ctx.fill();
@@ -7167,6 +8700,12 @@ if (!document.createElement('canvas').getContext) {
     $.jqplot.ShapeRenderer = function(options){
         
         this.lineWidth = 1.5;
+        // prop: linePattern
+        // line pattern 'dashed', 'dotted', 'solid', some combination
+        // of '-' and '.' characters such as '.-.' or a numerical array like 
+        // [draw, skip, draw, skip, ...] such as [1, 10] to draw a dotted line, 
+        // [1, 10, 20, 10] to draw a dot-dash line, and so on.
+        this.linePattern = 'solid';
         // prop: lineJoin
         // How line segments of the shadow are joined.
         this.lineJoin = 'miter';
@@ -7221,6 +8760,8 @@ if (!document.createElement('canvas').getContext) {
         var strokeRect = (opts.strokeRect != null) ? opts.strokeRect : this.strokeRect;
         var clearRect = (opts.clearRect != null) ? opts.clearRect : this.clearRect;
         var isarc = (opts.isarc != null) ? opts.isarc : this.isarc;
+        var linePattern = (opts.linePattern != null) ? opts.linePattern : this.linePattern;
+        var ctxPattern = $.jqplot.LinePattern(ctx, linePattern);
         ctx.lineWidth = opts.lineWidth || this.lineWidth;
         ctx.lineJoin = opts.lineJoin || this.lineJoin;
         ctx.lineCap = opts.lineCap || this.lineCap;
@@ -7262,11 +8803,11 @@ if (!document.createElement('canvas').getContext) {
                 // skip to the first non-null point and move to it.
                 if (points[i][0] != null && points[i][1] != null) {
                     if (move) {
-                        ctx.moveTo(points[i][0], points[i][1]);
+                        ctxPattern.moveTo(points[i][0], points[i][1]);
                         move = false;
                     }
                     else {
-                        ctx.lineTo(points[i][0], points[i][1]);
+                        ctxPattern.lineTo(points[i][0], points[i][1]);
                     }
                 }
                 else {
@@ -7274,7 +8815,7 @@ if (!document.createElement('canvas').getContext) {
                 }
             }
             if (closePath) {
-                ctx.closePath();
+                ctxPattern.closePath();
             }
             if (fill) {
                 ctx.fill();
@@ -7318,10 +8859,11 @@ if (!document.createElement('canvas').getContext) {
 
         if (this.showSwatches) {
             td = $(document.createElement('td'));
-            td.addClass('jqplot-table-legend');
+            td.addClass('jqplot-table-legend jqplot-table-legend-swatch');
             td.css({textAlign: 'center', paddingTop: rs});
 
             div0 = $(document.createElement('div'));
+            div0.addClass('jqplot-table-legend-swatch-outline');
             div1 = $(document.createElement('div'));
             div1.addClass('jqplot-table-legend-swatch');
             div1.css({backgroundColor: color, borderColor: color});
@@ -7334,7 +8876,7 @@ if (!document.createElement('canvas').getContext) {
         }
         if (this.showLabels) {
             td = $(document.createElement('td'));
-            td.addClass('jqplot-table-legend');
+            td.addClass('jqplot-table-legend jqplot-table-legend-label');
             td.css('paddingTop', rs);
             tr.append(td);
 
@@ -7617,6 +9159,7 @@ if (!document.createElement('canvas').getContext) {
      * >     series: [{
      * >         color: "#4bb2c5",
      * >         lineWidth: 2.5,
+     * >         linePattern: "solid",
      * >         shadow: true,
      * >         fillColor: "#4bb2c5",
      * >         showMarker: true,
@@ -8056,8 +9599,8 @@ if (!document.createElement('canvas').getContext) {
                             plot.series[i].renderer.shapeRenderer.strokeStyle = val;
                             plot.series[i][n] = val;
                         }
-                        else if (n == 'lineWidth') {
-                            plot.series[i].renderer.shapeRenderer.lineWidth = val;
+                        else if ((n == 'lineWidth') || (n == 'linePattern')) {
+                            plot.series[i].renderer.shapeRenderer[n] = val;
                             plot.series[i][n] = val;
                         }
                         else if (n == 'markerOptions') {
@@ -8384,6 +9927,7 @@ if (!document.createElement('canvas').getContext) {
     var LineSeriesProperties = function() {
         this.color=null;
         this.lineWidth=null;
+        this.linePattern=null;
         this.shadow=null;
         this.fillColor=null;
         this.showMarker=null;
@@ -8462,6 +10006,296 @@ if (!document.createElement('canvas').getContext) {
 
 
 
+    $.fn.jqplotChildText = function() {
+        return $(this).contents().filter(function() {
+            return this.nodeType == 3;  // Node.TEXT_NODE not defined in I7
+        }).text();
+    };
+
+    // Returns font style as abbreviation for "font" property.
+    $.fn.jqplotGetComputedFontStyle = function() {
+        var css = window.getComputedStyle ?  window.getComputedStyle(this[0]) : this[0].currentStyle;
+        var attrs = css['font-style'] ? ['font-style', 'font-weight', 'font-size', 'font-family'] : ['fontStyle', 'fontWeight', 'fontSize', 'fontFamily'];
+        var style = [];
+
+        for (var i=0 ; i < attrs.length; ++i) {
+            var attr = String(css[attrs[i]]);
+
+            if (attr && attr != 'normal') {
+                style.push(attr);
+            }
+        }
+        return style.join(' ');
+    };
+
+    /**
+     * Namespace: $.fn
+     * jQuery namespace to attach functions to jQuery elements.
+     *  
+     */
+
+    $.fn.jqplotToImageCanvas = function(options) {
+
+        options = options || {};
+        var x_offset = (options.x_offset == null) ? 0 : options.x_offset;
+        var y_offset = (options.y_offset == null) ? 0 : options.y_offset;
+        var backgroundColor = (options.backgroundColor == null) ? 'rgb(255,255,255)' : options.backgroundColor;
+
+        if ($(this).width() == 0 || $(this).height() == 0) {
+            return null;
+        }
+
+        // excanvas and hence IE < 9 do not support toDataURL and cannot export images.
+        if (!$.jqplot.support_canvas) {
+            return null;
+        }
+        
+        var newCanvas = document.createElement("canvas");
+        var h = $(this).outerHeight(true);
+        var w = $(this).outerWidth(true);
+        var offs = $(this).offset();
+        var plotleft = offs.left;
+        var plottop = offs.top;
+        var transx = 0, transy = 0;
+
+        // have to check if any elements are hanging outside of plot area before rendering,
+        // since changing width of canvas will erase canvas.
+
+        var clses = ['jqplot-table-legend', 'jqplot-xaxis-tick', 'jqplot-x2axis-tick', 'jqplot-yaxis-tick', 'jqplot-y2axis-tick', 'jqplot-y3axis-tick', 
+        'jqplot-y4axis-tick', 'jqplot-y5axis-tick', 'jqplot-y6axis-tick', 'jqplot-y7axis-tick', 'jqplot-y8axis-tick', 'jqplot-y9axis-tick',
+        'jqplot-xaxis-label', 'jqplot-x2axis-label', 'jqplot-yaxis-label', 'jqplot-y2axis-label', 'jqplot-y3axis-label', 'jqplot-y4axis-label', 
+        'jqplot-y5axis-label', 'jqplot-y6axis-label', 'jqplot-y7axis-label', 'jqplot-y8axis-label', 'jqplot-y9axis-label' ];
+
+        var temptop, templeft, tempbottom, tempright;
+
+        for (var i in clses) {
+            $(this).find('.'+clses[i]).each(function() {
+                temptop = $(this).offset().top - plottop;
+                templeft = $(this).offset().left - plotleft;
+                tempright = templeft + $(this).outerWidth(true) + transx;
+                tempbottom = temptop + $(this).outerHeight(true) + transy;
+                if (templeft < -transx) {
+                    w = w - transx - templeft;
+                    transx = -templeft;
+                }
+                if (temptop < -transy) {
+                    h = h - transy - temptop;
+                    transy = - temptop;
+                }
+                if (tempright > w) {
+                    w = tempright;
+                }
+                if (tempbottom > h) {
+                    h =  tempbottom;
+                }
+            });
+        }
+
+        newCanvas.width = w + Number(x_offset);
+        newCanvas.height = h + Number(y_offset);
+
+        var newContext = newCanvas.getContext("2d"); 
+
+        newContext.save();
+        newContext.fillStyle = backgroundColor;
+        newContext.fillRect(0,0, newCanvas.width, newCanvas.height);
+        newContext.restore();
+
+        newContext.translate(transx, transy);
+        newContext.textAlign = 'left';
+        newContext.textBaseline = 'top';
+
+        function getLineheight(el) {
+            var lineheight = parseInt($(el).css('line-height'), 10);
+
+            if (isNaN(lineheight)) {
+                lineheight = parseInt($(el).css('font-size'), 10) * 1.2;
+            }
+            return lineheight;
+        }
+
+        function writeWrappedText (el, context, text, left, top, canvasWidth) {
+            var lineheight = getLineheight(el);
+            var tagwidth = $(el).innerWidth();
+            var tagheight = $(el).innerHeight();
+            var words = text.split(/\s+/);
+            var wl = words.length;
+            var w = '';
+            var breaks = [];
+            var temptop = top;
+            var templeft = left;
+
+            for (var i=0; i<wl; i++) {
+                w += words[i];
+                if (context.measureText(w).width > tagwidth) {
+                    breaks.push(i);
+                    w = '';
+                }   
+            }
+            if (breaks.length === 0) {
+                // center text if necessary
+                if ($(el).css('textAlign') === 'center') {
+                    templeft = left + (canvasWidth - context.measureText(w).width)/2  - transx;
+                }
+                context.fillText(text, templeft, top);
+            }
+            else {
+                w = words.slice(0, breaks[0]).join(' ');
+                // center text if necessary
+                if ($(el).css('textAlign') === 'center') {
+                    templeft = left + (canvasWidth - context.measureText(w).width)/2  - transx;
+                }
+                context.fillText(w, templeft, temptop);
+                temptop += lineheight;
+                for (var i=1, l=breaks.length; i<l; i++) {
+                    w = words.slice(breaks[i-1], breaks[i]).join(' ');
+                    // center text if necessary
+                    if ($(el).css('textAlign') === 'center') {
+                        templeft = left + (canvasWidth - context.measureText(w).width)/2  - transx;
+                    }
+                    context.fillText(w, templeft, temptop);
+                    temptop += lineheight;
+                }
+                w = words.slice(breaks[i-1], words.length).join(' ');
+                // center text if necessary
+                if ($(el).css('textAlign') === 'center') {
+                    templeft = left + (canvasWidth - context.measureText(w).width)/2  - transx;
+                }
+                context.fillText(w, templeft, temptop);
+            }
+
+        }
+
+        function _jqpToImage(el, x_offset, y_offset) {
+            var tagname = el.tagName.toLowerCase();
+            var p = $(el).position();
+            var css = window.getComputedStyle ?  window.getComputedStyle(el) : el.currentStyle; // for IE < 9
+            var left = x_offset + p.left + parseInt(css.marginLeft, 10) + parseInt(css.borderLeftWidth, 10) + parseInt(css.paddingLeft, 10);
+            var top = y_offset + p.top + parseInt(css.marginTop, 10) + parseInt(css.borderTopWidth, 10)+ parseInt(css.paddingTop, 10);
+            var w = newCanvas.width;
+            // var left = x_offset + p.left + $(el).css('marginLeft') + $(el).css('borderLeftWidth') 
+
+            if ((tagname == 'div' || tagname == 'span') && !$(el).hasClass('jqplot-highlighter-tooltip')) {
+                $(el).children().each(function() {
+                    _jqpToImage(this, left, top);
+                });
+                var text = $(el).jqplotChildText();
+
+                if (text) {
+                    newContext.font = $(el).jqplotGetComputedFontStyle();
+                    newContext.fillStyle = $(el).css('color');
+
+                    writeWrappedText(el, newContext, text, left, top, w);
+                }
+            }
+
+            // handle the standard table legend
+
+            else if (tagname === 'table' && $(el).hasClass('jqplot-table-legend')) {
+                newContext.strokeStyle = $(el).css('border-top-color');
+                newContext.fillStyle = $(el).css('background-color');
+                newContext.fillRect(left, top, $(el).innerWidth(), $(el).innerHeight());
+                if (parseInt($(el).css('border-top-width'), 10) > 0) {
+                    newContext.strokeRect(left, top, $(el).innerWidth(), $(el).innerHeight());
+                }
+
+                // find all the swatches
+                $(el).find('div.jqplot-table-legend-swatch-outline').each(function() {
+                    // get the first div and stroke it
+                    var elem = $(this);
+                    newContext.strokeStyle = elem.css('border-top-color');
+                    var l = left + elem.position().left;
+                    var t = top + elem.position().top;
+                    newContext.strokeRect(l, t, elem.innerWidth(), elem.innerHeight());
+
+                    // now fill the swatch
+                    
+                    l += parseInt(elem.css('padding-left'), 10);
+                    t += parseInt(elem.css('padding-top'), 10);
+                    var h = elem.innerHeight() - 2 * parseInt(elem.css('padding-top'), 10);
+                    var w = elem.innerWidth() - 2 * parseInt(elem.css('padding-left'), 10);
+
+                    var swatch = elem.children('div.jqplot-table-legend-swatch');
+                    newContext.fillStyle = swatch.css('background-color');
+                    newContext.fillRect(l, t, w, h);
+                });
+
+                // now add text
+
+                $(el).find('td.jqplot-table-legend-label').each(function(){
+                    var elem = $(this);
+                    var l = left + elem.position().left;
+                    var t = top + elem.position().top + parseInt(elem.css('padding-top'), 10);
+                    newContext.font = elem.jqplotGetComputedFontStyle();
+                    newContext.fillStyle = elem.css('color');
+                    newContext.fillText(elem.text(), l, t);
+                });
+
+                var elem = null;
+            }
+
+            else if (tagname == 'canvas') {
+                newContext.drawImage(el, left, top);
+            }
+        }
+        $(this).children().each(function() {
+            _jqpToImage(this, x_offset, y_offset);
+        });
+        return newCanvas;
+    };
+
+    $.fn.jqplotToImageStr = function(options) {
+        var imgCanvas = $(this).jqplotToImageCanvas(options);
+        if (imgCanvas) {
+            return imgCanvas.toDataURL("image/png");
+        }
+        else {
+            return null;
+        }
+    };
+
+    // create an <img> element and return it.
+    // Should work on canvas supporting browsers.
+    $.fn.jqplotToImageElem = function(options) {
+        var elem = document.createElement("img");
+        var str = $(this).jqplotToImageStr(options);
+        elem.src = str;
+        return elem;
+    };
+
+    // create an <img> element and return it.
+    // Should work on canvas supporting browsers.
+    $.fn.jqplotToImageElemStr = function(options) {
+        var str = '<img src='+$(this).jqplotToImageStr(options)+' />';
+        return str;
+    };
+
+    // Not gauranteed to work, even on canvas supporting browsers due to 
+    // limitations with location.href and browser support.
+    $.fn.jqplotSaveImage = function() {
+        var imgData = $(this).jqplotToImageStr({});
+        if (imgData) {
+            window.location.href = imgData.replace("image/png", "image/octet-stream");
+        }
+
+    };
+
+    // Not gauranteed to work, even on canvas supporting browsers due to
+    // limitations with window.open and arbitrary data.
+    $.fn.jqplotViewImage = function() {
+        var imgStr = $(this).jqplotToImageElemStr({});
+        var imgData = $(this).jqplotToImageStr({});
+        if (imgStr) {
+            var w = window.open('');
+            w.document.open("image/png");
+            w.document.write(imgStr);
+            w.document.close();
+            w = null;
+        }
+    };
+    
+
+
     /** 
      * @description
      * <p>Object with extended date parsing and formatting capabilities.
@@ -8499,7 +10333,6 @@ if (!document.createElement('canvas').getContext) {
     
         this.syntax = jsDate.config.syntax;
         this._type = "jsDate";
-        this.utcOffset = new Date().getTimezoneOffset * 60000;
         this.proxy = new Date();
         this.options = {};
         this.locale = jsDate.regional.getLocale();
@@ -8528,7 +10361,8 @@ if (!document.createElement('canvas').getContext) {
                 for ( var i=0; i<arguments.length; i++ ) {
                     a.push(arguments[i]);
                 }
-                this.proxy = new Date( this.utcOffset );
+                // this should be the current date/time?
+                this.proxy = new Date();
                 this.proxy.setFullYear.apply( this.proxy, a.slice(0,3) );
                 if ( a.slice(3).length ) {
                     this.proxy.setHours.apply( this.proxy, a.slice(3) );
@@ -8541,6 +10375,7 @@ if (!document.createElement('canvas').getContext) {
      * @namespace Configuration options that will be used as defaults for all instances on the page.
      * @property {String} defaultLocale The default locale to use [en].
      * @property {String} syntax The default syntax to use [perl].
+     * @property {Number} defaultCentury The default centry for 2 digit dates.
      */
     jsDate.config = {
         defaultLocale: 'en',
@@ -8574,6 +10409,16 @@ if (!document.createElement('canvas').getContext) {
      
     jsDate.prototype.clone = function() {
             return new jsDate(this.proxy.getTime());
+    };
+
+    /**
+     * Get the UTC TimeZone Offset of this date in milliseconds.
+     *
+     * @returns {Number}
+     */
+
+    jsDate.prototype.getUtcOffset = function() {
+        return this.proxy.getTimezoneOffset() * 60000;
     };
 
     /**
@@ -8942,13 +10787,15 @@ if (!document.createElement('canvas').getContext) {
                 for ( var i=0; i<arguments.length; i++ ) {
                     a.push(arguments[i]);
                 }
-                this.proxy = new Date( this.utcOffset );
+                // this should be the current date/time
+                this.proxy = new Date();
                 this.proxy.setFullYear.apply( this.proxy, a.slice(0,3) );
                 if ( a.slice(3).length ) {
                     this.proxy.setHours.apply( this.proxy, a.slice(3) );
                 }
                 break;
         }
+        return this;
     };
     
     /**
@@ -8956,7 +10803,8 @@ if (!document.createElement('canvas').getContext) {
      * @param {Integer} dayValue An integer from 1 to 31, representing the day of the month. 
      */
     jsDate.prototype.setDate = function(n) {
-        return this.proxy.setDate(n);
+        this.proxy.setDate(n);
+        return this;
     };
     
     /**
@@ -8966,7 +10814,8 @@ if (!document.createElement('canvas').getContext) {
      * @param {Integer} dayValue Optional, between 1 and 31 representing the day of the month. If you specify the dayValue parameter, you must also specify the monthValue. 
      */
     jsDate.prototype.setFullYear = function() {
-        return this.proxy.setFullYear.apply(this.proxy, arguments);
+        this.proxy.setFullYear.apply(this.proxy, arguments);
+        return this;
     };
     
     /**
@@ -8980,49 +10829,56 @@ if (!document.createElement('canvas').getContext) {
      * If you specify the msValue parameter, you must also specify the minutesValue and secondsValue. 
      */
     jsDate.prototype.setHours = function() {
-        return this.proxy.setHours.apply(this.proxy, arguments);
+        this.proxy.setHours.apply(this.proxy, arguments);
+        return this;
     };
     
     /**
      * Implements Date functionality
      */ 
     jsDate.prototype.setMilliseconds = function(n) {
-        return this.proxy.setMilliseconds(n);
+        this.proxy.setMilliseconds(n);
+        return this;
     };
     
     /**
      * Implements Date functionality
      */ 
     jsDate.prototype.setMinutes = function() {
-        return this.proxy.setMinutes.apply(this.proxy, arguments);
+        this.proxy.setMinutes.apply(this.proxy, arguments);
+        return this;
     };
     
     /**
      * Implements Date functionality
      */ 
     jsDate.prototype.setMonth = function() {
-        return this.proxy.setMonth.apply(this.proxy, arguments);
+        this.proxy.setMonth.apply(this.proxy, arguments);
+        return this;
     };
     
     /**
      * Implements Date functionality
      */ 
     jsDate.prototype.setSeconds = function() {
-        return this.proxy.setSeconds.apply(this.proxy, arguments);
+        this.proxy.setSeconds.apply(this.proxy, arguments);
+        return this;
     };
     
     /**
      * Implements Date functionality
      */ 
     jsDate.prototype.setTime = function(n) {
-        return this.proxy.setTime(n);
+        this.proxy.setTime(n);
+        return this;
     };
     
     /**
      * Implements Date functionality
      */ 
     jsDate.prototype.setYear = function() {
-        return this.proxy.setYear.apply(this.proxy, arguments);
+        this.proxy.setYear.apply(this.proxy, arguments);
+        return this;
     };
     
     /**
@@ -9087,16 +10943,16 @@ if (!document.createElement('canvas').getContext) {
         },
         
         'fr': {
-            monthNames: ['Janvier','F√©vrier','Mars','Avril','Mai','Juin','Juillet','Ao√ªt','Septembre','Octobre','Novembre','D√©cembre'],
-            monthNamesShort: ['Jan','F√©v','Mar','Avr','Mai','Jun','Jul','Ao√ª','Sep','Oct','Nov','D√©c'],
+            monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+            monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
             dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
             dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
         
         'de': {
-            monthNames: ['Januar','Februar','M√§rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-            monthNamesShort: ['Jan','Feb','M√§r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+            monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+            monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
             dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
             dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
             formatString: '%Y-%m-%d %H:%M:%S'
@@ -9111,18 +10967,18 @@ if (!document.createElement('canvas').getContext) {
         },
         
         'ru': {
-            monthNames: ['–Ø–Ω–≤–∞—Ä—å','–§–µ–≤—Ä–∞–ª—å','–ú–∞—Ä—Ç','–ê–ø—Ä–µ–ª—å','–ú–∞–π','–ò—é–Ω—å','–ò—é–ª—å','–ê–≤–≥—É—Å—Ç','–°–µ–Ω—Ç—è–±—Ä—å','–û–∫—Ç—è–±—Ä—å','–ù–æ—è–±—Ä—å','–î–µ–∫–∞–±—Ä—å'],
-            monthNamesShort: ['–Ø–Ω–≤','–§–µ–≤','–ú–∞—Ä','–ê–ø—Ä','–ú–∞–π','–ò—é–Ω','–ò—é–ª','–ê–≤–≥','–°–µ–Ω','–û–∫—Ç','–ù–æ—è','–î–µ–∫'],
-            dayNames: ['–≤–æ—Å–∫—Ä–µ—Å–µ–Ω—å–µ','–ø–æ–Ω–µ–¥–µ–ª—å–Ω–∏–∫','–≤—Ç–æ—Ä–Ω–∏–∫','—Å—Ä–µ–¥–∞','—á–µ—Ç–≤–µ—Ä–≥','–ø—è—Ç–Ω–∏—Ü–∞','—Å—É–±–±–æ—Ç–∞'],
-            dayNamesShort: ['–≤—Å–∫','–ø–Ω–¥','–≤—Ç—Ä','—Å—Ä–¥','—á—Ç–≤','–ø—Ç–Ω','—Å–±—Ç'],
+            monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+            monthNamesShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+            dayNames: ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
+            dayNamesShort: ['вск','пнд','втр','срд','чтв','птн','сбт'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
         
         'ar': {
-            monthNames: ['ŸÉÿßŸÜŸàŸÜ ÿßŸÑÿ´ÿßŸÜŸä', 'ÿ¥ÿ®ÿßÿ∑', 'ÿ¢ÿ∞ÿßÿ±', 'ŸÜŸäÿ≥ÿßŸÜ', 'ÿ¢ÿ∞ÿßÿ±', 'ÿ≠ÿ≤Ÿäÿ±ÿßŸÜ','ÿ™ŸÖŸàÿ≤', 'ÿ¢ÿ®', 'ÿ£ŸäŸÑŸàŸÑ',   'ÿ™ÿ¥ÿ±ŸäŸÜ ÿßŸÑÿ£ŸàŸÑ', 'ÿ™ÿ¥ÿ±ŸäŸÜ ÿßŸÑÿ´ÿßŸÜŸä', 'ŸÉÿßŸÜŸàŸÜ ÿßŸÑÿ£ŸàŸÑ'],
+            monthNames: ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'آذار', 'حزيران','تموز', 'آب', 'أيلول',   'تشرين الأول', 'تشرين الثاني', 'كانون الأول'],
             monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
-            dayNames: ['ÿßŸÑÿ≥ÿ®ÿ™', 'ÿßŸÑÿ£ÿ≠ÿØ', 'ÿßŸÑÿßÿ´ŸÜŸäŸÜ', 'ÿßŸÑÿ´ŸÑÿßÿ´ÿßÿ°', 'ÿßŸÑÿ£ÿ±ÿ®ÿπÿßÿ°', 'ÿßŸÑÿÆŸÖŸäÿ≥', 'ÿßŸÑÿ¨ŸÖÿπÿ©'],
-            dayNamesShort: ['ÿ≥ÿ®ÿ™', 'ÿ£ÿ≠ÿØ', 'ÿßÿ´ŸÜŸäŸÜ', 'ÿ´ŸÑÿßÿ´ÿßÿ°', 'ÿ£ÿ±ÿ®ÿπÿßÿ°', 'ÿÆŸÖŸäÿ≥', 'ÿ¨ŸÖÿπÿ©'],
+            dayNames: ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+            dayNamesShort: ['سبت', 'أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
         
@@ -9193,6 +11049,8 @@ if (!document.createElement('canvas').getContext) {
                 // add any years needed (increments of 12)
                 multipliers.year.add(d, Math[number > 0 ? 'floor' : 'ceil'](number / 12));
                 // ensure that we properly wrap betwen December and January
+                // 11 % 12 = 11
+                // 12 % 12 = 0
                 var prevMonth = d.getMonth() + (number % 12);
                 if (prevMonth == 12) {
                     prevMonth = 0;
@@ -9729,7 +11587,8 @@ if (!document.createElement('canvas').getContext) {
         var length = jsDate.matchers.length;
         var pattern,
             ms,
-            current = parsable;
+            current = parsable,
+            obj;
         while (i < length) {
             ms = Date.parse(current);
             if (!isNaN(ms)) {
@@ -9737,7 +11596,7 @@ if (!document.createElement('canvas').getContext) {
             }
             pattern = jsDate.matchers[i];
             if (typeof pattern == 'function') {
-                var obj = pattern.call(jsDate, current);
+                obj = pattern.call(jsDate, current);
                 if (obj instanceof Date) {
                     return obj;
                 }
@@ -9844,10 +11703,10 @@ if (!document.createElement('canvas').getContext) {
                     ny = cent + m3;
                 }
                 
-                var nm = inArray(match[2], jsDate.regional[this.locale]["monthNamesShort"]);
+                var nm = inArray(match[2], jsDate.regional[jsDate.regional.getLocale()]["monthNamesShort"]);
                 
                 if (nm == -1) {
-                    nm = inArray(match[2], jsDate.regional[this.locale]["monthNames"]);
+                    nm = inArray(match[2], jsDate.regional[jsDate.regional.getLocale()]["monthNames"]);
                 }
             
                 d.setFullYear(ny, nm, nd);
@@ -9944,6 +11803,12 @@ if (!document.createElement('canvas').getContext) {
       * Format: '%.4g', Input: 12.0, Output: 12.00
       * Format: '%.4p', Input: 4.321e-5, Output: 4.321e-5
       * Format: '%.4g', Input: 4.321e-5, Output: 4.3210e-5
+      * 
+      * Example:
+      * >>> $.jqplot.sprintf('%.2f, %d', 23.3452, 43.23)
+      * "23.35, 43"
+      * >>> $.jqplot.sprintf("no value: %n, decimal with thousands separator: %'d", 23.3452, 433524)
+      * "no value: , decimal with thousands separator: 433,524"
       */
     $.jqplot.sprintf = function() {
         function pad(str, len, chr, leftJustify) {
@@ -9952,13 +11817,13 @@ if (!document.createElement('canvas').getContext) {
 
         }
 
-		function thousand_separate(value) {
-			var value_str = new String(value);
-			for (var i=10; i>0; i--) {
-				if (value_str == (value_str = value_str.replace(/^(\d+)(\d{3})/, "$1"+$.jqplot.sprintf.thousandsSeparator+"$2"))) break;
-			}
-			return value_str; 
-		}
+        function thousand_separate(value) {
+            var value_str = new String(value);
+            for (var i=10; i>0; i--) {
+                if (value_str == (value_str = value_str.replace(/^(\d+)(\d{3})/, "$1"+$.jqplot.sprintf.thousandsSeparator+"$2"))) break;
+            }
+            return value_str; 
+        }
 
         function justify(value, prefix, leftJustify, minWidth, zeroPad, htmlSpace) {
             var diff = minWidth - value.length;
@@ -10003,7 +11868,7 @@ if (!document.createElement('canvas').getContext) {
                 case '0': zeroPad = true; break;
                 case '#': prefixBaseX = true; break;
                 case '&': htmlSpace = true; break;
-				case '\'': thousandSeparation = true; break;
+                case '\'': thousandSeparation = true; break;
             }
 
             // parameters may be null, undefined, empty-string or real valued
@@ -10068,7 +11933,7 @@ if (!document.createElement('canvas').getContext) {
               }
               var prefix = number < 0 ? '-' : positivePrefix;
               var number_str = thousandSeparation ? thousand_separate(String(Math.abs(number))): String(Math.abs(number));
-			  value = prefix + pad(number_str, precision, '0', false);
+              value = prefix + pad(number_str, precision, '0', false);
               //value = prefix + pad(String(Math.abs(number)), precision, '0', false);
               return justify(value, prefix, leftJustify, minWidth, zeroPad, htmlSpace);
                   }
@@ -10079,7 +11944,7 @@ if (!document.createElement('canvas').getContext) {
               }
               var prefix = number < 0 ? '-' : positivePrefix;
               var number_str = thousandSeparation ? thousand_separate(String(Math.abs(number))): String(Math.abs(number));
-			  value = prefix + pad(number_str, precision, '0', false);
+              value = prefix + pad(number_str, precision, '0', false);
               return justify(value, prefix, leftJustify, minWidth, zeroPad, htmlSpace);
                   }
             case 'e':
@@ -10141,17 +12006,358 @@ if (!document.createElement('canvas').getContext) {
         });
     };
 
-	$.jqplot.sprintf.thousandsSeparator = ',';
+    $.jqplot.sprintf.thousandsSeparator = ',';
     
     $.jqplot.sprintf.regex = /%%|%(\d+\$)?([-+#0&\' ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([nAscboxXuidfegpEGP])/g;
 
+    $.jqplot.getSignificantFigures = function(number) {
+        var parts = String(Number(Math.abs(number)).toExponential()).split(/e|E/);
+        // total significant digits
+        var sd = (parts[0].indexOf('.') != -1) ? parts[0].length - 1 : parts[0].length;
+        var zeros = (parts[1] < 0) ? -parts[1] - 1 : 0;
+        // exponent
+        var expn = parseInt(parts[1], 10);
+        // digits to the left of the decimal place
+        var dleft = (expn + 1 > 0) ? expn + 1 : 0;
+        // digits to the right of the decimal place
+        var dright = (sd <= dleft) ? 0 : sd - expn - 1;
+        return {significantDigits: sd, digitsLeft: dleft, digitsRight: dright, zeros: zeros, exponent: expn} ;
+    };
+
+    $.jqplot.getPrecision = function(number) {
+        return $.jqplot.getSignificantFigures(number).digitsRight;
+    };
+
 })(jQuery);  
+
+
+    var backCompat = $.uiBackCompat !== false;
+
+    $.jqplot.effects = {
+        effect: {}
+    };
+
+    // prefix used for storing data on .data()
+    var dataSpace = "jqplot.storage.";
+
+    /******************************************************************************/
+    /*********************************** EFFECTS **********************************/
+    /******************************************************************************/
+
+    $.extend( $.jqplot.effects, {
+        version: "1.9pre",
+
+        // Saves a set of properties in a data storage
+        save: function( element, set ) {
+            for( var i=0; i < set.length; i++ ) {
+                if ( set[ i ] !== null ) {
+                    element.data( dataSpace + set[ i ], element[ 0 ].style[ set[ i ] ] );
+                }
+            }
+        },
+
+        // Restores a set of previously saved properties from a data storage
+        restore: function( element, set ) {
+            for( var i=0; i < set.length; i++ ) {
+                if ( set[ i ] !== null ) {
+                    element.css( set[ i ], element.data( dataSpace + set[ i ] ) );
+                }
+            }
+        },
+
+        setMode: function( el, mode ) {
+            if (mode === "toggle") {
+                mode = el.is( ":hidden" ) ? "show" : "hide";
+            }
+            return mode;
+        },
+
+        // Wraps the element around a wrapper that copies position properties
+        createWrapper: function( element ) {
+
+            // if the element is already wrapped, return it
+            if ( element.parent().is( ".ui-effects-wrapper" )) {
+                return element.parent();
+            }
+
+            // wrap the element
+            var props = {
+                    width: element.outerWidth(true),
+                    height: element.outerHeight(true),
+                    "float": element.css( "float" )
+                },
+                wrapper = $( "<div></div>" )
+                    .addClass( "ui-effects-wrapper" )
+                    .css({
+                        fontSize: "100%",
+                        background: "transparent",
+                        border: "none",
+                        margin: 0,
+                        padding: 0
+                    }),
+                // Store the size in case width/height are defined in % - Fixes #5245
+                size = {
+                    width: element.width(),
+                    height: element.height()
+                },
+                active = document.activeElement;
+
+            element.wrap( wrapper );
+
+            // Fixes #7595 - Elements lose focus when wrapped.
+            if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
+                $( active ).focus();
+            }
+
+            wrapper = element.parent(); //Hotfix for jQuery 1.4 since some change in wrap() seems to actually loose the reference to the wrapped element
+
+            // transfer positioning properties to the wrapper
+            if ( element.css( "position" ) === "static" ) {
+                wrapper.css({ position: "relative" });
+                element.css({ position: "relative" });
+            } else {
+                $.extend( props, {
+                    position: element.css( "position" ),
+                    zIndex: element.css( "z-index" )
+                });
+                $.each([ "top", "left", "bottom", "right" ], function(i, pos) {
+                    props[ pos ] = element.css( pos );
+                    if ( isNaN( parseInt( props[ pos ], 10 ) ) ) {
+                        props[ pos ] = "auto";
+                    }
+                });
+                element.css({
+                    position: "relative",
+                    top: 0,
+                    left: 0,
+                    right: "auto",
+                    bottom: "auto"
+                });
+            }
+            element.css(size);
+
+            return wrapper.css( props ).show();
+        },
+
+        removeWrapper: function( element ) {
+            var active = document.activeElement;
+
+            if ( element.parent().is( ".ui-effects-wrapper" ) ) {
+                element.parent().replaceWith( element );
+
+                // Fixes #7595 - Elements lose focus when wrapped.
+                if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
+                    $( active ).focus();
+                }
+            }
+
+
+            return element;
+        }
+    });
+
+    // return an effect options object for the given parameters:
+    function _normalizeArguments( effect, options, speed, callback ) {
+
+        // short path for passing an effect options object:
+        if ( $.isPlainObject( effect ) ) {
+            return effect;
+        }
+
+        // convert to an object
+        effect = { effect: effect };
+
+        // catch (effect)
+        if ( options === undefined ) {
+            options = {};
+        }
+
+        // catch (effect, callback)
+        if ( $.isFunction( options ) ) {
+            callback = options;
+            speed = null;
+            options = {};
+        }
+
+        // catch (effect, speed, ?)
+        if ( $.type( options ) === "number" || $.fx.speeds[ options ]) {
+            callback = speed;
+            speed = options;
+            options = {};
+        }
+
+        // catch (effect, options, callback)
+        if ( $.isFunction( speed ) ) {
+            callback = speed;
+            speed = null;
+        }
+
+        // add options to effect
+        if ( options ) {
+            $.extend( effect, options );
+        }
+
+        speed = speed || options.duration;
+        effect.duration = $.fx.off ? 0 : typeof speed === "number"
+            ? speed : speed in $.fx.speeds ? $.fx.speeds[ speed ] : $.fx.speeds._default;
+
+        effect.complete = callback || options.complete;
+
+        return effect;
+    }
+
+    function standardSpeed( speed ) {
+        // valid standard speeds
+        if ( !speed || typeof speed === "number" || $.fx.speeds[ speed ] ) {
+            return true;
+        }
+
+        // invalid strings - treat as "normal" speed
+        if ( typeof speed === "string" && !$.jqplot.effects.effect[ speed ] ) {
+            // TODO: remove in 2.0 (#7115)
+            if ( backCompat && $.jqplot.effects[ speed ] ) {
+                return false;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    $.fn.extend({
+        jqplotEffect: function( effect, options, speed, callback ) {
+            var args = _normalizeArguments.apply( this, arguments ),
+                mode = args.mode,
+                queue = args.queue,
+                effectMethod = $.jqplot.effects.effect[ args.effect ],
+
+                // DEPRECATED: remove in 2.0 (#7115)
+                oldEffectMethod = !effectMethod && backCompat && $.jqplot.effects[ args.effect ];
+
+            if ( $.fx.off || !( effectMethod || oldEffectMethod ) ) {
+                // delegate to the original method (e.g., .show()) if possible
+                if ( mode ) {
+                    return this[ mode ]( args.duration, args.complete );
+                } else {
+                    return this.each( function() {
+                        if ( args.complete ) {
+                            args.complete.call( this );
+                        }
+                    });
+                }
+            }
+
+            function run( next ) {
+                var elem = $( this ),
+                    complete = args.complete,
+                    mode = args.mode;
+
+                function done() {
+                    if ( $.isFunction( complete ) ) {
+                        complete.call( elem[0] );
+                    }
+                    if ( $.isFunction( next ) ) {
+                        next();
+                    }
+                }
+
+                // if the element is hiddden and mode is hide,
+                // or element is visible and mode is show
+                if ( elem.is( ":hidden" ) ? mode === "hide" : mode === "show" ) {
+                    done();
+                } else {
+                    effectMethod.call( elem[0], args, done );
+                }
+            }
+
+            // TODO: remove this check in 2.0, effectMethod will always be true
+            if ( effectMethod ) {
+                return queue === false ? this.each( run ) : this.queue( queue || "fx", run );
+            } else {
+                // DEPRECATED: remove in 2.0 (#7115)
+                return oldEffectMethod.call(this, {
+                    options: args,
+                    duration: args.duration,
+                    callback: args.complete,
+                    mode: args.mode
+                });
+            }
+        }
+    });
+
+
+
+
+    var rvertical = /up|down|vertical/,
+        rpositivemotion = /up|left|vertical|horizontal/;
+
+    $.jqplot.effects.effect.blind = function( o, done ) {
+        // Create element
+        var el = $( this ),
+            props = [ "position", "top", "bottom", "left", "right", "height", "width" ],
+            mode = $.jqplot.effects.setMode( el, o.mode || "hide" ),
+            direction = o.direction || "up",
+            vertical = rvertical.test( direction ),
+            ref = vertical ? "height" : "width",
+            ref2 = vertical ? "top" : "left",
+            motion = rpositivemotion.test( direction ),
+            animation = {},
+            show = mode === "show",
+            wrapper, distance, top;
+
+        // // if already wrapped, the wrapper's properties are my property. #6245
+        if ( el.parent().is( ".ui-effects-wrapper" ) ) {
+            $.jqplot.effects.save( el.parent(), props );
+        } else {
+            $.jqplot.effects.save( el, props );
+        }
+        el.show();
+        top = parseInt(el.css('top'), 10);
+        wrapper = $.jqplot.effects.createWrapper( el ).css({
+            overflow: "hidden"
+        });
+
+        distance = vertical ? wrapper[ ref ]() + top : wrapper[ ref ]();
+
+        animation[ ref ] = show ? String(distance) : '0';
+        if ( !motion ) {
+            el
+                .css( vertical ? "bottom" : "right", 0 )
+                .css( vertical ? "top" : "left", "" )
+                .css({ position: "absolute" });
+            animation[ ref2 ] = show ? '0' : String(distance);
+        }
+
+        // // start at 0 if we are showing
+        if ( show ) {
+            wrapper.css( ref, 0 );
+            if ( ! motion ) {
+                wrapper.css( ref2, distance );
+            }
+        }
+
+        // // Animate
+        wrapper.animate( animation, {
+            duration: o.duration,
+            easing: o.easing,
+            queue: false,
+            complete: function() {
+                if ( mode === "hide" ) {
+                    el.hide();
+                }
+                $.jqplot.effects.restore( el, props );
+                $.jqplot.effects.removeWrapper( el );
+                done();
+            }
+        });
+
+    };
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -10408,7 +12614,7 @@ if (!document.createElement('canvas').getContext) {
             var track = 0;
             
             // todo: adjust this so more ticks displayed.
-            var maxVisibleTicks = parseInt(3+dim/20, 10);
+            var maxVisibleTicks = parseInt(3+dim/10, 10);
             var skip = parseInt(numcats/maxVisibleTicks, 10);
 
             if (this.tickInterval == null) {
@@ -10788,7 +12994,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -11456,17 +13662,18 @@ if (!document.createElement('canvas').getContext) {
 
 
                             td1 = $(document.createElement('td'));
-                            td1.addClass('jqplot-table-legend');
+                            td1.addClass('jqplot-table-legend jqplot-table-legend-swatch');
                             td1.css({textAlign: 'center', paddingTop: rs});
 
                             div0 = $(document.createElement('div'));
+                            div0.addClass('jqplot-table-legend-swatch-outline');
                             div1 = $(document.createElement('div'));
                             div1.addClass('jqplot-table-legend-swatch');
                             div1.css({backgroundColor: color, borderColor: color});
                             td1.append(div0.append(div1));
 
                             td2 = $(document.createElement('td'));
-                            td2.addClass('jqplot-table-legend');
+                            td2.addClass('jqplot-table-legend jqplot-table-legend-label');
                             td2.css('paddingTop', rs);
 
                             if (this.escapeHtml){
@@ -11547,14 +13754,13 @@ if (!document.createElement('canvas').getContext) {
                 }
             }
         }
-        this.target.bind('mouseout', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     // called with scope of plot
     function postParseOptions(options) {
         for (var i=0; i<this.series.length; i++) {
             this.series[i].seriesColors = this.seriesColors;
-            this.series[i].colorGenerator = this.colorGenerator;
+            this.series[i].colorGenerator = $.jqplot.colorGenerator;
         }
     }
     
@@ -11668,6 +13874,7 @@ if (!document.createElement('canvas').getContext) {
         }
         
         var hctx = this.plugins.pieRenderer.highlightCanvas.setContext();
+        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     $.jqplot.preInitHooks.push(preInit);
@@ -11685,7 +13892,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -11775,6 +13982,19 @@ if (!document.createElement('canvas').getContext) {
         // prop: highlightColors
         // an array of colors to use when highlighting a bar.
         this.highlightColors = [];
+        // prop: transposedData
+        // NOT IMPLEMENTED YET.  True if this is a horizontal bar plot and 
+        // x and y values are "transposed".  Tranposed, or "swapped", data is 
+        // required prior to rev. 894 builds of jqPlot with horizontal bars. 
+        // Allows backward compatability of bar renderer horizontal bars with 
+        // old style data sets.
+        this.transposedData = true;
+        this.renderer.animation = {
+            show: false,
+            direction: 'down',
+            speed: 3000,
+            _supported: true
+        };
         this._type = 'bar';
         
         // if user has passed in highlightMouseDown option and not set highlightMouseOver, disable highlightMouseOver
@@ -11782,10 +14002,25 @@ if (!document.createElement('canvas').getContext) {
             options.highlightMouseOver = false;
         }
         
+        //////
+        // This is probably wrong here.
+        // After going back and forth on wether renderer should be the thing
+        // or extend the thing, it seems that it it best if it is a property
+        // on the thing.  This should be something that is commonized 
+        // among series renderers in the future.
+        //////
         $.extend(true, this, options);
+
+        // really should probably do this
+        $.extend(true, this.renderer, options);
         // fill is still needed to properly draw the legend.
         // bars have to be filled.
         this.fill = true;
+
+        // if horizontal bar and animating, reset the default direction
+        if (this.barDirection === 'horizontal' && this.rendererOptions.animation && this.rendererOptions.animation.direction == null) {
+            this.renderer.animation.direction = 'left';
+        }
         
         if (this.waterfall) {
             this.fillToZero = false;
@@ -11835,7 +14070,7 @@ if (!document.createElement('canvas').getContext) {
         if (this.rendererOptions.waterfall == true) {
             this._data = $.extend(true, [], this.data);
             var sum = 0;
-            var pos = (!this.rendererOptions.barDirection || this.rendererOptions.barDirection == 'vertical') ? 1 : 0;
+            var pos = (!this.rendererOptions.barDirection || this.rendererOptions.barDirection === 'vertical' || this.transposedData === false) ? 1 : 0;
             for(var i=0; i<this.data.length; i++) {
                 sum += this.data[i][pos];
                 if (i>0) {
@@ -12146,10 +14381,20 @@ if (!document.createElement('canvas').getContext) {
                         }                    
                     }
                     
-                    points.push([xstart, base+this.barWidth/2]);
-                    points.push([xstart, base-this.barWidth/2]);
-                    points.push([gridData[i][0], base-this.barWidth/2]);
-                    points.push([gridData[i][0], base+this.barWidth/2]);
+
+                    if (!this.fillToZero || this._plotData[i][0] >= 0) {
+                        points.push([xstart, base + this.barWidth / 2]);
+                        points.push([xstart, base - this.barWidth / 2]);
+                        points.push([gridData[i][0], base - this.barWidth / 2]);
+                        points.push([gridData[i][0], base + this.barWidth / 2]);
+                    }
+                    else {
+                        points.push([gridData[i][0], base + this.barWidth / 2]);
+                        points.push([gridData[i][0], base - this.barWidth / 2]);
+                        points.push([xstart, base - this.barWidth / 2]);
+                        points.push([xstart, base + this.barWidth / 2]);
+                    }
+
                     this._barPoints.push(points);
                     // now draw the shadows if not stacked.
                     // for stacked plots, they are predrawn by drawShadow
@@ -12166,7 +14411,7 @@ if (!document.createElement('canvas').getContext) {
         }                
         
         if (this.highlightColors.length == 0) {
-            this.highlightColors = computeHighlightColors(this._dataColors);
+            this.highlightColors = $.jqplot.computeHighlightColors(this._dataColors);
         }
         
         else if (typeof(this.highlightColors) == 'string') {
@@ -12277,7 +14522,6 @@ if (!document.createElement('canvas').getContext) {
                 }
             }
         }
-        this.target.bind('mouseout', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     // called within context of plot
@@ -12296,6 +14540,7 @@ if (!document.createElement('canvas').getContext) {
         
         this.eventCanvas._elem.before(this.plugins.barRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-barRenderer-highlight-canvas', this._plotDimensions, this));
         this.plugins.barRenderer.highlightCanvas.setContext();
+        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }   
     
     function highlight (plot, sidx, pidx, points) {
@@ -12389,13 +14634,13 @@ if (!document.createElement('canvas').getContext) {
     }
     
     
-})(jQuery);    
+})(jQuery);     
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -12544,6 +14789,7 @@ if (!document.createElement('canvas').getContext) {
         this.bringSeriesToFront = false;
         this._tooltipElem;
         this.isHighlighting = false;
+        this.currentNeighbor = null;
 
         $.extend(true, this, options);
     };
@@ -12623,7 +14869,11 @@ if (!document.createElement('canvas').getContext) {
         // add the plot._gridPadding to that to get x,y in the target.
         var hl = plot.plugins.highlighter;
         var elem = hl._tooltipElem;
-        if (hl.useAxesFormatters) {
+        var serieshl = series.highlighter || {};
+
+        var opts = $.extend(true, {}, hl, serieshl);
+
+        if (opts.useAxesFormatters) {
             var xf = series._xaxis._ticks[0].formatter;
             var yf = series._yaxis._ticks[0].formatter;
             var xfstr = series._xaxis._ticks[0].formatString;
@@ -12631,49 +14881,49 @@ if (!document.createElement('canvas').getContext) {
             var str;
             var xstr = xf(xfstr, neighbor.data[0]);
             var ystrs = [];
-            for (var i=1; i<hl.yvalues+1; i++) {
+            for (var i=1; i<opts.yvalues+1; i++) {
                 ystrs.push(yf(yfstr, neighbor.data[i]));
             }
-            if (hl.formatString) {
-                switch (hl.tooltipAxes) {
+            if (typeof opts.formatString === 'string') {
+                switch (opts.tooltipAxes) {
                     case 'both':
                     case 'xy':
                         ystrs.unshift(xstr);
-                        ystrs.unshift(hl.formatString);
+                        ystrs.unshift(opts.formatString);
                         str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
                         break;
                     case 'yx':
                         ystrs.push(xstr);
-                        ystrs.unshift(hl.formatString);
+                        ystrs.unshift(opts.formatString);
                         str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
                         break;
                     case 'x':
-                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, [hl.formatString, xstr]);
+                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, [opts.formatString, xstr]);
                         break;
                     case 'y':
-                        ystrs.unshift(hl.formatString);
+                        ystrs.unshift(opts.formatString);
                         str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
                         break;
                     default: // same as xy
                         ystrs.unshift(xstr);
-                        ystrs.unshift(hl.formatString);
+                        ystrs.unshift(opts.formatString);
                         str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
                         break;
                 } 
             }
             else {
-                switch (hl.tooltipAxes) {
+                switch (opts.tooltipAxes) {
                     case 'both':
                     case 'xy':
                         str = xstr;
                         for (var i=0; i<ystrs.length; i++) {
-                            str += hl.tooltipSeparator + ystrs[i];
+                            str += opts.tooltipSeparator + ystrs[i];
                         }
                         break;
                     case 'yx':
                         str = '';
                         for (var i=0; i<ystrs.length; i++) {
-                            str += ystrs[i] + hl.tooltipSeparator;
+                            str += ystrs[i] + opts.tooltipSeparator;
                         }
                         str += xstr;
                         break;
@@ -12681,12 +14931,12 @@ if (!document.createElement('canvas').getContext) {
                         str = xstr;
                         break;
                     case 'y':
-                        str = ystrs.join(hl.tooltipSeparator);
+                        str = ystrs.join(opts.tooltipSeparator);
                         break;
                     default: // same as 'xy'
                         str = xstr;
                         for (var i=0; i<ystrs.length; i++) {
-                            str += hl.tooltipSeparator + ystrs[i];
+                            str += opts.tooltipSeparator + ystrs[i];
                         }
                         break;
                     
@@ -12695,30 +14945,36 @@ if (!document.createElement('canvas').getContext) {
         }
         else {
             var str;
-            if (hl.tooltipAxes == 'both' || hl.tooltipAxes == 'xy') {
-                str = $.jqplot.sprintf(hl.tooltipFormatString, neighbor.data[0]) + hl.tooltipSeparator + $.jqplot.sprintf(hl.tooltipFormatString, neighbor.data[1]);
+            if (typeof opts.formatString ===  'string') {
+                str = $.jqplot.sprintf.apply($.jqplot.sprintf, [opts.formatString].concat(neighbor.data));
             }
-            else if (hl.tooltipAxes == 'yx') {
-                str = $.jqplot.sprintf(hl.tooltipFormatString, neighbor.data[1]) + hl.tooltipSeparator + $.jqplot.sprintf(hl.tooltipFormatString, neighbor.data[0]);
+
+            else {
+                if (opts.tooltipAxes == 'both' || opts.tooltipAxes == 'xy') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]) + opts.tooltipSeparator + $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
+                }
+                else if (opts.tooltipAxes == 'yx') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]) + opts.tooltipSeparator + $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
+                }
+                else if (opts.tooltipAxes == 'x') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
+                }
+                else if (opts.tooltipAxes == 'y') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
+                } 
             }
-            else if (hl.tooltipAxes == 'x') {
-                str = $.jqplot.sprintf(hl.tooltipFormatString, neighbor.data[0]);
-            }
-            else if (hl.tooltipAxes == 'y') {
-                str = $.jqplot.sprintf(hl.tooltipFormatString, neighbor.data[1]);
-            } 
         }
-        if ($.isFunction(hl.tooltipContentEditor)) {
+        if ($.isFunction(opts.tooltipContentEditor)) {
             // args str, seriesIndex, pointIndex are essential so the hook can look up
             // extra data for the point.
-            str = hl.tooltipContentEditor(str, neighbor.seriesIndex, neighbor.pointIndex, plot);
+            str = opts.tooltipContentEditor(str, neighbor.seriesIndex, neighbor.pointIndex, plot);
         }
         elem.html(str);
         var gridpos = {x:neighbor.gridData[0], y:neighbor.gridData[1]};
         var ms = 0;
         var fact = 0.707;
         if (series.markerRenderer.show == true) { 
-            ms = (series.markerRenderer.size + hl.sizeAdjust)/2;
+            ms = (series.markerRenderer.size + opts.sizeAdjust)/2;
         }
 		
 		var loc = locations;
@@ -12726,49 +14982,49 @@ if (!document.createElement('canvas').getContext) {
 			loc = oppositeLocations;
 		}
 		
-        switch (loc[locationIndicies[hl.tooltipLocation]]) {
+        switch (loc[locationIndicies[opts.tooltipLocation]]) {
             case 'nw':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - hl.tooltipOffset - fact * ms;
-                var y = gridpos.y + plot._gridPadding.top - hl.tooltipOffset - elem.outerHeight(true) - fact * ms;
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
                 break;
             case 'n':
                 var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
-                var y = gridpos.y + plot._gridPadding.top - hl.tooltipOffset - elem.outerHeight(true) - ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - ms;
                 break;
             case 'ne':
-                var x = gridpos.x + plot._gridPadding.left + hl.tooltipOffset + fact * ms;
-                var y = gridpos.y + plot._gridPadding.top - hl.tooltipOffset - elem.outerHeight(true) - fact * ms;
+                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + fact * ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
                 break;
             case 'e':
-                var x = gridpos.x + plot._gridPadding.left + hl.tooltipOffset + ms;
+                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + ms;
                 var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
                 break;
             case 'se':
-                var x = gridpos.x + plot._gridPadding.left + hl.tooltipOffset + fact * ms;
-                var y = gridpos.y + plot._gridPadding.top + hl.tooltipOffset + fact * ms;
+                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + fact * ms;
+                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + fact * ms;
                 break;
             case 's':
                 var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
-                var y = gridpos.y + plot._gridPadding.top + hl.tooltipOffset + ms;
+                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + ms;
                 break;
             case 'sw':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - hl.tooltipOffset - fact * ms;
-                var y = gridpos.y + plot._gridPadding.top + hl.tooltipOffset + fact * ms;
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
+                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + fact * ms;
                 break;
             case 'w':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - hl.tooltipOffset - ms;
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - ms;
                 var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
                 break;
             default: // same as 'nw'
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - hl.tooltipOffset - fact * ms;
-                var y = gridpos.y + plot._gridPadding.top - hl.tooltipOffset - elem.outerHeight(true) - fact * ms;
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
                 break;
         }
         elem.css('left', x);
         elem.css('top', y);
-        if (hl.fadeTooltip) {
+        if (opts.fadeTooltip) {
             // Fix for stacked up animations.  Thnanks Trevor!
-            elem.stop(true,true).fadeIn(hl.tooltipFadeSpeed);
+            elem.stop(true,true).fadeIn(opts.tooltipFadeSpeed);
         }
         else {
             elem.show();
@@ -12782,8 +15038,8 @@ if (!document.createElement('canvas').getContext) {
         var c = plot.plugins.cursor;
         if (hl.show) {
             if (neighbor == null && hl.isHighlighting) {
-               var ctx = hl.highlightCanvas._ctx;
-               ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                var ctx = hl.highlightCanvas._ctx;
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 if (hl.fadeTooltip) {
                     hl._tooltipElem.fadeOut(hl.tooltipFadeSpeed);
                 }
@@ -12793,12 +15049,13 @@ if (!document.createElement('canvas').getContext) {
                 if (hl.bringSeriesToFront) {
                     plot.restorePreviousSeriesOrder();
                 }
-               hl.isHighlighting = false;
-        	  ctx = null;
-            
+                hl.isHighlighting = false;
+                hl.currentNeighbor = null;
+                ctx = null;
             }
             else if (neighbor != null && plot.series[neighbor.seriesIndex].showHighlight && !hl.isHighlighting) {
                 hl.isHighlighting = true;
+                hl.currentNeighbor = neighbor;
                 if (hl.showMarker) {
                     draw(plot, neighbor);
                 }
@@ -12809,6 +15066,27 @@ if (!document.createElement('canvas').getContext) {
                     plot.moveSeriesToFront(neighbor.seriesIndex);
                 }
             }
+            // check to see if we're highlighting the wrong point.
+            else if (neighbor != null && hl.isHighlighting && hl.currentNeighbor != neighbor) {
+                // highlighting the wrong point.
+
+                // if new series allows highlighting, highlight new point.
+                if (plot.series[neighbor.seriesIndex].showHighlight) {
+                    var ctx = hl.highlightCanvas._ctx;
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    hl.isHighlighting = true;
+                    hl.currentNeighbor = neighbor;
+                    if (hl.showMarker) {
+                        draw(plot, neighbor);
+                    }
+                    if (hl.showTooltip && (!c || !c._zoom.started)) {
+                        showTooltip(plot, plot.series[neighbor.seriesIndex], neighbor);
+                    }
+                    if (hl.bringSeriesToFront) {
+                        plot.moveSeriesToFront(neighbor.seriesIndex);
+                    }                    
+                }                
+            }
         }
     }
 })(jQuery);
@@ -12818,7 +15096,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -13429,116 +15707,6 @@ if (!document.createElement('canvas').getContext) {
         return this._elem;                
     };
     
-    // $.jqplot.DonutLegendRenderer.prototype.pack = function(offsets) {
-    //     if (this.show) {
-    //         // fake a grid for positioning
-    //         var grid = {_top:offsets.top, _left:offsets.left, _right:offsets.right, _bottom:this._plotDimensions.height - offsets.bottom};        
-    //         if (this.placement == 'insideGrid') {
-    //             switch (this.location) {
-    //                 case 'nw':
-    //                     var a = grid._left + this.xoffset;
-    //                     var b = grid._top + this.yoffset;
-    //                     this._elem.css('left', a);
-    //                     this._elem.css('top', b);
-    //                     break;
-    //                 case 'n':
-    //                     var a = (offsets.left + (this._plotDimensions.width - offsets.right))/2 - this.getWidth()/2;
-    //                     var b = grid._top + this.yoffset;
-    //                     this._elem.css('left', a);
-    //                     this._elem.css('top', b);
-    //                     break;
-    //                 case 'ne':
-    //                     var a = offsets.right + this.xoffset;
-    //                     var b = grid._top + this.yoffset;
-    //                     this._elem.css({right:a, top:b});
-    //                     break;
-    //                 case 'e':
-    //                     var a = offsets.right + this.xoffset;
-    //                     var b = (offsets.top + (this._plotDimensions.height - offsets.bottom))/2 - this.getHeight()/2;
-    //                     this._elem.css({right:a, top:b});
-    //                     break;
-    //                 case 'se':
-    //                     var a = offsets.right + this.xoffset;
-    //                     var b = offsets.bottom + this.yoffset;
-    //                     this._elem.css({right:a, bottom:b});
-    //                     break;
-    //                 case 's':
-    //                     var a = (offsets.left + (this._plotDimensions.width - offsets.right))/2 - this.getWidth()/2;
-    //                     var b = offsets.bottom + this.yoffset;
-    //                     this._elem.css({left:a, bottom:b});
-    //                     break;
-    //                 case 'sw':
-    //                     var a = grid._left + this.xoffset;
-    //                     var b = offsets.bottom + this.yoffset;
-    //                     this._elem.css({left:a, bottom:b});
-    //                     break;
-    //                 case 'w':
-    //                     var a = grid._left + this.xoffset;
-    //                     var b = (offsets.top + (this._plotDimensions.height - offsets.bottom))/2 - this.getHeight()/2;
-    //                     this._elem.css({left:a, top:b});
-    //                     break;
-    //                 default:  // same as 'se'
-    //                     var a = grid._right - this.xoffset;
-    //                     var b = grid._bottom + this.yoffset;
-    //                     this._elem.css({right:a, bottom:b});
-    //                     break;
-    //             }
-    //             
-    //         }
-    //         else {
-    //             switch (this.location) {
-    //                 case 'nw':
-    //                     var a = this._plotDimensions.width - grid._left + this.xoffset;
-    //                     var b = grid._top + this.yoffset;
-    //                     this._elem.css('right', a);
-    //                     this._elem.css('top', b);
-    //                     break;
-    //                 case 'n':
-    //                     var a = (offsets.left + (this._plotDimensions.width - offsets.right))/2 - this.getWidth()/2;
-    //                     var b = this._plotDimensions.height - grid._top + this.yoffset;
-    //                     this._elem.css('left', a);
-    //                     this._elem.css('bottom', b);
-    //                     break;
-    //                 case 'ne':
-    //                     var a = this._plotDimensions.width - offsets.right + this.xoffset;
-    //                     var b = grid._top + this.yoffset;
-    //                     this._elem.css({left:a, top:b});
-    //                     break;
-    //                 case 'e':
-    //                     var a = this._plotDimensions.width - offsets.right + this.xoffset;
-    //                     var b = (offsets.top + (this._plotDimensions.height - offsets.bottom))/2 - this.getHeight()/2;
-    //                     this._elem.css({left:a, top:b});
-    //                     break;
-    //                 case 'se':
-    //                     var a = this._plotDimensions.width - offsets.right + this.xoffset;
-    //                     var b = offsets.bottom + this.yoffset;
-    //                     this._elem.css({left:a, bottom:b});
-    //                     break;
-    //                 case 's':
-    //                     var a = (offsets.left + (this._plotDimensions.width - offsets.right))/2 - this.getWidth()/2;
-    //                     var b = this._plotDimensions.height - offsets.bottom + this.yoffset;
-    //                     this._elem.css({left:a, top:b});
-    //                     break;
-    //                 case 'sw':
-    //                     var a = this._plotDimensions.width - grid._left + this.xoffset;
-    //                     var b = offsets.bottom + this.yoffset;
-    //                     this._elem.css({right:a, bottom:b});
-    //                     break;
-    //                 case 'w':
-    //                     var a = this._plotDimensions.width - grid._left + this.xoffset;
-    //                     var b = (offsets.top + (this._plotDimensions.height - offsets.bottom))/2 - this.getHeight()/2;
-    //                     this._elem.css({right:a, top:b});
-    //                     break;
-    //                 default:  // same as 'se'
-    //                     var a = grid._right - this.xoffset;
-    //                     var b = grid._bottom + this.yoffset;
-    //                     this._elem.css({right:a, bottom:b});
-    //                     break;
-    //             }
-    //         }
-    //     } 
-    // };
-    
     // setup default renderers for axes and legend so user doesn't have to
     // called with scope of plot
     function preInit(target, data, options) {
@@ -13589,7 +15757,6 @@ if (!document.createElement('canvas').getContext) {
                 }
             }
         }
-        this.target.bind('mouseout', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     var postParseOptionsRun = false;
@@ -13597,7 +15764,7 @@ if (!document.createElement('canvas').getContext) {
     function postParseOptions(options) {
         for (var i=0; i<this.series.length; i++) {
             this.series[i].seriesColors = this.seriesColors;
-            this.series[i].colorGenerator = this.colorGenerator;
+            this.series[i].colorGenerator = $.jqplot.colorGenerator;
         }
     }
     
@@ -13710,6 +15877,7 @@ if (!document.createElement('canvas').getContext) {
             this.eventCanvas._elem.before(this.plugins.donutRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-donutRenderer-highlight-canvas', this._plotDimensions, this));
         }
         var hctx = this.plugins.donutRenderer.highlightCanvas.setContext();
+        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     $.jqplot.preInitHooks.push(preInit);
@@ -13727,7 +15895,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -13828,21 +15996,23 @@ if (!document.createElement('canvas').getContext) {
                 nc = 1;
             }
                 
-            var i, j, tr, td1, td2, lt, rs;
+            var i, j, tr, td1, td2, lt, rs, div, div0, div1;
             var idx = 0;
             // check to see if we need to reverse
             for (i=series.length-1; i>=0; i--) {
-                if (series[i]._stack || series[i].renderer.constructor == $.jqplot.BezierCurveRenderer){
+                if (nc == 1 && series[i]._stack || series[i].renderer.constructor == $.jqplot.BezierCurveRenderer){
                     reverse = true;
                 }
             }    
                 
             for (i=0; i<nr; i++) {
+                tr = $(document.createElement('tr'));
+                tr.addClass('jqplot-table-legend');
                 if (reverse){
-                    tr = $('<tr class="jqplot-table-legend"></tr>').prependTo(this._elem);
+                    tr.prependTo(this._elem);
                 }
                 else{
-                    tr = $('<tr class="jqplot-table-legend"></tr>').appendTo(this._elem);
+                    tr.appendTo(this._elem);
                 }
                 for (j=0; j<nc; j++) {
                     if (idx < series.length && series[idx].show && series[idx].showLabel){
@@ -13867,11 +16037,27 @@ if (!document.createElement('canvas').getContext) {
                                 }
                             }
                             rs = (pad) ? this.rowSpacing : '0';
+
+                            td1 = $(document.createElement('td'));
+                            td1.addClass('jqplot-table-legend jqplot-table-legend-swatch');
+                            td1.css({textAlign: 'center', paddingTop: rs});
+
+                            div0 = $(document.createElement('div'));
+                            div0.addClass('jqplot-table-legend-swatch-outline');
+                            div1 = $(document.createElement('div'));
+                            div1.addClass('jqplot-table-legend-swatch');
+                            div1.css({backgroundColor: color, borderColor: color});
+
+                            td1.append(div0.append(div1));
+
+                            td2 = $(document.createElement('td'));
+                            td2.addClass('jqplot-table-legend jqplot-table-legend-label');
+                            td2.css('paddingTop', rs);
                     
-                            td1 = $('<td class="jqplot-table-legend" style="text-align:center;padding-top:'+rs+';">'+
-                                '<div><div class="jqplot-table-legend-swatch" style="background-color:'+color+';border-color:'+color+';"></div>'+
-                                '</div></td>');
-                            td2 = $('<td class="jqplot-table-legend" style="padding-top:'+rs+';"></td>');
+                            // td1 = $('<td class="jqplot-table-legend" style="text-align:center;padding-top:'+rs+';">'+
+                            //     '<div><div class="jqplot-table-legend-swatch" style="background-color:'+color+';border-color:'+color+';"></div>'+
+                            //     '</div></td>');
+                            // td2 = $('<td class="jqplot-table-legend" style="padding-top:'+rs+';"></td>');
                             if (this.escapeHtml){
                                 td2.text(lt);
                             }
@@ -13888,6 +16074,13 @@ if (!document.createElement('canvas').getContext) {
                             }
                             
                             if (this.seriesToggle) {
+
+                                // add an overlay for clicking series on/off
+                                // div0 = $(document.createElement('div'));
+                                // div0.addClass('jqplot-table-legend-overlay');
+                                // div0.css({position:'relative', left:0, top:0, height:'100%', width:'100%'});
+                                // tr.append(div0);
+
                                 var speed;
                                 if (typeof(this.seriesToggle) == 'string' || typeof(this.seriesToggle) == 'number') {
                                     if (!$.jqplot.use_excanvas || !this.disableIEFading) {
@@ -13895,11 +16088,11 @@ if (!document.createElement('canvas').getContext) {
                                     }
                                 } 
                                 if (this.showSwatches) {
-                                    td1.bind('click', {series:s, speed:speed}, s.toggleDisplay);
+                                    td1.bind('click', {series:s, speed:speed}, handleToggle);
                                     td1.addClass('jqplot-seriesToggle');
                                 }
                                 if (this.showLabels)  {
-                                    td2.bind('click', {series:s, speed:speed}, s.toggleDisplay);
+                                    td2.bind('click', {series:s, speed:speed}, handleToggle);
                                     td2.addClass('jqplot-seriesToggle');
                                 }
                             }
@@ -13908,10 +16101,27 @@ if (!document.createElement('canvas').getContext) {
                         }
                     }
                     idx++;
-                }   
+                }
+                
+                td1 = td2 = div0 = div1 = null;   
             }
         }
         return this._elem;
+    };
+
+    var handleToggle = function (ev) {
+        ev.data.series.toggleDisplay(ev);
+        if (ev.data.series.canvas._elem.hasClass('jqplot-series-hidden')) {
+            $(this).addClass('jqplot-series-hidden');
+            $(this).next('.jqplot-table-legend-label').addClass('jqplot-series-hidden');
+            $(this).prev('.jqplot-table-legend-swatch').addClass('jqplot-series-hidden');
+
+        }
+        else {
+            $(this).removeClass('jqplot-series-hidden');
+            $(this).next('.jqplot-table-legend-label').removeClass('jqplot-series-hidden');
+            $(this).prev('.jqplot-table-legend-swatch').removeClass('jqplot-series-hidden');
+        }
     };
     
     // called with scope of plot.
@@ -13927,7 +16137,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -14675,12 +16885,12 @@ if (!document.createElement('canvas').getContext) {
     $.jqplot.preInitHooks.push(preInit);
     
 })(jQuery);
-
+    
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -14872,7 +17082,7 @@ if (!document.createElement('canvas').getContext) {
             var dwidth = this.gridData[xmaxidx-1][0] - this.gridData[xminidx][0];
             var nvisiblePoints = xmaxidx - xminidx;
             try {
-                var dinterval = Math.abs(this._xaxis.series_u2p(parseInt(this._xaxis._intervalStats[0].sortedIntervals[0].interval)) - this._xaxis.series_u2p(0)); 
+                var dinterval = Math.abs(this._xaxis.series_u2p(parseInt(this._xaxis._intervalStats[0].sortedIntervals[0].interval, 10)) - this._xaxis.series_u2p(0)); 
             }
 
             catch (e) {
@@ -14884,7 +17094,7 @@ if (!document.createElement('canvas').getContext) {
                     r._bodyWidth = r.bodyWidth;
                 }
                 else {
-                    r._bodyWidth = Math.min(20, dinterval/1.75);
+                    r._bodyWidth = Math.min(20, dinterval/1.65);
                 }
             }
             else {
@@ -15053,7 +17263,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -15236,7 +17446,7 @@ if (!document.createElement('canvas').getContext) {
         }
         this._tickPoints = [];
         // reference to label element.
-        this._labelElm = null;
+        this._labelElem = null;
         
         // start the gauge at the beginning of the span
         this.startAngle = (90 + (360 - this.span)/2) * Math.PI/180;
@@ -15446,7 +17656,7 @@ if (!document.createElement('canvas').getContext) {
                     }
                     this.needleThickness = this.needleThickness || 2+Math.pow(this.ringWidth, 0.8);
                     this.innerPad = this.ringWidth/2 + this.needleThickness/2 + this.needlePad;
-                    this.diameter = w - 2*this.innerPad;
+                    this.diameter = w - 2*this.innerPad - this.ringWidth - this.padding;
                 }
                 // center taking into account legend and over draw for gauge bottom below hub.
                 // this will be center of hub.
@@ -15464,6 +17674,7 @@ if (!document.createElement('canvas').getContext) {
                 this._center = [(cw-trans*offx)/2 + trans * offx, (ch-trans*offy)/2 + trans * offy];
             }
         }
+
         
         if (this._labelElem && this.labelPosition == 'bottom') {
             this._center[1] -= this._labelElem.outerHeight(true);
@@ -16034,7 +18245,6 @@ if (!document.createElement('canvas').getContext) {
         options.legend = options.legend || {};
         options.seriesDefaults = options.seriesDefaults || {};
         options.grid = options.grid || {};
-        options.gridPadding = options.gridPadding || {};
            
         // only set these if there is a gauge series
         var setopts = false;
@@ -16057,10 +18267,6 @@ if (!document.createElement('canvas').getContext) {
             options.grid.drawGridlines = false;
             options.grid.borderWidth = (options.grid.borderWidth != null) ? options.grid.borderWidth : 0;
             options.grid.shadow = (options.grid.shadow != null) ? options.grid.shadow : false;
-            options.gridPadding.top = (options.gridPadding.top != null) ? options.gridPadding.top : 0;
-            options.gridPadding.bottom = (options.gridPadding.bottom != null) ? options.gridPadding.bottom : 0;
-            options.gridPadding.left = (options.gridPadding.left != null) ? options.gridPadding.left : 0;
-            options.gridPadding.right = (options.gridPadding.right != null) ? options.gridPadding.right : 0;
         }
     }
     
@@ -16085,7 +18291,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -16108,8 +18314,36 @@ if (!document.createElement('canvas').getContext) {
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
+ *
+ * included jsDate library by Chris Leonello:
+ *
+ * Copyright (c) 2010-2011 Chris Leonello
+ *
+ * jsDate is currently available for use in all personal or commercial projects 
+ * under both the MIT and GPL version 2.0 licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly.
+ *
+ * jsDate borrows many concepts and ideas from the Date Instance 
+ * Methods by Ken Snyder along with some parts of Ken's actual code.
+ * 
+ * Ken's origianl Date Instance Methods and copyright notice:
+ * 
+ * Ken Snyder (ken d snyder at gmail dot com)
+ * 2008-09-10
+ * version 2.0.2 (http://kendsnyder.com/sandbox/date/)     
+ * Creative Commons Attribution License 3.0 (http://creativecommons.org/licenses/by/3.0/)
+ *
+ * jqplotToImage function based on Larry Siden's export-jqplot-to-png.js.
+ * Larry has generously given permission to adapt his code for inclusion
+ * into jqPlot.
+ *
+ * Larry's original code can be found here:
+ *
+ * https://github.com/lsiden/export-jqplot-to-png
+ * 
  * 
  */
+
 (function($) {    
     // This code is a modified version of the canvastext.js code, copyright below:
     //
@@ -16506,7 +18740,7 @@ if (!document.createElement('canvas').getContext) {
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -16636,12 +18870,7 @@ if (!document.createElement('canvas').getContext) {
         }
         
         if (this.enableFontSupport) {
-            
-            function support_canvas_text() {
-                return !!(document.createElement('canvas').getContext && typeof document.createElement('canvas').getContext('2d').fillText == 'function');
-            }
-            
-            if (support_canvas_text()) {
+            if ($.jqplot.support_canvas_text()) {
                 this._textRenderer = new $.jqplot.CanvasFontRenderer(ropts);
             }
             
@@ -16710,7 +18939,7 @@ if (!document.createElement('canvas').getContext) {
         
         // Memory Leaks patch
         if (this._elem) {
-            if ($.jqplot.use_excanvas) {
+            if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
                 window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
             }
             
@@ -16750,11 +18979,11 @@ if (!document.createElement('canvas').getContext) {
     
 })(jQuery);
     
-    /**
+/**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0b2_r792
+ * Version: 1.0.0b2_r1012
  *
  * Copyright (c) 2009-2011 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -16861,12 +19090,7 @@ if (!document.createElement('canvas').getContext) {
         }
         
         if (this.enableFontSupport) {
-            
-            function support_canvas_text() {
-                return !!(document.createElement('canvas').getContext && typeof document.createElement('canvas').getContext('2d').fillText == 'function');
-            }
-            
-            if (support_canvas_text()) {
+            if ($.jqplot.support_canvas_text()) {
                 this._textRenderer = new $.jqplot.CanvasFontRenderer(ropts);
             }
             
@@ -16922,7 +19146,7 @@ if (!document.createElement('canvas').getContext) {
     $.jqplot.CanvasAxisLabelRenderer.prototype.draw = function(ctx, plot) {
           // Memory Leaks patch
           if (this._elem) {
-              if ($.jqplot.use_excanvas) {
+              if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
                   window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
               }
             
