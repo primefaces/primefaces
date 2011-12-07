@@ -44,7 +44,6 @@ class DataHelper {
         
 		String firstParam = params.get(clientId + "_first");
 		String rowsParam = params.get(clientId + "_rows");
-		String pageParam = params.get(clientId + "_page");
 
 		table.setFirst(Integer.valueOf(firstParam));
 		table.setRows(Integer.valueOf(rowsParam));
