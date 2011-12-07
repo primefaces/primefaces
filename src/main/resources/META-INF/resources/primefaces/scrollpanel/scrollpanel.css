@@ -21,7 +21,7 @@
 
 .ui-scrollpanel-content {
     left: 0px; top: 0px; width: auto; height: auto; display: block;
-    position: relative; 
+    position: absolute; 
     zoom: 1;
 }
 
