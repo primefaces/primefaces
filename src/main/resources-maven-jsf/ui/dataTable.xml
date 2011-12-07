@@ -112,13 +112,6 @@
             <description>Reference to the selection data.</description>
 		</attribute>
 		<attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Enables lazy loading. Default is false.</description>
-		</attribute>
-		<attribute>
 			<name>rowIndexVar</name>
 			<required>false</required>
 			<type>java.lang.String</type>
