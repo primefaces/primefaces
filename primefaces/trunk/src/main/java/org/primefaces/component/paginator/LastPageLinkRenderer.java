@@ -22,7 +22,10 @@ import org.primefaces.component.api.UIData;
 public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
     public void render(FacesContext context, UIData uidata) throws IOException {
-        boolean disabled = uidata.getPage() == uidata.getPageCount() - 1;
+        int currentPage = uidata.getPage();
+        int pageCount = uidata.getPageCount();
+        
+        boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
        
         super.render(context, uidata, UIData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled);
     }   

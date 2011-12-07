@@ -25,9 +25,14 @@ public class CurrentPageReportRenderer implements PaginatorElementRenderer {
     public void render(FacesContext context, UIData uidata) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String template = uidata.getCurrentPageReportTemplate();
+        int currentPage = uidata.getPage() + 1;
+        int pageCount = uidata.getPageCount();
+        if(pageCount == 0) {
+            pageCount = 1;
+        }
                 
-        String output = template.replaceAll("\\{currentPage\\}", Integer.toString(uidata.getPage() + 1));
-        output = output.replaceAll("\\{totalPage\\}", Integer.toString(uidata.getPageCount()));
+        String output = template.replaceAll("\\{currentPage\\}", Integer.toString(currentPage));
+        output = output.replaceAll("\\{totalPage\\}", Integer.toString(pageCount));
 
         writer.startElement("span", null);
         writer.writeAttribute("class", UIData.PAGINATOR_CURRENT_CLASS, null);
