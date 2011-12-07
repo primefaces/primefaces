@@ -1,10 +1,16 @@
 import org.primefaces.util.HTML;
+import java.util.logging.Logger;
         
+    private final static Logger logger = Logger.getLogger(CommandButton.class.getName());
+
     public String resolveIcon() {
         String icon = getIcon();
     
         if(icon == null) {
             icon = getImage();
+            
+            if(icon != null)
+                logger.info("image attribute is deprecated to define an icon, use icon attribute instead.");
         }
     
         return icon;
