@@ -217,7 +217,7 @@ public class TreeRenderer extends CoreRenderer {
                         writer.startElement("span", null);
                         String icon = uiTreeNode.getIconToRender(expanded);
                         if(icon != null) {
-                            writer.writeAttribute("class", icon, null);
+                            writer.writeAttribute("class", "ui-icon " + icon, null);
                         }
                         writer.endElement("span");
 
