@@ -79,11 +79,18 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         //input
+        encodeInput(context, calendar, inputId, value, popup);
+
+        writer.endElement("span");
+    }
+    
+    protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
 
         writer.startElement("input", null);
-        writer.writeAttribute("id", inputId, null);
-        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", type, null);
 
         if(!isValueBlank(value)) {
@@ -91,16 +98,18 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if(popup) {
-            if(themeForms()) writer.writeAttribute("class", Calendar.INPUT_STYLE_CLASS, null);
             if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+            
+            if(themeForms()) {
+                String inputStyleClass = calendar.isValid() ? Calendar.INPUT_STYLE_CLASS : Calendar.INPUT_STYLE_CLASS + " ui-state-error";
+                writer.writeAttribute("class", inputStyleClass, null);
+            }
 
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS);
         }
 
         writer.endElement("input");
-
-        writer.endElement("span");
     }
 
     protected void encodeScript(FacesContext context, Calendar calendar, String value) throws IOException {
