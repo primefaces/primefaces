@@ -636,7 +636,7 @@ import javax.faces.FacesException;
 
         if(ve != null) {
             Class type = ve.getType(FacesContext.getCurrentInstance().getELContext());
-            if(type != null && type.isAssignableFrom(LazyDataModel.class)) {
+            if(type != null && LazyDataModel.class.isAssignableFrom(type)) {
                 return true;
             }
         }
