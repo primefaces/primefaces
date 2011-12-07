@@ -360,16 +360,12 @@ import javax.faces.FacesException;
     public void loadLazyData() {
         DataModel model = getDataModel();
         
-        if(model instanceof LazyDataModel) {
-            int pageSize = getRows();
-            pageSize = pageSize == 0 ? getRowCount() : pageSize;
-            
+        if(model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
+
+            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
             
-            lazyModel.setPageSize(pageSize);
-
-            List<?> data = lazyModel.load(getFirst(), pageSize, resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
-
+            lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
