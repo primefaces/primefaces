@@ -11,6 +11,10 @@ import java.util.Date;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
@@ -106,4 +110,22 @@ import javax.faces.event.PhaseId;
                 super.queueEvent(dateSelectEvent);
             }
         }
+    }
+
+    private String calculatedPattern = null;
+
+    public String calculatePattern() {
+        if(calculatedPattern == null) {
+            String pattern = this.getPattern();
+            Locale locale = this.calculateLocale(FacesContext.getCurrentInstance());
+            if(pattern == null) {
+                calculatedPattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
+            }
+            else {
+                calculatedPattern = pattern;
+            }
+            
+        }
+
+        return calculatedPattern;
     }
