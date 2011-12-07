@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.application.NavigationHandler;
 import java.util.Map;
@@ -41,6 +42,8 @@ import org.primefaces.model.SelectableDataModelWrapper;
 import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
+
+    private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
@@ -360,7 +363,7 @@ import javax.faces.FacesException;
     public void loadLazyData() {
         DataModel model = getDataModel();
         
-        if(model instanceof LazyDataModel) {            
+        if(model != null && model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
 
             List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
@@ -627,3 +630,21 @@ import javax.faces.FacesException;
 
         return columnsCount;
     }
+
+    public boolean isLazy() {
+        ValueExpression ve = getValueExpression("value");
+
+        if(ve != null) {
+            Class type = ve.getType(FacesContext.getCurrentInstance().getELContext());
+            if(type != null && type.isAssignableFrom(LazyDataModel.class)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public void setLazy(boolean value) {
+        logger.info("Lazy attribute has been removed from datatable api, please also remove it from your page definition. See issue #2991.");
+    }
+
