@@ -21,7 +21,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.menubar.Menubar;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
@@ -96,7 +95,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
  
             if(icon != null) {
                 writer.startElement("span", null);
-                writer.writeAttribute("class", icon + " " + AbstractMenu.MENUITEM_ICON_CLASS, null);
+                writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
                 writer.endElement("span");
             }
 
@@ -158,7 +157,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 
         if(icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", icon + " " + Menu.MENUITEM_ICON_CLASS, null);
+            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
             writer.endElement("span");
         }
 
