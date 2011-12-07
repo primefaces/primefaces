@@ -27,10 +27,11 @@ PrimeFaces.widget.Carousel = function(cfg) {
     this.cfg.page = (this.cfg.firstVisible / this.cfg.numVisible) + 1;
     this.animating = false;
     
-    var firstItem = this.items.filter(':first').get(0);
-    this.cfg.itemOuterWidth = parseInt(this.getProperty(firstItem, 'width')) + parseInt(this.getProperty(firstItem, 'margin-Left')) + parseInt(this.getProperty(firstItem, 'margin-Right')) +  ((parseInt(this.getProperty(firstItem, 'border-Left-Width')) + parseInt(this.getProperty(firstItem, 'border-Right-Width'))));
-    this.cfg.itemOuterHeight = parseInt(this.getProperty(firstItem, 'height')) + Math.max(parseInt(this.getProperty(firstItem, 'margin-Top')), parseInt(this.getProperty(firstItem, 'margin-Bottom'))) + ((parseInt(this.getProperty(firstItem, 'border-Top-Width')) + parseInt(this.getProperty(firstItem, 'border-Bottom-Width'))));
-
+    var firstItem  = this.items.filter(':first'),
+    firstItemNative = firstItem.get(0);
+    this.cfg.itemOuterWidth =  firstItem.innerWidth() + parseInt(this.getProperty(firstItemNative, 'margin-Left')) + parseInt(this.getProperty(firstItemNative, 'margin-Right')) +  ((parseInt(this.getProperty(firstItemNative, 'border-Left-Width')) + parseInt(this.getProperty(firstItemNative, 'border-Right-Width'))));
+    this.cfg.itemOuterHeight = firstItem.innerHeight() + Math.max(parseInt(this.getProperty(firstItemNative, 'margin-Top')), parseInt(this.getProperty(firstItemNative, 'margin-Bottom'))) + ((parseInt(this.getProperty(firstItemNative, 'border-Top-Width')) + parseInt(this.getProperty(firstItemNative, 'border-Bottom-Width'))));
+    
     //viewport width/height
     if(this.cfg.vertical) {
         this.viewport.width(this.cfg.itemOuterWidth);
