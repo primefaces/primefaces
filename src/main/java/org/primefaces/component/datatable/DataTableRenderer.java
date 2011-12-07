@@ -79,6 +79,11 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isPaginator()) {
             updatePaginationMetadata(context, table);
         }
+        
+        //load lazy data if body needs to be updated (page, filter, sort)
+        if(table.isLazy() && table.isBodyUpdate(context)) {
+            table.loadLazyData();
+        }
     }
     
     @Override
