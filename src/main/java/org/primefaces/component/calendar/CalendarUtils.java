@@ -15,10 +15,8 @@
  */
 package org.primefaces.component.calendar;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -44,12 +42,7 @@ public class CalendarUtils {
 			}
 			//Use built-in converter
 			else {
-                String pattern = calendar.getPattern();
-                Locale locale = calendar.calculateLocale(context);
-                if(pattern == null) {
-                    pattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
-                }
-				SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
+				SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
 				dateFormat.setTimeZone(calendar.calculateTimeZone());
 				
 				return dateFormat.format(value);
@@ -57,19 +50,21 @@ public class CalendarUtils {
 		}
 	}
 	
-	public static String getDateAsString(Calendar calendar, Object date) {		
-		if(date == null) {
+	public static String getValueAsString(FacesContext context, Calendar calendar, Object value) {		
+		if(value == null) {
 			return null;
 		}
 		
-		if(date instanceof String){
-			return (String) date;
-		} else if(date instanceof Date) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.getPattern(), calendar.calculateLocale(FacesContext.getCurrentInstance())); 
+		if(value instanceof String){
+			return (String) value;
+		} 
+        else if(value instanceof Date) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context)); 
 			dateFormat.setTimeZone(calendar.calculateTimeZone());
 			
-			return dateFormat.format((Date) date);
-		} else {
+			return dateFormat.format((Date) value);
+		} 
+        else {
 			throw new FacesException("Date could be either String or java.util.Date");
 		}
 	}

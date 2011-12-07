@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.faces.component.UIComponent;
@@ -116,10 +115,7 @@ public class CalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
-        String pattern = calendar.getPattern();
-        if(pattern == null) {
-            pattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
-        }
+        String pattern = calendar.calculatePattern();
        
         startScript(writer, clientId);
 
@@ -138,15 +134,12 @@ public class CalendarRenderer extends InputRenderer {
             writer.write(",defaultDate:'" + value + "'");
         } 
         else if(pagedate != null) {
-            if(pagedate instanceof Date)
-                writer.write(",defaultDate:'" + CalendarUtils.getDateAsString(calendar, pagedate) + "'");
-            else
-                writer.write(",defaultDate:'" + pagedate + "'");
+            writer.write(",defaultDate:'" + CalendarUtils.getValueAsString(context, calendar, pagedate) + "'");
         }
 
         if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
-        if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMindate()) + "'");
-        if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getDateAsString(calendar, calendar.getMaxdate()) + "'");
+        if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()) + "'");
+        if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()) + "'");
         if(calendar.isShowButtonPanel()) writer.write(",showButtonPanel:true");
         if(calendar.isShowWeek()) writer.write(",showWeek:true");
         if(calendar.isDisabledWeekends()) writer.write(",disabledWeekends:true");
@@ -223,19 +216,12 @@ public class CalendarRenderer extends InputRenderer {
 
         //Use built-in converter
         try {
-            Date convertedValue;
-            Locale locale = calendar.calculateLocale(context);
-            String pattern = calendar.getPattern();
-            if(pattern == null) {
-                pattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
-            }
-            SimpleDateFormat format = new SimpleDateFormat(pattern, locale);
+            SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
             format.setTimeZone(calendar.calculateTimeZone());
-            convertedValue = format.parse(submittedValue);
             
-            return convertedValue;
-
-        } catch (ParseException e) {
+            return format.parse(submittedValue);
+        } 
+        catch (ParseException e) {
             throw new ConverterException(e);
         }
     }
