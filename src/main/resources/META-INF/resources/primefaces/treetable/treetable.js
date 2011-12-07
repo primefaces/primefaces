@@ -57,15 +57,15 @@ PrimeFaces.widget.TreeTable.prototype.bindSelectionEvents = function() {
             .live('mouseover.treetable', function(e) {
                 var element = $(this);
 
-                if(!element.hasClass('ui-selected')) {
-                    element.addClass('ui-state-highlight');
+                if(!element.hasClass('ui-state-highlight')) {
+                    element.addClass('ui-state-hover');
                 }
             })
             .live('mouseout.treetable', function(e) {
                 var element = $(this);
 
-                if(!element.hasClass('ui-selected')) {
-                    element.removeClass('ui-state-highlight');
+                if(!element.hasClass('ui-state-highlight')) {
+                    element.removeClass('ui-state-hover');
                 }
             })
             .live('click.treetable', function(e) {
@@ -147,12 +147,14 @@ PrimeFaces.widget.TreeTable.prototype.onRowClick = function(e, node) {
     
     //Check if rowclick triggered this event not an element in row content
     if($(e.target).is('div.ui-tt-c,td')) {
-        var selected = node.hasClass('ui-selected');
+        var selected = node.hasClass('ui-state-highlight');
 
         if(selected)
             this.unselectNode(e, node);
         else
             this.selectNode(e, node);
+        
+        PrimeFaces.clearSelection();
     }
 }
 
@@ -161,12 +163,12 @@ PrimeFaces.widget.TreeTable.prototype.selectNode = function(e, node) {
     
     //unselect previous selection
     if(this.isSingleSelection() || (this.isMultipleSelection() && !e.metaKey)) {
-        node.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight'); 
+        node.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
         this.selection = [];
     }
 
     //add to selection
-    node.addClass('ui-state-highlight ui-selected');
+    node.removeClass('ui-state-hover').addClass('ui-state-highlight');
     this.addSelection(nodeKey);
 
     //save state
@@ -180,7 +182,7 @@ PrimeFaces.widget.TreeTable.prototype.unselectNode = function(e, node) {
 
     if(e.metaKey) {
         //remove visual style
-        node.removeClass('ui-selected ui-state-highlight');
+        node.removeClass('ui-state-highlight');
 
         //remove from selection
         this.removeSelection(nodeKey);
@@ -191,7 +193,7 @@ PrimeFaces.widget.TreeTable.prototype.unselectNode = function(e, node) {
         this.fireUnselectNodeEvent(e, nodeKey);
     }
     else if(this.isMultipleSelection()){
-        this.selectRow(e, node);
+        this.selectNode(e, node);
     }
 }
 
