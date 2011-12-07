@@ -15,8 +15,10 @@
  */
 package org.primefaces.component.calendar;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -26,7 +28,7 @@ import javax.faces.context.FacesContext;
  */
 public class CalendarUtils {
 
-	public static String getValueAsString(FacesContext facesContext, Calendar calendar) {
+	public static String getValueAsString(FacesContext context, Calendar calendar) {
 		Object submittedValue = calendar.getSubmittedValue();
 		if(submittedValue != null) {
 			return submittedValue.toString();
@@ -38,11 +40,16 @@ public class CalendarUtils {
 		} else {
 			//first ask the converter
 			if(calendar.getConverter() != null) {
-				return calendar.getConverter().getAsString(facesContext, calendar, value);
+				return calendar.getConverter().getAsString(context, calendar, value);
 			}
 			//Use built-in converter
 			else {
-				SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.getPattern(), calendar.calculateLocale(facesContext));
+                String pattern = calendar.getPattern();
+                Locale locale = calendar.calculateLocale(context);
+                if(pattern == null) {
+                    pattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
+                }
+				SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
 				dateFormat.setTimeZone(calendar.calculateTimeZone());
 				
 				return dateFormat.format(value);
