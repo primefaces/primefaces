@@ -171,6 +171,10 @@ public class DataTableRenderer extends DataRenderer {
 		String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
+        
+        if(table.isLazy()) {
+            table.loadLazyData();
+        }
 
         //style
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
@@ -576,11 +580,7 @@ public class DataTableRenderer extends DataRenderer {
         String emptyMessage = table.getEmptyMessage();
         SubTable subTable = table.getSubTable();
         SummaryRow summaryRow = table.getSummaryRow();
-        
-        if(table.isLazy()) {
-            table.loadLazyData();
-        }
-        
+                
         if(table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
         }
