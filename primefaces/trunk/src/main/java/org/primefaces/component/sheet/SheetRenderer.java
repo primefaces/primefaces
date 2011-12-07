@@ -207,15 +207,7 @@ public class SheetRenderer extends CoreRenderer {
                     writer.endElement("span");
                 }
                 
-                int letterIndex = columnIndex / 26;
-                if(letterIndex == 0) {
-                    writer.write(Sheet.LETTERS[columnIndex]);
-                } else {
-                    int first = letterIndex - 1;
-                    int second = columnIndex % 26;
-                    
-                    writer.write(Sheet.LETTERS[first] + Sheet.LETTERS[second]);
-                }
+                writer.write(getColumnCode(columnIndex));
 
                 writer.endElement("th");
                 
@@ -372,5 +364,13 @@ public class SheetRenderer extends CoreRenderer {
         }
 
         Collections.sort(list, new BeanPropertyComparator(sortByVE, sheet.getVar(), sortOrder, null));
+    }
+    
+    protected String getColumnCode(int index){
+        if(index >= 26) {
+            return getColumnCode((index/26) - 1) + Sheet.LETTERS[index%26];
+        }
+            
+        return Sheet.LETTERS[index];
     }
 }
