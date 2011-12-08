@@ -65,7 +65,8 @@ PrimeFaces.widget.Calendar = function(cfg) {
     
     //Hide overlay on resize
     if(this.cfg.popup) {
-        $(window).resize(function() {
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
             _self.jqEl.datepicker('hide');
         });
     }
