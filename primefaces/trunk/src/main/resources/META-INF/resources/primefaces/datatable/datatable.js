@@ -127,19 +127,21 @@ PrimeFaces.widget.DataTable.prototype.setupSortEvents = function() {
  * Binds filter events to filters
  */
 PrimeFaces.widget.DataTable.prototype.setupFiltering = function() {
-    var _self = this;
-    
+    var _self = this,
+    filterEvent = _self.cfg.filterEvent == 'enter' ? 'keypress' : 'keyup';
+        
     $(this.jqId + ' thead:first th.ui-filter-column .ui-dt-c .ui-column-filter').each(function(index) {
         var filter = $(this);
+        
         if(filter.is('input:text')) {
             PrimeFaces.skinInput(filter);
             
-            filter.keyup(function(e) {
-                if(_self.cfg.filterEvent == 'keyup' || (_self.cfg.filterEvent == 'enter' && e.which == $.ui.keyCode.ENTER)){
+            filter.bind(filterEvent, function(e) {
+                if(_self.cfg.filterEvent == 'keyup' || (_self.cfg.filterEvent == 'enter' && e.which == $.ui.keyCode.ENTER)){
                     _self.filter(e);
                     
                     e.preventDefault();
-                }
+                } 
             });
         } 
         else {
