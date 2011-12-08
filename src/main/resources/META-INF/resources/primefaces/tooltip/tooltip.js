@@ -5,6 +5,7 @@ PrimeFaces.widget.Tooltip = function(cfg) {
 	this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
+    var _self = this;
     
     //remove previous element to support ajax updates
     $(document.body).children(this.jqId).remove();
@@ -32,6 +33,14 @@ PrimeFaces.widget.Tooltip = function(cfg) {
     
     //remove target's title
     this.target.removeAttr('title');
+    
+    //Hide overlay on resize
+    var resizeNS = 'resize.' + this.id;
+    $(window).unbind(resizeNS).bind(resizeNS, function() {
+        if(_self.jq.is(':visible')) {
+            _self.hide();
+        }
+    });
 
     this.postConstruct();
 }
