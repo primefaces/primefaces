@@ -95,27 +95,27 @@ PrimeFaces = {
         $.mobile.changePage(to, options);
     },
     
-    info: function(msg) {
-        if(window.log) {
-            log.info(msg);
+    info: function(log) {
+        if(this.logger) {
+            this.logger.info(log);
         }
     },
     
-    debug: function(msg) {
-        if(window.log) {
-            log.debug(msg);
+    debug: function(log) {
+        if(this.logger) {
+            this.logger.debug(log);
         }
     },
     
-    warn: function(msg) {
-        if(window.log) {
-            log.warn(msg);
+    warn: function(log) {
+        if(this.logger) {
+            this.logger.warn(log);
         }
     },
     
-    error: function(msg) {
-        if(window.log) {
-            log.error(msg);
+    error: function(log) {
+        if(this.logger) {
+            this.logger.error(log);
         }
     },
     
