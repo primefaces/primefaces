@@ -8,6 +8,7 @@ PrimeFaces.widget.Calendar = function(cfg) {
     this.jq = $(this.jq);
     this.input = $(this.jqId + '_input');
     this.jqEl = this.cfg.popup ? this.input : $(this.jqId + '_inline');
+    var _self = this;
     
     //i18n and l7n
     this.configureLocale();
@@ -61,6 +62,13 @@ PrimeFaces.widget.Calendar = function(cfg) {
 
     //button title
     this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
+    
+    //Hide overlay on resize
+    if(this.cfg.popup) {
+        $(window).resize(function() {
+            _self.jqEl.datepicker('hide');
+        });
+    }
     
     this.postConstruct();
 }
