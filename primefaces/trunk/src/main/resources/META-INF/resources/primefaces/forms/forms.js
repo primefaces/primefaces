@@ -234,7 +234,6 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.options = this.input.children('option');
     this.items = this.itemContainer.find('.ui-selectonemenu-item');
     this.cfg.effectDuration = this.cfg.effectDuration||400;
-    
     var _self = this;
 
     //disable options
@@ -275,6 +274,13 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         this.panel.width(jqWidth);
         this.jq.width(jqWidth);     //replace auto with fixed width
     }
+    
+    //Hide overlay on resize
+    $(window).resize(function() {
+        if(_self.panel.is(':visible')) {
+            _self.hide();
+        }
+    });
     
     this.postConstruct();
 }
