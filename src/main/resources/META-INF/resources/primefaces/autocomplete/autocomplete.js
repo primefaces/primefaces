@@ -14,6 +14,7 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
     this.disabled = this.input.is(':disabled');
     this.active = true;
     this.cfg.pojo = this.hinput.length == 1;
+    var _self = this;
     
     //options
     this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
@@ -40,6 +41,13 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
     //Panel management
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
+    
+    //Hide overlay on resize
+    $(window).resize(function() {
+        if(_self.panel.is(':visible')) {
+            _self.hide();
+        }
+    });
     
     this.postConstruct();
 }
