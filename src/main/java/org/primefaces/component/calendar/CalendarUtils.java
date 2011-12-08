@@ -65,7 +65,26 @@ public class CalendarUtils {
 			return dateFormat.format((Date) value);
 		} 
         else {
-			throw new FacesException("Date could be either String or java.util.Date");
+			throw new FacesException("Value could be either String or java.util.Date");
+		}
+	}
+    
+    public static String getTimeOnlyValueAsString(FacesContext context, Calendar calendar) {
+        Object value = calendar.getValue();
+        if(value == null) {
+            return null;
+        }
+        
+        if(value instanceof String){
+			return (String) value;
+		} else if(value instanceof Date) {
+            SimpleDateFormat format = new SimpleDateFormat(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context));
+            format.setTimeZone(calendar.calculateTimeZone());
+
+            return format.format(calendar.getValue());
+        }
+		else {
+			throw new FacesException("Value could be either String or java.util.Date");
 		}
 	}
 		
