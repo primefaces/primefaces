@@ -137,7 +137,7 @@ PrimeFaces.widget.DataTable.prototype.setupFiltering = function() {
             PrimeFaces.skinInput(filter);
             
             filter.bind(filterEvent, function(e) {
-                if(_self.cfg.filterEvent == 'keyup' || (_self.cfg.filterEvent == 'enter' && e.which == $.ui.keyCode.ENTER)){
+                if(_self.cfg.filterEvent == 'keyup'||(_self.cfg.filterEvent == 'enter' && e.which == $.ui.keyCode.ENTER)){
                     _self.filter(e);
                     
                     e.preventDefault();
