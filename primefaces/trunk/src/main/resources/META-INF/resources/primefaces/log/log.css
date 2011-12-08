@@ -1,84 +1,15 @@
-/*
-  Blackbird - Open Source JavaScript Logging Utility
-  Author: G Scott Olson
-  Web: http://blackbirdjs.googlecode.com/
-       http://www.gscottolson.com/blackbirdjs/
-  Version: 1.0
+.ui-log {
+    position:fixed;
+    width:300px;
+    height:300px;
+    left:50px;
+    top:50px;
+    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    overflow: auto;
+}
 
-  The MIT License - Copyright (c) 2008 Blackbird Project
-*/
-#blackbird { margin:0; padding:0; position:fixed; _position:absolute; font:11px/1.3 Consolas, 'Lucida Console', Monaco, monospace; _border:2px solid #BBB; z-index: 10000; }
-#blackbird.bbTopLeft { top:0; left:0; _top:expression(eval(document.documentElement.scrollTop+8)); _left:expression(eval(document.documentElement.scrollLeft+8)); }
-#blackbird.bbTopRight { top:0; right:0; }
-* html .bbTopRight { right:auto; top:expression(eval(document.documentElement.scrollTop+8)); left:expression(eval(document.documentElement.scrollLeft+document.documentElement.clientWidth-document.getElementById('blackbird').offsetWidth-8)); }
-#blackbird.bbBottomLeft  { bottom:0; left:0; }
-* html .bbBottomLeft { bottom:auto; top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-document.getElementById('blackbird').offsetHeight-8)); left:expression(eval(document.documentElement.scrollLeft+8)); }
-#blackbird.bbBottomRight { bottom:0; right:0; }
-* html .bbBottomRight { bottom:auto; right:auto; top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-document.getElementById('blackbird').offsetHeight-8)); left:expression(eval(document.documentElement.scrollLeft+document.documentElement.clientWidth-document.getElementById('blackbird').offsetWidth-8)); }
-
-#blackbird.bbSmall { width:300px; _width:272px; }
-  #blackbird.bbSmall .header { _width:272px; }
-  #blackbird.bbSmall .header div.left, #blackbird.bbSmall .footer div.left   { width:150px; }
-  #blackbird.bbSmall .main { _width:272px; }
-  #blackbird.bbSmall .main div { height:200px; }
-  #blackbird.bbSmall .main div.mainBody { width:272px; }
-  #blackbird.bbSmall .footer { _width:272px; }
-
-#blackbird.bbLarge { width:500px; _width:472px; }
-  #blackbird.bbLarge .header { _width:472px; }
-  #blackbird.bbLarge .header div.left, #blackbird.bbLarge .footer div.left { width:350px; }
-  #blackbird.bbLarge .main { _width:472px; }
-  #blackbird.bbLarge .main div { height:500px; }
-  #blackbird.bbLarge .main div.mainBody { width:472px; }
-  #blackbird.bbLarge .footer { _width:472px; }
-
-#blackbird .header span { position:relative; width:16px; height:16px; margin:0 4px; float:left; background-image:url("#{resource['primefaces:log/icons.png']}"); background-repeat:no-repeat; }
-	#blackbird .header span.error           { background-position:0px 0px; }
-	#blackbird .header span.errorDisabled   { background-position:-16px 0px; }
-	#blackbird .header span.warn            { background-position:0px -16px; }
-	#blackbird .header span.warnDisabled    { background-position:-16px -16px; }
-	#blackbird .header span.info            { background-position:0px -32px; }
-	#blackbird .header span.infoDisabled    { background-position:-16px -32px; }
-	#blackbird .header span.debug           { background-position:0px -48px; }
-	#blackbird .header span.debugDisabled   { background-position:-16px -48px; }
-	#blackbird .header span.profile         { background-position:0px -64px; }
-	#blackbird .header span.profileDisabled { background-position:-16px -64px; }
-	#blackbird .header span.close           { background-position:0px -80px; }
-	#blackbird .header span.clear           { background-position:-16px -80px; }
-	#blackbird .header span.small           { background-position:0px -96px; }
-	#blackbird .header span.large           { background-position:-16px -96px; }
-
-#blackbird .header > div, #blackbird .main > div, #blackbird .footer > div { background-image:url("#{resource['primefaces:log/panel.png']}"); background-repeat:no-repeat; }
-	
-#blackbird .header div { float:left; _background-color:#000; }
-	#blackbird .header div.left { background-position:top left; height:40px; _height:16px; }
-		#blackbird .header .left div.filters { margin-left: -4px; padding:16px 0 0 19px; float:left; _padding:6px 8px; }
-	#blackbird .header div.right { background-position:top right; height:40px; width:150px; _width:122px; _height:16px; }
-		#blackbird .header .right div.controls { padding:16px 24px 0 0; float:right; _padding:6px 8px; }
-		#blackbird .header .right .controls span { margin:0; }
-		#blackbird .header .right .controls span.clear { margin-right:8px; }
-
-#blackbird .main div { float:left; }
-	#blackbird .main div.left { background-position:0 -30px; width:11px; _width:0; }
-	#blackbird .main div.mainBody { background-position:40% -40px; _background-color:#000; _filter:alpha(opacity='93'); }
-		#blackbird .main .mainBody ol { line-height: 1.45; height:100%; overflow:auto; width:100%; list-style-type:none; margin:0; padding:0; }
-		#blackbird .main .mainBody ol li { padding:1px 4px 1px 30px; border-bottom: 1px solid #333; color:#CCC; margin: 2px 2px; _text-indent: -2px; }
-		  #blackbird .main .mainBody ol li span { background:url("#{resource['primefaces:log/icons.png']}") no-repeat 0 0; border: 1px solid #333; height:16px; width:16px; display:block; float:left; margin: -2px 0 1px -25px; _display:inline; }
-		
-#blackbird .main .mainBody ol li.error span   { background-position:0 0; }
-#blackbird .main .mainBody ol li.warn span    { background-position:0 -16px; }
-#blackbird .main .mainBody ol li.info span    { background-position:0 -32px; }
-#blackbird .main .mainBody ol li.debug span   { background-position:0 -48px; }
-#blackbird .main .mainBody ol li.profile span { background-position:0 -64px; }
-
-#blackbird .main .mainBody ol li.profile { color:#DDD; font-style:italic; }
-			
-#blackbird .errorHidden li.error,	#blackbird .warnHidden li.warn,	#blackbird .infoHidden li.info,	#blackbird .debugHidden li.debug,	#blackbird .profileHidden li.profile { display:none; }
-
-#blackbird .main div.right { background:url("#{resource['primefaces:log/panel.png']}") no-repeat 100% -30px; width:17px; _width:0; }
-
-#blackbird .footer div { height:50px; float:left; _background-color:#000; _height:30px; }
-#blackbird .footer div.left { background-position:bottom left; _width:100%  !important; }
-  #blackbird .footer div.left label { display:block;color:#BBB;margin:8px 0 0 16px; position:relative; font-family:Arial,sans-serif; _margin:4px 0 0 8px;}
-    #blackbird .footer div.left label input { padding:0;vertical-align:middle; }
-#blackbird .footer div.right { background-position:bottom right; width:150px; _width:0; }
+.ui-log .ui-log-items {
+    list-style-type: none;
+}
