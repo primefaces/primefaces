@@ -14,6 +14,7 @@ PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
+    var _self = this;
     
     //options
     if(!this.cfg.effectDuration) {
@@ -34,6 +35,13 @@ PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     //panel management
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
+    
+    //Hide overlay on resize
+    $(window).resize(function() {
+        if(_self.panel.is(':visible')) {
+            _self.hide();
+        }
+    });
     
     this.postConstruct();
 }
