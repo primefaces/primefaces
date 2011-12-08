@@ -274,9 +274,10 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         this.panel.width(jqWidth);
         this.jq.width(jqWidth);     //replace auto with fixed width
     }
-    
+        
     //Hide overlay on resize
-    $(window).resize(function() {
+    var resizeNS = 'resize.' + this.id;
+    $(window).unbind(resizeNS).bind(resizeNS, function() {
         if(_self.panel.is(':visible')) {
             _self.hide();
         }

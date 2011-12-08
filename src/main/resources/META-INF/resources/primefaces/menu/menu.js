@@ -337,6 +337,7 @@ PrimeFaces.widget.MenuButton = function(cfg) {
     this.menu = this.jq.children('.ui-menu');
     this.menuitems = this.jq.find('.ui-menuitem');
     this.cfg.disabled = this.button.is(':disabled');
+    var _self = this;
 
     PrimeFaces.skinButton(this.button);
 
@@ -346,6 +347,14 @@ PrimeFaces.widget.MenuButton = function(cfg) {
         $(document.body).children(this.menuId).remove();
         this.menu.appendTo(document.body);
     }
+    
+    //Hide overlay on resize
+    var resizeNS = 'resize.' + this.id;
+    $(window).unbind(resizeNS).bind(resizeNS, function() {
+        if(_self.menu.is(':visible')) {
+            _self.menu.hide();
+        }
+    });
     
     this.postConstruct();
 }

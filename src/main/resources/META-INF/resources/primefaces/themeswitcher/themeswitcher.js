@@ -35,9 +35,10 @@ PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     //panel management
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
-    
+        
     //Hide overlay on resize
-    $(window).resize(function() {
+    var resizeNS = 'resize.' + this.id;
+    $(window).unbind(resizeNS).bind(resizeNS, function() {
         if(_self.panel.is(':visible')) {
             _self.hide();
         }
