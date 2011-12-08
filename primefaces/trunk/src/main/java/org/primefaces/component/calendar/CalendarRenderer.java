@@ -16,7 +16,6 @@
 package org.primefaces.component.calendar;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -53,10 +52,11 @@ public class CalendarRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Calendar calendar = (Calendar) component;
-        String value = CalendarUtils.getValueAsString(context, calendar);
+        String markupValue = CalendarUtils.getValueAsString(context, calendar);
+        String widgetValue = calendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, calendar) : markupValue;
 
-        encodeMarkup(context, calendar, value);
-        encodeScript(context, calendar, value);
+        encodeMarkup(context, calendar, markupValue);
+        encodeScript(context, calendar, widgetValue);
     }
 
     protected void encodeMarkup(FacesContext context, Calendar calendar, String value) throws IOException {
@@ -115,8 +115,8 @@ public class CalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
-        String pattern = calendar.calculatePattern();
-       
+        String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
+
         startScript(writer, clientId);
 
         writer.write("$(function(){");
@@ -219,7 +219,9 @@ public class CalendarRenderer extends InputRenderer {
             SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
             format.setTimeZone(calendar.calculateTimeZone());
             
-            return format.parse(submittedValue);
+            Object date = format.parse(submittedValue);
+            
+            return date;
         } 
         catch (ParseException e) {
             throw new ConverterException(e);

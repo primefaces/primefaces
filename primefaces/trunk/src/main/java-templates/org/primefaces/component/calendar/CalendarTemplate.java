@@ -129,3 +129,16 @@ import javax.faces.event.PhaseId;
 
         return calculatedPattern;
     }
+
+    private String timeOnlyPattern = null;
+
+    public String calculateTimeOnlyPattern() {
+        if(timeOnlyPattern == null) {
+            String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, calculateLocale(FacesContext.getCurrentInstance()))).toPattern();
+            String userTimePattern = getPattern();
+
+            timeOnlyPattern = localePattern + " " + userTimePattern;
+        }
+
+        return timeOnlyPattern;
+    }
