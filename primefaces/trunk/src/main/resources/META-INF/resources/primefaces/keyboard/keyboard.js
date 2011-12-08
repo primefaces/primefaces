@@ -914,6 +914,12 @@ PrimeFaces.widget.Keyboard = function(cfg) {
         PrimeFaces.skinInput(this.jq);
     }
     
+    //Hide overlay on resize
+    var resizeNS = 'resize.' + this.id;
+    $(window).unbind(resizeNS).bind(resizeNS, function() {
+        $.keypad._hideKeypad();
+    });
+    
     this.postConstruct();
 }
 

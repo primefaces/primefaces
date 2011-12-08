@@ -123,6 +123,14 @@ PrimeFaces.widget.Menu = function(cfg) {
 
             _self.hide();
         });
+        
+        //Hide overlay on resize
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if(_self.jq.is(':visible')) {
+                _self.hide();
+            }
+        });
     }
 
     if(this.cfg.sliding){
