@@ -266,7 +266,9 @@ PrimeFaces.widget.InputMask = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
 
-    this.jq.mask(this.cfg.mask, this.cfg);
+    if(this.cfg.mask) {
+        this.jq.mask(this.cfg.mask, this.cfg);
+    }
 
     //Client behaviors
     if(this.cfg.behaviors) {

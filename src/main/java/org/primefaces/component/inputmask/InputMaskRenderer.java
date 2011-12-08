@@ -56,15 +56,18 @@ public class InputMaskRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
+        String mask = inputMask.getMask();
 		
         startScript(writer, clientId);
 
         writer.write("PrimeFaces.cw('InputMask','" + inputMask.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",mask:'" + inputMask.getMask() + "'");
-
-        if(inputMask.getPlaceHolder()!=null) {
-			writer.write(",placeholder:'" + inputMask.getPlaceHolder() + "'");
+        
+        if(mask != null) {
+            writer.write(",mask:'" + inputMask.getMask() + "'");
+            
+            if(inputMask.getPlaceHolder()!=null)
+                writer.write(",placeholder:'" + inputMask.getPlaceHolder() + "'");
         }
 
         encodeClientBehaviors(context, inputMask);
