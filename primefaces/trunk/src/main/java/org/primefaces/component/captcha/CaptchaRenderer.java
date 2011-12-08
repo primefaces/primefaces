@@ -46,7 +46,9 @@ public class CaptchaRenderer extends CoreRenderer {
 				captcha.setSubmittedValue(answer);
 			else
 				captcha.setSubmittedValue(new Verification(challenge, answer));
-		}
+		} else {
+            captcha.setSubmittedValue("");
+        }
 	}
 
     @Override
