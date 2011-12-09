@@ -1,6 +1,3 @@
-/**
- * PrimeFaces Log Widget
- */
 PrimeFaces.widget.Log = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
@@ -10,6 +7,7 @@ PrimeFaces.widget.Log = function(cfg) {
     this.content = this.jq.children('.ui-log-content');
     this.itemsContainer = this.content.find('.ui-log-items');
     this.filters = this.header.children('.ui-log-button');
+    this.severity = 'all';
     var _self = this;
     
     //make draggable
@@ -42,6 +40,7 @@ PrimeFaces.widget.Log.prototype.bindEvents = function() {
         _self.itemsContainer.html('');
         _self.filters.filter('.ui-state-active').removeClass('ui-state-active');
         _self.filters.filter('.ui-log-all').addClass('ui-state-active');
+        _self.severity = 'all';
         e.preventDefault();
     });
     
@@ -50,27 +49,28 @@ PrimeFaces.widget.Log.prototype.bindEvents = function() {
         _self.itemsContainer.children().show();
         _self.filters.filter('.ui-state-active').removeClass('ui-state-active');
         $(this).addClass('ui-state-active').removeClass('ui-state-hover');
+        _self.severity = 'all';
         e.preventDefault();
     });
     
     //info
     this.header.children('.ui-log-info').click(function(e) {
-        _self.handleFilterClick(e, '.ui-log-item-info', $(this));
+        _self.handleFilterClick(e, '.ui-log-item-info', 'info', $(this));
     });
     
     //warn
     this.header.children('.ui-log-warn').click(function(e) {
-        _self.handleFilterClick(e, '.ui-log-item-warn', $(this));
+        _self.handleFilterClick(e, '.ui-log-item-warn', 'warn', $(this));
     });
     
     //debug
     this.header.children('.ui-log-debug').click(function(e) {
-        _self.handleFilterClick(e, '.ui-log-item-debug', $(this));
+        _self.handleFilterClick(e, '.ui-log-item-debug', 'debug', $(this));
     });
     
     //error
     this.header.children('.ui-log-error').click(function(e) {
-        _self.handleFilterClick(e, '.ui-log-item-error', $(this));
+        _self.handleFilterClick(e, '.ui-log-item-error', 'error', $(this));
     });
 }
 
@@ -91,16 +91,22 @@ PrimeFaces.widget.Log.prototype.error = function(msg) {
 }
 
 PrimeFaces.widget.Log.prototype.add = function(msg, severity, icon) {
-    this.itemsContainer.append('<li class="ui-log-item ui-log-item-' + severity + ' ui-helper-clearfix"><span class="ui-icon ' + icon + '"></span>' + msg + '</li>');
+    var visible = this.severity == severity || this.severity == 'all',
+    style = visible ? 'display:block' : 'display:none';
+    
+    var item = '<li class="ui-log-item ui-log-item-' + severity + ' ui-helper-clearfix" style="' + style + '"><span class="ui-icon ' + icon + '"></span>' + msg + '</li>';
+    
+    this.itemsContainer.append(item);
 }
 
 PrimeFaces.widget.Log.prototype.filter = function(severity) {
     this.itemsContainer.children().hide().filter(severity).show();
 }
 
-PrimeFaces.widget.Log.prototype.handleFilterClick = function(event, severity, button) {
-    this.filter(severity);
+PrimeFaces.widget.Log.prototype.handleFilterClick = function(event, severityClass, severity, button) {
+    this.filter(severityClass);
     this.filters.filter('.ui-state-active').removeClass('ui-state-active');
     button.addClass('ui-state-active').removeClass('ui-state-hover');
+    this.severity = severity;
     event.preventDefault();
 }
