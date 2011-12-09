@@ -73,7 +73,11 @@ public abstract class InputRenderer extends CoreRenderer {
                     Collection collection = (Collection) value;
                     
                     for(Iterator it = collection.iterator(); it.hasNext();) {
-                        selectItems.add(createSelectItem(context, uiSelectItems, it.next()));
+                        Object item = it.next();
+                        if(item instanceof SelectItem)
+                            selectItems.add((SelectItem) item);
+                        else
+                            selectItems.add(createSelectItem(context, uiSelectItems, item));
                     }               
                 }
 			}
