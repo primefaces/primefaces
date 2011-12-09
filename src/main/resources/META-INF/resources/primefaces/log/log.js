@@ -18,10 +18,17 @@ PrimeFaces.widget.Log = function(cfg) {
     
     //attach events
     this.bindEvents();
+    
+    //append to body
+    this.jq.appendTo('body');
 
     //attach
     PrimeFaces.logger = this;
+    
+    this.postConstruct();
 }
+
+PrimeFaces.extend(PrimeFaces.widget.Log, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Log.prototype.bindEvents = function() {
     var _self = this;
