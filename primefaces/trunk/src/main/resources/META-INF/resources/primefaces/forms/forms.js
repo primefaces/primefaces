@@ -242,8 +242,12 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     });
 
     //populate label and activate selected item
-    var selectedOption = this.options.filter(':selected');
-    this.label.html(selectedOption.text());
+    var selectedOption = this.options.filter(':selected'),
+    label = selectedOption.text();
+    if(label == '') {
+        label = '&nbsp';
+    }
+    this.label.html(label);
     this.items.eq(selectedOption.index()).addClass('ui-state-active');
     
     this.bindEvents();
