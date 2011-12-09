@@ -66,6 +66,10 @@
     padding-left: 10px;
 }
 
+.ui-log .ui-log-item {
+    margin-bottom:5px;
+}
+
 .ui-log .ui-log-item .ui-icon {
     float:left;
     margin-right: 10px;
