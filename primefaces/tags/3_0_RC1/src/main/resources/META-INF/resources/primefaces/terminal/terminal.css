@@ -1,0 +1,33 @@
+/* Basic Terminal CSS */
+.ui-terminal {
+    padding: 3px;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow-x: none;
+    overflow-y: auto;
+}
+
+/* TODO: Input Box Width is faulty */
+.ui-terminal input {
+    background: transparent;
+    border: 0; 
+    width: 100%;
+    outline: none;
+}
+
+.ui-terminal div:first {
+    margin-bottom: 1em;
+}
+
+.ui-terminal .ui-terminal-prompt {
+    float: left;
+    clear: left;
+}
+
+.ui-terminal form {
+    float: left;
+    margin: 0px;
+    width: 75%;
+}
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>toolbar</tag>
+	<tagClass>org.primefaces.component.toolbar.ToolbarTag</tagClass>
+	<componentClass>org.primefaces.component.toolbar.Toolbar</componentClass>
+	<componentType>org.primefaces.component.Toolbar</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ToolbarRenderer</rendererType>
+	<rendererClass>org.primefaces.component.toolbar.ToolbarRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Toolbar is a horizontal grouping component for commands and other content.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+	</attributes>
+    <resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+    </resources>
+</component>
