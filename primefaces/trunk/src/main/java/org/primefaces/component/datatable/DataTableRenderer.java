@@ -301,10 +301,12 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasFilter = column.getValueExpression("filterBy") != null;
         String selectionMode = column.getSelectionMode();
         String sortIcon = isSortable ? DataTable.SORTABLE_COLUMN_ICON_CLASS : null;
+        boolean resizable = table.isResizableColumns() && column.isResizable();
         
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
+        columnClass = resizable ? columnClass = columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
 
         if(isSortable) {

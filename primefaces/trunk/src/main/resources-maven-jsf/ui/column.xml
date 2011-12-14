@@ -123,5 +123,12 @@
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Disables row selection when true.</description>
 		</attribute>
+        <attribute>
+			<name>resizable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.</description>
+		</attribute>
 	</attributes>
 </component>

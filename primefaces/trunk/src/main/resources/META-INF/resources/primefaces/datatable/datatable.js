@@ -1073,7 +1073,7 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
  */
  PrimeFaces.widget.DataTable.prototype.setupResizableColumns = function() {
     //Add resizers and resizer helper
-    $(this.jqId + ' thead tr th').prepend('<span class="ui-column-resizer">&nbsp;</span>');
+    $(this.jqId + ' thead tr th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>');
     $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
     //Variables
