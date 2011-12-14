@@ -657,7 +657,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(r, event) {
     if(this.isMultipleSelection() && event && !event.metaKey) {
         this.selectRow(row, event);
     }
-    else{
+    else if(event.metaKey) {
         //remove visual style
         row.removeClass('ui-state-highlight');
 
