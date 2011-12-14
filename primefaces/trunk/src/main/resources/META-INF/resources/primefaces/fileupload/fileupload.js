@@ -2020,12 +2020,6 @@
         },
         
         destroy: function () {
-            this.element.find('.fileupload-progressbar')
-                .progressbar('destroy');
-            this.element.find('.fileupload-content')
-                .removeClass('ui-widget-content ui-corner-bottom');
-            this._destroyFileUploadButtonBar();
-            this.element.removeClass('ui-widget');
             $.blueimp.fileupload.prototype.destroy.call(this);
         },
         
