@@ -164,7 +164,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
         String name = checkbox.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-        boolean disabled = option.isDisabled();
+        boolean disabled = option.isDisabled() || checkbox.isDisabled();
 
         Object valuesArray;
         Object itemValue;
