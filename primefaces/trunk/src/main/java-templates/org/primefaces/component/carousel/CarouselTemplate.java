@@ -31,4 +31,26 @@
 	public void setFirstVisible(int _firstVisible) {
 		getStateHelper().put("firsVisible", _firstVisible);
 	}
+
+    /** Following three overrides enables processing of all items **/
+    public void processDecodes(FacesContext facesContext) {
+        int rows = this.getRows();
+		this.setRows(this.getRowCount());
+        super.processDecodes(facesContext);
+        this.setRows(rows);
+    }
+	
+	public void processValidators(FacesContext facesContext) {
+        int rows = this.getRows();
+		this.setRows(this.getRowCount());
+        super.processValidators(facesContext);
+        this.setRows(rows);
+    }
+	
+	public void processUpdates(FacesContext facesContext) {
+        int rows = this.getRows();
+		this.setRows(this.getRowCount());
+        super.processUpdates(facesContext);
+        this.setRows(rows);
+	}
     
