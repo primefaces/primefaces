@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.HTML;
 
@@ -51,16 +52,23 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
         styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
+        String layout = radio.getLayout();
+        boolean custom = layout != null && layout.equals("custom");
+        String rootElement = custom ? "div" : "table";
+        List<SelectItem> selectItems = getSelectItems(context, radio);
 
-        writer.startElement("table", radio);
+        writer.startElement(rootElement, radio);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) 
             writer.writeAttribute("style", style, "style");
 
-        encodeSelectItems(context, radio);
+        if(custom)
+            encodeCustomLayout(context, radio, selectItems);
+        else
+            encodeSelectItems(context, radio, selectItems, layout);
 
-        writer.endElement("table");
+        writer.endElement(rootElement);
     }
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -79,11 +87,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         endScript(writer);
     }
     
-    protected void encodeSelectItems(FacesContext context, SelectOneRadio radio) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<SelectItem> selectItems = getSelectItems(context, radio);
         Converter converter = getConverter(context, radio);
-        String layout = radio.getLayout();
         String name = radio.getClientId(context);
         boolean pageDirection = layout != null && layout.equals("pageDirection");
         Object value = radio.getSubmittedValue();
@@ -187,6 +193,17 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         writer.endElement("div");
     }
+    
+    protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
+        //child radio buttons need parent selectitems to index
+        radio.setSelectItems(selectItems);
+                
+        renderChildren(context, radio);
+    }
+    
+    protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+    }
 
     protected Class getValueType(FacesContext context, UIInput input) {
         ValueExpression ve = input.getValueExpression("value");
@@ -198,5 +215,15 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context);
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }

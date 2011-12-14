@@ -111,7 +111,7 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
-	protected String getOptionAsString(FacesContext context, UIInput component, Converter converter, Object value) {
+	protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) {
 		if(value == null)
             return "";
         else if(value instanceof String)

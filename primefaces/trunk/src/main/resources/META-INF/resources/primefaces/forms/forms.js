@@ -621,9 +621,16 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
             _self.check($(this));
     });
 
+    //selects radio when label is clicked
     this.labels.click(function(e) {
-        var input = $(PrimeFaces.escapeClientId($(this).attr('for'))),
-        radio = input.parent().siblings('.ui-radiobutton-box');
+        var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
+        radio = null;
+        
+        //checks if target is input or not(custom labels)
+        if(target.is(':input'))
+            radio = target.parent().siblings('.ui-radiobutton-box');
+        else
+            radio = target; //custom layout
 
         if(!radio.hasClass('ui-state-active'))
             _self.check(radio);
