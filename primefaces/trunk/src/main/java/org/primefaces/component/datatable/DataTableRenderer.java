@@ -716,27 +716,29 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeRegularCell(FacesContext context, DataTable table, Column column, String clientId, boolean selected) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean selectionEnabled = column.getSelectionMode() != null;
         String style = column.getStyle();
-        String styleClass = column.getStyleClass();
-
-        writer.startElement("td", null);
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
-
-        if(column.getSelectionMode() != null) {
-            writer.writeAttribute("class", DataTable.SELECTION_COLUMN_CLASS , null);
+        String styleClass = "";
+        
+        if(selectionEnabled)
+            styleClass = DataTable.SELECTION_COLUMN_CLASS;
+        else if(column.getCellEditor() != null) 
+             styleClass = DataTable.EDITABLE_COLUMN_CLASS;
             
+        styleClass = column.getStyleClass() == null ? styleClass : styleClass + " " + column.getStyleClass();
+        
+        writer.startElement("td", null);
+        
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(!isValueBlank(styleClass)) writer.writeAttribute("class", styleClass.trim(), null);
+
+        if(selectionEnabled) {
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             encodeColumnSelection(context, table, clientId, column, selected);
             writer.endElement("div");
         }
         else {
-            CellEditor editor = column.getCellEditor();
-            if(editor != null) {
-                writer.writeAttribute("class", DataTable.EDITABLE_COLUMN_CLASS , null);
-            }
-
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             column.encodeAll(context);
