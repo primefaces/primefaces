@@ -38,8 +38,6 @@ public class ProgressBarRenderer extends CoreRenderer {
         }
         
         decodeBehaviors(context, progressBar);
-
-        FacesContext.getCurrentInstance().renderResponse();
     }
 
     @Override
