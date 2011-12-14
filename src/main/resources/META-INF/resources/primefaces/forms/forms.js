@@ -862,6 +862,8 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
     this.postConstruct();
 }
 
+PrimeFaces.extend(PrimeFaces.widget.SelectListbox, PrimeFaces.widget.BaseWidget);
+
 /* 
  * PrimeFaces CommandButton Widget
  */
