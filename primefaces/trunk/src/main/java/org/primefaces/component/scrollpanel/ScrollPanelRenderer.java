@@ -35,14 +35,15 @@ public class ScrollPanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         boolean nativeMode = panel.getMode().equals("native");
+        
+        String defaultStyleClass = nativeMode ? ScrollPanel.SCROLL_PANEL_NATIVE_CLASS : ScrollPanel.SCROLL_PANEL_CLASS;
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        String defaultStyleClass = nativeMode ? ScrollPanel.SCROLL_PANEL_NATIVE_CLASS : ScrollPanel.SCROLL_PANEL_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", panel); 
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", defaultStyleClass, "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
