@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
@@ -33,8 +32,6 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
@@ -151,7 +148,6 @@ public class AjaxBehavior extends ClientBehaviorBase {
         return listener;
     }
     public void setListener(MethodExpression listener) {
-        System.out.println("Listener:" + listener);
         this.listener = listener;
     }
 
@@ -180,24 +176,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
     public boolean isImmediateSet() {
         return ((immediate != null) || (getValueExpression("immediate") != null));
     }
-    
-    @Override
-    public void broadcast(BehaviorEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ELContext eLContext = context.getELContext();
 
-        if(listener != null) {
-            try {
-                listener.invoke(eLContext, null);       //no-arg listener
-            } catch(MethodNotFoundException e1) {
-                MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
-
-                argListener.invoke(eLContext, new Object[]{event});
-            }
-        }
-    }
-    
     protected Object eval(String propertyName, Object value) {
         if(value != null) {
             return value;
