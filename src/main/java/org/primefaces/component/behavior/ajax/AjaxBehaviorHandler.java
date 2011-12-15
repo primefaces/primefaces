@@ -118,8 +118,7 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         
         if(listener != null) {
             behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                this.listener.getMethodExpression(ctx, Object.class, new Class[] { AjaxBehaviorEvent.class }),
-                this.listener.getMethodExpression(ctx, Object.class, new Class[] { })));
+                this.listener.getMethodExpression(ctx, Object.class, new Class[] {})));
         }
         
         return behavior;

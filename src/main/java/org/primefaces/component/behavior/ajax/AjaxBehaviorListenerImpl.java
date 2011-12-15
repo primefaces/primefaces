@@ -26,25 +26,24 @@ import javax.faces.event.AjaxBehaviorListener;
 
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
-    private MethodExpression argListener;
-    private MethodExpression noArgListener;
+    private MethodExpression listener;
 
-    // Necessary for state saving
     public AjaxBehaviorListenerImpl() {}
 
-    public AjaxBehaviorListenerImpl(MethodExpression oneArg, MethodExpression noArg) {
-        this.argListener = oneArg;
-        this.noArgListener = noArg;
+    public AjaxBehaviorListenerImpl(MethodExpression listener) {
+        this.listener = listener;
     }
 
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
-        final ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        FacesContext context = FacesContext.getCurrentInstance();
+        final ELContext elContext = context.getELContext();
         
         try{
-            noArgListener.invoke(elContext, new Object[]{});
+            listener.invoke(elContext, new Object[]{});
         } catch (MethodNotFoundException mnfe) {
-            argListener.invoke(elContext, new Object[]{event});
-        } catch (IllegalArgumentException iae) {
+            MethodExpression argListener = context.getApplication().getExpressionFactory().
+                        createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
+            
             argListener.invoke(elContext, new Object[]{event});
         }
     }
