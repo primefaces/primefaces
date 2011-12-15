@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
 import javax.faces.view.facelets.BehaviorConfig;
+import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagException;
@@ -76,6 +77,10 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
     }
 
     public void applyAttachedObject(FaceletContext context, UIComponent component, String eventName) {
+        if(!ComponentHandler.isNew(component)) {
+            return;
+        }
+                
         ClientBehaviorHolder holder = (ClientBehaviorHolder) component;
 
         if(null == eventName) {

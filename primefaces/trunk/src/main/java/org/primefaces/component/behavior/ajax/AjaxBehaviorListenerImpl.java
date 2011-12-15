@@ -24,7 +24,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 
-class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
+public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
     private MethodExpression argListener;
     private MethodExpression noArgListener;
