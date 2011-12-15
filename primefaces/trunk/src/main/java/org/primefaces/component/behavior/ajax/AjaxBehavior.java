@@ -151,6 +151,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
         return listener;
     }
     public void setListener(MethodExpression listener) {
+        System.out.println("Listener:" + listener);
         this.listener = listener;
     }
 
@@ -371,5 +372,13 @@ public class AjaxBehavior extends ClientBehaviorBase {
             bindings.put(names[i], (ValueExpression) UIComponentBase.restoreAttachedState(context, states[i]));
         }
         return bindings;
+    }
+    
+    public void addAjaxBehaviorListener(AjaxBehaviorListenerImpl listener) {
+        addBehaviorListener(listener);
+    }
+
+    public void removeAjaxBehaviorListener(AjaxBehaviorListenerImpl listener) {
+        removeBehaviorListener(listener);
     }
 }
