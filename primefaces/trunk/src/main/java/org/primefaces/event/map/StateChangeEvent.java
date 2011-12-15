@@ -18,6 +18,7 @@ package org.primefaces.event.map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
 
 import org.primefaces.model.map.LatLng;
@@ -39,13 +40,13 @@ public class StateChangeEvent extends AjaxBehaviorEvent {
 	}
 
 	@Override
-	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+	public boolean isAppropriateListener(FacesListener faceslistener) {
+		return true;
 	}
 
 	@Override
-	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+	public void processListener(FacesListener faceslistener) {
+		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
 	public LatLngBounds getBounds() {
