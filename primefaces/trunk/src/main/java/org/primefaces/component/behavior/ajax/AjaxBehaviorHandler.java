@@ -70,15 +70,6 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
             throw new TagException(this.tag, "Unable to attach <p:ajax> to non-ClientBehaviorHolder parent");
         }
     }
-/*
-    @Override
-    protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
-
-		metaRuleset.addRule(new MethodRule("listener", null, new Class[0]));
-        
-		return metaRuleset;
-    }*/
 
     public String getEventName() {
         return (this.event != null) ? this.event.getValue() : null;
