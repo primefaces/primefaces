@@ -53,6 +53,8 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private MethodExpression listener;
     private Boolean immediate;
     private Boolean disabled;
+    
+    public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
 
