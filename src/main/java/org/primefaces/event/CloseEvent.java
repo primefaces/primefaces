@@ -18,6 +18,7 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
 
 public class CloseEvent extends AjaxBehaviorEvent {
@@ -28,11 +29,11 @@ public class CloseEvent extends AjaxBehaviorEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public void processListener(FacesListener faceslistener) {
-		throw new UnsupportedOperationException();
+		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 }

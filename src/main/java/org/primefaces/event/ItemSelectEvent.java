@@ -18,6 +18,7 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
 
 public class ItemSelectEvent extends AjaxBehaviorEvent {
@@ -33,13 +34,13 @@ public class ItemSelectEvent extends AjaxBehaviorEvent {
 	}
 
 	@Override
-	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
+	public boolean isAppropriateListener(FacesListener faceslistener) {
+		return true;
 	}
 
 	@Override
-	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
+	public void processListener(FacesListener faceslistener) {
+		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 	
 	public int getItemIndex() {
