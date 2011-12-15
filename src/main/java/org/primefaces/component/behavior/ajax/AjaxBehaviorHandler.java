@@ -17,10 +17,12 @@ package org.primefaces.component.behavior.ajax;
 
 import java.io.IOException;
 import java.util.Collection;
+import javax.el.MethodExpression;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.FaceletContext;
@@ -108,15 +110,22 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
 
         setBehaviorAttribute(ctx, behavior, this.process, String.class);
         setBehaviorAttribute(ctx, behavior, this.update, String.class);
-        setBehaviorAttribute(ctx, behavior, this.onstart, Boolean.class);
-        setBehaviorAttribute(ctx, behavior, this.onerror, Boolean.class);
-        setBehaviorAttribute(ctx, behavior, this.onsuccess, Boolean.class);
-        setBehaviorAttribute(ctx, behavior, this.oncomplete, Boolean.class);
+        setBehaviorAttribute(ctx, behavior, this.onstart, String.class);
+        setBehaviorAttribute(ctx, behavior, this.onerror, String.class);
+        setBehaviorAttribute(ctx, behavior, this.onsuccess, String.class);
+        setBehaviorAttribute(ctx, behavior, this.oncomplete, String.class);
         setBehaviorAttribute(ctx, behavior, this.disabled, Boolean.class);
         setBehaviorAttribute(ctx, behavior, this.immediate, Boolean.class);
         setBehaviorAttribute(ctx, behavior, this.global, Boolean.class);
-        setBehaviorAttribute(ctx, behavior, this.async, Object.class);
-
+        setBehaviorAttribute(ctx, behavior, this.async, Boolean.class);
+        setBehaviorAttribute(ctx, behavior, this.listener, MethodExpression.class);
+        
+        if(listener != null) {
+            behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
+                this.listener.getMethodExpression(ctx, Object.class, new Class[] { AjaxBehaviorEvent.class }),
+                this.listener.getMethodExpression(ctx, Object.class, new Class[] { })));
+        }
+        
         return behavior;
     }
 
