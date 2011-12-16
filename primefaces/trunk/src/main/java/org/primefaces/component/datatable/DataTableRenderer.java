@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -29,7 +27,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -848,16 +845,13 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("colspan", table.getColumnsCount(), null);
                       
-        Pattern pattern = Pattern.compile("\\{([^\\{]+?)\\}");
-        Matcher matcher = pattern.matcher(table.getPaginatorTemplate());
-        
-        while(matcher.find()) {
-            String key = matcher.group(1);
-            
-            PaginatorElementRenderer renderer = paginatorElements.get(key);
-            if(renderer != null) {
+        String[] elements = table.getPaginatorTemplate().split(" ");
+        for(String element : elements) {            
+            PaginatorElementRenderer renderer = paginatorElements.get(element);
+            if(renderer != null)
                 renderer.render(context, table);
-            }
+            else
+                writer.write(element + " ");
         }
         
         writer.endElement(tag);
