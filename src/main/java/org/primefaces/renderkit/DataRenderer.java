@@ -39,14 +39,14 @@ public class DataRenderer extends CoreRenderer {
     
     public DataRenderer() {
         paginatorElements = new HashMap<String, PaginatorElementRenderer>();
-        paginatorElements.put("CurrentPageReport", new CurrentPageReportRenderer());
-        paginatorElements.put("FirstPageLink", new FirstPageLinkRenderer());
-        paginatorElements.put("PreviousPageLink", new PrevPageLinkRenderer());
-        paginatorElements.put("NextPageLink", new NextPageLinkRenderer());
-        paginatorElements.put("LastPageLink", new LastPageLinkRenderer());
-        paginatorElements.put("PageLinks", new PageLinksRenderer());
-        paginatorElements.put("RowsPerPageDropdown", new RowsPerPageDropdownRenderer());
-        paginatorElements.put("JumpToPageDropdown", new JumpToPageDropdownRenderer());
+        paginatorElements.put("{CurrentPageReport}", new CurrentPageReportRenderer());
+        paginatorElements.put("{FirstPageLink}", new FirstPageLinkRenderer());
+        paginatorElements.put("{PreviousPageLink}", new PrevPageLinkRenderer());
+        paginatorElements.put("{NextPageLink}", new NextPageLinkRenderer());
+        paginatorElements.put("{LastPageLink}", new LastPageLinkRenderer());
+        paginatorElements.put("{PageLinks}", new PageLinksRenderer());
+        paginatorElements.put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer());
+        paginatorElements.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
     }
 
     protected void encodePaginatorMarkup(FacesContext context, UIData uidata, String position) throws IOException {
@@ -76,16 +76,13 @@ public class DataRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display:none", null);
         }
         
-        Pattern pattern = Pattern.compile("\\{([^\\{]+?)\\}");
-        Matcher matcher = pattern.matcher(uidata.getPaginatorTemplate());
-        
-        while(matcher.find()) {
-            String key = matcher.group(1);
-            
-            PaginatorElementRenderer renderer = paginatorElements.get(key);
-            if(renderer != null) {
+        String[] elements = uidata.getPaginatorTemplate().split(" ");
+        for(String element : elements) {            
+            PaginatorElementRenderer renderer = paginatorElements.get(element);
+            if(renderer != null)
                 renderer.render(context, uidata);
-            }
+            else
+                writer.write(element + " ");
         }
 
         writer.endElement("div");
