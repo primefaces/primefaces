@@ -329,18 +329,30 @@ PrimeFaces.widget.DataTable.prototype.loadLiveRows = function() {
             id = update.attr('id'),
             content = update.text();
 
-            if(id == _self.id){
-                $(_self.jqId + ' .ui-datatable-scrollable-body table tr:last').after(content);
+            if(id == _self.id) {
+                var lastRow = $(_self.jqId + ' .ui-datatable-scrollable-body table tr:last'),
+                lastRowColumnWrappers = lastRow.find('div.ui-dt-c');
+                
+                //insert new rows
+                lastRow.after(content);
+                
+                //align column widths of newly added rows with older ones
+                lastRow.nextAll('tr').each(function() {
+                    var row = $(this);
+                    row.find('div.ui-dt-c').each(function(i) {
+                        var wrapper = $(this),
+                        column = wrapper.parent();
+
+                        wrapper.width(lastRowColumnWrappers.eq(i).width());
+                        column.width('');
+                    });
+                });
 
                 _self.scrollOffset += _self.cfg.scrollStep;
 
                 //Disable scroll if there is no more data left
                 if(_self.scrollOffset == _self.cfg.scrollLimit) {
                     _self.shouldLiveScroll = false;
-                }
-
-                if(_self.cfg.resizableColumns) {
-                    _self.restoreColumnWidths();
                 }
             }
             else {

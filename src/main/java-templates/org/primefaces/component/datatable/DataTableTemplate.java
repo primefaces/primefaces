@@ -645,6 +645,6 @@ import javax.faces.FacesException;
     }
 
     public void setLazy(boolean value) {
-        logger.info("Lazy attribute has been removed from datatable api, please also remove it from your page definition. See issue #2991.");
+        logger.info("Lazy attribute has been removed from datatable api, please also remove it from your page definition. See issue #2993.");
     }
 
