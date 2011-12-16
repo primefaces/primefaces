@@ -132,12 +132,14 @@ PrimeFaces = {
     },
     
     clearSelection: function() {
-        var sel = window.getSelection ? window.getSelection() : document.selection;
-        if(sel) {
-            if(sel.removeAllRanges)
-                sel.removeAllRanges();
-            else if(sel.empty)
-                sel.empty();
+        if(window.getSelection) {
+            if(window.getSelection().empty) {
+                window.getSelection().empty();
+            } else if (window.getSelection().removeAllRanges) {
+                window.getSelection().removeAllRanges();
+            } else if (document.selection) {
+                document.selection.empty();
+            }
         }
     },
     
