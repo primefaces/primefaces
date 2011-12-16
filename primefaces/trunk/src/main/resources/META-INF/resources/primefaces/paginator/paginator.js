@@ -138,9 +138,18 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function() {
     var text = this.cfg.currentPageTemplate.replace('{currentPage}', this.cfg.page + 1).replace('{totalPage}', this.cfg.pageCount);
     this.currentReport.text(text);
     
-    //dropdowns
+    //rows per page dropdown
     this.rppSelect.attr('value', this.cfg.rows);
-    this.jtpSelect.attr('value', this.cfg.page);
+    
+    //jump to page dropdown
+    if(this.jtpSelect.length > 0) {
+        this.jtpSelect.children().remove();
+        
+        for(var i=0; i < this.cfg.pageCount; i++) {
+            this.jtpSelect.append("<option value=" + i + ">" + (i + 1) + "</option>");
+        }
+        this.jtpSelect.attr('value', this.cfg.page);
+    }
     
     //page links
     this.updatePageLinks();
