@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
 	<tag>radioButton</tag>
@@ -11,23 +12,50 @@
 	<rendererType>org.primefaces.component.RadioButtonRenderer</rendererType>
 	<rendererClass>org.primefaces.component.radiobutton.RadioButtonRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <description>Disables the component.</description>
         </attribute>
         <attribute>
             <name>itemIndex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+            <description>Index of the selectItem of the selectOneRadio.</description>
         </attribute>
         <attribute>
             <name>onchange</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <description>Client side callback to execute on state change.</description>
+        </attribute>
+        <attribute>
+            <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id of the selectOneRadio component to attach to.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
         </attribute>
 	</attributes>
     <resources>
