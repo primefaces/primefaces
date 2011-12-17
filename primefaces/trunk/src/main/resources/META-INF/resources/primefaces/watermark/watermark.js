@@ -567,13 +567,17 @@ $.watermark.options.className = 'ui-watermark';
 /**
  * PrimeFaces Watermark Widget 
  */
- PrimeFaces.widget.Watermark = function(cfg) {
+PrimeFaces.widget.Watermark = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jqTargetId = PrimeFaces.escapeClientId(this.cfg.target);
-    this.target = $(this.jqTargetId + ',' + this.jqTargetId + ' input:text,' + this.jqTargetId + ' input:password');
-   
+    this.target = $(this.jqTargetId);
+    
+    if(this.target.is(':not(:input)')) {
+        this.target = this.target.find(':input');
+    }
+
     this.target.watermark(this.cfg.value);
     
     this.postConstruct();
