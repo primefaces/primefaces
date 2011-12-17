@@ -32,14 +32,14 @@ public class RadioButtonRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
+        SelectOneRadio selectOneRadio = findSelectOneRadio(radioButton);
 
-        encodeMarkup(context, radioButton);
-        encodeScript(context, radioButton);
+        encodeMarkup(context, radioButton, selectOneRadio);
+        encodeScript(context, radioButton, selectOneRadio);
     }
     
-    protected void encodeMarkup(FacesContext context, RadioButton radio) throws IOException {
+    protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectOneRadio selectOneRadio = findSelectOneRadio(radio);
         String masterClientId = selectOneRadio.getClientId(context);
         String inputId = selectOneRadio.getRadioButtonId(context);
         String clientId = radio.getClientId(context);
@@ -73,7 +73,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, RadioButton radioButton) throws IOException {
+    protected void encodeScript(FacesContext context, RadioButton radioButton, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = radioButton.getClientId(context);
 
@@ -82,6 +82,9 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.write("$(function() {");
         writer.write("PrimeFaces.cw('RadioButton','" + radioButton.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
+        
+        encodeClientBehaviors(context, selectOneRadio);
+        
         writer.write("});});");
 
         endScript(writer);
@@ -104,8 +107,8 @@ public class RadioButtonRenderer extends InputRenderer {
         
         //onchange
         StringBuilder onchangeBuilder = new StringBuilder();
-        if(radio.getOnchange() != null) onchangeBuilder.append(radio.getOnchange());
-        if(button.getOnchange() != null) onchangeBuilder.append(button.getOnchange());
+        if(radio.getOnchange() != null) onchangeBuilder.append(radio.getOnchange()).append(";");
+        if(button.getOnchange() != null) onchangeBuilder.append(button.getOnchange()).append(";");
         if(onchangeBuilder.length() > 0) {  
             writer.writeAttribute("onchange", onchangeBuilder.toString(), null);
         }
