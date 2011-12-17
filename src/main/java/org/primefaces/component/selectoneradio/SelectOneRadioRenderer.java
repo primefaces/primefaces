@@ -41,9 +41,17 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectOneRadio radio = (SelectOneRadio) component;
+        String layout = radio.getLayout();
+        boolean custom = layout != null && layout.equals("custom");
 
-        encodeMarkup(context, radio);
-        encodeScript(context, radio);
+        if(!custom) {
+            encodeMarkup(context, radio);
+            encodeScript(context, radio);
+        }
+        else {
+            //populate selectitems for radiobutton access
+            radio.setSelectItems(getSelectItems(context, radio));
+        }
     }
 
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -53,22 +61,19 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String styleClass = radio.getStyleClass();
         styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
         String layout = radio.getLayout();
-        boolean custom = layout != null && layout.equals("custom");
-        String rootElement = custom ? "div" : "table";
+        
         List<SelectItem> selectItems = getSelectItems(context, radio);
 
-        writer.startElement(rootElement, radio);
+        writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) 
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
+        }
 
-        if(custom)
-            encodeCustomLayout(context, radio, selectItems);
-        else
-            encodeSelectItems(context, radio, selectItems, layout);
+        encodeSelectItems(context, radio, selectItems, layout);
 
-        writer.endElement(rootElement);
+        writer.endElement("table");
     }
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -193,14 +198,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         writer.endElement("div");
     }
-    
-    protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
-        //child radio buttons need parent selectitems to index
-        radio.setSelectItems(selectItems);
-                
-        renderChildren(context, radio);
-    }
-    
+        
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
     }

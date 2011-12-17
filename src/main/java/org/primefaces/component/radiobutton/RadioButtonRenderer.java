@@ -17,6 +17,7 @@ package org.primefaces.component.radiobutton;
 
 import java.io.IOException;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -30,9 +31,15 @@ public class RadioButtonRenderer extends InputRenderer {
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        RadioButton radioButton = (RadioButton) component;
+
+        encodeMarkup(context, radioButton);
+        encodeScript(context, radioButton);
+    }
+    
+    protected void encodeMarkup(FacesContext context, RadioButton radio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RadioButton radio = (RadioButton) component;
-        SelectOneRadio selectOneRadio = findParentSelectOneRadio(radio);
+        SelectOneRadio selectOneRadio = findSelectOneRadio(radio);
         String masterClientId = selectOneRadio.getClientId(context);
         String inputId = selectOneRadio.getRadioButtonId(context);
         String clientId = radio.getClientId(context);
@@ -52,13 +59,32 @@ public class RadioButtonRenderer extends InputRenderer {
         boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
 
         //render markup
+        String style = radio.getStyle();
+        String styleClass = radio.getStyleClass();
+        styleClass = styleClass == null ? HTML.RADIOBUTTON_CLASS : HTML.RADIOBUTTON_CLASS + " " + styleClass;
+        
         writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
 
         encodeOptionInput(context, selectOneRadio, radio, inputId, masterClientId, selected, disabled, itemValueAsString);
-        encodeOptionOutput(context, clientId, selected, disabled);
+        encodeOptionOutput(context, selected, disabled);
 
         writer.endElement("div");
+    }
+
+    protected void encodeScript(FacesContext context, RadioButton radioButton) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = radioButton.getClientId(context);
+
+        startScript(writer, clientId);
+        
+        writer.write("$(function() {");
+        writer.write("PrimeFaces.cw('RadioButton','" + radioButton.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write("});});");
+
+        endScript(writer);
     }
     
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
@@ -89,7 +115,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionOutput(FacesContext context, String clientId, boolean selected, boolean disabled) throws IOException {
+    protected void encodeOptionOutput(FacesContext context, boolean selected, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
         boxClass = selected ? boxClass + " ui-state-active" : boxClass;
@@ -99,7 +125,6 @@ public class RadioButtonRenderer extends InputRenderer {
         iconClass = selected ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", boxClass, null);
 
         writer.startElement("span", null);
@@ -109,18 +134,14 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.endElement("div");
     }
     
-    public SelectOneRadio findParentSelectOneRadio(UIComponent component) {
-		UIComponent parent = component.getParent();
-		
-		while(parent != null) {
-			if(parent instanceof SelectOneRadio) {
-				return (SelectOneRadio) parent;
-            }
-		
-			parent = parent.getParent();
-		}
-		
-		return null;
+    public SelectOneRadio findSelectOneRadio(RadioButton radioButton) {
+		UIComponent target = radioButton.findComponent(radioButton.getFor());
+        
+        if(target == null) {
+            throw new FacesException("Cannot find component '" + radioButton.getFor() + "' in view.");
+        }
+        
+        return (SelectOneRadio) target;
 	}
     
     protected Converter getConverter(FacesContext context, SelectOneRadio selectOneRadio) {
