@@ -51,6 +51,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         else {
             //populate selectitems for radiobutton access
             radio.setSelectItems(getSelectItems(context, radio));
+            
+            //render dummy markup to enable processing of ajax behaviors (finding form on client side)
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("span", radio);
+            writer.writeAttribute("id", radio.getClientId(context), "id");
+            writer.endElement("span");
         }
     }
 

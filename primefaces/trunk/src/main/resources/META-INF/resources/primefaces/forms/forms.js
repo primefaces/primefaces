@@ -934,6 +934,11 @@ PrimeFaces.widget.RadioButton = function(cfg) {
         _self.check();
     });
     
+    //Client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+    }
+    
     this.postConstruct();
 }
 
@@ -953,4 +958,5 @@ PrimeFaces.widget.RadioButton.prototype.check = function() {
     this.output.addClass('ui-state-active');
     this.input.attr('checked', 'checked');
     this.icon.addClass('ui-icon ui-icon-bullet');
+    this.input.change();
 }
