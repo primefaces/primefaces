@@ -604,6 +604,7 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.output = this.jq.find('.ui-radiobutton-box:not(.ui-state-disabled)');
+    this.inputs = this.jq.find(':radio:not(:disabled)');
     this.labels = this.jq.find('label:not(.ui-state-disabled)');
     this.icons = this.jq.find('.ui-radiobutton-icon');
 
@@ -638,7 +639,7 @@ PrimeFaces.widget.SelectOneRadio = function(cfg) {
 
     //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
     }
     
     this.postConstruct();
@@ -739,13 +740,13 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
-    this.output = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
+    this.jq = $(this.jqId);
+    this.outputs = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
+    this.inputs = this.jq.find(':checkbox:not(:disabled)');
     this.labels = this.jq.find('label:not(.ui-state-disabled)');
-
     var _self = this;
 
-    this.output.mouseover(function() {
+    this.outputs.mouseover(function() {
         $(this).addClass('ui-state-hover');
     }).mouseout(function() {
         $(this).removeClass('ui-state-hover');
@@ -754,17 +755,17 @@ PrimeFaces.widget.SelectManyCheckbox = function(cfg) {
     });
 
     this.labels.click(function(e) {
-            e.preventDefault();
-            var element = jQuery(this),
-            input = jQuery(PrimeFaces.escapeClientId(element.attr('for'))),
-            checkbox = input.parent().next();
-
-            checkbox.click();
+        var element = $(this),
+        input = $(PrimeFaces.escapeClientId(element.attr('for'))),
+        checkbox = input.parent().next();
+        checkbox.click();
+        
+        e.preventDefault();
     });
 
     //Client Behaviors
     if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
     }
     
     this.postConstruct();
