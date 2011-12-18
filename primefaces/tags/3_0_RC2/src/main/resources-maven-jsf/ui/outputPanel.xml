@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>outputPanel</tag>
+	<tagClass>org.primefaces.component.outputpanel.OutputPanelTag</tagClass>
+	<componentClass>org.primefaces.component.outputpanel.OutputPanel</componentClass>
+	<componentType>org.primefaces.component.OutputPanel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.OutputPanelRenderer</rendererType>
+	<rendererClass>org.primefaces.component.outputpanel.OutputPanelRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>OutputPanel is a display only element that's useful in various cases such as adding placeholders to a page.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AutoUpdatable</name>
+		</interface>
+	</interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the html container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>StyleClass of the html container element.</description>
+		</attribute>
+		<attribute>
+			<name>layout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>inline</defaultValue>
+            <description>Layout of the panel, valid values are inline(span) or block(div).</description>
+		</attribute>
+        <attribute>
+			<name>autoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description></description>
+		</attribute>
+	</attributes>
+</component>
