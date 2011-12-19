@@ -84,8 +84,10 @@ public class InputMaskRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
-        String defaultClass = themeForms() ? InputMask.THEME_INPUT_CLASS : InputMask.PLAIN_INPUT_CLASS;
         String styleClass = inputMask.getStyleClass();
+        String defaultClass = themeForms() ? InputMask.THEME_INPUT_CLASS : InputMask.PLAIN_INPUT_CLASS;
+        defaultClass = !inputMask.isValid() ? defaultClass + " ui-state-error" : defaultClass;
+        defaultClass = inputMask.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 		
 		writer.startElement("input", null);
