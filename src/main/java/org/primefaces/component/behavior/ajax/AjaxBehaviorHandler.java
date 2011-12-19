@@ -15,15 +15,23 @@
  */
 package org.primefaces.component.behavior.ajax;
 
+import java.beans.BeanDescriptor;
+import java.beans.BeanInfo;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import javax.el.MethodExpression;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.AttachedObjectHandler;
+import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
+import javax.faces.view.BehaviorHolderAttachedObjectTarget;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.FaceletContext;
@@ -62,12 +70,61 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         this.async = this.getAttribute("async");
     }
     
+    @Override
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
+        if(!ComponentHandler.isNew(parent)) {
+            return;
+        }
+                
         String eventName = getEventName();
-
-        if(parent instanceof ClientBehaviorHolder) {
+        
+        if(UIComponent.isCompositeComponent(parent)) {
+            boolean tagApplied = false;
+            if(parent instanceof ClientBehaviorHolder) {
+                applyAttachedObject(ctx, parent, eventName);
+                tagApplied = true;
+            }
+            
+            BeanInfo componentBeanInfo = (BeanInfo) parent.getAttributes().get(UIComponent.BEANINFO_KEY);
+            if(null == componentBeanInfo) {
+                throw new TagException(tag, "Composite component does not have BeanInfo attribute");
+            }
+            
+            BeanDescriptor componentDescriptor = componentBeanInfo.getBeanDescriptor();
+            if(null == componentDescriptor) {
+                throw new TagException(tag, "Composite component BeanInfo does not have BeanDescriptor");
+            }
+            
+            List<AttachedObjectTarget> targetList = (List<AttachedObjectTarget>)componentDescriptor.getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
+            if(null == targetList && !tagApplied) {
+                throw new TagException(tag, "Composite component does not support behavior events");
+            }
+            
+            boolean supportedEvent = false;
+            for(AttachedObjectTarget target : targetList) {
+                if(target instanceof BehaviorHolderAttachedObjectTarget) {
+                    BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
+                    if((null != eventName && eventName.equals(behaviorTarget.getName()))
+                        || (null == eventName && behaviorTarget.isDefaultEvent())) {
+                        supportedEvent = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(supportedEvent) {
+                getAttachedObjectHandlers(parent).add(this);
+            } 
+            else {
+                if(!tagApplied) {
+                    throw new TagException(tag, "Composite component does not support event " + eventName);
+                }
+            }
+        }
+        else if(parent instanceof ClientBehaviorHolder) {
             applyAttachedObject(ctx, parent, eventName);
-        } else {
+        } 
+        else {
             throw new TagException(this.tag, "Unable to attach <p:ajax> to non-ClientBehaviorHolder parent");
         }
     }
@@ -76,11 +133,7 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         return (this.event != null) ? this.event.getValue() : null;
     }
 
-    public void applyAttachedObject(FaceletContext context, UIComponent component, String eventName) {
-        if(!ComponentHandler.isNew(component)) {
-            return;
-        }
-                
+    public void applyAttachedObject(FaceletContext context, UIComponent component, String eventName) {                
         ClientBehaviorHolder holder = (ClientBehaviorHolder) component;
 
         if(null == eventName) {
@@ -138,5 +191,24 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         if(attr != null) {
             behavior.setValueExpression(attr.getLocalName(), attr.getValueExpression(ctx, type));
         }    
+    }
+    
+    public List<AttachedObjectHandler> getAttachedObjectHandlers(UIComponent component) {
+        return getAttachedObjectHandlers(component, true);
+    }
+    
+    public List<AttachedObjectHandler> getAttachedObjectHandlers(UIComponent component, boolean create) {
+        Map<String, Object> attrs = component.getAttributes();
+        List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.get("javax.faces.RetargetableHandlers");
+
+        if (result == null) {
+            if (create) {
+                result = new ArrayList<AttachedObjectHandler>();
+                attrs.put("javax.faces.RetargetableHandlers", result);
+            } else {
+                result = Collections.EMPTY_LIST;
+            }
+        }
+        return result;
     }
 }
