@@ -186,9 +186,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("ul");
 		
 		encodeListStateHolder(context, listId, values);
-        
-        writer.endElement("ul");
-        
+                
         writer.endElement("td");
 	}
 	
