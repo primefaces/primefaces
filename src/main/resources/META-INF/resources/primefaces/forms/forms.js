@@ -247,7 +247,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     if(label == '') {
         label = '&nbsp';
     }
-    this.label.html(label);
+    this.label.text(label);
     this.items.eq(selectedOption.index()).addClass('ui-state-active');
     
     this.bindEvents();
