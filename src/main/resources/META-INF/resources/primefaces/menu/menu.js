@@ -82,19 +82,6 @@ PrimeFaces.widget.Menu = function(cfg) {
     if(this.cfg.position == 'dynamic') {        
         this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
         
-        /*
-         * we might have two menus with same ids if an ancestor of a menu is updated,
-         * if so remove the previous one and refresh jq
-         */
-        if(this.jq.length > 1){
-            $(document.body).children(this.jqId).remove();
-            this.jq = $(this.jqId);
-            this.jq.appendTo(document.body);
-        }
-        else if(this.jq.parent().is(':not(body)')) {
-            this.jq.appendTo(document.body);
-        }
-        
         this.cfg.position = {
             my: this.cfg.my
             ,at: this.cfg.at
@@ -111,7 +98,7 @@ PrimeFaces.widget.Menu = function(cfg) {
             }
         });
             
-        //hide overlay when outside is clicked
+        //hide overlay when any element except trigger is clicked
         $(document.body).bind('click.ui-menu', function (e) {
             if(_self.jq.is(":hidden")) {
                 return;
