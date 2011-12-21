@@ -283,27 +283,22 @@ import javax.faces.FacesException;
             if(eventName.equals("rowSelect")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("rowUnselect")) {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey));
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("page")) {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("sort")) {
                 SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
                 Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("filter")) {
                 wrapperEvent = event;
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("rowEdit")) {
                 int editedRowIndex = Integer.parseInt(params.get(clientId + "_editedRowIndex"));
