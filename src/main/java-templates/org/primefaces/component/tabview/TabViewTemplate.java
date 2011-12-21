@@ -99,17 +99,27 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        if(this.getVar() == null) {
-            Iterator kids = getFacetsAndChildren();
-            while (kids.hasNext()) {
-                UIComponent kid = (UIComponent) kids.next();
-                kid.processDecodes(context);
-            }
+        String clientId = this.getClientId(context);
 
-            this.decode(context);
+        //only process current tab on dynamic content load
+        if(isDynamic() && isContentLoadRequest(context)) {
+            Tab currentTab = findTab(context.getExternalContext().getRequestParameterMap().get(clientId + "_currentTab"));
+
+            currentTab.processDecodes(context);
         }
         else {
-            super.processDecodes(context);
+            if(this.getVar() == null) {
+                Iterator kids = getFacetsAndChildren();
+                while (kids.hasNext()) {
+                    UIComponent kid = (UIComponent) kids.next();
+                    kid.processDecodes(context);
+                }
+
+                this.decode(context);
+            }
+            else {
+                super.processDecodes(context);
+            }
         }
     }
 
@@ -119,15 +129,25 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        if(this.getVar() == null) {
-            Iterator kids = getFacetsAndChildren();
-            while (kids.hasNext()) {
-                UIComponent kid = (UIComponent) kids.next();
-                kid.processValidators(context);
-            }
+        String clientId = this.getClientId(context);
+
+        //only process current tab on dynamic content load
+        if(isDynamic() && isContentLoadRequest(context)) {
+            Tab currentTab = findTab(context.getExternalContext().getRequestParameterMap().get(clientId + "_currentTab"));
+
+            currentTab.processValidators(context);
         }
         else {
-            super.processValidators(context);
+            if(this.getVar() == null) {
+                Iterator kids = getFacetsAndChildren();
+                while (kids.hasNext()) {
+                    UIComponent kid = (UIComponent) kids.next();
+                    kid.processValidators(context);
+                }
+            }
+            else {
+                super.processValidators(context);
+            }
         }
     }
 
@@ -143,16 +163,26 @@ import javax.faces.component.visit.VisitResult;
             resetActiveIndex();
         }
 
-        if(this.getVar() == null) {
-            Iterator kids = getFacetsAndChildren();
-            while (kids.hasNext()) {
-                UIComponent kid = (UIComponent) kids.next();
-                kid.processUpdates(context);
-            }
+        String clientId = this.getClientId(context);
+
+        //only process current tab on dynamic content load
+        if(isDynamic() && isContentLoadRequest(context)) {
+            Tab currentTab = findTab(context.getExternalContext().getRequestParameterMap().get(clientId + "_currentTab"));
+
+            currentTab.processValidators(context);
         }
         else {
-            super.processUpdates(context);
-        }        
+            if(this.getVar() == null) {
+                Iterator kids = getFacetsAndChildren();
+                while (kids.hasNext()) {
+                    UIComponent kid = (UIComponent) kids.next();
+                    kid.processUpdates(context);
+                }
+            }
+            else {
+                super.processUpdates(context);
+            }  
+        }
     }
 
     protected void resetActiveIndex() {
