@@ -35,9 +35,6 @@ PrimeFaces.widget.Dialog = function(cfg) {
     
     this.content.height(this.cfg.height);
     
-    //position
-    this.initPosition();
- 
     //events
     this.bindEvents();
     
@@ -130,6 +127,10 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
         this.loadContents();
     } 
     else {
+        if(!this.positionInitialized) {
+            this.initPosition();
+        }
+        
         this._show();
     }
 }
@@ -286,6 +287,7 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
         });
     }
     
+    this.positionInitialized = true;
 }
 
 PrimeFaces.widget.Dialog.prototype.onHide = function(event, ui) {
