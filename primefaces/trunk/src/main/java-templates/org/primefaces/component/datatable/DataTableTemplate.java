@@ -312,6 +312,8 @@ import javax.faces.FacesException;
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
+            
+            wrapperEvent.setPhaseId(event.getPhaseId());
 
             super.queueEvent(wrapperEvent);
         }
