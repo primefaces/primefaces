@@ -45,6 +45,24 @@ import javax.faces.component.visit.VisitResult;
         return null;
     }
 
+    List<Tab> loadedTabs;
+    public List<Tab> getLoadedTabs() {
+        if(loadedTabs == null) {
+            loadedTabs = new ArrayList<Tab>();
+
+            for(UIComponent component : getChildren()) {
+                if(component instanceof Tab) {
+                    Tab tab =  (Tab) component;
+                    
+                    if(tab.isLoaded())
+                        loadedTabs.add(tab);
+                }
+            }
+        }
+
+        return loadedTabs;
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -79,52 +97,89 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(this.getVar() == null) {
-            Iterator kids = getFacetsAndChildren();
-            while (kids.hasNext()) {
-                UIComponent kid = (UIComponent) kids.next();
-                kid.processDecodes(context);
-            }
+        if(!isRendered()) {
+            return;
+        }
 
+        //only process loaded tabs on dynamic case
+        if(isDynamic()) {
+            for(Tab tab : getLoadedTabs()) {
+                tab.processDecodes(context);
+            }
             this.decode(context);
         }
         else {
-            super.processDecodes(context);
+            if(this.getVar() == null) {
+                Iterator kids = getFacetsAndChildren();
+                while (kids.hasNext()) {
+                    UIComponent kid = (UIComponent) kids.next();
+                    kid.processDecodes(context);
+                }
+
+                this.decode(context);
+            }
+            else {
+                super.processDecodes(context);
+            }
         }
     }
 
     @Override
     public void processValidators(FacesContext context) {
-        if(this.getVar() == null) {
-            Iterator kids = getFacetsAndChildren();
-            while (kids.hasNext()) {
-                UIComponent kid = (UIComponent) kids.next();
-                kid.processValidators(context);
+        if(!isRendered()) {
+            return;
+        }
+
+        //only process loaded tabs on dynamic case
+        if(isDynamic()) {
+            for(Tab tab : getLoadedTabs()) {
+                tab.processValidators(context);
             }
         }
         else {
-            super.processValidators(context);
+            if(this.getVar() == null) {
+                Iterator kids = getFacetsAndChildren();
+                while (kids.hasNext()) {
+                    UIComponent kid = (UIComponent) kids.next();
+                    kid.processValidators(context);
+                }
+            }
+            else {
+                super.processValidators(context);
+            }
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
         ValueExpression expr = this.getValueExpression("activeIndex");
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
         }
 
-        if(this.getVar() == null) {
-            Iterator kids = getFacetsAndChildren();
-            while (kids.hasNext()) {
-                UIComponent kid = (UIComponent) kids.next();
-                kid.processUpdates(context);
+        //only process loaded tabs on dynamic case
+        if(isDynamic()) {
+            for(Tab tab : getLoadedTabs()) {
+                tab.processUpdates(context);
             }
         }
         else {
-            super.processUpdates(context);
-        }        
+            if(this.getVar() == null) {
+                Iterator kids = getFacetsAndChildren();
+                while (kids.hasNext()) {
+                    UIComponent kid = (UIComponent) kids.next();
+                    kid.processUpdates(context);
+                }
+            }
+            else {
+                super.processUpdates(context);
+            }  
+        }
     }
 
     protected void resetActiveIndex() {

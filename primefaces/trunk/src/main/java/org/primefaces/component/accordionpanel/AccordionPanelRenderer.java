@@ -56,8 +56,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
         if(acco.isContentLoadRequest(context)) {
             if(var == null) {
                 String tabClientId = params.get(clientId + "_newTab");
-                
-                acco.findTab(tabClientId).encodeAll(context);
+                Tab tabToLoad = acco.findTab(tabClientId);
+                tabToLoad.encodeAll(context);
+                tabToLoad.setLoaded(true);
             }
             else {
                 int index = Integer.parseInt(params.get(clientId + "_tabindex"));
@@ -196,8 +197,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", contentClass, null);
 
-        if(dynamic && active)
-            tab.encodeAll(context);
+        if(dynamic) {
+            if(active) {
+                tab.encodeAll(context);
+                tab.setLoaded(true);
+            }
+        }
         else
             tab.encodeAll(context);
 
