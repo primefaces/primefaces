@@ -54,6 +54,7 @@ public class TabViewRenderer extends CoreRenderer {
                 tabToLoad = (Tab) tabView.findTab(tabClientId);
                 
                 tabToLoad.encodeAll(context);
+                tabToLoad.setLoaded(true);
             } 
             else {
                 int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
@@ -248,8 +249,10 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, null);
 
         if(dynamic) {
-            if(active)
+            if(active) {
                 tab.encodeAll(context);
+                tab.setLoaded(true);
+            }
         } 
         else {
             tab.encodeAll(context);

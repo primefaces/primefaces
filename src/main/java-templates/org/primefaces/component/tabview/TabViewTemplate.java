@@ -44,6 +44,24 @@ import javax.faces.component.visit.VisitResult;
         return null;
     }
 
+    List<Tab> loadedTabs;
+    public List<Tab> getLoadedTabs() {
+        if(loadedTabs == null) {
+            loadedTabs = new ArrayList<Tab>();
+
+            for(UIComponent component : getChildren()) {
+                if(component instanceof Tab) {
+                    Tab tab =  (Tab) component;
+                    
+                    if(tab.isLoaded())
+                        loadedTabs.add(tab);
+                }
+            }
+        }
+
+        return loadedTabs;
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -99,13 +117,12 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        String clientId = this.getClientId(context);
-
-        //only process current tab on dynamic content load
-        if(isDynamic() && isContentLoadRequest(context)) {
-            Tab currentTab = findTab(context.getExternalContext().getRequestParameterMap().get(clientId + "_currentTab"));
-
-            currentTab.processDecodes(context);
+        //only process loaded tabs on dynamic case
+        if(isDynamic()) {
+            for(Tab tab : getLoadedTabs()) {
+                tab.processDecodes(context);
+            }
+            this.decode(context);
         }
         else {
             if(this.getVar() == null) {
@@ -129,13 +146,11 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        String clientId = this.getClientId(context);
-
-        //only process current tab on dynamic content load
-        if(isDynamic() && isContentLoadRequest(context)) {
-            Tab currentTab = findTab(context.getExternalContext().getRequestParameterMap().get(clientId + "_currentTab"));
-
-            currentTab.processValidators(context);
+        //only process loaded tabs on dynamic case
+        if(isDynamic()) {
+            for(Tab tab : getLoadedTabs()) {
+                tab.processValidators(context);
+            }
         }
         else {
             if(this.getVar() == null) {
@@ -163,13 +178,11 @@ import javax.faces.component.visit.VisitResult;
             resetActiveIndex();
         }
 
-        String clientId = this.getClientId(context);
-
-        //only process current tab on dynamic content load
-        if(isDynamic() && isContentLoadRequest(context)) {
-            Tab currentTab = findTab(context.getExternalContext().getRequestParameterMap().get(clientId + "_currentTab"));
-
-            currentTab.processValidators(context);
+        //only process loaded tabs on dynamic case
+        if(isDynamic()) {
+            for(Tab tab : getLoadedTabs()) {
+                tab.processUpdates(context);
+            }
         }
         else {
             if(this.getVar() == null) {
@@ -231,3 +244,5 @@ import javax.faces.component.visit.VisitResult;
             return super.visitTree(context, callback);
         }
     }
+
+    public void 

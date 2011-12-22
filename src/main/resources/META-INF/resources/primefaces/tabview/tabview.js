@@ -170,7 +170,6 @@ PrimeFaces.widget.TabView.prototype.loadDynamicTab = function(newPanel) {
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
-    params[this.id + '_currentTab'] = this.panelContainer.children('.ui-tabs-panel').filter(':visible').attr('id');
     params[this.id + '_newTab'] = newPanel.attr('id');
     params[this.id + '_tabindex'] = tabindex;
 
