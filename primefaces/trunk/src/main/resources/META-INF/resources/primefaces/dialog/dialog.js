@@ -233,13 +233,25 @@ PrimeFaces.widget.Dialog.prototype.setupDraggable = function() {
         containment : 'document'
     });
 }
-PrimeFaces.widget.Dialog.prototype.setupResizable = function() {    
+
+PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
+    var _self = this;
+    
     this.jq.resizable({
         handles : 'n,s,e,w,ne,nw,se,sw',
         minWidth : this.cfg.minWidth,
         minHeight : this.cfg.minHeight,
         alsoResize : this.content,
-        containment: 'document'
+        containment: 'document',
+        start: function(event, ui) {
+            _self.jq.data('offset', _self.jq.offset());
+        },
+        stop: function(event, ui) {
+            var offset = _self.jq.data('offset')
+            
+            _self.jq.css('position', 'fixed');
+            _self.jq.offset(offset);
+        }
     });
     
     this.resizers = this.jq.children('.ui-resizable-handle');
