@@ -112,6 +112,7 @@ public class DataGridRenderer extends DataRenderer {
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
+        int renderedItems = 0;
         String rowIndexVar = grid.getRowIndexVar();
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
 
@@ -124,27 +125,25 @@ public class DataGridRenderer extends DataRenderer {
             writer.writeAttribute("class", DataGrid.TABLE_ROW_CLASS, null);
 
             for(int j = 0; j < columns; j++) {
-                grid.setRowIndex(rowIndex);
-
-                if(rowIndexVar != null) {
-                    requestMap.put(rowIndexVar, j);
-                }
-
-                if(!grid.isRowAvailable()) {
-                    break;
-                }
-
                 writer.startElement("td", null);
                 writer.writeAttribute("class", DataGrid.TABLE_COLUMN_CLASS, null);
+                
+                if(renderedItems < itemsToRender) {
+                    grid.setRowIndex(rowIndex);
 
-                if (grid.isRowAvailable()) {
-                    renderChildren(context, grid);
-                    rowIndex++;
+                    if(rowIndexVar != null) {
+                        requestMap.put(rowIndexVar, j);
+                    }
+
+                    if(grid.isRowAvailable()) {
+                        renderChildren(context, grid);
+                        rowIndex++;
+                        renderedItems++;
+                    }
                 }
-
+                
                 writer.endElement("td");
             }
-
             writer.endElement("tr");
         }
 
