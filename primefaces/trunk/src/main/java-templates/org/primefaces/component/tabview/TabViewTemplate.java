@@ -244,5 +244,3 @@ import javax.faces.component.visit.VisitResult;
             return super.visitTree(context, callback);
         }
     }
-
-    public void 
