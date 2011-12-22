@@ -44,7 +44,7 @@ PrimeFaces.widget.DataTable = function(cfg) {
     }
     
     if(this.cfg.scrollable||this.cfg.resizableColumns) {
-        this.alignColumnWidths();
+        this.initColumnWidths();
     }
     
     if(this.cfg.scrollable) {
@@ -399,8 +399,8 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
 
-                if(_self.cfg.resizableColumns) {
-                    _self.restoreColumnWidths();
+                if(_self.cfg.scrollable) {
+                    _self.alignCellWidths();
                 }
                 
                 //update checkall checkbox if all enabled checkboxes are checked
@@ -481,8 +481,8 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                    paginator.setPage(0, true);
                 }
                 
-                if(_self.cfg.resizableColumns) {
-                    _self.restoreColumnWidths();
+                if(_self.cfg.scrollable) {
+                    _self.alignCellWidths();
                 }
             }
             else {
@@ -539,6 +539,10 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
 
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
+                
+                if(_self.cfg.scrollable) {
+                    _self.alignCellWidths();
+                }
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -551,10 +555,6 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
         var paginator = _self.getPaginator();
         if(paginator) {
             paginator.setTotalRecords(this.args.totalRecords);
-        }
-
-        if(_self.cfg.resizableColumns) {
-            _self.restoreColumnWidths();
         }
         
         return true;
@@ -1097,9 +1097,6 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
     thead = $(this.jqId + ' thead'),  
     tfoot = $(this.jqId + ' tfoot'),
     _self = this;
-         
-    //State cookie
-    this.columnWidthsCookie = location.href + '_' + this.id + '_columnWidths';
     
     //Main resize events
     resizers.draggable({
@@ -1137,9 +1134,6 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
             tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
 
             scrollHeader.scrollLeft(scrollBody.scrollLeft());
-
-            //Save state
-            _self.saveColumnWidths();
             
             //Invoke colResize behavior
             if(_self.hasBehavior('colResize')) {
@@ -1158,35 +1152,6 @@ PrimeFaces.widget.DataTable.prototype.clearFilters = function() {
         },
         containment: this.jq
     });
-    
-    this.restoreColumnWidths();
-}
-
-PrimeFaces.widget.DataTable.prototype.saveColumnWidths = function() {
-    var columnWidths = [],
-    columnHeaders = this.cfg.scrollable ? this.jq.find('.ui-datatable-scrollable-header thead th') : this.jq.find('table thead th');
-    
-    columnHeaders.each(function(i, item) {
-        columnWidths.push($(item).children('.ui-dt-c').width());
-    });
-    PrimeFaces.setCookie(this.columnWidthsCookie, columnWidths.join(','));
-}
-
-PrimeFaces.widget.DataTable.prototype.restoreColumnWidths = function() {
-    var widths = PrimeFaces.getCookie(this.columnWidthsCookie),
-    columnHeaders = this.cfg.scrollable ? this.jq.find('.ui-datatable-scrollable-header thead th') : this.jq.find('table thead th'),
-    columnFooters = this.cfg.scrollable ? this.jq.find('.ui-datatable-scrollable-footer tfoot td') : this.jq.find('table tfoot td');
-    
-    if(widths) {
-        widths = widths.split(',');
-        for(var i = 0; i < widths.length; i++) {
-            var width = widths[i];
-            
-            columnHeaders.eq(i).children('.ui-dt-c').width(width);
-            $(this.jqId + ' tbody.ui-datatable-data').find('tr td:nth-child(' + (i + 1) + ')').children('.ui-dt-c').width(width);
-            columnFooters.eq(i).children('.ui-dt-c').width(width);
-        }
-    }
 }
 
 PrimeFaces.widget.DataTable.prototype.hasBehavior = function(event) {
@@ -1257,12 +1222,28 @@ PrimeFaces.widget.DataTable.prototype.getRowMeta = function(row) {
 /**
  * Moves widths of columns to column wrappers
  */
-PrimeFaces.widget.DataTable.prototype.alignColumnWidths = function() {
+PrimeFaces.widget.DataTable.prototype.initColumnWidths = function() {
     this.jq.find('div.ui-dt-c').each(function() {
         var wrapper = $(this),
         column = wrapper.parent();
-        
+
         wrapper.width(column.width());
         column.width('');
+    });
+}
+
+/**
+ * Align data cell widths with column headers for scrolling
+ */
+PrimeFaces.widget.DataTable.prototype.alignCellWidths = function() {
+    var headerWrappers = this.jq.find('thead:first th div.ui-dt-c'),
+    dataCells = this.jq.find('tbody:first td');
+
+    dataCells.each(function(index, item) {
+        var cell = $(item),
+        headerWrapper = headerWrappers.eq(cell.index());
+
+        cell.children('div.ui-dt-c').width(headerWrapper.width());
+        cell.width('');
     });
 }
