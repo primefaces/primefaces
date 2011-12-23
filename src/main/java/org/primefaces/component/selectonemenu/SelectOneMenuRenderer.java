@@ -82,6 +82,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", inputId, null);
         if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), null);
+        if(menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), null);
 
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
