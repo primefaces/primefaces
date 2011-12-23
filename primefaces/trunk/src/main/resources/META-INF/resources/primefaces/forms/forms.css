@@ -103,6 +103,9 @@
     width: auto;
     border: none;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: normal;
 }
 
 .ui-selectonemenu.ui-state-disabled .ui-selectonemenu-trigger,

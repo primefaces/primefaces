@@ -266,20 +266,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     //Append panel to body
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
-    
-    //align panel and label-menuicon
-    var panelWidth = this.panel.width(),
-    jqWidth = this.jq.width();
-    
-    if(panelWidth > jqWidth) {
-        this.jq.width(panelWidth + this.menuIcon.width());
-        this.panel.width(this.jq.width());
-    }
-    else {
-        this.panel.width(jqWidth);
-        this.jq.width(jqWidth);     //replace auto with fixed width
-    }
-        
+            
     //Hide overlay on resize
     var resizeNS = 'resize.' + this.id;
     $(window).unbind(resizeNS).bind(resizeNS, function() {
@@ -288,10 +275,34 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         }
     });
     
+    if(this.jq.is(':visible')) {
+        this.initWidths();
+    }
+    else {
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                return _self.initWidths();
+            });
+        }
+    }
+    
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.SelectOneMenu, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.SelectOneMenu.prototype.initWidths = function() {
+    this.jq.width(this.input.outerWidth());
+    var jqWidth = this.jq.innerWidth();
+    
+    //align panel and container
+    if(this.panel.outerWidth() < jqWidth) {
+        this.panel.width(jqWidth);
+    }
+}
 
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     var _self = this;
