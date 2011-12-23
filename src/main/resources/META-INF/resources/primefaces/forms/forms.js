@@ -245,9 +245,10 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     var selectedOption = this.options.filter(':selected'),
     label = selectedOption.text();
     if(label == '') {
-        label = '&nbsp';
+        this.label.html('&nbsp;');
+    } else {
+        this.label.text(label);
     }
-    this.label.text(label);
     this.items.eq(selectedOption.index()).addClass('ui-state-active');
     
     this.bindEvents();
