@@ -7,5 +7,5 @@
     public static final String MENU_SLIDING_STATE_CLASS = "ui-menu-sliding-state";
     public static final String MENU_SLIDING_SCROLL_CLASS = "ui-menu-sliding-scroll ui-widget ui-widget-content ui-corner-all";
     public static final String MENU_SLIDING_CONTENT_CLASS = "ui-menu-sliding-content";
-    public static final String BACKWARD_CLASS = "ui-menu-backward ui-state-default ui-corner-all ui-helper-clearfix";
+    public static final String BACKWARD_CLASS = "ui-menu-backward ui-helper-clearfix";
     public static final String BACKWARD_ICON_CLASS = "ui-icon ui-icon-triangle-1-w";
