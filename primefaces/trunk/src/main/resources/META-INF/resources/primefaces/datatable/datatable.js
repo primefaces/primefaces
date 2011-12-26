@@ -399,7 +399,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
 
-                if(_self.cfg.scrollable) {
+                if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
                     _self.updateDataCellWidths();
                 }
                 
@@ -481,7 +481,7 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
                    paginator.setPage(0, true);
                 }
                 
-                if(_self.cfg.scrollable) {
+                if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
                     _self.updateDataCellWidths();
                 }
             }
@@ -540,7 +540,7 @@ PrimeFaces.widget.DataTable.prototype.filter = function() {
             if(id == _self.id){
                 $(_self.tbody).replaceWith(content);
                 
-                if(_self.cfg.scrollable) {
+                if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
                     _self.updateDataCellWidths();
                 }
             }
