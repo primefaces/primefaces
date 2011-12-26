@@ -1614,13 +1614,36 @@ PrimeFaces.widget.ImageCropper = function(cfg) {
     var _self = this;
     this.cfg.onSelect = function(c) {_self.saveCoords(c);};
     this.cfg.onChange = function(c) {_self.saveCoords(c);};
-
-	this.image.Jcrop(this.cfg);
     
+    if(this.jq.is(':visible')) {
+        this.init();
+    } 
+    else {
+        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+        hiddenParentWidget = hiddenParent.data('widget');
+        
+        if(hiddenParentWidget) {
+            hiddenParentWidget.addOnshowHandler(function() {
+                return _self.init();
+            });
+        }
+    }
+
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.ImageCropper, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.ImageCropper.prototype.init = function() {
+    if(this.jq.is(':visible')) {
+        this.image.Jcrop(this.cfg);
+        
+        return true;
+    } 
+    else {
+        return false;
+    }
+}
 
 PrimeFaces.widget.ImageCropper.prototype.saveCoords = function(c) {
     var cropCoords = c.x + "_" + c.y + "_" + c.w + "_" + c.h;
