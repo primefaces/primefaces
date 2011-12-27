@@ -72,10 +72,29 @@ PrimeFaces.widget.ThemeSwitcher = function(cfg) {
         }
     });
     
+    //dialog support
+    this.setupDialogSupport();
+    
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.ThemeSwitcher, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.ThemeSwitcher.prototype.setupDialogSupport = function() {
+    var dialog = this.jq.parents('.ui-dialog:first');
+    
+    if(dialog.length == 1) {
+        var dialogWidget = dialog.data('widget'),
+        _self = this;
+        
+        _self.panel.css('position', 'fixed');
+        _self.triggers.mousedown(function(e) {
+            dialogWidget.moveToTop();
+            _self.panel.css('z-index', ++PrimeFaces.zindex);
+            e.stopPropagation();
+        });
+    }
+}
 
 PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
     var _self = this;
@@ -116,7 +135,7 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
 
     var offset;
     //hide overlay when outside is clicked
-    $(document.body).bind('click', function (e) {
+    $(document.body).bind('mousedown.ui-selectonemenu', function (e) {
         if (_self.panel.is(":hidden")) {
             return;
         }
@@ -132,7 +151,6 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
             e.pageY > offset.top + _self.panel.height()) {
             _self.hide();
         }
-        _self.hide();
     });
     
     this.labelContainer.focus(function(){
@@ -375,10 +393,14 @@ PrimeFaces.widget.ThemeSwitcher.prototype.blur = function() {
 }
 
 PrimeFaces.widget.ThemeSwitcher.prototype.alignPanel = function() {
-    this.panel.css({left:'', top:''})
-    .position({
-        my: 'left top'
-        ,at: 'left bottom'
-        ,of: this.jq
-    });
+    var fixedPosition = this.panel.css('position') == 'fixed',
+    win = $(window),
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    
+    this.panel.css({left:'', top:''}).position({
+                                    my: 'left top'
+                                    ,at: 'left bottom'
+                                    ,of: this.jq
+                                    ,offset : positionOffset
+                                });
 }
