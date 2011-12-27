@@ -60,6 +60,8 @@ PrimeFaces = {
         }).blur(function() {
                 $(this).removeClass('ui-state-focus');
         });
+        
+        return this;
     },
     
     skinButton : function(button) {
@@ -77,6 +79,10 @@ PrimeFaces = {
             }
         }).mouseup(function() {
             $(this).removeClass('ui-state-active');
+        }).focus(function() {
+            $(this).addClass('ui-state-focus');
+        }).blur(function() {
+            $(this).removeClass('ui-state-focus');
         });
         
         return this;
