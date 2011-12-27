@@ -50,10 +50,32 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
         }
     });
     
+    //dialog support
+    this.setupDialogSupport();
+    
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.AutoComplete, PrimeFaces.widget.BaseWidget);
+
+/**
+ * Binds events to hide the dialog overlay when inside a dialog
+ */
+PrimeFaces.widget.AutoComplete.prototype.setupDialogSupport = function() {
+    var dialog = this.jq.parents('.ui-dialog:first');
+    
+    if(dialog.length == 1) {
+        var dialogWidget = dialog.data('widget'),
+        _self = this;
+        
+        _self.panel.css('position', 'fixed');
+        _self.input.mousedown(function(e) {
+            dialogWidget.moveToTop();
+            _self.panel.css('z-index', ++PrimeFaces.zindex);
+            e.stopPropagation();
+        });
+    }
+}
 
 PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
     var _self = this;
@@ -193,7 +215,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
 
     //hide overlay when outside is clicked
     var offset;
-    $(document.body).bind('click', function (e) {
+    $(document.body).bind('mousedown.ui-autocomplete', function (e) {
         if(_self.panel.is(":hidden")) {
             return;
         }
@@ -207,7 +229,6 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             e.pageY > offset.top + _self.panel.height()) {
             _self.hide();
         }
-        _self.hide();
     });
 }
 
@@ -230,8 +251,10 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
         if(_self.cfg.pojo) {
             _self.hinput.val(item.attr('data-item-value'));            
         } 
-
+        
         _self.invokeItemSelectBehavior(event);
+        
+        _self.hide();
     });
 }
 
@@ -408,6 +431,10 @@ PrimeFaces.widget.AutoComplete.prototype.activate = function() {
 }
 
 PrimeFaces.widget.AutoComplete.prototype.alignPanel = function() {
+    var fixedPosition = this.panel.css('position') == 'fixed',
+    win = $(window),
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    
     this.panel.css({
                     left:'',
                     top:'',
@@ -416,6 +443,7 @@ PrimeFaces.widget.AutoComplete.prototype.alignPanel = function() {
               .position({
                 my: 'left top'
                 ,at: 'left bottom'
-                ,of: this.input
+                ,of: this.input,
+                offset : positionOffset
               });
 }
