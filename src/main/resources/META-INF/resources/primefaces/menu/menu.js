@@ -102,8 +102,10 @@ PrimeFaces.widget.Menu = function(cfg) {
         }
         
         this.cfg.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
-            _self.jq.css({left:'', top:''}).position(_self.cfg.position);
-            _self.show(e);
+            if(_self.jq.is(':visible'))
+                _self.hide(e);
+            else
+                _self.show(e);
             
             //sliding rescue
             if(_self.cfg.sliding && !_self.slidingCfg.heighter.height()){
@@ -111,17 +113,23 @@ PrimeFaces.widget.Menu = function(cfg) {
             }
         });
             
-        //hide overlay when outside is clicked
-        $(document.body).bind('click.ui-menu', function (e) {
+        //hide overlay when document is clicked
+        $(document.body).bind('mousedown.ui-menu', function (e) {            
             if(_self.jq.is(":hidden")) {
                 return;
             }
             
-            if(e.target === _self.cfg.trigger.get(0) || _self.cfg.trigger.find($(e.target)).length > 0) {
+            var offset = _self.jq.offset();
+            if(e.target === _self.cfg.trigger.get(0)) {
                 return;
             }
-
-            _self.hide();
+            var offset = _self.jq.offset();
+            if(e.pageX < offset.left ||
+                e.pageX > offset.left + _self.jq.width() ||
+                e.pageY < offset.top ||
+                e.pageY > offset.top + _self.jq.height()) {
+                _self.hide(e);
+            }
         });
         
         //Hide overlay on resize
@@ -131,6 +139,9 @@ PrimeFaces.widget.Menu = function(cfg) {
                 _self.hide();
             }
         });
+        
+        //dialog support
+        this.setupDialogSupport();
     }
 
     if(this.cfg.sliding){
@@ -215,6 +226,43 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
            e.stopPropagation();
        });
     }
+}
+
+PrimeFaces.widget.Menu.prototype.setupDialogSupport = function() {
+    var dialog = this.cfg.trigger.parents('.ui-dialog:first');
+    
+    if(dialog.length == 1) {
+        var dialogWidget = dialog.data('widget'),
+        _self = this;
+        
+        _self.jq.css('position', 'fixed');
+        _self.cfg.trigger.mousedown(function(e) {
+            dialogWidget.moveToTop();
+            _self.jq.css('z-index', ++PrimeFaces.zindex);
+            e.stopPropagation();
+        });
+    }
+}
+
+PrimeFaces.widget.Menu.prototype.show = function(e) {
+    this.align();
+    this.jq.css('z-index', ++PrimeFaces.zindex).show();
+    
+    e.preventDefault();
+}
+
+PrimeFaces.widget.Menu.prototype.hide = function(e) {
+    this.jq.fadeOut('fast');
+}
+
+PrimeFaces.widget.Menu.prototype.align = function() {
+    var fixedPosition = this.jq.css('position') == 'fixed',
+    win = $(window),
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    
+    this.cfg.position.offset = positionOffset;
+    
+    this.jq.css({left:'', top:''}).position(this.cfg.position);
 }
 
 PrimeFaces.widget.Menu.prototype.setupSliding = function() {
@@ -320,16 +368,6 @@ PrimeFaces.widget.Menu.prototype.slide = function(level, fn){
                 _self.slidingCfg.backButton.css({display : 'block'});
         }
     });
-}
-
-PrimeFaces.widget.Menu.prototype.show = function(e) {
-    this.jq.css('z-index', ++PrimeFaces.zindex).show();
-    
-    e.preventDefault();
-}
-
-PrimeFaces.widget.Menu.prototype.hide = function(e) {
-    this.jq.fadeOut('fast');
 }
             
 /*
