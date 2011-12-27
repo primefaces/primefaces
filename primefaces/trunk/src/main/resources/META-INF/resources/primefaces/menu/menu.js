@@ -383,25 +383,17 @@ PrimeFaces.widget.MenuButton = function(cfg) {
     this.menu = this.jq.children('.ui-menu');
     this.menuitems = this.jq.find('.ui-menuitem');
     this.cfg.disabled = this.button.is(':disabled');
-    var _self = this;
-
-    PrimeFaces.skinButton(this.button);
 
     if(!this.cfg.disabled) {
         this.bindEvents();
 
         $(document.body).children(this.menuId).remove();
         this.menu.appendTo(document.body);
+        
+        //dialog support
+        this.setupDialogSupport();
     }
-    
-    //Hide overlay on resize
-    var resizeNS = 'resize.' + this.id;
-    $(window).unbind(resizeNS).bind(resizeNS, function() {
-        if(_self.menu.is(':visible')) {
-            _self.menu.hide();
-        }
-    });
-    
+
     this.postConstruct();
 }
 
@@ -409,6 +401,30 @@ PrimeFaces.extend(PrimeFaces.widget.MenuButton, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {  
     var _self = this;
+    
+    //button visuals
+    this.button.mouseover(function(){
+        $(this).addClass('ui-state-hover');
+    }).mouseout(function() {
+        $(this).removeClass('ui-state-hover');
+    }).mousedown(function(e) {
+        var el = $(this);
+        if(_self.menu.is(':visible')) {
+            el.removeClass('ui-state-active').addClass('ui-state-hover');
+            _self.hide();    
+        } else {
+            el.removeClass('ui-state-hover').addClass('ui-state-active');
+            _self.show();
+        }
+        
+        //do not trigger document mousedown.ui-menubutton
+        e.stopPropagation();
+        
+    }).focus(function() {
+        $(this).addClass('ui-state-focus');
+    }).blur(function() {
+        $(this).removeClass('ui-state-focus');
+    });
     
     //menuitem visuals
     this.menuitems.mouseover(function(e) {
@@ -419,32 +435,70 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     }).mouseout(function(e) {
         var element = $(this);
         element.removeClass('ui-state-hover');
+    }).mousedown(function(e) {
+        //do not trigger document mousedown.ui-menubutton
+        e.stopPropagation();
+    }).mouseup(function(e) {
+        _self.button.removeClass('ui-state-active ui-state-hover');
+        _self.hide();
     });
-    
+        
     this.cfg.position = {
         my: 'left top'
         ,at: 'left bottom'
         ,of: this.button
     }
     
-    //button event
-    this.button.click(function(e) {
-        _self.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex}).position(_self.cfg.position);
-        _self.menu.show();
+    //handler for document mousedown except button
+    $(document.body).bind('mousedown.ui-menubutton', function (e) {
+        if(_self.menu.is(":hidden")) {
+            return;
+        }
+        _self.button.removeClass('ui-state-active ui-state-hover');
+        _self.hide();
     });
     
-    //hide overlay when outside is clicked
-    $(document.body).bind('click.ui-menubutton', function (e) {
-        if(_self.jq.is(":hidden")) {
-            return;
+    //hide overlay on window resize
+    var resizeNS = 'resize.' + this.id;
+    $(window).unbind(resizeNS).bind(resizeNS, function() {
+        if(_self.menu.is(':visible')) {
+            _self.menu.hide();
         }
-        
-        if(e.target === _self.button.get(0) || _self.button.find($(e.target)).length > 0) {
-            return;
-        }
-
-        _self.menu.fadeOut('fast');
     });
+}
+
+/**
+ * Binds events to hide the dialog overlay when inside a dialog
+ */
+PrimeFaces.widget.MenuButton.prototype.setupDialogSupport = function() {
+    var dialog = this.button.parents('.ui-dialog:first');
+    
+    if(dialog.length == 1) {
+        var dialogWidget = dialog.data('widget'),
+        _self = this;
+        
+        this.menu.css('position', 'fixed');
+    }
+}
+
+PrimeFaces.widget.MenuButton.prototype.show = function() {
+    this.alignPanel();
+    
+    this.menu.show();
+}
+
+PrimeFaces.widget.MenuButton.prototype.hide = function() {
+    this.menu.fadeOut('fast');
+}
+
+PrimeFaces.widget.MenuButton.prototype.alignPanel = function() {
+    var fixedPosition = this.menu.css('position') == 'fixed',
+    win = $(window),
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    
+    this.cfg.position.offset = positionOffset;
+    
+    this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex}).position(this.cfg.position);
 }
 
 /*
