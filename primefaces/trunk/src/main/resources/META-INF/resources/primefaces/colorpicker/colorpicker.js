@@ -789,25 +789,14 @@ PrimeFaces.widget.ColorPicker = function(cfg) {
 	this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.input = $(this.jqId + '_input');
-    
-    var _self = this,
-    popup = this.cfg.mode == 'popup';
-    
-    this.jqEl = popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
-
-    //options
-    this.cfg.flat = !popup;
+    this.cfg.popup = this.cfg.mode == 'popup';    
+    this.jqEl = this.cfg.popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
+    this.cfg.flat = !this.cfg.popup;
     this.cfg.livePreview = false;
+    var _self = this;
 
-    //events
-    this.cfg.onChange = function(hsb, hex, rgb) {
-		_self.input.val(hex);
-
-        if(popup) {
-            _self.livePreview.css('backgroundColor', '#' + hex);
-        }
-	};
-
+    this.bindCallbacks();
+    
     //animation
     if(this.cfg.effect) {
         this.cfg.onShow = function(cp) {
@@ -820,23 +809,59 @@ PrimeFaces.widget.ColorPicker = function(cfg) {
             return false;
         };
     }
+    
+    //ajax update check
+    if(this.cfg.popup) {
+        this.clearOrphanOverlay();
+    }
 
     //create colorpicker
     this.jqEl.ColorPicker(this.cfg);
 
     //popup ui
-    if(popup) {
+    if(this.cfg.popup) {
         PrimeFaces.skinButton(this.jqEl);
+        this.overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
         this.livePreview = $(this.jqId + '_livePreview');
-        
-        var zindex = this.cfg.zindex ? this.cfg.zindex : 10000,
-        overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
-
-        overlay.appendTo(this.jq);
-        overlay.css('z-index', zindex);
     }
     
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.ColorPicker, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.ColorPicker.prototype.bindCallbacks = function() {
+    var _self = this;
+    
+    this.cfg.onChange = function(hsb, hex, rgb) {
+		_self.input.val(hex);
+
+        if(_self.cfg.popup) {
+            _self.livePreview.css('backgroundColor', '#' + hex);
+        }
+	};
+    
+    this.cfg.onBeforeShow = function() {
+        if(_self.cfg.popup) {
+            _self.overlay.css('z-index', ++PrimeFaces.zindex);
+        }
+    }
+}
+
+/**
+ * When a popup colorpicker is updated with ajax, a new overlay is appended to body and old overlay
+ * would be orphan. We need to remove the old overlay to prevent memory leaks.
+ */
+PrimeFaces.widget.ColorPicker.prototype.clearOrphanOverlay = function() {
+    var _self = this;
+    
+    $(document.body).children('.ui-colorpicker-container').each(function(i, element) {
+        var overlay = $(element),
+        options = overlay.data('colorpicker');
+        
+        if(options.id == _self.id) {
+            overlay.remove();
+            return false;   //break;
+        }
+    });
+}
