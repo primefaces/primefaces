@@ -793,23 +793,10 @@ PrimeFaces.widget.ColorPicker = function(cfg) {
     this.jqEl = this.cfg.popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
     this.cfg.flat = !this.cfg.popup;
     this.cfg.livePreview = false;
-    var _self = this;
+    this.cfg.nestedInDialog = this.jqEl.parents('.ui-dialog:first').length == 1;
 
     this.bindCallbacks();
-    
-    //animation
-    if(this.cfg.effect) {
-        this.cfg.onShow = function(cp) {
-            $(cp).show(_self.cfg.effect,{}, _self.cfg.effectSpeed);
-            return false;
-        };
-
-        this.cfg.onHide = function(cp) {
-            $(cp).hide(_self.cfg.effect,{}, _self.cfg.effectSpeed);
-            return false;
-        };
-    }
-    
+        
     //ajax update check
     if(this.cfg.popup) {
         this.clearOrphanOverlay();
@@ -841,10 +828,35 @@ PrimeFaces.widget.ColorPicker.prototype.bindCallbacks = function() {
         }
 	};
     
-    this.cfg.onBeforeShow = function() {
+    this.cfg.onShow = function() {
         if(_self.cfg.popup) {
             _self.overlay.css('z-index', ++PrimeFaces.zindex);
         }
+
+        var win = $(window),
+        positionOffset = _self.cfg.nestedInDialog ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+        
+        if(_self.cfg.nestedInDialog) {
+            _self.overlay.css('position', 'fixed');
+        }
+        
+        //position the overlay relative to the button
+        _self.overlay.css({
+                    left:'',
+                    top:''
+              })
+              .position({
+                my: 'left top'
+                ,at: 'left bottom'
+                ,of: _self.jqEl,
+                offset : positionOffset
+              });
+    }
+    
+    this.cfg.onHide = function(cp) {
+        _self.overlay.css('z-index', ++PrimeFaces.zindex);
+        $(cp).fadeOut('fast');
+        return false;
     }
 }
 

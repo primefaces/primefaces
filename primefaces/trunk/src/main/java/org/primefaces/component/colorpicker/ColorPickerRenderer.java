@@ -118,7 +118,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = colorPicker.getClientId(context);
         String value = (String) colorPicker.getValue();
-        String effect = colorPicker.getEffect();
+
 
 		startScript(writer, clientId);
 
@@ -128,12 +128,8 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",mode:'" + colorPicker.getMode() + "'");
 
-        if(value != null) writer.write(",color:'" + value + "'");
-        if(!effect.equals("none")) {
-            writer.write(",effect:'" + effect + "'");
-            writer.write(",effectSpeed:'" + colorPicker.getEffectSpeed() + "'");
-        }
-        if(colorPicker.getZindex() != Integer.MAX_VALUE) writer.write(",zindex:" + colorPicker.getZindex());
+        if(value != null) 
+            writer.write(",color:'" + value + "'");
 
         writer.write("},'colorpicker');});");
 

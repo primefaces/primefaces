@@ -29,18 +29,6 @@
 			<defaultValue>popup</defaultValue>
 		</attribute>
         <attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>fade</defaultValue>
-		</attribute>
-        <attribute>
-			<name>effectSpeed</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>normal</defaultValue>
-		</attribute>
-        <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -49,12 +37,6 @@
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>zindex</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
 		</attribute>
 	</attributes>
 	<resources>
