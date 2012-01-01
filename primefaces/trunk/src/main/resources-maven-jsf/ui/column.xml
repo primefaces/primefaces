@@ -107,7 +107,7 @@
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Enables selection mode.</description>
+            <description>Enables selection mode, valid values are "single" and "multiple".</description>
 		</attribute>
         <attribute>
 			<name>disabledSelection</name>
@@ -121,7 +121,7 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Disables row selection when true.</description>
+            <description>Maximum number of characters for an input filter.</description>
 		</attribute>
         <attribute>
 			<name>resizable</name>
