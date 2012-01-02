@@ -153,6 +153,7 @@ public class HTML {
     public final static String BUTTON_LEFT_ICON_CLASS = "ui-button-icon-left ui-icon";
     public final static String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon";
     public final static String BUTTON_TEXT_CLASS = "ui-button-text";
+    public final static String BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
     
     public final static String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public final static String CHECKBOX_CLASS = "ui-chkbox ui-widget";

@@ -214,10 +214,89 @@
 }
 .ui-buttonset .ui-button { 
     margin-left: 0; 
-    margin-right: -.3em; 
+    margin-right: 0;
 }
 
 /* workarounds */
 button.ui-button::-moz-focus-inner { 
     border: 0; padding: 0; /* reset extra padding in Firefox */
+}
+
+/** SelectCheckbox Menu **/
+.ui-selectcheckboxmenu {
+    display: inline-block;
+    position: relative;
+    width: auto;
+    zoom: 1;
+    cursor: pointer;
+    *display: inline;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    cursor: pointer;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 3px;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger  .ui-icon {
+    margin-top: 3px;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label  {
+    display: block;
+    padding: 3px 26px 3px 5px;
+    width: auto;
+    border: none;
+    cursor: pointer;
+}
+
+.ui-selectcheckboxmenu.ui-state-disabled .ui-selectcheckboxmenu-trigger,
+.ui-selectcheckboxmenu.ui-state-disabled .ui-selectcheckboxmenu-label {
+    cursor: auto
+}
+
+.ui-selectcheckboxmenu-panel {
+    position: absolute;
+    overflow: auto;
+    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
+    padding: 0.4em;
+    border: 0 none;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+    border:0px none;
+    cursor:pointer;
+    font-weight:normal;
+    margin:1px 0;
+    padding:3px 5px;
+    text-align:left;
+    white-space: nowrap;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+    display: block;
+    position: relative;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox {
+    position: absolute;
+    top:50%;
+    margin-top:-8px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+    display: block;
+    padding-left: 2.2em;
 }
