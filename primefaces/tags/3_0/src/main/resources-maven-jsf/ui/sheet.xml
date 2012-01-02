@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>sheet</tag>
+    <tagClass>org.primefaces.component.sheet.SheetTag</tagClass>
+    <componentClass>org.primefaces.component.sheet.Sheet</componentClass>
+    <componentType>org.primefaces.Sheet</componentType>
+    <componentFamily>org.primefaces</componentFamily>
+    <rendererType>org.primefaces.component.SheetRenderer</rendererType>
+    <rendererClass>org.primefaces.component.sheet.SheetRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UIData</parent>
+    <description>
+        Sheet is an excel like component for bulk data manipulation.
+    </description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &data_component_attributes;
+		&widget_var_attribute;
+        <attribute>
+			<name>scrollHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height in pixels.</description>
+		</attribute>
+        <attribute>
+			<name>scrollWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width in pixels.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>sheet/sheet.css</name>
+        </resource>
+        <resource>
+            <name>primefaces.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>sheet/sheet.js</name>
+        </resource>
+    </resources>
+</component>

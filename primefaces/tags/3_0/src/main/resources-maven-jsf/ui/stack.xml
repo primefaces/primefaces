@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>stack</tag>
+	<tagClass>org.primefaces.component.stack.StackTag</tagClass>
+	<componentClass>org.primefaces.component.stack.Stack</componentClass>
+	<componentType>org.primefaces.component.Stack</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.StackRenderer</rendererType>
+	<rendererClass>org.primefaces.component.stack.StackRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>Stack is a navigation component that mimics the stacks feature in Mac OS X.</description>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>An optional image to contain stacked items.</description>
+		</attribute>
+		<attribute>
+			<name>openSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+            <description>Speed of the animation in milliseconds when opening the stack. Default is 300.</description>
+		</attribute>
+		<attribute>
+			<name>closeSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>300</defaultValue>
+            <description>Speed of the animation in milliseconds when opening the stack. Default is 300.</description>
+		</attribute>
+        <attribute>
+			<name>expanded</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description></description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>stack/stack.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>stack/stack.js</name>
+		</resource>
+	</resources>
+</component>

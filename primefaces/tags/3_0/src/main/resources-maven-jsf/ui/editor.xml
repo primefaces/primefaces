@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>editor</tag>
+	<tagClass>org.primefaces.component.editor.EditorTag</tagClass>
+	<componentClass>org.primefaces.component.editor.Editor</componentClass>
+	<componentType>org.primefaces.component.Editor</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.EditorRenderer</rendererType>
+	<rendererClass>org.primefaces.component.editor.EditorRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>Editor is an input component with rich text editing capabilities.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+        <attribute>
+			<name>controls</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>List of controls to customize toolbar.</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height of the editor. Default is min integer value.</description>
+		</attribute>
+        <attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width of the editor. Default is min integer value.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables editor.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the editor container.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the editor container.</description>
+		</attribute>
+        <attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when editor data changes.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>editor/editor.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>editor/editor.js</name>
+		</resource>
+	</resources>
+</component>

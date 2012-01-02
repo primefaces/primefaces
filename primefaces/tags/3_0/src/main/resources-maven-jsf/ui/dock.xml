@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>dock</tag>
+	<tagClass>org.primefaces.component.dock.DockTag</tagClass>
+	<componentClass>org.primefaces.component.dock.Dock</componentClass>
+	<componentType>org.primefaces.component.Dock</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.DockRenderer</rendererType>
+	<rendererClass>org.primefaces.component.dock.DockRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>Dock component mimics the well known dock interface of Mac OS X.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
+		</attribute>
+		<attribute>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>bottom</defaultValue>
+            <description>Position of the dock, bottom or top. Default is bottom.</description>
+		</attribute>
+		<attribute>
+			<name>itemWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>40</defaultValue>
+            <description>Initial width of items. Default is 40.</description>
+		</attribute>
+		<attribute>
+			<name>maxWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>50</defaultValue>
+            <description>Maximum width of items. Default is 50.</description>
+		</attribute>
+		<attribute>
+			<name>proximity</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>90</defaultValue>
+            <description>Distance to enlarge. Default is 90.</description>
+		</attribute>
+		<attribute>
+			<name>halign</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>center</defaultValue>
+            <description>Horizontal alignment. Default is center.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>dock/dock.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>dock/dock.js</name>
+		</resource>
+	</resources>
+</component>

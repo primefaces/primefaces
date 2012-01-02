@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>feedReader</tag>
+	<tagClass>org.primefaces.component.feedreader.FeedReaderTag</tagClass>
+	<componentClass>org.primefaces.component.feedreader.FeedReader</componentClass>
+	<componentType>org.primefaces.component.FeedReader</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.FeedReaderRenderer</rendererType>
+	<rendererClass>org.primefaces.component.feedreader.FeedReaderRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>feedReader displays content from a feed.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>URL of the feed.</description>
+		</attribute>
+        <attribute>
+			<name>var</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Iterator to refer each item in feed.</description>
+		</attribute>
+        <attribute>
+			<name>size</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Number of items to display.</description>
+		</attribute>
+	</attributes>
+</component>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>galleriaOverlay</tag>
+	<tagClass>org.primefaces.component.galleria.GalleriaOverlayTag</tagClass>
+	<componentClass>org.primefaces.component.galleria.GalleriaOverlay</componentClass>
+	<componentType>org.primefaces.component.GalleriaOverlay</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.GalleriaOverlayRenderer</rendererType>
+	<rendererClass>org.primefaces.component.galleria.GalleriaOverlayRenderer</rendererClass>
+	<parent>javax.faces.component.UIColumn</parent>
+    <attributes>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </attributes>
+</component>
