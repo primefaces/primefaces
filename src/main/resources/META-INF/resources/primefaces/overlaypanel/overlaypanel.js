@@ -16,7 +16,10 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     }
     
     this.jq.data('widget', this);
-    
+            
+    //dialog support
+    this.setupDialogSupport();
+
     this.postConstruct();
 }
 
@@ -78,11 +81,16 @@ PrimeFaces.widget.OverlayPanel.prototype.show = function() {
 }
 
 PrimeFaces.widget.OverlayPanel.prototype.align = function() {
+    var fixedPosition = this.jq.css('position') == 'fixed',
+    win = $(window),
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    
     this.jq.css({'left':'', 'top':'', 'z-Index': ++PrimeFaces.zindex})
             .position({
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.target
+                ,offset: positionOffset
             });
 }
 
@@ -119,4 +127,18 @@ PrimeFaces.widget.OverlayPanel.prototype.postHide = function() {
 
 PrimeFaces.widget.OverlayPanel.prototype.addOnshowHandler = function(fn) {
     this.onshowHandlers.push(fn);
+}
+
+PrimeFaces.widget.OverlayPanel.prototype.setupDialogSupport = function() {
+    var dialog = this.target.parents('.ui-dialog:first');
+    
+    if(dialog.length == 1) {
+        //set position as fixed to scroll with dialog
+        this.jq.css('position', 'fixed');
+        
+        //append to body if not already appended by user choice
+        if(!this.cfg.appendToBody) {
+            this.jq.appendTo(document.body);
+        }
+    }
 }
