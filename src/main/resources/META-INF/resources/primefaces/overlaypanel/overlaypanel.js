@@ -25,16 +25,19 @@ PrimeFaces.extend(PrimeFaces.widget.OverlayPanel, PrimeFaces.widget.BaseWidget);
 PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
     var _self = this;
     
-    this.target.bind('click', function(e) {
+    this.target.bind('mousedown.ui-overlay', function(e) {
         if(_self.jq.is(":hidden")) {
             _self.show();
+        } else {
+            _self.hide();
         }
         
+        //do not trigger document mousedown
         e.stopPropagation();
     });
     
     //hide overlay when outside is clicked
-    $(document.body).bind('click.ui-overlaypanel', function (e) {
+    $(document.body).bind('mousedown.ui-overlay', function (e) {
         if(_self.jq.is(":hidden")) {
             return;
         }
@@ -61,15 +64,10 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
 PrimeFaces.widget.OverlayPanel.prototype.show = function() {
     var _self = this;
     
-    this.jq.css({'left':'', 'top':'', 'z-Index': ++PrimeFaces.zindex})
-            .position({
-                my: 'left top'
-                ,at: 'left bottom'
-                ,of: this.target
-            });
-            
+    this.align();
+    
     if(this.cfg.showEffect) {
-        this.jq.show(this.cfg.showEffect, {}, 800, function() {
+        this.jq.show(this.cfg.showEffect, {}, 200, function() {
             _self.postShow();
         });
     }
@@ -79,18 +77,44 @@ PrimeFaces.widget.OverlayPanel.prototype.show = function() {
     }
 }
 
+PrimeFaces.widget.OverlayPanel.prototype.align = function() {
+    this.jq.css({'left':'', 'top':'', 'z-Index': ++PrimeFaces.zindex})
+            .position({
+                my: 'left top'
+                ,at: 'left bottom'
+                ,of: this.target
+            });
+}
+
+PrimeFaces.widget.OverlayPanel.prototype.hide = function() {
+    var _self = this;
+    
+    if(this.cfg.hideEffect) {
+        this.jq.hide(this.cfg.hideEffect, {}, 200, function() {
+            _self.postHide();
+        });
+    }
+    else {
+        this.jq.hide();
+        this.postHide();
+    }
+}
+
 PrimeFaces.widget.OverlayPanel.prototype.postShow = function() {
+    if(this.cfg.onShow) {
+        this.cfg.onShow.call(this);
+    }
+    
     //execute onshowHandlers and remove successful ones
     this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
 		return !fn.call();
 	});
 }
 
-PrimeFaces.widget.OverlayPanel.prototype.hide = function() {
-    if(this.cfg.hideEffect)
-        this.jq.hide(this.cfg.hideEffect);
-    else
-        this.jq.hide();
+PrimeFaces.widget.OverlayPanel.prototype.postHide = function() {
+    if(this.cfg.onHide) {
+        this.cfg.onHide.call(this);
+    }
 }
 
 PrimeFaces.widget.OverlayPanel.prototype.addOnshowHandler = function(fn) {

@@ -51,13 +51,25 @@
 			<type>java.lang.String</type>
             <description>Effect to display when hiding the panel.</description>
 		</attribute>
-         <attribute>
+        <attribute>
 			<name>appendToBody</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>When set true, panel is appended as a child of document body.</description>
 		</attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when panel is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when panel is hidden.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
