@@ -1054,10 +1054,11 @@ PrimeFaces.widget.SelectOneButton = function(cfg) {
     
     this.buttons.mouseover(function() {
         var button = $(this);
-        if(!button.hasClass('ui-state-active'))
-            button.addClass('ui-state-hover'); 
+        if(!button.hasClass('ui-state-active')) {
+            button.addClass('ui-state-hover');
+        }
     }).mouseout(function() {
-        $(this).removeClass('ui-state-hover'); 
+        $(this).removeClass('ui-state-hover');
     }).click(function() {
         var button = $(this);
         
@@ -1075,13 +1076,11 @@ PrimeFaces.widget.SelectOneButton = function(cfg) {
 PrimeFaces.widget.SelectOneButton.prototype.select = function(button) {
     this.unselect(this.buttons.filter('.ui-state-active'));
     
-    button.removeClass('ui-state-hover').addClass('ui-state-active')
-                            .children(':radio').attr('checked','checked').change();
+    button.addClass('ui-state-active').children(':radio').attr('checked','checked').change();
 }
 
 PrimeFaces.widget.SelectOneButton.prototype.unselect = function(button) {
-    button.removeClass('ui-state-active').addClass('ui-state-hover')
-                            .children(':radio').removeAttr('checked').change()
+    button.removeClass('ui-state-active ui-state-hover').children(':radio').removeAttr('checked').change();
 }
 
 /**
