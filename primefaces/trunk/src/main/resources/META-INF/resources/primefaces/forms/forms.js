@@ -1100,10 +1100,13 @@ PrimeFaces.widget.SelectBooleanButton = function(cfg) {
     //bind events if not disabled
     if(!this.disabled) {
         this.jq.mouseover(function() {
-            if(!_self.jq.hasClass('ui-state-active')&&!_self.jq.hasClass('ui-state-disabled'))
+            if(!_self.jq.hasClass('ui-state-active')) {
                 _self.jq.addClass('ui-state-hover');
+            }
         }).mouseout(function() {
-            _self.jq.removeClass('ui-state-hover');
+            if(!_self.jq.hasClass('ui-state-active')) {
+                _self.jq.removeClass('ui-state-hover');
+            }
         }).click(function() {
             _self.toggle();
         });
@@ -1144,7 +1147,7 @@ PrimeFaces.widget.SelectBooleanButton.prototype.check = function() {
 PrimeFaces.widget.SelectBooleanButton.prototype.uncheck = function() {
     if(!this.disabled) {
         this.input.removeAttr('checked', 'checked');
-        this.jq.removeClass('ui-state-active').addClass('ui-state-hover').children('.ui-button-text').html(this.cfg.offLabel);
+        this.jq.removeClass('ui-state-active').children('.ui-button-text').html(this.cfg.offLabel);
         
         if(this.icon.length > 0) {
             this.icon.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
