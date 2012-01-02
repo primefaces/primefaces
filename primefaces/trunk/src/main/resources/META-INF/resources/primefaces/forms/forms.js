@@ -1037,7 +1037,7 @@ PrimeFaces.widget.SelectManyButton.prototype.select = function(button) {
 
 PrimeFaces.widget.SelectManyButton.prototype.unselect = function(button) {
     button.removeClass('ui-state-active').addClass('ui-state-hover')
-                            .children(':checkbox').removeAttr('checked').change()
+                            .children(':checkbox').removeAttr('checked').change();
 }
 
 /**
