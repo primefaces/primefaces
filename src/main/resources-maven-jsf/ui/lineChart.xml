@@ -158,6 +158,9 @@
 		<resource>
 			<name>primefaces.js</name>
 		</resource>
+        <resource>
+			<name>canvas/canvas.js</name>
+		</resource>
 		<resource>
 			<name>charts/charts.js</name>
 		</resource>
