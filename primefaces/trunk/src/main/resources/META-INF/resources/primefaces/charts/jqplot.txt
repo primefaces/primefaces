@@ -1,4 +1,3 @@
--excanvas
 -jqplot
 -categoryaxisrenderer
 -pierenderer
