@@ -48,101 +48,26 @@ public class ScrollPanelRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
-        if(nativeMode) {
-            renderChildren(context, panel);
-        } 
-        else {
-            writer.startElement("div", panel);
-            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTAINER_CLASS, "container");
-
-            writer.startElement("div", panel);
-            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_WRAPPER_CLASS, "wrapper");
-
-            writer.startElement("div", panel);
-            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, "content");
-            renderChildren(context, panel);
-            writer.endElement("div");
-            
-            writer.endElement("div");
-
-            encodeScrollBar(context, panel, false);
-            encodeScrollBar(context, panel, true);
-
-            writer.endElement("div");
-        }
-
+        renderChildren(context, panel);
+        
         //scrollpanel
-        writer.endElement("div");
-    }
-    
-    protected void encodeScrollBar(FacesContext context, ScrollPanel panel, boolean vertical) throws IOException{
-        ResponseWriter writer = context.getResponseWriter();
-        
-        String barClass, gripClass, buttonUpClass, buttonDownClass, iconUpClass, iconDownClass;
-        
-        if(vertical){
-            barClass = ScrollPanel.SCROLL_PANEL_VBAR_CLASS;
-            gripClass = ScrollPanel.SCROLL_PANEL_HGRIP_CLASS;
-            buttonUpClass = ScrollPanel.SCROLL_PANEL_BTOP_CLASS;
-            buttonDownClass = ScrollPanel.SCROLL_PANEL_BBOTTOM_CLASS;
-            iconUpClass = ScrollPanel.SCROLL_PANEL_INORTH_CLASS;
-            iconDownClass = ScrollPanel.SCROLL_PANEL_ISOUTH_CLASS;
-        }
-        else{
-            barClass = ScrollPanel.SCROLL_PANEL_HBAR_CLASS;
-            gripClass = ScrollPanel.SCROLL_PANEL_VGRIP_CLASS;
-            buttonUpClass = ScrollPanel.SCROLL_PANEL_BLEFT_CLASS;
-            buttonDownClass = ScrollPanel.SCROLL_PANEL_BRIGHT_CLASS;
-            iconUpClass = ScrollPanel.SCROLL_PANEL_IWEST_CLASS;
-            iconDownClass = ScrollPanel.SCROLL_PANEL_IEAST_CLASS;
-        }
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", barClass, "scrollbars");
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_HANDLE_CLASS, "barhandler");
-        writer.startElement("span", panel);
-        writer.writeAttribute("class", gripClass, "grips");
-        writer.endElement("span");
-        writer.endElement("div");
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", buttonUpClass, "buttonup");
-        writer.startElement("span", panel);
-        writer.writeAttribute("class", iconUpClass, "iconup");
-        writer.endElement("span");
-        writer.endElement("div");
-        
-        
-        writer.startElement("div", panel);
-        writer.writeAttribute("class", buttonDownClass, "buttondown");
-        writer.startElement("span", panel);
-        writer.writeAttribute("class", iconDownClass, "icondown");
-        writer.endElement("span");        
-        writer.endElement("div");
-        
         writer.endElement("div");
     }
     
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean nativeMode = panel.getMode().equals("native");
-        
-        if(!nativeMode) {
-            String clientId = panel.getClientId(context);
+        String clientId = panel.getClientId(context);
 
-            startScript(writer, clientId);
+        startScript(writer, clientId);
 
-            writer.write("$(function(){");
-            
-            writer.write("PrimeFaces.cw('ScrollPanel','" + panel.resolveWidgetVar() + "',{");
-            writer.write("id:'" + clientId + "'");
-            writer.write(",mode:'" + panel.getMode() + "'");
-            writer.write("});});");
+        writer.write("$(function(){");
 
-            endScript(writer);
-        }
+        writer.write("PrimeFaces.cw('ScrollPanel','" + panel.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",mode:'" + panel.getMode() + "'");
+        writer.write("});});");
+
+        endScript(writer);
     }
 
     @Override
