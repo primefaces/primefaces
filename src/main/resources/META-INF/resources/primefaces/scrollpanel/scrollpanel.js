@@ -4,26 +4,30 @@
 PrimeFaces.widget.ScrollPanel = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
+    if(this.id) {
+        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this.jq = $(this.jqId);
+    } else {
+        this.jq = this.cfg.jq;
+    }
+    
+    if(this.cfg.mode != 'native') {
+        this.generateDOM();
+    
+        var _self = this;
 
-    this.container = this.jq.children('.ui-scrollpanel-container');
-    this.wrapper = this.container.children('.ui-scrollpanel-wrapper');
-    this.content = this.wrapper.children('.ui-scrollpanel-content');
-    
-    var _self = this;
-    
-    if(this.jq.is(':visible')) {
-        this.init();
-    } 
-    else {
-        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-        hiddenParentWidget = hiddenParent.data('widget');
-        
-        if(hiddenParentWidget) {
-            hiddenParentWidget.addOnshowHandler(function() {
-                return _self.init();
-            });
+        if(this.jq.is(':visible')) {
+            this.init();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.init();
+                });
+            }
         }
     }
     
@@ -31,6 +35,30 @@ PrimeFaces.widget.ScrollPanel = function(cfg) {
 }
 
 PrimeFaces.extend(PrimeFaces.widget.ScrollPanel, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.ScrollPanel.prototype.generateDOM = function() {
+    this.jq.wrapInner('<div class="ui-scrollpanel-container" />');
+    this.container = this.jq.children('.ui-scrollpanel-container');
+    
+    this.container.wrapInner('<div class="ui-scrollpanel-wrapper" />');
+    this.wrapper = this.container.children('.ui-scrollpanel-wrapper');
+    
+    this.wrapper.wrapInner('<div class="ui-scrollpanel-content" />');
+    this.content = this.wrapper.children('.ui-scrollpanel-content');
+    
+    var hbarDOM = '<div class="ui-scrollpanel-hbar ui-widget-header ui-corner-bottom">';
+    hbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-vertical"></span></div>';
+    hbarDOM += '<div class="ui-scrollpanel-bl ui-state-default ui-corner-bl"><span class="ui-icon ui-icon-triangle-1-w"></span></div>';
+    hbarDOM += '<div class="ui-scrollpanel-br ui-state-default ui-corner-br"><span class="ui-icon ui-icon-triangle-1-e"></span></div></div>';
+    
+    var vbarDOM = '<div class="ui-scrollpanel-vbar ui-widget-header ui-corner-bottom">';
+    vbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-horizontal"></span></div>';
+    vbarDOM += '<div class="ui-scrollpanel-bt ui-state-default ui-corner-bl"><span class="ui-icon ui-icon-triangle-1-n"></span></div>';
+    vbarDOM += '<div class="ui-scrollpanel-bb ui-state-default ui-corner-br"><span class="ui-icon ui-icon-triangle-1-s"></span></div></div>';
+            
+    this.container.append(hbarDOM);
+    this.container.append(vbarDOM);
+}
 
 PrimeFaces.widget.ScrollPanel.prototype.init = function(){
     if(this.jq.is(':hidden'))
