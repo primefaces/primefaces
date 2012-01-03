@@ -1123,7 +1123,7 @@ PrimeFaces.extend(PrimeFaces.widget.SelectBooleanButton, PrimeFaces.widget.BaseW
 
 PrimeFaces.widget.SelectBooleanButton.prototype.toggle = function() {
     if(!this.disabled) {
-        if(this.input.is(":checked"))
+        if(this.jq.hasClass('ui-state-active'))
             this.uncheck();
         else
             this.check();
