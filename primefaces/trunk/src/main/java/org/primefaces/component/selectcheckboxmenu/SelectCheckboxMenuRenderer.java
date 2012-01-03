@@ -26,7 +26,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.SelectManyRenderer;
-import org.primefaces.util.HTML;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     
