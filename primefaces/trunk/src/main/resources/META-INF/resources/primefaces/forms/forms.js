@@ -1181,6 +1181,8 @@ PrimeFaces.widget.SelectCheckboxMenu = function(cfg) {
     
     this.bindEvents();
     
+    this.setupDialogSupport();
+    
     //Append panel to body
     $(document.body).children(this.panelId).remove();
     this.panel.appendTo(document.body);
@@ -1241,24 +1243,25 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.bindEvents = function() {
         if(!_self.disabled) {
             _self.triggers.removeClass('ui-state-hover');
         }
-    }).click(function(e) {
+    }).mousedown(function(e) {
         if(!_self.disabled) {
-            if(_self.panel.is(":hidden"))
+            if(_self.panel.is(":hidden")) {
                 _self.show();
-            else
-                _self.hide();
+            }
+            else {
+                _self.hide(true);
+            }
         }
         
-        _self.triggers.removeClass('ui-state-hover').addClass('ui-state-focus');
-        e.preventDefault();
+        //do not trigger document mousedown.selectcheckboxmenu
+        e.stopPropagation();
+    }).click(function(e) {
+       e.preventDefault(); 
     });
-    
+
     //hide overlay when outside is clicked
-    $(document.body).bind('click.selectcheckboxmenu', function (e) {        
-        //do nothing if event target is component itself
-        if(e.target === _self.label.get(0) ||
-            e.target === _self.menuIcon.get(0) ||
-            e.target === _self.menuIcon.children().get(0)) {
+    $(document.body).bind('mousedown.selectcheckboxmenu', function (e) {        
+        if(_self.panel.is(':hidden')) {
             return;
         }
         
@@ -1268,12 +1271,8 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.bindEvents = function() {
             e.pageX > offset.left + _self.panel.width() ||
             e.pageY < offset.top ||
             e.pageY > offset.top + _self.panel.height()) {
-            
-            _self.triggers.removeClass('ui-state-focus');
-            
-            if(_self.panel.is(":visible")) {
-                _self.hide(true);
-            }
+                        
+            _self.hide(true);
         }
     });
     
@@ -1314,12 +1313,16 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.hide = function(animate) {
 }
 
 PrimeFaces.widget.SelectCheckboxMenu.prototype.alignPanel = function() {
-    this.panel.css({left:'', top:''})
-    .position({
-        my: 'left top'
-        ,at: 'left bottom'
-        ,of: this.jq
-    });
+    var fixedPosition = this.panel.css('position') == 'fixed',
+    win = $(window),
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    
+    this.panel.css({left:'', top:''}).position({
+                                    my: 'left top'
+                                    ,at: 'left bottom'
+                                    ,of: this.jq
+                                    ,offset : positionOffset
+                                });
 }
 
 PrimeFaces.widget.SelectCheckboxMenu.prototype.toggleItem = function(checkbox) {
@@ -1344,5 +1347,13 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.uncheck = function(checkbox) {
         var input = this.inputs.eq(checkbox.parents('li:first').index());
         checkbox.removeClass('ui-state-active').addClass('ui-state-hover').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
         input.removeAttr('checked').change();
+    }
+}
+
+PrimeFaces.widget.SelectCheckboxMenu.prototype.setupDialogSupport = function() {
+    var dialog = this.jq.parents('.ui-dialog:first');
+    
+    if(dialog.length == 1) {
+        this.panel.css('position', 'fixed');
     }
 }
