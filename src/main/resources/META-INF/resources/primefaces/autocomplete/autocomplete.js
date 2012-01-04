@@ -73,6 +73,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupMultipleMode = function() {
 
     //visuals
     if(this.cfg.theme != false) {
+        //mimic input field
         this.multiItemContainer.hover(function() {
                 $(this).addClass('ui-state-hover');
             },
@@ -83,9 +84,10 @@ PrimeFaces.widget.AutoComplete.prototype.setupMultipleMode = function() {
             _self.input.focus();
         });
 
+        //delegate events to container
         this.input.focus(function() {
             _self.multiItemContainer.addClass('ui-state-focus');
-        }).blur(function() {
+        }).blur(function(e) {
             _self.multiItemContainer.removeClass('ui-state-focus');
         });
 
@@ -308,7 +310,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
                 
             _self.inputContainer.before(itemDisplayMarkup);
             _self.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-            _self.input.val('');
+            _self.input.val('').focus();
             
             if(_self.hinput.val() == '')
                 _self.hinput.val('"' + item.attr('data-item-value') + '"');
