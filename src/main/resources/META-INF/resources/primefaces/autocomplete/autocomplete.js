@@ -89,8 +89,24 @@ PrimeFaces.widget.AutoComplete.prototype.setupMultipleMode = function() {
             _self.multiItemContainer.removeClass('ui-state-focus');
         });
 
+        //remove token
         $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function() {
-             $(this).parent().fadeOut('fast', function() {
+             var currentValues = _self.hinput.val().split(','),
+             item = $(this).parent(),
+             value = '"' + item.data('token-value') + '"';
+             
+             //remove from value holder
+             for(var i=0; i < currentValues.length; i++) {
+                 if(currentValues[i] == value) {
+                     currentValues.remove(i);
+                     break;
+                 }
+             }
+             
+             _self.hinput.val(currentValues.join(','));
+             
+             //remove from dom
+             item.fadeOut('fast', function() {
                  $(this).remove();
              });
         });
