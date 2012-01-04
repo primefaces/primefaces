@@ -302,7 +302,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
         var item = $(this);
         
         if(_self.cfg.multiple) {
-            var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-default ui-corner-all ui-helper-hidden">';
+            var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
             itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
             itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
                 
