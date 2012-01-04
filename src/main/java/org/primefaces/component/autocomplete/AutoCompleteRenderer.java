@@ -16,6 +16,8 @@
 package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
@@ -35,29 +38,29 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        AutoComplete autoComplete = (AutoComplete) component;
+        AutoComplete ac = (AutoComplete) component;
 
-        if(autoComplete.isDisabled() || autoComplete.isReadonly()) {
+        if(ac.isDisabled() || ac.isReadonly()) {
             return;
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = autoComplete.getClientId(context);
-        String valueParam = autoComplete.getVar() == null ? clientId + "_input" : clientId + "_hinput";
+        String clientId = ac.getClientId(context);
+        String valueParam = (ac.getVar() != null || ac.isMultiple()) ? clientId + "_hinput" : clientId + "_input";
         String submittedValue = params.get(valueParam);
 
         if(submittedValue != null) {
-            autoComplete.setSubmittedValue(submittedValue);
+            ac.setSubmittedValue(submittedValue);
         }
         
-        decodeBehaviors(context, autoComplete);
+        decodeBehaviors(context, ac);
         
         //AutoComplete event
         String query = params.get(clientId + "_query");
         if(query != null) {
-            AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(autoComplete, query);
+            AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(ac, query);
             autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            autoComplete.queueEvent(autoCompleteEvent);
+            ac.queueEvent(autoCompleteEvent);
         }
     }
 
@@ -90,12 +93,19 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, AutoComplete ac) throws IOException {
+        if(ac.isMultiple())
+            encodeMultipleMarkup(context, ac);
+        else
+            encodeSingleMarkup(context, ac);
+    }
+    
+    protected void encodeSingleMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         Object value = ac.getValue();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
-
+        
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
@@ -155,15 +165,24 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String valueToRender;
+        if(value == null) {
+            valueToRender = null;
+        } else {
+            if(ac.isMultiple())
+                valueToRender = (String) value;
+            else
+                valueToRender = ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue());
+        }
         
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_hinput", null);
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (value != null) {
-            writer.writeAttribute("value", ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue()), null);
-        }
+        if(valueToRender != null) {
+            writer.writeAttribute("value", valueToRender, null);
+        } 
         writer.endElement("input");
 
         context.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
@@ -205,8 +224,74 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
+    protected void encodeMultipleMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = ac.getClientId(context);
+        String inputId = clientId + "_input";
+        List values = (List) ac.getValue();
+        Converter converter = getConverter(context, ac);
+        StringBuilder valueBuilder = new StringBuilder();
+        String styleClass = ac.getStyleClass();
+        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(ac.getStyle() != null) {
+            writer.writeAttribute("style", ac.getStyle(), null);
+        }
+        
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", AutoComplete.MULTIPLE_CONTAINER_CLASS, null);
+        
+        if(values != null && !values.isEmpty()) {
+            for(Iterator<Object> it = values.iterator(); it.hasNext();) {
+                Object value = it.next();
+                String itemValue = converter != null ? converter.getAsString(context, ac, value) : (String) value;
+                
+                writer.startElement("li", null);
+                writer.writeAttribute("data-token-value", itemValue, null);
+                writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS, null);
+                
+                writer.startElement("span", null);
+                writer.writeAttribute("class", AutoComplete.TOKEN_LABEL_CLASS, null);
+                writer.writeText(itemValue, null);
+                writer.endElement("span");
+                
+                writer.startElement("span", null);
+                writer.writeAttribute("class", AutoComplete.TOKEN_ICON_CLASS, null);
+                writer.endElement("span");
+                
+                writer.endElement("li");
+                
+                valueBuilder.append("\"").append(itemValue).append("\"");
+                
+                if(it.hasNext()) {
+                    valueBuilder.append(",");
+                }
+            }
+        }
+        
+        writer.startElement("li", null);
+        writer.writeAttribute("class", AutoComplete.TOKEN_INPUT_CLASS, null);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.endElement("input");
+        writer.endElement("li");
+        
+        writer.endElement("ul");
+                        
+        encodePanel(context, ac);
+        
+        encodeHiddenInput(context, ac, clientId, valueBuilder.toString());
+
+        writer.endElement("div");
+    }
+    
+    protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
         boolean customContent = ac.getColums().size() > 0;
         Converter converter = getConverter(context, ac);
         
@@ -280,6 +365,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
             else {
                 writer.writeAttribute("data-item-label", item, null);
+                writer.writeAttribute("data-item-value", item, null);
                 
                 writer.writeText(item, null);
             }
@@ -311,6 +397,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.isForceSelection()) writer.write(",forceSelection:true");
         if(!ac.isGlobal()) writer.write(",global:false");
         if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
+        if(ac.isMultiple()) writer.write(",multiple:true");
 
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
@@ -335,6 +422,40 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         endScript(writer);
     }
+    
+    @Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		AutoComplete ac = (AutoComplete) component;
+		Converter converter = getConverter(context, ac);
+
+        if(ac.isMultiple()) {
+            String[] values = ((String) submittedValue).split(",");
+            List list = new ArrayList();
+
+            for(String item : values) {
+                if(isValueBlank(item))
+                    continue;
+
+                //trim whitespaces and double quotes
+                String val = item.trim();
+                val = val.substring(1, val.length() - 1);
+            
+                Object convertedValue = converter != null ? converter.getAsObject(context, ac, val) : val;
+
+                if(convertedValue != null) {
+                    list.add(convertedValue);
+                }
+            }
+            
+            return list;
+        }
+        else {
+            if(converter != null)
+                return converter.getAsObject(context, component, (String) submittedValue);
+            else
+                return submittedValue;
+        }
+	}
     
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
