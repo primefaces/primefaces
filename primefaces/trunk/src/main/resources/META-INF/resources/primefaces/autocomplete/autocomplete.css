@@ -54,18 +54,21 @@
     margin: 0;
     min-height: 1px;
     overflow: hidden;
-    padding: 4px;
     width: 400px;
+}
+
+.ui-autocomplete-multiple-container.ui-inputfield {
+    padding:0;
 }
 
 .ui-autocomplete-token {
     cursor: default;
     float: left;
-    margin-right: 2px;
     overflow: hidden;
     padding: 1px 3px;
     white-space: nowrap;
     position: relative;
+    margin:2px;
 }
 
 .ui-autocomplete-token-label {
@@ -89,8 +92,9 @@
 }
 
 .ui-autocomplete-input-token input {
-    background-color: white;
     border: 0 none;
     width: 140px;
     outline: medium none;
+    background-color: transparent;
+    margin:2px;
 }
