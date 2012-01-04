@@ -233,6 +233,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         StringBuilder valueBuilder = new StringBuilder();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
+        String var = ac.getVar();
+        boolean pojo = var != null;
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -247,15 +249,28 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(values != null && !values.isEmpty()) {
             for(Iterator<Object> it = values.iterator(); it.hasNext();) {
                 Object value = it.next();
-                String itemValue = converter != null ? converter.getAsString(context, ac, value) : (String) value;
+                Object itemValue = null;
+                String itemLabel = null;
+                
+                if(pojo) {
+                    context.getExternalContext().getRequestMap().put(var, value);
+                    itemValue = ac.getItemValue();
+                    itemLabel = ac.getItemLabel();
+                }
+                else {
+                    itemValue = value;
+                    itemLabel = String.valueOf(value);
+                }
+                
+                String tokenValue = converter != null ? converter.getAsString(context, ac, itemValue) : String.valueOf(itemValue);
                 
                 writer.startElement("li", null);
-                writer.writeAttribute("data-token-value", itemValue, null);
+                writer.writeAttribute("data-token-value", tokenValue, null);
                 writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS, null);
                 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AutoComplete.TOKEN_LABEL_CLASS, null);
-                writer.writeText(itemValue, null);
+                writer.writeText(itemLabel, null);
                 writer.endElement("span");
                 
                 writer.startElement("span", null);
@@ -264,7 +279,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 
                 writer.endElement("li");
                 
-                valueBuilder.append("\"").append(itemValue).append("\"");
+                valueBuilder.append("\"").append(tokenValue).append("\"");
                 
                 if(it.hasNext()) {
                     valueBuilder.append(",");
