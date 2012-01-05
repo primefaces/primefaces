@@ -73,9 +73,6 @@
 	</attributes>
     <resources>
         <resource>
-            <name>overlaypanel/overlaypanel.css</name>
-        </resource>
-        <resource>
             <name>jquery/primefaces.css</name>
         </resource>
         <resource>
@@ -83,9 +80,6 @@
         </resource>
         <resource>
             <name>primefaces.js</name>
-        </resource>
-        <resource>
-            <name>overlaypanel/overlaypanel.js</name>
         </resource>
     </resources>
 </component>
