@@ -73,7 +73,7 @@
 	</attributes>
     <resources>
         <resource>
-            <name>jquery/primefaces.css</name>
+            <name>primefaces.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
