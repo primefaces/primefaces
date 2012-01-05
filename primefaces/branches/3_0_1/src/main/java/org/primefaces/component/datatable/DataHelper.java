@@ -96,6 +96,10 @@ class DataHelper {
     void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
         Object value = table.getValue();
         List list = null;
+        
+        if(value == null) {
+            return;
+        }
 
         if(value instanceof List) {
             list = (List) value;
