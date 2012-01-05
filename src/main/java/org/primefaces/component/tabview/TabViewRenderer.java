@@ -118,13 +118,14 @@ public class TabViewRenderer extends CoreRenderer {
             writer.writeAttribute("style", tabView.getStyle(), "style");
         }
 
-        if(orientation.equals("top")) {
-            encodeHeaders(context, tabView);
+        if(orientation.equals("bottom")) {
             encodeContents(context, tabView);
+            encodeHeaders(context, tabView);
+            
         }
         else {
-            encodeContents(context, tabView);
             encodeHeaders(context, tabView);
+            encodeContents(context, tabView);
         }
 
         encodeActiveIndexHolder(context, tabView);
