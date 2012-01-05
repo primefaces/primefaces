@@ -100,6 +100,13 @@
             <description>List to iterate to display dynamic number of tabs.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>top</defaultValue>
+            <description>Orientation of the tab headers, valid values are "top" and "bottom".</description>
+		</attribute>
     </attributes>
 	<resources>
         <resource>
