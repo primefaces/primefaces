@@ -1113,7 +1113,10 @@ a {
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
     border: 1px solid #a8a8a8;
-    border-bottom: 0 !important;
+}
+
+.ui-tabs.ui-tabs-top .ui-tabs-nav li.ui-tabs-selected {
+    border-bottom: 0;
 }
 
 .ui-tabs .ui-tabs-panel {
