@@ -404,22 +404,22 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     
     //button visuals
     this.button.mouseover(function(){
-        $(this).addClass('ui-state-hover');
+        if(!_self.button.hasClass('ui-state-disabled')&&!_self.button.hasClass('ui-state-focus')) {
+            _self.button.addClass('ui-state-hover');
+        }
     }).mouseout(function() {
-        $(this).removeClass('ui-state-hover');
+        if(!_self.button.hasClass('ui-state-disabled')&&!_self.button.hasClass('ui-state-focus')) {
+            _self.button.removeClass('ui-state-hover');
+        }
     }).mousedown(function(e) {
         var el = $(this);
         if(_self.menu.is(':visible')) {
-            el.removeClass('ui-state-active').addClass('ui-state-hover');
+            el.removeClass('ui-state-focus').addClass('ui-state-hover');
             _self.hide();    
         } else {
-            el.removeClass('ui-state-hover').addClass('ui-state-active');
+            el.removeClass('ui-state-hover').addClass('ui-state-focus');
             _self.show();
         }
-        
-        //do not trigger document mousedown.ui-menubutton
-        e.stopPropagation();
-        
     }).focus(function() {
         $(this).addClass('ui-state-focus');
     }).blur(function() {
@@ -429,18 +429,11 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     //menuitem visuals
     this.menuitems.mouseover(function(e) {
         var element = $(this);
-        if(!element.hasClass('ui-state-disabled'))
+        if(!element.hasClass('ui-state-disabled')) {
             element.addClass('ui-state-hover');
-        
+        }
     }).mouseout(function(e) {
-        var element = $(this);
-        element.removeClass('ui-state-hover');
-    }).mousedown(function(e) {
-        //do not trigger document mousedown.ui-menubutton
-        e.stopPropagation();
-    }).mouseup(function(e) {
-        _self.button.removeClass('ui-state-active ui-state-hover');
-        _self.hide();
+        $(this).removeClass('ui-state-hover');
     });
         
     this.cfg.position = {
@@ -449,13 +442,23 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
         ,of: this.button
     }
     
-    //handler for document mousedown except button
+    /**
+     * handler for document mousedown to hide the overlay, hides the overlay when target is not button and menu is visible
+     **/
     $(document.body).bind('mousedown.ui-menubutton', function (e) {
         if(_self.menu.is(":hidden")) {
             return;
         }
-        _self.button.removeClass('ui-state-active ui-state-hover');
-        _self.hide();
+        
+        var target = $(e.target);
+        if(target.is(_self.button)||_self.button.has(target).length > 0) {
+            return;
+        }
+        else {
+            _self.button.removeClass('ui-state-focus ui-state-hover');
+            _self.hide();
+        }
+        
     });
     
     //hide overlay on window resize
