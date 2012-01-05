@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.column;
+package org.primefaces.component.datatable;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
@@ -22,9 +22,9 @@ import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.facelets.MethodRule;
 
-public class ColumnHandler extends ComponentHandler {
+public class DataTableHandler extends ComponentHandler {
 
-	public ColumnHandler(ComponentConfig config) {
+	public DataTableHandler(ComponentConfig config) {
 		super(config);
 	}
 	

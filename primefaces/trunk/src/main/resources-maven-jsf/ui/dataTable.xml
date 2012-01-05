@@ -8,6 +8,7 @@
 	<tag>dataTable</tag>
 	<tagClass>org.primefaces.component.datatable.DataTableTag</tagClass>
 	<componentClass>org.primefaces.component.datatable.DataTable</componentClass>
+    <componentHandlerClass>org.primefaces.component.datatable.DataTableHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.DataTable</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
@@ -173,7 +174,7 @@
 			<name>sortBy</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-            <description>Property to be used for sorting.</description>
+            <description>Property to be used for default sorting.</description>
 		</attribute>
         <attribute>
 			<name>sortOrder</name>
@@ -181,6 +182,13 @@
 			<type>java.lang.String</type>
             <defaultValue>ascending</defaultValue>
             <description>Sets sorting order. Default is "ascending"</description>
+		</attribute>
+		<attribute>
+			<name>sortFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
+            <description>Custom pluggable sortFunction for default sorting.</description>
 		</attribute>
         <attribute>
 			<name>scrollRows</name>
