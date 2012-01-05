@@ -1035,7 +1035,8 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void sort(FacesContext context, DataTable table) {
-        dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), null);
+        dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), 
+                SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), table.getSortFunction());
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
