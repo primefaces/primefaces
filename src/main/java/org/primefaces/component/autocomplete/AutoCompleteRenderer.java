@@ -353,7 +353,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.endElement("tr");
         }
         
-        writer.startElement("tbody", ac);
+        writer.endElement("tbody");
         writer.endElement("table");
     }
 
