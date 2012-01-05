@@ -46,7 +46,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
 
-        encodeButton(context, button, clientId + "_button");
+        encodeButton(context, button, clientId + "_button", disabled);
         if(!disabled) {
             encodeMenu(context, button, clientId + "_menu");
         }
@@ -54,15 +54,16 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.endElement("span");
 	}
    
-    protected void encodeButton(FacesContext context, MenuButton button, String buttonId) throws IOException {
+    protected void encodeButton(FacesContext context, MenuButton button, String buttonId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String value = button.getValue();
+        String buttonClass = disabled ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " ui-state-disabled" : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
         
         writer.startElement("button", null);
 		writer.writeAttribute("id", buttonId, null);
 		writer.writeAttribute("name", buttonId, null);
 		writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, buttonId);
+        writer.writeAttribute("class", buttonClass, buttonId);
         if(button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
