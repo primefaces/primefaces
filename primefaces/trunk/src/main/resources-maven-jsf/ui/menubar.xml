@@ -39,6 +39,14 @@
             <type>java.lang.String</type>
             <description>Style class of menubar.</description>
         </attribute>
+        <attribute>
+            <name>autoDisplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether the first level of submenus will be displayed on mouseover or not. When
+            set to false, click event is required to display.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
