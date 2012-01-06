@@ -6,7 +6,6 @@ PrimeFaces.widget.Menubar = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    this.menuitems = this.jq.find('.ui-menuitem');
 
     this.bindEvents();
 
@@ -16,52 +15,100 @@ PrimeFaces.widget.Menubar = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.Menubar, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Menubar.prototype.bindEvents = function() {
+    var _self = this,
+    menuitems = null;
+    
+    if(this.cfg.autoDisplay) {
+        menuitems = this.jq.find('li.ui-menuitem');
+    }
+    else {
+        this.rootList = this.jq.children('ul.ui-menu-list');
+        this.rootMenuitems = this.rootList.children('li.ui-menuitem');  //immediate children of root
+        menuitems = this.rootMenuitems.find('li.ui-menuitem');            //descendants of root menuitems
+        
+        this.bindRootItemEvents();
+    }
+    
+    //menuitems are all items in autoDisplay case and descendants items of root items otherwise
+    menuitems.mouseenter(function() {
+        var menuitem = $(this),
+        menuitemLink = menuitem.children('.ui-menuitem-link');
+
+        if(!menuitemLink.hasClass('ui-state-disabled')) {
+            menuitemLink.addClass('ui-state-hover');
+
+            var submenu = menuitem.children('ul.ui-menu-child');
+            if(submenu.length == 1) {
+                _self.showSubmenu(menuitem, submenu);
+            }
+        }
+    })
+    .mouseleave(function() {
+        var menuitem = $(this);
+        menuitem.children('.ui-menuitem-link').removeClass('ui-state-hover');
+        menuitem.find('.ui-menu-child:visible').hide();
+    })
+    .click(function(e) {        
+        //hide all visible submenus of menubar and reset state
+        _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
+        _self.jq.find('a.ui-menuitem-link').removeClass('ui-state-hover');
+        
+        //do not trigger root click event in non-autodisplay
+        e.stopPropagation();
+    });        
+}
+
+PrimeFaces.widget.Menubar.prototype.bindRootItemEvents = function() {
     var _self = this;
 
-    this.menuitems.mouseenter(function() {
+    //root menuitems    
+    this.rootMenuitems.mouseenter(function() {
         var menuitem = $(this),
         menuitemLink = menuitem.children('.ui-menuitem-link');
 
         if(!menuitemLink.hasClass('ui-state-disabled')) {
             menuitemLink.addClass('ui-state-hover');
         }
-
-        var submenu = menuitem.children('ul.ui-menu-child');
-        if(submenu.length == 1) {
-            submenu.css('z-index', ++PrimeFaces.zindex);
-
-            if(!menuitem.parent().hasClass('ui-menu-child')) {    //root menuitem
-                submenu.css({
-                    'left': 0
-                    ,'top': menuitem.outerHeight()
-                });
-            } 
-            else {                                              //submenu menuitem
-                submenu.css({
-                    'left': menuitem.outerWidth()
-                    ,'top': 0
-                });
-            }
-
-            submenu.show();
-        }
     })
     .mouseleave(function() {
-        var menuitem = $(this),
-        menuitemLink = menuitem.children('.ui-menuitem-link');
-
-        menuitemLink.removeClass('ui-state-hover');
-
+        var menuitem = $(this);
+        menuitem.children('.ui-menuitem-link').removeClass('ui-state-hover');
         menuitem.find('.ui-menu-child:visible').hide();
     })
     .click(function(e) {
-        var menuitem = $(this);
-        if(menuitem.children('.ui-menu-child').length == 0) {
-            _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
+        var menuitem = $(this),
+        submenu = menuitem.children('ul.ui-menu-child');
+
+        if(submenu.length == 1) {
+            if(submenu.is(':visible')) {
+                menuitem.children('.ui-menu-child:visible').fadeOut('fast');
+            }
+            else {
+                _self.showSubmenu(menuitem, submenu);
+            }
         }
-        
-        e.stopPropagation();
+
+        e.preventDefault();
     });
+}
+
+PrimeFaces.widget.Menubar.prototype.showSubmenu = function(menuitem, submenu) {
+    submenu.css('z-index', ++PrimeFaces.zindex);
+
+    if(!menuitem.parent().hasClass('ui-menu-child')) {    //root menuitem
+        submenu.css({
+            'left': 0
+            ,'top': menuitem.outerHeight()
+        });
+    } 
+    else {                                              //submenu menuitem
+        submenu.css({
+            'left': menuitem.outerWidth()
+            ,'top': 0
+        });
+    }
+
+    submenu.show();
 }
 
 /**
