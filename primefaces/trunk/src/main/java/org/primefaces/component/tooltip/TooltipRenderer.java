@@ -51,7 +51,9 @@ public class TooltipRenderer extends CoreRenderer {
             renderChildren(context, tooltip);
         }
         else {
-            writer.writeText(ComponentUtils.getValueToRender(context, tooltip), "value");
+            String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
+            if(valueToRender != null)
+                writer.writeText(valueToRender, "value");
         }
         
         
