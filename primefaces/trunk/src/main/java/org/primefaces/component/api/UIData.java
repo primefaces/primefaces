@@ -15,6 +15,8 @@
  */
 package org.primefaces.component.api;
 
+import javax.faces.FacesException;
+
 public class UIData extends javax.faces.component.UIData {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header"; 
@@ -107,23 +109,31 @@ public class UIData extends javax.faces.component.UIData {
     
     public void calculatePage() {
         int rows = this.getRowsToRender();
-        int rowCount = this.getRowCount();
-        int first = this.getFirst();
-        int currentPage = (int) (first / rows);
-        int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+        
+        if(rows > 0) {
+            int rowCount = this.getRowCount();
+            int first = this.getFirst();
+            int currentPage = (int) (first / rows);
+            int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
 
-        if(currentPage > numberOfPages && numberOfPages > 0) {
-            currentPage = numberOfPages;
+            if(currentPage > numberOfPages && numberOfPages > 0) {
+                currentPage = numberOfPages;
 
-            this.setFirst((currentPage-1) * rows);
+                this.setFirst((currentPage-1) * rows);
+            }
         }
     }
     
     public int getPage() {
         int rows = this.getRowsToRender();
-        int first = this.getFirst();
+        
+        if(rows > 0) {
+            int first = this.getFirst();
          
-        return (int) (first / rows);
+            return (int) (first / rows);
+        } else {
+            return 0;
+        }
     }
     
     public int getPageCount() {
