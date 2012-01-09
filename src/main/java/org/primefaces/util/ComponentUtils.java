@@ -51,43 +51,63 @@ public class ComponentUtils {
 	 * @param component			UIComponent instance whose value will be returned
 	 * @return					End text
 	 */
-	public static String getValueToRender(FacesContext facesContext, UIComponent component) {
+	public static String getValueToRender(FacesContext context, UIComponent component) {
 		if(component instanceof ValueHolder) {
 			
 			if(component instanceof EditableValueHolder) {
 				Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
-				if (submittedValue != null) {
+				if(submittedValue != null) {
 					return submittedValue.toString();
 				}
 			}
 
 			ValueHolder valueHolder = (ValueHolder) component;
 			Object value = valueHolder.getValue();
-			
-			//first ask the converter
-			if(valueHolder.getConverter() != null) {
-				return valueHolder.getConverter().getAsString(facesContext, component, value);
-			}
-			//Try to guess
-			else {
-				ValueExpression expr = component.getValueExpression("value");
-				if(expr != null) {
-					Class<?> valueType = expr.getType(facesContext.getELContext());
-					if(valueType != null) {
-						Converter converterForType = facesContext.getApplication().createConverter(valueType);
-					
-						if(converterForType != null)
-							return converterForType.getAsString(facesContext, component, value);
-					}
-				}
-			}
-			
-			//No converter found just return the value
-			return (value == null) ? "" : value.toString();
+            
+            //format the value as string
+            if(value != null) {
+                Converter converter = getConverter(context, valueHolder);
+                
+                if(converter != null)
+                    return converter.getAsString(context, component, value);
+                else
+                    return value.toString();    //Use toString as a fallback if there is no explicit or implicit converter
+                
+            }
+            else {
+                //component is a value holder but has no value
+                return null;
+            }
 		}
         
+        //component it not a value holder
         return null;
 	}
+    
+    /**
+	 * Finds appropriate converter for a given value holder
+	 * 
+	 * @param context			FacesContext instance
+	 * @param component			ValueHolder instance to look converter for
+	 * @return					Converter
+	 */
+    public static Converter getConverter(FacesContext context, ValueHolder component) {
+        //explicit converter
+        Converter converter = component.getConverter();
+                
+        //try to find implicit converter
+        if(converter == null) {
+            ValueExpression expr = ((UIComponent) component).getValueExpression("value");
+            if(expr != null) {
+                Class<?> valueType = expr.getType(context.getELContext());
+                if(valueType != null) {
+                    converter = context.getApplication().createConverter(valueType);
+                }
+            }
+        }
+        
+        return converter;
+    }
 	
 	/**
 	 * Resolves the end text to render by using a specified value

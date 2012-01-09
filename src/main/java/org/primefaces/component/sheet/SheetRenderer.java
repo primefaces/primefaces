@@ -321,7 +321,10 @@ public class SheetRenderer extends CoreRenderer {
                 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Sheet.CELL_DISPLAY_CLASS, null);
-                writer.write(ComponentUtils.getValueToRender(context, child.getChildren().get(0)));
+                String valueToRender = ComponentUtils.getValueToRender(context, child.getChildren().get(0));
+                if(valueToRender != null) {
+                    writer.write(valueToRender);
+                }
                 writer.endElement("div");
                 
                 writer.startElement("div", null);
