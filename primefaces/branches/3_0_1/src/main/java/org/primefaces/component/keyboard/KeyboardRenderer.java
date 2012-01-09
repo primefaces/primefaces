@@ -99,12 +99,16 @@ public class KeyboardRenderer extends InputRenderer {
         String defaultClass = themeForms() ? Keyboard.THEME_INPUT_CLASS : Keyboard.PLAIN_INPUT_CLASS;
         String styleClass = keyboard.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        String valueToRender = ComponentUtils.getValueToRender(context, keyboard);
 
 		writer.startElement("input", keyboard);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", type, null);
-		writer.writeAttribute("value", ComponentUtils.getValueToRender(context, keyboard), null);
+        
+        if(valueToRender != null) {
+            writer.writeAttribute("value", valueToRender, "value");
+        }
 
         renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
 
