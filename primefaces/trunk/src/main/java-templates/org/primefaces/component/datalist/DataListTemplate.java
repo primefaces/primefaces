@@ -1,6 +1,10 @@
 import javax.faces.FacesException;
 import javax.faces.event.PhaseId;
 import javax.faces.component.UIColumn;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.FacesListener;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header ui-corner-top";
@@ -44,6 +48,10 @@ import javax.faces.component.UIColumn;
 
     @Override
     public void processDecodes(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
 		if(isPagingRequest(context)) {
             this.decode(context);
 
@@ -52,27 +60,48 @@ import javax.faces.component.UIColumn;
             context.renderResponse();
         }
         else {
-            super.processDecodes(context);
-
-            if(getVar() == null)
-                iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
+            if(getVar() == null) {
+                pushComponentToEL(context, this);
+                iterateChildren(context, PhaseId.APPLY_REQUEST_VALUES);
+                decode(context);
+                popComponentFromEL(context);
+            } 
+            else {
+                super.processDecodes(context);
+            }
         }
 	}
 
     @Override
     public void processValidators(FacesContext context) {
-		super.processValidators(context);
-        
-        if(getVar() == null)
+        if(!isRendered()) {
+            return;
+        }
+
+		if(getVar() == null) {
+            pushComponentToEL(context, this);
             iterateChildren(context, PhaseId.PROCESS_VALIDATIONS);
+            popComponentFromEL(context);
+        } 
+        else {
+            super.processValidators(context);
+        }
 	}
     
     @Override
     public void processUpdates(FacesContext context) {
-		super.processUpdates(context);
-        
-        if(getVar() == null)
+        if(!isRendered()) {
+            return;
+        }
+
+		if(getVar() == null) {
+            pushComponentToEL(context, this);
             iterateChildren(context, PhaseId.UPDATE_MODEL_VALUES);
+            popComponentFromEL(context);
+        } 
+        else {
+            super.processUpdates(context);
+        }
 	}
 
     protected void iterateChildren(FacesContext context, PhaseId phaseId) {
@@ -95,6 +124,41 @@ import javax.faces.component.UIColumn;
                             throw new IllegalArgumentException();
                     }
                 }
+            }
+        }
+    }
+
+    public void queueEvent(FacesEvent event) {
+        if(getVar() != null) {
+            super.queueEvent(event);
+        }
+        else {
+            if(event == null) {
+                throw new NullPointerException();
+            }
+            
+            UIComponent parent = getParent();
+            if(parent == null)
+                throw new IllegalStateException();
+            else
+                parent.queueEvent(event);
+        }
+    }
+
+
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        if(getVar() != null) {
+            super.broadcast(event);
+        }
+        else {
+
+            if(event == null) {
+                throw new NullPointerException();
+            }
+            if(event instanceof BehaviorEvent) {
+                BehaviorEvent behaviorEvent = (BehaviorEvent) event;
+                Behavior behavior = behaviorEvent.getBehavior();
+                behavior.broadcast(behaviorEvent);
             }
         }
     }
