@@ -107,23 +107,15 @@ import javax.faces.event.FacesListener;
     protected void iterateChildren(FacesContext context, PhaseId phaseId) {
         setRowIndex(-1);
         if(getChildCount() > 0) {
-            for(UIComponent column : getChildren()) {
-                if(!(column instanceof UIColumn) || !column.isRendered()) {
-                    continue;
-                }
-                
-                if(column.getChildCount() > 0) {
-                    for(UIComponent grandkid : column.getChildren()) {
-                        if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
-                            grandkid.processDecodes(context);
-                        else if (phaseId == PhaseId.PROCESS_VALIDATIONS)
-                            grandkid.processValidators(context);
-                        else if (phaseId == PhaseId.UPDATE_MODEL_VALUES)
-                            grandkid.processUpdates(context);
-                        else
-                            throw new IllegalArgumentException();
-                    }
-                }
+            for(UIComponent kid : this.getChildren()) {
+                if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                    kid.processDecodes(context);
+                else if (phaseId == PhaseId.PROCESS_VALIDATIONS)
+                    kid.processValidators(context);
+                else if (phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                    kid.processUpdates(context);
+                else
+                    throw new IllegalArgumentException();
             }
         }
     }
