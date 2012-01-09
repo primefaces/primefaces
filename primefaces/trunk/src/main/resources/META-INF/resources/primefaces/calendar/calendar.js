@@ -29,14 +29,12 @@ PrimeFaces.widget.Calendar = function(cfg) {
     
     //Client behaviors, input skinning and z-index
     if(this.cfg.popup) {
+        PrimeFaces.skinInput(this.jqEl);
+        
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
         }
 
-        if(this.cfg.theme != false) {
-            PrimeFaces.skinInput(this.jqEl);
-        }
-        
         this.cfg.beforeShow = function() {
             setTimeout(function() {
                 $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);

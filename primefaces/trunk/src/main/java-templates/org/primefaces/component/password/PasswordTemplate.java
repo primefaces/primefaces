@@ -4,7 +4,6 @@ import javax.faces.application.FacesMessage;
 import org.primefaces.util.MessageFactory;
 
     public final static String STYLE_CLASS = "ui-inputfield ui-password ui-widget ui-state-default ui-corner-all";
-    public final static String PLAIN_STYLE_CLASS = "ui-password";
 
     public final static String INVALID_MATCH_KEY = "primefaces.password.INVALID_MATCH";
 

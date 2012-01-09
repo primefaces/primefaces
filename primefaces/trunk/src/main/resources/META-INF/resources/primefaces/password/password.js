@@ -56,9 +56,7 @@ PrimeFaces.widget.Password = function(cfg) {
     }
 
     //Visuals
-    if(this.cfg.theme != false) {
-        PrimeFaces.skinInput(this.jq);
-    }
+    PrimeFaces.skinInput(this.jq);
     
     this.postConstruct();
 }

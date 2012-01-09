@@ -72,10 +72,6 @@ public class InputMaskRenderer extends InputRenderer {
 
         encodeClientBehaviors(context, inputMask);
 
-        if(!themeForms()) {
-            writer.write(",theme:false");
-        }
-
 		writer.write("});");
 	
 		endScript(writer);
@@ -85,7 +81,7 @@ public class InputMaskRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
         String styleClass = inputMask.getStyleClass();
-        String defaultClass = themeForms() ? InputMask.THEME_INPUT_CLASS : InputMask.PLAIN_INPUT_CLASS;
+        String defaultClass = InputMask.STYLE_CLASS;
         defaultClass = !inputMask.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = inputMask.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
