@@ -133,12 +133,16 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean disabled = ac.isDisabled();
         String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
-        
+        String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
+        styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
+            
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
+        
         if(value != null) {
             if(ac.getVar() == null) {
                 writer.writeAttribute("value", ComponentUtils.getValueToRender(context, ac), null);
@@ -152,13 +156,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
-
-        if(themeForms()) {
-            String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
-            styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
-            
-            writer.writeAttribute("class", styleClass, null);
-        }
 
         writer.endElement("input");
     }
@@ -427,11 +424,6 @@ public class AutoCompleteRenderer extends InputRenderer {
   
         //Behaviors
         encodeClientBehaviors(context, ac);
-
-        //Themeing
-        if(!themeForms()) {
-            writer.write(",theme:false");
-        }
 
         writer.write("});});");
 

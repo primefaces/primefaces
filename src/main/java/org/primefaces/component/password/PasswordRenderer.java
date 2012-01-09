@@ -80,10 +80,6 @@ public class PasswordRenderer extends InputRenderer {
 
         encodeClientBehaviors(context, password);
 
-        if(!themeForms()) {
-            writer.write(",theme:false");
-        }
-
 		writer.write("},'password');});");
         
 		endScript(writer);
@@ -93,6 +89,10 @@ public class PasswordRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
         String inputId = clientId + "_input";
+        
+        String inputClass = Password.STYLE_CLASS;
+        inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
+        inputClass = !password.isDisabled() ? inputClass : inputClass + " ui-state-disabled";
 
         writer.startElement("span", password);
         writer.writeAttribute("id", clientId, "id");
@@ -103,6 +103,7 @@ public class PasswordRenderer extends InputRenderer {
 		writer.writeAttribute("id", inputId, "id");
 		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "password", null);
+        writer.writeAttribute("class", inputClass, null);
 		
 		String valueToRender = ComponentUtils.getValueToRender(context, password);
 		if(!isValueEmpty(valueToRender) && password.isRedisplay()) {
@@ -114,13 +115,6 @@ public class PasswordRenderer extends InputRenderer {
         if(password.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
-        if(themeForms()) {
-            String inputClass = themeForms() ? Password.STYLE_CLASS : Password.PLAIN_STYLE_CLASS;
-            inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
-            inputClass = !password.isDisabled() ? inputClass : inputClass + " ui-state-disabled";
-            writer.writeAttribute("class", inputClass, null);
-        }
-		
 		writer.endElement("input");
 
         writer.endElement("span");

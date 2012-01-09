@@ -61,9 +61,7 @@ PrimeFaces.widget.Spinner = function(cfg) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
 
-    if(this.cfg.theme != false) {
-        PrimeFaces.skinInput(this.input);
-    }
+    PrimeFaces.skinInput(this.input);
     
     this.postConstruct();
 }

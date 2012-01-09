@@ -25,9 +25,7 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
     } 
     else {
         //visuals
-        if(this.cfg.theme != false) {
-            PrimeFaces.skinInput(this.input);
-        }
+        PrimeFaces.skinInput(this.input);
     }
     
     //core events

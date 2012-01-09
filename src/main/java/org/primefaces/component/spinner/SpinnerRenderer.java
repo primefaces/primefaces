@@ -85,10 +85,6 @@ public class SpinnerRenderer extends InputRenderer {
         if(spinner.isDisabled() || spinner.isReadonly()) writer.write(",disabled:true");
 
         encodeClientBehaviors(context, spinner);
-
-        if(!themeForms()) {
-            writer.write(",theme:false");
-        }
  		
 		writer.write("});});");
 		
@@ -125,6 +121,7 @@ public class SpinnerRenderer extends InputRenderer {
 		writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("class", Spinner.INPUT_CLASS, null);
         writer.writeAttribute("autocomplete", "off", null);
 
 		String valueToRender = ComponentUtils.getValueToRender(context, spinner);
@@ -137,9 +134,6 @@ public class SpinnerRenderer extends InputRenderer {
         
 		renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS);
 
-        String inputClass = themeForms() ? Spinner.THEME_INPUT_CLASS : Spinner.PLAIN_INPUT_CLASS;
-        writer.writeAttribute("class", inputClass, null);
-        
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 

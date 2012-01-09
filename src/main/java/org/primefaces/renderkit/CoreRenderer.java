@@ -347,13 +347,6 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected boolean themeForms() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String value = context.getExternalContext().getInitParameter(Constants.THEME_FORMS_PARAM);
-
-        return value == null ? true : Boolean.valueOf(value);
-    }
-
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
 
         if(!(component instanceof ClientBehaviorHolder)) {

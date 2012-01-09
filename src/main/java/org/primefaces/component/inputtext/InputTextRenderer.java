@@ -62,10 +62,6 @@ public class InputTextRenderer extends InputRenderer {
 
         encodeClientBehaviors(context, inputText);
 
-        if(!themeForms()) {
-            writer.write(",theme:false");
-        }
-
         writer.write("});");
 
 		endScript(writer);
@@ -97,7 +93,7 @@ public class InputTextRenderer extends InputRenderer {
 	}
 
     protected String createStyleClass(InputText inputText) {
-        String defaultClass = themeForms() ? InputText.THEME_INPUT_CLASS : InputText.PLAIN_INPUT_CLASS;
+        String defaultClass = InputText.STYLE_CLASS;
         defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
         

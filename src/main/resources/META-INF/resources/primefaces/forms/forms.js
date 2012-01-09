@@ -159,9 +159,7 @@ PrimeFaces.widget.InputText = function(cfg) {
     }
 
     //Visuals
-    if(this.cfg.theme != false) {
-        PrimeFaces.skinInput(this.jq);
-    }
+    PrimeFaces.skinInput(this.jq);
     
     this.postConstruct();
 }
@@ -180,9 +178,7 @@ PrimeFaces.widget.InputTextarea = function(cfg) {
     var _self = this;
     
     //Visuals
-    if(this.cfg.theme != false) {
-        PrimeFaces.skinInput(this.input);
-    }
+    PrimeFaces.skinInput(this.input);
 
     //AutoResize
     if(this.cfg.autoResize) {
