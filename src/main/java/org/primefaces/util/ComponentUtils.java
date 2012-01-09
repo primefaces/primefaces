@@ -246,10 +246,7 @@ public class ComponentUtils {
 					buffer.append(comp.getClientId(context));
                 }
 				else {
-                    if(context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
-                        logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
-                    }
-					buffer.append(id);
+                    throw new FacesException("Cannot find component with identifier \"" + id + "\" in view.");
                 }
 			}
 		}
