@@ -1,3 +1,6 @@
+/**
+ * PrimeFaces Dialog Widget
+ */    
 PrimeFaces.widget.Dialog = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
@@ -259,31 +262,26 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype.initPosition = function() {
-    
+    //reset
+    this.jq.css({'left':'0px','top':'0px'});
+                
     if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
         this.cfg.position = this.cfg.position.replace(',', ' ');
         
         this.jq.position({
-            my: 'center'
-            ,at: this.cfg.position
-            ,collision: 'fit'
-            ,of: window
-            ,using: function(pos) {
-                var topOffset = $(this).css(pos).offset().top;
-                if(topOffset < 0) {
-                    $(this).css('top', pos.top - topOffset);
-                }
-            }
-        });
+                    my: 'center'
+                    ,at: this.cfg.position
+                    ,of: window
+                });
     }
     else {
         var coords = this.cfg.position.split(','),
         x = $.trim(coords[0]),
         y = $.trim(coords[1]);
         
-        this.jq.offset({
-            top: y
-            ,left: x
+        this.jq.css({
+            'left': x + 'px' 
+            ,'top': y + 'px'
         });
     }
     
@@ -449,8 +447,7 @@ PrimeFaces.widget.Dialog.prototype.loadContents = function() {
     };
     
     options.oncomplete = function() {
-        _self._show();
-        _self.initPosition();
+        _self.show();
     };
 
     var params = [];
@@ -463,10 +460,6 @@ PrimeFaces.widget.Dialog.prototype.loadContents = function() {
 
 PrimeFaces.widget.Dialog.prototype.addOnshowHandler = function(fn) {
     this.onshowHandlers.push(fn);
-}
-
-PrimeFaces.widget.Dialog.prototype.getScriptTag = function() {
-    return this.getJQ().prev('script');
 }
 
 /**
