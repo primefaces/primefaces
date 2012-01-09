@@ -314,6 +314,8 @@ PrimeFaces.widget.AutoComplete.prototype.search = function(value) {
                         
                         if(_self.panel.is(':hidden')) {
                             _self.show();
+                        } else {
+                            _self.alignPanel(); //with new items
                         }
 
                         //adjust height
