@@ -1,3 +1,4 @@
+            //<![CDATA[
 /**
  * PrimeFaces Dialog Widget
  */    
@@ -74,34 +75,28 @@ PrimeFaces.widget.Dialog = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.Dialog, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Dialog.prototype.enableModality = function() {
-    var _self = this;
-
     $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>').
         children(this.jqId + '_modal').css({
             'width': $(document).width()
             ,'height': $(document).height()
             ,'z-index': this.jq.css('z-index') - 1
         });
-
+    
     //disable tabbing out of modal dialog and stop events from targets outside of dialog
-    $(document).bind('keypress.dialog', function(event) {
-        if(event.keyCode == $.ui.keyCode.TAB) {
-            var tabbables = _self.content.find(':tabbable'),
+    this.content.bind('keypress.ui-dialog', function(event) {
+        if(event.keyCode !== $.ui.keyCode.TAB) {
+            return;
+        }
+
+        var tabbables = $(':tabbable', this),
             first = tabbables.filter(':first'),
             last  = tabbables.filter(':last');
 
-            if(event.target === last[0] && !event.shiftKey) {
-                first.focus(1);
-                return false;
-            } 
-            else if (event.target === first[0] && event.shiftKey) {
-                last.focus(1);
-                return false;
-            }
-        }        
-    })
-    .bind(this.blockEvents, function(event) {
-        if ($(event.target).zIndex() < PrimeFaces.zindex) {
+        if (event.target === last[0] && !event.shiftKey) {
+            first.focus(1);
+            return false;
+        } else if (event.target === first[0] && event.shiftKey) {
+            last.focus(1);
             return false;
         }
     });
