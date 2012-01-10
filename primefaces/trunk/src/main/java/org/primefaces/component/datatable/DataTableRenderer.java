@@ -877,6 +877,7 @@ public class DataTableRenderer extends DataRenderer {
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
         writer.writeAttribute("value", table.getSelectedRowKeysAsString(), null);
+        writer.writeAttribute("autocomplete", "off", null);
 		writer.endElement("input");
 	}
 	
