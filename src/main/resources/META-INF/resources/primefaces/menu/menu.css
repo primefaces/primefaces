@@ -230,12 +230,6 @@
     *float: none;
 }
 
-.ui-menu .ui-menu-child {
-    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
-    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
-}
-
 .ui-menu .ui-separator {
     width:98%;
     height:0px;
