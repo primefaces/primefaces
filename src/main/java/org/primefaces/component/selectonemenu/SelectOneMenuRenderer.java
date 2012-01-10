@@ -201,8 +201,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             
             if(itemLabel.equals("&nbsp;"))
                 writer.write(itemLabel);
-            else
-                writer.writeText(itemLabel, null);
+            else {
+                if(selectItem.isEscape())
+                    writer.writeText(itemLabel, "value");
+                else
+                    writer.write(itemLabel);
+            }
+                
 
             writer.endElement("li");
         }
@@ -261,9 +266,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(selected) writer.writeAttribute("selected", "selected", null);
 
         if(option.isEscape())
-            writer.write(option.getLabel());
-        else
             writer.writeText(option.getLabel(), "value");
+        else
+            writer.write(option.getLabel());
 
         writer.endElement("option");
     }
