@@ -520,18 +520,13 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             }
             
             PrimeFaces.debug('Response completed.');
-
-            PrimeFaces.ajax.RequestManager.poll();
         }
     };
 	
     xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
+    xhrOptions.async = cfg.async == false || cfg.async == undefined ? false : true;
 
-    if(cfg.async) {
-        $.ajax(xhrOptions);
-    } else {
-        PrimeFaces.ajax.RequestManager.offer(xhrOptions);
-    }
+    $.ajax(xhrOptions);
 }
 
 PrimeFaces.ajax.AjaxResponse = function(responseXML) {
@@ -548,49 +543,6 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
 
     PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 }
-
-PrimeFaces.ajax.RequestManager = {
-		
-    requests : new Array(),
-
-    offer : function(req) {
-        this.requests.push(req);
-
-        if(this.requests.length == 1) {
-            var retVal = $.ajax(req);
-            if(retVal === false)
-                this.poll();
-        }
-    },
-
-    poll : function() {
-        if(this.isEmpty()) {
-            return null;
-        }
- 
-        var processedRequest = this.requests.shift();
-        var nextRequest = this.peek();
-        if(nextRequest != null) {
-            $.ajax(nextRequest);
-        }
-
-        return processedRequest;
-    },
-
-    peek : function() {
-        if(this.isEmpty()) {
-            return null;
-        }
-    
-        var nextRequest = this.requests[0];
-  
-        return nextRequest;
-    },
-    
-    isEmpty : function() {
-        return this.requests.length == 0;
-    }
-};
 
 /**
  * Utilities
