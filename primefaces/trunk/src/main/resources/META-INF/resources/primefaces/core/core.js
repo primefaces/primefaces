@@ -83,6 +83,13 @@ PrimeFaces = {
             $(this).addClass('ui-state-focus');
         }).blur(function() {
             $(this).removeClass('ui-state-focus');
+        }).keydown(function(e) {
+            if(e.keyCode == $.ui.keyCode.SPACE || e.keyCode == $.ui.keyCode.ENTER || e.keyCode == $.ui.keyCode.NUMPAD_ENTER) {
+                $(this).addClass('ui-state-active');
+            }
+            
+        }).keyup(function() {
+            $(this).removeClass('ui-state-active');
         });
         
         return this;
