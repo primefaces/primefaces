@@ -24,7 +24,6 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
-import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -34,7 +33,6 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
-import org.primefaces.component.column.Column;
 import org.primefaces.model.TreeNode;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
@@ -248,8 +246,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         setRowKey(null);
         
         for(UIComponent child : getChildren()) {
-            if(child instanceof Column && child.isRendered()) {
-                Column column = (Column) child;
+            if(child instanceof UIColumn && child.isRendered()) {
+                UIColumn column = (UIColumn) child;
                 
                 if(column.getFacetCount() > 0) {
                     for(UIComponent columnFacet : column.getFacets().values()) {
@@ -274,7 +272,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return;
         
         for(UIComponent child : getChildren()) {
-            if(child instanceof Column && child.isRendered()) {
+            if(child instanceof UIColumn && child.isRendered()) {
                 for(UIComponent grandkid : child.getChildren()) {
                     if(!grandkid.isRendered())
                         continue;
