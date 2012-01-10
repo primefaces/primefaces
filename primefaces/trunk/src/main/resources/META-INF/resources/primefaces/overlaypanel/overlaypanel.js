@@ -34,9 +34,6 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
         } else {
             _self.hide();
         }
-        
-        //do not trigger document mousedown
-        e.stopPropagation();
     });
     
     //hide overlay when outside is clicked
@@ -44,7 +41,14 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
         if(_self.jq.is(":hidden")) {
             return;
         }
+        
+        //do nothing on target mousedown
+        var target = $(e.target);
+        if(_self.target.is(target)||_self.target.has(target).length > 0) {
+            return;
+        }
 
+        //hide overlay if mousedown is on outside
         var offset = _self.jq.offset();
         if(e.pageX < offset.left ||
             e.pageX > offset.left + _self.jq.outerWidth() ||
