@@ -96,8 +96,10 @@ public abstract class InputRenderer extends CoreRenderer {
             Object itemValue = uiSelectItems.getAttributes().get("itemValue");
             String description = (String) uiSelectItems.getAttributes().get("itemDescription");
             Boolean disabled = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemDisabled")));
-            Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemEscaped")));
+            Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemLabelEscaped")));
             Boolean noSelectionOption = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("noSelectionOption")));
+            
+            System.out.println("Escaped:" + escaped);
 
             if(itemValue == null)
                 itemValue = object;
