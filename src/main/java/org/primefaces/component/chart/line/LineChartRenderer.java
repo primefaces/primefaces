@@ -105,6 +105,10 @@ public class LineChartRenderer extends BaseChartRenderer {
 
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
+
+            if(chart.isBreakOnNull()) 
+                writer.write(",breakOnNull:true");
+        
             if(series instanceof LineChartSeries) {
                 LineChartSeries  lineChartSeries = (LineChartSeries) series;
                 writer.write(",showLine:" + lineChartSeries.isShowLine());
@@ -145,9 +149,5 @@ public class LineChartRenderer extends BaseChartRenderer {
         
         if(chart.isStacked()) 
             writer.write(",stackSeries:true");
-
-        //other
-        if(chart.isBreakOnNull()) 
-            writer.write(",breakOnNull:true");
     }
 }
