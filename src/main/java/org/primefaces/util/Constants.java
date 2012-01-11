@@ -26,6 +26,8 @@ public class Constants {
     public static final String THEME_PARAM = "primefaces.THEME";
     public static final String AUTO_UPDATE = "primefaces.AUTO_UPDATE";
     public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";
+    
+    public static final String DOWNLOAD_COOKIE = "primefaces.download";
 
     public final static String VERSION = "3.1-SNAPSHOT";
     public final static String LIBRARY = "primefaces";

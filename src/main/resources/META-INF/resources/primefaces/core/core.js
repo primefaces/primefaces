@@ -224,6 +224,24 @@ PrimeFaces = {
             }
         }, 250);
     },
+    
+    monitorDownload : function(start, complete) {
+        if(start) {
+            start();
+        }
+
+        window.downloadMonitor = setInterval(function() {
+            var downloadComplete = PrimeFaces.getCookie('primefaces.download');
+
+            if(downloadComplete == 'true') {
+                if(complete) {
+                    complete();
+                }
+                clearInterval(window.downloadPoll);
+                PrimeFaces.setCookie('primefaces.download', null);
+            }
+        }, 500);
+    },
 
     locales : {},
     
