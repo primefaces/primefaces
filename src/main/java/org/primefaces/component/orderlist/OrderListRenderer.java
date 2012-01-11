@@ -34,7 +34,7 @@ public class OrderListRenderer extends CoreRenderer {
     @Override
 	public void decode(FacesContext context, UIComponent component) {
 		OrderList pickList = (OrderList) component;
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		Map<String,String[]> params = context.getExternalContext().getRequestParameterValuesMap();
         String values = pickList.getClientId(context) + "_values";
 		
 		if(values != null) {
@@ -101,14 +101,28 @@ public class OrderListRenderer extends CoreRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", listStyleClass, null);
 
-        String values = encodeOptions(context, ol, (List) ol.getValue());
+        encodeOptions(context, ol, (List) ol.getValue());
 
         writer.endElement("ul");
 
-        encodeListStateHolder(context, clientId + "_values", values);
+        encodeInput(context, clientId + "_values");
 
         writer.endElement("td");
     }
+    
+    protected void encodeInput(FacesContext context, String clientId) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		
+		writer.startElement("select", null);
+		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("multiple", "true", null);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+
+        //options generated at client side
+        
+		writer.endElement("select");
+	}
     
     protected void encodeControls(FacesContext context, OrderList ol) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -123,11 +137,10 @@ public class OrderListRenderer extends CoreRenderer {
     }
     
     @SuppressWarnings("unchecked")
-	protected String encodeOptions(FacesContext context, OrderList old, List model) throws IOException {
+	protected void encodeOptions(FacesContext context, OrderList old, List model) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = old.getVar();
 		Converter converter = old.getConverter();
-		StringBuilder builder = new StringBuilder();
         
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
@@ -165,18 +178,10 @@ public class OrderListRenderer extends CoreRenderer {
                 writer.writeText(old.getItemLabel(), null);
             }
                 
-			writer.endElement("li");
-			
-			builder.append("\"").append(value).append("\"");
-            
-            if(it.hasNext()) {
-                builder.append(",");
-            }
+			writer.endElement("li");			
 		}
 		
 		context.getExternalContext().getRequestMap().remove(var);
-		
-		return builder.toString();
 	}
     
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon) throws IOException {
@@ -201,17 +206,6 @@ public class OrderListRenderer extends CoreRenderer {
         writer.endElement("button");
 	}
     
-    protected void encodeListStateHolder(FacesContext context, String clientId, String values) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("value", values, null);
-		writer.endElement("input");
-	}
-
     protected void encodeScript(FacesContext context, OrderList ol) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = ol.getClientId(context);
@@ -236,17 +230,13 @@ public class OrderListRenderer extends CoreRenderer {
             OrderList ol = (OrderList) component;
             List orderedList = new ArrayList();
             Converter converter = ol.getConverter();
-            String[] values = ((String) submittedValue).split(",");
-
+            String[] values = (String[]) submittedValue;
+            
             for(String item : values) {
                 if(isValueBlank(item))
                     continue;
-
-                //trim whitespaces and double quotes
-                String val = item.trim();
-                val = val.substring(1, val.length() - 1);
             
-                Object convertedValue = converter != null ? converter.getAsObject(context, ol, val) : val;
+                Object convertedValue = converter != null ? converter.getAsObject(context, ol, item) : item;
 
                 if(convertedValue != null)
                     orderedList.add(convertedValue);
