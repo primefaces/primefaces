@@ -108,7 +108,7 @@ public class LineChartRenderer extends BaseChartRenderer {
             if(series instanceof LineChartSeries) {
                 LineChartSeries  lineChartSeries = (LineChartSeries) series;
                 writer.write(",showLine:" + lineChartSeries.isShowLine());
-                writer.write(",markerOptions:{style:'" + lineChartSeries.getMarkerStyle() + "'}");
+                writer.write(",markerOptions:{show:" + chart.isShowMarkers()+ ", style:'" + lineChartSeries.getMarkerStyle() + "'}");
             }
             writer.write("}");
 
@@ -138,14 +138,16 @@ public class LineChartRenderer extends BaseChartRenderer {
         if(chart.getMinY() != Double.MIN_VALUE) writer.write(",minY:" + chart.getMinY());
         if(chart.getMaxY() != Double.MAX_VALUE) writer.write(",maxY:" + chart.getMaxY());
 
-        if(chart.isFillToZero()) writer.write(",fillToZero:true");
-        else if(chart.isFill()) writer.write(",fill:true");
+        if(chart.isFillToZero()) 
+            writer.write(",fillToZero:true");
+        else 
+            if(chart.isFill()) writer.write(",fill:true");
         
-        if(chart.isStacked()) writer.write(",stackSeries:true");
-        
-        writer.write(",showMarkers:" + chart.isShowMarkers());
-        
+        if(chart.isStacked()) 
+            writer.write(",stackSeries:true");
+
         //other
-        if(chart.isBreakOnNull()) writer.write(",breakOnNull:true");
+        if(chart.isBreakOnNull()) 
+            writer.write(",breakOnNull:true");
     }
 }
