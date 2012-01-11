@@ -117,8 +117,8 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        //only process loaded tabs on dynamic case
-        if(isDynamic()) {
+        //only process loaded tabs on dynamic case without tab model
+        if(isDynamic() && getVar() == null) {
             for(Tab tab : getLoadedTabs()) {
                 tab.processDecodes(context);
             }
@@ -146,8 +146,8 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        //only process loaded tabs on dynamic case
-        if(isDynamic()) {
+        //only process loaded tabs on dynamic case without tab model
+        if(isDynamic() && getVar() == null) {
             for(Tab tab : getLoadedTabs()) {
                 tab.processValidators(context);
             }
@@ -178,8 +178,8 @@ import javax.faces.component.visit.VisitResult;
             resetActiveIndex();
         }
 
-        //only process loaded tabs on dynamic case
-        if(isDynamic()) {
+        //only process loaded tabs on dynamic case without tab model
+        if(isDynamic() && getVar() == null) {
             for(Tab tab : getLoadedTabs()) {
                 tab.processUpdates(context);
             }
