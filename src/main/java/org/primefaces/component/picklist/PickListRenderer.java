@@ -37,12 +37,13 @@ public class PickListRenderer extends CoreRenderer {
 	public void decode(FacesContext context, UIComponent component) {
 		PickList pickList = (PickList) component;
 		String clientId = pickList.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		Map<String,String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 		
 		String sourceParam = clientId + "_source";
 		String targetParam = clientId + "_target";
+        
 		if(params.containsKey(sourceParam) && params.containsKey(targetParam)) {
-			pickList.setSubmittedValue(new String[]{params.get(sourceParam), params.get(targetParam)});
+			pickList.setSubmittedValue(new String[][]{params.get(sourceParam), params.get(targetParam)});
 		}
 	}
 	
@@ -181,21 +182,34 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
 
-        String values = encodeOptions(context, pickList, model);
+        encodeOptions(context, pickList, model);
 
         writer.endElement("ul");
 		
-		encodeListStateHolder(context, listId, values);
+		encodeListInput(context, listId);
                 
         writer.endElement("td");
 	}
+    
+    protected void encodeListInput(FacesContext context, String clientId) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		
+		writer.startElement("select", null);
+        writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("name", clientId, null);
+		writer.writeAttribute("multiple", "true", null);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+
+        //items generated on client side
+
+		writer.endElement("select");
+	}
 	
 	@SuppressWarnings("unchecked")
-	protected String encodeOptions(FacesContext context, PickList pickList, List model) throws IOException {
+	protected void encodeOptions(FacesContext context, PickList pickList, List model) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = pickList.getVar();
 		Converter converter = pickList.getConverter();
-        StringBuilder builder = new StringBuilder();
         
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
@@ -234,28 +248,9 @@ public class PickListRenderer extends CoreRenderer {
             }
                 
 			writer.endElement("li");
-			
-			builder.append("\"").append(value).append("\"");
-            
-            if(it.hasNext()) {
-                builder.append(",");
-            }
 		}
 		
 		context.getExternalContext().getRequestMap().remove(var);
-		
-		return builder.toString();
-	}
-	
-	protected void encodeListStateHolder(FacesContext context, String clientId, String values) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("value", values, null);
-		writer.endElement("input");
 	}
 	
 	@Override
@@ -263,9 +258,9 @@ public class PickListRenderer extends CoreRenderer {
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         try {
             PickList pickList = (PickList) component;
-            String[] value = (String[]) submittedValue;
-            String[] sourceValue = value[0].split(",");
-            String[] targetValue = value[1].split(",");
+            String[][] value = (String[][]) submittedValue;
+            String[] sourceValue = value[0];
+            String[] targetValue = value[1];
             DualListModel model = new DualListModel();
 
             doConvertValue(context, pickList, sourceValue, model.getSource());
@@ -285,12 +280,8 @@ public class PickListRenderer extends CoreRenderer {
         for(String item : values) {            
 			if(isValueBlank(item))
 				continue;
-			
-            //trim whitespaces and double quotes
-			String val = item.trim();
-            val = val.substring(1, val.length() - 1);
-                    
-			Object convertedValue = converter != null ? converter.getAsObject(context, pickList, val) : val;
+			                    
+			Object convertedValue = converter != null ? converter.getAsObject(context, pickList, item) : item;
 			
 			if(convertedValue != null)
 				model.add(convertedValue);
