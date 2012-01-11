@@ -26,9 +26,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -54,8 +56,8 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 		try {
 			response.setContentType(content.getContentType());
 			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-
-			
+            
+            
 			byte[] buffer = new byte[2048];
 	
 			int length;
@@ -66,6 +68,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 				outputStream.write(buffer, 0, length);
 			}
 			
+            response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
 			response.setStatus(200);
 			
 			response.getOutputStream().flush();
