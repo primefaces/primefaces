@@ -8,9 +8,13 @@ PrimeFaces.widget.PickList = function(cfg) {
     this.jq = $(this.jqId);
     this.sourceList = this.jq.find('.ui-picklist-source');
     this.targetList = this.jq.find('.ui-picklist-target');
-    this.sourceState = $(this.jqId + '_source');
-    this.targetState = $(this.jqId + '_target');
+    this.sourceInput = $(this.jqId + '_source');
+    this.targetInput = $(this.jqId + '_target');
     this.items = this.jq.find('.ui-picklist-item:not(.ui-state-disabled)');
+
+    //generate input options
+    this.generateItems(this.sourceList, this.sourceInput);
+    this.generateItems(this.targetList, this.targetInput);
 
     //Buttons
     this.setupButtons();
@@ -82,6 +86,15 @@ PrimeFaces.widget.PickList = function(cfg) {
 }
 
 PrimeFaces.extend(PrimeFaces.widget.PickList, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.PickList.prototype.generateItems = function(list, input) {   
+    list.children('.ui-picklist-item').each(function(i, item) {
+        var item = $(this),
+        itemValue = item.data('item-value');
+        
+        input.append('<option value="' + itemValue + '" selected="selected">' + itemValue + '</option>');
+    });
+}
 
 PrimeFaces.widget.PickList.prototype.setupButtons = function() {
     var _self = this;
@@ -210,9 +223,15 @@ PrimeFaces.widget.PickList.prototype.moveBottom = function(list) {
     });
 }
 
+/**
+ * Clear inputs and repopulate them from the list states 
+ */
 PrimeFaces.widget.PickList.prototype.saveState = function() {
-    this.saveListState(this.sourceList, this.sourceState);
-    this.saveListState(this.targetList, this.targetState);
+    this.sourceInput.children().remove();
+    this.targetInput.children().remove();
+    
+    this.generateItems(this.sourceList, this.sourceInput);
+    this.generateItems(this.targetList, this.targetInput);
 }
 
 PrimeFaces.widget.PickList.prototype.transfer = function(item, from, to, type) {    
@@ -222,17 +241,6 @@ PrimeFaces.widget.PickList.prototype.transfer = function(item, from, to, type) {
         _self.saveState();
         _self.fireOnTransferEvent(item, from, to, type);
     });
-}
-
-PrimeFaces.widget.PickList.prototype.saveListState = function(list, holder) {
-    var values = [];
-    
-    $(list).children('li.ui-picklist-item').each(function() {
-        values.push('"' + $(this).data('item-value') + '"');
-    });
-    
-    //set value as json string
-    holder.val(values.join(','));
 }
 
 PrimeFaces.widget.PickList.prototype.fireOnTransferEvent = function(item, from, to, type) {
