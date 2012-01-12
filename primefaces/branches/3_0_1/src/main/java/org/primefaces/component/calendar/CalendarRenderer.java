@@ -191,6 +191,10 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         encodeClientBehaviors(context, calendar);
+        
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 
         writer.write("});});");
 
