@@ -152,6 +152,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
+        writer.writeAttribute("role", "tablist", null);
 
         if(var == null) {
             int i = 0;
@@ -193,6 +194,8 @@ public class TabViewRenderer extends CoreRenderer {
         //header container
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
         if(tab.getTitleStyle() != null)  writer.writeAttribute("style", tab.getTitleStyle(), null);
         if(tab.getTitletip() != null)  writer.writeAttribute("title", tab.getTitletip(), null);
 
@@ -257,6 +260,8 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("role", "tabpanel", null);
+        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
 
         if(dynamic) {
             if(active) {
