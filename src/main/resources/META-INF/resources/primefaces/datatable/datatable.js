@@ -199,8 +199,10 @@ PrimeFaces.widget.DataTable.prototype.setupSelectionEvents = function() {
                 disabled = radio.hasClass('ui-state-disabled');
                 
                 if(!disabled && !checked) {
+                    var currentRadios = $(_self.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-radiobutton .ui-radiobutton-box');
+                    
                     //unselect previous
-                    radios.filter('.ui-state-active').removeClass('ui-state-active')
+                    currentRadios.filter('.ui-state-active').removeClass('ui-state-active')
                            .children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
 
                     //select current
