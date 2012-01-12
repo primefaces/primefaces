@@ -39,12 +39,13 @@ public class PickListRenderer extends CoreRenderer {
 		String clientId = pickList.getClientId(context);
 		Map<String,String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 		
-		String sourceParam = clientId + "_source";
-		String targetParam = clientId + "_target";
+		String sourceParamKey = clientId + "_source";
+		String targetParamKey = clientId + "_target";
         
-		if(params.containsKey(sourceParam) && params.containsKey(targetParam)) {
-			pickList.setSubmittedValue(new String[][]{params.get(sourceParam), params.get(targetParam)});
-		}
+        String[] sourceParam = params.containsKey(sourceParamKey) ? params.get(sourceParamKey) : new String[]{};
+		String[] targetParam = params.containsKey(targetParamKey) ? params.get(targetParamKey) : new String[]{};
+
+		pickList.setSubmittedValue(new String[][]{sourceParam, targetParam});
 	}
 	
 	@Override
