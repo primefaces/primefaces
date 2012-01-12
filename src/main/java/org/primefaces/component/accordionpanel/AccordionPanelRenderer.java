@@ -82,8 +82,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-		if(acco.getStyle() != null)
+		if(acco.getStyle() != null) {
             writer.writeAttribute("style", acco.getStyle(), null);
+        }
+        
+        writer.writeAttribute("role", "tablist", null);
 
 		encodeTabs(context, acco);
 
@@ -174,6 +177,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         //header container
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
+        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
         if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
         if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
 
@@ -196,6 +201,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", contentClass, null);
+        writer.writeAttribute("role", "tabpanel", null);
+        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
 
         if(dynamic) {
             if(active) {

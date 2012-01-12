@@ -114,16 +114,19 @@ PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
     if(!this.cfg.multiple) {
         var oldHeader = this.headers.filter('.ui-state-active');
         oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-        oldHeader.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().slideUp();
+        oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().slideUp(function() {
+            $(this).attr('aria-hidden', true);
+        });
     }
     
     //activate selected
     var newHeader = panel.prev();
-    newHeader.addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
+    newHeader.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
              .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
              
     panel.slideDown('normal', function() {
         _self.postTabShow(panel);
+        panel.attr('aria-hidden', false);
     });
 }
 
