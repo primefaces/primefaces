@@ -99,9 +99,9 @@ PrimeFaces.widget.AccordionPanel.prototype.unselect = function(index) {
     var panel = this.panels.eq(index),
     header = panel.prev();
     
-    header.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+    header.attr('aria-expanded', false).children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
     header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
-    panel.slideUp();
+    panel.attr('aria-hidden', true).slideUp();
     
     this.removeFromSelection(index);
     this.saveState();
@@ -114,9 +114,7 @@ PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
     if(!this.cfg.multiple) {
         var oldHeader = this.headers.filter('.ui-state-active');
         oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-        oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().slideUp(function() {
-            $(this).attr('aria-hidden', true);
-        });
+        oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().attr('aria-hidden', true).slideUp();
     }
     
     //activate selected
@@ -124,9 +122,8 @@ PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
     newHeader.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
              .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
              
-    panel.slideDown('normal', function() {
+    panel.attr('aria-hidden', false).slideDown('normal', function() {
         _self.postTabShow(panel);
-        panel.attr('aria-hidden', false);
     });
 }
 
