@@ -103,10 +103,15 @@ PrimeFaces.widget.TabView.prototype.show = function(newPanel) {
     oldPanel = this.panelContainer.children('.ui-tabs-panel:visible'),
     _self = this;
     
+    //aria
+    oldPanel.attr('aria-hidden', true);
+    oldHeader.attr('aria-expanded', false);
+    newPanel.attr('aria-hidden', false);
+    newHeader.attr('aria-expanded', true);
+    
     if(this.cfg.effect) {
-        oldPanel.hide(this.cfg.effect.name, null, this.cfg.effect.duration, function() {
+            oldPanel.hide(this.cfg.effect.name, null, this.cfg.effect.duration, function() {
             oldHeader.removeClass('ui-state-focus ui-tabs-selected ui-state-active');
-            $(this).hide();
             
             newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
             newPanel.show(_self.cfg.effect.name, null, _self.cfg.effect.duration, function() {
