@@ -86,6 +86,7 @@ public class CalendarRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
+        boolean disabled = calendar.isDisabled();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -97,7 +98,10 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if(popup) {
-            String inputStyleClass = calendar.isValid() ? Calendar.INPUT_STYLE_CLASS : Calendar.INPUT_STYLE_CLASS + " ui-state-error";
+            String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
+            if(disabled) inputStyleClass = inputStyleClass + " ui-state-disabled";
+            if(!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
+            
             writer.writeAttribute("class", inputStyleClass, null);
             
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS);
