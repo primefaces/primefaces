@@ -56,10 +56,9 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 		try {
 			response.setContentType(content.getContentType());
 			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-            
+            response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
             
 			byte[] buffer = new byte[2048];
-	
 			int length;
             InputStream inputStream = content.getStream();
             OutputStream outputStream = response.getOutputStream();
@@ -68,9 +67,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 				outputStream.write(buffer, 0, length);
 			}
 			
-            response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
 			response.setStatus(200);
-			
 			response.getOutputStream().flush();
             content.getStream().close();
 			facesContext.responseComplete();
