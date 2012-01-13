@@ -41,8 +41,13 @@
     cursor: pointer;
 }
 
+.ui-datatable .ui-sortable-column div.ui-dt-c {
+    position: relative;
+}
+
 .ui-datatable .ui-sortable-column-icon {
-    float:right;
+    position: absolute;
+    right:0;
 }
 
 .ui-datatable .ui-column-filter {
