@@ -101,8 +101,6 @@ public abstract class InputRenderer extends CoreRenderer {
             Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemLabelEscaped")));
             Boolean noSelectionOption = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("noSelectionOption")));
             
-            System.out.println("Escaped:" + escaped);
-
             if(itemValue == null)
                 itemValue = object;
             if(itemLabel == null)
