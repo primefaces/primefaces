@@ -46,39 +46,41 @@ public abstract class InputRenderer extends CoreRenderer {
             else if(child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
 				Object value = uiSelectItems.getValue();
-
-                if(value instanceof SelectItem) {
+                
+                if(value != null) {
+                    if(value instanceof SelectItem) {
                     selectItems.add((SelectItem) value);
-                }
-                else if(value.getClass().isArray()) {
-                    for(int i = 0; i < Array.getLength(value); i++) {
-                        Object item = Array.get(value, i);
-                        
-                        if(item instanceof SelectItem)
-                            selectItems.add((SelectItem) item);
-                        else
-                            selectItems.add(createSelectItem(context, uiSelectItems, item));
                     }
-                }
-                else if(value instanceof Map) {
-                    Map map = (Map) value;
+                    else if(value.getClass().isArray()) {
+                        for(int i = 0; i < Array.getLength(value); i++) {
+                            Object item = Array.get(value, i);
 
-                    for(Iterator it = map.keySet().iterator(); it.hasNext();) {
-                        Object key = it.next();
-
-                        selectItems.add(new SelectItem(map.get(key), String.valueOf(key)));
+                            if(item instanceof SelectItem)
+                                selectItems.add((SelectItem) item);
+                            else
+                                selectItems.add(createSelectItem(context, uiSelectItems, item));
+                        }
                     }
-                }
-                else if(value instanceof Collection) {
-                    Collection collection = (Collection) value;
-                    
-                    for(Iterator it = collection.iterator(); it.hasNext();) {
-                        Object item = it.next();
-                        if(item instanceof SelectItem)
-                            selectItems.add((SelectItem) item);
-                        else
-                            selectItems.add(createSelectItem(context, uiSelectItems, item));
-                    }               
+                    else if(value instanceof Map) {
+                        Map map = (Map) value;
+
+                        for(Iterator it = map.keySet().iterator(); it.hasNext();) {
+                            Object key = it.next();
+
+                            selectItems.add(new SelectItem(map.get(key), String.valueOf(key)));
+                        }
+                    }
+                    else if(value instanceof Collection) {
+                        Collection collection = (Collection) value;
+
+                        for(Iterator it = collection.iterator(); it.hasNext();) {
+                            Object item = it.next();
+                            if(item instanceof SelectItem)
+                                selectItems.add((SelectItem) item);
+                            else
+                                selectItems.add(createSelectItem(context, uiSelectItems, item));
+                        }               
+                    }
                 }
 			}
         }
