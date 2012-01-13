@@ -220,6 +220,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("table", null);
+        writer.writeAttribute("role", "grid", null);
         if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
         
@@ -243,6 +244,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        writer.writeAttribute("role", "grid", null);
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
         
@@ -259,6 +261,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
+        writer.writeAttribute("role", "grid", null);
         if(table.getRowCount() == 0) {
             tableStyle = tableStyle == null ? "width:100%" : tableStyle + ";width:100%";
         }
@@ -278,6 +281,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        writer.writeAttribute("role", "grid", null);
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
         
@@ -328,6 +332,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("th", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
+        writer.writeAttribute("role", "columnheader", null);
         
         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
@@ -559,6 +564,7 @@ public class DataTableRenderer extends DataRenderer {
         } else {
             
             writer.startElement("tr", null);
+            writer.writeAttribute("role", "row", null);
 
             for(UIComponent kid : table.getChildren()) {
                 if(kid.isRendered()) {
@@ -662,8 +668,10 @@ public class DataTableRenderer extends DataRenderer {
             context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
         }
         
+        boolean selectionEnabled = table.isSelectionEnabled();
+        
         Object rowKey = null;
-        if(table.isSelectionEnabled()) {
+        if(selectionEnabled) {
             //try rowKey attribute
             rowKey = table.getRowKey();
             
@@ -694,6 +702,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("data-rk", rowKey, null);
         }
         writer.writeAttribute("class", rowStyleClass, null);
+        writer.writeAttribute("role", "row", null);
+        if(selectionEnabled) {
+            writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+        }
 
         for(UIComponent kid : table.getChildren()) {
             if(kid.isRendered()) {
@@ -725,6 +737,7 @@ public class DataTableRenderer extends DataRenderer {
         styleClass = column.getStyleClass() == null ? styleClass : styleClass + " " + column.getStyleClass();
         
         writer.startElement("td", null);
+        writer.writeAttribute("role", "gridcell", null);
         
         if(style != null) writer.writeAttribute("style", style, null);
         if(!isValueBlank(styleClass)) writer.writeAttribute("class", styleClass.trim(), null);
@@ -757,6 +770,7 @@ public class DataTableRenderer extends DataRenderer {
             requestMap.put(columnIndexVar, colIndex);
 
             writer.startElement("td", null);
+            writer.writeAttribute("role", "gridcell", null);
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             columns.encodeAll(context);
