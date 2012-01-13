@@ -151,6 +151,7 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", TreeTable.SCROLLABLE_HEADER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        writer.writeAttribute("role", "treegrid", null);
         if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
         if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
         
@@ -167,6 +168,7 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
+        writer.writeAttribute("role", "treegrid", null);
         if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
         if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
         
@@ -182,6 +184,7 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
         
         writer.startElement("table", null);
+        writer.writeAttribute("role", "treegrid", null);
         if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
         if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
         
@@ -196,6 +199,7 @@ public class TreeTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("table", tt);
+        writer.writeAttribute("role", "treegrid", null);
         if(tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
         if(tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
 
@@ -214,6 +218,7 @@ public class TreeTableRenderer extends CoreRenderer {
         encodeFacet(context, tt, "header", TreeTable.HEADER_CLASS, "th");
         
 		writer.startElement("tr", null);
+        writer.writeAttribute("role", "row", null);
 		
         for(int i = 0; i < tt.getChildCount(); i++) {
             UIComponent kid = tt.getChildren().get(i);
@@ -228,6 +233,7 @@ public class TreeTableRenderer extends CoreRenderer {
 				writer.startElement("th", null);
                 writer.writeAttribute("id", column.getClientId(context), null);
                 writer.writeAttribute("class", columnStyleClass, null);
+                writer.writeAttribute("role", "columnheader", null);
                 if(style != null)
                     writer.writeAttribute("style", style, null);
 
@@ -274,7 +280,8 @@ public class TreeTableRenderer extends CoreRenderer {
             String nodeId = clientId + "_node_" + rowKey;
             String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
             int depth = rowKey.split(UITree.SEPARATOR).length - 1;
-            boolean selectable = treeNode.isSelectable() && (tt.getSelectionMode() != null);
+            boolean selectionEnabled = tt.getSelectionMode() != null;
+            boolean selectable = treeNode.isSelectable() && selectionEnabled;
             boolean selected = treeNode.isSelected();
             
             String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
@@ -288,6 +295,11 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("id", nodeId, null);
             writer.writeAttribute("class", rowStyleClass, null);
+            writer.writeAttribute("role", "row", null);
+            writer.writeAttribute("aria-expanded", String.valueOf(treeNode.isExpanded()), null);
+            if(selectionEnabled) {
+                writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+            }
 
             for(int i=0; i < tt.getChildren().size(); i++) {
                 UIComponent kid = (UIComponent) tt.getChildren().get(i);
@@ -296,6 +308,7 @@ public class TreeTableRenderer extends CoreRenderer {
                     Column column = (Column) kid;
 
                     writer.startElement("td", null);
+                    writer.writeAttribute("role", "gridcell", null);
                     if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
                     if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
 
