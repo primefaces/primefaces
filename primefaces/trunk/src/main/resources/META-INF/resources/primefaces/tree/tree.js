@@ -141,6 +141,7 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
         }
     }
     else {
+        //expand dom
         this.showNodeChildren(node);
         this.fireExpandEvent(node);
     }
@@ -172,6 +173,9 @@ PrimeFaces.widget.Tree.prototype.collapseNode = function(node) {
     if(iconState) {
         nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
     }
+    
+    //aria
+    node.children('.ui-tree-node').attr('aria-expanded', false);
 
     var childNodeContainer = node.children('.ui-tree-nodes');
     childNodeContainer.hide();
@@ -198,6 +202,9 @@ PrimeFaces.widget.Tree.prototype.fireCollapseEvent = function(node) {
 }
 
 PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node) {
+    //aria
+    node.children('.ui-tree-node').attr('aria-expanded', true);
+        
     var icon = node.find('.ui-tree-icon:first'),
     lastClass = node.attr('class').split(' ').slice(-1),
     nodeIcon = icon.next(),
@@ -221,9 +228,12 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
         if(this.isSingleSelection() || (this.isMultipleSelection() && !e.metaKey)) {
             //clean all selections
             this.selections = [];
-            this.jq.find('.ui-tree-node-content.ui-state-highlight').removeClass('ui-state-highlight');
+            this.jq.find('.ui-tree-node-content.ui-state-highlight').each(function() {
+                $(this).removeClass('ui-state-highlight').parent().attr('aria-selected', false);
+            });
         }
 
+        node.children('.ui-tree-node').attr('aria-selected', true);
         node.find('.ui-tree-node-content:first').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getNodeId(node));
@@ -246,6 +256,9 @@ PrimeFaces.widget.Tree.prototype.unselectNode = function(e, node) {
     else if(e.metaKey) {
         //remove visual style    
         node.find('.ui-tree-node-content:first').removeClass('ui-state-highlight');
+        
+        //aria
+        node.children('.ui-tree-node').attr('aria-selected', false);
 
         //remove from selection
         this.removeFromSelection(nodeId);
@@ -329,19 +342,26 @@ PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
     //propagate selection down
     node.find('.ui-tree-checkbox-icon').each(function() {
         var icon = $(this),
-        nodeId = _self.getNodeId(icon.parents('li:first'));
+        treeNode = icon.parents('li:first'),
+        nodeId = _self.getNodeId(treeNode);
 
         if(check) {
             if($.inArray(nodeId, _self.selections) == -1) {
                 icon.addClass('ui-icon ui-icon-check');
             
                 _self.addToSelection(nodeId);
+                
+                //aria
+                treeNode.children('.ui-tree-node').attr('aria-checked', true).attr('aria-selected', true);
             }
         }
         else {
             icon.removeClass('ui-icon ui-icon-check');
 
             _self.removeFromSelection(nodeId);
+            
+            //aria
+            treeNode.children('.ui-tree-node').attr('aria-checked', false).attr('aria-selected', false);
         }
     });
 
@@ -358,18 +378,29 @@ PrimeFaces.widget.Tree.prototype.toggleCheckbox = function(node, check) {
                 icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
 
                 _self.addToSelection(nodeId);
-            } else {
+                
+                //aria
+                parentNode.children('.ui-tree-node').attr('aria-checked', true).attr('aria-selected', true);
+            } 
+            else {
                 icon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+                
+                //aria
+                parentNode.children('.ui-tree-node').attr('aria-checked', false).attr('aria-selected', false);
             }
         }
         else {
             if(checkedChildren.length > 0) {
                 icon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+
             } else {
                 icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
             }
 
             _self.removeFromSelection(nodeId);
+            
+            //aria
+            parentNode.children('.ui-tree-node').attr('aria-checked', false).attr('aria-selected', false);
         }
 
     });
