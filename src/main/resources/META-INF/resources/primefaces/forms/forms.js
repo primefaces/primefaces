@@ -1248,9 +1248,6 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.bindEvents = function() {
                 _self.hide(true);
             }
         }
-        
-        //do not trigger document mousedown.selectcheckboxmenu
-        e.stopPropagation();
     }).click(function(e) {
        e.preventDefault(); 
     });
@@ -1258,6 +1255,12 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.bindEvents = function() {
     //hide overlay when outside is clicked
     $(document.body).bind('mousedown.selectcheckboxmenu', function (e) {        
         if(_self.panel.is(':hidden')) {
+            return;
+        }
+        
+        //do nothing on trigger mousedown
+        var target = $(e.target);
+        if(_self.triggers.is(target)||_self.triggers.has(target).length > 0) {
             return;
         }
         
