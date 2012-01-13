@@ -139,8 +139,10 @@ public class TreeRenderer extends CoreRenderer {
 		String clientId = tree.getClientId(context);
         TreeNode root = (TreeNode) tree.getValue();
         boolean dynamic = tree.isDynamic();
+        String selectionMode = tree.getSelectionMode();
         boolean selectable = tree.getSelectionMode() != null;
-        boolean checkbox = selectable && tree.getSelectionMode().equals("checkbox");
+        boolean multiselectable = selectable && selectionMode.equals("single");
+        boolean checkbox = selectable && selectionMode.equals("checkbox");
         
         //container class
         String containerClass = tree.getStyleClass() == null ? Tree.CONTAINER_CLASS : Tree.CONTAINER_CLASS + " " + tree.getStyleClass();
@@ -148,6 +150,8 @@ public class TreeRenderer extends CoreRenderer {
 		writer.startElement("div", tree);
 		writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
+        writer.writeAttribute("role", "tree", null);
+        writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
 		if(tree.getStyle() != null) 
             writer.writeAttribute("style", tree.getStyle(), null);
 
@@ -198,6 +202,12 @@ public class TreeRenderer extends CoreRenderer {
                 //label
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Tree.NODE_CLASS, null);
+                writer.writeAttribute("role", "treeitem", null);
+                writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
+                writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+                if(checkbox) {
+                    writer.writeAttribute("aria-checked", String.valueOf(selected), null);
+                }
 
                     //node content
                     String nodeContentClass = selected ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
