@@ -490,6 +490,9 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
         }
     }).mouseout(function(e) {
         $(this).removeClass('ui-state-hover');
+    }).click(function() {
+        _self.button.removeClass('ui-state-focus');
+       _self.hide();
     });
         
     this.cfg.position = {
@@ -499,18 +502,27 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     }
     
     /**
-     * handler for document mousedown to hide the overlay, hides the overlay when target is not button and menu is visible
+     * handler for document mousedown to hide the overlay
      **/
     $(document.body).bind('mousedown.ui-menubutton', function (e) {
+        //do nothing if hidden already
         if(_self.menu.is(":hidden")) {
             return;
         }
         
+        //do nothing if mouse is on button
         var target = $(e.target);
         if(target.is(_self.button)||_self.button.has(target).length > 0) {
             return;
         }
-        else {
+        
+        //hide overlay if mouse is outside of overlay except button
+        var offset = _self.menu.offset();
+        if(e.pageX < offset.left ||
+            e.pageX > offset.left + _self.menu.width() ||
+            e.pageY < offset.top ||
+            e.pageY > offset.top + _self.menu.height()) {
+            
             _self.button.removeClass('ui-state-focus ui-state-hover');
             _self.hide();
         }
@@ -531,10 +543,7 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
 PrimeFaces.widget.MenuButton.prototype.setupDialogSupport = function() {
     var dialog = this.button.parents('.ui-dialog:first');
     
-    if(dialog.length == 1) {
-        var dialogWidget = dialog.data('widget'),
-        _self = this;
-        
+    if(dialog.length == 1) {        
         this.menu.css('position', 'fixed');
     }
 }
