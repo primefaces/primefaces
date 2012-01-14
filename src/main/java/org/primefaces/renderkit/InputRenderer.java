@@ -66,8 +66,8 @@ public abstract class InputRenderer extends CoreRenderer {
 
                         for(Iterator it = map.keySet().iterator(); it.hasNext();) {
                             Object key = it.next();
-
-                            selectItems.add(new SelectItem(map.get(key), String.valueOf(key)));
+                            
+                            selectItems.add(createSelectItem(context, uiSelectItems,  String.valueOf(key), map.get(key)));
                         }
                     }
                     else if(value instanceof Collection) {
@@ -110,6 +110,24 @@ public abstract class InputRenderer extends CoreRenderer {
         }
         else {
             return new SelectItem(object, String.valueOf(object));
+        }
+    }
+    
+    protected SelectItem createSelectItem(FacesContext context, UISelectItems uiSelectItems, String itemLabel, Object itemValue) {
+        String var = (String) uiSelectItems.getAttributes().get("var");
+        
+        if(var != null) {
+            context.getExternalContext().getRequestMap().put(var, itemValue);
+
+            String description = (String) uiSelectItems.getAttributes().get("itemDescription");
+            Boolean disabled = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemDisabled")));
+            Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemLabelEscaped")));
+            Boolean noSelectionOption = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("noSelectionOption")));
+            
+            return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+        }
+        else {
+            return new SelectItem(itemValue, itemLabel);
         }
     }
 
