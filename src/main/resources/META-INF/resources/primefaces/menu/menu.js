@@ -160,16 +160,19 @@ PrimeFaces.widget.Menu = function(cfg) {
             }
         });
             
-        //hide overlay when document is clicked
+        //hide overlay on document mousedown
         $(document.body).bind('mousedown.ui-menu', function (e) {            
             if(_self.jq.is(":hidden")) {
                 return;
             }
             
-            var offset = _self.jq.offset();
-            if(e.target === _self.cfg.trigger.get(0)) {
+            //do nothing if mousedown is on trigger
+            var target = $(e.target);
+            if(target.is(_self.cfg.trigger.get(0))||_self.cfg.trigger.has(target).length > 0) {
                 return;
             }
+            
+            //hide if mouse is outside of overlay except trigger
             var offset = _self.jq.offset();
             if(e.pageX < offset.left ||
                 e.pageX > offset.left + _self.jq.width() ||
@@ -237,6 +240,8 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
         if(_self.cfg.tiered) {
             menuitem.find('.ui-menu-child:visible').hide();
         }
+    }).click(function() {
+        _self.hide();
     });
     
     if(this.cfg.tiered) {
@@ -505,7 +510,6 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
             _self.button.removeClass('ui-state-focus ui-state-hover');
             _self.hide();
         }
-        
     });
     
     //hide overlay on window resize
