@@ -95,7 +95,7 @@ PrimeFaces.widget.Menu = function(cfg) {
             this.jq.appendTo(document.body);
         }
         
-        this.cfg.position = {
+        this.cfg.pos = {
             my: this.cfg.my
             ,at: this.cfg.at
             ,of: this.cfg.trigger
@@ -193,9 +193,13 @@ PrimeFaces.widget.Menu.prototype.bindEvents = function() {
         if(_self.cfg.tiered) {
             menuitem.find('.ui-menu-child:visible').hide();
         }
-    }).click(function() {
-        _self.hide();
     });
+    
+    if(this.cfg.position == 'dynamic') {
+        this.menuitems.click(function() {
+            _self.hide();
+        });  
+    }
     
     if(this.cfg.tiered) {
         this.menuitems.click(function(e) {
@@ -265,9 +269,9 @@ PrimeFaces.widget.Menu.prototype.align = function() {
     win = $(window),
     positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
     
-    this.cfg.position.offset = positionOffset;
+    this.cfg.pos.offset = positionOffset;
     
-    this.jq.css({left:'', top:''}).position(this.cfg.position);
+    this.jq.css({left:'', top:''}).position(this.cfg.pos);
 }
 
 PrimeFaces.widget.Menu.prototype.setupSliding = function() {
