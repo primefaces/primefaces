@@ -71,7 +71,7 @@ PrimeFaces.widget.TreeTable.prototype.bindSelectionEvents = function() {
             .live('click.treetable', function(e) {
                 _self.onRowClick(e, $(this));
                 e.preventDefault();
-            })           
+            })            
             .live('contextmenu.treetable', function(event) {
                _self.onRowClick(event, $(this));
                event.preventDefault();
@@ -99,7 +99,6 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(e, node) {
             if(id == _self.id){
                 node.replaceWith(content);
                 node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
-                node.attr('aria-expanded', true);
             }
             else {
                 PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -130,8 +129,6 @@ PrimeFaces.widget.TreeTable.prototype.collapseNode = function(e, node) {
     node.siblings('[id^="' + node.attr('id') + '"]').remove();
 
     node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
-    
-    node.attr('aria-expanded', false);
     
     if(this.hasBehavior('collapse')) {
         var collapseBehavior = this.cfg.behaviors['collapse'],
@@ -166,12 +163,12 @@ PrimeFaces.widget.TreeTable.prototype.selectNode = function(e, node) {
     
     //unselect previous selection
     if(this.isSingleSelection() || (this.isMultipleSelection() && !e.metaKey)) {
-        node.siblings('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false);
+        node.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
         this.selection = [];
     }
 
     //add to selection
-    node.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+    node.removeClass('ui-state-hover').addClass('ui-state-highlight');
     this.addSelection(nodeKey);
 
     //save state
@@ -186,9 +183,6 @@ PrimeFaces.widget.TreeTable.prototype.unselectNode = function(e, node) {
     if(e.metaKey) {
         //remove visual style
         node.removeClass('ui-state-highlight');
-        
-        //aria
-        node.attr('aria-selected', false);
 
         //remove from selection
         this.removeSelection(nodeKey);

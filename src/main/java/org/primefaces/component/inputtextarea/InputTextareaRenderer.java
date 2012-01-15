@@ -68,6 +68,10 @@ public class InputTextareaRenderer extends InputRenderer {
         
         encodeClientBehaviors(context, inputTextarea);
 
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
+
         writer.write("});");
 
 		endScript(writer);
@@ -105,7 +109,7 @@ public class InputTextareaRenderer extends InputRenderer {
 	}
     
     protected String createStyleClass(InputTextarea inputTextarea) {
-        String defaultClass = InputTextarea.STYLE_CLASS;
+        String defaultClass = themeForms() ? InputTextarea.THEME_INPUT_CLASS : InputTextarea.PLAIN_INPUT_CLASS;
         defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
         

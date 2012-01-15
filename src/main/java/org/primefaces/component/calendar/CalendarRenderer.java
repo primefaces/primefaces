@@ -98,12 +98,14 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if(popup) {
-            String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
-            if(disabled) inputStyleClass = inputStyleClass + " ui-state-disabled";
-            if(!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
-            
-            writer.writeAttribute("class", inputStyleClass, null);
-            
+            if(themeForms()) {
+                String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
+                if(disabled) inputStyleClass = inputStyleClass + " ui-state-disabled";
+                if(!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
+
+                writer.writeAttribute("class", inputStyleClass, null);
+            }
+
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS);
   
             if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
@@ -191,6 +193,10 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         encodeClientBehaviors(context, calendar);
+        
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 
         writer.write("});});");
 

@@ -910,7 +910,9 @@ PrimeFaces.widget.Keyboard = function(cfg) {
     }
 
     //Visuals
-    PrimeFaces.skinInput(this.jq);
+    if(this.cfg.theme != false) {
+        PrimeFaces.skinInput(this.jq);
+    }
     
     //Hide overlay on resize
     var resizeNS = 'resize.' + this.id;

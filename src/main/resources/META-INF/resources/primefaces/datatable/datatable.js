@@ -629,7 +629,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
                 var r = $(item),
                 rkey = _self.getRowMeta(r).key;
 
-                r.removeClass('ui-state-highlight').attr('aria-selected', false);
+                r.removeClass('ui-state-highlight');
                 _self.removeSelection(rkey);
             });
         }
@@ -644,7 +644,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
             var r = $(item),
             rkey = _self.getRowMeta(r).key;
 
-            r.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+            r.removeClass('ui-state-hover').addClass('ui-state-highlight');
             _self.addSelection(rkey);
         });
         
@@ -654,7 +654,7 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
         this.cursor = null;
                 
         //add to selection
-        row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+        row.removeClass('ui-state-hover').addClass('ui-state-highlight');
         this.addSelection(rowMeta.key);
     }
 
@@ -673,7 +673,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRow = function(r, event) {
     }
     else if(event.metaKey) {
         //remove visual style
-        row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        row.removeClass('ui-state-highlight');
 
         //remove from selection
         this.removeSelection(rowMeta.key);
@@ -729,11 +729,11 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithRadio = function(row) {
 
     //clean previous selection
     this.selection = [];
-    row.siblings('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false); 
+    row.siblings('.ui-state-highlight').removeClass('ui-state-highlight'); 
     
     //add to selection
     this.addSelection(rowMeta.key);
-    row.addClass('ui-state-highlight').attr('aria-selected', true); 
+    row.addClass('ui-state-highlight');
 
     //save state
     this.writeSelections();
@@ -750,7 +750,7 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(checkbox,
     
     //update visuals
     checkbox.addClass('ui-state-active').children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
-    row.addClass('ui-state-highlight').attr('aria-selected', true);
+    row.addClass('ui-state-highlight');
     
     //add to selection
     this.addSelection(rowMeta.key);
@@ -769,7 +769,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRowWithCheckbox = function(checkbo
     rowMeta = this.getRowMeta(row);
     
     checkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
-    row.removeClass('ui-state-highlight').attr('aria-selected', false);
+    row.removeClass('ui-state-highlight');
     
     //remove from selection
     this.removeSelection(rowMeta.key);
@@ -781,7 +781,7 @@ PrimeFaces.widget.DataTable.prototype.unselectRowWithCheckbox = function(checkbo
 }
 
 PrimeFaces.widget.DataTable.prototype.unselectAllRows = function() {
-    $(this.tbodyId).children('tr.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false); 
+    $(this.tbodyId).children('tr.ui-state-highlight').removeClass('ui-state-highlight'); 
     this.selection = [];
     this.writeSelections();
 }

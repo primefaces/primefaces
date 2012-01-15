@@ -24,12 +24,13 @@ public class Constants {
     public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 
     public static final String THEME_PARAM = "primefaces.THEME";
+    public static final String THEME_FORMS_PARAM = "primefaces.THEME_FORMS";
     public static final String AUTO_UPDATE = "primefaces.AUTO_UPDATE";
     public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";
     
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
 
-    public final static String VERSION = "3.1-SNAPSHOT";
+    public final static String VERSION = "3.0.1";
     public final static String LIBRARY = "primefaces";
 
     public final static String CUSTOM_EVENT = "CUSTOM_EVENT";

@@ -82,6 +82,10 @@ public class KeyboardRenderer extends InputRenderer {
 		if(keyboard.getCloseLabel() != null) writer.write(",closeText:'" + keyboard.getCloseLabel() + "'");
 
         encodeClientBehaviors(context, keyboard);
+
+        if(!themeForms()) {
+            writer.write(",theme:false");
+        }
 	
 		writer.write("});");
 		
@@ -92,7 +96,7 @@ public class KeyboardRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = keyboard.getClientId(context);
 		String type = keyboard.isPassword() ? "password" : "text";
-        String defaultClass = Keyboard.STYLE_CLASS;
+        String defaultClass = themeForms() ? Keyboard.THEME_INPUT_CLASS : Keyboard.PLAIN_INPUT_CLASS;
         String styleClass = keyboard.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
         String valueToRender = ComponentUtils.getValueToRender(context, keyboard);

@@ -93,6 +93,8 @@
     width: 44px;
 }
 
+.ui-datatable-odd, .ui-datatable-even {}
+
 .ui-datatable-scrollable {}
 
 .ui-datatable-scrollable-body {

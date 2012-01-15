@@ -20,22 +20,19 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
     this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
     this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
     
-    if(this.cfg.multiple) {
-        this.setupMultipleMode();
-    } 
-    else {
-        //visuals
+    //visuals
+    if(this.cfg.theme != false) {
         PrimeFaces.skinInput(this.input);
     }
     
     //core events
     this.bindStaticEvents();
-
+    
     //client Behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
-
+    
     //force selection
     if(this.cfg.forceSelection) {
         this.setupForceSelection();
@@ -60,58 +57,6 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
 }
 
 PrimeFaces.extend(PrimeFaces.widget.AutoComplete, PrimeFaces.widget.BaseWidget);
-
-/**
- * Binds events for multiple selection mode
- */
-PrimeFaces.widget.AutoComplete.prototype.setupMultipleMode = function() {
-    var _self = this;
-    this.multiItemContainer = this.jq.children('ul');
-    this.inputContainer = this.multiItemContainer.children('.ui-autocomplete-input-token');
-
-    //visuals
-    if(this.cfg.theme != false) {
-        //mimic input field
-        this.multiItemContainer.hover(function() {
-                $(this).addClass('ui-state-hover');
-            },
-            function() {
-                $(this).removeClass('ui-state-hover');
-            }
-        ).click(function() {
-            _self.input.focus();
-        });
-
-        //delegate events to container
-        this.input.focus(function() {
-            _self.multiItemContainer.addClass('ui-state-focus');
-        }).blur(function(e) {
-            _self.multiItemContainer.removeClass('ui-state-focus');
-        });
-
-        //remove token
-        $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function() {
-             var currentValues = _self.hinput.val().split(','),
-             item = $(this).parent(),
-             value = '"' + item.data('token-value') + '"';
-             
-             //remove from value holder
-             for(var i=0; i < currentValues.length; i++) {
-                 if(currentValues[i] == value) {
-                     currentValues.remove(i);
-                     break;
-                 }
-             }
-             
-             _self.hinput.val(currentValues.join(','));
-             
-             //remove from dom
-             item.fadeOut('fast', function() {
-                 $(this).remove();
-             });
-        });
-    }
-}
 
 /**
  * Binds events to hide the dialog overlay when inside a dialog
@@ -150,7 +95,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindStaticEvents = function() {
             || key == keyCode.NUMPAD_ENTER) {
             shouldSearch = false;
         } 
-        else if(_self.cfg.pojo && !_self.cfg.multiple) {
+        else if(_self.cfg.pojo) {
             _self.hinput.val($(this).val());
         }
         
@@ -301,28 +246,12 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
     .bind('click', function(event) {
         var item = $(this);
         
-        if(_self.cfg.multiple) {
-            var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
-            itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
-            itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
-                
-            _self.inputContainer.before(itemDisplayMarkup);
-            _self.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-            _self.input.val('').focus();
-            
-            if(_self.hinput.val() == '')
-                _self.hinput.val('"' + item.attr('data-item-value') + '"');
-            else
-                _self.hinput.val(_self.hinput.val() + ',"' + item.attr('data-item-value') + '"');
+        _self.input.val(item.attr('data-item-label'));
+        
+        if(_self.cfg.pojo) {
+            _self.hinput.val(item.attr('data-item-value'));            
         } 
-        else {
-            _self.input.val(item.attr('data-item-label'));
-            
-            if(_self.cfg.pojo) {
-                _self.hinput.val(item.attr('data-item-value'));            
-            }
-        }
-
+        
         _self.invokeItemSelectBehavior(event);
         
         _self.hide();

@@ -106,27 +106,18 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
-        String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
-        String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? TabView.CONTAINER_CLASS : TabView.CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(tabView.getStyle() != null) {
+        
+        if(tabView.getStyle() != null) 
             writer.writeAttribute("style", tabView.getStyle(), "style");
-        }
 
-        if(orientation.equals("bottom")) {
-            encodeContents(context, tabView);
-            encodeHeaders(context, tabView);
-            
-        }
-        else {
-            encodeHeaders(context, tabView);
-            encodeContents(context, tabView);
-        }
+        encodeHeaders(context, tabView);
+        encodeContents(context, tabView);
 
         encodeActiveIndexHolder(context, tabView);
 
@@ -152,13 +143,12 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
-        writer.writeAttribute("role", "tablist", null);
 
         if(var == null) {
             int i = 0;
             for(UIComponent kid : tabView.getChildren()) {
                 if(kid.isRendered() && kid instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) kid, (i == activeIndex));
+                    encodeTabHeader(context, (Tab) kid, (i == activeIndex));
                     i++;
                 }
             }
@@ -174,7 +164,7 @@ public class TabViewRenderer extends CoreRenderer {
             for(int i = 0; i < dataCount; i++) {
                 tabView.setRowIndex(i);
                 
-                encodeTabHeader(context, tabView, tab, (i == activeIndex));
+                encodeTabHeader(context, tab, (i == activeIndex));
             }
             
             tabView.setRowIndex(-1);
@@ -183,10 +173,9 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
     
-    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
+    protected void encodeTabHeader(FacesContext context, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
-        defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
         String styleClass = tab.getTitleStyleClass();
         styleClass = tab.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
@@ -194,8 +183,6 @@ public class TabViewRenderer extends CoreRenderer {
         //header container
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
         if(tab.getTitleStyle() != null)  writer.writeAttribute("style", tab.getTitleStyle(), null);
         if(tab.getTitletip() != null)  writer.writeAttribute("title", tab.getTitletip(), null);
 
@@ -260,8 +247,6 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "tabpanel", null);
-        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
 
         if(dynamic) {
             if(active) {

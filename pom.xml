@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.0.1</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 	
@@ -231,7 +231,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.css</include>
@@ -245,9 +244,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
@@ -289,7 +286,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.js</include>

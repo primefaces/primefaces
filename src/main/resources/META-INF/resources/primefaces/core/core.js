@@ -83,13 +83,6 @@ PrimeFaces = {
             $(this).addClass('ui-state-focus');
         }).blur(function() {
             $(this).removeClass('ui-state-focus');
-        }).keydown(function(e) {
-            if(e.keyCode == $.ui.keyCode.SPACE || e.keyCode == $.ui.keyCode.ENTER || e.keyCode == $.ui.keyCode.NUMPAD_ENTER) {
-                $(this).addClass('ui-state-active');
-            }
-            
-        }).keyup(function() {
-            $(this).removeClass('ui-state-active');
         });
         
         return this;
@@ -545,7 +538,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             }
             
             PrimeFaces.debug('Response completed.');
-            
+
             if(this.queued) {
                 PrimeFaces.ajax.Queue.poll();
             }
@@ -553,7 +546,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     };
 	
     xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
-    
+
     if(cfg.async) {
         $.ajax(xhrOptions);
     }

@@ -35,7 +35,6 @@ public class MenubarRenderer extends BaseMenuRenderer {
         
         writer.write("PrimeFaces.cw('Menubar','" + menubar.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",autoDisplay:" + menubar.isAutoDisplay());
         writer.write("});");
         
 		endScript(writer);        	
