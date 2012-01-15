@@ -245,6 +245,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
