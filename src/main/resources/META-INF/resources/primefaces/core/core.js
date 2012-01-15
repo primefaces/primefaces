@@ -546,7 +546,9 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
             
             PrimeFaces.debug('Response completed.');
             
-            PrimeFaces.ajax.RequestManager.poll();
+            if(this.queued) {
+                PrimeFaces.ajax.Queue.poll();
+            }
         }
     };
 	
@@ -554,8 +556,9 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     
     if(cfg.async) {
         $.ajax(xhrOptions);
-    } else {
-        PrimeFaces.ajax.RequestManager.offer(xhrOptions);
+    }
+    else {
+        PrimeFaces.ajax.Queue.offer(xhrOptions);
     }
 }
 
@@ -574,44 +577,42 @@ PrimeFaces.ajax.AjaxResponse = function(responseXML) {
     PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 }
 
-PrimeFaces.ajax.RequestManager = {
+PrimeFaces.ajax.Queue = {
 		
     requests : new Array(),
-
-    offer : function(req) {
-        this.requests.push(req);
-
+    
+    offer : function(request) {
+        request.queued = true;
+        this.requests.push(request);
+        
         if(this.requests.length == 1) {
-            var retVal = $.ajax(req);
-            if(retVal === false)
-                this.poll();
+            $.ajax(this.peek());
         }
     },
-
+    
     poll : function() {
         if(this.isEmpty()) {
             return null;
         }
- 
-        var processedRequest = this.requests.shift();
-        var nextRequest = this.peek();
-        if(nextRequest != null) {
-            $.ajax(nextRequest);
+        
+        var processed = this.requests.shift(),
+        next = this.peek();
+        
+        if(next != null) {
+            $.ajax(next);
         }
 
-        return processedRequest;
+        return processed;
     },
-
+    
     peek : function() {
         if(this.isEmpty()) {
             return null;
         }
-    
-        var nextRequest = this.requests[0];
-  
-        return nextRequest;
+        
+        return this.requests[0];
     },
-    
+        
     isEmpty : function() {
         return this.requests.length == 0;
     }
