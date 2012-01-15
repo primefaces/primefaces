@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>focus</tag>
+	<tagClass>org.primefaces.component.focus.FocusTag</tagClass>
+	<componentClass>org.primefaces.component.focus.Focus</componentClass>
+	<componentType>org.primefaces.component.Focus</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.FocusRenderer</rendererType>
+	<rendererClass>org.primefaces.component.focus.FocusRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Focus is a handy component that makes it easy to manage the element focus on a JSF page.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Specifies the exact component to set focus.</description>
+		</attribute>
+		<attribute>
+			<name>context</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>The root component to start first input search.</description>
+		</attribute>
+		<attribute>
+			<name>minSeverity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>error</defaultValue>
+            <description>Minimum severity level to be used when finding the first invalid component.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
