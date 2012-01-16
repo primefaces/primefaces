@@ -250,11 +250,6 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     if(this.disabled) {
         this.input.attr("tabindex", -1);
     }
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-    }
     
     //Append panel to body
     $(document.body).children(this.panelId).remove();
@@ -417,9 +412,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item) {
         this.label.val(newOption.text());
         this.value = newOption.val();
         
-        if(this.cfg.onchange) {
-            this.cfg.onchange.call(this);
-        }
+        this.fireChangeEvent();
     }
 
     this.input.focus();
@@ -560,6 +553,18 @@ PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
                                     ,of: this.jq
                                     ,offset : positionOffset
                                 });
+}
+
+PrimeFaces.widget.SelectOneMenu.prototype.fireChangeEvent = function() {
+    if(this.cfg.onchange) {
+        this.cfg.onchange.call(this);
+    }
+    
+    if(this.cfg.behaviors) {
+        var changeBehavior = this.cfg.behaviors['change'];
+        if(changeBehavior)
+            changeBehavior.call(this);
+    }
 }
 
 /**
