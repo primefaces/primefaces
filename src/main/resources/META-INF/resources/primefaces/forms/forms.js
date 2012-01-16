@@ -221,7 +221,6 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.input = $(this.jqId + '_input');
     this.label = this.jq.find('.ui-selectonemenu-label');
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-    this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
     this.tabindex = this.label.attr("tabindex") || 0;
@@ -236,13 +235,23 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
     });
 
-    //populate label and activate selected item
+    //populate label
     var selectedOption = this.options.filter(':selected'),
     label = selectedOption.text();
     this.label.val(label);
-    this.items.eq(selectedOption.index()).addClass('ui-state-active');
+
     this.label.attr('tabindex', -1);
     this.value = selectedOption.val();
+    
+    if(!this.cfg.editable) {
+        this.label.css('cursor', 'pointer').mousedown(function(e) {
+           e.preventDefault(); 
+        });
+        
+        this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+    } else {
+        this.triggers = this.jq.find('.ui-selectonemenu-trigger');
+    }
     
     this.bindEvents();
 

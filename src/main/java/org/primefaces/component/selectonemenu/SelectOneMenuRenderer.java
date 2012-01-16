@@ -219,11 +219,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400)
-            writer.write(",effectDuration:" + menu.getEffectDuration());
-        
-        if(menu.getOnchange() != null) 
-            writer.write(",onchange:function() {" + menu.getOnchange() + ";}");
+        if(menu.getEffectDuration() != 400) writer.write(",effectDuration:" + menu.getEffectDuration());
+        if(menu.getOnchange() != null)  writer.write(",onchange:function() {" + menu.getOnchange() + ";}");
+        if(menu.isEditable())  writer.write(",editable:true");
 
         encodeClientBehaviors(context, menu);
 
