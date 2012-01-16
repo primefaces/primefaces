@@ -87,10 +87,12 @@ PrimeFaces = {
             if(e.keyCode == $.ui.keyCode.SPACE || e.keyCode == $.ui.keyCode.ENTER || e.keyCode == $.ui.keyCode.NUMPAD_ENTER) {
                 $(this).addClass('ui-state-active');
             }
-            
         }).keyup(function() {
             $(this).removeClass('ui-state-active');
         });
+        
+        //aria
+        button.attr('role', 'button').attr('aria-disabled', button.is(':disabled'));
         
         return this;
     },
