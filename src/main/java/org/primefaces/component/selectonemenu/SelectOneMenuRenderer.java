@@ -80,7 +80,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
-        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), null);
         if(menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), null);
@@ -95,18 +94,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", SelectOneMenu.LABEL_CONTAINER_CLASS, null);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
         if(menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
         }
-        
-        writer.startElement("label", null);
-        writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-        writer.write("&nbsp;");     //will be updated by widget on load
-        writer.endElement("label");
-        writer.endElement("a");
+
+        writer.endElement("input");
     }
 
     protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu) throws IOException {
@@ -226,6 +221,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         if(menu.getEffectDuration() != 400)
             writer.write(",effectDuration:" + menu.getEffectDuration());
+        
+        if(menu.getOnchange() != null) 
+            writer.write(",onchange:function() {" + menu.getOnchange() + ";}");
 
         encodeClientBehaviors(context, menu);
 
