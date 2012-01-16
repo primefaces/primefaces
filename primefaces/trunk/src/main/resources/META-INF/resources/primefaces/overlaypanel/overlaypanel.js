@@ -15,6 +15,11 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
         this.jq.appendTo(document.body);
     }
     
+    //ie7 width auto fix
+    if($.browser.msie && parseInt($.browser.version, 10) == 7) {
+        this.jq.width(300);
+    }
+    
     this.jq.data('widget', this);
             
     //dialog support
