@@ -42,6 +42,7 @@ public class PanelGridRenderer extends CoreRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        writer.writeAttribute("role", "grid", null);
                 
         encodeFacet(context, grid, columns, "header", "thead", PanelGrid.HEADER_CLASS);
         encodeFacet(context, grid, columns, "footer", "tfoot", PanelGrid.FOOTER_CLASS);
@@ -59,10 +60,12 @@ public class PanelGridRenderer extends CoreRenderer {
             if((i % columns) == 0) {
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
+                writer.writeAttribute("role", "row", null);
             }
            
             if(child.isRendered()) {
                 writer.startElement("td", null);
+                writer.writeAttribute("role", "gridcell", null);
                 child.encodeAll(context);
                 writer.endElement("td");
                 i++;
@@ -84,9 +87,12 @@ public class PanelGridRenderer extends CoreRenderer {
             writer.startElement(tag, null);
             writer.startElement("tr", null);
             writer.writeAttribute("class", "ui-widget-header", null);
+            writer.writeAttribute("role", "row", null);
+            
             writer.startElement("td", null);
             writer.writeAttribute("class", styleClass, null);
             writer.writeAttribute("colspan", columns, null);
+            writer.writeAttribute("role", "columnheader", null);
 
             component.encodeAll(context);
 
