@@ -87,25 +87,8 @@ PrimeFaces.widget.AutoComplete.prototype.setupMultipleMode = function() {
     });
 
     //remove token
-    $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function() {
-         var currentValues = _self.hinput.val().split(','),
-         item = $(this).parent(),
-         value = '"' + item.data('token-value') + '"';
-
-         //remove from value holder
-         for(var i=0; i < currentValues.length; i++) {
-             if(currentValues[i] == value) {
-                 currentValues.remove(i);
-                 break;
-             }
-         }
-
-         _self.hinput.val(currentValues.join(','));
-
-         //remove from dom
-         item.fadeOut('fast', function() {
-             $(this).remove();
-         });
+    $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function(e) {
+         _self.removeItem(e, $(this).parent());
     });
 }
 
@@ -454,6 +437,46 @@ PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(eve
             itemSelectBehavior.call(this, event);
         }
     }
+}
+
+PrimeFaces.widget.AutoComplete.prototype.invokeItemUnselectBehavior = function(event, token) {
+    if(this.cfg.behaviors) {
+        var itemUnselectBehavior = this.cfg.behaviors['itemUnselect'];
+
+        if(itemUnselectBehavior) {
+            var ext = {
+                params : {}
+            };
+            ext.params[this.id + "_itemUnselect"] = token.data('token-value');
+            
+            itemUnselectBehavior.call(this, event, ext);
+        }
+    }
+}
+
+PrimeFaces.widget.AutoComplete.prototype.removeItem = function(event, item) {
+    var currentValues = this.hinput.val().split(','),
+    value = '"' + item.data('token-value') + '"',
+    _self = this;
+
+    //remove from value holder
+    for(var i=0; i < currentValues.length; i++) {
+        if(currentValues[i] == value) {
+            currentValues.remove(i);
+            break;
+        }
+    }
+
+    this.hinput.val(currentValues.join(','));
+
+    //remove from dom
+    item.fadeOut('fast', function() {
+        var token = $(this);
+        
+        token.remove();
+         
+        _self.invokeItemUnselectBehavior(event, token);
+    });
 }
 
 PrimeFaces.widget.AutoComplete.prototype.setupForceSelection = function() {
