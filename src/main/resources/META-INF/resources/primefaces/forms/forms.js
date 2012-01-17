@@ -424,6 +424,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item) {
         this.fireChangeEvent();
     }
 
+    this.input.focus();
     this.hide();
 }
 
