@@ -98,7 +98,7 @@ PrimeFaces.widget.ThemeSwitcher.prototype.setupDialogSupport = function() {
 }
 
 PrimeFaces.widget.ThemeSwitcher.prototype.initWidths = function() {
-    this.jq.width(this.input.outerWidth(true));
+    this.jq.width(this.input.outerWidth(true) + 5);
     var jqWidth = this.jq.innerWidth();
     
     //align panel and container
