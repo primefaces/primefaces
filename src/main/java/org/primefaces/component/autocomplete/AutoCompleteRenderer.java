@@ -338,7 +338,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             for(Column column : ac.getColums()) {
                 if(column.isRendered()) {
                     writer.startElement("td", null);
-                    if(column.getStyle() != null) writer.writeAttribute("style", item, null);
+                    if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
                     if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
                     
                     column.encodeAll(context);
