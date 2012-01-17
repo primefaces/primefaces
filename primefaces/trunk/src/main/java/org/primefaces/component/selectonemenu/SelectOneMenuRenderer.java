@@ -187,6 +187,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             
             writer.startElement("tr", null);
             writer.writeAttribute("class", SelectOneMenu.ROW_CLASS, null);
+            if(selectItem.getDescription() != null) {
+                writer.writeAttribute("title", selectItem.getDescription(), null);
+            }
 
             if(itemValue instanceof String) {
                 writer.startElement("td", null);
@@ -219,6 +222,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             
             writer.startElement("li", null);
             writer.writeAttribute("class", SelectOneMenu.ITEM_CLASS, null);
+            if(selectItem.getDescription() != null) {
+                writer.writeAttribute("title", selectItem.getDescription(), null);
+            }
             
             if(itemLabel.equals("&nbsp;"))
                 writer.write(itemLabel);
