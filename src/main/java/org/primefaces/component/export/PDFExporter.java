@@ -36,6 +36,8 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.lang.reflect.Array;
+import javax.servlet.http.Cookie;
+import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
 
@@ -228,6 +230,7 @@ public class PDFExporter extends Exporter {
         response.setHeader("Pragma", "public");
         response.setHeader("Content-disposition", "attachment;filename="+ fileName + ".pdf");
         response.setContentLength(baos.size());
+        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
         
         ServletOutputStream out = response.getOutputStream();
         baos.writeTo(out);

@@ -28,9 +28,11 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.Constants;
 
 public class XMLExporter extends Exporter {
 
@@ -43,6 +45,7 @@ public class XMLExporter extends Exporter {
         response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
         response.setHeader("Pragma", "public");
         response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
+        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
     	
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);

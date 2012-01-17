@@ -23,6 +23,7 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -32,6 +33,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.Constants;
 
 public class ExcelExporter extends Exporter {
 
@@ -211,6 +213,7 @@ public class ExcelExporter extends Exporter {
         response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
         response.setHeader("Pragma", "public");
         response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xls");
+        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
 
         generatedExcel.write(response.getOutputStream());
     }
