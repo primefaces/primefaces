@@ -42,6 +42,7 @@ public class CSVExporter extends Exporter {
         response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
         response.setHeader("Pragma", "public");
         response.setHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
+        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
         
 		OutputStream os = response.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os , encodingType);
