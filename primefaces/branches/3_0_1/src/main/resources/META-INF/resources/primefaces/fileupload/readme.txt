@@ -1,1 +1,0 @@
-- Fixed live event binding, line 1884
