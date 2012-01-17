@@ -228,7 +228,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.items = this.itemContainer.find('.ui-selectonemenu-item');
     this.cfg.effectDuration = this.cfg.effectDuration||400;
     var _self = this;
-
+    
     //disable options
     this.options.filter(':disabled').each(function() {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
@@ -241,7 +241,7 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         
         var selectedOption = this.options.filter(':selected');
         this.label.val(selectedOption.text());
-        this.value = selectedOption.val();
+        this.selectedOption = selectedOption;
         
         this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     } 
@@ -385,6 +385,10 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
         if(!_self.disabled){
             _self.jq.removeClass('ui-state-focus');
             _self.menuIcon.removeClass('ui-state-focus');
+            
+            //restore current selection if hidden select is changed via arrow keys
+            _self.options.removeAttr('selected');
+            _self.selectedOption.attr('selected', 'selected');
         }
     });
     
@@ -410,12 +414,12 @@ PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item) {
     this.unhighlightItem(this.items.filter('.ui-state-active'));
     
     //select item if item is not already selected
-    if(newOption.val() != this.value) {
+    if(newOption.val() != this.selectedOption.val()) {
         this.options.removeAttr('selected');
         newOption.attr('selected', 'selected');
 
         this.label.val(newOption.text());
-        this.value = newOption.val();
+        this.selectedOption = newOption;
         
         this.fireChangeEvent();
     }
@@ -437,13 +441,14 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
         if(key != keyCode.UP && key != keyCode.LEFT
                 && key != keyCode.DOWN && key != keyCode.RIGHT
                 && key != keyCode.ENTER && key != keyCode.NUMPAD_ENTER
-                && key != keyCode.ALT && key != keyCode.TAB)
+                && key != keyCode.ALT && key != keyCode.TAB) {
 
-            var selectedOption = _self.options.filter(':selected');
+                var selectedOption = _self.options.filter(':selected');
 
-            if(selectedOption.length > 0) {
-                _self.highlightItem(_self.items.eq(selectedOption.index()));
-            }
+                if(selectedOption.length > 0) {
+                    _self.highlightItem(_self.items.eq(selectedOption.index()));
+                }
+        }
      });
 
     this.input.keydown(function(e) {
@@ -452,7 +457,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
 
         var keyCode = $.ui.keyCode;
 
-        switch(e.which) {
+        switch(e.which) { 
             case keyCode.UP:
             case keyCode.LEFT:
                 var highlightedItem = _self.items.filter('.ui-state-active'),
@@ -517,7 +522,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.alignScroller = function(item) {
 
 PrimeFaces.widget.SelectOneMenu.prototype.show = function() {
     //highlight current
-    this.highlightItem(this.items.eq(this.options.filter(':selected').index()));
+    this.highlightItem(this.items.eq(this.selectedOption.index()));
     
     //calculate panel position
     this.alignPanel();
