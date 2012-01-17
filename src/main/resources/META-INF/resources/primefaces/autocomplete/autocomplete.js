@@ -69,48 +69,44 @@ PrimeFaces.widget.AutoComplete.prototype.setupMultipleMode = function() {
     this.multiItemContainer = this.jq.children('ul');
     this.inputContainer = this.multiItemContainer.children('.ui-autocomplete-input-token');
 
-    //visuals
-    if(this.cfg.theme != false) {
-        //mimic input field
-        this.multiItemContainer.hover(function() {
-                $(this).addClass('ui-state-hover');
-            },
-            function() {
-                $(this).removeClass('ui-state-hover');
-            }
-        ).click(function() {
-            _self.input.focus();
-        });
+    this.multiItemContainer.hover(function() {
+            $(this).addClass('ui-state-hover');
+        },
+        function() {
+            $(this).removeClass('ui-state-hover');
+        }
+    ).click(function() {
+        _self.input.focus();
+    });
 
-        //delegate events to container
-        this.input.focus(function() {
-            _self.multiItemContainer.addClass('ui-state-focus');
-        }).blur(function(e) {
-            _self.multiItemContainer.removeClass('ui-state-focus');
-        });
+    //delegate events to container
+    this.input.focus(function() {
+        _self.multiItemContainer.addClass('ui-state-focus');
+    }).blur(function(e) {
+        _self.multiItemContainer.removeClass('ui-state-focus');
+    });
 
-        //remove token
-        $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function() {
-             var currentValues = _self.hinput.val().split(','),
-             item = $(this).parent(),
-             value = '"' + item.data('token-value') + '"';
-             
-             //remove from value holder
-             for(var i=0; i < currentValues.length; i++) {
-                 if(currentValues[i] == value) {
-                     currentValues.remove(i);
-                     break;
-                 }
+    //remove token
+    $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function() {
+         var currentValues = _self.hinput.val().split(','),
+         item = $(this).parent(),
+         value = '"' + item.data('token-value') + '"';
+
+         //remove from value holder
+         for(var i=0; i < currentValues.length; i++) {
+             if(currentValues[i] == value) {
+                 currentValues.remove(i);
+                 break;
              }
-             
-             _self.hinput.val(currentValues.join(','));
-             
-             //remove from dom
-             item.fadeOut('fast', function() {
-                 $(this).remove();
-             });
-        });
-    }
+         }
+
+         _self.hinput.val(currentValues.join(','));
+
+         //remove from dom
+         item.fadeOut('fast', function() {
+             $(this).remove();
+         });
+    });
 }
 
 /**
@@ -506,12 +502,20 @@ PrimeFaces.widget.AutoComplete.prototype.activate = function() {
 PrimeFaces.widget.AutoComplete.prototype.alignPanel = function() {
     var fixedPosition = this.panel.css('position') == 'fixed',
     win = $(window),
-    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+    positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
+    panelWidth = null;
+    
+    if(this.cfg.multiple) {
+        panelWidth = this.multiItemContainer.innerWidth() - (this.input.position().left - this.multiItemContainer.position().left);
+    }
+    else {
+        panelWidth = this.input.innerWidth();
+    }
     
     this.panel.css({
                     left:'',
                     top:'',
-                    'width': this.input.innerWidth() + 'px'
+                    width: panelWidth
               })
               .position({
                 my: 'left top'
