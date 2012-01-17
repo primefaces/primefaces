@@ -424,7 +424,6 @@ PrimeFaces.widget.SelectOneMenu.prototype.selectItem = function(item) {
         this.fireChangeEvent();
     }
 
-    this.input.focus();
     this.hide();
 }
 
@@ -463,8 +462,8 @@ PrimeFaces.widget.SelectOneMenu.prototype.bindKeyEvents = function() {
                 var highlightedItem = _self.items.filter('.ui-state-active'),
                 prev = highlightedItem.prevAll(':not(.ui-state-disabled):first');
                 
-                if(prev.length == 1 && _self.panel.is(':visible')) {
-                   _self.highlightItem(prev);
+                if(prev.length == 1) {
+                    _self.highlightItem(prev);
                 }
                 
                 e.preventDefault();
