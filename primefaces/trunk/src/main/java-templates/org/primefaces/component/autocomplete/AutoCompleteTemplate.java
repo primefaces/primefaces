@@ -1,5 +1,6 @@
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
@@ -16,8 +17,11 @@ import java.util.List;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.el.ValueExpression;
+import javax.faces.convert.Converter;
+import javax.faces.component.behavior.Behavior;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
     
@@ -45,11 +49,27 @@ import javax.faces.event.PhaseId;
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
-        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
         
         if(eventName != null && eventName.equals("itemSelect") && event instanceof AjaxBehaviorEvent) {
             customEvents.put("itemSelect", (AjaxBehaviorEvent) event);
-        } else {
+        } 
+        else if(eventName != null && eventName.equals("itemUnselect") && event instanceof AjaxBehaviorEvent) {
+            String unselectedItemValue = params.get(this.getClientId(context) + "_itemUnselect");
+            Object itemValue = null;
+            Converter converter = getConverter();
+            if(converter == null)
+                itemValue = unselectedItemValue;
+            else 
+                itemValue = converter.getAsObject(context, this, unselectedItemValue);
+
+            UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior)((AjaxBehaviorEvent) event).getBehavior(), itemValue);
+            unselectEvent.setPhaseId(((AjaxBehaviorEvent) event).getPhaseId());
+
+            super.queueEvent(unselectEvent);
+        } 
+        else {
             super.queueEvent(event);
         }
     }
@@ -104,4 +124,23 @@ import javax.faces.event.PhaseId;
 
     public List getSuggestions() {
         return this.suggestions;
+    }
+
+    private Converter getConverter(FacesContext context) {
+        Converter converter = this.getConverter();
+
+        if(converter != null) {
+            return converter;
+        } else {
+            ValueExpression ve = this.getValueExpression("value");
+
+            if(ve != null) {
+                Class<?> valueType = ve.getType(context.getELContext());
+                
+                if(valueType != null)
+                    return context.getApplication().createConverter(valueType);
+            }
+        }
+
+        return null;
     }
