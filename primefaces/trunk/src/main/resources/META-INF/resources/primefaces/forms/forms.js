@@ -223,7 +223,6 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
     this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
-    this.tabindex = this.label.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
     this.options = this.input.children('option');
     this.items = this.itemContainer.find('.ui-selectonemenu-item');
@@ -235,21 +234,18 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
     });
 
-    //populate label
-    var selectedOption = this.options.filter(':selected'),
-    label = selectedOption.text();
-    this.label.val(label);
-
-    this.label.attr('tabindex', -1);
-    this.value = selectedOption.val();
-    
     if(!this.cfg.editable) {
         this.label.css('cursor', 'pointer').mousedown(function(e) {
            e.preventDefault(); 
         });
         
+        var selectedOption = this.options.filter(':selected');
+        this.label.val(selectedOption.text());
+        this.value = selectedOption.val();
+        
         this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-    } else {
+    } 
+    else {
         this.triggers = this.jq.find('.ui-selectonemenu-trigger');
     }
     

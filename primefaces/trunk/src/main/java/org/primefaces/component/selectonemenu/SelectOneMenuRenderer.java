@@ -17,6 +17,7 @@ package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -26,9 +27,29 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        if(!shouldDecode(component)) {
+            return;
+        }
+        
+        SelectOneMenu menu = (SelectOneMenu) component;
+        if(menu.isEditable()) {
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            
+            decodeBehaviors(context, menu);
+            
+            menu.setSubmittedValue(params.get(menu.getClientId(context) + "_editableInput"));
+        }
+        else {
+            super.decode(context, component);
+        }
+    }
+    
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Menu").getConvertedValue(context, component, submittedValue);
@@ -83,7 +104,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), null);
         if(menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), null);
-
+        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
@@ -93,13 +115,17 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String valueToRender = ComponentUtils.getValueToRender(context, menu);
         
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("name", menu.getClientId() + "_editableInput", null);
         writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-        if(menu.getTabindex() != null) {
-            writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        }
+        writer.writeAttribute("tabindex", -1, null);
+        
+        if(valueToRender != null) {
+			writer.writeAttribute("value", valueToRender , null);
+		}
 
         writer.endElement("input");
     }

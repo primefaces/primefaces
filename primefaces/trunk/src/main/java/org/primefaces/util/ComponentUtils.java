@@ -20,21 +20,23 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.ValueHolder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.BeanValidator;
 import org.primefaces.component.api.Widget;
 
 public class ComponentUtils {
@@ -340,5 +342,41 @@ public class ComponentUtils {
                 return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
             }
         }
+    }
+    
+    public static boolean validateEmptyFields(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
+
+        if(null == value) {
+            value = (String) externalContext.getApplicationMap().get(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
+        }
+
+        if(value == null || value.equals("auto")) {
+            return isBeansValidationAvailable(context);
+        }
+        else {
+            return Boolean.valueOf(value);
+        }
+    }
+    
+    public static boolean isBeansValidationAvailable(FacesContext context) {
+        boolean result = false;
+        String beanValidationAvailableKey = "javax.faces.private.BEANS_VALIDATION_AVAILABLE";
+
+        Map<String,Object> appMap = context.getExternalContext().getApplicationMap();
+        
+        if (appMap.containsKey(beanValidationAvailableKey)) {
+            result = (Boolean) appMap.get(beanValidationAvailableKey);
+        } else {
+            try {
+                new BeanValidator();
+                appMap.put(beanValidationAvailableKey, result = true);
+            } catch (Throwable t) {
+                appMap.put(beanValidationAvailableKey, Boolean.FALSE);
+            }
+        }
+
+        return result;
     }
 }
