@@ -1,5 +1,5 @@
 /**
- * PrimeFaces ThemeSwitcher Widget
+ * PrimeFaces SelectOneMenu Widget
  */
 PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     this.cfg = cfg;
@@ -10,39 +10,39 @@ PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     this.input = $(this.jqId + '_input');
     this.label = this.jq.find('.ui-selectonemenu-label');
     this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-    this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     this.panel = this.jq.children(this.panelId);
     this.disabled = this.jq.hasClass('ui-state-disabled');
-    this.tabindex = this.label.attr("tabindex") || 0;
     this.itemContainer = this.panel.children('.ui-selectonemenu-items');
     this.options = this.input.children('option');
     this.items = this.itemContainer.find('.ui-selectonemenu-item');
     this.cfg.effectDuration = this.cfg.effectDuration||400;
     var _self = this;
-
+    
     //disable options
     this.options.filter(':disabled').each(function() {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
     });
 
-    //populate label and activate selected item
-    var selectedOption = this.options.filter(':selected'),
-    label = selectedOption.text();
-    this.label.val(label);
-    this.items.eq(selectedOption.index()).addClass('ui-state-active');
-    this.label.attr('tabindex', -1);
-    this.value = selectedOption.val();
+    if(!this.cfg.editable) {
+        this.label.css('cursor', 'pointer').mousedown(function(e) {
+           e.preventDefault(); 
+        });
+        
+        var selectedOption = this.options.filter(':selected');
+        this.label.val(selectedOption.text());
+        this.selectedOption = selectedOption;
+        
+        this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+    } 
+    else {
+        this.triggers = this.jq.find('.ui-selectonemenu-trigger');
+    }
     
     this.bindEvents();
 
     //disable tabbing if disabled
     if(this.disabled) {
         this.input.attr("tabindex", -1);
-    }
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
     
     //Append panel to body
@@ -174,6 +174,10 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
         if(!_self.disabled){
             _self.jq.removeClass('ui-state-focus');
             _self.menuIcon.removeClass('ui-state-focus');
+            
+            //restore current selection if hidden select is changed via arrow keys
+            _self.options.removeAttr('selected');
+            _self.selectedOption.attr('selected', 'selected');
         }
     });
     
@@ -199,13 +203,13 @@ PrimeFaces.widget.ThemeSwitcher.prototype.selectItem = function(item) {
     this.unhighlightItem(this.items.filter('.ui-state-active'));
     
     //select item if item is not already selected
-    if(newOption.val() != this.value) {
+    if(newOption.val() != this.selectedOption.val()) {
         this.options.removeAttr('selected');
         newOption.attr('selected', 'selected');
 
         this.label.val(newOption.text());
-        this.value = newOption.val();
-                
+        this.selectedOption = newOption;
+        
         //update theme
         PrimeFaces.changeTheme(newOption.attr('value'));
         
@@ -229,13 +233,14 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindKeyEvents = function() {
         if(key != keyCode.UP && key != keyCode.LEFT
                 && key != keyCode.DOWN && key != keyCode.RIGHT
                 && key != keyCode.ENTER && key != keyCode.NUMPAD_ENTER
-                && key != keyCode.ALT && key != keyCode.TAB)
+                && key != keyCode.ALT && key != keyCode.TAB) {
 
-            var selectedOption = _self.options.filter(':selected');
+                var selectedOption = _self.options.filter(':selected');
 
-            if(selectedOption.length > 0) {
-                _self.highlightItem(_self.items.eq(selectedOption.index()));
-            }
+                if(selectedOption.length > 0) {
+                    _self.highlightItem(_self.items.eq(selectedOption.index()));
+                }
+        }
      });
 
     this.input.keydown(function(e) {
@@ -244,14 +249,14 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindKeyEvents = function() {
 
         var keyCode = $.ui.keyCode;
 
-        switch(e.which) {
+        switch(e.which) { 
             case keyCode.UP:
             case keyCode.LEFT:
                 var highlightedItem = _self.items.filter('.ui-state-active'),
                 prev = highlightedItem.prevAll(':not(.ui-state-disabled):first');
                 
-                if(prev.length == 1 && _self.panel.is(':visible')) {
-                   _self.highlightItem(prev);
+                if(prev.length == 1) {
+                    _self.highlightItem(prev);
                 }
                 
                 e.preventDefault();
@@ -309,7 +314,7 @@ PrimeFaces.widget.ThemeSwitcher.prototype.alignScroller = function(item) {
 
 PrimeFaces.widget.ThemeSwitcher.prototype.show = function() {
     //highlight current
-    this.highlightItem(this.items.eq(this.options.filter(':selected').index()));
+    this.highlightItem(this.items.eq(this.selectedOption.index()));
     
     //calculate panel position
     this.alignPanel();
