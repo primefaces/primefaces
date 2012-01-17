@@ -1,5 +1,5 @@
 /**
- * PrimeFaces SelectOneMenu Widget
+ * PrimeFaces ThemeSwitcher Widget
  */
 PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     this.cfg = cfg;
@@ -22,15 +22,17 @@ PrimeFaces.widget.ThemeSwitcher = function(cfg) {
     this.options.filter(':disabled').each(function() {
         _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
     });
+    
+    //set initial selected option
+    var selectedOption = this.options.filter(':selected');
+    this.selectedOption = selectedOption;
 
     if(!this.cfg.editable) {
         this.label.css('cursor', 'pointer').mousedown(function(e) {
            e.preventDefault(); 
         });
         
-        var selectedOption = this.options.filter(':selected');
         this.label.val(selectedOption.text());
-        this.selectedOption = selectedOption;
         
         this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     } 
