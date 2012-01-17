@@ -139,8 +139,9 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
             else
                 _self.hide();
         }
-        
-        _self.triggers.removeClass('ui-state-hover').addClass('ui-state-focus');
+       
+        _self.jq.removeClass('ui-state-hover');
+        _self.menuIcon.removeClass('ui-state-hover'); 
         _self.input.focus();
         e.preventDefault();
     });
