@@ -195,7 +195,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.startElement("span", menu);
         writer.writeAttribute("class", Menu.BACKWARD_ICON_CLASS, null);
         writer.endElement("span");
-        writer.write("back");
+        writer.write(menu.getBackLabel());
         writer.endElement("div");
     }
 }
