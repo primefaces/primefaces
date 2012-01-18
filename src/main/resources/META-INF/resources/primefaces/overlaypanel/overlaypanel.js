@@ -9,6 +9,9 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
     this.onshowHandlers = [];
     
+    this.cfg.my = this.cfg.my||'left top';
+    this.cfg.at = this.cfg.at||'left bottom';
+    
     this.bindEvents();
     
     if(this.cfg.appendToBody) {
@@ -96,8 +99,8 @@ PrimeFaces.widget.OverlayPanel.prototype.align = function() {
     
     this.jq.css({'left':'', 'top':'', 'z-Index': ++PrimeFaces.zindex})
             .position({
-                my: 'left top'
-                ,at: 'left bottom'
+                my: this.cfg.my
+                ,at: this.cfg.at
                 ,of: this.target
                 ,offset: positionOffset
             });
