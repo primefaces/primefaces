@@ -12,11 +12,14 @@ PrimeFaces.widget.Spinner = function(cfg) {
     this.decimalSeparator = this.findDecimalSeparator();
     this.decimalCount = this.findDecimalCount();
     var _self = this;
-    
+        
     //grab value from input
     this.refreshValue();
+    
+    //aria
+    this.addARIA();
 
-    if(this.cfg.disabled) {
+    if(this.input.prop('disabled')||this.input.prop('readonly')) {
         return;
     }
 
@@ -93,6 +96,7 @@ PrimeFaces.widget.Spinner.prototype.spin = function(step) {
 
     this.input.val(this.format(newValue));
     this.value = newValue;
+    this.input.attr('aria-valuenow', newValue);
 
     this.input.change();
 }
@@ -169,4 +173,22 @@ PrimeFaces.widget.Spinner.prototype.format = function(value) {
         value = value + this.cfg.suffix;
 
     return value;
+}
+
+PrimeFaces.widget.Spinner.prototype.addARIA = function() {
+    this.input.attr('role', 'spinner');
+    this.input.attr('aria-multiline', false);
+    this.input.attr('aria-valuenow', this.value);
+    
+    if(this.cfg.min != undefined) 
+        this.input.attr('aria-valuemin', this.cfg.min);
+    
+    if(this.cfg.max != undefined) 
+        this.input.attr('aria-valuemax', this.cfg.max);
+    
+    if(this.input.prop('disabled'))
+        this.input.attr('aria-disabled', true);
+    
+    if(this.input.prop('readonly'))
+        this.input.attr('aria-readonly', true);
 }

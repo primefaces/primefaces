@@ -82,7 +82,6 @@ public class SpinnerRenderer extends InputRenderer {
 		if(spinner.getMax() != Double.MAX_VALUE) writer.write(",max:" + spinner.getMax());
 		if(spinner.getPrefix() != null) writer.write(",prefix:'" + spinner.getPrefix() + "'");
 		if(spinner.getSuffix() != null) writer.write(",suffix:'" + spinner.getSuffix() + "'");
-        if(spinner.isDisabled() || spinner.isReadonly()) writer.write(",disabled:true");
 
         encodeClientBehaviors(context, spinner);
  		
@@ -96,7 +95,8 @@ public class SpinnerRenderer extends InputRenderer {
 		String clientId = spinner.getClientId(context);
         String styleClass = spinner.getStyleClass();
         styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
-        boolean disabled = spinner.isDisabled() || spinner.isReadonly();
+        styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
+        styleClass = !spinner.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -107,8 +107,8 @@ public class SpinnerRenderer extends InputRenderer {
 
 		encodeInput(context, spinner);
 
-        encodeButton(context, Spinner.UP_BUTTON_CLASS, Spinner.UP_ICON_CLASS, disabled);
-        encodeButton(context, Spinner.DOWN_BUTTON_CLASS, Spinner.DOWN_ICON_CLASS, disabled);
+        encodeButton(context, Spinner.UP_BUTTON_CLASS, Spinner.UP_ICON_CLASS);
+        encodeButton(context, Spinner.DOWN_BUTTON_CLASS, Spinner.DOWN_ICON_CLASS);
 
         writer.endElement("span");
 	}
@@ -140,9 +140,8 @@ public class SpinnerRenderer extends InputRenderer {
 		writer.endElement("input");
     }
 
-    protected void encodeButton(FacesContext context, String styleClass, String iconClass, boolean disabled) throws IOException {
+    protected void encodeButton(FacesContext context, String styleClass, String iconClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         writer.startElement("a", null);
         writer.writeAttribute("class", styleClass, null);
