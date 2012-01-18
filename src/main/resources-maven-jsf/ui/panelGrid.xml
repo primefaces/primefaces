@@ -21,7 +21,7 @@
 			<name>columns</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>1</defaultValue>
+            <defaultValue>0</defaultValue>
             <description>Number of columns of the table.</description>
 		</attribute>
         <attribute>
