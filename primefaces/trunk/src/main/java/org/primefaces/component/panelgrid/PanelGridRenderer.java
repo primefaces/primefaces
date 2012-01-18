@@ -19,6 +19,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class PanelGridRenderer extends CoreRenderer {
@@ -50,10 +52,23 @@ public class PanelGridRenderer extends CoreRenderer {
     
     public void encodeBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String columnClassesValue = grid.getColumnClasses();
-        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
         
         writer.startElement("tbody", grid);
+        
+        if(grid.getColumns() > 0) {
+            encodeDynamicBody(context, grid, grid.getColumns());
+        } 
+        else {
+            encodeStaticBody(context, grid);
+        }
+
+        writer.endElement("tbody");
+    }
+    
+    public void encodeDynamicBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String columnClassesValue = grid.getColumnClasses();
+        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
         
         int i = 0;
         for(UIComponent child : grid.getChildren()) {
@@ -83,8 +98,44 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.endElement("tr");
             }
         }
+    }
+    
+    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
-        writer.endElement("tbody");
+        for(UIComponent child : grid.getChildren()) {
+            if(child instanceof Row && child.isRendered()) {
+                encodeRow(context, (Row) child);
+            }
+        }
+    }
+    
+    public void encodeRow(FacesContext context, Row row) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("tr", null);
+        writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
+        writer.writeAttribute("role", "row", null);
+        
+        for(UIComponent child : row.getChildren()) {
+            if(child instanceof Column && child.isRendered()) {
+                Column column = (Column) child;
+                
+                writer.startElement("td", null);
+                writer.writeAttribute("role", "gridcell", null);
+                
+                if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+                if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+                if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+                
+                column.encodeAll(context);
+                
+                writer.endElement("td");
+            }
+        }
+        
+        writer.endElement("tr");
     }
     
     public void encodeFacet(FacesContext context, PanelGrid grid, int columns, String facet, String tag, String styleClass) throws IOException {
