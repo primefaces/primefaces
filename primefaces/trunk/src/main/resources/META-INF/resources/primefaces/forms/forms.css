@@ -100,8 +100,6 @@
 
 .ui-selectonemenu .ui-selectonemenu-label  {
     display: block;
-    padding: 3px 26px 3px 5px;
-    width: auto;
     border: none;
     white-space: nowrap;
     overflow: hidden;
