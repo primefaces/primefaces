@@ -45,7 +45,7 @@
                     left: -99999,
                     position: 'absolute',
                     top: -99999
-                }).css(properties).attr('tabIndex', -1).insertBefore(textarea);
+                }).css(properties).attr('tabIndex', -1).insertAfter(textarea);
             })();
 
             /**
