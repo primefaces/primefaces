@@ -32,10 +32,7 @@ public class PanelGridRenderer extends CoreRenderer {
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass();
         styleClass = styleClass == null ? PanelGrid.CONTAINER_CLASS : PanelGrid.CONTAINER_CLASS + " " + styleClass;
-        
-        UIComponent header = grid.getFacet("header");
-        UIComponent footer = grid.getFacet("footer");
-        
+                
         writer.startElement("table", grid);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -53,11 +50,16 @@ public class PanelGridRenderer extends CoreRenderer {
     
     public void encodeBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String columnClassesValue = grid.getColumnClasses();
+        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
+        
         writer.startElement("tbody", grid);
         
         int i = 0;
         for(UIComponent child : grid.getChildren()) {
-            if((i % columns) == 0) {
+            int colMod = i % columns;
+            
+            if(colMod == 0) {
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
                 writer.writeAttribute("role", "row", null);
@@ -66,12 +68,18 @@ public class PanelGridRenderer extends CoreRenderer {
             if(child.isRendered()) {
                 writer.startElement("td", null);
                 writer.writeAttribute("role", "gridcell", null);
+                if(colMod < columnClasses.length) {
+                    writer.writeAttribute("class", columnClasses[colMod].trim(), null);
+                }
+                
+                
                 child.encodeAll(context);
                 writer.endElement("td");
                 i++;
+                colMod = i % columns;
             }
             
-            if((i % columns) == 0) {
+            if(colMod == 0) {
                 writer.endElement("tr");
             }
         }
