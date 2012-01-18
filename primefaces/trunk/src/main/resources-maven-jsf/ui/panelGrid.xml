@@ -36,6 +36,12 @@
 			<type>java.lang.String</type>
             <description>Style class of the table.</description>
 		</attribute>
+        <attribute>
+			<name>columnClasses</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Comma separated list of column style classes.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
