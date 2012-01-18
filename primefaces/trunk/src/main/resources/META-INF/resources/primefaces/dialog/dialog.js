@@ -1,4 +1,3 @@
-            //<![CDATA[
 /**
  * PrimeFaces Dialog Widget
  */    
