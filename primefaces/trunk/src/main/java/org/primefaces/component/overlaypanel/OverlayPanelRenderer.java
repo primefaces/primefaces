@@ -72,6 +72,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
         if(panel.getHideEffect() != null) writer.write(",hideEffect:'" + panel.getHideEffect() + "'");
         if(panel.getOnShow() != null) writer.write(",onShow:function(){" + panel.getOnShow() + "})");
         if(panel.getOnHide() != null) writer.write(",onHide:function(){" + panel.getOnHide() + "})");
+        if(panel.getMy() != null) writer.write(",my:'" + panel.getMy() + "'");
+        if(panel.getAt() != null) writer.write(",at:'" + panel.getAt() + "'");
         if(panel.isAppendToBody()) writer.write(",appendToBody:true");
         
         writer.write("});});");
