@@ -36,7 +36,6 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 public abstract class CoreRenderer extends Renderer {
 	
