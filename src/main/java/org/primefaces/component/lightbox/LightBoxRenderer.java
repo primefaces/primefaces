@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,21 +42,7 @@ public class LightBoxRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		LightBox lb = (LightBox) component;
-        UIComponent inline = lb.getFacet("inline");
 
-		if(inline != null) {
-			writer.startElement("div", null);
-			writer.writeAttribute("style", "display:none", null);
-			
-			writer.startElement("div", null);
-			writer.writeAttribute("id", lb.getClientId(context) + "_inline", null);
-			
-			inline.encodeAll(context);
-			
-			writer.endElement("div");
-			writer.endElement("div");
-		}
-		
 		writer.endElement("div");
 
         encodeScript(context, component);
@@ -68,34 +54,10 @@ public class LightBoxRenderer extends CoreRenderer {
 		String clientId = lb.getClientId(context);
         
         startScript(writer, clientId);
-        
+        writer.write("$(function() {");
         writer.write("PrimeFaces.cw('LightBox','" + lb.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-
-		writer.write(",transition:'" + lb.getTransition() + "'");
-
-        if(lb.getSpeed() != 350) writer.write(",speed:" + lb.getSpeed());
-		if(lb.getWidth() != null) writer.write(",width:'" + lb.getWidth() + "'");
-		if(lb.getHeight() != null) writer.write(",height:'" + lb.getHeight() + "'");
-		if(lb.isIframe()) writer.write(",iframe:true");
-		if(lb.getFacet("inline") != null) {
-			writer.write(",inline:true");
-		}
-		if(lb.getOpacity() != 0.85) writer.write(",opacity:" + lb.getOpacity());
-		if(lb.isVisible()) writer.write(",open:true");
-		if(lb.isSlideshow()) {
-			writer.write(",slideshow:true");
-			writer.write(",slideshowSpeed:" + lb.getSlideshowSpeed());
-
-			if(lb.getSlideshowStartText() != null) writer.write(",slideshowStart:'" + lb.getSlideshowStartText() + "'");
-			if(lb.getSlideshowStopText() != null) writer.write(",slideshowStop:'" + lb.getSlideshowStopText() + "'");
-			if(!lb.isSlideshowAuto()) writer.write(",slideshowAuto:false");
-		}
-		if(!lb.isOverlayClose()) writer.write(",overlayClose:false");
-		if(lb.getCurrentTemplate() != null) writer.write(",current:'" + lb.getCurrentTemplate() + "'");
-		if(lb.isGroup()) writer.write(",rel:'" + clientId + "'");
-
-		writer.write("},'lightbox');");
+		writer.write("});});");
 
 		endScript(writer);
     }
