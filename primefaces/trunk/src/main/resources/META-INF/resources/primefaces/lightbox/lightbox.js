@@ -18,8 +18,12 @@ PrimeFaces.widget.LightBox = function(cfg) {
         this.setupIframe();
     }
     
+    
     this.bindCommonEvents();
         
+    if(this.cfg.visible) {
+        this.links.eq(0).click();
+    }
     
     this.postConstruct();
 }
@@ -171,7 +175,7 @@ PrimeFaces.widget.LightBox.prototype.bindCommonEvents = function() {
             e.pageX > offset.left + _self.panel.width() ||
             e.pageY < offset.top ||
             e.pageY > offset.top + _self.panel.height()) {
-            
+
             _self.hide();
         }
     });
