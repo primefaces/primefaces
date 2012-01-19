@@ -74,6 +74,7 @@ public class LightBoxRenderer extends CoreRenderer {
         writer.write(",mode:'" + mode + "'");
         if(lb.getWidth() != null) writer.write(",width:'" + lb.getWidth() + "'");
         if(lb.getHeight() != null) writer.write(",height:'" + lb.getHeight() + "'");
+        if(lb.isVisible()) writer.write(",visible:true");
         
 		writer.write("});});");
 
