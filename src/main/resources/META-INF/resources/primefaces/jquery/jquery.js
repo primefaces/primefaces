@@ -18540,24 +18540,6 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 };
 
 //#######################################################################################
-// override parseDate() because UI 1.8.14 throws an error about "Extra characters"
-// An option in datapicker to ignore extra format characters would be nicer.
-//#######################################################################################
-$.datepicker._base_parseDate = $.datepicker.parseDate;
-$.datepicker.parseDate = function(format, value, settings) {
-	var date;
-	try {
-		date = this._base_parseDate(format, value, settings);
-	} catch (err) {
-		// Hack!  The error message ends with a colon, a space, and
-		// the "extra" characters.  We rely on that instead of
-		// attempting to perfectly reproduce the parsing algorithm.
-		date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
-	}
-	return date;
-};
-
-//#######################################################################################
 // override options setter to add time to maxDate(Time) and minDate(Time)
 //#######################################################################################
 $.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
