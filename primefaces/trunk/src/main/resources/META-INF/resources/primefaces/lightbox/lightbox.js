@@ -23,7 +23,9 @@ PrimeFaces.widget.LightBox.prototype.createPanel = function() {
     dom += '<a class="ui-state-default ui-lightbox-nav-left ui-corner-right ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-w">go</span></a>';
     dom += '<div class="ui-lightbox-content ui-corner-all"><img class="ui-helper-hidden"></img></div>';
     dom += '<a class="ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-e">go</span></a>';
-    dom += '</div></div>';
+    dom += '</div>';
+    dom += '<div class="ui-lightbox-caption ui-widget-header ui-helper-hidden"></div>';
+    dom += '</div>';
     
     $(document.body).append(dom);
     this.panel = $(this.jqId + '_panel');
@@ -31,6 +33,7 @@ PrimeFaces.widget.LightBox.prototype.createPanel = function() {
     this.content = this.contentWrapper.children('.ui-lightbox-content');
     this.imageDisplay = this.content.children('img');
     this.navigators = this.contentWrapper.children('a');
+    this.caption = this.panel.children('.ui-lightbox-caption');
 }
 
 PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
@@ -44,6 +47,7 @@ PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
         //show image
         _self.imageDisplay.fadeIn();
         _self.showNavigators();
+        _self.caption.slideDown();
     });
     
     this.navigators.mouseover(function() {
@@ -79,11 +83,18 @@ PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
             _self.imageDisplay.fadeOut(function() {
                 _self.content.addClass('ui-lightbox-loading');
             });
+            
+            _self.caption.slideUp();
         }
         
         setTimeout(function() {
             _self.imageDisplay.attr('src', link.attr('href'));
             _self.current = link.index();
+            
+            var title = link.attr('title');
+            if(title) {
+                _self.caption.html(title);
+            }
         }, 1000);
         
 
@@ -121,6 +132,7 @@ PrimeFaces.widget.LightBox.prototype.hide = function() {
     this.disableModality();
     this.imageDisplay.hide();
     this.hideNavigators();
+    this.caption.hide();
 }
 
 PrimeFaces.widget.LightBox.prototype.center = function() {    

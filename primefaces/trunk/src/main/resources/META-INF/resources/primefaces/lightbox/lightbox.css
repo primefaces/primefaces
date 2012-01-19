@@ -29,3 +29,7 @@
 .ui-lightbox-loading {
     background: url("#{resource['primefaces:lightbox/images/loading.gif']}") center center no-repeat;
 }
+
+.ui-lightbox-caption {
+    padding: 0.5em 1em 0.3em;
+}
