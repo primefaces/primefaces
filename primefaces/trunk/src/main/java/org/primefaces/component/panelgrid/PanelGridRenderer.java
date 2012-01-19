@@ -122,7 +122,7 @@ public class PanelGridRenderer extends CoreRenderer {
             if(child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
                 String styleClass = column.getStyleClass();
-                styleClass = columnClass == null ? styleClass : (styleClass + " " + columnClass);
+                styleClass = styleClass == null ? columnClass : columnClass == null ? styleClass : (styleClass + " " + columnClass);
                 
                 writer.startElement("td", null);
                 writer.writeAttribute("role", columnRole, null);
@@ -147,15 +147,14 @@ public class PanelGridRenderer extends CoreRenderer {
         if(component != null && component.isRendered()) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(tag, null);
+            writer.writeAttribute("class", styleClass, null);
             
-
             if(columns > 0) {
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", "ui-widget-header", null);
                 writer.writeAttribute("role", "row", null);
 
                 writer.startElement("td", null);
-                writer.writeAttribute("class", styleClass, null);
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
                 
@@ -166,12 +165,12 @@ public class PanelGridRenderer extends CoreRenderer {
             }
             else {
                 if(component instanceof Row && component.isRendered()) {
-                    encodeRow(context, (Row) component, "columnheader", "ui-widget-header", styleClass);
+                    encodeRow(context, (Row) component, "columnheader", "ui-widget-header", "ui-widget-header");
                 }
                 else if(component instanceof UIPanel && component.isRendered()){
                     for (UIComponent row : component.getChildren()) {
                         if(row instanceof Row && row.isRendered()) {
-                            encodeRow(context, (Row) row, "columnheader", "ui-widget-header", styleClass);
+                            encodeRow(context, (Row) row, "columnheader", "ui-widget-header", "ui-widget-header");
                         }
                     }
                 }
