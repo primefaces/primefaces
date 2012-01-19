@@ -55,14 +55,26 @@ PrimeFaces.widget.LightBox.prototype.setupImaging = function() {
     this.navigators = this.contentWrapper.children('a');
 
     this.imageDisplay.load(function() {
+        var leftOffset = (_self.panel.width() - _self.imageDisplay.width()) / 2,
+        topOffset = (_self.panel.height() - _self.imageDisplay.height()) / 2;
+            
         //prepare content for new image
-        _self.content.removeClass('ui-lightbox-loading').width(_self.imageDisplay.width()).height(_self.imageDisplay.height());
-        _self.center();
+        _self.content.removeClass('ui-lightbox-loading').animate({
+            width:_self.imageDisplay.width()
+            ,height: _self.imageDisplay.height()
+        },
+        1000,
+        function() {            
+            //show image
+            _self.imageDisplay.fadeIn();
+            _self.showNavigators();
+            _self.caption.slideDown();
+        });
         
-        //show image
-        _self.imageDisplay.fadeIn();
-        _self.showNavigators();
-        _self.caption.slideDown();
+        _self.panel.animate({
+            left: '+=' + leftOffset
+            ,top: '+=' + topOffset
+        }, 1000);
     });
     
     this.navigators.mouseover(function() {
