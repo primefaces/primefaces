@@ -185,6 +185,10 @@ PrimeFaces.widget.LightBox.prototype.show = function() {
     this.center();
     this.panel.css('z-index', ++PrimeFaces.zindex).show();
     this.enableModality();
+    
+    if(this.cfg.onShow) {
+        this.cfg.onShow.call(this);
+    }
 }
 
 PrimeFaces.widget.LightBox.prototype.hide = function() {
@@ -193,6 +197,10 @@ PrimeFaces.widget.LightBox.prototype.hide = function() {
     this.imageDisplay.hide();
     this.hideNavigators();
     this.caption.hide();
+    
+    if(this.cfg.onHide) {
+        this.cfg.onHide.call(this);
+    }
 }
 
 PrimeFaces.widget.LightBox.prototype.center = function() {    

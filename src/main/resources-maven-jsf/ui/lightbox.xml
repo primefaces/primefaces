@@ -61,6 +61,18 @@
 			<defaultValue>false</defaultValue>
             <description>Displays lightbox without requiring any user interaction by default. Default is false.</description>
 		</attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when lightbox is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when lightbox is hidden.</description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
