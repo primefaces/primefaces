@@ -6,11 +6,20 @@ PrimeFaces.widget.LightBox = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    this.links = this.jq.children();
+    this.links = this.jq.children(':not(.ui-lightbox-inline)');
     
     this.createPanel();
     
-    this.bindEvents();
+    if(this.cfg.mode == 'image') {
+        this.setupImaging();
+    } else if(this.cfg.mode == 'inline') {
+        this.setupInline();
+    } else if(this.cfg.mode == 'iframe') {
+        this.setupIframe();
+    }
+    
+    this.bindCommonEvents();
+        
     
     this.postConstruct();
 }
@@ -21,7 +30,7 @@ PrimeFaces.widget.LightBox.prototype.createPanel = function() {
     var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden">';
     dom += '<div class="ui-lightbox-content-wrapper">';
     dom += '<a class="ui-state-default ui-lightbox-nav-left ui-corner-right ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-w">go</span></a>';
-    dom += '<div class="ui-lightbox-content ui-corner-all"><img class="ui-helper-hidden"></img></div>';
+    dom += '<div class="ui-lightbox-content ui-corner-all"></div>';
     dom += '<a class="ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-e">go</span></a>';
     dom += '</div>';
     dom += '<div class="ui-lightbox-caption ui-widget-header ui-helper-hidden"></div>';
@@ -31,14 +40,16 @@ PrimeFaces.widget.LightBox.prototype.createPanel = function() {
     this.panel = $(this.jqId + '_panel');
     this.contentWrapper = this.panel.children('.ui-lightbox-content-wrapper');
     this.content = this.contentWrapper.children('.ui-lightbox-content');
-    this.imageDisplay = this.content.children('img');
-    this.navigators = this.contentWrapper.children('a');
     this.caption = this.panel.children('.ui-lightbox-caption');
 }
 
-PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
+PrimeFaces.widget.LightBox.prototype.setupImaging = function() {
     var _self = this;
     
+    this.content.append('<img class="ui-helper-hidden"></img>');
+    this.imageDisplay = this.content.children('img');
+    this.navigators = this.contentWrapper.children('a');
+
     this.imageDisplay.load(function() {
         //prepare content for new image
         _self.content.removeClass('ui-lightbox-loading').width(_self.imageDisplay.width()).height(_self.imageDisplay.height());
@@ -77,6 +88,7 @@ PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
         var link = $(this);
         
         if(_self.panel.is(':hidden')) {
+            _self.content.addClass('ui-lightbox-loading').width(32).height(32);
             _self.show();
         }
         else {
@@ -101,6 +113,51 @@ PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
         e.preventDefault();
         e.stopPropagation();
     });
+}
+
+PrimeFaces.widget.LightBox.prototype.setupInline = function() {
+    this.inline = this.jq.children('.ui-lightbox-inline');
+    this.inline.appendTo(this.content).show();
+    var _self = this;
+    
+    this.links.click(function(e) {
+        _self.show();
+        
+        var title = $(this).attr('title');
+        if(title) {
+            _self.caption.html(title);
+            _self.caption.slideDown();
+        }
+                    
+        e.preventDefault();
+        e.stopPropagation();
+    });
+}
+
+PrimeFaces.widget.LightBox.prototype.setupIframe = function() {
+    var _self = this;
+    this.cfg.width = this.cfg.width||'640px';
+    this.cfg.height = this.cfg.height||'480px';
+    
+    _self.content.append('<iframe frameborder="0" style="width:' + this.cfg.width + ';height:' + this.cfg.height + ';border:0 none; display: block;" src="' 
+        + this.links.eq(0).attr('href') + '"></iframe>');
+    
+    this.links.click(function(e) {
+        _self.show();
+        
+        var title = $(this).attr('title');
+        if(title) {
+            _self.caption.html(title);
+            _self.caption.slideDown();
+        }
+        
+        e.preventDefault();
+        e.stopPropagation();
+    });
+}
+
+PrimeFaces.widget.LightBox.prototype.bindCommonEvents = function() {
+    var _self = this;
     
     //hide when outside is clicked
     $(document.body).bind('click.ui-lightbox', function (e) {            
@@ -121,7 +178,6 @@ PrimeFaces.widget.LightBox.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.LightBox.prototype.show = function() {
-    this.content.addClass('ui-lightbox-loading').width(20).height(20);
     this.center();
     this.panel.css('z-index', ++PrimeFaces.zindex).show();
     this.enableModality();
