@@ -73,6 +73,9 @@ public class LayoutRenderer extends CoreRenderer {
 
         if(layout.isNested())
             writer.write(",parent:'" + layout.getParent().getClientId(context) + "'");
+        
+        if(layout.isStateful())
+            writer.write(",useStateCookie:true");
 
         encodeUnits(context, layout);
 
