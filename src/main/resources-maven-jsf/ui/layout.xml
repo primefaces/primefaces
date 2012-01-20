@@ -85,7 +85,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>Close</defaultValue>
-            <description>Title label for the close button of closable units. Default is "Close"</description>
+            <description>Title label for the close button of closable units. Default is "Close".</description>
+		</attribute>
+        <attribute>
+			<name>stateful</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, layout state is saved in a cookie for the session.</description>
 		</attribute>
     </attributes>
     <resources>
