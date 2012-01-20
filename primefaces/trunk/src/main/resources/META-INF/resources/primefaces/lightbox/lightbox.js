@@ -7,6 +7,7 @@ PrimeFaces.widget.LightBox = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.links = this.jq.children(':not(.ui-lightbox-inline)');
+    this.onshowHandlers = [];
     
     this.createPanel();
     
@@ -18,12 +19,13 @@ PrimeFaces.widget.LightBox = function(cfg) {
         this.setupIframe();
     }
     
-    
     this.bindCommonEvents();
         
     if(this.cfg.visible) {
         this.links.eq(0).click();
     }
+    
+    this.panel.data('widget', this);
     
     this.postConstruct();
 }
@@ -31,7 +33,7 @@ PrimeFaces.widget.LightBox = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.LightBox, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.LightBox.prototype.createPanel = function() {
-    var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden">';
+    var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-hidden-container">';
     dom += '<div class="ui-lightbox-content-wrapper">';
     dom += '<a class="ui-state-default ui-lightbox-nav-left ui-corner-right ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-w">go</span></a>';
     dom += '<div class="ui-lightbox-content ui-corner-all"></div>';
@@ -63,7 +65,7 @@ PrimeFaces.widget.LightBox.prototype.setupImaging = function() {
             width:_self.imageDisplay.width()
             ,height: _self.imageDisplay.height()
         },
-        1000,
+        500,
         function() {            
             //show image
             _self.imageDisplay.fadeIn();
@@ -74,7 +76,7 @@ PrimeFaces.widget.LightBox.prototype.setupImaging = function() {
         _self.panel.animate({
             left: '+=' + leftOffset
             ,top: '+=' + topOffset
-        }, 1000);
+        }, 500);
     });
     
     this.navigators.mouseover(function() {
@@ -201,6 +203,11 @@ PrimeFaces.widget.LightBox.prototype.show = function() {
     if(this.cfg.onShow) {
         this.cfg.onShow.call(this);
     }
+    
+    //execute onshowHandlers and remove successful ones
+    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+		return !fn.call();
+	});
 }
 
 PrimeFaces.widget.LightBox.prototype.hide = function() {
@@ -245,4 +252,8 @@ PrimeFaces.widget.LightBox.prototype.showNavigators = function() {
 
 PrimeFaces.widget.LightBox.prototype.hideNavigators = function() {
     this.navigators.hide();
+}
+
+PrimeFaces.widget.LightBox.prototype.addOnshowHandler = function(fn) {
+    this.onshowHandlers.push(fn);
 }
