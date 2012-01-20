@@ -12,7 +12,8 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     //configuration
     this.cfg.my = this.cfg.my||'left top';
     this.cfg.at = this.cfg.at||'left bottom';
-    this.cfg.event = this.cfg.event||'mousedown';
+    this.cfg.showEvent = this.cfg.showEvent||'mousedown';
+    this.cfg.hideEvent = this.cfg.hideEvent||'mousedown';
     
     this.bindEvents();
     
@@ -38,13 +39,28 @@ PrimeFaces.extend(PrimeFaces.widget.OverlayPanel, PrimeFaces.widget.BaseWidget);
 PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
     var _self = this;
     
-    this.target.bind(this.cfg.event + '.ui-overlay', function(e) {
-        if(_self.jq.is(":hidden")) {
-            _self.show();
-        } else {
-            _self.hide();
-        }
-    });
+    //show and hide events for target
+    if(this.cfg.showEvent == this.cfg.hideEvent) {
+        this.target.bind(this.cfg.showEvent + '.ui-overlay', function(e) {
+            if(_self.jq.is(':hidden')) {
+                _self.show();
+            } else {
+                _self.hide();
+            }
+        })
+    }
+    else {
+        this.target.bind(this.cfg.showEvent + '.ui-overlay', function(e) {
+            if(_self.jq.is(':hidden')) {
+                _self.show();
+            }
+        })
+        .bind(this.cfg.hideEvent + '.ui-overlay', function(e) {
+            if(_self.jq.is(':visible')) {
+                _self.hide();
+            }
+        });
+    }
     
     //hide overlay when mousedown is at outside of overlay
     $(document.body).bind('mousedown.ui-overlay', function (e) {

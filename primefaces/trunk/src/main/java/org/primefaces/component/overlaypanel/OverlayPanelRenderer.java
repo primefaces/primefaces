@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Prime Technology.
+ * Copyright 2009-2011 Prime Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",target:'" + targetClientId + "'");
         
-        if(panel.getEvent() != null) writer.write(",event:'" + panel.getEvent() + "'");
+        if(panel.getShowEvent() != null) writer.write(",showEvent:'" + panel.getShowEvent() + "'");
+        if(panel.getHideEvent() != null) writer.write(",hideEvent:'" + panel.getHideEvent() + "'");
         if(panel.getShowEffect() != null) writer.write(",showEffect:'" + panel.getShowEffect() + "'");
         if(panel.getHideEffect() != null) writer.write(",hideEffect:'" + panel.getHideEffect() + "'");
         if(panel.getOnShow() != null) writer.write(",onShow:function(){" + panel.getOnShow() + "})");
