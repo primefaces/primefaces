@@ -26,6 +26,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -99,13 +100,18 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
             writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
             for(UIComponent child : button.getChildren()) {
-                MenuItem item = (MenuItem) child;
-
-                if(item.isRendered()) {
-                    writer.startElement("li", item);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    encodeMenuItem(context, item);
-                    writer.endElement("li");
+                if(child.isRendered()) {
+                    if(child instanceof MenuItem) {
+                        MenuItem item = (MenuItem) child;
+                        
+                        writer.startElement("li", item);
+                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        encodeMenuItem(context, item);
+                        writer.endElement("li");
+                    }
+                    else if(child instanceof Separator) {
+                        encodeSeparator(context, (Separator) child);
+                    }
                 }
             }
 
