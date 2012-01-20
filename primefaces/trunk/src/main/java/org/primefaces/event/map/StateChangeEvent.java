@@ -36,12 +36,12 @@ public class StateChangeEvent extends AjaxBehaviorEvent {
 		super(component, behavior);
 		this.bounds = bounds;
 		this.zoomLevel = zoomLevel;
-                this.center = center;
+        this.center = center;
 	}
 
 	@Override
 	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return true;
+		return (faceslistener instanceof AjaxBehaviorListener);
 	}
 
 	@Override

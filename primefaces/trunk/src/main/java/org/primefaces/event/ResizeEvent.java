@@ -34,7 +34,7 @@ public class ResizeEvent extends AjaxBehaviorEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return true;
+		return (faceslistener instanceof AjaxBehaviorListener);
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class PointSelectEvent extends AjaxBehaviorEvent {
 
 	@Override
 	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return true;
+		return (faceslistener instanceof AjaxBehaviorListener);
 	}
 
 	@Override
