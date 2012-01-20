@@ -29,8 +29,8 @@ public class LightBoxRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		LightBox lb = (LightBox) component;
 
-        encodeMarkup(context, lb);
         encodeScript(context, lb);
+        encodeMarkup(context, lb);
 	}
 
 	public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
