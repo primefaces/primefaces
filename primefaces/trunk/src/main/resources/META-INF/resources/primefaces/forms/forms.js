@@ -310,13 +310,14 @@ PrimeFaces.widget.SelectOneMenu.prototype.setupDialogSupport = function() {
 
 PrimeFaces.widget.SelectOneMenu.prototype.initWidths = function() {
     this.jq.width(this.input.outerWidth(true) + 5);
+    this.label.width(this.jq.width() - this.menuIcon.width());
     var jqWidth = this.jq.innerWidth();
     
     //align panel and container
     if(this.panel.outerWidth() < jqWidth) {
         this.panel.width(jqWidth);
     }
-}
+}  
 
 PrimeFaces.widget.SelectOneMenu.prototype.bindEvents = function() {
     var _self = this;
