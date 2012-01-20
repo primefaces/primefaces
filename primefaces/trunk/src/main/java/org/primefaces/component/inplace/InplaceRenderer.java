@@ -67,7 +67,7 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId + "_display", "id");
 		writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
-		writer.write(getLabelToRender(context, inplace));
+		writer.writeText(getLabelToRender(context, inplace), null);
 		writer.endElement("span");
 
         //content
