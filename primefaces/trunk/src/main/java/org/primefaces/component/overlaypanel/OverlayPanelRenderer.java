@@ -68,6 +68,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('OverlayPanel','" + panel.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",target:'" + targetClientId + "'");
+        
+        if(panel.getEvent() != null) writer.write(",event:'" + panel.getEvent() + "'");
         if(panel.getShowEffect() != null) writer.write(",showEffect:'" + panel.getShowEffect() + "'");
         if(panel.getHideEffect() != null) writer.write(",hideEffect:'" + panel.getHideEffect() + "'");
         if(panel.getOnShow() != null) writer.write(",onShow:function(){" + panel.getOnShow() + "})");

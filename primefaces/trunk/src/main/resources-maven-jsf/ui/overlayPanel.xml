@@ -40,6 +40,12 @@
             <description>Identifier of the target component to show the panel.</description>
 		</attribute>
         <attribute>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event to show the overlay panel, default is "mousedown".</description>
+		</attribute>
+        <attribute>
 			<name>showEffect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
