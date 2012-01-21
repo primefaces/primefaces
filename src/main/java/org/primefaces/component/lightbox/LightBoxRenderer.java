@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2011 Prime Teknoloji.
+ * Copyright 2009-2012 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
