@@ -99,13 +99,14 @@ PrimeFaces.widget.ThemeSwitcher.prototype.setupDialogSupport = function() {
 
 PrimeFaces.widget.ThemeSwitcher.prototype.initWidths = function() {
     this.jq.width(this.input.outerWidth(true) + 5);
+    this.label.width(this.jq.width() - this.menuIcon.width());
     var jqWidth = this.jq.innerWidth();
     
     //align panel and container
     if(this.panel.outerWidth() < jqWidth) {
         this.panel.width(jqWidth);
     }
-}
+}  
 
 PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
     var _self = this;
@@ -139,9 +140,9 @@ PrimeFaces.widget.ThemeSwitcher.prototype.bindEvents = function() {
             else
                 _self.hide();
         }
-       
+        
         _self.jq.removeClass('ui-state-hover');
-        _self.menuIcon.removeClass('ui-state-hover'); 
+        _self.menuIcon.removeClass('ui-state-hover');          
         _self.input.focus();
         e.preventDefault();
     });
