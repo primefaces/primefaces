@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2012 Prime Technology.
+ * Copyright 2009-2012 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,9 +56,9 @@ public class PanelGridRenderer extends CoreRenderer {
         
         writer.startElement("tbody", grid);
         
-        if(grid.getColumns() > 0) {
+        if(columns > 0) {
             encodeDynamicBody(context, grid, grid.getColumns());
-        } 
+        }
         else {
             encodeStaticBody(context, grid);
         }
@@ -101,9 +101,7 @@ public class PanelGridRenderer extends CoreRenderer {
         }
     }
     
-    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
+    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException {        
         for(UIComponent child : grid.getChildren()) {
             if(child instanceof Row && child.isRendered()) {
                 encodeRow(context, (Row) child, "gridcell", PanelGrid.ROW_CLASS, null);
@@ -121,8 +119,12 @@ public class PanelGridRenderer extends CoreRenderer {
         for(UIComponent child : row.getChildren()) {
             if(child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
-                String styleClass = column.getStyleClass();
-                styleClass = styleClass == null ? columnClass : columnClass == null ? styleClass : (styleClass + " " + columnClass);
+                String styleClass = null;
+                String userStyleClass = column.getStyleClass();
+                
+                if(userStyleClass != null && columnClass != null) styleClass = columnClass + " " + userStyleClass;
+                else if(userStyleClass != null && columnClass == null) styleClass = userStyleClass;
+                else if(userStyleClass == null && columnClass != null) styleClass = columnClass;
                 
                 writer.startElement("td", null);
                 writer.writeAttribute("role", columnRole, null);
@@ -164,11 +166,11 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.endElement("tr");
             }
             else {
-                if(component instanceof Row && component.isRendered()) {
+                if(component instanceof Row) {
                     encodeRow(context, (Row) component, "columnheader", "ui-widget-header", "ui-widget-header");
                 }
-                else if(component instanceof UIPanel && component.isRendered()){
-                    for (UIComponent row : component.getChildren()) {
+                else if(component instanceof UIPanel){
+                    for(UIComponent row : component.getChildren()) {
                         if(row instanceof Row && row.isRendered()) {
                             encodeRow(context, (Row) row, "columnheader", "ui-widget-header", "ui-widget-header");
                         }
