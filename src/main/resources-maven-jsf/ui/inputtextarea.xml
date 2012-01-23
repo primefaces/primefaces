@@ -33,25 +33,11 @@
             <description>Allows to expand height automatically when text input overflows.</description>
 		</attribute>
         <attribute>
-			<name>maxHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>500</defaultValue>
-            <description>Sets maximum height of text area container. Default is 500.</description>
-		</attribute>
-        <attribute>
 			<name>maxlength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Sets maximum character number of text area container. Default is 0, means no limit.</description>
-		</attribute>
-        <attribute>
-			<name>effectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>200</defaultValue>
-            <description>Expand animation period in milliseconds. Default is 200.</description>
 		</attribute>
 	</attributes>
 	<resources>
