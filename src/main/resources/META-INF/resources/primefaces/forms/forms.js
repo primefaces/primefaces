@@ -667,14 +667,31 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    this.input = $(this.jqId + '_input');
+    this.input = $(this.jqId + '_input'),
+    this.listContainer = this.jq.children('ul'),
+    this.options = $(this.input).children('option');
 
-    var listContainer = this.jq.children('ul'),
-    options = $(this.input).children('option'),
-    _self = this;
+    this.generateItems(cfg);
+    
+    this.bindEvents();
 
-    //create elements for each option
-    options.each(function(i) {
+    //Client Behaviors
+    if(this.cfg.behaviors) {
+        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+    }
+    
+    this.postConstruct();
+}
+
+PrimeFaces.extend(PrimeFaces.widget.SelectListbox, PrimeFaces.widget.BaseWidget);
+
+/**
+ * Creates items for each option 
+ */
+PrimeFaces.widget.SelectListbox.prototype.generateItems = function() {
+    var _self = this;
+    
+    this.options.each(function(i) {
         var option = $(this),
         selected = option.is(':selected'),
         disabled = option.is(':disabled'),
@@ -682,12 +699,20 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
         styleClass = disabled ? styleClass + ' ui-state-disabled' : styleClass;
         styleClass = selected ? styleClass + ' ui-state-active' : styleClass;
         
-        listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
+        _self.listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
     });
+    
+    this.items = this.listContainer.children('li:not(.ui-state-disabled)');
+}
 
-    var items = listContainer.children('li:not(.ui-state-disabled)');
-
-    items.mouseover(function() {
+/**
+ * Binds events to the elements
+ */
+PrimeFaces.widget.SelectListbox.prototype.bindEvents = function() {
+    var _self = this;
+    
+    //items
+    this.items.mouseover(function() {
         var element = $(this);
         if(!element.hasClass('ui-state-active')) {
             $(this).addClass('ui-state-hover');
@@ -695,13 +720,15 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
     }).mouseout(function() {
         $(this).removeClass('ui-state-hover');
     }).click(function(e) {
+        _self.input.focus();
+        
         var element = $(this),
-        option = $(options.get(element.index()));
+        option = $(_self.options.get(element.index()));
 
         //clear previous selections
         if(_self.cfg.selection == 'single' || (_self.cfg.selection == 'multiple' && !e.metaKey)) {
-            items.removeClass('ui-state-active ui-state-hover');
-            options.removeAttr('selected');
+            _self.items.removeClass('ui-state-active ui-state-hover');
+            _self.options.removeAttr('selected');
         }
         
         if(_self.cfg.selection == 'multiple' && e.metaKey && element.hasClass('ui-state-active')) {
@@ -717,16 +744,14 @@ PrimeFaces.widget.SelectListbox = function(cfg) {
         
         PrimeFaces.clearSelection();
     });
-
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-    }
     
-    this.postConstruct();
+    //input
+    this.input.focus(function() {
+        _self.jq.addClass('ui-state-focus');
+    }).blur(function() {
+        _self.jq.removeClass('ui-state-focus');
+    })
 }
-
-PrimeFaces.extend(PrimeFaces.widget.SelectListbox, PrimeFaces.widget.BaseWidget);
 
 /* 
  * PrimeFaces CommandButton Widget
