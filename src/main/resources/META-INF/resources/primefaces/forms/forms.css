@@ -105,6 +105,7 @@
     overflow: hidden;
     font-weight: normal;
     width: 100%;
+    float:left;
 }
 
 .ui-selectonemenu.ui-state-disabled .ui-selectonemenu-trigger,
