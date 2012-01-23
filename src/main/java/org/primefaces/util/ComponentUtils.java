@@ -217,8 +217,9 @@ public class ComponentUtils {
 		StringBuilder buffer = new StringBuilder();
 		
 		for(int i = 0; i < ids.length; i++) {
-			if(i != 0)
+			if(i != 0) {
 				buffer.append(" ");
+            }
 			
 			String id = ids[i].trim();
 			
@@ -236,7 +237,7 @@ public class ComponentUtils {
 			
                 return form.getClientId(context);
             }
-            else if(id.equals("@form")) {
+            else if(id.equals("@parent")) {
                 return component.getParent().getClientId(context);
             }
 			else {
