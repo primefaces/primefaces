@@ -52,6 +52,13 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Position of the input element in the tabbing order.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

@@ -85,15 +85,16 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         String inputid = clientId + "_input";
         
         writer.startElement("div", menu);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputid, "id");
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-        if(menu.getOnchange() != null)
-            writer.writeAttribute("onchange", menu.getOnchange(), null);
+        writer.writeAttribute("size", "2", null);               //prevent browser to send value when no item is selected
+ 
+        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
 
         encodeSelectItems(context, menu);
 
