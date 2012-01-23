@@ -36,7 +36,7 @@ public class InputTextareaRenderer extends InputRenderer {
         decodeBehaviors(context, inputTextarea);
 
 		String clientId = inputTextarea.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
         
 		inputTextarea.setSubmittedValue(submittedValue);
 	}
@@ -59,8 +59,6 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.write("PrimeFaces.cw('InputTextarea','" + inputTextarea.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",autoResize:" + autoResize);
-        writer.write(",maxHeight:" + inputTextarea.getMaxHeight());
-        writer.write(",effectDuration:" + inputTextarea.getEffectDuration());
         
         if(inputTextarea.getMaxlength() != Integer.MAX_VALUE) {
             writer.write(",maxlength:" + inputTextarea.getMaxlength());
@@ -76,15 +74,10 @@ public class InputTextareaRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputTextarea.getClientId(context);
-        String inputId = clientId + "_input";
-        
-        writer.startElement("span", null);
+                
+		writer.startElement("textarea", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-
-		writer.startElement("textarea", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
 
 		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
 
