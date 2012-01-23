@@ -719,9 +719,7 @@ PrimeFaces.widget.SelectListbox.prototype.bindEvents = function() {
         }
     }).mouseout(function() {
         $(this).removeClass('ui-state-hover');
-    }).click(function(e) {
-        _self.input.focus();
-        
+    }).mousedown(function(e) {        
         var element = $(this),
         option = $(_self.options.get(element.index()));
 
