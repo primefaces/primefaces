@@ -12,8 +12,8 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     //configuration
     this.cfg.my = this.cfg.my||'left top';
     this.cfg.at = this.cfg.at||'left bottom';
-    this.cfg.showEvent = this.cfg.showEvent||'mousedown';
-    this.cfg.hideEvent = this.cfg.hideEvent||'mousedown';
+    this.cfg.showEvent = this.cfg.showEvent||'click';
+    this.cfg.hideEvent = this.cfg.hideEvent||'click';
     
     this.bindEvents();
     
@@ -115,7 +115,7 @@ PrimeFaces.widget.OverlayPanel.prototype.align = function() {
     win = $(window),
     positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
     
-    this.jq.css({'left':'', 'top':'', 'z-Index': ++PrimeFaces.zindex})
+    this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
             .position({
                 my: this.cfg.my
                 ,at: this.cfg.at
