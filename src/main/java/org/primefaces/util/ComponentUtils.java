@@ -235,10 +235,10 @@ public class ComponentUtils {
                     throw new FacesException("Component " + component.getClientId(context) + " needs to be enclosed in a form");
                 } 
 			
-                return form.getClientId(context);
+                buffer.append(form.getClientId(context));
             }
             else if(id.equals("@parent")) {
-                return component.getParent().getClientId(context);
+                buffer.append(component.getParent().getClientId(context));
             }
 			else {
 				UIComponent comp = component.findComponent(id);
