@@ -83,12 +83,14 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         String inputid = clientId + "_input";
 
         writer.startElement("div", listbox);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         
         writer.startElement("select", listbox);
         writer.writeAttribute("id", inputid, "id");
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
+        
+        if(listbox.getTabindex() != null) writer.writeAttribute("tabindex", listbox.getTabindex(), null);
         if(listbox.getOnchange() != null) writer.writeAttribute("onchange", listbox.getOnchange(), null);
 
         encodeSelectItems(context, listbox);
