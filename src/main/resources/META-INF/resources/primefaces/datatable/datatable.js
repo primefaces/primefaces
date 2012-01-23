@@ -1265,3 +1265,17 @@ PrimeFaces.widget.DataTable.prototype.updateDataCellWidths = function() {
         cell.width('').children('div.ui-dt-c').width(widths[cell.index()]);
     }
 }
+
+/**
+ * Returns if there is any data displayed
+ */
+PrimeFaces.widget.DataTable.prototype.isEmpty = function() {
+    return $(this.tbodyId).hasClass('ui-datatable-data-empty');
+}
+
+/**
+ * Returns if there is any data displayed
+ */
+PrimeFaces.widget.DataTable.prototype.getSelectedRowsCount = function() {
+    return this.isSelectionEnabled() ? this.selection.length : 0;
+}
