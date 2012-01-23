@@ -452,11 +452,7 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
 /**
  * Ajax sort
  */
-PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
-    if(this.isSelectionEnabled()) {
-        this.clearSelection();
-    }
-    
+PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {    
     var options = {
         source: this.id,
         update: this.id,
@@ -518,10 +514,6 @@ PrimeFaces.widget.DataTable.prototype.sort = function(columnId, asc) {
  * Ajax filter
  */
 PrimeFaces.widget.DataTable.prototype.filter = function() {
-    if(this.isSelectionEnabled()) {
-        this.clearSelection();
-    }
-
     var options = {
         source: this.id,
         update: this.id,
