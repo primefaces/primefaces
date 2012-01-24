@@ -184,18 +184,24 @@ PrimeFaces.widget.ScrollPanel.prototype.bindEvents = function(s){
         event.preventDefault();
     });
     
+    var dragOffset = undefined;
+    
     //drag
     scroll.hand.draggable({
         axis: scroll.dir,
+        
         drag: function (e, data) {
+            var p = data.position;
+            dragOffset = dragOffset || p;
+            
             if(scroll.dir === 'x'){
-                var move = (e.target.offsetLeft - data.position.left);
-                _self.scrollWithRatio('x', move);
+                _self.scrollWithRatio('x', dragOffset.left - p.left);
             }
             else{
-                var move = (e.target.offsetTop - data.position.top);
-                _self.scrollWithRatio('y', move);
+                _self.scrollWithRatio('y', dragOffset.top - p.top);
             }
+            
+            dragOffset = p;
         },
         containment: "parent",
         scroll: false,
@@ -254,6 +260,7 @@ PrimeFaces.widget.ScrollPanel.prototype.bindEvents = function(s){
     
     $(document.body).bind('mouseup.scrollpanel', function(){
         clearInterval(mouseInterval);
+        scroll.hand.removeClass('ui-state-active');
         mouseDown = false;
     });
 }
