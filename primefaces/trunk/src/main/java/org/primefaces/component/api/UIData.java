@@ -80,7 +80,7 @@ public class UIData extends javax.faces.component.UIData {
 	}
 
 	public java.lang.String getCurrentPageReportTemplate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPage})");
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
 	}
 	public void setCurrentPageReportTemplate(java.lang.String _currentPageReportTemplate) {
 		getStateHelper().put(PropertyKeys.currentPageReportTemplate, _currentPageReportTemplate);
