@@ -22,8 +22,6 @@ import javax.faces.convert.Converter;
 import javax.faces.component.behavior.Behavior;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect"));
-
-    private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
     
     public final static String STYLE_CLASS = "ui-autocomplete";
     public final static String MULTIPLE_STYLE_CLASS = "ui-autocomplete-multiple";
@@ -51,25 +49,29 @@ import javax.faces.component.behavior.Behavior;
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        
-        if(eventName != null && eventName.equals("itemSelect") && event instanceof AjaxBehaviorEvent) {
-            customEvents.put("itemSelect", (AjaxBehaviorEvent) event);
-        } 
-        else if(eventName != null && eventName.equals("itemUnselect") && event instanceof AjaxBehaviorEvent) {
-            String unselectedItemValue = params.get(this.getClientId(context) + "_itemUnselect");
-            Object itemValue = null;
-            Converter converter = getConverter();
-            if(converter == null)
-                itemValue = unselectedItemValue;
-            else 
-                itemValue = converter.getAsObject(context, this, unselectedItemValue);
 
-            UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior)((AjaxBehaviorEvent) event).getBehavior(), itemValue);
-            unselectEvent.setPhaseId(((AjaxBehaviorEvent) event).getPhaseId());
+        if(eventName != null && event instanceof AjaxBehaviorEvent) {
+            AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            super.queueEvent(unselectEvent);
-        } 
+            if(eventName.equals("itemSelect")) {
+                Object selectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemSelect"));
+                SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
+                selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
+                super.queueEvent(selectEvent);
+            }
+            else if(eventName.equals("itemUnselect")) {
+                Object unselectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemUnselect"));
+                UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
+                unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
+                super.queueEvent(unselectEvent);
+            }
+            else {
+                //e.g. blur, focus, change
+                super.queueEvent(event);
+            }
+        }
         else {
+            //e.g. valueChange, autoCompleteEvent
             super.queueEvent(event);
         }
     }
@@ -92,24 +94,6 @@ import javax.faces.component.behavior.Behavior;
             facesContext.renderResponse();
 		}
 	}
-
-    @Override
-    public void validate(FacesContext context) {
-        super.validate(context);
-       
-        if(isValid()) {
-            for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getValue());
-
-                if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
-                    selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
-                }
-
-                super.queueEvent(selectEvent);
-            }
-        }
-    }
 
     public List<Column> getColums() {
         List<Column> columns = new ArrayList<Column>();
@@ -143,4 +127,13 @@ import javax.faces.component.behavior.Behavior;
         }
 
         return null;
+    }
+
+    private Object convertValue(FacesContext context, String submittedItemValue) {
+        Converter converter = getConverter();
+
+        if(converter == null)
+            return submittedItemValue;
+        else 
+            return converter.getAsObject(context, this, submittedItemValue);
     }

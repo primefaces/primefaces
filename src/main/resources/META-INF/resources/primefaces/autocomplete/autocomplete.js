@@ -278,7 +278,8 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
         $(this).removeClass('ui-state-highlight');
     })
     .bind('click', function(event) {
-        var item = $(this);
+        var item = $(this),
+        itemValue = item.data('item-value');
         
         if(_self.cfg.multiple) {
             var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
@@ -290,19 +291,19 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
             _self.input.val('').focus();
             
             if(_self.hinput.val() == '')
-                _self.hinput.val('"' + item.attr('data-item-value') + '"');
+                _self.hinput.val('"' + itemValue + '"');
             else
-                _self.hinput.val(_self.hinput.val() + ',"' + item.attr('data-item-value') + '"');
+                _self.hinput.val(_self.hinput.val() + ',"' + itemValue + '"');
         } 
         else {
-            _self.input.val(item.attr('data-item-label'));
+            _self.input.val(item.data('item-label'));
             
             if(_self.cfg.pojo) {
-                _self.hinput.val(item.attr('data-item-value'));            
+                _self.hinput.val(itemValue);            
             }
         }
 
-        _self.invokeItemSelectBehavior(event);
+        _self.invokeItemSelectBehavior(event, itemValue);
         
         _self.hide();
     });
@@ -429,12 +430,17 @@ PrimeFaces.widget.AutoComplete.prototype.hide = function() {
     this.panel.css('z-index', '').hide();
 }
 
-PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(event) {
+PrimeFaces.widget.AutoComplete.prototype.invokeItemSelectBehavior = function(event, itemValue) {
     if(this.cfg.behaviors) {
         var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
 
         if(itemSelectBehavior) {
-            itemSelectBehavior.call(this, event);
+            var ext = {
+                params : {}
+            };
+            ext.params[this.id + "_itemSelect"] = itemValue;
+            
+            itemSelectBehavior.call(this, event, ext);
         }
     }
 }
