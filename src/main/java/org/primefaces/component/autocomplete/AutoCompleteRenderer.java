@@ -434,6 +434,10 @@ public class AutoCompleteRenderer extends InputRenderer {
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
 		AutoComplete ac = (AutoComplete) component;
 		Converter converter = getConverter(context, ac);
+        
+        if(submittedValue == null) {
+            return null;
+        }
 
         if(ac.isMultiple()) {
             String[] values = ((String) submittedValue).split(",");
