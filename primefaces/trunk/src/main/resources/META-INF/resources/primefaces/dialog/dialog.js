@@ -198,8 +198,11 @@ PrimeFaces.widget.Dialog.prototype.focusFirstInput = function() {
 PrimeFaces.widget.Dialog.prototype.bindEvents = function() {   
     var _self = this;
     
-    this.jq.mousedown(function(){
-        _self.moveToTop();
+    //Move dialog to top if target is not a trigger for a PrimeFaces overlay
+    this.jq.mousedown(function(e) {
+        if(!$(e.target).data('primefaces-overlay-target')) {
+            _self.moveToTop();
+        }
     });
 
     this.icons.mouseover(function() {

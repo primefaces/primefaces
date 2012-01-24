@@ -12,8 +12,8 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     //configuration
     this.cfg.my = this.cfg.my||'left top';
     this.cfg.at = this.cfg.at||'left bottom';
-    this.cfg.showEvent = this.cfg.showEvent||'click';
-    this.cfg.hideEvent = this.cfg.hideEvent||'click';
+    this.cfg.showEvent = this.cfg.showEvent||'mousedown';
+    this.cfg.hideEvent = this.cfg.hideEvent||'mousedown';
     
     this.bindEvents();
     
@@ -38,6 +38,9 @@ PrimeFaces.extend(PrimeFaces.widget.OverlayPanel, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
     var _self = this;
+    
+    //mark target and descandants of target as a trigger for a primefaces overlay
+    this.target.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
     
     //show and hide events for target
     if(this.cfg.showEvent == this.cfg.hideEvent) {
