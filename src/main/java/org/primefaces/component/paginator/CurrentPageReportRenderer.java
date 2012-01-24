@@ -32,7 +32,7 @@ public class CurrentPageReportRenderer implements PaginatorElementRenderer {
         }
                 
         String output = template.replaceAll("\\{currentPage\\}", Integer.toString(currentPage))
-        .replaceAll("\\{totalPage\\}", Integer.toString(pageCount))
+        .replaceAll("\\{totalPages\\}", Integer.toString(pageCount))
         .replaceAll("\\{totalRecords\\}", Integer.toString(uidata.getRowCount()))
         .replaceAll("\\{startRecord\\}", Integer.toString(Math.min(uidata.getFirst() + 1, uidata.getRowCount())))
         .replaceAll("\\{endRecord}", Integer.toString(Math.min(uidata.getFirst() + uidata.getRowsToRender(), uidata.getRowCount())));

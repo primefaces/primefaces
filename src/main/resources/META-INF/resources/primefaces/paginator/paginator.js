@@ -22,7 +22,7 @@ PrimeFaces.widget.Paginator = function(cfg){
     this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
     this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
     this.cfg.pageLinks = this.cfg.pageLinks||10;
-    this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPage})';
+    this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPages})';
     
     //event bindings
     this.bindEvents();
