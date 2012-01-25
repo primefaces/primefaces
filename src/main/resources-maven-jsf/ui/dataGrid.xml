@@ -100,6 +100,13 @@
             <type>java.lang.String</type>
             <description>Name of iterator to refer each row index.</description>
         </attribute>
+        <attribute>
+			<name>emptyMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>No records found.</defaultValue>
+            <description>Text to display when there is no data to display. Default is "No records found."</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>
