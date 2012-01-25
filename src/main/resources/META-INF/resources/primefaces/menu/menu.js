@@ -86,9 +86,9 @@ PrimeFaces.widget.Menubar.prototype.bindRootItemEvents = function() {
             else {
                 _self.showSubmenu(menuitem, submenu);
             }
+            
+            e.preventDefault();
         }
-
-        e.preventDefault();
     });
 }
 
