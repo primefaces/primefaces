@@ -54,8 +54,10 @@ public class DataGridRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId();
         boolean hasPaginator = grid.isPaginator();
+        boolean empty = grid.getRowCount() == 0;
         String paginatorPosition = grid.getPaginatorPosition();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
+        String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : DataGrid.CONTENT_CLASS;
 
         if(hasPaginator) {
             grid.calculatePage();
@@ -71,9 +73,14 @@ public class DataGridRenderer extends DataRenderer {
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
-        writer.writeAttribute("class", DataGrid.CONTENT_CLASS, null);
+        writer.writeAttribute("class", contentClass, null);
 
-        encodeTable(context, grid);
+        if(empty) {
+            writer.write(grid.getEmptyMessage());
+        } 
+        else {
+            encodeTable(context, grid);
+        }
         
         writer.endElement("div");
 
