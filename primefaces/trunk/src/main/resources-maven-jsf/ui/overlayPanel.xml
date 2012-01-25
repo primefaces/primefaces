@@ -94,6 +94,14 @@
             <type>java.lang.String</type>
             <description>Position of the target relative to the panel.</description>
         </attribute>
+        <attribute>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Dynamic mode allows overlay panel to fetch it's contents before it's shown rather than on page load
+            which is useful to reduce initial page load times. Default is false.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

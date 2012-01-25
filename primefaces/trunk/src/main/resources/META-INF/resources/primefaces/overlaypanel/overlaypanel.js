@@ -98,6 +98,15 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
 }
 
 PrimeFaces.widget.OverlayPanel.prototype.show = function() {
+    if(!this.loaded && this.cfg.dynamic) {
+        this.loadContents();
+    }
+    else {
+        this._show();
+    }
+}
+
+PrimeFaces.widget.OverlayPanel.prototype._show = function() {
     var _self = this;
     
     this.align();
@@ -174,4 +183,47 @@ PrimeFaces.widget.OverlayPanel.prototype.setupDialogSupport = function() {
             this.jq.appendTo(document.body);
         }
     }
+}
+
+PrimeFaces.widget.OverlayPanel.prototype.loadContents = function() {
+    var options = {
+        source: this.id,
+        process: this.id,
+        update: this.id
+    },
+    _self = this;
+
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update");
+
+        for(var i=0; i < updates.length; i++) {
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
+
+            if(id == _self.id){
+                _self.jq.html(content);
+                _self.loaded = true;
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+            }
+        }
+
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+        
+        return true;
+    };
+    
+    options.oncomplete = function() {
+        _self._show();
+    };
+
+    var params = [];
+    params[this.id + '_contentLoad'] = true;
+
+    options.params = params;
+
+    PrimeFaces.ajax.AjaxRequest(options);
 }
