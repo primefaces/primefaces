@@ -84,7 +84,7 @@ PrimeFaces.widget.Tree.prototype.onNodeClick = function(e, node) {
     }
 }
 
-PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
+PrimeFaces.widget.Tree.prototype.expandNode = function(node) {    
     var _self = this;
 
     if(this.cfg.dynamic) {
@@ -94,6 +94,13 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
             
             return;
         }
+        
+        if(node.data('processing')) {
+            PrimeFaces.debug('Node is already being expanded, ignoring expand event.');
+            return;
+        }
+        
+        node.data('processing', true);
 
         var options = {
             source: this.id,
@@ -126,6 +133,10 @@ PrimeFaces.widget.Tree.prototype.expandNode = function(node) {
             return true;
         };
         
+        options.oncomplete = function() {
+            node.removeData('processing');
+        }
+         
         var params = {};
         params[this.id + '_expandNode'] = _self.getNodeId(node);
 
