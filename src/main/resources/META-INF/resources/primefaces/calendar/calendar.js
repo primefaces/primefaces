@@ -59,7 +59,12 @@ PrimeFaces.widget.Calendar = function(cfg) {
     }
 
     //button title
-    this.jqEl.siblings('.ui-datepicker-trigger:button').attr('title', this.cfg.buttonText);
+    if(this.cfg.popup && this.cfg.showOn) {
+        var triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
+        triggerButton.attr('title', this.cfg.buttonText);
+        
+        PrimeFaces.skinButton(triggerButton);
+    }
     
     //Hide overlay on resize
     if(this.cfg.popup) {
