@@ -60,12 +60,10 @@ public class ScrollPanelRenderer extends CoreRenderer {
 
         startScript(writer, clientId);
 
-        writer.write("$(function(){");
-
         writer.write("PrimeFaces.cw('ScrollPanel','" + panel.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",mode:'" + panel.getMode() + "'");
-        writer.write("});});");
+        writer.write("});");
 
         endScript(writer);
     }
