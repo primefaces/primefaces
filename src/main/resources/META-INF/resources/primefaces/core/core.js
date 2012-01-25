@@ -61,6 +61,12 @@ PrimeFaces = {
                 $(this).removeClass('ui-state-focus');
         });
         
+        //aria
+        input.attr('role', 'textbox').attr('aria-disabled', input.is(':disabled'))
+                                      .attr('aria-readonly', input.prop('readonly'))
+                                      .attr('aria-multiline', input.is('textarea'));
+        
+        
         return this;
     },
     
