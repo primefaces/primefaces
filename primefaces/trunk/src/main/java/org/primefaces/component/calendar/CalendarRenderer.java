@@ -160,11 +160,7 @@ public class CalendarRenderer extends InputRenderer {
 
         String showOn = calendar.getShowOn();
         if(!showOn.equalsIgnoreCase("focus")) {
-            String iconSrc = calendar.getPopupIcon() != null ? getResourceURL(context, calendar.getPopupIcon()) : getResourceRequestPath(context, Calendar.POPUP_ICON);
-
             writer.write(",showOn:'" + showOn + "'");
-            writer.write(",buttonImage:'" + iconSrc + "'");
-            writer.write(",buttonImageOnly:" + calendar.isPopupIconOnly());
         }
 
         if(calendar.isShowOtherMonths()) {

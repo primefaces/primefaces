@@ -65,19 +65,6 @@
             <description>Locale to be used for labels and conversion.</description>
         </attribute>
         <attribute>
-            <name>popupIcon</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Icon of the popup button.</description>
-        </attribute>
-        <attribute>
-            <name>popupIconOnly</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>When enabled, popup icon is rendered without the button. Default is false.</description>
-        </attribute>
-        <attribute>
             <name>navigator</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
