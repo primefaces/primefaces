@@ -178,3 +178,8 @@
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
+
+/* PrimeFaces Extensions */
+.ui-datepicker-trigger.ui-button-icon-only .ui-button-text {
+    padding: 0.3em;
+}
