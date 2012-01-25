@@ -135,12 +135,18 @@ PrimeFaces.widget.Paginator.prototype.updateUI = function() {
     }
     
     //current page report
+    var startRecord = (this.cfg.page * this.cfg.rows) + 1,
+    endRecord = (this.cfg.page * this.cfg.rows) + this.cfg.rows;
+    if(endRecord > this.cfg.rowCount) {
+        endRecord = this.cfg.rowCount;
+    }
+    
     var text = this.cfg.currentPageTemplate
         .replace("{currentPage}", this.cfg.page + 1)
         .replace("{totalPages}", this.cfg.pageCount)
         .replace("{totalRecords}", this.cfg.rowCount)
-        .replace("{startRecord}", (this.cfg.page * this.cfg.rows) + 1)
-        .replace("{endRecord}", (this.cfg.page * this.cfg.rows) + this.cfg.rows);
+        .replace("{startRecord}", startRecord)
+        .replace("{endRecord}", endRecord);
     this.currentReport.text(text);
     
     //rows per page dropdown
