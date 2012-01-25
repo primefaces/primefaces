@@ -21,6 +21,7 @@ import java.io.OutputStream;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -73,7 +74,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 			facesContext.responseComplete();
 		}
         catch(IOException e) {
-			e.printStackTrace();
+			throw new FacesException(e);
 		}
 	}
 
