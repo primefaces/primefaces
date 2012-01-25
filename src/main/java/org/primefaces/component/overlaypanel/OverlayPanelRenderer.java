@@ -28,8 +28,13 @@ public class OverlayPanelRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OverlayPanel panel = (OverlayPanel) component;
         
-        encodeScript(context, panel);
-        encodeMarkup(context, panel);
+        if(panel.isContentLoadRequest(context)) {
+            renderChildren(context, panel);
+        }
+        else {
+            encodeScript(context, panel);
+            encodeMarkup(context, panel);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, OverlayPanel panel) throws IOException {
@@ -78,6 +83,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         if(panel.getMy() != null) writer.write(",my:'" + panel.getMy() + "'");
         if(panel.getAt() != null) writer.write(",at:'" + panel.getAt() + "'");
         if(panel.isAppendToBody()) writer.write(",appendToBody:true");
+        if(panel.isDynamic()) writer.write(",dynamic:true");
         
         writer.write("});});");
 
