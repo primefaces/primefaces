@@ -12,7 +12,6 @@ PrimeFaces.widget.ScrollPanel = function(cfg) {
     }
     
     if(this.cfg.mode != 'native') {
-        this.generateDOM();
     
         var _self = this;
 
@@ -43,8 +42,7 @@ PrimeFaces.widget.ScrollPanel.prototype.generateDOM = function() {
     this.container.wrapInner('<div class="ui-scrollpanel-wrapper" />');
     this.wrapper = this.container.children('.ui-scrollpanel-wrapper');
     
-    this.wrapper.wrapInner('<div class="ui-scrollpanel-content" />');
-    this.content = this.wrapper.children('.ui-scrollpanel-content');
+    this.content.removeAttr("style").addClass('ui-scrollpanel-content');
     
     var hbarDOM = '<div class="ui-scrollpanel-hbar ui-widget-header ui-corner-bottom">';
     hbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-vertical"></span></div>';
@@ -61,25 +59,39 @@ PrimeFaces.widget.ScrollPanel.prototype.generateDOM = function() {
 }
 
 PrimeFaces.widget.ScrollPanel.prototype.init = function(){
-    if(this.jq.is(':hidden'))
+    if(this.jq.is(':hidden')) {
         return false;
+    }
     
-    var contentWidth = this.content.outerWidth(true),
+    //look into
+    this.jq.wrapInner('<div style="display:inline-block;"/>');
+    this.content = this.jq.children('div');
+    
+    var containerWidth = this.jq.width(),
+    containerHeight = this.jq.height(),
+    
+    contentWidth = this.content.outerWidth(true),
     contentHeight = this.content.outerHeight(true),
     
-    containerWidth = this.jq.width(),
-    containerHeight = this.jq.height();
+    xScrolled = contentWidth > containerWidth,
+    yScrolled = contentHeight > containerHeight;
+    
+    //no need to scroll and unwrap
+    if(!(xScrolled||yScrolled)) {
+        this.content.replaceWith(this.content.html());
+        return;
+    }
+    
+    this.generateDOM();
+
     this.container.css({width: containerWidth, height: containerHeight});
     
-    var xScrolled = contentWidth > containerWidth,
-    yScrolled = contentHeight > containerHeight,
-    hbar = this.container.children('.ui-scrollpanel-hbar'),
+    var hbar = this.container.children('.ui-scrollpanel-hbar'),
     vbar = this.container.children('.ui-scrollpanel-vbar'),
-
     wrapperWidth = containerWidth - (yScrolled ? vbar.width() : 0),
     wrapperHeight = containerHeight - (xScrolled ? hbar.height() : 0);
     this.wrapper.css({width: wrapperWidth, height: wrapperHeight});
-
+    
     if(xScrolled){
         this.h = {
             bar  : hbar,
