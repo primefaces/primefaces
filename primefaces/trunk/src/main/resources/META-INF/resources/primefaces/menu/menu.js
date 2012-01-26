@@ -535,6 +535,9 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
             _self.menu.hide();
         }
     });
+    
+    //aria
+    this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
 }
 
 /**
