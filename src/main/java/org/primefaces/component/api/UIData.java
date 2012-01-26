@@ -15,8 +15,6 @@
  */
 package org.primefaces.component.api;
 
-import javax.faces.FacesException;
-
 public class UIData extends javax.faces.component.UIData {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header"; 
@@ -25,8 +23,8 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default ui-corner-all"; 
     public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active ui-corner-all"; 
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current"; 
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options"; 
-    public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select"; 
+    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left"; 
+    public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left"; 
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all"; 
     public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first"; 
     public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default ui-corner-all"; 

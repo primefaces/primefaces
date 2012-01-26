@@ -54,3 +54,12 @@
 .ui-paginator-pages {
     *padding-bottom: 0px;
 }
+
+.ui-paginator-jtp-select option,
+.ui-paginator-rpp-options option {
+    background-image: none;
+    border:0 none;
+    box-shadow:none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}

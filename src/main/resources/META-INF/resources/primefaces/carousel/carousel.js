@@ -96,6 +96,7 @@ PrimeFaces.widget.Carousel.prototype.bindEvents = function(){
         e.preventDefault();
     });
     
+    PrimeFaces.skinSelect(this.dropdown);
     this.dropdown.change(function(e) {
         if(!_self.animating)
             _self.setPage(parseInt($(this).val()));
