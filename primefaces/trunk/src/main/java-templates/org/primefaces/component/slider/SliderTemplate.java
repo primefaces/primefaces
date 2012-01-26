@@ -41,6 +41,7 @@ import javax.faces.event.PhaseId;
             if(eventName.equals("slideEnd")) {
                 int sliderValue = Integer.parseInt(params.get(clientId + "_ajaxSlideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
+                slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(slideEndEvent);
             }
         }
