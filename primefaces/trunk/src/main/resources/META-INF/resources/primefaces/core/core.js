@@ -209,7 +209,7 @@ PrimeFaces = {
     },
     
     focus : function(id, context) {
-        var selector = ':not(:submit):not(:button):input:visible:enabled:first';
+        var selector = ':not(:submit):not(:button):input:visible:enabled';
 
         setTimeout(function() {
             if(id) {
@@ -219,13 +219,11 @@ PrimeFaces = {
                     jq.focus();
                 } 
                 else {
-                    jq.find(selector).focus();
+                    jq.find(selector).eq(0).focus();
                 }
             }
             else if(context) {
-                var jq = $(PrimeFaces.escapeClientId(context));
-
-                jq.find(selector).focus();
+                $(PrimeFaces.escapeClientId(context)).find(selector).eq(0).focus();
             }
             else {
                 $(selector).focus();
