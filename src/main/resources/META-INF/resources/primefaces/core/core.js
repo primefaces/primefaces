@@ -3,11 +3,7 @@ PrimeFaces = {
     escapeClientId : function(id) {
         return "#" + id.replace(/:/g,"\\:");
     },
-	
-    onContentReady : function(id, fn) {
-        YAHOO.util.Event.onContentReady(id, fn, window, true);
-    },
-	
+		
     cleanWatermarks : function(){
         $.watermark.hideAll();
     },
