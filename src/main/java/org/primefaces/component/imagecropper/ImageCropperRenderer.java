@@ -119,9 +119,17 @@ public class ImageCropperRenderer extends CoreRenderer {
             return null;
         }
         
-		ImageCropper cropper = (ImageCropper) component;
+        ImageCropper cropper = (ImageCropper) component;
+        
+        //remove query string
+        String imagePath = cropper.getImage();
+        int queryStringIndex = imagePath.indexOf("?");
+        if(queryStringIndex != -1 ) {
+            imagePath = imagePath.substring(0, queryStringIndex);
+        }
+        
 		String[] cropCoords = coords.split("_");
-		String format = getFormat(cropper.getImage());
+		String format = getFormat(imagePath);
 		
 		int x = Integer.parseInt(cropCoords[0]);
 		int y = Integer.parseInt(cropCoords[1]);
@@ -129,7 +137,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 		int h = Integer.parseInt(cropCoords[3]);
 		
 		try {
-			BufferedImage outputImage = getSourceImage(context, cropper);
+			BufferedImage outputImage = getSourceImage(context, imagePath);
 			BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
 			
 			ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
@@ -156,27 +164,26 @@ public class ImageCropperRenderer extends CoreRenderer {
 	protected String getFormat(String path) {
 		String[] pathTokens = path.split("\\.");
 		
-		return pathTokens[pathTokens.length -1];
+		return pathTokens[pathTokens.length - 1];
 	}
 		
 	protected boolean isExternalImage(ImageCropper cropper) {
 		return cropper.getImage().startsWith("http");
 	}
 	
-	private BufferedImage getSourceImage(FacesContext context, ImageCropper cropper) throws IOException {
+	private BufferedImage getSourceImage(FacesContext context, String imagePath) throws IOException {
 		 BufferedImage outputImage = null;
-		 boolean isExternal = isExternalImage(cropper);
+		 boolean isExternal = imagePath.startsWith("http");
 		 
 		 if(isExternal) {
-			 URL url = new URL(cropper.getImage());
+			 URL url = new URL(imagePath);
 			 
 			 outputImage =  ImageIO.read(url);
 		 }
 		 else {
 			ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-			String imagePath = servletContext.getRealPath("") + cropper.getImage();
 			
-			outputImage = ImageIO.read(new File(imagePath));
+			outputImage = ImageIO.read(new File(servletContext.getRealPath("") + imagePath));
 		}
 		 
 		return outputImage;
