@@ -260,7 +260,7 @@ PrimeFaces.widget.Dialog.prototype.setupResizable = function() {
 
 PrimeFaces.widget.Dialog.prototype.initPosition = function() {
     //reset
-    this.jq.css({'left':'0px','top':'0px'});
+    this.jq.css({left:0,top:0});
                 
     if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
         this.cfg.position = this.cfg.position.replace(',', ' ');
@@ -268,7 +268,18 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
         this.jq.position({
                     my: 'center'
                     ,at: this.cfg.position
+                    ,collision: 'fit'
                     ,of: window
+                    //make sure dialog stays in viewport
+                    ,using: function(pos) {
+                        var l = pos.left < 0 ? 0 : pos.left,
+                        t = pos.top < 0 ? 0 : pos.top;
+                        
+                        $(this).css({
+                            left: l
+                            ,top: t
+                        });
+                    }
                 });
     }
     else {
@@ -277,8 +288,8 @@ PrimeFaces.widget.Dialog.prototype.initPosition = function() {
         y = $.trim(coords[1]);
         
         this.jq.css({
-            'left': x + 'px' 
-            ,'top': y + 'px'
+            left: x
+            ,top: y
         });
     }
     
