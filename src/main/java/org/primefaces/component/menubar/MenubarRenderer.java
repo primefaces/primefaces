@@ -55,6 +55,7 @@ public class MenubarRenderer extends BaseMenuRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        writer.writeAttribute("role", "menubar", null);
 
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);

@@ -78,6 +78,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("role", "menu", null);
 		if(breadCrumb.getStyle() != null) writer.writeAttribute("style", breadCrumb.getStyle(), null);
 
 		writer.startElement("ul", null);
@@ -88,6 +89,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
 			if(child.isRendered() && child instanceof MenuItem) {
 				writer.startElement("li", null);
+                writer.writeAttribute("role", "menuitem", null);
 
 				encodeMenuItem(context, (MenuItem) child);
 

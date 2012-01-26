@@ -68,6 +68,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, null);
         }
+        writer.writeAttribute("role", "menu", null);
 
 		writer.startElement("ul", null);
         writer.writeAttribute("class", ContextMenu.LIST_CLASS, null);
@@ -78,6 +79,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
                 if(child instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", ContextMenu.MENUITEM_CLASS, null);
+                    writer.writeAttribute("role", "menuitem", null);
                     encodeMenuItem(context, (MenuItem) child);
                     writer.endElement("li");
                 } 

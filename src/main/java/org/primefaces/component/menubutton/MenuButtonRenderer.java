@@ -95,6 +95,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("div", null);
             writer.writeAttribute("id", menuId, null);
             writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
+            writer.writeAttribute("role", "menu", null);
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
@@ -106,6 +107,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                         
                         writer.startElement("li", item);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, item);
                         writer.endElement("li");
                     }

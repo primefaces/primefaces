@@ -121,6 +121,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                 if(child instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    writer.writeAttribute("role", "menuitem", null);
                     encodeMenuItem(context, (MenuItem) child);
                     writer.endElement("li");
                 } 
@@ -135,6 +136,8 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                     if(style != null) {
                         writer.writeAttribute("style", style, null);
                     }
+                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute("aria-haspopup", "true", null);
                     encodeTieredSubmenu(context, (Submenu) child);
                     writer.endElement("li");
                 } 
@@ -176,6 +179,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		if(submenu.getChildCount() > 0) {
 			writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
+            writer.writeAttribute("role", "menu", null);
 
 			encodeTieredMenuContent(context, submenu);
 

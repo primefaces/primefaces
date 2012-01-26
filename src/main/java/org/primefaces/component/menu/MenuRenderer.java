@@ -84,6 +84,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        writer.writeAttribute("role", "menu", null);
 
         if(sliding){
             encodeSlidingMenuBegin(context, menu);
@@ -119,6 +120,7 @@ public class MenuRenderer extends BaseMenuRenderer {
                 if(child instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    writer.writeAttribute("role", "menuitem", null);
                     encodeMenuItem(context, (MenuItem) child);
                     writer.endElement("li");
                 } 
