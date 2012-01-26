@@ -102,6 +102,22 @@ PrimeFaces = {
         
         return this;
     },
+    
+    skinSelect : function(select) {
+       select.mouseover(function() {
+            var el = $(this);
+            if(!el.hasClass('ui-state-focus'))
+                el.addClass('ui-state-hover'); 
+       }).mouseout(function() {
+            $(this).removeClass('ui-state-hover'); 
+       }).focus(function() {
+            $(this).addClass('ui-state-focus').removeClass('ui-state-hover');
+       }).blur(function() {
+            $(this).removeClass('ui-state-focus ui-state-hover'); 
+       });
+        
+        return this;
+    },
 
     //ajax shortcut
     ab : function(cfg, ext) {

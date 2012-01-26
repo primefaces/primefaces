@@ -45,6 +45,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     this.bindPageLinkEvents();
     
     //records per page selection
+    PrimeFaces.skinSelect(this.rppSelect);
     this.rppSelect.change(function(e) {
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setRowsPerPage(parseInt($(this).val()));
@@ -52,6 +53,7 @@ PrimeFaces.widget.Paginator.prototype.bindEvents = function(){
     });
     
     //jump to page
+    PrimeFaces.skinSelect(this.jtpSelect);
     this.jtpSelect.change(function(e) {
         if(!$(this).hasClass("ui-state-disabled")){
             _self.setPage(parseInt($(this).val()));

@@ -67,6 +67,14 @@
   margin: 0px 10px;
 }
 
+.ui-carousel-dropdown option {
+    background-image: none;
+    border:0 none;
+    box-shadow:none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 .ui-carousel-button {
   float: right;
   margin: 2px;

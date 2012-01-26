@@ -11,7 +11,7 @@
     public final static String VERTICAL_VIEWPORT_CLASS = "ui-carousel-viewport ui-carousel-vertical-viewport";
     public final static String PAGE_LINKS_CONTAINER_CLASS = "ui-carousel-page-links";
     public final static String PAGE_LINK_CLASS = "ui-icon ui-carousel-page-link ui-icon-radio-off";
-    public final static String DROPDOWN_CLASS = "ui-carousel-dropdown";
+    public final static String DROPDOWN_CLASS = "ui-carousel-dropdown ui-widget ui-state-default ui-corner-left";
 
     public int getRenderedChildCount() {
         int i = 0;
