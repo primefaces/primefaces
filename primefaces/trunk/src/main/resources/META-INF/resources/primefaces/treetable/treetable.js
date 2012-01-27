@@ -162,10 +162,11 @@ PrimeFaces.widget.TreeTable.prototype.onRowClick = function(e, node) {
 }
 
 PrimeFaces.widget.TreeTable.prototype.selectNode = function(e, node) {
-    var nodeKey = node.attr('id').split('_node_')[1];
+    var nodeKey = node.attr('id').split('_node_')[1],
+    metaKey = (e.metaKey||e.ctrlKey);
     
     //unselect previous selection
-    if(this.isSingleSelection() || (this.isMultipleSelection() && !e.metaKey)) {
+    if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
         node.siblings('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false);
         this.selection = [];
     }
@@ -181,9 +182,10 @@ PrimeFaces.widget.TreeTable.prototype.selectNode = function(e, node) {
 }
 
 PrimeFaces.widget.TreeTable.prototype.unselectNode = function(e, node) {
-    var nodeKey = node.attr('id').split('_node_')[1];
+    var nodeKey = node.attr('id').split('_node_')[1],
+    metaKey = metaKey = (e.metaKey||e.ctrlKey);
 
-    if(e.metaKey) {
+    if(metaKey) {
         //remove visual style
         node.removeClass('ui-state-highlight');
         

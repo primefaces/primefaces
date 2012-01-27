@@ -231,12 +231,13 @@ PrimeFaces.widget.Tree.prototype.showNodeChildren = function(node) {
 }
 
 PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
-
+    var metaKey = (e.metaKey||e.ctrlKey);
+    
     if(this.isCheckboxSelection()) {
         this.toggleCheckbox(node, true);
     }
     else {
-        if(this.isSingleSelection() || (this.isMultipleSelection() && !e.metaKey)) {
+        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
             //clean all selections
             this.selections = [];
             this.jq.find('.ui-tree-node-content.ui-state-highlight').each(function() {
@@ -244,6 +245,7 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
             });
         }
 
+        //select node
         node.children('.ui-tree-node').attr('aria-selected', true);
         node.find('.ui-tree-node-content:first').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
@@ -256,7 +258,8 @@ PrimeFaces.widget.Tree.prototype.selectNode = function(e, node) {
 }
 
 PrimeFaces.widget.Tree.prototype.unselectNode = function(e, node) {
-    var nodeId = this.getNodeId(node);
+    var nodeId = this.getNodeId(node),
+    metaKey = (e.metaKey||e.ctrlKey);
 
     //select node
     if(this.isCheckboxSelection()) {
@@ -264,7 +267,7 @@ PrimeFaces.widget.Tree.prototype.unselectNode = function(e, node) {
         this.writeSelections();
         this.fireNodeUnselectEvent(node);
     }
-    else if(e.metaKey) {
+    else if(metaKey) {
         //remove visual style    
         node.find('.ui-tree-node-content:first').removeClass('ui-state-highlight');
         

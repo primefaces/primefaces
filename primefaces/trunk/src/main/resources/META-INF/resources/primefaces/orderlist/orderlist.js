@@ -63,9 +63,10 @@ PrimeFaces.widget.OrderList.prototype.bindEvents = function() {
             $(this).removeClass('ui-state-hover');
     })
     .mousedown(function(e) {
-        var element = $(this);
+        var element = $(this),
+        metaKey = (e.metaKey||e.ctrlKey);
 
-        if(!e.metaKey) {
+        if(!metaKey) {
             element.removeClass('ui-state-hover').addClass('ui-state-highlight')
             .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
         }
