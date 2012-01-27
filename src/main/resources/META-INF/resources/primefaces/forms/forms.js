@@ -721,18 +721,21 @@ PrimeFaces.widget.SelectListbox.prototype.bindEvents = function() {
         $(this).removeClass('ui-state-hover');
     }).mousedown(function(e) {        
         var element = $(this),
-        option = $(_self.options.get(element.index()));
-
-        //clear previous selections
-        if(_self.cfg.selection == 'single' || (_self.cfg.selection == 'multiple' && !e.metaKey)) {
+        option = $(_self.options.get(element.index())),
+        metaKey = (e.metaKey||e.ctrlKey);
+        
+        //clear previous selection if single or multiple with no metakey
+        if(_self.cfg.selection == 'single' || (_self.cfg.selection == 'multiple' && !metaKey)) {
             _self.items.removeClass('ui-state-active ui-state-hover');
             _self.options.removeAttr('selected');
         }
         
-        if(_self.cfg.selection == 'multiple' && e.metaKey && element.hasClass('ui-state-active')) {
+        //unselect current selected item if multiple with metakey
+        if(_self.cfg.selection == 'multiple' && metaKey && element.hasClass('ui-state-active')) {
             element.removeClass('ui-state-active');
             option.removeAttr('selected');
         } 
+        //select item
         else {
             element.addClass('ui-state-active').removeClass('ui-state-hover');
             option.attr('selected', 'selected');
@@ -741,6 +744,8 @@ PrimeFaces.widget.SelectListbox.prototype.bindEvents = function() {
         _self.input.change();
         
         PrimeFaces.clearSelection();
+        
+        e.preventDefault();
     });
     
     //input
