@@ -256,7 +256,7 @@ PrimeFaces.widget.Sheet.prototype.bindDynamicEvents = function() {
     //events for data cells
     this.cells.click(function(e) {
         var cell = $(this),
-        metaKey = e.metaKey,
+        metaKey = (e.metaKey||e.ctrlKey),
         shiftKey = e.shiftKey,
         selected = _self.isSelected(cell);
         

@@ -600,10 +600,11 @@ PrimeFaces.widget.DataTable.prototype.findRow = function(r) {
 PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
     var row = this.findRow(r),
     rowMeta = this.getRowMeta(row),
-    _self = this;
+    _self = this,
+    metaKey = event.metaKey||event.ctrlKey;
 
     //unselect previous selection if this is single selection or multiple one with no keys
-    if(this.isSingleSelection() || (this.isMultipleSelection() && event && !event.metaKey && !event.shiftKey)) {
+    if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !event.shiftKey)) {
         this.unselectAllRows();
     }
     
@@ -658,12 +659,13 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
 
 PrimeFaces.widget.DataTable.prototype.unselectRow = function(r, event) {
     var row = this.findRow(r),
-    rowMeta = this.getRowMeta(row);
+    rowMeta = this.getRowMeta(row),
+    metaKey = event.metaKey||event.ctrlKey;
 
-    if(this.isMultipleSelection() && event && !event.metaKey) {
+    if(this.isMultipleSelection() && event && !metaKey) {
         this.selectRow(row, event);
     }
-    else if(event.metaKey) {
+    else if(metaKey) {
         //remove visual style
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
 
