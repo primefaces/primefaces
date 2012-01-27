@@ -30,7 +30,6 @@ PrimeFaces.widget.InputTextarea = function(cfg) {
     this.jq = $(this.jqId);
     this.cfg.rowsDefault = this.jq.attr('rows');
     this.cfg.colsDefault = this.jq.attr('cols');
-    var _self = this;
     
     //Visuals
     PrimeFaces.skinInput(this.jq);
@@ -42,13 +41,7 @@ PrimeFaces.widget.InputTextarea = function(cfg) {
     
     //max length
     if(this.cfg.maxlength){
-        //backspace, tab, pageup/down, end, arrows..
-        var ignore = [8,9,33,34,35,36,37,38,39,40,46];
-        this.input.keydown(function(e){
-            return $(this).val().length < _self.cfg.maxlength 
-            || $.inArray(e.which, ignore) !== -1
-            || e.metaKey;
-        });
+        this.applyMaxlength();
     }
 
     //Client behaviors
@@ -84,6 +77,19 @@ PrimeFaces.widget.InputTextarea.prototype.resize = function() {
     var newRows = (linesCount >= this.cfg.rowsDefault) ? (linesCount + 1) : this.cfg.rowsDefault;
 
     this.jq.attr('rows', newRows);
+}
+
+PrimeFaces.widget.InputTextarea.prototype.applyMaxlength = function() {
+    var _self = this;
+    
+    this.jq.keyup(function(e) {
+        var value = _self.jq.val(),
+        length = value.length;
+        
+        if(length > _self.cfg.maxlength) {
+            _self.jq.val(value.substr(0, _self.cfg.maxlength));
+        }
+    });
 }
 
 /**
