@@ -301,7 +301,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/themeswitcher/themeswitcher.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
