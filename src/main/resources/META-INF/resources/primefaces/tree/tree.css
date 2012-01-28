@@ -109,6 +109,6 @@
     cursor: pointer;
 }
 
-.ui-tree-selectable .ui-tree-selectable-node {
+.ui-tree .ui-tree-selectable-node {
     cursor: pointer;
 }
