@@ -24,6 +24,7 @@ import javax.faces.event.PhaseId;
 import javax.xml.bind.DatatypeConverter;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class PhotoCamRenderer extends CoreRenderer {
@@ -47,10 +48,12 @@ public class PhotoCamRenderer extends CoreRenderer {
     
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		PhotoCam cam = (PhotoCam) component;
-		
-		encodeMarkup(context, cam);
-		encodeScript(context, cam);
+        if(!AgentUtils.isIE(context)) {
+            PhotoCam cam = (PhotoCam) component;
+
+            encodeMarkup(context, cam);
+            encodeScript(context, cam);
+        }
 	}
 
     protected void encodeMarkup(FacesContext context, PhotoCam cam) throws IOException {
