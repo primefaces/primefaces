@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Prime Technology.
+ * Copyright 2009-2012 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,33 +18,28 @@ package org.primefaces.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.component.UIComponent;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.submenu.Submenu;
 
 public class DefaultMenuModel implements MenuModel, Serializable {
 
-	private List<Submenu> submenus;
-	private List<MenuItem> menuItems;
-	
-	public DefaultMenuModel() {
-		submenus = new ArrayList<Submenu>();
-		menuItems = new ArrayList<MenuItem>();
-	}
+    private List<UIComponent> contents;
 
-	public List<Submenu> getSubmenus() {
-		return submenus;
-	}
-	
-	public void addSubmenu(Submenu submenu) {
-		submenus.add(submenu);
-	}
+    public DefaultMenuModel() {
+        contents = new ArrayList<UIComponent>();
+    }
 
-	public void addMenuItem(MenuItem menuItem) {
-		menuItems.add(menuItem);
-	}
+    public void addSubmenu(Submenu submenu) {
+        contents.add(submenu);
+    }
 
-	public List<MenuItem> getMenuItems() {
-		return menuItems;
-	}
+    public void addMenuItem(MenuItem menuItem) {
+        contents.add(menuItem);
+    }
+
+    public List<UIComponent> getContents() {
+        return contents;
+    }
 }

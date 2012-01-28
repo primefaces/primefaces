@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Prime Technology.
+ * Copyright 2009-2012 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
 package org.primefaces.model;
 
 import java.util.List;
+import javax.faces.component.UIComponent;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.submenu.Submenu;
 
 public interface MenuModel {
 
-	public List<Submenu> getSubmenus();
+	public List<UIComponent> getContents();
 	
 	public void addSubmenu(Submenu submenu);
-	
-	public List<MenuItem> getMenuItems();
 	
 	public void addMenuItem(MenuItem menuItem);
 }
