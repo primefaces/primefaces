@@ -453,8 +453,9 @@ PrimeFaces.widget.SelectOneMenu.prototype.alignPanel = function() {
 }
 
 PrimeFaces.widget.SelectOneMenu.prototype.fireChangeEvent = function() {
+    //call user onchange callback by passing current option value
     if(this.cfg.onchange) {
-        this.cfg.onchange.call(this);
+        this.cfg.onchange.call(this, this.selectedOption.attr('value'));
     }
     
     if(this.cfg.behaviors) {
