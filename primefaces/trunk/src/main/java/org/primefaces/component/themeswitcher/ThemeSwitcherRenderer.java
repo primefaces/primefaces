@@ -34,9 +34,7 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         onchange = (onchange == null) ? changeTheme : onchange + ";" + changeTheme;
         
         startScript(writer, clientId);
-		
-		writer.write("$(function(){");
-        
+
         writer.write("PrimeFaces.cw('SelectOneMenu','" + ts.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",onchange:function() {" + onchange + ";}");
@@ -47,7 +45,7 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
 
         encodeClientBehaviors(context, menu);
 		
-		writer.write("});});");
+		writer.write("});");
         
 		endScript(writer);
 	}

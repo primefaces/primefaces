@@ -141,20 +141,10 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         this.input.attr("tabindex", -1);
     }
     
-    //Append panel to body
-    $(document.body).children(this.panelId).remove();
-    this.panel.appendTo(document.body);
-            
-    //Hide overlay on resize
-    var resizeNS = 'resize.' + this.id;
-    $(window).unbind(resizeNS).bind(resizeNS, function() {
-        if(_self.panel.is(':visible')) {
-            _self.hide();
-        }
-    });
-    
     //dialog support
     this.setupDialogSupport();
+    
+    this.bindOnloadEvents();
     
     if(this.jq.is(':visible')) {
         this.initWidths();
@@ -174,6 +164,25 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
 }
 
 PrimeFaces.extend(PrimeFaces.widget.SelectOneMenu, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.SelectOneMenu.prototype.bindOnloadEvents = function() {
+    var _self = this;
+    
+    $(function() {
+        //Append panel to body
+        $(document.body).children(_self.panelId).remove();
+        _self.panel.appendTo(document.body);
+
+        //Hide overlay on resize
+        var resizeNS = 'resize.' + _self.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if(_self.panel.is(':visible')) {
+                _self.hide();
+            }
+        });
+    });
+    
+}
 
 PrimeFaces.widget.SelectOneMenu.prototype.setupDialogSupport = function() {
     var dialog = this.jq.parents('.ui-dialog:first');
