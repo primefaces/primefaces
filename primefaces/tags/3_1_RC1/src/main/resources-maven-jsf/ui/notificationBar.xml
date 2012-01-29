@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>notificationBar</tag>
+	<tagClass>org.primefaces.component.notificationbar.NotificationBarTag</tagClass>
+	<componentClass>org.primefaces.component.notificationbar.NotificationBar</componentClass>
+	<componentType>org.primefaces.component.NotificationBar</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.NotificationBarRenderer</rendererType>
+	<rendererClass>org.primefaces.component.notificationbar.NotificationBarRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>NotificationBar displayes a multipurpose fixed positioned panel for notification. Any group of JSF content can be placed inside notificationbar.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>StyleClass of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>top</defaultValue>
+            <description>Position of the bar, "top" or "bottom". Default is top.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Name of the effect, "fade", "slide" or "none". Default is fade.</description>
+		</attribute>
+		<attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
+            <description>Speed of the effect, "slow", "normal" or "fast". Default is normal.</description>
+		</attribute>
+		<attribute>
+			<name>autoDisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description></description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

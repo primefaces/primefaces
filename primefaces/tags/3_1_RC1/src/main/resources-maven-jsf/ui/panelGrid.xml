@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>panelGrid</tag>
+	<tagClass>org.primefaces.component.panelgrid.PanelGridTag</tagClass>
+	<componentClass>org.primefaces.component.panelgrid.PanelGrid</componentClass>
+	<componentType>org.primefaces.component.PanelGrid</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.PanelGridRenderer</rendererType>
+	<rendererClass>org.primefaces.component.panelgrid.PanelGridRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>
+        PanelGrid is an extension to the standard PanelGrid.
+    </description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>columns</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Number of columns of the table.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the table.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the table.</description>
+		</attribute>
+        <attribute>
+			<name>columnClasses</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Comma separated list of column style classes.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+	</resources>
+</component>

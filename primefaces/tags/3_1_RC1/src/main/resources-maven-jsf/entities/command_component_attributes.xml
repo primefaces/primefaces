@@ -1,0 +1,33 @@
+&standard_uicomponent_attributes;
+<attribute>
+	<name>value</name>
+	<required>false</required>
+	<type>java.lang.Object</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Label of the component.</description>
+</attribute>
+<attribute>
+	<name>actionListener</name>
+	<required>false</required>
+	<type>javax.faces.event.ActionListener</type>
+	<method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>An actionlistener to process when command is executed.</description>
+</attribute>
+<attribute>
+	<name>action</name>
+	<required>false</required>
+	<type>javax.el.MethodExpression</type>
+	<method-signature>java.lang.Object action()</method-signature>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>A method expression or a string outcome to process when command is executed.</description>
+</attribute>
+<attribute>
+	<name>immediate</name>
+	<required>false</required>
+	<type>boolean</type>
+	<defaultValue>false</defaultValue>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Boolean value that determines the phaseId of the action event, 
+    when true actions are processed at "Apply Request Values", when false at "Invoke Application" phase.</description>
+</attribute>
