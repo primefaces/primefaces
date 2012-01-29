@@ -605,7 +605,7 @@ import javax.faces.FacesException;
     }
 
     private int columnsCount = -1;
-
+    
     public int getColumnsCount() {
         if(columnsCount == -1) {
             columnsCount = 0;
@@ -614,11 +614,20 @@ import javax.faces.FacesException;
                 if(kid.isRendered()) {
                     if(kid instanceof Column) {
                         columnsCount++;
-                    } else if(kid instanceof Columns) {
+                    } 
+                    else if(kid instanceof Columns) {
                         Columns columns = (Columns) kid;
                         Collection collection = (Collection) columns.getValue();
                         if(collection != null) {
                             columnsCount += collection.size();
+                        }
+                    }
+                    else if(kid instanceof SubTable) {
+                        SubTable subTable = (SubTable) kid;
+                        for(UIComponent subTableKid : subTable.getChildren()) {
+                            if(subTableKid.isRendered() && subTableKid instanceof Column) {
+                                columnsCount++;
+                            }
                         }
                     }
                 } 
