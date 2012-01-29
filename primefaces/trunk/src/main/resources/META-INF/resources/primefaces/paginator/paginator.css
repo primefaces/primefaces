@@ -4,21 +4,21 @@
     padding:2px;
 }
 
-.ui-paginator-top {
+.ui-paginator .ui-paginator-top {
     border-bottom:0px none;
 }
 
-.ui-paginator-bottom {
+.ui-paginator .ui-paginator-bottom {
     border-top:0px none;
 }
 
-.ui-paginator-page,
-.ui-paginator-pages,
-.ui-paginator-next,
-.ui-paginator-last,
-.ui-paginator-first,
-.ui-paginator-prev,
-.ui-paginator-current {
+.ui-paginator .ui-paginator-page,
+.ui-paginator .ui-paginator-pages,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev,
+.ui-paginator .ui-paginator-current {
 	display: inline-block;
 	padding: 2px 6px;
 	zoom: 1;
@@ -28,35 +28,36 @@
 	outline: none;
 }
 
-.ui-paginator-page,
-.ui-paginator-next,
-.ui-paginator-last,
-.ui-paginator-first,
-.ui-paginator-prev{
+.ui-paginator .ui-paginator-page,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev{
     cursor: pointer;
 }
 
-.ui-paginator-current,
-.ui-paginator-rpp-options {
+.ui-paginator .ui-paginator-current,
+.ui-paginator .ui-paginator-rpp-options {
 	margin-left: 1em;
 	margin-right: 1em;
+    background-image: none;
 }
 
-.ui-paginator-next .ui-icon,
-.ui-paginator-prev .ui-icon,
-.ui-paginator-first .ui-icon,
-.ui-paginator-last .ui-icon {
+.ui-paginator .ui-paginator-next .ui-icon,
+.ui-paginator .ui-paginator-prev .ui-icon,
+.ui-paginator .ui-paginator-first .ui-icon,
+.ui-paginator .ui-paginator-last .ui-icon {
 	height: auto;
 	overflow: inherit;
 }
 
 /* IE7 Hack */
-.ui-paginator-pages {
+.ui-paginator .ui-paginator-pages {
     *padding-bottom: 0px;
 }
 
-.ui-paginator-jtp-select option,
-.ui-paginator-rpp-options option {
+.ui-paginator .ui-paginator-jtp-select option,
+.ui-paginator .ui-paginator-rpp-options option {
     background-image: none;
     border:0 none;
     box-shadow:none;

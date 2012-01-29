@@ -5,7 +5,7 @@
   padding: 1px;
 }
 
-.ui-carousel-viewport ul {
+.ui-carousel .ui-carousel-viewport ul {
   list-style: none outside none;
   margin: 0;
   padding:0;
@@ -14,27 +14,27 @@
   left: 0;
 }
 
-.ui-carousel-viewport ul li {
+.ui-carousel .ui-carousel-viewport ul li {
   margin: 1px;
   padding: 0;
   float: left;
 }
 
-.ui-carousel-viewport {
+.ui-carousel .ui-carousel-viewport {
   overflow: hidden;
   position: relative;
   border: 0;
 }
 
-.ui-carousel-vertical-viewport ul li {
+.ui-carousel .ui-carousel-vertical-viewport ul li {
   float: none !important;
 }
 
-.ui-carousel-vertical-viewport ul {
+.ui-carousel .ui-carousel-vertical-viewport ul {
   width: auto !important;
 }
 
-.ui-carousel-footer {
+.ui-carousel .ui-carousel-footer {
   margin: 1px 1px 0px 1px;
   height: 16px;
   padding-top: 9px;
@@ -45,7 +45,7 @@
 }
 
 /* header */
-.ui-carousel-header {
+.ui-carousel .ui-carousel-header {
   margin: 0 1px;
   height: 16px;
   overflow: hidden;
@@ -55,19 +55,20 @@
   padding-left: 10px;
 }
 
-.ui-carousel-header .ui-carousel-header-title {
+.ui-carousel .ui-carousel-header .ui-carousel-header-title {
   display: inline-block;
   width: 30%;
   padding-top: 2px;
   overflow: hidden;
 }
 
-.ui-carousel-dropdown {
+.ui-carousel .ui-carousel-dropdown {
   float: right;
   margin: 0px 10px;
+  background-image: none;
 }
 
-.ui-carousel-dropdown option {
+.ui-carousel .ui-carousel-dropdown option {
     background-image: none;
     border:0 none;
     box-shadow:none;
@@ -75,21 +76,22 @@
     -webkit-box-shadow: none;
 }
 
-.ui-carousel-button {
+.ui-carousel .ui-carousel-button {
   float: right;
   margin: 2px;
 }
 
-.ui-carousel-page-link {
+.ui-carousel .ui-carousel-page-link {
   float: left;
   margin: 0 2px;
 }
 
-.ui-carousel-page-link, .ui-carousel-button {
+.ui-carousel .ui-carousel-page-link, 
+.ui-carousel .ui-carousel-button {
   cursor: pointer;
 }
 
-.ui-carousel-page-links {
+.ui-carousel .ui-carousel-page-links {
   margin: 0px 9px;
   margin-top: 1px;
   display: inline-table;
@@ -97,6 +99,8 @@
 }
 
 /* ie7 hack*/
-.ui-carousel-page-links, .ui-carousel-button, .ui-carousel-dropdown {
+.ui-carousel .ui-carousel-page-links, 
+.ui-carousel .ui-carousel-button, 
+.ui-carousel .ui-carousel-dropdown {
   *margin-top:-1.4em ;
 }
