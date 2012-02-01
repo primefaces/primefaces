@@ -1111,6 +1111,8 @@
                 // Reset the global progress values:
                 this._loaded = this._total = 0;
             }
+            
+            $(document).trigger('ajaxComplete');
         },
 
         _onSend: function (e, data) {
@@ -1494,31 +1496,33 @@
             // Callback for successful uploads:
             done: function (e, data) {
                 var that = $(this).data('fileupload');
-                if (data.context) {
-                    data.context.each(function (index) {
-                        var file = ($.isArray(data.result) &&
-                                data.result[index]) || {error: 'emptyResult'};
-                        if (file.error) {
-                            that._adjustMaxNumberOfFiles(1);
-                        }
-                        $(this).fadeOut(function () {
-                            that._renderDownload([file])
-                                .css('display', 'none')
-                                .replaceAll(this)
-                                .fadeIn(function () {
-                                    // Fix for IE7 and lower:
-                                    $(this).show();
-                                });
+                if(that) {
+                    if (data.context) {
+                        data.context.each(function (index) {
+                            var file = ($.isArray(data.result) &&
+                                    data.result[index]) || {error: 'emptyResult'};
+                            if (file.error) {
+                                that._adjustMaxNumberOfFiles(1);
+                            }
+                            $(this).fadeOut(function () {
+                                that._renderDownload([file])
+                                    .css('display', 'none')
+                                    .replaceAll(this)
+                                    .fadeIn(function () {
+                                        // Fix for IE7 and lower:
+                                        $(this).show();
+                                    });
+                            });
                         });
-                    });
-                } else {
-                    that._renderDownload(data.result)
-                        .css('display', 'none')
-                        .appendTo($(this).find('.files'))
-                        .fadeIn(function () {
-                            // Fix for IE7 and lower:
-                            $(this).show();
-                        });
+                    } else {
+                        that._renderDownload(data.result)
+                            .css('display', 'none')
+                            .appendTo($(this).find('.files'))
+                            .fadeIn(function () {
+                                // Fix for IE7 and lower:
+                                $(this).show();
+                            });
+                    }
                 }
             },
             // Callback for failed (abort or error) uploads:
@@ -2106,14 +2110,18 @@ PrimeFaces.widget.FileUpload = function(cfg) {
     //dragdrop
     this.cfg.dropZone = this.cfg.dnd && !this.cfg.disabled ? this.jq : null;
     
-    //start and complete callbacks
-    this.bindCallbacks();
-    
     //create widget
     if(this.form.data().fileupload) {
         this.destroy();
     }
-    this.form.fileupload(this.cfg);
+    
+    this.form.fileupload(this.cfg).bind('fileuploaddone', function(e, data) {
+        PrimeFaces.ajax.AjaxResponse(data.jqXHR.responseXML);
+        
+        if(_self.cfg.oncomplete) {
+            _self.cfg.oncomplete.call(_self);
+        }
+    });
         
     //disable buttonbar
     if(this.cfg.disabled) {
@@ -2139,28 +2147,6 @@ PrimeFaces.widget.FileUpload = function(cfg) {
 
 PrimeFaces.extend(PrimeFaces.widget.FileUpload, PrimeFaces.widget.BaseWidget);
 
-PrimeFaces.widget.FileUpload.prototype.bindCallbacks = function() {
-    var _self = this;
-    
-    //mark as ajax request
-    this.cfg.beforeSend = function(xhr) {
-       xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-       
-       if(_self.cfg.onstart) {
-            _self.cfg.onstart.call(this);
-        }
-    };
-    
-    this.cfg.success = function(response) {
-        PrimeFaces.ajax.AjaxResponse(response);
-    };
-    
-    this.cfg.complete = function(jqXHR, textStatus) {
-        if(_self.cfg.oncomplete) {
-            _self.cfg.oncomplete.call(this);
-        }
-    };
-}
 
 PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
     var response = iframe.contents(),
