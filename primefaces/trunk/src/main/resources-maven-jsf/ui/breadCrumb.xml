@@ -27,55 +27,6 @@
             <description>MenuModel instance to create menus programmatically.</description>
 		</attribute>
 		<attribute>
-			<name>expandedEndItems</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>Number of expanded menutitems at the end. Default is 1.</description>
-		</attribute>
-		<attribute>
-			<name>expandedBeginningItems</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>Number of expanded menuitems at begining. Default is 1.</description>
-		</attribute>
-		<attribute>
-			<name>expandEffectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>800</defaultValue>
-            <description>Expanded effect duration in milliseconds. Default is 800.</description>
-		</attribute>
-		<attribute>
-			<name>collapseEffectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>500</defaultValue>
-            <description>Collapse effect duration in milliseconds. Default is 500.</description>
-		</attribute>
-		<attribute>
-			<name>initialCollapseEffectDuration</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>600</defaultValue>
-            <description>Initial collapse effect duration in milliseconds. Default is 600.</description>
-		</attribute>
-		<attribute>
-			<name>previewWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>5</defaultValue>
-            <description>Preview width of a collapsed menuitem. Default is 5.</description>
-		</attribute>
-		<attribute>
-			<name>preview</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Specifies preview mode, when set to false menuitems will not collapse. Default is false.</description>
-		</attribute>
-		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -93,16 +44,10 @@
 			<name>primefaces.css</name>
 		</resource>
 		<resource>
-			<name>breadcrumb/breadcrumb.css</name>
-		</resource>
-		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
 			<name>primefaces.js</name>
-		</resource>
-		<resource>
-			<name>breadcrumb/breadcrumb.js</name>
 		</resource>
 	</resources>
 </component>

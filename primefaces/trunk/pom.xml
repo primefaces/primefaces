@@ -230,6 +230,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/ui/jquery-ui.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/breadcrumb/breadcrumb.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
