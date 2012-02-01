@@ -17,7 +17,6 @@ package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -37,54 +36,30 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 		}
 
 		encodeMarkup(context, breadCrumb);
-		encodeScript(context, breadCrumb);
-	}
-
-    @Override
-	protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        BreadCrumb breadCrumb = (BreadCrumb) menu;
-		String clientId = breadCrumb.getClientId(context);
-        boolean preview = breadCrumb.isPreview();
-        int childCount = breadCrumb.getChildCount();
-        int expandedEndItems = preview ? breadCrumb.getExpandedEndItems() : childCount;
-        int expandedBeginningItems = preview ? breadCrumb.getExpandedBeginningItems() : childCount;
-        
-        startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Breadcrumb','" + breadCrumb.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        writer.write(",endElementsToLeaveOpen:" + expandedEndItems);
-        writer.write(",beginingElementsToLeaveOpen:" + expandedBeginningItems);
-      
-		if(breadCrumb.getPreviewWidth() != 5) writer.write(",previewWidth:" + breadCrumb.getPreviewWidth());
-		if(breadCrumb.getExpandEffectDuration() != 800) writer.write(",timeExpansionAnimation:" + breadCrumb.getExpandEffectDuration());
-		if(breadCrumb.getCollapseEffectDuration() != 500) writer.write(",timeCompressionAnimation:" + breadCrumb.getCollapseEffectDuration());
-		if(breadCrumb.getInitialCollapseEffectDuration() != 600) writer.write(",timeInitialCollapse:" + breadCrumb.getInitialCollapseEffectDuration());
-		        
-		writer.write("},'breadcrumb');");
-
-		endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;
 		String clientId = breadCrumb.getClientId(context);
-		String defaultStyleClass = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-corner-all";
-		String styleClass = breadCrumb.getStyleClass() == null ? defaultStyleClass : defaultStyleClass + " " + breadCrumb.getStyleClass();
+		String styleClass = breadCrumb.getStyleClass();
+		styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
+        
+        //home icon for first item
+        if(breadCrumb.getChildCount() > 0) {
+            ((MenuItem) breadCrumb.getChildren().get(0)).setStyleClass("ui-icon ui-icon-home");
+        }
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "menu", null);
-		if(breadCrumb.getStyle() != null) writer.writeAttribute("style", breadCrumb.getStyle(), null);
+		if(breadCrumb.getStyle() != null) 
+            writer.writeAttribute("style", breadCrumb.getStyle(), null);
 
 		writer.startElement("ul", null);
 
         for(Iterator<UIComponent> iterator = breadCrumb.getChildren().iterator(); iterator.hasNext();) {
-            
             UIComponent child = iterator.next();
 
 			if(child.isRendered() && child instanceof MenuItem) {
@@ -95,7 +70,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
                 if(iterator.hasNext()) {
                     writer.startElement("span", null);
-                    writer.writeAttribute("class", "ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e", null);
+                    writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
                     writer.endElement("span");
                 }
 
@@ -117,4 +92,9 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+
+    @Override
+    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+        // Do nothing
+    }
 }
