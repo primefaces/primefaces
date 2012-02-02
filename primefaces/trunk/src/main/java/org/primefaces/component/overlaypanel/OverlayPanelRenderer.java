@@ -32,8 +32,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
             renderChildren(context, panel);
         }
         else {
-            encodeScript(context, panel);
             encodeMarkup(context, panel);
+            encodeScript(context, panel);
         }
     }
 

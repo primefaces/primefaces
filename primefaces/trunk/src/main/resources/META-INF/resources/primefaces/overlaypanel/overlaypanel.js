@@ -7,7 +7,6 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
     this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
-    this.onshowHandlers = [];
     
     //configuration
     this.cfg.my = this.cfg.my||'left top';
@@ -26,7 +25,11 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
         this.jq.width(300);
     }
     
-    this.jq.data('widget', this);
+    //replace visibility hidden with display none
+    this.jq.css({
+        'display':'none'
+        ,'visibility':'visible'
+    })
             
     //dialog support
     this.setupDialogSupport();
@@ -154,21 +157,12 @@ PrimeFaces.widget.OverlayPanel.prototype.postShow = function() {
     if(this.cfg.onShow) {
         this.cfg.onShow.call(this);
     }
-    
-    //execute onshowHandlers and remove successful ones
-    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
-		return !fn.call();
-	});
 }
 
 PrimeFaces.widget.OverlayPanel.prototype.postHide = function() {
     if(this.cfg.onHide) {
         this.cfg.onHide.call(this);
     }
-}
-
-PrimeFaces.widget.OverlayPanel.prototype.addOnshowHandler = function(fn) {
-    this.onshowHandlers.push(fn);
 }
 
 PrimeFaces.widget.OverlayPanel.prototype.setupDialogSupport = function() {
