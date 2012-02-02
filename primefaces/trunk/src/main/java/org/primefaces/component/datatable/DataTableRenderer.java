@@ -933,8 +933,13 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
+        String rowIndexVar = table.getRowIndexVar();
 
         table.setRowIndex(expandedRowIndex);
+        
+        if(rowIndexVar != null) {
+            context.getExternalContext().getRequestMap().put(rowIndexVar, expandedRowIndex);
+        }
 
         writer.startElement("tr", null);
         writer.writeAttribute("style", "display:none", null);
