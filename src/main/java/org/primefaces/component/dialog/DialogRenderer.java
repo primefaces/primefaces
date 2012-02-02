@@ -36,9 +36,10 @@ public class DialogRenderer extends CoreRenderer {
         
         if(dialog.isContentLoadRequest(context)) {
             renderChildren(context, component);
-        } else {
-            encodeScript(context, dialog);
+        } 
+        else {
             encodeMarkup(context, dialog);
+            encodeScript(context, dialog);
         }
     }
 
