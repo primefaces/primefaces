@@ -883,33 +883,27 @@
     if (iOS) editor.$area.show();
     else $frame.show();
 
-    // Wait for the layout to finish - shortcut for $(document).ready()
-    $(function() {
+    var $toolbar = editor.$toolbar,
+        $group = $toolbar.children("div:last"),
+        wid = $main.width();
 
-      var $toolbar = editor.$toolbar,
-          $group = $toolbar.children("div:last"),
-          wid = $main.width();
+    // Resize the toolbar
+    var hgt = $group.offset().top + $group.outerHeight() - $toolbar.offset().top + 1;
+    $toolbar.height(hgt);
 
-      // Resize the toolbar
-      var hgt = $group.offset().top + $group.outerHeight() - $toolbar.offset().top + 1;
-      $toolbar.height(hgt);
+    // Resize the iframe
+    hgt = (/%/.test("" + options.height) ? $main.height() : parseInt(options.height)) - hgt;
+    $frame.width(wid).height(hgt);
 
-      // Resize the iframe
-      hgt = (/%/.test("" + options.height) ? $main.height() : parseInt(options.height)) - hgt;
-      $frame.width(wid).height(hgt);
+    // Resize the textarea. IE6 textareas have a 1px top
+    // & bottom margin that cannot be removed using css.
+    editor.$area.width(wid).height(ie6 ? hgt - 2 : hgt);
 
-      // Resize the textarea. IE6 textareas have a 1px top
-      // & bottom margin that cannot be removed using css.
-      editor.$area.width(wid).height(ie6 ? hgt - 2 : hgt);
+    // Switch the iframe into design mode if enabled
+    disable(editor, editor.disabled);
 
-      // Switch the iframe into design mode if enabled
-      disable(editor, editor.disabled);
-
-      // Enable or disable the toolbar buttons
-      refreshButtons(editor);
-
-    });
-
+    // Enable or disable the toolbar buttons
+    refreshButtons(editor);
   }
 
   // refreshButtons - enables or disables buttons based on availability
