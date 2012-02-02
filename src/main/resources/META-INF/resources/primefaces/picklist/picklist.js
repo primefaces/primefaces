@@ -91,7 +91,7 @@ PrimeFaces.extend(PrimeFaces.widget.PickList, PrimeFaces.widget.BaseWidget);
 PrimeFaces.widget.PickList.prototype.generateItems = function(list, input) {   
     list.children('.ui-picklist-item').each(function(i, item) {
         var item = $(this),
-        itemValue = item.data('item-value');
+        itemValue = item.attr('data-item-value');
         
         input.append('<option value="' + itemValue + '" selected="selected">' + itemValue + '</option>');
     });
