@@ -192,7 +192,7 @@ public class TreeRenderer extends CoreRenderer {
 
             //style class of node container
             String containerClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
-            containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + "" + uiTreeNode.getStyleClass();
+            containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             containerClass = containerClass + " " + uiTreeNode.getType();
 
             writer.startElement("li", null);
