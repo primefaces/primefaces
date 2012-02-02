@@ -61,11 +61,17 @@ PrimeFaces.widget.Dialog = function(cfg) {
         $(document.body).append('<div class="ui-dialog-docking-zone"></div>')
     }
     
+    //remove related modality if there is one
+    var modal = $(this.jqId + '_modal');
+    if(modal.length > 0) {
+        modal.remove();
+    }
+    
     //replace visibility hidden with display none
     this.jq.css({
         'display':'none'
         ,'visibility':'visible'
-    })
+    });
         
     if(this.cfg.autoOpen){
         this.show();
