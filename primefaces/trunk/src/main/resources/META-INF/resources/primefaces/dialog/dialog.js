@@ -15,7 +15,6 @@ PrimeFaces.widget.Dialog = function(cfg) {
     this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
     this.visible = false;
     this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keypress.dialog click.dialog';
-    this.onshowHandlers = [];
     
     //configuration
     this.cfg.width = this.cfg.width||'auto';
@@ -61,12 +60,16 @@ PrimeFaces.widget.Dialog = function(cfg) {
     if($(document.body).children('.ui-dialog-docking-zone').length == 0) {
         $(document.body).append('<div class="ui-dialog-docking-zone"></div>')
     }
+    
+    //replace visibility hidden with display none
+    this.jq.css({
+        'display':'none'
+        ,'visibility':'visible'
+    })
         
     if(this.cfg.autoOpen){
         this.show();
     }
-    
-    this.jq.data('widget', this);
     
     this.postConstruct();
 }
@@ -160,11 +163,6 @@ PrimeFaces.widget.Dialog.prototype.postShow = function() {
     if(this.cfg.onShow) {
         this.cfg.onShow.call(this);
     }
-            
-    //execute onshowHandlers and remove successful ones
-    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
-		return !fn.call();
-	});
 }
 
 PrimeFaces.widget.Dialog.prototype.hide = function() {   
@@ -464,10 +462,6 @@ PrimeFaces.widget.Dialog.prototype.loadContents = function() {
     options.params = params;
 
     PrimeFaces.ajax.AjaxRequest(options);
-}
-
-PrimeFaces.widget.Dialog.prototype.addOnshowHandler = function(fn) {
-    this.onshowHandlers.push(fn);
 }
 
 /**
