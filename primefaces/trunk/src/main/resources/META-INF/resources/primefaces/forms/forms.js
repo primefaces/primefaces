@@ -1063,14 +1063,22 @@ PrimeFaces.widget.SelectCheckboxMenu.prototype.generateItems = function() {
         var input = $(this),
         label = input.next(),
         disabled = input.is(':disabled'),
+        checked = input.is(':checked'),
         boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default';
+        
         if(disabled) {
             boxClass += " ui-state-disabled";
         }
+        
+        if(checked) {
+            boxClass += " ui-state-active";
+        }
+        
+        var iconClass = checked ? 'ui-chkbox-icon ui-icon ui-icon-check' : 'ui-chkbox-icon';
 
         var dom = '<li class="ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all">';
-        dom += '<div class="ui-chkbox ui-widget"><div class="' + boxClass + '"><span class="ui-chkbox-icon"></span></div></div>';
-        dom += '<label>' + label.html() +  '</label></li>';
+        dom += '<div class="ui-chkbox ui-widget"><div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>';
+        dom += '<label>' + label.text() +  '</label></li>';
         
         _self.itemContainer.append(dom);
     });
