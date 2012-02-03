@@ -1209,7 +1209,7 @@ PrimeFaces.widget.DataTable.prototype.isSelected = function(rowIndex) {
 PrimeFaces.widget.DataTable.prototype.getRowMeta = function(row) {
     var meta = {
         index: row.data('ri'),
-        key:  row.data('rk')
+        key:  row.attr('data-rk')
     };
     
     return meta;
