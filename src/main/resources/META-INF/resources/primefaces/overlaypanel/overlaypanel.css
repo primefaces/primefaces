@@ -2,4 +2,5 @@
     padding: 0.5em 1em;
     position: absolute;
     visibility: hidden;
+    *width: 300px;
 }
