@@ -19,12 +19,7 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     if(this.cfg.appendToBody) {
         this.jq.appendTo(document.body);
     }
-    
-    //ie7 width auto fix
-    if($.browser.msie && parseInt($.browser.version, 10) == 7) {
-        this.jq.width(300);
-    }
-    
+        
     //replace visibility hidden with display none
     this.jq.css({
         'display':'none'
