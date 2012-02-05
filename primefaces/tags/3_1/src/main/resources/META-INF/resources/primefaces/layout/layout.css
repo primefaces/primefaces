@@ -1,0 +1,40 @@
+.ui-layout-unit {
+    visibility: hidden;
+    padding: 0.2em;
+}
+
+.ui-layout-unit-header, .ui-layout-unit-footer {
+	padding: 0.4em 0.2em 0.4em 0.4em;
+}
+
+.ui-layout-unit-header-title, .ui-layout-unit-footer-title {
+    
+}
+
+.ui-layout-unit .ui-layout-unit-content {
+    padding: 0.2em 0em;
+    border: 0px none;
+    overflow: auto;
+}
+
+.ui-layout-unit-header-icon {
+	float: right;
+}
+
+.ui-layout-unit-header-icon,
+.ui-layout-unit-header-icon:hover,
+.ui-layout-unit-header-icon:focus {
+	margin-right: 0.2em;
+    margin-top:-0.2em;
+
+    /*IE7 hack*/
+    *margin-top: -2em;
+}
+
+.ui-layout-unit-expand-icon {
+    display: block;
+    width:16px;
+    position: absolute;
+    left:4px;
+    top:2px;
+}
