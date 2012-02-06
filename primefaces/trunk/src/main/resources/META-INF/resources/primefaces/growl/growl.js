@@ -38,9 +38,9 @@ PrimeFaces.widget.Growl.prototype.render = function() {
 }
 
 PrimeFaces.widget.Growl.prototype.renderMessage = function(msg) {
-    var markup = '<div class="ui-growl-item-container ui-widget-header ui-corner-all ui-helper-hidden">';
+    var markup = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden">';
     markup += '<div class="ui-growl-item">';
-    markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick"></div>';
+    markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
     markup += '<img class="ui-growl-image" src="' + msg.image + '" />';
     markup += '<div class="ui-growl-message">';
     markup += '<span class="ui-growl-title">' + msg.title + '</span>';
@@ -63,12 +63,12 @@ PrimeFaces.widget.Growl.prototype.bindEvents = function(message) {
 
         //visuals
         if(!msg.is(':animated')) {
-            msg.addClass('ui-state-hover');
+            msg.find('div.ui-growl-icon-close:first').show();
         }
     })
     .mouseout(function() {        
         //visuals
-        $(this).removeClass('ui-state-hover');
+        $(this).find('div.ui-growl-icon-close:first').hide();
     });
     
     //remove message on click of close icon
