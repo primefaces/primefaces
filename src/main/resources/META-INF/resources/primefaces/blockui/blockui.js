@@ -21,11 +21,12 @@ PrimeFaces.widget.BlockUI = function(cfg) {
 PrimeFaces.widget.BlockUI.prototype.bindTriggers = function() {
     var _self = this,
     triggers = this.cfg.triggers.split(',');
-    
-    $.each(triggers, function() {
-        $(PrimeFaces.escapeClientId(this)).unbind('click.blockui').bind('click.blockui', function() {
+        
+    //listen global ajax send and complete callbacks
+    $(document).bind('ajaxSend', function(e, xhr, settings) {
+        if($.inArray(settings.source, triggers) != -1) {
             _self.show();
-        });
+        }
     });
     
     $(document).bind('ajaxComplete', function(e, xhr, settings) {
