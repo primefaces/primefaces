@@ -65,6 +65,16 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
+            <name>panelStyle</name>
+            <required></required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>panelStyleClass</name>
+            <required></required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
