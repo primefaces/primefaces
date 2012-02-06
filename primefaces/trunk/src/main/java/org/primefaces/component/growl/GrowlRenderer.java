@@ -33,11 +33,11 @@ public class GrowlRenderer extends CoreRenderer {
 		Growl growl = (Growl) component;
 		String clientId = growl.getClientId(context);
         String widgetVar = growl.resolveWidgetVar();
-		
-		writer.startElement("span", growl);
+        
+        writer.startElement("span", growl);
 		writer.writeAttribute("id", clientId, "id");
 		writer.endElement("span");
-		
+				
         startScript(writer, clientId);
 
         if(isAjaxRequest(context)) {
@@ -47,10 +47,14 @@ public class GrowlRenderer extends CoreRenderer {
         } 
         else {
             writer.write("$(function(){");
-            
             writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
-            writer.write("id:'" + clientId + "',msgs:");
+            writer.write("id:'" + clientId + "'");
+            writer.write(",sticky:" + growl.isSticky());
+            writer.write(",life:" + growl.getLife());
+
+            writer.write(",msgs:");
             encodeMessages(context, growl);
+            
             writer.write("});});");
         }
 	
@@ -80,14 +84,6 @@ public class GrowlRenderer extends CoreRenderer {
 
 			if(!isValueBlank(severityImage))
 				writer.write(",image:\"" + severityImage + "\"");
-
-			if(growl.isSticky())
-				writer.write(",sticky:true");
-			else
-				writer.write(",sticky:false");
-
-			if(growl.getLife() != 6000)
-                writer.write(",time:" + growl.getLife());
 
             writer.write("}");
 

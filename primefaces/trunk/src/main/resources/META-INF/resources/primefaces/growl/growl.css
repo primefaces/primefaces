@@ -7,7 +7,7 @@
 }
 * html .ui-growl-icon-close {
 	top:7px;
-	left:7px;
+	right:7px;
 }
 
 /* the norm */
@@ -35,7 +35,7 @@
 .ui-growl-icon-close {
 	position:absolute;
 	top:5px;
-	left:3px;
+	right:3px;
 	cursor:pointer;
 }
 .ui-growl-title {
