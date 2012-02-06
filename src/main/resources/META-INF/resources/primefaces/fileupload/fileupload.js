@@ -2116,7 +2116,7 @@ PrimeFaces.widget.FileUpload = function(cfg) {
     }
     
     this.form.fileupload(this.cfg).bind('fileuploaddone', function(e, data) {
-        PrimeFaces.ajax.AjaxResponse(data.jqXHR.responseXML);
+        PrimeFaces.ajax.AjaxResponse(data.result);
         
         if(_self.cfg.oncomplete) {
             _self.cfg.oncomplete.call(_self);
