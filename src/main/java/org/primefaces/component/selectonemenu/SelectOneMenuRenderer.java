@@ -147,14 +147,29 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = menu.getVar() != null;
         int height = calculatePanelHeight(menu, selectItems.size());
+        String panelStyle = "";
+        String panelStyleClass = SelectOneMenu.PANEL_CLASS;
+        
+        if(menu.getPanelStyleClass() != null) {
+            panelStyleClass += " " + menu.getPanelStyleClass();
+        }
+        
+        if(menu.getPanelStyle() != null) {
+            panelStyle += menu.getPanelStyle();
+        }
 
+        if(height != -1) {
+            panelStyle += " height:" + height + "px";
+        }
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
-        writer.writeAttribute("class", SelectOneMenu.PANEL_CLASS, null);
+        writer.writeAttribute("class", panelStyleClass, null);
         
-        if(height != -1) {
-            writer.writeAttribute("style", "height:" + height + "px", null);
+        if(!panelStyle.isEmpty()) {
+            writer.writeAttribute("style", panelStyle, null);
         }
+        
 
         if(customContent) {
             writer.startElement("table", menu);
