@@ -66,12 +66,12 @@
         </attribute>
         <attribute>
             <name>panelStyle</name>
-            <required></required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <name>panelStyleClass</name>
-            <required></required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
