@@ -156,9 +156,9 @@ PrimeFaces.widget.Dialog.prototype._show = function() {
         this.postShow();
     }
     
-    this.focusFirstInput();
     this.visible = true;
     this.moveToTop();
+    this.focusFirstInput();
     
     if(this.cfg.modal)
         this.enableModality();
