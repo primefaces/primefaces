@@ -37,8 +37,7 @@ public class PasswordRenderer extends InputRenderer {
 
         decodeBehaviors(context, password);
 
-		String paramKey = password.getClientId(context) + "_input";
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(paramKey);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(password.getClientId(context));
 
         if(submittedValue != null) {
             password.setSubmittedValue(submittedValue);
@@ -64,23 +63,21 @@ public class PasswordRenderer extends InputRenderer {
         
         writer.write("PrimeFaces.cw('Password','" + password.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",feedback:" + feedback);
+
 
         if(feedback) {
-            if(password.getMinLength() != 8) writer.write(",length:" + password.getMinLength());
-            if(password.isInline()) writer.write(",flat:true");
-            if(password.getLevel() != 1) writer.write(",type: " + password.getLevel());
+            writer.write(",feedback:true");
+            writer.write(",inline:" + password.isInline());
+            
             if(password.getPromptLabel() != null) writer.write(",promptLabel:'" + password.getPromptLabel() + "'");
             if(password.getWeakLabel() != null) writer.write(",weakLabel:'" + password.getWeakLabel() + "'");
             if(password.getGoodLabel() != null) writer.write(",goodLabel:'" + password.getGoodLabel() + "'");
-            if(password.getStrongLabel() != null) writer.write(",strongLabel:'" + password.getStrongLabel() + "'");
-            if(password.getOnshow() != null) writer.write(",onShow:" + password.getOnshow());
-            if(password.getOnhide() != null) writer.write(",onHide:" + password.getOnhide());   
+            if(password.getStrongLabel() != null) writer.write(",strongLabel:'" + password.getStrongLabel() + "'"); 
         }
 
         encodeClientBehaviors(context, password);
 
-		writer.write("},'password');});");
+		writer.write("});});");
         
 		endScript(writer);
 	}
@@ -88,22 +85,21 @@ public class PasswordRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, Password password) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
-        String inputId = clientId + "_input";
+        boolean disabled = password.isDisabled();
         
         String inputClass = Password.STYLE_CLASS;
         inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
-        inputClass = !password.isDisabled() ? inputClass : inputClass + " ui-state-disabled";
-
-        writer.startElement("span", password);
-        writer.writeAttribute("id", clientId, "id");
-        if(password.getStyle() != null) writer.writeAttribute("style", password.getStyle(), null);
-        if(password.getStyleClass() != null) writer.writeAttribute("class", password.getStyleClass(), null);
-		
+        inputClass = !disabled ? inputClass : inputClass + " ui-state-disabled";
+		String styleClass = password.getStyleClass() == null ? inputClass : inputClass + " " + password.getStyleClass();
+        
 		writer.startElement("input", password);
-		writer.writeAttribute("id", inputId, "id");
-		writer.writeAttribute("name", inputId, null);
+		writer.writeAttribute("id", clientId, "id");
+		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "password", null);
-        writer.writeAttribute("class", inputClass, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(password.getStyle() != null) {
+            writer.writeAttribute("stye", password.getStyle(), null);
+        }
 		
 		String valueToRender = ComponentUtils.getValueToRender(context, password);
 		if(!isValueEmpty(valueToRender) && password.isRedisplay()) {
@@ -112,11 +108,9 @@ public class PasswordRenderer extends InputRenderer {
 		
 		renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS);
 
-        if(password.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
 		writer.endElement("input");
-
-        writer.endElement("span");
 	}
 }
