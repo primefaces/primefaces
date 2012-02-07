@@ -147,19 +147,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = menu.getVar() != null;
         int height = calculatePanelHeight(menu, selectItems.size());
-        String panelStyle = "";
-        String panelStyleClass = SelectOneMenu.PANEL_CLASS;
-        
-        if(menu.getPanelStyleClass() != null) {
-            panelStyleClass += " " + menu.getPanelStyleClass();
-        }
-        
-        if(menu.getPanelStyle() != null) {
-            panelStyle += menu.getPanelStyle();
-        }
-
+        String panelStyle = menu.getPanelStyle() != null ? menu.getPanelStyle() : "";
+        String panelStyleClass = menu.getPanelStyleClass();
+        panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+             
         if(height != -1) {
-            panelStyle += " height:" + height + "px";
+            panelStyle += ";height:" + height + "px";
         }
         
         writer.startElement("div", null);
@@ -169,7 +162,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(!panelStyle.isEmpty()) {
             writer.writeAttribute("style", panelStyle, null);
         }
-        
 
         if(customContent) {
             writer.startElement("table", menu);
