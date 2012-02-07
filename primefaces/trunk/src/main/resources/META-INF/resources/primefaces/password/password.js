@@ -67,22 +67,22 @@ PrimeFaces.widget.Password.prototype.setupFeedback = function() {
         
         if(value.length == 0) {
             label = _self.cfg.promptLabel;
-            meterPos = '0pt 0pt';
+            meterPos = '0px 0px';
         }
         else {
             var score = _self.testStrength(_self.jq.val());
             
             if(score < 50) {
                 label = _self.cfg.weakLabel;
-                meterPos = '0pt -7pt';
+                meterPos = '0px -10px';
             }
             else if(score >= 50 && score < 80) {
                 label = _self.cfg.mediumLabel;
-                meterPos = '0pt -15pt';
+                meterPos = '0px -20px';
             } 
             else if(score >= 80) {
                 label = _self.cfg.strongLabel;
-                meterPos = '0pt -22pt';
+                meterPos = '0px -30px';
             }
         }
         
