@@ -460,20 +460,25 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     
     //button visuals
     this.button.mouseover(function(){
-        if(!_self.button.hasClass('ui-state-disabled')&&!_self.button.hasClass('ui-state-focus')) {
+        if(!_self.button.hasClass('ui-state-focus')) {
             _self.button.addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        if(!_self.button.hasClass('ui-state-disabled')&&!_self.button.hasClass('ui-state-focus')) {
-            _self.button.removeClass('ui-state-hover');
+        if(!_self.button.hasClass('ui-state-focus')) {
+            _self.button.removeClass('ui-state-hover ui-state-active');
         }
-    }).mousedown(function(e) {
+    }).mousedown(function() {
+        $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
+    }).mouseup(function() {
         var el = $(this);
+        el.removeClass('ui-state-active')
+        
         if(_self.menu.is(':visible')) {
-            el.removeClass('ui-state-focus').addClass('ui-state-hover');
-            _self.hide();    
-        } else {
-            el.removeClass('ui-state-hover').addClass('ui-state-focus');
+            el.addClass('ui-state-hover');
+            _self.hide();
+        } 
+        else {
+            el.addClass('ui-state-focus');
             _self.show();
         }
     }).focus(function() {
