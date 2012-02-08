@@ -487,6 +487,9 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
         $(this).removeClass('ui-state-focus');
     });
     
+    //mark target and descandants of button as a trigger for a primefaces overlay
+    this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+    
     //menuitem visuals
     this.menuitems.mouseover(function(e) {
         var element = $(this);
