@@ -72,9 +72,7 @@ PrimeFaces.widget.Dialog = function(cfg) {
         'display':'none'
         ,'visibility':'visible'
     });
-    
-    this.jq.data('widget', this);
-        
+
     if(this.cfg.autoOpen){
         this.show();
     }

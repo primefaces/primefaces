@@ -20,12 +20,19 @@ PrimeFaces.widget.AutoComplete = function(cfg) {
     this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
     this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
     
+
+    
     if(this.cfg.multiple) {
         this.setupMultipleMode();
+        
+        this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
     } 
     else {
         //visuals
         PrimeFaces.skinInput(this.input);
+        
+        this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+        this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
     }
     
     //core events
@@ -99,15 +106,7 @@ PrimeFaces.widget.AutoComplete.prototype.setupDialogSupport = function() {
     var dialog = this.jq.parents('.ui-dialog:first');
     
     if(dialog.length == 1) {
-        var dialogWidget = dialog.data('widget'),
-        _self = this;
-        
-        _self.panel.css('position', 'fixed');
-        _self.input.mousedown(function(e) {
-            dialogWidget.moveToTop();
-            _self.panel.css('z-index', ++PrimeFaces.zindex);
-            e.stopPropagation();
-        });
+        this.panel.css('position', 'fixed');
     }
 }
 
