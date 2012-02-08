@@ -179,15 +179,7 @@ PrimeFaces.widget.SelectOneMenu.prototype.setupDialogSupport = function() {
     var dialog = this.jq.parents('.ui-dialog:first');
     
     if(dialog.length == 1) {
-        var dialogWidget = dialog.data('widget'),
-        _self = this;
-        
-        _self.panel.css('position', 'fixed');
-        _self.triggers.mousedown(function(e) {
-            dialogWidget.moveToTop();
-            _self.panel.css('z-index', ++PrimeFaces.zindex);
-            e.stopPropagation();
-        });
+        this.panel.css('position', 'fixed');
     }
 }
 
