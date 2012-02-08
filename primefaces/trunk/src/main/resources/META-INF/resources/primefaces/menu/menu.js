@@ -129,6 +129,9 @@ PrimeFaces.widget.Menu = function(cfg) {
     if(this.cfg.position == 'dynamic') {        
         this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
         
+        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+        this.cfg.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+        
         /*
          * we might have two menus with same ids if an ancestor of a menu is updated,
          * if so remove the previous one and refresh jq
@@ -288,15 +291,7 @@ PrimeFaces.widget.Menu.prototype.setupDialogSupport = function() {
     var dialog = this.cfg.trigger.parents('.ui-dialog:first');
     
     if(dialog.length == 1) {
-        var dialogWidget = dialog.data('widget'),
-        _self = this;
-        
-        _self.jq.css('position', 'fixed');
-        _self.cfg.trigger.mousedown(function(e) {
-            dialogWidget.moveToTop();
-            _self.jq.css('z-index', ++PrimeFaces.zindex);
-            e.stopPropagation();
-        });
+        this.jq.css('position', 'fixed');
     }
 }
 
@@ -487,7 +482,7 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
         $(this).removeClass('ui-state-focus');
     });
     
-    //mark target and descandants of button as a trigger for a primefaces overlay
+    //mark button and descandants of button as a trigger for a primefaces overlay
     this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
     
     //menuitem visuals
