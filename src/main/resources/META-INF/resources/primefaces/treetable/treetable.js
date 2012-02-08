@@ -127,7 +127,7 @@ PrimeFaces.widget.TreeTable.prototype.expandNode = function(e, node) {
 }
 
 PrimeFaces.widget.TreeTable.prototype.collapseNode = function(e, node) {
-    node.siblings('[id^="' + node.attr('id') + '"]').remove();
+    node.siblings('[id^="' + node.attr('id') + '_"]').remove();
 
     node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
     
