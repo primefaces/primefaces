@@ -65,7 +65,7 @@ PrimeFaces.widget.BlockUI.prototype.hide = function() {
 }
 
 PrimeFaces.widget.BlockUI.prototype.render = function() {   
-    this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden ui-shadow"></div>');
+    this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
     
     if(this.block.hasClass('ui-corner-all')) {
         this.blocker.addClass('ui-corner-all');
