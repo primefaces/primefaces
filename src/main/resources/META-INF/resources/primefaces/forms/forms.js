@@ -125,14 +125,14 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         this.label.css('cursor', 'pointer').mousedown(function(e) {
            e.preventDefault(); 
         });
-        
-        this.label.val(selectedOption.text());
-        
+
         this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
     } 
     else {
         this.triggers = this.jq.find('.ui-selectonemenu-trigger');
     }
+    
+    this.label.val(selectedOption.text());
     
     //mark trigger and descandants of trigger as a trigger for a primefaces overlay
     this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
