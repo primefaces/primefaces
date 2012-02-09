@@ -98,7 +98,7 @@ public class PasswordRenderer extends InputRenderer {
 		writer.writeAttribute("type", "password", null);
         writer.writeAttribute("class", styleClass, null);
         if(password.getStyle() != null) {
-            writer.writeAttribute("stye", password.getStyle(), null);
+            writer.writeAttribute("style", password.getStyle(), null);
         }
 		
 		String valueToRender = ComponentUtils.getValueToRender(context, password);
