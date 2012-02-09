@@ -134,6 +134,9 @@ PrimeFaces.widget.SelectOneMenu = function(cfg) {
         this.triggers = this.jq.find('.ui-selectonemenu-trigger');
     }
     
+    //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+    this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+    
     this.bindEvents();
 
     //disable tabbing if disabled
@@ -1034,6 +1037,9 @@ PrimeFaces.widget.SelectCheckboxMenu = function(cfg) {
     
     this.checkboxes = this.itemContainer.find('.ui-chkbox-box:not(.ui-state-disabled)');
     this.labels = this.itemContainer.find('label');
+    
+    //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+    this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
     
     this.bindEvents();
     

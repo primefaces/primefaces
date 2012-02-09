@@ -129,6 +129,9 @@ PrimeFaces.widget.Menu = function(cfg) {
     if(this.cfg.position == 'dynamic') {        
         this.cfg.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
         
+        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+        this.cfg.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+        
         /*
          * we might have two menus with same ids if an ancestor of a menu is updated,
          * if so remove the previous one and refresh jq
@@ -288,15 +291,7 @@ PrimeFaces.widget.Menu.prototype.setupDialogSupport = function() {
     var dialog = this.cfg.trigger.parents('.ui-dialog:first');
     
     if(dialog.length == 1) {
-        var dialogWidget = dialog.data('widget'),
-        _self = this;
-        
-        _self.jq.css('position', 'fixed');
-        _self.cfg.trigger.mousedown(function(e) {
-            dialogWidget.moveToTop();
-            _self.jq.css('z-index', ++PrimeFaces.zindex);
-            e.stopPropagation();
-        });
+        this.jq.css('position', 'fixed');
     }
 }
 
@@ -460,20 +455,25 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     
     //button visuals
     this.button.mouseover(function(){
-        if(!_self.button.hasClass('ui-state-disabled')&&!_self.button.hasClass('ui-state-focus')) {
+        if(!_self.button.hasClass('ui-state-focus')) {
             _self.button.addClass('ui-state-hover');
         }
     }).mouseout(function() {
-        if(!_self.button.hasClass('ui-state-disabled')&&!_self.button.hasClass('ui-state-focus')) {
-            _self.button.removeClass('ui-state-hover');
+        if(!_self.button.hasClass('ui-state-focus')) {
+            _self.button.removeClass('ui-state-hover ui-state-active');
         }
-    }).mousedown(function(e) {
+    }).mousedown(function() {
+        $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
+    }).mouseup(function() {
         var el = $(this);
+        el.removeClass('ui-state-active')
+        
         if(_self.menu.is(':visible')) {
-            el.removeClass('ui-state-focus').addClass('ui-state-hover');
-            _self.hide();    
-        } else {
-            el.removeClass('ui-state-hover').addClass('ui-state-focus');
+            el.addClass('ui-state-hover');
+            _self.hide();
+        } 
+        else {
+            el.addClass('ui-state-focus');
             _self.show();
         }
     }).focus(function() {
@@ -481,6 +481,9 @@ PrimeFaces.widget.MenuButton.prototype.bindEvents = function() {
     }).blur(function() {
         $(this).removeClass('ui-state-focus');
     });
+    
+    //mark button and descandants of button as a trigger for a primefaces overlay
+    this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
     
     //menuitem visuals
     this.menuitems.mouseover(function(e) {
