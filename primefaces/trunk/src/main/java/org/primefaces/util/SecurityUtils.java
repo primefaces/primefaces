@@ -32,7 +32,7 @@ public class SecurityUtils {
 		boolean isAuthorized = false;
 		
 		for(String role : roles) {
-			if(ifGranted(role)) {
+			if(ifGranted(role.trim())) {
 				isAuthorized = true;
 			} else {
 				isAuthorized = false;
@@ -48,7 +48,7 @@ public class SecurityUtils {
 		boolean isAuthorized = false;
 		
 		for(String role : roles) {
-			if(ifGranted(role)) {
+			if(ifGranted(role.trim())) {
 				isAuthorized = true;
 				break;
 			}
@@ -62,7 +62,7 @@ public class SecurityUtils {
 		boolean isAuthorized = false;
 		
 		for(String role : roles) {
-			if(ifGranted(role)) {
+			if(ifGranted(role.trim())) {
 				isAuthorized = false;
 				break;
 			} else {
