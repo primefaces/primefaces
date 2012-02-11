@@ -69,7 +69,7 @@ public class PieChartRenderer extends BaseChartRenderer {
             String key = it.next();
             Number value = model.getData().get(key);
 
-            writer.write("['" + key + "'," + value + "]");
+            writer.write("[\"" + escapeText(key) + "\"," + value + "]");
 
             if(it.hasNext())
                 writer.write(",");
