@@ -173,6 +173,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
         String contentClass = active ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+        UIComponent titleFacet = tab.getFacet("title");
 
         //header container
         writer.startElement("h3", null);
@@ -190,9 +191,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
-        if(tab.getTitle() != null) 
+        if(titleFacet == null) {
             writer.write(tab.getTitle());
-
+        }
+        else {
+            titleFacet.encodeAll(context);
+        } 
         writer.endElement("a");
 
         writer.endElement("h3");
