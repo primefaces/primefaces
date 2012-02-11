@@ -54,29 +54,31 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "menu", null);
-		if(breadCrumb.getStyle() != null) 
+		if(breadCrumb.getStyle() != null) {
             writer.writeAttribute("style", breadCrumb.getStyle(), null);
+        }
 
 		writer.startElement("ul", null);
-
-        for(Iterator<UIComponent> iterator = breadCrumb.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = iterator.next();
-
-			if(child.isRendered() && child instanceof MenuItem) {
+        
+        for(int i = 0; i < breadCrumb.getChildCount(); i++) {
+            UIComponent child = breadCrumb.getChildren().get(i);
+            
+            if(child.isRendered() && child instanceof MenuItem) {
+                //dont render chevron before home icon
+                if(i != 0) {
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
+                    writer.endElement("li");
+                }
+                
 				writer.startElement("li", null);
                 writer.writeAttribute("role", "menuitem", null);
 
 				encodeMenuItem(context, (MenuItem) child);
 
-                if(iterator.hasNext()) {
-                    writer.startElement("span", null);
-                    writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
-                    writer.endElement("span");
-                }
-
-				writer.endElement("li");
+				writer.endElement("li");                
 			}
-		}
+        }
 
 		writer.endElement("ul");
 		
