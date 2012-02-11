@@ -71,12 +71,12 @@ PrimeFaces.widget.Password.prototype.setupFeedback = function() {
         }
         else {
             var score = _self.testStrength(_self.jq.val());
-            
-            if(score < 50) {
+
+            if(score < 30) {
                 label = _self.cfg.weakLabel;
                 meterPos = '0px -10px';
             }
-            else if(score >= 50 && score < 80) {
+            else if(score >= 30 && score < 80) {
                 label = _self.cfg.mediumLabel;
                 meterPos = '0px -20px';
             } 
