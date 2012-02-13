@@ -67,12 +67,6 @@ PrimeFaces.widget.Dialog = function(cfg) {
         modal.remove();
     }
     
-    //replace visibility hidden with display none
-    this.jq.css({
-        'display':'none'
-        ,'visibility':'visible'
-    });
-
     if(this.cfg.autoOpen){
         this.show();
     }
@@ -142,6 +136,12 @@ PrimeFaces.widget.Dialog.prototype.show = function() {
 }
 
 PrimeFaces.widget.Dialog.prototype._show = function() {
+    //replace visibility hidden with display none for effect support
+    this.jq.css({
+        'display':'none'
+        ,'visibility':'visible'
+    });
+    
     if(this.cfg.showEffect) {
         var _self = this;
             
@@ -175,7 +175,7 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
     if(!this.visible) {
        return;
     }
-
+    
     if(this.cfg.hideEffect) {
         var _self = this;
     
@@ -190,6 +190,12 @@ PrimeFaces.widget.Dialog.prototype.hide = function() {
     }
     
     this.visible = false;
+    
+    //replace display block with visibility hidden for hidden container support
+    this.jq.css({
+        'visibility':'hidden'
+        ,'display':'block'
+    });
     
     if(this.cfg.modal)
         this.disableModality();
