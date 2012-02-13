@@ -38,7 +38,7 @@ PrimeFaces.widget.Password.prototype.setupFeedback = function() {
     //config
     this.cfg.promptLabel = this.cfg.promptLabel||'Please enter a password';
     this.cfg.weakLabel = this.cfg.weakLabel||'Weak';
-    this.cfg.mediumLabel = this.cfg.mediumLabel||'Medium';
+    this.cfg.goodLabel = this.cfg.goodLabel||'Medium';
     this.cfg.strongLabel = this.cfg.strongLabel||'Strong';
     
     var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
@@ -77,7 +77,7 @@ PrimeFaces.widget.Password.prototype.setupFeedback = function() {
                 meterPos = '0px -10px';
             }
             else if(score >= 30 && score < 80) {
-                label = _self.cfg.mediumLabel;
+                label = _self.cfg.goodLabel;
                 meterPos = '0px -20px';
             } 
             else if(score >= 80) {
