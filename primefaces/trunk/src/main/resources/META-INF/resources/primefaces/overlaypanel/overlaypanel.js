@@ -19,12 +19,6 @@ PrimeFaces.widget.OverlayPanel = function(cfg) {
     if(this.cfg.appendToBody) {
         this.jq.appendTo(document.body);
     }
-        
-    //replace visibility hidden with display none
-    this.jq.css({
-        'display':'none'
-        ,'visibility':'visible'
-    })
             
     //dialog support
     this.setupDialogSupport();
@@ -43,21 +37,22 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
     //show and hide events for target
     if(this.cfg.showEvent == this.cfg.hideEvent) {
         this.target.bind(this.cfg.showEvent + '.ui-overlay', function(e) {
-            if(_self.jq.is(':hidden')) {
+            if(_self.jq.css('visibility') == 'hidden') {
                 _self.show();
-            } else {
+            } 
+            else {
                 _self.hide();
             }
         })
     }
     else {
         this.target.bind(this.cfg.showEvent + '.ui-overlay', function(e) {
-            if(_self.jq.is(':hidden')) {
+            if(_self.jq.css('visibility') == 'hidden') {
                 _self.show();
             }
         })
         .bind(this.cfg.hideEvent + '.ui-overlay', function(e) {
-            if(_self.jq.is(':visible')) {
+            if(_self.jq.css('visibility') == 'visible') {
                 _self.hide();
             }
         });
@@ -65,7 +60,7 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
     
     //hide overlay when mousedown is at outside of overlay
     $(document.body).bind('mousedown.ui-overlay', function (e) {
-        if(_self.jq.is(":hidden")) {
+        if(_self.jq.css('visibility') == 'hidden') {
             return;
         }
         
@@ -89,7 +84,7 @@ PrimeFaces.widget.OverlayPanel.prototype.bindEvents = function() {
     //Hide overlay on resize
     var resizeNS = 'resize.' + this.id;
     $(window).unbind(resizeNS).bind(resizeNS, function() {
-        if(_self.jq.is(':visible')) {
+        if(_self.jq.css('visibility') == 'visible') {
             _self.hide();
         }
     });
@@ -108,6 +103,12 @@ PrimeFaces.widget.OverlayPanel.prototype._show = function() {
     var _self = this;
     
     this.align();
+    
+    //replace visibility hidden with display none for effect support
+    this.jq.css({
+        'display':'none'
+        ,'visibility':'visible'
+    });
     
     if(this.cfg.showEffect) {
         this.jq.show(this.cfg.showEffect, {}, 200, function() {
@@ -158,6 +159,12 @@ PrimeFaces.widget.OverlayPanel.prototype.postHide = function() {
     if(this.cfg.onHide) {
         this.cfg.onHide.call(this);
     }
+    
+    //replace display block with visibility hidden for hidden container support
+    this.jq.css({
+        'visibility':'hidden'
+        ,'display':'block'
+    });
 }
 
 PrimeFaces.widget.OverlayPanel.prototype.setupDialogSupport = function() {
