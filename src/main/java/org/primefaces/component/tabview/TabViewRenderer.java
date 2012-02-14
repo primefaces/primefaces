@@ -190,7 +190,6 @@ public class TabViewRenderer extends CoreRenderer {
         String styleClass = tab.getTitleStyleClass();
         styleClass = tab.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-        UIComponent titleFacet = tab.getFacet("title");
         
         //header container
         writer.startElement("li", null);
@@ -203,14 +202,9 @@ public class TabViewRenderer extends CoreRenderer {
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        if(titleFacet == null) {
-            writer.write(tab.getTitle());
-        }
-        else {
-            titleFacet.encodeAll(context);
-        }        
+        writer.write(tab.getTitle());
         writer.endElement("a");
-
+        
         //closable
         if(tab.isClosable()) {
             writer.startElement("span", null);
