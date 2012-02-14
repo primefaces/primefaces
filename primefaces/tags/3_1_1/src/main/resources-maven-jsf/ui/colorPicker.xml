@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>colorPicker</tag>
+	<tagClass>org.primefaces.component.colorpicker.ColorPickerTag</tagClass>
+	<componentClass>org.primefaces.component.colorpicker.ColorPicker</componentClass>
+	<componentType>org.primefaces.component.ColorPicker</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>corg.primefaces.component.ColorPickerRenderer</rendererType>
+	<rendererClass>org.primefaces.component.colorpicker.ColorPickerRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+        <attribute>
+			<name>mode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>popup</defaultValue>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
+			<name>colorpicker/colorpicker.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>colorpicker/colorpicker.js</name>
+		</resource>
+	</resources>
+</component>

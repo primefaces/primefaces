@@ -1,0 +1,10 @@
+        <client-behavior-renderer>
+            <client-behavior-renderer-type>org.primefaces.component.AjaxBehaviorRenderer</client-behavior-renderer-type>
+            <client-behavior-renderer-class>org.primefaces.component.behavior.ajax.AjaxBehaviorRenderer</client-behavior-renderer-class>
+        </client-behavior-renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>javax.faces.Head</renderer-type>
+            <renderer-class>org.primefaces.renderkit.HeadRenderer</renderer-class>
+        </renderer>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>tabView</tag>
+    <tagClass>org.primefaces.component.tabview.TabViewTag</tagClass>
+    <componentClass>org.primefaces.component.tabview.TabView</componentClass>
+    <componentType>org.primefaces.component.TabView</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.TabViewRenderer</rendererType>
+    <rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
+    <parent>javax.faces.component.UIData</parent>
+    <description>TabView is a tabbed panel component featuring client side tabs, dynamic content loading with ajax and content transition effects.</description>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>activeIndex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Index of the active tab. Default is 0.</description>
+        </attribute>
+        <attribute>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of the transition effect.</description>
+        </attribute>
+        <attribute>
+            <name>effectDuration</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>normal</defaultValue>
+            <description>Duration of the transition effect. Default is normal.</description>
+        </attribute>
+        <attribute>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Specifies the toggleMode. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>
+              When tab contents are lazy loaded by ajax toggleMode, 
+              caching only retrieves the tab contents once and subsequent toggles of a cached tab does not communicate with server.
+              If caching is turned off, tab contents are reloaded from server each time tab is clicked. Default is true.
+            </description>
+        </attribute>
+        <attribute>
+            <name>onTabChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is clicked.</description>
+        </attribute>
+        <attribute>
+            <name>onTabShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is shown.</description>
+        </attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+        <attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of collection iterator to use in dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>java.util.List</type>
+            <description>List to iterate to display dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>top</defaultValue>
+            <description>Orientation of the tab headers, valid values are "top" and "bottom".</description>
+		</attribute>
+    </attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
