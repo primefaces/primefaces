@@ -11,7 +11,6 @@ PrimeFaces.widget.Spinner = function(cfg) {
     this.downButton = this.jq.children('a.ui-spinner-down');
     this.decimalSeparator = this.findDecimalSeparator();
     this.decimalCount = this.findDecimalCount();
-    var _self = this;
         
     //grab value from input
     this.refreshValue();
@@ -23,7 +22,20 @@ PrimeFaces.widget.Spinner = function(cfg) {
         return;
     }
 
-    //visuals
+    this.bindEvents();
+    
+    PrimeFaces.skinInput(this.input);
+    
+    this.postConstruct();
+}
+
+PrimeFaces.extend(PrimeFaces.widget.Spinner, PrimeFaces.widget.BaseWidget);
+
+
+PrimeFaces.widget.Spinner.prototype.bindEvents = function() {
+    var _self = this;
+    
+    //visuals for spinner buttons
     this.jq.children('.ui-spinner-button')
         .mouseover(function() {
             $(this).addClass('ui-state-hover');
@@ -44,36 +56,56 @@ PrimeFaces.widget.Spinner = function(cfg) {
 
             _self.repeat(null, dir);
         });
-
-    //only allow numbers and decimal keys
+        
+    /**
+     * Key restrictions
+     * - Only allow integers by default
+     * - Allow decimal separators in step mode
+     * - Allow prefix and suffix if defined
+     * - Enable support for arrow keys
+     * 
+     * Note: e.keyCode is used for arrow key detection, rest uses e.which
+     */
     this.input.keypress(function (e) {
-        var charCode = (e.which) ? e.which : e.keyCode,
-        notNumber = charCode > 31 && (charCode < 48||charCode > 57),
-        decimalKey = (_self.decimalSeparator != null) && (charCode == 44||charCode == 46);
-         
-       if(notNumber && !decimalKey) {
-            return false;
-        }
-        else {
-            return true;
+        var keyCode = $.ui.keyCode,
+        character = String.fromCharCode(e.which),
+        number = (e.which >= 48&&e.which <= 57),
+        decimalKey = (_self.decimalSeparator != null) && (e.which == 44||e.which == 46),
+        boundary = (character == _self.cfg.prefix||character == _self.cfg.suffix);
+                                          
+        switch(e.keyCode) {            
+            case keyCode.BACKSPACE:
+            case keyCode.LEFT:
+            case keyCode.RIGHT:
+                //allow backspace, left and right arrow keys
+            break;
+            
+            case keyCode.UP:
+                _self.spin(_self.cfg.step);
+            break;
+            
+            case keyCode.DOWN:
+                _self.spin(-1 * _self.cfg.step);
+            break;
+            
+            default:
+                if(!number && !decimalKey && !boundary) {
+                    e.preventDefault();
+                }
+            break;
         }
     });
 
     //refresh the value if user enters input manually
-    this.input.keyup(function (e){
+    this.input.keyup(function (e) {      
         _self.refreshValue();
     });
-
+    
+    //client behaviors
     if(this.cfg.behaviors) {
         PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
     }
-
-    PrimeFaces.skinInput(this.input);
-    
-    this.postConstruct();
 }
-
-PrimeFaces.extend(PrimeFaces.widget.Spinner, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.Spinner.prototype.repeat = function(interval, dir) {
     var _self = this,
