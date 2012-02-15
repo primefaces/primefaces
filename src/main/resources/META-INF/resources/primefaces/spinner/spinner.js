@@ -28,7 +28,11 @@ PrimeFaces.widget.Spinner = function(cfg) {
         .mouseover(function() {
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('ui-state-hover ui-state-active');
+            
+            if(_self.timer) {
+                clearInterval(_self.timer);
+            }
         }).mouseup(function() {
             clearInterval(_self.timer);
             $(this).removeClass('ui-state-active');
@@ -36,7 +40,7 @@ PrimeFaces.widget.Spinner = function(cfg) {
             var element = $(this),
             dir = element.hasClass('ui-spinner-up') ? 1 : -1;
 
-            element.addClass('ui-state-active');
+            element.removeClass('ui-state-hover').addClass('ui-state-active');
 
             _self.repeat(null, dir);
         });
@@ -46,8 +50,8 @@ PrimeFaces.widget.Spinner = function(cfg) {
         var charCode = (e.which) ? e.which : e.keyCode,
         notNumber = charCode > 31 && (charCode < 48||charCode > 57),
         decimalKey = (_self.decimalSeparator != null) && (charCode == 44||charCode == 46);
-        
-        if(notNumber && !decimalKey) {
+         
+       if(notNumber && !decimalKey) {
             return false;
         }
         else {
