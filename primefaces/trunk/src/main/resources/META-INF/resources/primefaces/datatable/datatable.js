@@ -278,15 +278,17 @@ PrimeFaces.widget.DataTable.prototype.setupExpansionEvents = function() {
  * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
  */
 PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
-    var scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
-    scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
-    scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer'),
-    _self = this;
+    this.scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header');
+    this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
+    this.scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer');
+    this.scrollStateCookie = window.location.pathname + '_' + this.id;
+    
+    var _self = this;
     
     if(this.cfg.scrollWidth) {
-        scrollHeader.width(this.cfg.scrollWidth);
-        scrollBody.width(this.cfg.scrollWidth);
-        scrollFooter.width(this.cfg.scrollWidth);
+        this.scrollHeader.width(this.cfg.scrollWidth);
+        this.scrollBody.width(this.cfg.scrollWidth);
+        this.scrollFooter.width(this.cfg.scrollWidth);
     }
     
     if(this.cfg.liveScroll) {
@@ -294,9 +296,13 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
         this.shouldLiveScroll = true;       
     }
     
-    scrollBody.scroll(function() {
-        scrollHeader.scrollLeft(scrollBody.scrollLeft());
-        scrollFooter.scrollLeft(scrollBody.scrollLeft());
+    this.restoreScrollState();
+
+           
+    //scroll handler
+    this.scrollBody.scroll(function() {
+        _self.scrollHeader.scrollLeft(_self.scrollBody.scrollLeft());
+        _self.scrollFooter.scrollLeft(_self.scrollBody.scrollLeft());
         
         if(_self.shouldLiveScroll) {
             var scrollTop = this.scrollTop,
@@ -307,7 +313,22 @@ PrimeFaces.widget.DataTable.prototype.setupScrolling = function() {
                 _self.loadLiveRows();
             }
         }
+        
+        //keep scroll state
+        PrimeFaces.setCookie(_self.scrollStateCookie, _self.scrollBody.scrollLeft() + ',' + _self.scrollBody.scrollTop());
     });
+}
+
+PrimeFaces.widget.DataTable.prototype.restoreScrollState = function() {
+    var scrollState = PrimeFaces.getCookie(this.scrollStateCookie);
+        
+    //restore state
+    if(scrollState) {
+        var scrollValues = scrollState.split(',');
+        
+        this.scrollBody.scrollLeft(scrollValues[0]);
+        this.scrollBody.scrollTop(scrollValues[1]);
+    }
 }
 
 /**
