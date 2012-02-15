@@ -159,7 +159,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", panelStyleClass, null);
         
-        if(!panelStyle.isEmpty()) {
+        if(!isValueEmpty(panelStyle)) {
             writer.writeAttribute("style", panelStyle, null);
         }
 
