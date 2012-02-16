@@ -238,7 +238,7 @@ PrimeFaces = {
                 $(PrimeFaces.escapeClientId(context)).find(selector).eq(0).focus();
             }
             else {
-                $(selector).focus();
+                $(selector).eq(0).focus();
             }
         }, 250);
     },
