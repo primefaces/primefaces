@@ -35,6 +35,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
@@ -298,7 +299,7 @@ import javax.faces.FacesException;
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
             }
             else if(eventName.equals("filter")) {
-                wrapperEvent = event;
+                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredData(), getFilters());
             }
             else if(eventName.equals("rowEdit")) {
                 int editedRowIndex = Integer.parseInt(params.get(clientId + "_editedRowIndex"));

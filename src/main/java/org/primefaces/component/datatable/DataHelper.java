@@ -122,30 +122,30 @@ class DataHelper {
             //Reset state
             table.setFirst(0);
         }
+        
+        //populate filters
+        Map<String,String> filters = new HashMap<String, String>();
+        Map<String,Column> filterMap = table.getFilterMap();
 
-        if(table.isLazy()) {
-            Map<String,String> filters = new HashMap<String, String>();
-            Map<String,Column> filterMap = table.getFilterMap();
+        for(String filterName : filterMap.keySet()) {
+            Column column = filterMap.get(filterName);
+            String filterValue = params.get(filterName);
 
-            for(String filterName : filterMap.keySet()) {
-                Column column = filterMap.get(filterName);
-                String filterValue = params.get(filterName);
+            if(!isValueBlank(filterValue)) {
+                String filterField = resolveField(column.getValueExpression("filterBy"));
 
-                if(!isValueBlank(filterValue)) {
-                    String filterField = resolveField(column.getValueExpression("filterBy"));
-                    
-                    filters.put(filterField, filterValue);
-                }
+                filters.put(filterField, filterValue);
             }
-            
-            if(hasGlobalFilter) {
-                filters.put("globalFilter", params.get(globalFilterParam));
-            }
-
-            table.setFilters(filters);
         }
-        else {
-            Map<String,Column> filterMap = table.getFilterMap();
+
+        if(hasGlobalFilter) {
+            filters.put("globalFilter", params.get(globalFilterParam));
+        }
+
+        table.setFilters(filters);
+
+        //process with filtering for non-lazy data
+        if(!table.isLazy()) {
             List filteredData = new ArrayList();
             String globalFilter = hasGlobalFilter ? params.get(globalFilterParam).toLowerCase() : null;
 
