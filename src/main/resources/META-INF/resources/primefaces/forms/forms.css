@@ -324,3 +324,10 @@ button.ui-button::-moz-focus-inner {
     display: block;
     padding-left: 2.2em;
 }
+
+/** IE Hacks **/
+div.ui-button {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}

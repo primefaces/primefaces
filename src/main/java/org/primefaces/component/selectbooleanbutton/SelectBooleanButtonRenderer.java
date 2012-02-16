@@ -64,7 +64,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         String icon = checked ? button.getOnIcon() : button.getOffIcon();
         
         //button        
-        writer.startElement("button", null);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("type", "button", null);
 		writer.writeAttribute("class", button.resolveStyleClass(checked, disabled), null);
@@ -98,7 +98,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeText(label, "value");
         writer.endElement("span");
         
-        writer.endElement("button");
+        writer.endElement("div");
     }
     
     protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
