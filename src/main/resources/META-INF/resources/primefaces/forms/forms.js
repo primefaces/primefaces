@@ -863,7 +863,7 @@ PrimeFaces.widget.SelectManyButton = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    this.buttons = this.jq.children('button:not(:disabled)');
+    this.buttons = this.jq.children('div:not(:disabled)');
     this.inputs = this.jq.find(':checkbox:not(:disabled)');
     var _self = this;
     

@@ -51,7 +51,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : SelectManyButton.STYLE_CLASS + " " + styleClass;
         
-        writer.startElement("span", button);
+        writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) {
@@ -60,7 +60,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
 
         encodeSelectItems(context, button);
 
-        writer.endElement("span");
+        writer.endElement("div");
     }
     
     protected void encodeSelectItems(FacesContext context, SelectManyButton button) throws IOException {
@@ -112,8 +112,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
         
         //button
-        writer.startElement("button", null);
-        writer.writeAttribute("type", "button", null);
+        writer.startElement("div", null);
 		writer.writeAttribute("class", buttonStyle, null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
@@ -138,7 +137,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeText(option.getLabel(), "itemLabel");
         writer.endElement("span");
 
-        writer.endElement("button");
+        writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, SelectManyButton button) throws IOException {
