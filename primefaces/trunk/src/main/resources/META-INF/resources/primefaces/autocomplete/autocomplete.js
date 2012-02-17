@@ -278,7 +278,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
     })
     .bind('click', function(event) {
         var item = $(this),
-        itemValue = item.data('item-value');
+        itemValue = item.attr('data-item-value');
         
         if(_self.cfg.multiple) {
             var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
@@ -295,7 +295,7 @@ PrimeFaces.widget.AutoComplete.prototype.bindDynamicEvents = function() {
                 _self.hinput.val(_self.hinput.val() + ',"' + itemValue + '"');
         } 
         else {
-            _self.input.val(item.data('item-label'));
+            _self.input.val(item.attr('data-item-label'));
             
             if(_self.cfg.pojo) {
                 _self.hinput.val(itemValue);            
@@ -452,7 +452,7 @@ PrimeFaces.widget.AutoComplete.prototype.invokeItemUnselectBehavior = function(e
             var ext = {
                 params : {}
             };
-            ext.params[this.id + "_itemUnselect"] = token.data('token-value');
+            ext.params[this.id + "_itemUnselect"] = token.attr('data-token-value');
             
             itemUnselectBehavior.call(this, event, ext);
         }
@@ -461,7 +461,7 @@ PrimeFaces.widget.AutoComplete.prototype.invokeItemUnselectBehavior = function(e
 
 PrimeFaces.widget.AutoComplete.prototype.removeItem = function(event, item) {
     var currentValues = this.hinput.val().split(','),
-    value = '"' + item.data('token-value') + '"',
+    value = '"' + item.attr('data-token-value') + '"',
     _self = this;
 
     //remove from value holder
