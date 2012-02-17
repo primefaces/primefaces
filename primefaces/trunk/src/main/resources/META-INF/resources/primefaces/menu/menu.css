@@ -239,3 +239,16 @@
     padding:0;
     border-top: 0px none;
 }
+
+/** MegaMenu **/
+.ui-megamenu td {
+    vertical-align: top;
+}
+
+.ui-menu.ui-megamenu .ui-menu-parent .ui-menu-child {
+    width:auto;
+}
+
+.ui-menu.ui-megamenu .ui-menu-child > table {
+    width:auto;
+}

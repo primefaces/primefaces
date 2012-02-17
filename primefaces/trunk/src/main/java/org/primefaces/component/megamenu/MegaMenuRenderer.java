@@ -20,6 +20,7 @@ import java.util.Iterator;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -83,23 +84,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, (MenuItem) child);
                     writer.endElement("li");
                 } 
-                else if(child instanceof Submenu) {
-                    Submenu submenu = (Submenu) child;
-                    String style = submenu.getStyle();
-                    String styleClass = submenu.getStyleClass();
-                    styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
-        
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", styleClass, null);
-                    if(style != null) {
-                        writer.writeAttribute("style", style, null);
-                    }
-                    writer.writeAttribute("role", "menuitem", null);
-                    writer.writeAttribute("aria-haspopup", "true", null);
-                    
-                    encodeRootSubmenu(context, submenu);
-                    
-                    writer.endElement("li");
+                else if(child instanceof Submenu) {                    
+                    encodeRootSubmenu(context, (Submenu) child);
                 } 
                 else if(child instanceof Separator) {
                     encodeSeparator(context, (Separator) child);
@@ -112,6 +98,17 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
+        String style = submenu.getStyle();
+        String styleClass = submenu.getStyleClass();
+        styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+
+        writer.startElement("li", null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute("aria-haspopup", "true", null);
 
         //title
         writer.startElement("a", null);
@@ -141,25 +138,44 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
             
+            writer.startElement("table", null);
+            writer.startElement("tbody", null);
+            writer.startElement("tr", null);
+
             for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
                 UIComponent child = (UIComponent) iterator.next();
 
-                if(child.isRendered()) {
-                    writer.startElement("li", null);
-                    
-                    if(child instanceof Submenu) {
-                        encodeDescendantSubmenu(context, (Submenu) child);
-                    } 
-                    else if(child instanceof Separator) {
-                        encodeSeparator(context, (Separator) child);
-                    }
-                            
-                    writer.endElement("li");
+                if(child.isRendered() && child instanceof Column) {
+                    encodeColumn(context, (Column) child);
                 }
             }
+            
+            writer.endElement("tr");
+            writer.endElement("tbody");
+            writer.endElement("table");
 
 			writer.endElement("ul");
 		}
+        
+        writer.endElement("li");
+    }
+    
+    protected void encodeColumn(FacesContext context, Column column) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("td", null);
+        if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+        if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+        
+        for(Iterator<UIComponent> iterator = column.getChildren().iterator(); iterator.hasNext();) {
+            UIComponent child = (UIComponent) iterator.next();
+
+            if(child.isRendered() && child instanceof Submenu) {
+                encodeDescendantSubmenu(context, (Submenu) child);
+            } 
+        }
+
+        writer.endElement("td");
     }
 
     protected void encodeDescendantSubmenu(FacesContext context, Submenu submenu) throws IOException {
@@ -169,8 +185,6 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
 
-        
-        
         writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
         writer.writeAttribute("role", "menu", null);
@@ -209,5 +223,15 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
         
         writer.endElement("ul");
+    }
+    
+    @Override
+    protected void encodeTieredSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String icon = submenu.getParent() instanceof MegaMenu ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", icon, null);
+        writer.endElement("span");
     }
 }
