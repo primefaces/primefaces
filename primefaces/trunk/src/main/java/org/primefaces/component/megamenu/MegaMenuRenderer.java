@@ -175,6 +175,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     encodeDescendantSubmenu(context, (Submenu) child);
                 } else if(child instanceof Separator) {
                     encodeSubmenuSeparator(context, (Separator) child);
+                } else {
+                    child.encodeAll(context);
                 }
             }
         }
