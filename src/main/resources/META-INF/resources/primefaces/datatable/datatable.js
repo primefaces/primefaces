@@ -827,6 +827,15 @@ PrimeFaces.widget.DataTable.prototype.toggleCheckAll = function() {
 
     //save state
     this.writeSelections();
+    
+    //fire toggleCheckAll event
+    if(this.cfg.behaviors) {
+        var toggleCheckAllBehavior = this.cfg.behaviors['toggleCheckAll'];
+        
+        if(toggleCheckAllBehavior) {            
+            toggleCheckAllBehavior.call(this);
+        }
+    }
 }
 
 /**

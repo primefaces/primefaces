@@ -89,7 +89,8 @@ import javax.faces.FacesException;
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", "rowUnselect", "rowEdit", "colResize"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
+                                                        "rowUnselect", "rowEdit", "colResize", "toggleCheckAll"));
 
     public List<Column> columns;
 
@@ -312,6 +313,9 @@ import javax.faces.FacesException;
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
+            }
+            else if(eventName.equals("toggleCheckAll")) {
+                wrapperEvent = behaviorEvent;
             }
             
             wrapperEvent.setPhaseId(event.getPhaseId());
