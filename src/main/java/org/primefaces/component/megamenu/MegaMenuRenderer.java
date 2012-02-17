@@ -169,10 +169,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         
         for(Iterator<UIComponent> iterator = column.getChildren().iterator(); iterator.hasNext();) {
             UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered() && child instanceof Submenu) {
-                encodeDescendantSubmenu(context, (Submenu) child);
-            } 
+            
+            if(child.isRendered()) {
+                if(child instanceof Submenu) {
+                    encodeDescendantSubmenu(context, (Submenu) child);
+                } else if(child instanceof Separator) {
+                    encodeSubmenuSeparator(context, (Separator) child);
+                }
+            }
         }
 
         writer.endElement("td");
@@ -234,4 +238,19 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", icon, null);
         writer.endElement("span");
     }
+
+	protected void encodeSubmenuSeparator(FacesContext context, Separator separator) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String styleClass = separator.getStyleClass();
+        styleClass = styleClass == null ? Separator.DEFAULT_STYLE_CLASS : Separator.DEFAULT_STYLE_CLASS + " " + styleClass;
+		
+		writer.startElement("hr", separator);
+		writer.writeAttribute("id", separator.getClientId(context), "id");
+		writer.writeAttribute("class", styleClass, "styleClass");
+		
+		if(separator.getTitle() != null) writer.writeAttribute("title", separator.getTitle(), "title");
+		if(separator.getStyle() != null) writer.writeAttribute("style", separator.getStyle(), "style");
+        
+        writer.endElement("hr");
+	}
 }
