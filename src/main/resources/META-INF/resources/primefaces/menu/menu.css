@@ -252,3 +252,7 @@
 .ui-menu.ui-megamenu .ui-menu-child > table {
     width:auto;
 }
+
+.ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
+    width: 150px;
+}
