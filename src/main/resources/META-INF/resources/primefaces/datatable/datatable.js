@@ -55,6 +55,10 @@ PrimeFaces.widget.DataTable = function(cfg) {
         this.setupResizableColumns();
     }
     
+    if(this.cfg.draggableColumns) {
+        this.setupDraggableColumns();
+    }
+    
     this.postConstruct();
 }
 
@@ -1296,6 +1300,60 @@ PrimeFaces.widget.DataTable.prototype.updateDataCellWidths = function() {
         var cell = dataCells.eq(i);
         cell.width('').children('div.ui-dt-c').width(widths[cell.index()]);
     }
+}
+
+/**
+ * Sets up column reordering
+ */
+PrimeFaces.widget.DataTable.prototype.setupDraggableColumns = function() {
+    var _self = this;
+    
+    $(this.jqId + ' thead th').draggable({
+        appendTo: 'body'
+        ,opacity: 0.75
+        ,cursor: 'move'
+        ,helper: function() {
+            var header = $(this),
+            helper = $('<div class="ui-widget ui-state-default" style="padding:4px 10px;text-align:center;"></div>');
+
+            helper.width(header.width());
+            helper.height(header.height());
+
+            helper.html(header.html());
+
+            return helper.get(0);
+        }
+        ,start:function(event, ui) {
+
+        }
+        
+    }).droppable({
+        hoverClass:'ui-state-highlight'
+        ,activeClass:'ui-state-hover'
+        ,tolerance:'intersect'
+        ,drop:function(event, ui) {
+            var draggedColumn = ui.draggable,
+            droppedColumn = $(this),
+            draggedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (draggedColumn.index() + 1) + ')'),
+            droppedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (droppedColumn.index() + 1) + ')'),
+            ltr = draggedColumn.nextAll(PrimeFaces.escapeClientId(droppedColumn.attr('id'))).length == 1;
+
+            if(ltr) {
+                draggedColumn.insertAfter(droppedColumn);
+
+                draggedCells.each(function(i, item) {
+                    $(this).insertAfter(droppedCells.eq(i));
+                });
+            }
+            else {
+                draggedColumn.insertBefore(droppedColumn);
+
+                draggedCells.each(function(i, item) {
+                    $(this).insertBefore(droppedCells.eq(i));
+                });
+            }
+        }
+    });
 }
 
 /**
