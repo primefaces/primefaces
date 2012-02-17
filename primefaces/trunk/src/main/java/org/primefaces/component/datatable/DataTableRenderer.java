@@ -159,6 +159,11 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isResizableColumns()) {
             writer.write(",resizableColumns:true");
         }
+        
+        //Draggable Columns
+        if(table.isDraggableColumns()) {
+            writer.write(",draggableColumns:true");
+        }
 
         //Behaviors
         encodeClientBehaviors(context, table);

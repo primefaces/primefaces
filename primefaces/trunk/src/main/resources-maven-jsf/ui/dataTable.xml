@@ -221,6 +221,13 @@
 			<type>java.lang.String</type>
             <description>Style class of the table element.</description>
 		</attribute>
+        <attribute>
+			<name>draggableColumns</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Decides whether datatable columns can be reordered using dragdrop.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
