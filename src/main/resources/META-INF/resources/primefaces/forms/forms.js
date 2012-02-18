@@ -775,7 +775,8 @@ PrimeFaces.widget.CommandButton = function(cfg) {
 PrimeFaces.extend(PrimeFaces.widget.CommandButton, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.CommandButton.prototype.disable = function() {
-    this.jq.addClass('ui-state-disabled').attr('disabled', 'disabled');
+    this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
+            .addClass('ui-state-disabled').attr('disabled', 'disabled');
 }
 
 PrimeFaces.widget.CommandButton.prototype.enable = function() {
