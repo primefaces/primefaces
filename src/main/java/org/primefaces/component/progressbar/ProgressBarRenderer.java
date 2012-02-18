@@ -98,10 +98,6 @@ public class ProgressBarRenderer extends CoreRenderer {
         if(isAjax) {
             writer.write(",interval:" + progressBar.getInterval());
 
-            if(progressBar.getOncomplete() != null) {
-                writer.write(",oncomplete:function(xhr, status, args) {" + progressBar.getOncomplete() + "}");
-            }
-
             encodeClientBehaviors(context, progressBar);
         }
 
