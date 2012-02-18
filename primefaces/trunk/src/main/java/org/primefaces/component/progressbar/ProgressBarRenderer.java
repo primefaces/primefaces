@@ -65,8 +65,14 @@ public class ProgressBarRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
+        //value
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
+        writer.endElement("div");
+        
+        //label
+        writer.startElement("div", progressBar);
+        writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
         writer.endElement("div");
         
         writer.endElement("div");
@@ -85,6 +91,9 @@ public class ProgressBarRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",value:" + progressBar.getValue());
         writer.write(",ajax:" + isAjax);
+        
+        if(progressBar.getLabelTemplate() != null)  
+            writer.write(",labelTemplate:'" + progressBar.getLabelTemplate() + "'");
 
         if(isAjax) {
             writer.write(",interval:" + progressBar.getInterval());

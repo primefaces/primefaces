@@ -6,7 +6,8 @@ PrimeFaces.widget.ProgressBar = function(cfg) {
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
-    this.jqProgress = this.jq.children('.ui-progressbar-value');
+    this.jqValue = this.jq.children('.ui-progressbar-value');
+    this.jqLabel = this.jq.children('.ui-progressbar-label');
     this.value = 0;
 
     if(this.cfg.ajax) {
@@ -21,18 +22,23 @@ PrimeFaces.extend(PrimeFaces.widget.ProgressBar, PrimeFaces.widget.BaseWidget);
 PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
     if(value >= 0 && value<=100) {
         if(value == 0) {
-            this.jqProgress.css({
-                'width': '0%'
-                ,'display': 'none'
-            });
+            this.jqValue.hide().css('width', '0%');
+            
+            this.jqLabel.hide();
         }
         else {
-            this.jqProgress.css({
+            this.jqValue.css({
                 'width': value + '%'
                 ,'display': 'block'
             });
 
-            this.value = value; 
+            this.value = value;
+            
+            if(this.cfg.labelTemplate) {
+                var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
+                
+                this.jqLabel.html(formattedLabel).show();
+            }
         }
     }
 }
