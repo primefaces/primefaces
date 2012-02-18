@@ -65,12 +65,6 @@
             <description>Style class of the main container element.</description>
         </attribute>
         <attribute>
-            <name>oncomplete</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Client side callback to execute when progress ends.</description>
-        </attribute>
-        <attribute>
             <name>labelTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
