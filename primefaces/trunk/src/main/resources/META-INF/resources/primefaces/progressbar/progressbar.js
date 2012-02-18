@@ -27,10 +27,9 @@ PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
             this.jqLabel.hide();
         }
         else {
-            this.jqValue.css({
-                'width': value + '%'
-                ,'display': 'block'
-            });
+            this.jqValue.show().animate({
+                'width': value + '%' 
+            }, 500, 'easeInOutCirc');
 
             this.value = value;
             
