@@ -1,0 +1,10 @@
+.ui-progressbar { 
+    height:2 em; 
+    text-align: left; 
+}
+
+.ui-progressbar .ui-progressbar-value {
+    margin: -1px; 
+    height: 100%;
+    width: 0%;
+}

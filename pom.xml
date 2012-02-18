@@ -256,13 +256,14 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/password/password.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
@@ -495,13 +496,14 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
-                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
-                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/password/password.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>

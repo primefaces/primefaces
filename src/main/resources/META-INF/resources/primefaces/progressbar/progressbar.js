@@ -1,26 +1,44 @@
+/**
+ * PrimeFaces ProgressBar widget
+ */
 PrimeFaces.widget.ProgressBar = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
     this.jq = $(this.jqId);
+    this.jqProgress = this.jq.children('.ui-progressbar-value');
+    this.value = 0;
 
     if(this.cfg.ajax) {
         this.cfg.formId = this.jq.parents('form:first').attr('id');
     }
-	
-    this.jq.progressbar(this.cfg);
-    
+	    
     this.postConstruct();
 }
 
 PrimeFaces.extend(PrimeFaces.widget.ProgressBar, PrimeFaces.widget.BaseWidget);
 
 PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
-    this.jq.progressbar('value', value);
+    if(value >= 0 && value<=100) {
+        if(value == 0) {
+            this.jqProgress.css({
+                'width': '0%'
+                ,'display': 'none'
+            });
+        }
+        else {
+            this.jqProgress.css({
+                'width': value + '%'
+                ,'display': 'block'
+            });
+
+            this.value = value; 
+        }
+    }
 }
 
 PrimeFaces.widget.ProgressBar.prototype.getValue  = function() {
-    return this.jq.progressbar('value');
+    return this.value;
 }
 
 PrimeFaces.widget.ProgressBar.prototype.start = function() {
@@ -38,7 +56,7 @@ PrimeFaces.widget.ProgressBar.prototype.start = function() {
                     var value = args[_self.id + '_value'];
                     _self.setValue(value);
 
-                    //trigger close listener
+                    //trigger complete listener
                     if(value === 100) {
                         _self.fireCompleteEvent();
                     }

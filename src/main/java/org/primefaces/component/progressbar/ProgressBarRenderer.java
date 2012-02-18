@@ -50,11 +50,24 @@ public class ProgressBarRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, ProgressBar progressBar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+        String style = progressBar.getStyle();
+        String styleClass = progressBar.getStyleClass();
+        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
+        
+        if(progressBar.isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+        
         writer.startElement("div", progressBar);
         writer.writeAttribute("id", progressBar.getClientId(context), "id");
-        if(progressBar.getStyle() != null) writer.writeAttribute("style", progressBar.getStyle(), "style");
-        if(progressBar.getStyleClass() != null) writer.writeAttribute("class", progressBar.getStyleClass(), "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        
+        writer.startElement("div", progressBar);
+        writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
+        writer.endElement("div");
         
         writer.endElement("div");
     }
@@ -81,10 +94,6 @@ public class ProgressBarRenderer extends CoreRenderer {
             }
 
             encodeClientBehaviors(context, progressBar);
-        }
-
-        if(progressBar.isDisabled()) {
-            writer.write(",disabled:true");
         }
 
         writer.write("});});");

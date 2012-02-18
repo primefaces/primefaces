@@ -160,17 +160,7 @@
     left: -4px; /*must have*/
     width: 200px; /*must have*/
     height: 200px; /*must have*/
-}/*
- * jQuery UI Progressbar 1.8.16
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Progressbar#theming
- */
-.ui-progressbar { height:1.1em; text-align: left; }
-.ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
+}
 
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
