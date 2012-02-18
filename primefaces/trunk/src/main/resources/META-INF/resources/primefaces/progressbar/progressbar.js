@@ -31,7 +31,6 @@ PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
                 'width': value + '%' 
             }, 500, 'easeInOutCirc');
 
-            this.value = value;
             
             if(this.cfg.labelTemplate) {
                 var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
@@ -39,6 +38,8 @@ PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
                 this.jqLabel.html(formattedLabel).show();
             }
         }
+        
+        this.value = value;
     }
 }
 

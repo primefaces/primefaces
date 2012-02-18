@@ -1197,9 +1197,6 @@ a {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    -moz-box-shadow: inset 0 2px 2px #8f8f8f;
-    -webkit-box-shadow: inset 0 2px 2px #8f8f8f;
-    box-shadow: inset 0 2px 2px #8f8f8f;
 }
 
 .ui-progressbar .ui-widget-header {
