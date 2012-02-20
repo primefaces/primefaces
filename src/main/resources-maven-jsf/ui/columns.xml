@@ -8,7 +8,7 @@
     <componentClass>org.primefaces.component.columns.Columns</componentClass>
     <componentType>org.primefaces.component.Columns</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
-    <parent>javax.faces.component.UIColumn</parent>
+    <parent>org.primefaces.component.column.Column</parent>
     <attributes>
 		&standard_uicomponent_attributes;
         <attribute>
@@ -31,12 +31,21 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Inline style of the column.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Style class of the column.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>sortBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Property to be used for sorting.</description>
+            <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
     </attributes>
 </component>

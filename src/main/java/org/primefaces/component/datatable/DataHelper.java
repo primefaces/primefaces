@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.BeanPropertyComparator;
@@ -58,28 +59,47 @@ class DataHelper {
 		String sortDir  = params.get(clientId + "_sortDir");
         Column sortColumn = null;
 
-        ColumnGroup group = table.getColumnGroup("header");
-        if(group != null) {
-            outer:
-            for (UIComponent child : group.getChildren()) {
-                Row headerRow = (Row) child;
-                for (UIComponent headerRowChild : headerRow.getChildren()) {
-                    Column column = (Column) headerRowChild;
+        //find the sortColumn if the column is static
+        if(sortKey.indexOf("_colIndex") == -1) {
+            ColumnGroup group = table.getColumnGroup("header");
+            if(group != null) {
+                outer:
+                for (UIComponent child : group.getChildren()) {
+                    Row headerRow = (Row) child;
+                    for (UIComponent headerRowChild : headerRow.getChildren()) {
+                        Column column = (Column) headerRowChild;
+                        if (column.getClientId(context).equals(sortKey)) {
+                            sortColumn = column;
+                            break outer;
+                        }
+                    }
+                }
+            } else {
+                //single header row
+                for (Column column : table.getColumns()) {
                     if (column.getClientId(context).equals(sortKey)) {
                         sortColumn = column;
-                        break outer;
+                        break;
                     }
                 }
             }
-        } else {
-            //single header row
-            for (Column column : table.getColumns()) {
-                if (column.getClientId(context).equals(sortKey)) {
-                    sortColumn = column;
+        }
+        //sort is a dynamic column
+        else {
+            int colIndex = Integer.parseInt(sortKey.split("_colIndex_")[1]);
+            Columns columns = null;
+            
+            for(UIComponent child : table.getChildren()) {
+                if(child instanceof Columns) {
+                    columns = (Columns) child;
                     break;
                 }
             }
+            
+            columns.setColIndex(colIndex);
+            sortColumn = columns;
         }
+        
 
         //Reset state
 		table.setFirst(0);

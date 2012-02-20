@@ -18,6 +18,7 @@ package org.primefaces.component.datatable;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -312,7 +313,7 @@ public class DataTableRenderer extends DataRenderer {
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
-        columnClass = resizable ? columnClass = columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
+        columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
 
         if(isSortable) {
@@ -400,40 +401,13 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String columnVar = columns.getVar();
-        String columnIndexVar = columns.getColumnIndexVar();
-        int colIndex = 0;
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        int colCount = ((List<?>) columns.getValue()).size();
 
-        for(Object column : (Collection) columns.getValue()) {
-            requestMap.put(columnVar, column);
-            requestMap.put(columnIndexVar, colIndex);
-            UIComponent header = columns.getFacet("header");
-            String style = columns.getStyle();
-            String styleClass = columns.getStyleClass() == null ? DataTable.COLUMN_HEADER_CLASS : DataTable.COLUMN_HEADER_CLASS + " " + columns.getStyleClass();
+        for(int i = 0; i < colCount; i++) {
+            columns.setColIndex(i);
             
-            writer.startElement("th", null);
-            writer.writeAttribute("class", styleClass, null);
-            if(style != null) {
-                writer.writeAttribute("style", style, null);
-            }
-            
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
-            
-            if(header != null) {
-                header.encodeAll(context);
-            }
-            
-            writer.endElement("div");
-
-            writer.endElement("th");
-            
-            colIndex++;
+            encodeColumnHeader(context, table, columns);
         }
-
-        context.getExternalContext().getRequestMap().remove(columnVar);
     }
 
     protected void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
@@ -573,11 +547,12 @@ public class DataTableRenderer extends DataRenderer {
 
             for(UIComponent kid : table.getChildren()) {
                 if(kid.isRendered()) {
-                    if(kid instanceof Column) {
-                        encodeColumnHeader(context, table, (Column) kid);
-                    }
-                    else if(kid instanceof Columns) {
+                    if(kid instanceof Columns) {
                         encodeColumnsHeader(context, table, (Columns) kid);
+                        
+                    }
+                    else if(kid instanceof Column) {
+                        encodeColumnHeader(context, table, (Column) kid);
                     }
                 }
             }
@@ -714,11 +689,11 @@ public class DataTableRenderer extends DataRenderer {
 
         for(UIComponent kid : table.getChildren()) {
             if(kid.isRendered()) {
-                if(kid instanceof Column) {
-                    encodeRegularCell(context, table, (Column) kid, clientId, selected);
-                }
-                else if(kid instanceof Columns) {
+                if(kid instanceof Columns) {
                     encodeDynamicCell(context, table, (Columns) kid);
+                }
+                else if(kid instanceof Column) {
+                    encodeRegularCell(context, table, (Column) kid, clientId, selected);
                 }
             }
         }
@@ -764,29 +739,13 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeDynamicCell(FacesContext context, DataTable table, Columns columns) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String columnVar = columns.getVar();
-        String columnIndexVar = columns.getColumnIndexVar();
-        int colIndex = 0;
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        int colCount = ((List<?>) columns.getValue()).size();
 
-        for(Object column : (Collection) columns.getValue()) {
-            requestMap.put(columnVar, column);
-            requestMap.put(columnIndexVar, colIndex);
-
-            writer.startElement("td", null);
-            writer.writeAttribute("role", "gridcell", null);
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
-            columns.encodeAll(context);
-            writer.endElement("div");
-            writer.endElement("td");
-
-            colIndex++;
+        for(int i = 0; i < colCount; i++) {
+            columns.setColIndex(i);
+            
+            encodeRegularCell(context, table, columns, null, false);
         }
-
-        context.getExternalContext().getRequestMap().remove(columnVar);
-        context.getExternalContext().getRequestMap().remove(columnIndexVar);
     }
 
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
