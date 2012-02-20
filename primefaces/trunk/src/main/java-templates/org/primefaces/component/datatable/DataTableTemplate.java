@@ -682,31 +682,69 @@ import javax.faces.context.FacesContext;
     public void syncColumnOrder() {
         FacesContext context = FacesContext.getCurrentInstance();
         List<Column> actualColumns = getColumns();
-        List<Column> orderedColumns = new ArrayList<Column>();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String[] order = params.get(getClientId(context) + "_columnOrder").split(",");
+        UIComponent firstChild = actualColumns.get(0);
+        
+        if(firstChild instanceof Columns) {
+            Columns uicolumns = (Columns) firstChild;
+            List<?> model = (List<?>) uicolumns.getValue();
+            List orderedModel = new ArrayList();
+            
+            for(String columnId : order) {
+                int colIndex = Integer.parseInt(columnId.split("_colIndex_")[1]);
+                
+                orderedModel.add(model.get(colIndex));
+            }
+            
+            uicolumns.getValueExpression("value").setValue(context.getELContext(), orderedModel);
+        }
+        else {
+            List<Column> orderedColumns = new ArrayList<Column>();
+            for(String columnId : order) {
+                for(Column column : actualColumns) {
+                    if(columnId.equals(column.getClientId(context))) {
+                        orderedColumns.add(column);
+                        break;                    
+                    }
 
-        for(String columnId : order) {
-            for(Column column : actualColumns) {
-                if(columnId.equals(column.getClientId(context))) {
-                    orderedColumns.add(column);
-                    break;
                 }
             }
+            
+            this.columns = orderedColumns;
         }
-        
-        this.columns = orderedColumns;
     }
     
     public String getColumnIds() {
         StringBuilder builder = new StringBuilder();
-        List<Column> columns = getColumns();
+        List<Column> cols = getColumns();
         
-        for(Iterator<Column> iter = columns.iterator(); iter.hasNext();) {
-            builder.append(iter.next().getClientId());
+        for(Iterator<Column> iter = cols.iterator(); iter.hasNext();) {
+            Column column = iter.next();
+            
+            if(column instanceof Columns) {
+                Columns uicolumns = (Columns) column;
+                List<?> model = (List<?>) uicolumns.getValue();
+                int size = model.size();
+                
+                if(model != null) {
+                    for(int i = 0; i < size; i++) {
+                        uicolumns.setColIndex(i);
+                        
+                        builder.append(uicolumns.getClientId());
+                        
+                        if(i != (size - 1)) {
+                            builder.append(",");
+                        }
+                    }
+                }
+            }
+            else {
+                builder.append(iter.next().getClientId());
 
-            if(iter.hasNext()) {
-                builder.append(",");
+                if(iter.hasNext()) {
+                    builder.append(",");
+                }
             }
         }
 
