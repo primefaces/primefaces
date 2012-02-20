@@ -1306,6 +1306,8 @@ PrimeFaces.widget.DataTable.prototype.updateDataCellWidths = function() {
  * Sets up column reordering
  */
 PrimeFaces.widget.DataTable.prototype.setupDraggableColumns = function() {
+    this.orderStateHolder = $(this.jqId + '_columnOrder');
+    
     var _self = this;
     
     $(this.jqId + ' thead th').draggable({
@@ -1322,9 +1324,6 @@ PrimeFaces.widget.DataTable.prototype.setupDraggableColumns = function() {
             helper.html(header.html());
 
             return helper.get(0);
-        }
-        ,start:function(event, ui) {
-
         }
         
     }).droppable({
@@ -1352,6 +1351,16 @@ PrimeFaces.widget.DataTable.prototype.setupDraggableColumns = function() {
                     $(this).insertBefore(droppedCells.eq(i));
                 });
             }
+            
+            //save order
+            var columns = $(_self.jqId + ' thead:first th'),
+            columnIds = [];
+            
+            columns.each(function(i, item) {
+                columnIds.push($(item).attr('id'));
+            });
+
+            _self.orderStateHolder.val(columnIds.join(','));
         }
     });
 }

@@ -113,7 +113,7 @@ import javax.faces.context.FacesContext;
     private Boolean sortRequest = null;
     private Boolean filterRequest = null;
     private Boolean clearFiltersRequest = null;
-
+    
     public boolean isPaginationRequest(FacesContext context) {
         if(pageRequest == null) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -678,4 +678,37 @@ import javax.faces.context.FacesContext;
     public void setLazy(boolean value) {
         logger.info("Lazy attribute has been removed from datatable api, please also remove it from your page definition. See issue #2993.");
     }
+    
+    public void syncColumnOrder() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        List<Column> actualColumns = getColumns();
+        List<Column> orderedColumns = new ArrayList<Column>();
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String[] order = params.get(getClientId(context) + "_columnOrder").split(",");
 
+        for(String columnId : order) {
+            for(Column column : actualColumns) {
+                if(columnId.equals(column.getClientId(context))) {
+                    orderedColumns.add(column);
+                    break;
+                }
+            }
+        }
+        
+        this.columns = orderedColumns;
+    }
+    
+    public String getColumnIds() {
+        StringBuilder builder = new StringBuilder();
+        List<Column> columns = getColumns();
+        
+        for(Iterator<Column> iter = columns.iterator(); iter.hasNext();) {
+            builder.append(iter.next().getClientId());
+
+            if(iter.hasNext()) {
+                builder.append(",");
+            }
+        }
+
+        return builder.toString();
+    }
