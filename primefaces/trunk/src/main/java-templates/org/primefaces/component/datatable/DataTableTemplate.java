@@ -43,6 +43,7 @@ import org.primefaces.model.SelectableDataModelWrapper;
 import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -189,13 +190,32 @@ import javax.faces.FacesException;
                    }
                }
             }
-         } else {
-            //single header row
-            for(Column column : getColumns()) {
-               if(column.getValueExpression("filterBy") != null) {
-                  filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
-               }
+         } 
+         else {
+
+            for(UIComponent child : getChildren()) {
+                if(child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    List<?> columnModel = (List<?>) columns.getValue();
+                    
+                    if(columnModel != null && columns.getValueExpression("filterBy") != null) {
+                        for(int i = 0; i < columnModel.size(); i++) {
+                            columns.setColIndex(i);
+                            
+                            filterMap.put(columns.getClientId(FacesContext.getCurrentInstance()) + "_filter", columns);
+                        }
+                        
+                        columns.setColIndex(-1);    //reset
+                    }
+                }
+                else if(child instanceof Column) {
+                    Column column = (Column) child;
+                    if(column.getValueExpression("filterBy") != null) {
+                        filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
+                    }
+                }
             }
+            
          }
       }
 
