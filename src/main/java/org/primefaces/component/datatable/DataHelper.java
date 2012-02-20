@@ -177,6 +177,14 @@ class DataHelper {
                 for(String filterName : filterMap.keySet()) {
                     Column column = filterMap.get(filterName);
                     String columnFilter = params.containsKey(filterName) ? params.get(filterName).toLowerCase() : null; 
+                    
+                    if(column instanceof Columns) {
+                        Columns columns = (Columns) column;
+                        //parse a filter key like id_colIndex_2_filter to get colIndex like 2
+                        int colIndex = Integer.parseInt(filterName.split("_colIndex_")[1].split("_filter")[0]);
+                        columns.setColIndex(colIndex);
+                    }
+                    
                     String columnValue = String.valueOf(column.getValueExpression("filterBy").getValue(context.getELContext()));
 
                     if(hasGlobalFilter && !globalMatch) {

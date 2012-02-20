@@ -13,12 +13,17 @@ import java.util.Map;
 
     public void setColIndex(int colIndex) {
         this.colIndex = colIndex;
-    
-        List<?> columns = (List<?>) this.getValue();
-        if(columns != null) {
-            Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-    
-            requestMap.put(this.getVar(), columns.get(colIndex));
-            requestMap.put(this.getColumnIndexVar(), colIndex);
+        Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+
+        if(colIndex == -1) {
+            requestMap.remove(this.getVar());
+            requestMap.remove(this.getColumnIndexVar());
+        }
+        else {
+            List<?> columns = (List<?>) this.getValue();
+            if(columns != null) {
+                requestMap.put(this.getVar(), columns.get(colIndex));
+                requestMap.put(this.getColumnIndexVar(), colIndex);
+            }
         }
     }
