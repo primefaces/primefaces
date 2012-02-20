@@ -752,7 +752,7 @@ PrimeFaces.widget.MegaMenu.prototype.bindEvents = function() {
         menuitemLink.removeClass('ui-state-hover');
 
         //hide
-        menuitem.parents('.ui-menu-child:first').fadeOut();
+        menuitem.parents('.ui-menu-child:first').fadeOut('fast');
         
         
     });    
