@@ -1361,6 +1361,15 @@ PrimeFaces.widget.DataTable.prototype.setupDraggableColumns = function() {
             });
 
             _self.orderStateHolder.val(columnIds.join(','));
+            
+            //fire toggleCheckAll event
+            if(_self.cfg.behaviors) {
+                var columnReorderBehavior = _self.cfg.behaviors['columnReorder'];
+
+                if(columnReorderBehavior) {            
+                    columnReorderBehavior.call(_self);
+                }
+            }
         }
     });
 }
