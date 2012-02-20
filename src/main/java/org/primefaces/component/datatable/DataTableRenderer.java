@@ -53,6 +53,10 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
         boolean isSortRequest = table.isSortRequest(context);
 
+        if(table.isDraggableColumns()) {
+            table.syncColumnOrder();
+        }
+        
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
             
@@ -77,7 +81,7 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isPaginator()) {
             updatePaginationMetadata(context, table);
         }
-        
+
         //load lazy data if body needs to be updated (page, filter, sort)
         if(table.isLazy() && table.isBodyUpdate(context)) {
             table.loadLazyData();
@@ -216,7 +220,11 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if(table.isSelectionEnabled()) {
-            encodeSelectionHolder(context, table);
+            encodeStateHolder(context, table, table.getClientId(context) + "_selection", table.getSelectedRowKeysAsString());
+        }
+        
+        if(table.isDraggableColumns()) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_columnOrder", table.getColumnIds());
         }
 
         writer.endElement("div");
@@ -540,19 +548,18 @@ public class DataTableRenderer extends DataRenderer {
                 }
             }
 
-        } else {
-            
+        } 
+        else {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
 
-            for(UIComponent kid : table.getChildren()) {
-                if(kid.isRendered()) {
-                    if(kid instanceof Columns) {
-                        encodeColumnsHeader(context, table, (Columns) kid);
-                        
+            for(Column column : table.getColumns()) {
+                if(column.isRendered()) {
+                    if(column instanceof Columns) {
+                        encodeColumnsHeader(context, table, (Columns) column);
                     }
-                    else if(kid instanceof Column) {
-                        encodeColumnHeader(context, table, (Column) kid);
+                    else {
+                        encodeColumnHeader(context, table, column);
                     }
                 }
             }
@@ -687,13 +694,13 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
 
-        for(UIComponent kid : table.getChildren()) {
-            if(kid.isRendered()) {
-                if(kid instanceof Columns) {
-                    encodeDynamicCell(context, table, (Columns) kid);
+        for(Column column : table.getColumns()) {
+            if(column.isRendered()) {
+                if(column instanceof Columns) {
+                    encodeDynamicCell(context, table, (Columns) column);
                 }
-                else if(kid instanceof Column) {
-                    encodeRegularCell(context, table, (Column) kid, clientId, selected);
+                else {
+                    encodeRegularCell(context, table, column, clientId, selected);
                 }
             }
         }
@@ -846,16 +853,17 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeSelectionHolder(FacesContext context, DataTable table) throws IOException {
+    protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String id = table.getClientId(context) + "_selection";
 
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
-        writer.writeAttribute("value", table.getSelectedRowKeysAsString(), null);
         writer.writeAttribute("autocomplete", "off", null);
+        if(value != null) {
+            writer.writeAttribute("value", value, null);
+        }
 		writer.endElement("input");
 	}
 	
