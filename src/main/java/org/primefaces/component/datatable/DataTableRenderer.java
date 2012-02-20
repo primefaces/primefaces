@@ -417,6 +417,16 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeader(context, table, columns);
         }
     }
+    
+    protected void encodeColumnsFooter(FacesContext context, DataTable table, Columns columns) throws IOException {
+        int colCount = ((List<?>) columns.getValue()).size();
+
+        for(int i = 0; i < colCount; i++) {
+            columns.setColIndex(i);
+            
+            encodeColumnFooter(context, table, columns);
+        }
+    }
 
     protected void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -784,7 +794,14 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tr", null);
 
             for(Column column : table.getColumns()) {
-                encodeColumnFooter(context, table, column);
+                if(column.isRendered()) {
+                    if(column instanceof Columns) {
+                        encodeColumnsFooter(context, table, (Columns) column);
+                    }
+                    else {
+                        encodeColumnFooter(context, table, column);
+                    }
+                }
             }
 
             writer.endElement("tr");
