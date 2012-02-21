@@ -147,6 +147,7 @@ public class CalendarRenderer extends InputRenderer {
         if(calendar.isDisabledWeekends()) writer.write(",disabledWeekends:true");
         if(calendar.isDisabled()) writer.write(",disabled:true");
         if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
+        if(calendar.getBeforeShowDay() != null) writer.write(",preShowDay:" + calendar.getBeforeShowDay());
 
         if(calendar.isNavigator()) {
             writer.write(",changeMonth:true");

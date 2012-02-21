@@ -16,10 +16,19 @@ PrimeFaces.widget.Calendar = function(cfg) {
     //Select listener
     this.bindDateSelectListener();
     
-    //weekends
-    if(this.cfg.disabledWeekends) {
-        this.cfg.beforeShowDay = $.datepicker.noWeekends;
+    //disabled dates
+    this.cfg.beforeShowDay = function(date) { 
+        if(_self.cfg.preShowDay) {
+            return _self.cfg.preShowDay(date);
+        }
+        else if(_self.cfg.disabledWeekends) {
+            return $.datepicker.noWeekends(date);
+        }
+        else {
+            return [true,''];
+        }
     }
+    
 
     //Setup timepicker
     var hasTimePicker = this.hasTimePicker();
