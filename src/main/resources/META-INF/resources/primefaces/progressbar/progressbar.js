@@ -13,6 +13,8 @@ PrimeFaces.widget.ProgressBar = function(cfg) {
     if(this.cfg.ajax) {
         this.cfg.formId = this.jq.parents('form:first').attr('id');
     }
+    
+    this.enableARIA();
 	    
     this.postConstruct();
 }
@@ -39,6 +41,7 @@ PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
         }
         
         this.value = value;
+        this.jq.attr('aria-valuenow', value);
     }
 }
 
@@ -89,4 +92,11 @@ PrimeFaces.widget.ProgressBar.prototype.fireCompleteEvent = function() {
 PrimeFaces.widget.ProgressBar.prototype.cancel = function() {
     clearInterval(this.progressPoll);
     this.setValue(0);
+}
+
+PrimeFaces.widget.ProgressBar.prototype.enableARIA = function() {
+    this.jq.attr('role', 'progressbar')
+            .attr('aria-valuemin', 0)
+            .attr('aria-valuenow', 0)
+            .attr('aria-valuemax', 100);
 }
