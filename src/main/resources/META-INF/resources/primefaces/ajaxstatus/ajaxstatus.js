@@ -20,4 +20,5 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     ,bindCallback: function(eventName, fn) {
         $(document).bind(eventName, fn);
     }
+    
 });
