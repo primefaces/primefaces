@@ -29,13 +29,8 @@ PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
         else {
             this.jqValue.show().animate({
                 'width': value + '%' 
-            }, 500, 'easeInOutCirc', function() {
-                if(value == 100) {
-                    $(this).addClass('ui-corner-right');
-                }
-            });
+            }, 500, 'easeInOutCirc');
 
-            
             if(this.cfg.labelTemplate) {
                 var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
                 
