@@ -1,24 +1,23 @@
-PrimeFaces.widget.AjaxStatus = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-	this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
+/**
+ * PrimeFaces AjaxStatus Widget
+ */
+PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.AjaxStatus, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.AjaxStatus.prototype.bindFacet = function(eventName, facetToShow) {
-    var _self = this;
+    init: function(cfg) {
+        this._super(cfg);
+    },
     
-	$(document).bind(eventName, function() {
-		$(_self.jqId).children().hide();
-	
-		$(_self.jqId + '_' + facetToShow).show();
-	});
-}
+    bindFacet: function(eventName, facetToShow) {
+        var _self = this;
 
-PrimeFaces.widget.AjaxStatus.prototype.bindCallback = function(eventName, fn) {
-	$(document).bind(eventName, fn);
-}
+        $(document).bind(eventName, function() {
+            $(_self.jqId).children().hide();
+
+            $(_self.jqId + '_' + facetToShow).show();
+        });
+    }
+    
+    ,bindCallback: function(eventName, fn) {
+        $(document).bind(eventName, fn);
+    }
+});

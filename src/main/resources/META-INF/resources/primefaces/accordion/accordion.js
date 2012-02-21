@@ -1,252 +1,246 @@
 /**
- * PrimeFaces Accordion Widget
+ * PrimeFaces Accordion Panel Widget
  */
-PrimeFaces.widget.AccordionPanel = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.cfg.id);
-    this.jq = $(this.jqId);
-    this.stateHolder = $(this.jqId + '_active');
-    this.headers = this.jq.children('.ui-accordion-header');
-    this.panels = this.jq.children('.ui-accordion-content');
-    this.headers.children('a').disableSelection();
-    this.onshowHandlers = [];
+PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     
-    //options
-    this.cfg.active = this.cfg.multiple ? this.stateHolder.val().split(',') : this.stateHolder.val();
-    
-    this.bindEvents();
-    
-    if(this.cfg.dynamic && this.cfg.cache) {
-        this.markAsLoaded(this.panels.eq(this.cfg.active));
-    }
-    
-    this.jq.data('widget', this);
-    
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.AccordionPanel, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.AccordionPanel.prototype.bindEvents = function() {
-    var _self = this;
-    
-    this.headers.mouseover(function() {
-        var element = $(this);
-        if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
-            element.addClass('ui-state-hover');
-        }
-    }).mouseout(function() {
-        var element = $(this);
-        if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
-            element.removeClass('ui-state-hover');
-        }
-    }).click(function(e) {
-        var element = $(this);
-        if(!element.hasClass('ui-state-disabled')) {
-            var tabIndex = element.index() / 2;
-            
-            if(element.hasClass('ui-state-active')) {
-                _self.unselect(tabIndex);
-            }
-            else {
-                _self.select(tabIndex);
-            }
-        }
+    init: function(cfg) {
+        this._super(cfg);
         
-        e.preventDefault();
-    });
-}
+        this.stateHolder = $(this.jqId + '_active');
+        this.headers = this.jq.children('.ui-accordion-header');
+        this.panels = this.jq.children('.ui-accordion-content');
+        this.headers.children('a').disableSelection();
+        this.onshowHandlers = [];
 
-/**
- *  Activates a tab with given index
- */
-PrimeFaces.widget.AccordionPanel.prototype.select = function(index) {
-    var panel = this.panels.eq(index);
-    
-    //Call user onTabChange callback
-    if(this.cfg.onTabChange) {
-        var result = this.cfg.onTabChange.call(this, panel);
-        if(result == false)
-            return false;
-    }
-    
-    var shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+        //active index
+        this.cfg.active = this.cfg.multiple ? this.stateHolder.val().split(',') : this.stateHolder.val();
 
-    //update state
-    if(this.cfg.multiple)
-        this.addToSelection(index);
-    else
-        this.cfg.active = index;
-    
-    this.saveState();
-    
-    if(shouldLoad) {
-        this.loadDynamicTab(panel);
-    }
-    else {
-        this.show(panel);
-        this.fireTabChangeEvent(panel);
-    }
-    
-    return true;
-}
+        this.bindEvents();
 
-/**
- *  Deactivates a tab with given index
- */
-PrimeFaces.widget.AccordionPanel.prototype.unselect = function(index) {
-    var panel = this.panels.eq(index),
-    header = panel.prev();
+        if(this.cfg.dynamic && this.cfg.cache) {
+            this.markAsLoaded(this.panels.eq(this.cfg.active));
+        }
+
+        this.jq.data('widget', this);
+    },
     
-    header.attr('aria-expanded', false).children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-    header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
-    panel.attr('aria-hidden', true).slideUp();
+    bindEvents: function() {
+        var _self = this;
     
-    this.removeFromSelection(index);
-    this.saveState();
-}
+        this.headers.mouseover(function() {
+            var element = $(this);
+            if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
+                element.addClass('ui-state-hover');
+            }
+        }).mouseout(function() {
+            var element = $(this);
+            if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
+                element.removeClass('ui-state-hover');
+            }
+        }).click(function(e) {
+            var element = $(this);
+            if(!element.hasClass('ui-state-disabled')) {
+                var tabIndex = element.index() / 2;
 
-PrimeFaces.widget.AccordionPanel.prototype.show = function(panel) {
-    var _self = this;
-    
-    //deactivate current
-    if(!this.cfg.multiple) {
-        var oldHeader = this.headers.filter('.ui-state-active');
-        oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-        oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().attr('aria-hidden', true).slideUp();
-    }
-    
-    //activate selected
-    var newHeader = panel.prev();
-    newHeader.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
-             .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
-             
-    panel.attr('aria-hidden', false).slideDown('normal', function() {
-        _self.postTabShow(panel);
-    });
-}
-
-/**
- * Loads tab contents with ajax
- */
-PrimeFaces.widget.AccordionPanel.prototype.loadDynamicTab = function(panel) {
-    var _self = this,
-    options = {
-        source: this.id,
-        process: this.id,
-        update: this.id
-    };
-
-    options.onsuccess = function(responseXML) {
-        var xmlDoc = $(responseXML.documentElement),
-        updates = xmlDoc.find("update");
-
-        for(var i=0; i < updates.length; i++) {
-            var update = updates.eq(i),
-            id = update.attr('id'),
-            content = update.text();
-
-            if(id == _self.id){
-                $(panel).html(content);
-
-                if(_self.cfg.cache) {
-                    _self.markAsLoaded(panel);
+                if(element.hasClass('ui-state-active')) {
+                    _self.unselect(tabIndex);
+                }
+                else {
+                    _self.select(tabIndex);
                 }
             }
-            else {
-                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-            }
+
+            e.preventDefault();
+        });
+    },
+    
+    /**
+     *  Activates a tab with given index
+     */
+    select: function(index) {
+        var panel = this.panels.eq(index);
+
+        //Call user onTabChange callback
+        if(this.cfg.onTabChange) {
+            var result = this.cfg.onTabChange.call(this, panel);
+            if(result == false)
+                return false;
         }
-        
-        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+        var shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+
+        //update state
+        if(this.cfg.multiple)
+            this.addToSelection(index);
+        else
+            this.cfg.active = index;
+
+        this.saveState();
+
+        if(shouldLoad) {
+            this.loadDynamicTab(panel);
+        }
+        else {
+            this.show(panel);
+            this.fireTabChangeEvent(panel);
+        }
 
         return true;
-    };
+    },
     
-    options.oncomplete = function() {
-        _self.show(panel);
-    };
+    /**
+     *  Deactivates a tab with given index
+     */
+    unselect: function(index) {
+        var panel = this.panels.eq(index),
+        header = panel.prev();
 
-    var params = {};
-    params[this.id + '_contentLoad'] = true;
-    params[this.id + '_newTab'] = panel.attr('id');
-    params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
+        header.attr('aria-expanded', false).children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
+        panel.attr('aria-hidden', true).slideUp();
 
-    options.params = params;
+        this.removeFromSelection(index);
+        this.saveState();
+    },
     
-    if(this.hasBehavior('tabChange')) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'];
-        
-        tabChangeBehavior.call(this, null, options);
-    }
-    else {
-        PrimeFaces.ajax.AjaxRequest(options);
-    }
-}
+    show: function(panel) {
+        var _self = this;
 
-/**
- * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
- */
-PrimeFaces.widget.AccordionPanel.prototype.fireTabChangeEvent = function(panel) {
-    if(this.hasBehavior('tabChange')) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        ext = {
-            params: {}
+        //deactivate current
+        if(!this.cfg.multiple) {
+            var oldHeader = this.headers.filter('.ui-state-active');
+            oldHeader.children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+            oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().attr('aria-hidden', true).slideUp();
+        }
+
+        //activate selected
+        var newHeader = panel.prev();
+        newHeader.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
+                .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+
+        panel.attr('aria-hidden', false).slideDown('normal', function() {
+            _self.postTabShow(panel);
+        });
+    },
+    
+    loadDynamicTab: function(panel) {
+        var _self = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id
         };
-        ext.params[this.id + '_newTab'] = panel.attr('id');
-        ext.params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
 
+        options.onsuccess = function(responseXML) {
+            var xmlDoc = $(responseXML.documentElement),
+            updates = xmlDoc.find("update");
 
-        tabChangeBehavior.call(this, null, ext);
-    }
-}
+            for(var i=0; i < updates.length; i++) {
+                var update = updates.eq(i),
+                id = update.attr('id'),
+                content = update.text();
 
-PrimeFaces.widget.AccordionPanel.prototype.markAsLoaded = function(panel) {
-    panel.data('loaded', true);
-}
+                if(id == _self.id){
+                    $(panel).html(content);
 
-PrimeFaces.widget.AccordionPanel.prototype.isLoaded = function(panel) {
-    return panel.data('loaded') == true;
-}
+                    if(_self.cfg.cache) {
+                        _self.markAsLoaded(panel);
+                    }
+                }
+                else {
+                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+                }
+            }
 
-PrimeFaces.widget.AccordionPanel.prototype.hasBehavior = function(event) {
-    if(this.cfg.behaviors) {
-        return this.cfg.behaviors[event] != undefined;
-    }
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+            return true;
+        };
+
+        options.oncomplete = function() {
+            _self.show(panel);
+        };
+
+        var params = {};
+        params[this.id + '_contentLoad'] = true;
+        params[this.id + '_newTab'] = panel.attr('id');
+        params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
+
+        options.params = params;
+
+        if(this.hasBehavior('tabChange')) {
+            var tabChangeBehavior = this.cfg.behaviors['tabChange'];
+
+            tabChangeBehavior.call(this, null, options);
+        }
+        else {
+            PrimeFaces.ajax.AjaxRequest(options);
+        }
+    },
     
-    return false;
-}
+    /**
+     * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
+     */
+    fireTabChangeEvent : function(panel) {
+        if(this.hasBehavior('tabChange')) {
+            var tabChangeBehavior = this.cfg.behaviors['tabChange'],
+            ext = {
+                params: {}
+            };
+            ext.params[this.id + '_newTab'] = panel.attr('id');
+            ext.params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
 
-PrimeFaces.widget.AccordionPanel.prototype.addToSelection = function(nodeId) {
-    this.cfg.active.push(nodeId);
-}
 
-PrimeFaces.widget.AccordionPanel.prototype.removeFromSelection = function(nodeId) {
-    this.cfg.active = $.grep(this.cfg.active, function(r) {
-        return r != nodeId;
-    });
-}
-
-PrimeFaces.widget.AccordionPanel.prototype.saveState = function() {
-    if(this.cfg.multiple)
-        this.stateHolder.val(this.cfg.active.join(','));
-    else
-        this.stateHolder.val(this.cfg.active);
-}
-
-PrimeFaces.widget.AccordionPanel.prototype.addOnshowHandler = function(fn) {
-    this.onshowHandlers.push(fn);
-}
-
-PrimeFaces.widget.AccordionPanel.prototype.postTabShow = function(newPanel) {            
-    //Call user onTabShow callback
-    if(this.cfg.onTabShow) {
-        this.cfg.onTabShow.call(this, newPanel);
-    }
+            tabChangeBehavior.call(this, null, ext);
+        }
+    },
     
-    //execute onshowHandlers and remove successful ones
-    this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
-		return !fn.call();
-	});
-}
+    markAsLoaded: function(panel) {
+        panel.data('loaded', true);
+    },
+
+    isLoaded: function(panel) {
+        return panel.data('loaded') == true;
+    },
+
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+
+        return false;
+    },
+
+    addToSelection: function(nodeId) {
+        this.cfg.active.push(nodeId);
+    },
+
+    removeFromSelection: function(nodeId) {
+        this.cfg.active = $.grep(this.cfg.active, function(r) {
+            return r != nodeId;
+        });
+    },
+    
+    saveState: function() {
+        if(this.cfg.multiple)
+            this.stateHolder.val(this.cfg.active.join(','));
+        else
+            this.stateHolder.val(this.cfg.active);
+    },
+
+    addOnshowHandler : function(fn) {
+        this.onshowHandlers.push(fn);
+    },
+
+    postTabShow: function(newPanel) {            
+        //Call user onTabShow callback
+        if(this.cfg.onTabShow) {
+            this.cfg.onTabShow.call(this, newPanel);
+        }
+
+        //execute onshowHandlers and remove successful ones
+        this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+            return !fn.call();
+        });
+    }
+});
