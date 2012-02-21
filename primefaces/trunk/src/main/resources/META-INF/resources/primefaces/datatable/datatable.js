@@ -434,21 +434,9 @@ PrimeFaces.widget.DataTable.prototype.paginate = function(newState) {
                     _self.updateDataCellWidths();
                 }
                 
-                //update checkall checkbox if all enabled checkboxes are checked
+                //update header checkbox if all enabled checkboxes are checked in new page
                 if(_self.checkAllToggler) {
-                    var checkboxes = $(_self.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column .ui-chkbox-box'),
-                    uncheckedBoxes = $.grep(checkboxes, function(element) {
-                        var checkbox = $(element),
-                        disabled = checkbox.hasClass('ui-state-disabled'),
-                        checked = checkbox.hasClass('ui-state-active');
-                        
-                        return !(checked || disabled); 
-                    });
-                     
-                    if(uncheckedBoxes.length == 0)
-                        _self.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
-                    else
-                        _self.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+                    _self.updateHeaderCheckbox();
                 }
             }
             else {
@@ -776,6 +764,8 @@ PrimeFaces.widget.DataTable.prototype.selectRowWithCheckbox = function(checkbox,
     //add to selection
     this.addSelection(rowMeta.key);
     
+    this.updateHeaderCheckbox();
+    
     this.writeSelections();
     
     if(!silent)
@@ -794,6 +784,9 @@ PrimeFaces.widget.DataTable.prototype.unselectRowWithCheckbox = function(checkbo
     
     //remove from selection
     this.removeSelection(rowMeta.key);
+    
+    //unselect header checkbox
+    this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
 
     this.writeSelections();
     
@@ -1389,3 +1382,19 @@ PrimeFaces.widget.DataTable.prototype.isEmpty = function() {
 PrimeFaces.widget.DataTable.prototype.getSelectedRowsCount = function() {
     return this.isSelectionEnabled() ? this.selection.length : 0;
 }
+
+PrimeFaces.widget.DataTable.prototype.updateHeaderCheckbox = function() {
+    var checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column .ui-chkbox-box'),
+    uncheckedBoxes = $.grep(checkboxes, function(element) {
+        var checkbox = $(element),
+        disabled = checkbox.hasClass('ui-state-disabled'),
+        checked = checkbox.hasClass('ui-state-active');
+
+        return !(checked || disabled); 
+    });
+
+    if(uncheckedBoxes.length == 0)
+        this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+    else
+        this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+}  
