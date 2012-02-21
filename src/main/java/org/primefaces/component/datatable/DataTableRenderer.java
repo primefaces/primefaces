@@ -118,7 +118,26 @@ public class DataTableRenderer extends DataRenderer {
         
         writer.write("$(function() {");
         
-        writer.write("PrimeFaces.cw('DataTable','" + table.resolveWidgetVar() + "',{");
+        if(isAjaxRequest(context)) {
+            writer.write(table.resolveWidgetVar() + ".refresh({");
+            encodeConfig(context, table);
+            writer.write("});");
+        }
+        else {
+            writer.write("PrimeFaces.cw('DataTable','" + table.resolveWidgetVar() + "',{");
+            encodeConfig(context, table);
+            writer.write("});");
+        }
+        
+        writer.write("});");
+
+		endScript(writer);
+	}
+    
+    protected void encodeConfig(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = table.getClientId(context);
+        
         writer.write("id:'" + clientId + "'");
 
         //Pagination
@@ -172,11 +191,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Behaviors
         encodeClientBehaviors(context, table);
-
-        writer.write("});});");
-
-		endScript(writer);
-	}
+    }
 
 	protected void encodeMarkup(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
