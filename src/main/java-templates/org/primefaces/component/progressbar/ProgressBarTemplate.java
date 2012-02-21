@@ -11,7 +11,7 @@ import java.util.HashMap;
 import javax.faces.event.PhaseId;
 
     public final static String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content ui-corner-all";
-    public final static String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-left";
+    public final static String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-all";
     public final static String LABEL_CLASS = "ui-progressbar-label";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("complete"));

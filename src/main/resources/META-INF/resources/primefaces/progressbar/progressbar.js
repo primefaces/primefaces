@@ -22,14 +22,18 @@ PrimeFaces.extend(PrimeFaces.widget.ProgressBar, PrimeFaces.widget.BaseWidget);
 PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
     if(value >= 0 && value<=100) {
         if(value == 0) {
-            this.jqValue.hide().css('width', '0%');
+            this.jqValue.hide().css('width', '0%').removeClass('ui-corner-right');
             
             this.jqLabel.hide();
         }
         else {
             this.jqValue.show().animate({
                 'width': value + '%' 
-            }, 500, 'easeInOutCirc');
+            }, 500, 'easeInOutCirc', function() {
+                if(value == 100) {
+                    $(this).addClass('ui-corner-right');
+                }
+            });
 
             
             if(this.cfg.labelTemplate) {
