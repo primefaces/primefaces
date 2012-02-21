@@ -2,6 +2,14 @@
  * PrimeFaces DataTable Widget
  */
 PrimeFaces.widget.DataTable = function(cfg) {
+    this.refresh(cfg);
+    
+    this.postConstruct();
+}
+
+PrimeFaces.extend(PrimeFaces.widget.DataTable, PrimeFaces.widget.BaseWidget);
+
+PrimeFaces.widget.DataTable.prototype.refresh = function(cfg) {
     this.cfg = cfg;
     this.id = this.cfg.id;
     this.jqId = PrimeFaces.escapeClientId(this.id);
@@ -58,11 +66,7 @@ PrimeFaces.widget.DataTable = function(cfg) {
     if(this.cfg.draggableColumns) {
         this.setupDraggableColumns();
     }
-    
-    this.postConstruct();
 }
-
-PrimeFaces.extend(PrimeFaces.widget.DataTable, PrimeFaces.widget.BaseWidget);
 
 /**
  * Binds the change event listener and renders the paginator
@@ -635,13 +639,12 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
     
     if(this.isMultipleSelection() && event && event.shiftKey) {
         var rows = $(this.tbody).children();
-        this.originRow = this.originRow||rows.eq(0);
-        var originIndex = this.originRow.index();
+        this.originRowIndex = this.originRowIndex||0;
 
         //unselect previously selected rows with shift
-        if(this.cursor) {
-            var oldCursorIndex = this.cursor.index(),
-            rowsToUnselect = oldCursorIndex > originIndex ? rows.slice(originIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, originIndex + 1);
+        if(this.cursorIndex) {
+            var oldCursorIndex = this.cursorIndex,
+            rowsToUnselect = oldCursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, this.originRowIndex + 1);
             
             rowsToUnselect.each(function(i, item) {
                 var r = $(item),
@@ -653,10 +656,9 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
         }
         
         //select rows between cursor and origin
-        this.cursor = row;
+        this.cursorIndex = row.index();
 
-        var cursorIndex = this.cursor.index(),
-        rowsToSelect = cursorIndex > originIndex ? rows.slice(originIndex, cursorIndex + 1) : rows.slice(cursorIndex, originIndex + 1);
+        var rowsToSelect = this.cursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, this.cursorIndex + 1) : rows.slice(this.cursorIndex, this.originRowIndex + 1);
 
         rowsToSelect.each(function(i, item) {
             var r = $(item),
@@ -668,8 +670,8 @@ PrimeFaces.widget.DataTable.prototype.selectRow = function(r, event) {
         
     }
     else {
-        this.originRow = row;
-        this.cursor = null;
+        this.originRowIndex = row.index();
+        this.cursorIndex = null;
                 
         //add to selection
         row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
