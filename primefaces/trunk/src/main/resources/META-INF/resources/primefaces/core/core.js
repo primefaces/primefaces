@@ -187,7 +187,10 @@ PrimeFaces = {
     
     createWidget : function(widgetConstructor, widgetVar, cfg, resource) {            
         if(PrimeFaces.widget[widgetConstructor]) {
-            window[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
+            if(window[widgetVar])
+                window[widgetVar].refresh(cfg);                                     //ajax update
+            else
+                window[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  //page init
         }
         else {
             var scriptURI = $('script[src*="/javax.faces.resource/primefaces.js"]').attr('src').replace('primefaces.js', resource + '/' + resource + '.js'),
@@ -280,26 +283,39 @@ PrimeFaces = {
     VIEW_STATE : "javax.faces.ViewState"
 };
 
+/**
+ * PrimeFaces Namespaces
+ */
 PrimeFaces.ajax = {};
 PrimeFaces.widget = {};
 PrimeFaces.websockets = {};
 
 /**
- * BaseWidget for PrimeFaces Widgets to implement common tasks
+ * BaseWidget for PrimeFaces Widgets
  */
-PrimeFaces.widget.BaseWidget = function() {}
-
-PrimeFaces.widget.BaseWidget.prototype.postConstruct = function() {
-    this.getScriptTag().remove();
-};
-
-PrimeFaces.widget.BaseWidget.prototype.getScriptTag = function() {
-    return $(this.jqId + '_s');
-};
-
-PrimeFaces.widget.BaseWidget.prototype.getJQ = function() {
+PrimeFaces.widget.BaseWidget = Class.extend({
+    
+  init: function(cfg) {
+    this.cfg = cfg;
+    this.id = cfg.id;
+    this.jqId = PrimeFaces.escapeClientId(this.id),
+    this.jq = $(this.jqId);
+    
+    //remove script tag
+    $(this.jqId + '_s').remove();
+  },
+  
+  //used mostly in ajax updates, reloads the widget configuration
+  refresh: function(cfg) {
+    return this.init(cfg);
+  },
+  
+  //returns jquery object representing the main dom element related to the widget
+  getJQ: function(){
     return this.jq;
-};
+  }
+  
+});
 
 PrimeFaces.ajax.AjaxUtils = {
 	
