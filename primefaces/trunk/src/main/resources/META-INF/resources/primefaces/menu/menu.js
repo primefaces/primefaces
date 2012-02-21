@@ -105,6 +105,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
 
         submenu.show();
     }
+    
 });
 
 
@@ -413,6 +414,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     }
+    
 });
             
 /*
@@ -560,6 +562,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex}).position(this.cfg.position);
     }
+    
 });
 
 
@@ -750,4 +753,5 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 
         submenu.show();
     }
+    
 });

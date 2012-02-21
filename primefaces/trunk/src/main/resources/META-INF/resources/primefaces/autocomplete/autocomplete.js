@@ -543,4 +543,5 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     offset : positionOffset
                 });
     }
+    
 });

@@ -243,4 +243,5 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             return !fn.call();
         });
     }
+    
 });
