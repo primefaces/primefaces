@@ -1,79 +1,83 @@
 /**
  * PrimeFaces BlockUI Widget
  */
-PrimeFaces.widget.BlockUI = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.block = $(PrimeFaces.escapeClientId(this.cfg.block));
-    this.content = $(this.jqId);
-
-    this.render();
-
-    if(this.cfg.triggers) {
-        this.bindTriggers();
-    }
+PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     
-    //remove script tag
-    $(this.jqId + '_s').remove();
-}
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.id = this.cfg.id;
+        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this.block = $(PrimeFaces.escapeClientId(this.cfg.block));
+        this.content = $(this.jqId);
 
-PrimeFaces.widget.BlockUI.prototype.bindTriggers = function() {
-    var _self = this,
-    triggers = this.cfg.triggers.split(',');
-        
-    //listen global ajax send and complete callbacks
-    $(document).bind('ajaxSend', function(e, xhr, settings) {
-        if($.inArray(settings.source, triggers) != -1) {
-            _self.show();
+        this.render();
+
+        if(this.cfg.triggers) {
+            this.bindTriggers();
         }
-    });
+
+        //remove script tag
+        $(this.jqId + '_s').remove();
+    },
     
-    $(document).bind('ajaxComplete', function(e, xhr, settings) {
-        if($.inArray(settings.source, triggers) != -1) {
-            _self.hide();
+    bindTriggers: function() {
+        var _self = this,
+        triggers = this.cfg.triggers.split(',');
+
+        //listen global ajax send and complete callbacks
+        $(document).bind('ajaxSend', function(e, xhr, settings) {
+            if($.inArray(settings.source, triggers) != -1) {
+                _self.show();
+            }
+        });
+
+        $(document).bind('ajaxComplete', function(e, xhr, settings) {
+            if($.inArray(settings.source, triggers) != -1) {
+                _self.hide();
+            }
+        });
+    },
+    
+    show: function() {
+        var blockWidth = this.block.outerWidth(),
+        blockHeight = this.block.outerHeight();
+
+        //set dimensions of blocker to span the content
+        this.blocker.width(blockWidth).height(blockHeight);
+
+        //center position of content
+        this.content.css({
+            'left': (blockWidth - this.content.outerWidth()) / 2,
+            'top': (blockHeight - this.content.outerHeight()) / 2
+        });
+
+        this.blocker.fadeIn();
+
+        if(this.hasContent()) {
+            this.content.fadeIn();
         }
-    });
-}
+    },
+    
+    hide: function() {
+        this.blocker.fadeOut();
 
-PrimeFaces.widget.BlockUI.prototype.show = function() {
-    var blockWidth = this.block.outerWidth(),
-    blockHeight = this.block.outerHeight();
+        if(this.hasContent()) {
+            this.content.fadeOut();
+        }
+    },
     
-    //set dimensions of blocker to span the content
-    this.blocker.width(blockWidth).height(blockHeight);
-    
-    //center position of content
-    this.content.css({
-        'left': (blockWidth - this.content.outerWidth()) / 2,
-        'top': (blockHeight - this.content.outerHeight()) / 2
-    });
-    
-    this.blocker.fadeIn();
-    
-    if(this.hasContent()) {
-        this.content.fadeIn();
-    }
-}
+    render: function() {   
+        this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
 
-PrimeFaces.widget.BlockUI.prototype.hide = function() {
-    this.blocker.fadeOut();
-    
-    if(this.hasContent()) {
-        this.content.fadeOut();
-    }
-}
+        if(this.block.hasClass('ui-corner-all')) {
+            this.blocker.addClass('ui-corner-all');
+        }
 
-PrimeFaces.widget.BlockUI.prototype.render = function() {   
-    this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+        this.block.css('position', 'relative').append(this.blocker).append(this.content);
+    },
     
-    if(this.block.hasClass('ui-corner-all')) {
-        this.blocker.addClass('ui-corner-all');
+    hasContent: function() {
+        return this.content.contents().length > 0;
     }
     
-    this.block.css('position', 'relative').append(this.blocker).append(this.content);
-}
-
-PrimeFaces.widget.BlockUI.prototype.hasContent = function() {
-    return this.content.contents().length > 0;
-}
+});
