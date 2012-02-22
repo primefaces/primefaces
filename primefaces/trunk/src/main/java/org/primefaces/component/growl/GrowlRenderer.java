@@ -40,23 +40,16 @@ public class GrowlRenderer extends CoreRenderer {
 				
         startScript(writer, clientId);
 
-        if(isAjaxRequest(context)) {
-            writer.write(widgetVar + ".show(");
-            encodeMessages(context, growl);
-            writer.write(");");
-        } 
-        else {
-            writer.write("$(function(){");
-            writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
-            writer.write("id:'" + clientId + "'");
-            writer.write(",sticky:" + growl.isSticky());
-            writer.write(",life:" + growl.getLife());
+        writer.write("$(function(){");
+        writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",sticky:" + growl.isSticky());
+        writer.write(",life:" + growl.getLife());
 
-            writer.write(",msgs:");
-            encodeMessages(context, growl);
-            
-            writer.write("});});");
-        }
+        writer.write(",msgs:");
+        encodeMessages(context, growl);
+
+        writer.write("});});");
 	
 		endScript(writer);
 	}
