@@ -297,7 +297,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
@@ -536,7 +535,6 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
-                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
