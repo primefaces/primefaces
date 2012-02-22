@@ -1,230 +1,227 @@
 /**
- *  PrimeFaces Spinner Widget
+ * PrimeFaces Spinner Widget
  */
-PrimeFaces.widget.Spinner = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.input = this.jq.children('.ui-spinner-input');
-    this.upButton = this.jq.children('a.ui-spinner-up');
-    this.downButton = this.jq.children('a.ui-spinner-down');
-    this.decimalSeparator = this.findDecimalSeparator();
-    this.decimalCount = this.findDecimalCount();
+PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
         
-    //grab value from input
-    this.refreshValue();
-    
-    //aria
-    this.addARIA();
+        this.input = this.jq.children('.ui-spinner-input');
+        this.upButton = this.jq.children('a.ui-spinner-up');
+        this.downButton = this.jq.children('a.ui-spinner-down');
+        this.decimalSeparator = this.findDecimalSeparator();
+        this.decimalCount = this.findDecimalCount();
 
-    if(this.input.prop('disabled')||this.input.prop('readonly')) {
-        return;
-    }
+        //grab value from input
+        this.refreshValue();
 
-    this.bindEvents();
-    
-    PrimeFaces.skinInput(this.input);
-    
-    this.postConstruct();
-}
+        //aria
+        this.addARIA();
 
-PrimeFaces.extend(PrimeFaces.widget.Spinner, PrimeFaces.widget.BaseWidget);
-
-
-PrimeFaces.widget.Spinner.prototype.bindEvents = function() {
-    var _self = this;
-    
-    //visuals for spinner buttons
-    this.jq.children('.ui-spinner-button')
-        .mouseover(function() {
-            $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
-            $(this).removeClass('ui-state-hover ui-state-active');
-            
-            if(_self.timer) {
-                clearInterval(_self.timer);
-            }
-        }).mouseup(function() {
-            clearInterval(_self.timer);
-            $(this).removeClass('ui-state-active');
-        }).mousedown(function() {
-            var element = $(this),
-            dir = element.hasClass('ui-spinner-up') ? 1 : -1;
-
-            element.removeClass('ui-state-hover').addClass('ui-state-active');
-
-            _self.repeat(null, dir);
-        });
-        
-    /**
-     * Key restrictions
-     * - Only allow integers by default
-     * - Allow decimal separators in step mode
-     * - Allow prefix and suffix if defined
-     * - Enable support for arrow keys
-     * 
-     * Note: e.keyCode is used for arrow key detection, rest uses e.which
-     */
-    this.input.keypress(function (e) {
-        var keyCode = $.ui.keyCode,
-        character = String.fromCharCode(e.which),
-        number = (e.which >= 48&&e.which <= 57),
-        decimalKey = (_self.decimalSeparator != null) && (e.which == 44||e.which == 46),
-        boundary = (character == _self.cfg.prefix||character == _self.cfg.suffix);
-                                          
-        switch(e.keyCode) {            
-            case keyCode.BACKSPACE:
-            case keyCode.LEFT:
-            case keyCode.RIGHT:
-                //allow backspace, left and right arrow keys
-            break;
-            
-            case keyCode.UP:
-                _self.spin(_self.cfg.step);
-            break;
-            
-            case keyCode.DOWN:
-                _self.spin(-1 * _self.cfg.step);
-            break;
-            
-            default:
-                if(!number && !decimalKey && !boundary) {
-                    e.preventDefault();
-                }
-            break;
+        if(this.input.prop('disabled')||this.input.prop('readonly')) {
+            return;
         }
-    });
 
-    //refresh the value if user enters input manually
-    this.input.keyup(function (e) {      
-        _self.refreshValue();
-    });
+        this.bindEvents();
+
+        PrimeFaces.skinInput(this.input);
+    },
     
-    //client behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-    }
-}
+    bindEvents: function() {
+        var _self = this;
 
-PrimeFaces.widget.Spinner.prototype.repeat = function(interval, dir) {
-    var _self = this,
-    i = interval || 500;
+        //visuals for spinner buttons
+        this.jq.children('.ui-spinner-button')
+            .mouseover(function() {
+                $(this).addClass('ui-state-hover');
+            }).mouseout(function() {
+                $(this).removeClass('ui-state-hover ui-state-active');
 
-    clearTimeout(this.timer);
-    this.timer = setTimeout(function() {
-        _self.repeat(40, dir);
-    }, i);
+                if(_self.timer) {
+                    clearInterval(_self.timer);
+                }
+            }).mouseup(function() {
+                clearInterval(_self.timer);
+                $(this).removeClass('ui-state-active');
+            }).mousedown(function() {
+                var element = $(this),
+                dir = element.hasClass('ui-spinner-up') ? 1 : -1;
 
-    this.spin(this.cfg.step * dir);
-}
+                element.removeClass('ui-state-hover').addClass('ui-state-active');
 
-PrimeFaces.widget.Spinner.prototype.spin = function(step) {
-    var newValue = this.value + step;
+                _self.repeat(null, dir);
+            });
 
-    if(this.cfg.min != undefined && newValue < this.cfg.min) {
-        newValue = this.cfg.min;
-    }
+        /**
+        * Key restrictions
+        * - Only allow integers by default
+        * - Allow decimal separators in step mode
+        * - Allow prefix and suffix if defined
+        * - Enable support for arrow keys
+        * 
+        * Note: e.keyCode is used for arrow key detection, rest uses e.which
+        */
+        this.input.keypress(function (e) {
+            var keyCode = $.ui.keyCode,
+            character = String.fromCharCode(e.which),
+            number = (e.which >= 48&&e.which <= 57),
+            decimalKey = (_self.decimalSeparator != null) && (e.which == 44||e.which == 46),
+            boundary = (character == _self.cfg.prefix||character == _self.cfg.suffix);
 
-    if(this.cfg.max != undefined && newValue > this.cfg.max) {
-        newValue = this.cfg.max;
-    }
+            switch(e.keyCode) {            
+                case keyCode.BACKSPACE:
+                case keyCode.LEFT:
+                case keyCode.RIGHT:
+                    //allow backspace, left and right arrow keys
+                break;
 
-    this.input.val(this.format(newValue));
-    this.value = newValue;
-    this.input.attr('aria-valuenow', newValue);
+                case keyCode.UP:
+                    _self.spin(_self.cfg.step);
+                break;
 
-    this.input.change();
-}
+                case keyCode.DOWN:
+                    _self.spin(-1 * _self.cfg.step);
+                break;
 
-PrimeFaces.widget.Spinner.prototype.refreshValue = function() {
-    var value = this.input.val();
+                default:
+                    if(!number && !decimalKey && !boundary) {
+                        e.preventDefault();
+                    }
+                break;
+            }
+        });
+
+        //refresh the value if user enters input manually
+        this.input.keyup(function (e) {      
+            _self.refreshValue();
+        });
+
+        //client behaviors
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+        }
+    },
     
-    if(value == '') {
-        if(this.cfg.min)
-            this.value = this.cfg.min;
-        else
-            this.value = 0;
-    } 
-    else {
+    repeat: function(interval, dir) {
+        var _self = this,
+        i = interval || 500;
+
+        clearTimeout(this.timer);
+        this.timer = setTimeout(function() {
+            _self.repeat(40, dir);
+        }, i);
+
+        this.spin(this.cfg.step * dir);
+    },
+    
+    spin: function(step) {
+        var newValue = this.value + step;
+
+        if(this.cfg.min != undefined && newValue < this.cfg.min) {
+            newValue = this.cfg.min;
+        }
+
+        if(this.cfg.max != undefined && newValue > this.cfg.max) {
+            newValue = this.cfg.max;
+        }
+
+        this.input.val(this.format(newValue));
+        this.value = newValue;
+        this.input.attr('aria-valuenow', newValue);
+
+        this.input.change();
+    },
+    
+    refreshValue: function() {
+        var value = this.input.val();
+
+        if(value == '') {
+            if(this.cfg.min)
+                this.value = this.cfg.min;
+            else
+                this.value = 0;
+        } 
+        else {
+            if(this.cfg.prefix)
+                value = value.split(this.cfg.prefix)[1];
+
+            if(this.cfg.suffix)
+                value = value.split(this.cfg.suffix)[0];
+
+            if(this.decimalSeparator)
+                this.value =  parseFloat(value);
+            else
+                this.value = parseInt(value);
+        }
+    },
+    
+    findDecimalSeparator: function() {
+        var step = this.cfg.step + '';
+
+        if(step.indexOf('.') != -1) {
+            return "."
+        } else if(step.indexOf(',') != -1) {
+            return ',';
+        } else {
+            return null;
+        }
+    },
+    
+    findDecimalCount: function() {
+        var decimalSeparator = this.findDecimalSeparator(),
+        step = this.cfg.step + '';
+
+        if(decimalSeparator) {
+            return step.split(decimalSeparator)[1].length;
+        } else {
+            return 0;
+        }
+    },
+    
+    format: function(value) {
+        if(this.decimalSeparator) {
+            value = value + '';
+
+            var decimalCount = this.findDecimalCount(),
+            valueDecimalCount = null;
+
+            if(value.indexOf(this.decimalSeparator) != -1) {
+                valueDecimalCount = value.split(this.decimalSeparator)[1].length;
+            } else {
+                valueDecimalCount = 0;
+                value = value + this.decimalSeparator;
+            }
+
+            for(var i = valueDecimalCount ; i < decimalCount; i++) {
+                value = value + '0';
+            }
+        }
+
         if(this.cfg.prefix)
-            value = value.split(this.cfg.prefix)[1];
+            value = this.cfg.prefix + value;
 
         if(this.cfg.suffix)
-            value = value.split(this.cfg.suffix)[0];
+            value = value + this.cfg.suffix;
 
-        if(this.decimalSeparator)
-            this.value =  parseFloat(value);
-        else
-            this.value = parseInt(value);
-    }
-}
-
-PrimeFaces.widget.Spinner.prototype.findDecimalSeparator = function() {
-    var step = this.cfg.step + '';
-
-    if(step.indexOf('.') != -1) {
-        return "."
-    } else if(step.indexOf(',') != -1) {
-        return ',';
-    } else {
-        return null;
-    }
-}
-
-PrimeFaces.widget.Spinner.prototype.findDecimalCount = function() {
-    var decimalSeparator = this.findDecimalSeparator(),
-    step = this.cfg.step + '';
-
-    if(decimalSeparator) {
-        return step.split(decimalSeparator)[1].length;
-    } else {
-        return 0;
-    }
-}
-
-PrimeFaces.widget.Spinner.prototype.format = function(value) {
-    if(this.decimalSeparator) {
-        value = value + '';
-
-        var decimalCount = this.findDecimalCount(),
-        valueDecimalCount = null;
-
-        if(value.indexOf(this.decimalSeparator) != -1) {
-            valueDecimalCount = value.split(this.decimalSeparator)[1].length;
-        } else {
-            valueDecimalCount = 0;
-            value = value + this.decimalSeparator;
-        }
-
-        for(var i = valueDecimalCount ; i < decimalCount; i++) {
-            value = value + '0';
-        }
-    }
-
-    if(this.cfg.prefix)
-        value = this.cfg.prefix + value;
-
-    if(this.cfg.suffix)
-        value = value + this.cfg.suffix;
-
-    return value;
-}
-
-PrimeFaces.widget.Spinner.prototype.addARIA = function() {
-    this.input.attr('role', 'spinner');
-    this.input.attr('aria-multiline', false);
-    this.input.attr('aria-valuenow', this.value);
+        return value;
+    },
     
-    if(this.cfg.min != undefined) 
-        this.input.attr('aria-valuemin', this.cfg.min);
+    addARIA: function() {
+        this.input.attr('role', 'spinner');
+        this.input.attr('aria-multiline', false);
+        this.input.attr('aria-valuenow', this.value);
+
+        if(this.cfg.min != undefined) 
+            this.input.attr('aria-valuemin', this.cfg.min);
+
+        if(this.cfg.max != undefined) 
+            this.input.attr('aria-valuemax', this.cfg.max);
+
+        if(this.input.prop('disabled'))
+            this.input.attr('aria-disabled', true);
+
+        if(this.input.prop('readonly'))
+            this.input.attr('aria-readonly', true);
+    }
     
-    if(this.cfg.max != undefined) 
-        this.input.attr('aria-valuemax', this.cfg.max);
-    
-    if(this.input.prop('disabled'))
-        this.input.attr('aria-disabled', true);
-    
-    if(this.input.prop('readonly'))
-        this.input.attr('aria-readonly', true);
-}
+});
