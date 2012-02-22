@@ -385,53 +385,52 @@
 /**
  * PrimeFaces Star Rating
  */
-PrimeFaces.widget.Rating = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.jqInput = $(this.jqId + ' input');
-    this.cfg.formId = this.jq.parents('form:first').attr('id');
-    this.value = this.getValue();
-    var _self = this;
+PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     
-    this.cfg.callback = function(value) {
-        if(_self.value == value)
-            return;
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jqInput = $(this.jqId + ' input');
+        this.cfg.formId = this.jq.parents('form:first').attr('id');
+        this.value = this.getValue();
+        var _self = this;
 
-        _self.value = value;
+        this.cfg.callback = function(value) {
+            if(_self.value == value)
+                return;
 
-        if(_self.cfg.onRate) {
-            _self.cfg.onRate.call(_self, value);
-        }
+            _self.value = value;
 
-        if(_self.cfg.behaviors) {
-            var rateBehavior = _self.cfg.behaviors['rate'];
-            if(rateBehavior) {
-                rateBehavior.call(_self);
+            if(_self.cfg.onRate) {
+                _self.cfg.onRate.call(_self, value);
             }
-        }
-    };
-	
-    this.jqInput.rating(this.cfg);
+
+            if(_self.cfg.behaviors) {
+                var rateBehavior = _self.cfg.behaviors['rate'];
+                if(rateBehavior) {
+                    rateBehavior.call(_self);
+                }
+            }
+        };
+
+        this.jqInput.rating(this.cfg);
+    },
     
-    this.postConstruct();
-}
+    getValue: function() {
+        return $(this.jq).find('input:radio:checked').val();
+    },
+    
+    setValue: function(value) {
+        this.jqInput.rating('select', value);
+    },
+    
+    enable: function() {
+        this.jqInput.rating('enable');
+    },
+    
+    disable: function() {
+        this.jqInput.rating('disable');
+    }
 
-PrimeFaces.extend(PrimeFaces.widget.Rating, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.Rating.prototype.getValue = function() {
-    return $(this.jq).find('input:radio:checked').val();
-}
-
-PrimeFaces.widget.Rating.prototype.setValue = function(value) {
-    this.jqInput.rating('select', value);
-}
-
-PrimeFaces.widget.Rating.prototype.enable = function() {
-    this.jqInput.rating('enable');
-}
-
-PrimeFaces.widget.Rating.prototype.disable = function() {
-    this.jqInput.rating('disable');
-}
+    
+});
