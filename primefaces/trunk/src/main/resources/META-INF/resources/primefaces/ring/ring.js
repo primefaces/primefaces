@@ -505,15 +505,12 @@ jQuery.roundabout_updateChildPosition = function(child, container, info, childPo
 /**
  * PrimeFaces Ring Widget
  */
-PrimeFaces.widget.Ring = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId);
-
-    this.jq.roundabout(this.cfg);
+PrimeFaces.widget.Ring = PrimeFaces.widget.BaseWidget.extend({
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Ring, PrimeFaces.widget.BaseWidget);
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.roundabout(this.cfg);
+    }
+    
+});
