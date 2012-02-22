@@ -391,15 +391,12 @@ jQuery.fn.Fisheye = jQuery.iFisheye.build;
 /**
  * PrimeFace Dock Widget
  */
-PrimeFaces.widget.Dock = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
- 
-	$(this.jqId).Fisheye(this.cfg);
+PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Dock, PrimeFaces.widget.BaseWidget);
+    init: function(cfg) {
+        this._super(cfg);
+        
+        $(this.jqId).Fisheye(this.cfg);
+    }
+    
+});
