@@ -1214,3 +1214,26 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/**
+ * PrimeFaces InputMask Widget
+ */
+PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        if(this.cfg.mask) {
+            this.jq.mask(this.cfg.mask, this.cfg);
+        }
+
+        //Client behaviors
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        }
+
+        //Visuals
+        PrimeFaces.skinInput(this.jq);
+    }
+    
+});
