@@ -1,295 +1,292 @@
 /**
  * PrimeFaces Google Maps Widget
  */
-PrimeFaces.widget.GMap = function(cfg) {
-    this.cfg = cfg;
-	this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    var _self = this;
-	
-	if(this.jq.is(':visible')) {
-        this.init();
-    }
-    else {
-        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-        hiddenParentWidget = hiddenParent.data('widget');
+PrimeFaces.widget.GMap = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
         
-        if(hiddenParentWidget) {
-            hiddenParentWidget.addOnshowHandler(function() {
-                return _self.init();
-            });
-        }
-    }
-    
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.GMap, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.GMap.prototype.init = function() {
-    this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
-	this.cfg.fitBounds = !(this.cfg.fitBounds === false);
-    this.viewport = this.map.getBounds();
-    
-	//conf markers
-	if(this.cfg.markers) {
-		this.configureMarkers();
-	}
-	
-	//add polylines
-	if(this.cfg.polylines) {
-		this.configurePolylines();
-	}
-	
-	//add polygons
-	if(this.cfg.polygons) {
-		this.configurePolygons();
-	}
-	
-    //add circles
-	if(this.cfg.circles) {
-		this.configureCircles();
-	}
-	
-    //add rectangles
-	if(this.cfg.rectangles) {
-		this.configureRectangles();
-	}
-	
-	//general map events
-	this.configureEventListeners();
-    
-    //fit auto bounds
-    if(this.cfg.fitBounds && this.viewport)
-        this.map.fitBounds(this.viewport);
-    
-    //bind infowindow domready for dynamic content.
-    if(this.cfg.infoWindow){
         var _self = this;
-        google.maps.event.addListener(this.cfg.infoWindow, 'domready', function() {
-            _self.loadWindow(_self.cfg.infoWindowContent);
-        });
-    }
-}
-
-PrimeFaces.widget.GMap.prototype.getMap = function() {
-	return this.map;
-}
-
-PrimeFaces.widget.GMap.prototype.getInfoWindow = function() {
-	return this.cfg.infoWindow;
-}
-
-//load info window content
-PrimeFaces.widget.GMap.prototype.loadWindow = function(content){
-    this.jq.find(PrimeFaces.escapeClientId(this.getInfoWindow().id + '_content')).html(content||'');
-}
-
-PrimeFaces.widget.GMap.prototype.openWindow = function(responseXML) {
-    var xmlDoc = $(responseXML.documentElement),
-    updates = xmlDoc.find("update"),
-    infoWindow = this.getInfoWindow();
-
-    for(var i=0; i < updates.length; i++) {
-        var update = updates.eq(i),
-        id = update.attr('id'),
-        content = update.text();
-
-        if(id == infoWindow.id){
-            this.cfg.infoWindowContent = content;
-            infoWindow.setContent('<div id="' + id + '_content">' + content + '</div>');
-
-            infoWindow.open(this.getMap(), this.selectedOverlay);
+	
+        if(this.jq.is(':visible')) {
+            this.render();
         }
         else {
-            PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.render();
+                });
+            }
         }
-    }
-
-    PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
-
-    return true;
-}
-
-PrimeFaces.widget.GMap.prototype.configureMarkers = function() {
-	var _self = this;
-	
-	for(var i=0; i < this.cfg.markers.length; i++) {
-		var marker = this.cfg.markers[i];
-		marker.setMap(this.map);
-
-        //extend viewport
-        if(this.cfg.fitBounds)
-            this.extendView(marker);
-
-        //overlay select
-        google.maps.event.addListener(marker, 'click', function(event) {
-            _self.fireOverlaySelectEvent(event, this);
-        });
-
-        //marker drag
-        google.maps.event.addListener(marker, 'dragend', function(event) {
-            _self.fireMarkerDragEvent(event, this);
-        });
-	}
-}
-
-PrimeFaces.widget.GMap.prototype.fireMarkerDragEvent = function(event, marker) {
-    if(this.hasBehavior('markerDrag')) {
-        var markerDragBehavior = this.cfg.behaviors['markerDrag'];
-
-        var ext = {
-            params: {}
-        };
-        ext.params[this.id + '_markerId'] = marker.id;
-        ext.params[this.id + '_lat'] = event.latLng.lat();
-        ext.params[this.id + '_lng'] = event.latLng.lng();
-
-        markerDragBehavior.call(this, event, ext);
-    }
-}
-
-PrimeFaces.widget.GMap.prototype.configurePolylines = function() {
-	this.addOverlays(this.cfg.polylines);
-}
-
-PrimeFaces.widget.GMap.prototype.configureCircles = function() {
-	this.addOverlays(this.cfg.circles);
-}
-
-PrimeFaces.widget.GMap.prototype.configureRectangles = function() {
-	this.addOverlays(this.cfg.rectangles);
-}
-
-PrimeFaces.widget.GMap.prototype.configurePolygons = function() {
-	this.addOverlays(this.cfg.polygons);
-}
-
-PrimeFaces.widget.GMap.prototype.fireOverlaySelectEvent = function(event, overlay) {
-    this.selectedOverlay = overlay;
+    },
     
-    if(this.hasBehavior('overlaySelect')) {
-        var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
+    render: function() {
+        this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
+        this.cfg.fitBounds = !(this.cfg.fitBounds === false);
+        this.viewport = this.map.getBounds();
 
-        var ext = {
-            params: {}
-        };
-        ext.params[this.id + '_overlayId'] = overlay.id;
+        //conf markers
+        if(this.cfg.markers) {
+            this.configureMarkers();
+        }
 
-        overlaySelectBehavior.call(this, event, ext);
-    }
-}
+        //add polylines
+        if(this.cfg.polylines) {
+            this.configurePolylines();
+        }
 
-PrimeFaces.widget.GMap.prototype.configureEventListeners = function() {
-	var _self = this;
+        //add polygons
+        if(this.cfg.polygons) {
+            this.configurePolygons();
+        }
 
-    this.cfg.formId = $(PrimeFaces.escapeClientId(this.id)).parents('form:first').attr('id');
-	
-	//client side events
-	if(this.cfg.onPointClick) {
-		google.maps.event.addListener(this.map, 'click', function(event) {
-			_self.cfg.onPointClick(event);
-		});
-	}
-	
-	//behaviors
-    this.configureStateChangeListener();
-    this.configurePointSelectListener();
-}
+        //add circles
+        if(this.cfg.circles) {
+            this.configureCircles();
+        }
 
-PrimeFaces.widget.GMap.prototype.configureStateChangeListener = function() {
-    var _self = this,
-    onStateChange = function(event) {
-        _self.fireStateChangeEvent(event);
-    };
+        //add rectangles
+        if(this.cfg.rectangles) {
+            this.configureRectangles();
+        }
 
-	google.maps.event.addListener(this.map, 'zoom_changed', onStateChange);
-	google.maps.event.addListener(this.map, 'dragend', onStateChange);
-}
+        //general map events
+        this.configureEventListeners();
 
-PrimeFaces.widget.GMap.prototype.fireStateChangeEvent = function(event) {
-    if(this.hasBehavior('stateChange')) {
-        var stateChangeBehavior = this.cfg.behaviors['stateChange'];
+        //fit auto bounds
+        if(this.cfg.fitBounds && this.viewport)
+            this.map.fitBounds(this.viewport);
 
-        var ext = {
-            params: {}
-        };
-        ext.params[this.id + '_northeast'] = this.map.getBounds().getNorthEast().lat() + "," + this.map.getBounds().getNorthEast().lng();
-        ext.params[this.id + '_southwest'] = this.map.getBounds().getSouthWest().lat() + "," + this.map.getBounds().getSouthWest().lng();
-        ext.params[this.id + '_center'] = this.map.getBounds().getCenter().lat() + "," + this.map.getBounds().getCenter().lng();
-        ext.params[this.id + '_zoom'] = this.map.getZoom();
-
-        stateChangeBehavior.call(this, event, ext);
-    }
-}
-
-PrimeFaces.widget.GMap.prototype.configurePointSelectListener = function() {	
-	var _self = this;
-	
-	google.maps.event.addListener(this.map, 'click', function(event) {
-		_self.firePointSelectEvent(event);
-	});
-}
-
-PrimeFaces.widget.GMap.prototype.firePointSelectEvent = function(event) {
-    if(this.hasBehavior('pointSelect')) {
-        var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
-
-        var ext = {
-            params: {}
-        };
-        ext.params[this.id + '_pointLatLng'] = event.latLng.lat() + "," + event.latLng.lng();
-
-        pointSelectBehavior.call(this, event, ext);
-    }
-}
-
-PrimeFaces.widget.GMap.prototype.addOverlay = function(overlay) {
-	overlay.setMap(this.map);
-}
-
-PrimeFaces.widget.GMap.prototype.addOverlays = function(overlays) {
-    var _self = this;
-    
-    $.each(overlays, function(index, item){
-        item.setMap(_self.map);
-
-        _self.extendView(item);
-
-        //bind overlay click event
-        google.maps.event.addListener(item, 'click', function(event) {
-            _self.fireOverlaySelectEvent(event, item);
-        });
-    })
-}
-
-PrimeFaces.widget.GMap.prototype.extendView = function(overlay){
-    if( this.cfg.fitBounds && overlay){
-        var _self = this;
-        this.viewport = this.viewport || new google.maps.LatLngBounds();
-        if(overlay instanceof google.maps.Marker)
-            this.viewport.extend(overlay.getPosition());
-        
-        else if(overlay instanceof google.maps.Circle || overlay instanceof google.maps.Rectangle)
-            this.viewport.union(overlay.getBounds());
-        
-        else if(overlay instanceof google.maps.Polyline || overlay instanceof google.maps.Polygon)
-            overlay.getPath().forEach(function(item, index){
-                _self.viewport.extend(item);
+        //bind infowindow domready for dynamic content.
+        if(this.cfg.infoWindow){
+            var _self = this;
+            google.maps.event.addListener(this.cfg.infoWindow, 'domready', function() {
+                _self.loadWindow(_self.cfg.infoWindowContent);
             });
-    }
-}
-
-PrimeFaces.widget.GMap.prototype.checkResize = function() {
-    google.maps.event.trigger(this.map, 'resize');
-    this.map.setZoom(this.map.getZoom());
-}
-
-PrimeFaces.widget.GMap.prototype.hasBehavior = function(event) {
-    if(this.cfg.behaviors) {
-        return this.cfg.behaviors[event] != undefined;
-    }
+        }
+    },
     
-    return false;
-}
+    getMap: function() {
+        return this.map;
+    },
+    
+    getInfoWindow: function() {
+        return this.cfg.infoWindow;
+    },
+    
+    loadWindow: function(content){
+        this.jq.find(PrimeFaces.escapeClientId(this.getInfoWindow().id + '_content')).html(content||'');
+    },
+    
+    openWindow: function(responseXML) {
+        var xmlDoc = $(responseXML.documentElement),
+        updates = xmlDoc.find("update"),
+        infoWindow = this.getInfoWindow();
+
+        for(var i=0; i < updates.length; i++) {
+            var update = updates.eq(i),
+            id = update.attr('id'),
+            content = update.text();
+
+            if(id == infoWindow.id){
+                this.cfg.infoWindowContent = content;
+                infoWindow.setContent('<div id="' + id + '_content">' + content + '</div>');
+
+                infoWindow.open(this.getMap(), this.selectedOverlay);
+            }
+            else {
+                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+            }
+        }
+
+        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+        return true;
+    },
+    
+    configureMarkers: function() {
+        var _self = this;
+
+        for(var i=0; i < this.cfg.markers.length; i++) {
+            var marker = this.cfg.markers[i];
+            marker.setMap(this.map);
+
+            //extend viewport
+            if(this.cfg.fitBounds)
+                this.extendView(marker);
+
+            //overlay select
+            google.maps.event.addListener(marker, 'click', function(event) {
+                _self.fireOverlaySelectEvent(event, this);
+            });
+
+            //marker drag
+            google.maps.event.addListener(marker, 'dragend', function(event) {
+                _self.fireMarkerDragEvent(event, this);
+            });
+        }
+    },
+    
+    fireMarkerDragEvent: function(event, marker) {
+        if(this.hasBehavior('markerDrag')) {
+            var markerDragBehavior = this.cfg.behaviors['markerDrag'];
+
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_markerId'] = marker.id;
+            ext.params[this.id + '_lat'] = event.latLng.lat();
+            ext.params[this.id + '_lng'] = event.latLng.lng();
+
+            markerDragBehavior.call(this, event, ext);
+        }
+    },
+    
+    configurePolylines: function() {
+        this.addOverlays(this.cfg.polylines);
+    },
+    
+    configureCircles: function() {
+        this.addOverlays(this.cfg.circles);
+    },
+    
+    configureRectangles: function() {
+        this.addOverlays(this.cfg.rectangles);
+    },
+    
+    configurePolygons: function() {
+        this.addOverlays(this.cfg.polygons);
+    },
+    
+    fireOverlaySelectEvent: function(event, overlay) {
+        this.selectedOverlay = overlay;
+
+        if(this.hasBehavior('overlaySelect')) {
+            var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
+
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_overlayId'] = overlay.id;
+
+            overlaySelectBehavior.call(this, event, ext);
+        }
+    },
+    
+    configureEventListeners: function() {
+        var _self = this;
+
+        this.cfg.formId = $(PrimeFaces.escapeClientId(this.id)).parents('form:first').attr('id');
+
+        //client side events
+        if(this.cfg.onPointClick) {
+            google.maps.event.addListener(this.map, 'click', function(event) {
+                _self.cfg.onPointClick(event);
+            });
+        }
+
+        //behaviors
+        this.configureStateChangeListener();
+        this.configurePointSelectListener();
+    },
+    
+    configureStateChangeListener: function() {
+        var _self = this,
+        onStateChange = function(event) {
+            _self.fireStateChangeEvent(event);
+        };
+
+        google.maps.event.addListener(this.map, 'zoom_changed', onStateChange);
+        google.maps.event.addListener(this.map, 'dragend', onStateChange);
+    },
+    
+    fireStateChangeEvent: function(event) {
+        if(this.hasBehavior('stateChange')) {
+            var stateChangeBehavior = this.cfg.behaviors['stateChange'];
+
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_northeast'] = this.map.getBounds().getNorthEast().lat() + "," + this.map.getBounds().getNorthEast().lng();
+            ext.params[this.id + '_southwest'] = this.map.getBounds().getSouthWest().lat() + "," + this.map.getBounds().getSouthWest().lng();
+            ext.params[this.id + '_center'] = this.map.getBounds().getCenter().lat() + "," + this.map.getBounds().getCenter().lng();
+            ext.params[this.id + '_zoom'] = this.map.getZoom();
+
+            stateChangeBehavior.call(this, event, ext);
+        }
+    },
+    
+    configurePointSelectListener: function() {	
+        var _self = this;
+
+        google.maps.event.addListener(this.map, 'click', function(event) {
+            _self.firePointSelectEvent(event);
+        });
+    },
+    
+    firePointSelectEvent: function(event) {
+        if(this.hasBehavior('pointSelect')) {
+            var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
+
+            var ext = {
+                params: {}
+            };
+            ext.params[this.id + '_pointLatLng'] = event.latLng.lat() + "," + event.latLng.lng();
+
+            pointSelectBehavior.call(this, event, ext);
+        }
+    },
+    
+    addOverlay: function(overlay) {
+        overlay.setMap(this.map);
+    },
+    
+    addOverlays: function(overlays) {
+        var _self = this;
+
+        $.each(overlays, function(index, item){
+            item.setMap(_self.map);
+
+            _self.extendView(item);
+
+            //bind overlay click event
+            google.maps.event.addListener(item, 'click', function(event) {
+                _self.fireOverlaySelectEvent(event, item);
+            });
+        })
+    },
+    
+    extendView: function(overlay){
+        if( this.cfg.fitBounds && overlay){
+            var _self = this;
+            this.viewport = this.viewport || new google.maps.LatLngBounds();
+            if(overlay instanceof google.maps.Marker)
+                this.viewport.extend(overlay.getPosition());
+
+            else if(overlay instanceof google.maps.Circle || overlay instanceof google.maps.Rectangle)
+                this.viewport.union(overlay.getBounds());
+
+            else if(overlay instanceof google.maps.Polyline || overlay instanceof google.maps.Polygon)
+                overlay.getPath().forEach(function(item, index){
+                    _self.viewport.extend(item);
+                });
+        }
+    },
+    
+    checkResize: function() {
+        google.maps.event.trigger(this.map, 'resize');
+        this.map.setZoom(this.map.getZoom());
+    },
+    
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+
+        return false;
+    }
+ 
+});
