@@ -135,17 +135,14 @@
 /**
  * PrimeFaces ImageCompare Widget 
  */
- PrimeFaces.widget.ImageCompare = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
+ PrimeFaces.widget.ImageCompare = PrimeFaces.widget.BaseWidget.extend({
     
-    this.cfg.showFullLinks = false;
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.cfg.showFullLinks = false;
     
-    this.jq.beforeAfter(this.cfg);
+        this.jq.beforeAfter(this.cfg);
+    }
     
-    this.postConstruct();
- }
- 
- PrimeFaces.extend(PrimeFaces.widget.ImageCompare, PrimeFaces.widget.BaseWidget);
+});
