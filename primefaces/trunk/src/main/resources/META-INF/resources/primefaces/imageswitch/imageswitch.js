@@ -1334,39 +1334,35 @@ $.fn.cycle.transitions.wipe = function($cont, $slides, opts) {
 /**
  * PrimeFaces ImageSwitch Widget
  */
-PrimeFaces.widget.ImageSwitch = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-	this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-
-    this.jq.cycle(this.cfg);
+ PrimeFaces.widget.ImageSwitch = PrimeFaces.widget.BaseWidget.extend({
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.ImageSwitch, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.ImageSwitch.prototype.startSlideshow = function() {
-	this.jq.cycle('start');
-}
-
-PrimeFaces.widget.ImageSwitch.prototype.stopSlideshow = function() {
-	this.jq.cycle('stop');
-}
-
-PrimeFaces.widget.ImageSwitch.prototype.toggleSlideshow = function() {
-	this.jq.cycle('toggle');
-}
-
-PrimeFaces.widget.ImageSwitch.prototype.pauseSlideshow = function() {
-	this.jq.cycle('pause');
-}
-
-PrimeFaces.widget.ImageSwitch.prototype.next = function() {
-	this.jq.cycle('next');
-}
-
-PrimeFaces.widget.ImageSwitch.prototype.previous = function() {
-	this.jq.cycle('prev');
-}
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.cycle(this.cfg);
+    },
+    
+    startSlideshow: function() {
+        this.jq.cycle('start');
+    },
+    
+    stopSlideshow: function() {
+        this.jq.cycle('stop');
+    },
+    
+    toggleSlideshow: function() {
+        this.jq.cycle('toggle');
+    },
+    
+    pauseSlideshow: function() {
+        this.jq.cycle('pause');
+    },
+    
+    next: function() {
+        this.jq.cycle('next');
+    },
+    
+    previous: function() {
+        this.jq.cycle('prev');
+    }
+});
