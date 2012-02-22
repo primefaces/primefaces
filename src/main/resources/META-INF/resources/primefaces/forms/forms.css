@@ -341,7 +341,7 @@ div.ui-button {
 
 .ui-password-panel .ui-password-meter { 
     height: 10px; 
-    background:transparent url("#{resource['primefaces:password/jpassword-meter.png']}") no-repeat left top; 
+    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top; 
     padding: 0;
     margin: 0;
 }
