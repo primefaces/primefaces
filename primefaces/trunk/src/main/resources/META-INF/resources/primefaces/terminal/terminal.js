@@ -447,21 +447,21 @@
 
 })(jQuery);
 
-
-PrimeFaces.widget.Terminal = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-	this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.cfg.formId = this.jq.parents('form:first').attr('id');
-	
-	this.jq.wterm(this.cfg);
+/**
+ * PrimeFaces Terminal Widget 
+ */
+PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Terminal, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.Terminal.prototype.focus = function() {
-    $(this.jqId + ' input').eq(0).focus();
-}
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.cfg.formId = this.jq.parents('form:first').attr('id');
+	
+        this.jq.wterm(this.cfg);
+    },
+    
+    focus: function() {
+        $(this.jqId + ' input').eq(0).focus();
+    }
+    
+});
