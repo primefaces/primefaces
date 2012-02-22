@@ -1603,50 +1603,48 @@
 /**
  * PrimeFaces ImageCropper Widget
  */
-PrimeFaces.widget.ImageCropper = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.image = $(PrimeFaces.escapeClientId(this.cfg.image));
-    this.jqCoords = $(this.jqId + '_coords');
-
-    var _self = this;
-    this.cfg.onSelect = function(c) {_self.saveCoords(c);};
-    this.cfg.onChange = function(c) {_self.saveCoords(c);};
+ PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
     
-    if(this.jq.is(':visible')) {
-        this.init();
-    } 
-    else {
-        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-        hiddenParentWidget = hiddenParent.data('widget');
+    init: function(cfg) {
+        this._super(cfg);
         
-        if(hiddenParentWidget) {
-            hiddenParentWidget.addOnshowHandler(function() {
-                return _self.init();
-            });
+        this.image = $(PrimeFaces.escapeClientId(this.cfg.image));
+        this.jqCoords = $(this.jqId + '_coords');
+
+        var _self = this;
+        this.cfg.onSelect = function(c) {_self.saveCoords(c);};
+        this.cfg.onChange = function(c) {_self.saveCoords(c);};
+
+        if(this.jq.is(':visible')) {
+            this.render();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.render();
+                });
+            }
         }
+    },
+    
+    render: function() {
+        if(this.jq.is(':visible')) {
+            this.image.Jcrop(this.cfg);
+
+            return true;
+        } 
+        else {
+            return false;
+        }
+    },
+    
+    saveCoords: function(c) {
+        var cropCoords = c.x + "_" + c.y + "_" + c.w + "_" + c.h;
+
+        this.jqCoords.val(cropCoords);
     }
-
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.ImageCropper, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.ImageCropper.prototype.init = function() {
-    if(this.jq.is(':visible')) {
-        this.image.Jcrop(this.cfg);
-        
-        return true;
-    } 
-    else {
-        return false;
-    }
-}
-
-PrimeFaces.widget.ImageCropper.prototype.saveCoords = function(c) {
-    var cropCoords = c.x + "_" + c.y + "_" + c.w + "_" + c.h;
-
-    this.jqCoords.val(cropCoords);
-}
+    
+});
