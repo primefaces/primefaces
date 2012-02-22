@@ -1,7 +1,7 @@
 /** 
  * PrimeFaces Resizable Widget
  */
-PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this.cfg = cfg;

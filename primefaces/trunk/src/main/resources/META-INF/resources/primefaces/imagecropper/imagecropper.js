@@ -1603,7 +1603,7 @@
 /**
  * PrimeFaces ImageCropper Widget
  */
- PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);

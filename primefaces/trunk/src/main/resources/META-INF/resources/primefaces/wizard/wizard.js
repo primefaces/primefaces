@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Wizard Component
  */
-PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);

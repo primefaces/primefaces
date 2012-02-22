@@ -1,7 +1,7 @@
 /**
  * PrimeFaes Stack Widget
  */
-PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);

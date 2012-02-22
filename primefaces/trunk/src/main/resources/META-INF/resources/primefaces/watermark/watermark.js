@@ -567,7 +567,7 @@ $.watermark.options.className = 'ui-watermark';
 /**
  * PrimeFaces Watermark Widget 
  */
-PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Watermark = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this.cfg = cfg;
