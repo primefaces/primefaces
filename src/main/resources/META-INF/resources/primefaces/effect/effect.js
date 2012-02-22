@@ -1,30 +1,32 @@
 /**
  * PrimeFaces Effect Widget
  */
-PrimeFaces.widget.Effect = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
-    var _self = this;
+PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
     
-    this.runner = function() {
-        //avoid queuing multiple runs
-        if(_self.timeoutId) {
-            clearTimeout(_self.timeoutId);
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.id = this.cfg.id;
+        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
+        var _self = this;
+
+        this.runner = function() {
+            //avoid queuing multiple runs
+            if(_self.timeoutId) {
+                clearTimeout(_self.timeoutId);
+            }
+
+            _self.timeoutId = setTimeout(_self.cfg.fn, _self.cfg.delay);
+        };
+
+        if(this.cfg.event == 'load') {
+            this.runner.call();
+        } 
+        else {
+            this.source.bind(this.cfg.event, this.runner);
         }
         
-        _self.timeoutId = setTimeout(_self.cfg.fn, _self.cfg.delay);
-    };
-    
-    if(this.cfg.event == 'load') {
-        this.runner.call();
-    } 
-    else {
-        this.source.bind(this.cfg.event, this.runner);
+        $(this.jqId + '_script').remove();
     }
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Effect, PrimeFaces.widget.BaseWidget);
+});
