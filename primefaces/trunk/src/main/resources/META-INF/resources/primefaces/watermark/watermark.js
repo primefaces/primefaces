@@ -567,20 +567,22 @@ $.watermark.options.className = 'ui-watermark';
 /**
  * PrimeFaces Watermark Widget 
  */
-PrimeFaces.widget.Watermark = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jqTargetId = PrimeFaces.escapeClientId(this.cfg.target);
-    this.target = $(this.jqTargetId);
+PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
     
-    if(this.target.is(':not(:input)')) {
-        this.target = this.target.find(':input');
-    }
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.id = this.cfg.id;
+        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this.jqTargetId = PrimeFaces.escapeClientId(this.cfg.target);
+        this.target = $(this.jqTargetId);
 
-    this.target.watermark(this.cfg.value);
+        if(this.target.is(':not(:input)')) {
+            this.target = this.target.find(':input');
+        }
+
+        this.target.watermark(this.cfg.value);
+        
+        $(this.jqId + '_script').remove();
+    }
     
-    this.postConstruct();
- }
- 
- PrimeFaces.extend(PrimeFaces.widget.Watermark, PrimeFaces.widget.BaseWidget);
+});
