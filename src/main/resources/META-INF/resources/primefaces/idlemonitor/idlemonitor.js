@@ -160,7 +160,7 @@ $.idleTimer = function(newTimeout){
 /**
  * PrimeFaces IdleMonitor Widget
  */
-PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
