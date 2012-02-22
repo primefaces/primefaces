@@ -155,45 +155,46 @@ $.idleTimer = function(newTimeout){
 
 }; // end of $.idleTimer()
 
-
-
 })(jQuery);
 
 /**
  * PrimeFaces IdleMonitor Widget
  */
-PrimeFaces.widget.IdleMonitor = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-
-    var _self = this;
-	
-    $(document).bind("idle.idleTimer", function(){
-
-        if(_self.cfg.onidle) {
-            _self.cfg.onidle.call(_self);
-        }
-		
-        if(_self.cfg.behaviors) {
-            var idleBehavior = _self.cfg.behaviors['idle'];
-            if(idleBehavior) {
-                idleBehavior.call(_self);
-            }
-        }
-    });
-	
-    $(document).bind("active.idleTimer", function(){
-        if(_self.cfg.onactive) {
-            _self.cfg.onactive.call(this);
-        }
-
-        if(_self.cfg.behaviors) {
-            var activeBehavior = _self.cfg.behaviors['active'];
-            if(activeBehavior) {
-                activeBehavior.call(_self);
-            }
-        }
-    });
+PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
     
-    $.idleTimer(this.cfg.timeout);
-}
+    init: function(cfg) {
+        this._super(cfg);
+
+        var _self = this;
+
+        $(document).bind("idle.idleTimer", function(){
+
+            if(_self.cfg.onidle) {
+                _self.cfg.onidle.call(_self);
+            }
+
+            if(_self.cfg.behaviors) {
+                var idleBehavior = _self.cfg.behaviors['idle'];
+                if(idleBehavior) {
+                    idleBehavior.call(_self);
+                }
+            }
+        });
+
+        $(document).bind("active.idleTimer", function(){
+            if(_self.cfg.onactive) {
+                _self.cfg.onactive.call(this);
+            }
+
+            if(_self.cfg.behaviors) {
+                var activeBehavior = _self.cfg.behaviors['active'];
+                if(activeBehavior) {
+                    activeBehavior.call(_self);
+                }
+            }
+        });
+
+        $.idleTimer(this.cfg.timeout);
+    }
+    
+});
