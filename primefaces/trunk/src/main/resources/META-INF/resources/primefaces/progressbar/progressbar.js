@@ -1,102 +1,100 @@
 /**
  * PrimeFaces ProgressBar widget
  */
-PrimeFaces.widget.ProgressBar = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.jqValue = this.jq.children('.ui-progressbar-value');
-    this.jqLabel = this.jq.children('.ui-progressbar-label');
-    this.value = 0;
-
-    if(this.cfg.ajax) {
-        this.cfg.formId = this.jq.parents('form:first').attr('id');
-    }
+PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
     
-    this.enableARIA();
-	    
-    this.postConstruct();
-}
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jqValue = this.jq.children('.ui-progressbar-value');
+        this.jqLabel = this.jq.children('.ui-progressbar-label');
+        this.value = 0;
 
-PrimeFaces.extend(PrimeFaces.widget.ProgressBar, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.ProgressBar.prototype.setValue = function(value) {
-    if(value >= 0 && value<=100) {
-        if(value == 0) {
-            this.jqValue.hide().css('width', '0%').removeClass('ui-corner-right');
-            
-            this.jqLabel.hide();
+        if(this.cfg.ajax) {
+            this.cfg.formId = this.jq.parents('form:first').attr('id');
         }
-        else {
-            this.jqValue.show().animate({
-                'width': value + '%' 
-            }, 500, 'easeInOutCirc');
 
-            if(this.cfg.labelTemplate) {
-                var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
-                
-                this.jqLabel.html(formattedLabel).show();
+        this.enableARIA();
+    },
+    
+    setValue: function(value) {
+        if(value >= 0 && value<=100) {
+            if(value == 0) {
+                this.jqValue.hide().css('width', '0%').removeClass('ui-corner-right');
+
+                this.jqLabel.hide();
+            }
+            else {
+                this.jqValue.show().animate({
+                    'width': value + '%' 
+                }, 500, 'easeInOutCirc');
+
+                if(this.cfg.labelTemplate) {
+                    var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
+
+                    this.jqLabel.html(formattedLabel).show();
+                }
+            }
+
+            this.value = value;
+            this.jq.attr('aria-valuenow', value);
+        }
+    },
+    
+    getValue: function() {
+        return this.value;
+    },
+    
+    start: function() {
+        var _self = this;
+
+        if(this.cfg.ajax) {
+
+            this.progressPoll = setInterval(function() {
+                var options = {
+                    source: _self.id,
+                    process: _self.id,
+                    formId: _self.cfg._formId,
+                    async: true,
+                    oncomplete: function(xhr, status, args) {
+                        var value = args[_self.id + '_value'];
+                        _self.setValue(value);
+
+                        //trigger complete listener
+                        if(value === 100) {
+                            _self.fireCompleteEvent();
+                        }
+                    }
+                };
+
+                PrimeFaces.ajax.AjaxRequest(options);
+
+            }, this.cfg.interval);
+        }
+    },
+    
+    fireCompleteEvent: function() {
+        clearInterval(this.progressPoll);
+
+        if(this.cfg.behaviors) {
+            var completeBehavior = this.cfg.behaviors['complete'];
+
+            if(completeBehavior) {
+                completeBehavior.call(this);
             }
         }
-        
-        this.value = value;
-        this.jq.attr('aria-valuenow', value);
+    },
+    
+    cancel: function() {
+        clearInterval(this.progressPoll);
+        this.setValue(0);
+    },
+    
+    enableARIA: function() {
+        this.jq.attr('role', 'progressbar')
+                .attr('aria-valuemin', 0)
+                .attr('aria-valuenow', 0)
+                .attr('aria-valuemax', 100);
     }
-}
 
-PrimeFaces.widget.ProgressBar.prototype.getValue  = function() {
-    return this.value;
-}
-
-PrimeFaces.widget.ProgressBar.prototype.start = function() {
-    var _self = this;
-	
-    if(this.cfg.ajax) {
-		
-        this.progressPoll = setInterval(function() {
-            var options = {
-                source: _self.id,
-                process: _self.id,
-                formId: _self.cfg._formId,
-                async: true,
-                oncomplete: function(xhr, status, args) {
-                    var value = args[_self.id + '_value'];
-                    _self.setValue(value);
-
-                    //trigger complete listener
-                    if(value === 100) {
-                        _self.fireCompleteEvent();
-                    }
-                }
-            };
-
-            PrimeFaces.ajax.AjaxRequest(options);
-            
-        }, this.cfg.interval);
-    }
-}
-
-PrimeFaces.widget.ProgressBar.prototype.fireCompleteEvent = function() {
-    clearInterval(this.progressPoll);
-
-    if(this.cfg.behaviors) {
-        var completeBehavior = this.cfg.behaviors['complete'];
-        
-        if(completeBehavior) {
-            completeBehavior.call(this);
-        }
-    }
-}
-
-PrimeFaces.widget.ProgressBar.prototype.cancel = function() {
-    clearInterval(this.progressPoll);
-    this.setValue(0);
-}
-
-PrimeFaces.widget.ProgressBar.prototype.enableARIA = function() {
-    this.jq.attr('role', 'progressbar')
-            .attr('aria-valuemin', 0)
-            .attr('aria-valuenow', 0)
-            .attr('aria-valuemax', 100);
-}
+});
