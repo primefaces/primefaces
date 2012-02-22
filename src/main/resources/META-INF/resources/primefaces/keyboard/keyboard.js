@@ -891,37 +891,34 @@ $(function() {
 /**
  * PrimeFaces Keyboard Widget
  */
-PrimeFaces.widget.Keyboard = function(cfg) {
-	this.cfg = cfg;
-	this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
+ PrimeFaces.widget.Keyboard = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        if(this.cfg.layoutTemplate)
+            this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
+        else
+            this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 
-	if(this.cfg.layoutTemplate)
-		this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
-	else
-		this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
+        this.jq.keypad(this.cfg);
 
-	this.jq.keypad(this.cfg);
+        //Client Behaviors
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        }
 
-    //Client Behaviors
-    if(this.cfg.behaviors) {
-        PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        //Visuals
+        PrimeFaces.skinInput(this.jq);
+
+        //Hide overlay on resize
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            $.keypad._hideKeypad();
+        });
     }
-
-    //Visuals
-    PrimeFaces.skinInput(this.jq);
     
-    //Hide overlay on resize
-    var resizeNS = 'resize.' + this.id;
-    $(window).unbind(resizeNS).bind(resizeNS, function() {
-        $.keypad._hideKeypad();
-    });
-    
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Keyboard, PrimeFaces.widget.BaseWidget);
+});
 
 PrimeFaces.widget.KeyboardUtils = {
 
