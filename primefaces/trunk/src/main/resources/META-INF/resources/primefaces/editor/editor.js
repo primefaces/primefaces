@@ -1147,83 +1147,81 @@ v)}}else{d=a.indexOf("<");g+=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d)}else
 /**
  * PrimeFaces Editor Widget
  */
-PrimeFaces.widget.Editor = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.jqInput = $(this.jqId + '_input');
-    var _self = this;
-
-    if(this.jq.is(':visible')) {
-        this.init();
-    } 
-    else {
-        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-        hiddenParentWidget = hiddenParent.data('widget');
+PrimeFaces.widget.Editor = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
         
-        if(hiddenParentWidget) {
-            hiddenParentWidget.addOnshowHandler(function() {
-                return _self.init();
-            });
+        this.jqInput = $(this.jqId + '_input');
+        var _self = this;
+
+        if(this.jq.is(':visible')) {
+            this.render();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.render();
+                });
+            }
         }
+    },
+    
+    render: function() {
+        if(this.jq.is(':visible')) {
+            this.editor = this.jqInput.cleditor(this.cfg)[0];
+
+            if(this.cfg.disabled) {
+                this.disable();
+            }
+
+            if(this.cfg.change) {
+                this.editor.change(this.cfg.change);
+            }
+
+            //show container after progressive enhancement
+            this.jq.css('visibility', '');
+
+            return true;
+        } 
+        else {
+            return false;
+        }
+    },
+    
+    saveHTML: function() {
+        this.editor.updateTextArea();
+    },
+    
+    clear: function() {
+        this.editor.clear();
+    },
+    
+    enable: function() {
+        this.editor.disable(false);
+    },
+    
+    disable: function() {
+        this.editor.disable(true);
+    },
+    
+    focus: function() {
+        this.editor.focus();
+    },
+    
+    selectAll: function() {
+        this.editor.select();
+    },
+    
+    getSelectedHTML: function() {
+        return this.editor.selectedHTML();
+    },
+    
+    getSelectedText: function() {
+        return this.editor.selectedText();
     }
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Editor, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.Editor.prototype.init = function() {
-    if(this.jq.is(':visible')) {
-        this.editor = this.jqInput.cleditor(this.cfg)[0];
-
-        if(this.cfg.disabled) {
-            this.disable();
-        }
-        
-        if(this.cfg.change) {
-            this.editor.change(this.cfg.change);
-        }
-        
-        //show container after progressive enhancement
-        this.jq.css('visibility', '');
-        
-        return true;
-    } 
-    else {
-        return false;
-    }
-}
-
-PrimeFaces.widget.Editor.prototype.saveHTML = function() {
-    this.editor.updateTextArea();
-}
-
-PrimeFaces.widget.Editor.prototype.clear = function() {
-    this.editor.clear();
-}
-
-PrimeFaces.widget.Editor.prototype.enable = function() {
-    this.editor.disable(false);
-}
-
-PrimeFaces.widget.Editor.prototype.disable = function() {
-    this.editor.disable(true);
-}
-
-PrimeFaces.widget.Editor.prototype.focus = function() {
-    this.editor.focus();
-}
-
-PrimeFaces.widget.Editor.prototype.selectAll = function() {
-    this.editor.select();
-}
-
-PrimeFaces.widget.Editor.prototype.getSelectedHTML = function() {
-    return this.editor.selectedHTML();
-}
-
-PrimeFaces.widget.Editor.prototype.getSelectedText = function() {
-    return this.editor.selectedText();
-}
+});
