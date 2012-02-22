@@ -2048,162 +2048,161 @@
 /**
  * PrimeFaces FileUpload Widget
  */
-PrimeFaces.widget.FileUpload = function(cfg) {
-	this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.form = this.jq.parents('form:first');
-    this.buttonBar = this.jq.children('.fileupload-buttonbar');
-    this.uploadContent = this.jq.children('.fileupload-content');
-
-    var _self = this;
+PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     
-    //upload template
-    this.cfg.uploadTemplate = '<tr class="template-upload{{if error}} ui-state-error{{/if}}">' + 
-                              '<td class="preview"></td>' +
-                              '<td class="name">$' + '{name}</td>' +
-                              '<td class="size">$' + '{sizef}</td>' + 
-                              '{{if error}}' + 
-                              '<td class="error" colspan="2">' + 
-                                    '{{if error === "maxFileSize"}}' + this.getMessage(this.cfg.invalidSizeMessage, this.INVALID_SIZE_MESSAGE) +
-                                    '{{else error === "minFileSize"}}'+ this.getMessage(this.cfg.invalidSizeMessage, this.INVALID_SIZE_MESSAGE)  +
-                                    '{{else error === "acceptFileTypes"}}'+ this.getMessage(this.cfg.invalidFileMessage, this.INVALID_FILE_MESSAGE)  +
-                                    '{{else error === "maxNumberOfFiles"}}' + this.getMessage(this.cfg.fileLimitMessage, this.FILE_LIMIT_MESSAGE) +
-                                    '{{else}}$' + '{error}' +
-                                    '{{/if}}' +
-                              '</td>' +
-                              '{{else}}' +
-                              '<td class="progress"><div></div></td>' +
-                              '<td class="start"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
-                              '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-arrowreturnthick-1-n"></span>' +
-                              '<span class="ui-button-text">ui-button</span></button></td>' +
-                              '<td class="cancel"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
-                              '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-cancel"></span>' +
-                              '<span class="ui-button-text">ui-button</span></button></td>' +
-                              '{{/if}}' +
-                              '</tr>';
-                          
-    //download template
-    this.cfg.downloadTemplate = '';
-    
-    //config
-    this.cfg.fileInput = $(PrimeFaces.escapeClientId(this.id + '_input'));
-    this.cfg.paramName = this.id;
-    this.cfg.sequentialUploads = true;
-    this.cfg.dataType = 'xml';
-    this.cfg.namespace = this.jqId;
-    this.cfg.disabled = this.cfg.fileInput.is(':disabled');
-    
-    //iframe content parser
-    $.ajaxSetup({
-        converters: {
-            'iframe xml': this.parseIFrameResponse
-        }
-    });
-    
-    //params
-    this.cfg.formData = function() {
-        return _self.createPostData();
-    };
-    
-    //dragdrop
-    this.cfg.dropZone = this.cfg.dnd && !this.cfg.disabled ? this.jq : null;
-    
-    //create widget
-    if(this.form.data().fileupload) {
-        this.destroy();
-    }
-    
-    this.form.fileupload(this.cfg).bind('fileuploaddone', function(e, data) {
-        PrimeFaces.ajax.AjaxResponse(data.result);
+    init: function(cfg) {
+        this._super(cfg);
         
-        if(_self.cfg.oncomplete) {
-            _self.cfg.oncomplete.call(_self);
-        }
-    });
-        
-    //disable buttonbar
-    if(this.cfg.disabled) {
-        this.disable();
-    }
-    
-    //show the UI
-    this.jq.css('visibility', 'visible');
-    
-    //bind events
-    PrimeFaces.skinButton(this.buttonBar.children('.ui-button'));
-    
-    this.buttonBar.children('.start.ui-button').click(function(e) {
-        _self.uploadContent.find('.start button').click();
-    });
-    
-    this.buttonBar.children('.cancel.ui-button').click(function(e) {
-        _self.uploadContent.find('.cancel button').click();
-    });
-    
-    this.postConstruct();
-}
+        this.form = this.jq.parents('form:first');
+        this.buttonBar = this.jq.children('.fileupload-buttonbar');
+        this.uploadContent = this.jq.children('.fileupload-content');
 
-PrimeFaces.extend(PrimeFaces.widget.FileUpload, PrimeFaces.widget.BaseWidget);
+        var _self = this;
 
+        //upload template
+        this.cfg.uploadTemplate = '<tr class="template-upload{{if error}} ui-state-error{{/if}}">' + 
+                                '<td class="preview"></td>' +
+                                '<td class="name">$' + '{name}</td>' +
+                                '<td class="size">$' + '{sizef}</td>' + 
+                                '{{if error}}' + 
+                                '<td class="error" colspan="2">' + 
+                                        '{{if error === "maxFileSize"}}' + this.getMessage(this.cfg.invalidSizeMessage, this.INVALID_SIZE_MESSAGE) +
+                                        '{{else error === "minFileSize"}}'+ this.getMessage(this.cfg.invalidSizeMessage, this.INVALID_SIZE_MESSAGE)  +
+                                        '{{else error === "acceptFileTypes"}}'+ this.getMessage(this.cfg.invalidFileMessage, this.INVALID_FILE_MESSAGE)  +
+                                        '{{else error === "maxNumberOfFiles"}}' + this.getMessage(this.cfg.fileLimitMessage, this.FILE_LIMIT_MESSAGE) +
+                                        '{{else}}$' + '{error}' +
+                                        '{{/if}}' +
+                                '</td>' +
+                                '{{else}}' +
+                                '<td class="progress"><div></div></td>' +
+                                '<td class="start"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
+                                '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-arrowreturnthick-1-n"></span>' +
+                                '<span class="ui-button-text">ui-button</span></button></td>' +
+                                '<td class="cancel"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
+                                '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-cancel"></span>' +
+                                '<span class="ui-button-text">ui-button</span></button></td>' +
+                                '{{/if}}' +
+                                '</tr>';
 
-PrimeFaces.widget.FileUpload.prototype.parseIFrameResponse = function(iframe) {
-    var response = iframe.contents(),
-    responseText = null;
-    
-    //Somehow firefox, opera, ie9 ignores xml root element so we add it ourselves
-    if($.browser.mozilla||$.browser.opera||($.browser.msie&&$.browser.version=='9.0')) {
-        responseText = '<?xml version="1.0" encoding="UTF-8"?><partial-response><changes>';
-        response.find('update').each(function(i, item) {
-            var update = $(item),
-            id = update.attr('id'),
-            content = '<![CDATA[' + update.text() + ']]>';
-            
-            responseText += '<update id="' + id + '">' + content + '</update>';
+        //download template
+        this.cfg.downloadTemplate = '';
+
+        //config
+        this.cfg.fileInput = $(PrimeFaces.escapeClientId(this.id + '_input'));
+        this.cfg.paramName = this.id;
+        this.cfg.sequentialUploads = true;
+        this.cfg.dataType = 'xml';
+        this.cfg.namespace = this.jqId;
+        this.cfg.disabled = this.cfg.fileInput.is(':disabled');
+
+        //iframe content parser
+        $.ajaxSetup({
+            converters: {
+                'iframe xml': this.parseIFrameResponse
+            }
         });
-        responseText += '</changes></partial-response>';
-    } 
-    //IE
-    else {
-        responseText = $.trim(iframe.contents().text().replace(/(> -)|(>-)/g,'>'));
-    }
+
+        //params
+        this.cfg.formData = function() {
+            return _self.createPostData();
+        };
+
+        //dragdrop
+        this.cfg.dropZone = this.cfg.dnd && !this.cfg.disabled ? this.jq : null;
+
+        //create widget
+        if(this.form.data().fileupload) {
+            this.destroy();
+        }
+
+        this.form.fileupload(this.cfg).bind('fileuploaddone', function(e, data) {
+            PrimeFaces.ajax.AjaxResponse(data.result);
+
+            if(_self.cfg.oncomplete) {
+                _self.cfg.oncomplete.call(_self);
+            }
+        });
+
+        //disable buttonbar
+        if(this.cfg.disabled) {
+            this.disable();
+        }
+
+        //show the UI
+        this.jq.css('visibility', 'visible');
+
+        //bind events
+        PrimeFaces.skinButton(this.buttonBar.children('.ui-button'));
+
+        this.buttonBar.children('.start.ui-button').click(function(e) {
+            _self.uploadContent.find('.start button').click();
+        });
+
+        this.buttonBar.children('.cancel.ui-button').click(function(e) {
+            _self.uploadContent.find('.cancel button').click();
+        });
+    },
     
-    return $.parseXML(responseText);
-}
+    parseIFrameResponse: function(iframe) {
+        var response = iframe.contents(),
+        responseText = null;
 
-PrimeFaces.widget.FileUpload.prototype.createPostData = function() {
-    var process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id,
-    params = this.form.serializeArray();
+        //Somehow firefox, opera, ie9 ignores xml root element so we add it ourselves
+        if($.browser.mozilla||$.browser.opera||($.browser.msie&&$.browser.version=='9.0')) {
+            responseText = '<?xml version="1.0" encoding="UTF-8"?><partial-response><changes>';
+            response.find('update').each(function(i, item) {
+                var update = $(item),
+                id = update.attr('id'),
+                content = '<![CDATA[' + update.text() + ']]>';
+
+                responseText += '<update id="' + id + '">' + content + '</update>';
+            });
+            responseText += '</changes></partial-response>';
+        } 
+        //IE
+        else {
+            responseText = $.trim(iframe.contents().text().replace(/(> -)|(>-)/g,'>'));
+        }
+
+        return $.parseXML(responseText);
+    },
     
-    params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM, value: 'true'});
-    params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM, value: process});
-    params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM, value: this.id});
+    createPostData: function() {
+        var process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id,
+        params = this.form.serializeArray();
 
-    if(this.cfg.update) {
-        params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM, value: this.cfg.update});
-    }
+        params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM, value: 'true'});
+        params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM, value: process});
+        params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM, value: this.id});
+
+        if(this.cfg.update) {
+            params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM, value: this.cfg.update});
+        }
+
+        return params;
+    },
     
-    return params;
-}
-
-PrimeFaces.widget.FileUpload.prototype.getMessage = function(customMsg, defaultMsg) {
-    return customMsg || defaultMsg; 
-}
-
-PrimeFaces.widget.FileUpload.prototype.destroy = function() {
-    this.form.fileupload('destroy');
-}
-
-PrimeFaces.widget.FileUpload.prototype.disable = function() {
-    this.jq.children('.fileupload-buttonbar').find('.ui-button')
-                        .addClass('ui-state-disabled')
-                        .unbind()
-                        .bind('click', function(e) {e.preventDefault();});
+    getMessage: function(customMsg, defaultMsg) {
+        return customMsg || defaultMsg; 
+    },
     
-    this.cfg.fileInput.css('cursor', 'auto');
-}
+    destroy: function() {
+        this.form.fileupload('destroy');
+    },
+    
+    disable: function() {
+        this.jq.children('.fileupload-buttonbar').find('.ui-button')
+                            .addClass('ui-state-disabled')
+                            .unbind()
+                            .bind('click', function(e) {e.preventDefault();});
 
-PrimeFaces.widget.FileUpload.prototype.INVALID_SIZE_MESSAGE = 'Invalid file size.';
-PrimeFaces.widget.FileUpload.prototype.INVALID_FILE_MESSAGE = 'Invalid file type.';
-PrimeFaces.widget.FileUpload.prototype.FILE_LIMIT_MESSAGE = 'Max number of files exceeded.';
+        this.cfg.fileInput.css('cursor', 'auto');
+    },
+    
+    INVALID_SIZE_MESSAGE: 'Invalid file size.',
+    
+    INVALID_FILE_MESSAGE: 'Invalid file type.',
+    
+    FILE_LIMIT_MESSAGE: 'Max number of files exceeded.'
+    
+});
