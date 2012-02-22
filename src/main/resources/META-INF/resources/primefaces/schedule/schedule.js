@@ -5221,183 +5221,181 @@ function HorizontalPositionCache(getElement) {
 /**
  * PrimeFaces Schedule Widget
  */
-PrimeFaces.widget.Schedule = function(cfg) {
-	this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.jqc = $(this.jqId + '_container');
-    this.cfg.formId = this.jq.parents('form:first').attr('id');
-    this.cfg.theme = true;
-    var _self = this;
-
-	this.setupEventSource();
-	
-    this.configureLocale();
-	
-	this.setupEventHandlers();
+PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
     
-    if(this.jq.is(':not(:visible)')) {
-        var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-        hiddenParentWidget = hiddenParent.data('widget');
+    init: function(cfg) {
+        this._super(cfg);
         
-        if(hiddenParentWidget) {
-            hiddenParentWidget.addOnshowHandler(function() {
-                return _self.init();
-            });
+        this.jqc = $(this.jqId + '_container');
+        this.cfg.formId = this.jq.parents('form:first').attr('id');
+        this.cfg.theme = true;
+        var _self = this;
+
+        this.setupEventSource();
+
+        this.configureLocale();
+
+        this.setupEventHandlers();
+
+        if(this.jq.is(':not(:visible)')) {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.render();
+                });
+            }
+        } 
+        else {
+            this.render();
         }
-    } 
-    else {
-        this.init();
-    }
+    },
     
-    this.postConstruct();
-}
+    render: function() {
+        if(this.jq.is(':visible')) {
+            this.jqc.fullCalendar(this.cfg);
 
-PrimeFaces.extend(PrimeFaces.widget.Schedule, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.Schedule.prototype.init = function() {
-    if(this.jq.is(':visible')) {
-        this.jqc.fullCalendar(this.cfg);
-        
-        return true;
-    } 
-    else {
-        return false;
-    }
-}
-
-PrimeFaces.widget.Schedule.prototype.configureLocale = function() {
-	var lang = PrimeFaces.locales[this.cfg.locale];
-	                                                    
-	if(lang) {
-        this.cfg.firstDay = lang.firstDay;
-		this.cfg.monthNames = lang.monthNames;
-		this.cfg.monthNamesShort = lang.monthNamesShort;
-		this.cfg.dayNames = lang.dayNames;
-		this.cfg.dayNamesShort = lang.dayNamesShort;
-		this.cfg.buttonText = {today: lang.currentText
-                                ,month: lang.month
-                                ,week: lang.week
-                                ,day: lang.day};
-		this.cfg.allDayText = lang.allDayText;
-	}
-}
-
-PrimeFaces.widget.Schedule.prototype.setupEventHandlers = function() {
-    var _self = this;
+            return true;
+        } 
+        else {
+            return false;
+        }
+    },
     
-	this.cfg.dayClick = function(dayDate, allDay, jsEvent, view) {
-        if(_self.cfg.behaviors) {
-            var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
-            if(dateSelectBehavior) {
-                var ext = {
-                    params: {}
-                };
-                ext.params[_self.id + '_selectedDate'] = dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset;
+    configureLocale: function() {
+        var lang = PrimeFaces.locales[this.cfg.locale];
 
-                dateSelectBehavior.call(_self, dayDate, ext);
-            }
+        if(lang) {
+            this.cfg.firstDay = lang.firstDay;
+            this.cfg.monthNames = lang.monthNames;
+            this.cfg.monthNamesShort = lang.monthNamesShort;
+            this.cfg.dayNames = lang.dayNames;
+            this.cfg.dayNamesShort = lang.dayNamesShort;
+            this.cfg.buttonText = {today: lang.currentText
+                                    ,month: lang.month
+                                    ,week: lang.week
+                                    ,day: lang.day};
+            this.cfg.allDayText = lang.allDayText;
         }
-	}
+    },
+    
+    setupEventHandlers: function() {
+        var _self = this;
 
-	this.cfg.eventClick = function(calEvent, jsEvent, view) {
-        if(_self.cfg.behaviors) {
-            var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
-            if(eventSelectBehavior) {
-                var ext = {
-                    params: {}
-                };
-                ext.params[_self.id + '_selectedEventId'] = calEvent.id;
+        this.cfg.dayClick = function(dayDate, allDay, jsEvent, view) {
+            if(_self.cfg.behaviors) {
+                var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
+                if(dateSelectBehavior) {
+                    var ext = {
+                        params: {}
+                    };
+                    ext.params[_self.id + '_selectedDate'] = dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset;
 
-                eventSelectBehavior.call(_self, calEvent, ext);
-            }
-        }
-	}
-	
-	this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-        if(_self.cfg.behaviors) {
-            var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
-            if(eventMoveBehavior) {
-                var ext = {
-                    params: {}
-                };
-                ext.params[_self.id + '_movedEventId'] = calEvent.id;
-                ext.params[_self.id + '_dayDelta'] = dayDelta;
-                ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-
-                eventMoveBehavior.call(_self, calEvent, ext);
-            }
-        }
-	}
-	
-	this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
-        if(_self.cfg.behaviors) {
-            var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
-            if(eventResizeBehavior) {
-                var ext = {
-                    params: {}
-                };
-                ext.params[_self.id + '_resizedEventId'] = calEvent.id;
-                ext.params[_self.id + '_dayDelta'] = dayDelta;
-                ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-
-                eventResizeBehavior.call(_self, calEvent, ext);
-            }
-        }
-	}
-}
-
-PrimeFaces.widget.Schedule.prototype.setupEventSource = function() {
-	var _self = this,
-    offset = new Date().getTimezoneOffset()*60000 + this.cfg.offset;
-	
-	this.cfg.events = function(start, end, callback) {
-        var options = {
-            source: _self.id,
-            process: _self.id,
-            update: _self.id,
-            formId: _self.cfg.formId,
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
-
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    data = update.text();
-
-                    if(id == _self.id){
-                        var events = $.parseJSON(data).events;
-
-                        for(var j=0; j < events.length; j++) {
-                            events[j].start = new Date(events[j].start + offset);
-                            events[j].end = new Date(events[j].end + offset);
-                        }
-
-                        callback(events);
-                    }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
-                    }
+                    dateSelectBehavior.call(_self, dayDate, ext);
                 }
-                
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
-
-                return true;
             }
-        };
+        }
 
-        var params = {};
-        params[_self.id + "_start"] = start.getTime() + offset;
-		params[_self.id + "_end"] = end.getTime() + offset;
-		
-        options.params = params;
+        this.cfg.eventClick = function(calEvent, jsEvent, view) {
+            if(_self.cfg.behaviors) {
+                var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
+                if(eventSelectBehavior) {
+                    var ext = {
+                        params: {}
+                    };
+                    ext.params[_self.id + '_selectedEventId'] = calEvent.id;
 
-		PrimeFaces.ajax.AjaxRequest(options);
-	}
-}
+                    eventSelectBehavior.call(_self, calEvent, ext);
+                }
+            }
+        }
 
-PrimeFaces.widget.Schedule.prototype.update = function() {
-	this.jqc.fullCalendar('refetchEvents');
-}
+        this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+            if(_self.cfg.behaviors) {
+                var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
+                if(eventMoveBehavior) {
+                    var ext = {
+                        params: {}
+                    };
+                    ext.params[_self.id + '_movedEventId'] = calEvent.id;
+                    ext.params[_self.id + '_dayDelta'] = dayDelta;
+                    ext.params[_self.id + '_minuteDelta'] = minuteDelta;
+
+                    eventMoveBehavior.call(_self, calEvent, ext);
+                }
+            }
+        }
+
+        this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+            if(_self.cfg.behaviors) {
+                var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
+                if(eventResizeBehavior) {
+                    var ext = {
+                        params: {}
+                    };
+                    ext.params[_self.id + '_resizedEventId'] = calEvent.id;
+                    ext.params[_self.id + '_dayDelta'] = dayDelta;
+                    ext.params[_self.id + '_minuteDelta'] = minuteDelta;
+
+                    eventResizeBehavior.call(_self, calEvent, ext);
+                }
+            }
+        }
+    },
+    
+    setupEventSource: function() {
+        var _self = this,
+        offset = new Date().getTimezoneOffset()*60000 + this.cfg.offset;
+
+        this.cfg.events = function(start, end, callback) {
+            var options = {
+                source: _self.id,
+                process: _self.id,
+                update: _self.id,
+                formId: _self.cfg.formId,
+                onsuccess: function(responseXML) {
+                    var xmlDoc = $(responseXML.documentElement),
+                    updates = xmlDoc.find("update");
+
+                    for(var i=0; i < updates.length; i++) {
+                        var update = updates.eq(i),
+                        id = update.attr('id'),
+                        data = update.text();
+
+                        if(id == _self.id){
+                            var events = $.parseJSON(data).events;
+
+                            for(var j=0; j < events.length; j++) {
+                                events[j].start = new Date(events[j].start + offset);
+                                events[j].end = new Date(events[j].end + offset);
+                            }
+
+                            callback(events);
+                        }
+                        else {
+                            PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
+                        }
+                    }
+
+                    PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+                    return true;
+                }
+            };
+
+            var params = {};
+            params[_self.id + "_start"] = start.getTime() + offset;
+            params[_self.id + "_end"] = end.getTime() + offset;
+
+            options.params = params;
+
+            PrimeFaces.ajax.AjaxRequest(options);
+        }
+    },
+    
+    update: function() {
+        this.jqc.fullCalendar('refetchEvents');
+    }
+
+});
