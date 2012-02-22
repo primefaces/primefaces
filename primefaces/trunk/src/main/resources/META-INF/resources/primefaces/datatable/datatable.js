@@ -1292,6 +1292,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Sets up column reordering
      */
     setupDraggableColumns: function() {
+        this.dragIndicatorTop = $('<div class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
+        this.dragIndicatorBottom = $('<div class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
+    
         this.orderStateHolder = $(this.jqId + '_columnOrder');
 
         var _self = this;
@@ -1300,6 +1303,35 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             appendTo: 'body'
             ,opacity: 0.75
             ,cursor: 'move'
+            ,drag: function(event, ui) {
+                var droppable = ui.helper.data('droppable-column');
+
+                if(droppable) {
+                    var droppableOffset = droppable.offset(),
+                    padding = droppable.innerWidth() - droppable.width(),
+                    topArrowY = droppableOffset.top - 10,
+                    bottomArrowY = droppableOffset.top + droppable.height() + 8,
+                    arrowX = null;
+
+                    //calculate coordinates of arrow depending on mouse location
+                    if(event.originalEvent.pageX >= droppableOffset.left + (droppable.innerWidth() / 2)) {
+                        arrowX = droppableOffset.left + droppable.outerWidth() - (padding / 2);
+                        ui.helper.data('drop-location', 1);     //right
+                    }
+                    else {
+                        arrowX = droppableOffset.left - (padding / 2);
+                        ui.helper.data('drop-location', -1);    //left
+                    }
+                    
+                    _self.dragIndicatorTop.offset({'left': arrowX, 'top': topArrowY}).show();
+                    _self.dragIndicatorBottom.offset({'left': arrowX, 'top': bottomArrowY}).show();
+                }
+            }
+            ,stop: function(event, ui) {
+                //hide dnd arrows
+                _self.dragIndicatorTop.css({'left':0, 'top':0}).hide();
+                _self.dragIndicatorBottom.css({'left':0, 'top':0}).hide();
+            }
             ,helper: function() {
                 var header = $(this),
                 helper = $('<div class="ui-widget ui-state-default" style="padding:4px 10px;text-align:center;"></div>');
@@ -1314,22 +1346,28 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         }).droppable({
             hoverClass:'ui-state-highlight'
-            ,activeClass:'ui-state-hover'
-            ,tolerance:'intersect'
-            ,drop:function(event, ui) {
+            ,tolerance:'pointer'
+            ,over: function(event, ui) {
+                ui.helper.data('droppable-column', $(this));
+            }
+            ,drop: function(event, ui) {
+                
                 var draggedColumn = ui.draggable,
-                droppedColumn = $(this),
-                draggedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (draggedColumn.index() + 1) + ')'),
-                droppedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (droppedColumn.index() + 1) + ')'),
-                ltr = draggedColumn.nextAll(PrimeFaces.escapeClientId(droppedColumn.attr('id'))).length == 1;
-
-                if(ltr) {
+                dropLocation = ui.helper.data('drop-location'),
+                droppedColumn =  $(this);
+                
+                var draggedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (draggedColumn.index() + 1) + ')'),
+                droppedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (droppedColumn.index() + 1) + ')');
+                
+                //drop right
+                if(dropLocation > 0) {
                     draggedColumn.insertAfter(droppedColumn);
 
                     draggedCells.each(function(i, item) {
                         $(this).insertAfter(droppedCells.eq(i));
                     });
                 }
+                //drop left
                 else {
                     draggedColumn.insertBefore(droppedColumn);
 
@@ -1337,7 +1375,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         $(this).insertBefore(droppedCells.eq(i));
                     });
                 }
-
+               
                 //save order
                 var columns = $(_self.jqId + ' thead:first th'),
                 columnIds = [];
@@ -1347,6 +1385,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 });
 
                 _self.orderStateHolder.val(columnIds.join(','));
+                
 
                 //fire toggleCheckAll event
                 if(_self.cfg.behaviors) {

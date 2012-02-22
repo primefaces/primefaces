@@ -169,3 +169,13 @@
 .ui-datatable .ui-paginator {
     padding:2px;
 }
+
+.ui-column-dnd-top, ui-column-dnd-bottom {
+    display: none;
+    position: absolute;
+}
+
+.ui-column-dnd-top .ui-icon, ui-column-dnd-bottom .ui-icon{
+    position: absolute;
+    top: -4px;
+}
