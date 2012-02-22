@@ -1,7 +1,7 @@
 /**
  * PrimeFaces PickList Widget
  */
-PrimeFaces.widget.XXX = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
