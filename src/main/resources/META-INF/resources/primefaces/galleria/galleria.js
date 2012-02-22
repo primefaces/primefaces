@@ -1340,19 +1340,12 @@ jQuery(window).bind("unload", function() {
 /**
  * PrimeFaces Galleria Widget
  */
-PrimeFaces.widget.Galleria = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-
-    this.jq.galleryView(this.cfg);
+PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     
-    this.postConstruct();
-}
-
-PrimeFaces.extend(PrimeFaces.widget.Galleria, PrimeFaces.widget.BaseWidget);
-
-PrimeFaces.widget.Galleria.prototype.getScriptTag = function() {
-    return $(this.jqId).next('script');
-};
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.galleryView(this.cfg);
+    }
+    
+});
