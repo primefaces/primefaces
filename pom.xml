@@ -260,7 +260,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/password/password.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
@@ -305,7 +304,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/password/password.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/resizable/resizable.js</include>
@@ -498,7 +496,6 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
-                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/password/password.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
@@ -543,7 +540,6 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
-                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/password/password.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/resizable/resizable.js</include>
