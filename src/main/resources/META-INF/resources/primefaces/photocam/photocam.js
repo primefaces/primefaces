@@ -95,87 +95,89 @@
 /**
 * PrimeFaces PhotoCam Widget
 */
-PrimeFaces.widget.PhotoCam = function(cfg) {
-    this.cfg = cfg;
-    this.id = this.cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id);
-    this.jq = $(this.jqId);
-    this.form = this.jq.parents('form:first');
-    this.url = this.form.attr('action');
-    this.canvas = document.createElement("canvas");
-    this.canvas.setAttribute('width', 320);
-    this.canvas.setAttribute('height', 240);
-    this.ctx = this.canvas.getContext("2d"),
-    this.image = this.ctx.getImageData(0, 0, 320, 240);
-    this.pos = 0;
-    var _self = this;
+PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.form = this.jq.parents('form:first');
+        this.url = this.form.attr('action');
+        this.canvas = document.createElement("canvas");
+        this.canvas.setAttribute('width', 320);
+        this.canvas.setAttribute('height', 240);
+        this.ctx = this.canvas.getContext("2d"),
+        this.image = this.ctx.getImageData(0, 0, 320, 240);
+        this.pos = 0;
+        var _self = this;
 
-    this.jq.webcam({
-        width: 320,
-        height: 240,
-        mode: "callback",
-        swffile: this.cfg.camera,
-        onSave: function(data) {
-            _self.save(data)
-        },
-        onCapture: function () {
-            webcam.save();
-        },
-        debug: function (type, string) {
-            console.log(type + ": " + string);
-        }
-    });
-}
-
-PrimeFaces.widget.PhotoCam.prototype.save = function(data) {
-    var col = data.split(";");
-
-    for(var i = 0; i < 320; i++) {
-            var tmp = parseInt(col[i]);
-            this.image.data[this.pos + 0] = (tmp >> 16) & 0xff;
-            this.image.data[this.pos + 1] = (tmp >> 8) & 0xff;
-            this.image.data[this.pos + 2] = tmp & 0xff;
-            this.image.data[this.pos + 3] = 0xff;
-            this.pos+= 4;
-    }
-
-    if(this.pos >= 4 * 320 * 240) {
-        this.ctx.putImageData(this.image, 0, 0);
-
-        $.ajax({
-            url:this.url,
-            type : "POST",
-            cache : false,
-            dataType : "xml",
-            data: this.createPostData(),
-            success : function(data, status, xhr) {
-                PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+        this.jq.webcam({
+            width: 320,
+            height: 240,
+            mode: "callback",
+            swffile: this.cfg.camera,
+            onSave: function(data) {
+                _self.save(data)
+            },
+            onCapture: function () {
+                webcam.save();
+            },
+            debug: function (type, string) {
+                console.log(type + ": " + string);
             }
         });
-
-        this.pos = 0;
-    }
-}
-
-PrimeFaces.widget.PhotoCam.prototype.createPostData = function() {
-    var data = this.form.serialize(),
-    params = {},
-    process = this.cfg.process ? this.cfg.process + ' ' + this.id : this.id;
-
-    params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
-    params[PrimeFaces.PARTIAL_PROCESS_PARAM] = process;
-    params[PrimeFaces.PARTIAL_SOURCE_PARAM] = this.id;
-    params[this.id] = this.canvas.toDataURL('image/png');
+    },
     
-    if(this.cfg.update) {
-        params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.update;
+    save: function(data) {
+        var col = data.split(";");
+
+        for(var i = 0; i < 320; i++) {
+                var tmp = parseInt(col[i]);
+                this.image.data[this.pos + 0] = (tmp >> 16) & 0xff;
+                this.image.data[this.pos + 1] = (tmp >> 8) & 0xff;
+                this.image.data[this.pos + 2] = tmp & 0xff;
+                this.image.data[this.pos + 3] = 0xff;
+                this.pos+= 4;
+        }
+
+        if(this.pos >= 4 * 320 * 240) {
+            this.ctx.putImageData(this.image, 0, 0);
+
+            $.ajax({
+                url:this.url,
+                type : "POST",
+                cache : false,
+                dataType : "xml",
+                data: this.createPostData(),
+                success : function(data, status, xhr) {
+                    PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+                }
+            });
+
+            this.pos = 0;
+        }
+    },
+    
+    createPostData: function() {
+        var data = this.form.serialize(),
+        params = {},
+        process = this.cfg.process ? this.cfg.process + ' ' + this.id : this.id;
+
+        params[PrimeFaces.PARTIAL_REQUEST_PARAM] = true;
+        params[PrimeFaces.PARTIAL_PROCESS_PARAM] = process;
+        params[PrimeFaces.PARTIAL_SOURCE_PARAM] = this.id;
+        params[this.id] = this.canvas.toDataURL('image/png');
+
+        if(this.cfg.update) {
+            params[PrimeFaces.PARTIAL_UPDATE_PARAM] = this.cfg.update;
+        }
+
+        data = data + '&' + $.param(params);
+
+        return data; 
+    },
+    
+    capture: function() {
+        webcam.capture();
     }
     
-    data = data + '&' + $.param(params);
-
-    return data; 
-}
-
-PrimeFaces.widget.PhotoCam.prototype.capture = function() {
-    webcam.capture();
-}
+});
