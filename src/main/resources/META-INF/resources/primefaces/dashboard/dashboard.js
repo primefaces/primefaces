@@ -43,7 +43,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
             }
         } 
 
-        $(this.jqId + " " + this.COLUMN_CLASS).sortable(this.cfg);
+        $(this.jqId + ' .ui-dashboard-column').sortable(this.cfg);
     }
     
 });
