@@ -37,7 +37,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.setupExpansionEvents();
         }
 
-        this.setupCellEditorEvents();
+        if(this.cfg.editable) {
+            this.setupCellEditorEvents();
+        }
 
         if(this.cfg.scrollable||this.cfg.resizableColumns) {
             this.initColumnWidths();
@@ -1073,19 +1075,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var _self = this,
         rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
 
-        if(rowEditors.length > 0) {
-           rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
-                _self.showEditors(this);
-            });
+        rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
+            _self.showEditors(this);
+        });
 
-            rowEditors.find('span.ui-icon-check').die().live('click', function() {
-                _self.saveRowEdit(this);
-            });
+        rowEditors.find('span.ui-icon-check').die().live('click', function() {
+            _self.saveRowEdit(this);
+        });
 
-            rowEditors.find('span.ui-icon-close').die().live('click', function() {
-                _self.cancelRowEdit(this);
-            }); 
-        }
+        rowEditors.find('span.ui-icon-close').die().live('click', function() {
+            _self.cancelRowEdit(this);
+        }); 
     },
     
     /**

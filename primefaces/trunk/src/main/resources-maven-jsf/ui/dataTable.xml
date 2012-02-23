@@ -228,6 +228,13 @@
             <defaultValue>false</defaultValue>
             <description>Decides whether datatable columns can be reordered using dragdrop.</description>
 		</attribute>
+        <attribute>
+			<name>editable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls incell editing.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
