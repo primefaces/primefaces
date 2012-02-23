@@ -12,8 +12,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.decimalSeparator = this.findDecimalSeparator();
         this.decimalCount = this.findDecimalCount();
 
-        //grab value from input
-        this.refreshValue();
+        //init value from input
+        this.initValue();
 
         //aria
         this.addARIA();
@@ -42,14 +42,21 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 }
             }).mouseup(function() {
                 clearInterval(_self.timer);
-                $(this).removeClass('ui-state-active');
-            }).mousedown(function() {
+                $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+            }).mousedown(function(e) {
                 var element = $(this),
                 dir = element.hasClass('ui-spinner-up') ? 1 : -1;
 
                 element.removeClass('ui-state-hover').addClass('ui-state-active');
+                
+                if(_self.input.is(':not(:focus)')) {
+                    _self.input.focus();
+                }
 
                 _self.repeat(null, dir);
+
+                //keep focused
+                e.preventDefault();
             });
 
         /**
@@ -58,17 +65,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         * - Allow decimal separators in step mode
         * - Allow prefix and suffix if defined
         * - Enable support for arrow keys
-        * 
-        * Note: e.keyCode is used for arrow key detection, rest uses e.which
         */
-        this.input.keypress(function (e) {
+        this.input.keydown(function (e) {        
             var keyCode = $.ui.keyCode,
-            character = String.fromCharCode(e.which),
             number = (e.which >= 48&&e.which <= 57),
-            decimalKey = (_self.decimalSeparator != null) && (e.which == 44||e.which == 46),
-            boundary = (character == _self.cfg.prefix||character == _self.cfg.suffix);
-
-            switch(e.keyCode) {            
+            decimalKey = (_self.decimalSeparator != null) && (e.which == 188||e.which == 190);
+            
+            switch(e.which) {            
                 case keyCode.BACKSPACE:
                 case keyCode.LEFT:
                 case keyCode.RIGHT:
@@ -84,16 +87,37 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 default:
-                    if(!number && !decimalKey && !boundary) {
+                    if(!number && !decimalKey) {
                         e.preventDefault();
                     }
                 break;
             }
         });
 
-        //refresh the value if user enters input manually
-        this.input.keyup(function (e) {      
-            _self.refreshValue();
+        
+        this.input.keyup(function () { 
+            //update value from manual user input
+            _self.updateValue();
+        })
+        .blur(function () { 
+            //format value onblur
+            _self.format();
+        })
+        .focus(function () {
+            //remove formatting
+            _self.input.val(_self.value);
+        });
+        
+        //mousewheel
+        this.input.bind('mousewheel', function(event, delta) {
+            if(_self.input.is(':focus')) {
+                if(delta > 0)
+                    _self.spin(_self.cfg.step);
+                else
+                    _self.spin(-1 * _self.cfg.step);
+                
+                return false;
+            }
         });
 
         //client behaviors
@@ -125,22 +149,49 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             newValue = this.cfg.max;
         }
 
-        this.input.val(this.format(newValue));
+        this.input.val(newValue);
         this.value = newValue;
         this.input.attr('aria-valuenow', newValue);
 
         this.input.change();
     },
     
-    refreshValue: function() {
+    /**
+     * Parses value on keyup
+     */
+    updateValue: function() {
         var value = this.input.val();
 
         if(value == '') {
-            if(this.cfg.min)
+            if(this.cfg.min != undefined)
                 this.value = this.cfg.min;
             else
                 this.value = 0;
-        } 
+        }
+        else {
+            if(this.decimalSeparator)
+                value = parseFloat(value);
+            else
+                value = parseInt(value);
+            
+            if(!isNaN(value)) {
+                this.value = value;
+            }
+        }
+    },
+    
+    /**
+     * Parses value on initial load
+     */
+    initValue: function() {
+        var value = this.input.val();
+
+        if(value == '') {
+            if(this.cfg.min != undefined)
+                this.value = this.cfg.min;
+            else
+                this.value = 0;
+        }
         else {
             if(this.cfg.prefix)
                 value = value.split(this.cfg.prefix)[1];
@@ -149,10 +200,42 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 value = value.split(this.cfg.suffix)[0];
 
             if(this.decimalSeparator)
-                this.value =  parseFloat(value);
+                this.value = parseFloat(value);
             else
                 this.value = parseInt(value);
         }
+    },
+     
+    format: function() {
+        var value = this.value;
+        
+        if(this.decimalSeparator) {
+            //convert to string
+            value = value + '';
+
+            var decimalCount = this.findDecimalCount(),
+            valueDecimalCount = null;
+
+            if(value.indexOf(this.decimalSeparator) != -1) {
+                valueDecimalCount = value.split(this.decimalSeparator)[1].length;
+            } 
+            else {
+                valueDecimalCount = 0;
+                value = value + this.decimalSeparator;
+            }
+
+            for(var i = valueDecimalCount ; i < decimalCount; i++) {
+                value = value + '0';
+            }
+        }
+
+        if(this.cfg.prefix)
+            value = this.cfg.prefix + value;
+
+        if(this.cfg.suffix)
+            value = value + this.cfg.suffix;
+        
+        this.input.val(value);
     },
     
     findDecimalSeparator: function() {
@@ -177,35 +260,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             return 0;
         }
     },
-    
-    format: function(value) {
-        if(this.decimalSeparator) {
-            value = value + '';
 
-            var decimalCount = this.findDecimalCount(),
-            valueDecimalCount = null;
-
-            if(value.indexOf(this.decimalSeparator) != -1) {
-                valueDecimalCount = value.split(this.decimalSeparator)[1].length;
-            } else {
-                valueDecimalCount = 0;
-                value = value + this.decimalSeparator;
-            }
-
-            for(var i = valueDecimalCount ; i < decimalCount; i++) {
-                value = value + '0';
-            }
-        }
-
-        if(this.cfg.prefix)
-            value = this.cfg.prefix + value;
-
-        if(this.cfg.suffix)
-            value = value + this.cfg.suffix;
-
-        return value;
-    },
-    
     addARIA: function() {
         this.input.attr('role', 'spinner');
         this.input.attr('aria-multiline', false);
