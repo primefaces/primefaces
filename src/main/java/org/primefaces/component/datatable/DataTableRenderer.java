@@ -93,7 +93,7 @@ public class DataTableRenderer extends DataRenderer {
 		DataTable table = (DataTable) component;
 
         if(table.isBodyUpdate(context)) {
-            encodeTbody(context, table);
+            encodeTbody(context, table, true);
         } 
         else if(table.isRowExpansionRequest(context)) {
             encodeRowExpansion(context, table);
@@ -140,7 +140,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.write(",filtering:true");
             writer.write(",filterEvent:'" + table.getFilterEvent() + "'");
         }
-
+        
         //Row expansion
         if(table.getRowExpansion() != null) {
             writer.write(",expansion:true");
@@ -190,6 +190,7 @@ public class DataTableRenderer extends DataRenderer {
         //style
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
+        
         String style = null;
         
         if(table.isResizableColumns()) {
@@ -239,7 +240,7 @@ public class DataTableRenderer extends DataRenderer {
         
         encodeThead(context, table);
         encodeTFoot(context, table);
-        encodeTbody(context, table);
+        encodeTbody(context, table, false);
         writer.endElement("table");
     }
 
@@ -282,7 +283,7 @@ public class DataTableRenderer extends DataRenderer {
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
-        encodeTbody(context, table);
+        encodeTbody(context, table, false);
         writer.endElement("table");
         writer.endElement("div");
 
@@ -579,7 +580,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("thead");
     }
 
-    protected void encodeTbody(FacesContext context, DataTable table) throws IOException {
+    protected void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
@@ -599,9 +600,11 @@ public class DataTableRenderer extends DataRenderer {
 
         String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
       
-        writer.startElement("tbody", null);
-        writer.writeAttribute("id", clientId + "_data", null);
-        writer.writeAttribute("class", tbodyClass, null);
+        if(!dataOnly) {
+            writer.startElement("tbody", null);
+            writer.writeAttribute("id", clientId + "_data", null);
+            writer.writeAttribute("class", tbodyClass, null);
+        }
 
         if(hasData) {
             for(int i = first; i < (first + rowCountToRender); i++) {
@@ -640,7 +643,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("tr");
         }
 		
-        writer.endElement("tbody");
+        if(!dataOnly) {
+            writer.endElement("tbody");
+        }
 
 		//Cleanup
 		table.setRowIndex(-1);
@@ -892,30 +897,6 @@ public class DataTableRenderer extends DataRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
-
-    protected void encodeRowEditor(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String widgetVar = table.resolveWidgetVar();
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.ROW_EDITOR_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
-        writer.endElement("span");
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-check", null);
-        writer.writeAttribute("style", "display:none", null);
-        writer.endElement("span");
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-close", null);
-        writer.writeAttribute("style", "display:none", null);
-        writer.endElement("span");
-
-        writer.endElement("span");
-    }
 
     protected void encodeRowExpansion(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
