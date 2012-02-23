@@ -19445,7 +19445,7 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.highlighter = {show:false}; //default highlighter 
 
         if(this.jq.is(':visible')) {
-            this.init();
+            this.draw();
         } 
         else {
             var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
@@ -19453,7 +19453,7 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
 
             if(hiddenParentWidget) {
                 hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.init();
+                    return _self.draw();
                 });
             }
         }
