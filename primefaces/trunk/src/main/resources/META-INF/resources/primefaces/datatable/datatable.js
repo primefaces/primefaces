@@ -1240,7 +1240,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     initColumnWidths: function() {
         var headers = this.jq.find('thead:first tr:last th'),
-        dataCells = $(this.tbodyId).find('td'),
+        dataCells = this.tbody.find('td'),
         footers = this.jq.find('tfoot:first tr:first td'),
         widths = [];
 
@@ -1357,8 +1357,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 dropLocation = ui.helper.data('drop-location'),
                 droppedColumn =  $(this);
                 
-                var draggedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (draggedColumn.index() + 1) + ')'),
-                droppedCells = $(_self.jqId + ' tbody tr td:nth-child(' + (droppedColumn.index() + 1) + ')');
+                var draggedCells = _self.tbody.find('> tr > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
+                droppedCells = _self.tbody.find('> tr > td:nth-child(' + (droppedColumn.index() + 1) + ')');
                 
                 //drop right
                 if(dropLocation > 0) {
