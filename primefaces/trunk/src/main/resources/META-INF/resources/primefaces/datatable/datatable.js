@@ -6,8 +6,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.tbody = this.jqId + '_data';
-        this.tbodyId = this.jqId + '_data';
+        this.tbody = $(this.jqId + '_data');
         this.cfg.formId = this.jq.parents('form:first').attr('id');
 
         //Paginator
@@ -38,10 +37,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.setupExpansionEvents();
         }
 
-        var rowEditors = this.getRowEditors();
-        if(rowEditors.length > 0) {
-            this.setupCellEditorEvents(rowEditors);
-        }
+        this.setupCellEditorEvents();
 
         if(this.cfg.scrollable||this.cfg.resizableColumns) {
             this.initColumnWidths();
@@ -419,9 +415,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
-                    $(_self.tbody).replaceWith(content);
+                if(id == _self.id) {
+                    //update body
+                    _self.tbody.html(content);
 
+                    //restore column widths
                     if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
                         _self.updateDataCellWidths();
                     }
@@ -481,14 +479,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 content = update.text();
 
                 if(id == _self.id){
-                    $(_self.tbody).replaceWith(content);
+                    //update body
+                    _self.tbody.html(content);
 
                     //reset paginator
                     var paginator = _self.getPaginator();
                     if(paginator) {
-                    paginator.setPage(0, true);
+                        paginator.setPage(0, true);
                     }
 
+                    //restore column widths
                     if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
                         _self.updateDataCellWidths();
                     }
@@ -543,8 +543,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 content = update.text();
 
                 if(id == _self.id){
-                    $(_self.tbody).replaceWith(content);
+                    //update body
+                    _self.tbody.html(content);
 
+                    //restore column widths
                     if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
                         _self.updateDataCellWidths();
                     }
@@ -603,7 +605,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var row = r;
 
         if(PrimeFaces.isNumber(r)) {
-            row = $(this.tbodyId).children('tr:eq(' + r + ')');
+            row = this.tbody.children('tr:eq(' + r + ')');
         }
 
         return row;
@@ -621,7 +623,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.isMultipleSelection() && event && event.shiftKey) {
-            var rows = $(this.tbody).children();
+            var rows = this.tbody.children();
             this.originRowIndex = this.originRowIndex||0;
 
             //unselect previously selected rows with shift
@@ -790,7 +792,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unselectAllRows: function() {
-        $(this.tbodyId).children('tr.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false); 
+        this.tbody.children('tr.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false); 
         this.selection = [];
         this.writeSelections();
     },
@@ -799,7 +801,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Toggles all rows with checkbox
      */
     toggleCheckAll: function() {
-        var checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column').find('.ui-chkbox > .ui-chkbox-box:not(.ui-state-disabled)'),
+        var checkboxes = this.tbody.find('> tr > td.ui-selection-column .ui-chkbox-box:not(.ui-state-disabled)'),
         checked = this.checkAllToggler.hasClass('ui-state-active'),
         _self = this;
 
@@ -1063,28 +1065,27 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     isSelectionEnabled: function() {
         return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
     },
-    
-    getRowEditors: function() {
-        return $(this.jqId + ' tbody.ui-datatable-data tr td span.ui-row-editor');
-    },
-    
+        
     /**
      * Binds cell editor events non-obstrusively
      */
-    setupCellEditorEvents: function(rowEditors) {
-        var _self = this;
+    setupCellEditorEvents: function() {
+        var _self = this,
+        rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
 
-        rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
-            _self.showEditors(this);
-        });
+        if(rowEditors.length > 0) {
+           rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
+                _self.showEditors(this);
+            });
 
-        rowEditors.find('span.ui-icon-check').die().live('click', function() {
-            _self.saveRowEdit(this);
-        });
+            rowEditors.find('span.ui-icon-check').die().live('click', function() {
+                _self.saveRowEdit(this);
+            });
 
-        rowEditors.find('span.ui-icon-close').die().live('click', function() {
-            _self.cancelRowEdit(this);
-        });
+            rowEditors.find('span.ui-icon-close').die().live('click', function() {
+                _self.cancelRowEdit(this);
+            }); 
+        }
     },
     
     /**
