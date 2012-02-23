@@ -169,6 +169,11 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isDraggableColumns()) {
             writer.write(",draggableColumns:true");
         }
+        
+        //Editing
+        if(table.isEditable()) {
+            writer.write(",editable:true");
+        }
 
         //Behaviors
         encodeClientBehaviors(context, table);
