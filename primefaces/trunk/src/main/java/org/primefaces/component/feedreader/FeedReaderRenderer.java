@@ -35,7 +35,6 @@ public class FeedReaderRenderer extends CoreRenderer {
         String var = reader.getVar();
         int size = reader.getSize();
         
-        
         try {
             List entries = new FeedInput().parse(reader.getValue(), size);
             
@@ -47,7 +46,10 @@ public class FeedReaderRenderer extends CoreRenderer {
             requestMap.remove(var);
             
         } catch(Exception e) {
-            throw new FacesException(e);
+            UIComponent errorFacet = reader.getFacet("error");
+            if(errorFacet != null) {
+                errorFacet.encodeAll(context);
+            }
         }
     }
     
