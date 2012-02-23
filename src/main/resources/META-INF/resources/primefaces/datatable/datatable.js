@@ -1136,8 +1136,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 oldPos = ui.originalPosition.left,
                 newPos = ui.position.left,
                 change = (newPos - oldPos),
-                newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2)),
-                tbody = $(_self.jqId + ' tbody');
+                newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2));
 
                 ui.helper.css('left','');
                 resizerHelper.hide();
@@ -1145,7 +1144,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 columnHeaderWrapper.width(newWidth);
                 columnHeader.css('width', '');
 
-                tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
+                _self.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
                 tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
 
                 scrollHeader.scrollLeft(scrollBody.scrollLeft());
