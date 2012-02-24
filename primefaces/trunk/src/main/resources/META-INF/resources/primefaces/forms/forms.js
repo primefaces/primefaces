@@ -1406,3 +1406,29 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/**
+ * PrimeFaces DefaultCommand Widget
+ */
+PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.id = this.cfg.id;
+        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        var _self = this;
+        
+        //attach keypress listener to parent form
+        this.jqTarget.parents('form:first').keypress(function(e) {
+           var keyCode = $.ui.keyCode;
+           
+           if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
+               _self.jqTarget.click();
+               e.preventDefault();
+           }
+        });
+        
+        $(this.jqId + '_script').remove();
+    }
+});
