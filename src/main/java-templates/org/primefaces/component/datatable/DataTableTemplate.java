@@ -91,7 +91,7 @@ import javax.faces.context.FacesContext;
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
-                                                        "rowUnselect", "rowEdit", "colResize", "toggleCheckAll", "columnReorder"));
+                                                        "rowUnselect", "rowEdit", "colResize", "toggleSelect", "columnReorder"));
 
     public List<Column> columns;
 
@@ -334,7 +334,7 @@ import javax.faces.context.FacesContext;
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
-            else if(eventName.equals("toggleCheckAll")) {
+            else if(eventName.equals("toggleSelect")) {
                 wrapperEvent = behaviorEvent;
             }
             else if(eventName.equals("columnReorder")) {
