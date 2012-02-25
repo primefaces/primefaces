@@ -826,12 +826,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         //save state
         this.writeSelections();
 
-        //fire toggleCheckAll event
+        //fire toggleSelect event
         if(this.cfg.behaviors) {
-            var toggleCheckAllBehavior = this.cfg.behaviors['toggleCheckAll'];
+            var toggleSelectBehavior = this.cfg.behaviors['toggleSelect'];
 
-            if(toggleCheckAllBehavior) {            
-                toggleCheckAllBehavior.call(this);
+            if(toggleSelectBehavior) {            
+                toggleSelectBehavior.call(this);
             }
         }
     },
