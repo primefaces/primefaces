@@ -88,7 +88,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description></description>
+            <description>When enabled, growl is updated for each ajax request implicitly.</description>
+		</attribute>
+        <attribute>
+			<name>redisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines if already rendered messages should be displayed. Default is true.</description>
 		</attribute>
 	</attributes>
 	<resources>
