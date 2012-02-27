@@ -743,7 +743,7 @@ import javax.faces.context.FacesContext;
                 }
             }
             else {
-                builder.append(iter.next().getClientId());
+                builder.append(column.getClientId());
 
                 if(iter.hasNext()) {
                     builder.append(",");
