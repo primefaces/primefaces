@@ -59,30 +59,6 @@
 			<defaultValue>6000</defaultValue>
             <description>Duration in milliseconds to display non-sticky messages. Default is 800.</description>
 		</attribute>
-		<attribute>
-			<name>warnIcon</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Image path of the warning messages.</description>
-		</attribute>
-		<attribute>
-			<name>infoIcon</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Image path of the info messages.</description>
-		</attribute>
-		<attribute>
-			<name>errorIcon</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Image path of the error messages.</description>
-		</attribute>
-		<attribute>
-			<name>fatalIcon</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Image path of the fatal messages.</description>
-		</attribute>
         <attribute>
 			<name>autoUpdate</name>
 			<required>false</required>

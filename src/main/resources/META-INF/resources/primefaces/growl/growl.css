@@ -47,7 +47,27 @@
 	width:32px;
 	height:32px;
 	float:left;
+    margin:0;
+    padding:0;
+    display: block;
 }
+
+.ui-growl-image-info {
+	background: url("#{resource['primefaces:growl/images/info.png']}") no-repeat;
+}
+
+.ui-growl-image-warn {
+	background: url("#{resource['primefaces:growl/images/warn.png']}") no-repeat;
+}
+
+.ui-growl-image-error {
+	background: url("#{resource['primefaces:growl/images/error.png']}") no-repeat;
+}
+
+.ui-growl-image-fatal {
+	background: url("#{resource['primefaces:growl/images/fatal.png']}") no-repeat;
+}
+
 .ui-growl-message {
 	padding:0 0 5px 0;
 	width:220px;

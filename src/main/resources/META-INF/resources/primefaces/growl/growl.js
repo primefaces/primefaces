@@ -46,10 +46,10 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         var markup = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden">';
         markup += '<div class="ui-growl-item">';
         markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
-        markup += '<img class="ui-growl-image" src="' + msg.image + '" />';
+        markup += '<span class="ui-growl-image ' + this.getSeverityIcon(msg.severity) + '" />';
         markup += '<div class="ui-growl-message">';
-        markup += '<span class="ui-growl-title">' + msg.title + '</span>';
-        markup += '<p>' + msg.text + '</p>';
+        markup += '<span class="ui-growl-title">' + msg.summary + '</span>';
+        markup += '<p>' + msg.detail + '</p>';
         markup += '</div><div style="clear: both;"></div></div></div>';
 
         var message = $(markup);
@@ -108,6 +108,25 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         }, this.cfg.life);
 
         message.data('timeout', timeout);
-    }
+    },
     
+    getSeverityIcon: function(ordinal) {
+        switch(ordinal) {
+            case 0:
+                return 'ui-growl-image-info';
+            break;
+            
+            case 1:
+                return 'ui-growl-image-warn';
+            break;
+            
+            case 2:
+                return 'ui-growl-image-error';
+            break;
+            
+            case 3:
+                return 'ui-growl-image-fatal';
+            break;
+        }
+    }
 });
