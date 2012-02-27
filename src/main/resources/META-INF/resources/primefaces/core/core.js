@@ -14,8 +14,7 @@ PrimeFaces = {
 	
     addSubmitParam : function(parent, params) {
         var form = $(this.escapeClientId(parent));
-        form.children('input.ui-submit-param').remove();
-
+        
         for(var key in params) {
             form.append("<input type=\"hidden\" name=\"" + key + "\" value=\"" + params[key] + "\" class=\"ui-submit-param\"/>");
         }
@@ -23,8 +22,11 @@ PrimeFaces = {
         return this;
     },
 
+    /**
+     * Submits a form and clears ui-submit-param after that to prevent dom caching issues
+     */ 
     submit : function(formId) {
-        $(this.escapeClientId(formId)).submit();
+        $(this.escapeClientId(formId)).submit().children('input.ui-submit-param').remove();
     },
 
     attachBehaviors : function(element, behaviors) {
