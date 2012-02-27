@@ -83,7 +83,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         
         writer.startElement("div", checkbox);
-        writer.writeAttribute("class", HTML.CHECKBOX_INPUT_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");

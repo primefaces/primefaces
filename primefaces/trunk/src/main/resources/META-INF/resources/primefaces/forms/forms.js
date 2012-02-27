@@ -543,6 +543,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             }).click(function() {
                 _self.toggle();
             });
+            
+            //delegate focus-blur states
+            _self.input.focus(function() {
+                _self.box.addClass('ui-state-focus');
+            }).blur(function() {
+                _self.box.removeClass('ui-state-focus');
+            });
 
             //toggle state on label click
             this.itemLabel.click(function() {
@@ -568,7 +575,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     check: function() {
         if(!this.disabled) {
             this.input.attr('checked', 'checked');
-            this.box.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            this.box.addClass('ui-state-active').removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
 
             this.input.change();
         }
@@ -577,7 +584,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     uncheck: function() {
         if(!this.disabled) {
             this.input.removeAttr('checked');
-            this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+            this.box.removeClass('ui-state-active').addClass('ui-state-hover').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
 
             this.input.change();
         }
