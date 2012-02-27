@@ -103,6 +103,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = HTML.CHECKBOX_BOX_CLASS;
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
+        styleClass = !checkbox.isValid() ? styleClass + " ui-state-error" : styleClass;
         styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         String iconClass = HTML.CHECKBOX_ICON_CLASS;

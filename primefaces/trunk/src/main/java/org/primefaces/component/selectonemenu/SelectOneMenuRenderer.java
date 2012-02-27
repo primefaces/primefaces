@@ -70,22 +70,24 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         Converter converter = getConverter(context, menu);
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
+        boolean valid = menu.isValid();
                 
         String style = menu.getStyle();
-        String styleclass = menu.getStyleClass();
-        styleclass = styleclass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleclass;
-        styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
+        String styleClass = menu.getStyleClass();
+        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
+        styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
+        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleclass, "styleclass");
+        writer.writeAttribute("class", styleClass, "styleclass");
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
         encodeLabel(context, menu, selectItems);
-        encodeMenuIcon(context, menu);
+        encodeMenuIcon(context, menu, valid);
         encodePanel(context, menu, selectItems);
 
         writer.endElement("div");
@@ -133,11 +135,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String iconClass = valid ? SelectOneMenu.TRIGGER_CLASS : SelectOneMenu.TRIGGER_CLASS + " ui-state-error";
         
         writer.startElement("div", menu);
-        writer.writeAttribute("class", SelectOneMenu.TRIGGER_CLASS, null);
+        writer.writeAttribute("class", iconClass, null);
 
         writer.startElement("span", menu);
         writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
