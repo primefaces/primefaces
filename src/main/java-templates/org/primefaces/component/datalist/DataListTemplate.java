@@ -21,7 +21,9 @@ import javax.faces.event.FacesListener;
 			return "ol";
 		else if(type.equalsIgnoreCase("definition"))
 			return "dl";
-		else
+        else if(type.equalsIgnoreCase("none"))
+            return null;
+        else
 			throw new FacesException("DataList '" + this.getClientId() + "' has invalid list type:'" + type + "'");
 	}
 	
