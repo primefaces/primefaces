@@ -50,22 +50,23 @@
     margin:0;
     padding:0;
     display: block;
+    background: url("#{resource['primefaces:messages/messages.png']}") no-repeat;
 }
 
 .ui-growl-image-info {
-	background: url("#{resource['primefaces:growl/images/info.png']}") no-repeat;
+	background-position: 0 -264px;
 }
 
 .ui-growl-image-warn {
-	background: url("#{resource['primefaces:growl/images/warn.png']}") no-repeat;
+	background-position: 0 -396px;
 }
 
 .ui-growl-image-error {
-	background: url("#{resource['primefaces:growl/images/error.png']}") no-repeat;
+	background-position: 0 0;
 }
 
 .ui-growl-image-fatal {
-	background: url("#{resource['primefaces:growl/images/fatal.png']}") no-repeat;
+	background-position: 0 -228px;
 }
 
 .ui-growl-message {
