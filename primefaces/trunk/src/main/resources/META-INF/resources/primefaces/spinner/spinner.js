@@ -75,7 +75,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.BACKSPACE:
                 case keyCode.LEFT:
                 case keyCode.RIGHT:
-                    //allow backspace, left and right arrow keys
+                case keyCode.TAB:
+                    //allow keys above
                 break;
 
                 case keyCode.UP:
@@ -87,6 +88,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 default:
+                    //block key if not a number and decimal key
                     if(!number && !decimalKey) {
                         e.preventDefault();
                     }
