@@ -11,7 +11,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.draggable(this.cfg);
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     }
     
 });
@@ -31,7 +31,7 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.droppable(this.cfg);
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     },
     
     bindDropListener: function() {

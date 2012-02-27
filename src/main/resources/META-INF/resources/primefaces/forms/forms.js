@@ -1429,6 +1429,6 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
            }
         });
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     }
 });

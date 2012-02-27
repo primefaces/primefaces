@@ -26,7 +26,7 @@ PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
             this.source.bind(this.cfg.event, this.runner);
         }
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     }
     
 });
