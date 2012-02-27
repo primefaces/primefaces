@@ -14,6 +14,10 @@ import org.primefaces.util.HTML;
             styleClass = styleClass + " ui-state-active";
         }
 
+        if(!isValid()) {
+            styleClass = styleClass + " ui-state-error";
+        }
+
         String userStyleClass = getStyleClass();
         if(userStyleClass != null) {
             styleClass = styleClass + " " + userStyleClass;

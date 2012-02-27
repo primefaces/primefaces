@@ -110,6 +110,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
+        buttonStyle = !button.isValid() ? buttonStyle + " ui-state-error" : buttonStyle;
         
         //button
         writer.startElement("div", null);

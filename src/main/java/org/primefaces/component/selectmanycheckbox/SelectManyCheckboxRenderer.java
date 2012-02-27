@@ -120,6 +120,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         boxClass = checked ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = !checkbox.isValid() ? boxClass + " ui-state-error" : boxClass;
         
         String iconClass = HTML.CHECKBOX_ICON_CLASS;
         iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
