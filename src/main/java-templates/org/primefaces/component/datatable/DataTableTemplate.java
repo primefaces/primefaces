@@ -640,16 +640,16 @@ import javax.faces.context.FacesContext;
 
             for(UIComponent kid : getChildren()) {
                 if(kid.isRendered()) {
-                    if(kid instanceof Column) {
-                        columnsCount++;
-                    } 
-                    else if(kid instanceof Columns) {
-                        Columns columns = (Columns) kid;
-                        Collection collection = (Collection) columns.getValue();
+                    if(kid instanceof Columns) {
+                        Columns uicolumns = (Columns) kid;
+                        Collection collection = (Collection) uicolumns.getValue();
                         if(collection != null) {
                             columnsCount += collection.size();
                         }
                     }
+                    else if(kid instanceof Column) {
+                        columnsCount++;
+                    } 
                     else if(kid instanceof SubTable) {
                         SubTable subTable = (SubTable) kid;
                         for(UIComponent subTableKid : subTable.getChildren()) {
