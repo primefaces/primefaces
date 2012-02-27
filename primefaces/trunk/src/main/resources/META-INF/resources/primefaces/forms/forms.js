@@ -618,8 +618,13 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.outputs = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
         this.labels = this.jq.find('label:not(.ui-state-disabled)');
+        
+        this.bindEvents();
+    },
+    
+    bindEvents: function() {
         var _self = this;
-
+        
         this.outputs.mouseover(function() {
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
@@ -635,6 +640,13 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             checkbox.click();
 
             e.preventDefault();
+        });
+        
+        //delegate focus-blur states
+        this.inputs.focus(function() {
+            $(this).parent().next().addClass('ui-state-focus');
+        }).blur(function() {
+            $(this).parent().next().removeClass('ui-state-focus');
         });
 
         //Client Behaviors
