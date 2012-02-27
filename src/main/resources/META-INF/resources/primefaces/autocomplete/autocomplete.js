@@ -310,10 +310,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onstart) {
             this.cfg.onstart.call(this, value);
         }
-
+        
         var options = {
             source: this.id,
-            process: this.id,
             update: this.id,
             formId: this.cfg.formId,
             onsuccess: function(responseXML) {
@@ -384,6 +383,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.oncomplete) {
             options.oncomplete = this.cfg.oncomplete;
         }
+        
+        //process
+        options.process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id;
 
         if(this.cfg.global === false) {
             options.global = false;

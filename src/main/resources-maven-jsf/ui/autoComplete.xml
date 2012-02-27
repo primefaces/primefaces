@@ -138,6 +138,12 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to process during autocomplete request.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
