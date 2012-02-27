@@ -43,9 +43,13 @@ public class DataListRenderer extends DataRenderer {
         String clientId = list.getClientId();
         boolean isAjaxPaging = params.containsKey(clientId + "_ajaxPaging");
 
-        if (isAjaxPaging) {
-            encodeList(context, list);
-        } else {
+        if(isAjaxPaging) {
+            if(list.getType().equals("none"))
+                encodeFreeList(context, list);
+            else
+                encodeStrictList(context, list); 
+        } 
+        else {
             encodeMarkup(context, list);
             encodeScript(context, list);
         }
@@ -82,7 +86,10 @@ public class DataListRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId + "_content", "id");
         writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
 
-        encodeList(context, list);
+        if(list.getType().equals("none"))
+            encodeFreeList(context, list);
+        else
+            encodeStrictList(context, list); 
 
         writer.endElement("div");
 
@@ -114,7 +121,14 @@ public class DataListRenderer extends DataRenderer {
         endScript(writer);
     }
 
-    protected void encodeList(FacesContext context, DataList list) throws IOException {
+    /**
+     * Renders items with no strict markup
+     * 
+     * @param context FacesContext instance
+     * @param list DataList component
+     * @throws IOException 
+     */
+    protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean isDefinition = list.isDefinition();
@@ -163,6 +177,40 @@ public class DataListRenderer extends DataRenderer {
         }
 
         writer.endElement(listTag);
+    }
+    
+    /**
+     * Renders items with no strict markup
+     * 
+     * @param context FacesContext instance
+     * @param list DataList component
+     * @throws IOException 
+     */
+    protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
+        int first = list.getFirst();
+        int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
+
+        String rowIndexVar = list.getRowIndexVar();
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+
+        for(int i = first; i < (first + rows); i++) {
+            list.setRowIndex(i);
+
+            if(rowIndexVar != null) {
+                requestMap.put(rowIndexVar, i);
+            }
+
+            if(list.isRowAvailable()) {
+                renderChildren(context, list);
+            }
+        }
+
+        //cleanup
+        list.setRowIndex(-1);               
+
+        if(rowIndexVar != null) {
+            requestMap.remove(rowIndexVar);
+        }
     }
     
     @Override
