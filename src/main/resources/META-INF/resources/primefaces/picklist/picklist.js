@@ -85,7 +85,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
     
     generateItems: function(list, input) {   
-        list.children('.ui-picklist-item').each(function(i, item) {
+        list.children('.ui-picklist-item').each(function() {
             var item = $(this),
             itemValue = item.attr('data-item-value');
 
