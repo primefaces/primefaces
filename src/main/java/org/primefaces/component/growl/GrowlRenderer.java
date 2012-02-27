@@ -62,6 +62,11 @@ public class GrowlRenderer extends CoreRenderer {
 
 		while(messages.hasNext()) {
 			FacesMessage message = messages.next();
+            
+            if(message.isRendered() && !growl.isRedisplay()) {
+                continue;
+            }
+            
 			String severityImage = getImage(context, growl, message);
 			String summary = escapeText(message.getSummary());
 			String detail = escapeText(message.getDetail());
