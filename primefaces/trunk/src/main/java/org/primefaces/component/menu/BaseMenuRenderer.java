@@ -70,14 +70,14 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                 writer.writeAttribute("style", menuItem.getStyle(), null);
                         
 			if(menuItem.getUrl() != null) {
-                String href = disabled ? "javascript:void(0)" : getResourceURL(context, menuItem.getUrl());
+                String href = disabled ? "#" : getResourceURL(context, menuItem.getUrl());
 				writer.writeAttribute("href", href, null);
                                 
 				if(menuItem.getTarget() != null) 
                     writer.writeAttribute("target", menuItem.getTarget(), null);
 			}
             else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
+				writer.writeAttribute("href", "#", null);
 
 				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 				if(form == null) {

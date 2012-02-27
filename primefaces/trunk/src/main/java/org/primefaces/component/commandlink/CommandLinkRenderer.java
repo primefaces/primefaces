@@ -62,7 +62,7 @@ public class CommandLinkRenderer extends CoreRenderer {
 
 			writer.startElement("a", link);
 			writer.writeAttribute("id", clientId, "id");
-			writer.writeAttribute("href", "javascript:void(0);", null);
+			writer.writeAttribute("href", "#", null);
 			writer.writeAttribute("class", styleClass, null);
 			
 			String formClientId = form.getClientId(context);
