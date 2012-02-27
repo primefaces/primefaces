@@ -94,7 +94,7 @@ public class RadioButtonRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.RADIOBUTTON_INPUT_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);

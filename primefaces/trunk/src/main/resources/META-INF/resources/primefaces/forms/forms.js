@@ -459,14 +459,19 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.output = this.jq.find('.ui-radiobutton-box:not(.ui-state-disabled)');
+        this.outputs = this.jq.find('.ui-radiobutton-box:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
         this.labels = this.jq.find('label:not(.ui-state-disabled)');
         this.icons = this.jq.find('.ui-radiobutton-icon');
-
+        
+        this.bindEvents();        
+    },
+    
+    bindEvents: function() {
         var _self = this;
-
-        this.output.mouseover(function() {
+        
+        //events for displays
+        this.outputs.mouseover(function() {
             var radio = $(this);
             if(!radio.hasClass('ui-state-active'))
                 $(this).addClass('ui-state-hover');
@@ -477,7 +482,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             if(!radio.hasClass('ui-state-active')) 
                 _self.check($(this));
         });
-
+        
         //selects radio when label is clicked
         this.labels.click(function(e) {
             var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
@@ -493,15 +498,25 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 _self.check(radio);
         });
 
+        //delegate focus-blur states
+        this.inputs.focus(function() {
+            $(this).parent().next().addClass('ui-state-focus');
+        }).blur(function() {
+            $(this).parent().next().removeClass('ui-state-focus');
+        });
+        
         //Client Behaviors
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
+        
+        
+
     },
     
     check: function(radio) {
         //unselect previous
-        var previousRadio = this.output.filter('.ui-state-active'),
+        var previousRadio = this.outputs.filter('.ui-state-active'),
         previousInput = previousRadio.siblings('.ui-helper-hidden').children('input:radio');
         previousRadio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
         previousInput.removeAttr('checked');
@@ -800,8 +815,13 @@ PrimeFaces.widget.RadioButton = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.jq.find('input:radio');
         this.icon = this.jq.find('.ui-radiobutton-icon');
         this.label = $('label[for="' + this.id + '"]');
+        
+        this.bindEvents();
+    },
+    
+    bindEvents: function() {
         var _self = this;
-
+        
         this.output.mouseover(function() {
             var radio = $(this);
             if(!radio.hasClass('ui-state-active') && !radio.hasClass('ui-state-disabled'))
@@ -816,6 +836,13 @@ PrimeFaces.widget.RadioButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.label.click(function(e) {
             _self.check();
+        });
+        
+        //delegate focus-blur states
+        this.input.focus(function() {
+            _self.output.addClass('ui-state-focus');
+        }).blur(function() {
+            _self.output.removeClass('ui-state-focus');
         });
 
         //Client Behaviors
