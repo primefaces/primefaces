@@ -44,7 +44,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     },
     
     bindEvents: function() {

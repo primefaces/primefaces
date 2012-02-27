@@ -10,7 +10,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
 
         this.render();
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     },
     
     //Override

@@ -37,7 +37,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
 
         this.jqTarget.resizable(this.cfg);
         
-        $(this.jqId + '_script').remove();
+        $(this.jqId + '_s').remove();
     },
     
     fireAjaxResizeEvent: function(event, ui) {
