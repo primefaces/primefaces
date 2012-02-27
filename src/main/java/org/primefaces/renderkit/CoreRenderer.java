@@ -262,7 +262,7 @@ public abstract class CoreRenderer extends Renderer {
             req.append("}");
         }
 
-        req.append("});");
+        req.append("});return false;");
 
         return req.toString();
     }
