@@ -82,7 +82,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_INPUT_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
