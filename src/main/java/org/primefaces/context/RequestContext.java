@@ -61,4 +61,6 @@ public abstract class RequestContext {
     public abstract void execute(String script);
     
     public abstract void push(String channel, Object data);
+    
+    public abstract void scrollTo(String clientId);
 }
