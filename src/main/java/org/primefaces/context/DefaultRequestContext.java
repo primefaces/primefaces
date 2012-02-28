@@ -107,4 +107,14 @@ public class DefaultRequestContext extends RequestContext {
     public void scrollTo(String clientId) {
         this.execute("PrimeFaces.scrollTo('" + clientId +  "');");
     }
+
+    @Override
+    public void update(String clientId) {
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(clientId);
+    }
+
+    @Override
+    public void update(Collection<String> collection) {
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().addAll(collection);
+    }
 }
