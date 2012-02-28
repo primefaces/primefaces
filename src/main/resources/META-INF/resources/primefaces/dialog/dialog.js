@@ -13,7 +13,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
-        this.visible = false;
         this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keypress.dialog click.dialog';
 
         //configuration
@@ -72,6 +71,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    //override
+    refresh: function(cfg) {
+        this.positionInitialized = false;
+        this.loaded = false;
+        
+        this.init(cfg);
+    },
+    
     enableModality: function() {
         $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>').
             children(this.jqId + '_modal').css({
@@ -115,8 +122,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        if(this.visible) {
-        return;
+        if(this.jq.css('visibilility') == 'visible') {
+            return;
         }
 
         if(!this.loaded && this.cfg.dynamic) {
@@ -152,7 +159,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.postShow();
         }
 
-        this.visible = true;
         this.moveToTop();
         this.focusFirstInput();
 
@@ -168,8 +174,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {   
-        if(!this.visible) {
-        return;
+        if(this.jq.css('visibilility') == 'hidden') {
+            return;
         }
 
         if(this.cfg.hideEffect) {
@@ -184,8 +190,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
             this.onHide();
         }
-
-        this.visible = false;
 
         //replace display block with visibility hidden for hidden container support
         this.jq.css({
