@@ -41,7 +41,6 @@ public abstract class RequestContext {
         }
     }
 
-    @Deprecated
     public abstract boolean isAjaxRequest();
 
     public abstract void release();
@@ -50,8 +49,10 @@ public abstract class RequestContext {
 
     public abstract Map<String, Object> getCallbackParams();
 
+    @Deprecated
     public abstract void addPartialUpdateTarget(String name);
 
+    @Deprecated
     public abstract void addPartialUpdateTargets(Collection<String> collection);
 
     public abstract List<String> getScriptsToExecute();
@@ -63,4 +64,8 @@ public abstract class RequestContext {
     public abstract void push(String channel, Object data);
     
     public abstract void scrollTo(String clientId);
+    
+    public abstract void update(String name);
+
+    public abstract void update(Collection<String> collection);
 }
