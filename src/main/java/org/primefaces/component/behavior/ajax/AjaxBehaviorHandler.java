@@ -70,7 +70,6 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         this.async = this.getAttribute("async");
     }
     
-    @Override
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
         if(!ComponentHandler.isNew(parent)) {
             return;
