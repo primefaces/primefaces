@@ -181,7 +181,10 @@ public class CSVExporter extends Exporter {
 	
 	private void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
 		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
-            
+        
+        //escape double quotes
+        value = value.replaceAll("\"", "\"\"");
+        
         writer.write("\"" + value + "\"");
 	}
 	
@@ -192,6 +195,9 @@ public class CSVExporter extends Exporter {
 			if(component.isRendered()) {
 				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
+                //escape double quotes
+                value = value.replaceAll("\"", "\"\"");
+                
 				builder.append(value);
 			}
 		}
