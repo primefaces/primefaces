@@ -272,7 +272,7 @@ PrimeFaces = {
     scrollTo: function(id) {
         var offset = $(PrimeFaces.escapeClientId(id)).offset();
 
-        $('html').animate({
+        $('html,body').animate({
                 scrollTop:offset.top
                 ,scrollLeft:offset.left
             },{
