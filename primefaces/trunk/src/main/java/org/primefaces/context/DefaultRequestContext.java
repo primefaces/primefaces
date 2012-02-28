@@ -102,4 +102,9 @@ public class DefaultRequestContext extends RequestContext {
         }
         return (Map<String, List<Object>>) attributes.get(PUSH_DATA_KEY);
     }
+
+    @Override
+    public void scrollTo(String clientId) {
+        this.execute("PrimeFaces.scrollTo('" + clientId +  "');");
+    }
 }

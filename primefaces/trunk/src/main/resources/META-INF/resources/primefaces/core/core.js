@@ -248,7 +248,7 @@ PrimeFaces = {
         }, 250);
     },
     
-    monitorDownload : function(start, complete) {
+    monitorDownload: function(start, complete) {
         if(start) {
             start();
         }
@@ -264,6 +264,21 @@ PrimeFaces = {
                 PrimeFaces.setCookie('primefaces.download', null);
             }
         }, 500);
+    },
+    
+    /**
+     *  Scrolls to a component with given client id
+     */
+    scrollTo: function(id) {
+        var offset = $(PrimeFaces.escapeClientId(id)).offset();
+
+        $('html').animate({
+                scrollTop:offset.top
+                ,scrollLeft:offset.left
+            },{
+               easing: 'easeInCirc'
+            },1000);
+            
     },
 
     locales : {},
