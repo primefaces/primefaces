@@ -58,6 +58,10 @@ public class OrderListRenderer extends CoreRenderer {
         String styleClass = ol.getStyleClass();
         styleClass = styleClass == null ? OrderList.CONTAINER_CLASS : OrderList.CONTAINER_CLASS + " " + styleClass;
         
+        if(ol.isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled"; 
+        }
+        
         writer.startElement("table", ol);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
