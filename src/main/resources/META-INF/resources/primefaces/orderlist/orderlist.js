@@ -10,24 +10,27 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         this.items = this.list.children('.ui-orderlist-item');
         this.input = $(this.jqId + '_values');
         this.cfg.effect = this.cfg.effect||'fade';
+        this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
         var _self = this;
 
-        this.generateItems();
+        if(!this.cfg.disabled) {
+            this.generateItems();
 
-        this.setupButtons();
+            this.setupButtons();
 
-        this.bindEvents();
+            this.bindEvents();
 
-        //Enable dnd
-        this.list.sortable({
-            revert: true,
-            start: function(event, ui) {
-                PrimeFaces.clearSelection();
-            } 
-            ,update: function(event, ui) {
-                _self.onDragDrop(event, ui);
-            }
-        });
+            //Enable dnd
+            this.list.sortable({
+                revert: true,
+                start: function(event, ui) {
+                    PrimeFaces.clearSelection();
+                } 
+                ,update: function(event, ui) {
+                    _self.onDragDrop(event, ui);
+                }
+            });
+        }
     },
     
     generateItems: function() {
