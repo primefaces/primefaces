@@ -80,13 +80,6 @@
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>File size limit in bytes. Default is unlimited.</description>
 		</attribute>
-        <attribute>
-			<name>fileLimit</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Number of maximum files to allow. Default is unlimited.</description>
-		</attribute>
 		<attribute>
 			<name>showButtons</name>
 			<required>false</required>
@@ -131,11 +124,6 @@
 		</attribute>
         <attribute>
 			<name>invalidFileMessage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
-			<name>fileLimitMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
