@@ -76,6 +76,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.LEFT:
                 case keyCode.RIGHT:
                 case keyCode.TAB:
+                case keyCode.DELETE:
                     //allow keys above
                 break;
 
