@@ -454,14 +454,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         _self = this;
         
         //remove from options
-        this.hinput.children('option').each(function() {
-            var option = $(this);
-            
-            if(option.val() == itemValue) {
-                option.remove();
-                return false;
-            }
-        });
+        this.hinput.children('option').filter('[value="' + itemValue + '"]').remove();
         
         //remove from items
         item.fadeOut('fast', function() {
