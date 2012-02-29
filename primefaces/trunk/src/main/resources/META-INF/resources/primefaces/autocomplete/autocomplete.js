@@ -280,11 +280,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 _self.multiItemContainer.children('.ui-helper-hidden').fadeIn();
                 _self.input.val('').focus();
 
-                if(_self.hinput.val() == '')
-                    _self.hinput.val('"' + itemValue + '"');
-                else
-                    _self.hinput.val(_self.hinput.val() + ',"' + itemValue + '"');
-            } 
+                _self.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
+            }
             else {
                 _self.input.val(item.attr('data-item-label'));
 
@@ -437,7 +434,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    invokeItemUnselectBehavior: function(event, token) {
+    invokeItemUnselectBehavior: function(event, itemValue) {
         if(this.cfg.behaviors) {
             var itemUnselectBehavior = this.cfg.behaviors['itemUnselect'];
 
@@ -445,7 +442,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var ext = {
                     params : {}
                 };
-                ext.params[this.id + "_itemUnselect"] = token.attr('data-token-value');
+                ext.params[this.id + "_itemUnselect"] = itemValue;
 
                 itemUnselectBehavior.call(this, event, ext);
             }
@@ -453,27 +450,26 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     removeItem: function(event, item) {
-        var currentValues = this.hinput.val().split(','),
-        value = '"' + item.attr('data-token-value') + '"',
+        var itemValue = item.attr('data-token-value'),
         _self = this;
-
-        //remove from value holder
-        for(var i=0; i < currentValues.length; i++) {
-            if(currentValues[i] == value) {
-                currentValues.remove(i);
-                break;
+        
+        //remove from options
+        this.hinput.children('option').each(function() {
+            var option = $(this);
+            
+            if(option.val() == itemValue) {
+                option.remove();
+                return false;
             }
-        }
-
-        this.hinput.val(currentValues.join(','));
-
-        //remove from dom
+        });
+        
+        //remove from items
         item.fadeOut('fast', function() {
             var token = $(this);
 
             token.remove();
 
-            _self.invokeItemUnselectBehavior(event, token);
+            _self.invokeItemUnselectBehavior(event, itemValue);
         });
     },
     
