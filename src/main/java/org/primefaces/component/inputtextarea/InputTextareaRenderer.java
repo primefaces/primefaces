@@ -93,8 +93,6 @@ public class InputTextareaRenderer extends InputRenderer {
 		}
 
         writer.endElement("textarea");
-        
-        writer.endElement("span");
 	}
     
     protected String createStyleClass(InputTextarea inputTextarea) {
