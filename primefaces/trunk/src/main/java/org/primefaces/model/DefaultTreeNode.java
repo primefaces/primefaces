@@ -106,10 +106,6 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
-		
-		if(parent != null) {
-			parent.setExpanded(expanded);
-		}
 	}
 
     public boolean isSelected() {
