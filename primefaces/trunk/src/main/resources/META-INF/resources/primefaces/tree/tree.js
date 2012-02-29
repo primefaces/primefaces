@@ -421,8 +421,9 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             var icon = $(this),
             node = icon.parents('li:first');
 
-            if(node.find('.ui-tree-checkbox-icon.ui-icon-check').length > 0)
-                $(this).addClass('ui-icon ui-icon-minus');
+            if(node.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon.ui-icon-check').length > 0) {
+                icon.addClass('ui-icon ui-icon-minus');
+            }
         });
     },
     
