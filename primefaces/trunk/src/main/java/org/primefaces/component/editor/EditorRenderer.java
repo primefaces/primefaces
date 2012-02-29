@@ -35,10 +35,13 @@ public class EditorRenderer extends CoreRenderer{
 		Editor editor = (Editor) component;
         String inputParam = editor.getClientId(context) + "_input";
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-        if(params.containsKey(inputParam)) {
-            editor.setSubmittedValue(params.get(inputParam));
+        String value = params.get(inputParam);
+        
+        if(value != null && value.equals("<br/>")) {
+            value = "";
         }
+        
+        editor.setSubmittedValue(value);
 	}
 
     @Override
