@@ -39,18 +39,18 @@ public class AutoCompleteRenderer extends InputRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         AutoComplete ac = (AutoComplete) component;
+        String clientId = ac.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if(ac.isDisabled() || ac.isReadonly()) {
             return;
         }
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = ac.getClientId(context);
-        String valueParam = (ac.getVar() != null || ac.isMultiple()) ? clientId + "_hinput" : clientId + "_input";
-        String submittedValue = params.get(valueParam);
-
-        if(submittedValue != null) {
-            ac.setSubmittedValue(submittedValue);
+        
+        if(ac.isMultiple()) {
+            decodeMultiple(context, ac);
+        }
+        else {
+            decodeSingle(context, ac);
         }
         
         decodeBehaviors(context, ac);
@@ -61,6 +61,30 @@ public class AutoCompleteRenderer extends InputRenderer {
             AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(ac, query);
             autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             ac.queueEvent(autoCompleteEvent);
+        }
+    }
+    
+    protected void decodeSingle(FacesContext context, AutoComplete ac) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = ac.getClientId(context);
+        String valueParam = (ac.getVar() != null) ? clientId + "_hinput" : clientId + "_input";
+        String submittedValue = params.get(valueParam);
+
+        if(submittedValue != null) {
+            ac.setSubmittedValue(submittedValue);
+        }
+    }
+    
+    protected void decodeMultiple(FacesContext context, AutoComplete ac) {
+        Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
+        String clientId = ac.getClientId(context);
+        String[] submittedValues = params.get(clientId + "_hinput");
+        
+        if(submittedValues != null) {
+            ac.setSubmittedValue(submittedValues);
+        }
+        else {
+            ac.setSubmittedValue("");
         }
     }
 
@@ -169,7 +193,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             if(ac.isMultiple())
                 valueToRender = (String) value;
             else
-                valueToRender = ComponentUtils.getStringValueToRender(context, ac, ac.getItemValue());
+                valueToRender = ComponentUtils.getValueToRender(context, ac);
         }
         
         writer.startElement("input", null);
@@ -181,8 +205,25 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         } 
         writer.endElement("input");
-
-        context.getExternalContext().getRequestMap().remove(ac.getVar());	//clean
+    }
+    
+    protected void encodeHiddenSelect(FacesContext context, AutoComplete ac, String clientId, List<String> values) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = clientId + "_hinput";
+        
+        writer.startElement("select", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("multiple", "multiple", null);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+        
+        for(String value : values) {
+            writer.startElement("option", null);
+            writer.writeAttribute("value", value, null);
+            writer.endElement("option");
+        }
+        
+        writer.endElement("select");
     }
     
     protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
@@ -226,8 +267,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         String clientId = ac.getClientId(context);
         String inputId = clientId + "_input";
         List values = (List) ac.getValue();
+        List<String> stringValues = new ArrayList<String>();
         Converter converter = getConverter(context, ac);
-        StringBuilder valueBuilder = new StringBuilder();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String var = ac.getVar();
@@ -276,11 +317,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 
                 writer.endElement("li");
                 
-                valueBuilder.append("\"").append(tokenValue).append("\"");
-                
-                if(it.hasNext()) {
-                    valueBuilder.append(",");
-                }
+                stringValues.add(tokenValue);
             }
         }
         
@@ -298,7 +335,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                         
         encodePanel(context, ac);
         
-        encodeHiddenInput(context, ac, clientId, valueBuilder.toString());
+        encodeHiddenSelect(context, ac, clientId, stringValues);
 
         writer.endElement("div");
     }
@@ -441,18 +478,15 @@ public class AutoCompleteRenderer extends InputRenderer {
 		Converter converter = getConverter(context, ac);
 
         if(ac.isMultiple()) {
-            String[] values = ((String) submittedValue).split(",");
+            String[] values = (String[]) submittedValue;
             List list = new ArrayList();
 
-            for(String item : values) {
-                if(isValueBlank(item))
+            for(String value : values) {
+                if(isValueBlank(value)) {
                     continue;
-
-                //trim whitespaces and double quotes
-                String val = item.trim();
-                val = val.substring(1, val.length() - 1);
+                }
             
-                Object convertedValue = converter != null ? converter.getAsObject(context, ac, val) : val;
+                Object convertedValue = converter != null ? converter.getAsObject(context, ac, value) : value;
 
                 if(convertedValue != null) {
                     list.add(convertedValue);
