@@ -59,6 +59,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
+     * @Override
+     */
+    refresh: function(cfg) {
+        //remove arrows
+        if(cfg.draggableColumns) {
+            var jqId = PrimeFaces.escapeClientId(cfg.id);
+            $(jqId + '_dnd_top,' + jqId + '_dnd_bottom').remove();
+        }
+        
+        this.init(cfg);
+    },
+    
+    /**
      * Binds the change event listener and renders the paginator
      */
     setupPaginator: function() {
@@ -1292,8 +1305,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Sets up column reordering
      */
     setupDraggableColumns: function() {
-        this.dragIndicatorTop = $('<div class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
-        this.dragIndicatorBottom = $('<div class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
+        this.dragIndicatorTop = $('<div id="' + this.id + '_dnd_top" class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
+        this.dragIndicatorBottom = $('<div id="' + this.id + '_dnd_bottom" class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
     
         this.orderStateHolder = $(this.jqId + '_columnOrder');
 
