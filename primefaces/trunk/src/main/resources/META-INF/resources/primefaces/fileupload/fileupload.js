@@ -2129,7 +2129,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //show the UI
-        this.jq.css('visibility', 'visible');
+        this.jq.show()
 
         //bind events
         PrimeFaces.skinButton(this.buttonBar.children('.ui-button'));
