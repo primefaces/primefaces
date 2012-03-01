@@ -41,7 +41,15 @@ public abstract class InputRenderer extends CoreRenderer {
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UISelectItem) {
                 UISelectItem uiSelectItem = (UISelectItem) child;
-				selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel(), uiSelectItem.getItemDescription(), uiSelectItem.isItemDisabled(), uiSelectItem.isItemEscaped(), uiSelectItem.isNoSelectionOption()));
+                Object selectItemValue = uiSelectItem.getValue();
+                
+                if(selectItemValue == null) {
+                    selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel(), uiSelectItem.getItemDescription(), uiSelectItem.isItemDisabled(), uiSelectItem.isItemEscaped(), uiSelectItem.isNoSelectionOption()));
+                }
+                else {
+                    selectItems.add((SelectItem) selectItemValue);
+                }
+				
 			}
             else if(child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
