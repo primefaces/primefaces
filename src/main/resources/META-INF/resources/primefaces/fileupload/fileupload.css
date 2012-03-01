@@ -11,7 +11,7 @@
  */
 
  .ui-fileupload {
-     visibility: hidden;
+     display: none;
  }
 
 .fileupload-buttonbar .ui-button input {
