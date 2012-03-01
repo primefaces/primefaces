@@ -335,10 +335,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             if(_self.panel.children().is('ul')) {
                                 items.each(function() {
                                     var item = $(this),
-                                    text = item.html(),
-                                    queryIndex = value.length;
-
-                                    item.html('<span class="ui-autocomplete-query">' + text.substr(0, queryIndex) + '</span>' + text.substr(queryIndex));
+                                    text = item.text(),
+                                    re = new RegExp(value, 'gi'),
+                                    highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
+                                    
+                                    item.html(highlighedText);
                                 });
                             }
 
