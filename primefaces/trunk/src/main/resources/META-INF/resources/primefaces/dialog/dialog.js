@@ -122,7 +122,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        if(this.jq.css('visibilility') == 'visible') {
+        if(this.jq.css('visibility') == 'visible') {
             return;
         }
 
@@ -174,10 +174,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {   
-        if(this.jq.css('visibilility') == 'hidden') {
+        if(this.jq.css('visibility') == 'hidden') {
             return;
         }
-
+        
         if(this.cfg.hideEffect) {
             var _self = this;
 
@@ -190,12 +190,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
             this.onHide();
         }
-
-        //replace display block with visibility hidden for hidden container support
-        this.jq.css({
-            'visibility':'hidden'
-            ,'display':'block'
-        });
 
         if(this.cfg.modal)
             this.disableModality();
@@ -307,6 +301,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     onHide: function(event, ui) {
+        //replace display block with visibility hidden for hidden container support
+        this.jq.css({
+            'visibility':'hidden'
+            ,'display':'block'
+        });
+        
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
