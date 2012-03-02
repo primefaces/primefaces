@@ -18,7 +18,9 @@ package org.primefaces.component.calendar;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import javax.faces.application.FacesMessage;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,6 +30,7 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 
 public class CalendarRenderer extends InputRenderer {
 
@@ -210,8 +213,9 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         //Use built-in converter
+        SimpleDateFormat format = null;
         try {
-            SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
+            format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
             format.setTimeZone(calendar.calculateTimeZone());
             
             Object date = format.parse(submittedValue);
@@ -219,7 +223,23 @@ public class CalendarRenderer extends InputRenderer {
             return date;
         } 
         catch (ParseException e) {
-            throw new ConverterException(e);
+            FacesMessage message = null;
+            Object[] params = new Object[3];
+            params[0] = submittedValue;
+            params[1] = format.format(new Date());
+            params[2] = MessageFactory.getLabel(context, calendar);
+            
+            if(calendar.isTimeOnly()) {
+                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
+            } 
+            else if(calendar.hasTime()) {
+                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
+            } 
+            else {
+                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
+            }
+            
+            throw new ConverterException(message);
         }
     }
 }
