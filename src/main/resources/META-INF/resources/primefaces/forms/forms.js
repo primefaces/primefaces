@@ -522,7 +522,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         previousInput.removeAttr('checked');
 
         //select current
-        var input = radio.siblings('.ui-helper-hidden').children('input:radio');
+        var input = radio.prev().children('input:radio');
 
         radio.addClass('ui-state-active');
         input.attr('checked', 'checked');
@@ -667,14 +667,14 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
     check: function(checkbox) {
         if(!checkbox.hasClass('ui-state-disabled')) {
             checkbox.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
-            checkbox.siblings('.ui-helper-hidden').children('input:checkbox').attr('checked', 'checked').change();
+            checkbox.prev().children('input:checkbox').attr('checked', 'checked').change();
         }
     },
     
     uncheck: function(checkbox) {
         if(!checkbox.hasClass('ui-state-disabled')) {
             checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
-            checkbox.siblings('.ui-helper-hidden').children('input:checkbox').removeAttr('checked').change();
+            checkbox.prev().children('input:checkbox').removeAttr('checked').change();
         }
     }
 });
