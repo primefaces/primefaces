@@ -1151,7 +1151,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }).click(function(e) {
-        e.preventDefault(); 
+            e.preventDefault(); 
         });
 
         //hide overlay when outside is clicked
@@ -1184,6 +1184,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide(false);
             }
         });
+        
+        //Client Behaviors
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
+        }
     },
     
     show: function() {    
