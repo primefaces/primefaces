@@ -36,7 +36,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             $(document).off(event, this.targetId).on(event, this.targetId, this, function(e) {
                 var _self = e.data;
                 
-                if(_self.jq.css('visibility') == 'hidden') {
+                if(_self.jq.hasClass('ui-overlay-hidden')) {
                     _self.show();
                 } 
                 else {
@@ -51,14 +51,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             $(document).off(showEvent + ' ' + hideEvent, this.targetId).on(showEvent, this.targetId, this, function(e) {
                 var _self = e.data;
 
-                if(_self.jq.css('visibility') == 'hidden') {
+                if(_self.jq.hasClass('ui-overlay-hidden')) {
                     _self.show();
                 }
             })
             .on(hideEvent, this.targetId, this, function(e) {
                 var _self = e.data;
 
-                if(_self.jq.css('visibility') == 'visible') {
+                if(_self.jq.hasClass('ui-overlay-visible')) {
                     _self.hide();
                 }
             });
@@ -68,7 +68,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         //hide overlay when mousedown is at outside of overlay
         $(document.body).bind('mousedown.ui-overlay', function (e) {
-            if(_self.jq.css('visibility') == 'hidden') {
+            if(_self.jq.hasClass('ui-overlay-hidden')) {
                 return;
             }
 
@@ -92,7 +92,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         //Hide overlay on resize
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.jq.css('visibility') == 'visible') {
+            if(_self.jq.hasClass('ui-overlay-visible')) {
                 _self.hide();
             }
         });
@@ -112,8 +112,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         this.align();
 
-        //replace visibility hidden with display none for effect support
-        this.jq.css({
+        //replace visibility hidden with display none for effect support, toggle marker class
+        this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
             'display':'none'
             ,'visibility':'visible'
         });
@@ -164,15 +164,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     postHide: function() {
+        //replace display block with visibility hidden for hidden container support, toggle marker class
+        this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
+            'display':'block'
+            ,'visibility':'hidden'
+        });
+        
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
 
-        //replace display block with visibility hidden for hidden container support
-        this.jq.css({
-            'visibility':'hidden'
-            ,'display':'block'
-        });
+        
     },
     
     setupDialogSupport: function() {

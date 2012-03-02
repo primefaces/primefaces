@@ -3,3 +3,19 @@
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
 }
+
+.ui-overlay-visible {
+    visibility: visible;
+}
+
+.ui-overlay-hidden {
+    visibility: hidden;
+}
+
+/* IE7 Fixes */
+.ui-overlay-visible table {
+    *border-collapse: collapse !important;
+}
+.ui-overlay-hidden table {
+    *border-collapse: separate !important;
+}
