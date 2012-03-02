@@ -122,7 +122,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        if(this.jq.css('visibility') == 'visible') {
+        if(this.jq.hasClass('ui-overlay-visible')) {
             return;
         }
 
@@ -139,12 +139,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     _show: function() {
-        //replace visibility hidden with display none for effect support
-        this.jq.css({
+        //replace visibility hidden with display none for effect support, toggle marker class
+        this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
             'display':'none'
             ,'visibility':'visible'
         });
-
+        
         if(this.cfg.showEffect) {
             var _self = this;
 
@@ -174,7 +174,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {   
-        if(this.jq.css('visibility') == 'hidden') {
+        if(this.jq.hasClass('ui-overlay-hidden')) {
             return;
         }
         
@@ -301,10 +301,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     onHide: function(event, ui) {
-        //replace display block with visibility hidden for hidden container support
-        this.jq.css({
-            'visibility':'hidden'
-            ,'display':'block'
+        //replace display block with visibility hidden for hidden container support, toggle marker class
+        this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
+            'display':'block'
+            ,'visibility':'hidden'
         });
         
         if(this.cfg.onHide) {
