@@ -326,7 +326,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 /** IE Hacks **/
-div.ui-button {
+div.ui-button, .ui-splitbutton {
     display: inline-block;
     zoom: 1;
     *display: inline;
