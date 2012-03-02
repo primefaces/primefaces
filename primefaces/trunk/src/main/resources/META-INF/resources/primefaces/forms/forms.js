@@ -1513,7 +1513,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         //remove previous overlay
         $(document.body).children(PrimeFaces.escapeClientId(cfg.id + '_menu')).remove();
         
-        this._init(cfg);
+        this.init(cfg);
     },
     
     bindEvents: function() {  

@@ -154,9 +154,10 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 		
         startScript(writer, clientId);
 
+        writer.write("$(function(){");
         writer.write("PrimeFaces.cw('SplitButton','" + button.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");		
-		writer.write("});");
+		writer.write("});});");
 		
 		endScript(writer);
     }
