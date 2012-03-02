@@ -50,10 +50,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
 
-        this.jq.css({
-            visibility: 'visible'
-        });
-
         if(this.cfg.autoPlayInterval) {
             this.startAutoPlay();
         }
