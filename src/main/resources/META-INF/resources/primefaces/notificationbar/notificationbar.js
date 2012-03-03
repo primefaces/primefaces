@@ -38,6 +38,17 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
             $(this.jq).fadeOut(this.cfg.effect);
         else if(this.cfg.effect === 'none')
             $(this.jq).hide();
+    },
+    
+    isVisible: function() {
+        return this.jq.is(':visible');
+    },
+
+    toggle: function() {
+        if(this.isVisible())
+            this.hide();
+        else
+            this.show();
     }
     
 });
