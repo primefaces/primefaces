@@ -33,6 +33,10 @@ public class DataListRenderer extends DataRenderer {
         if(list.isPagingRequest(context)) {
             list.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             list.setRows(Integer.valueOf(params.get(clientId + "_rows")));
+            
+            if(list.isLazy()) {
+                list.loadLazyData();
+            }
         }
     }
 
@@ -56,6 +60,10 @@ public class DataListRenderer extends DataRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, DataList list) throws IOException {
+        if(list.isLazy()) {
+            list.loadLazyData();
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean hasPaginator = list.isPaginator();

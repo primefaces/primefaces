@@ -15,6 +15,10 @@
  */
 package org.primefaces.component.api;
 
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+import org.primefaces.model.LazyDataModel;
+
 public class UIData extends javax.faces.component.UIData {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header"; 
@@ -142,5 +146,18 @@ public class UIData extends javax.faces.component.UIData {
         int rows = this.getRows();
         
         return rows == 0 ? this.getRowCount() : rows;
+    }
+    
+    public boolean isLazy() {
+        ValueExpression ve = getValueExpression("value");
+
+        if(ve != null) {
+            Class type = ve.getType(FacesContext.getCurrentInstance().getELContext());
+            if(type != null && LazyDataModel.class.isAssignableFrom(type)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
