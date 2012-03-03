@@ -470,7 +470,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {        
-        if(submittedValue == null) {
+        if(submittedValue == null || submittedValue.equals("")) {
             return null;
         }
         
