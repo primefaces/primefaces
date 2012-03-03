@@ -268,21 +268,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     highlightItem: function(item) {
-        this.unhighlightItem(this.items.filter('.ui-state-active'));
-        item.addClass('ui-state-active');
+        this.unhighlightItem(this.items.filter('.ui-state-highlight'));
+        item.addClass('ui-state-highlight');
 
         this.alignScroller(item);
     },
     
     unhighlightItem: function(item) {
-        item.removeClass('ui-state-active');
+        item.removeClass('ui-state-highlight');
     },
     
     selectItem: function(item) {
         var newOption = this.options.eq(item.index());
 
         //unselect active item as current gets activated on show
-        this.unhighlightItem(this.items.filter('.ui-state-active'));
+        this.unhighlightItem(this.items.filter('.ui-state-highlight'));
 
         //select item if item is not already selected
         if(newOption.val() != this.selectedOption.val()) {
@@ -331,7 +331,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             switch(e.which) { 
                 case keyCode.UP:
                 case keyCode.LEFT:
-                    var highlightedItem = _self.items.filter('.ui-state-active'),
+                    var highlightedItem = _self.items.filter('.ui-state-highlight'),
                     prev = highlightedItem.prevAll(':not(.ui-state-disabled):first');
 
                     if(prev.length == 1) {
@@ -343,7 +343,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
-                    var highlightedItem = _self.items.filter('.ui-state-active'), 
+                    var highlightedItem = _self.items.filter('.ui-state-highlight'), 
                     next = highlightedItem.nextAll(':not(.ui-state-disabled):first');
 
                     if(next.length == 1 && _self.panel.is(':visible')) {
@@ -356,7 +356,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                     if(_self.panel.is(":visible"))
-                        _self.selectItem(_self.items.filter('.ui-state-active'));
+                        _self.selectItem(_self.items.filter('.ui-state-highlight'));
                     else
                         _self.show();
 
@@ -370,7 +370,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 case keyCode.TAB:
                     if(_self.panel.is(':visible')) {
-                        _self.selectItem(_self.items.filter('.ui-state-active'));
+                        _self.selectItem(_self.items.filter('.ui-state-highlight'));
                     }
                     break;
 
