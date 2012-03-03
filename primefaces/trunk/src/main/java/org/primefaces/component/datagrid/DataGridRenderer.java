@@ -34,6 +34,10 @@ public class DataGridRenderer extends DataRenderer {
         if(grid.isPagingRequest(context)) {
             grid.setFirst(Integer.valueOf(params.get(clientId + "_first")));
             grid.setRows(Integer.valueOf(params.get(clientId + "_rows")));
+            
+            if(grid.isLazy()) {
+                grid.loadLazyData();
+            }
         }
     }
 
@@ -42,15 +46,20 @@ public class DataGridRenderer extends DataRenderer {
         DataGrid grid = (DataGrid) component;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if(grid.isPagingRequest(context)) {
+        if(grid.isPagingRequest(context)) {      
             encodeTable(context, grid);
-        } else {
+        } 
+        else {
             encodeMarkup(context, grid);
             encodeScript(context, grid);
         }
     }
 
     protected void encodeMarkup(FacesContext context, DataGrid grid) throws IOException {
+        if(grid.isLazy()) {
+            grid.loadLazyData();
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId();
         boolean hasPaginator = grid.isPaginator();
@@ -114,6 +123,7 @@ public class DataGridRenderer extends DataRenderer {
 
     protected void encodeTable(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+                
         int columns = grid.getColumns();
         int rowIndex = grid.getFirst();
         int rows = grid.getRows();
