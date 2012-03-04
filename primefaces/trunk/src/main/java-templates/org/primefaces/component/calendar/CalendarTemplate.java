@@ -140,3 +140,13 @@ import javax.faces.event.PhaseId;
 
         return timeOnlyPattern;
     }
+
+    private boolean conversionFailed = false;
+
+    public void setConversionFailed(boolean value) {
+        this.conversionFailed = value;
+    }
+
+    public boolean isConversionFailed() {
+        return this.conversionFailed;
+    }
