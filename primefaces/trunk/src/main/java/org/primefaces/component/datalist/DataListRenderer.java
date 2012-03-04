@@ -143,9 +143,12 @@ public class DataListRenderer extends DataRenderer {
         UIComponent definition = list.getFacet("description");
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
+        String varStatus = list.getVarStatus();
 
         int first = list.getFirst();
         int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
+        int pageSize = first + rows;
+        int rowCount = list.getRowCount();
 
         String rowIndexVar = list.getRowIndexVar();
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
@@ -157,7 +160,12 @@ public class DataListRenderer extends DataRenderer {
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        for(int i = first; i < (first + rows); i++) {
+        for(int i = first; i < pageSize; i++) {
+            if(varStatus != null) {
+                requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
+            }
+            
+            
             list.setRowIndex(i);
 
             if(rowIndexVar != null) {
@@ -178,10 +186,15 @@ public class DataListRenderer extends DataRenderer {
             }
         }
 
-        list.setRowIndex(-1);	//cleanup
+        //cleanup
+        list.setRowIndex(-1);	
 
         if(rowIndexVar != null) {
             requestMap.remove(rowIndexVar);
+        }
+        
+        if(varStatus != null) {
+            requestMap.remove(varStatus);
         }
 
         writer.endElement(listTag);
@@ -229,5 +242,96 @@ public class DataListRenderer extends DataRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+    
+    public static class VarStatus {
+        
+        private int begin;
+        private int end;
+        private boolean first;
+        private boolean last;
+        private int index;
+        private boolean even;
+        private boolean odd;
+        private int step;
+        
+        public VarStatus() {
+            
+        }
+
+        public VarStatus(int begin, int end, boolean first, boolean last, int index, boolean even, boolean odd, int step) {
+            this.begin = begin;
+            this.end = end;
+            this.first = first;
+            this.last = last;
+            this.index = index;
+            this.even = even;
+            this.odd = odd;
+            this.step = step;
+        }
+
+        public int getBegin() {
+            return begin;
+        }
+
+        public void setBegin(int begin) {
+            this.begin = begin;
+        }
+
+        public int getEnd() {
+            return end;
+        }
+
+        public void setEnd(int end) {
+            this.end = end;
+        }
+
+        public boolean isEven() {
+            return even;
+        }
+
+        public void setEven(boolean even) {
+            this.even = even;
+        }
+
+        public boolean isFirst() {
+            return first;
+        }
+
+        public void setFirst(boolean first) {
+            this.first = first;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public boolean isLast() {
+            return last;
+        }
+
+        public void setLast(boolean last) {
+            this.last = last;
+        }
+
+        public boolean isOdd() {
+            return odd;
+        }
+
+        public void setOdd(boolean odd) {
+            this.odd = odd;
+        }
+        
+        public int getStep() {
+            return step;
+        }
+
+        public void setStep(int step) {
+            this.step = step;
+        }
     }
 }
