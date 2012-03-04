@@ -133,15 +133,24 @@ public class CalendarRenderer extends InputRenderer {
         writer.write(",locale:'" + locale.toString() + "'");
         writer.write(",dateFormat:'" + CalendarUtils.convertPattern(pattern) + "'");
 
-        //initial date
+        //default date
         Object pagedate = calendar.getPagedate();
-        if(!isValueBlank(value)) {
-            writer.write(",defaultDate:'" + value + "'");
+        String defaultDate = null;
+        
+        if(calendar.isConversionFailed()) {
+            defaultDate = CalendarUtils.getValueAsString(context, calendar, new Date());
+        }
+        else if(!isValueBlank(value)) {
+            defaultDate = value;
         } 
         else if(pagedate != null) {
-            writer.write(",defaultDate:'" + CalendarUtils.getValueAsString(context, calendar, pagedate) + "'");
+            defaultDate = CalendarUtils.getValueAsString(context, calendar, pagedate);
         }
-
+        
+        if(defaultDate != null) {
+            writer.write(",defaultDate:'" + defaultDate + "'");
+        }
+        
         if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
         if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()) + "'");
         if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()) + "'");
@@ -223,6 +232,8 @@ public class CalendarRenderer extends InputRenderer {
             return date;
         } 
         catch (ParseException e) {
+            calendar.setConversionFailed(true);
+            
             FacesMessage message = null;
             Object[] params = new Object[3];
             params[0] = submittedValue;
