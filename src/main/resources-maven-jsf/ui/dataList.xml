@@ -109,6 +109,12 @@
             <type>java.lang.String</type>
             <description>Name of iterator to refer each row index.</description>
         </attribute>
+        <attribute>
+            <name>varStatus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of the exported request scoped variable for the status of the iteration.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
