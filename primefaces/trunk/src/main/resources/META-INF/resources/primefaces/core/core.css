@@ -7,9 +7,15 @@
 .ui-overlay-visible {
     visibility: visible;
 }
+ui-overlay-visible * {
+    visibility: visible !important;
+}
 
 .ui-overlay-hidden {
     visibility: hidden;
+}
+.ui-overlay-hidden * {
+    visibility: hidden !important;;
 }
 
 /* IE7 Fixes */
