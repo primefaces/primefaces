@@ -297,7 +297,9 @@ PrimeFaces = {
 
     PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
 
-    VIEW_STATE : "javax.faces.ViewState"
+    VIEW_STATE : "javax.faces.ViewState",
+    
+    VIEW_ROOT : "javax.faces.ViewRoot"
 };
 
 /**
@@ -375,6 +377,11 @@ PrimeFaces.ajax.AjaxUtils = {
     updateElement: function(id, content) {        
         if(id == PrimeFaces.VIEW_STATE) {
             PrimeFaces.ajax.AjaxUtils.updateState.call(this, content);
+        }
+        else if(id == PrimeFaces.VIEW_ROOT) {
+            document.open();
+            document.write(content);
+            document.close();
         }
         else {
             $(PrimeFaces.escapeClientId(id)).replaceWith(content);
