@@ -463,7 +463,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':radio:not(:disabled)');
         this.labels = this.jq.find('label:not(.ui-state-disabled)');
         this.icons = this.jq.find('.ui-radiobutton-icon');
-        
+                
         this.bindEvents();        
     },
     
@@ -472,15 +472,16 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         
         //events for displays
         this.outputs.mouseover(function() {
-            var radio = $(this);
-            if(!radio.hasClass('ui-state-active'))
-                $(this).addClass('ui-state-hover');
+            $(this).addClass('ui-state-hover');
         }).mouseout(function() {
             $(this).removeClass('ui-state-hover');
         }).click(function() {
-            var radio = $(this);
-            if(!radio.hasClass('ui-state-active')) 
-                _self.check($(this));
+            var radio = $(this),
+            input = radio.prev().children(':radio');
+            
+            if(!input.is(':checked')) {
+                $(this).prev().children(':radio').click();
+            }
         });
         
         //selects radio when label is clicked
@@ -490,45 +491,51 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
             //checks if target is input or not(custom labels)
             if(target.is(':input'))
-                radio = target.parent().siblings('.ui-radiobutton-box');
+                radio = target.parent().next();
             else
                 radio = target; //custom layout
 
-            if(!radio.hasClass('ui-state-active'))
-                _self.check(radio);
+            radio.click();
+            
+            e.preventDefault();
         });
-
-        //delegate focus-blur states
+        
+        //delegate focus-blur-change states
         this.inputs.focus(function() {
-            $(this).parent().next().addClass('ui-state-focus');
-        }).blur(function() {
-            $(this).parent().next().removeClass('ui-state-focus');
+            var input = $(this),
+            radio = input.parent().next();
+            
+            if(input.prop('checked')) {
+                radio.removeClass('ui-state-active');
+            }
+            
+            radio.addClass('ui-state-focus');
+        })
+        .blur(function() {
+            var input = $(this),
+            radio = input.parent().next();
+                        
+            radio.removeClass('ui-state-focus');
+        })
+        .change(function(e) {
+            //unselect previous
+            _self.outputs.find(' > .ui-radiobutton-icon.ui-icon-bullet').parent()
+                        .removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
+            
+            //select current
+            var currentInput = _self.inputs.filter(':checked'),
+            currentRadio = currentInput.parent().next();
+            currentRadio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+            
+            if(!currentInput.is(':focus')) {
+                currentRadio.addClass('ui-state-active');
+            }
         });
         
         //Client Behaviors
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
-        
-        
-
-    },
-    
-    check: function(radio) {
-        //unselect previous
-        var previousRadio = this.outputs.filter('.ui-state-active'),
-        previousInput = previousRadio.siblings('.ui-helper-hidden').children('input:radio');
-        previousRadio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
-        previousInput.removeAttr('checked');
-
-        //select current
-        var input = radio.prev().children('input:radio');
-
-        radio.addClass('ui-state-active');
-        input.attr('checked', 'checked');
-        radio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
-
-        input.change();
     }
     
 });
