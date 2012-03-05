@@ -570,10 +570,10 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             }).mouseout(function() {
                 _self.box.removeClass('ui-state-hover');
             }).click(function() {
-                _self.toggle();
+                _self.input.click();
             });
             
-            //delegate focus-blur-keyup states
+            //delegate focus-blur-change states
             this.input.focus(function() {
                 if(_self.input.prop('checked')) {
                     _self.box.removeClass('ui-state-active');
@@ -588,12 +588,17 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
                 _self.box.removeClass('ui-state-focus');
             })
-            .keyup(function(e) {
-                if(e.which == $.ui.keyCode.SPACE) {
-                    _self.toggle($(this).parent().next());
-                }
+            .change(function() {
+                if(_self.input.is(':checked')) {
+                    _self.box.children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
 
-                e.preventDefault();
+                    if(!_self.input.is(':focus')) {
+                        _self.box.addClass('ui-state-active');
+                    }
+                }
+                else {
+                    _self.box.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+                }
             });
 
             //toggle state on label click
@@ -609,34 +614,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     },
     
     toggle: function() {
-        if(!this.disabled) {
-            if(this.input.is(":checked"))
-                this.uncheck();
-            else
-                this.check();
-        }
-    },
-    
-    check: function() {
-        if(!this.disabled) {
-            this.input.prop('checked', true);
-            this.box.removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
-
-            this.input.change();
-            
-            if(!this.input.is(':focus')) {
-                this.box.addClass('ui-state-active');
-            }
-        }
-    },
-    
-    uncheck: function() {
-        if(!this.disabled) {
-            this.input.removeAttr('checked');
-            this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
-
-            this.input.change();
-        }
+        this.input.change();
     }
     
 });
