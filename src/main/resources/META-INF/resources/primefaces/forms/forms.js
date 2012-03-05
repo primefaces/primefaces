@@ -618,7 +618,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.outputs = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
         this.labels = this.jq.find('label:not(.ui-state-disabled)');
-        
+                
         this.bindEvents();
     },
     
@@ -632,21 +632,45 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         }).click(function() {
             _self.toggle($(this));
         });
-
+        
+        //toggle checkbox on label click
         this.labels.click(function(e) {
             var element = $(this),
             input = $(PrimeFaces.escapeClientId(element.attr('for'))),
             checkbox = input.parent().next();
-            checkbox.click();
+            
+            _self.toggle(checkbox);
 
             e.preventDefault();
         });
-        
-        //delegate focus-blur states
+
+        //delegate focus-blur-keyup states
         this.inputs.focus(function() {
-            $(this).parent().next().addClass('ui-state-focus');
-        }).blur(function() {
-            $(this).parent().next().removeClass('ui-state-focus');
+            var input = $(this),
+            checkbox = input.parent().next();
+            
+            if(input.prop('checked')) {
+                checkbox.removeClass('ui-state-active');
+            }
+            
+            checkbox.addClass('ui-state-focus');
+        })
+        .blur(function() {
+            var input = $(this),
+            checkbox = input.parent().next();
+            
+            if(input.prop('checked')) {
+                checkbox.addClass('ui-state-active');
+            }
+            
+            checkbox.removeClass('ui-state-focus');
+        })
+        .keyup(function(e) {
+            if(e.which == $.ui.keyCode.SPACE) {
+                _self.toggle($(this).parent().next());
+            }
+            
+            e.preventDefault();
         });
 
         //Client Behaviors
@@ -656,25 +680,25 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
     },
     
     toggle: function(checkbox) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
-            if(checkbox.hasClass('ui-state-active'))
-                this.uncheck(checkbox);
-            else
-                this.check(checkbox);
+        var input = checkbox.prev().children('input:checkbox'),
+        hasFocus = input.is(':focus'),
+        disabled = input.is(':disabled');
+        
+        if(disabled) {
+            return;
         }
-    },
-    
-    check: function(checkbox) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
-            checkbox.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
-            checkbox.prev().children('input:checkbox').attr('checked', 'checked').change();
-        }
-    },
-    
-    uncheck: function(checkbox) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
+        
+        if(input.is(':checked')) {
             checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
-            checkbox.prev().children('input:checkbox').removeAttr('checked').change();
+            input.removeAttr('checked').change();
+        }
+        else {
+            checkbox.children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            input.prop('checked', true).change();
+            
+            if(!hasFocus) {
+                checkbox.addClass('ui-state-active');
+            }
         }
     }
 });
