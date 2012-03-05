@@ -565,8 +565,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.itemLabel = this.jq.find('.ui-chkbox-label');
         this.disabled = this.input.is(':disabled');
         
-        this.input.parent().removeClass('ui-helper-hidden-accessible');
-
         var _self = this;
 
         //bind events if not disabled
