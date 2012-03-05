@@ -463,6 +463,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':radio:not(:disabled)');
         this.labels = this.jq.find('label:not(.ui-state-disabled)');
         this.icons = this.jq.find('.ui-radiobutton-icon');
+        
+        this.checkedRadio = this.outputs.filter('.ui-state-active');
                 
         this.bindEvents();        
     },
@@ -514,13 +516,16 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         .blur(function() {
             var input = $(this),
             radio = input.parent().next();
+            
+            if(input.prop('checked')) {
+                radio.addClass('ui-state-active');
+            }
                         
             radio.removeClass('ui-state-focus');
         })
         .change(function(e) {
             //unselect previous
-            _self.outputs.find(' > .ui-radiobutton-icon.ui-icon-bullet').parent()
-                        .removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
+            _self.checkedRadio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
             
             //select current
             var currentInput = _self.inputs.filter(':checked'),
@@ -530,6 +535,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             if(!currentInput.is(':focus')) {
                 currentRadio.addClass('ui-state-active');
             }
+            
+            _self.checkedRadio = currentRadio;
         });
         
         //Client Behaviors
