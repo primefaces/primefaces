@@ -559,11 +559,27 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 _self.toggle();
             });
             
-            //delegate focus-blur states
-            _self.input.focus(function() {
+            //delegate focus-blur-keyup states
+            this.input.focus(function() {
+                if(_self.input.prop('checked')) {
+                    _self.box.removeClass('ui-state-active');
+                }
+
                 _self.box.addClass('ui-state-focus');
-            }).blur(function() {
+            })
+            .blur(function() {
+                if(_self.input.prop('checked')) {
+                    _self.box.addClass('ui-state-active');
+                }
+
                 _self.box.removeClass('ui-state-focus');
+            })
+            .keyup(function(e) {
+                if(e.which == $.ui.keyCode.SPACE) {
+                    _self.toggle($(this).parent().next());
+                }
+
+                e.preventDefault();
             });
 
             //toggle state on label click
@@ -589,17 +605,21 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     
     check: function() {
         if(!this.disabled) {
-            this.input.attr('checked', 'checked');
-            this.box.addClass('ui-state-active').removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            this.input.prop('checked', true);
+            this.box.removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
 
             this.input.change();
+            
+            if(!this.input.is(':focus')) {
+                this.box.addClass('ui-state-active');
+            }
         }
     },
     
     uncheck: function() {
         if(!this.disabled) {
             this.input.removeAttr('checked');
-            this.box.removeClass('ui-state-active').addClass('ui-state-hover').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+            this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
 
             this.input.change();
         }
