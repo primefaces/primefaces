@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>droppable</tag>
+    <tagClass>org.primefaces.component.dnd.DroppableTag</tagClass>
+    <componentClass>org.primefaces.component.dnd.Droppable</componentClass>
+    <componentType>org.primefaces.component.Droppable</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DroppableRenderer</rendererType>
+    <rendererClass>org.primefaces.component.dnd.DroppableRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id of the component to add droppable behavior.</description>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables of enables droppable behavior.</description>
+        </attribute>
+        <attribute>
+            <name>hoverStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class to apply when an acceptable draggable is dragged over.</description>
+        </attribute>
+        <attribute>
+            <name>activeStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class to apply when an acceptable draggable is being dragged.</description>
+        </attribute>
+        <attribute>
+            <name>onDrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a draggable is dropped.</description>
+        </attribute>
+        <attribute>
+            <name>accept</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Selector to define the accepted draggables.</description>
+        </attribute>
+        <attribute>
+            <name>scope</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Scope key to match draggables and droppables.</description>
+        </attribute>
+        <attribute>
+            <name>tolerance</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Specifies the intersection mode to accept a draggable.</description>
+        </attribute>
+        <attribute>
+            <name>datasource</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Id of a UIData component to connect with.</description>
+        </attribute>
+    </attributes>
+    <resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,12 @@
+.ui-blockui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+
+.ui-blockui-content {
+    position: absolute;
+    text-align: center;
+    padding:1em;
+}

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>fileUpload</tag>
+	<tagClass>org.primefaces.component.fileupload.FileUploadTag</tagClass>
+	<componentHandlerClass>org.primefaces.component.fileupload.FileUploadHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.fileupload.FileUpload</componentClass>
+	<componentType>org.primefaces.component.FileUpload</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.FileUploadRenderer</rendererType>
+	<rendererClass>org.primefaces.component.fileupload.FileUploadRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>
+      FileUpload goes beyond the browser input type="file" functionality and features a flash-javascript solution for uploading files. 
+      File filtering, multiple uploads, partial page rendering and progress tracking are the significant features compared to legacy fileUploads.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side ids of the component(s) to be updated after file upload completes.</description>
+		</attribute>
+        <attribute>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description></description>
+		</attribute>
+		<attribute>
+			<name>fileUploadListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void fileUploadListener(org.primefaces.event.FileUploadEvent)</method-signature>
+            <description>Method expression to listen file upload events.</description>
+		</attribute>
+		<attribute>
+			<name>multiple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Allows multi file uploads, turned off by default.</description>
+		</attribute>
+		<attribute>
+			<name>auto</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When set to true, selecting a file starts the upload process implicitly. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Choose</defaultValue>
+            <description>Label of the browse button, default is 'Choose'</description>
+		</attribute>
+		<attribute>
+			<name>allowTypes</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Semi colon separated list of file extensions to accept.</description>
+		</attribute>
+		<attribute>
+			<name>sizeLimit</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>File size limit in bytes. Default is unlimited.</description>
+		</attribute>
+		<attribute>
+			<name>showButtons</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines visibility of upload and cancel buttons in button bar. Default is true</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
+		</attribute>
+        <attribute>
+			<name>mode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>advanced</defaultValue>
+		</attribute>
+        <attribute>
+			<name>uploadLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Upload</defaultValue>
+		</attribute>
+        <attribute>
+			<name>cancelLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Cancel</defaultValue>
+		</attribute>
+        <attribute>
+			<name>invalidSizeMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>invalidFileMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>dragDropSupport</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
+        <attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+         <attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>fileupload/fileupload.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>fileupload/fileupload.js</name>
+		</resource>
+	</resources>
+</component>
