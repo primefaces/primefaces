@@ -47,12 +47,16 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 	}
 
 	public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
 		ELContext elContext = facesContext.getELContext();
+        StreamedContent content = (StreamedContent) value.getValue(elContext);
+        
+		if(content == null) {
+            return;
+        }
+        
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-	
 		String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";	
-		StreamedContent content = (StreamedContent) value.getValue(elContext);
 		
 		try {
 			response.setContentType(content.getContentType());
