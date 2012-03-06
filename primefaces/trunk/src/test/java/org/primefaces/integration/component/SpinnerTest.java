@@ -28,6 +28,8 @@ import org.primefaces.integration.bean.SpinnerView;
 import org.primefaces.jsfunit.PrimeClientFactory;
 import org.primefaces.jsfunit.SpinnerClient;
 
+import static org.junit.Assert.*;
+
 @RunWith(Arquillian.class)
 public class SpinnerTest {
     
@@ -39,22 +41,39 @@ public class SpinnerTest {
     }
     
     @Test
-    public void spinner() throws IOException {
+    public void spinnerBasic() throws IOException {
         JSFSession session = new JSFSession("/spinner.jsf");
-        SpinnerClient spinner = PrimeClientFactory.spinnerClient(session.getJSFClientSession(), "spinnerBasic");       
+        SpinnerClient spinner = PrimeClientFactory.spinnerClient(session.getJSFClientSession(), "form:spinnerBasic");       
         
-        Assert.assertEquals("Initial spinner value.", spinner.getValue(), "1");
+        assertEquals("1", spinner.getValue());
         
         spinner.spinUp();
         
-        Assert.assertEquals("After spin-up value.", spinner.getValue(), "2");
+        assertEquals("2" ,spinner.getValue());
         
         spinner.spinDown();
         
-        Assert.assertEquals("After spin-down value.", spinner.getValue(), "1");
+        assertEquals("1", spinner.getValue());
         
         spinner.spinDown();
 
-        Assert.assertEquals("After second spin-down value.", spinner.getValue(), "0");
+        assertEquals("0", spinner.getValue());
+    }
+    
+    @Test
+    public void spinnerAjax() throws IOException {
+        JSFSession session = new JSFSession("/spinner.jsf");
+        SpinnerClient spinner = PrimeClientFactory.spinnerClient(session.getJSFClientSession(), "form:spinnerAjax");       
+        
+        int value = (Integer) session.getJSFServerSession().getManagedBeanValue("#{spinnerView.value2}");
+        assertEquals(0, value);
+        
+        spinner.spinUp();
+        value = (Integer) session.getJSFServerSession().getManagedBeanValue("#{spinnerView.value2}");
+        assertEquals(1, value);
+        
+        spinner.spinUp();
+        value = (Integer) session.getJSFServerSession().getManagedBeanValue("#{spinnerView.value2}");
+        assertEquals(2, value);
     }
 }

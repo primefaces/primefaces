@@ -22,13 +22,23 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class SpinnerView {
     
-    private int spin = 1;
+    private int value1 = 1;
+    
+    private int value2 = 0;
 
-    public int getSpin() {
-        return spin;
+    public int getValue1() {
+        return value1;
     }
 
-    public void setSpin(int spin) {
-        this.spin = spin;
+    public void setValue1(int value1) {
+        this.value1 = value1;
+    }
+
+    public int getValue2() {
+        return value2;
+    }
+
+    public void setValue2(int value2) {
+        this.value2 = value2;
     }
 }
