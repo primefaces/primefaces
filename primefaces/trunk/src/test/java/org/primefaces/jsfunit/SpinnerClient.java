@@ -55,4 +55,8 @@ public class SpinnerClient extends PrimeFacesClient {
     public String getValue() {
         return ((HtmlInput) getRootElement().getFirstChild()).getValueAttribute();
     }
+    
+    public void setValue(String value) {
+        ((HtmlInput) getRootElement().getFirstChild()).setValueAttribute(value);
+    }
 }
