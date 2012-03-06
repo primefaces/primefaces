@@ -8,12 +8,20 @@
 <f:view contentType="text/html">
     <h:head>
 
-		<ui:insert name="head"></ui:insert>
 	</h:head>
     
     <h:body>
-      <p:spinner id="spinnerBasic" value="#{spinnerView.spin}">
-      </p:spinner>
+        
+        <h:form id="form">
+            
+            <p:spinner id="spinnerBasic" value="#{spinnerView.value1}" />
+                
+            <p:spinner id="spinnerAjax" value="#{spinnerView.value2}">
+                <p:ajax />
+            </p:spinner>
+
+        </h:form>
    </h:body>
+      
 </f:view>
 </html>
