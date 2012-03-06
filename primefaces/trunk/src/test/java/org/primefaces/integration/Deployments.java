@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.jsfunit;
+package org.primefaces.integration;
 
-import org.jboss.jsfunit.jsfsession.JSFClientSession;
+import java.io.File;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 
-public class PrimeClientFactory {
+public class Deployments {
     
-    private static JSFClientSession client;
-
-    public PrimeClientFactory(JSFClientSession client) {
-        this.client = client;
-    }
-        
-    public static SpinnerClient spinnerClient(JSFClientSession client, String componentId) {
-        return new SpinnerClient(client, componentId);
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class, "primefaces-test.war")
+            .setWebXML(new File("src/test/resources/test-web.xml"))
+            .addAsWebResource("faces-config.xml");
     }
 }
