@@ -437,10 +437,19 @@
             <url>http://download.java.net/maven/2/</url>
         </repository>
         <repository>
-            <id>repository.jboss.org</id>
-            <name>JBoss Repository for Maven</name>
-            <url>http://repository.jboss.org/maven2</url>
-        </repository>
+             <id>jboss-public-repository-group</id>
+             <name>JBoss Public Maven Repository Group</name>
+             <url>https://repository.jboss.org/nexus/content/groups/public</url>
+             <layout>default</layout>
+             <releases>
+                 <enabled>true</enabled>
+                 <updatePolicy>never</updatePolicy>
+             </releases>
+             <snapshots>
+                 <enabled>true</enabled>
+                 <updatePolicy>never</updatePolicy>
+             </snapshots>
+         </repository>
     </repositories>
 
     <pluginRepositories>
@@ -459,6 +468,17 @@
             <name>Codehaus Release Repo</name>
             <url>http://repository.codehaus.org</url>
         </pluginRepository>
+        <pluginRepository>
+           <id>jboss-public-repository-group</id>
+           <name>JBoss Public Repository Group</name>
+           <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+           <releases>
+             <enabled>true</enabled>
+           </releases>
+           <snapshots>
+             <enabled>true</enabled>
+           </snapshots>
+         </pluginRepository>
     </pluginRepositories>
 
     <profiles>
