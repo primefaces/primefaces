@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns="http://jboss.com/arquillian"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+   
+<!--   <engine>
+      <deploymentExportPath>target/</deploymentExportPath>
+   </engine>-->
+<!--   <defaultProtocol type="Servlet 3.0" />-->
+<!--   <container qualifier="jetty" default="true">
+   </container>-->
+       
+<!--   <container qualifier="jetty-embedded-7" default="true">
+        <protocol type="Servlet 3.0">
+            <property name="executionType">EMBEDDED</property>
+        </protocol>
+    </container>-->
+   
+</arquillian>

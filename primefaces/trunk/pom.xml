@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
@@ -9,12 +9,19 @@
     <version>3.2-SNAPSHOT</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.arquillian>1.0.0.Alpha4</version.arquillian>
+        <version.jetty>8.1.1.v20120215</version.jetty>
+        <version.jsf>2.1.7</version.jsf>
+    </properties>
 	
     <dependencies>
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
-            <version>2.0.4-b09</version>
+            <version>${version.jsf}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -60,10 +67,10 @@
 		
         <!-- Push -->
         <dependency>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-websocket</artifactId>
-          <version>8.0.0.v20110901</version>
-          <scope>provided</scope>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-websocket</artifactId>
+            <version>8.0.0.v20110901</version>
+            <scope>provided</scope>
         </dependency>
         
         <!-- FeedReader -->
@@ -86,7 +93,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
+            <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -101,8 +108,70 @@
             <version>1.0.5</version>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.jboss.jsfunit</groupId>
+            <artifactId>jsfunit-arquillian</artifactId>
+            <version>2.0.0.Beta2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-jetty-embedded-7</artifactId>
+            <version>1.0.0.CR1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${version.jetty}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+            <version>${version.jetty}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>${version.jsf}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>el-impl</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 	
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.0.0.CR7</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <build>
 	
         <resources>
@@ -335,12 +404,12 @@
     </build>
     
     <distributionManagement>
-   		<repository>
-			<id>prime-repo</id>
+        <repository>
+            <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>
             <url>sftp://primefaces.org/var/www/repository</url>
             <uniqueVersion>false</uniqueVersion>
-		</repository>
+        </repository>
     </distributionManagement>
 
     <reporting>
@@ -357,11 +426,11 @@
     </reporting>
 
     <repositories>
-   		<repository>
-			<id>prime-repo</id>
+        <repository>
+            <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>
             <url>http://repository.primefaces.org</url>
-		</repository>
+        </repository>
         <repository>
             <id>maven2-repository.dev.java.net</id>
             <name>Java.net Repository for Maven</name>
@@ -375,11 +444,11 @@
     </repositories>
 
     <pluginRepositories>
-   		<pluginRepository>
-			<id>prime-repo</id>
+        <pluginRepository>
+            <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>
             <url>http://repository.primefaces.org</url>
-		</pluginRepository>
+        </pluginRepository>
         <pluginRepository>
             <id>oss.sonatype.org-github-releases</id>
             <name>oss.sonatype.org - github-releases</name>
@@ -580,7 +649,4 @@
             </build>
         </profile>
     </profiles>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>

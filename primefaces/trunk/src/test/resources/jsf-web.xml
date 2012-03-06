@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+   version="3.0">
+
+   <!--
+   ConfigureListener and expressionFactory required if JSP is not available as Mojarra is loads them via TLD configuration
+   FIXME fix the Jetty container so this isn't needed
+   -->
+    <listener>
+        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+    </listener>
+<!--   <context-param>
+      <param-name>com.sun.faces.expressionFactory</param-name>
+      <param-value>com.sun.el.ExpressionFactoryImpl</param-value>
+   </context-param>-->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    
+    <context-param>
+		<param-name>com.sun.faces.expressionFactory</param-name>
+		<param-value>com.sun.el.ExpressionFactoryImpl</param-value>
+	</context-param>
+   <!--
+
+   <listener>
+      <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+   </listener>
+
+   <context-param>
+      <param-name>com.sun.faces.expressionFactory</param-name>
+      <param-value>com.sun.el.ExpressionFactoryImpl</param-value>
+   </context-param>
+
+  
+
+   <servlet>
+      <servlet-name>Faces Servlet</servlet-name>
+      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>*.jsf</url-pattern>
+   </servlet-mapping>
+
+   <welcome-file-list>
+      <welcome-file>index.xhtml</welcome-file>
+   </welcome-file-list>-->
+   
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+<!--        <url-pattern>*.jsp</url-pattern>-->
+    </servlet-mapping>
+    
+    
+<!--    <filter>
+        <filter-name>JSFUnitFilter</filter-name>
+        <filter-class>org.jboss.jsfunit.framework.JSFUnitFilter</filter-class>
+    </filter>
+ 
+    <filter-mapping>
+        <filter-name>JSFUnitFilter</filter-name>
+        <servlet-name>ServletTestRunner</servlet-name>
+    </filter-mapping>    
+    
+    <filter-mapping>
+        <filter-name>JSFUnitFilter</filter-name>
+        <servlet-name>ServletRedirector</servlet-name>
+    </filter-mapping>
+ 
+    <servlet>
+        <servlet-name>ServletRedirector</servlet-name>
+        <servlet-class>org.jboss.jsfunit.framework.JSFUnitServletRedirector</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>ServletTestRunner</servlet-name>
+        <servlet-class>org.apache.cactus.server.runner.ServletTestRunner</servlet-class>
+    </servlet> 
+ 
+    <servlet-mapping>
+        <servlet-name>ServletRedirector</servlet-name>
+        <url-pattern>/ServletRedirector</url-pattern>
+    </servlet-mapping> 
+    
+    <servlet-mapping>
+        <servlet-name>ServletTestRunner</servlet-name>
+        <url-pattern>/ServletTestRunner</url-pattern>
+    </servlet-mapping>-->
+    
+</web-app>
