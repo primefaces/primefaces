@@ -336,7 +336,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                                 items.each(function() {
                                     var item = $(this),
                                     text = item.text(),
-                                    re = new RegExp(value, 'gi'),
+                                    re = new RegExp(PrimeFaces.escapeRegExp(value), 'gi'),
                                     highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
                                     
                                     item.html(highlighedText);
