@@ -166,6 +166,10 @@ PrimeFaces = {
         }
     },
     
+    escapeRegExp: function(text) {
+        return text.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    },
+    
     clearSelection: function() {
         if(window.getSelection) {
             if(window.getSelection().empty) {
