@@ -113,44 +113,36 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         //set initial selected option
         var selectedOption = this.options.filter(':selected');
         this.selectedOption = selectedOption;
-
-        if(!this.cfg.editable) {
-            this.label.css('cursor', 'pointer').mousedown(function(e) {
-            e.preventDefault(); 
-            });
-
-            this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-        } 
-        else {
-            this.triggers = this.jq.find('.ui-selectonemenu-trigger');
-        }
-
         this.label.val(selectedOption.text());
 
-        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
-        this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-
-        this.bindEvents();
-
-        //disable tabbing if disabled
+        //disable tabbing
         if(this.disabled) {
             this.input.attr("tabindex", -1);
+        }
+        else {
+            if(!this.cfg.editable) {
+                this.label.css('cursor', 'pointer').mousedown(function(e) {
+                    e.preventDefault(); 
+                });
+
+                this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+            } 
+            else {
+                this.triggers = this.jq.find('.ui-selectonemenu-trigger');
+            }
+            
+            //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+            this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+            
+            this.bindEvents();
+            
+            //dialog support
+            this.setupDialogSupport();
         }
 
         //Append panel to body
         $(document.body).children(this.panelId).remove();
         this.panel.appendTo(document.body);
-
-        //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.panel.is(':visible')) {
-                _self.hide();
-            }
-        });
-
-        //dialog support
-        this.setupDialogSupport();
 
         if(this.jq.is(':visible')) {
             this.initWidths();
@@ -265,6 +257,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //key bindings
         this.bindKeyEvents();
+        
+        //Hide overlay on resize
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if(_self.panel.is(':visible')) {
+                _self.hide();
+            }
+        });
     },
     
     highlightItem: function(item) {
