@@ -428,7 +428,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var ext = {
                     params : {}
                 };
-                ext.params[this.id + "_itemSelect"] = itemValue;
+                ext.params[this.id + "_itemSelect"] = encodeURIComponent(itemValue);
 
                 itemSelectBehavior.call(this, event, ext);
             }
