@@ -69,6 +69,8 @@ public class GrowlRenderer extends CoreRenderer {
             
 			String summary = escapeText(message.getSummary());
 			String detail = escapeText(message.getDetail());
+            int ordinal = message.getSeverity().getOrdinal();
+            String severity = null;
 
             writer.write("{");
 
@@ -79,7 +81,16 @@ public class GrowlRenderer extends CoreRenderer {
 			else if(!growl.isShowSummary() && growl.isShowDetail())
 				writer.writeText("summary:\"\",text:\"" + detail + "\"", null);
             
-            writer.write(",severity:" + message.getSeverity().getOrdinal());
+            if(ordinal == FacesMessage.SEVERITY_INFO.getOrdinal())
+                severity = "info";
+            else if(ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal())
+                severity = "error";
+            else if(ordinal == FacesMessage.SEVERITY_WARN.getOrdinal())
+                severity = "warn";
+            else if(ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal())
+                severity = "fatal";
+            
+            writer.write(",severity:'" + severity + "'");
 
             writer.write("}");
 
