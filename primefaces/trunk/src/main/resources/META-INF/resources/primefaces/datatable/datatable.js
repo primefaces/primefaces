@@ -1402,7 +1402,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 //fire toggleCheckAll event
                 if(_self.cfg.behaviors) {
-                    var columnReorderBehavior = _self.cfg.behaviors['columnReorder'];
+                    var columnReorderBehavior = _self.cfg.behaviors['colReorder'];
 
                     if(columnReorderBehavior) {            
                         columnReorderBehavior.call(_self);
