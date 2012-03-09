@@ -1314,6 +1314,15 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
 
         //Visuals
         PrimeFaces.skinInput(this.jq);
+    },
+
+    setValue: function(value) {
+        this.jq.val(value);
+        this.jq.unmask().mask(this.cfg.mask, this.cfg);
+    },
+
+    getValue: function() {
+        return this.jq.val();
     }
     
 });
