@@ -156,8 +156,10 @@ import org.primefaces.model.TreeNode;
             }
             else if(eventName.equals("collapse")) {
                 this.setRowKey(params.get(clientId + "_collapseNode"));
+                TreeNode collapsedNode = this.getRowNode();
+                collapsedNode.setExpanded(false);
 
-                wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("select")) {
