@@ -25,7 +25,6 @@ import javax.servlet.ServletRequestWrapper;
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultUploadedFile;
-import org.primefaces.model.UploadedFile;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -42,15 +41,26 @@ public class FileUploadRenderer extends CoreRenderer {
 		if(multipartRequest != null) {
 			FileItem file = multipartRequest.getFileItem(clientId);
 
-			if(file != null) {
-				UploadedFile uploadedFile = new DefaultUploadedFile(file);
-
-                if(fileUpload.getMode().equals("simple"))
-                    fileUpload.setSubmittedValue(uploadedFile);
-                else
-                    fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
-			}
+            if(fileUpload.getMode().equals("simple")) {
+                decodeSimple(context, fileUpload, file);
+            }
+            else {
+                decodeAdvanced(context, fileUpload, file);
+            }
 		}
+    }
+	
+	public void decodeSimple(FacesContext context, FileUpload fileUpload, FileItem file) {
+		if(file.getName().equals(""))
+            fileUpload.setSubmittedValue("");
+        else
+            fileUpload.setSubmittedValue(new DefaultUploadedFile(file));
+	}
+    
+    public void decodeAdvanced(FacesContext context, FileUpload fileUpload, FileItem file) {
+		if(file != null) {
+            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file)));
+        }
 	}
 	
 	/**
