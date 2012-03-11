@@ -1,0 +1,51 @@
+&output_component_attributes;
+<attribute>
+	<name>immediate</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>When set true, process validations logic is executed at apply request values phase for this component. Default is false.</description>
+</attribute>
+<attribute>
+	<name>required</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Marks component as required.</description>
+</attribute>
+<attribute>
+	<name>validator</name>
+	<required>false</required>
+	<type>javax.faces.validator.Validator</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>A method expression referring to a method validationg the input.</description>
+</attribute>
+<attribute>
+	<name>valueChangeListener</name>
+	<required>false</required>
+	<type>javax.faces.event.ValueChangeListener</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
+    <description>A method binding expression referring to a method for handling a valuchangeevent.</description>
+</attribute>
+<attribute>
+	<name>requiredMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Message to display when required field validation fails.</description>
+</attribute>
+<attribute>
+	<name>converterMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Message to display when conversion fails.</description>
+</attribute>
+<attribute>
+	<name>validatorMessage</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Message to display when validation fails.</description>
+</attribute>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>overlayPanel</tag>
+	<tagClass>org.primefaces.component.overlaypanel.OverlayPanelTag</tagClass>
+	<componentClass>org.primefaces.component.overlaypanel.OverlayPanel</componentClass>
+	<componentType>org.primefaces.component.OverlayPanel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.OverlayPanelRenderer</rendererType>
+	<rendererClass>org.primefaces.component.overlaypanel.OverlayPanelRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>OverlayPanel is a generic container component that is displayed as a popup.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the component.</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Identifier of the target component to show the panel.</description>
+		</attribute>
+        <attribute>
+			<name>showEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event to show the overlay panel, default is "click".</description>
+		</attribute>
+        <attribute>
+			<name>hideEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event to hide the overlay panel, default is "click".</description>
+		</attribute>
+        <attribute>
+			<name>showEffect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Effect to display when showing the panel.</description>
+		</attribute>
+        <attribute>
+			<name>hideEffect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Effect to display when hiding the panel.</description>
+		</attribute>
+        <attribute>
+			<name>appendToBody</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set true, panel is appended as a child of document body.</description>
+		</attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when panel is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when panel is hidden.</description>
+        </attribute>
+        <attribute>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of the panel relative to the target.</description>
+        </attribute>
+        <attribute>
+            <name>at</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of the target relative to the panel.</description>
+        </attribute>
+        <attribute>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Dynamic mode allows overlay panel to fetch it's contents before it's shown rather than on page load
+            which is useful to reduce initial page load times. Default is false.</description>
+        </attribute>
+	</attributes>
+    <resources>
+        <resource>
+            <name>primefaces.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
+</component>
