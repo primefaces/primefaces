@@ -79,7 +79,7 @@ public class GrowlRenderer extends CoreRenderer {
 			else if(growl.isShowSummary() && !growl.isShowDetail())
 				writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
 			else if(!growl.isShowSummary() && growl.isShowDetail())
-				writer.writeText("summary:\"\",text:\"" + detail + "\"", null);
+				writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
             
             if(ordinal == FacesMessage.SEVERITY_INFO.getOrdinal())
                 severity = "info";
