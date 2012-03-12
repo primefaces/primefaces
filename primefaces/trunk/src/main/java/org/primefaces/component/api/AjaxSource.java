@@ -36,4 +36,6 @@ public interface AjaxSource {
 	public boolean isGlobal();
 	
 	public boolean isAsync();
+    
+    public boolean isPartialSubmit();
 }
