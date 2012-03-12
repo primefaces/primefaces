@@ -367,16 +367,6 @@ PrimeFaces.ajax.AjaxUtils = {
             }
         });
     },
-	
-    serialize: function(params) {
-        var serializedParams = '';
-		
-        for(var param in params) {
-            serializedParams = serializedParams + "&" + param + "=" + params[param];
-        }
-		
-        return serializedParams;
-    },
 
     updateElement: function(id, content) {        
         if(id == PrimeFaces.VIEW_STATE) {
@@ -491,8 +481,8 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
     var postURL = form.attr('action'),
-    postParams = form.serializeArray(),
-    encodedURLfield = form.children("input[name='javax.faces.encodedURL']");
+    encodedURLfield = form.children("input[name='javax.faces.encodedURL']"),
+    postParams = [];
 
     //portlet support
     var pForms = null;
@@ -546,13 +536,33 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     else {
         postParams.push({name:sourceId, value:sourceId});
     }
-    
+
     //params
     if(cfg.params) {
         $.merge(postParams, cfg.params);
     }
     if(ext && ext.params) {
-        $.merge(postParams, cfg.params);
+        $.merge(postParams, ext.params);
+    }
+    
+    /**
+     * Only add params of process components and their children 
+     * if partial submit is enabled and there are components to process partially
+     */
+    if(cfg.partialSubmit && processIds != '@all') {    
+        var processIdsArray = processIds.split(' ');
+        $.each(processIdsArray, function(i, item) {
+            var jqProcess = PrimeFaces.escapeClientId(item),
+            componentPostParams = $(jqProcess + ',' + jqProcess + ' :input').serializeArray();
+            
+            $.merge(postParams, componentPostParams);
+        });
+        
+        //add viewstate
+        postParams.push({name:PrimeFaces.VIEW_STATE, value:form.children("input[name='javax.faces.ViewState']").val()});
+    }
+    else {
+        $.merge(postParams, form.serializeArray());
     }
     
     //serialize
