@@ -19636,10 +19636,10 @@ PrimeFaces.widget.ChartUtils = {
                 var itemSelectCallback = chart.cfg.behaviors['itemSelect'];
                 if(itemSelectCallback) {
                     var ext = {
-                        params: {
-                            itemIndex:neighbor.pointIndex, 
-                            seriesIndex:neighbor.seriesIndex
-                        }
+                        params: [
+                            {name: 'itemIndex', value: neighbor.pointIndex}
+                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
+                        ]
                     };
                     
                     itemSelectCallback.call(chart, ev, ext);
