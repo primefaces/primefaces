@@ -477,7 +477,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     }
     
     if(cfg.formId) {
-        form = $(PrimeFaces.escapeClientId(cfg.formId));                    //Explicit form is defined
+        form = $(PrimeFaces.escapeClientId(cfg.formId));                         //Explicit form is defined
     }
     else {
         form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');     //look for a parent of source
@@ -491,7 +491,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
     var postURL = form.attr('action'),
-    postParams = form.serialize(),
+    postParams = form.serializeArray(),
     encodedURLfield = form.children("input[name='javax.faces.encodedURL']");
 
     //portlet support
@@ -504,34 +504,36 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     PrimeFaces.debug('URL to post ' + postURL + '.');
 
     //partial ajax
-    postParams = postParams + "&" + PrimeFaces.PARTIAL_REQUEST_PARAM + "=true";
+    postParams.push({name:PrimeFaces.PARTIAL_REQUEST_PARAM, value:true});
 
     //source
-    postParams = postParams + "&" + PrimeFaces.PARTIAL_SOURCE_PARAM + "=" + sourceId;
+    postParams.push({name:PrimeFaces.PARTIAL_SOURCE_PARAM, value:sourceId});
 
     //process
     var process = [];
-    if(cfg.process)
+    if(cfg.process) {
         process.push(cfg.process);
-    if(ext && ext.process)
-        process.push(ext.process);
+    }
+    if(ext && ext.process) {
+        process.push(cfg.process);
+    }
+    var processIds = process.length > 0 ? process.join(' ') : '@all';
+    postParams.push({name:PrimeFaces.PARTIAL_PROCESS_PARAM, value:processIds});
     
-    if(process.length > 0)
-        postParams = postParams + "&" + PrimeFaces.PARTIAL_PROCESS_PARAM + "=" + process.join(' ');
-
     //update
     var update = [];
-    if(cfg.update)
+    if(cfg.update) {
         update.push(cfg.update);
-    if(ext && ext.update)
+    }
+    if(ext && ext.update) {
         update.push(ext.update);
+    }    
+    postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:update.join(' ')});
     
-    if(update.length > 0)
-        postParams = postParams + "&" + PrimeFaces.PARTIAL_UPDATE_PARAM + "=" + update.join(' ');
-
     //behavior event
     if(cfg.event) {
-        postParams = postParams + "&" + PrimeFaces.BEHAVIOR_EVENT_PARAM + "=" + cfg.event;
+        postParams.push({name:PrimeFaces.BEHAVIOR_EVENT_PARAM, value:cfg.event});
+
         var domEvent = cfg.event;
 
         if(cfg.event == 'valueChange')
@@ -539,18 +541,22 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         else if(cfg.event == 'action')
             domEvent = 'click';
 
-        postParams = postParams + "&" + PrimeFaces.PARTIAL_EVENT_PARAM + "=" + domEvent;
-    } else {
-        postParams = postParams + "&" + cfg.source + "=" + cfg.source;
+        postParams.push({name:PrimeFaces.PARTIAL_EVENT_PARAM, value:domEvent});
+    } 
+    else {
+        postParams.push({name:sourceId, value:sourceId});
     }
     
     //params
     if(cfg.params) {
-        postParams = postParams + PrimeFaces.ajax.AjaxUtils.serialize(cfg.params);
+        $.merge(postParams, cfg.params);
     }
     if(ext && ext.params) {
-        postParams = postParams + PrimeFaces.ajax.AjaxUtils.serialize(ext.params);
+        $.merge(postParams, cfg.params);
     }
+    
+    //serialize
+    var postData = $.param(postParams);
     
     PrimeFaces.debug('Post Data:' + postParams);
 	
@@ -559,7 +565,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         type : "POST",
         cache : false,
         dataType : "xml",
-        data : postParams,
+        data : postData,
         portletForms: pForms,
         source: cfg.source,
         beforeSend: function(xhr) {
