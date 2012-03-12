@@ -161,12 +161,11 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             _self.show(panel);
         };
 
-        var params = {};
-        params[this.id + '_contentLoad'] = true;
-        params[this.id + '_newTab'] = panel.attr('id');
-        params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_contentLoad', value: true},
+            {name: this.id + '_newTab', value: panel.attr('id')},
+            {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+        ];
 
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'];
@@ -185,11 +184,11 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'],
             ext = {
-                params: {}
+                params: [
+                    {name: this.id + '_newTab', value: panel.attr('id')},
+                    {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+                ]
             };
-            ext.params[this.id + '_newTab'] = panel.attr('id');
-            ext.params[this.id + '_tabindex'] = parseInt(panel.index() / 2);
-
 
             tabChangeBehavior.call(this, null, ext);
         }
