@@ -52,13 +52,12 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             }
         };
-
-        var params = {};
-        params[this.id + "_ajaxPaging"] = true;
-        params[this.id + "_first"] = newState.first;
-        params[this.id + "_rows"] = newState.rows;
-
-        options.params = params;
+        
+        options.params = [
+            {name: this.id + '_ajaxPaging', value: true},
+            {name: this.id + '_first', value: newState.first},
+            {name: this.id + '_rows', value: newState.rows}
+        ];
 
         PrimeFaces.ajax.AjaxRequest(options);
     },
