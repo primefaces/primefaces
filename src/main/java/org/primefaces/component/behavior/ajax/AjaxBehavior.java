@@ -50,6 +50,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private MethodExpression listener;
     private Boolean immediate;
     private Boolean disabled;
+    private Boolean partialSubmit;
     
     public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
@@ -175,6 +176,17 @@ public class AjaxBehavior extends ClientBehaviorBase {
     
     public boolean isImmediateSet() {
         return ((immediate != null) || (getValueExpression("immediate") != null));
+    }
+    
+    public boolean isPartialSubmit() {
+        Boolean result = (Boolean) eval("partialSubmit", partialSubmit);
+        
+        return ((result != null) ? result : false);
+    }
+    public void setPartialSubmit(boolean partialSubmit) {
+        this.partialSubmit = partialSubmit;
+        
+        clearInitialState();
     }
 
     protected Object eval(String propertyName, Object value) {
