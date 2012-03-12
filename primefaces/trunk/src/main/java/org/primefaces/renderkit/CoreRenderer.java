@@ -225,6 +225,10 @@ public abstract class CoreRenderer extends Renderer {
         //global
         if(!source.isGlobal())
             req.append(",global:false");
+        
+        //partial submit
+        if(source.isPartialSubmit())
+            req.append(",partialSubmit:true");
 
         //callbacks
         if(source.getOnstart() != null)

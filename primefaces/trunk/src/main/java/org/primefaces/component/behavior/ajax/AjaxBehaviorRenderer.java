@@ -82,6 +82,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         //global
         if(!ajaxBehavior.isGlobal())
             req.append(",global:false");
+        
+        //partial submit
+        if(ajaxBehavior.isPartialSubmit())
+            req.append(",partialSubmit:true");
 
         //callbacks
         if(ajaxBehavior.getOnstart() != null)
