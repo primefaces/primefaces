@@ -296,7 +296,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    search: function(value) {
+    search: function(query) {
         if(!this.active) {
             return;
         }
@@ -305,7 +305,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         //start callback
         if(this.cfg.onstart) {
-            this.cfg.onstart.call(this, value);
+            this.cfg.onstart.call(this, query);
         }
         
         var options = {
@@ -336,7 +336,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                                 items.each(function() {
                                     var item = $(this),
                                     text = item.text(),
-                                    re = new RegExp(PrimeFaces.escapeRegExp(value), 'gi'),
+                                    re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
                                     highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
                                     
                                     item.html(highlighedText);
@@ -389,11 +389,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             options.global = false;
         }
 
-        var params = {};
-        params[this.id + '_query'] = encodeURIComponent(value);
-
-        options.params = params;
-
+        options.params = [
+          {name: this.id + '_query', value: query}  
+        ];
+        
         PrimeFaces.ajax.AjaxRequest(options);
     },
     
@@ -426,9 +425,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             if(itemSelectBehavior) {
                 var ext = {
-                    params : {}
+                    params : [
+                        {name: this.id + '_itemSelect', value: itemValue}
+                    ]
                 };
-                ext.params[this.id + "_itemSelect"] = encodeURIComponent(itemValue);
 
                 itemSelectBehavior.call(this, event, ext);
             }
@@ -441,10 +441,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             if(itemUnselectBehavior) {
                 var ext = {
-                    params : {}
+                    params : [
+                        {name: this.id + '_itemUnselect', value: itemValue}
+                    ]
                 };
-                ext.params[this.id + "_itemUnselect"] = itemValue;
-
+                
                 itemUnselectBehavior.call(this, event, ext);
             }
         }
