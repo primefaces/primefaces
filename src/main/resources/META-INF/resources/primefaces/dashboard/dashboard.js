@@ -25,15 +25,16 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                         receiverColumnIndex =  ui.item.parent().parent().children().index(ui.item.parent());
 
                         var ext = {
-                            params: {}
+                            params: [
+                                {name: _self.id + '_reordered', value: true},
+                                {name: _self.id + '_widgetId', value: ui.item.attr('id')},
+                                {name: _self.id + '_itemIndex', value: itemIndex},
+                                {name: _self.id + '_receiverColumnIndex', value: receiverColumnIndex}
+                            ]
                         }  
-                        ext.params[_self.id + "_reordered"] = true;
-                        ext.params[_self.id + "_widgetId"] = ui.item.attr('id');
-                        ext.params[_self.id + "_itemIndex"] = itemIndex;
-                        ext.params[_self.id + "_receiverColumnIndex"] = receiverColumnIndex;
 
                         if(ui.sender) {
-                            ext.params[_self.id + "_senderColumnIndex"] = ui.sender.parent().children().index(ui.sender);
+                            ext.params.push({name: _self.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender)});
                         }
 
                         reorderBehavior.call(_self, e, ext);
