@@ -208,18 +208,14 @@ public abstract class CoreRenderer extends Renderer {
 
         //process
         String process = source.getProcess();
-        if(process == null) {
-            process = "@all";
+        if(process != null) {
+            req.append(",process:'").append(ComponentUtils.findClientIds(context, component, process)).append("'");
         } 
-        else {
-            process = ComponentUtils.findClientIds(context, component, process);
-        }
-        req.append(",process:'").append(process).append("'");
-
 
         //update
-        if(source.getUpdate() != null) {
-            req.append(",update:'").append(ComponentUtils.findClientIds(context, component, source.getUpdate())).append("'");
+        String update = source.getUpdate();
+        if(update != null) {
+            req.append(",update:'").append(ComponentUtils.findClientIds(context, component, update)).append("'");
         }
 
         //async
@@ -242,24 +238,23 @@ public abstract class CoreRenderer extends Renderer {
 
         //params
         boolean paramWritten = false;
-
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
 
                 if(!paramWritten) {
                     paramWritten = true;
-                    req.append(",params:{");
+                    req.append(",params:[");
                 } else {
                     req.append(",");
                 }
 
-                req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
+                req.append("{name:").append("'").append(parameter.getName()).append("',value:'").append(parameter.getValue()).append("'}");
             }
         }
 
         if(paramWritten) {
-            req.append("}");
+            req.append("]");
         }
 
         req.append("});return false;");

@@ -68,9 +68,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         req.append(",process:'").append(process).append("'");
 
         //update
-        if (ajaxBehavior.getUpdate() != null) {
-            req.append(",update:'").append(ComponentUtils.findClientIds(fc, component, ajaxBehavior.getUpdate())).append("'");
-        }
+        String update = ajaxBehavior.getUpdate();
+        if(update != null)
+            req.append(",update:'").append(ComponentUtils.findClientIds(fc, component, update)).append("'");
 
         //behavior event
         req.append(",event:'").append(behaviorContext.getEventName()).append("'");
@@ -95,24 +95,23 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         //params
         boolean paramWritten = false;
-
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
 
                 if(!paramWritten) {
                     paramWritten = true;
-                    req.append(",params:{");
+                    req.append(",params:[");
                 } else {
                     req.append(",");
                 }
 
-                req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
+                req.append("{name:").append("'").append(parameter.getName()).append("',value:'").append(parameter.getValue()).append("'}");
             }
         }
 
         if(paramWritten) {
-            req.append("}");
+            req.append("]");
         }
         
         
