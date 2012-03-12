@@ -568,7 +568,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     //serialize
     var postData = $.param(postParams);
     
-    PrimeFaces.debug('Post Data:' + postParams);
+    PrimeFaces.debug('Post Data:' + postData);
 	
     var xhrOptions = {
         url : postURL,
