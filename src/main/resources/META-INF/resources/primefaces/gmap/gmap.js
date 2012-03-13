@@ -135,11 +135,12 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.BaseWidget.extend({
             var markerDragBehavior = this.cfg.behaviors['markerDrag'];
 
             var ext = {
-                params: {}
+                params: [
+                    {name: this.id + '_markerId', value: marker.id},
+                    {name: this.id + '_lat', value: event.latLng.lat()},
+                    {name: this.id + '_lng', value: event.latLng.lng()}
+                ]
             };
-            ext.params[this.id + '_markerId'] = marker.id;
-            ext.params[this.id + '_lat'] = event.latLng.lat();
-            ext.params[this.id + '_lng'] = event.latLng.lng();
 
             markerDragBehavior.call(this, event, ext);
         }
@@ -168,9 +169,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.BaseWidget.extend({
             var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
 
             var ext = {
-                params: {}
+                params: [
+                    {name: this.id + '_overlayId', value: overlay.id}
+                ]
             };
-            ext.params[this.id + '_overlayId'] = overlay.id;
 
             overlaySelectBehavior.call(this, event, ext);
         }
@@ -205,15 +207,17 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.BaseWidget.extend({
     
     fireStateChangeEvent: function(event) {
         if(this.hasBehavior('stateChange')) {
-            var stateChangeBehavior = this.cfg.behaviors['stateChange'];
+            var stateChangeBehavior = this.cfg.behaviors['stateChange'],
+            bounds = this.map.getBounds();
 
             var ext = {
-                params: {}
+                params: [
+                    {name: this.id + '_northeast', value: bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng()},
+                    {name: this.id + '_southwest', value: bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng()},
+                    {name: this.id + '_center', value: bounds.getCenter().lat() + ',' + bounds.getCenter().lng()},
+                    {name: this.id + '_zoom', value: this.map.getZoom()}
+                ]
             };
-            ext.params[this.id + '_northeast'] = this.map.getBounds().getNorthEast().lat() + "," + this.map.getBounds().getNorthEast().lng();
-            ext.params[this.id + '_southwest'] = this.map.getBounds().getSouthWest().lat() + "," + this.map.getBounds().getSouthWest().lng();
-            ext.params[this.id + '_center'] = this.map.getBounds().getCenter().lat() + "," + this.map.getBounds().getCenter().lng();
-            ext.params[this.id + '_zoom'] = this.map.getZoom();
 
             stateChangeBehavior.call(this, event, ext);
         }
@@ -232,9 +236,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.BaseWidget.extend({
             var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
 
             var ext = {
-                params: {}
+                params: [
+                    {name: this.id + '_pointLatLng', value: event.latLng.lat() + ',' + event.latLng.lng()}
+                ]
             };
-            ext.params[this.id + '_pointLatLng'] = event.latLng.lat() + "," + event.latLng.lng();
 
             pointSelectBehavior.call(this, event, ext);
         }
