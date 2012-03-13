@@ -45,10 +45,11 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
             var resizeBehavior = this.cfg.behaviors['resize'];
             if(resizeBehavior) {
                 var ext = {
-                    params:{}
+                    params: [
+                        {name: this.id + '_width', value: ui.helper.width()},
+                        {name: this.id + '_height', value: ui.helper.height()}
+                    ]
                 };
-                ext.params[this.id + '_width'] = ui.helper.width();
-                ext.params[this.id + '_height'] = ui.helper.height();
 
                 resizeBehavior.call(this, event, ext);
             }
