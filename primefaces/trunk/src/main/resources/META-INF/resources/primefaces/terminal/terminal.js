@@ -190,10 +190,9 @@
                     }
                  };
 
-                 var params = {};
-                 params[options.id + '_args'] = tokens.join(",");
-
-                 cfg.params = params;
+                 cfg.params = [
+                     {name: options.id + '_args', value: tokens.join(',')}
+                 ];
 
                  PrimeFaces.ajax.AjaxRequest(cfg);
       		}

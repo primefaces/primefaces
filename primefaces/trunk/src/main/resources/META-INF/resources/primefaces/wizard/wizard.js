@@ -122,16 +122,15 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        var params = {};
-        params[this.id + '_wizardRequest'] = true;
-        params[this.id + '_currentStep'] = this.currentStep;
-        params[this.id + '_stepToGo'] = stepToGo;
+        options.params = [
+            {name: this.id + '_wizardRequest', value: true},
+            {name: this.id + '_currentStep', value: this.currentStep},
+            {name: this.id + '_stepToGo', value: stepToGo}
+        ];
 
         if(isBack) {
-            params[this.id + '_backRequest'] = true;
+            options.params.push({name: this.id + '_backRequest', value: true});
         }
-
-        options.params = params;
 
         PrimeFaces.ajax.AjaxRequest(options);
     },
