@@ -46,10 +46,11 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
 
                 if(dropBehavior) {
                     var ext = {
-                        params: {}
+                        params: [
+                            {name: _self.id + '_dragId', value: ui.draggable.attr('id')},
+                            {name: _self.id + '_dropId', value: _self.cfg.target}
+                        ]
                     };
-                    ext.params[_self.id + "_dragId"] = ui.draggable.attr('id');
-                    ext.params[_self.id + "_dropId"] = _self.cfg.target;
 
                     dropBehavior.call(_self, event, ext);
                 }
