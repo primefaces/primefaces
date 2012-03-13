@@ -158,12 +158,11 @@ PrimeFaces.widget.Sheet = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[this.id + "_sorting"] = true;
-        params[this.id + "_sortKey"] = columnId;
-        params[this.id + "_sortDir"] = order;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_sorting', value: true},
+            {name: this.id + '_sortKey', value: columnId},
+            {name: this.id + '_sortDir', value: order}
+        ];
 
         PrimeFaces.ajax.AjaxRequest(options); 
     },
