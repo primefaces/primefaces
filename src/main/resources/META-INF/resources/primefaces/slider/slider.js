@@ -66,9 +66,10 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
             if(slideEndBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_ajaxSlideValue', value: ui.value}
+                    ]
                 };
-                ext.params[this.id + '_ajaxSlideValue'] = ui.value;
 
                 slideEndBehavior.call(this, event, ext);
             }
