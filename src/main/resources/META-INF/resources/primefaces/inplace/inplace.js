@@ -115,7 +115,8 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             var saveBehavior = this.cfg.behaviors['save'];
 
             saveBehavior.call(this, e, options);
-        } else {
+        } 
+        else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
     },
@@ -128,10 +129,9 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             formId: this.cfg.formId
         };
 
-        var params = {};
-        params[this.id + '_cancel'] = true;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_cancel', value: true}
+        ];
 
         if(this.hasBehavior('cancel')) {
             var saveBehavior = this.cfg.behaviors['cancel'];
