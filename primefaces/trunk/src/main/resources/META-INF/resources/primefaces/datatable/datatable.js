@@ -399,11 +399,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[this.id + "_scrolling"] = true;
-        params[this.id + "_scrollOffset"] = this.scrollOffset;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_scrolling', value: true},
+            {name: this.id + '_scrollOffset', value: this.scrollOffset}
+            
+        ];
 
         PrimeFaces.ajax.AjaxRequest(options);
     },
@@ -454,13 +454,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[this.id + "_paging"] = true;
-        params[this.id + "_first"] = newState.first;
-        params[this.id + "_rows"] = newState.rows;
-        params[this.id + "_updateBody"] = true;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_paging', value: true},
+            {name: this.id + '_first', value: newState.first},
+            {name: this.id + '_rows', value: newState.rows},
+            {name: this.id + '_updateBody', value: true},
+        ];
 
         if(this.hasBehavior('page')) {
             var pageBehavior = this.cfg.behaviors['page'];
@@ -518,13 +517,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[this.id + "_sorting"] = true;
-        params[this.id + "_sortKey"] = columnId;
-        params[this.id + "_sortDir"] = asc;
-        params[this.id + "_updateBody"] = true;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_sorting', value: true},
+            {name: this.id + '_sortKey', value: columnId},
+            {name: this.id + '_sortDir', value: asc},
+            {name: this.id + '_updateBody', value: true}
+        ];
 
         if(this.hasBehavior('sort')) {
             var sortBehavior = this.cfg.behaviors['sort'];
@@ -582,11 +580,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[this.id + "_filtering"] = true;
-        params[this.id + "_updateBody"] = true;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_filtering', value: true},
+            {name: this.id + '_updateBody', value: true}
+        ];
 
         if(this.hasBehavior('filter')) {
             var filterBehavior = this.cfg.behaviors['filter'];
@@ -715,9 +712,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             if(selectBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_instantSelectedRowKey', value: rowKey}
+                    ]
                 };
-                ext.params[this.id + '_instantSelectedRowKey'] = rowKey;
 
                 selectBehavior.call(this, rowKey, ext);
             }
@@ -733,9 +731,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             if(unselectBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_instantUnselectedRowKey', value: rowKey}
+                    ]
                 };
-                ext.params[this.id + '_instantUnselectedRowKey'] = rowKey;
 
                 unselectBehavior.call(this, rowKey, ext);
             }
@@ -923,15 +922,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         options.oncomplete = function() {
             _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
-            return r != rowIndex;
-        });
+                return r != rowIndex;
+            });
         };
 
-        var params = {};
-        params[this.id + '_rowExpansion'] = true;
-        params[this.id + '_expandedRowIndex'] = rowIndex;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_rowExpansion', value: true},
+            {name: this.id + '_expandedRowIndex', value: rowIndex}
+        ];
 
         PrimeFaces.ajax.AjaxRequest(options);
     },
@@ -1022,16 +1020,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[rowEditorId] = rowEditorId;
-        params[this.id + '_rowEdit'] = true;
-        params[this.id + '_editedRowIndex'] = this.getRowMeta(row).index;
+        options.params = [
+            {name: rowEditorId, value: rowEditorId},
+            {name: this.id + '_rowEdit', value: true},
+            {name: this.id + '_editedRowIndex', value: this.getRowMeta(row).index}
+        ];
 
         if(action === 'cancel') {
-            params[this.id + '_rowEditCancel'] = true;
+            options.params.push({name: this.id + '_rowEditCancel', value: true});
         }
-
-        options.params = params;
 
         if(this.hasBehavior('rowEdit')) {
             var rowEditBehavior = this.cfg.behaviors['rowEdit'];
@@ -1167,11 +1164,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     var colResizeBehavior = _self.cfg.behaviors['colResize'];
 
                     var ext = {
-                        params: {}
+                        params: [
+                            {name: _self.id + '_columnId', value: columnHeader.attr('id')},
+                            {name: _self.id + '_width', value: newWidth},
+                            {name: _self.id + '_height', value: columnHeader.height()}
+                        ]
                     };
-                    ext.params[_self.id + '_columnId'] = columnHeader.attr('id');
-                    ext.params[_self.id + '_width'] = newWidth;
-                    ext.params[_self.id + '_height'] = columnHeader.height();
 
                     colResizeBehavior.call(_self, event, ext);
 
