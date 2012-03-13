@@ -168,14 +168,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             _self.show(newPanel);
         };
 
-
-        var params = [
+        
+        options.params = [
             {name: this.id + '_contentLoad', value: true},
             {name: this.id + '_newTab', value: newPanel.attr('id')},
             {name: this.id + '_tabindex', value: tabindex}
         ];
-
-        options.params = params;
 
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'];
