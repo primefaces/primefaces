@@ -5288,9 +5288,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                 var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
                 if(dateSelectBehavior) {
                     var ext = {
-                        params: {}
+                        params: [
+                            {name: _self.id + '_selectedDate', value: dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset}
+                        ]
                     };
-                    ext.params[_self.id + '_selectedDate'] = dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset;
 
                     dateSelectBehavior.call(_self, dayDate, ext);
                 }
@@ -5302,9 +5303,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                 var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
                 if(eventSelectBehavior) {
                     var ext = {
-                        params: {}
+                        params: [
+                            {name: _self.id + '_selectedEventId', value: calEvent.id}
+                        ]
                     };
-                    ext.params[_self.id + '_selectedEventId'] = calEvent.id;
 
                     eventSelectBehavior.call(_self, calEvent, ext);
                 }
@@ -5316,12 +5318,13 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                 var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
                 if(eventMoveBehavior) {
                     var ext = {
-                        params: {}
+                        params: [
+                            {name: _self.id + '_movedEventId', value: calEvent.id},
+                            {name: _self.id + '_dayDelta', value: dayDelta},
+                            {name: _self.id + '_minuteDelta', value: minuteDelta}
+                        ]
                     };
-                    ext.params[_self.id + '_movedEventId'] = calEvent.id;
-                    ext.params[_self.id + '_dayDelta'] = dayDelta;
-                    ext.params[_self.id + '_minuteDelta'] = minuteDelta;
-
+                    
                     eventMoveBehavior.call(_self, calEvent, ext);
                 }
             }
@@ -5332,11 +5335,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                 var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
                 if(eventResizeBehavior) {
                     var ext = {
-                        params: {}
+                        params: [
+                            {name: _self.id + '_resizedEventId', value: calEvent.id},
+                            {name: _self.id + '_dayDelta', value: dayDelta},
+                            {name: _self.id + '_minuteDelta', value: minuteDelta}
+                        ]
                     };
-                    ext.params[_self.id + '_resizedEventId'] = calEvent.id;
-                    ext.params[_self.id + '_dayDelta'] = dayDelta;
-                    ext.params[_self.id + '_minuteDelta'] = minuteDelta;
 
                     eventResizeBehavior.call(_self, calEvent, ext);
                 }
@@ -5384,11 +5388,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
 
-            var params = {};
-            params[_self.id + "_start"] = start.getTime() + offset;
-            params[_self.id + "_end"] = end.getTime() + offset;
-
-            options.params = params;
+            options.params = [
+                {name: _self.id + '_start', value: start.getTime() + offset},
+                {name: _self.id + '_end', value: end.getTime() + offset}
+            ];
 
             PrimeFaces.ajax.AjaxRequest(options);
         }
