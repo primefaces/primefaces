@@ -226,10 +226,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             _self._show();
         };
 
-        var params = [];
-        params[this.id + '_contentLoad'] = true;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_contentLoad', value: true}
+        ];
 
         PrimeFaces.ajax.AjaxRequest(options);
     }
