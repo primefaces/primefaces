@@ -4464,9 +4464,10 @@ debugData( test, pane );
         var closeBehavior = this.cfg.behaviors['close'];
         if(closeBehavior) {
             var ext = {
-                params : {}
+                params : [
+                    {name: this.id + '_unit', value: location}
+                ]
             };
-            ext.params[this.id + '_unit'] = location;
 
             closeBehavior.call(this, location, ext);
         }
@@ -4507,11 +4508,12 @@ debugData( test, pane );
             var resizeBehavior = this.cfg.behaviors['resize'];
             if(resizeBehavior) {
                 var ext = {
-                    params : {}
+                    params : [
+                        {name: this.id + '_unit', value: location},
+                        {name: this.id + '_width', value: state.innerWidth},
+                        {name: this.id + '_height', value: state.innerHeight}
+                    ]
                 };
-                ext.params[this.id + '_unit'] = location;
-                ext.params[this.id + '_width'] = state.innerWidth;
-                ext.params[this.id + '_height'] = state.innerHeight;
 
                 resizeBehavior.call(this, location, ext);
             }
@@ -4522,10 +4524,11 @@ debugData( test, pane );
         var toggleBehavior = this.cfg.behaviors['toggle'];
         if(toggleBehavior) {
             var ext = {
-                params : {}
+                params : [
+                    {name: this.id + '_unit', value: location},
+                    {name: this.id + '_collapsed', value: collapsed}
+                ]
             };
-            ext.params[this.id + '_unit'] = location;
-            ext.params[this.id + '_collapsed'] = collapsed;
 
             toggleBehavior.call(this, location, ext);
         }
