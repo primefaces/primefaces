@@ -133,10 +133,9 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                 node.removeData('processing');
             }
 
-            var params = {};
-            params[this.id + '_expandNode'] = _self.getNodeId(node);
-
-            options.params = params;
+            options.params = [
+                {name: this.id + '_expandNode', value: _self.getNodeId(node)}
+            ];
 
             if(this.hasBehavior('expand')) {
                 var expandBehavior = this.cfg.behaviors['expand'];
@@ -159,9 +158,10 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             var expandBehavior = this.cfg.behaviors['expand'];
             if(expandBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_expandNode', value: this.getNodeId(node)}
+                    ]
                 };
-                ext.params[this.id + '_expandNode'] = this.getNodeId(node);
 
                 expandBehavior.call(this, node, ext);
             }
@@ -199,9 +199,10 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             var collapseBehavior = this.cfg.behaviors['collapse'];
             if(collapseBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_collapseNode', value: this.getNodeId(node)}
+                    ]
                 };
-                ext.params[this.id + '_collapseNode'] = this.getNodeId(node);
 
                 collapseBehavior.call(this, node, ext);
             }
@@ -292,9 +293,10 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
 
             if(selectBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_instantSelection', value: this.getNodeId(node)}
+                    ]
                 };
-                ext.params[this.id + '_instantSelection'] = this.getNodeId(node);
 
                 selectBehavior.call(this, node, ext);
             }
@@ -307,9 +309,10 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
 
             if(unselectBehavior) {
                 var ext = {
-                    params: {}
+                    params: [
+                        {name: this.id + '_instantUnselection', value: this.getNodeId(node)}
+                    ]
                 };
-                ext.params[this.id + '_instantUnselection'] = this.getNodeId(node);
 
                 unselectBehavior.call(this, node, ext);
             }

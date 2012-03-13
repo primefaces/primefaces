@@ -106,10 +106,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
 
-        var params = {};
-        params[this.id + '_expand'] = nodeKey;
-
-        options.params = params;
+        options.params = [
+            {name: this.id + '_expand', value: nodeKey}
+        ];
 
         if(this.hasBehavior('expand')) {
             var expandBehavior = this.cfg.behaviors['expand'];
@@ -132,12 +131,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             var collapseBehavior = this.cfg.behaviors['collapse'],
             nodeKey = node.attr('id').split('_node_')[1];
 
-            var options = {
-                params : {}
+            var ext = {
+                params : [
+                    {name: this.id + '_collapse', value: nodeKey}
+                ]
             };
-            options.params[this.id + '_collapse'] = nodeKey;
 
-            collapseBehavior.call(this, e, options);
+            collapseBehavior.call(this, e, ext);
         }
     },
     
@@ -271,26 +271,26 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     fireSelectNodeEvent: function(e, nodeKey) {
         if(this.hasBehavior('select')) {
             var selectBehavior = this.cfg.behaviors['select'],
-            options = {
-                params : {}
+            ext = {
+                params: [
+                    {name: this.id + '_instantSelect', value: nodeKey}
+                ]
             };
 
-            options.params[this.id + '_instantSelect'] = nodeKey;
-
-            selectBehavior.call(this, e, options);
+            selectBehavior.call(this, e, ext);
         }
     },
     
     fireUnselectNodeEvent: function(e, nodeKey) {
         if(this.hasBehavior('unselect')) {
             var unselectBehavior = this.cfg.behaviors['unselect'],
-            options = {
-                params : {}
+             ext = {
+                params: [
+                    {name: this.id + '_instantUnselect', value: nodeKey}
+                ]
             };
-
-            options.params[this.id + '_instantUnselect'] = nodeKey;
-
-            unselectBehavior.call(this, e, options);
+            
+            unselectBehavior.call(this, e, ext);
         }
     },
     
