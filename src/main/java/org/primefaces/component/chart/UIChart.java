@@ -40,7 +40,9 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
         ,style
         ,title
         ,legendPosition
-        ,enhancedLegend
+        ,legendToggle
+        ,legendCols
+        ,legendRows
         ,shadow
         ,xaxisLabel
         ,yaxisLabel
@@ -138,11 +140,11 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 		getStateHelper().put(PropertyKeys.shadow, _shadow);
 	}
         
-	public boolean isEnhancedLegend() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.enhancedLegend, true);
+	public boolean isLegendToggle() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.legendToggle, true);
 	}
-	public void setEnhancedLegend(boolean _enhancedLegend) {
-		getStateHelper().put(PropertyKeys.enhancedLegend, _enhancedLegend);
+	public void setLegendToggle(boolean _legendToggle) {
+		getStateHelper().put(PropertyKeys.legendToggle, _legendToggle);
 	}
 	
     public java.lang.String getSeriesColors() {
@@ -150,6 +152,20 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
 	public void setSeriesColors(java.lang.String _seriesColors) {
 		getStateHelper().put(PropertyKeys.seriesColors, _seriesColors);
+	}
+    
+    public Integer getLegendCols() {
+		return (Integer) getStateHelper().eval(PropertyKeys.legendCols, 1);
+	}
+	public void setLegendCols(Integer _legendCols) {
+		getStateHelper().put(PropertyKeys.legendCols, _legendCols);
+	}
+    
+    public Integer getLegendRows() {
+		return (Integer) getStateHelper().eval(PropertyKeys.legendRows, 0);
+	}
+	public void setLegendRows(Integer _legendRows) {
+		getStateHelper().put(PropertyKeys.legendRows, _legendRows);
 	}
     
     @Override

@@ -88,18 +88,25 @@
             <description>Whether data information will be showed on chart. Default is false.</description>
 		</attribute>
         <attribute>
-			<name>enhancedLegend</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <ignoreInComponent>true</ignoreInComponent>
-            <description>Defines legend action whether hides/shows related series on click.</description>
-		</attribute>
-        <attribute>
             <name>dataFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>Defines data information type on highlighter or slices. Default is percent.</description>
         </attribute>
+        <attribute>
+			<name>legendCols</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Defines visible column count of chart legend.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>legendRows</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Defines visible row count of chart legend.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

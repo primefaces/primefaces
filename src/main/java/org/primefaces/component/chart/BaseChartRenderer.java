@@ -62,8 +62,26 @@ public class BaseChartRenderer extends CoreRenderer {
         if(legendPosition != null) {
             writer.write(",legend:{");
             writer.write("show:true");
-            if(chart.isEnhancedLegend()) writer.write(",renderer: $.jqplot.EnhancedLegendRenderer");
-            writer.write(",location:'" + legendPosition + "'}");
+            writer.write(",renderer: $.jqplot.EnhancedLegendRenderer, rendererOptions: {");
+            
+            writer.write("seriesToggle:");
+            
+            if(chart.isLegendToggle()) {
+                writer.write("'normal'");
+            }
+            else {
+                writer.write("false");
+            }
+            
+            if(chart.getLegendCols() != 1) {
+                writer.write(",numberColumns:" + chart.getLegendCols());
+            }
+            
+            if(chart.getLegendRows() > 0) {
+                writer.write(",numberRows:" + chart.getLegendRows());
+            }
+            
+            writer.write("}, location:'" + legendPosition + "'}");
         }
         
         writer.write(",axes:{");
