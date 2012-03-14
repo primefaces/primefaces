@@ -105,7 +105,7 @@
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
         <attribute>
-            <name>enhancedLegend</name>
+            <name>legendToggle</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <ignoreInComponent>true</ignoreInComponent>
@@ -133,6 +133,20 @@
 			<name>yaxisAngle</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>legendCols</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Defines visible column count of chart legend.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>legendRows</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Defines visible row count of chart legend.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
 	</attributes>

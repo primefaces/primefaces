@@ -44,12 +44,6 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>legendPosition</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
             <name>shadow</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
@@ -60,13 +54,6 @@
             <required>false</required>
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
-            <name>enhancedLegend</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <ignoreInComponent>true</ignoreInComponent>
-            <description>Defines legend action whether hides/shows related series on click.</description>
         </attribute>
         <attribute>
             <name>bubbleGradients</name>
