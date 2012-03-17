@@ -1509,7 +1509,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
         
         //attach keypress listener to parent form
-        this.jqTarget.parents('form:first').keypress(function(e) {
+        this.jqTarget.parents('form:first').keydown(function(e) {
            var keyCode = $.ui.keyCode;
            
            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
