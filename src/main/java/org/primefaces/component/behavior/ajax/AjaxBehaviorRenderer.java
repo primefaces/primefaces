@@ -64,13 +64,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         req.append("{source:").append(source);
 
         //process
-        String process = ajaxBehavior.getProcess() != null ? ComponentUtils.findClientIds(fc, component, ajaxBehavior.getProcess()) : clientId;
-        req.append(",process:'").append(process).append("'");
+        ComponentUtils.addIds(fc, component, ajaxBehavior.getProcess(), req, "process", "processSelector");
 
         //update
-        String update = ajaxBehavior.getUpdate();
-        if(update != null)
-            req.append(",update:'").append(ComponentUtils.findClientIds(fc, component, update)).append("'");
+        ComponentUtils.addIds(fc, component, ajaxBehavior.getUpdate(), req, "update", "updateSelector");
 
         //behavior event
         req.append(",event:'").append(behaviorContext.getEventName()).append("'");

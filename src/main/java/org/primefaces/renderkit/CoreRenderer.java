@@ -189,42 +189,7 @@ public abstract class CoreRenderer extends Renderer {
 		
 		return value.trim().equals("");
 	}
-    
-    private String[] parseIds(String ids) {
-        Pattern p = Pattern.compile("@\\(.+\\)\\s*");
-        Matcher m = p.matcher(ids);
-        String selector, regular;
-        
-        if(m.find()) {
-            selector = m.group().trim();
-            regular = m.replaceAll("");
-        }
-        else {
-            selector = null;
-            regular = ids;
-        }
-        
-        if(isValueBlank(regular)) {
-            regular = null;
-        }
-        
-        return new String[]{regular, selector};
-    }
-    
-    private void addIds(FacesContext context, UIComponent component, String ids, StringBuilder req, String key, String keySel) {        
-        if(!isValueBlank(ids)) {
-            String[] parsed = parseIds(ids);
-            String regular = parsed[0];
-            String selector = parsed[1];
-            
-            if(regular != null)
-                req.append(",").append(key).append(":'").append(ComponentUtils.findClientIds(context, component, regular)).append("'");
-            
-            if(selector != null)
-                req.append(",").append(keySel).append(":'").append(selector).append("'");
-        }
-    }
-	
+    	
     protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
@@ -244,10 +209,10 @@ public abstract class CoreRenderer extends Renderer {
         req.append(",source:").append("'").append(clientId).append("'");
 
         //process
-        addIds(context, component, source.getProcess(), req, "process", "processSelector");
+        ComponentUtils.addIds(context, component, source.getProcess(), req, "process", "processSelector");
 
         //update
-        addIds(context, component, source.getUpdate(), req, "update", "updateSelector");
+        ComponentUtils.addIds(context, component, source.getUpdate(), req, "update", "updateSelector");
 
         //async
         if(source.isAsync())
