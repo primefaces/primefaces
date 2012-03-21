@@ -32,12 +32,13 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.AjaxSource;
 
 @ResourceDependencies({
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
 	@ResourceDependency(library="primefaces", name="primefaces.js")
 })
-public class AjaxBehavior extends ClientBehaviorBase {
+public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
 
     private String update;
     private String process;

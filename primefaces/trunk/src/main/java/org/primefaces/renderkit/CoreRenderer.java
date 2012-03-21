@@ -21,10 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.faces.FacesException;
-
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
@@ -37,7 +33,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.AjaxRequestBuilder;
 
 public abstract class CoreRenderer extends Renderer {
 	
@@ -193,73 +189,23 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
-        UIComponent form = ComponentUtils.findParentForm(context, component);
-
-        if(form == null) {
-            throw new FacesException("Component " + component.getClientId(context) + " must be enclosed in a form.");
-        }
-
-        StringBuilder req = new StringBuilder();
-        req.append("PrimeFaces.ab(");
-
-        //form
-        req.append("{formId:").append("'").append(form.getClientId(context)).append("'");
-
-        //source
-        req.append(",source:").append("'").append(clientId).append("'");
-
-        //process
-        ComponentUtils.addIds(context, component, source.getProcess(), req, "process", "processSelector");
-
-        //update
-        ComponentUtils.addIds(context, component, source.getUpdate(), req, "update", "updateSelector");
-
-        //async
-        if(source.isAsync())
-            req.append(",async:true");
-
-        //global
-        if(!source.isGlobal())
-            req.append(",global:false");
         
-        //partial submit
-        if(source.isPartialSubmit())
-            req.append(",partialSubmit:true");
+        AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        
+        String request = builder.source(clientId)
+                        .process(context, component, source.getProcess())
+                        .update(context, component, source.getUpdate())
+                        .async(source.isAsync())
+                        .global(source.isGlobal())
+                        .partialSubmit(source.isPartialSubmit())
+                        .onstart(source.getOnstart())
+                        .onerror(source.getOnerror())
+                        .onsuccess(source.getOnsuccess())
+                        .oncomplete(source.getOncomplete())
+                        .params(component)
+                        .build();
 
-        //callbacks
-        if(source.getOnstart() != null)
-            req.append(",onstart:function(){").append(source.getOnstart()).append(";}");
-        if(source.getOnerror() != null)
-            req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
-        if(source.getOnsuccess() != null)
-            req.append(",onsuccess:function(data, status, xhr){").append(source.getOnsuccess()).append(";}");
-        if(source.getOncomplete() != null)
-            req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
-
-        //params
-        boolean paramWritten = false;
-        for(UIComponent child : component.getChildren()) {
-            if(child instanceof UIParameter) {
-                UIParameter parameter = (UIParameter) child;
-
-                if(!paramWritten) {
-                    paramWritten = true;
-                    req.append(",params:[");
-                } else {
-                    req.append(",");
-                }
-
-                req.append("{name:").append("'").append(parameter.getName()).append("',value:'").append(parameter.getValue()).append("'}");
-            }
-        }
-
-        if(paramWritten) {
-            req.append("]");
-        }
-
-        req.append("});return false;");
-
-        return req.toString();
+        return request;
     }
 	
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
