@@ -121,14 +121,6 @@ PrimeFaces = {
     ab : function(cfg, ext) {
         PrimeFaces.ajax.AjaxRequest(cfg, ext);
     },
-
-    //mobile
-    navigate : function(to, cfg) {
-        var options = cfg ? cfg : {};
-        options.changeHash = false;
-        
-        $.mobile.changePage(to, options);
-    },
     
     info: function(log) {
         if(this.logger) {
@@ -378,34 +370,6 @@ PrimeFaces.ajax.AjaxUtils = {
             document.open();
             document.write(content);
             document.close();
-        }
-        else {
-            $(PrimeFaces.escapeClientId(id)).replaceWith(content);
-
-            //PrimeFaces Mobile
-            if($.mobile) {
-                var controls = $(PrimeFaces.escapeClientId(id)).parent().find("input, textarea, select, button, ul");
-
-                //input and textarea
-                controls
-                    .filter("input, textarea")
-                    .not("[type='radio'], [type='checkbox'], [type='button'], [type='submit'], [type='reset'], [type='image'], [type='hidden']")
-                    .textinput();
-                    
-                //lists
-                controls.filter("[data-role='listview']").listview();
-                
-                //buttons
-                controls.filter("button, [type='button'], [type='submit'], [type='reset'], [type='image']" ).button();
-
-                //slider
-                controls.filter("input, select")
-                        .filter("[data-role='slider'], [data-type='range']")
-                        .slider();
-                
-                //selects
-                controls.filter("select:not([data-role='slider'])" ).selectmenu();
-            }
         }
     },
 
