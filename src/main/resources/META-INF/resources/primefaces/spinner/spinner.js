@@ -23,6 +23,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.bindEvents();
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         PrimeFaces.skinInput(this.input);
     },

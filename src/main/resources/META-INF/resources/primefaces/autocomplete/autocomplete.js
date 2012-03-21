@@ -57,6 +57,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide();
             }
         });
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         //dialog support
         this.setupDialogSupport();

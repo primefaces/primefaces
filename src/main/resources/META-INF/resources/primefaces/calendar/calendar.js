@@ -82,6 +82,9 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 _self.jqEl.datepicker('hide');
             });
         }
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     configureLocale: function() {
