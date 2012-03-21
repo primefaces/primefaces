@@ -442,6 +442,19 @@ PrimeFaces.ajax.AjaxUtils = {
                 }
             }
         }
+    },
+    
+    findComponents : function(selector) {
+        //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
+        var jqSelector = selector.substring(2, selector.length - 1),
+        components = $(jqSelector),
+        ids = [];
+        
+        components.each(function() {
+            ids.push($(this).attr('id'));
+        });
+        
+        return ids;
     }
 };
 
@@ -507,6 +520,12 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     if(ext && ext.process) {
         process.push(cfg.process);
     }
+    
+    //process selector
+    if(cfg.processSelector) {
+        $.merge(process, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.processSelector));
+    }
+    
     var processIds = process.length > 0 ? process.join(' ') : '@all';
     postParams.push({name:PrimeFaces.PARTIAL_PROCESS_PARAM, value:processIds});
     
@@ -517,8 +536,16 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     }
     if(ext && ext.update) {
         update.push(ext.update);
-    }    
-    postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:update.join(' ')});
+    }
+
+    //update selector
+    if(cfg.updateSelector) {
+        $.merge(update, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.updateSelector));
+    }
+    
+    if(update.length > 0) {
+        postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:update.join(' ')});
+    }
     
     //behavior event
     if(cfg.event) {

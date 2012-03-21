@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.faces.FacesException;
 
 import javax.faces.application.Resource;
@@ -187,12 +189,47 @@ public abstract class CoreRenderer extends Renderer {
 		
 		return value.trim().equals("");
 	}
+    
+    private String[] parseIds(String ids) {
+        Pattern p = Pattern.compile("@\\(.+\\)\\s*");
+        Matcher m = p.matcher(ids);
+        String selector, regular;
+        
+        if(m.find()) {
+            selector = m.group().trim();
+            regular = m.replaceAll("");
+        }
+        else {
+            selector = null;
+            regular = ids;
+        }
+        
+        if(isValueBlank(regular)) {
+            regular = null;
+        }
+        
+        return new String[]{regular, selector};
+    }
+    
+    private void addIds(FacesContext context, UIComponent component, String ids, StringBuilder req, String key, String keySel) {        
+        if(!isValueBlank(ids)) {
+            String[] parsed = parseIds(ids);
+            String regular = parsed[0];
+            String selector = parsed[1];
+            
+            if(regular != null)
+                req.append(",").append(key).append(":'").append(ComponentUtils.findClientIds(context, component, regular)).append("'");
+            
+            if(selector != null)
+                req.append(",").append(keySel).append(":'").append(selector).append("'");
+        }
+    }
 	
     protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
         UIComponent form = ComponentUtils.findParentForm(context, component);
-        
+
         if(form == null) {
             throw new FacesException("Component " + component.getClientId(context) + " must be enclosed in a form.");
         }
@@ -207,16 +244,10 @@ public abstract class CoreRenderer extends Renderer {
         req.append(",source:").append("'").append(clientId).append("'");
 
         //process
-        String process = source.getProcess();
-        if(process != null) {
-            req.append(",process:'").append(ComponentUtils.findClientIds(context, component, process)).append("'");
-        } 
+        addIds(context, component, source.getProcess(), req, "process", "processSelector");
 
         //update
-        String update = source.getUpdate();
-        if(update != null) {
-            req.append(",update:'").append(ComponentUtils.findClientIds(context, component, update)).append("'");
-        }
+        addIds(context, component, source.getUpdate(), req, "update", "updateSelector");
 
         //async
         if(source.isAsync())
