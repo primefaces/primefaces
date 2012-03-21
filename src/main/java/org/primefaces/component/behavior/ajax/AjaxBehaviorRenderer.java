@@ -18,13 +18,13 @@ package org.primefaces.component.behavior.ajax;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
@@ -51,74 +51,26 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             return null;
         }
         
-        FacesContext fc = behaviorContext.getFacesContext();
+        FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
-        String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
-        source = source == null ? "this" : "'" + source + "'";
 
-        StringBuilder req = new StringBuilder();
-        req.append("PrimeFaces.ab(");
-
-        //source
-        req.append("{source:").append(source);
-
-        //process
-        ComponentUtils.addIds(fc, component, ajaxBehavior.getProcess(), req, "process", "processSelector");
-
-        //update
-        ComponentUtils.addIds(fc, component, ajaxBehavior.getUpdate(), req, "update", "updateSelector");
-
-        //behavior event
-        req.append(",event:'").append(behaviorContext.getEventName()).append("'");
-
-        //async
-        if(ajaxBehavior.isAsync())
-            req.append(",async:true");
-
-        //global
-        if(!ajaxBehavior.isGlobal())
-            req.append(",global:false");
+        AjaxRequestBuilder builder = new AjaxRequestBuilder();
         
-        //partial submit
-        if(ajaxBehavior.isPartialSubmit())
-            req.append(",partialSubmit:true");
+        String request = builder.source(source)
+                        .process(context, component, ajaxBehavior.getProcess())
+                        .update(context, component, ajaxBehavior.getUpdate())
+                        .async(ajaxBehavior.isAsync())
+                        .global(ajaxBehavior.isGlobal())
+                        .partialSubmit(ajaxBehavior.isPartialSubmit())
+                        .onstart(ajaxBehavior.getOnstart())
+                        .onerror(ajaxBehavior.getOnerror())
+                        .onsuccess(ajaxBehavior.getOnsuccess())
+                        .oncomplete(ajaxBehavior.getOncomplete())
+                        .params(component)
+                        .buildBehavior();
 
-        //callbacks
-        if(ajaxBehavior.getOnstart() != null)
-            req.append(",onstart:function(xhr){").append(ajaxBehavior.getOnstart()).append(";}");
-        if(ajaxBehavior.getOnerror() != null)
-            req.append(",onerror:function(xhr, status, error){").append(ajaxBehavior.getOnerror()).append(";}");
-        if(ajaxBehavior.getOnsuccess() != null)
-            req.append(",onsuccess:function(data, status, xhr){").append(ajaxBehavior.getOnsuccess()).append(";}");
-        if(ajaxBehavior.getOncomplete() != null)
-            req.append(",oncomplete:function(xhr, status, args){").append(ajaxBehavior.getOncomplete()).append(";}");
-
-        //params
-        boolean paramWritten = false;
-        for(UIComponent child : component.getChildren()) {
-            if(child instanceof UIParameter) {
-                UIParameter parameter = (UIParameter) child;
-
-                if(!paramWritten) {
-                    paramWritten = true;
-                    req.append(",params:[");
-                } else {
-                    req.append(",");
-                }
-
-                req.append("{name:").append("'").append(parameter.getName()).append("',value:'").append(parameter.getValue()).append("'}");
-            }
-        }
-
-        if(paramWritten) {
-            req.append("]");
-        }
-        
-        
-        req.append("}, arguments[1]);");
-
-        return req.toString();
+        return request;
     }
 
     private boolean isImmediate(UIComponent component, AjaxBehavior ajaxBehavior) {
