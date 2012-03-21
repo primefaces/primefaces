@@ -303,7 +303,9 @@ PrimeFaces = {
 
     VIEW_STATE : "javax.faces.ViewState",
     
-    VIEW_ROOT : "javax.faces.ViewRoot"
+    VIEW_ROOT : "javax.faces.ViewRoot",
+    
+    CLIENT_ID_DATA : "primefaces.clientid"
 };
 
 /**
@@ -451,7 +453,10 @@ PrimeFaces.ajax.AjaxUtils = {
         ids = [];
         
         components.each(function() {
-            ids.push($(this).attr('id'));
+            var element = $(this),
+            clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
+            
+            ids.push(clientId);
         });
         
         return ids;
