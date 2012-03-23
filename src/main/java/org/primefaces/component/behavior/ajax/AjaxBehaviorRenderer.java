@@ -56,7 +56,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         String source = behaviorContext.getSourceId();
         String process = ajaxBehavior.getProcess();
         if(process == null) {
-            process = source;
+            process = "@this";
         }
 
         AjaxRequestBuilder builder = new AjaxRequestBuilder();
