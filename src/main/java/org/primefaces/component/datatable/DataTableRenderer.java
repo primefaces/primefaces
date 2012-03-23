@@ -155,9 +155,6 @@ public class DataTableRenderer extends DataRenderer {
             writer.write(",liveScroll:" + table.isLiveScroll());
             writer.write(",scrollStep:" + table.getScrollRows());
             writer.write(",scrollLimit:" + table.getRowCount());
-            
-            if(table.getScrollWidth() != Integer.MIN_VALUE)
-                writer.write(",scrollWidth:" + table.getScrollWidth());
         }
 
         //Resizable Columns
@@ -251,13 +248,25 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int scrollHeight = table.getScrollHeight();        
+        int scrollHeight = table.getScrollHeight();    
+        int scrollWidth = table.getScrollWidth();
+        boolean hasScrollHeight = scrollHeight != Integer.MIN_VALUE;
+        boolean hasScrollWidth = scrollWidth != Integer.MIN_VALUE;
+        StringBuilder style = new StringBuilder();
         String tableStyle = table.getStyle();
         String tableStyleClass = table.getStyleClass();
+        
+        if(hasScrollHeight)
+            style.append("height:").append(scrollHeight).append("px;");
+        if(hasScrollWidth)
+            style.append("width:").append(scrollWidth).append("px;");
                 
         //header
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
@@ -276,8 +285,8 @@ public class DataTableRenderer extends DataRenderer {
         //body
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        if(scrollHeight != Integer.MIN_VALUE) {
-            writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
+        if(style.length() > 0) {
+            writer.writeAttribute("style", style.toString(), null);
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
@@ -295,6 +304,9 @@ public class DataTableRenderer extends DataRenderer {
         //footer
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
@@ -360,6 +372,9 @@ public class DataTableRenderer extends DataRenderer {
         //column content wrapper
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER , null);
+        if(column.getWidth() != -1) {
+            writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+        }
 
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
             encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
@@ -515,6 +530,9 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+        if(column.getWidth() != -1) {
+            writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+        }
         
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -748,18 +766,20 @@ public class DataTableRenderer extends DataRenderer {
         if(style != null) writer.writeAttribute("style", style, null);
         if(!isValueBlank(styleClass)) writer.writeAttribute("class", styleClass.trim(), null);
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
+        if(column.getWidth() != -1) {
+            writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+        }
+        
         if(selectionEnabled) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             encodeColumnSelection(context, table, clientId, column, selected);
-            writer.endElement("div");
         }
         else {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
-            column.encodeAll(context);
-            writer.endElement("div");
+            column.encodeAll(context);            
         }
+        
+        writer.endElement("div");
 
         writer.endElement("td");
     }

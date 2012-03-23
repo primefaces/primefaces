@@ -130,5 +130,12 @@
             <defaultValue>true</defaultValue>
             <description>Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.</description>
 		</attribute>
+        <attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>-1</defaultValue>
+            <description>Width of the column in pixels.</description>
+		</attribute>
 	</attributes>
 </component>

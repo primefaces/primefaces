@@ -41,10 +41,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.setupCellEditorEvents();
         }
 
-        if(this.cfg.scrollable||this.cfg.resizableColumns) {
-            this.initColumnWidths();
-        }
-
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
@@ -296,19 +292,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         var _self = this;
 
-        if(this.cfg.scrollWidth) {
-            this.scrollHeader.width(this.cfg.scrollWidth);
-            this.scrollBody.width(this.cfg.scrollWidth);
-            this.scrollFooter.width(this.cfg.scrollWidth);
-        }
-
         if(this.cfg.liveScroll) {
             this.scrollOffset = this.cfg.scrollStep;
             this.shouldLiveScroll = true;       
         }
 
         this.restoreScrollState();
-
 
         //scroll handler
         this.scrollBody.scroll(function() {
@@ -434,11 +423,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     //update body
                     _self.tbody.html(content);
 
-                    //restore column widths
-                    if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
-                        _self.updateDataCellWidths();
-                    }
-
                     //update header checkbox if all enabled checkboxes are checked in new page
                     if(_self.checkAllToggler) {
                         _self.updateHeaderCheckbox();
@@ -501,11 +485,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     if(paginator) {
                         paginator.setPage(0, true);
                     }
-
-                    //restore column widths
-                    if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
-                        _self.updateDataCellWidths();
-                    }
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -558,11 +537,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 if(id == _self.id){
                     //update body
                     _self.tbody.html(content);
-
-                    //restore column widths
-                    if(_self.cfg.scrollable||_self.cfg.resizableColumns) {
-                        _self.updateDataCellWidths();
-                    }
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -1243,61 +1217,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         return meta;
     },
-    
-    
-    /**
-     * Moves widths of columns to column wrappers
-     */
-    initColumnWidths: function() {
-        var headers = this.jq.find('thead:first tr:last th'),
-        dataCells = this.tbody.find('td'),
-        footers = this.jq.find('tfoot:first tr:first td'),
-        widths = [];
-
-        //headers
-        for(var i = 0; i < headers.length; i++) {
-            var header = headers.eq(i),
-            wrapper = header.children('div.ui-dt-c'),
-            width = header.width();
-
-            wrapper.width(width);
-            header.width('');
-
-            widths.push(width);
-        }
-
-        //data cells
-        for(var i = 0; i < dataCells.length; i++) {
-            var cell = dataCells.eq(i);
-            cell.width('').children('div.ui-dt-c').width(widths[cell.index()]);
-        }
-
-        //footers
-        for(var i = 0; i < footers.length; i++) {
-            footers.eq(i).width('').children('div.ui-dt-c').width(widths[i]);
-        }
-    },
-    
-    /**
-     * Updates data cell widths after data changes
-     */
-    updateDataCellWidths: function() {
-        var headerWrappers = this.jq.find('thead:first th div.ui-dt-c'),
-        dataCells = $(this.tbodyId).find('td'),
-        widths = [];
-
-        //headers
-        for(var i = 0; i < headerWrappers.length; i++) {
-            widths.push(headerWrappers.eq(i).width());        
-        }
-
-        //data cells
-        for(i = 0; i < dataCells.length; i++) {
-            var cell = dataCells.eq(i);
-            cell.width('').children('div.ui-dt-c').width(widths[cell.index()]);
-        }
-    },
-    
     
     /**
      * Sets up column reordering
