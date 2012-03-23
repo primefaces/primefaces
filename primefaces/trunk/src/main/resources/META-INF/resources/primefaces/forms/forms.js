@@ -1579,7 +1579,12 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
         //menuitem visuals
         this.menuitems.mouseover(function(e) {
-            $(this).addClass('ui-state-hover');
+            var menuitem = $(this),
+            menuitemLink = menuitem.children('.ui-menuitem-link');
+            
+            if(!menuitemLink.hasClass('ui-state-disabled')) {
+                menuitem.addClass('ui-state-hover');
+            }
         }).mouseout(function(e) {
             $(this).removeClass('ui-state-hover');
         }).click(function() {
