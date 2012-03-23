@@ -1133,21 +1133,28 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 scrollHeader.scrollLeft(scrollBody.scrollLeft());
 
-                //Invoke colResize behavior
+                //Sync width change with server side state
+                var options = {
+                    source: _self.id,
+                    process: _self.id,
+                    params: [
+                        {name: _self.id + '_updateBody', value: true},
+                        {name: _self.id + '_colResize', value: true},
+                        {name: _self.id + '_columnId', value: columnHeader.attr('id')},
+                        {name: _self.id + '_width', value: newWidth},
+                        {name: _self.id + '_height', value: columnHeader.height()}
+                    ]
+                }
+                
                 if(_self.hasBehavior('colResize')) {
                     var colResizeBehavior = _self.cfg.behaviors['colResize'];
-
-                    var ext = {
-                        params: [
-                            {name: _self.id + '_columnId', value: columnHeader.attr('id')},
-                            {name: _self.id + '_width', value: newWidth},
-                            {name: _self.id + '_height', value: columnHeader.height()}
-                        ]
-                    };
-
-                    colResizeBehavior.call(_self, event, ext);
-
+                    
+                    colResizeBehavior.call(_self, event, options);
                 }
+                else {
+                    PrimeFaces.ajax.AjaxRequest(options);
+                }
+                
             },
             containment: this.jq
         });

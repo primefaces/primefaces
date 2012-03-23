@@ -57,6 +57,10 @@ public class DataTableRenderer extends DataRenderer {
             table.syncColumnOrder();
         }
         
+        if(table.isResizableColumns() && table.isColResizeRequest(context)) {
+            table.syncColumnWidths();
+        }
+        
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
             
