@@ -123,12 +123,16 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
     
     protected void encodeMenuIcon(FacesContext context, SplitButton button, String id) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String buttonClass = SplitButton.MENU_ICON_BUTTON_CLASS;
+        if(button.isDisabled()) {
+            buttonClass += " ui-state-disabled";
+        }
         
         writer.startElement("button", button);
-		writer.writeAttribute("id", id, "id");
-		writer.writeAttribute("name", id, "name");
-        writer.writeAttribute("type", "button", "name");
-        writer.writeAttribute("class", SplitButton.MENU_ICON_BUTTON_CLASS + " ui-corner-right", "styleClass");
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", buttonClass, null);
 
         if(button.isDisabled()) { 
             writer.writeAttribute("disabled", "disabled", "disabled");
