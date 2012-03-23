@@ -1110,7 +1110,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     setupResizableColumns: function() {
         //Add resizers and resizer helper
-        $(this.jqId + ' thead tr th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>');
+        $(this.jqId + ' thead tr th.ui-resizable-column div.ui-dt-c').prepend('<span class="ui-column-resizer">&nbsp;</span>');
         $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
         //Variables
@@ -1141,8 +1141,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     });  
             },
             stop: function(event, ui) {
-                var columnHeader = ui.helper.parent(),
-                columnHeaderWrapper = columnHeader.children('div.ui-dt-c'),
+                var columnHeaderWrapper = ui.helper.parent(),
+                columnHeader = columnHeaderWrapper.parent(),
                 oldPos = ui.originalPosition.left,
                 newPos = ui.position.left,
                 change = (newPos - oldPos),

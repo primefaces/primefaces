@@ -20,7 +20,7 @@
 .ui-datatable th, .ui-datatable tfoot td {
     text-align:center;
     white-space:nowrap;
-    padding:4px 10px;
+    padding:0px;
     margin:0px;
     overflow: hidden;
 }
@@ -32,7 +32,7 @@
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
-    padding:4px 10px;
+    padding:0px;
     margin:0px;
     overflow: hidden;
 }
@@ -41,13 +41,14 @@
     cursor: pointer;
 }
 
-.ui-datatable .ui-sortable-column div.ui-dt-c {
+.ui-datatable div.ui-dt-c {
     position: relative;
 }
 
 .ui-datatable .ui-sortable-column-icon {
     position: absolute;
-    right:0;
+    left:0;
+    margin-left: -2px;
 }
 
 .ui-datatable .ui-column-filter {
@@ -121,13 +122,14 @@
 }
 
 .ui-datatable .ui-column-resizer {
+    position:absolute;
+    right:0;
     width:8px;
     height:20px;
-    float:right;
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: -4px -10px -4px 0;
+    margin: -4px 0px;
     *margin-left: 2px;
 }
 
@@ -155,7 +157,7 @@
 .ui-datatable .ui-datatable-data td div.ui-dt-c,
 .ui-datatable .ui-datatable-data-empty td div.ui-dt-c,
 .ui-datatable tfoot td div.ui-dt-c {
-    padding: 0px;
+    padding: 4px 10px;
     overflow: hidden;
 }
 
