@@ -54,11 +54,16 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String source = behaviorContext.getSourceId();
+        String process = ajaxBehavior.getProcess();
+        if(process == null) {
+            process = source;
+        }
 
         AjaxRequestBuilder builder = new AjaxRequestBuilder();
         
         String request = builder.source(source)
-                        .process(context, component, ajaxBehavior.getProcess())
+                        .event(behaviorContext.getEventName())
+                        .process(context, component, process)
                         .update(context, component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
                         .global(ajaxBehavior.isGlobal())
