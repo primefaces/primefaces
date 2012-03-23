@@ -109,7 +109,7 @@ public class CalendarRenderer extends InputRenderer {
             
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS);
   
-            if(calendar.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
+            if(calendar.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         }
 
@@ -160,6 +160,7 @@ public class CalendarRenderer extends InputRenderer {
         if(calendar.isDisabled()) writer.write(",disabled:true");
         if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
         if(calendar.getBeforeShowDay() != null) writer.write(",preShowDay:" + calendar.getBeforeShowDay());
+        if(calendar.isReadonlyInput()) writer.write(",readonlyInput:true");
 
         if(calendar.isNavigator()) {
             writer.write(",changeMonth:true");

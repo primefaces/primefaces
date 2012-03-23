@@ -78,7 +78,7 @@
             <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
         </attribute>
         <attribute>
-            <name>readOnlyInputText</name>
+            <name>readonlyInput</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>

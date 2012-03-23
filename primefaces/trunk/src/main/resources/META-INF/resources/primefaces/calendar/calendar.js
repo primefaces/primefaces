@@ -68,8 +68,9 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
         
         //readonly input
-        if(this.cfg.popup && this.input.prop('readonly')) {
+        if(this.cfg.popup && this.cfg.readonlyInput) {
             this.input.focus(function(e) {
+                e.preventDefault();
                 $(this).blur();
             });
         }
