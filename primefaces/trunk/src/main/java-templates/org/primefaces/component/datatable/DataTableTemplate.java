@@ -167,6 +167,10 @@ import javax.faces.context.FacesContext;
     public boolean isScrollingRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
     }
+    
+    public boolean isColResizeRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_colResize");
+    }
 
     private Map<String,Column> filterMap;
 
@@ -752,4 +756,15 @@ import javax.faces.context.FacesContext;
         }
 
         return builder.toString();
+    }
+    
+    public void syncColumnWidths() {
+        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String clientId = this.getClientId();
+        
+        String columnId = params.get(clientId + "_columnId");
+        String width = params.get(clientId + "_width");
+        Column column = findColumn(columnId);
+        
+        column.setWidth(Integer.parseInt(width));
     }
