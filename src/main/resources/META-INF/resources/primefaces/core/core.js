@@ -371,6 +371,9 @@ PrimeFaces.ajax.AjaxUtils = {
             document.write(content);
             document.close();
         }
+        else {
+            $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+        }
     },
 
     /**
@@ -543,9 +546,9 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     
     /**
      * Only add params of process components and their children 
-     * if partial submit is enabled and there are components to process partially
+     * if partial submit is enabled(undefined or true) and there are components to process partially
      */
-    if(cfg.partialSubmit && processIds != '@all') {    
+    if(cfg.partialSubmit != false && processIds != '@all') {    
         var processIdsArray = processIds.split(' ');
         $.each(processIdsArray, function(i, item) {
             var jqProcess = PrimeFaces.escapeClientId(item),

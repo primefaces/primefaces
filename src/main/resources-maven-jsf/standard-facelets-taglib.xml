@@ -235,7 +235,7 @@
             <description>When enabled, only values related to partially processed components would be serialized for ajax 
             instead of whole form.</description>
 			<name>partialSubmit</name>
-			<required>false</required>
+			<required>true</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
     </tag>
