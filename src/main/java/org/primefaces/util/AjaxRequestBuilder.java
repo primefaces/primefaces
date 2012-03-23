@@ -98,6 +98,12 @@ public class AjaxRequestBuilder {
         return this;
     }
     
+    public AjaxRequestBuilder event(String event) {
+        buffer.append(",event:'").append(event).append("'");
+        
+        return this;
+    }
+    
     public AjaxRequestBuilder async(boolean async) {
         if(async) {
             buffer.append(",async:true");
