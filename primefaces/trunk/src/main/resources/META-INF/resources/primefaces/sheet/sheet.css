@@ -48,13 +48,15 @@
 }
 
 .ui-sheet .ui-column-resizer {
+    position:absolute;
+    right:0;
     width:8px;
-    height:22px;
-    float:right;
+    height:20px;
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: -4px -10px;
+    margin: -4px 0px;
+    *margin-left: 2px;
 }
 
 .ui-sheet .ui-column-resizer-helper {
@@ -65,6 +67,7 @@
 }
 
 .ui-sheet div.ui-sh-c {
+    position: relative;
     padding: 4px 10px;
     overflow: hidden;
 }
@@ -100,7 +103,9 @@
 }
 
 .ui-sheet .ui-sortable-column-icon {
-    float:right;
+    position: absolute;
+    left:0;
+    margin-left: -2px;
 }
 
 .ui-sheet .ui-sheet-editing {

@@ -39,9 +39,6 @@ PrimeFaces.widget.Sheet = PrimeFaces.widget.BaseWidget.extend({
         thead = $(this.jqId + ' thead'),
         _self = this;
 
-        //State cookie
-        this.columnWidthsCookie = location.href + this.id + '_columnWidths';
-
         //Main resize events
         resizers.draggable({
             axis: 'x',
@@ -74,16 +71,23 @@ PrimeFaces.widget.Sheet = PrimeFaces.widget.BaseWidget.extend({
 
                 _self.header.find('tbody tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth).children('div').width(newWidth);
                 _self.body.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width(newWidth).children('div').width(newWidth);
-
-                //Save state
-                _self.saveColumnWidths();
+                
+                //Sync width change with server side state
+                var options = {
+                    source: _self.id,
+                    process: _self.id,
+                    params: [
+                        {name: _self.id + '_colResize', value: true},
+                        {name: _self.id + '_columnId', value: columnHeader.attr('id')},
+                        {name: _self.id + '_width', value: newWidth},
+                    ]
+                }
+                
+                PrimeFaces.ajax.AjaxRequest(options);
 
             },
             containment: this.jq
         });
-
-        //Restore widths on postback
-        this.restoreColumnWidths();
     },
     
     setupSorting: function() {
@@ -145,7 +149,6 @@ PrimeFaces.widget.Sheet = PrimeFaces.widget.BaseWidget.extend({
 
                 if(id == _self.id){
                     _self.body.children('table').children('tbody').html(content);
-                    _self.restoreColumnWidths();
                     _self.bindDynamicEvents();
                 }
                 else {
@@ -166,30 +169,7 @@ PrimeFaces.widget.Sheet = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.AjaxRequest(options); 
     },
-    
-    restoreColumnWidths: function() {
-        var widths = PrimeFaces.getCookie(this.columnWidthsCookie);
-        if(widths) {
-            widths = widths.split(',');
-            for(var i = 0; i < widths.length; i++) {
-                var width = widths[i];
-
-                this.columnHeaders.eq(i).children('div').width(width);
-                this.header.find('tbody tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
-                this.body.find('tr td:nth-child(' + (i + 1) + ')').children('div').width(width);
-            }
-        }
-    },
-    
-    saveColumnWidths: function() {
-        var columnWidths = [];
-
-        this.columnHeaders.each(function(i, item) {
-            columnWidths.push($(item).children('div').width());
-        });
-        PrimeFaces.setCookie(this.columnWidthsCookie, columnWidths.join(','));
-    },
-    
+        
     updateCellInfoDisplay: function(cell) {
         var rowIndex = cell.parent().siblings().eq(0).children('.ui-sheet-index-cell').html(),
         columnName = this.header.find('th').eq(cell.parent().index()).children('.ui-sh-c').text();
