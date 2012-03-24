@@ -34,6 +34,15 @@ import org.primefaces.util.ComponentUtils;
 public class SheetRenderer extends CoreRenderer {
     
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        Sheet sheet = (Sheet) component;
+
+        if(sheet.isColResizeRequest(context)) {
+            sheet.syncColumnWidths();
+        }
+    }
+    
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Sheet sheet = (Sheet) component;
         
@@ -186,21 +195,25 @@ public class SheetRenderer extends CoreRenderer {
                 boolean sortable = column.getValueExpression("sortBy") != null;
                 
                 String style = column.getStyle();
-                String styleClass = column.getStyleClass();
-                styleClass = styleClass == null ? Sheet.CELL_CLASS : Sheet.CELL_CLASS  + " " + styleClass;
-                
                 String columnHeaderClass = sortable ? Sheet.COLUMN_HEADER_CLASS + " " + Sheet.SORTABLE_COLUMN : Sheet.COLUMN_HEADER_CLASS;
+                String userStyleClass = column.getStyleClass();
+                if(userStyleClass != null) {
+                    columnHeaderClass = columnHeaderClass + " " + userStyleClass;
+                }
         
                 writer.startElement("th", null);
                 writer.writeAttribute("id", column.getClientId(context), style);
                 writer.writeAttribute("class", columnHeaderClass, null);
-
-                writer.startElement("div", null);
-                writer.writeAttribute("class", styleClass, null);
                 if(style != null) {
                     writer.writeAttribute("style", style, null);
                 }
                 
+                writer.startElement("div", null);
+                writer.writeAttribute("class", Sheet.CELL_CLASS, null);
+                if(column.getWidth() != -1) {
+                    writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+                }
+
                 if(sortable) {
                     writer.startElement("span", null);
                     writer.writeAttribute("class", Sheet.SORTABLE_COLUMN_ICON, null);
@@ -237,19 +250,21 @@ public class SheetRenderer extends CoreRenderer {
                 Column column = (Column) child;
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
-                styleClass = styleClass == null ? Sheet.CELL_CLASS : Sheet.CELL_CLASS  + " " + styleClass;
         
                 writer.startElement("td", null);
+                if(style != null) writer.writeAttribute("style", style, null);
+                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", styleClass, null);
-                if(style != null) {
-                    writer.writeAttribute("style", style, null);
+                writer.writeAttribute("class", Sheet.CELL_CLASS, null);
+                if(column.getWidth() != -1) {
+                    writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
                 }
                 
                 if(column.getHeader() != null) {
                     column.getHeader().encodeAll(context);
-                } else if(column.getHeaderText() != null) {
+                } 
+                else if(column.getHeaderText() != null) {
                     writer.write(column.getHeaderText());
                 }
 
@@ -309,16 +324,17 @@ public class SheetRenderer extends CoreRenderer {
                 Column column = (Column) child;
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
-                styleClass = styleClass == null ? Sheet.CELL_CLASS : Sheet.CELL_CLASS  + " " + styleClass;
         
                 writer.startElement("td", null);
-
-                writer.startElement("div", null);
-                writer.writeAttribute("class", styleClass, null);
-                if(style != null) {
-                    writer.writeAttribute("style", style, null);
-                }
+                if(style != null) writer.writeAttribute("style", style, null);
+                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
                 
+                writer.startElement("div", null);
+                writer.writeAttribute("class", Sheet.CELL_CLASS, null);
+                if(column.getWidth() != -1) {
+                    writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+                }
+
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Sheet.CELL_DISPLAY_CLASS, null);
                 String valueToRender = ComponentUtils.getValueToRender(context, child.getChildren().get(0));
