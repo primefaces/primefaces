@@ -20,7 +20,7 @@
 .ui-treetable th, .ui-treetable tfoot td {
     text-align:center;
     white-space:nowrap;
-    padding:4px 10px;
+    padding:0px;
     margin:0px;
     overflow: hidden;
 }
@@ -30,7 +30,7 @@
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
-    padding:4px 10px;
+    padding:0px;
     margin:0px;
     overflow: hidden;
 }
@@ -38,8 +38,9 @@
 .ui-treetable th div.ui-tt-c,
 .ui-treetable .ui-treetable-data td div.ui-tt-c,
 .ui-treetable tfoot td div.ui-tt-c {
-    padding: 0px;
+    padding: 4px 10px;
     overflow: hidden;
+    position: relative;
 }
 
 .ui-treetable .ui-treetable-toggler {

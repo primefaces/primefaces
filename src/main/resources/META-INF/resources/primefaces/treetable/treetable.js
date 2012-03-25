@@ -13,7 +13,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
 
         //scrolling
         if(this.cfg.scrollable) {
-            this.alignColumnWidths();
             this.setupScrolling();
         }
 
@@ -299,29 +298,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
         scrollFooter = $(this.jqId + ' .ui-treetable-scrollable-footer');
 
-        if(this.cfg.scrollWidth) {
-            scrollHeader.width(this.cfg.scrollWidth);
-            scrollBody.width(this.cfg.scrollWidth);
-            scrollFooter.width(this.cfg.scrollWidth);
-        }
-
         scrollBody.scroll(function() {
             scrollHeader.scrollLeft(scrollBody.scrollLeft());
             scrollFooter.scrollLeft(scrollBody.scrollLeft());
         });
-    },
-    
-    /**
-     * Moves widths of columns to column wrappers
-     */
-    alignColumnWidths: function() {
-        this.jq.find('div.ui-tt-c').each(function() {
-            var wrapper = $(this),
-            column = wrapper.parent();
-
-            wrapper.width(column.width());
-            column.width('');
-        });
     }
-
 });
