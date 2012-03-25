@@ -42,6 +42,14 @@ public class AjaxRequestBuilder {
         return this;
     }
     
+    public AjaxRequestBuilder form(String form) {
+        if(form != null) {
+            buffer.append(",formId:'").append(form).append("'");
+        }
+        
+        return this;
+    }
+    
     private String[] parseIds(String ids) {
         Pattern p = Pattern.compile("@\\(.+\\)\\s*");
         Matcher m = p.matcher(ids);
@@ -181,6 +189,12 @@ public class AjaxRequestBuilder {
         if(paramWritten) {
             buffer.append("]");
         }
+        
+        return this;
+    }
+    
+    public AjaxRequestBuilder passParams() {
+        buffer.append(",params:arguments[0]");
         
         return this;
     }
