@@ -100,8 +100,8 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('TreeTable','" + tt.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         
-        if(selectionMode != null) writer.write(",selectionMode:'" + selectionMode + "'");
-        if(tt.getScrollWidth() != Integer.MIN_VALUE) writer.write(",scrollWidth:" + tt.getScrollWidth());
+        if(selectionMode != null) 
+            writer.write(",selectionMode:'" + selectionMode + "'");
                 
         encodeClientBehaviors(context, tt);
         
@@ -141,11 +141,23 @@ public class TreeTableRenderer extends CoreRenderer {
     
     protected void encodeScrollableMarkup(FacesContext context, TreeTable tt) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int scrollHeight = tt.getScrollHeight();
+        int scrollHeight = tt.getScrollHeight();    
+        int scrollWidth = tt.getScrollWidth();
+        boolean hasScrollHeight = scrollHeight != Integer.MIN_VALUE;
+        boolean hasScrollWidth = scrollWidth != Integer.MIN_VALUE;
+        StringBuilder style = new StringBuilder();
+        
+        if(hasScrollHeight)
+            style.append("height:").append(scrollHeight).append("px;");
+        if(hasScrollWidth)
+            style.append("width:").append(scrollWidth).append("px;");
         
         //header
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_HEADER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_HEADER_BOX_CLASS, null);
@@ -164,8 +176,8 @@ public class TreeTableRenderer extends CoreRenderer {
         //body
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_BODY_CLASS, null);
-        if(scrollHeight != Integer.MIN_VALUE) {
-            writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
+        if(style.length() > 0) {
+            writer.writeAttribute("style", style.toString(), null);
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "treegrid", null);
@@ -179,6 +191,9 @@ public class TreeTableRenderer extends CoreRenderer {
         //footer
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_FOOTER_CLASS, null);
+        if(hasScrollWidth) {
+            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
@@ -227,18 +242,23 @@ public class TreeTableRenderer extends CoreRenderer {
 				Column column = (Column) kid;
                 UIComponent header = column.getFacet("header");
                 String headerText = column.getHeaderText();
-				String columnStyleClass = column.getStyleClass() == null ? TreeTable.COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS + " " + column.getStyleClass();
                 String style = column.getStyle();
+                String styleClass = column.getStyleClass();
+                styleClass = styleClass == null ? TreeTable.COLUMN_HEADER_CLASS  : TreeTable.COLUMN_HEADER_CLASS  + " " + styleClass;
 
 				writer.startElement("th", null);
                 writer.writeAttribute("id", column.getClientId(context), null);
-                writer.writeAttribute("class", columnStyleClass, null);
+                writer.writeAttribute("class", styleClass, null);
                 writer.writeAttribute("role", "columnheader", null);
-                if(style != null)
+                if(style != null) {
                     writer.writeAttribute("style", style, null);
-
+                }
+                
 				writer.startElement("div", null);
                 writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
+                if(column.getWidth() != -1) {
+                    writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+                }
                 
                 if(header != null) 
                     header.encodeAll(context);
@@ -275,6 +295,7 @@ public class TreeTableRenderer extends CoreRenderer {
     
     protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey) throws IOException {
         if(rowKey != null) {
+            boolean scrollable = tt.isScrollable();
             ResponseWriter writer = context.getResponseWriter();
             tt.setRowKey(rowKey);
             String nodeId = clientId + "_node_" + rowKey;
@@ -306,6 +327,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
                 if(kid instanceof Column && kid.isRendered()) {
                     Column column = (Column) kid;
+                    int width = column.getWidth();
 
                     writer.startElement("td", null);
                     writer.writeAttribute("role", "gridcell", null);
@@ -315,9 +337,13 @@ public class TreeTableRenderer extends CoreRenderer {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
 
-                    //icon
                     if(i == 0) {
-                        String cellStyle = "padding-left:" + (depth * 15) + "px";
+                        int paddingLeft = (depth * 15);
+                        String cellStyle = "padding-left:" + paddingLeft + "px";
+                        if(scrollable) {
+                            width = width - (paddingLeft - 10);
+                            cellStyle = cellStyle + ";width:" + width + "px";
+                        }
                         writer.writeAttribute("style", cellStyle, null);
 
                         writer.startElement("span", null);
@@ -326,6 +352,9 @@ public class TreeTableRenderer extends CoreRenderer {
                             writer.writeAttribute("style", "visibility:hidden", null);
                         }
                         writer.endElement("span");
+                    }
+                    else if(scrollable) {
+                        writer.writeAttribute("style", "width:" + width + "px", null);
                     }
 
                     //content
@@ -392,11 +421,15 @@ public class TreeTableRenderer extends CoreRenderer {
                     writer.startElement("td", null);
                     writer.writeAttribute("id", column.getClientId(context), null);
                     writer.writeAttribute("class", columnStyleClass, null);
-                    if(style != null)
+                    if(style != null) {
                         writer.writeAttribute("style", style, null);
+                    }
 
                     writer.startElement("div", null);
                     writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
+                    if(column.getWidth() != -1) {
+                        writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+                    }
 
                     if(footer != null) 
                         footer.encodeAll(context);
