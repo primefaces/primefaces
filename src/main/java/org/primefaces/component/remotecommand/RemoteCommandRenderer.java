@@ -72,7 +72,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
                         .onsuccess(source.getOnsuccess())
                         .oncomplete(source.getOncomplete())
                         .passParams()
-                        .build();
+                        .buildCommand();
 
         //script
         writer.startElement("script", command);
@@ -83,7 +83,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         writer.write("}");
         
         if(command.isAutoRun()) {
-            writer.write("$(function() {");
+            writer.write(";$(function() {");
             writer.write(name + "();");
             writer.write("});");
         }

@@ -216,4 +216,13 @@ public class AjaxRequestBuilder {
         
         return request;
     }
+    
+    public String buildCommand() {
+        buffer.append("});");
+        
+        String request = buffer.toString();
+        buffer.setLength(0);
+        
+        return request;
+    }
 }
