@@ -291,7 +291,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             x = $.trim(coords[0]),
             y = $.trim(coords[1]);
 
-            this.jq.css({
+            this.jq.offset({
                 left: x
                 ,top: y
             });
