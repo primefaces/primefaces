@@ -246,16 +246,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }).die('mouseout').live('mouseout', function() {
                     $(this).removeClass('ui-state-hover');
                 }).die('click').live('click', function() {
-                    var box = $(this);
+                    var checkbox = $(this);
 
-                    if(!box.hasClass('ui-state-disabled')) {
-                        var checked = box.hasClass('ui-state-active');
+                    if(!checkbox.hasClass('ui-state-disabled')) {
+                        var checked = checkbox.hasClass('ui-state-active');
 
                         if(checked) {
-                            _self.unselectRowWithCheckbox(box);
+                            _self.unselectRowWithCheckbox(checkbox);
                         } 
                         else {                        
-                            _self.selectRowWithCheckbox(box);
+                            _self.selectRowWithCheckbox(checkbox);
                         }
                     }
                 });
@@ -665,7 +665,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.writeSelections();
 
         if(!silent) {
-            this.fireRowUnselectEvent(rowMeta.key);
+            this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
         }
     },
     
@@ -691,9 +691,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
      */
-    fireRowUnselectEvent: function(rowKey) {
+    fireRowUnselectEvent: function(rowKey, behaviorEvent) {
         if(this.cfg.behaviors) {
-            var unselectBehavior = this.cfg.behaviors['rowUnselect'];
+            var unselectBehavior = this.cfg.behaviors[behaviorEvent];
 
             if(unselectBehavior) {
                 var ext = {
@@ -751,8 +751,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         this.writeSelections();
 
-        if(!silent)
-            this.fireRowSelectEvent(rowMeta.key);
+        if(!silent) {
+            this.fireRowSelectEvent(rowMeta.key, "rowSelectCheckbox");
+        }
     },
     
     /**
@@ -773,8 +774,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         this.writeSelections();
 
-        if(!silent)
-            this.fireRowUnselectEvent(rowMeta.key);
+        if(!silent) {
+            this.fireRowUnselectEvent(rowMeta.key, "rowUnselectCheckbox");
+        }
     },
     
     unselectAllRows: function() {
