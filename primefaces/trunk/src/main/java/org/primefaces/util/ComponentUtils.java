@@ -248,7 +248,7 @@ public class ComponentUtils {
 					buffer.append(comp.getClientId(context));
                 }
 				else {
-                    throw new FacesException("Cannot find component with identifier \"" + id + "\" in view.");
+                    throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from \"" + component.getClientId(context) + "\".");
                 }
 			}
 		}
