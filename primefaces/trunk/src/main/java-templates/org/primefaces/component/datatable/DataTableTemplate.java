@@ -307,11 +307,11 @@ import javax.faces.context.FacesContext;
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")) {
+            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("rowSelectCheckbox")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
             }
-            else if(eventName.equals("rowUnselect")) {
+            else if(eventName.equals("rowUnselect")||eventName.equals("rowUnselectCheckbox")) {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey));
             }
