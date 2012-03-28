@@ -137,13 +137,6 @@
 			<type>java.lang.String</type>
             <description>Style class of the main container.</description>
 		</attribute>
-		<attribute>
-			<name>dblClickSelect</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>Client side callback to execute after ajax request to select a row ends. Default is false.</description>
-		</attribute>
         <attribute>
 			<name>liveScroll</name>
 			<required>false</required>

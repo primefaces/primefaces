@@ -171,17 +171,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         //Row mouseover, mouseout, click
         if(this.cfg.selectionMode) {
-            var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
-
             $(this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content').css('cursor', 'pointer')
-                .die('mouseover.datatable mouseout.datatable contextmenu.datatable ' + selectEvent + '.datatable')
+                .die('mouseover.datatable mouseout.datatable contextmenu.datatable click.datatable')
                 .live('mouseover.datatable', function() {
                     var element = $(this);
 
                     if(!element.hasClass('ui-state-highlight')) {
                         element.addClass('ui-state-hover');
                     }
-
                 })
                 .live('mouseout.datatable', function() {
                     var element = $(this);
@@ -190,8 +187,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         element.removeClass('ui-state-hover');
                     }
                 })
-                .live(selectEvent + '.datatable', function(event) {
+                .live('click.datatable', function(event) {
                     _self.onRowClick(event, this);
+                })
+                .live('dblclick.datatable', function(event) {
+                    _self.onRowDblclick(event, this);
                 })
                 .live('contextmenu.datatable', function(event) {
                     _self.onRowClick(event, this);
@@ -596,6 +596,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             PrimeFaces.clearSelection();
         }
+    },
+    
+    onRowDblclick: function(event, rowElement) {   
+        var rowDblclickBehavior = this.cfg.behaviors['rowDblselect'];
+        
+        if(rowDblclickBehavior) {
+            //Check if rowclick triggered this event not a clickable element in row content
+            if($(event.target).is('.ui-dt-c,td,span')) {
+                var row = $(rowElement),
+                rowMeta = this.getRowMeta(row);
+                
+                this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
+            }
+        }
+        
     },
     
     /**
