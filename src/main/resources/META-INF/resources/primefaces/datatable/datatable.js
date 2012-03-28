@@ -210,16 +210,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     disabled = radio.hasClass('ui-state-disabled');
 
                     if(!disabled && !checked) {
-                        var currentRadios = $(_self.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-radiobutton .ui-radiobutton-box');
-
-                        //unselect previous
-                        currentRadios.filter('.ui-state-active').removeClass('ui-state-active')
-                            .children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
-
-                        //select current
-                        radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
-
-                        _self.selectRowWithRadio(radio.parents('tr:first'));
+                        _self.selectRowWithRadio(radio);
                     }
                 }).die('mouseover').live('mouseover', function() {
                     var radio = $(this);
@@ -656,7 +647,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.writeSelections();
 
         if(!silent) {
-            this.fireRowSelectEvent(rowMeta.key);
+            this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
         }
     },
     
@@ -681,9 +672,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
      */
-    fireRowSelectEvent: function(rowKey) {
+    fireRowSelectEvent: function(rowKey, behaviorEvent) {
         if(this.cfg.behaviors) {
-            var selectBehavior = this.cfg.behaviors['rowSelect'];
+            var selectBehavior = this.cfg.behaviors[behaviorEvent];
 
             if(selectBehavior) {
                 var ext = {
@@ -719,12 +710,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Selects the corresping row of a radio based column selection
      */
-    selectRowWithRadio: function(row) {
-        var rowMeta = this.getRowMeta(row);
+    selectRowWithRadio: function(radio) {
+        var row = radio.parents('tr:first'),
+        rowMeta = this.getRowMeta(row);
 
         //clean previous selection
         this.selection = [];
-        row.siblings('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false); 
+        row.siblings('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false)      //row
+            .find('td.ui-selection-column .ui-radiobutton .ui-radiobutton-box').removeClass('ui-state-active')  //radio
+            .children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');                        //radio icon
+
+        //select current
+        radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
 
         //add to selection
         this.addSelection(rowMeta.key);
@@ -733,7 +730,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         //save state
         this.writeSelections();
 
-        this.fireRowSelectEvent(rowMeta.key);
+        this.fireRowSelectEvent(rowMeta.key, 'rowSelectRadio');
     },
     
     /**

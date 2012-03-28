@@ -91,7 +91,8 @@ import javax.faces.context.FacesContext;
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
-                                                        "rowUnselect", "rowEdit", "colResize", "toggleSelect", "colReorder"));
+                                                        "rowUnselect", "rowEdit", "colResize", "toggleSelect", "colReorder"
+                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox"));
 
     public List<Column> columns;
 
@@ -306,7 +307,7 @@ import javax.faces.context.FacesContext;
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("rowSelect")) {
+            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
             }
