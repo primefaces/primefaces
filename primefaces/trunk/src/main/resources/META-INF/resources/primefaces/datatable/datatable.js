@@ -23,6 +23,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             var preselection = $(this.selectionHolder).val();
             this.selection = preselection == "" ? [] : preselection.split(',');
+            
+            //shift key based range selection
+            this.originRowIndex = 0;
+            this.cursorIndex = null;
 
             this.setupSelectionEvents();
         }
@@ -190,8 +194,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     _self.onRowClick(event, this);
                 })
                 .live('contextmenu.datatable', function(event) {
-                _self.onRowClick(event, this);
-                event.preventDefault();
+                    _self.onRowClick(event, this);
+                    event.preventDefault();
                 });
         }
         //Radio-Checkbox based rowselection
@@ -576,10 +580,28 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             selected = row.hasClass('ui-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey;
 
-            if(selected && metaKey)
-                this.unselectRow(row, event);
-            else
-                this.selectRow(row, event);
+            //unselect a selected row if metakey is on
+            if(selected && metaKey) {
+                this.unselectRow(row);
+            }
+            else {
+                //unselect previous selection if this is single selection or multiple one with no keys
+                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !event.shiftKey)) {
+                    this.unselectAllRows();
+                }
+                
+                //range selection with shift key
+                if(this.isMultipleSelection() && event && event.shiftKey) {                    
+                    this.selectRowsInRange(row);
+                }
+                //select current row
+                else {
+                    this.originRowIndex = row.index();
+                    this.cursorIndex = null;
+                    
+                    this.selectRow(row);
+                }
+            } 
 
             PrimeFaces.clearSelection();
         }
@@ -598,65 +620,47 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         return row;
     },
     
-    selectRow: function(r, event) {
-        var row = this.findRow(r),
-        rowMeta = this.getRowMeta(row),
-        _self = this,
-        metaKey = event.metaKey||event.ctrlKey;
+    selectRowsInRange: function(row) {
+        var rows = this.tbody.children(),
+        _self = this;
+       
+        //unselect previously selected rows with shift
+        if(this.cursorIndex) {
+            var oldCursorIndex = this.cursorIndex,
+            rowsToUnselect = oldCursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, this.originRowIndex + 1);
 
-        //unselect previous selection if this is single selection or multiple one with no keys
-        if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !event.shiftKey)) {
-            this.unselectAllRows();
-        }
-
-        if(this.isMultipleSelection() && event && event.shiftKey) {
-            var rows = this.tbody.children();
-            this.originRowIndex = this.originRowIndex||0;
-
-            //unselect previously selected rows with shift
-            if(this.cursorIndex) {
-                var oldCursorIndex = this.cursorIndex,
-                rowsToUnselect = oldCursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, this.originRowIndex + 1);
-
-                rowsToUnselect.each(function(i, item) {
-                    var r = $(item),
-                    rkey = _self.getRowMeta(r).key;
-
-                    r.removeClass('ui-state-highlight').attr('aria-selected', false);
-                    _self.removeSelection(rkey);
-                });
-            }
-
-            //select rows between cursor and origin
-            this.cursorIndex = row.index();
-
-            var rowsToSelect = this.cursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, this.cursorIndex + 1) : rows.slice(this.cursorIndex, this.originRowIndex + 1);
-
-            rowsToSelect.each(function(i, item) {
-                var r = $(item),
-                rkey = _self.getRowMeta(r).key;
-
-                r.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
-                _self.addSelection(rkey);
+            rowsToUnselect.each(function(i, item) {
+                _self.unselectRow($(item), true);
             });
-
         }
-        else {
-            this.originRowIndex = row.index();
-            this.cursorIndex = null;
 
-            //add to selection
-            row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
-            this.addSelection(rowMeta.key);
-        }
+        //select rows between cursor and origin
+        this.cursorIndex = row.index();
+
+        var rowsToSelect = this.cursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, this.cursorIndex + 1) : rows.slice(this.cursorIndex, this.originRowIndex + 1);
+
+        rowsToSelect.each(function(i, item) {
+            _self.selectRow($(item), true);
+        });
+    },
+    
+    selectRow: function(r, silent) {
+        var row = this.findRow(r),
+        rowMeta = this.getRowMeta(row);
+
+        //add to selection
+        row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+        this.addSelection(rowMeta.key);
 
         //save state
         this.writeSelections();
 
-        this.fireRowSelectEvent(rowMeta.key);
+        if(!silent) {
+            this.fireRowSelectEvent(rowMeta.key);
+        }
     },
     
-    unselectRow: function(r) {
+    unselectRow: function(r, silent) {
         var row = this.findRow(r),
         rowMeta = this.getRowMeta(row);
 
@@ -669,7 +673,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         //save state
         this.writeSelections();
 
-        this.fireRowUnselectEvent(rowMeta.key);
+        if(!silent) {
+            this.fireRowUnselectEvent(rowMeta.key);
+        }
     },
     
     /**
