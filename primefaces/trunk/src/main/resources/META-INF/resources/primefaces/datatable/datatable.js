@@ -573,9 +573,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is('.ui-dt-c,td,span')) {
             var row = $(rowElement),
-            selected = row.hasClass('ui-state-highlight');
+            selected = row.hasClass('ui-state-highlight'),
+            metaKey = event.metaKey||event.ctrlKey;
 
-            if(selected)
+            if(selected && metaKey)
                 this.unselectRow(row, event);
             else
                 this.selectRow(row, event);
@@ -655,26 +656,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.fireRowSelectEvent(rowMeta.key);
     },
     
-    unselectRow: function(r, event) {
+    unselectRow: function(r) {
         var row = this.findRow(r),
-        rowMeta = this.getRowMeta(row),
-        metaKey = event.metaKey||event.ctrlKey;
+        rowMeta = this.getRowMeta(row);
 
-        if(this.isMultipleSelection() && event && !metaKey) {
-            this.selectRow(row, event);
-        }
-        else if(metaKey) {
-            //remove visual style
-            row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        //remove visual style
+        row.removeClass('ui-state-highlight').attr('aria-selected', false);
 
-            //remove from selection
-            this.removeSelection(rowMeta.key);
+        //remove from selection
+        this.removeSelection(rowMeta.key);
 
-            //save state
-            this.writeSelections();
+        //save state
+        this.writeSelections();
 
-            this.fireRowUnselectEvent(rowMeta.key);
-        }
+        this.fireRowUnselectEvent(rowMeta.key);
     },
     
     /**
