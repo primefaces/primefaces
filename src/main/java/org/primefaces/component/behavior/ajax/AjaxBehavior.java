@@ -182,7 +182,7 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
     public boolean isPartialSubmit() {
         Boolean result = (Boolean) eval("partialSubmit", partialSubmit);
         
-        return ((result != null) ? result : false);
+        return ((result != null) ? result : true);
     }
     public void setPartialSubmit(boolean partialSubmit) {
         this.partialSubmit = partialSubmit;
