@@ -132,7 +132,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Selection
         if(table.isRowSelectionEnabled()) {
-            encodeSelectionConfig(context, table);
+            writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
         }
 
         if(table.isColumnSelectionEnabled()) {
@@ -891,16 +891,6 @@ public class DataTableRenderer extends DataRenderer {
         
         writer.endElement(tag);
         writer.endElement("tr");
-    }
-
-    protected void encodeSelectionConfig(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
-
-        if(table.isDblClickSelect()) {
-            writer.write(",dblclickSelect:true");
-        }
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {

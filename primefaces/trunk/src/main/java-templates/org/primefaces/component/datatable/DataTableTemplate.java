@@ -92,7 +92,7 @@ import javax.faces.context.FacesContext;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "colResize", "toggleSelect", "colReorder"
-                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox"));
+                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect"));
 
     public List<Column> columns;
 
@@ -307,7 +307,7 @@ import javax.faces.context.FacesContext;
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("rowSelectCheckbox")) {
+            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("rowSelectCheckbox")||eventName.equals("rowDblselect")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
             }
