@@ -30,17 +30,28 @@ public class DefaultCommandRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         DefaultCommand command = (DefaultCommand) component;
         String clientId = command.getClientId(context);
+        String scope = command.getScope();
         UIComponent target = command.findComponent(command.getTarget());
         if(target == null) {
             throw new FacesException("Cannot find component \"" + command.getTarget() + "\" in view.");
         }
-        
+
         startScript(writer, clientId);
         
         writer.write("$(function() {");
         writer.write("PrimeFaces.cw('DefaultCommand','" + command.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",target:'" + target.getClientId(context) + "'");
+        
+        if(scope != null) {
+            UIComponent scopeComponent = command.findComponent(scope);
+            if(scopeComponent == null) {
+                throw new FacesException("Cannot find component \"" + scope + "\" in view.");
+            }
+            
+            writer.write(",scope:'" + scopeComponent.getClientId(context) + "'");
+        }
+        
         writer.write("});});");
         
         endScript(writer);

@@ -1506,10 +1506,16 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
         var _self = this;
         
         //attach keypress listener to parent form
         this.jqTarget.parents('form:first').keydown(function(e) {
+           //do not proceed if event target is not in this scope
+           if(_self.scope && _self.scope.find(e.target).length == 0) {
+               return true;
+           }
+               
            var keyCode = $.ui.keyCode;
            
            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
