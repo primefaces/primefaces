@@ -55,7 +55,7 @@ public class ToolbarRenderer extends CoreRenderer {
                 }
 
                 for(UIComponent groupChild : group.getChildren()) {
-                    if(groupChild instanceof Separator)
+                    if(groupChild instanceof Separator && groupChild.isRendered())
                         encodeSeparator(context, (Separator) groupChild);
                     else
                         groupChild.encodeAll(context);
