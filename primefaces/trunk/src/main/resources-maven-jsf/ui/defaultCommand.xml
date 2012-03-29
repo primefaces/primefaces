@@ -27,6 +27,12 @@
             <type>java.lang.String</type>
             <description>Identifier of the default command component.</description>
         </attribute>
+        <attribute>
+            <name>scope</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Identifier of the grouping component to enable multiple default commands in a form.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
