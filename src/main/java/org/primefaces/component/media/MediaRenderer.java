@@ -24,13 +24,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.application.PrimeResourceHandler;
 
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 
 public class MediaRenderer extends CoreRenderer {
@@ -147,7 +147,7 @@ public class MediaRenderer extends CoreRenderer {
                 String rid = createUniqueContentId(context);
                 StringBuilder builder = new StringBuilder(resourcePath);
 
-                builder.append("&").append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
+                builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
 
                 for(UIComponent kid : media.getChildren()) {
                     if(kid instanceof UIParameter) {
@@ -184,6 +184,6 @@ public class MediaRenderer extends CoreRenderer {
     protected String generateKey() {
         StringBuilder builder = new StringBuilder();
         
-        return builder.append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
+        return builder.append(Constants.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
     }
 }
