@@ -25,9 +25,9 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.PrimeResourceHandler;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 
 public class GraphicImageRenderer extends CoreRenderer {
@@ -66,7 +66,7 @@ public class GraphicImageRenderer extends CoreRenderer {
                 String rid = createUniqueContentId(context);
                 StringBuilder builder = new StringBuilder(resourcePath);
 
-                builder.append("&").append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
+                builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
 
                 for(UIComponent kid : image.getChildren()) {
                     if(kid instanceof UIParameter) {
@@ -110,6 +110,6 @@ public class GraphicImageRenderer extends CoreRenderer {
     protected String generateKey() {
         StringBuilder builder = new StringBuilder();
         
-        return builder.append(PrimeResourceHandler.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
+        return builder.append(Constants.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
     }
 }
