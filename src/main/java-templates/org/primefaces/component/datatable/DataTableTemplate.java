@@ -271,12 +271,10 @@ import javax.faces.context.FacesContext;
 		String clientId = getClientId(context);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
-        if(isBodyUpdate(context)) {
-            this.decode(context);
-        }
-        else if(params.containsKey(clientId + "_rowEditCancel")) {
+        if(params.containsKey(clientId + "_rowEditCancel")) {
             context.renderResponse();
-        } else {
+        } 
+        else {
             super.processDecodes(context);
         }
 	}

@@ -73,23 +73,11 @@ public class DataTableRenderer extends DataRenderer {
             dataHelper.decodeSelection(context, table);
         }
 
-        if(table.isPaginationRequest(context)) {
-            dataHelper.decodePageRequest(context, table);
-        } 
-        else if(isSortRequest) {
+        if(isSortRequest) {
             dataHelper.decodeSortRequest(context, table);
         }
 
         decodeBehaviors(context, component);
-
-        if(table.isPaginator()) {
-            updatePaginationMetadata(context, table);
-        }
-
-        //load lazy data if body needs to be updated (page, filter, sort)
-        if(table.isLazy() && table.isBodyUpdate(context)) {
-            table.loadLazyData();
-        }
     }
     
     @Override
@@ -97,6 +85,14 @@ public class DataTableRenderer extends DataRenderer {
 		DataTable table = (DataTable) component;
 
         if(table.isBodyUpdate(context)) {
+            if(table.isPaginationRequest(context)) {
+                updatePaginationData(context, table);
+            }
+            
+            if(table.isLazy()) {
+                table.loadLazyData();
+            }
+            
             encodeTbody(context, table, true);
         } 
         else if(table.isRowExpansionRequest(context)) {
@@ -1028,8 +1024,18 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
     
-    protected void updatePaginationMetadata(FacesContext context, DataTable table) {
+    protected void updatePaginationData(FacesContext context, DataTable table) {
+        table.setRowIndex(-1);
+        String clientId = table.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ELContext elContext = context.getELContext();
+        
+		String firstParam = params.get(clientId + "_first");
+		String rowsParam = params.get(clientId + "_rows");
+
+		table.setFirst(Integer.valueOf(firstParam));
+		table.setRows(Integer.valueOf(rowsParam));
+        
         ValueExpression firstVe = table.getValueExpression("first");
         ValueExpression rowsVe = table.getValueExpression("rows");
         ValueExpression pageVE = table.getValueExpression("page");
