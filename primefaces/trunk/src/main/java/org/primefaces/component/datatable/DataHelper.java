@@ -38,18 +38,6 @@ import org.primefaces.model.SortOrder;
 
 class DataHelper {
 
-    void decodePageRequest(FacesContext context, DataTable table) {
-        table.setRowIndex(-1);
-        String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        
-		String firstParam = params.get(clientId + "_first");
-		String rowsParam = params.get(clientId + "_rows");
-
-		table.setFirst(Integer.valueOf(firstParam));
-		table.setRows(Integer.valueOf(rowsParam));
-	}
-
     void decodeSortRequest(FacesContext context, DataTable table) {
         table.setRowIndex(-1);
         String clientId = table.getClientId(context);
