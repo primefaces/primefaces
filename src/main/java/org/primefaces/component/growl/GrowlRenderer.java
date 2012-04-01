@@ -45,6 +45,7 @@ public class GrowlRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",sticky:" + growl.isSticky());
         writer.write(",life:" + growl.getLife());
+        writer.write(",escape:" + growl.isEscape());
 
         writer.write(",msgs:");
         encodeMessages(context, growl);
@@ -57,7 +58,6 @@ public class GrowlRenderer extends CoreRenderer {
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String _for = growl.getFor();
-        boolean escape = growl.isEscape();
         Iterator<FacesMessage> messages;
         if(_for != null) {
             messages = context.getMessages(_for);
@@ -75,32 +75,19 @@ public class GrowlRenderer extends CoreRenderer {
                 continue;
             }
             
-			String summary = message.getSummary();
-			String detail = message.getDetail();
+			String summary = escapeText(message.getSummary());
+			String detail = escapeText(message.getDetail());
             int ordinal = message.getSeverity().getOrdinal();
             String severity = null;
 
             writer.write("{");
-            
-            if(growl.isShowSummary()) {
-                if(escape)
-                    writer.writeText("summary:\"" + summary + "\"", null);
-                else
-                    writer.write("summary:\"" + summary + "\"");
-            }
-            else {
-                writer.write("summary:\"\"");
-            }
-            
-            if(growl.isShowDetail()) {
-                if(escape)
-                    writer.writeText(",detail:\"" + detail + "\"", null);
-                else
-                    writer.write(",detail:\"" + detail + "\"");
-            }
-            else {
-                writer.write(",detail:\"\"");
-            }
+
+			if(growl.isShowSummary() && growl.isShowDetail())
+				writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
+			else if(growl.isShowSummary() && !growl.isShowDetail())
+				writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
+			else if(!growl.isShowSummary() && growl.isShowDetail())
+				writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
             
             if(ordinal == FacesMessage.SEVERITY_INFO.getOrdinal())
                 severity = "info";
