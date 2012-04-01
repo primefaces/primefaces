@@ -35,7 +35,7 @@ public class MessagesRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		Messages uiMessages = (Messages) component;
 		ResponseWriter writer = context.getResponseWriter();
-        String clientId = uiMessages.getClientId(context);		
+        String clientId = uiMessages.getClientId(context);	
 		Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
         
         String _for = uiMessages.getFor();
@@ -88,6 +88,7 @@ public class MessagesRenderer extends CoreRenderer {
 	protected void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String styleClassPrefix = "ui-messages-" + severity;
+        boolean escape = uiMessages.isEscape();
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("class", styleClassPrefix + " ui-corner-all", null);
@@ -107,14 +108,24 @@ public class MessagesRenderer extends CoreRenderer {
             if(uiMessages.isShowSummary()) {
 	            writer.startElement("span", null);
 	            writer.writeAttribute("class", styleClassPrefix + "-summary", null);
-	            writer.writeText(summary, null);
+                
+                if(escape)
+                    writer.writeText(summary, null);
+                else
+                    writer.write(summary);
+                    
 	            writer.endElement("span");
             }
             
             if(uiMessages.isShowDetail()) {
             	writer.startElement("span", null);
             	writer.writeAttribute("class", styleClassPrefix + "-detail", null);
-            	writer.writeText(detail, null);
+            	
+                if(escape)
+                    writer.writeText(detail, null);
+                else
+                    writer.write(detail);
+                
             	writer.endElement("span");
             }
             
