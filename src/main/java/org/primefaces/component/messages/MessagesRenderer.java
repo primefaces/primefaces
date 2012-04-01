@@ -35,33 +35,37 @@ public class MessagesRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		Messages uiMessages = (Messages) component;
 		ResponseWriter writer = context.getResponseWriter();
-        String clientId = uiMessages.getClientId(context);
-		Iterator<FacesMessage> allMessages = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-		Map<String, List<FacesMessage>> messages = new HashMap<String, List<FacesMessage>>();
-		messages.put("info", new ArrayList<FacesMessage>());
-		messages.put("warn", new ArrayList<FacesMessage>());
-		messages.put("error", new ArrayList<FacesMessage>());
-		messages.put("fatal", new ArrayList<FacesMessage>());
+        String clientId = uiMessages.getClientId(context);		
+		Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
+        
+        String _for = uiMessages.getFor();
+        Iterator<FacesMessage> messages;
+        if(_for != null) {
+            messages = context.getMessages(_for);
+        }
+        else {
+            messages = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+        }
 		
-		while(allMessages.hasNext()) {
-			FacesMessage message = allMessages.next();
+		while(messages.hasNext()) {
+			FacesMessage message = messages.next();
 			FacesMessage.Severity severity = message.getSeverity();
 			
 			if(message.isRendered() && !uiMessages.isRedisplay())
 				continue;
 			
-			if(severity.equals(FacesMessage.SEVERITY_INFO)) messages.get("info").add(message);
-			else if(severity.equals(FacesMessage.SEVERITY_WARN)) messages.get("warn").add(message);
-			else if(severity.equals(FacesMessage.SEVERITY_ERROR)) messages.get("error").add(message);
-			else if(severity.equals(FacesMessage.SEVERITY_FATAL)) messages.get("fatal").add(message);	
+			if(severity.equals(FacesMessage.SEVERITY_INFO)) addMessage(message, messagesMap, "info");
+			else if(severity.equals(FacesMessage.SEVERITY_WARN))addMessage(message, messagesMap, "warn");
+			else if(severity.equals(FacesMessage.SEVERITY_ERROR)) addMessage(message, messagesMap, "error");
+			else if(severity.equals(FacesMessage.SEVERITY_FATAL)) addMessage(message, messagesMap, "fatal");	
 		}
 		
 		writer.startElement("div", uiMessages);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-messages ui-widget", null);
 		
-		for(String severity : messages.keySet()) {
-			List<FacesMessage> severityMessages = messages.get(severity);
+		for(String severity : messagesMap.keySet()) {
+			List<FacesMessage> severityMessages = messagesMap.get(severity);
 			
 			if(severityMessages.size() > 0)
 				encodeSeverityMessages(context, uiMessages, severity, severityMessages);
@@ -69,8 +73,19 @@ public class MessagesRenderer extends CoreRenderer {
 		
 		writer.endElement("div");
 	}
+    
+    protected void addMessage(FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
+        List<FacesMessage> severityMessages = messagesMap.get(severity);
+        
+        if(severityMessages == null) {
+            severityMessages = new ArrayList<FacesMessage>();
+            messagesMap.put(severity, severityMessages);
+        }
+        
+        severityMessages.add(message);
+    }
 
-	private void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
+	protected void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String styleClassPrefix = "ui-messages-" + severity;
 		

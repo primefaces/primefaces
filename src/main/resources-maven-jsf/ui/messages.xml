@@ -10,8 +10,8 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.MessagesRenderer</rendererType>
 	<rendererClass>org.primefaces.component.messages.MessagesRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
-    <description>Message is a pre-skinned extended version of the standard JSF message component.</description>
+	<parent>javax.faces.component.UIMessages</parent>
+    <description>Message is a pre-skinned extended version of the standard JSF message component with extensions.</description>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.AutoUpdatable</name>
@@ -24,6 +24,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Specifies if the summary of the FacesMessage should be displayed. Default is true.</description>
 		</attribute>
 		<attribute>
@@ -31,6 +32,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Specifies if the detail of the FacesMessage should be displayed. Default is false.</description>
 		</attribute>
 		<attribute>
@@ -38,6 +40,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>When true, only facesmessages with no clientIds are displayed. Default is false.</description>
 		</attribute>
 		<attribute>
@@ -45,7 +48,16 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Defines if already rendered messages should be displayed. Default is true.</description>
+		</attribute>
+        <attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Identifier of the component whose messages to display only, takes precendence when used
+            with globalOnly.</description>
 		</attribute>
         <attribute>
 			<name>autoUpdate</name>
