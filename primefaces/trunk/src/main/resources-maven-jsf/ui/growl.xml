@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.GrowlRenderer</rendererType>
 	<rendererClass>org.primefaces.component.growl.GrowlRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+	<parent>javax.faces.component.UIMessages</parent>
     <description>Growl is based on the Mac's growl notification widget and used to display FacesMessages similar to h:messages.</description>
     <interfaces>
         <interface>
@@ -36,6 +36,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Specifies if the summary of message should be displayed. Default is true.</description>
 		</attribute>
 		<attribute>
@@ -43,6 +44,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Specifies if the detail of message should be displayed. Default is false.</description>
 		</attribute>
 		<attribute>
@@ -50,6 +52,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>When true, only facesmessages without client-ids are displayed. Default is false.</description>
 		</attribute>
 		<attribute>
@@ -71,7 +74,15 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Defines if already rendered messages should be displayed. Default is true.</description>
+		</attribute>
+        <attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Identifier of the component whose messages to display only, takes precendence when used with globalOnly.</description>
 		</attribute>
 	</attributes>
 	<resources>

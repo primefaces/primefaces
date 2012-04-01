@@ -56,8 +56,15 @@ public class GrowlRenderer extends CoreRenderer {
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Iterator<FacesMessage> messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-
+        String _for = growl.getFor();
+        Iterator<FacesMessage> messages;
+        if(_for != null) {
+            messages = context.getMessages(_for);
+        }
+        else {
+            messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+        }
+        
         writer.write("[");
 
 		while(messages.hasNext()) {
