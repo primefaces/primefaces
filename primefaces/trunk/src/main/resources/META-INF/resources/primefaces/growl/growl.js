@@ -48,11 +48,22 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
         markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" />';
         markup += '<div class="ui-growl-message">';
-        markup += '<span class="ui-growl-title">' + msg.summary + '</span>';
-        markup += '<p>' + msg.detail + '</p>';
+        markup += '<span class="ui-growl-title"></span>';
+        markup += '<p></p>';
         markup += '</div><div style="clear: both;"></div></div></div>';
 
-        var message = $(markup);
+        var message = $(markup),
+        summaryEL = message.find('span.ui-growl-title'),
+        detailEL = summaryEL.next();
+        
+        if(this.cfg.escape) {
+            summaryEL.text(msg.summary);
+            detailEL.text(msg.detail);
+        }
+        else {
+            summaryEL.html(msg.summary);
+            detailEL.html(msg.detail);
+        }
 
         this.bindEvents(message);
 
