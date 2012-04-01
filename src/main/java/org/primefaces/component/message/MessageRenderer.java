@@ -36,6 +36,7 @@ public class MessageRenderer extends CoreRenderer {
 		UIComponent target = uiMessage.findComponent(uiMessage.getFor());
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
+        boolean escape = uiMessage.isEscape();
         
 		if(target == null) {
 			throw new FacesException("Cannot find component \"" + uiMessage.getFor() + "\" in view.");
@@ -75,9 +76,9 @@ public class MessageRenderer extends CoreRenderer {
 
                 if(!iconOnly) {
                     if(uiMessage.isShowSummary())
-                        encodeText(writer, msg.getSummary(), severityKey + "-summary");
+                        encodeText(writer, msg.getSummary(), severityKey + "-summary", escape);
                     if(uiMessage.isShowDetail())
-                        encodeText(writer, msg.getDetail(), severityKey + "-detail");
+                        encodeText(writer, msg.getDetail(), severityKey + "-detail", escape);
                 }
 					
 				msg.rendered();
@@ -87,10 +88,15 @@ public class MessageRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeText(ResponseWriter writer, String text, String severity) throws IOException {
+	protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
 		writer.startElement("span", null);
 		writer.writeAttribute("class", "ui-message-" + severity, null);
-		writer.writeText(text, null);
+        
+        if(escape)
+            writer.writeText(text, null);
+        else
+            writer.write(text);
+        
 		writer.endElement("span");
 	}
 

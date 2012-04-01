@@ -42,6 +42,13 @@
 			<type>java.lang.String</type>
 			<defaultValue>both</defaultValue>
 		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines wheterh html would be escaped or not, defaults to true.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
