@@ -490,7 +490,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
         process.push(cfg.process);
     }
     if(ext && ext.process) {
-        process.push(cfg.process);
+        process.push(ext.process);
     }
     
     //process selector
