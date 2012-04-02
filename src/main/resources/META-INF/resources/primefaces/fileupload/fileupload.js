@@ -2115,13 +2115,18 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             this.destroy();
         }
 
-        this.form.fileupload(this.cfg).bind('fileuploaddone', function(e, data) {
-            PrimeFaces.ajax.AjaxResponse(data.result);
+        this.form.fileupload(this.cfg).bind('fileuploadstart', function(e, data) {
+                                        if(_self.cfg.onstart) {
+                                            _self.cfg.onstart.call(_self);
+                                        }
+                                    })
+                                    .bind('fileuploaddone', function(e, data) {
+                                        PrimeFaces.ajax.AjaxResponse(data.result);
 
-            if(_self.cfg.oncomplete) {
-                _self.cfg.oncomplete.call(_self);
-            }
-        });
+                                        if(_self.cfg.oncomplete) {
+                                            _self.cfg.oncomplete.call(_self);
+                                        }
+                                    });
 
         //disable buttonbar
         if(this.cfg.disabled) {
