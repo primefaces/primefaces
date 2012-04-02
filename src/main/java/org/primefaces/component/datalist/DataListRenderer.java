@@ -25,29 +25,17 @@ import org.primefaces.renderkit.DataRenderer;
 public class DataListRenderer extends DataRenderer {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
-        String clientId = list.getClientId();
 
-        if(list.isPagingRequest(context)) {
-            list.setFirst(Integer.valueOf(params.get(clientId + "_first")));
-            list.setRows(Integer.valueOf(params.get(clientId + "_rows")));
+        if(list.isPaginationRequest(context)) {
+            list.updatePaginationData(context, list);
             
             if(list.isLazy()) {
                 list.loadLazyData();
             }
-        }
-    }
-
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        DataList list = (DataList) component;
-        String clientId = list.getClientId();
-        boolean isAjaxPaging = params.containsKey(clientId + "_ajaxPaging");
-
-        if(isAjaxPaging) {
+            
             if(list.getType().equals("none"))
                 encodeFreeList(context, list);
             else

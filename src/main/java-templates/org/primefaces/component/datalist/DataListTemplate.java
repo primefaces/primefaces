@@ -34,46 +34,20 @@ import org.primefaces.model.LazyDataModel;
 		return getType().equalsIgnoreCase("definition");
 	}
 
-    public boolean isPagingRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_ajaxPaging");
-    }
-
-    protected void updatePaginationMetadata(FacesContext context) {
-        ValueExpression firstVe = this.getValueExpression("first");
-        ValueExpression rowsVe = this.getValueExpression("rows");
-        ValueExpression pageVE = this.getValueExpression("page");
-
-        if(firstVe != null)
-            firstVe.setValue(context.getELContext(), getFirst());
-        if(rowsVe != null)
-            rowsVe.setValue(context.getELContext(), getRows());
-        if(pageVE != null)
-            pageVE.setValue(context.getELContext(), getPage());
-    }
-
     @Override
     public void processDecodes(FacesContext context) {
         if(!isRendered()) {
             return;
         }
 
-		if(isPagingRequest(context)) {
-            this.decode(context);
-
-            updatePaginationMetadata(context);
-
-            context.renderResponse();
-        }
+		if(getVar() == null) {
+            pushComponentToEL(context, this);
+            iterateChildren(context, PhaseId.APPLY_REQUEST_VALUES);
+            decode(context);
+            popComponentFromEL(context);
+        } 
         else {
-            if(getVar() == null) {
-                pushComponentToEL(context, this);
-                iterateChildren(context, PhaseId.APPLY_REQUEST_VALUES);
-                decode(context);
-                popComponentFromEL(context);
-            } 
-            else {
-                super.processDecodes(context);
-            }
+            super.processDecodes(context);
         }
 	}
 

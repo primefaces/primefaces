@@ -110,21 +110,10 @@ import javax.faces.context.FacesContext;
         return columns;
     }
 
-    private Boolean pageRequest = null;
     private Boolean sortRequest = null;
     private Boolean filterRequest = null;
     private Boolean clearFiltersRequest = null;
     
-    public boolean isPaginationRequest(FacesContext context) {
-        if(pageRequest == null) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-            pageRequest = params.containsKey(this.getClientId(context) + "_paging");
-        }
-
-        return pageRequest;
-    }
-
     public boolean isSortRequest(FacesContext context) {
         if(sortRequest == null) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();

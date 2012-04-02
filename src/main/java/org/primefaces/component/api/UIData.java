@@ -15,8 +15,11 @@
  */
 package org.primefaces.component.api;
 
+import java.util.Map;
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.LazyDataModel;
 
 public class UIData extends javax.faces.component.UIData {
@@ -159,5 +162,30 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         return false;
+    }
+    
+    public boolean isPaginationRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
+    }
+    
+    public void updatePaginationData(FacesContext context, UIData data) {
+        data.setRowIndex(-1);
+        String clientId = data.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ELContext elContext = context.getELContext();
+        
+		String firstParam = params.get(clientId + "_first");
+		String rowsParam = params.get(clientId + "_rows");
+
+		data.setFirst(Integer.valueOf(firstParam));
+		data.setRows(Integer.valueOf(rowsParam));
+        
+        ValueExpression firstVe = data.getValueExpression("first");
+        ValueExpression rowsVe = data.getValueExpression("rows");
+
+        if(firstVe != null && !firstVe.isReadOnly(elContext))
+            firstVe.setValue(context.getELContext(), data.getFirst());
+        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
+            rowsVe.setValue(context.getELContext(), data.getRows());
     }
 }

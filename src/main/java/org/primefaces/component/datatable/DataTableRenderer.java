@@ -86,7 +86,7 @@ public class DataTableRenderer extends DataRenderer {
 
         if(table.isBodyUpdate(context)) {
             if(table.isPaginationRequest(context)) {
-                updatePaginationData(context, table);
+                table.updatePaginationData(context, table);
             }
             
             if(table.isLazy()) {
@@ -1024,30 +1024,6 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
     
-    protected void updatePaginationData(FacesContext context, DataTable table) {
-        table.setRowIndex(-1);
-        String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        ELContext elContext = context.getELContext();
-        
-		String firstParam = params.get(clientId + "_first");
-		String rowsParam = params.get(clientId + "_rows");
-
-		table.setFirst(Integer.valueOf(firstParam));
-		table.setRows(Integer.valueOf(rowsParam));
-        
-        ValueExpression firstVe = table.getValueExpression("first");
-        ValueExpression rowsVe = table.getValueExpression("rows");
-        ValueExpression pageVE = table.getValueExpression("page");
-
-        if(firstVe != null && !firstVe.isReadOnly(elContext))
-            firstVe.setValue(context.getELContext(), table.getFirst());
-        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
-            rowsVe.setValue(context.getELContext(), table.getRows());
-        if(pageVE != null && !pageVE.isReadOnly(elContext))
-            pageVE.setValue(context.getELContext(), table.getPage());
-    }
-
     protected void sort(FacesContext context, DataTable table) {
         dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), 
                 SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), table.getSortFunction());
