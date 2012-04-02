@@ -25,9 +25,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.UINotificationRenderer;
 
-public class MessageRenderer extends CoreRenderer {
+public class MessageRenderer extends UINotificationRenderer {
 
     @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
@@ -49,12 +49,14 @@ public class MessageRenderer extends CoreRenderer {
 		
 		if(msgs.hasNext()) {
 			FacesMessage msg = msgs.next();
+            String severityName = getSeverityName(msg);
 			
-			if(msg.isRendered() && !uiMessage.isRedisplay()) {
+			if(!shouldRender(uiMessage, msg, severityName)) {
 				writer.endElement("div");
+                
 				return;
-				
-			} else {
+			} 
+            else {
 				Severity severity = msg.getSeverity();
 				String severityKey = null;
 				

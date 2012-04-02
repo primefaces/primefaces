@@ -74,7 +74,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Defines wheterh html would be escaped or not, defaults to true.</description>
+            <description>Defines whether html would be escaped or not, defaults to true.</description>
 		</attribute>
         <attribute>
 			<name>severity</name>
