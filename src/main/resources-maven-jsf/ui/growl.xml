@@ -20,6 +20,9 @@
         <interface>
 			<name>org.primefaces.component.api.AutoUpdatable</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.UINotification</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -90,6 +93,12 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Defines wheterh html would be escaped or not, defaults to true.</description>
+		</attribute>
+        <attribute>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Comma seperated list of severities to display only.</description>
 		</attribute>
 	</attributes>
 	<resources>

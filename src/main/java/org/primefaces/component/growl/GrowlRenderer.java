@@ -22,10 +22,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.renderkit.BaseMessageRenderer;
 
-import org.primefaces.renderkit.CoreRenderer;
-
-public class GrowlRenderer extends CoreRenderer {
+public class GrowlRenderer extends BaseMessageRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -46,6 +45,9 @@ public class GrowlRenderer extends CoreRenderer {
         writer.write(",sticky:" + growl.isSticky());
         writer.write(",life:" + growl.getLife());
         writer.write(",escape:" + growl.isEscape());
+        if(growl.getSeverity() != null) {
+            writer.write(",severity:'" + growl.getSeverity() + "'");
+        }
 
         writer.write(",msgs:");
         encodeMessages(context, growl);
@@ -70,42 +72,31 @@ public class GrowlRenderer extends CoreRenderer {
 
 		while(messages.hasNext()) {
 			FacesMessage message = messages.next();
+                        
+            String severityName = getSeverityName(message);
             
-            if(message.isRendered() && !growl.isRedisplay()) {
-                continue;
+            if(shouldRender(growl, message, severityName)) {
+                String summary = escapeText(message.getSummary());
+                String detail = escapeText(message.getDetail());
+            
+                writer.write("{");
+
+                if(growl.isShowSummary() && growl.isShowDetail())
+                    writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
+                else if(growl.isShowSummary() && !growl.isShowDetail())
+                    writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
+                else if(!growl.isShowSummary() && growl.isShowDetail())
+                    writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
+
+                writer.write(",severity:'" + severityName + "'");
+
+                writer.write("}");
+
+                if(messages.hasNext())
+                    writer.write(",");
+
+                message.rendered();
             }
-            
-			String summary = escapeText(message.getSummary());
-			String detail = escapeText(message.getDetail());
-            int ordinal = message.getSeverity().getOrdinal();
-            String severity = null;
-
-            writer.write("{");
-
-			if(growl.isShowSummary() && growl.isShowDetail())
-				writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
-			else if(growl.isShowSummary() && !growl.isShowDetail())
-				writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
-			else if(!growl.isShowSummary() && growl.isShowDetail())
-				writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
-            
-            if(ordinal == FacesMessage.SEVERITY_INFO.getOrdinal())
-                severity = "info";
-            else if(ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal())
-                severity = "error";
-            else if(ordinal == FacesMessage.SEVERITY_WARN.getOrdinal())
-                severity = "warn";
-            else if(ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal())
-                severity = "fatal";
-            
-            writer.write(",severity:'" + severity + "'");
-
-            writer.write("}");
-
-            if(messages.hasNext())
-                writer.write(",");
-            
-			message.rendered();
 		}
 
         writer.write("]");
