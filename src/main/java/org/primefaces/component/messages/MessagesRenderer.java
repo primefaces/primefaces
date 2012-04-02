@@ -26,9 +26,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.renderkit.BaseMessageRenderer;
+import org.primefaces.renderkit.UINotificationRenderer;
 
-public class MessagesRenderer extends BaseMessageRenderer {
+public class MessagesRenderer extends UINotificationRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
