@@ -18,7 +18,7 @@ package org.primefaces.renderkit;
 import javax.faces.application.FacesMessage;
 import org.primefaces.component.api.UINotification;
 
-public class BaseMessageRenderer extends CoreRenderer {
+public class UINotificationRenderer extends CoreRenderer {
     
     protected boolean shouldRender(UINotification component, FacesMessage message, String severityName) {
         String severityLevel = component.getSeverity();
