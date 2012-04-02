@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.HashMap;
 import javax.faces.event.PhaseId;
 
+    public static final String CONTAINER_CLASS = "ui-rating";
+    public static final String CANCEL_CLASS = "ui-rating-cancel";
+    public static final String STAR_CLASS = "ui-rating-star";
+    public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
+
     private final static String DEFAULT_EVENT = "rate";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));

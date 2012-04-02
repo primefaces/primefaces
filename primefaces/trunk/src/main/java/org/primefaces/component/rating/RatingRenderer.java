@@ -24,7 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -76,35 +75,63 @@ public class RatingRenderer extends CoreRenderer {
         endScript(writer);
     }
 
-    private void encodeMarkup(FacesContext context, Rating rating) throws IOException {
+    protected void encodeMarkup(FacesContext context, Rating rating) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = rating.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, rating);
-        Double value = isValueBlank(valueToRender) ? null : Double.valueOf(valueToRender);
+        int value = isValueBlank(valueToRender) ? 0 : Integer.valueOf(valueToRender);
+        int stars = rating.getStars();
+        String style = rating.getStyle();
+        String styleClass = rating.getStyleClass();
+        styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
 
-        writer.startElement("span", rating);
+        writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");
-
-        for(int i = 1; i <= rating.getStars(); i++) {
-            writer.startElement("input", null);
-            writer.writeAttribute("name", clientId + "_input", null);
-            writer.writeAttribute("type", "radio", null);
-            writer.writeAttribute("value", i, null);
-
-            if(value != null && value.intValue() == i) {
-                writer.writeAttribute("checked", "checked", null);
-            }
-
-            if (rating.isDisabled()) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
-
-            writer.endElement("input");
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        
+        if(rating.isCancel()) {
+            encodeIcon(context, Rating.CANCEL_CLASS);
         }
 
-        writer.endElement("span");
-    }
+        for(int i = 0; i < stars; i++) {
+            String starClass = (i < value) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
+            encodeIcon(context, starClass);
+        }
+        
+        encodeInput(context, clientId + "_input", valueToRender);
 
+        writer.endElement("div");
+    }
+    
+    protected void encodeIcon(FacesContext context, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+
+        writer.startElement("a", null);
+        writer.endElement("a");
+
+        writer.endElement("div");
+    }
+    
+    protected void encodeInput(FacesContext context, String id, String value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+		writer.startElement("input", null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("id", id, null);
+		writer.writeAttribute("name", id, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        if(value != null) {
+            writer.writeAttribute("value", value, null);
+        }
+		writer.endElement("input");
+    }
+    
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         String value = (String) submittedValue;

@@ -40,11 +40,30 @@
             <defaultValue>false</defaultValue>
             <description>Disabled user interaction.</description>
         </attribute>
-         <attribute>
+        <attribute>
             <name>onRate</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>Client side callback to execute when rate happens.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
+        </attribute>
+        <attribute>
+            <name>cancel</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When enabled, displays a cancel icon to reset rating value, defaults to true.</description>
         </attribute>
     </attributes>
     <resources>
