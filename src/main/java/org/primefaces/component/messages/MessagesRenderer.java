@@ -49,15 +49,15 @@ public class MessagesRenderer extends UINotificationRenderer {
 		while(messages.hasNext()) {
 			FacesMessage message = messages.next();
 			FacesMessage.Severity severity = message.getSeverity();
-            String severityName = getSeverityName(message);
 			
-			if(!shouldRender(uiMessages, message, severityName))
-				continue;
-			
-			if(severity.equals(FacesMessage.SEVERITY_INFO)) addMessage(message, messagesMap, "info");
-			else if(severity.equals(FacesMessage.SEVERITY_WARN))addMessage(message, messagesMap, "warn");
-			else if(severity.equals(FacesMessage.SEVERITY_ERROR)) addMessage(message, messagesMap, "error");
-			else if(severity.equals(FacesMessage.SEVERITY_FATAL)) addMessage(message, messagesMap, "fatal");	
+			if(severity.equals(FacesMessage.SEVERITY_INFO)) 
+                addMessage(uiMessages, message, messagesMap, "info");
+			else if(severity.equals(FacesMessage.SEVERITY_WARN))
+                addMessage(uiMessages, message, messagesMap, "warn");
+			else if(severity.equals(FacesMessage.SEVERITY_ERROR)) 
+                addMessage(uiMessages, message, messagesMap, "error");
+			else if(severity.equals(FacesMessage.SEVERITY_FATAL)) 
+                addMessage(uiMessages, message, messagesMap, "fatal");	
 		}
 		
 		writer.startElement("div", uiMessages);
@@ -74,15 +74,17 @@ public class MessagesRenderer extends UINotificationRenderer {
 		writer.endElement("div");
 	}
     
-    protected void addMessage(FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
-        List<FacesMessage> severityMessages = messagesMap.get(severity);
+    protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
+        if(shouldRender(uiMessages, message, severity)) {
+            List<FacesMessage> severityMessages = messagesMap.get(severity);
         
-        if(severityMessages == null) {
-            severityMessages = new ArrayList<FacesMessage>();
-            messagesMap.put(severity, severityMessages);
+            if(severityMessages == null) {
+                severityMessages = new ArrayList<FacesMessage>();
+                messagesMap.put(severity, severityMessages);
+            }
+
+            severityMessages.add(message);
         }
-        
-        severityMessages.add(message);
     }
 
 	protected void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
