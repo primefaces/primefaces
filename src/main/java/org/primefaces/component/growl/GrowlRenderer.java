@@ -45,9 +45,6 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.write(",sticky:" + growl.isSticky());
         writer.write(",life:" + growl.getLife());
         writer.write(",escape:" + growl.isEscape());
-        if(growl.getSeverity() != null) {
-            writer.write(",severity:'" + growl.getSeverity() + "'");
-        }
 
         writer.write(",msgs:");
         encodeMessages(context, growl);
@@ -71,8 +68,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.write("[");
 
 		while(messages.hasNext()) {
-			FacesMessage message = messages.next();
-                        
+			FacesMessage message = messages.next();      
             String severityName = getSeverityName(message);
             
             if(shouldRender(growl, message, severityName)) {
