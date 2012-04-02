@@ -54,7 +54,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         };
         
         options.params = [
-            {name: this.id + '_ajaxPaging', value: true},
+            {name: this.id + '_pagination', value: true},
             {name: this.id + '_first', value: newState.first},
             {name: this.id + '_rows', value: newState.rows}
         ];

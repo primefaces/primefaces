@@ -26,27 +26,17 @@ import org.primefaces.renderkit.DataRenderer;
 public class DataGridRenderer extends DataRenderer {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        DataGrid grid = (DataGrid) component;
-        String clientId = grid.getClientId();
-
-        if(grid.isPagingRequest(context)) {
-            grid.setFirst(Integer.valueOf(params.get(clientId + "_first")));
-            grid.setRows(Integer.valueOf(params.get(clientId + "_rows")));
-            
-            if(grid.isLazy()) {
-                grid.loadLazyData();
-            }
-        }
-    }
-
-    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataGrid grid = (DataGrid) component;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if(grid.isPagingRequest(context)) {      
+        if(grid.isPaginationRequest(context)) {
+            grid.updatePaginationData(context, grid);
+            
+            if(grid.isLazy()) {
+                grid.loadLazyData();
+            }
+            
             encodeTable(context, grid);
         } 
         else {

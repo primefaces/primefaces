@@ -434,7 +434,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.params = [
-            {name: this.id + '_paging', value: true},
+            {name: this.id + '_pagination', value: true},
             {name: this.id + '_first', value: newState.first},
             {name: this.id + '_rows', value: newState.rows},
             {name: this.id + '_updateBody', value: true},
