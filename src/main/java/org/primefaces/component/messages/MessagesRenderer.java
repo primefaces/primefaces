@@ -26,10 +26,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.renderkit.BaseMessageRenderer;
 
-import org.primefaces.renderkit.CoreRenderer;
-
-public class MessagesRenderer extends CoreRenderer {
+public class MessagesRenderer extends BaseMessageRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
@@ -50,8 +49,9 @@ public class MessagesRenderer extends CoreRenderer {
 		while(messages.hasNext()) {
 			FacesMessage message = messages.next();
 			FacesMessage.Severity severity = message.getSeverity();
+            String severityName = getSeverityName(message);
 			
-			if(message.isRendered() && !uiMessages.isRedisplay())
+			if(!shouldRender(uiMessages, message, severityName))
 				continue;
 			
 			if(severity.equals(FacesMessage.SEVERITY_INFO)) addMessage(message, messagesMap, "info");
