@@ -13,6 +13,10 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.disabled && !this.cfg.readonly) {
             this.bindEvents();
         }
+        
+        if(this.cfg.readonly) {
+            this.jq.children().css('cursor', 'default');
+        }
     },
     
     bindEvents: function() {
