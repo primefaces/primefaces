@@ -134,6 +134,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             
             //dialog support
             this.setupDialogSupport();
+            
+            //Client behaviors
+            if(this.cfg.behaviors) {
+                PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+            }
         }
 
         //Append panel to body
