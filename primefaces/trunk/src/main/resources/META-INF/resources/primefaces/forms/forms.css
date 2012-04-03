@@ -131,7 +131,15 @@
 
 .ui-selectonemenu.ui-state-disabled .ui-selectonemenu-trigger,
 .ui-selectonemenu.ui-state-disabled .ui-selectonemenu-label {
-    cursor: auto
+    cursor: default;
+}
+
+.ui-selectonemenu label.ui-selectonemenu-label  {
+    cursor: pointer;
+}
+
+.ui-selectonemenu input.ui-selectonemenu-label  {
+    cursor: default;
 }
 
 .ui-selectonemenu-panel {
