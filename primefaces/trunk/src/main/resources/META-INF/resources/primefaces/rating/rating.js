@@ -9,9 +9,10 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.value = this.getValue();
         this.stars = this.jq.children('.ui-rating-star');
         this.cancel = this.jq.children('.ui-rating-cancel');
-        this.disabled = this.jq.hasClass('ui-state-disabled');
         
-        this.bindEvents();
+        if(!this.cfg.disabled && !this.cfg.readonly) {
+            this.bindEvents();
+        }
     },
     
     bindEvents: function() {
@@ -68,7 +69,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     },
     
     enable: function() {
-        this.disabled = false;
+        this.cfg.disabled = false;
         
         this.bindEvents();
         
@@ -76,7 +77,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     },
     
     disable: function() {
-        this.disabled = true;
+        this.cfg.disabled = true;
         
         this.unbindEvents();
         

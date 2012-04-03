@@ -38,7 +38,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Disabled user interaction.</description>
+            <description>Disables user interaction.</description>
+        </attribute>
+        <attribute>
+            <name>readonly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables user interaction without adding disabled visuals.</description>
         </attribute>
         <attribute>
             <name>onRate</name>
