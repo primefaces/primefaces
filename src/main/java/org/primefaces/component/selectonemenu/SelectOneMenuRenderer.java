@@ -118,20 +118,36 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, menu);
         
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("name", menu.getClientId() + "_editableInput", null);
-        writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-        writer.writeAttribute("tabindex", -1, null);
-        if(menu.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        
-        if(valueToRender != null) {
-			writer.writeAttribute("value", valueToRender , null);
-        }
+        if(menu.isEditable()) {
+            writer.startElement("input", null);
+            writer.writeAttribute("type", "text", null);
+            writer.writeAttribute("name", menu.getClientId() + "_editableInput", null);
+            writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            writer.writeAttribute("tabindex", -1, null);
+            if(menu.isDisabled()) {
+                writer.writeAttribute("disabled", "disabled", null);
+            }
 
-        writer.endElement("input");
+            if(valueToRender != null) {
+                writer.writeAttribute("value", valueToRender , null);
+            }
+
+            writer.endElement("input");
+        }
+        else {
+            writer.startElement("label", null);
+            writer.writeAttribute("id", menu.getClientId() + "_label", null);
+            writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+
+            if(valueToRender != null) {
+                writer.writeText(valueToRender, null);
+            }
+            else {
+                writer.write("&nbsp;");
+            }
+
+            writer.endElement("label");
+        }
     }
 
     protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu, boolean valid) throws IOException {
