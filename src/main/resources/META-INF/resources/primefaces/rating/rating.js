@@ -88,5 +88,13 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.jqInput.val('');
         
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
+        
+        //invoke ajax cancel behavior
+        if(this.cfg.behaviors) {
+            var cancelBehavior = this.cfg.behaviors['cancel'];
+            if(cancelBehavior) {
+                cancelBehavior.call(this);
+            }
+        }
     }
 });
