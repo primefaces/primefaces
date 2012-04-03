@@ -5,47 +5,87 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        
-        this.jqInput = $(this.jqId + ' input');
-        this.cfg.formId = this.jq.parents('form:first').attr('id');
+        this.jqInput = $(this.jqId + '_input');
         this.value = this.getValue();
+        this.stars = this.jq.children('.ui-rating-star');
+        this.cancel = this.jq.children('.ui-rating-cancel');
+        this.disabled = this.jq.hasClass('ui-state-disabled');
+        
+        this.bindEvents();
+    },
+    
+    bindEvents: function() {
         var _self = this;
-
-        this.cfg.callback = function(value) {
-            if(_self.value == value)
-                return;
-
-            _self.value = value;
-
-            if(_self.cfg.onRate) {
-                _self.cfg.onRate.call(_self, value);
-            }
-
-            if(_self.cfg.behaviors) {
-                var rateBehavior = _self.cfg.behaviors['rate'];
-                if(rateBehavior) {
-                    rateBehavior.call(_self);
-                }
-            }
-        };
-
+        
+        this.stars.click(function() {
+            var value = $(this).index();
+            
+            _self.setValue(value);
+        });
+        
+        this.cancel.hover(function() {
+            $(this).toggleClass('ui-rating-cancel-hover');
+        })
+        .click(function() {
+            _self.reset();
+        });
+    },
+    
+    unbindEvents: function() {        
+        this.stars.unbind('click');
+        
+        this.cancel.unbind('hover click');
     },
     
     getValue: function() {
-        return $(this.jq).find('input:radio:checked').val();
+        var inputVal = this.jqInput.val();
+        
+        return inputVal == '' ? null : parseInt(inputVal);
     },
     
     setValue: function(value) {
-        this.jqInput.rating('select', value);
+        //set hidden value
+        this.jqInput.val(value);
+        
+        //update visuals
+        this.stars.removeClass('ui-rating-star-on');
+        for(var i = 0; i < value; i++) {
+            this.stars.eq(i).addClass('ui-rating-star-on');
+        }
+        
+        //invoke callback
+        if(this.cfg.onRate) {
+            this.cfg.onRate.call(this, value);
+        }
+
+        //invoke ajax rate behavior
+        if(this.cfg.behaviors) {
+            var rateBehavior = this.cfg.behaviors['rate'];
+            if(rateBehavior) {
+                rateBehavior.call(this);
+            }
+        }
     },
     
     enable: function() {
-        this.jqInput.rating('enable');
+        this.disabled = false;
+        
+        this.bindEvents();
+        
+        this.jq.removeClass('ui-state-disabled');
     },
     
     disable: function() {
-        this.jqInput.rating('disable');
-    }
-
+        this.disabled = true;
+        
+        this.unbindEvents();
+        
+        this.jq.addClass('ui-state-disabled');
+    },
     
+    reset: function() {
+        this.jqInput.val('');
+        
+        this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
+    }
 });
