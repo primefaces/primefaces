@@ -298,7 +298,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
-        boolean disabled = option.isDisabled() || menu.isDisabled();
+        boolean disabled = option.isDisabled();
 
         Object valuesArray;
         Object itemValue;

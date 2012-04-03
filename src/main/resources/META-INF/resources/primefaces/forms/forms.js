@@ -113,24 +113,22 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         //set initial selected option
         var selectedOption = this.options.filter(':selected');
         this.setLabel(selectedOption.text());
-
-        //disable tabbing
-        if(this.disabled) {
-            this.input.attr("tabindex", -1);
-        }
+        
+        //triggers to toggle dropdown
+        if(this.cfg.editable) {
+            this.triggers = this.jq.find('.ui-selectonemenu-trigger');
+        } 
         else {
-            if(this.cfg.editable) {
-                this.triggers = this.jq.find('.ui-selectonemenu-trigger');
-            } 
-            else {
-                this.label.css('cursor', 'pointer');
-                this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-            }
-            
-            //mark trigger and descandants of trigger as a trigger for a primefaces overlay
-            this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-            
+            this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+        }
+        
+        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+        this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+
+        if(!this.disabled) {            
             this.bindEvents();
+            
+            this.bindConstantEvents();
             
             //dialog support
             this.setupDialogSupport();
@@ -208,15 +206,28 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             _self.input.focus();
             e.preventDefault();
         });
-
-
-        var offset;
+        
+        this.input.focus(function(){
+            _self.jq.addClass('ui-state-focus');
+            _self.menuIcon.addClass('ui-state-focus');
+        }).blur(function(){
+            _self.jq.removeClass('ui-state-focus');
+            _self.menuIcon.removeClass('ui-state-focus');
+        });
+        
+        //key bindings
+        this.bindKeyEvents();
+    },
+    
+    bindConstantEvents: function(item) {
+        var _self = this;
+        
         //hide overlay when outside is clicked
         $(document.body).bind('mousedown.ui-selectonemenu', function (e) {
             if(_self.panel.is(":hidden")) {
                 return;
             }
-            offset = _self.panel.offset();
+            var offset = _self.panel.offset();
             if (e.target === _self.label.get(0) ||
                 e.target === _self.menuIcon.get(0) ||
                 e.target === _self.menuIcon.children().get(0)) {
@@ -231,17 +242,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        this.input.focus(function(){
-            _self.jq.addClass('ui-state-focus');
-            _self.menuIcon.addClass('ui-state-focus');
-        }).blur(function(){
-            _self.jq.removeClass('ui-state-focus');
-            _self.menuIcon.removeClass('ui-state-focus');
-        });
-
-        //key bindings
-        this.bindKeyEvents();
-        
         //Hide overlay on resize
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
@@ -249,6 +249,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide();
             }
         });
+    },
+    
+    unbindEvents: function() {
+        this.items.filter(':not(.ui-state-disabled)').unbind('mouseover click');
+        this.triggers.unbind('mouseover mouseout click');
+        this.input.unbind('focus blur keydown keyup');
     },
     
     highlightItem: function(item) {
@@ -367,6 +373,26 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     
     blur: function() {
         this.input.blur();
+    },
+    
+    disable: function() {
+        this.disabled = true;
+        this.jq.addClass('ui-state-disabled');
+        this.input.attr('disabled', 'disabled');
+        if(this.cfg.editable) {
+            this.label.attr('disabled', 'disabled');
+        }
+        this.unbindEvents();
+    },
+    
+    enable: function() {
+        this.disabled = false;
+        this.jq.removeClass('ui-state-disabled');
+        this.input.removeAttr('disabled');
+        if(this.cfg.editable) {
+            this.label.removeAttr('disabled');
+        }
+        this.bindEvents();
     },
     
     alignPanel: function() {
