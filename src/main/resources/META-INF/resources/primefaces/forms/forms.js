@@ -183,7 +183,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
 
         //Events for items
-        this.items.mouseover(function() {
+        this.items.filter(':not(.ui-state-disabled)').mouseover(function() {
             _self.highlightItem($(this));
         })
         .click(function() {
