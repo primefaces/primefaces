@@ -16,18 +16,14 @@
 package org.primefaces.component.rating;
 
 import java.io.IOException;
-import javax.el.ValueExpression;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public class RatingRenderer extends CoreRenderer {
+public class RatingRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -37,8 +33,7 @@ public class RatingRenderer extends CoreRenderer {
         }
 
         String clientId = rating.getClientId();
-        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        String submittedValue = value == null ? "0" : value;
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         rating.setSubmittedValue(submittedValue);
 
@@ -79,7 +74,7 @@ public class RatingRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = rating.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, rating);
-        int value = isValueBlank(valueToRender) ? 0 : Integer.valueOf(valueToRender);
+        Integer value = isValueBlank(valueToRender) ? null : Integer.valueOf(valueToRender);
         int stars = rating.getStars();
         boolean disabled = rating.isDisabled();
         boolean readonly = rating.isReadonly();
@@ -103,7 +98,7 @@ public class RatingRenderer extends CoreRenderer {
         }
 
         for(int i = 0; i < stars; i++) {
-            String starClass = (i < value) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
+            String starClass = (value != null && i < value.intValue()) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
             encodeIcon(context, starClass);
         }
         
@@ -136,43 +131,5 @@ public class RatingRenderer extends CoreRenderer {
             writer.writeAttribute("value", value, null);
         }
 		writer.endElement("input");
-    }
-    
-    @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        String value = (String) submittedValue;
-        Rating rating = (Rating) component;
-        Converter converter = rating.getConverter();
-
-        //first ask the converter
-		if(converter != null) {
-			return converter.getAsObject(context, rating, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = rating.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, rating, value);
-                }
-            }
-		}
-
-        //Built-in converter
-        if(value == null) {
-            return null;
-        }
-
-        try {
-            return Double.valueOf(value);
-        } catch (NumberFormatException exception) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion error", submittedValue + " is not a valid value for " + component.getClientId(context));
-
-            throw new ConverterException(msg);
-        }
     }
 }
