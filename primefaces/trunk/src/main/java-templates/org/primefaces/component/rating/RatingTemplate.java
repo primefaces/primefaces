@@ -17,7 +17,7 @@ import javax.faces.event.PhaseId;
 
     private final static String DEFAULT_EVENT = "rate";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("rate","cancel"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
@@ -38,7 +38,12 @@ import javax.faces.event.PhaseId;
         if(event instanceof AjaxBehaviorEvent) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            customEvents.put(eventName, (AjaxBehaviorEvent) event);
+            if(eventName.equals("rate")) {
+                customEvents.put(eventName, (AjaxBehaviorEvent) event);
+            }
+            else if(eventName.equals("cancel")) {
+                super.queueEvent(event);
+            }
         } 
         else {
             super.queueEvent(event);
