@@ -19,7 +19,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
         
         this.stars.click(function() {
-            var value = $(this).index();
+            var value = _self.stars.index(this) + 1;   //index starts from zero
             
             _self.setValue(value);
         });
