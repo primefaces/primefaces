@@ -25,6 +25,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 
 public class PollRenderer extends CoreRenderer {
@@ -64,17 +65,34 @@ public class PollRenderer extends CoreRenderer {
 
             poll.setOncomplete(oncomplete);
         }
+        
+        AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        
+        String request = builder.source(clientId)
+                .form(form.getClientId(context))
+                .process(context, component, poll.getProcess())
+                .update(context, component, poll.getUpdate())
+                .async(poll.isAsync())
+                .global(poll.isGlobal())
+                .partialSubmit(poll.isPartialSubmit())
+                .onstart(poll.getOnstart())
+                .onerror(poll.getOnerror())
+                .onsuccess(poll.getOnsuccess())
+                .oncomplete(poll.getOncomplete())
+                .params(poll)
+                .build();
 
         //script
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");
-        writer.write(widgetVar + "= new PrimeFaces.widget.Poll('" + clientId + "', {");
-        writer.write("frequency:" + poll.getInterval());
+        writer.write("PrimeFaces.cw('Poll','" + poll.resolveWidgetVar() + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",frequency:" + poll.getInterval());
         writer.write(",autoStart:" + poll.isAutoStart());
         writer.write(",fn: function() {");
-        writer.write(buildAjaxRequest(context, poll));
+        writer.write(request);
         writer.write("}});});");
 
         writer.endElement("script");

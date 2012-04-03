@@ -1,6 +1,6 @@
-PrimeFaces.widget.Poll = function(id, cfg) {
-    this.id = id;
+PrimeFaces.widget.Poll = function(cfg) {
     this.cfg = cfg;
+    this.id = this.cfg.id;
     this.active = false;
 
     if(this.cfg.autoStart) {
