@@ -310,7 +310,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         }).keydown(function(e) {
-            if(e.which == $.ui.keyCode.TAB && _self.panel.is(':visible')) {
+            //hide on tab or escape                    
+            if((e.which == $.ui.keyCode.TAB||e.which == $.ui.keyCode.ESCAPE) && _self.panel.is(':visible')) {
                 _self.hide();
             }
         });
