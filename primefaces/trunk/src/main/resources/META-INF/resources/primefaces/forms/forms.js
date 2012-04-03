@@ -112,22 +112,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //set initial selected option
         var selectedOption = this.options.filter(':selected');
-        this.label.val(selectedOption.text());
+        this.setLabel(selectedOption.text());
 
         //disable tabbing
         if(this.disabled) {
             this.input.attr("tabindex", -1);
         }
         else {
-            if(!this.cfg.editable) {
-                this.label.css('cursor', 'pointer').mousedown(function(e) {
-                    e.preventDefault(); 
-                });
-
-                this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+            if(this.cfg.editable) {
+                this.triggers = this.jq.find('.ui-selectonemenu-trigger');
             } 
             else {
-                this.triggers = this.jq.find('.ui-selectonemenu-trigger');
+                this.label.css('cursor', 'pointer');
+                this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
             }
             
             //mark trigger and descandants of trigger as a trigger for a primefaces overlay
@@ -274,7 +271,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             newOption.attr('selected', 'selected');
             
             //update label
-            this.label.val(newOption.text());
+            this.setLabel(newOption.text());
             
             //trigger change
             this.input.trigger('change');
@@ -296,7 +293,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.NUMPAD_ENTER:
                     if(_self.panel.is(":visible")) {
                         //reflect changes on select element to the display elements, hide the overlay
-                        _self.label.val(_self.options.filter(':selected').text());
+                        _self.setLabel(_self.options.filter(':selected').text());
                         _self.hide();
                     }
                 break;
@@ -309,7 +306,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     if(_self.panel.is(":visible"))
                         _self.highlightItem(item);
                     else
-                        _self.label.val(item.text());
+                        _self.setLabel(item.text());
                 break;
             }
         }).keydown(function(e) {
@@ -377,6 +374,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                                         ,of: this.jq
                                         ,offset : positionOffset
                                     });
+    },
+    
+    setLabel: function(value) {
+        if(this.cfg.editable)
+            this.label.val(value);
+        else
+            this.label.text(value);
     }
     
 });
