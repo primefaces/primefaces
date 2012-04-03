@@ -287,24 +287,23 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     bindKeyEvents: function() {
         var _self = this;
         
+        //Key bindings reflect the select tag changes made by the browser to the ui
         this.input.keyup(function(e) {
             var keyCode = $.ui.keyCode;
 
             switch(e.which) { 
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
-                    var currentOption = _self.options.filter(':selected'),
-                    item = _self.items.eq(currentOption.index());
-
                     if(_self.panel.is(":visible")) {
-                        _self.label.val(currentOption.text());
+                        //reflect changes on select element to the display elements, hide the overlay
+                        _self.label.val(_self.options.filter(':selected').text());
                         _self.hide();
                     }
                 break;
 
                 case keyCode.TAB:
-                    if(_self.panel.is(':visible')) {
-                        _self.selectItem(_self.items.filter('.ui-state-highlight'));
+                    if(_self.panel.is(":visible")) {
+                        _self.hide();
                     }
                 break;
                 
