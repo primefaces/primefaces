@@ -32,7 +32,7 @@ public class RatingRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
-        if(rating.isDisabled()) {
+        if(rating.isDisabled()||rating.isReadonly()) {
             return;
         }
 
@@ -64,9 +64,9 @@ public class RatingRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('Rating','" + rating.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         
-        if(rating.getOnRate() != null) {
-            writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");
-        }
+        if(rating.getOnRate() != null) writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");        
+        if(rating.isReadonly()) writer.write(",readonly:true");
+        if(rating.isDisabled()) writer.write(",disabled:true");
         
         encodeClientBehaviors(context, rating);
 
@@ -81,9 +81,15 @@ public class RatingRenderer extends CoreRenderer {
         String valueToRender = ComponentUtils.getValueToRender(context, rating);
         int value = isValueBlank(valueToRender) ? 0 : Integer.valueOf(valueToRender);
         int stars = rating.getStars();
+        boolean disabled = rating.isDisabled();
+        boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
         String styleClass = rating.getStyleClass();
         styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
+        
+        if(disabled) {
+            styleClass = styleClass + " ui-state-disabled"; 
+        }
 
         writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");
@@ -92,7 +98,7 @@ public class RatingRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
         
-        if(rating.isCancel()) {
+        if(rating.isCancel() && !disabled && !readonly) {
             encodeIcon(context, Rating.CANCEL_CLASS);
         }
 
