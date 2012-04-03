@@ -39,7 +39,8 @@ import javax.faces.event.PhaseId;
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
             customEvents.put(eventName, (AjaxBehaviorEvent) event);
-        } else {
+        } 
+        else {
             super.queueEvent(event);
         }
     }
@@ -53,9 +54,7 @@ import javax.faces.event.PhaseId;
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
                 RateEvent rateEvent = new RateEvent(this, behaviorEvent.getBehavior(), getValue());
 
-                if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
-                    rateEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
-                }
+                rateEvent.setPhaseId(behaviorEvent.getPhaseId());
                 
                 super.queueEvent(rateEvent);
             }
