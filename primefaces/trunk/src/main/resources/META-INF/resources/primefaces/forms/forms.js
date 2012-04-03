@@ -300,12 +300,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         _self.hide();
                     }
                 break;
-
-                case keyCode.TAB:
-                    if(_self.panel.is(":visible")) {
-                        _self.hide();
-                    }
-                break;
                 
                 //reflect changes on select element to the display elements
                 default:
@@ -316,9 +310,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         _self.highlightItem(item);
                     else
                         _self.label.val(item.text());
-                        
-                    e.preventDefault();
                 break;
+            }
+        }).keydown(function(e) {
+            if(e.which == $.ui.keyCode.TAB && _self.panel.is(':visible')) {
+                _self.hide();
             }
         });
     },
@@ -337,6 +333,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
+        console.log('showing');
         //highlight current
         this.highlightItem(this.items.eq(this.options.filter(':selected').index()));
 
@@ -353,6 +350,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
+        console.log('hiding');
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', '');
         }
