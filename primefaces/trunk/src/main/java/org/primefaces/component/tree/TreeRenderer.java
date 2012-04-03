@@ -110,7 +110,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('Tree','" + tree.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",dynamic:" + dynamic);
-
+        
         if(dynamic) {
             writer.write(",cache:" + tree.isCache());
         }
@@ -118,6 +118,7 @@ public class TreeRenderer extends CoreRenderer {
         //selection
         if(selectionMode != null) {
             writer.write(",selectionMode:'" + selectionMode + "'");
+            writer.write(",highlight:" + tree.isHighlight());
         }
 
         if(tree.getOnNodeClick() != null) {

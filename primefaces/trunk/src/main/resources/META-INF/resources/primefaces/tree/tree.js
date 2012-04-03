@@ -22,46 +22,43 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     
     bindEvents: function() {
         var _self = this,
-        selectionMode = this.cfg.selectionMode;
+        selectionMode = this.cfg.selectionMode,
+        iconSelector = this.jqId + ' .ui-tree-icon',
+        nodeSelector = this.jqId  + ' .ui-tree-selectable-node';
 
         //expand-collapse
-        $(this.jqId + ' .ui-tree-icon')
-            .die()
-            .live('click',function(e) {
-                var icon = $(this),
-                node = icon.parents('li:first');
+        $(document).off('click', iconSelector)
+                    .on('click', iconSelector, null, function(e) {
+                        var icon = $(this),
+                        node = icon.parents('li:first');
 
-                if(icon.hasClass('ui-icon-triangle-1-e'))
-                    _self.expandNode(node);
-                else
-                    _self.collapseNode(node);
-            });
+                        if(icon.hasClass('ui-icon-triangle-1-e'))
+                            _self.expandNode(node);
+                        else
+                            _self.collapseNode(node);
+                    });
 
         //selection hover
         if(selectionMode) {
-            var clickTargetSelector = this.jqId  + ' .ui-tree-selectable-node';
+            if(this.cfg.highlight) {
+                $(document).off('hover.tree', nodeSelector)
+                            .on('hover.tree', nodeSelector, null, function() {
+                                var element = $(this);
 
-            $(clickTargetSelector)
-                .die('mouseover.tree mouseout.tree click.tree contextmenu.tree')
-                .live('mouseover.tree', function() {
-                    var element = $(this);
-
-                    if(!element.hasClass('ui-state-highlight'))
-                        $(this).addClass('ui-state-hover');
-                })
-                .live('mouseout.tree', function() {
-                    var element = $(this);
-
-                    if(!element.hasClass('ui-state-highlight'))
-                        $(this).removeClass('ui-state-hover');
-                })
-                .live('click.tree', function(e) {
-                    _self.onNodeClick(e, $(this).parents('li:first'));
-                })
-                .live('contextmenu.tree', function(e) {
-                    _self.onNodeClick(e, $(this).parents('li:first'));
-                    e.preventDefault();
-                });
+                                if(!element.hasClass('ui-state-highlight'))
+                                    $(this).toggleClass('ui-state-hover');
+                            });
+                
+            }
+     
+            $(document).off('click.tree contextmenu.tree', nodeSelector)
+                        .on('click.tree', nodeSelector, null, function(e) {
+                            _self.onNodeClick(e, $(this).parents('li:first'));
+                        })
+                        .on('contextmenu.tree', nodeSelector, null, function(e) {
+                            _self.onNodeClick(e, $(this).parents('li:first'));
+                            e.preventDefault();
+                        });
         }
     },
     

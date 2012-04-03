@@ -82,6 +82,13 @@
 			<type>java.lang.String</type>
             <description>Defines the selectionMode.</description>
 		</attribute>
+        <attribute>
+			<name>highlight</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Highlights nodes on hover when selection is enabled, set to false to disable highlighting.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
