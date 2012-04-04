@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
@@ -44,7 +45,7 @@ public class HotkeyRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Hotkey hotkey = (Hotkey) component;
 		String clientId = hotkey.getClientId(context);
-
+        
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
@@ -57,8 +58,24 @@ public class HotkeyRenderer extends CoreRenderer {
 			if(form == null) {
 				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
 			}
+            
+            AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        
+            String request = builder.source(clientId)
+                .form(form.getClientId(context))
+                .process(context, component, hotkey.getProcess())
+                .update(context, component, hotkey.getUpdate())
+                .async(hotkey.isAsync())
+                .global(hotkey.isGlobal())
+                .partialSubmit(hotkey.isPartialSubmit())
+                .onstart(hotkey.getOnstart())
+                .onerror(hotkey.getOnerror())
+                .onsuccess(hotkey.getOnsuccess())
+                .oncomplete(hotkey.getOncomplete())
+                .params(hotkey)
+                .build();
 			
-			writer.write(buildAjaxRequest(context, hotkey));
+			writer.write(request);
 
 		} else {
 			writer.write(hotkey.getHandler());
