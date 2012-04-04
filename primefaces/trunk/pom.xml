@@ -266,6 +266,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/rating/rating.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
@@ -310,6 +311,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/rating/rating.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/resizable/resizable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/slider/slider.js</include>
@@ -497,6 +499,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/rating/rating.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
@@ -541,6 +544,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/rating/rating.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/resizable/resizable.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/slider/slider.js</include>
