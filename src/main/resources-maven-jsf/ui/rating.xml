@@ -75,16 +75,13 @@
     </attributes>
     <resources>
         <resource>
-            <name>rating/rating.css</name>
+            <name>primefaces.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
             <name>primefaces.js</name>
-        </resource>
-        <resource>
-            <name>rating/rating.js</name>
         </resource>
     </resources>
 </component>
