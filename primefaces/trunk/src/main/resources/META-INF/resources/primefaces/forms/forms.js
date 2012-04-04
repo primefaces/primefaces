@@ -271,7 +271,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Handler to process item selection with mouse
      */
-    selectItem: function(item) {
+    selectItem: function(item, silent) {
         //option to select
         var newOption = this.options.eq(item.index()),
         currentOption = this.options.filter(':selected');
@@ -288,7 +288,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.input.trigger('change');
         }
 
-        this.input.focus();
+        if(!silent) {
+            this.input.focus();
+        }
+        
         this.hide();
     },
     
@@ -342,7 +345,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        console.log('showing');
         //highlight current
         this.highlightItem(this.items.eq(this.options.filter(':selected').index()));
 
@@ -359,7 +361,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
-        console.log('hiding');
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', '');
         }
@@ -413,6 +414,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.label.val(value);
         else
             this.label.text(value);
+    },
+    
+    selectValue : function(value) {
+        var option = this.options.filter('[value="' + value + '"]');
+
+        this.selectItem(this.items.eq(option.index()), true);
     }
     
 });
