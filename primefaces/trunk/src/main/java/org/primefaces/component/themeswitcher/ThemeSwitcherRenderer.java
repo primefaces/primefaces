@@ -29,21 +29,18 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         String clientId = ts.getClientId(context);
-        String onchange = ts.getOnchange();
-        String changeTheme = "PrimeFaces.changeTheme(arguments[0])";
-        onchange = (onchange == null) ? changeTheme : onchange + ";" + changeTheme;
         
         startScript(writer, clientId);
 		
 		writer.write("$(function(){");
         
-        writer.write("PrimeFaces.cw('SelectOneMenu','" + ts.resolveWidgetVar() + "',{");
+        writer.write("PrimeFaces.cw('ThemeSwitcher','" + ts.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",onchange:function() {" + onchange + ";}");
         writer.write(",effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400) 
+        if(menu.getEffectDuration() != 400) {
             writer.write(",effectDuration:" + menu.getEffectDuration());
+        }
 
         encodeClientBehaviors(context, menu);
 		
