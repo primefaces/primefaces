@@ -1632,3 +1632,20 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/*
+ * PrimeFaces ThemeSwitcher Widget
+ */
+PrimeFaces.widget.ThemeSwitcher = PrimeFaces.widget.SelectOneMenu.extend({
+    
+    init: function(cfg) {        
+        this._super(cfg);
+        
+        var _self = this;
+        this.input.change(function() {
+            var value = _self.options.filter(':selected').val();
+            
+            PrimeFaces.changeTheme(value);
+        });
+    }
+});
