@@ -548,17 +548,22 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
      * Only add params of process components and their children 
      * if partial submit is enabled(undefined or true) and there are components to process partially
      */
-    if(cfg.partialSubmit != false && processIds != '@all') {    
-        var processIdsArray = processIds.split(' ');
-        $.each(processIdsArray, function(i, item) {
-            var jqProcess = PrimeFaces.escapeClientId(item),
-            componentPostParams = $(jqProcess + ',' + jqProcess + ' :input').serializeArray();
-            
-            $.merge(postParams, componentPostParams);
-        });
+    if(cfg.partialSubmit != false && processIds != '@all') {
         
         //add viewstate
         postParams.push({name:PrimeFaces.VIEW_STATE, value:form.children("input[name='javax.faces.ViewState']").val()});
+        
+        if(processIds != '@none') {
+            var processIdsArray = processIds.split(' ');
+            
+            $.each(processIdsArray, function(i, item) {
+                var jqProcess = PrimeFaces.escapeClientId(item),
+                componentPostParams = $(jqProcess + ',' + jqProcess + ' :input').serializeArray();
+
+                $.merge(postParams, componentPostParams);
+            });
+        }   
+        
     }
     else {
         $.merge(postParams, form.serializeArray());
