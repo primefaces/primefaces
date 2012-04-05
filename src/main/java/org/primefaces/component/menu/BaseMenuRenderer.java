@@ -19,12 +19,15 @@ import java.io.IOException;
 import java.util.Iterator;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class BaseMenuRenderer extends CoreRenderer {
@@ -84,7 +87,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}
@@ -220,4 +223,28 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+    
+    protected String buildAjaxRequest(FacesContext context, MenuItem menuItem, UIComponent form) {
+        UIComponent component = (UIComponent) menuItem;
+        String clientId = component.getClientId(context);
+        
+        AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        
+        String request = builder.source(clientId)
+                        .form(form.getClientId(context))
+                        .process(context, component, menuItem.getProcess())
+                        .update(context, component, menuItem.getUpdate())
+                        .async(menuItem.isAsync())
+                        .global(menuItem.isGlobal())
+                        .partialSubmit(menuItem.isPartialSubmit())
+                        .onstart(menuItem.getOnstart())
+                        .onerror(menuItem.getOnerror())
+                        .onsuccess(menuItem.getOnsuccess())
+                        .oncomplete(menuItem.getOncomplete())
+                        .params(component)
+                        .preventDefault()
+                        .build();
+
+        return request;
+    }
 }
