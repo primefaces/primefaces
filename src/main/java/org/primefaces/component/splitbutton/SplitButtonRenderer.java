@@ -39,7 +39,9 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
             return;
         }
         
-		String param = component.getClientId(context);
+        String clientId = button.getClientId(context);
+        
+        String param = button.isAjax() ? clientId : clientId + "_button";
 		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
 		}
@@ -168,7 +170,6 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
     
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {
         StringBuilder onclick = new StringBuilder();
-        String request;
         if(button.getOnclick() != null) {
             onclick.append(button.getOnclick()).append(";");
         }
@@ -182,7 +183,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }
         
-            //onclick.append(buildNonAjaxRequest(context, button, formClientId));
+            onclick.append(buildNonAjaxRequest(context, button, form, null, false));
         }
         
         String onclickBehaviors = getOnclickBehaviors(context, button);
@@ -265,7 +266,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}

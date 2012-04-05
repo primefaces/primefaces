@@ -112,7 +112,7 @@ public class StackRenderer extends CoreRenderer {
                     throw new FacesException("Stack must be inside a form element");
                 }
 
-                String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId);
+                String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId, true);
 
                 command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
 				

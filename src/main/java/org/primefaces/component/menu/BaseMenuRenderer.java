@@ -84,7 +84,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
                     throw new FacesException("MenuItem must be inside a form element");
                 }
 
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}

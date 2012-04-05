@@ -83,7 +83,7 @@ public class CommandButtonRenderer extends CoreRenderer {
                     throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
                 }
                 
-                request = buildNonAjaxRequest(context, form, form);
+                request = buildNonAjaxRequest(context, button, form, null, false);
             }
 			
             onclick.append(request);
@@ -138,36 +138,5 @@ public class CommandButtonRenderer extends CoreRenderer {
 		writer.write("});");
 		
 		endScript(writer);
-	}
-    
-	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form) {		
-        StringBuilder request = new StringBuilder();
-        String formId = form.getClientId(context);
-        Map<String,String> params = new HashMap<String, String>();
-		
-		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
-
-                params.put(param.getName(), String.valueOf(param.getValue()));
-			}
-		}
-        
-        //append params
-        if(!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
-            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                String value = params.get(key);
-
-                request.append("'").append(key).append("':'").append(value).append("'");
-
-                if(it.hasNext())
-                    request.append(",");
-            }
-            request.append("});");
-        }
-		
-		return request.toString();
 	}
 }

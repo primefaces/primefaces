@@ -213,12 +213,15 @@ public abstract class CoreRenderer extends Renderer {
         return builder.build();
     }
 	
-	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam) {		
+	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {		
         StringBuilder request = new StringBuilder();
         String formId = form.getClientId(context);
         Map<String,String> params = new HashMap<String, String>();
-        params.put(decodeParam, decodeParam);
-		
+        
+        if(decodeParam != null) {
+            params.put(decodeParam, decodeParam);
+        }
+        
 		for(UIComponent child : component.getChildren()) {
 			if(child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
@@ -228,19 +231,25 @@ public abstract class CoreRenderer extends Renderer {
 		}
         
         //append params
-        request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
-        for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-            String key = it.next();
-            String value = params.get(key);
+        if(!params.isEmpty()) {
+            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
             
-            request.append("'").append(key).append("':'").append(value).append("'");
+            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+                String key = it.next();
+                String value = params.get(key);
+
+                request.append("'").append(key).append("':'").append(value).append("'");
+
+                if(it.hasNext())
+                    request.append(",");
+            }
             
-            if(it.hasNext())
-                request.append(",");
+            request.append("})");
         }
-        request.append("})");
         
-        request.append(".submit('").append(formId).append("');");
+        if(submit) {
+            request.append(".submit('").append(formId).append("');");
+        }
 		
 		return request.toString();
 	}
