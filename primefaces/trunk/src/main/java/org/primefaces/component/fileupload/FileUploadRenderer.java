@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
 import javax.servlet.ServletRequestWrapper;
 
 import org.apache.commons.fileupload.FileItem;
@@ -218,7 +219,7 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.endElement("input");
     }
     
-        protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
+    protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("button", null);
@@ -239,4 +240,25 @@ public class FileUploadRenderer extends CoreRenderer {
 
 		writer.endElement("button");
     }
+
+    /**
+     * Return null if no file is submitted in simple mode
+     * 
+     * @param context
+     * @param component
+     * @param submittedValue
+     * @return
+     * @throws ConverterException 
+     */
+    @Override
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        FileUpload fileUpload = (FileUpload) component;
+        
+        if(fileUpload.getMode().equals("simple") && submittedValue != null && submittedValue.equals("")) {
+            return null;
+        }
+        else {
+            return submittedValue;
+        }
+    } 
 }
