@@ -124,7 +124,7 @@ public class DockRenderer extends CoreRenderer {
 						throw new FacesException("Dock must be inside a form element");
 					}
                     
-                    String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId);
+                    String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId, true);
 
 					command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
 					
