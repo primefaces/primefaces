@@ -87,9 +87,9 @@ public class StackRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeMenuItem(FacesContext facesContext, MenuItem menuitem) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = menuitem.getClientId(facesContext);
+	protected void encodeMenuItem(FacesContext context, MenuItem menuitem) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = menuitem.getClientId(context);
 		
 		writer.startElement("li", null);
 		
@@ -100,21 +100,21 @@ public class StackRenderer extends CoreRenderer {
 			if(menuitem.getStyleClass() != null) writer.writeAttribute("class", menuitem.getStyleClass(), null);
 			
 			if(menuitem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(facesContext, menuitem.getUrl()), null);
+				writer.writeAttribute("href", getResourceURL(context, menuitem.getUrl()), null);
 				if(menuitem.getOnclick() != null) writer.writeAttribute("onclick", menuitem.getOnclick(), null);
 				if(menuitem.getTarget() != null) writer.writeAttribute("target", menuitem.getTarget(), null);
-			} else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
-				
-				UIComponent form = ComponentUtils.findParentForm(facesContext, menuitem);
-				if(form == null) {
-					throw new FacesException("Menu must be inside a form element");
-				}
-				
-				String formClientId = form.getClientId(facesContext);
-				String command = menuitem.isAjax() ? buildAjaxRequest(facesContext, menuitem, form) : buildNonAjaxRequest(facesContext, menuitem, formClientId, clientId);
-				
-				command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
+			} 
+            else {
+				writer.writeAttribute("href", "#", null);
+                
+                UIComponent form = ComponentUtils.findParentForm(context, menuitem);
+                if(form == null) {
+                    throw new FacesException("Stack must be inside a form element");
+                }
+
+                String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId);
+
+                command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
 				
 				writer.writeAttribute("onclick", command, null);
 			}
@@ -128,7 +128,7 @@ public class StackRenderer extends CoreRenderer {
 			
 			//Icon
 			writer.startElement("img", null);
-			writer.writeAttribute("src", getResourceURL(facesContext, menuitem.getIcon()), null);
+			writer.writeAttribute("src", getResourceURL(context, menuitem.getIcon()), null);
 			writer.endElement("img");
 			
 			writer.endElement("a");

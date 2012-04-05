@@ -213,8 +213,9 @@ public abstract class CoreRenderer extends Renderer {
         return builder.build();
     }
 	
-	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
+	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam) {		
         StringBuilder request = new StringBuilder();
+        String formId = form.getClientId(context);
         Map<String,String> params = new HashMap<String, String>();
         params.put(decodeParam, decodeParam);
 		

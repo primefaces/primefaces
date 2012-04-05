@@ -91,14 +91,14 @@ public class DockRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeMenuItems(FacesContext facesContext, Dock dock) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		String position = dock.getPosition();
 		
 		for(UIComponent child : dock.getChildren()) {
 			if(child instanceof MenuItem && child.isRendered()) {
 				MenuItem menuitem = (MenuItem) child;
-				String clientId = menuitem.getClientId(facesContext);
+				String clientId = menuitem.getClientId(context);
 				
 				String styleClass = "ui-dock-item-" + position;
 				if(menuitem.getStyleClass() != null) {
@@ -106,38 +106,38 @@ public class DockRenderer extends CoreRenderer {
 				}
 				
 				writer.startElement("a", null);
-				writer.writeAttribute("id", menuitem.getClientId(facesContext), null);
+				writer.writeAttribute("id", menuitem.getClientId(context), null);
 				writer.writeAttribute("class", styleClass, null);
 				
 				if(menuitem.getStyle() != null) writer.writeAttribute("style", menuitem.getStyle(), null);
 				
 				if(menuitem.getUrl() != null) {
-					writer.writeAttribute("href", getResourceURL(facesContext, menuitem.getUrl()), null);
+					writer.writeAttribute("href", getResourceURL(context, menuitem.getUrl()), null);
 					if(menuitem.getOnclick() != null) writer.writeAttribute("onclick", menuitem.getOnclick(), null);
 					if(menuitem.getTarget() != null) writer.writeAttribute("target", menuitem.getTarget(), null);
-				} else {
-					writer.writeAttribute("href", "javascript:void(0)", null);
-					
-					UIComponent form = ComponentUtils.findParentForm(facesContext, menuitem);
+				} 
+                else {
+                    writer.writeAttribute("href", "#", null);
+                    
+                    UIComponent form = ComponentUtils.findParentForm(context, menuitem);
 					if(form == null) {
 						throw new FacesException("Dock must be inside a form element");
 					}
-					
-					String formClientId = form.getClientId(facesContext);
-					String command = menuitem.isAjax() ? buildAjaxRequest(facesContext, menuitem, form) : buildNonAjaxRequest(facesContext, menuitem, formClientId, clientId);
-					
+                    
+                    String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId);
+
 					command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
 					
 					writer.writeAttribute("onclick", command, null);
 				}
 				
 				if(position.equalsIgnoreCase("top")) {
-					encodeItemIcon(facesContext, menuitem);
-					encodeItemLabel(facesContext, menuitem);
+					encodeItemIcon(context, menuitem);
+					encodeItemLabel(context, menuitem);
 				}
 				else{
-					encodeItemLabel(facesContext, menuitem);
-					encodeItemIcon(facesContext, menuitem);
+					encodeItemLabel(context, menuitem);
+					encodeItemIcon(context, menuitem);
 				}
 				
 				writer.endElement("a");

@@ -25,7 +25,6 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class BaseMenuRenderer extends CoreRenderer {
@@ -79,13 +78,13 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			}
             else {
 				writer.writeAttribute("href", "#", null);
+                
+                UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+                if(form == null) {
+                    throw new FacesException("MenuItem must be inside a form element");
+                }
 
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Menubar must be inside a form element");
-				}
-
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}
