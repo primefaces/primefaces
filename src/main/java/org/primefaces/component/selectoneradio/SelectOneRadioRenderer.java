@@ -57,6 +57,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
             writer.endElement("span");
+            
+            encodeScript(context, radio);
         }
     }
 
@@ -85,15 +87,21 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = radio.getClientId(context);
+        String layout = radio.getLayout();
+        boolean custom = layout != null && layout.equals("custom");
 
         startScript(writer, clientId);
         
+        writer.write("$(function(){");
         writer.write("PrimeFaces.cw('SelectOneRadio','" + radio.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
+        if(custom) {
+            writer.write(",custom:true");
+        }
 
         encodeClientBehaviors(context, radio);
 
-        writer.write("});");
+        writer.write("});});");
 
         endScript(writer);
     }

@@ -432,13 +432,28 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.outputs = this.jq.find('.ui-radiobutton-box:not(.ui-state-disabled)');
-        this.inputs = this.jq.find(':radio:not(:disabled)');
-        this.labels = this.jq.find('label:not(.ui-state-disabled)');
-        this.icons = this.jq.find('.ui-radiobutton-icon');
+        //custom layout
+        if(this.cfg.custom) {
+            this.inputs = $('input:radio[name="' + this.id + '"]:not:(:disabled)');
+            this.outputs = this.inputs.parent().next('.ui-radiobutton-box:not(.ui-state-disabled)');
+            this.labels = $();
+            this.icons = this.outputs.find('.ui-radiobutton-icon');
+            
+            //labels
+            for(var i=0; i < this.outputs.length; i++) {
+                this.labels = this.labels.add('label[for="' + this.outputs.eq(i).parent().attr('id') + '"]');
+            }
+        }
+        //regular layout
+        else {
+            this.outputs = this.jq.find('.ui-radiobutton-box:not(.ui-state-disabled)');
+            this.inputs = this.jq.find(':radio:not(:disabled)');
+            this.labels = this.jq.find('label:not(.ui-state-disabled)');
+            this.icons = this.jq.find('.ui-radiobutton-icon');
+        }
         
         this.checkedRadio = this.outputs.filter('.ui-state-active');
-                
+    
         this.bindEvents();        
     },
     
@@ -472,7 +487,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             if(target.is(':input'))
                 radio = target.parent().next();
             else
-                radio = target; //custom layout
+                radio = target.children('.ui-radiobutton-box'); //custom layout
 
             radio.click();
             
@@ -815,72 +830,6 @@ PrimeFaces.widget.Button = PrimeFaces.widget.BaseWidget.extend({
         this.jq.removeClass('ui-state-disabled').removeAttr('disabled');
     }
     
-});
-
-/**
- * PrimeFaces RadioButton Widget
- */
-PrimeFaces.widget.RadioButton = PrimeFaces.widget.BaseWidget.extend({
-
-    init: function(cfg) {
-        this._super(cfg);
-        
-        this.output = this.jq.find('.ui-radiobutton-box');
-        this.input = this.jq.find('input:radio');
-        this.icon = this.jq.find('.ui-radiobutton-icon');
-        this.label = $('label[for="' + this.id + '"]');
-        
-        this.bindEvents();
-    },
-    
-    bindEvents: function() {
-        var _self = this;
-        
-        this.output.mouseover(function() {
-            var radio = $(this);
-            if(!radio.hasClass('ui-state-active') && !radio.hasClass('ui-state-disabled'))
-                $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
-            $(this).removeClass('ui-state-hover');
-        }).click(function() {
-            var radio = $(this);
-            if(!radio.hasClass('ui-state-active') && !radio.hasClass('ui-state-disabled'))
-                _self.check();
-        });
-
-        this.label.click(function(e) {
-            _self.check();
-        });
-        
-        //delegate focus-blur states
-        this.input.focus(function() {
-            _self.output.addClass('ui-state-focus');
-        }).blur(function() {
-            _self.output.removeClass('ui-state-focus');
-        });
-
-        //Client Behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-        }
-    },
-    
-    check: function() {
-        //unselect current
-        var selectedRadioInput = $('input:radio[name="' + this.input.attr('name') + '"]').filter(':checked');
-        if(selectedRadioInput.length > 0) {
-            var radio = selectedRadioInput.parents('.ui-radiobutton:first');
-            selectedRadioInput.removeAttr('checked');
-            radio.children('.ui-radiobutton-box').removeClass('ui-state-active');
-            radio.find('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
-        }
-
-        //select itself
-        this.output.addClass('ui-state-active');
-        this.input.attr('checked', 'checked');
-        this.icon.addClass('ui-icon ui-icon-bullet');
-        this.input.change();
-    }
 });
 
 /**

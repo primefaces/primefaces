@@ -35,7 +35,6 @@ public class RadioButtonRenderer extends InputRenderer {
         SelectOneRadio selectOneRadio = findSelectOneRadio(radioButton);
 
         encodeMarkup(context, radioButton, selectOneRadio);
-        encodeScript(context, radioButton, selectOneRadio);
     }
     
     protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {
@@ -71,23 +70,6 @@ public class RadioButtonRenderer extends InputRenderer {
         encodeOptionOutput(context, selected, disabled);
 
         writer.endElement("div");
-    }
-
-    protected void encodeScript(FacesContext context, RadioButton radioButton, SelectOneRadio selectOneRadio) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = radioButton.getClientId(context);
-
-        startScript(writer, clientId);
-        
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('RadioButton','" + radioButton.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        encodeClientBehaviors(context, selectOneRadio);
-        
-        writer.write("});});");
-
-        endScript(writer);
     }
     
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
