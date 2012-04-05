@@ -1240,10 +1240,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         return meta;
     },
     
-    /**
-     * Sets up column reordering
-     */
-    setupDraggableColumns: function() {
+    setupDraggableColumns : function() {
         this.dragIndicatorTop = $('<div id="' + this.id + '_dnd_top" class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
         this.dragIndicatorBottom = $('<div id="' + this.id + '_dnd_bottom" class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
     
@@ -1260,18 +1257,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 if(droppable) {
                     var droppableOffset = droppable.offset(),
-                    padding = droppable.innerWidth() - droppable.width(),
                     topArrowY = droppableOffset.top - 10,
                     bottomArrowY = droppableOffset.top + droppable.height() + 8,
                     arrowX = null;
-
+                    
                     //calculate coordinates of arrow depending on mouse location
-                    if(event.originalEvent.pageX >= droppableOffset.left + (droppable.innerWidth() / 2)) {
-                        arrowX = droppableOffset.left + droppable.outerWidth() - (padding / 2);
+                    if(event.originalEvent.pageX >= droppableOffset.left + (droppable.width() / 2)) {
+                        arrowX = droppable.next().offset().left - 9;
                         ui.helper.data('drop-location', 1);     //right
                     }
                     else {
-                        arrowX = droppableOffset.left - (padding / 2);
+                        arrowX = droppableOffset.left  - 9;
                         ui.helper.data('drop-location', -1);    //left
                     }
                     
