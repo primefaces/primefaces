@@ -185,27 +185,32 @@ public abstract class CoreRenderer extends Renderer {
 		
 		return value.trim().equals("");
 	}
-    	
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
+    	    
+    protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
         
         AjaxRequestBuilder builder = new AjaxRequestBuilder();
         
-        String request = builder.source(clientId)
-                        .process(context, component, source.getProcess())
-                        .update(context, component, source.getUpdate())
-                        .async(source.isAsync())
-                        .global(source.isGlobal())
-                        .partialSubmit(source.isPartialSubmit())
-                        .onstart(source.getOnstart())
-                        .onerror(source.getOnerror())
-                        .onsuccess(source.getOnsuccess())
-                        .oncomplete(source.getOncomplete())
-                        .params(component)
-                        .build();
-
-        return request;
+        builder.source(clientId)
+                .process(context, component, source.getProcess())
+                .update(context, component, source.getUpdate())
+                .async(source.isAsync())
+                .global(source.isGlobal())
+                .partialSubmit(source.isPartialSubmit())
+                .onstart(source.getOnstart())
+                .onerror(source.getOnerror())
+                .onsuccess(source.getOnsuccess())
+                .oncomplete(source.getOncomplete())
+                .params(component);
+        
+        if(form != null) {
+            builder.form(form.getClientId(context));
+        }
+        
+        builder.preventDefault();
+                
+        return builder.build();
     }
 	
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		

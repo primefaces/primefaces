@@ -28,7 +28,7 @@ public class AjaxRequestBuilder {
     
     private StringBuilder buffer;
     
-    private boolean preventDefault;
+    private boolean preventDefault = false;
     
     public AjaxRequestBuilder() {
         buffer = new StringBuilder();
@@ -227,14 +227,9 @@ public class AjaxRequestBuilder {
     public String buildBehavior() {
         buffer.append("}, arguments[1]);");
         
-        String request = buffer.toString();
-        buffer.setLength(0);
-        
-        return request;
-    }
-    
-    public String buildCommand() {
-        buffer.append("});");
+        if(preventDefault) {
+            buffer.append("return false;");
+        }
         
         String request = buffer.toString();
         buffer.setLength(0);

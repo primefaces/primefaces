@@ -25,7 +25,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentUtils;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 

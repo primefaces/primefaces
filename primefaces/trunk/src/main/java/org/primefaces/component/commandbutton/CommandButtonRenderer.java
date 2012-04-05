@@ -26,10 +26,8 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import org.primefaces.component.api.AjaxSource;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -80,7 +78,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 			}
 			
 			String formClientId = form.getClientId(context);		
-			String request = button.isAjax() ? buildAjaxRequest(context, button) : buildNonAjaxRequest(context, button, formClientId);
+			String request = button.isAjax() ? buildAjaxRequest(context, button, form) : buildNonAjaxRequest(context, button, formClientId);
 			
             onclick.append(request);
 		}
@@ -138,30 +136,6 @@ public class CommandButtonRenderer extends CoreRenderer {
 		endScript(writer);
 	}
     
-    @Override
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
-        UIComponent component = (UIComponent) source;
-        String clientId = component.getClientId(context);
-        
-        AjaxRequestBuilder builder = new AjaxRequestBuilder();
-        
-        String request = builder.source(clientId)
-                        .process(context, component, source.getProcess())
-                        .update(context, component, source.getUpdate())
-                        .async(source.isAsync())
-                        .global(source.isGlobal())
-                        .partialSubmit(source.isPartialSubmit())
-                        .onstart(source.getOnstart())
-                        .onerror(source.getOnerror())
-                        .onsuccess(source.getOnsuccess())
-                        .oncomplete(source.getOncomplete())
-                        .params(component)
-                        .preventDefault()
-                        .build();
-
-        return request;
-    }
-
 	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId) {		
         StringBuilder request = new StringBuilder();
         Map<String,String> params = new HashMap<String, String>();
