@@ -323,10 +323,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         _self.setLabel(item.text());
                 break;
             }
+            
+            if($.browser.webkit) {
+                e.preventDefault();
+            }
+
         }).keydown(function(e) {
             //hide on tab or escape                    
             if((e.which == $.ui.keyCode.TAB||e.which == $.ui.keyCode.ESCAPE) && _self.panel.is(':visible')) {
                 _self.hide();
+            }
+            
+            if($.browser.webkit) {
+                e.preventDefault();
             }
         });
     },
