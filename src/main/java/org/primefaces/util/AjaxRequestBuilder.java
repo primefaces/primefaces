@@ -28,6 +28,8 @@ public class AjaxRequestBuilder {
     
     private StringBuilder buffer;
     
+    private boolean preventDefault;
+    
     public AjaxRequestBuilder() {
         buffer = new StringBuilder();
         buffer.append("PrimeFaces.ab({");
@@ -199,8 +201,22 @@ public class AjaxRequestBuilder {
         return this;
     }
     
+    public AjaxRequestBuilder preventDefault() {
+        this.preventDefault = true;
+        
+        return this;
+    }
+
+    public StringBuilder getBuffer() {
+        return buffer;
+    }
+      
     public String build() {
-        buffer.append("});return false;");
+        buffer.append("});");
+        
+        if(preventDefault) {
+            buffer.append("return false;");
+        }
         
         String request = buffer.toString();
         buffer.setLength(0);
