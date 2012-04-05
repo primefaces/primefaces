@@ -72,7 +72,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
                         .onsuccess(source.getOnsuccess())
                         .oncomplete(source.getOncomplete())
                         .passParams()
-                        .buildCommand();
+                        .build();
 
         //script
         writer.startElement("script", command);

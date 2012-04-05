@@ -178,7 +178,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
         }
 
         String formClientId = form.getClientId(context);		
-        String request = button.isAjax() ? buildAjaxRequest(context, button) : buildNonAjaxRequest(context, button, formClientId);
+        String request = button.isAjax() ? buildAjaxRequest(context, button, form) : buildNonAjaxRequest(context, button, formClientId);
 
         onclick.append(request);
         
@@ -262,7 +262,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}
