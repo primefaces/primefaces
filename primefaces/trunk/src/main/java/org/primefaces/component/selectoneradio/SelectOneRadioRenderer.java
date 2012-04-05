@@ -41,25 +41,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectOneRadio radio = (SelectOneRadio) component;
-        String layout = radio.getLayout();
-        boolean custom = layout != null && layout.equals("custom");
-
-        if(!custom) {
-            encodeMarkup(context, radio);
-            encodeScript(context, radio);
-        }
-        else {
-            //populate selectitems for radiobutton access
-            radio.setSelectItems(getSelectItems(context, radio));
-            
-            //render dummy markup to enable processing of ajax behaviors (finding form on client side)
-            ResponseWriter writer = context.getResponseWriter();
-            writer.startElement("span", radio);
-            writer.writeAttribute("id", radio.getClientId(context), "id");
-            writer.endElement("span");
-            
-            encodeScript(context, radio);
-        }
+        
+        encodeMarkup(context, radio);
+        encodeScript(context, radio);
     }
 
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -69,19 +53,31 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String styleClass = radio.getStyleClass();
         styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
         String layout = radio.getLayout();
+        boolean custom = layout != null && layout.equals("custom");
         
         List<SelectItem> selectItems = getSelectItems(context, radio);
-
-        writer.startElement("table", radio);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
-            writer.writeAttribute("style", style, "style");
+        
+        if(custom) {
+            //populate selectitems for radiobutton access
+            radio.setSelectItems(getSelectItems(context, radio));
+            
+            //render dummy markup to enable processing of ajax behaviors (finding form on client side)
+            writer.startElement("span", radio);
+            writer.writeAttribute("id", radio.getClientId(context), "id");
+            writer.endElement("span");
         }
+        else {
+            writer.startElement("table", radio);
+            writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("class", styleClass, "styleClass");
+            if(style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
 
-        encodeSelectItems(context, radio, selectItems, layout);
+            encodeSelectItems(context, radio, selectItems, layout);
 
-        writer.endElement("table");
+            writer.endElement("table");
+        }
     }
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
