@@ -168,19 +168,22 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
     
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {
         StringBuilder onclick = new StringBuilder();
+        String request;
         if(button.getOnclick() != null) {
             onclick.append(button.getOnclick()).append(";");
         }
         
-        UIComponent form = ComponentUtils.findParentForm(context, button);
-        if(form == null) {
-            throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
+        if(button.isAjax()) {
+            onclick.append(buildAjaxRequest(context, button, null));
         }
-
-        String formClientId = form.getClientId(context);		
-        String request = button.isAjax() ? buildAjaxRequest(context, button, form) : buildNonAjaxRequest(context, button, formClientId);
-
-        onclick.append(request);
+        else {
+            UIComponent form = ComponentUtils.findParentForm(context, button);
+            if(form == null) {
+                throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
+            }
+        
+            //onclick.append(buildNonAjaxRequest(context, button, formClientId));
+        }
         
         String onclickBehaviors = getOnclickBehaviors(context, button);
         if(onclickBehaviors != null) {
@@ -262,7 +265,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form.getClientId(context), clientId);
+                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}

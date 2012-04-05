@@ -72,13 +72,19 @@ public class CommandButtonRenderer extends CoreRenderer {
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
 		if(!type.equals("reset") && !type.equals("button")) {
-			UIComponent form = ComponentUtils.findParentForm(context, button);
-			if(form == null) {
-				throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
-			}
+            String request;
 			
-			String formClientId = form.getClientId(context);		
-			String request = button.isAjax() ? buildAjaxRequest(context, button, form) : buildNonAjaxRequest(context, button, formClientId);
+            if(button.isAjax()) {
+                 request = buildAjaxRequest(context, button, null);
+            }
+            else {
+                UIComponent form = ComponentUtils.findParentForm(context, button);
+                if(form == null) {
+                    throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
+                }
+                
+                request = buildNonAjaxRequest(context, form, form);
+            }
 			
             onclick.append(request);
 		}
@@ -124,8 +130,6 @@ public class CommandButtonRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
-		String type = button.getType();
-		boolean hasValue = (button.getValue() != null);
 		
         startScript(writer, clientId);
 
@@ -136,8 +140,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 		endScript(writer);
 	}
     
-	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId) {		
+	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form) {		
         StringBuilder request = new StringBuilder();
+        String formId = form.getClientId(context);
         Map<String,String> params = new HashMap<String, String>();
 		
 		for(UIComponent child : component.getChildren()) {

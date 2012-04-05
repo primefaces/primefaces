@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.component.api.AjaxSource;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -51,12 +50,8 @@ public class CommandLinkRenderer extends CoreRenderer {
 		String clientId = link.getClientId(context);
         Object label = link.getValue();
 
-		UIComponent form = ComponentUtils.findParentForm(context, link);
-		if(form == null) {
-			throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
-		}
-		
 		if(!link.isDisabled()) {
+            String request;
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
 
@@ -64,9 +59,19 @@ public class CommandLinkRenderer extends CoreRenderer {
 			writer.writeAttribute("id", clientId, "id");
 			writer.writeAttribute("href", "#", null);
 			writer.writeAttribute("class", styleClass, null);
-			
-			String formClientId = form.getClientId(context);
-			String request = link.isAjax() ? buildAjaxRequest(context, link, form) : buildNonAjaxRequest(context, link, formClientId, clientId);
+            
+            if(link.isAjax()) {
+                request = buildAjaxRequest(context, link, null);
+            }
+            else {
+                UIComponent form = ComponentUtils.findParentForm(context, link);
+                if(form == null) {
+                    throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
+                }
+                
+                request = buildNonAjaxRequest(context, link, form, clientId);
+            }
+
 			String onclick = link.getOnclick() != null ? link.getOnclick() + ";" + request : request;
 			writer.writeAttribute("onclick", onclick, "onclick");
 			
