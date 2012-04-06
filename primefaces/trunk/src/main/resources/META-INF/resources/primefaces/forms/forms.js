@@ -26,7 +26,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         
         this.cfg.rowsDefault = this.jq.attr('rows');
         this.cfg.colsDefault = this.jq.attr('cols');
-
+        
         //Visuals
         PrimeFaces.skinInput(this.jq);
 
@@ -36,13 +36,24 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //max length
-        if(this.cfg.maxlength){
+        if(this.cfg.maxlength) {
             this.applyMaxlength();
         }
 
         //Client behaviors
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
+        }
+        
+        //Counter
+        if(this.cfg.counter) {
+            var _self = this;
+            $(function() {
+                _self.counter = _self.cfg.counter ? $(PrimeFaces.escapeClientId(_self.cfg.counter)) : null;
+                _self.cfg.counterTemplate = _self.cfg.counterTemplate||'{0}';
+                
+                _self.updateCounter();
+            });
         }
     },
     
@@ -81,7 +92,23 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
             if(length > _self.cfg.maxlength) {
                 _self.jq.val(value.substr(0, _self.cfg.maxlength));
             }
+            
+            if(_self.counter) {
+                _self.updateCounter();
+            }
         });
+    },
+    
+    updateCounter: function() {
+        var value = this.jq.val(),
+        length = value.length;
+
+        if(this.counter) {
+            var remaining = this.cfg.maxlength - length,
+            remainingText = this.cfg.counterTemplate.replace('{0}', remaining);
+
+            this.counter.html(remainingText);
+        }
     }
 });
 

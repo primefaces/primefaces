@@ -16,6 +16,7 @@
 package org.primefaces.component.inputtextarea;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -53,6 +54,7 @@ public class InputTextareaRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputTextarea.getClientId(context);
         boolean autoResize = inputTextarea.isAutoResize();
+        String counter = inputTextarea.getCounter();
 
         startScript(writer, clientId);
         
@@ -62,6 +64,20 @@ public class InputTextareaRenderer extends InputRenderer {
         
         if(inputTextarea.getMaxlength() != Integer.MAX_VALUE) {
             writer.write(",maxlength:" + inputTextarea.getMaxlength());
+        }
+        
+        if(counter != null) {
+            String counterTemplate = inputTextarea.getCounterTemplate();
+            UIComponent counterComponent = inputTextarea.findComponent(counter);
+            if(counterComponent == null) {
+                throw new FacesException("Cannot find component \"" + counter + "\" in view.");
+            }
+            
+            writer.write(",counter:'" + counterComponent.getClientId(context) + "'");
+            
+            if(counterTemplate != null) {
+                writer.write(",counterTemplate:'" + counterTemplate + "'");
+            }
         }
         
         encodeClientBehaviors(context, inputTextarea);
