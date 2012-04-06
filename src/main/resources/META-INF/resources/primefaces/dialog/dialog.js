@@ -13,7 +13,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
-        this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keypress.dialog click.dialog';
+        this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keyup.dialog click.dialog';
 
         //configuration
         this.cfg.width = this.cfg.width||'auto';
@@ -80,36 +80,44 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     enableModality: function() {
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>').
-            children(this.jqId + '_modal').css({
-                'width': $(document).width()
-                ,'height': $(document).height()
-                ,'z-index': this.jq.css('z-index') - 1
-            });
+        var _self = this;
 
-        //disable tabbing out of modal dialog and stop events from targets outside of dialog
-        this.content.bind('keypress.ui-dialog', function(event) {
-            if(event.keyCode !== $.ui.keyCode.TAB) {
-                return;
-            }
+        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>')
+                        .children(this.jqId + '_modal').css({
+                            'width' : $(document).width(),
+                            'height' : $(document).height(),
+                            'z-index' : this.jq.css('z-index') - 1
+                        });
 
-            var tabbables = $(':tabbable', this),
-                first = tabbables.filter(':first'),
-                last  = tabbables.filter(':last');
+        // disable tabbing out of modal dialog and stop events from targets outside
+        // of dialog
+        $(document).bind('keydown.modal-dialog',
+                function(event) {
+                    if (event.keyCode == $.ui.keyCode.TAB) {
+                        var tabbables = _self.content.find(':tabbable'), 
+                        first = tabbables.filter(':first'), 
+                        last = tabbables.filter(':last');
 
-            if (event.target === last[0] && !event.shiftKey) {
-                first.focus(1);
-                return false;
-            } else if (event.target === first[0] && event.shiftKey) {
-                last.focus(1);
-                return false;
-            }
-        });
+                        if (event.target === last[0] && !event.shiftKey) {
+                            first.focus(1);
+                            return false;
+                        } else if (event.target === first[0]
+                                && event.shiftKey) {
+                            last.focus(1);
+                            return false;
+                        }
+                    }
+                })
+                .bind(this.blockEvents, function(event) {
+                    if ($(event.target).zIndex() < PrimeFaces.zindex) {
+                        return false;
+                    }
+                });
     },
     
     disableModality: function(){
         $(document.body).children(this.jqId + '_modal').remove();
-        $(document).unbind(this.blockEvents).unbind('keydown.dialog');
+        $(document).unbind(this.blockEvents).unbind('keydown.modal-dialog');
     },
     
     syncWindowResize: function() {
