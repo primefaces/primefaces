@@ -39,6 +39,18 @@
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Sets maximum character number of text area container. Default is 0, means no limit.</description>
 		</attribute>
+        <attribute>
+			<name>counter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the label component to display remaining characters.</description>
+		</attribute>
+        <attribute>
+			<name>counterTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template text to display in counter, default value is "{0}".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
