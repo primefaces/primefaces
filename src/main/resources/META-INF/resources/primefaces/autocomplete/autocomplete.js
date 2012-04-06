@@ -212,6 +212,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.TAB:
+                        highlightItem.trigger('click');
                         _self.hide();
                         break;
                 }
