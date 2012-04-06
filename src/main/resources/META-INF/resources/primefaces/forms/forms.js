@@ -306,14 +306,31 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.input.keyup(function(e) {
             var keyCode = $.ui.keyCode;
             
-            if(keyCode != keyCode.UP && keyCode != keyCode.DOWN && keyCode != keyCode.LEFT && keyCode != keyCode.RIGHT) {
-                var currentOption = _self.options.filter(':selected'),
-                item = _self.items.eq(currentOption.index());
+            switch(e.which) { 
+                case keyCode.UP:
+                case keyCode.LEFT:
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                    e.preventDefault();
+                break;
+                
+                case keyCode.TAB:
+                case keyCode.ESCAPE:
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                    //nothing, handled by keydown
+                break;
+                
+                
+                default:
+                    var currentOption = _self.options.filter(':selected'),
+                    item = _self.items.eq(currentOption.index());
 
-                _self.highlightItem(item, true);
+                    _self.highlightItem(item, true);
+                break;
             }
-            
-        }).keydown(function(e) {
+        })
+        .keydown(function(e) {
             /**
              * For arrow keys, we need to reflect the change to the ui, webkit displays dropdown menu so we need
              * to prevent default and select the option ourselves as default is prevented.
@@ -370,7 +387,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         _self.hide();
                     }
                 break;
-            };
+            }
         });
     },
          
