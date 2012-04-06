@@ -104,6 +104,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effectDuration = this.cfg.effectDuration||400;
         var _self = this;
+        
+        this.input.parent().removeClass('ui-helper-hidden-accessible');
 
         //disable options
         this.options.filter(':disabled').each(function() {
@@ -182,7 +184,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //Events for items
         this.items.filter(':not(.ui-state-disabled)').mouseover(function() {
-            _self.highlightItem($(this));
+            _self.highlightItem($(this), false);
         })
         .click(function() {
             _self.selectItem($(this));   
@@ -257,9 +259,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.input.unbind('focus blur keydown keyup');
     },
     
-    highlightItem: function(item) {
+    highlightItem: function(item, updateLabel) {
         this.unhighlightItem(this.items.filter('.ui-state-highlight'));
         item.addClass('ui-state-highlight');
+        
+        if(updateLabel) {
+            this.setLabel(item.text());
+        }
 
         this.alignScroller(item);
     },
@@ -301,42 +307,72 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         //Key bindings reflect the select tag changes made by the browser to the ui
         this.input.keyup(function(e) {
             var keyCode = $.ui.keyCode;
+            
+            if(keyCode != keyCode.UP && keyCode != keyCode.DOWN && keyCode != keyCode.LEFT && keyCode != keyCode.RIGHT) {
+                var currentOption = _self.options.filter(':selected'),
+                item = _self.items.eq(currentOption.index());
+
+                _self.highlightItem(item, true);
+            }
+            
+        }).keydown(function(e) {
+            /**
+             * For arrow keys, we need to reflect the change to the ui, webkit displays dropdown menu so we need
+             * to prevent default and select the option ourselves as default is prevented.
+             */
+            
+            var keyCode = $.ui.keyCode,
+            webkit = $.browser.webkit;
 
             switch(e.which) { 
+                case keyCode.UP:
+                case keyCode.LEFT:
+                    var highlightedItem = _self.items.filter('.ui-state-highlight'),
+                    prev = highlightedItem.prevAll(':not(.ui-state-disabled):first');
+
+                    if(prev.length == 1) {
+                        _self.highlightItem(prev, true);
+                        
+                        if(webkit) {
+                            _self.options.filter(':selected').removeAttr('selected');
+                            _self.options.eq(prev.index()).attr('selected', 'selected');
+                        }
+                    }
+                    
+                    if(webkit) {
+                        e.preventDefault();
+                    }
+                    
+                break;
+
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                    var highlightedItem = _self.items.filter('.ui-state-highlight'),
+                    next = highlightedItem.nextAll(':not(.ui-state-disabled):first');
+
+                    if(next.length == 1) {
+                        _self.highlightItem(next, true);
+                        
+                        if(webkit) {
+                            _self.options.filter(':selected').removeAttr('selected');
+                            _self.options.eq(next.index()).attr('selected', 'selected');
+                        }
+                    }
+                    
+                    if(webkit) {
+                        e.preventDefault();
+                    }
+                break;
+
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
+                case keyCode.TAB:
+                case keyCode.ESCAPE:
                     if(_self.panel.is(":visible")) {
-                        //reflect changes on select element to the display elements, hide the overlay
-                        _self.setLabel(_self.options.filter(':selected').text());
                         _self.hide();
                     }
                 break;
-                
-                //reflect changes on select element to the display elements
-                default:
-                    var currentOption = _self.options.filter(':selected'),
-                    item = _self.items.eq(currentOption.index());
-        
-                    if(_self.panel.is(":visible"))
-                        _self.highlightItem(item);
-                    else
-                        _self.setLabel(item.text());
-                break;
-            }
-            
-            if($.browser.webkit) {
-                e.preventDefault();
-            }
-
-        }).keydown(function(e) {
-            //hide on tab or escape                    
-            if((e.which == $.ui.keyCode.TAB||e.which == $.ui.keyCode.ESCAPE) && _self.panel.is(':visible')) {
-                _self.hide();
-            }
-            
-            if($.browser.webkit) {
-                e.preventDefault();
-            }
+            };
         });
     },
          
@@ -355,7 +391,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     
     show: function() {
         //highlight current
-        this.highlightItem(this.items.eq(this.options.filter(':selected').index()));
+        this.highlightItem(this.items.eq(this.options.filter(':selected').index()), false);
 
         //calculate panel position
         this.alignPanel();
