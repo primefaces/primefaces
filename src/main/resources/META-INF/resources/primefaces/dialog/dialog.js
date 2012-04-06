@@ -365,6 +365,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
             this.maximized = true;
+            
+            if(this.cfg.behaviors) {
+                var maximizeBehavior = this.cfg.behaviors['maximize'];
+
+                if(maximizeBehavior) {
+                    maximizeBehavior.call(this);
+                }
+            }
         }
     },
     
@@ -415,8 +423,17 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
         this.minimized = true;
 
-        if(this.cfg.resizable)
+        if(this.cfg.resizable) {
             this.resizers.hide();
+        }
+        
+        if(this.cfg.behaviors) {
+            var minimizeBehavior = this.cfg.behaviors['minimize'];
+
+            if(minimizeBehavior) {
+                minimizeBehavior.call(this);
+            }
+        }
     },
     
     saveState: function() {

@@ -21,7 +21,7 @@ import javax.faces.event.PhaseId;
 
     private final static String DEFAULT_EVENT = "close";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -37,15 +37,19 @@ import javax.faces.event.PhaseId;
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(isRequestSource(context)) {
+        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if(eventName != null && eventName.equals("close")) {
+            if(eventName.equals("close")) {
                 setVisible(false);
                 CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
                 closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
                 super.queueEvent(closeEvent);
                 context.renderResponse();       //just process the close event and skip to response
+            }
+            else {
+                //minimize and maximize
+                super.queueEvent(event);
             }
         } else {
             super.queueEvent(event);
