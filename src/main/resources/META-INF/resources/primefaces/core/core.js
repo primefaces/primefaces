@@ -434,7 +434,7 @@ PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
     PrimeFaces.debug('Initiating ajax request.');
     
     if(cfg.onstart) {
-       var retVal = cfg.onstart.call(this);
+       var retVal = cfg.onstart.call(this, cfg);
        if(retVal == false) {
            PrimeFaces.debug('Ajax request cancelled by onstart callback.');
            return;  //cancel request
