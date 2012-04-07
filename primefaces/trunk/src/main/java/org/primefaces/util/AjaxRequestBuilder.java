@@ -140,7 +140,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder onstart(String onstart) {
         if(onstart != null) {
-            buffer.append(",onstart:function(){").append(onstart).append(";}");
+            buffer.append(",onstart:function(cfg){").append(onstart).append(";}");
         }
     
         return this;
