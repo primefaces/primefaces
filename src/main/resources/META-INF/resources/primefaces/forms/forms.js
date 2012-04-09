@@ -1707,14 +1707,14 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
  */
 PrimeFaces.widget.ThemeSwitcher = PrimeFaces.widget.SelectOneMenu.extend({
     
-    init: function(cfg) {        
-        this._super(cfg);
-        
+    init: function(cfg) { 
         var _self = this;
-        this.input.change(function() {
+        cfg.onchange = function() {
             var value = _self.options.filter(':selected').val();
             
             PrimeFaces.changeTheme(value);
-        });
+        };
+        
+        this._super(cfg);
     }
 });
