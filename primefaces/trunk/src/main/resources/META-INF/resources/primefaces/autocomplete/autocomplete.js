@@ -130,6 +130,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     || key == keyCode.DOWN 
                     || key == keyCode.RIGHT 
                     || key == keyCode.TAB 
+                    || key == keyCode.SHIFT 
                     || key == keyCode.ENTER
                     || key == keyCode.NUMPAD_ENTER) {
                     shouldSearch = false;
