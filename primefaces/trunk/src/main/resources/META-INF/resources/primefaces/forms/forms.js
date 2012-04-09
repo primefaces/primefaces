@@ -131,6 +131,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effectDuration = this.cfg.effectDuration||400;
         var _self = this;
+        
+        this.input.parent().removeClass('ui-helper-hidden-accessible');
 
         //disable options
         this.options.filter(':disabled').each(function() {
@@ -160,11 +162,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             
             //dialog support
             this.setupDialogSupport();
-            
-            //Client behaviors
-            if(this.cfg.behaviors) {
-                PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-            }
         }
 
         //Append panel to body
@@ -313,7 +310,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     triggerChange: function(item) {
-        this.input.trigger('change');
+        var inputEl = this.input.get(0);
+        if(this.cfg.onchange) {
+            this.cfg.onchange.call(inputEl);
+        }
+        
+        if(this.cfg.behaviors && this.cfg.behaviors['change']) {
+            this.cfg.behaviors['change'].call(inputEl);
+        }
+        
         this.value = this.options.filter(':selected').val();
         this.changed = false;
     },
@@ -336,7 +341,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.setLabel(newOption.text());
             
             //trigger change
-            this.input.trigger('change');
+            this.triggerChange();
         }
 
         if(!silent) {
@@ -372,6 +377,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     item = _self.items.eq(currentOption.index());
 
                     _self.highlightItem(item, true);
+                    
+                    _self.changed = (currentOption.val() != _self.value);
+                    
+                    e.preventDefault();
                 break;
             }            
         })
