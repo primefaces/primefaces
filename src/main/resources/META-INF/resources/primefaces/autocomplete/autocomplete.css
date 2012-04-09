@@ -99,3 +99,13 @@
     background-color: transparent;
     margin:2px;
 }
+
+.ui-autocomplete-itemtip-content {
+    display:none;
+}
+
+.ui-autocomplete-itemtip {
+    position: absolute;
+    display: none;
+    padding: 0.4em;
+}

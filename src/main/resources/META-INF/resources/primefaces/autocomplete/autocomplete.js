@@ -49,6 +49,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         //Panel management
         $(document.body).children(this.panelId).remove();
         this.panel.appendTo(document.body);
+        
+        //itemtip
+        if(this.cfg.itemtip) {
+            this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
+        }
 
         //Hide overlay on resize
         var resizeNS = 'resize.' + this.id;
@@ -102,6 +107,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(dialog.length == 1) {
             this.panel.css('position', 'fixed');
+            
+            if(this.cfg.itemtip) {
+                this.itemtip.css('position', 'fixed');
+            }
         }
     },
     
@@ -274,10 +283,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         //visuals and click handler for items
         items.bind('mouseover', function() {
-            $(this).addClass('ui-state-highlight');
+            var item = $(this);
+            item.addClass('ui-state-highlight');
+            
+            if(_self.cfg.itemtip) {
+                _self.showItemtip(item);
+            }
         })
         .bind('mouseout', function() {
             $(this).removeClass('ui-state-highlight');
+            
+            if(_self.cfg.itemtip) {
+                _self.itemtip.hide();
+            }
         })
         .bind('click', function(event) {
             var item = $(this),
@@ -306,6 +324,24 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             _self.hide();
         });
+    },
+    
+    showItemtip: function(item) {
+        var content = item.is('li') ? item.next('.ui-autocomplete-itemtip-content') : item.children('td:last');
+            
+        this.itemtip.html(content.html())
+                    .css({
+                        'left':'', 
+                        'top':'', 
+                        'z-index': ++PrimeFaces.zindex,
+                        'width': content.outerWidth()
+                    })
+                    .position({
+                        my: 'left top'
+                        ,at: 'right bottom'
+                        ,of: item
+                    })
+                    .show();
     },
     
     search: function(query) {
@@ -340,9 +376,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var items = _self.panel.find('.ui-autocomplete-item');
 
                         if(items.length > 0) {
+                            var firstItem = items.eq(0);
+                            
                             //highlight first item
-                            items.eq(0).addClass('ui-state-highlight');
-
+                            firstItem.addClass('ui-state-highlight');
+                            
                             //highlight query string
                             if(_self.panel.children().is('ul')) {
                                 items.each(function() {
@@ -364,14 +402,20 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                             if(_self.panel.is(':hidden')) {
                                 _self.show();
-                            } else {
+                            } 
+                            else {
                                 _self.alignPanel(); //with new items
                             }
-
+                            
                             //adjust height
                             _self.panel.css('height', '');
                             if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
                                 _self.panel.css('height', _self.cfg.scrollHeight + 'px');
+                            }
+                            
+                            //show itemtip if defined
+                            if(_self.cfg.itemtip && firstItem.length == 1) {
+                                _self.showItemtip(firstItem);
                             }
                         }
                         else {
@@ -411,24 +455,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         this.alignPanel();
 
-        this.panel.css('z-index', ++PrimeFaces.zindex);
-
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
-        }
-
         if(this.cfg.effect)
             this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
         else
             this.panel.show();
     },
     
-    hide: function() {
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', '');
+    hide: function() {        
+        this.panel.hide();
+        
+        if(this.cfg.itemtip) {
+            this.itemtip.hide();
         }
-
-        this.panel.css('z-index', '').hide();
     },
     
     invokeItemSelectBehavior: function(event, itemValue) {
@@ -537,9 +575,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.panel.css({
-                        left:'',
-                        top:'',
-                        width: panelWidth
+                        'left':'',
+                        'top':'',
+                        'width': panelWidth,
+                        'z-index': ++PrimeFaces.zindex
                 })
                 .position({
                     my: 'left top'
