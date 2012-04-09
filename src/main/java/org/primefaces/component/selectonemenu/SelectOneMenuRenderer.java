@@ -103,7 +103,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
-        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         
@@ -281,6 +280,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         if(menu.getEffectDuration() != 400) writer.write(",effectDuration:" + menu.getEffectDuration());
         if(menu.isEditable())  writer.write(",editable:true");
+        if(menu.getOnchange() != null) writer.write(",onchange:function() {" + menu.getOnchange() + "}");
 
         encodeClientBehaviors(context, menu);
 
