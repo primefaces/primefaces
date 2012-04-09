@@ -346,7 +346,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         
         if(customContent) {
             encodeSuggestionsAsTable(context, ac, items, converter);
-        } else {
+        } 
+        else {
             encodeSuggestionsAsList(context, ac, items, converter);
         }
     }
@@ -356,15 +357,16 @@ public class AutoCompleteRenderer extends InputRenderer {
         String var = ac.getVar();
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
+        UIComponent itemtip = ac.getFacet("itemtip");
         
         writer.startElement("table", ac);
         writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
         writer.startElement("tbody", ac);
-        
+
         for(Object item : items) {
             writer.startElement("tr", null);
             writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
-            
+
             if(pojo) {
                 requestMap.put(var, item);
                 String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
@@ -383,12 +385,19 @@ public class AutoCompleteRenderer extends InputRenderer {
                     writer.endElement("td");
                 }
             }
+            
+            if(itemtip != null && itemtip.isRendered()) {
+                writer.startElement("td", null);
+                writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
+                itemtip.encodeAll(context);
+                writer.endElement("td");
+            }
 
-            writer.endElement("tr");
+            writer.endElement("tr");     
         }
-        
+
         writer.endElement("tbody");
-        writer.endElement("table");
+            writer.endElement("table");
     }
 
     protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
@@ -396,6 +405,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String var = ac.getVar();
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
+        UIComponent itemtip = ac.getFacet("itemtip");
         
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
@@ -418,8 +428,15 @@ public class AutoCompleteRenderer extends InputRenderer {
                 
                 writer.writeText(item, null);
             }
-
+            
             writer.endElement("li");
+            
+            if(itemtip != null && itemtip.isRendered()) {
+                writer.startElement("li", null);
+                writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
+                itemtip.encodeAll(context);
+                writer.endElement("li");
+            }
         }
         
         writer.endElement("ul");
@@ -448,6 +465,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
         if(ac.isMultiple()) writer.write(",multiple:true");
         if(ac.getProcess() != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, ac, ac.getProcess()) + "'");
+        if(ac.getFacet("itemtip") != null) writer.write(",itemtip:true");
 
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
