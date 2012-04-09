@@ -131,8 +131,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effectDuration = this.cfg.effectDuration||400;
         var _self = this;
-        
-        this.input.parent().removeClass('ui-helper-hidden-accessible');
 
         //disable options
         this.options.filter(':disabled').each(function() {
