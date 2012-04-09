@@ -131,6 +131,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effectDuration = this.cfg.effectDuration||400;
         var _self = this;
+        
+        this.input.parent().removeClass('ui-helper-hidden-accessible');
 
         //disable options
         this.options.filter(':disabled').each(function() {
@@ -140,6 +142,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         //set initial selected option
         var selectedOption = this.options.filter(':selected');
         this.setLabel(selectedOption.text());
+        this.value = selectedOption.val();
         
         //triggers to toggle dropdown
         if(this.cfg.editable) {
@@ -244,9 +247,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.input.focus(function(){
             _self.jq.addClass('ui-state-focus');
             _self.menuIcon.addClass('ui-state-focus');
-        }).blur(function(){
+        })
+        .blur(function(){
             _self.jq.removeClass('ui-state-focus');
             _self.menuIcon.removeClass('ui-state-focus');
+            
+            if(_self.changed) {
+                _self.triggerChange();
+            }
         });
         
         //key bindings
@@ -306,6 +314,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         item.removeClass('ui-state-highlight');
     },
     
+    triggerChange: function(item) {
+        this.input.trigger('change');
+        this.value = this.options.filter(':selected').val();
+        this.changed = false;
+    },
+    
     /**
      * Handler to process item selection with mouse
      */
@@ -316,8 +330,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         
         if(newOption.val() != currentOption.val()) {
             //update selected option
-            this.options.removeAttr('selected');
+            currentOption.removeAttr('selected');
             newOption.attr('selected', 'selected');
+            this.value = newOption.val();
             
             //update label
             this.setLabel(newOption.text());
@@ -335,43 +350,35 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     
     bindKeyEvents: function() {
         var _self = this;
-        
-        //Key bindings reflect the select tag changes made by the browser to the ui
-        this.input.keyup(function(e) {
-            var keyCode = $.ui.keyCode;
-            
+
+        this.input.keyup(function(e) {            
+            var keyCode = $.ui.keyCode,
+            mozilla = $.browser.mozilla;
+
             switch(e.which) { 
                 case keyCode.UP:
                 case keyCode.LEFT:
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
+                    if(mozilla) {
+                        var highlightedItem = _self.items.filter('.ui-state-highlight');
+                        _self.options.filter(':selected').removeAttr('selected');
+                        _self.options.eq(highlightedItem.index()).attr('selected', 'selected');
+                    }
+                    
                     e.preventDefault();
                 break;
-                
-                case keyCode.TAB:
-                case keyCode.ESCAPE:
-                case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
-                    //nothing, handled by keydown
-                break;
-                
-                
+                                
                 default:
                     var currentOption = _self.options.filter(':selected'),
                     item = _self.items.eq(currentOption.index());
 
                     _self.highlightItem(item, true);
                 break;
-            }
+            }            
         })
-        .keydown(function(e) {
-            /**
-             * For arrow keys, we need to reflect the change to the ui, webkit displays dropdown menu so we need
-             * to prevent default and select the option ourselves as default is prevented.
-             */
-            
-            var keyCode = $.ui.keyCode,
-            webkit = $.browser.webkit;
+        .keydown(function(e) {            
+            var keyCode = $.ui.keyCode;
 
             switch(e.which) { 
                 case keyCode.UP:
@@ -381,16 +388,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
                     if(prev.length == 1) {
                         _self.highlightItem(prev, true);
+                        _self.changed = true;
                         
-                        if(webkit) {
-                            _self.options.filter(':selected').removeAttr('selected');
-                            _self.options.eq(prev.index()).attr('selected', 'selected');
-                        }
+                        _self.options.filter(':selected').removeAttr('selected');
+                        
+                        var option = _self.options.eq(prev.index());
+                        option.attr('selected', 'selected');
+                        
+                        _self.changed = (option.val() != _self.value);
                     }
                     
-                    if(webkit) {
-                        e.preventDefault();
-                    }
+                    e.preventDefault();
                     
                 break;
 
@@ -401,18 +409,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
                     if(next.length == 1) {
                         _self.highlightItem(next, true);
+                        _self.options.filter(':selected').removeAttr('selected');
                         
-                        if(webkit) {
-                            _self.options.filter(':selected').removeAttr('selected');
-                            _self.options.eq(next.index()).attr('selected', 'selected');
-                        }
+                        var option = _self.options.eq(next.index());
+                        option.attr('selected', 'selected');
+                        
+                        _self.changed = (option.val() != _self.value);
                     }
                     
-                    if(webkit) {
-                        e.preventDefault();
-                    }
+                    e.preventDefault();
+                    
                 break;
-
+                
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
@@ -420,6 +428,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     if(_self.panel.is(":visible")) {
                         _self.hide();
                     }
+                    
+                    if(_self.changed) {
+                        _self.triggerChange();
+                    }
+                    
+                    e.preventDefault();
                 break;
             }
         });
