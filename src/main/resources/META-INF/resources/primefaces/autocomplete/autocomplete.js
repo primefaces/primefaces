@@ -307,7 +307,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 _self.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
             }
             else {
-                _self.input.val(item.attr('data-item-label'));
+                _self.input.val(item.attr('data-item-label')).focus();
 
                 if(_self.cfg.pojo) {
                     _self.hinput.val(itemValue);            
