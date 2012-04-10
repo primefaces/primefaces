@@ -211,47 +211,36 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.input.keydown(function(e) {
             if(_self.panel.is(':visible')) {
                 var keyCode = $.ui.keyCode,
-                currentItems = _self.panel.find('.ui-autocomplete-item'),
-                highlightItem = _self.panel.find('.ui-autocomplete-item.ui-state-highlight');
+                highlightedItem = _self.items.filter('.ui-state-highlight');
 
                 switch(e.which) {
                     case keyCode.UP:
                     case keyCode.LEFT:
-                        var prev;
-                        if(highlightItem.length > 0) {
-                            prev = highlightItem.removeClass('ui-state-highlight').prev();
-                            if(prev.length > 0){
-                                prev.addClass('ui-state-highlight');
-                                var diff = prev.offset().top - _self.panel.offset().top - prev.outerHeight(true) + prev.height();
-                                if( diff < 0 )
-                                    _self.panel.scrollTop( _self.panel.scrollTop() + diff);
+                        var prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
+                        
+                        if(prev.length == 1) {
+                            highlightedItem.removeClass('ui-state-highlight');
+                            prev.addClass('ui-state-highlight');
+                            
+                            if(_self.cfg.itemtip) {
+                                _self.showItemtip(prev);
                             }
-                        } 
-
-                        if(!prev || prev.length == 0) {
-                            prev = currentItems.eq(currentItems.length - 1).addClass('ui-state-highlight');
-                            _self.panel.scrollTop(prev.offset().top + prev.outerHeight(true) - _self.panel.offset().top - _self.panel.height());
                         }
-
+                        
                         e.preventDefault();
                         break;
 
                     case keyCode.DOWN:
                     case keyCode.RIGHT:
-                        var next;
-                        if(highlightItem.length > 0) {
-                            next = highlightItem.removeClass('ui-state-highlight').next();
-                            if(next.length > 0){
-                                next.addClass('ui-state-highlight');
-                                var diff = next.offset().top + next.outerHeight(true) - _self.panel.offset().top;
-                                if( diff > _self.panel.height() )
-                                    _self.panel.scrollTop(_self.panel.scrollTop() + (diff - _self.panel.height()));
-                        }
-                        } 
-
-                        if(!next || next.length == 0) {
-                            currentItems.eq(0).addClass('ui-state-highlight');
-                            _self.panel.scrollTop(0);
+                        var next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
+                        
+                        if(next.length == 1) {
+                            highlightedItem.removeClass('ui-state-highlight');
+                            next.addClass('ui-state-highlight');
+                            
+                            if(_self.cfg.itemtip) {
+                                _self.showItemtip(next);
+                            }
                         }
 
                         e.preventDefault();
@@ -357,6 +346,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.onstart.call(this, query);
         }
         
+        if(this.cfg.itemtip) {
+            this.itemtip.hide();
+        }
+        
         var options = {
             source: this.id,
             update: this.id,
@@ -373,18 +366,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     if(id == _self.id) {
                         _self.panel.html(data);
                         _self.bindDynamicEvents();
+                        _self.items = _self.panel.find('.ui-autocomplete-item');
 
-                        var items = _self.panel.find('.ui-autocomplete-item');
-
-                        if(items.length > 0) {
-                            var firstItem = items.eq(0);
+                        if(_self.items.length > 0) {
+                            var firstItem = _self.items.eq(0);
                             
                             //highlight first item
                             firstItem.addClass('ui-state-highlight');
                             
                             //highlight query string
                             if(_self.panel.children().is('ul')) {
-                                items.each(function() {
+                                _self.items.each(function() {
                                     var item = $(this),
                                     text = item.text(),
                                     re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
@@ -396,7 +388,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                             if(_self.cfg.forceSelection) {
                                 _self.cachedResults = [];
-                                items.each(function(i, item) {
+                                _self.items.each(function(i, item) {
                                     _self.cachedResults.push($(item).attr('data-item-label'));
                                 });
                             }
