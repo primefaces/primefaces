@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
  */
 public class AjaxRequestBuilder {
     
-    private StringBuilder buffer;
+    protected StringBuilder buffer;
     
     private boolean preventDefault = false;
     
