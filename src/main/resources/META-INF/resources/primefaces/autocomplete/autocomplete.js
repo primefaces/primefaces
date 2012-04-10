@@ -248,7 +248,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
-                        highlightItem.click();
+                        highlightedItem.click();
 
                         e.preventDefault();
                         break;
@@ -258,7 +258,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.TAB:
-                        highlightItem.trigger('click');
+                        highlightedItem.trigger('click');
                         _self.hide();
                         break;
                 }
@@ -268,23 +268,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindDynamicEvents: function() {
-        var _self = this,
-        items = this.panel.find('.ui-autocomplete-item');
+        var _self = this;
 
         //visuals and click handler for items
-        items.bind('mouseover', function() {
+        this.items.bind('mouseover', function() {
             var item = $(this);
-            item.addClass('ui-state-highlight');
             
-            if(_self.cfg.itemtip) {
-                _self.showItemtip(item);
-            }
-        })
-        .bind('mouseout', function() {
-            $(this).removeClass('ui-state-highlight');
-            
-            if(_self.cfg.itemtip) {
-                _self.itemtip.hide();
+            if(!item.hasClass('ui-state-highlight')) {
+                _self.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+                item.addClass('ui-state-highlight');
+                
+                if(_self.cfg.itemtip) {
+                    _self.showItemtip(item);
+                }
             }
         })
         .bind('click', function(event) {
@@ -365,8 +361,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     if(id == _self.id) {
                         _self.panel.html(data);
-                        _self.bindDynamicEvents();
                         _self.items = _self.panel.find('.ui-autocomplete-item');
+                        
+                        _self.bindDynamicEvents();
 
                         if(_self.items.length > 0) {
                             var firstItem = _self.items.eq(0);
