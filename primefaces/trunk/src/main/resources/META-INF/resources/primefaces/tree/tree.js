@@ -24,7 +24,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         var _self = this,
         selectionMode = this.cfg.selectionMode,
         iconSelector = this.jqId + ' .ui-tree-icon',
-        nodeSelector = this.jqId  + ' .ui-tree-selectable-node';
+        nodeSelector = this.jqId  + ' .ui-tree-node-content';
 
         //expand-collapse
         $(document).off('click', iconSelector)
@@ -39,41 +39,45 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                     });
 
         //selection hover
-        if(selectionMode) {
-            if(this.cfg.highlight) {
-                $(document).off('hover.tree', nodeSelector)
-                            .on('hover.tree', nodeSelector, null, function() {
-                                var element = $(this);
+        if(selectionMode && this.cfg.highlight) {
+            $(document).off('hover.tree', nodeSelector)
+                        .on('hover.tree', nodeSelector, null, function() {
+                            var element = $(this);
 
-                                if(!element.hasClass('ui-state-highlight'))
-                                    $(this).toggleClass('ui-state-hover');
-                            });
+                            if(!element.hasClass('ui-state-highlight') && element.hasClass('ui-tree-selectable-node')) {
+                                $(this).toggleClass('ui-state-hover');
+                            }
+                        });
                 
-            }
-     
-            $(document).off('click.tree contextmenu.tree', nodeSelector)
+        }
+        
+        //node click
+        $(document).off('click.tree contextmenu.tree', nodeSelector)
                         .on('click.tree', nodeSelector, null, function(e) {
-                            _self.onNodeClick(e, $(this).parents('li:first'));
+                            _self.nodeClick(e, $(this));
                         })
                         .on('contextmenu.tree', nodeSelector, null, function(e) {
-                            _self.onNodeClick(e, $(this).parents('li:first'));
+                            _self.nodeClick(e, $(this));
                             e.preventDefault();
                         });
-        }
     },
     
-    onNodeClick: function(e, node) {
+    nodeClick: function(e, nodeContent) {
         PrimeFaces.clearSelection();
+        
+        var node = nodeContent.parents('li:first');
 
         if($(e.target).is(':not(.ui-tree-icon)')) {
             if(this.cfg.onNodeClick) {
                 this.cfg.onNodeClick.call(this, node);
             }
-
-            if(this.isNodeSelected(node))
-                this.unselectNode(e, node);
-            else
-                this.selectNode(e, node);
+            
+            if(nodeContent.hasClass('ui-tree-selectable-node')) {
+                if(this.isNodeSelected(node))
+                    this.unselectNode(e, node);
+                else
+                    this.selectNode(e, node);
+            };
         }
     },
     
