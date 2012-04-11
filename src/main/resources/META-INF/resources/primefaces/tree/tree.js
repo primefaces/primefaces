@@ -135,7 +135,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             }
 
             options.params = [
-                {name: this.id + '_expandNode', value: _self.getNodeId(node)}
+                {name: this.id + '_expandNode', value: _self.getRowKey(node)}
             ];
 
             if(this.hasBehavior('expand')) {
@@ -160,7 +160,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             if(expandBehavior) {
                 var ext = {
                     params: [
-                        {name: this.id + '_expandNode', value: this.getNodeId(node)}
+                        {name: this.id + '_expandNode', value: this.getRowKey(node)}
                     ]
                 };
 
@@ -201,7 +201,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             if(collapseBehavior) {
                 var ext = {
                     params: [
-                        {name: this.id + '_collapseNode', value: this.getNodeId(node)}
+                        {name: this.id + '_collapseNode', value: this.getRowKey(node)}
                     ]
                 };
 
@@ -247,7 +247,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             node.children('.ui-tree-node').attr('aria-selected', true);
             node.find('.ui-tree-node-content:first').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
-            this.addToSelection(this.getNodeId(node));
+            this.addToSelection(this.getRowKey(node));
         }
 
         this.writeSelections();
@@ -256,14 +256,14 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unselectNode: function(e, node) {
-        var nodeId = this.getNodeId(node),
+        var rowKey = this.getRowKey(node),
         metaKey = (e.metaKey||e.ctrlKey);
 
         //select node
         if(this.isCheckboxSelection()) {
             this.toggleCheckbox(node, false);
             this.writeSelections();
-            this.fireNodeUnselectEvent(node);
+            this.fireNodeUnselectEvent(node);f
         }
         else if(metaKey) {
             //remove visual style    
@@ -273,7 +273,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             node.children('.ui-tree-node').attr('aria-selected', false);
 
             //remove from selection
-            this.removeFromSelection(nodeId);
+            this.removeFromSelection(rowKey);
 
             this.writeSelections();
 
@@ -295,7 +295,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             if(selectBehavior) {
                 var ext = {
                     params: [
-                        {name: this.id + '_instantSelection', value: this.getNodeId(node)}
+                        {name: this.id + '_instantSelection', value: this.getRowKey(node)}
                     ]
                 };
 
@@ -311,7 +311,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             if(unselectBehavior) {
                 var ext = {
                     params: [
-                        {name: this.id + '_instantUnselection', value: this.getNodeId(node)}
+                        {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
                     ]
                 };
 
@@ -320,12 +320,12 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    getNodeId: function(node) {
-        return node.attr('id').split('_node_')[1];
+    getRowKey: function(node) {
+        return node.attr('data-rowkey');
     },
     
     isNodeSelected: function(node) {
-        return $.inArray(this.getNodeId(node), this.selections) != -1;
+        return $.inArray(this.getRowKey(node), this.selections) != -1;
     },
     
     isSingleSelection: function() {
@@ -340,13 +340,13 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         return this.cfg.selectionMode == 'checkbox';
     },
     
-    addToSelection: function(nodeId) {
-        this.selections.push(nodeId);
+    addToSelection: function(rowKey) {
+        this.selections.push(rowKey);
     },
     
-    removeFromSelection: function(nodeId) {
+    removeFromSelection: function(rowKey) {
         this.selections = $.grep(this.selections, function(r) {
-            return r != nodeId;
+            return r != rowKey;
         });
     },
     
@@ -357,13 +357,13 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         node.find('.ui-tree-checkbox-icon').each(function() {
             var icon = $(this),
             treeNode = icon.parents('li:first'),
-            nodeId = _self.getNodeId(treeNode);
+            rowKey = _self.getRowKey(treeNode);
 
             if(check) {
-                if($.inArray(nodeId, _self.selections) == -1) {
+                if($.inArray(rowKey, _self.selections) == -1) {
                     icon.addClass('ui-icon ui-icon-check');
 
-                    _self.addToSelection(nodeId);
+                    _self.addToSelection(rowKey);
 
                     //aria
                     treeNode.children('.ui-tree-node').attr('aria-checked', true).attr('aria-selected', true);
@@ -372,7 +372,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             else {
                 icon.removeClass('ui-icon ui-icon-check');
 
-                _self.removeFromSelection(nodeId);
+                _self.removeFromSelection(rowKey);
 
                 //aria
                 treeNode.children('.ui-tree-node').attr('aria-checked', false).attr('aria-selected', false);
@@ -382,7 +382,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         //propagate selection up
         node.parents('li').each(function() {
             var parentNode = $(this),
-            nodeId = _self.getNodeId(parentNode),
+            rowKey = _self.getRowKey(parentNode),
             icon = parentNode.find('.ui-tree-checkbox-icon:first'),
             checkedChildren = parentNode.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon.ui-icon-check'),
             allChildren = parentNode.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon');
@@ -391,7 +391,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                 if(checkedChildren.length == allChildren.length) {
                     icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
 
-                    _self.addToSelection(nodeId);
+                    _self.addToSelection(rowKey);
 
                     //aria
                     parentNode.children('.ui-tree-node').attr('aria-checked', true).attr('aria-selected', true);
@@ -411,7 +411,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                     icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
                 }
 
-                _self.removeFromSelection(nodeId);
+                _self.removeFromSelection(rowKey);
 
                 //aria
                 parentNode.children('.ui-tree-node').attr('aria-checked', false).attr('aria-selected', false);
