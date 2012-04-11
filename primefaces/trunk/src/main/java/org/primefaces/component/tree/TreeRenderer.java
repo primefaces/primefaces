@@ -183,6 +183,7 @@ public class TreeRenderer extends CoreRenderer {
             boolean selectable = node.isSelectable() && (tree.getSelectionMode() != null);
             String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
+            Object datakey = tree.getDatakey();
 
             //preselection
             boolean selected = node.isSelected();
@@ -199,6 +200,10 @@ public class TreeRenderer extends CoreRenderer {
                 writer.writeAttribute("data-rowkey", rowKey, null);
                 writer.writeAttribute("class", containerClass, null);
 
+                if(datakey != null) {
+                    writer.writeAttribute("data-datakey", datakey, null);
+                }
+                
                 //label
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Tree.NODE_CLASS, null);

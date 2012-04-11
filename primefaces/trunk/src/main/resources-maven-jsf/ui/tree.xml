@@ -89,6 +89,12 @@
             <defaultValue>true</defaultValue>
             <description>Highlights nodes on hover when selection is enabled, set to false to disable highlighting.</description>
 		</attribute>
+        <attribute>
+			<name>datakey</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Unique key of the data presented by tree nodes.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
