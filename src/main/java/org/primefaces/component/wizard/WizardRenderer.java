@@ -184,8 +184,8 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
 
-        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), "ui-icon-arrowthick-1-w");
-        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), "ui-icon-arrowthick-1-e");
+        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), Wizard.BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w");
+        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e");
 
         writer.endElement("div");
     }
@@ -236,14 +236,14 @@ public class WizardRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String label, String icon) throws IOException {
+    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String label, String buttonClass, String icon) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("button", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
 		writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + buttonClass, null);
 
         //button icon
         String iconClass = HTML.BUTTON_LEFT_ICON_CLASS + " " + icon;
