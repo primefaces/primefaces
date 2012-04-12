@@ -1,6 +1,9 @@
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 
+	public final static String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
+	public final static String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
+	
 	private Tab tabToProcess;
 
 	public void processDecodes(FacesContext facesContext) {
