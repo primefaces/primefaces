@@ -43,7 +43,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
             menuitem.children('.ui-menuitem-link').removeClass('ui-state-hover');
             menuitem.find('.ui-menu-child:visible').hide();
         })
-        .click(function(e) {        
+        .click(function(e) {
             //hide all visible submenus of menubar and reset state
             _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
             _self.jq.find('a.ui-menuitem-link').removeClass('ui-state-hover');
@@ -64,6 +64,10 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
             if(!menuitemLink.hasClass('ui-state-disabled')) {
                 menuitemLink.addClass('ui-state-hover');
             }
+            
+            if(_self.active) {
+                $(this).trigger('click');
+            }
         })
         .mouseleave(function() {
             var menuitem = $(this);
@@ -77,13 +81,20 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
             if(submenu.length == 1) {
                 if(submenu.is(':visible')) {
                     menuitem.children('.ui-menu-child:visible').fadeOut('fast');
+                    _self.active = false;
                 }
                 else {
                     _self.showSubmenu(menuitem, submenu);
+                    _self.active = true;
                 }
 
                 e.preventDefault();
             }
+        });
+        
+        //deactivate when outside is clicked
+        $(document.body).bind('mousedown.ui-menubar', function (e) {            
+            _self.active = false;
         });
     },
     
