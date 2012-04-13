@@ -79,16 +79,20 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
             _self.hideAll = true;
 
             _self.jq.find('li.ui-menuitem-active').each(function() {
-                _self.deactivate($(this));
+                _self.deactivate($(this), true);
             });
         });
     },
     
-    deactivate: function(menuitem) {
+    deactivate: function(menuitem, animate) {
         this.activeitem = null;
         menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover');
-        menuitem.children('ul.ui-menu-child:visible').hide();
         menuitem.removeClass('ui-menuitem-active');
+        
+        if(animate)
+            menuitem.children('ul.ui-menu-child:visible').fadeOut('fast');
+        else
+            menuitem.children('ul.ui-menu-child:visible').hide();
     },
     
     activate: function(menuitem) {
