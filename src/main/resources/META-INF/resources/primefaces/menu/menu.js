@@ -6,32 +6,60 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
+        
         this.bindEvents();
     },
     
     bindEvents: function() {
         var _self = this;
-        
-        this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
 
         this.links.mouseenter(function() {
             var link = $(this),
             menuitem = link.parent(),
-            submenu = menuitem.children('ul.ui-menu-child'),
-            rootitem = !menuitem.parent().hasClass('ui-menu-child');
+            autoDisplay = _self.cfg.autoDisplay;
             
             var activeSibling = menuitem.siblings('.ui-menuitem-active');
             if(activeSibling.length == 1) {
                 _self.deactivate(activeSibling);
             }
             
-            if(menuitem.hasClass('ui-menuitem-active')) {
-                _self.reactivate(menuitem);
+            if(autoDisplay||_self.active) {
+                if(menuitem.hasClass('ui-menuitem-active')) {
+                    _self.reactivate(menuitem);
+                }
+                else {
+                    _self.activate(menuitem);
+                }  
             }
             else {
-                _self.activate(menuitem);
-            }  
+                _self.highlight(menuitem);
+            }
         });
+        
+        if(this.cfg.autoDisplay == false) {
+            this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
+            
+            this.rootLinks.data('primefaces-menubar', this.id).find('*').data('primefaces-menubar', this.id)
+            
+            this.rootLinks.click(function(e) {
+                var link = $(this),
+                menuitem = link.parent(),
+                submenu = menuitem.children('ul.ui-menu-child');
+
+                if(submenu.length == 1) {
+                    if(submenu.is(':visible')) {
+                        _self.active = false;
+                        _self.deactivate(menuitem);
+                    }
+                    else {                                        
+                        _self.active = true;
+                        _self.highlight(menuitem);
+                        _self.showSubmenu(menuitem, submenu);
+                    }
+                }
+            });
+        }
         
         this.jq.find('ul.ui-menu-list').mouseleave(function(e) {
            if(_self.activeitem) {
@@ -41,7 +69,15 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
            e.stopPropagation();
         });
         
-        $(document.body).click(function() {
+        $(document.body).click(function(e) {
+            var target = $(e.target);
+            if(target.data('primefaces-menubar') == _self.id) {
+                return;
+            }
+            
+            _self.active = false;
+            _self.hideAll = true;
+
             _self.jq.find('li.ui-menuitem-active').each(function() {
                 _self.deactivate($(this));
             });
@@ -56,9 +92,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
     },
     
     activate: function(menuitem) {
-        this.activeitem = menuitem;
-        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
-        menuitem.addClass('ui-menuitem-active');
+        this.highlight(menuitem);
 
         var submenu = menuitem.children('ul.ui-menu-child');
         if(submenu.length == 1) {
@@ -75,6 +109,12 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
         if(activeChilditem.length == 1) {
             _self.deactivate(activeChilditem);
         }
+    },
+    
+    highlight: function(menuitem) {
+        this.activeitem = menuitem;
+        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
+        menuitem.addClass('ui-menuitem-active');
     },
     
     showSubmenu: function(menuitem, submenu) {
