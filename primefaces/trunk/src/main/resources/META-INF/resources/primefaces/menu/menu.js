@@ -33,8 +33,8 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
             }  
         });
         
-        this.jq.find('ul.ui-menu-child').mouseleave(function(e) {
-           if(_self.activeitem && _self.activeitem.parent().hasClass('ui-menu-child')) {
+        this.jq.find('ul.ui-menu-list').mouseleave(function(e) {
+           if(_self.activeitem) {
                _self.deactivate(_self.activeitem);
            }
            
