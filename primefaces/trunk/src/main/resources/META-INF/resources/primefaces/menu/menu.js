@@ -10,92 +10,71 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {
-        var _self = this,
-        menuitems = null;
-
-        if(this.cfg.autoDisplay) {
-            menuitems = this.jq.find('li.ui-menuitem');
-        }
-        else {
-            this.rootList = this.jq.children('ul.ui-menu-list');
-            this.rootMenuitems = this.rootList.children('li.ui-menuitem');  //immediate children of root
-            menuitems = this.rootMenuitems.find('li.ui-menuitem');            //descendants of root menuitems
-
-            this.bindRootItemEvents();
-        }
-
-        //menuitems are all items in autoDisplay case and descendants items of root items otherwise
-        menuitems.mouseenter(function() {
-            var menuitem = $(this),
-            menuitemLink = menuitem.children('.ui-menuitem-link');
-
-            if(!menuitemLink.hasClass('ui-state-disabled')) {
-                menuitemLink.addClass('ui-state-hover');
-
-                var submenu = menuitem.children('ul.ui-menu-child');
-                if(submenu.length == 1) {
-                    _self.showSubmenu(menuitem, submenu);
-                }
-            }
-        })
-        .mouseleave(function() {
-            var menuitem = $(this);
-            menuitem.children('.ui-menuitem-link').removeClass('ui-state-hover');
-            menuitem.find('.ui-menu-child:visible').hide();
-        })
-        .click(function(e) {
-            //hide all visible submenus of menubar and reset state
-            _self.jq.find('.ui-menu-child:visible').fadeOut('fast');
-            _self.jq.find('a.ui-menuitem-link').removeClass('ui-state-hover');
-
-            //do not trigger root click event in non-autodisplay
-            e.stopPropagation();
-        });        
-    },
-    
-    bindRootItemEvents: function() {
         var _self = this;
+        
+        this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
 
-        //root menuitems    
-        this.rootMenuitems.mouseenter(function() {
-            var menuitem = $(this),
-            menuitemLink = menuitem.children('.ui-menuitem-link');
-
-            if(!menuitemLink.hasClass('ui-state-disabled')) {
-                menuitemLink.addClass('ui-state-hover');
+        this.links.mouseenter(function() {
+            var link = $(this),
+            menuitem = link.parent(),
+            submenu = menuitem.children('ul.ui-menu-child'),
+            rootitem = !menuitem.parent().hasClass('ui-menu-child');
+            
+            var activeSibling = menuitem.siblings('.ui-menuitem-active');
+            if(activeSibling.length == 1) {
+                _self.deactivate(activeSibling);
             }
             
-            if(_self.active) {
-                $(this).trigger('click');
+            if(menuitem.hasClass('ui-menuitem-active')) {
+                _self.reactivate(menuitem);
             }
-        })
-        .mouseleave(function() {
-            var menuitem = $(this);
-            menuitem.children('.ui-menuitem-link').removeClass('ui-state-hover');
-            menuitem.find('.ui-menu-child:visible').hide();
-        })
-        .click(function(e) {
-            var menuitem = $(this),
-            submenu = menuitem.children('ul.ui-menu-child');
-
-            if(submenu.length == 1) {
-                if(submenu.is(':visible')) {
-                    menuitem.children('.ui-menu-child:visible').fadeOut('fast');
-                    _self.active = false;
-                }
-                else {
-                    _self.showSubmenu(menuitem, submenu);
-                    _self.active = true;
-                }
-
-                e.preventDefault();
-            }
+            else {
+                _self.activate(menuitem);
+            }  
         });
         
-        //deactivate when outside is clicked
-        $(document.body).bind('mousedown.ui-menubar', function (e) {            
-            _self.active = false;
+        this.jq.find('ul.ui-menu-child').mouseleave(function(e) {
+           if(_self.activeitem && _self.activeitem.parent().hasClass('ui-menu-child')) {
+               _self.deactivate(_self.activeitem);
+           }
+           
+           e.stopPropagation();
         });
+        
+        $(document.body).click(function() {
+            _self.jq.find('li.ui-menuitem-active').each(function() {
+                _self.deactivate($(this));
+            });
+        });
+    },
+    
+    deactivate: function(menuitem) {
+        this.activeitem = null;
+        menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover');
+        menuitem.children('ul.ui-menu-child:visible').hide();
+        menuitem.removeClass('ui-menuitem-active');
+    },
+    
+    activate: function(menuitem) {
+        this.activeitem = menuitem;
+        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
+        menuitem.addClass('ui-menuitem-active');
+
+        var submenu = menuitem.children('ul.ui-menu-child');
+        if(submenu.length == 1) {
+            this.showSubmenu(menuitem, submenu);
+        }
+    },
+    
+    reactivate: function(menuitem) {
+        this.activeitem = menuitem;
+        var submenu = menuitem.children('ul.ui-menu-child'),
+        activeChilditem = submenu.children('li.ui-menuitem-active:first'),
+        _self = this;
+        
+        if(activeChilditem.length == 1) {
+            _self.deactivate(activeChilditem);
+        }
     },
     
     showSubmenu: function(menuitem, submenu) {
