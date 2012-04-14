@@ -160,6 +160,18 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
     }
 });
 
+/**
+ * PrimeFaces SlideMenu Widget
+ */
+PrimeFaces.widget.SlideMenu = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        //TODO
+    }
+});
+
 
 /**
  * PrimeFaces Menu Widget
