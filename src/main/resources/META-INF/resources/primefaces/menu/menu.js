@@ -1,10 +1,12 @@
 /**
- * PrimeFaces Menubar Widget
+ * PrimeFaces TieredMenu Widget
  */
-PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.TieredMenu = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        
+        this.cfg.autoDisplay = this.cfg.autoDisplay||true;
         
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         
@@ -122,24 +124,42 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.BaseWidget.extend({
     },
     
     showSubmenu: function(menuitem, submenu) {
-        submenu.css('z-index', ++PrimeFaces.zindex);
-
-        if(!menuitem.parent().hasClass('ui-menu-child')) {    //root menuitem
-            submenu.css({
-                'left': 0
-                ,'top': menuitem.outerHeight()
-            });
-        } 
-        else {                                              //submenu menuitem
-            submenu.css({
-                'left': menuitem.outerWidth()
-                ,'top': 0
-            });
-        }
+        
+        submenu.css({
+            'left': menuitem.outerWidth()
+            ,'top': 0
+            ,'z-index': ++PrimeFaces.zindex
+        });
 
         submenu.show();
     }
     
+});
+
+/**
+ * PrimeFaces Menubar Widget
+ */
+PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
+    
+    showSubmenu: function(menuitem, submenu) {
+        submenu.css('z-index', ++PrimeFaces.zindex);
+
+        if(menuitem.parent().hasClass('ui-menu-child')) {    //submenu menuitem
+            submenu.css({
+                'left': menuitem.outerWidth()
+                ,'top': 0
+            });
+        } 
+        else {  
+            submenu.css({                                    //root menuitem         
+                'left': 0
+                ,'top': menuitem.outerHeight()
+            });
+            
+        }
+
+        submenu.show();
+    }
 });
 
 
