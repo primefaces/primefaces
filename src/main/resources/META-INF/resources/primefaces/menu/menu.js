@@ -6,8 +6,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.cfg.autoDisplay = this.cfg.autoDisplay||true;
-        
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         
         this.bindEvents();
