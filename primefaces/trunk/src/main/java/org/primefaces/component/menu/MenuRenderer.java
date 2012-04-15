@@ -33,24 +33,19 @@ public class MenuRenderer extends BaseMenuRenderer {
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
 		String widgetVar = menu.resolveWidgetVar();
-        String position = menu.getPosition();
+        boolean dynamic = menu.getPosition().equals("dynamic");
 
 		startScript(writer, clientId);
         
         writer.write("$(function() {");
         
-        writer.write("PrimeFaces.cw('Menu','" + widgetVar + "',{");
+        writer.write("PrimeFaces.cw('PlainMenu','" + widgetVar + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",position:'" + position + "'");
-        writer.write(",type:'" + menu.getType() + "'");
         
-        if(menu.getEasing() != null)
-            writer.write(",easing:'" + menu.getEasing() + "'");
-        
-        //dynamic position
-        if(position.equalsIgnoreCase("dynamic")) {
-           writer.write(",my:'" + menu.getMy() + "'");
-           writer.write(",at:'" + menu.getAt() + "'");
+        if(dynamic) {
+            writer.write(",dynamic:true");
+            writer.write(",my:'" + menu.getMy() + "'");
+            writer.write(",at:'" + menu.getAt() + "'");
 
             UIComponent trigger = menu.findComponent(menu.getTrigger());
             String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
@@ -68,15 +63,12 @@ public class MenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
-        boolean tiered = !menu.getType().equalsIgnoreCase("plain");
-        boolean sliding = menu.getType().equalsIgnoreCase("sliding");
         boolean dynamic = menu.getPosition().equals("dynamic");
         
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = dynamic ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
-        styleClass = sliding ? styleClass + " " + Menu.MENU_SLIDING_CLASS: styleClass;
         
         writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
@@ -85,31 +77,18 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menu", null);
-
-        if(sliding){
-            encodeSlidingMenuBegin(context, menu);
-        }
         
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-        if(tiered) {
-            encodeTieredMenuContent(context, menu);
-        }
-        else {
-            encodePlainMenuContent(context, menu);
-        }
+        encodeContent(context, menu);
 
 		writer.endElement("ul");
-
-        if(sliding){
-            encodeSlidingMenuEnd(context, menu);
-        }
         
         writer.endElement("div");
 	}
 
-    protected void encodePlainMenuContent(FacesContext context, UIComponent component) throws IOException{
+    protected void encodeContent(FacesContext context, UIComponent component) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 
         for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
@@ -125,7 +104,7 @@ public class MenuRenderer extends BaseMenuRenderer {
                     writer.endElement("li");
                 } 
                 else if(child instanceof Submenu) {
-                    encodePlainSubmenu(context, (Submenu) child);
+                    encodeSubmenu(context, (Submenu) child);
                 }
                 else if(child instanceof Separator) {
                     encodeSeparator(context, (Separator) child);
@@ -134,7 +113,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodePlainSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -156,48 +135,6 @@ public class MenuRenderer extends BaseMenuRenderer {
         
         writer.endElement("li");
 
-        encodePlainMenuContent(context, submenu);
+        encodeContent(context, submenu);
 	}
-    
-    protected void encodeSlidingMenuBegin(FacesContext context, Menu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
-        //scroll
-        writer.startElement("div", menu);
-        writer.writeAttribute("class", Menu.MENU_SLIDING_SCROLL_CLASS, null);
-        
-        //state
-        writer.startElement("div", menu);
-        writer.writeAttribute("class", Menu.MENU_SLIDING_STATE_CLASS, "state");
-        
-        //wrapper
-        writer.startElement("div", menu);
-        writer.writeAttribute("class", Menu.MENU_SLIDING_WRAPPER_CLASS, "wrapper");
-        
-        //content
-        writer.startElement("div", menu);
-        writer.writeAttribute("class", Menu.MENU_SLIDING_CONTENT_CLASS, "sliding_content");
-        
-        //height
-        writer.startElement("div", menu);
-    }
-    
-    protected void encodeSlidingMenuEnd(FacesContext context, Menu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
-        writer.endElement("div");       //scroll
-        writer.endElement("div");       //state
-        writer.endElement("div");       //wrapper
-        writer.endElement("div");       //content
-        writer.endElement("div");       //height
-        
-        //back navigator
-        writer.startElement("div", menu);
-        writer.writeAttribute("class", Menu.BACKWARD_CLASS, null);
-        writer.startElement("span", menu);
-        writer.writeAttribute("class", Menu.BACKWARD_ICON_CLASS, null);
-        writer.endElement("span");
-        writer.write(menu.getBackLabel());
-        writer.endElement("div");
-    }
 }
