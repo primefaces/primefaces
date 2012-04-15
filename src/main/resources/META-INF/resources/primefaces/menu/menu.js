@@ -6,12 +6,12 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        if(this.cfg.dynamic) {
-            this.initPosition();
+        if(this.cfg.overlay) {
+            this.initOverlay();
         }
     },
     
-    initPosition: function() {
+    initOverlay: function() {
         var _self = this;
         
         this.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));

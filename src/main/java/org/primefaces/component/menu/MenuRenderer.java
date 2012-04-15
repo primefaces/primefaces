@@ -33,7 +33,6 @@ public class MenuRenderer extends BaseMenuRenderer {
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
 		String widgetVar = menu.resolveWidgetVar();
-        boolean dynamic = menu.getPosition().equals("dynamic");
 
 		startScript(writer, clientId);
         
@@ -42,8 +41,8 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.write("PrimeFaces.cw('PlainMenu','" + widgetVar + "',{");
         writer.write("id:'" + clientId + "'");
         
-        if(dynamic) {
-            writer.write(",dynamic:true");
+        if(menu.isOverlay()) {
+            writer.write(",overlay:true");
             writer.write(",my:'" + menu.getMy() + "'");
             writer.write(",at:'" + menu.getAt() + "'");
 
@@ -63,11 +62,9 @@ public class MenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
-        boolean dynamic = menu.getPosition().equals("dynamic");
-        
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        String defaultStyleClass = dynamic ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
+        String defaultStyleClass = menu.isOverlay() ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
         
         writer.startElement("div", menu);
