@@ -53,13 +53,6 @@
             <description>Defines positioning type of menu, either static or dynamic. Default is static.</description>
 		</attribute>
         <attribute>
-			<name>type</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>plain</defaultValue>
-            <description>Type of menu, valid values are plain, tiered and sliding. Default is plain.</description>
-		</attribute>
-        <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -72,24 +65,11 @@
             <description>Style class of the main container element.</description>
 		</attribute>
         <attribute>
-			<name>backLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>Back</defaultValue>
-            <description>Text for back link, only applies to sliding menus. Default is "Back"</description>
-		</attribute>
-        <attribute>
 			<name>triggerEvent</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>click</defaultValue>
             <description>Event name of component that will show the dynamic positioned menu. Default is click.</description>
-		</attribute>
-		<attribute>
-			<name>easing</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Type of easing on sliding animation. Default is easeInOutCirc.</description>
 		</attribute>
 	</attributes>
 	<resources>
