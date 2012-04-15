@@ -44,9 +44,41 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Defines whether the first level of submenus will be displayed on mouseover or not. When
-                    set to false, click event is required to display.</description>
+            <description>Defines whether the first level of submenus will be displayed on mouseover or not. 
+                        When set to false, click event is required to display.</description>
         </attribute>
+        <attribute>
+			<name>trigger</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of component whose click event will show the dynamic positioned menu.</description>
+		</attribute>
+        <attribute>
+			<name>my</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Corner of menu to align with trigger element.</description>
+		</attribute>
+        <attribute>
+			<name>at</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Corner of trigger to align with menu element.</description>
+		</attribute>
+        <attribute>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>static</defaultValue>
+            <description>Defines positioning type of menu, either static or dynamic. Default is static.</description>
+		</attribute>
+        <attribute>
+			<name>triggerEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>click</defaultValue>
+            <description>Event name of component that will show the dynamic positioned menu. Default is click.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

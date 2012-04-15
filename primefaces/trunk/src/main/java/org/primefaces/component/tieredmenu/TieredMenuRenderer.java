@@ -16,6 +16,7 @@
 package org.primefaces.component.tieredmenu;
 
 import java.io.IOException;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -29,12 +30,25 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         TieredMenu menu = (TieredMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
+        boolean dynamic = menu.getPosition().equals("dynamic");
 		
 		startScript(writer, clientId);
         
         writer.write("PrimeFaces.cw('TieredMenu','" + menu.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",autoDisplay:" + menu.isAutoDisplay());
+        
+        if(dynamic) {
+            writer.write(",dynamic:true");
+            writer.write(",my:'" + menu.getMy() + "'");
+            writer.write(",at:'" + menu.getAt() + "'");
+
+            UIComponent trigger = menu.findComponent(menu.getTrigger());
+            String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
+            
+            writer.write(",trigger:'" + triggerClientId + "'");
+            writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
+        }
         
         writer.write("});");
         
@@ -45,9 +59,11 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         TieredMenu menu = (TieredMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
+        boolean dynamic = menu.getPosition().equals("dynamic");
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? TieredMenu.CONTAINER_CLASS : TieredMenu.CONTAINER_CLASS + " " + styleClass;
+        String defaultStyleClass = dynamic ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
