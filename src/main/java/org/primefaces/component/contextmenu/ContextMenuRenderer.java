@@ -45,8 +45,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         writer.write("id:'" + clientId + "'");     
         writer.write(",target:" + target);
  
-        if(menu.getNodeType() != null) 
+        if(menu.getNodeType() != null) {
             writer.write(",nodeType:'" + menu.getNodeType() + "'");
+        }
         
         writer.write("});});");
 		
@@ -73,21 +74,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.startElement("ul", null);
         writer.writeAttribute("class", ContextMenu.LIST_CLASS, null);
 
-		for(UIComponent child : menu.getChildren()) {
-			if(child.isRendered()) {
-                
-                if(child instanceof MenuItem) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", ContextMenu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
-                    writer.endElement("li");
-                } 
-                else if(child instanceof Separator) {
-                    encodeSeparator(context, (Separator) child);
-                }
-			}
-		}
+		encodeTieredMenuContent(context, menu);
 
 		writer.endElement("ul");
         
