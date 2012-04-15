@@ -108,6 +108,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.jq.css({left:'', top:''}).position(this.cfg.pos);
     }
 });
+
 /**
  * PrimeFaces TieredMenu Widget
  */
@@ -121,9 +122,15 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.bindEvents();
     },
     
-    bindEvents: function() {
+    bindEvents: function() {        
+        this.bindItemEvents();
+        
+        this.bindDocumentHandler();
+    },
+    
+    bindItemEvents: function() {
         var _self = this;
-
+        
         this.links.mouseenter(function() {
             var link = $(this),
             menuitem = link.parent(),
@@ -178,6 +185,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
            
            e.stopPropagation();
         });
+    },
+    
+    bindDocumentHandler: function() {
+        var _self = this;
         
         $(document.body).click(function(e) {
             var target = $(e.target);
@@ -466,12 +477,12 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 /*
  * PrimeFaces ContextMenu Widget
  */
-PrimeFaces.widget.ContextMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     
     init: function(cfg) {
+        cfg.autoDisplay = true;
         this._super(cfg);
-        
-        this.menuitems = this.jq.find('.ui-menuitem');
+
         var _self = this,
         documentTrigger = this.cfg.target === document;
 
@@ -492,9 +503,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.trigger = this.cfg.target;
         }
 
-        //visuals
-        this.bindEvents();
-
         //append to body
         this.jq.appendTo('body');
 
@@ -511,20 +519,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    bindEvents: function() {
+    bindDocumentHandler: function() {
         var _self = this;
-
-        //menuitem visuals
-        this.menuitems.mouseover(function(e) {
-            var element = $(this);
-            if(!element.hasClass('ui-state-disabled'))
-                element.addClass('ui-state-hover');
-
-        }).mouseout(function(e) {
-            var element = $(this);
-            element.removeClass('ui-state-hover');
-        });
-
+        
         //hide overlay when document is clicked
         $(document.body).bind('click.ui-contextmenu', function (e) {
             if(_self.jq.is(":hidden")) {
