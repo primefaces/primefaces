@@ -30,7 +30,6 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         TieredMenu menu = (TieredMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-        boolean dynamic = menu.getPosition().equals("dynamic");
 		
 		startScript(writer, clientId);
         
@@ -38,8 +37,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",autoDisplay:" + menu.isAutoDisplay());
         
-        if(dynamic) {
-            writer.write(",dynamic:true");
+        if(menu.isOverlay()) {
+            writer.write(",overlay:true");
             writer.write(",my:'" + menu.getMy() + "'");
             writer.write(",at:'" + menu.getAt() + "'");
 
@@ -59,10 +58,9 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         TieredMenu menu = (TieredMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-        boolean dynamic = menu.getPosition().equals("dynamic");
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        String defaultStyleClass = dynamic ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
+        String defaultStyleClass = menu.isOverlay() ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", menu);

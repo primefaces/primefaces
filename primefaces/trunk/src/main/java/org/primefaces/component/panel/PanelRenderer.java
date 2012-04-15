@@ -117,7 +117,7 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         if (optionsMenu != null) {
-            optionsMenu.setPosition("dynamic");
+            optionsMenu.setOverlay(true);
             optionsMenu.setTrigger(clientId + "_menu");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");

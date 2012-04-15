@@ -66,11 +66,12 @@
             <description>Corner of trigger to align with menu element.</description>
 		</attribute>
         <attribute>
-			<name>position</name>
+			<name>overlay</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>static</defaultValue>
-            <description>Defines positioning type of menu, either static or dynamic. Default is static.</description>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Defines positioning, when enabled menu is displayed with absolute positioning relative to the trigger. 
+            Default is false, meaning static positioning.</description>
 		</attribute>
         <attribute>
 			<name>triggerEvent</name>
