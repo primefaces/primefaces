@@ -4,7 +4,7 @@
     position:relative;
 }
 
-.ui-menu.ui-menu-dynamic, .ui-menu.ui-menu-sliding.ui-menu-dynamic {
+.ui-menu.ui-menu-dynamic {
     position: absolute;
     display: none;
     z-index: 100000;
@@ -105,78 +105,6 @@
 
 .ui-menubutton .ui-button {
     margin:0;
-}
-
-.ui-menu.ui-menu-sliding{
-    overflow: hidden;
-    position: relative;
-    padding: .3em .3em .5em .3em;
-    border-radius : 4px;
-    display: block; 
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll{
-    border : medium none;
-    padding: 0;
-    outline: medium none;
-    border-radius : 4px;
-    background: transparent;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state{
-    overflow: hidden;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper{
-    overflow: hidden;
-    position: absolute;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content{
-    display: block;
-    height: auto;
-    width: auto;
-    position: relative;
-    top: 0px;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content > div{
-    position: relative;
-}
-
-.ui-menu.ui-menu-sliding ul{
-    position: absolute;
-    box-shadow : none;
-    border-width: 0;
-    height: auto;
-    width: 100%; 
-    background: none;
-    top : 0;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-sliding-scroll .ui-menu-sliding-state .ui-menu-sliding-wrapper .ui-menu-sliding-content ul li{
-    clear: both;
-    float: left;
-    margin: 1px 0;
-    padding: 0;
-    background: none;
-    position: static;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-backward{
-    margin : 0;
-    padding: 0;
-    display: none;
-    height : 16px;
-    background: transparent;
-    cursor: pointer;
-}
-
-.ui-menu.ui-menu-sliding .ui-menu-backward .ui-icon{
-    float: left;
 }
 
 /** Menubar **/
@@ -302,3 +230,41 @@
     float:left;
     margin-top:2px;
 }
+
+/** SlideMenu **/
+.ui-slidemenu .ui-slidemenu-content {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 200px;
+}
+
+.ui-slidemenu .ui-menu-list {
+    position: absolute;
+    top: 0;
+}
+
+.ui-slidemenu .ui-menu-parent {
+    position: static;
+}
+
+.ui-slidemenu .ui-menu-child {
+    box-shadow : none;
+    border: 0 none;
+    background: none repeat scroll 0 0 transparent;
+}
+
+.ui-slidemenu-backward {
+    position: absolute;
+    bottom: 0;
+    width: 180px;
+    margin-bottom: 0.4em;
+    padding: 0.2em;
+    cursor: pointer;
+    display: none;
+}
+
+.ui-slidemenu-backward .ui-icon {
+    float:left;
+}
+
