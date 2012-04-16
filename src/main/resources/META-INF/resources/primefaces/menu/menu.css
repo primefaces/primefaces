@@ -230,12 +230,16 @@
     float:left;
     margin-top:2px;
 }
-
+           
 /** SlideMenu **/
-.ui-slidemenu .ui-slidemenu-content {
+.ui-slidemenu .ui-slidemenu-wrapper {
     position: relative;
+}
+
+.ui-slidemenu .ui-slidemenu-content {
     overflow-x: hidden;
     overflow-y: auto;
+    position: relative;
     height: 200px;
 }
 
@@ -257,7 +261,7 @@
 .ui-slidemenu-backward {
     position: absolute;
     bottom: 0;
-    width: 180px;
+    width: 95%;
     margin-bottom: 0.4em;
     padding: 0.2em;
     cursor: pointer;

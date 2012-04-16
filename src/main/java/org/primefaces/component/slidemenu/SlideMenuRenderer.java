@@ -75,7 +75,11 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         }
         writer.writeAttribute("role", "menu", null);
         
-        //content wrapper
+        //wrapper
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", SlideMenu.WRAPPER_CLASS, "styleClass");
+        
+        //content
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.CONTENT_CLASS, "styleClass");
 
@@ -85,8 +89,9 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 		encodeMenuContent(context, menu);
 		writer.endElement("ul");
         
+        //content
         writer.endElement("div");
-        
+                
         //back navigator
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
@@ -94,6 +99,9 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         writer.writeAttribute("class", SlideMenu.BACKWARD_ICON_CLASS, null);
         writer.endElement("span");
         writer.write(menu.getBackLabel());
+        writer.endElement("div");
+        
+        //wrapper
         writer.endElement("div");
 
         writer.endElement("div");
