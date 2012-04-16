@@ -291,15 +291,17 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         
         //elements
         this.submenus = this.jq.find('ul.ui-menu-list');
-        this.content = this.jq.children('div.ui-slidemenu-content');
+        this.wrapper = this.jq.children('div.ui-slidemenu-wrapper');
+        this.content = this.wrapper.children('div.ui-slidemenu-content');
         this.rootList = this.content.children('ul.ui-menu-list');
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
-        this.backward = this.jq.children('div.ui-slidemenu-backward');
-        
-        //stack
+        this.backward = this.wrapper.children('div.ui-slidemenu-backward');
+                
+        //config
         this.stack = [];
+        this.jqWidth = this.jq.width();
         
-        //submenus
+        //dimensions
         this.submenus.width(this.jq.width());
                 
         this.bindEvents();
@@ -333,15 +335,15 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         
         this.push(submenu);
         
-        var rootLeft = -1 * (this.depth() * 180);
+        var rootLeft = -1 * (this.depth() * this.jqWidth);
         
         submenu.show().css({
-            left: 180
+            left: this.jqWidth
         });
                
         this.rootList.animate({
             left: rootLeft
-        }, 750, 'easeInOutCirc', function() {
+        }, 500, 'easeInOutCirc', function() {
             if(_self.backward.is(':hidden')) {
                 _self.backward.fadeIn('fast');
             }
@@ -353,11 +355,11 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         last = this.pop(),
         depth = this.depth();
             
-        var rootLeft = -1 * (depth * 180);
+        var rootLeft = -1 * (depth * this.jqWidth);
 
         this.rootList.animate({
             left: rootLeft
-        }, 750, 'easeInOutCirc', function() {
+        }, 500, 'easeInOutCirc', function() {
             last.hide();
             
             if(depth == 0) {
