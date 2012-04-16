@@ -23,9 +23,11 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 
-public class SlideMenuRenderer extends BaseMenuRenderer {
-
+public class SlideMenuRenderer extends TieredMenuRenderer {
+    
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         SlideMenu menu = (SlideMenu) abstractMenu;
@@ -62,32 +64,16 @@ public class SlideMenuRenderer extends BaseMenuRenderer {
 		endScript(writer);
 	}
 
+    @Override
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         SlideMenu menu = (SlideMenu) abstractMenu;
-		String clientId = menu.getClientId(context);
-        boolean dynamic = menu.getPosition().equals("dynamic");
         
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        String defaultStyleClass = dynamic ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
-        defaultStyleClass = defaultStyleClass + " " + Menu.MENU_SLIDING_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
+        styleClass = styleClass == null ? Menu.STATIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS+ " " + styleClass;
         
-        writer.startElement("div", menu);
-		writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
-        writer.writeAttribute("role", "menu", null);
-        
-		writer.startElement("ul", null);
-        writer.writeAttribute("class", Menu.LIST_CLASS, null);
-
-        encodeTieredMenuContent(context, menu);
-
-		writer.endElement("ul");
+        encodeMenu(context, menu, style, styleClass, "menu");
         
         //back navigator
         writer.startElement("div", menu);
