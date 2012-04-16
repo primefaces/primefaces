@@ -20,12 +20,13 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.submenu.Submenu;
+import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 
-public class MenubarRenderer extends BaseMenuRenderer {
+public class MenubarRenderer extends TieredMenuRenderer {
 
+    @Override
 	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
         Menubar menubar = (Menubar) abstractMenu;
@@ -42,34 +43,19 @@ public class MenubarRenderer extends BaseMenuRenderer {
 		endScript(writer);        	
 	}
 
+    @Override
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         Menubar menubar = (Menubar) abstractMenu;
-		String clientId = menubar.getClientId(context);
         String style = menubar.getStyle();
         String styleClass = menubar.getStyleClass();
         styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
 
-        writer.startElement("div", menubar);
-		writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
-        writer.writeAttribute("role", "menubar", null);
-
-		writer.startElement("ul", null);
-        writer.writeAttribute("class", Menu.LIST_CLASS, null);
-
-		encodeTieredMenuContent(context, menubar);
-		
-		writer.endElement("ul");
-
-        writer.endElement("div");
+        encodeMenu(context, menubar, style, styleClass, "menubar");
 	}
     
     @Override
-    protected void encodeTieredSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getParent() instanceof Menubar ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
         

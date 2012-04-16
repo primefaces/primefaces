@@ -128,7 +128,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.endElement("span");
         }
         
-        encodeTieredSubmenuIcon(context, submenu);
+        encodeSubmenuIcon(context, submenu);
 
         writer.endElement("a");
         
@@ -231,8 +231,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("ul");
     }
     
-    @Override
-    protected void encodeTieredSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getParent() instanceof MegaMenu ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
         
