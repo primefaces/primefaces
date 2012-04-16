@@ -28,6 +28,25 @@
             <description>A menu model instance to create menu programmatically.</description>
 		</attribute>
         <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the main container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
+		</attribute>
+        <attribute>
+			<name>backLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Back</defaultValue>
+            <description>Text for back link, only applies to sliding menus. Default is "Back"</description>
+		</attribute>
+        <attribute>
 			<name>trigger</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -52,25 +71,6 @@
 			<defaultValue>false</defaultValue>
             <description>Defines positioning, when enabled menu is displayed with absolute positioning relative to the trigger. 
             Default is false, meaning static positioning.</description>
-		</attribute>
-        <attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Inline style of the main container element.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Style class of the main container element.</description>
-		</attribute>
-        <attribute>
-			<name>backLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <defaultValue>Back</defaultValue>
-            <description>Text for back link, only applies to sliding menus. Default is "Back"</description>
 		</attribute>
         <attribute>
 			<name>triggerEvent</name>
