@@ -289,7 +289,97 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        //TODO
+        //elements
+        this.submenus = this.jq.find('ul.ui-menu-list');
+        this.content = this.jq.children('div.ui-slidemenu-content');
+        this.rootList = this.content.children('ul.ui-menu-list');
+        this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
+        this.backward = this.jq.children('div.ui-slidemenu-backward');
+        
+        //stack
+        this.stack = [];
+        
+        //submenus
+        this.submenus.width(this.jq.width());
+                
+        this.bindEvents();
+    },
+    
+    bindEvents: function() {
+        var _self = this;
+        
+        this.links.mouseenter(function() {
+           $(this).addClass('ui-state-hover'); 
+        })
+        .mouseleave(function() {
+           $(this).removeClass('ui-state-hover'); 
+        })
+        .click(function() {
+           var link = $(this),
+           submenu = link.next();
+           
+           if(submenu.length == 1) {
+               _self.forward(submenu)
+           }
+        });
+        
+        this.backward.click(function() {
+            _self.back();
+        });
+    },
+    
+    forward: function(submenu) {
+        var _self = this;
+        
+        this.push(submenu);
+        
+        var rootLeft = -1 * (this.depth() * 180);
+        
+        submenu.show().css({
+            left: 180
+        });
+               
+        this.rootList.animate({
+            left: rootLeft
+        }, 750, 'easeInOutCirc', function() {
+            if(_self.backward.is(':hidden')) {
+                _self.backward.fadeIn('fast');
+            }
+        });
+    },
+    
+    back: function() {
+        var _self = this,
+        last = this.pop(),
+        depth = this.depth();
+            
+        var rootLeft = -1 * (depth * 180);
+
+        this.rootList.animate({
+            left: rootLeft
+        }, 750, 'easeInOutCirc', function() {
+            last.hide();
+            
+            if(depth == 0) {
+                _self.backward.fadeOut('fast');
+            }
+        });
+    },
+    
+    push: function(submenu) {
+        this.stack.push(submenu);
+    },
+    
+    pop: function() {
+        return this.stack.pop();
+    },
+    
+    last: function() {
+        return this.stack[this.stack.length - 1];
+    },
+    
+    depth: function() {
+        return this.stack.length;
     }
 });
 

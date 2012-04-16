@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 
@@ -33,7 +32,6 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         SlideMenu menu = (SlideMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
 		String widgetVar = menu.resolveWidgetVar();
-        String position = menu.getPosition();
 
 		startScript(writer, clientId);
         
@@ -41,16 +39,11 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         
         writer.write("PrimeFaces.cw('SlideMenu','" + widgetVar + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",position:'" + position + "'");
-        
-        if(menu.getEasing() != null) {
-            writer.write(",easing:'" + menu.getEasing() + "'");
-        }
-        
-        //dynamic position
-        if(position.equalsIgnoreCase("dynamic")) {
-           writer.write(",my:'" + menu.getMy() + "'");
-           writer.write(",at:'" + menu.getAt() + "'");
+                
+        if(menu.isOverlay()) {
+            writer.write(",overlay:true");
+            writer.write(",my:'" + menu.getMy() + "'");
+            writer.write(",at:'" + menu.getAt() + "'");
 
             UIComponent trigger = menu.findComponent(menu.getTrigger());
             String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
@@ -71,19 +64,38 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? Menu.STATIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS+ " " + styleClass;
+        String defaultStyleClass = menu.isOverlay() ? SlideMenu.DYNAMIC_CONTAINER_CLASS : SlideMenu.STATIC_CONTAINER_CLASS;
+        styleClass = styleClass == null ?  defaultStyleClass : defaultStyleClass + " " + styleClass;
         
-        encodeMenu(context, menu, style, styleClass, "menu");
+        writer.startElement("div", menu);
+		writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        writer.writeAttribute("role", "menu", null);
+        
+        //content wrapper
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", SlideMenu.CONTENT_CLASS, "styleClass");
+
+        //root menu
+		writer.startElement("ul", null);
+        writer.writeAttribute("class", Menu.LIST_CLASS, null);
+		encodeMenuContent(context, menu);
+		writer.endElement("ul");
+        
+        writer.endElement("div");
         
         //back navigator
         writer.startElement("div", menu);
-        writer.writeAttribute("class", Menu.BACKWARD_CLASS, null);
+        writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
         writer.startElement("span", menu);
-        writer.writeAttribute("class", Menu.BACKWARD_ICON_CLASS, null);
+        writer.writeAttribute("class", SlideMenu.BACKWARD_ICON_CLASS, null);
         writer.endElement("span");
         writer.write(menu.getBackLabel());
         writer.endElement("div");
-        
+
         writer.endElement("div");
 	}
 }
