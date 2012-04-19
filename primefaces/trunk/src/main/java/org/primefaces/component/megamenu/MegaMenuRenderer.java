@@ -39,6 +39,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         
         writer.write("PrimeFaces.cw('MegaMenu','" + menu.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
+        writer.write(",autoDisplay:" + menu.isAutoDisplay());
         writer.write("});");
         
 		endScript(writer);        	

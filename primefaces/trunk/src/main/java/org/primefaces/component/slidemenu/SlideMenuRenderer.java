@@ -41,15 +41,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         writer.write("id:'" + clientId + "'");
                 
         if(menu.isOverlay()) {
-            writer.write(",overlay:true");
-            writer.write(",my:'" + menu.getMy() + "'");
-            writer.write(",at:'" + menu.getAt() + "'");
-
-            UIComponent trigger = menu.findComponent(menu.getTrigger());
-            String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
-            
-            writer.write(",trigger:'" + triggerClientId + "'");
-            writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
+            encodeOverlayConfig(context, menu);
         }
 
         writer.write("});});");

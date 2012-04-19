@@ -15,7 +15,6 @@
  */
 package org.primefaces.component.menu;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.model.MenuModel;
