@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UITree;
@@ -184,6 +185,7 @@ public class TreeRenderer extends CoreRenderer {
             String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
             Object datakey = tree.getDatakey();
+            String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
 
             //preselection
             boolean selected = node.isSelected();
@@ -197,6 +199,7 @@ public class TreeRenderer extends CoreRenderer {
             containerClass = containerClass + " " + uiTreeNode.getType();
 
             writer.startElement("li", null);
+                writer.writeAttribute("id", nodeId, null);
                 writer.writeAttribute("data-rowkey", rowKey, null);
                 writer.writeAttribute("class", containerClass, null);
 
