@@ -31,13 +31,21 @@
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Inline style of menubar.</description>
+            <description>Inline style of the component.</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Style class of menubar.</description>
+            <description>Style class of the component.</description>
+        </attribute>
+        <attribute>
+            <name>autoDisplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether submenus will be displayed on mouseover or not. When
+            set to false, click event is required to display.</description>
         </attribute>
 	</attributes>
 	<resources>

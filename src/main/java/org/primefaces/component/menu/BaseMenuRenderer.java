@@ -16,14 +16,12 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
-import java.util.Iterator;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -125,7 +123,21 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
         
         writer.endElement("li");
 	}
+    
+    protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.write(",overlay:true");
+        writer.write(",my:'" + menu.getMy() + "'");
+        writer.write(",at:'" + menu.getAt() + "'");
 
+        UIComponent trigger = ((UIComponent) menu).findComponent(menu.getTrigger());
+        String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
+
+        writer.write(",trigger:'" + triggerClientId + "'");
+        writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
+    }
+ 
     @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
 		//Do nothing
