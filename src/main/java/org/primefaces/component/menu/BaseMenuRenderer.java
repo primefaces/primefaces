@@ -47,6 +47,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuItem.getIcon();
+        String title = menuItem.getTitle();
 
 		if(menuItem.shouldRenderChildren()) {
 			renderChildren(context, menuItem);
@@ -57,6 +58,9 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             
             writer.startElement("a", null);
             writer.writeAttribute("id", menuItem.getClientId(context), null);
+            if(title != null) {
+                writer.writeAttribute("title", title, null);
+            }
             
             String styleClass = menuItem.getStyleClass();
             styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
