@@ -9,8 +9,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.jq.children('.ui-spinner-input');
         this.upButton = this.jq.children('a.ui-spinner-up');
         this.downButton = this.jq.children('a.ui-spinner-down');
-        this.decimalSeparator = this.findDecimalSeparator();
-        this.decimalCount = this.findDecimalCount();
 
         //init value from input
         this.initValue();
@@ -60,29 +58,12 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
                 //keep focused
                 e.preventDefault();
-            });
+        });
 
-        /**
-        * Key restrictions
-        * - Only allow integers by default
-        * - Allow decimal separators in step mode
-        * - Allow prefix and suffix if defined
-        * - Enable support for arrow keys
-        */
         this.input.keydown(function (e) {        
-            var keyCode = $.ui.keyCode,
-            number = (e.which >= 48&&e.which <= 57),
-            decimalKey = (_self.decimalSeparator != null) && (e.which == 188||e.which == 190);
+            var keyCode = $.ui.keyCode;
             
             switch(e.which) {            
-                case keyCode.BACKSPACE:
-                case keyCode.LEFT:
-                case keyCode.RIGHT:
-                case keyCode.TAB:
-                case keyCode.DELETE:
-                    //allow keys above
-                break;
-
                 case keyCode.UP:
                     _self.spin(_self.cfg.step);
                 break;
@@ -92,10 +73,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 default:
-                    //block key if not a number and decimal key
-                    if(!number && !decimalKey) {
-                        e.preventDefault();
-                    }
+                    //do nothing
                 break;
             }
         });
@@ -175,7 +153,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 this.value = 0;
         }
         else {
-            if(this.decimalSeparator)
+            if(this.cfg.step)
                 value = parseFloat(value);
             else
                 value = parseInt(value);
@@ -205,7 +183,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.suffix)
                 value = value.split(this.cfg.suffix)[0];
 
-            if(this.decimalSeparator)
+            if(this.cfg.step)
                 this.value = parseFloat(value);
             else
                 this.value = parseInt(value);
@@ -214,26 +192,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
      
     format: function() {
         var value = this.value;
-        
-        if(this.decimalSeparator) {
-            //convert to string
-            value = value + '';
-
-            var decimalCount = this.findDecimalCount(),
-            valueDecimalCount = null;
-
-            if(value.indexOf(this.decimalSeparator) != -1) {
-                valueDecimalCount = value.split(this.decimalSeparator)[1].length;
-            } 
-            else {
-                valueDecimalCount = 0;
-                value = value + this.decimalSeparator;
-            }
-
-            for(var i = valueDecimalCount ; i < decimalCount; i++) {
-                value = value + '0';
-            }
-        }
 
         if(this.cfg.prefix)
             value = this.cfg.prefix + value;
@@ -244,29 +202,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input.val(value);
     },
     
-    findDecimalSeparator: function() {
-        var step = this.cfg.step + '';
-
-        if(step.indexOf('.') != -1) {
-            return "."
-        } else if(step.indexOf(',') != -1) {
-            return ',';
-        } else {
-            return null;
-        }
-    },
-    
-    findDecimalCount: function() {
-        var decimalSeparator = this.findDecimalSeparator(),
-        step = this.cfg.step + '';
-
-        if(decimalSeparator) {
-            return step.split(decimalSeparator)[1].length;
-        } else {
-            return 0;
-        }
-    },
-
     addARIA: function() {
         this.input.attr('role', 'spinner');
         this.input.attr('aria-multiline', false);
