@@ -197,7 +197,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
             
             _self.active = false;
-            _self.hideAll = true;
 
             _self.jq.find('li.ui-menuitem-active').each(function() {
                 _self.deactivate($(this), true);
@@ -654,6 +653,12 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 return;
             }
 
+            _self.active = false;
+
+            _self.jq.find('li.ui-menuitem-active').each(function() {
+                _self.deactivate($(this), true);
+            });
+            
             _self.hide();
         });
     },
