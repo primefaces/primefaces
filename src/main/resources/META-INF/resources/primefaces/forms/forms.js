@@ -136,18 +136,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options.filter(':disabled').each(function() {
             _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
         });
-
-        //set initial selected option
-        var selectedOption = this.options.filter(':selected');
-        this.setLabel(selectedOption.text());
-        this.value = selectedOption.val();
         
-        //triggers to toggle dropdown
+        //triggers and default label value
         if(this.cfg.editable) {
             this.triggers = this.jq.find('.ui-selectonemenu-trigger');
         } 
         else {
             this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+            
+            //set initial selected option
+            var selectedOption = this.options.filter(':selected');
+            this.setLabel(selectedOption.text());
+            this.value = selectedOption.val();
         }
         
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
