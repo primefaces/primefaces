@@ -392,7 +392,7 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.writeAttribute("colspan", tt.getColumnsCount(), null);
             writer.writeAttribute("class", styleClass, null);
             facet.encodeAll(context);
-            writer.endElement("td");
+            writer.endElement(tag);
             writer.endElement("tr");
         }
 	}
