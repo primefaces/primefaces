@@ -369,6 +369,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     
                     e.preventDefault();
                 break;
+                
+                case keyCode.TAB:
+                case keyCode.ESCAPE:
+                    //do nothing
+                break;
                                 
                 default:
                     var currentOption = _self.options.filter(':selected'),
@@ -425,11 +430,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                     
                 break;
-                
-                case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
+      
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
+                    if(_self.panel.is(":visible")) {
+                        _self.hide();
+                    }
+                    
+                    if(_self.changed) {
+                        _self.triggerChange();
+                    }                    
+                break;
+                
+
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
                     if(_self.panel.is(":visible")) {
                         _self.hide();
                     }
