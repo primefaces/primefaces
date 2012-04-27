@@ -114,7 +114,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
     protected void encodeSelectItems(FacesContext context, SelectManyMenu menu) throws IOException {
         List<SelectItem> selectItems = getSelectItems(context, menu);
-        Converter converter = getConverter(context, menu);
+        Converter converter = menu.getConverter();
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         

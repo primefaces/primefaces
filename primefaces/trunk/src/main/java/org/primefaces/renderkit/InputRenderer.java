@@ -24,10 +24,7 @@ import java.util.Map;
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -139,40 +136,60 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
-	protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) {
-		if(value == null)
-            return "";
-        else if(value instanceof String)
-            return (String) value;
-        else if(converter != null)
-			return converter.getAsString(context, component, value);
-        else
-            return value.toString();
+	protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
+        if(!(component instanceof ValueHolder)) {
+            return value == null ? null : value.toString();
+        }
+        
+        if(converter == null) {
+            if(value == null) {
+                return "";
+            }
+            else if(value instanceof String) {
+                return (String) value;
+            }
+            else {
+                Converter implicitConverter = findImplicitConverter(context, component);
+                
+                return implicitConverter.getAsString(context, component, value);
+            }
+        }
+        else {
+            return converter.getAsString(context, component, value);
+        }
 	}
 
-    protected Converter getConverter(FacesContext context, UIInput component) {
-        Converter converter = component.getConverter();
+    protected Converter findImplicitConverter(FacesContext context, UIComponent component) {
+        ValueExpression ve = component.getValueExpression("value");
 
-        if(converter != null) {
-            return converter;
-        } else {
-            ValueExpression ve = component.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
+        if(ve != null) {
+            Class<?> valueType = ve.getType(context.getELContext());
                 
-                if(valueType != null)
-                    return context.getApplication().createConverter(valueType);
-            }
+            if(valueType != null)
+                return context.getApplication().createConverter(valueType);
         }
 
         return null;
     }
     
+    protected Converter findConverter(FacesContext context, UIComponent component) {
+        if(!(component instanceof ValueHolder)) {
+            return null;
+        }
+        
+        Converter converter = ((ValueHolder) component).getConverter();
+
+        if(converter != null) {
+            return converter;
+        } 
+        else {
+            return findImplicitConverter(context, component);
+        }
+    }
+    
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		UIInput input = (UIInput) component;
-		Converter converter = getConverter(context, input);
+		Converter converter = findConverter(context, component);
 
 		if(converter != null) {
             return converter.getAsObject(context, component, (String) submittedValue);

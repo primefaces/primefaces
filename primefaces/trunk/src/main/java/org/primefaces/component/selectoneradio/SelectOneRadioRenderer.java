@@ -104,7 +104,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Converter converter = getConverter(context, radio);
+        Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
         boolean pageDirection = layout != null && layout.equals("pageDirection");
         Object value = radio.getSubmittedValue();
