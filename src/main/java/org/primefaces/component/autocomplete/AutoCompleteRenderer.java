@@ -268,7 +268,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         List values = (List) ac.getValue();
         List<String> stringValues = new ArrayList<String>();
-        Converter converter = getConverter(context, ac);
+        Converter converter = findConverter(context, ac);
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String var = ac.getVar();
@@ -342,7 +342,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
         boolean customContent = ac.getColums().size() > 0;
-        Converter converter = getConverter(context, ac);
+        Converter converter = findConverter(context, ac);
         
         if(customContent) {
             encodeSuggestionsAsTable(context, ac, items, converter);
@@ -493,7 +493,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         
         AutoComplete ac = (AutoComplete) component;
-		Converter converter = getConverter(context, ac);
+		Converter converter = findConverter(context, component);
 
         if(ac.isMultiple()) {
             String[] values = (String[]) submittedValue;

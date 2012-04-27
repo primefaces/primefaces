@@ -138,7 +138,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
-        Converter converter = getConverter(context, checkbox);
+        Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
         String layout = checkbox.getLayout();

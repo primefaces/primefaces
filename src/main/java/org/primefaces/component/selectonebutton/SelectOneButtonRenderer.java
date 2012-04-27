@@ -65,7 +65,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneButton button) throws IOException {
         List<SelectItem> selectItems = getSelectItems(context, button);
         int selectItemsSize = selectItems.size();
-        Converter converter = getConverter(context, button);
+        Converter converter = button.getConverter();
         String name = button.getClientId(context);
         Object value = button.getSubmittedValue();
         if(value == null) {

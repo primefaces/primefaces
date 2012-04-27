@@ -66,7 +66,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     protected void encodeSelectItems(FacesContext context, SelectManyButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, button);
-        Converter converter = getConverter(context, button);
+        Converter converter = button.getConverter();
         Object values = getValues(button);
         Object submittedValues = getSubmittedValues(button);
         int selectItemsSize = selectItems.size();

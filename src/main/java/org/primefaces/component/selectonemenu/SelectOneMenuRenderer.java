@@ -67,7 +67,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, menu);
         String clientId = menu.getClientId(context);
-        Converter converter = getConverter(context, menu);
+        Converter converter = menu.getConverter();
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         boolean valid = menu.isValid();

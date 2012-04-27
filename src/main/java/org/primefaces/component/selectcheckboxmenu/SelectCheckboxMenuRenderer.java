@@ -71,7 +71,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     
     protected void encodeInputs(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Converter converter = getConverter(context, menu);
+        Converter converter = menu.getConverter();
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         

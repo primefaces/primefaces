@@ -111,7 +111,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
     protected void encodeSelectItems(FacesContext context, SelectOneListbox listbox) throws IOException {
         List<SelectItem> selectItems = getSelectItems(context, listbox);
-        Converter converter = getConverter(context, listbox);
+        Converter converter = listbox.getConverter();
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
         
