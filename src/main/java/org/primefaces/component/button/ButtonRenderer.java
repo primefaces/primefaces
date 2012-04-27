@@ -72,10 +72,15 @@ public class ButtonRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         
-        if(value == null)
+        if(value == null) {
             writer.write("ui-button");
-        else
-            writer.writeText(value, "value");
+        }
+        else {
+            if(button.isEscape())
+                writer.writeText(value, "value");
+            else
+                writer.write(value);
+        }
         
         writer.endElement("span");
 			
