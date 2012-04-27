@@ -234,6 +234,13 @@
 			<type>java.lang.String</type>
             <description>Resource to link to.</description>
 		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if label of the component is escaped or not.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
