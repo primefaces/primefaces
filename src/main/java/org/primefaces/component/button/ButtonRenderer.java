@@ -84,7 +84,6 @@ public class ButtonRenderer extends CoreRenderer {
         
         writer.endElement("span");
 			
-
 		writer.endElement("button");
     }
 
@@ -97,14 +96,6 @@ public class ButtonRenderer extends CoreRenderer {
         
         writer.write("PrimeFaces.cw('Button','" + button.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-
-		if(button.getImage() != null) {
-			writer.write(",text:" + hasValue);
-			writer.write(",icons:{");
-			writer.write("primary:'" + button.getImage() + "'");
-			writer.write("}");
-		}
-
 		writer.write("});");
 
 		endScript(writer);
