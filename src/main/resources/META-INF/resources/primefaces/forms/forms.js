@@ -250,6 +250,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
+        //onchange handler for editable input
+        if(this.cfg.editable) {
+            this.label.change(function() {
+                _self.triggerChange(true);
+            });
+        }
+        
         //key bindings
         this.bindKeyEvents();
     },
@@ -307,7 +314,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         item.removeClass('ui-state-highlight');
     },
     
-    triggerChange: function(item) {
+    triggerChange: function(edited) {
         var inputEl = this.input.get(0);
         if(this.cfg.onchange) {
             this.cfg.onchange.call(inputEl);
@@ -317,7 +324,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.behaviors['change'].call(inputEl);
         }
         
-        this.value = this.options.filter(':selected').val();
+        if(!edited) {
+            this.value = this.options.filter(':selected').val();
+        }
+        
         this.changed = false;
     },
     
