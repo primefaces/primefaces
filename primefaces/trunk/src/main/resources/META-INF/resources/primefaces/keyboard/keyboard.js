@@ -387,7 +387,7 @@ $.extend(Keypad.prototype, {
 				width: inst._mainDiv.outerWidth(), height: inst._mainDiv.outerHeight()});
 		inst._mainDiv.removeClass().addClass(this._get(inst, 'keypadClass') +
 			(this._get(inst, 'isRTL') ? ' keypad-rtl' : '') +
-			(inst._inline ? this._inlineClass : '') + ' ui-widget ui-widget-content ui-corner-all');
+			(inst._inline ? this._inlineClass : '') + ' ui-widget ui-widget-content ui-corner-all ui-shadow');
 		var beforeShow = this._get(inst, 'beforeShow');
 		if (beforeShow) {
 			beforeShow.apply((inst._input ? inst._input[0] : null),
