@@ -151,7 +151,7 @@ public abstract class InputRenderer extends CoreRenderer {
             else {
                 Converter implicitConverter = findImplicitConverter(context, component);
                 
-                return implicitConverter == null ? value.toString() : converter.getAsString(context, component, value);                
+                return implicitConverter == null ? value.toString() : implicitConverter.getAsString(context, component, value);                
             }
         }
         else {
