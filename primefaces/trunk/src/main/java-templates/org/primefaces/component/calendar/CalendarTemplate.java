@@ -104,6 +104,9 @@ import javax.faces.event.PhaseId;
                 if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     dateSelectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 }
+                else {
+                    dateSelectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                }
 
                 super.queueEvent(dateSelectEvent);
             }
