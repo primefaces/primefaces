@@ -179,6 +179,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 });
             }
         }
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     setupDialogSupport: function() {
@@ -592,7 +595,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         
         this.checkedRadio = this.outputs.filter('.ui-state-active');
     
-        this.bindEvents();        
+        this.bindEvents();    
+        
+        //pfs metadata
+        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     bindEvents: function() {
@@ -745,6 +751,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
             }
         }
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     toggle: function() {
@@ -765,6 +774,9 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
                         
         this.bindEvents();
+        
+        //pfs metadata
+        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     bindEvents: function() {        
@@ -854,6 +866,9 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
         }
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     /**
@@ -1001,6 +1016,9 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
+        
+        //pfs metadata
+        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     select: function(button) {
@@ -1047,6 +1065,9 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
+        
+        //pfs metadata
+        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     select: function(button) {
@@ -1094,6 +1115,9 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
             }
         }
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     toggle: function() {
@@ -1169,6 +1193,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         //Append panel to body
         $(document.body).children(this.panelId).remove();
         this.panel.appendTo(document.body);
+        
+        //pfs metadata
+        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     generateItems: function() {
@@ -1615,6 +1642,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.setupDialogSupport();
         }
+        
+        //pfs metadata
+        this.button.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     //override
