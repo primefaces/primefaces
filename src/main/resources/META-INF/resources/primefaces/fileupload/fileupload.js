@@ -2094,6 +2094,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.dataType = 'xml';
         this.cfg.namespace = this.jqId;
         this.cfg.disabled = this.cfg.fileInput.is(':disabled');
+        
+        //url
+        var encodedURLfield = this.form.children("input[name='javax.faces.encodedURL']");
+        this.cfg.url = (encodedURLfield.length == 1) ? encodedURLfield.val() : this.form.attr('action'); 
 
         //iframe content parser
         $.ajaxSetup({
