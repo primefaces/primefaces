@@ -102,15 +102,18 @@ public abstract class InputRenderer extends CoreRenderer {
             Object itemLabelAsObject = uiSelectItems.getAttributes().get("itemLabel");
             Object itemValue = uiSelectItems.getAttributes().get("itemValue");
             String description = (String) uiSelectItems.getAttributes().get("itemDescription");
-            Boolean disabled = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemDisabled")));
-            Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemLabelEscaped")));
-            Boolean noSelectionOption = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("noSelectionOption")));
+            Object itemDisabled = uiSelectItems.getAttributes().get("itemDisabled");
+            Object itemEscaped = uiSelectItems.getAttributes().get("itemLabelEscaped");
+            Object noSelection = uiSelectItems.getAttributes().get("noSelectionOption");
             
             if(itemValue == null) {
                 itemValue = object;
             }
             
             String itemLabel = itemLabelAsObject == null ? String.valueOf(object) : String.valueOf(itemLabelAsObject);
+            boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
+            boolean escaped = itemEscaped == null ? false : Boolean.valueOf(itemEscaped.toString());
+            boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
 
             return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
         }
