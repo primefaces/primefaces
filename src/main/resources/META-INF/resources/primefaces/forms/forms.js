@@ -551,10 +551,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setLabel: function(value) {
-        if(this.cfg.editable)
+        if(this.cfg.editable) {
             this.label.val(value);
-        else
-            this.label.text(value);
+        }
+        else {
+            if(value == '')
+                this.label.html('&nbsp;');
+            else
+                this.label.text(value);
+        }
     },
     
     selectValue : function(value) {
