@@ -48,7 +48,8 @@ public class UIData extends javax.faces.component.UIData {
 		,currentPageReportTemplate
 		,pageLinks
 		,paginatorPosition
-		,paginatorAlwaysVisible;
+		,paginatorAlwaysVisible,
+        lazy;
 
         String toString;
 
@@ -112,6 +113,13 @@ public class UIData extends javax.faces.component.UIData {
 		getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, _paginatorAlwaysVisible);
 	}
     
+    public boolean isLazy() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.lazy, false);
+	}
+	public void setLazy(boolean _lazy) {
+		getStateHelper().put(PropertyKeys.lazy, _lazy);
+	}
+    
     public void calculatePage() {
         int rows = this.getRowsToRender();
         
@@ -151,9 +159,13 @@ public class UIData extends javax.faces.component.UIData {
         return rows == 0 ? this.getRowCount() : rows;
     }
     
-    public boolean isLazy() {
+    public boolean isLazyLoading() {
+        if(isLazy()) {
+            return true;
+        }
+        
+        //backward compatibility to figure out lazy loading from ve type
         ValueExpression ve = getValueExpression("value");
-
         if(ve != null) {
             Class type = ve.getType(FacesContext.getCurrentInstance().getELContext());
             if(type != null && LazyDataModel.class.isAssignableFrom(type)) {

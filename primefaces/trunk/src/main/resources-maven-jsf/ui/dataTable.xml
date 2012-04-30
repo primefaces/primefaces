@@ -228,6 +228,13 @@
             <defaultValue>false</defaultValue>
             <description>Controls incell editing.</description>
 		</attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
