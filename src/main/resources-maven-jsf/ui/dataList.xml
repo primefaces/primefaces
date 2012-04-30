@@ -115,6 +115,13 @@
             <type>java.lang.String</type>
             <description>Name of the exported request scoped variable for the status of the iteration.</description>
         </attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
     <resources>
         <resource>

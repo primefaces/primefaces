@@ -656,23 +656,6 @@ import javax.faces.context.FacesContext;
 
         return columnsCount;
     }
-
-    public boolean isLazy() {
-        ValueExpression ve = getValueExpression("value");
-
-        if(ve != null) {
-            Class type = ve.getType(FacesContext.getCurrentInstance().getELContext());
-            if(type != null && LazyDataModel.class.isAssignableFrom(type)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    public void setLazy(boolean value) {
-        logger.info("Lazy attribute has been removed from datatable api, please also remove it from your page definition. See issue #2993.");
-    }
     
     public void syncColumnOrder() {
         FacesContext context = FacesContext.getCurrentInstance();

@@ -107,6 +107,13 @@
             <defaultValue>No records found.</defaultValue>
             <description>Text to display when there is no data to display. Default is "No records found."</description>
 		</attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
     <resources>
         <resource>
