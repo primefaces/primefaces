@@ -1603,8 +1603,8 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         
         //attach keypress listener to parent form
         this.jqTarget.parents('form:first').keydown(function(e) {
-           //do not proceed if event target is not in this scope
-           if(_self.scope && _self.scope.find(e.target).length == 0) {
+           //do not proceed if event target is not in this scope or target is a textarea
+           if((_self.scope && _self.scope.find(e.target).length == 0)||$(e.target).is('textarea')) {
                return true;
            }
                
