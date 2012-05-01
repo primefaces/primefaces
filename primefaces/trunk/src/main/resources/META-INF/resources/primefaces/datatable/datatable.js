@@ -283,16 +283,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header');
         this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
         this.scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer');
-        this.scrollStateCookie = window.location.pathname + '_' + this.id;
-
+        this.scrollStateHolder = $(this.jqId + '_scrollState');
         var _self = this;
+        
+        this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
             this.scrollOffset = this.cfg.scrollStep;
             this.shouldLiveScroll = true;       
         }
-
-        this.restoreScrollState();
 
         //scroll handler
         this.scrollBody.scroll(function() {
@@ -308,23 +307,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     _self.loadLiveRows();
                 }
             }
-
-            //keep scroll state
-            PrimeFaces.setCookie(_self.scrollStateCookie, _self.scrollBody.scrollLeft() + ',' + _self.scrollBody.scrollTop());
+            
+            _self.saveScrollState();
         });
     },
     
     restoreScrollState: function() {
-        var scrollState = PrimeFaces.getCookie(this.scrollStateCookie);
+        var scrollState = this.scrollStateHolder.val(),
+        scrollValues = scrollState.split(',');
 
-        //restore state
-        if(scrollState) {
-            var scrollValues = scrollState.split(',');
-
-            this.scrollBody.scrollLeft(scrollValues[0]);
-            this.scrollBody.scrollTop(scrollValues[1]);
-        }
+        this.scrollBody.scrollLeft(scrollValues[0]);
+        this.scrollBody.scrollTop(scrollValues[1]);
     },
+    
+    saveScrollState: function() {
+        var scrollState = this.scrollBody.scrollLeft() + ',' + this.scrollBody.scrollTop();
+        
+        this.scrollStateHolder.val(scrollState);
+     },
     
     /**
      * Loads rows on-the-fly when scrolling live
