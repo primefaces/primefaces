@@ -9,6 +9,8 @@ import org.primefaces.model.LazyDataModel;
 	public static final String TABLE_CLASS = "ui-datagrid-data";
 	public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
 	public static final String TABLE_COLUMN_CLASS = "ui-datagrid-column";
+    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
+    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
 
     public void loadLazyData() {
         DataModel model = getDataModel();

@@ -65,6 +65,8 @@ public class DataGridRenderer extends DataRenderer {
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        
+        encodeFacet(context, grid, "header", DataGrid.HEADER_CLASS);
 
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, grid, "top");
@@ -86,6 +88,8 @@ public class DataGridRenderer extends DataRenderer {
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, grid, "bottom");
         }
+        
+        encodeFacet(context, grid, "footer", DataGrid.FOOTER_CLASS);
 
         writer.endElement("div");
     }
@@ -162,6 +166,18 @@ public class DataGridRenderer extends DataRenderer {
 
         writer.endElement("tbody");
         writer.endElement("table");
+    }
+    
+    public void encodeFacet(FacesContext context, DataGrid dataGrid, String facet, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent component = dataGrid.getFacet(facet);
+        
+        if(component != null && component.isRendered()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", styleClass, null);
+            component.encodeAll(context);
+            writer.endElement("div");
+        }
     }
 
     @Override
