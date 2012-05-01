@@ -168,18 +168,6 @@ public class DataGridRenderer extends DataRenderer {
         writer.endElement("table");
     }
     
-    public void encodeFacet(FacesContext context, DataGrid dataGrid, String facet, String styleClass) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        UIComponent component = dataGrid.getFacet(facet);
-        
-        if(component != null && component.isRendered()) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass, null);
-            component.encodeAll(context);
-            writer.endElement("div");
-        }
-    }
-
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd

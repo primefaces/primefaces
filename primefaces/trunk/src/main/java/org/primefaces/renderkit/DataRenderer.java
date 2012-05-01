@@ -18,9 +18,11 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
+import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
 import org.primefaces.component.paginator.JumpToPageDropdownRenderer;
@@ -111,5 +113,17 @@ public class DataRenderer extends CoreRenderer {
         if(!uidata.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
 
         writer.write("}");
+    }
+    
+    public void encodeFacet(FacesContext context, UIData data, String facet, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent component = data.getFacet(facet);
+        
+        if(component != null && component.isRendered()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", styleClass, null);
+            component.encodeAll(context);
+            writer.endElement("div");
+        }
     }
 }
