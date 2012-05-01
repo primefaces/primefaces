@@ -27,3 +27,11 @@
 .ui-datagrid .ui-datagrid-footer {
     border-top: 0px none;
 }
+
+.ui-datagrid .ui-paginator-top {
+    border-bottom: 0px none;
+}
+
+.ui-datagrid .ui-paginator-bottom {
+    border-top: 0px none;
+}
