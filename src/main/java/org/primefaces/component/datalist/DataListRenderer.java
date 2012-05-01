@@ -67,13 +67,8 @@ public class DataListRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         
-        if(header != null) {
-            writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.HEADER_CLASS, "styleClass");
-            header.encodeAll(context);
-            writer.endElement("div");
-        }
-
+        encodeFacet(context, list, "header", DataList.HEADER_CLASS);
+        
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, list, "top");
         }
@@ -92,6 +87,8 @@ public class DataListRenderer extends DataRenderer {
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, list, "bottom");
         }
+        
+        encodeFacet(context, list, "footer", DataList.FOOTER_CLASS);
 
         writer.endElement("div");
     }
