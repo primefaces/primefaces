@@ -11,3 +11,11 @@
 .ui-datalist .ui-datalist-footer {
     border-top: 0px none;
 }
+
+.ui-datalist .ui-paginator-top {
+    border-bottom: 0px none;
+}
+
+.ui-datalist .ui-paginator-bottom {
+    border-top: 0px none;
+}
