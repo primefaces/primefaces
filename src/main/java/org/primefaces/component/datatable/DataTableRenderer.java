@@ -228,6 +228,10 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isDraggableColumns()) {
             encodeStateHolder(context, table, table.getClientId(context) + "_columnOrder", table.getColumnIds());
         }
+        
+        if(scrollable) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_scrollState", table.getScrollState());
+        }
 
         writer.endElement("div");
 	}

@@ -739,3 +739,11 @@ import javax.faces.context.FacesContext;
         
         column.setWidth(Integer.parseInt(width));
     }
+    
+    public String getScrollState() {
+        Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
+        String name = this.getClientId() + "_scrollState";
+        String value = params.get(name);
+        
+        return value == null ? "0,0" : value;
+    }
