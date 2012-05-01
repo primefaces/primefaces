@@ -344,8 +344,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         
         if(newOption.val() != currentOption.val()) {
             //update selected option
-            currentOption.removeAttr('selected');
-            newOption.attr('selected', 'selected');
+            this.input.val(newOption.val());
             this.value = newOption.val();
             
             //update label
