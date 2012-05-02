@@ -130,7 +130,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.items = this.itemContainer.find('.ui-selectonemenu-item');
         this.options = this.input.children('option');
         this.cfg.effectDuration = this.cfg.effectDuration||400;
-        var _self = this;
+        var _self = this,
+        selectedOption = this.options.filter(':selected');
 
         //disable options
         this.options.filter(':disabled').each(function() {
@@ -143,12 +144,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         } 
         else {
             this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-            
-            //set initial selected option
-            var selectedOption = this.options.filter(':selected');
             this.setLabel(selectedOption.text());
             this.value = selectedOption.val();
         }
+        
+        //highlight selected
+        this.highlightItem(this.items.eq(selectedOption.index()), false);
         
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
@@ -407,6 +408,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.LEFT:
                     var highlightedItem = _self.items.filter('.ui-state-highlight'),
                     prev = highlightedItem.prevAll(':not(.ui-state-disabled):first');
+                    
+                    
 
                     if(prev.length == 1) {
                         _self.highlightItem(prev, true);
