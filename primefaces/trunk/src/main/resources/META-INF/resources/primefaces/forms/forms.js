@@ -860,7 +860,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
     
 });
 
-/**
+            /**
  * PrimeFaces SelectListbox Widget
  */
 PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
@@ -903,6 +903,18 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.items = this.listContainer.children('li:not(.ui-state-disabled)');
+        
+        //scroll to selected
+        var selected = this.options.filter(':selected');
+        if(selected.length > 0) {
+            var selectedItem = this.items.eq(selected.eq(0).index()),
+            itemBottom = selectedItem.position().top + selectedItem.height(),
+            scrollBottom = this.jq.scrollTop() + this.jq.height();
+
+            if(itemBottom > scrollBottom) {
+                this.jq.scrollTop(selectedItem.position().top);
+            }
+        }
     },
     
     bindEvents: function() {
