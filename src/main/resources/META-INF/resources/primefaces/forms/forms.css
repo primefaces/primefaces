@@ -19,6 +19,7 @@
     width:100px;
     overflow:auto;
     padding:2px;
+    position: relative;
 }
 
 .ui-selectonelistbox ul, .ui-selectmanymenu ul {
