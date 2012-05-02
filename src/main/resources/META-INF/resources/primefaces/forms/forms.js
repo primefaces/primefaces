@@ -475,22 +475,26 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
          
     alignScroller: function(item) {
-        if(this.panel.height() < this.itemContainer.height()){
-            var diff = item.offset().top + item.outerHeight(true) - this.panel.offset().top;
-
-            if(diff > this.panel.height()) {
-                this.panel.scrollTop(this.panel.scrollTop() + (diff - this.panel.height()));
+        var scrollHeight = this.panel.height();
+        
+        if(scrollHeight < this.itemContainer.height()) {
+            var itemTop = item.offset().top - this.items.eq(0).offset().top,
+            visibleTop = itemTop + item.height(),
+            scrollTop = this.panel.scrollTop(),
+            scrollBottom = scrollTop + scrollHeight;
+            
+            //scroll up
+            if(itemTop < scrollTop) {
+                this.panel.scrollTop(itemTop);
             }
-            else if((diff -= item.outerHeight(true)*2 - item.height()) < 0) {
-                this.panel.scrollTop( this.panel.scrollTop() + diff);
+            //scroll down
+            else if(visibleTop > scrollBottom) {
+                this.panel.scrollTop(itemTop);
             }
         }
     },
     
     show: function() {
-        //highlight current
-        this.highlightItem(this.items.eq(this.options.filter(':selected').index()), false);
-
         //calculate panel position
         this.alignPanel();
 
@@ -501,6 +505,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
+        
+        //highlight current
+        this.highlightItem(this.items.eq(this.options.filter(':selected').index()), false);
     },
     
     hide: function() {
