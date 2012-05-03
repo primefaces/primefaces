@@ -19191,28 +19191,24 @@ PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        
-        this.jqpId = this.id.replace(/:/g,"\\:");
-    
-        var _self = this;
-
-        //renderer options
-        var rendererCfg = {
-            diameter : this.cfg.diameter,
-            sliceMargin : this.cfg.sliceMargin,
-            fill: this.cfg.fill,
-            shadow : this.cfg.shadow,
-            showDataLabels : this.cfg.showDataLabels,
-            dataLabels : this.cfg.dataFormat || "percent"
-        }
+        this.jqpid = this.id.replace(/:/g,"\\:");
+        var _self = this;        
 
         //renderer configuration
         this.cfg.seriesDefaults = {
             renderer: $.jqplot.PieRenderer,
-            rendererOptions: rendererCfg
+            rendererOptions: {
+                diameter : this.cfg.diameter,
+                sliceMargin : this.cfg.sliceMargin,
+                fill: this.cfg.fill,
+                shadow : this.cfg.shadow,
+                showDataLabels : this.cfg.showDataLabels,
+                dataLabels : this.cfg.dataFormat||'percent'
+            }
+            ,highlighter: {
+                show: false
+            }
         };
-
-        this.cfg.highlighter = {show:false};            //ignore default highlighter 
 
         if(this.jq.is(':visible')) {
             this.draw();
@@ -19238,7 +19234,7 @@ PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.widget.ChartUtils.bindHighlighter(this);
 
             //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+            this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
 
             return true;
         }
@@ -19248,7 +19244,6 @@ PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
-
 
 /**
  * PrimeFaces LineChart Widget
