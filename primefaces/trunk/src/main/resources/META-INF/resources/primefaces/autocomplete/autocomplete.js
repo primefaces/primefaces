@@ -397,18 +397,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                                     _self.cachedResults.push($(item).attr('data-item-label'));
                                 });
                             }
+                            
+                            //adjust height
+                            if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
+                                _self.panel.height(_self.cfg.scrollHeight);
+                            }
 
                             if(_self.panel.is(':hidden')) {
                                 _self.show();
                             } 
                             else {
                                 _self.alignPanel(); //with new items
-                            }
-                            
-                            //adjust height
-                            _self.panel.css('height', '');
-                            if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
-                                _self.panel.css('height', _self.cfg.scrollHeight + 'px');
                             }
                             
                             //show itemtip if defined
