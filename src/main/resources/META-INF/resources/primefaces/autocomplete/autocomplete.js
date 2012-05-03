@@ -115,76 +115,30 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindStaticEvents: function() {
-        var _self = this,
-        hasDropdown = this.dropdown.length == 1;
+        var _self = this;
+ 
+        this.bindKeyEvents();
 
-        if(!hasDropdown) {
-            //bind keyup handler
-            this.input.keyup(function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which,
-                shouldSearch = true;
+        this.dropdown.mouseover(function() {
+            if(!_self.disabled) {
+                $(this).addClass('ui-state-hover');
+            }
+        }).mouseout(function() {
+            if(!_self.disabled) {
+                $(this).removeClass('ui-state-hover');
+            }
+        }).mousedown(function() {
+            if(!_self.disabled && _self.active) {
+                $(this).addClass('ui-state-active');
+            }
+        }).mouseup(function() {
+            if(!_self.disabled && _self.active) {
+                $(this).removeClass('ui-state-active');
 
-                if(key == keyCode.UP 
-                    || key == keyCode.LEFT 
-                    || key == keyCode.DOWN 
-                    || key == keyCode.RIGHT 
-                    || key == keyCode.TAB 
-                    || key == keyCode.SHIFT 
-                    || key == keyCode.ENTER
-                    || key == keyCode.NUMPAD_ENTER) {
-                    shouldSearch = false;
-                } 
-                else if(_self.cfg.pojo && !_self.cfg.multiple) {
-                    _self.hinput.val($(this).val());
-                }
-
-                if(shouldSearch) {
-                    var value = _self.input.val();
-
-                    if(!value.length) {
-                        _self.hide();
-                    }
-
-                    if(value.length >= _self.cfg.minLength) {
-
-                        //Cancel the search request if user types within the timeout
-                        if(_self.timeout) {
-                            clearTimeout(_self.timeout);
-                        }
-
-                        _self.timeout = setTimeout(function() {
-                            _self.search(value);
-                        }, 
-                        _self.cfg.delay);
-                    }
-                }
-            });
-            
-            this.bindKeyEvents();
-        }
-        else {
-            this.dropdown.mouseover(function() {
-                if(!_self.disabled) {
-                    $(this).addClass('ui-state-hover');
-                }
-            }).mouseout(function() {
-                if(!_self.disabled) {
-                    $(this).removeClass('ui-state-hover');
-                }
-            }).mousedown(function() {
-                if(!_self.disabled && _self.active) {
-                    $(this).addClass('ui-state-active');
-                }
-            }).mouseup(function() {
-                if(!_self.disabled && _self.active) {
-                    $(this).removeClass('ui-state-active');
-
-                    _self.search(_self.input.val());
-                    _self.input.focus();
-                }
-            });
-        }
+                _self.search('');
+                _self.input.focus();
+            }
+        });
 
         //hide overlay when outside is clicked
         var offset;
@@ -208,7 +162,48 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     bindKeyEvents: function() {
         var _self = this;
         
-        this.input.keydown(function(e) {
+        //bind keyup handler
+        this.input.keyup(function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which,
+            shouldSearch = true;
+
+            if(key == keyCode.UP 
+                || key == keyCode.LEFT 
+                || key == keyCode.DOWN 
+                || key == keyCode.RIGHT 
+                || key == keyCode.TAB 
+                || key == keyCode.SHIFT 
+                || key == keyCode.ENTER
+                || key == keyCode.NUMPAD_ENTER) {
+                shouldSearch = false;
+            } 
+            else if(_self.cfg.pojo && !_self.cfg.multiple) {
+                _self.hinput.val($(this).val());
+            }
+
+            if(shouldSearch) {
+                var value = _self.input.val();
+
+                if(!value.length) {
+                    _self.hide();
+                }
+
+                if(value.length >= _self.cfg.minLength) {
+
+                    //Cancel the search request if user types within the timeout
+                    if(_self.timeout) {
+                        clearTimeout(_self.timeout);
+                    }
+
+                    _self.timeout = setTimeout(function() {
+                        _self.search(value);
+                    }, 
+                    _self.cfg.delay);
+                }
+            }
+            
+        }).keydown(function(e) {
             if(_self.panel.is(':visible')) {
                 var keyCode = $.ui.keyCode,
                 highlightedItem = _self.items.filter('.ui-state-highlight');
