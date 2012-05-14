@@ -427,220 +427,226 @@ PrimeFaces.ajax.AjaxUtils = {
         });
         
         return ids;
+    },
+    
+    send : function(cfg) {
+        PrimeFaces.debug('Initiating ajax request.');
+    
+        if(cfg.onstart) {
+            var retVal = cfg.onstart.call(this, cfg);
+            if(retVal == false) {
+                PrimeFaces.debug('Ajax request cancelled by onstart callback.');
+                return;  //cancel request
+            }
+        }
+
+        var form = null,
+        sourceId = null;
+
+        //source can be a client id or an element defined by this keyword
+        if(typeof(cfg.source) == 'string') {
+            sourceId = cfg.source;
+        } else {
+            sourceId = $(cfg.source).attr('id');
+        }
+
+        if(cfg.formId) {
+            form = $(PrimeFaces.escapeClientId(cfg.formId));                         //Explicit form is defined
+        }
+        else {
+            form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');     //look for a parent of source
+
+            //source has no parent form so use first form in document
+            if(form.length == 0) {
+                form = $('form').eq(0);
+            }
+        }
+
+        PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
+
+        var postURL = form.attr('action'),
+        encodedURLfield = form.children("input[name='javax.faces.encodedURL']"),
+        postParams = [];
+
+        //portlet support
+        var pForms = null;
+        if(encodedURLfield.length > 0) {
+            postURL = encodedURLfield.val();
+            pForms = $('form[action="' + form.attr('action') + '"]');   //find forms of the portlet
+        }
+
+        PrimeFaces.debug('URL to post ' + postURL + '.');
+
+        //partial ajax
+        postParams.push({name:PrimeFaces.PARTIAL_REQUEST_PARAM, value:true});
+
+        //source
+        postParams.push({name:PrimeFaces.PARTIAL_SOURCE_PARAM, value:sourceId});
+
+        //process
+        var process = [];
+        if(cfg.process) {
+            process.push(cfg.process);
+        }
+        if(cfg.ext && cfg.ext.process) {
+            process.push(cfg.ext.process);
+        }
+
+        //process selector
+        if(cfg.processSelector) {
+            $.merge(process, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.processSelector));
+        }
+
+        var processIds = process.length > 0 ? process.join(' ') : '@all';
+        postParams.push({name:PrimeFaces.PARTIAL_PROCESS_PARAM, value:processIds});
+
+        //update
+        var update = [];
+        if(cfg.update) {
+            update.push(cfg.update);
+        }
+        if(cfg.ext && cfg.ext.update) {
+            update.push(cfg.ext.update);
+        }
+
+        //update selector
+        if(cfg.updateSelector) {
+            $.merge(update, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.updateSelector));
+        }
+
+        if(update.length > 0) {
+            postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:update.join(' ')});
+        }
+
+        //behavior event
+        if(cfg.event) {
+            postParams.push({name:PrimeFaces.BEHAVIOR_EVENT_PARAM, value:cfg.event});
+
+            var domEvent = cfg.event;
+
+            if(cfg.event == 'valueChange')
+                domEvent = 'change';
+            else if(cfg.event == 'action')
+                domEvent = 'click';
+
+            postParams.push({name:PrimeFaces.PARTIAL_EVENT_PARAM, value:domEvent});
+        } 
+        else {
+            postParams.push({name:sourceId, value:sourceId});
+        }
+
+        //params
+        if(cfg.params) {
+            $.merge(postParams, cfg.params);
+        }
+        if(cfg.ext && cfg.ext.params) {
+            $.merge(postParams, cfg.ext.params);
+        }
+
+        /**
+        * Only add params of process components and their children 
+        * if partial submit is enabled(undefined or true) and there are components to process partially
+        */
+        if(cfg.partialSubmit != false && processIds != '@all') {
+
+            //add viewstate
+            postParams.push({name:PrimeFaces.VIEW_STATE, value:form.children("input[name='javax.faces.ViewState']").val()});
+
+            if(processIds != '@none') {
+                var processIdsArray = processIds.split(' ');
+
+                $.each(processIdsArray, function(i, item) {
+                    var jqProcess = PrimeFaces.escapeClientId(item),
+                    componentPostParams = $(jqProcess + ',' + jqProcess + ' :input').serializeArray();
+
+                    $.merge(postParams, componentPostParams);
+                });
+            }   
+
+        }
+        else {
+            $.merge(postParams, form.serializeArray());
+        }
+
+        //serialize
+        var postData = $.param(postParams);
+
+        PrimeFaces.debug('Post Data:' + postData);
+
+        var xhrOptions = {
+            url : postURL,
+            type : "POST",
+            cache : false,
+            dataType : "xml",
+            data : postData,
+            portletForms: pForms,
+            source: cfg.source,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+            },
+            error: function(xhr, status, errorThrown) {
+                if(cfg.onerror) {
+                    cfg.onerror.call(xhr, status, errorThrown);
+                }
+
+                PrimeFaces.error('Request return with error:' + status + '.');
+            },
+            success : function(data, status, xhr) {
+                PrimeFaces.debug('Response received succesfully.');
+
+                var parsed;
+
+                //call user callback
+                if(cfg.onsuccess) {
+                    parsed = cfg.onsuccess.call(this, data, status, xhr);
+                }
+
+                //extension callback that might parse response
+                if(cfg.ext && cfg.ext.onsuccess && !parsed) {
+                    parsed = cfg.ext.onsuccess.call(this, data, status, xhr); 
+                }
+
+                //do not execute default handler as response already has been parsed
+                if(parsed) {
+                    return;
+                } 
+                else {
+                    PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+                }
+
+                PrimeFaces.debug('DOM is updated.');
+            },
+            complete : function(xhr, status) {
+                if(cfg.oncomplete) {
+                    cfg.oncomplete.call(this, xhr, status, this.args);
+                }
+
+                if(cfg.ext && cfg.ext.oncomplete) {
+                    cfg.ext.oncomplete.call(this, xhr, status, this.args);
+                }
+
+                PrimeFaces.debug('Response completed.');
+
+                if(!cfg.async) {
+                    PrimeFaces.ajax.Queue.poll();
+                }
+            }
+        };
+
+        xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
+        
+        $.ajax(xhrOptions);
     }
 };
 
 PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
-    PrimeFaces.debug('Initiating ajax request.');
-    
-    if(cfg.onstart) {
-       var retVal = cfg.onstart.call(this, cfg);
-       if(retVal == false) {
-           PrimeFaces.debug('Ajax request cancelled by onstart callback.');
-           return;  //cancel request
-       }
-    }
-
-    var form = null,
-    sourceId = null;
-    
-    //source can be a client id or an element defined by this keyword
-    if(typeof(cfg.source) == 'string') {
-        sourceId = cfg.source;
-    } else {
-        sourceId = $(cfg.source).attr('id');
-    }
-    
-    if(cfg.formId) {
-        form = $(PrimeFaces.escapeClientId(cfg.formId));                         //Explicit form is defined
-    }
-    else {
-        form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');     //look for a parent of source
-
-        //source has no parent form so use first form in document
-        if(form.length == 0) {
-            form = $('form').eq(0);
-        }
-    }
-    
-    PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
-
-    var postURL = form.attr('action'),
-    encodedURLfield = form.children("input[name='javax.faces.encodedURL']"),
-    postParams = [];
-
-    //portlet support
-    var pForms = null;
-    if(encodedURLfield.length > 0) {
-        postURL = encodedURLfield.val();
-        pForms = $('form[action="' + form.attr('action') + '"]');   //find forms of the portlet
-    }
-    
-    PrimeFaces.debug('URL to post ' + postURL + '.');
-
-    //partial ajax
-    postParams.push({name:PrimeFaces.PARTIAL_REQUEST_PARAM, value:true});
-
-    //source
-    postParams.push({name:PrimeFaces.PARTIAL_SOURCE_PARAM, value:sourceId});
-
-    //process
-    var process = [];
-    if(cfg.process) {
-        process.push(cfg.process);
-    }
-    if(ext && ext.process) {
-        process.push(ext.process);
-    }
-    
-    //process selector
-    if(cfg.processSelector) {
-        $.merge(process, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.processSelector));
-    }
-    
-    var processIds = process.length > 0 ? process.join(' ') : '@all';
-    postParams.push({name:PrimeFaces.PARTIAL_PROCESS_PARAM, value:processIds});
-    
-    //update
-    var update = [];
-    if(cfg.update) {
-        update.push(cfg.update);
-    }
-    if(ext && ext.update) {
-        update.push(ext.update);
-    }
-
-    //update selector
-    if(cfg.updateSelector) {
-        $.merge(update, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.updateSelector));
-    }
-    
-    if(update.length > 0) {
-        postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:update.join(' ')});
-    }
-    
-    //behavior event
-    if(cfg.event) {
-        postParams.push({name:PrimeFaces.BEHAVIOR_EVENT_PARAM, value:cfg.event});
-
-        var domEvent = cfg.event;
-
-        if(cfg.event == 'valueChange')
-            domEvent = 'change';
-        else if(cfg.event == 'action')
-            domEvent = 'click';
-
-        postParams.push({name:PrimeFaces.PARTIAL_EVENT_PARAM, value:domEvent});
-    } 
-    else {
-        postParams.push({name:sourceId, value:sourceId});
-    }
-
-    //params
-    if(cfg.params) {
-        $.merge(postParams, cfg.params);
-    }
-    if(ext && ext.params) {
-        $.merge(postParams, ext.params);
-    }
-    
-    /**
-     * Only add params of process components and their children 
-     * if partial submit is enabled(undefined or true) and there are components to process partially
-     */
-    if(cfg.partialSubmit != false && processIds != '@all') {
-        
-        //add viewstate
-        postParams.push({name:PrimeFaces.VIEW_STATE, value:form.children("input[name='javax.faces.ViewState']").val()});
-        
-        if(processIds != '@none') {
-            var processIdsArray = processIds.split(' ');
-            
-            $.each(processIdsArray, function(i, item) {
-                var jqProcess = PrimeFaces.escapeClientId(item),
-                componentPostParams = $(jqProcess + ',' + jqProcess + ' :input').serializeArray();
-
-                $.merge(postParams, componentPostParams);
-            });
-        }   
-        
-    }
-    else {
-        $.merge(postParams, form.serializeArray());
-    }
-    
-    //serialize
-    var postData = $.param(postParams);
-    
-    PrimeFaces.debug('Post Data:' + postData);
-	
-    var xhrOptions = {
-        url : postURL,
-        type : "POST",
-        cache : false,
-        dataType : "xml",
-        data : postData,
-        portletForms: pForms,
-        source: cfg.source,
-        beforeSend: function(xhr) {
-           xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-        },
-        error: function(xhr, status, errorThrown) {
-            if(cfg.onerror) {
-                cfg.onerror.call(xhr, status, errorThrown);
-            }
-    
-            PrimeFaces.error('Request return with error:' + status + '.');
-        },
-        success : function(data, status, xhr) {
-            PrimeFaces.debug('Response received succesfully.');
-            
-            var parsed;
-
-            //call user callback
-            if(cfg.onsuccess) {
-                parsed = cfg.onsuccess.call(this, data, status, xhr);
-            }
-
-            //extension callback that might parse response
-            if(ext && ext.onsuccess && !parsed) {
-                parsed = ext.onsuccess.call(this, data, status, xhr); 
-            }
-
-            //do not execute default handler as response already has been parsed
-            if(parsed) {
-                return;
-            } 
-            else {
-                PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
-            }
-            
-            PrimeFaces.debug('DOM is updated.');
-        },
-        complete : function(xhr, status) {
-            if(cfg.oncomplete) {
-                cfg.oncomplete.call(this, xhr, status, this.args);
-            }
-            
-            if(ext && ext.oncomplete) {
-                ext.oncomplete.call(this, xhr, status, this.args);
-            }
-            
-            PrimeFaces.debug('Response completed.');
-            
-            if(this.queued) {
-                PrimeFaces.ajax.Queue.poll();
-            }
-        }
-    };
-	
-    xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
+    cfg.ext = ext;
     
     if(cfg.async) {
-        $.ajax(xhrOptions);
+        PrimeFaces.ajax.AjaxUtils.send(cfg);
     }
     else {
-        PrimeFaces.ajax.Queue.offer(xhrOptions);
+        PrimeFaces.ajax.Queue.offer(cfg);
     }
 }
 
@@ -664,11 +670,10 @@ PrimeFaces.ajax.Queue = {
     requests : new Array(),
     
     offer : function(request) {
-        request.queued = true;
         this.requests.push(request);
         
         if(this.requests.length == 1) {
-            $.ajax(this.peek());
+            PrimeFaces.ajax.AjaxUtils.send(request);
         }
     },
     
@@ -681,7 +686,7 @@ PrimeFaces.ajax.Queue = {
         next = this.peek();
         
         if(next != null) {
-            $.ajax(next);
+            PrimeFaces.ajax.AjaxUtils.send(next);
         }
 
         return processed;
