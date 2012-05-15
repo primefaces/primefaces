@@ -53,6 +53,10 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
             }
         };
         
+        options.oncomplete = function() {
+            _self.paginator.updateUI();
+        };
+        
         options.params = [
             {name: this.id + '_pagination', value: true},
             {name: this.id + '_first', value: newState.first},
