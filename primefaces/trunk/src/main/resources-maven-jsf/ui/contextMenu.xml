@@ -51,6 +51,12 @@
 			<type>java.lang.String</type>
             <description>Type of tree nodes to get attached.</description>
 		</attribute>
+        <attribute>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event to bind the contextmenu default is right click.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

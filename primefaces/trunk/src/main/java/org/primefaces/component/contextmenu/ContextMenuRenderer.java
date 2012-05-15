@@ -34,6 +34,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
 		String widgetVar = menu.resolveWidgetVar();
 		String clientId = menu.getClientId(context);
 		String target = findTarget(context, menu);
+        String event = menu.getEvent();
 		
         startScript(writer, clientId);
 
@@ -43,9 +44,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         writer.write("id:'" + clientId + "'");     
         writer.write(",target:" + target);
  
-        if(menu.getNodeType() != null) {
-            writer.write(",nodeType:'" + menu.getNodeType() + "'");
-        }
+        if(menu.getNodeType() != null) writer.write(",nodeType:'" + menu.getNodeType() + "'");
+        if(event != null) writer.write(",event:'" + event + "'");
         
         writer.write("});});");
 		

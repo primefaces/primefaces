@@ -609,19 +609,22 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this._super(cfg);
 
         var _self = this,
-        documentTrigger = this.cfg.target === document;
+        isDocumentTrigger = this.cfg.target === document;
+
+        //event
+        this.cfg.event = this.cfg.event||'contextmenu';
 
         //trigger
-        this.cfg.target = documentTrigger ? document : PrimeFaces.escapeClientId(this.cfg.target);
-        var jqTarget = $(this.cfg.target);
+        this.cfg.target = isDocumentTrigger ? document : PrimeFaces.escapeClientId(this.cfg.target);
+        this.jqTarget = $(this.cfg.target);
 
-        if(jqTarget.hasClass('ui-datatable')) {
+        if(this.jqTarget.hasClass('ui-datatable')) {
             this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
         }
-        else if(jqTarget.hasClass('ui-treetable')) {
+        else if(this.jqTarget.hasClass('ui-treetable')) {
             this.cfg.trigger = this.cfg.target + ' .ui-treetable-data ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node');
         }
-        else if(jqTarget.hasClass('ui-tree')) {
+        else if(this.jqTarget.hasClass('ui-tree')) {
             this.cfg.trigger = this.cfg.target + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node');
         }
         else {
@@ -632,33 +635,42 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this.jq.appendTo('body');
 
         //attach contextmenu
-        if(documentTrigger) {
+        if(isDocumentTrigger) {
             $(this.cfg.trigger).bind('contextmenu.ui-contextmenu', function(e) {
                 _self.show(e);
             });
-        } 
+        }
         else {
-            $(this.cfg.trigger).live('contextmenu.ui-contextmenu', function(e) {
+            $(document).on(this.cfg.event + '.ui-contextmenu', this.cfg.trigger, null, function(e) {
                 _self.show(e);
             });
         }
     },
     
-    bindDocumentHandler: function() {
+    bindItemEvents: function() {
+        this._super();
+        
         var _self = this;
         
+        //hide menu on item click
+        this.links.bind('click', function() {
+            _self.hide();
+        });
+    },
+    
+    bindDocumentHandler: function() {
+        var _self = this;
+
         //hide overlay when document is clicked
         $(document.body).bind('click.ui-contextmenu', function (e) {
             if(_self.jq.is(":hidden")) {
                 return;
             }
-
-            _self.active = false;
-
+                        
             _self.jq.find('li.ui-menuitem-active').each(function() {
                 _self.deactivate($(this), true);
             });
-            
+         
             _self.hide();
         });
     },
@@ -690,8 +702,8 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         e.preventDefault();
     },
     
-    hide: function(e) {
-        this.jq.fadeOut('fast');
+    hide: function() {
+        this.jq.hide();
     },
     
     isVisible: function() {
