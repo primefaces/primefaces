@@ -52,6 +52,10 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             }
         };
+        
+        options.oncomplete = function() {
+            _self.paginator.updateUI();
+        };
 
         options.params = [
             {name: this.id + '_pagination', value: true},

@@ -209,8 +209,6 @@ PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {
         if(!silent) {
             this.cfg.paginate.call(this, newState);
         }
-    
-        this.updateUI();
     }
 }
 
