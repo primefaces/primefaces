@@ -1,64 +1,60 @@
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
+import javax.faces.component.UIComponent;
 
 	public final static String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
 	public final static String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
 	
-	private Tab tabToProcess;
+	private Tab current;
 
-	public void processDecodes(FacesContext facesContext) {
-		if(isWizardRequest(facesContext)) {
-                        String currentStep = facesContext.getExternalContext().getRequestParameterMap().get(getClientId(facesContext) + "_currentStep");
-                        setStep(currentStep);
-
-			//If flow goes back, skip to rendering
-			if(isBackRequest(facesContext)) {
-				facesContext.renderResponse();
-			} else {
-				getStepToProcess(facesContext).processDecodes(facesContext);
-			}
-			
-		} else {
-			super.processDecodes(facesContext);
+	public void processDecodes(FacesContext context) {
+        //If flow goes back, skip to rendering
+		if(isBackRequest(context)) {
+            context.renderResponse();
+		}
+        else {
+			getStepToProcess().processDecodes(context);
 		}
     }
 	
-	public void processValidators(FacesContext facesContext) {
-		if(isWizardRequest(facesContext)) {
-			getStepToProcess(facesContext).processValidators(facesContext);
-		} else {
-			super.processValidators(facesContext);
+	public void processValidators(FacesContext context) {
+		if(isWizardRequest(context)) {
+			current.processValidators(context);
+		}
+        else {
+			super.processValidators(context);
 		}
     }
 	
-	public void processUpdates(FacesContext facesContext) {
-		if(isWizardRequest(facesContext)) {
-			getStepToProcess(facesContext).processUpdates(facesContext);
-		} else {
-			super.processUpdates(facesContext);
+	public void processUpdates(FacesContext context) {
+		if(isWizardRequest(context)) {
+			current.processUpdates(context);
+		} 
+        else {
+			super.processUpdates(context);
 		}
 	}
 	
-	public Tab getStepToProcess(FacesContext facesContext) {
-		if(tabToProcess == null) {
-			String currentStep = getStep();
+	public Tab getStepToProcess() {
+		if(current == null) {
+			String currentStepId = getStep();
 			
-			for(javax.faces.component.UIComponent child : getChildren()) {
-				if(child.getId().equals(currentStep)) {
-					tabToProcess = (Tab) child;
+			for(UIComponent child : getChildren()) {
+				if(child.getId().equals(currentStepId)) {
+					current = (Tab) child;
 					
 					break;
 				}
 			}
 		}
 		
-		return tabToProcess;
+		return current;
 	}
 	
-	public boolean isWizardRequest(FacesContext facesContext) {
-		return facesContext.getExternalContext().getRequestParameterMap().containsKey(getClientId(facesContext) + "_wizardRequest");
+	public boolean isWizardRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_wizardRequest");
 	}
 	
-	public boolean isBackRequest(FacesContext facesContext) {
-		return facesContext.getExternalContext().getRequestParameterMap().containsKey(getClientId(facesContext) + "_backRequest");
+	public boolean isBackRequest(FacesContext context) {
+		return isWizardRequest(context) && context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_backRequest");
 	}

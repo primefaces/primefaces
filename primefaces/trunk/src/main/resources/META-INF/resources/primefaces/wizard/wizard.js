@@ -6,15 +6,14 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.content = this.jqId + '_content';
+        this.content = $(this.jqId + '_content');
         this.backNav = $(this.jqId + '_back');
         this.nextNav = $(this.jqId + '_next');
         this.cfg.formId = this.jq.parents('form:first').attr('id');
-        var _self = this;
-
         this.currentStep = this.cfg.initialStep;
-        var currentStepIndex = this.getStepIndex(this.currentStep);
-
+        
+        var _self = this;
+        
         //Step controls
         if(this.cfg.showStepStatus) {
             this.stepControls = $(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
@@ -22,6 +21,8 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
 
         //Navigation controls
         if(this.cfg.showNavBar) {
+            var currentStepIndex = this.getStepIndex(this.currentStep);
+            
             //visuals
             PrimeFaces.skinButton(this.backNav);
             PrimeFaces.skinButton(this.nextNav);
@@ -39,7 +40,10 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     
     back: function() {
         if(this.cfg.onback) {
-            this.cfg.onback.call(this);
+            var value = this.cfg.onback.call(this);
+            if(value == false) {
+                return;
+            }
         }
 
         var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) - 1];
@@ -49,7 +53,10 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     
     next: function() {
         if(this.cfg.onnext) {
-            this.cfg.onnext.call(this);
+            var value = this.cfg.onnext.call(this);
+            if(value == false) {
+                return;
+            }
         }
 
         var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) + 1];
@@ -79,10 +86,10 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                     content = update.text();
 
                     if(id == _self.id){
+                        //update content
+                        _self.content.html(content);
+                        
                         if(!this.args.validationFailed) {
-                            //update content
-                            $(_self.content).html(content);
-
                             //update navigation controls
                             var currentStepIndex = _self.getStepIndex(_self.currentStep);
 
@@ -99,14 +106,12 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                                 }
                             }
 
+                            //update step status
                             if(_self.cfg.showStepStatus) {
                                 _self.stepControls.removeClass('ui-state-hover');
                                 $(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
                             }
 
-                        } else {
-                            //update content
-                            $(_self.content).html(content);
                         }
 
                     }
@@ -118,13 +123,12 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             },
             error: function() {
-                alert('Error in loading dynamic tab content');
+                PrimeFaces.error('Error in loading dynamic tab content');
             }
         };
 
         options.params = [
             {name: this.id + '_wizardRequest', value: true},
-            {name: this.id + '_currentStep', value: this.currentStep},
             {name: this.id + '_stepToGo', value: stepToGo}
         ];
 
