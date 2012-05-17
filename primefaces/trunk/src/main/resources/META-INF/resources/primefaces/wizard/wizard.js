@@ -108,8 +108,8 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
 
                             //update step status
                             if(_self.cfg.showStepStatus) {
-                                _self.stepControls.removeClass('ui-state-hover');
-                                $(_self.stepControls.get(currentStepIndex)).addClass('ui-state-hover');
+                                _self.stepControls.removeClass('ui-state-highlight');
+                                $(_self.stepControls.get(currentStepIndex)).addClass('ui-state-highlight');
                             }
 
                         }
