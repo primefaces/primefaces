@@ -436,6 +436,12 @@ PrimeFaces.ajax.AjaxUtils = {
             var retVal = cfg.onstart.call(this, cfg);
             if(retVal == false) {
                 PrimeFaces.debug('Ajax request cancelled by onstart callback.');
+                
+                //remove from queue
+                if(!cfg.async) {
+                    PrimeFaces.ajax.Queue.poll();
+                }
+                
                 return;  //cancel request
             }
         }
