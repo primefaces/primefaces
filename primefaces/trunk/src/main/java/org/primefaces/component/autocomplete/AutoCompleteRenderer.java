@@ -220,6 +220,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         for(String value : values) {
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
+            writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
         }
         
