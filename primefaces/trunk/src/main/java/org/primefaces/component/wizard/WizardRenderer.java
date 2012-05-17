@@ -36,10 +36,10 @@ public class WizardRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Wizard wizard = (Wizard) component;
         
         if(wizard.isWizardRequest(context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = wizard.getClientId(context);
             String stepToGo = params.get(clientId + "_stepToGo");
             String currentStep = wizard.getStep();
