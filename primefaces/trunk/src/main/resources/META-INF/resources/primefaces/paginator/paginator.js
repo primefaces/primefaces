@@ -197,13 +197,12 @@ PrimeFaces.widget.Paginator.prototype.updatePageLinks = function() {
     this.bindPageLinkEvents();
 }
 
-PrimeFaces.widget.Paginator.prototype.setPage = function(page, silent) {
-    if(page >= 0 && page < this.cfg.pageCount && this.cfg.page != page){
-        this.cfg.page = page;
-        
+PrimeFaces.widget.Paginator.prototype.setPage = function(p, silent) {
+    if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){        
         var newState = {
-            first: this.cfg.rows * (this.cfg.page),
-            rows: this.cfg.rows
+            first: this.cfg.rows * p,
+            rows: this.cfg.rows,
+            page: p
         };
 
         if(!silent) {

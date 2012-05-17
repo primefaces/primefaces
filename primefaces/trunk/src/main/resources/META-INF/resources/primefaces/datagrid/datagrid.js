@@ -48,12 +48,15 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
-
+                
                 return true;
             }
         };
         
         options.oncomplete = function() {
+            //update paginator state
+            _self.paginator.cfg.page = newState.page;
+            
             _self.paginator.updateUI();
         };
 
