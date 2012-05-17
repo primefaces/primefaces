@@ -220,7 +220,7 @@ public class WizardRenderer extends CoreRenderer {
                 String styleClass = "ui-wizard-step-title ui-state-default";
 
                 if((!currentFound) && (currentStep == null || tab.getId().equals(currentStep))) {
-                    styleClass += " ui-state-hover";
+                    styleClass += " ui-state-highlight";
                     currentFound = true;
                 }
 
