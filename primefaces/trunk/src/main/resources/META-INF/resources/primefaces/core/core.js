@@ -734,7 +734,7 @@ PrimeFaces.widget.PrimeWebSocket.prototype.send = function(data) {
 }
 
 PrimeFaces.widget.PrimeWebSocket.prototype.connect = function() {
-    this.ws = $.browser.mozilla ? new MozWebSocket(this.cfg.url) : new WebSocket(this.cfg.url);
+    this.ws = new WebSocket(this.cfg.url);
 
     var _self = this;
 
