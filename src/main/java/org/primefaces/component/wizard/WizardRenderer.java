@@ -23,6 +23,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
@@ -32,6 +33,23 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class WizardRenderer extends CoreRenderer {
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        Wizard wizard = (Wizard) component;
+        
+        if(wizard.isWizardRequest(context)) {
+            String clientId = wizard.getClientId(context);
+            String stepToGo = params.get(clientId + "_stepToGo");
+            String currentStep = wizard.getStep();
+            
+            FlowEvent event = new FlowEvent(wizard, currentStep, stepToGo);
+            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            
+            wizard.queueEvent(event);
+        }
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -48,27 +66,7 @@ public class WizardRenderer extends CoreRenderer {
     
     protected void encodeStep(FacesContext context, Wizard wizard) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String stepToDisplay = null;
-        String clientId = wizard.getClientId(context);
-        String currentStep = wizard.getStep();
-        String stepToGo = params.get(clientId + "_stepToGo");
-
-        if(context.isValidationFailed()) {
-            stepToDisplay = currentStep;
-        }
-        else {
-            if(wizard.getFlowListener() != null) {
-                FlowEvent flowEvent = new FlowEvent(wizard, currentStep, stepToGo);
-                Object outcome = wizard.getFlowListener().invoke(context.getELContext(), new Object[]{flowEvent});
-                stepToDisplay = (String) outcome;
-            } 
-            else {
-                stepToDisplay = stepToGo;
-            }
-        }
-        
-        wizard.setStep(stepToDisplay);
-
+        String stepToDisplay = wizard.getStep();
         UIComponent tabToDisplay = null;
         for(UIComponent child : wizard.getChildren()) {
             if(child.getId().equals(stepToDisplay)) {

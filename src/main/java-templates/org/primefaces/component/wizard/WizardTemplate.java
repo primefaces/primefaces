@@ -1,6 +1,10 @@
+import java.util.Map;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
 
 	public final static String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
 	public final static String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
@@ -8,30 +12,22 @@ import javax.faces.component.UIComponent;
 	private Tab current;
 
 	public void processDecodes(FacesContext context) {
-        //If flow goes back, skip to rendering
-		if(isBackRequest(context)) {
-            context.renderResponse();
-		}
-        else {
+        this.decode(context);
+
+		if(!isBackRequest(context)) {
 			getStepToProcess().processDecodes(context);
 		}
     }
 	
 	public void processValidators(FacesContext context) {
-		if(isWizardRequest(context)) {
+        if(!isBackRequest(context)) {
 			current.processValidators(context);
-		}
-        else {
-			super.processValidators(context);
 		}
     }
 	
 	public void processUpdates(FacesContext context) {
-		if(isWizardRequest(context)) {
+		if(!isBackRequest(context)) {
 			current.processUpdates(context);
-		} 
-        else {
-			super.processUpdates(context);
 		}
 	}
 	
@@ -58,3 +54,25 @@ import javax.faces.component.UIComponent;
 	public boolean isBackRequest(FacesContext context) {
 		return isWizardRequest(context) && context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_backRequest");
 	}
+
+    @Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+
+        if(event instanceof FlowEvent) {
+            FlowEvent flowEvent = (FlowEvent) event;
+            FacesContext context = getFacesContext();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = this.getClientId(context);
+            MethodExpression me = this.getFlowListener();
+
+            if(me != null) {
+                String step = (String) me.invoke(context.getELContext(), new Object[]{event});
+
+                this.setStep(step);
+            }
+            else {
+                this.setStep(flowEvent.getNewStep());
+            }
+        }
+    }
