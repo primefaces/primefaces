@@ -14,61 +14,62 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.disabled = this.input.is(':disabled');
         this.active = true;
         this.cfg.pojo = this.hinput.length == 1;
-        var _self = this;
-
-        //options
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
-
-        if(this.cfg.multiple) {
-            this.setupMultipleMode();
-
-            this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-        } 
-        else {
-            //visuals
-            PrimeFaces.skinInput(this.input);
-
-            this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-            this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-        }
-
-        //core events
-        this.bindStaticEvents();
-
-        //client Behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-        }
-
-        //force selection
-        if(this.cfg.forceSelection) {
-            this.setupForceSelection();
-        }
-
-        //Panel management
-        $(document.body).children(this.panelId).remove();
-        this.panel.appendTo(document.body);
-        
-        //itemtip
-        if(this.cfg.itemtip) {
-            this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
-        }
-
-        //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.panel.is(':visible')) {
-                _self.hide();
-            }
-        });
+        var _self = this;
         
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        
+        if(!this.disabled) {
+            if(this.cfg.multiple) {
+                this.setupMultipleMode();
 
-        //dialog support
-        this.setupDialogSupport();
+                this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+            } 
+            else {
+                //visuals
+                PrimeFaces.skinInput(this.input);
+
+                this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+                this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+            }
+            
+            //core events
+            this.bindStaticEvents();
+
+            //client Behaviors
+            if(this.cfg.behaviors) {
+                PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+            }
+            
+            //force selection
+            if(this.cfg.forceSelection) {
+                this.setupForceSelection();
+            }
+
+            //Panel management
+            $(document.body).children(this.panelId).remove();
+            this.panel.appendTo(document.body);
+
+            //itemtip
+            if(this.cfg.itemtip) {
+                this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
+            }
+
+            //Hide overlay on resize
+            var resizeNS = 'resize.' + this.id;
+            $(window).unbind(resizeNS).bind(resizeNS, function() {
+                if(_self.panel.is(':visible')) {
+                    _self.hide();
+                }
+            });
+
+            //dialog support
+            this.setupDialogSupport();
+        }
+        
     },
     
     /**

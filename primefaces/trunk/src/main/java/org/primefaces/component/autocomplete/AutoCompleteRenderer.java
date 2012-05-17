@@ -217,6 +217,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
         
+        if(ac.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        
         for(String value : values) {
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
@@ -270,10 +274,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         List values = (List) ac.getValue();
         List<String> stringValues = new ArrayList<String>();
         Converter converter = findConverter(context, ac);
-        String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String var = ac.getVar();
         boolean pojo = var != null;
+        boolean disabled = ac.isDisabled();
+        
+        String styleClass = ac.getStyleClass();
+        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
+        String listClass = disabled ? AutoComplete.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -283,7 +290,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         
         writer.startElement("ul", null);
-        writer.writeAttribute("class", AutoComplete.MULTIPLE_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", listClass, null);
         
         if(values != null && !values.isEmpty()) {
             for(Iterator<Object> it = values.iterator(); it.hasNext();) {
@@ -329,6 +336,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
+        if(disabled) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
         writer.endElement("input");
         writer.endElement("li");
         
