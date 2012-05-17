@@ -34,53 +34,58 @@ import org.primefaces.util.HTML;
 public class WizardRenderer extends CoreRenderer {
 
     @Override
-    public void encodeEnd(FacesContext fc, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Wizard wizard = (Wizard) component;
 
-        if(wizard.isWizardRequest(fc)) {
-            Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
-            String stepToDisplay = null;
-            String clientId = wizard.getClientId(fc);
-            String currentStep = wizard.getStep();
-            String stepToGo = params.get(clientId + "_stepToGo");
-            
-            if (fc.isValidationFailed()) {
-                stepToDisplay = currentStep;
- 
-            } else {
-                if (wizard.getFlowListener() != null) {
-                    FlowEvent flowEvent = new FlowEvent(wizard, currentStep, stepToGo);
-                    Object outcome = wizard.getFlowListener().invoke(fc.getELContext(), new Object[]{flowEvent});
-                    stepToDisplay = (String) outcome;
-                } else {
-                    stepToDisplay = stepToGo;
-                }
-            }
-
-            wizard.setStep(stepToDisplay);
-
-            UIComponent tabToDisplay = null;
-            for (UIComponent child : wizard.getChildren()) {
-                if (child.getId().equals(stepToDisplay)) {
-                    tabToDisplay = child;
-                }
-            }
-
-            tabToDisplay.encodeAll(fc);
-
-            RequestContext.getCurrentInstance().addCallbackParam("currentStep", wizard.getStep());
-            
-        } else {
-            encodeMarkup(fc, wizard);
-            encodeScript(fc, wizard);
+        if(wizard.isWizardRequest(context)) {
+            encodeStep(context, wizard);
+        } 
+        else {
+            encodeMarkup(context, wizard);
+            encodeScript(context, wizard);
         }
     }
+    
+    protected void encodeStep(FacesContext context, Wizard wizard) throws IOException {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String stepToDisplay = null;
+        String clientId = wizard.getClientId(context);
+        String currentStep = wizard.getStep();
+        String stepToGo = params.get(clientId + "_stepToGo");
 
-    protected void encodeScript(FacesContext facesContext, Wizard wizard) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = wizard.getClientId(facesContext);
+        if(context.isValidationFailed()) {
+            stepToDisplay = currentStep;
+        }
+        else {
+            if(wizard.getFlowListener() != null) {
+                FlowEvent flowEvent = new FlowEvent(wizard, currentStep, stepToGo);
+                Object outcome = wizard.getFlowListener().invoke(context.getELContext(), new Object[]{flowEvent});
+                stepToDisplay = (String) outcome;
+            } 
+            else {
+                stepToDisplay = stepToGo;
+            }
+        }
+        
+        wizard.setStep(stepToDisplay);
 
-        UIComponent form = ComponentUtils.findParentForm(facesContext, wizard);
+        UIComponent tabToDisplay = null;
+        for(UIComponent child : wizard.getChildren()) {
+            if(child.getId().equals(stepToDisplay)) {
+                tabToDisplay = child;
+            }
+        }
+
+        tabToDisplay.encodeAll(context);
+
+        RequestContext.getCurrentInstance().addCallbackParam("currentStep", wizard.getStep());
+    }
+
+    protected void encodeScript(FacesContext context, Wizard wizard) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = wizard.getClientId(context);
+
+        UIComponent form = ComponentUtils.findParentForm(context, wizard);
         if (form == null) {
             throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
         }
