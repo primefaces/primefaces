@@ -18,6 +18,7 @@ package org.primefaces.component.outputlabel;
 import java.io.IOException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.InputHolder;
@@ -31,11 +32,14 @@ public class OutputLabelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         OutputLabel label = (OutputLabel) component;
         String clientId = label.getClientId();
-        String styleClass = label.getStyleClass();
-        styleClass = styleClass == null ? "ui-outputlabel" : "ui-outputlabel " + styleClass;
         Object value = label.getValue();
+        
         UIComponent target = findTarget(context, label);
         String _for = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
+        
+        String defaultStyleClass = ((UIInput) target).isValid() ? OutputLabel.VALID_STYLE_CLASS : OutputLabel.INVALID_STYLE_CLASS;
+        String styleClass = label.getStyleClass();
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         
         writer.startElement("label", label);
         writer.writeAttribute("id", clientId, "id");

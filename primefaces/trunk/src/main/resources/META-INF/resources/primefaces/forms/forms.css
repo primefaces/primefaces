@@ -368,3 +368,9 @@ div.ui-button, .ui-splitbutton {
 .ui-password-panel-overlay { 
     position: absolute; 
 }
+
+/* OutputLabel */
+.ui-outputlabel.ui-state-error {
+    border:0 none;
+    background: inherit;
+}
