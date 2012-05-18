@@ -129,14 +129,26 @@ public class HTML {
 		"tabindex",
 		"title"
 	};
+    
+    //StyleClass is omitted
+	public static String[] LABEL_ATTRS_WITHOUT_EVENTS = {
+		"accesskey",
+		"dir",
+		"lang",
+		"style",
+		"tabindex",
+		"title"
+	};
+    
+    public static String[] OUTPUT_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
 	
-	public static String[] LINK_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
-	
-	public static String[] BUTTON_EVENTS = ArrayUtils.concat(LINK_EVENTS, CHANGE_SELECT_EVENTS);
+	public static String[] BUTTON_EVENTS = ArrayUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
 	
 	public static String[] IMG_ATTRS = ArrayUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
 	
-	public static String[] LINK_ATTRS = ArrayUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, LINK_EVENTS);
+	public static String[] LINK_ATTRS = ArrayUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    
+    public static String[] LABEL_ATTRS = ArrayUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
 	
 	public static String[] BUTTON_ATTRS = ArrayUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);	
 	
