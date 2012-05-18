@@ -138,3 +138,7 @@ import javax.faces.component.behavior.Behavior;
         else 
             return converter.getAsObject(context, this, submittedItemValue);
     }
+
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
