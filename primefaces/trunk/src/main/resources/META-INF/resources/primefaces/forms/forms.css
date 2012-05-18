@@ -374,3 +374,7 @@ div.ui-button, .ui-splitbutton {
     border:0 none;
     background: inherit;
 }
+
+.ui-outputlabel .ui-outputlabel-rfi {
+    margin-left: 0.4em;
+}

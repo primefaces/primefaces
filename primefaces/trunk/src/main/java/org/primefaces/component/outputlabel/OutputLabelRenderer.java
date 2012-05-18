@@ -34,10 +34,10 @@ public class OutputLabelRenderer extends CoreRenderer {
         String clientId = label.getClientId();
         Object value = label.getValue();
         
-        UIComponent target = findTarget(context, label);
+        UIInput target = findTarget(context, label);
         String _for = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
         
-        String defaultStyleClass = ((UIInput) target).isValid() ? OutputLabel.VALID_STYLE_CLASS : OutputLabel.INVALID_STYLE_CLASS;
+        String defaultStyleClass = target.isValid() ? OutputLabel.VALID_CLASS : OutputLabel.INVALID_CLASS;
         String styleClass = label.getStyleClass();
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         
@@ -58,10 +58,17 @@ public class OutputLabelRenderer extends CoreRenderer {
             target.getAttributes().put("label", value);
         }
         
+        if(target.isRequired()) {
+            writer.startElement("span", label);
+            writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+            writer.write("*");
+            writer.endElement("span");   
+        }
+        
         writer.endElement("label");        
     }
     
-    protected UIComponent findTarget(FacesContext context, OutputLabel label) {
+    protected UIInput findTarget(FacesContext context, OutputLabel label) {
         UIComponent _forComponent = null;
         String _for = label.getFor();
         
@@ -72,6 +79,6 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
         
-        return _forComponent;
+        return (UIInput) _forComponent;
     }
 }
