@@ -43,7 +43,6 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
         
-        
         writer.startElement("label", label);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
@@ -56,8 +55,13 @@ public class OutputLabelRenderer extends CoreRenderer {
                 writer.writeText(text, "value");
             else
                 writer.write(text);
+            
+            //assign label of target
+            _forComponent.getAttributes().put("label", value);
         }
         
         writer.endElement("label");
+        
+        
     }
 }
