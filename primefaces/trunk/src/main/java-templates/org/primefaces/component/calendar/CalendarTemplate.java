@@ -153,3 +153,7 @@ import javax.faces.event.PhaseId;
     public boolean isConversionFailed() {
         return this.conversionFailed;
     }
+
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
