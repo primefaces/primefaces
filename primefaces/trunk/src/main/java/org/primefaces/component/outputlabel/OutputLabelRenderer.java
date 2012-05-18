@@ -20,6 +20,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 
@@ -32,21 +33,14 @@ public class OutputLabelRenderer extends CoreRenderer {
         String clientId = label.getClientId();
         String styleClass = label.getStyleClass();
         styleClass = styleClass == null ? "ui-outputlabel" : "ui-outputlabel " + styleClass;
-        String _for = label.getFor();
-        UIComponent _forComponent = null;
         Object value = label.getValue();
-        
-        if(_for != null) {
-            _forComponent = label.findComponent(_for);
-            if(_forComponent == null) {
-                throw new FacesException("Cannot find component with identifier \"" + _for + "\" referenced from \"" + label.getClientId(context) + "\".");
-            }
-        }
+        UIComponent target = findTarget(context, label);
+        String _for = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
         
         writer.startElement("label", label);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute("for", _forComponent.getClientId(context), "for");
+        writer.writeAttribute("for", _for, "for");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
         
         if(value != null) {
@@ -57,11 +51,23 @@ public class OutputLabelRenderer extends CoreRenderer {
                 writer.write(text);
             
             //assign label of target
-            _forComponent.getAttributes().put("label", value);
+            target.getAttributes().put("label", value);
         }
         
-        writer.endElement("label");
+        writer.endElement("label");        
+    }
+    
+    protected UIComponent findTarget(FacesContext context, OutputLabel label) {
+        UIComponent _forComponent = null;
+        String _for = label.getFor();
         
+        if(_for != null) {
+            _forComponent = label.findComponent(_for);
+            if(_forComponent == null) {
+                throw new FacesException("Cannot find component with identifier \"" + _for + "\" referenced from \"" + label.getClientId(context) + "\".");
+            }
+        }
         
+        return _forComponent;
     }
 }
