@@ -333,8 +333,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if(!edited) {
             this.value = this.options.filter(':selected').val();
         }
-        
-        
     },
     
     /**
