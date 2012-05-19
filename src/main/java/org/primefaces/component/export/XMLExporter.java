@@ -52,8 +52,8 @@ public class XMLExporter extends Exporter {
 		PrintWriter writer = new PrintWriter(osw);	
 		
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-    	List<String> headers = getFacetTexts(table, ColumnType.HEADER);
-    	List<String> footers = getFacetTexts(table, ColumnType.FOOTER);
+    	List<String> headers = getFacetTexts(table, columns, ColumnType.HEADER);
+    	List<String> footers = getFacetTexts(table, columns, ColumnType.FOOTER);
     	String var = table.getVar().toLowerCase();
         String rowIndexVar = table.getRowIndexVar();
     	
@@ -191,23 +191,17 @@ public class XMLExporter extends Exporter {
 		}
 	}	
 	
-	private List<String> getFacetTexts(UIData data, ColumnType columnType) {
+	private List<String> getFacetTexts(UIData data, List<UIColumn> columns, ColumnType columnType) {
 		List<String> facets = new ArrayList<String>();
 		 
-        for (int i = 0; i < data.getChildCount(); i++) {
-            UIComponent child = (UIComponent) data.getChildren().get(i);
-            
-            if (child instanceof UIColumn && child.isRendered()) {
-            	UIColumn column = (UIColumn) child;
-				UIComponent facet = column.getFacet(columnType.facet());
+        for(UIColumn column : columns) {
+            UIComponent facet = column.getFacet(columnType.facet());
             	
-            	if(facet != null && facet.isRendered()) {
-            		String value = exportValue(FacesContext.getCurrentInstance(), facet);
-            		
-            		facets.add(value);
-            	} else {
-            		facets.add("");
-            	}
+            if(facet != null && facet.isRendered()) {
+                facets.add(exportValue(FacesContext.getCurrentInstance(), facet));
+            } 
+            else {
+                facets.add("");
             }
         }
         return facets;
