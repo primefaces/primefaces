@@ -319,6 +319,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     triggerChange: function(edited) {
+        this.changed = false;
+        
         var inputEl = this.input.get(0);
         if(this.cfg.onchange) {
             this.cfg.onchange.call(inputEl);
@@ -332,7 +334,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.value = this.options.filter(':selected').val();
         }
         
-        this.changed = false;
+        
     },
     
     /**
