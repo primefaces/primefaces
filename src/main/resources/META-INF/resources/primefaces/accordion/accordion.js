@@ -81,8 +81,12 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             this.loadDynamicTab(panel);
         }
         else {
-            this.show(panel);
-            this.fireTabChangeEvent(panel);
+            if(this.hasBehavior('tabChange')) {
+                this.fireTabChangeEvent(panel);
+            }
+            else {
+                this.show(panel);
+            }
         }
 
         return true;
@@ -181,17 +185,20 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
      */
     fireTabChangeEvent : function(panel) {
-        if(this.hasBehavior('tabChange')) {
-            var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-            ext = {
-                params: [
-                    {name: this.id + '_newTab', value: panel.attr('id')},
-                    {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
-                ]
-            };
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
+        _self = this,
+        ext = {
+            params: [
+                {name: this.id + '_newTab', value: panel.attr('id')},
+                {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+            ]
+        };
+        
+        ext.oncomplete = function() {
+            _self.show(panel);
+        };
 
-            tabChangeBehavior.call(this, null, ext);
-        }
+        tabChangeBehavior.call(this, null, ext);
     },
     
     markAsLoaded: function(panel) {

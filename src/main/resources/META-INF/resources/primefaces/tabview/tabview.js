@@ -84,9 +84,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             this.loadDynamicTab(newPanel);
         }
         else {
-            this.show(newPanel);
-
-            this.fireTabChangeEvent(newPanel);
+            if(this.hasBehavior('tabChange')) {
+                this.fireTabChangeEvent(newPanel);
+            }
+            else {
+                this.show(newPanel);
+            }
         }
 
         return true;
@@ -167,7 +170,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         options.oncomplete = function() {
             _self.show(newPanel);
         };
-
         
         options.params = [
             {name: this.id + '_contentLoad', value: true},
@@ -213,17 +215,20 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     },
     
     fireTabChangeEvent: function(panel) {
-        if(this.hasBehavior('tabChange')) {
-            var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-            ext = {
-                params: [
-                    {name: this.id + '_newTab', value: panel.attr('id')},
-                    {name: this.id + '_tabindex', value: panel.index()}
-                ]
-            };
+        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
+        _self = this,
+        ext = {
+            params: [
+                {name: this.id + '_newTab', value: panel.attr('id')},
+                {name: this.id + '_tabindex', value: panel.index()}
+            ]
+        };
+        
+        ext.oncomplete = function() {
+            _self.show(panel);
+        };
 
-            tabChangeBehavior.call(this, panel, ext);
-        }
+        tabChangeBehavior.call(this, panel, ext);
     },
     
     fireTabCloseEvent: function(panel) {    
