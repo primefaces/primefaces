@@ -527,7 +527,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if(!valid) {
-                $(this).val('');
+                _self.input.val('');
+                _self.hinput.val('');
             }
         });
     },
