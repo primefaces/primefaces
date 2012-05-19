@@ -5,6 +5,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        this.onshowHandlers = [];
         
         if(this.cfg.toggleable) {
             this.toggler = $(this.jqId + '_toggler');
@@ -25,6 +26,8 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             this.setupMenuTrigger();
         }
+        
+        this.jq.data('widget', this);
     },
     
     toggle: function() {
@@ -41,13 +44,17 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
         var _self = this;
 
-        this.content.slideToggle(this.cfg.toggleSpeed,
+        this.content.slideToggle(this.cfg.toggleSpeed, 'easeInOutCirc',
             function(e) {
                 if(_self.cfg.behaviors) {
                     var toggleBehavior = _self.cfg.behaviors['toggle'];
                     if(toggleBehavior) {
                         toggleBehavior.call(_self, e);
                     }
+                }
+                
+                if(_self.onshowHandlers.length > 0) {
+                    _self.invokeOnshowHandlers();
                 }
             });
     },
@@ -70,7 +77,10 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        $(this.jqId).fadeIn(this.cfg.closeSpeed);
+        var _self = this;
+        $(this.jqId).fadeIn(this.cfg.closeSpeed, function() {
+            _self.invokeOnshowHandlers();
+        });
 
         this.visibleStateHolder.val(true);
     },
@@ -102,6 +112,16 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     setupTriggerVisuals: function(trigger) {
         trigger.mouseover(function() {$(this).addClass('ui-state-hover');})
                 .mouseout(function() {$(this).removeClass('ui-state-hover');});
+    },
+    
+    addOnshowHandler: function(fn) {
+        this.onshowHandlers.push(fn);
+    },
+    
+    invokeOnshowHandlers: function() {
+        this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+            return !fn.call();
+        });
     }
 
 });

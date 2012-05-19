@@ -52,6 +52,9 @@ public class FieldsetRenderer extends CoreRenderer {
         boolean toggleable = fieldset.isToggleable();
         
         String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
+        if(fieldset.isCollapsed()) {
+            styleClass = styleClass + " ui-hidden-container";
+        }
         if(fieldset.getStyleClass() != null) {
             styleClass = styleClass + " " + fieldset.getStyleClass();
         }

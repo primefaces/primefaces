@@ -47,8 +47,8 @@
             <name>toggleSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1000</defaultValue>
-            <description>Speed of toggling in milliseconds. Default is 1000.</description>
+            <defaultValue>500</defaultValue>
+            <description>Speed of toggling in milliseconds. Default is 500</description>
         </attribute>
         <attribute>
             <name>style</name>
@@ -80,8 +80,8 @@
             <name>closeSpeed</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1000</defaultValue>
-            <description>Speed of closing effect in milliseconds. Default is 1000.</description>
+            <defaultValue>500</defaultValue>
+            <description>Speed of closing effect in milliseconds. Default is 500.</description>
         </attribute>
         <attribute>
             <name>visible</name>
