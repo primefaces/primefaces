@@ -5,6 +5,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        this.onshowHandlers = [];
         
         this.legend = this.jq.children('.ui-fieldset-legend');
 
@@ -23,6 +24,8 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                             .mousedown(function() {_self.legend.toggleClass('ui-state-active');})
                             .mouseup(function() {_self.legend.toggleClass('ui-state-active');})
         }
+        
+        this.jq.data('widget', this);
     },
     
     /**
@@ -33,13 +36,17 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
 
         var _self = this;
 
-        this.content.slideToggle(this.cfg.toggleSpeed, function() {
+        this.content.slideToggle(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             if(_self.cfg.behaviors) {
                 var toggleBehavior = _self.cfg.behaviors['toggle'];
 
                 if(toggleBehavior) {
                     toggleBehavior.call(_self);
                 }
+            }
+            
+            if(_self.onshowHandlers.length > 0) {
+                _self.invokeOnshowHandlers();
             }
         });
     },
@@ -56,6 +63,16 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = !collapsed;
 
         this.stateHolder.val(!collapsed);
+    },
+    
+    addOnshowHandler: function(fn) {
+        this.onshowHandlers.push(fn);
+    },
+    
+    invokeOnshowHandlers: function() {
+        this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
+            return !fn.call();
+        });
     }
     
 });

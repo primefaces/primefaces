@@ -94,12 +94,19 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         Menu optionsMenu = panel.getOptionsMenu();
-
+        boolean collapsed = panel.isCollapsed();
+        boolean visible = panel.isVisible();
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         String styleClass = panel.getStyleClass() != null ? Panel.PANEL_CLASS + " " + panel.getStyleClass() : Panel.PANEL_CLASS;
         styleClass = panel.isVisible() ? styleClass : styleClass + " ui-helper-hidden";
+        
+        if(collapsed) styleClass += " ui-hidden-container";
+        if(!visible) styleClass += " ui-helper-hidden";
+        
         writer.writeAttribute("class", styleClass, "styleClass");
+        
         if(panel.getStyle() != null) {
             writer.writeAttribute("style", panel.getStyle(), "style");
         }
@@ -109,11 +116,11 @@ public class PanelRenderer extends CoreRenderer {
         encodeFooter(context, panel);
 
         if(panel.isToggleable()) {
-            encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(panel.isCollapsed()));
+            encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(collapsed));
         }
 
         if(panel.isClosable()) {
-            encodeStateHolder(context, panel, clientId + "_visible", String.valueOf(panel.isVisible()));
+            encodeStateHolder(context, panel, clientId + "_visible", String.valueOf(visible));
         }
 
         if (optionsMenu != null) {
