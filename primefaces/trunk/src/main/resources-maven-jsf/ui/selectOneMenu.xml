@@ -97,6 +97,18 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+            <name>onkeydown</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>onkeyup</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
