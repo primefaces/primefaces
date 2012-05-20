@@ -14436,7 +14436,7 @@ function Datepicker() {
 	this._mainDivId = 'ui-datepicker-div'; // The ID of the main datepicker division
 	this._inlineClass = 'ui-datepicker-inline'; // The name of the inline marker class
 	this._appendClass = 'ui-datepicker-append'; // The name of the append marker class
-	this._triggerClass = 'ui-datepicker-trigger'; // The name of the trigger marker class
+	this._triggerClass = 'ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only'; // The name of the trigger marker class
 	this._dialogClass = 'ui-datepicker-dialog'; // The name of the dialog marker class
 	this._disableClass = 'ui-datepicker-disabled'; // The name of the disabled covering marker class
 	this._unselectableClass = 'ui-datepicker-unselectable'; // The name of the unselectable cell marker class
@@ -14630,8 +14630,8 @@ $.extend(Datepicker.prototype, {
 				$('<img/>').addClass(this._triggerClass).
 					attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
 				$('<button type="button"></button>').addClass(this._triggerClass).
-					html(buttonImage == '' ? buttonText : $('<img/>').attr(
-					{ src:buttonImage, alt:buttonText, title:buttonText })));
+					html('<span class="ui-button-icon-left ui-icon ui-icon-calendar"></span><span class="ui-button-text">ui-button</span>'));
+                    
 			input[isRTL ? 'before' : 'after'](inst.trigger);
 			inst.trigger.click(function() {
 				if ($.datepicker._datepickerShowing && $.datepicker._lastInput == input[0])
