@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>carousel</tag>
+	<tagClass>org.primefaces.component.carousel.CarouselTag</tagClass>
+	<componentClass>org.primefaces.component.carousel.Carousel</componentClass>
+	<componentType>org.primefaces.component.Carousel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.CarouselRenderer</rendererType>
+	<rendererClass>org.primefaces.component.carousel.CarouselRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UIData</parent>
+    <description>Carousel is a multi purpose component to display a set of data or general content with slide effects.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&data_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>circular</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Sets continuous scrolling. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>vertical</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Sets vertical scrolling. Default is false</description>
+		</attribute>
+		<attribute>
+			<name>autoPlayInterval</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.</description>
+		</attribute>
+		<attribute>
+			<name>pageLinks</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>3</defaultValue>
+            <description>Defines number of pageLinks of paginator.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the animation effect slide or fade. Default is slide.</description>
+		</attribute>
+		<attribute>
+			<name>easing</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the animation effect. Default is easeInOutCirc.</description>
+		</attribute>
+        <attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Sets the speed of the scrolling animation in milliseconds. Default is 500.</description>
+		</attribute>
+		<attribute>
+			<name>dropdownTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>{page}</defaultValue>
+            <description>Text format of the pager dropdown elements. Default is "{page}".</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>itemStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of each item container.</description>
+		</attribute>
+		<attribute>
+			<name>itemStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of each item container.</description>
+		</attribute>
+        <attribute>
+			<name>headerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Shortcut for header facet.</description>
+		</attribute>
+        <attribute>
+			<name>footerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Shortcut for footer facet.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+    </resources>
+</component>

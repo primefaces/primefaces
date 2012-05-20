@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>tieredMenu</tag>
+	<tagClass>org.primefaces.component.tieredmenu.TieredMenuTag</tagClass>
+	<componentClass>org.primefaces.component.tieredmenu.TieredMenu</componentClass>
+	<componentType>org.primefaces.component.TieredMenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TieredMenuRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tieredmenu.TieredMenuRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>TieredMenu displays submenus in overlays.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.menu.OverlayMenu</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
+		</attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
+        </attribute>
+        <attribute>
+            <name>autoDisplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether the first level of submenus will be displayed on mouseover or not. 
+                        When set to false, click event is required to display.</description>
+        </attribute>
+        <attribute>
+			<name>trigger</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of component whose click event will show the dynamic positioned menu.</description>
+		</attribute>
+        <attribute>
+			<name>my</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Corner of menu to align with trigger element.</description>
+		</attribute>
+        <attribute>
+			<name>at</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Corner of trigger to align with menu element.</description>
+		</attribute>
+        <attribute>
+			<name>overlay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Defines positioning, when enabled menu is displayed with absolute positioning relative to the trigger. 
+            Default is false, meaning static positioning.</description>
+		</attribute>
+        <attribute>
+			<name>triggerEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>click</defaultValue>
+            <description>Event name of component that will show the dynamic positioned menu. Default is click.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

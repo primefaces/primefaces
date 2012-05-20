@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>message</tag>
+	<tagClass>org.primefaces.component.message.MessageTag</tagClass>
+	<componentClass>org.primefaces.component.message.Message</componentClass>
+	<componentType>org.primefaces.component.Message</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.MessageRenderer</rendererType>
+	<rendererClass>org.primefaces.component.message.MessageRenderer</rendererClass>
+	<parent>javax.faces.component.UIMessage</parent>
+    <interfaces>
+        <interface>
+			<name>org.primefaces.component.api.UINotification</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>showSummary</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Specifies if the summary of the FacesMessage should be displayed. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>showDetail</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Specifies if the summary of the FacesMessage should be displayed. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+            <type>java.lang.String</type>     
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Identifier of the component whose messages to display only, takes precendence when used with globalOnly.</description>
+		</attribute>
+		<attribute>
+			<name>redisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>            
+			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines if already rendered messages should be displayed. Default is true.</description>
+		</attribute>
+        <attribute>
+			<name>display</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>both</defaultValue>
+            <description>Defines display mode, valid values are text, icon and both(default).</description>
+		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether html would be escaped or not, defaults to true.</description>
+		</attribute>
+        <attribute>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Comma seperated list of severities to display only.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+	</resources>
+</component>

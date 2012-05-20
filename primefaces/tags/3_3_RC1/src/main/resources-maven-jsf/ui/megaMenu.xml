@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>megaMenu</tag>
+	<tagClass>org.primefaces.component.megamenu.MegaMenuTag</tagClass>
+	<componentClass>org.primefaces.component.megamenu.MegaMenu</componentClass>
+	<componentType>org.primefaces.component.MegaMenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.MegaMenuRenderer</rendererType>
+	<rendererClass>org.primefaces.component.megamenu.MegaMenuRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>MegaMenu is a navigation component that displays submenus together.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+            <description>MenuModel instance to create menus programmatically.</description>
+		</attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
+        </attribute>
+        <attribute>
+            <name>autoDisplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether submenus will be displayed on mouseover or not. When
+            set to false, click event is required to display.</description>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

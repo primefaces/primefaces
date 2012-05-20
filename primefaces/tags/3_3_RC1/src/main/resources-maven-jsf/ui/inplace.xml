@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>inplace</tag>
+	<tagClass>org.primefaces.component.inplace.InplaceTag</tagClass>
+	<componentClass>org.primefaces.component.inplace.Inplace</componentClass>
+	<componentType>org.primefaces.component.Inplace</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InplaceRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inplace.InplaceRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>
+      Inplace provides easy inplace editing and inline content display. 
+      Inplace consists of two members, display element is the inital clickable label and inline element is the hidden content 
+      that'll be displayed when display element is toggled.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label to be shown in display mode.</description>
+		</attribute>
+        <attribute>
+			<name>emptyLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label to be shown in display mode when value isempty.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Effect to be used when toggling. Default fade.</description>
+		</attribute>
+		<attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
+            <description>Speed of the effect. Default normal.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Prevents hidden content to be shown.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the main container element.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
+		</attribute>
+        <attribute>
+			<name>editor</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies the editor mode.</description>
+		</attribute>
+        <attribute>
+			<name>saveLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Save</defaultValue>
+            <description>Tooltip text of save buttin in editor mode. Default is "Save"</description>
+		</attribute>
+        <attribute>
+			<name>cancelLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Cancel</defaultValue>
+            <description>Tooltip text of cancel buttin in editor mode. Default is "Cancel"</description>
+		</attribute>
+        <attribute>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>click</defaultValue>
+            <description>Name of the client side event to display inline content. Default is click.</description>
+		</attribute>
+        <attribute>
+			<name>toggleable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description></description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

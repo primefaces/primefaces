@@ -1,0 +1,37 @@
+.ui-datagrid-data {
+	width: 100%;
+}
+
+.ui-datagrid .ui-paginator {
+	text-align: center;
+}
+
+.ui-datagrid-column {
+	padding: 3px;
+}
+
+.ui-datagrid-content-empty {
+    padding: 4px 10px;
+}
+
+.ui-datagrid .ui-datagrid-header,
+.ui-datagrid .ui-datagrid-footer {
+    text-align:center;
+    padding:4px 10px;
+}
+
+.ui-datagrid .ui-datagrid-header {
+    border-bottom: 0px none;
+}
+
+.ui-datagrid .ui-datagrid-footer {
+    border-top: 0px none;
+}
+
+.ui-datagrid .ui-paginator-top {
+    border-bottom: 0px none;
+}
+
+.ui-datagrid .ui-paginator-bottom {
+    border-top: 0px none;
+}

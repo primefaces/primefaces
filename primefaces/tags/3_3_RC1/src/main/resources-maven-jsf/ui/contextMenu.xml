@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>contextMenu</tag>
+	<tagClass>org.primefaces.component.contextmenu.ContextMenuTag</tagClass>
+	<componentClass>org.primefaces.component.contextmenu.ContextMenu</componentClass>
+	<componentType>org.primefaces.component.ContextMenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ContextMenuRenderer</rendererType>
+	<rendererClass>org.primefaces.component.contextmenu.ContextMenuRenderer</rendererClass>
+	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <description>ContextMenu provides an overlay menu displayed on mouse right-click event.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the component to attach to.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
+		</attribute>
+        <attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.MenuModel</type>
+            <description>Menu model instance to create menu programmatically.</description>
+		</attribute>
+        <attribute>
+			<name>nodeType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Type of tree nodes to get attached.</description>
+		</attribute>
+        <attribute>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event to bind the contextmenu default is right click.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
