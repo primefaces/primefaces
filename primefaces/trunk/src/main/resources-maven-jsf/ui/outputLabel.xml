@@ -20,7 +20,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Value of the component than can be either an EL expression of a literal text.</description>
+            <description>Label to display.</description>
 		</attribute>
         <attribute>
 			<name>accesskey</name>
@@ -48,7 +48,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Defines the component the label is associated to.</description>
+            <description>Id of the associated input component.</description>
 		</attribute>
 		<attribute>
 			<name>lang</name>
@@ -90,84 +90,84 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when button loses focus.</description>
+            <description>Client side callback to execute when component loses focus.</description>
 		</attribute>
 		<attribute>
 			<name>onclick</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when button is clicked.</description>
+            <description>Client side callback to execute when component is clicked.</description>
         </attribute>
 		<attribute>
 			<name>ondblclick</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when button is double clicked.</description>
+            <description>Client side callback to execute when component is double clicked.</description>
 		</attribute>
 		<attribute>
 			<name>onfocus</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when button receives focus.</description>
+            <description>Client side callback to execute when component receives focus.</description>
 		</attribute>
 		<attribute>
 			<name>onkeydown</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a key is pressed down over button.</description>
+            <description>Client side callback to execute when a key is pressed down over component.</description>
 		</attribute>
 		<attribute>
 			<name>onkeypress</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a key is pressed and released over button.</description>
+            <description>Client side callback to execute when a key is pressed and released over component.</description>
 		</attribute>
 		<attribute>
 			<name>onkeyup</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a key is released over button.</description>
+            <description>Client side callback to execute when a key is released over component.</description>
 		</attribute>
 		<attribute>
 			<name>onmousedown</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a pointer button is pressed down over button.</description>
+            <description>Client side callback to execute when a pointer button is pressed down over component.</description>
 		</attribute>
 		<attribute>
 			<name>onmousemove</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a pointer button is moved within button.</description>
+            <description>Client side callback to execute when a pointer button is moved within component.</description>
 		</attribute>
 		<attribute>
 			<name>onmouseout</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a pointer button is moved away from button.</description>
+            <description>Client side callback to execute when a pointer button is moved away from component.</description>
 		</attribute>
 		<attribute>
 			<name>onmouseover</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a pointer button is moved onto button.</description>
+            <description>Client side callback to execute when a pointer button is moved onto component.</description>
 		</attribute>
 		<attribute>
 			<name>onmouseup</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Client side callback to execute when a pointer button is released over button.</description>
+            <description>Client side callback to execute when a pointer button is released over component.</description>
 		</attribute>
 	</attributes>
 </component>
