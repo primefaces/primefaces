@@ -346,7 +346,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         shouldChange = null;
         
         if(this.cfg.editable) {
-            shouldChange = !sameOption || (newOption.text() != this.label.val());
+            shouldChange = (!sameOption)||(newOption.text() != this.label.val());
         }
         else {
             shouldChange = !sameOption;
