@@ -341,9 +341,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     selectItem: function(item, silent) {
         //option to select
         var newOption = this.options.eq(item.index()),
-        currentOption = this.options.filter(':selected');
+        currentOption = this.options.filter(':selected'),
+        sameOption = newOption.val() == currentOption.val(),
+        shouldChange = null;
         
-        if(newOption.val() != currentOption.val()) {
+        if(this.cfg.editable) {
+            shouldChange = !sameOption || (newOption.text() != this.label.val());
+        }
+        else {
+            shouldChange = !sameOption;
+        }
+        
+        if(shouldChange) {
             //update selected option
             this.input.val(newOption.val());
             this.value = newOption.val();
