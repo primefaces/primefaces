@@ -568,7 +568,7 @@ PrimeFaces.ajax.AjaxUtils = {
                         hasViewstate = true;
                     }
                     else {
-                        jqProcess.find(':input').serializeArray();
+                        componentPostParams = jqProcess.find(':input').serializeArray();
                     }
                     
                     $.merge(postParams, componentPostParams);
