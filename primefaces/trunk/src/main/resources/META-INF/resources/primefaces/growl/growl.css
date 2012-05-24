@@ -1,4 +1,4 @@
-/* ie6 trash */
+/* ie6 */
 * html .ui-growl {
 	position:absolute; 
 }
@@ -10,13 +10,11 @@
 	right:7px;
 }
 
-/* the norm */
 .ui-growl {
 	position:fixed;
 	top:20px;
 	right:20px;
 	width:301px;
-	z-index:9999;
 }
 .ui-growl-item-container {
 	position:relative;
