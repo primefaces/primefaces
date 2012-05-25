@@ -303,7 +303,11 @@ import javax.faces.context.FacesContext;
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey));
             }
             else if(eventName.equals("page")) {
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), this.getPage());
+                int rows = this.getRowsToRender();
+                int first = Integer.parseInt(params.get(clientId + "_first"));
+                int page = rows > 0 ? (int) (first / rows) : 0;
+        
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if(eventName.equals("sort")) {
                 SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
