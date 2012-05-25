@@ -212,26 +212,28 @@ public class WizardRenderer extends CoreRenderer {
         boolean currentFound = false;
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix", null);
+        writer.writeAttribute("class", Wizard.STEP_STATUS_CLASS, null);
 
         for(UIComponent child : wizard.getChildren()) {
             if(child instanceof Tab && child.isRendered()) {
                 Tab tab = (Tab) child;
-                String styleClass = "ui-wizard-step-title ui-state-default";
-
-                if((!currentFound) && (currentStep == null || tab.getId().equals(currentStep))) {
-                    styleClass += " ui-state-highlight";
+                boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
+                String titleStyleClass = active ? Wizard.ACTIVE_STEP_CLASS : Wizard.STEP_CLASS;
+                if(tab.getTitleStyleClass() != null) {
+                    titleStyleClass = titleStyleClass + " " + tab.getTitleStyleClass();
+                }
+                
+                if(active) {
                     currentFound = true;
                 }
 
-                styleClass += " ui-corner-all";
-
                 writer.startElement("li", null);
-                writer.writeAttribute("class", styleClass, null);
-                if(tab.getTitletip() != null) 
-                    writer.writeAttribute("title", tab.getTitletip(), null);
+                writer.writeAttribute("class", titleStyleClass, null);
+                if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
+                if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
                 
                 writer.write(tab.getTitle());
+                
                 writer.endElement("li");
             }
         }
