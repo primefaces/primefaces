@@ -174,7 +174,8 @@
 
 .ui-selectonemenu-panel .ui-selectonemenu-table {
     border-collapse:collapse;
-    width: 100%;
+    width:100%;
+    *width:auto;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-table td {
