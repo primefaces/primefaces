@@ -623,13 +623,11 @@ public class DataTableRenderer extends DataRenderer {
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? table.getScrollRows() : rowCount) : rows;
         boolean hasData = rowCount > 0;
-
-        String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
       
         if(!dataOnly) {
             writer.startElement("tbody", null);
             writer.writeAttribute("id", clientId + "_data", null);
-            writer.writeAttribute("class", tbodyClass, null);
+            writer.writeAttribute("class", DataTable.DATA_CLASS, null);
         }
 
         if(hasData) {
@@ -656,7 +654,7 @@ public class DataTableRenderer extends DataRenderer {
         else if(emptyMessage != null){
             //Empty message
             writer.startElement("tr", null);
-            writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+            writer.writeAttribute("class", DataTable.EMPTY_MESSAGE_ROW_CLASS, null);
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumns().size(), null);
