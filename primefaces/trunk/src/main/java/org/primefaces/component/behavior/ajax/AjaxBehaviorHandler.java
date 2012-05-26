@@ -53,6 +53,7 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
     private final TagAttribute listener;
     private final TagAttribute global;
     private final TagAttribute async;
+    private final TagAttribute partialSubmit;
     
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -68,6 +69,7 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         this.listener = this.getAttribute("listener");
         this.global = this.getAttribute("global");
         this.async = this.getAttribute("async");
+        this.partialSubmit = this.getAttribute("partialSubmit");
     }
     
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
@@ -166,6 +168,7 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         setBehaviorAttribute(ctx, behavior, this.immediate, Boolean.class);
         setBehaviorAttribute(ctx, behavior, this.global, Boolean.class);
         setBehaviorAttribute(ctx, behavior, this.async, Boolean.class);
+        setBehaviorAttribute(ctx, behavior, this.partialSubmit, Boolean.class);
         setBehaviorAttribute(ctx, behavior, this.listener, MethodExpression.class);
         
         if(listener != null) {

@@ -563,9 +563,12 @@ PrimeFaces.ajax.AjaxUtils = {
                     var jqProcess = $(PrimeFaces.escapeClientId(item)),
                     componentPostParams = null;
                     
-                    if(jqProcess.is(form)) {
+                    if(jqProcess.is('form')) {
                         componentPostParams = jqProcess.serializeArray();
                         hasViewstate = true;
+                    }
+                    else if(jqProcess.is(':input')) {
+                        componentPostParams = jqProcess.serializeArray();
                     }
                     else {
                         componentPostParams = jqProcess.find(':input').serializeArray();
