@@ -270,6 +270,8 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
             async = (Boolean)value;
         } else if ("global".equals(propertyName)) {
             global = (Boolean)value;
+        } else if ("partialSubmit".equals(propertyName)) {
+            partialSubmit = (Boolean)value;
         }
     }
     
@@ -286,7 +288,7 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
                 values = new Object[] {superState};
         } 
         else {
-            values = new Object[13];
+            values = new Object[14];
       
             values[0] = superState;
             values[1] = onstart;
@@ -299,8 +301,9 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
             values[8] = update;
             values[9] = async;
             values[10] = global;
-            values[11] = listener;
-            values[12] = saveBindings(context, bindings);
+            values[11] = partialSubmit;
+            values[12] = listener;
+            values[13] = saveBindings(context, bindings);
         }
 
         return values;
@@ -323,8 +326,9 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
                 update = (String) values[8];
                 async = (Boolean) values[9];
                 global = (Boolean) values[10];
-                listener = (MethodExpression) values[11];
-                bindings = restoreBindings(context, values[12]);
+                partialSubmit = (Boolean) values[11];
+                listener = (MethodExpression) values[12];
+                bindings = restoreBindings(context, values[13]);
 
                 clearInitialState();
             }
