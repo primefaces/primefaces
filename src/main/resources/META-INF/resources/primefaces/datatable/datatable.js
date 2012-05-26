@@ -171,7 +171,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         //Row mouseover, mouseout, click
         if(this.cfg.selectionMode) {
-            $(this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-emptymessage)').css('cursor', 'pointer')
+            $(this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)').css('cursor', 'pointer')
                 .die('mouseover.datatable mouseout.datatable contextmenu.datatable click.datatable')
                 .live('mouseover.datatable', function() {
                     var element = $(this);
@@ -1358,7 +1358,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Returns if there is any data displayed
      */
     isEmpty: function() {
-        return this.tbody.children('tr.ui-datatable-emptymessage').length == 1;
+        return this.tbody.children('tr.ui-datatable-empty-message').length == 1;
     },
     
     getSelectedRowsCount: function() {

@@ -54,7 +54,7 @@ import javax.faces.context.FacesContext;
     public static final String COLUMN_FOOTER_CONTAINER_CLASS = "ui-footer-column";
     public static final String DATA_CLASS = "ui-datatable-data ui-widget-content";
     public static final String ROW_CLASS = "ui-widget-content";
-    public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-datatable-emptymessage";
+    public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-datatable-empty-message";
     public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header";
     public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header";
     public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
