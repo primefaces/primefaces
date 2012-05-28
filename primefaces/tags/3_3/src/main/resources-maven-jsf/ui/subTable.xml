@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+]>
+<component>
+	<tag>subTable</tag>
+	<tagClass>org.primefaces.component.subtable.SubTableTag</tagClass>
+	<componentClass>org.primefaces.component.subtable.SubTable</componentClass>
+	<componentType>org.primefaces.component.SubTable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SubTableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.subtable.SubTableRenderer</rendererClass>
+	<parent>javax.faces.component.UIData</parent>
+    <description>SubTable is a helper component of datatable used for grouping.</description>
+	<attributes>
+        &data_component_attributes;
+	</attributes>
+</component>

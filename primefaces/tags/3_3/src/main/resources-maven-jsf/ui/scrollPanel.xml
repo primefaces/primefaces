@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>scrollPanel</tag>
+	<tagClass>org.primefaces.component.scrollpanel.ScrollPanelTag</tagClass>
+	<componentClass>org.primefaces.component.scrollpanel.ScrollPanel</componentClass>
+	<componentType>org.primefaces.component.ScrollPanel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ScrollPanelRenderer</rendererType>
+	<rendererClass>org.primefaces.component.scrollpanel.ScrollPanelRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>mode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>default</defaultValue>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

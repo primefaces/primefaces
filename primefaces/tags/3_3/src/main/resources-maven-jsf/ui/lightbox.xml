@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>lightBox</tag>
+	<tagClass>org.primefaces.component.lightbox.LightBoxTag</tagClass>
+	<componentClass>org.primefaces.component.lightbox.LightBox</componentClass>
+	<componentType>org.primefaces.component.LightBox</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.LightBoxRenderer</rendererType>
+	<rendererClass>org.primefaces.component.lightbox.LightBoxRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Lightbox features a powerful overlay that can display images, multimedia content, other JSF components and external urls.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the container element not the overlay element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element not the overlay element.</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Width of the iframe.</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Height of the iframe.</description>
+		</attribute>
+		<attribute>
+			<name>iframe</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies an iframe to display an external url in overlay. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>visible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays lightbox without requiring any user interaction by default. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when lightbox is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when lightbox is hidden.</description>
+        </attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
