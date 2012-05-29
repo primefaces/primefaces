@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>accordionPanel</tag>
+	<tagClass>org.primefaces.component.accordionpanel.AccordionPanelTag</tagClass>
+	<componentClass>org.primefaces.component.accordionpanel.AccordionPanel</componentClass>
+	<componentType>org.primefaces.component.AccordionPanel</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
+	<rendererClass>org.primefaces.component.accordionpanel.AccordionPanelRenderer</rendererClass>
+	<parent>javax.faces.component.UIData</parent>
+    <description>
+      AccordionPanel is a container component that displays content in stacked format.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>activeIndex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>0</defaultValue>
+            <description>Index of the active tab or a comma separated string of indexes when multiple mode is on. Default is zero.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+            <name>onTabChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is clicked.</description>
+        </attribute>
+        <attribute>
+            <name>onTabShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is shown.</description>
+        </attribute>
+        <attribute>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines the toggle mode.</description>
+        </attribute>
+        <attribute>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if activating a dynamic tab should load the contents from server again.</description>
+        </attribute>
+        <attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of collection iterator to use in dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>java.util.List</type>
+            <description>List to iterate to display dynamic number of tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>multiple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Enables activating multiple tabs, default is false.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>dialog</tag>
+    <tagClass>org.primefaces.component.dialog.DialogTag</tagClass>
+    <componentClass>org.primefaces.component.dialog.Dialog</componentClass>
+    <componentType>org.primefaces.component.Dialog</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DialogRenderer</rendererType>
+    <rendererClass>org.primefaces.component.dialog.DialogRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
+    <description>Dialog is a panel component overlaying other elements. Dialog avoids popup blockers, provides customization, resizing, modality, ajax interactions and more.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>header</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Text of the header.</description>
+        </attribute>
+        <attribute>
+            <name>draggable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Specifies draggability. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>resizable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Specifies resizability. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>modal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>visible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Sets dialogs visibility. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Width of the dialog in pixels. Default is auto.</description>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Height of the dialog.</description>
+        </attribute>
+        <attribute>
+            <name>minWidth</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Minimum width of a resizable dialog. Default is unl.</description>
+        </attribute>
+        <attribute>
+            <name>minHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Minimum height of a resizable dialog. Default is height of titlebar.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the dialog container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the dialog container.</description>
+        </attribute>
+        <attribute>
+            <name>showEffect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Effect to use when showing the dialog.</description>
+        </attribute>
+        <attribute>
+            <name>hideEffect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Effect to use when hiding the dialog.</description>
+        </attribute>
+        <attribute>
+            <name>position</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines where the dialog should be displayed.</description>
+        </attribute>
+        <attribute>
+            <name>closable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if close icon should be displayed or not.</description>
+        </attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when dialog is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when dialog is hidden.</description>
+        </attribute>
+        <attribute>
+            <name>appendToBody</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Appends dialog as a child of document body.</description>
+        </attribute>
+        <attribute>
+            <name>showHeader</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Specifies visibility of header content.</description>
+        </attribute>
+        <attribute>
+            <name>footer</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Text of the footer.</description>
+        </attribute>
+        <attribute>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Dynamic mode allows dialog to fetch it's contents before it's shown rather than on page load
+            which is useful to reduce initial page load times. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>minimizable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Specifies if dialog is minimizable or not. Default false.</description>
+        </attribute>
+        <attribute>
+            <name>maximizable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Specifies if dialog is maximizable or not. Default false.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

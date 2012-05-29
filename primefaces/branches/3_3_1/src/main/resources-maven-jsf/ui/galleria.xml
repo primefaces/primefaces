@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>galleria</tag>
+	<tagClass>org.primefaces.component.galleria.GalleriaTag</tagClass>
+	<componentClass>org.primefaces.component.galleria.Galleria</componentClass>
+	<componentType>org.primefaces.component.Galleria</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.GalleriaRenderer</rendererType>
+	<rendererClass>org.primefaces.component.galleria.GalleriaRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UIData</parent>
+    <description>Galleria is used to display a set of images.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description></description>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description></description>
+        </attribute>
+         <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+        </attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>crossfade</defaultValue>
+            <description>Name of animation to use on galleria switches. Default is crossfade.</description>
+		</attribute>
+        <attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>800</defaultValue>
+            <description>Duration of animation in milliseconds. Default is 800.</description>
+		</attribute>
+        <attribute>
+			<name>panelWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>600</defaultValue>
+		</attribute>
+        <attribute>
+			<name>panelHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>400</defaultValue>
+		</attribute>
+        <attribute>
+			<name>frameWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>60</defaultValue>
+		</attribute>
+        <attribute>
+			<name>frameHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>40</defaultValue>
+		</attribute>
+        <attribute>
+			<name>filmstripStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>filmstripPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>showFilmstrip</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
+        <attribute>
+			<name>showCaptions</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>showOverlays</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>transitionInterval</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>4000</defaultValue>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>galleria/galleria.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>galleria/galleria.js</name>
+		</resource>
+	</resources>
+</component>

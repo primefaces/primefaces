@@ -1,0 +1,114 @@
+.ui-sheet table {
+	border-collapse:collapse;
+}
+
+.ui-sheet .ui-sheet-caption {
+    padding: 4px 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ui-sheet .ui-sheet-editor-bar table {
+    width: 100%;
+}
+
+.ui-sheet .ui-sheet-editor-bar tbody td {
+    border:0 none;
+}
+
+.ui-sheet th {
+    text-align:center;
+    white-space:nowrap;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-sheet tbody td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-sheet-body {
+    overflow:auto;
+}
+.ui-sheet-header {
+    overflow: hidden;
+    border:0px none;
+    position: relative;
+}
+            
+.ui-sheet-header-box {
+    float:left;
+    padding-right: 40px;
+}
+
+.ui-sheet .ui-column-resizer {
+    position:absolute;
+    right:0;
+    width:8px;
+    height:20px;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    margin: -4px 0px;
+    *margin-left: 2px;
+}
+
+.ui-sheet .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-sheet div.ui-sh-c {
+    position: relative;
+    padding: 4px 10px;
+    overflow: hidden;
+}
+
+.ui-sheet .ui-sh-c-e {
+    display: none;
+}
+
+.ui-sheet .ui-sh-c.ui-state-highlight {
+    border:0 none;
+}
+
+.ui-sh-c-e input {
+    width: 100%;
+}
+
+.ui-sheet .ui-sheet-index-cell {
+    width: 16px;
+}
+
+.ui-sheet .ui-sheet-cell-info {
+    padding-left: 10px;
+    width: 26px;
+}
+
+.ui-sheet .ui-sheet-editor {
+    width: 100%;
+    padding-left: 4px;
+}
+
+.ui-sheet .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-sheet .ui-sortable-column-icon {
+    position: absolute;
+    left:0;
+    margin-left: -2px;
+}
+
+.ui-sheet .ui-sheet-editing {
+    padding:0 !important;
+    width:auto !important;
+}

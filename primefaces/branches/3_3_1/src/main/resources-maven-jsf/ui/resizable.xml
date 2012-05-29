@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>resizable</tag>
+	<tagClass>org.primefaces.component.resizable.ResizableTag</tagClass>
+	<componentClass>org.primefaces.component.resizable.Resizable</componentClass>
+	<componentType>org.primefaces.component.Resizable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ResizableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.resizable.ResizableRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>
+      PrimeFaces features a resizable component that has the ability to make a JSF component resizable. 
+      Resizable can be used on various components like resize an input fields, panels, menus, images and more.
+    </description>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Identifier of the target component to make resizable.</description>
+        </attribute>
+        <attribute>
+			<name>aspectRatio</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Defines if aspectRatio should be kept or not. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>proxy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays proxy element instead of actual element.</description>
+		</attribute>
+		<attribute>
+			<name>handles</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Specifies the resize handles.</description>
+		</attribute>
+		<attribute>
+			<name>ghost</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>In ghost mode, resize helper is displayed as the original element with less opacity. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Enables animation. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>swing</defaultValue>
+            <description>Effect to use in animation. Default is swing.</description>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>normal</defaultValue>
+            <description>Effect duration of animation. Default is normal.</description>
+		</attribute>
+		<attribute>
+			<name>maxWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>Integer.MAX_VALUE</defaultValue>
+            <description>Maximum width boundary in pixels. Default is max integer value.</description>
+		</attribute>
+		<attribute>
+			<name>maxHeight</name>
+			<required>false</required>
+			<defaultValue>Integer.MAX_VALUE</defaultValue>
+			<type>java.lang.Integer</type>
+            <description>Maximum height boundary in pixels. Default is max integer value.</description>
+		</attribute>
+		<attribute>
+			<name>minWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>Integer.MIN_VALUE</defaultValue>
+            <description>Minimum width boundary in pixels. Default is min integer value.</description>
+		</attribute>
+		<attribute>
+			<name>minHeight</name>
+			<required>false</required>
+			<defaultValue>Integer.MIN_VALUE</defaultValue>
+			<type>java.lang.Integer</type>
+            <description>Maximum height boundary in pixels. Default is min integer value.</description>
+		</attribute>
+        <attribute>
+			<name>containment</name>
+			<required>false</required>
+			<defaultValue>false</defaultValue>
+			<type>java.lang.Boolean</type>
+            <description>Sets resizable boundaries as the parents size. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>grid</name>
+			<required>false</required>
+			<defaultValue>1</defaultValue>
+			<type>java.lang.Integer</type>
+            <description>Snaps resizing to grid structure. Default is 1.</description>
+		</attribute>
+        <attribute>
+            <name>onStart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when resizing begins.</description>
+        </attribute>
+        <attribute>
+            <name>onResize</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute during resizing.</description>
+        </attribute>
+        <attribute>
+            <name>onStop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute after resizing end.</description>
+        </attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

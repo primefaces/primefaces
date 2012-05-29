@@ -1,0 +1,74 @@
+/* GALLERY CONTAINER */
+.ui-galleria { overflow: hidden; visibility: hidden; }
+
+/*************************************************/
+/**   PANEL STYLES								**/
+/*************************************************/
+
+/* GALLERY PANELS */
+.ui-galleria-panel { filter: inherit; }
+
+/* DEFINE HEIGHT OF PANEL OVERLAY */
+/* NOTE - It is best to define padding here as well so overlay and background retain identical dimensions */
+.ui-galleria-panel .ui-galleria-overlay,
+.ui-galleria-panel .ui-galleria-overlay-background { height: 5em; padding: 1em; }
+
+/* PANEL OVERLAY BACKGROUND */
+.ui-galleria-panel .ui-galleria-overlay-background { background: #222; }
+
+/* PANEL OVERLAY CONTENT */
+.ui-galleria-panel .ui-galleria-overlay { color: white; }
+.ui-galleria-panel .ui-galleria-overlay a { color: white; text-decoration: underline; font-weight: bold; }
+
+/* CONTENT PANELS */
+.ui-galleria-panel-content { overflow-y: auto; }
+
+
+/*************************************************/
+/**   FILMSTRIP STYLES							**/
+/*************************************************/
+
+
+/* FILMSTRIP */
+/* 'margin' will define top/bottom margin in completed gallery */
+.ui-galleria-filmstrip { margin: 5px; }
+
+/* FILMSTRIP FRAMES (contains both images and captions) */
+.ui-galleria-frame {
+    float:left;
+}
+
+/* WRAPPER FOR FILMSTRIP IMAGES */
+.ui-galleria-frame .ui-galleria-img-wrap {}
+
+/* WRAPPER FOR CURRENT FILMSTRIP IMAGE */
+.ui-galleria-frame.current .ui-galleria-img-wrap {}
+
+/* FRAME IMAGES */
+.ui-galleria-frame img { border: none; }
+
+/* FRAME CAPTION */
+.ui-galleria-frame .ui-galleria-caption { height: 2em; line-height: 2em; font-size: 1em; text-align: center; }
+
+/* CURRENT FRAME CAPTION */
+.ui-galleria-frame.current .ui-galleria-caption { }
+
+/* POINTER FOR CURRENT FRAME */
+.ui-galleria-pinter {
+	border-color: black;
+}
+
+/* NAVIGATION BUTTONS */
+.ui-galleria-nav-next, .ui-galleria-nav-prev {
+	cursor: pointer;
+}
+
+.ui-galleria-panel-nav-next, ui-galleria-panel-nav-prev {
+	display:none;
+}
+
+/* TRANSPARENT BORDER FIX FOR IE6 */
+/* NOTE - DO NOT CHANGE THIS RULE */
+*html .ui-galleria-pinter {
+	filter: chroma(color=pink);
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>imageCropper</tag>
+	<tagClass>org.primefaces.component.imagecropper.ImageCropperTag</tagClass>
+	<componentClass>org.primefaces.component.imagecropper.ImageCropper</componentClass>
+	<componentType>org.primefaces.component.ImageCropper</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ImageCropperRenderer</rendererType>
+	<rendererClass>org.primefaces.component.imagecropper.ImageCropperRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>ImageCropper allows cropping a certain region of an image. A new image is created containing the cropped area and assigned to a CroppedImage instanced on the server side.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>image</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Context relative path to the image.</description>
+		</attribute>
+        <attribute>
+			<name>alt</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Alternate text of the image.</description>
+		</attribute>
+        <attribute>
+			<name>aspectRatio</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+            <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <description>Aspect ratio of the cropper area. Default is min integer value.</description>
+		</attribute>
+        <attribute>
+			<name>minSize</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Minimum size of the cropper area.</description>
+		</attribute>
+        <attribute>
+			<name>maxSize</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Maximum size of the cropper area.</description>
+		</attribute>
+        <attribute>
+			<name>backgroundColor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Background color of the container.</description>
+		</attribute>
+        <attribute>
+			<name>backgroundOpacity</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+            <defaultValue>0.6</defaultValue>
+            <description>Background opacity of the container. Default is 0.6</description>
+		</attribute>
+        <attribute>
+			<name>initialCoords</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Initial coordinates of the cropper area.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>imagecropper/imagecropper.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>imagecropper/imagecropper.js</name>
+		</resource>
+	</resources>
+</component>

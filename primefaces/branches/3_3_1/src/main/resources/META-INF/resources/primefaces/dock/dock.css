@@ -1,0 +1,58 @@
+/* top */
+.ui-dock-top, .ui-dock-bottom {
+	position: relative; 
+	height: 50px; 
+	text-align: center;
+}
+.ui-dock-container-top {
+	position: fixed;
+	height: 50px;
+	padding-left: 20px;
+}
+a.ui-dock-item-top {
+	display: block;
+	width: 40px;
+	position: absolute;
+	top: 0px;
+	text-align: center;
+	text-decoration: none;
+}
+.ui-dock-item-top img {
+	border: none; 
+	margin: 5px 10px 0px; 
+	width: 100%; 
+}
+.ui-dock-item-top span {
+	display: none; 
+	padding-left: 20px;
+}
+
+/* bottom */
+.ui-dock-bottom {
+	width: 100%;
+	bottom: 0px;
+	position: absolute;
+	left: 0px;
+}
+.ui-dock-container-bottom {
+	position: fixed;
+	height: 50px;
+	padding-left: 20px;
+}
+a.ui-dock-item-bottom {
+	display: block; 
+	width: 40px;  
+	bottom: 0px; 
+	position: absolute;
+	text-align: center;
+	text-decoration: none;
+}
+.ui-dock-item-bottom span {
+	display: none;
+	padding-left: 20px;
+}
+.ui-dock-item-bottom img {
+	border: none; 
+	margin: 5px 10px 0px; 
+	width: 100%; 
+}

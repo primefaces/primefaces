@@ -1,0 +1,13 @@
+-jqplot
+-categoryaxisrenderer
+-pierenderer
+-barrenderer
+-highlighter
+-donutrenderer
+-enhancedlegendrenderer
+-bubblerenderer
+-metergaugerenderer
+-ohlcrenderer
+-canvastextrenderer
+-canvasaxistickrenderer
+-canvasaxislabelrenderer
