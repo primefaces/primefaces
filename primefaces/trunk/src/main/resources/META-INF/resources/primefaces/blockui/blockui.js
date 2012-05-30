@@ -15,6 +15,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.triggers) {
             this.bindTriggers();
         }
+        
+        if(this.cfg.blocked) {
+            this.show();
+        }
 
         //remove script tag
         $(this.jqId + '_s').remove();

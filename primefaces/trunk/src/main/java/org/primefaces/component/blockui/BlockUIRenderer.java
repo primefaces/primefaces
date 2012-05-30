@@ -50,6 +50,9 @@ public class BlockUIRenderer extends CoreRenderer {
         if(triggers != null) {
             writer.write(",triggers:'" + triggers + "'");
         }
+        if(blockUI.isBlocked()) {
+            writer.write(",blocked:true");
+        }
         
         writer.write("});});");
         

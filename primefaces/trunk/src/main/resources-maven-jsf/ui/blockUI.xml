@@ -35,6 +35,13 @@
 			<type>java.lang.String</type>
             <description>Component whose UI to block.</description>
 		</attribute>
+        <attribute>
+			<name>blocked</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Blocks the ui by default when enabled.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
