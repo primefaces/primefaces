@@ -99,8 +99,7 @@ public class PanelRenderer extends CoreRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = panel.getStyleClass() != null ? Panel.PANEL_CLASS + " " + panel.getStyleClass() : Panel.PANEL_CLASS;
-        styleClass = panel.isVisible() ? styleClass : styleClass + " ui-helper-hidden";
+        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + panel.getStyleClass(); 
         
         if(collapsed) styleClass += " ui-hidden-container";
         if(!visible) styleClass += " ui-helper-hidden";
