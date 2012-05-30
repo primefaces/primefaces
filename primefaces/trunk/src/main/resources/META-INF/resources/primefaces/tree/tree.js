@@ -263,7 +263,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         if(this.isCheckboxSelection()) {
             this.toggleCheckbox(node, false);
             this.writeSelections();
-            this.fireNodeUnselectEvent(node);f
+            this.fireNodeUnselectEvent(node);
         }
         else if(metaKey) {
             //remove visual style    
