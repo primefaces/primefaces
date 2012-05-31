@@ -627,24 +627,35 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         else if(this.jqTarget.hasClass('ui-tree')) {
             this.cfg.trigger = this.cfg.target + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node');
         }
-        else {
-            this.cfg.trigger = this.cfg.target;
-        }
 
         //append to body
-        this.jq.appendTo('body');
+        if(!this.jq.parent().is(document.body)) {
+            this.jq.appendTo('body');
+        }
 
         //attach contextmenu
         if(isDocumentTrigger) {
-            $(this.cfg.trigger).bind('contextmenu.ui-contextmenu', function(e) {
+            $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
                 _self.show(e);
             });
         }
         else {
-            $(document).on(this.cfg.event + '.ui-contextmenu', this.cfg.trigger, null, function(e) {
+            var event = this.cfg.event + '.ui-contextmenu';
+            $(document).off(event, this.cfg.trigger).on(event, this.cfg.trigger, null, function(e) {
                 _self.show(e);
             });
         }
+    },
+    
+    refresh: function(cfg) {
+        var jqId = PrimeFaces.escapeClientId(cfg.id),
+        instances = $(jqId);
+        
+        if(instances.length > 1) {
+            $(document.body).children(jqId).remove();
+        }
+
+        this.init(cfg);
     },
     
     bindItemEvents: function() {
