@@ -89,27 +89,26 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                             'z-index' : this.jq.css('z-index') - 1
                         });
 
-        // disable tabbing out of modal dialog and stop events from targets outside
-        // of dialog
+        //Disable tabbing out of modal dialog and stop events from targets outside of dialog
         $(document).bind('keydown.modal-dialog',
                 function(event) {
-                    if (event.keyCode == $.ui.keyCode.TAB) {
+                    if(event.keyCode == $.ui.keyCode.TAB) {
                         var tabbables = _self.content.find(':tabbable'), 
                         first = tabbables.filter(':first'), 
                         last = tabbables.filter(':last');
 
-                        if (event.target === last[0] && !event.shiftKey) {
+                        if(event.target === last[0] && !event.shiftKey) {
                             first.focus(1);
                             return false;
-                        } else if (event.target === first[0]
-                                && event.shiftKey) {
+                        } 
+                        else if (event.target === first[0] && event.shiftKey) {
                             last.focus(1);
                             return false;
                         }
                     }
                 })
                 .bind(this.blockEvents, function(event) {
-                    if ($(event.target).zIndex() < PrimeFaces.zindex) {
+                    if ($(event.target).zIndex() < _self.jq.zIndex()) {
                         return false;
                     }
                 });
