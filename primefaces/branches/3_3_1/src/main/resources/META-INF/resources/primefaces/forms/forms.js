@@ -728,15 +728,15 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 _self.box.addClass('ui-state-hover');
             }).mouseout(function() {
                 _self.box.removeClass('ui-state-hover');
-            }).click(function(e) {
+            }).click(function() {
                 _self.input.trigger('click');
-                
+    
                 if($.browser.msie && parseInt($.browser.version) < 9) {
                     _self.input.trigger('change');
                 }
             });
             
-            //delegate focus-blur-change states
+            //reflect focus-blur-change states of hidden checkbox
             this.input.focus(function() {
                 if(_self.input.prop('checked')) {
                     _self.box.removeClass('ui-state-active');
@@ -779,8 +779,18 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
-    toggle: function() {
-        this.box.click();
+    toggle: function() {  
+        this.box.trigger('click');
+    },
+    
+    check: function() {
+        this.input.prop('checked', true);
+        this.box.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+    },
+    
+    uncheck: function() {
+        this.input.prop('checked', false);
+        this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
     }
     
 });
