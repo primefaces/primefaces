@@ -153,5 +153,8 @@ public class LineChartRenderer extends BaseChartRenderer {
         
         if(chart.isBreakOnNull())
             writer.write(",breakOnNull:true");
+        
+        if(chart.isZoom())
+            writer.write(",zoom:true");
     }
 }

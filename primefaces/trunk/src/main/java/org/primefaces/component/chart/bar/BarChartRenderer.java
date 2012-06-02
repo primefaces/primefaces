@@ -96,6 +96,9 @@ public class BarChartRenderer extends BaseChartRenderer {
         
         if(chart.isBreakOnNull()) 
             writer.write(",breakOnNull:true");
+        
+        if(chart.isZoom())
+            writer.write(",zoom:true");
 
         //boundaries
         if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());

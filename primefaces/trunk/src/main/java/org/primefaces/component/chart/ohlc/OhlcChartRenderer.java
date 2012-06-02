@@ -93,8 +93,10 @@ public class OhlcChartRenderer extends BaseChartRenderer {
         encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle(), Double.MIN_VALUE, Double.MAX_VALUE);
         writer.write("}");
         
-        if(chart.isCandleStick()) {
+        if(chart.isCandleStick())
             writer.write(",candleStick:true");
-        }
+        
+        if(chart.isZoom())
+            writer.write(",zoom:true");
     }
 }

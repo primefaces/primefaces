@@ -149,6 +149,13 @@
             <description>Defines visible row count of chart legend.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>zoom</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables plot zooming.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
