@@ -39,22 +39,15 @@ public class OhlcChartModel extends ChartModel implements Serializable {
         this.data = data;
     }
     
+    public void add(OhlcChartSeries ohlc){
+        this.data.add(ohlc);
+    }
+    
+    @Deprecated
     public void addRecord(OhlcChartSeries ohlc){
         this.data.add(ohlc);
     }
     
-    @Override
-    public String toString(){
-        String out = "[";
-        for( int i = 0; i < data.size() ; i++){
-            if(i != 0)
-                out += ",";
-            out += data.get(i).toString();
-        }
-        
-        return out + "]";
-    }
-
     public void clear() {
         this.data.clear();
     }

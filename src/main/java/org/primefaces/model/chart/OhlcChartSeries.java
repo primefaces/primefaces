@@ -28,11 +28,11 @@ public class OhlcChartSeries implements Serializable {
     public OhlcChartSeries() {}
 
     public OhlcChartSeries(Object value, double open, double high, double low, double close) {
-        setValue(value);
-        setOpen(open);
-        setHigh(high);
-        setLow(low);
-        setClose(close);
+        this.value = value;
+        this.open = open;
+        this.high = high;
+        this.low = low;
+        this.close = close;
     }
 
     public double getClose() {
@@ -73,10 +73,5 @@ public class OhlcChartSeries implements Serializable {
 
     public void setValue(Object value) {
         this.value = value;
-    }
-    
-    @Override
-    public String toString(){
-        return "[" + getValue() + "," + getOpen() + "," + getHigh() + "," + getLow() + "," + getClose() + "]";
     }
 }
