@@ -69,4 +69,18 @@ public class BaseChartRenderer extends CoreRenderer {
                 writer.write(",legendRows:" + chart.getLegendRows());
         }
     }
+    
+    protected void encodeAxis(FacesContext context, String name, String label, int angle, double min, double max) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String labelText = label == null ? "" : label;
+        
+        writer.write(name + ":{");
+        writer.write("title:'" + labelText + "'");
+        writer.write(",angle:" + angle);
+        
+        if(min != Double.MIN_VALUE) writer.write(",min:" + min);
+        if(max != Double.MAX_VALUE) writer.write(",max:" + max);
+       
+        writer.write("}");
+    }
 }
