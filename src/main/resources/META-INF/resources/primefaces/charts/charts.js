@@ -18891,6 +18891,7 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.Chart.extend({
         
         //series config
         this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
             renderer: $.jqplot.BarRenderer,
             rendererOptions: {
                 barDirection: this.cfg.orientation,
@@ -18939,53 +18940,42 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces BubbleChart Widget
  */
-PrimeFaces.widget.BubbleChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.BubbleChart = PrimeFaces.widget.Chart.extend({
     
-    init: function(cfg) {
-        this._super(cfg);
+    configure: function() {
+        this._super();
         
-        this.jqpId = this.id.replace(/:/g,"\\:");
-        var _self = this;
-
-        //default values
-        this.cfg.seriesDefaults.rendererOptions.bubbleAlpha = this.cfg.seriesDefaults.rendererOptions.bubbleAlpha || 0.7;
-        this.cfg.seriesDefaults.rendererOptions.highlightAlpha = 0.8;
-        this.cfg.highlighter = {show:false};
-        this.cfg.seriesDefaults.shadow = this.cfg.shadow;
-
-        if(this.jq.is(':visible')) {
-            this.draw();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
-                });
+        //series config
+        this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
+            renderer: $.jqplot.BubbleRenderer,
+            rendererOptions: {
+                showLabels: this.cfg.showLabels,
+                bubbleGradients: this.cfg.bubbleGradients,
+                bubbleAlpha: this.cfg.bubbleAlpha
             }
-        }
-    },
-    
-    draw: function(){
-        if(this.jq.is(':visible')) {
-            //events
-            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-
-            //highlighter
-            PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-
-            //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
-
-            return true;
-        }
-        else {
-            return false;
-        }
+        };
+        
+        //axes
+        this.cfg.axes = {
+            xaxis: {
+                label: this.cfg.axes.xaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.xaxis.angle
+                }
+            },
+            yaxis: {
+                label: this.cfg.axes.yaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.yaxis.angle
+                }
+            }
+        };
     }
-    
 });
 
 /**
