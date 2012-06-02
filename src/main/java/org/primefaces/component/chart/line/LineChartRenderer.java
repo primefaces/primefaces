@@ -113,31 +113,12 @@ public class LineChartRenderer extends BaseChartRenderer {
     }
 
     protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+        super.encodeOptions(context, chart);
+		
+        ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
-        String legendPosition = chart.getLegendPosition();
-        String title = chart.getTitle();
-        String seriesColors = chart.getSeriesColors();
 
-        if(title != null)
-            writer.write(",title:'" + title + "'");
-        
-        if(!chart.isShadow())
-            writer.write(",shadow:false");
-        
-        if(seriesColors != null)
-            writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
-        
-        if(legendPosition != null) {
-            writer.write(",legendPosition:'" + legendPosition + "'");
-            
-            if(chart.getLegendCols() != 0)
-                writer.write(",legendCols:" + chart.getLegendCols());
-            
-            if(chart.getLegendRows() != 0)
-                writer.write(",legendRows:" + chart.getLegendRows());
-        }
-        
+        //axes
         writer.write(",axes:{");
         encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle(), chart.getMinX(), chart.getMaxX());
         encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle(), chart.getMinY(), chart.getMaxY());
@@ -151,9 +132,6 @@ public class LineChartRenderer extends BaseChartRenderer {
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
 
-            if(chart.isBreakOnNull()) 
-                writer.write(",breakOnNull:true");
-        
             if(series instanceof LineChartSeries) {
                 LineChartSeries  lineChartSeries = (LineChartSeries) series;
                 writer.write(",showLine:" + lineChartSeries.isShowLine());
@@ -170,8 +148,11 @@ public class LineChartRenderer extends BaseChartRenderer {
         if(chart.isFill()) 
             writer.write(",fill:true");
         
-        if(chart.isStacked()) 
+        if(chart.isStacked())
             writer.write(",stackSeries:true");
+        
+        if(chart.isBreakOnNull())
+            writer.write(",breakOnNull:true");
     }
     
     protected void encodeAxis(FacesContext context, String name, String label, int angle, double min, double max) throws IOException {
@@ -179,8 +160,8 @@ public class LineChartRenderer extends BaseChartRenderer {
         String labelText = label == null ? "" : label;
         
         writer.write(name + ":{");
-        writer.write("label:'" + labelText + "'");
-        writer.write(",tickAngle:" + angle);
+        writer.write("title:'" + labelText + "'");
+        writer.write(",angle:" + angle);
         
         if(min != Double.MIN_VALUE) writer.write(",min:" + min);
         if(max != Double.MAX_VALUE) writer.write(",max:" + max);

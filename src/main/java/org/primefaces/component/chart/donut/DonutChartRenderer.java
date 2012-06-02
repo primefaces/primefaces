@@ -60,29 +60,9 @@ public class DonutChartRenderer extends BaseChartRenderer {
     }
 
     protected void encodeOptions(FacesContext context, DonutChart chart) throws IOException {
+        super.encodeOptions(context, chart);
+        
         ResponseWriter writer = context.getResponseWriter();
-        String legendPosition = chart.getLegendPosition();
-        String title = chart.getTitle();
-        String seriesColors = chart.getSeriesColors();
-
-        if(title != null)
-            writer.write(",title:'" + title + "'");
-        
-        if(!chart.isShadow())
-            writer.write(",shadow:false");
-        
-        if(seriesColors != null)
-            writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
-        
-        if(legendPosition != null) {
-            writer.write(",legendPosition:'" + legendPosition + "'");
-            
-            if(chart.getLegendCols() != 0)
-                writer.write(",legendCols:" + chart.getLegendCols());
-            
-            if(chart.getLegendRows() != 0)
-                writer.write(",legendRows:" + chart.getLegendRows());
-        }
 
         if(chart.getSliceMargin() != 0)
             writer.write(",sliceMargin:" + chart.getSliceMargin());

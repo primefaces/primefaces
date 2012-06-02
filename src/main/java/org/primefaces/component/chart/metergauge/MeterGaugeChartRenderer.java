@@ -60,7 +60,7 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
         
         writer.write(",data:[[" + model.getValue() + "]]");
         
-        encodeCommonConfig(context, chart);
+        super.encodeOptions(context, chart);
         
         writer.write(",seriesDefaults : {renderer: $.jqplot.MeterGaugeRenderer, rendererOptions : {");
         

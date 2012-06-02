@@ -18843,6 +18843,8 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.Chart.extend({
 PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
     
     configure: function() {
+        this._super();
+        
         //series config
         this.cfg.seriesDefaults = {
             shadow: this.cfg.shadow,
@@ -18851,16 +18853,23 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
         };
 
         //axes
-        this.cfg.axes.xaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
-        this.cfg.axes.xaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
-        this.cfg.axes.xaxis.tickOptions = {
-            angle: this.cfg.axes.xaxis.angle
-        };
-        
-        this.cfg.axes.yaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
-        this.cfg.axes.yaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
-        this.cfg.axes.yaxis.tickOptions = {
-            angle: this.cfg.axes.yaxis.angle
+        this.cfg.axes = {
+            xaxis: {
+                label: this.cfg.axes.xaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.xaxis.angle
+                }
+            },
+            yaxis: {
+                label: this.cfg.axes.xaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.yaxis.angle
+                }
+            }
         };
         
         if(this.cfg.categories) {
@@ -18875,89 +18884,53 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces BarChart Widget
  */
-PrimeFaces.widget.BarChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.BarChart = PrimeFaces.widget.Chart.extend({
     
-    init: function(cfg) {
-        this._super(cfg);
+    configure: function() {
+        this._super();
         
-        this.jqpId = this.id.replace(/:/g,"\\:");
-        var _self = this;
-
-        var rendererCfg = {
-            barDirection:this.cfg.orientation,
-            barPadding: this.cfg.barPadding,
-            barMargin: this.cfg.barMargin
-        };
-
-        //renderer configuration
+        //series config
         this.cfg.seriesDefaults = {
             renderer: $.jqplot.BarRenderer,
-            rendererOptions: rendererCfg
+            rendererOptions: {
+                barDirection: this.cfg.orientation,
+                barPadding: this.cfg.barPadding,
+                barMargin: this.cfg.barMargin,
+                breakOnNull: this.cfg.breakOnNull
+            }
+        };
+        
+        //axes
+        this.cfg.axes = {
+            xaxis: {
+                label: this.cfg.axes.xaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.xaxis.angle
+                }
+            },
+            yaxis: {
+                label: this.cfg.axes.yaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.yaxis.angle
+                }
+            }
         };
 
-        if(this.cfg.breakOnNull) {
-            this.cfg.seriesDefaults.breakOnNull = true;
-        }
-
-        //axes
-        var categoryAxis = {
-            renderer:$.jqplot.CategoryAxisRenderer,
-            ticks: this.cfg.categories
-        },
-        valueAxis = {
-            min: this.cfg.min,
-            max: this.cfg.max
-        }
-
-        this.cfg.axes = this.cfg.axes || {};
-        this.cfg.axes.xaxis = this.cfg.axes.xaxis || {};
-        this.cfg.axes.yaxis = this.cfg.axes.yaxis || {};
-
         if(this.cfg.orientation == 'vertical') {
-            this.cfg.axes.xaxis.renderer = categoryAxis.renderer;
-            this.cfg.axes.xaxis.ticks = categoryAxis.ticks;
-            this.cfg.axes.yaxis.min = valueAxis.min;
-            this.cfg.axes.yaxis.max = valueAxis.max;
+            this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
+            this.cfg.axes.xaxis.ticks = this.cfg.categories;
+            this.cfg.axes.yaxis.min = this.cfg.min;
+            this.cfg.axes.yaxis.max = this.cfg.max;
         }
         else {
-            this.cfg.axes.yaxis.renderer = categoryAxis.renderer;
-            this.cfg.axes.yaxis.ticks = categoryAxis.ticks;
-            this.cfg.axes.xaxis.min = valueAxis.min;
-            this.cfg.axes.xaxis.max = valueAxis.max;
-        }
-
-        this.cfg.highlighter = {show:false}; //default highlighter off
-
-        if(this.jq.is(':visible')) {
-            this.draw();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
-                });
-            }
-        }
-    },
-    
-    draw: function(){
-        if(this.jq.is(':visible')) {
-            //events
-            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-
-            //highlighter
-            PrimeFaces.widget.ChartUtils.bindHighlighter(this);
-
-            //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
-
-            return true;
-        } 
-        else {
-            return false;
+            this.cfg.axes.yaxis.renderer = $.jqplot.CategoryAxisRenderer;
+            this.cfg.axes.yaxis.ticks = this.cfg.categories;
+            this.cfg.axes.xaxis.min = this.cfg.min;
+            this.cfg.axes.xaxis.max = this.cfg.max;
         }
     }
     

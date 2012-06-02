@@ -58,7 +58,7 @@ public class OhlcChartRenderer extends BaseChartRenderer {
      
     protected void encodeOptions(FacesContext context, OhlcChart chart) throws IOException {
         
-        encodeCommonConfig(context, chart);
+        super.encodeOptions(context, chart);
         
         encodeSeriesDefaults(context, chart);
     }

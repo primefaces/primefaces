@@ -58,7 +58,7 @@ public class BubbleChartRenderer extends BaseChartRenderer {
 
     protected void encodeOptions(FacesContext context, BubbleChart chart) throws IOException {
 
-        encodeCommonConfig(context, chart);
+        super.encodeOptions(context, chart);
         
         encodeSeriesDefaults(context, chart);
     }
