@@ -16,12 +16,15 @@
 package org.primefaces.component.chart.ohlc;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
 import org.primefaces.model.chart.OhlcChartModel;
+import org.primefaces.model.chart.OhlcChartSeries;
 
 public class OhlcChartRenderer extends BaseChartRenderer {
 
@@ -55,25 +58,54 @@ public class OhlcChartRenderer extends BaseChartRenderer {
 
         endScript(writer);
     }
+    
+    protected void encodeData(FacesContext context, OhlcChart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        OhlcChartModel model = (OhlcChartModel) chart.getValue();
+        List<OhlcChartSeries> data = model.getData();
+        StringBuilder builder = new StringBuilder();
+        
+        writer.write(",data:[[");
+        for(Iterator<OhlcChartSeries> it = data.iterator(); it.hasNext();) {
+            OhlcChartSeries s = it.next();
+            builder.append("[").append(s.getValue()).append(",").append(s.getOpen()).append(",").append(s.getHigh())
+                    .append(",").append(s.getLow()).append(",").append(s.getClose()).append("]");
+            
+            writer.write(builder.toString());
+            builder.setLength(0);
+            
+            if(it.hasNext()) {
+                writer.write(",");
+            }
+        }
+        
+        writer.write("]]");
+    }
      
     protected void encodeOptions(FacesContext context, OhlcChart chart) throws IOException {
-        
         super.encodeOptions(context, chart);
         
-        encodeSeriesDefaults(context, chart);
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //axes
+        writer.write(",axes:{");
+        encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle());
+        encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle());
+        writer.write("}");
+        
+        if(chart.isCandleStick()) {
+            writer.write(",candleStick:true");
+        }
     }
     
-    protected void encodeSeriesDefaults(FacesContext context, OhlcChart chart) throws IOException {
+    protected void encodeAxis(FacesContext context, String name, String label, int angle) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.write(", seriesDefaults : { renderer: $.jqplot.OHLCRenderer, rendererOptions : {");
+        String labelText = label == null ? "" : label;
         
-        if(chart.isCandleStick())
-            writer.write("candleStick:true");
- 
-        writer.write("}}");
-    }
-
-    private void encodeData(FacesContext context, OhlcChart chart) throws IOException {
-        context.getResponseWriter().write(",data:[" + ((OhlcChartModel)chart.getValue()).toString() + "]");
+        writer.write(name + ":{");
+        writer.write("title:'" + labelText + "'");
+        writer.write(",angle:" + angle);
+        
+        writer.write("}");
     }
 }

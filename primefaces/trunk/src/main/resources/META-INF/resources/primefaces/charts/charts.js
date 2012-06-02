@@ -18981,50 +18981,39 @@ PrimeFaces.widget.BubbleChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces OhlcChart Widget
  */
-PrimeFaces.widget.OhlcChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.OhlcChart = PrimeFaces.widget.Chart.extend({
     
-    init: function(cfg) {
+    configure: function(cfg) {
         this._super(cfg);
 
-        this.jqpId = this.id.replace(/:/g,"\\:");
-        var _self = this;
-
-        this.cfg.highlighter = {
-            tooltipAxes: 'xy',
-            yvalues: 4,
-            formatString:'<table class="jqplot-highlighter"> \
-            <tr><td>value:</td><td>%s</td></tr> \
-            <tr><td>open:</td><td>%s</td></tr> \
-            <tr><td>hi:</td><td>%s</td></tr> \
-            <tr><td>low:</td><td>%s</td></tr> \
-            <tr><td>close:</td><td>%s</td></tr></table>'
-        }
-
-        if(this.jq.is(':visible')) {
-            this.draw();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
-                });
+        //series config
+        this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
+            renderer: $.jqplot.OHLCRenderer,
+            rendererOptions: {
+                candleStick: this.cfg.candleStick
             }
-        }
-    },
-    
-    draw: function(){
-        if(this.jq.is(':visible')) {
-            //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+        };
 
-            return true;
-        } 
-        else {
-            return false;
-        }
+        //axes
+        this.cfg.axes = {
+            xaxis: {
+                label: this.cfg.axes.xaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.xaxis.angle
+                }
+            },
+            yaxis: {
+                label: this.cfg.axes.yaxis.title,
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: this.cfg.axes.yaxis.angle
+                }
+            }
+        };
     }
     
 });
