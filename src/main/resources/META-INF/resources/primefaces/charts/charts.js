@@ -19021,42 +19021,24 @@ PrimeFaces.widget.OhlcChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces MeterGaugeChart Widget
  */
-PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.Chart.extend({
     
-    init: function(cfg) {
-        this._super(cfg);
+    configure: function() {
+        this._super();
         
-        this.jqpId = this.id.replace(/:/g,"\\:");
-        var _self = this;
-
-        if(this.cfg.seriesColors)
-            this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
-
-        if(this.jq.is(':visible')) {
-            this.draw();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
-                });
+        //series config
+        this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
+            renderer: $.jqplot.MeterGaugeRenderer,
+            rendererOptions: {
+                intervals: this.cfg.intervals,
+                intervalColors: this.cfg.seriesColors,
+                label: this.cfg.label,
+                showTickLabels: this.cfg.showTickLabels,
+                labelHeightAdjust: this.cfg.labelHeightAdjust,
+                intervalOuterRadius: this.cfg.intervalOuterRadius
             }
-        }
-    },
-    
-    draw: function(){
-        if(this.jq.is(':visible')) {
-            //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
-
-            return true;
-        } 
-        else {
-            return false;
-        }
+        };   
     }
     
 });

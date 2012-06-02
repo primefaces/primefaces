@@ -25,7 +25,6 @@ public class MeterGaugeChartModel extends ChartModel implements Serializable {
     private List<Number> intervals;
     private Number value;
     
-    
     public MeterGaugeChartModel() {
         intervals = new ArrayList<Number>();
     }
