@@ -16,6 +16,8 @@
 package org.primefaces.component.chart.metergauge;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -45,6 +47,8 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
         writer.write("PrimeFaces.cw('MeterGaugeChart','" + chart.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
 
+        encodeData(context, chart);
+        
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
@@ -53,27 +57,39 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
 
         endScript(writer);
     }
+    
+    protected void encodeData(FacesContext context, MeterGaugeChart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        MeterGaugeChartModel model = (MeterGaugeChartModel) chart.getValue();
+        
+         writer.write(",data:[[" + model.getValue() + "]]");
+    }
 
     protected void encodeOptions(FacesContext context, MeterGaugeChart chart) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        MeterGaugeChartModel model = (MeterGaugeChartModel)chart.getValue();
-        
-        writer.write(",data:[[" + model.getValue() + "]]");
-        
         super.encodeOptions(context, chart);
         
-        writer.write(",seriesDefaults : {renderer: $.jqplot.MeterGaugeRenderer, rendererOptions : {");
+        ResponseWriter writer = context.getResponseWriter();
+        MeterGaugeChartModel model = (MeterGaugeChartModel)chart.getValue();
+        String label = model.getLabel();
+        List<Number> intervals = model.getIntervals();
         
-        writer.write("intervals:" + model.getIntervals().toString());
-        
-        writer.write(",label:'" + model.getLabel() + "'");
-        
-        if(!chart.isShowTickLabels())
-            writer.write(",showTickLabels:false");
-        
+        writer.write(",intervals:[");
+        for(Iterator<Number> it = intervals.iterator(); it.hasNext();) {
+            Number number = it.next();
+            writer.write(number.toString());
+            
+            if(it.hasNext()) {
+                writer.write(",");
+            }
+        }
+        writer.write("]");
+
+        if(label != null) {
+            writer.write(",label:'" + label + "'");
+        }
+              
+        writer.write(",showTickLabels:" + chart.isShowTickLabels());
         writer.write(",labelHeightAdjust:" + chart.getLabelHeightAdjust());
         writer.write(",intervalOuterRadius:" + chart.getIntervalOuterRadius());
-        
-        writer.write("}}");
     }
 }
