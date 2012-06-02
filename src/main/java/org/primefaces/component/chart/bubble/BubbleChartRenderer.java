@@ -96,5 +96,8 @@ public class BubbleChartRenderer extends BaseChartRenderer {
         writer.write(",showLabels:" + chart.isShowLabels());
         writer.write(",bubbleGradients:" + chart.isBubbleGradients());
         writer.write(",bubbleAlpha:" + chart.getBubbleAlpha());
+        
+        if(chart.isZoom())
+            writer.write(",zoom:true");
     }
 }

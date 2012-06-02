@@ -11,3 +11,4 @@
 -canvastextrenderer
 -canvasaxistickrenderer
 -canvasaxislabelrenderer
+-cursor
