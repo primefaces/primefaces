@@ -80,18 +80,41 @@ public class PieChartRenderer extends BaseChartRenderer {
 
     protected void encodeOptions(FacesContext context, PieChart chart) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-
-        encodeCommonConfig(context, chart);
-
-        //chart specific config
-        if(chart.getDiameter() != Integer.MIN_VALUE) 
+        String legendPosition = chart.getLegendPosition();
+        String title = chart.getTitle();
+        String seriesColors = chart.getSeriesColors();
+        
+        if(title != null)
+            writer.write(",title:'" + title + "'");
+        
+        if(!chart.isShadow())
+            writer.write(",shadow:false");
+        
+        if(seriesColors != null)
+            writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
+        
+        if(legendPosition != null) {
+            writer.write(",legendPosition:'" + legendPosition + "'");
+            
+            if(chart.getLegendCols() != 0)
+                writer.write(",legendCols:" + chart.getLegendCols());
+            
+            if(chart.getLegendRows() != 0)
+                writer.write(",legendRows:" + chart.getLegendRows());
+        }
+ 
+       if(chart.getDiameter() != Integer.MIN_VALUE) 
             writer.write(",diameter:" + chart.getDiameter());
+        
         if(chart.getSliceMargin() != 0)
             writer.write(",sliceMargin:" + chart.getSliceMargin());
+        
         if(chart.isFill() == false)
             writer.write(",fill:false");
+        
         if(chart.isShowDataLabels())
             writer.write(",showDataLabels:true");
+        
         if(chart.getDataFormat() !=null)
             writer.write(",dataFormat:'" + chart.getDataFormat() +"'");
     }
