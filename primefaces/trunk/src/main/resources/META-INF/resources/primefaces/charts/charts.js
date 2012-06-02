@@ -19914,6 +19914,10 @@ PrimeFaces.widget.CartesianChart = PrimeFaces.widget.Chart.extend({
         this.cfg.axes.yaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
         this.cfg.axes.yaxis.tickOptions = {angle:this.cfg.axes.yaxis.angle};
     }
+    
+    ,resetZoom: function() {
+        this.plot.resetZoom();
+    }
 });
 
 /**
