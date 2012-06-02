@@ -35,7 +35,7 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 
     protected enum PropertyKeys {
         widgetVar
-	,value
+        ,value
         ,styleClass
         ,style
         ,title
@@ -155,7 +155,7 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
     
     public Integer getLegendCols() {
-		return (Integer) getStateHelper().eval(PropertyKeys.legendCols, 1);
+		return (Integer) getStateHelper().eval(PropertyKeys.legendCols, 0);
 	}
 	public void setLegendCols(Integer _legendCols) {
 		getStateHelper().put(PropertyKeys.legendCols, _legendCols);
