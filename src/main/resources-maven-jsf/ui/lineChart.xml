@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.chart.LineChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.line.LineChartRenderer</rendererClass>
-	<parent>org.primefaces.component.chart.UIChart</parent>
+	<parent>org.primefaces.component.chart.CartesianChart</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>

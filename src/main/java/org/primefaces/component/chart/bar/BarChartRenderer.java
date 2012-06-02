@@ -109,7 +109,7 @@ public class BarChartRenderer extends BaseChartRenderer {
         ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
         boolean horizontal = chart.getOrientation().equals("horizontal");
-        List<String> categories = model.getCategories();
+        List<String> categories = chart.getCategories();
         
         //data
 		writer.write(",data:[" );

@@ -17,9 +17,7 @@ package org.primefaces.model.chart;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class CartesianChartModel extends ChartModel implements Serializable {
 
@@ -35,28 +33,5 @@ public class CartesianChartModel extends ChartModel implements Serializable {
 
     public void clear() {
         this.series.clear();
-    }
-
-    /**
-     * Finds the categories using first series
-     *
-     * @return List of categories
-     */
-    public List<String> getCategories() {
-        List<String> categories = new ArrayList<String>();
-        
-        if(series.size() > 0) {
-            Map<Object,Number> firstSeriesData = series.get(0).getData();
-            for(Iterator<Object> it = firstSeriesData.keySet().iterator(); it.hasNext();) {
-                Object key = it.next();
-                
-                if(key instanceof String) {
-                    categories.add(key.toString());
-                } else {
-                    break;
-                }
-            }
-        }
-        return categories;
     }
 }

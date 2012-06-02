@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIOutput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -27,7 +27,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.ItemSelectEvent;
 
-public abstract class UIChart extends UIComponentBase implements ClientBehaviorHolder {
+public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 
     private final static String DEFAULT_EVENT = "itemSelect";
 
@@ -35,7 +35,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 
     protected enum PropertyKeys {
         widgetVar
-        ,value
         ,styleClass
         ,style
         ,title
@@ -69,13 +68,6 @@ public abstract class UIChart extends UIComponentBase implements ClientBehaviorH
 	}
 	public void setWidgetVar(String _widgetVar) {
 		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
-
-	public Object getValue() {
-		return getStateHelper().eval(PropertyKeys.value, null);
-	}
-	public void setValue(Object _value) {
-		getStateHelper().put(PropertyKeys.value, _value);
 	}
 
 	public String getStyleClass() {

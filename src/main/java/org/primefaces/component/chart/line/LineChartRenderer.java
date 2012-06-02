@@ -63,7 +63,7 @@ public class LineChartRenderer extends BaseChartRenderer {
     protected void encodeData(FacesContext context, LineChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
-        List<String> categories = model.getCategories();
+        List<String> categories = chart.getCategories();
         boolean hasCategories = !categories.isEmpty();
         
         //data
