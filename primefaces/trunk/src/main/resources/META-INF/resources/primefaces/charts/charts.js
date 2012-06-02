@@ -18730,57 +18730,33 @@ if (!document.createElement('canvas').getContext) {
 $.jqplot.config.enablePlugins = true;
 
 /**
- * PrimeFaces PieChart Widget
+ * PrimeFaces Base Chart Widget
  */
-PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
         this.jqpid = this.id.replace(/:/g,"\\:");
-        var _self = this;        
-
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.PieRenderer,
-            rendererOptions: {
-                fill: this.cfg.fill,
-                diameter : this.cfg.diameter,
-                sliceMargin : this.cfg.sliceMargin,
-                showDataLabels : this.cfg.showDataLabels,
-                dataLabels : this.cfg.dataFormat||'percent'
-            }
-        };
         
-        //legend config
-        if(this.cfg.legendPosition) {
-            this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
-                show: true,
-                location: this.cfg.legendPosition,
-                rendererOptions: {
-                    numberRows: this.cfg.legendRows||0,
-                    numberColumns: this.cfg.legendCols||0
-                }
-            };
-        }
-
+        this.configure();
+        
         if(this.jq.is(':visible')) {
-            this.draw();
+            this.render();
         } 
         else {
             var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
+            hiddenParentWidget = hiddenParent.data('widget'),
+            _self = this;
 
             if(hiddenParentWidget) {
                 hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
+                    return _self.render();
                 });
             }
         }
-    },
+    }
     
-    draw: function(){
+    ,render: function(){
         if(this.jq.is(':visible')) {
             //events
             PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
@@ -18798,18 +18774,53 @@ PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
         }
     }
     
+    ,configure: function() {
+        
+        //legend config
+        if(this.cfg.legendPosition) {
+            this.cfg.legend = {
+                renderer: $.jqplot.EnhancedLegendRenderer,
+                show: true,
+                location: this.cfg.legendPosition,
+                rendererOptions: {
+                    numberRows: this.cfg.legendRows||0,
+                    numberColumns: this.cfg.legendCols||0
+                }
+            };
+        }
+    }
+});
+
+/**
+ * PrimeFaces PieChart Widget
+ */
+PrimeFaces.widget.PieChart = PrimeFaces.widget.Chart.extend({
+    
+    configure: function() {
+        this._super();
+        
+        //series config
+        this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
+            renderer: $.jqplot.PieRenderer,
+            rendererOptions: {
+                fill: this.cfg.fill,
+                diameter : this.cfg.diameter,
+                sliceMargin : this.cfg.sliceMargin,
+                showDataLabels : this.cfg.showDataLabels,
+                dataLabels : this.cfg.dataFormat||'percent'
+            }
+        };
+    }
+    
 });
 
 /**
  * PrimeFaces DonutChart Widget
  */
-PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DonutChart = PrimeFaces.widget.Chart.extend({
     
-    init: function(cfg) {
-        this._super(cfg);
-        this.jqpId = this.id.replace(/:/g,"\\:");
-        var _self = this;
-        
+    configure: function() {
         //series config
         this.cfg.seriesDefaults = {
             shadow : this.cfg.shadow,
@@ -18821,49 +18832,7 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
                 showDataLabels : this.cfg.showDataLabels,
                 dataLabels : this.cfg.dataFormat||'percent'
             }
-        };
-        
-        //legend config
-        if(this.cfg.legendPosition) {
-            this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
-                show: true,
-                location: this.cfg.legendPosition,
-                rendererOptions: {
-                    numberRows: this.cfg.legendRows||0,
-                    numberColumns: this.cfg.legendCols||0
-                }
-            };
-        }
-
-        if(this.jq.is(':visible')) {
-            this.draw();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
-                });
-            }
-        }
-    },
-    
-    draw: function(){
-        if(this.jq.is(':visible')) {
-            //events
-            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-
-            //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
-
-            return true;
-        } 
-        else {
-            return false;
-        }
+        };    
     }
     
 });
@@ -18871,33 +18840,15 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
 /**
  * PrimeFaces LineChart Widget
  */
-PrimeFaces.widget.LineChart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
     
-    init: function(cfg) {
-        this._super(cfg);
-        
-        this.jqpId = this.id.replace(/:/g,"\\:");   
-        var _self = this;
-        
+    configure: function() {
         //series config
         this.cfg.seriesDefaults = {
             shadow: this.cfg.shadow,
             fill: this.cfg.fill,
             breakOnNull: this.cfg.breakOnNull
         };
-        
-        //legend config
-        if(this.cfg.legendPosition) {
-            this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
-                show: true,
-                location: this.cfg.legendPosition,
-                rendererOptions: {
-                    numberRows: this.cfg.legendRows||0,
-                    numberColumns: this.cfg.legendCols||0
-                }
-            };
-        }
 
         //axes
         this.cfg.axes.xaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
@@ -18915,35 +18866,6 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.categories) {
             this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
             this.cfg.axes.xaxis.ticks = this.cfg.categories;
-        }
-
-        if(this.jq.is(':visible')) {
-            this.draw();
-        }
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.draw();
-                });
-            }
-        }
-    },
-    
-    draw: function(){
-        if(this.jq.is(':visible')) {
-            //events
-            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-
-            //render chart
-            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
-
-            return true;
-        } 
-        else {
-            return false;
         }
     }
     
