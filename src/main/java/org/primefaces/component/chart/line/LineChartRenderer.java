@@ -49,6 +49,8 @@ public class LineChartRenderer extends BaseChartRenderer {
         writer.write("PrimeFaces.cw('LineChart','" + chart.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         
+        encodeData(context, chart);
+        
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
@@ -57,13 +59,13 @@ public class LineChartRenderer extends BaseChartRenderer {
 
 		endScript(writer);
 	}
-
-    protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    
+    protected void encodeData(FacesContext context, LineChart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
         List<String> categories = model.getCategories();
         boolean hasCategories = !categories.isEmpty();
-
+        
         //data
 		writer.write(",data:[" );
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
@@ -77,7 +79,8 @@ public class LineChartRenderer extends BaseChartRenderer {
 
                 if(hasCategories) {
                     writer.write(yValueAsString);
-                } else {
+                } 
+                else {
                     writer.write("[");
                     writer.write(xValue + "," + yValueAsString);
                     writer.write("]");
@@ -94,10 +97,52 @@ public class LineChartRenderer extends BaseChartRenderer {
             }
         }
         writer.write("]");
+        
+        //categories
+        if(hasCategories) {
+            writer.write(",categories:[");
+            for(Iterator<String> it = categories.iterator(); it.hasNext();) {
+                writer.write("'" + it.next() + "'");
 
-        //common config
-        encodeCommonConfig(context, chart);
+                if(it.hasNext()) {
+                    writer.write(",");
+                }
+            }
+            writer.write("]");
+        }
+    }
 
+    protected void encodeOptions(FacesContext context, LineChart chart) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+        CartesianChartModel model = (CartesianChartModel) chart.getValue();
+        String legendPosition = chart.getLegendPosition();
+        String title = chart.getTitle();
+        String seriesColors = chart.getSeriesColors();
+
+        if(title != null)
+            writer.write(",title:'" + title + "'");
+        
+        if(!chart.isShadow())
+            writer.write(",shadow:false");
+        
+        if(seriesColors != null)
+            writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
+        
+        if(legendPosition != null) {
+            writer.write(",legendPosition:'" + legendPosition + "'");
+            
+            if(chart.getLegendCols() != 0)
+                writer.write(",legendCols:" + chart.getLegendCols());
+            
+            if(chart.getLegendRows() != 0)
+                writer.write(",legendRows:" + chart.getLegendRows());
+        }
+        
+        writer.write(",axes:{");
+        encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle(), chart.getMinX(), chart.getMaxX());
+        encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle(), chart.getMinY(), chart.getMaxY());
+        writer.write("}");
+        
         //series
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
@@ -116,38 +161,30 @@ public class LineChartRenderer extends BaseChartRenderer {
             }
             writer.write("}");
 
-            if(it.hasNext()) {
+            if(it.hasNext())
                 writer.write(",");
-            }
         }
 
         writer.write("]");
 
-        //categories
-        if(hasCategories) {
-            writer.write(",categories:[");
-            for(Iterator<String> it = categories.iterator(); it.hasNext();) {
-                writer.write("'" + it.next() + "'");
-
-                if(it.hasNext()) {
-                    writer.write(",");
-                }
-            }
-            writer.write("]");
-        }
-
-        //boundaries
-        if(chart.getMinX() != Double.MIN_VALUE) writer.write(",minX:" + chart.getMinX());
-        if(chart.getMaxX() != Double.MAX_VALUE) writer.write(",maxX:" + chart.getMaxX());
-        if(chart.getMinY() != Double.MIN_VALUE) writer.write(",minY:" + chart.getMinY());
-        if(chart.getMaxY() != Double.MAX_VALUE) writer.write(",maxY:" + chart.getMaxY());
-
-        if(chart.isFillToZero()) 
-            writer.write(",fillToZero:true");
-        else 
-            if(chart.isFill()) writer.write(",fill:true");
+        if(chart.isFill()) 
+            writer.write(",fill:true");
         
         if(chart.isStacked()) 
             writer.write(",stackSeries:true");
+    }
+    
+    protected void encodeAxis(FacesContext context, String name, String label, int angle, double min, double max) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String labelText = label == null ? "" : label;
+        
+        writer.write(name + ":{");
+        writer.write("label:'" + labelText + "'");
+        writer.write(",tickAngle:" + angle);
+        
+        if(min != Double.MIN_VALUE) writer.write(",min:" + min);
+        if(max != Double.MAX_VALUE) writer.write(",max:" + max);
+        
+        writer.write("}");
     }
 }
