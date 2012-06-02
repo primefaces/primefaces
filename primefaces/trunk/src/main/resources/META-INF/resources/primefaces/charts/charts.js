@@ -18741,12 +18741,12 @@ PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
 
         //series config
         this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
             renderer: $.jqplot.PieRenderer,
             rendererOptions: {
+                fill: this.cfg.fill,
                 diameter : this.cfg.diameter,
                 sliceMargin : this.cfg.sliceMargin,
-                fill: this.cfg.fill,
-                shadow : this.cfg.shadow,
                 showDataLabels : this.cfg.showDataLabels,
                 dataLabels : this.cfg.dataFormat||'percent'
             }
@@ -18812,12 +18812,12 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
         
         //series config
         this.cfg.seriesDefaults = {
+            shadow : this.cfg.shadow,
             renderer: $.jqplot.DonutRenderer,
             rendererOptions: {
+                fill: this.cfg.fill,
                 diameter : this.cfg.diameter,
                 sliceMargin : this.cfg.sliceMargin,
-                fill: this.cfg.fill,
-                shadow : this.cfg.shadow,
                 showDataLabels : this.cfg.showDataLabels,
                 dataLabels : this.cfg.dataFormat||'percent'
             }
@@ -18876,39 +18876,46 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.jqpId = this.id.replace(/:/g,"\\:");    
-        this.cfg.seriesDefaults = {};
+        this.jqpId = this.id.replace(/:/g,"\\:");   
         var _self = this;
+        
+        //series config
+        this.cfg.seriesDefaults = {
+            shadow: this.cfg.shadow,
+            fill: this.cfg.fill,
+            breakOnNull: this.cfg.breakOnNull
+        };
+        
+        //legend config
+        if(this.cfg.legendPosition) {
+            this.cfg.legend = {
+                renderer: $.jqplot.EnhancedLegendRenderer,
+                show: true,
+                location: this.cfg.legendPosition,
+                rendererOptions: {
+                    numberRows: this.cfg.legendRows||0,
+                    numberColumns: this.cfg.legendCols||0
+                }
+            };
+        }
 
         //axes
-        this.cfg.axes = this.cfg.axes || {};
-        this.cfg.axes.xaxis = this.cfg.axes.xaxis || {};
-        this.cfg.axes.yaxis = this.cfg.axes.yaxis || {};
-
-        this.cfg.axes.xaxis.min = this.cfg.minX;
-        this.cfg.axes.xaxis.max = this.cfg.maxX;
-
-        this.cfg.axes.yaxis.min = this.cfg.minY;
-        this.cfg.axes.yaxis.max = this.cfg.maxY;
-
+        this.cfg.axes.xaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
+        this.cfg.axes.xaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
+        this.cfg.axes.xaxis.tickOptions = {
+            angle: this.cfg.axes.xaxis.angle
+        };
+        
+        this.cfg.axes.yaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
+        this.cfg.axes.yaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
+        this.cfg.axes.yaxis.tickOptions = {
+            angle: this.cfg.axes.yaxis.angle
+        };
+        
         if(this.cfg.categories) {
             this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
             this.cfg.axes.xaxis.ticks = this.cfg.categories;
         }
-
-        if(this.cfg.breakOnNull) {
-            this.seriesDefaults.breakOnNull =  true;
-        }
-
-        if(this.cfg.fillToZero){
-            this.cfg.seriesDefaults.fillToZero = true;
-            this.cfg.seriesDefaults.fill = true;
-        }
-        else if(this.cfg.fill){
-            this.cfg.seriesDefaults.fill = true;
-        }
-
-        this.cfg.highlighter = {show : true, formatString : '%s, %s', showTooltip : true};
 
         if(this.jq.is(':visible')) {
             this.draw();
@@ -18934,7 +18941,8 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.BaseWidget.extend({
             this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
 
             return true;
-        } else {
+        } 
+        else {
             return false;
         }
     }

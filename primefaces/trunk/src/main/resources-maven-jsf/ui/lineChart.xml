@@ -111,12 +111,6 @@
             <defaultValue>true</defaultValue>
 		</attribute>
        <attribute>
-			<name>fillToZero</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-		</attribute>
-       <attribute>
 			<name>xaxisLabel</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -140,13 +134,6 @@
 			<type>java.lang.Integer</type>
         <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-       <attribute>
-            <name>legendToggle</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <ignoreInComponent>true</ignoreInComponent>
-            <description>Defines legend action whether hides/shows related series on click.</description>
-        </attribute>
         <attribute>
 			<name>legendCols</name>
 			<required>false</required>
