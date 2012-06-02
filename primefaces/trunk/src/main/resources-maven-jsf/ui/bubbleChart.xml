@@ -64,8 +64,8 @@
         <attribute>
             <name>bubbleAlpha</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>70</defaultValue>
+            <type>java.lang.Double</type>
+            <defaultValue>1.0</defaultValue>
         </attribute>
         <attribute>
             <name>showLabels</name>

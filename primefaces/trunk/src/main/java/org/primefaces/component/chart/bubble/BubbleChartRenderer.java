@@ -16,12 +16,15 @@
 package org.primefaces.component.chart.bubble;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.BaseChartRenderer;
 import org.primefaces.component.chart.UIChart;
 import org.primefaces.model.chart.BubbleChartModel;
+import org.primefaces.model.chart.BubbleChartSeries;
 
 public class BubbleChartRenderer extends BaseChartRenderer {
 
@@ -55,30 +58,54 @@ public class BubbleChartRenderer extends BaseChartRenderer {
 
         endScript(writer);
     }
+    
+    protected void encodeData(FacesContext context, BubbleChart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        BubbleChartModel model = (BubbleChartModel) chart.getValue();
+        List<BubbleChartSeries> data = model.getData();
+        StringBuilder builder = new StringBuilder();
+        
+        writer.write(",data:[[");
+        for(Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext();) {
+            BubbleChartSeries s = it.next();
+            builder.append("[").append(s.getX()).append(",").append(s.getY()).append(",")
+                    .append(s.getRadius()).append(",'").append(s.getLabel()).append("']");
+            
+            writer.write(builder.toString());
+            builder.setLength(0);
+            
+            if(it.hasNext()) {
+                writer.write(",");
+            }
+        }
+        
+        writer.write("]]");
+    }
 
     protected void encodeOptions(FacesContext context, BubbleChart chart) throws IOException {
-
         super.encodeOptions(context, chart);
         
-        encodeSeriesDefaults(context, chart);
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //axes
+        writer.write(",axes:{");
+        encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle());
+        encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle());
+        writer.write("}");
+        
+        writer.write(",showLabels:" + chart.isShowLabels());
+        writer.write(",bubbleGradients:" + chart.isBubbleGradients());
+        writer.write(",bubbleAlpha:" + chart.getBubbleAlpha());
     }
     
-    protected void encodeSeriesDefaults(FacesContext context, BubbleChart chart) throws IOException {
+    protected void encodeAxis(FacesContext context, String name, String label, int angle) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.write(", seriesDefaults : { renderer: $.jqplot.BubbleRenderer, rendererOptions : {");
+        String labelText = label == null ? "" : label;
         
-        writer.write("showLabels : " + chart.isShowLabels());
+        writer.write(name + ":{");
+        writer.write("title:'" + labelText + "'");
+        writer.write(",angle:" + angle);
         
-        if(chart.isBubbleGradients())
-            writer.write(",bubbleGradients:true");
-        
-        if(chart.getBubbleAlpha()  != 70)
-            writer.write(",bubbleAlpha:" + ((chart.getBubbleAlpha()%100)/100));
-        
-        writer.write("}}");
-    }
-
-    private void encodeData(FacesContext context, BubbleChart chart) throws IOException {
-        context.getResponseWriter().write(",data:[" + ((BubbleChartModel) chart.getValue()).toString() + "]");
+        writer.write("}");
     }
 }
