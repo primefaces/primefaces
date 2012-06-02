@@ -18775,7 +18775,6 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
     }
     
     ,configure: function() {
-        
         //legend config
         if(this.cfg.legendPosition) {
             this.cfg.legend = {
@@ -18788,6 +18787,24 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
         }
+    }
+});
+
+/**
+ * PrimeFaces Carteisian Chart Widget
+ */
+PrimeFaces.widget.CartesianChart = PrimeFaces.widget.Chart.extend({
+    
+    configure: function() {
+        this._super();
+        
+        //axes
+        this.cfg.axes.xaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
+        this.cfg.axes.xaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
+        this.cfg.axes.xaxis.tickOptions = {angle:this.cfg.axes.xaxis.angle};
+        this.cfg.axes.yaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
+        this.cfg.axes.yaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
+        this.cfg.axes.yaxis.tickOptions = {angle:this.cfg.axes.yaxis.angle};
     }
 });
 
@@ -18832,7 +18849,7 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.Chart.extend({
                 showDataLabels : this.cfg.showDataLabels,
                 dataLabels : this.cfg.dataFormat||'percent'
             }
-        };    
+        };   
     }
     
 });
@@ -18840,7 +18857,7 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces LineChart Widget
  */
-PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
+PrimeFaces.widget.LineChart = PrimeFaces.widget.CartesianChart.extend({
     
     configure: function() {
         this._super();
@@ -18852,26 +18869,6 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
             breakOnNull: this.cfg.breakOnNull
         };
 
-        //axes
-        this.cfg.axes = {
-            xaxis: {
-                label: this.cfg.axes.xaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.xaxis.angle
-                }
-            },
-            yaxis: {
-                label: this.cfg.axes.xaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.yaxis.angle
-                }
-            }
-        };
-        
         if(this.cfg.categories) {
             this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
             this.cfg.axes.xaxis.ticks = this.cfg.categories;
@@ -18884,7 +18881,7 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces BarChart Widget
  */
-PrimeFaces.widget.BarChart = PrimeFaces.widget.Chart.extend({
+PrimeFaces.widget.BarChart = PrimeFaces.widget.CartesianChart.extend({
     
     configure: function() {
         this._super();
@@ -18901,26 +18898,6 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.Chart.extend({
             }
         };
         
-        //axes
-        this.cfg.axes = {
-            xaxis: {
-                label: this.cfg.axes.xaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.xaxis.angle
-                }
-            },
-            yaxis: {
-                label: this.cfg.axes.yaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.yaxis.angle
-                }
-            }
-        };
-
         if(this.cfg.orientation == 'vertical') {
             this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
             this.cfg.axes.xaxis.ticks = this.cfg.categories;
@@ -18940,7 +18917,7 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.Chart.extend({
 /**
  * PrimeFaces BubbleChart Widget
  */
-PrimeFaces.widget.BubbleChart = PrimeFaces.widget.Chart.extend({
+PrimeFaces.widget.BubbleChart = PrimeFaces.widget.CartesianChart.extend({
     
     configure: function() {
         this._super();
@@ -18955,33 +18932,13 @@ PrimeFaces.widget.BubbleChart = PrimeFaces.widget.Chart.extend({
                 bubbleAlpha: this.cfg.bubbleAlpha
             }
         };
-        
-        //axes
-        this.cfg.axes = {
-            xaxis: {
-                label: this.cfg.axes.xaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.xaxis.angle
-                }
-            },
-            yaxis: {
-                label: this.cfg.axes.yaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.yaxis.angle
-                }
-            }
-        };
     }
 });
 
 /**
  * PrimeFaces OhlcChart Widget
  */
-PrimeFaces.widget.OhlcChart = PrimeFaces.widget.Chart.extend({
+PrimeFaces.widget.OhlcChart = PrimeFaces.widget.CartesianChart.extend({
     
     configure: function(cfg) {
         this._super(cfg);
@@ -18992,26 +18949,6 @@ PrimeFaces.widget.OhlcChart = PrimeFaces.widget.Chart.extend({
             renderer: $.jqplot.OHLCRenderer,
             rendererOptions: {
                 candleStick: this.cfg.candleStick
-            }
-        };
-
-        //axes
-        this.cfg.axes = {
-            xaxis: {
-                label: this.cfg.axes.xaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.xaxis.angle
-                }
-            },
-            yaxis: {
-                label: this.cfg.axes.yaxis.title,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: this.cfg.axes.yaxis.angle
-                }
             }
         };
     }

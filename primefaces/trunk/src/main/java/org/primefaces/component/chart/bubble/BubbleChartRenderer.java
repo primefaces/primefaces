@@ -89,23 +89,12 @@ public class BubbleChartRenderer extends BaseChartRenderer {
         
         //axes
         writer.write(",axes:{");
-        encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle());
-        encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle());
+        encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle(), Double.MIN_VALUE, Double.MAX_VALUE);
+        encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle(), Double.MIN_VALUE, Double.MAX_VALUE);
         writer.write("}");
         
         writer.write(",showLabels:" + chart.isShowLabels());
         writer.write(",bubbleGradients:" + chart.isBubbleGradients());
         writer.write(",bubbleAlpha:" + chart.getBubbleAlpha());
-    }
-    
-    protected void encodeAxis(FacesContext context, String name, String label, int angle) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String labelText = label == null ? "" : label;
-        
-        writer.write(name + ":{");
-        writer.write("title:'" + labelText + "'");
-        writer.write(",angle:" + angle);
-        
-        writer.write("}");
     }
 }
