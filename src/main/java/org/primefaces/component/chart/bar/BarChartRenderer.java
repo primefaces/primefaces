@@ -100,10 +100,8 @@ public class BarChartRenderer extends BaseChartRenderer {
         if(chart.isZoom())
             writer.write(",zoom:true");
         
-        if(chart.isAnimate()) {
+        if(chart.isAnimate())
             writer.write(",animate:true");
-            writer.write(",animateReplot:true");
-        }
 
         //boundaries
         if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
