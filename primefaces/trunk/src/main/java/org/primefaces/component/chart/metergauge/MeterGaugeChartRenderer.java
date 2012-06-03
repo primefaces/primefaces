@@ -70,19 +70,10 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         MeterGaugeChartModel model = (MeterGaugeChartModel)chart.getValue();
-        String label = model.getLabel();
-        List<Number> intervals = model.getIntervals();
+        String label = chart.getLabel();
         
-        writer.write(",intervals:[");
-        for(Iterator<Number> it = intervals.iterator(); it.hasNext();) {
-            Number number = it.next();
-            writer.write(number.toString());
-            
-            if(it.hasNext()) {
-                writer.write(",");
-            }
-        }
-        writer.write("]");
+        encodeNumberList(context, "intervals", model.getIntervals());
+        encodeNumberList(context, "ticks", model.getTicks());
 
         if(label != null) {
             writer.write(",label:'" + label + "'");
@@ -91,5 +82,25 @@ public class MeterGaugeChartRenderer extends BaseChartRenderer {
         writer.write(",showTickLabels:" + chart.isShowTickLabels());
         writer.write(",labelHeightAdjust:" + chart.getLabelHeightAdjust());
         writer.write(",intervalOuterRadius:" + chart.getIntervalOuterRadius());
+        
+        if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
+        if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
+    }
+    
+    protected void encodeNumberList(FacesContext context, String name, List<Number> values) throws IOException {
+        if(values != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            
+            writer.write("," + name + ":[");
+            for(Iterator<Number> it = values.iterator(); it.hasNext();) {
+                Number number = it.next();
+                writer.write(number.toString());
+
+                if(it.hasNext()) {
+                    writer.write(",");
+                }
+            }
+            writer.write("]");
+        }
     }
 }

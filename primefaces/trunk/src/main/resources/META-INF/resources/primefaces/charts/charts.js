@@ -19834,6 +19834,11 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
         
         this.configure();
         
+        //call extender
+        if(this.cfg.extender) {
+            this.cfg.extender.call(this);
+        }
+        
         if(this.jq.is(':visible')) {
             this.render();
         } 
@@ -20084,8 +20089,11 @@ PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.Chart.extend({
                 intervalColors: this.cfg.seriesColors,
                 label: this.cfg.label,
                 showTickLabels: this.cfg.showTickLabels,
+                ticks: this.cfg.ticks,
                 labelHeightAdjust: this.cfg.labelHeightAdjust,
-                intervalOuterRadius: this.cfg.intervalOuterRadius
+                intervalOuterRadius: this.cfg.intervalOuterRadius,
+                min: this.cfg.min,
+                max: this.cfg.max
             }
         };   
     }

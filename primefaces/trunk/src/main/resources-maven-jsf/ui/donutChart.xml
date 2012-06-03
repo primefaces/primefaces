@@ -106,6 +106,13 @@
             <description>Defines visible row count of chart legend.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>extender</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Javascript function to extend the chart with low level jqplot options.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
 	<resources>
         <resource>
