@@ -42,8 +42,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         
         writer.write("PrimeFaces.cw('ContextMenu','" + widgetVar + "',{");
         writer.write("id:'" + clientId + "'");     
-        writer.write(",target:" + target);
- 
+        
+        if(target != null) writer.write(",target:" + target);
         if(menu.getNodeType() != null) writer.write(",nodeType:'" + menu.getNodeType() + "'");
         if(event != null) writer.write(",event:'" + event + "'");
         
@@ -74,7 +74,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
                 return "'" + forComponent.getClientId(context) + "'";
 		}
         else {
-            return "document";
+            //null means document as target
+            return null;
         }
 	}
 }
