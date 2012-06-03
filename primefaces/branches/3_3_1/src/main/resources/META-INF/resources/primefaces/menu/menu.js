@@ -607,25 +607,29 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     init: function(cfg) {
         cfg.autoDisplay = true;
         this._super(cfg);
-
+        
         var _self = this,
-        isDocumentTrigger = this.cfg.target === document;
+        documentTarget = (this.cfg.target === undefined);
 
         //event
         this.cfg.event = this.cfg.event||'contextmenu';
 
-        //trigger
-        this.cfg.target = isDocumentTrigger ? document : PrimeFaces.escapeClientId(this.cfg.target);
-        this.jqTarget = $(this.cfg.target);
+        //target
+        this.jqTargetId = documentTarget ? document : PrimeFaces.escapeClientId(this.cfg.target);
+        this.jqTarget = $(this.jqTargetId);
 
+        //trigger
         if(this.jqTarget.hasClass('ui-datatable')) {
-            this.cfg.trigger = this.cfg.target + ' .ui-datatable-data tr';
+            this.trigger = this.jqTargetId + ' .ui-datatable-data tr';
         }
         else if(this.jqTarget.hasClass('ui-treetable')) {
-            this.cfg.trigger = this.cfg.target + ' .ui-treetable-data ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node');
+            this.trigger = this.jqTargetId + ' .ui-treetable-data ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node');
         }
         else if(this.jqTarget.hasClass('ui-tree')) {
-            this.cfg.trigger = this.cfg.target + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node');
+            this.trigger = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node');
+        }
+        else {
+            this.trigger = this.jqTargetId;
         }
 
         //append to body
@@ -634,14 +638,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         }
 
         //attach contextmenu
-        if(isDocumentTrigger) {
+        if(documentTarget) {
             $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
                 _self.show(e);
             });
         }
         else {
             var event = this.cfg.event + '.ui-contextmenu';
-            $(document).off(event, this.cfg.trigger).on(event, this.cfg.trigger, null, function(e) {
+            $(document).off(event, this.trigger).on(event, this.trigger, null, function(e) {
                 _self.show(e);
             });
         }
