@@ -49,6 +49,7 @@ public class BaseChartRenderer extends CoreRenderer {
         String legendPosition = chart.getLegendPosition();
         String title = chart.getTitle();
         String seriesColors = chart.getSeriesColors();
+        String extender = chart.getExtender();
 
         if(title != null)
             writer.write(",title:'" + title + "'");
@@ -68,6 +69,9 @@ public class BaseChartRenderer extends CoreRenderer {
             if(chart.getLegendRows() != 0)
                 writer.write(",legendRows:" + chart.getLegendRows());
         }
+        
+        if(extender != null)
+            writer.write(",extender:" + extender);
     }
     
     protected void encodeAxis(FacesContext context, String name, String label, int angle, double min, double max) throws IOException {

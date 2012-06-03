@@ -156,6 +156,13 @@
             <defaultValue>false</defaultValue>
             <description>Enables plot zooming.</description>
 		</attribute>
+        <attribute>
+			<name>extender</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Javascript function to extend the chart with low level jqplot options.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

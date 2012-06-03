@@ -39,7 +39,6 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
         ,style
         ,title
         ,legendPosition
-        ,legendToggle
         ,legendCols
         ,legendRows
         ,shadow
@@ -47,7 +46,8 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
         ,yaxisLabel
         ,xaxisAngle
         ,yaxisAngle
-        ,seriesColors;
+        ,seriesColors
+        ,extender;
 
 		String toString;
 
@@ -131,14 +131,7 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	public void setShadow(boolean _shadow) {
 		getStateHelper().put(PropertyKeys.shadow, _shadow);
 	}
-        
-	public boolean isLegendToggle() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.legendToggle, true);
-	}
-	public void setLegendToggle(boolean _legendToggle) {
-		getStateHelper().put(PropertyKeys.legendToggle, _legendToggle);
-	}
-	
+    
     public java.lang.String getSeriesColors() {
 		return (java.lang.String) getStateHelper().eval(PropertyKeys.seriesColors, null);
 	}
@@ -158,6 +151,13 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	}
 	public void setLegendRows(Integer _legendRows) {
 		getStateHelper().put(PropertyKeys.legendRows, _legendRows);
+	}
+    
+    public java.lang.String getExtender() {
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.extender, null);
+	}
+	public void setExtender(java.lang.String _extender) {
+		getStateHelper().put(PropertyKeys.extender, _extender);
 	}
     
     @Override
