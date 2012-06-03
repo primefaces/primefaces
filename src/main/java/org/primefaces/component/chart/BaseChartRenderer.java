@@ -72,6 +72,7 @@ public class BaseChartRenderer extends CoreRenderer {
         
         if(extender != null)
             writer.write(",extender:" + extender);
+        
     }
     
     protected void encodeAxis(FacesContext context, String name, String label, int angle, double min, double max) throws IOException {

@@ -125,6 +125,7 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	public void setLegendPosition(String _legendPosition) {
 		getStateHelper().put(PropertyKeys.legendPosition, _legendPosition);
 	}
+    
 	public boolean isShadow() {
 		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.shadow, true);
 	}
