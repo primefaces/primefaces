@@ -101,5 +101,8 @@ public class OhlcChartRenderer extends BaseChartRenderer {
         
         if(chart.isAnimate())
             writer.write(",animate:true");
+        
+        if(chart.isShowDatatip())
+            writer.write(",datatip:true");
     }
 }

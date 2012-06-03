@@ -111,6 +111,13 @@
             <description>Javascript function to extend the chart with low level jqplot options.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>showDatatip</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines visibility of datatip, default is true.</description>
+		</attribute>
     </attributes>
 	<resources>
         <resource>

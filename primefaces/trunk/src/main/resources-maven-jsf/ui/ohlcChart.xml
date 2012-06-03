@@ -100,6 +100,13 @@
             <defaultValue>false</defaultValue>
             <description>Enables animation on plot, default is false.</description>
 		</attribute>
+        <attribute>
+			<name>showDatatip</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines visibility of datatip, default is true.</description>
+		</attribute>
     </attributes>
 	<resources>
         <resource>

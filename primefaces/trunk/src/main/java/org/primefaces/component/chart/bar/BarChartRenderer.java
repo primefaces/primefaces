@@ -102,6 +102,9 @@ public class BarChartRenderer extends BaseChartRenderer {
         
         if(chart.isAnimate())
             writer.write(",animate:true");
+        
+        if(chart.isShowDatatip())
+            writer.write(",datatip:true");
 
         //boundaries
         if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
