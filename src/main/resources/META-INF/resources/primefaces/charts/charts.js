@@ -19901,6 +19901,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     }
+    
+    ,exportAsImage: function() {
+        return this.jq.jqplotToImageElem();
+    }
 });
 
 /**
