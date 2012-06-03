@@ -162,6 +162,13 @@
             <description>Javascript function to extend the chart with low level jqplot options.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables animation on plot, default is false.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
