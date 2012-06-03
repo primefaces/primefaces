@@ -456,7 +456,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String filterId = column.getClientId(context) + "_filter";
-        String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
+        String filterValue = params.containsKey(filterId) && !table.isReset() ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
         
 
