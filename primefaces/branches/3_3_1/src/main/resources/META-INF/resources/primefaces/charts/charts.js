@@ -19205,9 +19205,10 @@ PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
                 showDataLabels : this.cfg.showDataLabels,
                 dataLabels : this.cfg.dataFormat||'percent'
             }
-            ,highlighter: {
-                show: false
-            }
+        };
+        
+        this.cfg.highlighter = {
+            show: false
         };
 
         if(this.jq.is(':visible')) {
