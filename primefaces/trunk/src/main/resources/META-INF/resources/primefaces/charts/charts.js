@@ -19858,10 +19858,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
     ,render: function(){
         if(this.jq.is(':visible')) {
             //events
-            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
-
-            //highlighter
-            //PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+            this.bindItemSelect();
 
             //render chart
             this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
@@ -19904,6 +19901,26 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
     
     ,exportAsImage: function() {
         return this.jq.jqplotToImageElem();
+    }
+    
+    ,bindItemSelect: function() {
+        var _self = this;
+        
+        $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+            if(neighbor && _self.cfg.behaviors) {
+                var itemSelectCallback = _self.cfg.behaviors['itemSelect'];
+                if(itemSelectCallback) {
+                    var ext = {
+                        params: [
+                            {name: 'itemIndex', value: neighbor.pointIndex}
+                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
+                        ]
+                    };
+                    
+                    itemSelectCallback.call(_self, ev, ext);
+                }
+            }
+        });
     }
 });
 
@@ -20103,55 +20120,3 @@ PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.Chart.extend({
     }
     
 });
-
-/**
- * Chart Utils
- */
-PrimeFaces.widget.ChartUtils = {
-    
-    bindItemSelectListener : function(chart) {
-        $(chart.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
-            if(neighbor && chart.cfg.behaviors) {
-                var itemSelectCallback = chart.cfg.behaviors['itemSelect'];
-                if(itemSelectCallback) {
-                    var ext = {
-                        params: [
-                            {name: 'itemIndex', value: neighbor.pointIndex}
-                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
-                        ]
-                    };
-                    
-                    itemSelectCallback.call(chart, ev, ext);
-                }
-            }
-        });
-    },
-    
-    bindHighlighter : function(chartWidget){      
-      chartWidget.jq.append($('<div class="ui-chart-tooltip" style="position:absolute;overflow:hidden;white-space:nowrap;display:none;background:#E5DACA;padding:4px; z-index:1000;"></div>').css({opacity : 0.8}));
-      
-      var tooltip = chartWidget.jq.find('.ui-chart-tooltip');
-      
-      chartWidget.jq.bind('jqplotDataHighlight',
-            function (ev, seriesIndex, pointIndex, data) {
-                var text = chartWidget.cfg.categories ? chartWidget.cfg.categories[pointIndex] + ' : ' : '';
-                text += (chartWidget.cfg.series ? chartWidget.cfg.series[seriesIndex].label + " : " : '') + data[0] + " : " +data[1];
-                tooltip.html(text).css({
-                    display : 'block'
-                });
-            }
-            ).bind('jqplotDataUnhighlight',
-            function (ev, seriesIndex, pointIndex, data) {
-                tooltip.css({
-                    display : 'none'
-                });
-            }).bind('jqplotMouseMove', 
-            function(ev, gridpos, datapos, neighbor, plot){
-                if (neighbor != null)
-                    tooltip.css({
-                        left:(gridpos.x + 15 ),
-                        top:(gridpos.y - 5)
-                    });
-            });
-    }
-}
