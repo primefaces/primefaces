@@ -39,10 +39,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
-            if(_self.jq.is(':visible'))
-                _self.hide(e);
-            else
-                _self.show(e);
+            if(_self.jq.is(':visible')) {
+                _self.hide();
+            }
+            else {
+                _self.show();
+                e.preventDefault();
+            }
         });
 
         //hide overlay on document mousedown
@@ -87,14 +90,12 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    show: function(e) {
+    show: function() {
         this.align();
         this.jq.css('z-index', ++PrimeFaces.zindex).show();
-
-        e.preventDefault();
     },
     
-    hide: function(e) {
+    hide: function() {
         this.jq.fadeOut('fast');
     },
     
@@ -442,7 +443,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             $(this).removeClass('ui-state-hover');
         });
 
-        if(this.cfg.dynamic) {
+        if(this.cfg.overlay) {
             this.menuitemLinks.click(function() {
                 _self.hide();
             });  
