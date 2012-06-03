@@ -20356,7 +20356,8 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
         //highlighter
         if(this.cfg.datatip) {
             this.cfg.highlighter = {
-                show: true
+                show: true,
+                formatString: this.cfg.datatipFormat
             }
         }
         else {

@@ -100,7 +100,10 @@ public class BubbleChartRenderer extends BaseChartRenderer {
         if(chart.isZoom())
             writer.write(",zoom:true");
         
-        if(chart.isShowDatatip())
+        if(chart.isShowDatatip()) {
             writer.write(",datatip:true");
+            if(chart.getDatatipFormat() != null)
+                writer.write(",datatipFormat:'" + chart.getDatatipFormat() + "'");
+        }
     }
 }
