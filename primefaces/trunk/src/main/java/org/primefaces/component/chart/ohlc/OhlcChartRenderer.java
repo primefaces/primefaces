@@ -99,9 +99,7 @@ public class OhlcChartRenderer extends BaseChartRenderer {
         if(chart.isZoom())
             writer.write(",zoom:true");
         
-        if(chart.isAnimate()) {
+        if(chart.isAnimate())
             writer.write(",animate:true");
-            writer.write(",animateReplot:true");
-        }
     }
 }
