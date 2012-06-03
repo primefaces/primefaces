@@ -160,7 +160,10 @@ public class LineChartRenderer extends BaseChartRenderer {
         if(chart.isAnimate())
             writer.write(",animate:true");
         
-        if(chart.isShowDatatip())
+        if(chart.isShowDatatip()) {
             writer.write(",datatip:true");
+            if(chart.getDatatipFormat() != null)
+                writer.write(",datatipFormat:'" + chart.getDatatipFormat() + "'");
+        }
     }
 }

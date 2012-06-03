@@ -176,6 +176,12 @@
             <defaultValue>true</defaultValue>
             <description>Defines visibility of datatip, default is true.</description>
 		</attribute>
+        <attribute>
+			<name>datatipFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template string for datatips.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
