@@ -32,7 +32,7 @@ public class DataListRenderer extends DataRenderer {
         if(list.isPaginationRequest(context)) {
             list.updatePaginationData(context, list);
             
-            if(list.isLazyLoading()) {
+            if(list.isLazy()) {
                 list.loadLazyData();
             }
             
@@ -48,7 +48,7 @@ public class DataListRenderer extends DataRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, DataList list) throws IOException {
-        if(list.isLazyLoading()) {
+        if(list.isLazy()) {
             list.loadLazyData();
         }
         
