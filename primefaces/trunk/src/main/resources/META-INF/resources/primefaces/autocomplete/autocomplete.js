@@ -139,6 +139,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 _self.search('');
                 _self.input.focus();
             }
+        }).focus(function() {
+            $(this).addClass('ui-state-focus');
+        }).blur(function() {
+            $(this).removeClass('ui-state-focus');
+        }).keydown(function(e) {
+            var keyCode = $.ui.keyCode;
+            
+            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
+                _self.search('');
+                _self.input.focus();
+                
+                e.preventDefault();
+            }
         });
 
         //hide overlay when outside is clicked
