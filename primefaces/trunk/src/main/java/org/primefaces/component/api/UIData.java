@@ -158,24 +158,7 @@ public class UIData extends javax.faces.component.UIData {
         
         return rows == 0 ? this.getRowCount() : rows;
     }
-    
-    public boolean isLazyLoading() {
-        if(isLazy()) {
-            return true;
-        }
         
-        //backward compatibility to figure out lazy loading from ve type
-        ValueExpression ve = getValueExpression("value");
-        if(ve != null) {
-            Class type = ve.getType(FacesContext.getCurrentInstance().getELContext());
-            if(type != null && LazyDataModel.class.isAssignableFrom(type)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
     public boolean isPaginationRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
     }
