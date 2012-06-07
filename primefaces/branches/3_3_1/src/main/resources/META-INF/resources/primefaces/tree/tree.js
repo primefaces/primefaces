@@ -383,7 +383,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         node.parents('li').each(function() {
             var parentNode = $(this),
             rowKey = _self.getRowKey(parentNode),
-            icon = parentNode.find('.ui-tree-checkbox-icon:first'),
+            icon = parentNode.find('> .ui-tree-node > .ui-tree-selectable-node > .ui-tree-checkbox'),
             checkedChildren = parentNode.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon.ui-icon-check'),
             allChildren = parentNode.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon');
 
