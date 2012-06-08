@@ -20308,6 +20308,13 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
                 });
             }
         }
+    },
+    
+    refresh: function(cfg) {
+        //release resources
+        this.plot.destroy();
+        
+        this.init(cfg);
     }
     
     ,render: function(){
