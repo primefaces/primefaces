@@ -37,14 +37,19 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         var text = this.raphael.text(x, y, model.data);
         text.data('node', node);
         node.data('text', text);
-        
-        //events
-        node.click(this.nodeClick);
-        text.click(this.nodeTextClick);
-        
+
         //draggable
         node.drag(this.nodeDrag, this.nodeDragStart, this.nodeDragEnd);
         text.drag(this.textDrag, this.textDragStart, this.textDragEnd);
+        
+        //events
+        if(model.selectable) {
+            node.click(this.nodeClick);
+            text.click(this.nodeTextClick);
+            
+            node.attr({cursor:'pointer'});
+            text.attr({cursor:'pointer'});
+        }
         
         return node;
     },
