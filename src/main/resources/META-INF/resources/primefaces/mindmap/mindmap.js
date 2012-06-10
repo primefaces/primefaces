@@ -5,33 +5,48 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        this.width = this.jq.width();
-        this.height = this.jq.height();
-        this.centerX = this.width / 2;
-        this.centerY = this.height / 2;
-        this.raphael = new Raphael(this.id, this.width, this.height);
-        this.connections = [];
+        this.cfg.width = this.jq.width();
+        this.cfg.height = this.jq.height();
+        this.cfg.centerX = this.cfg.width / 2;
+        this.cfg.centerY = this.cfg.height / 2;
+        this.raphael = new Raphael(this.id, this.cfg.width, this.cfg.height);
         
         if(this.cfg.model) {            
             //root
-            this.root = this.raphael.ellipse(this.centerX, this.centerY, 30, 20)
-                            .data('model', this.cfg.model)
-                            .data('connections', [])
-                            .data('widget', this);
-                            
-            if(this.cfg.model.fill) {
-                this.root.attr({fill: '#' + this.cfg.model.fill});
-            }
-                            
-            this.root.drag(this.move, this.dragger, this.up);
-                            
-            this.raphael.text(this.centerX, this.centerY, this.cfg.model.data);
+            this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, 30, 20, this.cfg.model);
             
             //children
             if(this.cfg.model.children) {
                 this.createSubNodes(this.root);
             }
         }
+    },
+    
+    createNode: function(x, y, rx, ry, model) { 
+        var node = this.raphael.ellipse(x, y, rx, ry)
+                            .data('model', model)
+                            .data('connections', [])
+                            .data('widget', this);
+              
+        //node options
+        if(model.fill) {
+            node.attr({fill: '#' + model.fill});
+        }
+            
+        //text
+        var text = this.raphael.text(x, y, model.data);
+        text.data('node', node);
+        node.data('text', text);
+        
+        //events
+        node.click(this.nodeClick);
+        text.click(this.nodeTextClick);
+        
+        //draggable
+        node.drag(this.nodeDrag, this.nodeDragStart, this.nodeDragEnd);
+        text.drag(this.textDrag, this.textDragStart, this.textDragEnd);
+        
+        return node;
     },
     
     createSubNodes: function(node) {        
@@ -46,23 +61,9 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
             x = node.attr('cx') + 100 * Math.cos(angle),
             y = node.attr('cy') + 100 * Math.sin(angle);
-
-            var childNode = this.raphael.ellipse(x, y, 30, 20)
-                        .data('model', childModel)
-                        .data('connections', [])
-                        .data('parent', node)
-                        .data('widget', this);
-
-            if(childModel.fill) {
-                childNode.attr({fill: '#' + childModel.fill});
-            }
-
-            //label of node
-            var nodeText = this.raphael.text(x, y, childModel.data);
-
-            //drag support
-            childNode.drag(this.move, this.dragger, this.up);
             
+            var childNode = this.createNode(x, y, 30, 20, childModel);
+
             //connection
             var connection = this.raphael.connection(node, childNode, "#000");
             node.data('connections').push(connection);
@@ -75,28 +76,102 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         
     },
     
-    dragger : function () {
-        this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
-        this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
-        this.animate({"fill-opacity": .2}, 500);
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+    
+        return false;
     },
     
-    move: function(dx, dy) {
-        var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-        this.attr(att);
+    nodeTextClick: function(e) {
+        var _self = this.data('node').data('widget');
         
-        var widget = this.data('widget'),
-        connections = this.data('connections');
+        _self.fireNodeSelectEvent(this.data('node'));
+    },
+    
+    nodeClick: function(e) { 
+        var _self = this.data('widget');
+        
+        if(this.dragged) {
+            this.dragged = false;
+        }
+        else {
+            _self.fireNodeSelectEvent(this);
+        }
+    },
+    
+    fireNodeSelectEvent: function(node) {
+        if(this.hasBehavior('select')) {
+            var selectBehavior = this.cfg.behaviors['select'],
+            key = node.data('model').key||'root';
+
+            var ext = {
+                params: [
+                    {name: this.id + '_nodeKey', value: key}
+                ]
+            };
+
+            selectBehavior.call(this, node, ext);
+        }
+    },
+    
+    nodeDragStart: function () {
+        this.ox = this.attr("cx");
+        this.oy = this.attr("cy");
+    },
+    
+    nodeDrag: function(dx, dy) {
+        //update location
+        this.attr({cx: this.ox + dx, cy: this.oy + dy});
+        
+        //drag text
+        this.data('text').attr({x: this.attr('cx'), y: this.attr('cy')});
+        
+        //update connections
+        var _self = this.data('widget');
+        _self.updateConnections(this);
+        
+        //flag to prevent drag to invoke nodeClick
+        this.dragged = true;
+    },
+    
+    nodeDragEnd: function () {
+    },
+    
+    textDragStart: function () {
+        this.ox = this.attr("x");
+        this.oy = this.attr("y");
+    },
+    
+    textDrag: function(dx, dy) {
+        var node = this.data('node');
+        
+        //update location
+        this.attr({x: this.ox + dx, y: this.oy + dy});
+        
+        //drag node
+        node.attr({cx: this.attr('x'), cy: this.attr('y')});
+        
+        //update connections
+        var _self = node.data('widget');
+        _self.updateConnections(node);
+        
+        //flag to prevent drag to invoke nodeClick
+        this.dragged = true;
+    },
+    
+    textDragEnd: function () {
+    }
+    
+    ,updateConnections: function(node) {
+        var connections = node.data('connections');
         
         for(var i = 0; i < connections.length; i++) {
-            widget.raphael.connection(connections[i]);
+            this.raphael.connection(connections[i]);
         }
         
-        widget.raphael.safari();
-    },
-    
-    up : function () {
-        this.animate({"fill-opacity": 0}, 500);
+        this.raphael.safari();
     }
 });
 

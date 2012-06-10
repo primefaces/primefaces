@@ -16,7 +16,6 @@
 package org.primefaces.component.mindmap;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,7 +24,12 @@ import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class MindmapRenderer extends CoreRenderer {
-    
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Mindmap map = (Mindmap) component;
@@ -47,8 +51,10 @@ public class MindmapRenderer extends CoreRenderer {
       
         if(root != null) {
             writer.write(",model:");
-            encodeNode(context, map, root);
+            encodeNode(context, map, root, null);
         }
+        
+        encodeClientBehaviors(context, map);
 
         writer.write("});});");
         endScript(writer);
@@ -59,39 +65,50 @@ public class MindmapRenderer extends CoreRenderer {
         String clientId = map.getClientId(context);
         String style = map.getStyle();
         String styleClass = map.getStyleClass();
+        styleClass = (styleClass == null) ? Mindmap.STYLE_CLASS : Mindmap.STYLE_CLASS + " " + styleClass;
         
         writer.startElement("div", map);
         writer.writeAttribute("id", clientId, "id");
-        if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) 
+            writer.writeAttribute("style", style, "style");
+        
         //content is rendered on client side by the widget
         
         writer.endElement("div");
     }
     
-    protected void encodeNode(FacesContext context, Mindmap map, MindmapNode node) throws IOException {
+    protected void encodeNode(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter(); 
         List<MindmapNode> children = node.getChildren();
         
         writer.write("{");
         writer.write("data:'" + node.getData() + "'");
         
+        if(nodeKey != null) {
+            writer.write(",key:'" + nodeKey + "'");
+        }
+        
         if(node.getFill() != null) {
             writer.write(",fill:'" + node.getFill() + "'");
         }
         
         if(!children.isEmpty()) {
+            int size = children.size();
+            
             writer.write(",children:[");
-            for(Iterator<MindmapNode> it = children.iterator(); it.hasNext();) {
-                MindmapNode child = it.next();
+            
+            for(int i = 0; i < size; i++) {
+                String childKey = (nodeKey == null) ? String.valueOf(i) : nodeKey + "_" + i;
                 
-                encodeNode(context, map, child);
+                MindmapNode child = children.get(i);
+                encodeNode(context, map, child, childKey);
                 
-                if(it.hasNext()) {
+                if(i != (size - 1)) {
                     writer.write(",");
                 }
             }
+            
             writer.write("]");
         }
         
