@@ -13,7 +13,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.cfg.model) {            
             //root
-            this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, 30, 20, this.cfg.model);
+            this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, 40, 25, this.cfg.model);
             
             //children
             if(this.cfg.model.children) {
@@ -62,7 +62,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             x = node.attr('cx') + 150 * Math.cos(angle),
             y = node.attr('cy') + 150 * Math.sin(angle);
             
-            var childNode = this.createNode(x, y, 30, 20, childModel);
+            var childNode = this.createNode(x, y, 40, 25, childModel);
 
             //connection
             var connection = this.raphael.connection(node, childNode, "#000");
@@ -87,7 +87,12 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     nodeTextClick: function(e) {
         var _self = this.data('node').data('widget');
         
-        _self.fireNodeSelectEvent(this.data('node'));
+        if(this.dragged) {
+            this.dragged = false;
+        }
+        else {
+            _self.fireNodeSelectEvent(this.data('node'));
+        }
     },
     
     nodeClick: function(e) { 
