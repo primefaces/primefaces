@@ -23,7 +23,15 @@ public interface MindmapNode {
     
     public MindmapNode getParent();
     
+    public void setParent(MindmapNode node);
+    
     public Object getData();
     
     public String getFill();
+    
+    public void add(MindmapNode node);
+    
+    public void setSelectable(boolean selectable);
+    
+    public boolean isSelectable();
 }

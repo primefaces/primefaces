@@ -93,6 +93,11 @@ public class MindmapRenderer extends CoreRenderer {
             writer.write(",fill:'" + node.getFill() + "'");
         }
         
+        if(node.isSelectable()) {
+            writer.write(",selectable:true");
+        }
+        
+        
         if(!children.isEmpty()) {
             int size = children.size();
             

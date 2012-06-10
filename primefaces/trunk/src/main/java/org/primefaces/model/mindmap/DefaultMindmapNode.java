@@ -18,7 +18,7 @@ package org.primefaces.model.mindmap;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DefaultMindmapNode implements MindmapNode {
+public class DefaultMindmapNode implements MindmapNode {
     
     private MindmapNode parent;
     
@@ -28,17 +28,19 @@ public final class DefaultMindmapNode implements MindmapNode {
     
     private String fill;
     
-    public DefaultMindmapNode(Object data, MindmapNode parent, String fill) {
+    private boolean selectable;
+    
+    public DefaultMindmapNode(Object data) {
         this.data = data;
         this.children = new ArrayList<MindmapNode>();
-        this.setParent(parent);
-        this.fill = fill;
+        this.selectable = false;
     }
     
-    public DefaultMindmapNode(Object data, MindmapNode parent) {
+    public DefaultMindmapNode(Object data, String fill, boolean selectable) {
         this.data = data;
         this.children = new ArrayList<MindmapNode>();
-        this.setParent(parent);
+        this.fill = fill;
+        this.selectable = selectable;
     }
 
     public List<MindmapNode> getChildren() {
@@ -67,5 +69,17 @@ public final class DefaultMindmapNode implements MindmapNode {
 
     public String getFill() {
         return this.fill;
+    }
+
+    public void add(MindmapNode node) {
+        node.setParent(this);
+    }
+
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
     }
 }
