@@ -59,8 +59,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
 
             //coordinates
             var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
-            x = node.attr('cx') + 100 * Math.cos(angle),
-            y = node.attr('cy') + 100 * Math.sin(angle);
+            x = node.attr('cx') + 150 * Math.cos(angle),
+            y = node.attr('cy') + 150 * Math.sin(angle);
             
             var childNode = this.createNode(x, y, 30, 20, childModel);
 
