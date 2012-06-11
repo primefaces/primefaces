@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import javax.faces.component.UIOutput;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -27,7 +27,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.ItemSelectEvent;
 
-public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
+public abstract class UIChart extends UIComponentBase implements ClientBehaviorHolder {
 
     private final static String DEFAULT_EVENT = "itemSelect";
 
@@ -35,10 +35,12 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 
     protected enum PropertyKeys {
         widgetVar
+	,value
         ,styleClass
         ,style
         ,title
         ,legendPosition
+        ,legendToggle
         ,legendCols
         ,legendRows
         ,shadow
@@ -46,8 +48,7 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
         ,yaxisLabel
         ,xaxisAngle
         ,yaxisAngle
-        ,seriesColors
-        ,extender;
+        ,seriesColors;
 
 		String toString;
 
@@ -68,6 +69,13 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	}
 	public void setWidgetVar(String _widgetVar) {
 		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+	}
+
+	public Object getValue() {
+		return getStateHelper().eval(PropertyKeys.value, null);
+	}
+	public void setValue(Object _value) {
+		getStateHelper().put(PropertyKeys.value, _value);
 	}
 
 	public String getStyleClass() {
@@ -125,14 +133,20 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	public void setLegendPosition(String _legendPosition) {
 		getStateHelper().put(PropertyKeys.legendPosition, _legendPosition);
 	}
-    
 	public boolean isShadow() {
 		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.shadow, true);
 	}
 	public void setShadow(boolean _shadow) {
 		getStateHelper().put(PropertyKeys.shadow, _shadow);
 	}
-    
+        
+	public boolean isLegendToggle() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.legendToggle, true);
+	}
+	public void setLegendToggle(boolean _legendToggle) {
+		getStateHelper().put(PropertyKeys.legendToggle, _legendToggle);
+	}
+	
     public java.lang.String getSeriesColors() {
 		return (java.lang.String) getStateHelper().eval(PropertyKeys.seriesColors, null);
 	}
@@ -141,7 +155,7 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	}
     
     public Integer getLegendCols() {
-		return (Integer) getStateHelper().eval(PropertyKeys.legendCols, 0);
+		return (Integer) getStateHelper().eval(PropertyKeys.legendCols, 1);
 	}
 	public void setLegendCols(Integer _legendCols) {
 		getStateHelper().put(PropertyKeys.legendCols, _legendCols);
@@ -152,13 +166,6 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
 	}
 	public void setLegendRows(Integer _legendRows) {
 		getStateHelper().put(PropertyKeys.legendRows, _legendRows);
-	}
-    
-    public java.lang.String getExtender() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.extender, null);
-	}
-	public void setExtender(java.lang.String _extender) {
-		getStateHelper().put(PropertyKeys.extender, _extender);
 	}
     
     @Override

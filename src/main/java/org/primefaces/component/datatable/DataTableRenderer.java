@@ -63,7 +63,7 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isFilteringEnabled()) {
             dataHelper.decodeFilters(context, table);
             
-            if(!isSortRequest && table.getValueExpression("sortBy") != null && !table.isLazy()) {
+            if(!isSortRequest && table.getValueExpression("sortBy") != null && !table.isLazyLoading()) {
                 sort(context, table);
             }
         }
@@ -88,7 +88,7 @@ public class DataTableRenderer extends DataRenderer {
                 table.updatePaginationData(context, table);
             }
             
-            if(table.isLazy()) {
+            if(table.isLazyLoading()) {
                 table.loadLazyData();
             }
             
@@ -184,7 +184,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
         
-        if(table.isLazy()) {
+        if(table.isLazyLoading()) {
             table.loadLazyData();
         }
 
@@ -199,7 +199,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         //default sort
-        if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
+        if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazyLoading()) {
             sort(context, table);
         }
 
@@ -456,7 +456,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String filterId = column.getClientId(context) + "_filter";
-        String filterValue = params.containsKey(filterId) && !table.isReset() ? params.get(filterId) : "";
+        String filterValue = params.containsKey(filterId) ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
         
 

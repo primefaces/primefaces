@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.chart.BarChartRenderer</rendererType>
 	<rendererClass>org.primefaces.component.chart.bar.BarChartRenderer</rendererClass>
-	<parent>org.primefaces.component.chart.CartesianChart</parent>
+	<parent>org.primefaces.component.chart.UIChart</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
@@ -148,40 +148,6 @@
 			<type>java.lang.Integer</type>
             <description>Defines visible row count of chart legend.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-        <attribute>
-			<name>zoom</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Enables plot zooming.</description>
-		</attribute>
-        <attribute>
-			<name>extender</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <description>Javascript function to extend the chart with low level jqplot options.</description>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-        <attribute>
-			<name>animate</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Enables animation on plot, default is false.</description>
-		</attribute>
-        <attribute>
-			<name>showDatatip</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Defines visibility of datatip, default is true.</description>
-		</attribute>
-        <attribute>
-			<name>datatipFormat</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Template string for datatips.</description>
 		</attribute>
 	</attributes>
 	<resources>

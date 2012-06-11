@@ -60,44 +60,37 @@ public class DonutChartRenderer extends BaseChartRenderer {
     }
 
     protected void encodeOptions(FacesContext context, DonutChart chart) throws IOException {
-        super.encodeOptions(context, chart);
-        
         ResponseWriter writer = context.getResponseWriter();
 
+        encodeCommonConfig(context, chart);
+
+        //chart specific config
         if(chart.getSliceMargin() != 0)
             writer.write(",sliceMargin:" + chart.getSliceMargin());
-        
         if(chart.isFill() == false)
             writer.write(",fill:false");
-        
         if(chart.isShowDataLabels())
             writer.write(",showDataLabels:true");
-        
         if(chart.getDataFormat() !=null)
             writer.write(",dataFormat:'" + chart.getDataFormat()+"'");
     }
 
     protected void encodeData(FacesContext context, DonutChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List data = ((DonutChartModel) chart.getValue()).getData();
 
         writer.write(",data:[");
-        
+        List data = ((DonutChartModel) chart.getValue()).getData();
+
         for(int i = 0; i < data.size() ; i++) {
-            if(i != 0) {
-                writer.write(",");
-            }
-            
-            writer.write("[");
-            Map<String, Number> map = (Map) data.get(i);
-            
-            for(Iterator<String> it = map.keySet().iterator(); it.hasNext();) {
+            writer.write( (i != 0 ? "," : "") + "[");
+            Map<String, Number> s = (Map)data.get(i);
+            for (Iterator<String> it = s.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                Number value = map.get(key);
+                Number value = s.get(key);
 
                 writer.write("['" + key + "'," + value + "]");
 
-                if(it.hasNext()) {
+                if (it.hasNext()) {
                     writer.write(",");
                 }
             }

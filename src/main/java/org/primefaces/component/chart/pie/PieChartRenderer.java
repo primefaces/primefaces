@@ -79,22 +79,19 @@ public class PieChartRenderer extends BaseChartRenderer {
 	}
 
     protected void encodeOptions(FacesContext context, PieChart chart) throws IOException {
-        super.encodeOptions(context, chart);
-		
-        ResponseWriter writer = context.getResponseWriter();
- 
+		ResponseWriter writer = context.getResponseWriter();
+
+        encodeCommonConfig(context, chart);
+
+        //chart specific config
         if(chart.getDiameter() != Integer.MIN_VALUE) 
             writer.write(",diameter:" + chart.getDiameter());
-        
         if(chart.getSliceMargin() != 0)
             writer.write(",sliceMargin:" + chart.getSliceMargin());
-        
         if(chart.isFill() == false)
             writer.write(",fill:false");
-        
         if(chart.isShowDataLabels())
             writer.write(",showDataLabels:true");
-        
         if(chart.getDataFormat() !=null)
             writer.write(",dataFormat:'" + chart.getDataFormat() +"'");
     }

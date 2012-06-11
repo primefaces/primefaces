@@ -21,26 +21,22 @@ import java.util.List;
 
 public class MeterGaugeChartModel extends ChartModel implements Serializable {
  
-    private Number value;
+    private String label;
     private List<Number> intervals;
-    private List<Number> ticks;
+    private Number value;
+    
     
     public MeterGaugeChartModel() {
         intervals = new ArrayList<Number>();
     }
 
-    public MeterGaugeChartModel(Number value, List<Number> intervals) {
-        this.value = value;
+    public MeterGaugeChartModel(String label, Number value, List<Number> intervals) {
         this.intervals = intervals;
+        this.value = value;
+        this.label = label;
     }
     
-    public MeterGaugeChartModel(Number value, List<Number> intervals, List<Number> ticks) {
-        this.value = value;
-        this.intervals = intervals;
-        this.ticks = ticks;
-    }
-    
-    public void addInterval(Number interval) {
+    public void addInterval( Number interval ){
         this.intervals.add(interval);
     }
     
@@ -59,12 +55,12 @@ public class MeterGaugeChartModel extends ChartModel implements Serializable {
     public void setValue(Number value) {
         this.value = value;
     }
-
-    public List<Number> getTicks() {
-        return ticks;
-    }
-    public void setTicks(List<Number> ticks) {
-        this.ticks = ticks;
+    
+    public String getLabel() {
+        return label;
     }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }

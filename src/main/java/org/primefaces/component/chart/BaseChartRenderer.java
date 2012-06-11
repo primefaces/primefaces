@@ -44,48 +44,76 @@ public class BaseChartRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-    protected void encodeOptions(FacesContext context, UIChart chart) throws IOException {
+    protected void encodeCommonConfig(FacesContext context, UIChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String legendPosition = chart.getLegendPosition();
-        String title = chart.getTitle();
-        String seriesColors = chart.getSeriesColors();
-        String extender = chart.getExtender();
 
-        if(title != null)
-            writer.write(",title:'" + title + "'");
+        if(chart.getTitle() != null) {
+            writer.write(",title:'" + chart.getTitle() + "'");
+        }
         
         if(!chart.isShadow())
             writer.write(",shadow:false");
         
-        if(seriesColors != null)
-            writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
+        if(chart.getSeriesColors() != null)
+            writer.write(",seriesColors:['#" +  chart.getSeriesColors().replaceAll("[ ]*,[ ]*", "','#") + "']");
+        
         
         if(legendPosition != null) {
-            writer.write(",legendPosition:'" + legendPosition + "'");
+            writer.write(",legend:{");
+            writer.write("show:true");
+            writer.write(",renderer: $.jqplot.EnhancedLegendRenderer, rendererOptions: {");
             
-            if(chart.getLegendCols() != 0)
-                writer.write(",legendCols:" + chart.getLegendCols());
+            writer.write("seriesToggle:");
             
-            if(chart.getLegendRows() != 0)
-                writer.write(",legendRows:" + chart.getLegendRows());
+            if(chart.isLegendToggle()) {
+                writer.write("'normal'");
+            }
+            else {
+                writer.write("false");
+            }
+            
+            if(chart.getLegendCols() != 1) {
+                writer.write(",numberColumns:" + chart.getLegendCols());
+            }
+            
+            if(chart.getLegendRows() > 0) {
+                writer.write(",numberRows:" + chart.getLegendRows());
+            }
+            
+            writer.write("}, location:'" + legendPosition + "'}");
         }
         
-        if(extender != null)
-            writer.write(",extender:" + extender);
+        writer.write(",axes:{");
+        writer.write("xaxis:{");
         
-    }
-    
-    protected void encodeAxis(FacesContext context, String name, String label, int angle, double min, double max) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String labelText = label == null ? "" : label;
-        
-        writer.write(name + ":{");
-        writer.write("title:'" + labelText + "'");
-        writer.write(",angle:" + angle);
-        
-        if(min != Double.MIN_VALUE) writer.write(",min:" + min);
-        if(max != Double.MAX_VALUE) writer.write(",max:" + max);
-       
+        boolean xLabeled = chart.getXaxisLabel() != null;
+        if(xLabeled){
+            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer,");
+            writer.write("label:'" + chart.getXaxisLabel() + "'");
+        }
+        if(chart.getXaxisAngle() != 0){
+            if(xLabeled){
+                writer.write(",");
+            }
+            writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
+            writer.write("tickOptions:{ angle:" + chart.getXaxisAngle() + "}");
+        }
         writer.write("}");
+        
+        boolean yLabeled = chart.getYaxisLabel() != null;
+        writer.write(",yaxis:{");
+        if(yLabeled){
+            writer.write("label:'" + chart.getYaxisLabel() + "',");
+            writer.write("labelRenderer: $.jqplot.CanvasAxisLabelRenderer");
+        }
+        if(chart.getYaxisAngle() != 0){
+            if(yLabeled){
+                writer.write(",");
+            }
+            writer.write("tickRenderer:$.jqplot.CanvasAxisTickRenderer,");
+            writer.write("tickOptions:{ angle:" + chart.getYaxisAngle() + "}");
+        }
+        writer.write("}}");
     }
 }

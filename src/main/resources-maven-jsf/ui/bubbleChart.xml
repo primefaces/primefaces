@@ -64,8 +64,8 @@
         <attribute>
             <name>bubbleAlpha</name>
             <required>false</required>
-            <type>java.lang.Double</type>
-            <defaultValue>1.0</defaultValue>
+            <type>java.lang.Integer</type>
+            <defaultValue>70</defaultValue>
         </attribute>
         <attribute>
             <name>showLabels</name>
@@ -97,33 +97,6 @@
             <type>java.lang.Integer</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
-        <attribute>
-			<name>zoom</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Enables plot zooming.</description>
-		</attribute>
-        <attribute>
-			<name>extender</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <description>Javascript function to extend the chart with low level jqplot options.</description>
-            <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
-        <attribute>
-			<name>showDatatip</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Defines visibility of datatip, default is true.</description>
-		</attribute>
-        <attribute>
-			<name>datatipFormat</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Template string for datatips.</description>
-		</attribute>
     </attributes>
 	<resources>
         <resource>

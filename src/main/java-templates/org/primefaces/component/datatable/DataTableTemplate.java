@@ -436,23 +436,14 @@ import javax.faces.context.FacesContext;
     public void setFilters(Map<String,String> filters) {
         getStateHelper().put("filters", filters);
     }
-    
-    private boolean reset = false;
-    
-    public boolean isReset() {
-        return reset;
-    }
 
     public void resetValue() {
         setValue(null);
-        setFilteredData(null);
-        setFilters(null);
     }
 
     public void reset() {
         resetValue();
         setFirst(0);
-        this.reset = true;
     }
 
     public boolean isFilteringEnabled() {

@@ -48,8 +48,6 @@ public class BarChartRenderer extends BaseChartRenderer {
         writer.write("PrimeFaces.cw('BarChart','" + chart.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         
-        encodeData(context, chart);
-        
         encodeOptions(context, chart);
 
         encodeClientBehaviors(context, chart);
@@ -60,66 +58,11 @@ public class BarChartRenderer extends BaseChartRenderer {
 	}
 
     protected void encodeOptions(FacesContext context, BarChart chart) throws IOException {
-		super.encodeOptions(context, chart);
-        
-        ResponseWriter writer = context.getResponseWriter();
-        CartesianChartModel model = (CartesianChartModel) chart.getValue();
-        
-        //axes
-        writer.write(",axes:{");
-        encodeAxis(context, "xaxis", chart.getXaxisLabel(), chart.getXaxisAngle(), Double.MIN_VALUE, Double.MAX_VALUE);
-        encodeAxis(context, ",yaxis", chart.getYaxisLabel(), chart.getYaxisAngle(), Double.MIN_VALUE, Double.MAX_VALUE);
-        writer.write("}");
-
-        //series
-        writer.write(",series:[");
-        for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
-            ChartSeries series = (ChartSeries) it.next();
-
-            writer.write("{");
-            writer.write("label:'" + series.getLabel() + "'");
-            writer.write("}");
-
-            if(it.hasNext()) {
-                writer.write(",");
-            }
-        }
-        writer.write("]");
-
-        //config
-        writer.write(",orientation:'" + chart.getOrientation() + "'");
-        writer.write(",barPadding:" + chart.getBarPadding());
-        writer.write(",barMargin:" + chart.getBarMargin());
-        
-        if(chart.isStacked())
-            writer.write(",stackSeries:true");
-        
-        if(chart.isBreakOnNull()) 
-            writer.write(",breakOnNull:true");
-        
-        if(chart.isZoom())
-            writer.write(",zoom:true");
-        
-        if(chart.isAnimate())
-            writer.write(",animate:true");
-        
-        if(chart.isShowDatatip()) {
-            writer.write(",datatip:true");
-            if(chart.getDatatipFormat() != null)
-                writer.write(",datatipFormat:'" + chart.getDatatipFormat() + "'");
-        }
-
-        //boundaries
-        if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
-        if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
-    }
-    
-    protected void encodeData(FacesContext context, BarChart chart) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+		ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getValue();
         boolean horizontal = chart.getOrientation().equals("horizontal");
-        List<String> categories = chart.getCategories();
-        
+        List<String> categories = model.getCategories();
+
         //data
 		writer.write(",data:[" );
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
@@ -152,7 +95,25 @@ public class BarChartRenderer extends BaseChartRenderer {
             }
         }
         writer.write("]");
-        
+
+        //common config
+        encodeCommonConfig(context, chart);
+
+        //series
+        writer.write(",series:[");
+        for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+            ChartSeries series = (ChartSeries) it.next();
+
+            writer.write("{");
+            writer.write("label:'" + series.getLabel() + "'");
+            writer.write("}");
+
+            if(it.hasNext()) {
+                writer.write(",");
+            }
+        }
+        writer.write("]");
+
         //categories
         writer.write(",categories:[");
         for(Iterator<String> it = categories.iterator(); it.hasNext();) {
@@ -163,5 +124,21 @@ public class BarChartRenderer extends BaseChartRenderer {
             }
         }
         writer.write("]");
+
+        //config
+        writer.write(",orientation:'" + chart.getOrientation() + "'");
+        writer.write(",barPadding:" + chart.getBarPadding());
+        writer.write(",barMargin:" + chart.getBarMargin());
+
+        if(chart.isStacked()) {
+            writer.write(",stackSeries:true");
+        }
+
+        //boundaries
+        if(chart.getMin() != Double.MIN_VALUE) writer.write(",min:" + chart.getMin());
+        if(chart.getMax() != Double.MAX_VALUE) writer.write(",max:" + chart.getMax());
+
+        //other
+        if(chart.isBreakOnNull()) writer.write(",breakOnNull:true");
     }
 }

@@ -33,7 +33,7 @@ public class DataGridRenderer extends DataRenderer {
         if(grid.isPaginationRequest(context)) {
             grid.updatePaginationData(context, grid);
             
-            if(grid.isLazy()) {
+            if(grid.isLazyLoading()) {
                 grid.loadLazyData();
             }
             
@@ -46,7 +46,7 @@ public class DataGridRenderer extends DataRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, DataGrid grid) throws IOException {
-        if(grid.isLazy()) {
+        if(grid.isLazyLoading()) {
             grid.loadLazyData();
         }
         

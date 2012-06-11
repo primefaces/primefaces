@@ -2,13 +2,12 @@
 -categoryaxisrenderer
 -pierenderer
 -barrenderer
+-highlighter
 -donutrenderer
 -enhancedlegendrenderer
 -bubblerenderer
--ohlcrenderer
 -metergaugerenderer
+-ohlcrenderer
 -canvastextrenderer
 -canvasaxistickrenderer
 -canvasaxislabelrenderer
--cursor
--highlighter

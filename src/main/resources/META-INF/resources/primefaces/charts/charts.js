@@ -14636,6 +14636,461 @@ if (!document.createElement('canvas').getContext) {
     
 })(jQuery);     
 
+/**
+ * jqPlot
+ * Pure JavaScript plotting plugin using jQuery
+ *
+ * Version: 1.0.0b2_r1012
+ *
+ * Copyright (c) 2009-2011 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
+ *
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
+ * chris at jqplot dot com or see http://www.jqplot.com/info.php .
+ *
+ * If you are feeling kind and generous, consider supporting the project by
+ * making a donation at: http://www.jqplot.com/donate.php .
+ *
+ * sprintf functions contained in jqplot.sprintf.js by Ash Searle:
+ *
+ *     version 2007.04.27
+ *     author Ash Searle
+ *     http://hexmen.com/blog/2007/03/printf-sprintf/
+ *     http://hexmen.com/js/sprintf.js
+ *     The author (Ash Searle) has placed this code in the public domain:
+ *     "This code is unrestricted: you are free to use it however you like."
+ * 
+ */
+(function($) {
+    $.jqplot.eventListenerHooks.push(['jqplotMouseMove', handleMove]);
+    
+    /**
+     * Class: $.jqplot.Highlighter
+     * Plugin which will highlight data points when they are moused over.
+     * 
+     * To use this plugin, include the js
+     * file in your source:
+     * 
+     * > <script type="text/javascript" src="plugins/jqplot.highlighter.js"></script>
+     * 
+     * A tooltip providing information about the data point is enabled by default.
+     * To disable the tooltip, set "showTooltip" to false.
+     * 
+     * You can control what data is displayed in the tooltip with various
+     * options.  The "tooltipAxes" option controls wether the x, y or both
+     * data values are displayed.
+     * 
+     * Some chart types (e.g. hi-low-close) have more than one y value per
+     * data point. To display the additional values in the tooltip, set the
+     * "yvalues" option to the desired number of y values present (3 for a hlc chart).
+     * 
+     * By default, data values will be formatted with the same formatting
+     * specifiers as used to format the axis ticks.  A custom format code
+     * can be supplied with the tooltipFormatString option.  This will apply 
+     * to all values in the tooltip.  
+     * 
+     * For more complete control, the "formatString" option can be set.  This
+     * Allows conplete control over tooltip formatting.  Values are passed to
+     * the format string in an order determined by the "tooltipAxes" and "yvalues"
+     * options.  So, if you have a hi-low-close chart and you just want to display 
+     * the hi-low-close values in the tooltip, you could set a formatString like:
+     * 
+     * > highlighter: {
+     * >     tooltipAxes: 'y',
+     * >     yvalues: 3,
+     * >     formatString:'<table class="jqplot-highlighter">
+     * >         <tr><td>hi:</td><td>%s</td></tr>
+     * >         <tr><td>low:</td><td>%s</td></tr>
+     * >         <tr><td>close:</td><td>%s</td></tr></table>'
+     * > }
+     * 
+     */
+    $.jqplot.Highlighter = function(options) {
+        // Group: Properties
+        //
+        //prop: show
+        // true to show the highlight.
+        this.show = $.jqplot.config.enablePlugins;
+        // prop: markerRenderer
+        // Renderer used to draw the marker of the highlighted point.
+        // Renderer will assimilate attributes from the data point being highlighted,
+        // so no attributes need set on the renderer directly.
+        // Default is to turn off shadow drawing on the highlighted point.
+        this.markerRenderer = new $.jqplot.MarkerRenderer({shadow:false});
+        // prop: showMarker
+        // true to show the marker
+        this.showMarker  = true;
+        // prop: lineWidthAdjust
+        // Pixels to add to the lineWidth of the highlight.
+        this.lineWidthAdjust = 2.5;
+        // prop: sizeAdjust
+        // Pixels to add to the overall size of the highlight.
+        this.sizeAdjust = 5;
+        // prop: showTooltip
+        // Show a tooltip with data point values.
+        this.showTooltip = true;
+        // prop: tooltipLocation
+        // Where to position tooltip, 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'
+        this.tooltipLocation = 'nw';
+        // prop: fadeTooltip
+        // true = fade in/out tooltip, flase = show/hide tooltip
+        this.fadeTooltip = true;
+        // prop: tooltipFadeSpeed
+        // 'slow', 'def', 'fast', or number of milliseconds.
+        this.tooltipFadeSpeed = "fast";
+        // prop: tooltipOffset
+        // Pixel offset of tooltip from the highlight.
+        this.tooltipOffset = 2;
+        // prop: tooltipAxes
+        // Which axes to display in tooltip, 'x', 'y' or 'both', 'xy' or 'yx'
+        // 'both' and 'xy' are equivalent, 'yx' reverses order of labels.
+        this.tooltipAxes = 'both';
+        // prop; tooltipSeparator
+        // String to use to separate x and y axes in tooltip.
+        this.tooltipSeparator = ', ';
+        // prop; tooltipContentEditor
+        // Function used to edit/augment/replace the formatted tooltip contents.
+        // Called as str = tooltipContentEditor(str, seriesIndex, pointIndex)
+        // where str is the generated tooltip html and seriesIndex and pointIndex identify
+        // the data point being highlighted. Should return the html for the tooltip contents.
+        this.tooltipContentEditor = null;
+        // prop: useAxesFormatters
+        // Use the x and y axes formatters to format the text in the tooltip.
+        this.useAxesFormatters = true;
+        // prop: tooltipFormatString
+        // sprintf format string for the tooltip.
+        // Uses Ash Searle's javascript sprintf implementation
+        // found here: http://hexmen.com/blog/2007/03/printf-sprintf/
+        // See http://perldoc.perl.org/functions/sprintf.html for reference.
+        // Additional "p" and "P" format specifiers added by Chris Leonello.
+        this.tooltipFormatString = '%.5P';
+        // prop: formatString
+        // alternative to tooltipFormatString
+        // will format the whole tooltip text, populating with x, y values as
+        // indicated by tooltipAxes option.  So, you could have a tooltip like:
+        // 'Date: %s, number of cats: %d' to format the whole tooltip at one go.
+        // If useAxesFormatters is true, values will be formatted according to
+        // Axes formatters and you can populate your tooltip string with 
+        // %s placeholders.
+        this.formatString = null;
+        // prop: yvalues
+        // Number of y values to expect in the data point array.
+        // Typically this is 1.  Certain plots, like OHLC, will
+        // have more y values in each data point array.
+        this.yvalues = 1;
+        // prop: bringSeriesToFront
+        // This option requires jQuery 1.4+
+        // True to bring the series of the highlighted point to the front
+        // of other series.
+        this.bringSeriesToFront = false;
+        this._tooltipElem;
+        this.isHighlighting = false;
+        this.currentNeighbor = null;
+
+        $.extend(true, this, options);
+    };
+    
+    var locations = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
+    var locationIndicies = {'nw':0, 'n':1, 'ne':2, 'e':3, 'se':4, 's':5, 'sw':6, 'w':7};
+    var oppositeLocations = ['se', 's', 'sw', 'w', 'nw', 'n', 'ne', 'e'];
+    
+    // axis.renderer.tickrenderer.formatter
+    
+    // called with scope of plot
+    $.jqplot.Highlighter.init = function (target, data, opts){
+        var options = opts || {};
+        // add a highlighter attribute to the plot
+        this.plugins.highlighter = new $.jqplot.Highlighter(options.highlighter);
+    };
+    
+    // called within scope of series
+    $.jqplot.Highlighter.parseOptions = function (defaults, options) {
+        // Add a showHighlight option to the series 
+        // and set it to true by default.
+        this.showHighlight = true;
+    };
+    
+    // called within context of plot
+    // create a canvas which we can draw on.
+    // insert it before the eventCanvas, so eventCanvas will still capture events.
+    $.jqplot.Highlighter.postPlotDraw = function() {
+        // Memory Leaks patch    
+        if (this.plugins.highlighter && this.plugins.highlighter.highlightCanvas) {
+            this.plugins.highlighter.highlightCanvas.resetCanvas();
+            this.plugins.highlighter.highlightCanvas = null;
+        }
+
+        if (this.plugins.highlighter && this.plugins.highlighter._tooltipElem) {
+            this.plugins.highlighter._tooltipElem.emptyForce();
+            this.plugins.highlighter._tooltipElem = null;
+        }
+
+        this.plugins.highlighter.highlightCanvas = new $.jqplot.GenericCanvas();
+        
+        this.eventCanvas._elem.before(this.plugins.highlighter.highlightCanvas.createElement(this._gridPadding, 'jqplot-highlight-canvas', this._plotDimensions, this));
+        this.plugins.highlighter.highlightCanvas.setContext();
+
+        var elem = document.createElement('div');
+        this.plugins.highlighter._tooltipElem = $(elem);
+        elem = null;
+        this.plugins.highlighter._tooltipElem.addClass('jqplot-highlighter-tooltip');
+        this.plugins.highlighter._tooltipElem.css({position:'absolute', display:'none'});
+        
+        this.eventCanvas._elem.before(this.plugins.highlighter._tooltipElem);
+    };
+    
+    $.jqplot.preInitHooks.push($.jqplot.Highlighter.init);
+    $.jqplot.preParseSeriesOptionsHooks.push($.jqplot.Highlighter.parseOptions);
+    $.jqplot.postDrawHooks.push($.jqplot.Highlighter.postPlotDraw);
+    
+    function draw(plot, neighbor) {
+        var hl = plot.plugins.highlighter;
+        var s = plot.series[neighbor.seriesIndex];
+        var smr = s.markerRenderer;
+        var mr = hl.markerRenderer;
+        mr.style = smr.style;
+        mr.lineWidth = smr.lineWidth + hl.lineWidthAdjust;
+        mr.size = smr.size + hl.sizeAdjust;
+        var rgba = $.jqplot.getColorComponents(smr.color);
+        var newrgb = [rgba[0], rgba[1], rgba[2]];
+        var alpha = (rgba[3] >= 0.6) ? rgba[3]*0.6 : rgba[3]*(2-rgba[3]);
+        mr.color = 'rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+','+alpha+')';
+        mr.init();
+        mr.draw(s.gridData[neighbor.pointIndex][0], s.gridData[neighbor.pointIndex][1], hl.highlightCanvas._ctx);
+    }
+    
+    function showTooltip(plot, series, neighbor) {
+        // neighbor looks like: {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]}
+        // gridData should be x,y pixel coords on the grid.
+        // add the plot._gridPadding to that to get x,y in the target.
+        var hl = plot.plugins.highlighter;
+        var elem = hl._tooltipElem;
+        var serieshl = series.highlighter || {};
+
+        var opts = $.extend(true, {}, hl, serieshl);
+
+        if (opts.useAxesFormatters) {
+            var xf = series._xaxis._ticks[0].formatter;
+            var yf = series._yaxis._ticks[0].formatter;
+            var xfstr = series._xaxis._ticks[0].formatString;
+            var yfstr = series._yaxis._ticks[0].formatString;
+            var str;
+            var xstr = xf(xfstr, neighbor.data[0]);
+            var ystrs = [];
+            for (var i=1; i<opts.yvalues+1; i++) {
+                ystrs.push(yf(yfstr, neighbor.data[i]));
+            }
+            if (typeof opts.formatString === 'string') {
+                switch (opts.tooltipAxes) {
+                    case 'both':
+                    case 'xy':
+                        ystrs.unshift(xstr);
+                        ystrs.unshift(opts.formatString);
+                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
+                        break;
+                    case 'yx':
+                        ystrs.push(xstr);
+                        ystrs.unshift(opts.formatString);
+                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
+                        break;
+                    case 'x':
+                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, [opts.formatString, xstr]);
+                        break;
+                    case 'y':
+                        ystrs.unshift(opts.formatString);
+                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
+                        break;
+                    default: // same as xy
+                        ystrs.unshift(xstr);
+                        ystrs.unshift(opts.formatString);
+                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
+                        break;
+                } 
+            }
+            else {
+                switch (opts.tooltipAxes) {
+                    case 'both':
+                    case 'xy':
+                        str = xstr;
+                        for (var i=0; i<ystrs.length; i++) {
+                            str += opts.tooltipSeparator + ystrs[i];
+                        }
+                        break;
+                    case 'yx':
+                        str = '';
+                        for (var i=0; i<ystrs.length; i++) {
+                            str += ystrs[i] + opts.tooltipSeparator;
+                        }
+                        str += xstr;
+                        break;
+                    case 'x':
+                        str = xstr;
+                        break;
+                    case 'y':
+                        str = ystrs.join(opts.tooltipSeparator);
+                        break;
+                    default: // same as 'xy'
+                        str = xstr;
+                        for (var i=0; i<ystrs.length; i++) {
+                            str += opts.tooltipSeparator + ystrs[i];
+                        }
+                        break;
+                    
+                }                
+            }
+        }
+        else {
+            var str;
+            if (typeof opts.formatString ===  'string') {
+                str = $.jqplot.sprintf.apply($.jqplot.sprintf, [opts.formatString].concat(neighbor.data));
+            }
+
+            else {
+                if (opts.tooltipAxes == 'both' || opts.tooltipAxes == 'xy') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]) + opts.tooltipSeparator + $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
+                }
+                else if (opts.tooltipAxes == 'yx') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]) + opts.tooltipSeparator + $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
+                }
+                else if (opts.tooltipAxes == 'x') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
+                }
+                else if (opts.tooltipAxes == 'y') {
+                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
+                } 
+            }
+        }
+        if ($.isFunction(opts.tooltipContentEditor)) {
+            // args str, seriesIndex, pointIndex are essential so the hook can look up
+            // extra data for the point.
+            str = opts.tooltipContentEditor(str, neighbor.seriesIndex, neighbor.pointIndex, plot);
+        }
+        elem.html(str);
+        var gridpos = {x:neighbor.gridData[0], y:neighbor.gridData[1]};
+        var ms = 0;
+        var fact = 0.707;
+        if (series.markerRenderer.show == true) { 
+            ms = (series.markerRenderer.size + opts.sizeAdjust)/2;
+        }
+		
+		var loc = locations;
+		if (series.fillToZero && series.fill && neighbor.data[1] < 0) {
+			loc = oppositeLocations;
+		}
+		
+        switch (loc[locationIndicies[opts.tooltipLocation]]) {
+            case 'nw':
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
+                break;
+            case 'n':
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - ms;
+                break;
+            case 'ne':
+                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + fact * ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
+                break;
+            case 'e':
+                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + ms;
+                var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
+                break;
+            case 'se':
+                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + fact * ms;
+                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + fact * ms;
+                break;
+            case 's':
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
+                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + ms;
+                break;
+            case 'sw':
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
+                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + fact * ms;
+                break;
+            case 'w':
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - ms;
+                var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
+                break;
+            default: // same as 'nw'
+                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
+                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
+                break;
+        }
+        elem.css('left', x);
+        elem.css('top', y);
+        if (opts.fadeTooltip) {
+            // Fix for stacked up animations.  Thnanks Trevor!
+            elem.stop(true,true).fadeIn(opts.tooltipFadeSpeed);
+        }
+        else {
+            elem.show();
+        }
+        elem = null;
+        
+    }
+    
+    function handleMove(ev, gridpos, datapos, neighbor, plot) {
+        var hl = plot.plugins.highlighter;
+        var c = plot.plugins.cursor;
+        if (hl.show) {
+            if (neighbor == null && hl.isHighlighting) {
+                var ctx = hl.highlightCanvas._ctx;
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                if (hl.fadeTooltip) {
+                    hl._tooltipElem.fadeOut(hl.tooltipFadeSpeed);
+                }
+                else {
+                    hl._tooltipElem.hide();
+                }
+                if (hl.bringSeriesToFront) {
+                    plot.restorePreviousSeriesOrder();
+                }
+                hl.isHighlighting = false;
+                hl.currentNeighbor = null;
+                ctx = null;
+            }
+            else if (neighbor != null && plot.series[neighbor.seriesIndex].showHighlight && !hl.isHighlighting) {
+                hl.isHighlighting = true;
+                hl.currentNeighbor = neighbor;
+                if (hl.showMarker) {
+                    draw(plot, neighbor);
+                }
+                if (hl.showTooltip && (!c || !c._zoom.started)) {
+                    showTooltip(plot, plot.series[neighbor.seriesIndex], neighbor);
+                }
+                if (hl.bringSeriesToFront) {
+                    plot.moveSeriesToFront(neighbor.seriesIndex);
+                }
+            }
+            // check to see if we're highlighting the wrong point.
+            else if (neighbor != null && hl.isHighlighting && hl.currentNeighbor != neighbor) {
+                // highlighting the wrong point.
+
+                // if new series allows highlighting, highlight new point.
+                if (plot.series[neighbor.seriesIndex].showHighlight) {
+                    var ctx = hl.highlightCanvas._ctx;
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    hl.isHighlighting = true;
+                    hl.currentNeighbor = neighbor;
+                    if (hl.showMarker) {
+                        draw(plot, neighbor);
+                    }
+                    if (hl.showTooltip && (!c || !c._zoom.started)) {
+                        showTooltip(plot, plot.series[neighbor.seriesIndex], neighbor);
+                    }
+                    if (hl.bringSeriesToFront) {
+                        plot.moveSeriesToFront(neighbor.seriesIndex);
+                    }                    
+                }                
+            }
+        }
+    }
+})(jQuery);
+
 
 /**
  * jqPlot
@@ -18727,1600 +19182,57 @@ if (!document.createElement('canvas').getContext) {
     
 })(jQuery);
 
-/**
- * jqPlot
- * Pure JavaScript plotting plugin using jQuery
- *
- * Version: 1.0.0b2_r1012
- *
- * Copyright (c) 2009-2011 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects 
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
- * choose the license that best suits your project and use it accordingly. 
- *
- * Although not required, the author would appreciate an email letting him 
- * know of any substantial use of jqPlot.  You can reach the author at: 
- * chris at jqplot dot com or see http://www.jqplot.com/info.php .
- *
- * If you are feeling kind and generous, consider supporting the project by
- * making a donation at: http://www.jqplot.com/donate.php .
- *
- * sprintf functions contained in jqplot.sprintf.js by Ash Searle:
- *
- *     version 2007.04.27
- *     author Ash Searle
- *     http://hexmen.com/blog/2007/03/printf-sprintf/
- *     http://hexmen.com/js/sprintf.js
- *     The author (Ash Searle) has placed this code in the public domain:
- *     "This code is unrestricted: you are free to use it however you like."
- * 
- */
-(function($) {
-    
-    /**
-     * Class: $.jqplot.Cursor
-     * Plugin class representing the cursor as displayed on the plot.
-     */
-    $.jqplot.Cursor = function(options) {
-        // Group: Properties
-        //
-        // prop: style
-        // CSS spec for cursor style
-        this.style = 'crosshair';
-        this.previousCursor = 'auto';
-        // prop: show
-        // wether to show the cursor or not.
-        this.show = $.jqplot.config.enablePlugins;
-        // prop: showTooltip
-        // show a cursor position tooltip.  Location of the tooltip
-        // will be controlled by followMouse and tooltipLocation.
-        this.showTooltip = true;
-        // prop: followMouse
-        // Tooltip follows the mouse, it is not at a fixed location.
-        // Tooltip will show on the grid at the location given by
-        // tooltipLocation, offset from the grid edge by tooltipOffset.
-        this.followMouse = false;
-        // prop: tooltipLocation
-        // Where to position tooltip.  If followMouse is true, this is
-        // relative to the cursor, otherwise, it is relative to the grid.
-        // One of 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'
-        this.tooltipLocation = 'se';
-        // prop: tooltipOffset
-        // Pixel offset of tooltip from the grid boudaries or cursor center.
-        this.tooltipOffset = 6;
-        // prop: showTooltipGridPosition
-        // show the grid pixel coordinates of the mouse.
-        this.showTooltipGridPosition = false;
-        // prop: showTooltipUnitPosition
-        // show the unit (data) coordinates of the mouse.
-        this.showTooltipUnitPosition = true;
-        // prop: showTooltipDataPosition
-        // Used with showVerticalLine to show intersecting data points in the tooltip.
-        this.showTooltipDataPosition = false;
-        // prop: tooltipFormatString
-        // sprintf format string for the tooltip.
-        // Uses Ash Searle's javascript sprintf implementation
-        // found here: http://hexmen.com/blog/2007/03/printf-sprintf/
-        // See http://perldoc.perl.org/functions/sprintf.html for reference
-        // Note, if showTooltipDataPosition is true, the default tooltipFormatString
-        // will be set to the cursorLegendFormatString, not the default given here.
-        this.tooltipFormatString = '%.4P, %.4P';
-        // prop: useAxesFormatters
-        // Use the x and y axes formatters to format the text in the tooltip.
-        this.useAxesFormatters = true;
-        // prop: tooltipAxisGroups
-        // Show position for the specified axes.
-        // This is an array like [['xaxis', 'yaxis'], ['xaxis', 'y2axis']]
-        // Default is to compute automatically for all visible axes.
-        this.tooltipAxisGroups = [];
-        // prop: zoom
-        // Enable plot zooming.
-        this.zoom = false;
-        // zoomProxy and zoomTarget properties are not directly set by user.  
-        // They Will be set through call to zoomProxy method.
-        this.zoomProxy = false;
-        this.zoomTarget = false;
-        // prop: looseZoom
-        // Will expand zoom range to provide more rounded tick values.
-        // Works only with linear, log and date axes.
-        this.looseZoom = true;
-        // prop: clickReset
-        // Will reset plot zoom if single click on plot without drag.
-        this.clickReset = false;
-        // prop: dblClickReset
-        // Will reset plot zoom if double click on plot without drag.
-        this.dblClickReset = true;
-        // prop: showVerticalLine
-        // draw a vertical line across the plot which follows the cursor.
-        // When the line is near a data point, a special legend and/or tooltip can
-        // be updated with the data values.
-        this.showVerticalLine = false;
-        // prop: showHorizontalLine
-        // draw a horizontal line across the plot which follows the cursor.
-        this.showHorizontalLine = false;
-        // prop: constrainZoomTo
-        // 'none', 'x' or 'y'
-        this.constrainZoomTo = 'none';
-        // // prop: autoscaleConstraint
-        // // when a constrained axis is specified, true will
-        // // auatoscale the adjacent axis.
-        // this.autoscaleConstraint = true;
-        this.shapeRenderer = new $.jqplot.ShapeRenderer();
-        this._zoom = {start:[], end:[], started: false, zooming:false, isZoomed:false, axes:{start:{}, end:{}}, gridpos:{}, datapos:{}};
-        this._tooltipElem;
-        this.zoomCanvas;
-        this.cursorCanvas;
-        // prop: intersectionThreshold
-        // pixel distance from data point or marker to consider cursor lines intersecting with point.
-        // If data point markers are not shown, this should be >= 1 or will often miss point intersections.
-        this.intersectionThreshold = 2;
-        // prop: showCursorLegend
-        // Replace the plot legend with an enhanced legend displaying intersection information.
-        this.showCursorLegend = false;
-        // prop: cursorLegendFormatString
-        // Format string used in the cursor legend.  If showTooltipDataPosition is true,
-        // this will also be the default format string used by tooltipFormatString.
-        this.cursorLegendFormatString = $.jqplot.Cursor.cursorLegendFormatString;
-        // whether the cursor is over the grid or not.
-        this._oldHandlers = {onselectstart: null, ondrag: null, onmousedown: null};
-        // prop: constrainOutsideZoom
-        // True to limit actual zoom area to edges of grid, even when zooming
-        // outside of plot area.  That is, can't zoom out by mousing outside plot.
-        this.constrainOutsideZoom = true;
-        // prop: showTooltipOutsideZoom
-        // True will keep updating the tooltip when zooming of the grid.
-        this.showTooltipOutsideZoom = false;
-        // true if mouse is over grid, false if not.
-        this.onGrid = false;
-        $.extend(true, this, options);
-    };
-    
-    $.jqplot.Cursor.cursorLegendFormatString = '%s x:%s, y:%s';
-    
-    // called with scope of plot
-    $.jqplot.Cursor.init = function (target, data, opts){
-        // add a cursor attribute to the plot
-        var options = opts || {};
-        this.plugins.cursor = new $.jqplot.Cursor(options.cursor);
-        var c = this.plugins.cursor;
-
-        if (c.show) {
-            $.jqplot.eventListenerHooks.push(['jqplotMouseEnter', handleMouseEnter]);
-            $.jqplot.eventListenerHooks.push(['jqplotMouseLeave', handleMouseLeave]);
-            $.jqplot.eventListenerHooks.push(['jqplotMouseMove', handleMouseMove]);
-            
-            if (c.showCursorLegend) {              
-                opts.legend = opts.legend || {};
-                opts.legend.renderer =  $.jqplot.CursorLegendRenderer;
-                opts.legend.formatString = this.plugins.cursor.cursorLegendFormatString;
-                opts.legend.show = true;
-            }
-            
-            if (c.zoom) {
-                $.jqplot.eventListenerHooks.push(['jqplotMouseDown', handleMouseDown]);
-                
-                if (c.clickReset) {
-                    $.jqplot.eventListenerHooks.push(['jqplotClick', handleClick]);
-                }
-                
-                if (c.dblClickReset) {
-                    $.jqplot.eventListenerHooks.push(['jqplotDblClick', handleDblClick]);
-                }             
-            }
-    
-            this.resetZoom = function() {
-                var axes = this.axes;
-                if (!c.zoomProxy) {
-                    for (var ax in axes) {
-                        axes[ax].reset();
-                        axes[ax]._ticks = [];
-                        // fake out tick creation algorithm to make sure original auto
-                        // computed format string is used if _overrideFormatString is true
-                        if (c._zoom.axes[ax] !== undefined) {
-                            axes[ax]._autoFormatString = c._zoom.axes[ax].tickFormatString;
-                        }
-                    }
-                    this.redraw();
-                }
-                else {
-                    var ctx = this.plugins.cursor.zoomCanvas._ctx;
-                    ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-                    ctx = null;
-                }
-                this.plugins.cursor._zoom.isZoomed = false;
-                this.target.trigger('jqplotResetZoom', [this, this.plugins.cursor]);
-            };
-            
-
-            if (c.showTooltipDataPosition) {
-                c.showTooltipUnitPosition = false;
-                c.showTooltipGridPosition = false;
-                if (options.cursor.tooltipFormatString == undefined) {
-                    c.tooltipFormatString = $.jqplot.Cursor.cursorLegendFormatString;
-                }
-            }
-        }
-    };
-    
-    // called with context of plot
-    $.jqplot.Cursor.postDraw = function() {
-        var c = this.plugins.cursor;
-        
-        // Memory Leaks patch
-        if (c.zoomCanvas) {
-            c.zoomCanvas.resetCanvas();
-            c.zoomCanvas = null;
-        }
-        
-        if (c.cursorCanvas) {
-            c.cursorCanvas.resetCanvas();
-            c.cursorCanvas = null;
-        }
-        
-        if (c._tooltipElem) {
-            c._tooltipElem.emptyForce();
-            c._tooltipElem = null;
-        }
-
-        
-        if (c.zoom) {
-            c.zoomCanvas = new $.jqplot.GenericCanvas();
-            this.eventCanvas._elem.before(c.zoomCanvas.createElement(this._gridPadding, 'jqplot-zoom-canvas', this._plotDimensions, this));
-            c.zoomCanvas.setContext();
-        }
-
-        var elem = document.createElement('div');
-        c._tooltipElem = $(elem);
-        elem = null;
-        c._tooltipElem.addClass('jqplot-cursor-tooltip');
-        c._tooltipElem.css({position:'absolute', display:'none'});
-        
-        
-        if (c.zoomCanvas) {
-            c.zoomCanvas._elem.before(c._tooltipElem);
-        }
-
-        else {
-            this.eventCanvas._elem.before(c._tooltipElem);
-        }
-
-        if (c.showVerticalLine || c.showHorizontalLine) {
-            c.cursorCanvas = new $.jqplot.GenericCanvas();
-            this.eventCanvas._elem.before(c.cursorCanvas.createElement(this._gridPadding, 'jqplot-cursor-canvas', this._plotDimensions, this));
-            c.cursorCanvas.setContext();
-        }
-
-        // if we are showing the positions in unit coordinates, and no axes groups
-        // were specified, create a default set.
-        if (c.showTooltipUnitPosition){
-            if (c.tooltipAxisGroups.length === 0) {
-                var series = this.series;
-                var s;
-                var temp = [];
-                for (var i=0; i<series.length; i++) {
-                    s = series[i];
-                    var ax = s.xaxis+','+s.yaxis;
-                    if ($.inArray(ax, temp) == -1) {
-                        temp.push(ax);
-                    }
-                }
-                for (var i=0; i<temp.length; i++) {
-                    c.tooltipAxisGroups.push(temp[i].split(','));
-                }
-            }
-        }
-    };
-    
-    // Group: methods
-    //
-    // method: $.jqplot.Cursor.zoomProxy
-    // links targetPlot to controllerPlot so that plot zooming of
-    // targetPlot will be controlled by zooming on the controllerPlot.
-    // controllerPlot will not actually zoom, but acts as an
-    // overview plot.  Note, the zoom options must be set to true for
-    // zoomProxy to work.
-    $.jqplot.Cursor.zoomProxy = function(targetPlot, controllerPlot) {
-        var tc = targetPlot.plugins.cursor;
-        var cc = controllerPlot.plugins.cursor;
-        tc.zoomTarget = true;
-        tc.zoom = true;
-        tc.style = 'auto';
-        tc.dblClickReset = false;
-        cc.zoom = true;
-        cc.zoomProxy = true;
-              
-        controllerPlot.target.bind('jqplotZoom', plotZoom);
-        controllerPlot.target.bind('jqplotResetZoom', plotReset);
-
-        function plotZoom(ev, gridpos, datapos, plot, cursor) {
-            tc.doZoom(gridpos, datapos, targetPlot, cursor);
-        } 
-
-        function plotReset(ev, plot, cursor) {
-            targetPlot.resetZoom();
-        }
-    };
-    
-    $.jqplot.Cursor.prototype.resetZoom = function(plot, cursor) {
-        var axes = plot.axes;
-        var cax = cursor._zoom.axes;
-        if (!plot.plugins.cursor.zoomProxy && cursor._zoom.isZoomed) {
-            for (var ax in axes) {
-                // axes[ax]._ticks = [];
-                // axes[ax].min = cax[ax].min;
-                // axes[ax].max = cax[ax].max;
-                // axes[ax].numberTicks = cax[ax].numberTicks; 
-                // axes[ax].tickInterval = cax[ax].tickInterval;
-                // // for date axes
-                // axes[ax].daTickInterval = cax[ax].daTickInterval;
-                axes[ax].reset();
-                axes[ax]._ticks = [];
-                // fake out tick creation algorithm to make sure original auto
-                // computed format string is used if _overrideFormatString is true
-                axes[ax]._autoFormatString = cax[ax].tickFormatString;
-            }
-            plot.redraw();
-            cursor._zoom.isZoomed = false;
-        }
-        else {
-            var ctx = cursor.zoomCanvas._ctx;
-            ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-            ctx = null;
-        }
-        plot.target.trigger('jqplotResetZoom', [plot, cursor]);
-    };
-    
-    $.jqplot.Cursor.resetZoom = function(plot) {
-        plot.resetZoom();
-    };
-    
-    $.jqplot.Cursor.prototype.doZoom = function (gridpos, datapos, plot, cursor) {
-        var c = cursor;
-        var axes = plot.axes;
-        var zaxes = c._zoom.axes;
-        var start = zaxes.start;
-        var end = zaxes.end;
-        var min, max, dp, span,
-            newmin, newmax, curax, _numberTicks, ret;
-        var ctx = plot.plugins.cursor.zoomCanvas._ctx;
-        // don't zoom if zoom area is too small (in pixels)
-        if ((c.constrainZoomTo == 'none' && Math.abs(gridpos.x - c._zoom.start[0]) > 6 && Math.abs(gridpos.y - c._zoom.start[1]) > 6) || (c.constrainZoomTo == 'x' && Math.abs(gridpos.x - c._zoom.start[0]) > 6) ||  (c.constrainZoomTo == 'y' && Math.abs(gridpos.y - c._zoom.start[1]) > 6)) {
-            if (!plot.plugins.cursor.zoomProxy) {
-                for (var ax in datapos) {
-                    // make a copy of the original axes to revert back.
-                    if (c._zoom.axes[ax] == undefined) {
-                        c._zoom.axes[ax] = {};
-                        c._zoom.axes[ax].numberTicks = axes[ax].numberTicks;
-                        c._zoom.axes[ax].tickInterval = axes[ax].tickInterval;
-                        // for date axes...
-                        c._zoom.axes[ax].daTickInterval = axes[ax].daTickInterval;
-                        c._zoom.axes[ax].min = axes[ax].min;
-                        c._zoom.axes[ax].max = axes[ax].max;
-                        c._zoom.axes[ax].tickFormatString = (axes[ax].tickOptions != null) ? axes[ax].tickOptions.formatString :  '';
-                    }
-
-
-                    if ((c.constrainZoomTo == 'none') || (c.constrainZoomTo == 'x' && ax.charAt(0) == 'x') || (c.constrainZoomTo == 'y' && ax.charAt(0) == 'y')) {   
-                        dp = datapos[ax];
-                        if (dp != null) {           
-                            if (dp > start[ax]) { 
-                                newmin = start[ax];
-                                newmax = dp;
-                            }
-                            else {
-                                span = start[ax] - dp;
-                                newmin = dp;
-                                newmax = start[ax];
-                            }
-
-                            curax = axes[ax];
-
-                            _numberTicks = null;
-
-                            // if aligning this axis, use number of ticks from previous axis.
-                            // Do I need to reset somehow if alignTicks is changed and then graph is replotted??
-                            if (curax.alignTicks) {
-                                if (curax.name === 'x2axis' && plot.axes.xaxis.show) {
-                                    _numberTicks = plot.axes.xaxis.numberTicks;
-                                }
-                                else if (curax.name.charAt(0) === 'y' && curax.name !== 'yaxis' && curax.name !== 'yMidAxis' && plot.axes.yaxis.show) {
-                                    _numberTicks = plot.axes.yaxis.numberTicks;
-                                }
-                            }
-                            
-                            if (this.looseZoom && (axes[ax].renderer.constructor === $.jqplot.LinearAxisRenderer || axes[ax].renderer.constructor === $.jqplot.LogAxisRenderer )) { //} || axes[ax].renderer.constructor === $.jqplot.DateAxisRenderer)) {
-
-                                ret = $.jqplot.LinearTickGenerator(newmin, newmax, curax._scalefact, _numberTicks);
-
-                                // if new minimum is less than "true" minimum of axis display, adjust it
-                                if (axes[ax].tickInset && ret[0] < axes[ax].min + axes[ax].tickInset * axes[ax].tickInterval) {
-                                    ret[0] += ret[4];
-                                    ret[2] -= 1;
-                                }
-
-                                // if new maximum is greater than "true" max of axis display, adjust it
-                                if (axes[ax].tickInset && ret[1] > axes[ax].max - axes[ax].tickInset * axes[ax].tickInterval) {
-                                    ret[1] -= ret[4];
-                                    ret[2] -= 1;
-                                }
-
-                                // for log axes, don't fall below current minimum, this will look bad and can't have 0 in range anyway.
-                                if (axes[ax].renderer.constructor === $.jqplot.LogAxisRenderer && ret[0] < axes[ax].min) {
-                                    // remove a tick and shift min up
-                                    ret[0] += ret[4];
-                                    ret[2] -= 1;
-                                }
-
-                                axes[ax].min = ret[0];
-                                axes[ax].max = ret[1];
-                                axes[ax]._autoFormatString = ret[3];
-                                axes[ax].numberTicks = ret[2];
-                                axes[ax].tickInterval = ret[4];
-                                // for date axes...
-                                axes[ax].daTickInterval = [ret[4]/1000, 'seconds'];
-                            }
-                            else {
-                                axes[ax].min = newmin;
-                                axes[ax].max = newmax;
-                                axes[ax].tickInterval = null;
-                                axes[ax].numberTicks = null;
-                                // for date axes...
-                                axes[ax].daTickInterval = null;
-                            }
-
-                            axes[ax]._ticks = [];
-                        }
-                    }
-                            
-                    // if ((c.constrainZoomTo == 'x' && ax.charAt(0) == 'y' && c.autoscaleConstraint) || (c.constrainZoomTo == 'y' && ax.charAt(0) == 'x' && c.autoscaleConstraint)) {
-                    //     dp = datapos[ax];
-                    //     if (dp != null) {
-                    //         axes[ax].max == null;
-                    //         axes[ax].min = null;
-                    //     }
-                    // }
-                }
-                ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-                plot.redraw();
-                c._zoom.isZoomed = true;
-                ctx = null;
-            }
-            plot.target.trigger('jqplotZoom', [gridpos, datapos, plot, cursor]);
-        }
-    };
-    
-    $.jqplot.preInitHooks.push($.jqplot.Cursor.init);
-    $.jqplot.postDrawHooks.push($.jqplot.Cursor.postDraw);
-    
-    function updateTooltip(gridpos, datapos, plot) {
-        var c = plot.plugins.cursor;
-        var s = '';
-        var addbr = false;
-        if (c.showTooltipGridPosition) {
-            s = gridpos.x+', '+gridpos.y;
-            addbr = true;
-        }
-        if (c.showTooltipUnitPosition) {
-            var g;
-            for (var i=0; i<c.tooltipAxisGroups.length; i++) {
-                g = c.tooltipAxisGroups[i];
-                if (addbr) {
-                    s += '<br />';
-                }
-                if (c.useAxesFormatters) {
-                    var xf = plot.axes[g[0]]._ticks[0].formatter;
-                    var yf = plot.axes[g[1]]._ticks[0].formatter;
-                    var xfstr = plot.axes[g[0]]._ticks[0].formatString;
-                    var yfstr = plot.axes[g[1]]._ticks[0].formatString;
-                    s += xf(xfstr, datapos[g[0]]) + ', '+ yf(yfstr, datapos[g[1]]);
-                }
-                else {
-                    s += $.jqplot.sprintf(c.tooltipFormatString, datapos[g[0]], datapos[g[1]]);
-                }
-                addbr = true;
-            }
-        }
-        
-        if (c.showTooltipDataPosition) {
-            var series = plot.series; 
-            var ret = getIntersectingPoints(plot, gridpos.x, gridpos.y);
-            var addbr = false;
-        
-            for (var i = 0; i< series.length; i++) {
-                if (series[i].show) {
-                    var idx = series[i].index;
-                    var label = series[i].label.toString();
-                    var cellid = $.inArray(idx, ret.indices);
-                    var sx = undefined;
-                    var sy = undefined;
-                    if (cellid != -1) {
-                        var data = ret.data[cellid].data;
-                        if (c.useAxesFormatters) {
-                            var xf = series[i]._xaxis._ticks[0].formatter;
-                            var yf = series[i]._yaxis._ticks[0].formatter;
-                            var xfstr = series[i]._xaxis._ticks[0].formatString;
-                            var yfstr = series[i]._yaxis._ticks[0].formatString;
-                            sx = xf(xfstr, data[0]);
-                            sy = yf(yfstr, data[1]);
-                        }
-                        else {
-                            sx = data[0];
-                            sy = data[1];
-                        }
-                        if (addbr) {
-                            s += '<br />';
-                        }
-                        s += $.jqplot.sprintf(c.tooltipFormatString, label, sx, sy);
-                        addbr = true;
-                    }
-                }
-            }
-            
-        }
-        c._tooltipElem.html(s);
-    }
-    
-    function moveLine(gridpos, plot) {
-        var c = plot.plugins.cursor;
-        var ctx = c.cursorCanvas._ctx;
-        ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-        if (c.showVerticalLine) {
-            c.shapeRenderer.draw(ctx, [[gridpos.x, 0], [gridpos.x, ctx.canvas.height]]);
-        }
-        if (c.showHorizontalLine) {
-            c.shapeRenderer.draw(ctx, [[0, gridpos.y], [ctx.canvas.width, gridpos.y]]);
-        }
-        var ret = getIntersectingPoints(plot, gridpos.x, gridpos.y);
-        if (c.showCursorLegend) {
-            var cells = $(plot.targetId + ' td.jqplot-cursor-legend-label');
-            for (var i=0; i<cells.length; i++) {
-                var idx = $(cells[i]).data('seriesIndex');
-                var series = plot.series[idx];
-                var label = series.label.toString();
-                var cellid = $.inArray(idx, ret.indices);
-                var sx = undefined;
-                var sy = undefined;
-                if (cellid != -1) {
-                    var data = ret.data[cellid].data;
-                    if (c.useAxesFormatters) {
-                        var xf = series._xaxis._ticks[0].formatter;
-                        var yf = series._yaxis._ticks[0].formatter;
-                        var xfstr = series._xaxis._ticks[0].formatString;
-                        var yfstr = series._yaxis._ticks[0].formatString;
-                        sx = xf(xfstr, data[0]);
-                        sy = yf(yfstr, data[1]);
-                    }
-                    else {
-                        sx = data[0];
-                        sy = data[1];
-                    }
-                }
-                if (plot.legend.escapeHtml) {
-                    $(cells[i]).text($.jqplot.sprintf(c.cursorLegendFormatString, label, sx, sy));
-                }
-                else {
-                    $(cells[i]).html($.jqplot.sprintf(c.cursorLegendFormatString, label, sx, sy));
-                }
-            }        
-        }
-        ctx = null;
-    }
-        
-    function getIntersectingPoints(plot, x, y) {
-        var ret = {indices:[], data:[]};
-        var s, i, d0, d, j, r, p;
-        var threshold;
-        var c = plot.plugins.cursor;
-        for (var i=0; i<plot.series.length; i++) {
-            s = plot.series[i];
-            r = s.renderer;
-            if (s.show) {
-                threshold = c.intersectionThreshold;
-                if (s.showMarker) {
-                    threshold += s.markerRenderer.size/2;
-                }
-                for (var j=0; j<s.gridData.length; j++) {
-                    p = s.gridData[j];
-                    // check vertical line
-                    if (c.showVerticalLine) {
-                        if (Math.abs(x-p[0]) <= threshold) {
-                            ret.indices.push(i);
-                            ret.data.push({seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]});
-                        }
-                    }
-                } 
-            }
-        }
-        return ret;
-    }
-    
-    function moveTooltip(gridpos, plot) {
-        var c = plot.plugins.cursor;  
-        var elem = c._tooltipElem;
-        switch (c.tooltipLocation) {
-            case 'nw':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top - c.tooltipOffset - elem.outerHeight(true);
-                break;
-            case 'n':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
-                var y = gridpos.y + plot._gridPadding.top - c.tooltipOffset - elem.outerHeight(true);
-                break;
-            case 'ne':
-                var x = gridpos.x + plot._gridPadding.left + c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top - c.tooltipOffset - elem.outerHeight(true);
-                break;
-            case 'e':
-                var x = gridpos.x + plot._gridPadding.left + c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
-                break;
-            case 'se':
-                var x = gridpos.x + plot._gridPadding.left + c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top + c.tooltipOffset;
-                break;
-            case 's':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
-                var y = gridpos.y + plot._gridPadding.top + c.tooltipOffset;
-                break;
-            case 'sw':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top + c.tooltipOffset;
-                break;
-            case 'w':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
-                break;
-            default:
-                var x = gridpos.x + plot._gridPadding.left + c.tooltipOffset;
-                var y = gridpos.y + plot._gridPadding.top + c.tooltipOffset;
-                break;
-        }
-            
-        elem.css('left', x);
-        elem.css('top', y);
-	    elem = null;
-    }
-    
-    function positionTooltip(plot) { 
-        // fake a grid for positioning
-        var grid = plot._gridPadding; 
-        var c = plot.plugins.cursor;
-        var elem = c._tooltipElem;  
-        switch (c.tooltipLocation) {
-            case 'nw':
-                var a = grid.left + c.tooltipOffset;
-                var b = grid.top + c.tooltipOffset;
-                elem.css('left', a);
-                elem.css('top', b);
-                break;
-            case 'n':
-                var a = (grid.left + (plot._plotDimensions.width - grid.right))/2 - elem.outerWidth(true)/2;
-                var b = grid.top + c.tooltipOffset;
-                elem.css('left', a);
-                elem.css('top', b);
-                break;
-            case 'ne':
-                var a = grid.right + c.tooltipOffset;
-                var b = grid.top + c.tooltipOffset;
-                elem.css({right:a, top:b});
-                break;
-            case 'e':
-                var a = grid.right + c.tooltipOffset;
-                var b = (grid.top + (plot._plotDimensions.height - grid.bottom))/2 - elem.outerHeight(true)/2;
-                elem.css({right:a, top:b});
-                break;
-            case 'se':
-                var a = grid.right + c.tooltipOffset;
-                var b = grid.bottom + c.tooltipOffset;
-                elem.css({right:a, bottom:b});
-                break;
-            case 's':
-                var a = (grid.left + (plot._plotDimensions.width - grid.right))/2 - elem.outerWidth(true)/2;
-                var b = grid.bottom + c.tooltipOffset;
-                elem.css({left:a, bottom:b});
-                break;
-            case 'sw':
-                var a = grid.left + c.tooltipOffset;
-                var b = grid.bottom + c.tooltipOffset;
-                elem.css({left:a, bottom:b});
-                break;
-            case 'w':
-                var a = grid.left + c.tooltipOffset;
-                var b = (grid.top + (plot._plotDimensions.height - grid.bottom))/2 - elem.outerHeight(true)/2;
-                elem.css({left:a, top:b});
-                break;
-            default:  // same as 'se'
-                var a = grid.right - c.tooltipOffset;
-                var b = grid.bottom + c.tooltipOffset;
-                elem.css({right:a, bottom:b});
-                break;
-        }
-        elem = null;
-    }
-    
-    function handleClick (ev, gridpos, datapos, neighbor, plot) {
-        ev.preventDefault();
-        ev.stopImmediatePropagation();
-        var c = plot.plugins.cursor;
-        if (c.clickReset) {
-            c.resetZoom(plot, c);
-        }
-        var sel = window.getSelection;
-        if (document.selection && document.selection.empty)
-        {
-            document.selection.empty();
-        }
-        else if (sel && !sel().isCollapsed) {
-            sel().collapse();
-        }
-        return false;
-    }
-    
-    function handleDblClick (ev, gridpos, datapos, neighbor, plot) {
-        ev.preventDefault();
-        ev.stopImmediatePropagation();
-        var c = plot.plugins.cursor;
-        if (c.dblClickReset) {
-            c.resetZoom(plot, c);
-        }
-        var sel = window.getSelection;
-        if (document.selection && document.selection.empty)
-        {
-            document.selection.empty();
-        }
-        else if (sel && !sel().isCollapsed) {
-            sel().collapse();
-        }
-        return false;
-    }
-    
-    function handleMouseLeave(ev, gridpos, datapos, neighbor, plot) {
-        var c = plot.plugins.cursor;
-        c.onGrid = false;
-        if (c.show) {
-            $(ev.target).css('cursor', c.previousCursor);
-            if (c.showTooltip && !(c._zoom.zooming && c.showTooltipOutsideZoom && !c.constrainOutsideZoom)) {
-                c._tooltipElem.hide();
-            }
-            if (c.zoom) {
-                c._zoom.gridpos = gridpos;
-                c._zoom.datapos = datapos;
-            }
-            if (c.showVerticalLine || c.showHorizontalLine) {
-                var ctx = c.cursorCanvas._ctx;
-                ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-                ctx = null;
-            }
-            if (c.showCursorLegend) {
-                var cells = $(plot.targetId + ' td.jqplot-cursor-legend-label');
-                for (var i=0; i<cells.length; i++) {
-                    var idx = $(cells[i]).data('seriesIndex');
-                    var series = plot.series[idx];
-                    var label = series.label.toString();
-                    if (plot.legend.escapeHtml) {
-                        $(cells[i]).text($.jqplot.sprintf(c.cursorLegendFormatString, label, undefined, undefined));
-                    }
-                    else {
-                        $(cells[i]).html($.jqplot.sprintf(c.cursorLegendFormatString, label, undefined, undefined));
-                    }
-                
-                }        
-            }
-        }
-    }
-    
-    function handleMouseEnter(ev, gridpos, datapos, neighbor, plot) {
-        var c = plot.plugins.cursor;
-        c.onGrid = true;
-        if (c.show) {
-            c.previousCursor = ev.target.style.cursor;
-            ev.target.style.cursor = c.style;
-            if (c.showTooltip) {
-                updateTooltip(gridpos, datapos, plot);
-                if (c.followMouse) {
-                    moveTooltip(gridpos, plot);
-                }
-                else {
-                    positionTooltip(plot);
-                }
-                c._tooltipElem.show();
-            }
-            if (c.showVerticalLine || c.showHorizontalLine) {
-                moveLine(gridpos, plot);
-            }
-        }
-
-    }    
-    
-    function handleMouseMove(ev, gridpos, datapos, neighbor, plot) {
-        var c = plot.plugins.cursor;
-        if (c.show) {
-            if (c.showTooltip) {
-                updateTooltip(gridpos, datapos, plot);
-                if (c.followMouse) {
-                    moveTooltip(gridpos, plot);
-                }
-            }
-            if (c.showVerticalLine || c.showHorizontalLine) {
-                moveLine(gridpos, plot);
-            }
-        }
-    }
-            
-    function getEventPosition(ev) {
-        var plot = ev.data.plot;
-        var go = plot.eventCanvas._elem.offset();
-        var gridPos = {x:ev.pageX - go.left, y:ev.pageY - go.top};
-        //////
-        // TO DO: handle yMidAxis
-        //////
-        var dataPos = {xaxis:null, yaxis:null, x2axis:null, y2axis:null, y3axis:null, y4axis:null, y5axis:null, y6axis:null, y7axis:null, y8axis:null, y9axis:null, yMidAxis:null};
-        var an = ['xaxis', 'yaxis', 'x2axis', 'y2axis', 'y3axis', 'y4axis', 'y5axis', 'y6axis', 'y7axis', 'y8axis', 'y9axis', 'yMidAxis'];
-        var ax = plot.axes;
-        var n, axis;
-        for (n=11; n>0; n--) {
-            axis = an[n-1];
-            if (ax[axis].show) {
-                dataPos[axis] = ax[axis].series_p2u(gridPos[axis.charAt(0)]);
-            }
-        }
-
-        return {offsets:go, gridPos:gridPos, dataPos:dataPos};
-    }    
-    
-    function handleZoomMove(ev) {
-        var plot = ev.data.plot;
-        var c = plot.plugins.cursor;
-        // don't do anything if not on grid.
-        if (c.show && c.zoom && c._zoom.started && !c.zoomTarget) {
-            var ctx = c.zoomCanvas._ctx;
-            var positions = getEventPosition(ev);
-            var gridpos = positions.gridPos;
-            var datapos = positions.dataPos;
-            c._zoom.gridpos = gridpos;
-            c._zoom.datapos = datapos;
-            c._zoom.zooming = true;
-            var xpos = gridpos.x;
-            var ypos = gridpos.y;
-            var height = ctx.canvas.height;
-            var width = ctx.canvas.width;
-            if (c.showTooltip && !c.onGrid && c.showTooltipOutsideZoom) {
-                updateTooltip(gridpos, datapos, plot);
-                if (c.followMouse) {
-                    moveTooltip(gridpos, plot);
-                }
-            }
-            if (c.constrainZoomTo == 'x') {
-                c._zoom.end = [xpos, height];
-            }
-            else if (c.constrainZoomTo == 'y') {
-                c._zoom.end = [width, ypos];
-            }
-            else {
-                c._zoom.end = [xpos, ypos];
-            }
-            var sel = window.getSelection;
-            if (document.selection && document.selection.empty)
-            {
-                document.selection.empty();
-            }
-            else if (sel && !sel().isCollapsed) {
-                sel().collapse();
-            }
-            drawZoomBox.call(c);
-            ctx = null;
-        }
-    }
-    
-    function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
-        var c = plot.plugins.cursor;
-        $(document).one('mouseup.jqplot_cursor', {plot:plot}, handleMouseUp);
-        var axes = plot.axes;
-        if (document.onselectstart != undefined) {
-            c._oldHandlers.onselectstart = document.onselectstart;
-            document.onselectstart = function () { return false; };
-        }
-        if (document.ondrag != undefined) {
-            c._oldHandlers.ondrag = document.ondrag;
-            document.ondrag = function () { return false; };
-        }
-        if (document.onmousedown != undefined) {
-            c._oldHandlers.onmousedown = document.onmousedown;
-            document.onmousedown = function () { return false; };
-        }
-        if (c.zoom) {
-            if (!c.zoomProxy) {
-                var ctx = c.zoomCanvas._ctx;
-                ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-                ctx = null;
-            }
-            if (c.constrainZoomTo == 'x') {
-                c._zoom.start = [gridpos.x, 0];
-            }
-            else if (c.constrainZoomTo == 'y') {
-                c._zoom.start = [0, gridpos.y];
-            }
-            else {
-                c._zoom.start = [gridpos.x, gridpos.y];
-            }
-            c._zoom.started = true;
-            for (var ax in datapos) {
-                // get zoom starting position.
-                c._zoom.axes.start[ax] = datapos[ax];
-            }  
-            $(document).bind('mousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
-        }
-    }
-    
-    function handleMouseUp(ev) {
-        var plot = ev.data.plot;
-        var c = plot.plugins.cursor;
-        if (c.zoom && c._zoom.zooming && !c.zoomTarget) {
-            var xpos = c._zoom.gridpos.x;
-            var ypos = c._zoom.gridpos.y;
-            var datapos = c._zoom.datapos;
-            var height = c.zoomCanvas._ctx.canvas.height;
-            var width = c.zoomCanvas._ctx.canvas.width;
-            var axes = plot.axes;
-            
-            if (c.constrainOutsideZoom && !c.onGrid) {
-                if (xpos < 0) { xpos = 0; }
-                else if (xpos > width) { xpos = width; }
-                if (ypos < 0) { ypos = 0; }
-                else if (ypos > height) { ypos = height; }
-                
-                for (var axis in datapos) {
-                    if (datapos[axis]) {
-                        if (axis.charAt(0) == 'x') {
-                            datapos[axis] = axes[axis].series_p2u(xpos);
-                        }
-                        else {
-                            datapos[axis] = axes[axis].series_p2u(ypos);
-                        }
-                    }
-                }
-            }
-            
-            if (c.constrainZoomTo == 'x') {
-                ypos = height;
-            }
-            else if (c.constrainZoomTo == 'y') {
-                xpos = width;
-            }
-            c._zoom.end = [xpos, ypos];
-            c._zoom.gridpos = {x:xpos, y:ypos};
-            
-            c.doZoom(c._zoom.gridpos, datapos, plot, c);
-        }
-        c._zoom.started = false;
-        c._zoom.zooming = false;
-        
-        $(document).unbind('mousemove.jqplotCursor', handleZoomMove);
-        
-        if (document.onselectstart != undefined && c._oldHandlers.onselectstart != null){
-            document.onselectstart = c._oldHandlers.onselectstart;
-            c._oldHandlers.onselectstart = null;
-        }
-        if (document.ondrag != undefined && c._oldHandlers.ondrag != null){
-            document.ondrag = c._oldHandlers.ondrag;
-            c._oldHandlers.ondrag = null;
-        }
-        if (document.onmousedown != undefined && c._oldHandlers.onmousedown != null){
-            document.onmousedown = c._oldHandlers.onmousedown;
-            c._oldHandlers.onmousedown = null;
-        }
-
-    }
-    
-    function drawZoomBox() {
-        var start = this._zoom.start;
-        var end = this._zoom.end;
-        var ctx = this.zoomCanvas._ctx;
-        var l, t, h, w;
-        if (end[0] > start[0]) {
-            l = start[0];
-            w = end[0] - start[0];
-        }
-        else {
-            l = end[0];
-            w = start[0] - end[0];
-        }
-        if (end[1] > start[1]) {
-            t = start[1];
-            h = end[1] - start[1];
-        }
-        else {
-            t = end[1];
-            h = start[1] - end[1];
-        }
-        ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        ctx.strokeStyle = '#999999';
-        ctx.lineWidth = 1.0;
-        ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-        ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
-        ctx.clearRect(l, t, w, h);
-        // IE won't show transparent fill rect, so stroke a rect also.
-        ctx.strokeRect(l,t,w,h);
-        ctx = null;
-    }
-    
-    $.jqplot.CursorLegendRenderer = function(options) {
-        $.jqplot.TableLegendRenderer.call(this, options);
-        this.formatString = '%s';
-    };
-    
-    $.jqplot.CursorLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
-    $.jqplot.CursorLegendRenderer.prototype.constructor = $.jqplot.CursorLegendRenderer;
-    
-    // called in context of a Legend
-    $.jqplot.CursorLegendRenderer.prototype.draw = function() {
-        if (this._elem) {
-            this._elem.emptyForce();
-            this._elem = null;
-        }
-        if (this.show) {
-            var series = this._series, s;
-            // make a table.  one line label per row.
-            var elem = document.createElement('div');
-            this._elem = $(elem);
-            elem = null;
-            this._elem.addClass('jqplot-legend jqplot-cursor-legend');
-            this._elem.css('position', 'absolute');
-        
-            var pad = false;
-            for (var i = 0; i< series.length; i++) {
-                s = series[i];
-                if (s.show && s.showLabel) {
-                    var lt = $.jqplot.sprintf(this.formatString, s.label.toString());
-                    if (lt) {
-                        var color = s.color;
-                        if (s._stack && !s.fill) {
-                            color = '';
-                        }
-                        addrow.call(this, lt, color, pad, i);
-                        pad = true;
-                    }
-                    // let plugins add more rows to legend.  Used by trend line plugin.
-                    for (var j=0; j<$.jqplot.addLegendRowHooks.length; j++) {
-                        var item = $.jqplot.addLegendRowHooks[j].call(this, s);
-                        if (item) {
-                            addrow.call(this, item.label, item.color, pad);
-                            pad = true;
-                        } 
-                    }
-                }
-            }
-            series = s = null;
-            delete series;
-            delete s;
-        }
-        
-        function addrow(label, color, pad, idx) {
-            var rs = (pad) ? this.rowSpacing : '0';
-            var tr = $('<tr class="jqplot-legend jqplot-cursor-legend"></tr>').appendTo(this._elem);
-            tr.data('seriesIndex', idx);
-            $('<td class="jqplot-legend jqplot-cursor-legend-swatch" style="padding-top:'+rs+';">'+
-                '<div style="border:1px solid #cccccc;padding:0.2em;">'+
-                '<div class="jqplot-cursor-legend-swatch" style="background-color:'+color+';"></div>'+
-                '</div></td>').appendTo(tr);
-            var td = $('<td class="jqplot-legend jqplot-cursor-legend-label" style="vertical-align:middle;padding-top:'+rs+';"></td>');
-            td.appendTo(tr);
-            td.data('seriesIndex', idx);
-            if (this.escapeHtml) {
-                td.text(label);
-            }
-            else {
-                td.html(label);
-            }
-            tr = null;
-            td = null;
-        }
-        return this._elem;
-    };
-    
-})(jQuery);
-
-/**
- * jqPlot
- * Pure JavaScript plotting plugin using jQuery
- *
- * Version: 1.0.0b2_r1012
- *
- * Copyright (c) 2009-2011 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects 
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
- * choose the license that best suits your project and use it accordingly. 
- *
- * Although not required, the author would appreciate an email letting him 
- * know of any substantial use of jqPlot.  You can reach the author at: 
- * chris at jqplot dot com or see http://www.jqplot.com/info.php .
- *
- * If you are feeling kind and generous, consider supporting the project by
- * making a donation at: http://www.jqplot.com/donate.php .
- *
- * sprintf functions contained in jqplot.sprintf.js by Ash Searle:
- *
- *     version 2007.04.27
- *     author Ash Searle
- *     http://hexmen.com/blog/2007/03/printf-sprintf/
- *     http://hexmen.com/js/sprintf.js
- *     The author (Ash Searle) has placed this code in the public domain:
- *     "This code is unrestricted: you are free to use it however you like."
- * 
- */
-(function($) {
-    $.jqplot.eventListenerHooks.push(['jqplotMouseMove', handleMove]);
-    
-    /**
-     * Class: $.jqplot.Highlighter
-     * Plugin which will highlight data points when they are moused over.
-     * 
-     * To use this plugin, include the js
-     * file in your source:
-     * 
-     * > <script type="text/javascript" src="plugins/jqplot.highlighter.js"></script>
-     * 
-     * A tooltip providing information about the data point is enabled by default.
-     * To disable the tooltip, set "showTooltip" to false.
-     * 
-     * You can control what data is displayed in the tooltip with various
-     * options.  The "tooltipAxes" option controls wether the x, y or both
-     * data values are displayed.
-     * 
-     * Some chart types (e.g. hi-low-close) have more than one y value per
-     * data point. To display the additional values in the tooltip, set the
-     * "yvalues" option to the desired number of y values present (3 for a hlc chart).
-     * 
-     * By default, data values will be formatted with the same formatting
-     * specifiers as used to format the axis ticks.  A custom format code
-     * can be supplied with the tooltipFormatString option.  This will apply 
-     * to all values in the tooltip.  
-     * 
-     * For more complete control, the "formatString" option can be set.  This
-     * Allows conplete control over tooltip formatting.  Values are passed to
-     * the format string in an order determined by the "tooltipAxes" and "yvalues"
-     * options.  So, if you have a hi-low-close chart and you just want to display 
-     * the hi-low-close values in the tooltip, you could set a formatString like:
-     * 
-     * > highlighter: {
-     * >     tooltipAxes: 'y',
-     * >     yvalues: 3,
-     * >     formatString:'<table class="jqplot-highlighter">
-     * >         <tr><td>hi:</td><td>%s</td></tr>
-     * >         <tr><td>low:</td><td>%s</td></tr>
-     * >         <tr><td>close:</td><td>%s</td></tr></table>'
-     * > }
-     * 
-     */
-    $.jqplot.Highlighter = function(options) {
-        // Group: Properties
-        //
-        //prop: show
-        // true to show the highlight.
-        this.show = $.jqplot.config.enablePlugins;
-        // prop: markerRenderer
-        // Renderer used to draw the marker of the highlighted point.
-        // Renderer will assimilate attributes from the data point being highlighted,
-        // so no attributes need set on the renderer directly.
-        // Default is to turn off shadow drawing on the highlighted point.
-        this.markerRenderer = new $.jqplot.MarkerRenderer({shadow:false});
-        // prop: showMarker
-        // true to show the marker
-        this.showMarker  = true;
-        // prop: lineWidthAdjust
-        // Pixels to add to the lineWidth of the highlight.
-        this.lineWidthAdjust = 2.5;
-        // prop: sizeAdjust
-        // Pixels to add to the overall size of the highlight.
-        this.sizeAdjust = 5;
-        // prop: showTooltip
-        // Show a tooltip with data point values.
-        this.showTooltip = true;
-        // prop: tooltipLocation
-        // Where to position tooltip, 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'
-        this.tooltipLocation = 'nw';
-        // prop: fadeTooltip
-        // true = fade in/out tooltip, flase = show/hide tooltip
-        this.fadeTooltip = true;
-        // prop: tooltipFadeSpeed
-        // 'slow', 'def', 'fast', or number of milliseconds.
-        this.tooltipFadeSpeed = "fast";
-        // prop: tooltipOffset
-        // Pixel offset of tooltip from the highlight.
-        this.tooltipOffset = 2;
-        // prop: tooltipAxes
-        // Which axes to display in tooltip, 'x', 'y' or 'both', 'xy' or 'yx'
-        // 'both' and 'xy' are equivalent, 'yx' reverses order of labels.
-        this.tooltipAxes = 'both';
-        // prop; tooltipSeparator
-        // String to use to separate x and y axes in tooltip.
-        this.tooltipSeparator = ', ';
-        // prop; tooltipContentEditor
-        // Function used to edit/augment/replace the formatted tooltip contents.
-        // Called as str = tooltipContentEditor(str, seriesIndex, pointIndex)
-        // where str is the generated tooltip html and seriesIndex and pointIndex identify
-        // the data point being highlighted. Should return the html for the tooltip contents.
-        this.tooltipContentEditor = null;
-        // prop: useAxesFormatters
-        // Use the x and y axes formatters to format the text in the tooltip.
-        this.useAxesFormatters = true;
-        // prop: tooltipFormatString
-        // sprintf format string for the tooltip.
-        // Uses Ash Searle's javascript sprintf implementation
-        // found here: http://hexmen.com/blog/2007/03/printf-sprintf/
-        // See http://perldoc.perl.org/functions/sprintf.html for reference.
-        // Additional "p" and "P" format specifiers added by Chris Leonello.
-        this.tooltipFormatString = '%.5P';
-        // prop: formatString
-        // alternative to tooltipFormatString
-        // will format the whole tooltip text, populating with x, y values as
-        // indicated by tooltipAxes option.  So, you could have a tooltip like:
-        // 'Date: %s, number of cats: %d' to format the whole tooltip at one go.
-        // If useAxesFormatters is true, values will be formatted according to
-        // Axes formatters and you can populate your tooltip string with 
-        // %s placeholders.
-        this.formatString = null;
-        // prop: yvalues
-        // Number of y values to expect in the data point array.
-        // Typically this is 1.  Certain plots, like OHLC, will
-        // have more y values in each data point array.
-        this.yvalues = 1;
-        // prop: bringSeriesToFront
-        // This option requires jQuery 1.4+
-        // True to bring the series of the highlighted point to the front
-        // of other series.
-        this.bringSeriesToFront = false;
-        this._tooltipElem;
-        this.isHighlighting = false;
-        this.currentNeighbor = null;
-
-        $.extend(true, this, options);
-    };
-    
-    var locations = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
-    var locationIndicies = {'nw':0, 'n':1, 'ne':2, 'e':3, 'se':4, 's':5, 'sw':6, 'w':7};
-    var oppositeLocations = ['se', 's', 'sw', 'w', 'nw', 'n', 'ne', 'e'];
-    
-    // axis.renderer.tickrenderer.formatter
-    
-    // called with scope of plot
-    $.jqplot.Highlighter.init = function (target, data, opts){
-        var options = opts || {};
-        // add a highlighter attribute to the plot
-        this.plugins.highlighter = new $.jqplot.Highlighter(options.highlighter);
-    };
-    
-    // called within scope of series
-    $.jqplot.Highlighter.parseOptions = function (defaults, options) {
-        // Add a showHighlight option to the series 
-        // and set it to true by default.
-        this.showHighlight = true;
-    };
-    
-    // called within context of plot
-    // create a canvas which we can draw on.
-    // insert it before the eventCanvas, so eventCanvas will still capture events.
-    $.jqplot.Highlighter.postPlotDraw = function() {
-        // Memory Leaks patch    
-        if (this.plugins.highlighter && this.plugins.highlighter.highlightCanvas) {
-            this.plugins.highlighter.highlightCanvas.resetCanvas();
-            this.plugins.highlighter.highlightCanvas = null;
-        }
-
-        if (this.plugins.highlighter && this.plugins.highlighter._tooltipElem) {
-            this.plugins.highlighter._tooltipElem.emptyForce();
-            this.plugins.highlighter._tooltipElem = null;
-        }
-
-        this.plugins.highlighter.highlightCanvas = new $.jqplot.GenericCanvas();
-        
-        this.eventCanvas._elem.before(this.plugins.highlighter.highlightCanvas.createElement(this._gridPadding, 'jqplot-highlight-canvas', this._plotDimensions, this));
-        this.plugins.highlighter.highlightCanvas.setContext();
-
-        var elem = document.createElement('div');
-        this.plugins.highlighter._tooltipElem = $(elem);
-        elem = null;
-        this.plugins.highlighter._tooltipElem.addClass('jqplot-highlighter-tooltip');
-        this.plugins.highlighter._tooltipElem.css({position:'absolute', display:'none'});
-        
-        this.eventCanvas._elem.before(this.plugins.highlighter._tooltipElem);
-    };
-    
-    $.jqplot.preInitHooks.push($.jqplot.Highlighter.init);
-    $.jqplot.preParseSeriesOptionsHooks.push($.jqplot.Highlighter.parseOptions);
-    $.jqplot.postDrawHooks.push($.jqplot.Highlighter.postPlotDraw);
-    
-    function draw(plot, neighbor) {
-        var hl = plot.plugins.highlighter;
-        var s = plot.series[neighbor.seriesIndex];
-        var smr = s.markerRenderer;
-        var mr = hl.markerRenderer;
-        mr.style = smr.style;
-        mr.lineWidth = smr.lineWidth + hl.lineWidthAdjust;
-        mr.size = smr.size + hl.sizeAdjust;
-        var rgba = $.jqplot.getColorComponents(smr.color);
-        var newrgb = [rgba[0], rgba[1], rgba[2]];
-        var alpha = (rgba[3] >= 0.6) ? rgba[3]*0.6 : rgba[3]*(2-rgba[3]);
-        mr.color = 'rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+','+alpha+')';
-        mr.init();
-        mr.draw(s.gridData[neighbor.pointIndex][0], s.gridData[neighbor.pointIndex][1], hl.highlightCanvas._ctx);
-    }
-    
-    function showTooltip(plot, series, neighbor) {
-        // neighbor looks like: {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]}
-        // gridData should be x,y pixel coords on the grid.
-        // add the plot._gridPadding to that to get x,y in the target.
-        var hl = plot.plugins.highlighter;
-        var elem = hl._tooltipElem;
-        var serieshl = series.highlighter || {};
-
-        var opts = $.extend(true, {}, hl, serieshl);
-
-        if (opts.useAxesFormatters) {
-            var xf = series._xaxis._ticks[0].formatter;
-            var yf = series._yaxis._ticks[0].formatter;
-            var xfstr = series._xaxis._ticks[0].formatString;
-            var yfstr = series._yaxis._ticks[0].formatString;
-            var str;
-            var xstr = xf(xfstr, neighbor.data[0]);
-            var ystrs = [];
-            for (var i=1; i<opts.yvalues+1; i++) {
-                ystrs.push(yf(yfstr, neighbor.data[i]));
-            }
-            if (typeof opts.formatString === 'string') {
-                switch (opts.tooltipAxes) {
-                    case 'both':
-                    case 'xy':
-                        ystrs.unshift(xstr);
-                        ystrs.unshift(opts.formatString);
-                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
-                        break;
-                    case 'yx':
-                        ystrs.push(xstr);
-                        ystrs.unshift(opts.formatString);
-                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
-                        break;
-                    case 'x':
-                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, [opts.formatString, xstr]);
-                        break;
-                    case 'y':
-                        ystrs.unshift(opts.formatString);
-                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
-                        break;
-                    default: // same as xy
-                        ystrs.unshift(xstr);
-                        ystrs.unshift(opts.formatString);
-                        str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
-                        break;
-                } 
-            }
-            else {
-                switch (opts.tooltipAxes) {
-                    case 'both':
-                    case 'xy':
-                        str = xstr;
-                        for (var i=0; i<ystrs.length; i++) {
-                            str += opts.tooltipSeparator + ystrs[i];
-                        }
-                        break;
-                    case 'yx':
-                        str = '';
-                        for (var i=0; i<ystrs.length; i++) {
-                            str += ystrs[i] + opts.tooltipSeparator;
-                        }
-                        str += xstr;
-                        break;
-                    case 'x':
-                        str = xstr;
-                        break;
-                    case 'y':
-                        str = ystrs.join(opts.tooltipSeparator);
-                        break;
-                    default: // same as 'xy'
-                        str = xstr;
-                        for (var i=0; i<ystrs.length; i++) {
-                            str += opts.tooltipSeparator + ystrs[i];
-                        }
-                        break;
-                    
-                }                
-            }
-        }
-        else {
-            var str;
-            if (typeof opts.formatString ===  'string') {
-                str = $.jqplot.sprintf.apply($.jqplot.sprintf, [opts.formatString].concat(neighbor.data));
-            }
-
-            else {
-                if (opts.tooltipAxes == 'both' || opts.tooltipAxes == 'xy') {
-                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]) + opts.tooltipSeparator + $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
-                }
-                else if (opts.tooltipAxes == 'yx') {
-                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]) + opts.tooltipSeparator + $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
-                }
-                else if (opts.tooltipAxes == 'x') {
-                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
-                }
-                else if (opts.tooltipAxes == 'y') {
-                    str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
-                } 
-            }
-        }
-        if ($.isFunction(opts.tooltipContentEditor)) {
-            // args str, seriesIndex, pointIndex are essential so the hook can look up
-            // extra data for the point.
-            str = opts.tooltipContentEditor(str, neighbor.seriesIndex, neighbor.pointIndex, plot);
-        }
-        elem.html(str);
-        var gridpos = {x:neighbor.gridData[0], y:neighbor.gridData[1]};
-        var ms = 0;
-        var fact = 0.707;
-        if (series.markerRenderer.show == true) { 
-            ms = (series.markerRenderer.size + opts.sizeAdjust)/2;
-        }
-		
-		var loc = locations;
-		if (series.fillToZero && series.fill && neighbor.data[1] < 0) {
-			loc = oppositeLocations;
-		}
-		
-        switch (loc[locationIndicies[opts.tooltipLocation]]) {
-            case 'nw':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
-                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
-                break;
-            case 'n':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
-                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - ms;
-                break;
-            case 'ne':
-                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + fact * ms;
-                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
-                break;
-            case 'e':
-                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + ms;
-                var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
-                break;
-            case 'se':
-                var x = gridpos.x + plot._gridPadding.left + opts.tooltipOffset + fact * ms;
-                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + fact * ms;
-                break;
-            case 's':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true)/2;
-                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + ms;
-                break;
-            case 'sw':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
-                var y = gridpos.y + plot._gridPadding.top + opts.tooltipOffset + fact * ms;
-                break;
-            case 'w':
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - ms;
-                var y = gridpos.y + plot._gridPadding.top - elem.outerHeight(true)/2;
-                break;
-            default: // same as 'nw'
-                var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
-                var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
-                break;
-        }
-        elem.css('left', x);
-        elem.css('top', y);
-        if (opts.fadeTooltip) {
-            // Fix for stacked up animations.  Thnanks Trevor!
-            elem.stop(true,true).fadeIn(opts.tooltipFadeSpeed);
-        }
-        else {
-            elem.show();
-        }
-        elem = null;
-        
-    }
-    
-    function handleMove(ev, gridpos, datapos, neighbor, plot) {
-        var hl = plot.plugins.highlighter;
-        var c = plot.plugins.cursor;
-        if (hl.show) {
-            if (neighbor == null && hl.isHighlighting) {
-                var ctx = hl.highlightCanvas._ctx;
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                if (hl.fadeTooltip) {
-                    hl._tooltipElem.fadeOut(hl.tooltipFadeSpeed);
-                }
-                else {
-                    hl._tooltipElem.hide();
-                }
-                if (hl.bringSeriesToFront) {
-                    plot.restorePreviousSeriesOrder();
-                }
-                hl.isHighlighting = false;
-                hl.currentNeighbor = null;
-                ctx = null;
-            }
-            else if (neighbor != null && plot.series[neighbor.seriesIndex].showHighlight && !hl.isHighlighting) {
-                hl.isHighlighting = true;
-                hl.currentNeighbor = neighbor;
-                if (hl.showMarker) {
-                    draw(plot, neighbor);
-                }
-                if (hl.showTooltip && (!c || !c._zoom.started)) {
-                    showTooltip(plot, plot.series[neighbor.seriesIndex], neighbor);
-                }
-                if (hl.bringSeriesToFront) {
-                    plot.moveSeriesToFront(neighbor.seriesIndex);
-                }
-            }
-            // check to see if we're highlighting the wrong point.
-            else if (neighbor != null && hl.isHighlighting && hl.currentNeighbor != neighbor) {
-                // highlighting the wrong point.
-
-                // if new series allows highlighting, highlight new point.
-                if (plot.series[neighbor.seriesIndex].showHighlight) {
-                    var ctx = hl.highlightCanvas._ctx;
-                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                    hl.isHighlighting = true;
-                    hl.currentNeighbor = neighbor;
-                    if (hl.showMarker) {
-                        draw(plot, neighbor);
-                    }
-                    if (hl.showTooltip && (!c || !c._zoom.started)) {
-                        showTooltip(plot, plot.series[neighbor.seriesIndex], neighbor);
-                    }
-                    if (hl.bringSeriesToFront) {
-                        plot.moveSeriesToFront(neighbor.seriesIndex);
-                    }                    
-                }                
-            }
-        }
-    }
-})(jQuery);
-
 $.jqplot.config.enablePlugins = true;
 
 /**
- * PrimeFaces Base Chart Widget
+ * PrimeFaces PieChart Widget
  */
-PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.PieChart = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
         this.jqpid = this.id.replace(/:/g,"\\:");
+        var _self = this;        
+
+        //renderer configuration
+        this.cfg.seriesDefaults = {
+            renderer: $.jqplot.PieRenderer,
+            rendererOptions: {
+                diameter : this.cfg.diameter,
+                sliceMargin : this.cfg.sliceMargin,
+                fill: this.cfg.fill,
+                shadow : this.cfg.shadow,
+                showDataLabels : this.cfg.showDataLabels,
+                dataLabels : this.cfg.dataFormat||'percent'
+            }
+        };
         
-        this.configure();
-        
-        //call extender
-        if(this.cfg.extender) {
-            this.cfg.extender.call(this);
-        }
-        
+        this.cfg.highlighter = {
+            show: false
+        };
+
         if(this.jq.is(':visible')) {
-            this.render();
+            this.draw();
         } 
         else {
             var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget'),
-            _self = this;
+            hiddenParentWidget = hiddenParent.data('widget');
 
             if(hiddenParentWidget) {
                 hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
+                    return _self.draw();
                 });
             }
         }
     },
     
-    refresh: function(cfg) {
-        //release resources
-        this.plot.destroy();
-        
-        this.init(cfg);
-    }
-    
-    ,render: function(){
+    draw: function(){
         if(this.jq.is(':visible')) {
             //events
-            this.bindItemSelect();
+            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+            //highlighter
+            PrimeFaces.widget.ChartUtils.bindHighlighter(this);
 
             //render chart
             this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
@@ -20332,162 +19244,76 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
         }
     }
     
-    ,configure: function() {
-        //legend config
-        if(this.cfg.legendPosition) {
-            this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
-                show: true,
-                location: this.cfg.legendPosition,
-                rendererOptions: {
-                    numberRows: this.cfg.legendRows||0,
-                    numberColumns: this.cfg.legendCols||0
-                }
-            };
-        }
-        
-        //zoom
-        if(this.cfg.zoom) {
-            this.cfg.cursor = {
-                show: true,
-                zoom: true,
-                showTooltip: false
-            };
-        }
-        else {
-            this.cfg.cursor = {
-                show: false
-            }
-        }
-        
-        //highlighter
-        if(this.cfg.datatip) {
-            this.cfg.highlighter = {
-                show: true,
-                formatString: this.cfg.datatipFormat
-            }
-        }
-        else {
-            this.cfg.highlighter = {
-                show: false
-            }
-        }
-        
-    }
-    
-    ,exportAsImage: function() {
-        return this.jq.jqplotToImageElem();
-    }
-    
-    ,bindItemSelect: function() {
-        var _self = this;
-        
-        $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
-            if(neighbor && _self.cfg.behaviors) {
-                var itemSelectCallback = _self.cfg.behaviors['itemSelect'];
-                if(itemSelectCallback) {
-                    var ext = {
-                        params: [
-                            {name: 'itemIndex', value: neighbor.pointIndex}
-                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
-                        ]
-                    };
-                    
-                    itemSelectCallback.call(_self, ev, ext);
-                }
-            }
-        });
-    }
-});
-
-/**
- * PrimeFaces Carteisian Chart Widget
- */
-PrimeFaces.widget.CartesianChart = PrimeFaces.widget.Chart.extend({
-    
-    configure: function() {
-        this._super();
-        
-        //axes
-        this.cfg.axes.xaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
-        this.cfg.axes.xaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
-        this.cfg.axes.xaxis.tickOptions = {angle:this.cfg.axes.xaxis.angle};
-        this.cfg.axes.yaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
-        this.cfg.axes.yaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
-        this.cfg.axes.yaxis.tickOptions = {angle:this.cfg.axes.yaxis.angle};
-    }
-    
-    ,resetZoom: function() {
-        this.plot.resetZoom();
-    }
-});
-
-/**
- * PrimeFaces PieChart Widget
- */
-PrimeFaces.widget.PieChart = PrimeFaces.widget.Chart.extend({
-    
-    configure: function() {
-        this._super();
-        
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.PieRenderer,
-            rendererOptions: {
-                fill: this.cfg.fill,
-                diameter : this.cfg.diameter,
-                sliceMargin : this.cfg.sliceMargin,
-                showDataLabels : this.cfg.showDataLabels,
-                dataLabels : this.cfg.dataFormat||'percent'
-            }
-        };
-    }
-    
-});
-
-/**
- * PrimeFaces DonutChart Widget
- */
-PrimeFaces.widget.DonutChart = PrimeFaces.widget.Chart.extend({
-    
-    configure: function() {
-        this._super();
-        
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.DonutRenderer,
-            rendererOptions: {
-                fill: this.cfg.fill,
-                diameter : this.cfg.diameter,
-                sliceMargin : this.cfg.sliceMargin,
-                showDataLabels : this.cfg.showDataLabels,
-                dataLabels : this.cfg.dataFormat||'percent'
-            }
-        };   
-    }
-    
 });
 
 /**
  * PrimeFaces LineChart Widget
  */
-PrimeFaces.widget.LineChart = PrimeFaces.widget.CartesianChart.extend({
+PrimeFaces.widget.LineChart = PrimeFaces.widget.BaseWidget.extend({
     
-    configure: function() {
-        this._super();
+    init: function(cfg) {
+        this._super(cfg);
         
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow: this.cfg.shadow,
-            fill: this.cfg.fill,
-            breakOnNull: this.cfg.breakOnNull
-        };
+        this.jqpId = this.id.replace(/:/g,"\\:");    
+        this.cfg.seriesDefaults = {};
+        var _self = this;
+
+        //axes
+        this.cfg.axes = this.cfg.axes || {};
+        this.cfg.axes.xaxis = this.cfg.axes.xaxis || {};
+        this.cfg.axes.yaxis = this.cfg.axes.yaxis || {};
+
+        this.cfg.axes.xaxis.min = this.cfg.minX;
+        this.cfg.axes.xaxis.max = this.cfg.maxX;
+
+        this.cfg.axes.yaxis.min = this.cfg.minY;
+        this.cfg.axes.yaxis.max = this.cfg.maxY;
 
         if(this.cfg.categories) {
             this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
             this.cfg.axes.xaxis.ticks = this.cfg.categories;
+        }
+
+        if(this.cfg.breakOnNull) {
+            this.seriesDefaults.breakOnNull =  true;
+        }
+
+        if(this.cfg.fillToZero){
+            this.cfg.seriesDefaults.fillToZero = true;
+            this.cfg.seriesDefaults.fill = true;
+        }
+        else if(this.cfg.fill){
+            this.cfg.seriesDefaults.fill = true;
+        }
+
+        this.cfg.highlighter = {show : true, formatString : '%s, %s', showTooltip : true};
+
+        if(this.jq.is(':visible')) {
+            this.draw();
+        }
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.draw();
+                });
+            }
+        }
+    },
+    
+    draw: function(){
+        if(this.jq.is(':visible')) {
+            //events
+            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+            //render chart
+            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+            return true;
+        } else {
+            return false;
         }
     }
     
@@ -20497,34 +19323,153 @@ PrimeFaces.widget.LineChart = PrimeFaces.widget.CartesianChart.extend({
 /**
  * PrimeFaces BarChart Widget
  */
-PrimeFaces.widget.BarChart = PrimeFaces.widget.CartesianChart.extend({
+PrimeFaces.widget.BarChart = PrimeFaces.widget.BaseWidget.extend({
     
-    configure: function() {
-        this._super();
+    init: function(cfg) {
+        this._super(cfg);
         
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.BarRenderer,
-            rendererOptions: {
-                barDirection: this.cfg.orientation,
-                barPadding: this.cfg.barPadding,
-                barMargin: this.cfg.barMargin,
-                breakOnNull: this.cfg.breakOnNull
-            }
+        this.jqpId = this.id.replace(/:/g,"\\:");
+        var _self = this;
+
+        var rendererCfg = {
+            barDirection:this.cfg.orientation,
+            barPadding: this.cfg.barPadding,
+            barMargin: this.cfg.barMargin
         };
-        
+
+        //renderer configuration
+        this.cfg.seriesDefaults = {
+            renderer: $.jqplot.BarRenderer,
+            rendererOptions: rendererCfg
+        };
+
+        if(this.cfg.breakOnNull) {
+            this.cfg.seriesDefaults.breakOnNull = true;
+        }
+
+        //axes
+        var categoryAxis = {
+            renderer:$.jqplot.CategoryAxisRenderer,
+            ticks: this.cfg.categories
+        },
+        valueAxis = {
+            min: this.cfg.min,
+            max: this.cfg.max
+        }
+
+        this.cfg.axes = this.cfg.axes || {};
+        this.cfg.axes.xaxis = this.cfg.axes.xaxis || {};
+        this.cfg.axes.yaxis = this.cfg.axes.yaxis || {};
+
         if(this.cfg.orientation == 'vertical') {
-            this.cfg.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
-            this.cfg.axes.xaxis.ticks = this.cfg.categories;
-            this.cfg.axes.yaxis.min = this.cfg.min;
-            this.cfg.axes.yaxis.max = this.cfg.max;
+            this.cfg.axes.xaxis.renderer = categoryAxis.renderer;
+            this.cfg.axes.xaxis.ticks = categoryAxis.ticks;
+            this.cfg.axes.yaxis.min = valueAxis.min;
+            this.cfg.axes.yaxis.max = valueAxis.max;
         }
         else {
-            this.cfg.axes.yaxis.renderer = $.jqplot.CategoryAxisRenderer;
-            this.cfg.axes.yaxis.ticks = this.cfg.categories;
-            this.cfg.axes.xaxis.min = this.cfg.min;
-            this.cfg.axes.xaxis.max = this.cfg.max;
+            this.cfg.axes.yaxis.renderer = categoryAxis.renderer;
+            this.cfg.axes.yaxis.ticks = categoryAxis.ticks;
+            this.cfg.axes.xaxis.min = valueAxis.min;
+            this.cfg.axes.xaxis.max = valueAxis.max;
+        }
+
+        this.cfg.highlighter = {show:false}; //default highlighter off
+
+        if(this.jq.is(':visible')) {
+            this.draw();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.draw();
+                });
+            }
+        }
+    },
+    
+    draw: function(){
+        if(this.jq.is(':visible')) {
+            //events
+            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+            //highlighter
+            PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+
+            //render chart
+            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
+    
+});
+
+/**
+ * PrimeFaces DonutChart Widget
+ */
+PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jqpId = this.id.replace(/:/g,"\\:");
+        var _self = this;
+
+        //renderer options
+        var rendererCfg = {
+            diameter : this.cfg.diameter,
+            sliceMargin : this.cfg.sliceMargin,
+            fill: this.cfg.fill,
+            shadow : this.cfg.shadow,
+            showDataLabels : this.cfg.showDataLabels,
+            dataLabels : this.cfg.dataFormat || "percent"
+        }
+
+        //renderer configuration
+        this.cfg.seriesDefaults = {
+            renderer: $.jqplot.DonutRenderer,
+            rendererOptions: rendererCfg
+        };
+
+        this.cfg.highlighter = {show:false}; //default highlighter 
+
+        if(this.jq.is(':visible')) {
+            this.draw();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.draw();
+                });
+            }
+        }
+    },
+    
+    draw: function(){
+        if(this.jq.is(':visible')) {
+            //events
+            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+            //highlighter
+            PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+
+            //render chart
+            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+            return true;
+        } 
+        else {
+            return false;
         }
     }
     
@@ -20533,40 +19478,102 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.CartesianChart.extend({
 /**
  * PrimeFaces BubbleChart Widget
  */
-PrimeFaces.widget.BubbleChart = PrimeFaces.widget.CartesianChart.extend({
+PrimeFaces.widget.BubbleChart = PrimeFaces.widget.BaseWidget.extend({
     
-    configure: function() {
-        this._super();
+    init: function(cfg) {
+        this._super(cfg);
         
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.BubbleRenderer,
-            rendererOptions: {
-                showLabels: this.cfg.showLabels,
-                bubbleGradients: this.cfg.bubbleGradients,
-                bubbleAlpha: this.cfg.bubbleAlpha
+        this.jqpId = this.id.replace(/:/g,"\\:");
+        var _self = this;
+
+        //default values
+        this.cfg.seriesDefaults.rendererOptions.bubbleAlpha = this.cfg.seriesDefaults.rendererOptions.bubbleAlpha || 0.7;
+        this.cfg.seriesDefaults.rendererOptions.highlightAlpha = 0.8;
+        this.cfg.highlighter = {show:false};
+        this.cfg.seriesDefaults.shadow = this.cfg.shadow;
+
+        if(this.jq.is(':visible')) {
+            this.draw();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.draw();
+                });
             }
-        };
+        }
+    },
+    
+    draw: function(){
+        if(this.jq.is(':visible')) {
+            //events
+            PrimeFaces.widget.ChartUtils.bindItemSelectListener(this);
+
+            //highlighter
+            PrimeFaces.widget.ChartUtils.bindHighlighter(this);
+
+            //render chart
+            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+    
 });
 
 /**
  * PrimeFaces OhlcChart Widget
  */
-PrimeFaces.widget.OhlcChart = PrimeFaces.widget.CartesianChart.extend({
+PrimeFaces.widget.OhlcChart = PrimeFaces.widget.BaseWidget.extend({
     
-    configure: function(cfg) {
+    init: function(cfg) {
         this._super(cfg);
 
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.OHLCRenderer,
-            rendererOptions: {
-                candleStick: this.cfg.candleStick
+        this.jqpId = this.id.replace(/:/g,"\\:");
+        var _self = this;
+
+        this.cfg.highlighter = {
+            tooltipAxes: 'xy',
+            yvalues: 4,
+            formatString:'<table class="jqplot-highlighter"> \
+            <tr><td>value:</td><td>%s</td></tr> \
+            <tr><td>open:</td><td>%s</td></tr> \
+            <tr><td>hi:</td><td>%s</td></tr> \
+            <tr><td>low:</td><td>%s</td></tr> \
+            <tr><td>close:</td><td>%s</td></tr></table>'
+        }
+
+        if(this.jq.is(':visible')) {
+            this.draw();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.draw();
+                });
             }
-        };
+        }
+    },
+    
+    draw: function(){
+        if(this.jq.is(':visible')) {
+            //render chart
+            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+            return true;
+        } 
+        else {
+            return false;
+        }
     }
     
 });
@@ -20574,27 +19581,94 @@ PrimeFaces.widget.OhlcChart = PrimeFaces.widget.CartesianChart.extend({
 /**
  * PrimeFaces MeterGaugeChart Widget
  */
-PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.Chart.extend({
+PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.BaseWidget.extend({
     
-    configure: function() {
-        this._super();
+    init: function(cfg) {
+        this._super(cfg);
         
-        //series config
-        this.cfg.seriesDefaults = {
-            shadow : this.cfg.shadow,
-            renderer: $.jqplot.MeterGaugeRenderer,
-            rendererOptions: {
-                intervals: this.cfg.intervals,
-                intervalColors: this.cfg.seriesColors,
-                label: this.cfg.label,
-                showTickLabels: this.cfg.showTickLabels,
-                ticks: this.cfg.ticks,
-                labelHeightAdjust: this.cfg.labelHeightAdjust,
-                intervalOuterRadius: this.cfg.intervalOuterRadius,
-                min: this.cfg.min,
-                max: this.cfg.max
+        this.jqpId = this.id.replace(/:/g,"\\:");
+        var _self = this;
+
+        if(this.cfg.seriesColors)
+            this.cfg.seriesDefaults.rendererOptions.intervalColors = this.cfg.seriesColors;
+
+        if(this.jq.is(':visible')) {
+            this.draw();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return _self.draw();
+                });
             }
-        };   
+        }
+    },
+    
+    draw: function(){
+        if(this.jq.is(':visible')) {
+            //render chart
+            this.plot = $.jqplot(this.jqpId, this.cfg.data, this.cfg);
+
+            return true;
+        } 
+        else {
+            return false;
+        }
     }
     
 });
+
+/**
+ * Chart Utils
+ */
+PrimeFaces.widget.ChartUtils = {
+    
+    bindItemSelectListener : function(chart) {
+        $(chart.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+            if(neighbor && chart.cfg.behaviors) {
+                var itemSelectCallback = chart.cfg.behaviors['itemSelect'];
+                if(itemSelectCallback) {
+                    var ext = {
+                        params: [
+                            {name: 'itemIndex', value: neighbor.pointIndex}
+                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
+                        ]
+                    };
+                    
+                    itemSelectCallback.call(chart, ev, ext);
+                }
+            }
+        });
+    },
+    
+    bindHighlighter : function(chartWidget){      
+      chartWidget.jq.append($('<div class="ui-chart-tooltip" style="position:absolute;overflow:hidden;white-space:nowrap;display:none;background:#E5DACA;padding:4px; z-index:1000;"></div>').css({opacity : 0.8}));
+      
+      var tooltip = chartWidget.jq.find('.ui-chart-tooltip');
+      
+      chartWidget.jq.bind('jqplotDataHighlight',
+            function (ev, seriesIndex, pointIndex, data) {
+                var text = chartWidget.cfg.categories ? chartWidget.cfg.categories[pointIndex] + ' : ' : '';
+                text += (chartWidget.cfg.series ? chartWidget.cfg.series[seriesIndex].label + " : " : '') + data[0] + " : " +data[1];
+                tooltip.html(text).css({
+                    display : 'block'
+                });
+            }
+            ).bind('jqplotDataUnhighlight',
+            function (ev, seriesIndex, pointIndex, data) {
+                tooltip.css({
+                    display : 'none'
+                });
+            }).bind('jqplotMouseMove', 
+            function(ev, gridpos, datapos, neighbor, plot){
+                if (neighbor != null)
+                    tooltip.css({
+                        left:(gridpos.x + 15 ),
+                        top:(gridpos.y - 5)
+                    });
+            });
+    }
+}

@@ -24,17 +24,18 @@ public class BubbleChartSeries implements Serializable {
     private int radius;
     private String label;
 
+
     public BubbleChartSeries() {}
 
     public BubbleChartSeries(String label) {
         this.label = label;
     }
 
-    public BubbleChartSeries(String label, int x, int y, int radius) {
-        this.label = label;
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
+    public BubbleChartSeries(String label, int x, int y, int radius){
+        setLabel(label);
+        setX(x);
+        setY(y);
+        setRadius(radius);
     }
     
     public String getLabel() {
@@ -67,5 +68,10 @@ public class BubbleChartSeries implements Serializable {
 
     public void setY(int y) {
         this.y = y;
+    }
+    
+    @Override
+    public String toString(){
+        return "[" + getX() + "," + getY() + "," + getRadius() + ",'" + getLabel() + "']";
     }
 }

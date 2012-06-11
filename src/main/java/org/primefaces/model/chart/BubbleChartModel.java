@@ -39,13 +39,20 @@ public class BubbleChartModel extends ChartModel implements Serializable {
         this.data = data;
     }
     
-    public void add(BubbleChartSeries bubble){
+    public void addBubble(BubbleChartSeries bubble){
         this.data.add(bubble);
     }
     
-    @Deprecated
-    public void addBubble(BubbleChartSeries bubble){
-        this.data.add(bubble);
+    @Override
+    public String toString(){
+        String out = "[";
+        for( int i = 0; i < data.size() ; i++){
+            if(i != 0)
+                out += ",";
+            out += data.get(i).toString();
+        }
+        
+        return out + "]";
     }
 
     public void clear() {
