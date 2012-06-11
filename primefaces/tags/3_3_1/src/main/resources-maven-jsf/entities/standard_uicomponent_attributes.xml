@@ -1,0 +1,22 @@
+<attribute>
+	<name>id</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<literal>true</literal>
+    <description>Unique identifier of the component in a namingContainer.</description>
+</attribute>
+<attribute>
+	<name>rendered</name>
+	<required>false</required>
+	<type>java.lang.Boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Boolean value to specify the rendering of the component, when set to false component will not be rendered.</description>
+</attribute>
+<attribute>
+	<name>binding</name>
+	<required>false</required>
+	<type>javax.faces.component.UIComponent</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>An el expression referring to a server side UIComponent instance in a backing bean.</description>
+</attribute>
