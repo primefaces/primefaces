@@ -66,7 +66,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                         .update(context, component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
                         .global(ajaxBehavior.isGlobal())
-                        .partialSubmit(ajaxBehavior.isPartialSubmit())
+                        .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet())
                         .onstart(ajaxBehavior.getOnstart())
                         .onerror(ajaxBehavior.getOnerror())
                         .onsuccess(ajaxBehavior.getOnsuccess())

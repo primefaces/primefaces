@@ -551,9 +551,9 @@ PrimeFaces.ajax.AjaxUtils = {
 
         /**
         * Only add params of process components and their children 
-        * if partial submit is enabled(undefined or true) and there are components to process partially
+        * if partial submit is enabled and there are components to process partially
         */
-        if(cfg.partialSubmit != false && processIds != '@all') {
+        if(cfg.partialSubmit && processIds != '@all') {
             var hasViewstate = false;
             
             if(processIds != '@none') {

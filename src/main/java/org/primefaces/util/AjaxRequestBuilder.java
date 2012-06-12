@@ -130,9 +130,12 @@ public class AjaxRequestBuilder {
         return this;
     }
     
-    public AjaxRequestBuilder partialSubmit(boolean partialSubmit) {
-        if(!partialSubmit) {
-            buffer.append(",partialSubmit:false");
+    public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
+        //component can override global setting
+        boolean partialSubmit = partialSubmitSet ? value : ComponentUtils.isPartialSubmitEnabled(FacesContext.getCurrentInstance());
+        
+        if(partialSubmit) {
+            buffer.append(",partialSubmit:true");
         }
         
         return this;

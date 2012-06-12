@@ -52,6 +52,7 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
     private Boolean immediate;
     private Boolean disabled;
     private Boolean partialSubmit;
+    private boolean partialSubmitSet = false;
     
     public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
@@ -182,12 +183,17 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
     public boolean isPartialSubmit() {
         Boolean result = (Boolean) eval("partialSubmit", partialSubmit);
         
-        return ((result != null) ? result : true);
+        return ((result != null) ? result : false);
     }
     public void setPartialSubmit(boolean partialSubmit) {
         this.partialSubmit = partialSubmit;
+        this.partialSubmitSet = true;
         
         clearInitialState();
+    }
+    
+    public boolean isPartialSubmitSet() {
+        return this.partialSubmitSet || (this.getValueExpression("partialSubmit") != null);
     }
 
     protected Object eval(String propertyName, Object value) {
@@ -272,6 +278,7 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
             global = (Boolean)value;
         } else if ("partialSubmit".equals(propertyName)) {
             partialSubmit = (Boolean)value;
+            this.partialSubmitSet = true;
         }
     }
     
