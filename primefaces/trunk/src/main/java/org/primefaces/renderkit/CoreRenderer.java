@@ -197,7 +197,7 @@ public abstract class CoreRenderer extends Renderer {
                 .update(context, component, source.getUpdate())
                 .async(source.isAsync())
                 .global(source.isGlobal())
-                .partialSubmit(source.isPartialSubmit())
+                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())

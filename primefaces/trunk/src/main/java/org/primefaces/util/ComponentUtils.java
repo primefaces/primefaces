@@ -379,4 +379,11 @@ public class ComponentUtils {
 
         return result;
     }
+    
+    public static boolean isPartialSubmitEnabled(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
+        
+        return (value == null) ? false : value.equalsIgnoreCase("partial");
+    }
 }

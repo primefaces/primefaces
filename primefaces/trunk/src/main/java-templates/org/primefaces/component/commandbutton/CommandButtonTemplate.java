@@ -42,3 +42,7 @@ import java.util.logging.Logger;
     
         return styleClass;
     }
+    
+    public boolean isPartialSubmitSet() {
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression("partialSubmit") != null);
+    }

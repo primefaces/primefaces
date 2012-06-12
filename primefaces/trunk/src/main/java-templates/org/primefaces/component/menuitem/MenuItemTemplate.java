@@ -27,3 +27,7 @@ import javax.faces.event.ActionEvent;
 		
 		return false;
 	}
+
+    public boolean isPartialSubmitSet() {
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression("partialSubmit") != null); 
+    }

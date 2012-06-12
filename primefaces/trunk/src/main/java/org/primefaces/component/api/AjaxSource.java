@@ -38,4 +38,6 @@ public interface AjaxSource {
 	public boolean isAsync();
     
     public boolean isPartialSubmit();
+    
+    public boolean isPartialSubmitSet();
 }

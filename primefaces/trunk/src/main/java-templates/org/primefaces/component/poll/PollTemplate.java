@@ -16,3 +16,7 @@ import org.primefaces.context.RequestContext;
             requestContext.addCallbackParam("stop", expr.getValue(facesContext.getELContext()));
         }
 	}
+
+    public boolean isPartialSubmitSet() {
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression("partialSubmit") != null);
+    }
