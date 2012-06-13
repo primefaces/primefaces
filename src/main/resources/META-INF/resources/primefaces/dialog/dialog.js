@@ -13,7 +13,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
-        this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keyup.dialog click.dialog';
+        this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog keydown.dialog keyup.dialog';
 
         //configuration
         this.cfg.width = this.cfg.width||'auto';
