@@ -16,10 +16,15 @@
 package org.primefaces.component.inputtextarea;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
+import org.primefaces.component.autocomplete.AutoComplete;
+import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -37,18 +42,54 @@ public class InputTextareaRenderer extends InputRenderer {
         decodeBehaviors(context, inputTextarea);
 
 		String clientId = inputTextarea.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		String submittedValue = params.get(clientId);
         
 		inputTextarea.setSubmittedValue(submittedValue);
+        
+        //AutoComplete event
+        String query = params.get(clientId + "_query");
+        if(query != null) {
+            AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(inputTextarea, query);
+            autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            inputTextarea.queueEvent(autoCompleteEvent);
+        }
 	}
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		InputTextarea inputTextarea = (InputTextarea) component;
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String query = params.get(inputTextarea.getClientId(context) + "_query");
 
-		encodeMarkup(context, inputTextarea);
-		encodeScript(context, inputTextarea);
+        if(query != null) {
+            encodeSuggestions(context, inputTextarea, query);
+        }
+        else {
+            encodeMarkup(context, inputTextarea);
+            encodeScript(context, inputTextarea);
+        }
 	}
+    
+    @SuppressWarnings("unchecked")
+    public void encodeSuggestions(FacesContext context, InputTextarea inputTextarea, String query) throws IOException {        
+        ResponseWriter writer = context.getResponseWriter();
+        List<Object> items = inputTextarea.getSuggestions();
+
+        writer.startElement("ul", inputTextarea);
+        writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
+
+        for(Object item : items) {
+            writer.startElement("li", null);
+            writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
+            writer.writeAttribute("data-item-value", item, null);
+            writer.writeText(item, null); 
+            
+            writer.endElement("li");
+        }
+        
+        writer.endElement("ul");
+    }
 
 	protected void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
@@ -57,7 +98,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
 
         startScript(writer, clientId);
-        
+        writer.write("$(function(){");
         writer.write("PrimeFaces.cw('InputTextarea','" + inputTextarea.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",autoResize:" + autoResize);
@@ -80,9 +121,14 @@ public class InputTextareaRenderer extends InputRenderer {
             }
         }
         
+        if(inputTextarea.getCompleteMethod() != null) {
+            writer.write(",autoComplete:true");
+            writer.write(",minQueryLength:" + inputTextarea.getMinQueryLength());
+        }
+        
         encodeClientBehaviors(context, inputTextarea);
 
-        writer.write("});");
+        writer.write("});});");
 
 		endScript(writer);
 	}

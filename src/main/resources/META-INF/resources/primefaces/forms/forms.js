@@ -30,12 +30,17 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         //Visuals
         PrimeFaces.skinInput(this.jq);
 
-        //AutoResize
+        //autoComplete
+        if(this.cfg.autoComplete) {
+            this.setupAutoComplete();
+        }
+        
+        //autoResize
         if(this.cfg.autoResize) {
             this.setupAutoResize();
         }
 
-        //max length
+        //maxLength
         if(this.cfg.maxlength) {
             this.applyMaxlength();
         }
@@ -47,13 +52,9 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         
         //Counter
         if(this.cfg.counter) {
-            var _self = this;
-            $(function() {
-                _self.counter = _self.cfg.counter ? $(PrimeFaces.escapeClientId(_self.cfg.counter)) : null;
-                _self.cfg.counterTemplate = _self.cfg.counterTemplate||'{0}';
-                
-                _self.updateCounter();
-            });
+            this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
+            this.cfg.counterTemplate = this.cfg.counterTemplate||'{0}';
+            this.updateCounter();
         }
     },
     
@@ -109,7 +110,259 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
 
             this.counter.html(remainingText);
         }
+    },
+    
+    setupAutoComplete: function() {
+        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow"></div>',
+        _self = this;
+        
+        this.panel = $(panelMarkup).appendTo(document.body);
+        
+        this.jq.keyup(function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            switch(e.which) {
+                
+                case keyCode.UP:
+                case keyCode.LEFT:
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                    //default
+                break;
+                
+                case keyCode.SPACE:
+                case keyCode.TAB:
+                    if(_self.panel.is(':visible')) {
+                        _self.hide();
+                    }
+                break;
+                
+                default:
+                    var query = _self.extractQuery();           
+                    if(query && query.length >= _self.cfg.minQueryLength) {
+                        _self.search(query);
+                    }
+                break;
+            }
+
+        }).keydown(function(e) {
+            if(_self.panel.is(':visible')) {
+                var keyCode = $.ui.keyCode,
+                highlightedItem = _self.items.filter('.ui-state-highlight');
+
+                switch(e.which) {
+                    case keyCode.UP:
+                    case keyCode.LEFT:
+                        var prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prev('.ui-autocomplete-item');
+                        
+                        if(prev.length == 1) {
+                            highlightedItem.removeClass('ui-state-highlight');
+                            prev.addClass('ui-state-highlight');
+                        }
+ 
+                        e.preventDefault();
+                        break;
+
+                    case keyCode.DOWN:
+                    case keyCode.RIGHT:
+                        var next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.next('.ui-autocomplete-item');
+                        
+                        if(next.length == 1) {
+                            highlightedItem.removeClass('ui-state-highlight');
+                            next.addClass('ui-state-highlight');
+                        }
+                        
+                        e.preventDefault();
+                        break;
+
+                    case keyCode.ENTER:
+                    case keyCode.NUMPAD_ENTER:
+                        highlightedItem.trigger('click');
+
+                        e.preventDefault();
+                        break;
+
+                    case keyCode.ALT: 
+                    case 224:
+                        break;
+
+                    case keyCode.TAB:
+                        highlightedItem.trigger('click');
+                        _self.hide();
+                        break;
+                }
+            }
+        });
+        
+        //hide panel when outside is clicked
+        $(document.body).bind('mousedown.ui-inputtextarea', function (e) {
+            if(_self.panel.is(":hidden")) {
+                return;
+            }
+            var offset = _self.panel.offset();
+            if(e.target === _self.jq.get(0)) {
+                return;
+            }
+            
+            if (e.pageX < offset.left ||
+                e.pageX > offset.left + _self.panel.width() ||
+                e.pageY < offset.top ||
+                e.pageY > offset.top + _self.panel.height()) {
+                _self.hide();
+            }
+        });
+    },
+        
+    bindDynamicEvents: function() {
+        var _self = this;
+
+        //visuals and click handler for items
+        this.items.bind('mouseover', function() {
+            var item = $(this);
+            
+            if(!item.hasClass('ui-state-highlight')) {
+                _self.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+                item.addClass('ui-state-highlight');
+            }
+        })
+        .bind('click', function(event) {
+            var item = $(this),
+            itemValue = item.attr('data-item-value'),
+            insertValue = itemValue.substring(_self.query.length);
+            
+            _self.jq.insertText(insertValue, _self.jq.getSelection().end, true);
+            
+            _self.hide();
+        });
+    },
+    
+    extractQuery: function() {
+        var end = this.jq.getSelection().end,
+        result = /\S+$/.exec(this.jq.get(0).value.slice(0, end)),
+        lastWord = result ? result[0] : null;
+    
+        return lastWord;
+    },
+    
+    search: function(query) {
+        var _self = this;
+        this.query = query;
+
+        var options = {
+            source: this.id,
+            update: this.id,
+            onsuccess: function(responseXML) {
+                var xmlDoc = $(responseXML.documentElement),
+                updates = xmlDoc.find("update");
+
+                for(var i=0; i < updates.length; i++) {
+                    var update = updates.eq(i),
+                    id = update.attr('id'),
+                    data = update.text();
+
+                    if(id == _self.id) {
+                        _self.panel.html(data);
+                        _self.items = _self.panel.find('.ui-autocomplete-item');
+                        
+                        _self.bindDynamicEvents();
+                        
+                        if(_self.items.length > 0) {
+                            var firstItem = _self.items.eq(0);
+                            
+                            //highlight first item
+                            firstItem.addClass('ui-state-highlight');
+                            
+                            //highlight query string
+                            if(_self.panel.children().is('ul')) {
+                                _self.items.each(function() {
+                                    var item = $(this),
+                                    text = item.text(),
+                                    re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
+                                    highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
+                                    
+                                    item.html(highlighedText);
+                                });
+                            }
+
+                            if(_self.cfg.forceSelection) {
+                                _self.cachedResults = [];
+                                _self.items.each(function(i, item) {
+                                    _self.cachedResults.push($(item).attr('data-item-label'));
+                                });
+                            }
+                            
+                            //adjust height
+                            if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
+                                _self.panel.height(_self.cfg.scrollHeight);
+                            }
+
+                            if(_self.panel.is(':hidden')) {
+                                _self.show();
+                            } 
+                            else {
+                                _self.alignPanel(); //with new items
+                            }
+                            
+                            //show itemtip if defined
+                            if(_self.cfg.itemtip && firstItem.length == 1) {
+                                _self.showItemtip(firstItem);
+                            }
+                        }
+                        else {
+                            _self.panel.hide();
+                        }
+                    } 
+                    else {
+                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
+                    }
+                }
+
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+                return true;
+            }
+        };
+
+        options.params = [
+          {name: this.id + '_query', value: query}  
+        ];
+        
+        PrimeFaces.ajax.AjaxRequest(options);
+    },
+    
+    alignPanel: function() {
+        var fixedPosition = this.panel.css('position') == 'fixed',
+        win = $(window),
+        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
+        panelWidth = this.jq.innerWidth();
+
+        this.panel.css({
+                        'left':'',
+                        'top':'',
+                        'width': panelWidth,
+                        'z-index': ++PrimeFaces.zindex
+                })
+                .position({
+                    my: 'left top'
+                    ,at: 'left bottom'
+                    ,of: this.jq,
+                    offset : positionOffset
+                });
+    },
+    
+    show: function() {
+        this.alignPanel();
+
+        this.panel.show();
+    },
+    
+    hide: function() {        
+        this.panel.hide();
     }
+    
 });
 
 /**
