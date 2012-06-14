@@ -252,8 +252,26 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
             
             _self.jq.insertText(insertValue, _self.jq.getSelection().end, true);
             
+            _self.invokeItemSelectBehavior(event, itemValue);
+            
             _self.hide();
         });
+    },
+    
+    invokeItemSelectBehavior: function(event, itemValue) {
+        if(this.cfg.behaviors) {
+            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+
+            if(itemSelectBehavior) {
+                var ext = {
+                    params : [
+                        {name: this.id + '_itemSelect', value: itemValue}
+                    ]
+                };
+
+                itemSelectBehavior.call(this, event, ext);
+            }
+        }
     },
     
     extractQuery: function() {
