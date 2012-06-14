@@ -9,6 +9,7 @@
 <component>
 	<tag>inputTextarea</tag>
 	<tagClass>org.primefaces.component.inputtextarea.InputTextarea</tagClass>
+    <componentHandlerClass>org.primefaces.component.autocomplete.AutoCompleteHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.inputtextarea.InputTextarea</componentClass>
 	<componentType>org.primefaces.component.InputTextarea</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
@@ -51,6 +52,20 @@
 			<type>java.lang.String</type>
             <description>Template text to display in counter, default value is "{0}".</description>
 		</attribute>
+        <attribute>
+            <name>completeMethod</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.util.List completeMethod(java.lang.String)</method-signature>
+            <description>Method providing suggestions.</description>
+        </attribute>
+        <attribute>
+            <name>minQueryLength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>4</defaultValue>
+            <description>Number of characters of a word to be typed before starting to query. Default is 4.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
