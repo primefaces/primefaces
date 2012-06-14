@@ -63,8 +63,15 @@
             <name>minQueryLength</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>4</defaultValue>
-            <description>Number of characters of a word to be typed before starting to query. Default is 4.</description>
+            <defaultValue>3</defaultValue>
+            <description>Number of characters of a word to be typed before starting to query. Default is 3.</description>
+        </attribute>
+        <attribute>
+            <name>queryDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>700</defaultValue>
+            <description>Delay to wait in milliseconds before sending each query to the server. Default is 700</description>
         </attribute>
 	</attributes>
 	<resources>

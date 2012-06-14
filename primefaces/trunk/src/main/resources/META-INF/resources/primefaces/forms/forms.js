@@ -143,7 +143,16 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 default:
                     var query = _self.extractQuery();           
                     if(query && query.length >= _self.cfg.minQueryLength) {
-                        _self.search(query);
+                        
+                         //Cancel the search request if user types within the timeout
+                        if(_self.timeout) {
+                            clearTimeout(_self.timeout);
+                        }
+                        
+                        _self.timeout = setTimeout(function() {
+                            _self.search(query);
+                        }, _self.cfg.queryDelay);
+                        
                     }
                 break;
             }
