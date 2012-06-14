@@ -37,6 +37,8 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SelectableDataModelWrapper;
@@ -44,6 +46,7 @@ import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import org.primefaces.model.*;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -92,7 +95,7 @@ import javax.faces.context.FacesContext;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "colResize", "toggleSelect", "colReorder"
-                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect"));
+                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"));
 
     public List<Column> columns;
 
@@ -335,6 +338,14 @@ import javax.faces.context.FacesContext;
             }
             else if(eventName.equals("colReorder")) {
                 wrapperEvent = behaviorEvent;
+            }
+            else if(eventName.equals("rowToggle")) {
+                boolean expansion = isRowExpansionRequest(context);
+                Visibility visibility = expansion ? Visibility.VISIBLE : Visibility.HIDDEN;
+                String rowIndex = expansion ? params.get(clientId + "_expandedRowIndex") : params.get(clientId + "_collapsedRowIndex");
+                setRowIndex(Integer.parseInt(rowIndex));
+                
+                wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
             }
             
             wrapperEvent.setPhaseId(event.getPhaseId());
