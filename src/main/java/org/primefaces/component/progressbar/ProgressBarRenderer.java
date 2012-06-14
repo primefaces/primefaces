@@ -50,6 +50,8 @@ public class ProgressBarRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, ProgressBar progressBar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        int value = progressBar.getValue();
+        String labelTemplate = progressBar.getLabelTemplate();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
         styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
@@ -68,11 +70,18 @@ public class ProgressBarRenderer extends CoreRenderer {
         //value
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
+        if(value != 0) {
+            writer.writeAttribute("style", "display:block;width:" + value + "%", style);
+        }
         writer.endElement("div");
         
         //label
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
+        if(labelTemplate != null && value != 0) {
+            writer.writeAttribute("style", "display:block", style);
+            writer.write(labelTemplate.replaceAll("\\{value\\}", String.valueOf(value)));
+        }
         writer.endElement("div");
         
         writer.endElement("div");
@@ -89,7 +98,7 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         writer.write("PrimeFaces.cw('ProgressBar','" + progressBar.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",value:" + progressBar.getValue());
+        writer.write(",initialValue:" + progressBar.getValue());
         writer.write(",ajax:" + isAjax);
         
         if(progressBar.getLabelTemplate() != null)  

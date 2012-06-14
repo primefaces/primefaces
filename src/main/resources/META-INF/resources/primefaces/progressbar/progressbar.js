@@ -8,7 +8,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
         
         this.jqValue = this.jq.children('.ui-progressbar-value');
         this.jqLabel = this.jq.children('.ui-progressbar-label');
-        this.value = 0;
+        this.value = this.cfg.initialValue;
 
         if(this.cfg.ajax) {
             this.cfg.formId = this.jq.parents('form:first').attr('id');
@@ -93,7 +93,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
     enableARIA: function() {
         this.jq.attr('role', 'progressbar')
                 .attr('aria-valuemin', 0)
-                .attr('aria-valuenow', 0)
+                .attr('aria-valuenow', this.value)
                 .attr('aria-valuemax', 100);
     }
 
