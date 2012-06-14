@@ -128,8 +128,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         this.panel = $(panelMarkup).appendTo(document.body);
         
         this.jq.keyup(function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+            var keyCode = $.ui.keyCode;
             
             switch(e.which) {
                 
@@ -139,16 +138,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
                     //default
                 break;
-                
-                case keyCode.SPACE:
-                case keyCode.TAB:
-                    if(_self.panel.is(':visible')) {
-                        _self.hide();
-                    }
-                break;
-                
+
                 default:
                     var query = _self.extractQuery();           
                     if(query && query.length >= _self.cfg.minQueryLength) {
@@ -182,7 +175,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         }
  
                         e.preventDefault();
-                        break;
+                    break;
 
                     case keyCode.DOWN:
                     case keyCode.RIGHT:
@@ -194,23 +187,29 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         }
                         
                         e.preventDefault();
-                        break;
+                    break;
 
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
                         highlightedItem.trigger('click');
 
                         e.preventDefault();
-                        break;
+                    break;
 
                     case keyCode.ALT: 
                     case 224:
                         break;
+                        
+                    case keyCode.SPACE:
+                        if(_self.panel.is(':visible')) {
+                            _self.hide();
+                        }
+                    break;
 
                     case keyCode.TAB:
                         highlightedItem.trigger('click');
                         _self.hide();
-                        break;
+                    break;
                 }
             }
         });
