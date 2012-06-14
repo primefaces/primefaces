@@ -865,9 +865,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 $(this).remove();
 
                 _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
-                    return r != rowIndex;
+                        return r != rowIndex;
+                    });
                 });
-                });
+                
+                this.fireRowCollapseEvent(row);
             }
             else {
                 this.expansionProcess.push(rowIndex);
@@ -880,10 +882,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     loadExpandedRowContent: function(row) {
-        if(this.cfg.onExpandStart) {
-            this.cfg.onExpandStart.call(this, row);
-        }
-
         var options = {
             source: this.id,
             process: this.id,
@@ -926,8 +924,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_rowExpansion', value: true},
             {name: this.id + '_expandedRowIndex', value: rowIndex}
         ];
+        
+        if(this.hasBehavior('rowToggle')) {
+            var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
 
-        PrimeFaces.ajax.AjaxRequest(options);
+            rowToggleBehavior.call(this, row, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options); 
+        }
+    },
+    
+    fireRowCollapseEvent: function(row) {
+        var rowIndex = this.getRowMeta(row).index;
+        
+        if(this.hasBehavior('rowToggle')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_collapsedRowIndex', value: rowIndex}
+                ]
+            };
+        
+            var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
+
+            rowToggleBehavior.call(this, row, ext);
+        } 
     },
     
     /**

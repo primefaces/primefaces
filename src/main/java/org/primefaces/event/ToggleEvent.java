@@ -25,11 +25,21 @@ import org.primefaces.model.Visibility;
 
 public class ToggleEvent extends AjaxBehaviorEvent {
 	
+    /** Visibility status */
 	private Visibility visibility;
+    
+    /** Related data if available */
+    private Object data;
 	
 	public ToggleEvent(UIComponent component, Behavior behavior, Visibility visibility) {
 		super(component, behavior);
 		this.visibility = visibility;
+	}
+    
+    public ToggleEvent(UIComponent component, Behavior behavior, Visibility visibility, Object data) {
+		super(component, behavior);
+		this.visibility = visibility;
+        this.data = data;
 	}
 
 	@Override
@@ -45,4 +55,8 @@ public class ToggleEvent extends AjaxBehaviorEvent {
 	public Visibility getVisibility() {
 		return visibility;
 	}
+
+    public Object getData() {
+        return data;
+    }
 }
