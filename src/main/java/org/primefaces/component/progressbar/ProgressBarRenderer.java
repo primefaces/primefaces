@@ -45,7 +45,10 @@ public class ProgressBarRenderer extends CoreRenderer {
         ProgressBar progressBar = (ProgressBar) component;
 
         encodeMarkup(context, progressBar);
-        encodeScript(context, progressBar);
+        
+        if(!progressBar.isDisplayOnly()) {
+            encodeScript(context, progressBar);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, ProgressBar progressBar) throws IOException {

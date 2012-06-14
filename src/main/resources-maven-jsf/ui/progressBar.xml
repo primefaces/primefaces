@@ -70,6 +70,13 @@
             <type>java.lang.String</type>
             <description>Template of the progress value e.g. "{value}%"</description>
         </attribute>
+        <attribute>
+            <name>displayOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables static value display mode.</description>
+        </attribute>
     </attributes>
 	<resources>
 		<resource>
