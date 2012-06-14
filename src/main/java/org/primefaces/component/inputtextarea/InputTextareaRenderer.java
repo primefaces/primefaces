@@ -124,6 +124,7 @@ public class InputTextareaRenderer extends InputRenderer {
         if(inputTextarea.getCompleteMethod() != null) {
             writer.write(",autoComplete:true");
             writer.write(",minQueryLength:" + inputTextarea.getMinQueryLength());
+            writer.write(",queryDelay:" + inputTextarea.getQueryDelay());
         }
         
         encodeClientBehaviors(context, inputTextarea);
