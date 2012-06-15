@@ -270,3 +270,82 @@
     float:left;
 }
 
+/** TreeMenu **/
+.ui-treemenu { 
+    width: auto; 
+}
+
+.ui-treemenu .ui-treemenu-header { 
+    cursor: pointer; 
+    position: relative; 
+    margin: 0;
+    zoom: 1; 
+}
+
+.ui-treemenu .ui-treemenu-header a { 
+    display: block;
+    font-size: 1em;
+    padding: .5em .5em .5em 2.2em; 
+}
+
+.ui-treemenu .ui-treemenu-header .ui-icon { 
+    position: absolute;
+    left: .5em;
+    top: 50%;
+    margin-top: -8px;
+}
+
+.ui-treemenu .ui-treemenu-content { 
+    padding: 0.2em 0 0.2em 0.2em;
+    border-top: 0; 
+    margin-top: -2px; 
+    position: relative; 
+    top: 1px; 
+    overflow: auto; 
+    zoom: 1; 
+}
+
+.ui-treemenu .ui-treemenu-header.ui-state-disabled, 
+.ui-treemenu .ui-treemenu-header.ui-state-disabled a { 
+    cursor: default; 
+}
+
+.ui-treemenu .ui-menu-list { 
+    position: static; 
+}
+
+.ui-treemenu .ui-menuitem {
+    width:100%;
+    float:left;
+    clear:both;
+    margin:1px 0;
+    padding:0;
+}
+
+.ui-treemenu .ui-menuitem-link {
+    display:block;
+    width:92%;
+    outline:none;
+    text-decoration:none;
+    font-weight:400;
+    border:solid 1px transparent;
+    float:left;
+    line-height:16px;
+    padding:0.3em;
+    cursor: pointer;
+}
+
+.ui-treemenu .ui-icon {
+    display:inline-block;
+    float:left;
+}
+
+.ui-treemenu .ui-menuitem-text {
+    float:left;
+}
+
+.ui-treemenu .ui-menu-parent .ui-menu-list {
+    display: none;
+    margin-left: 20px;
+}
+
