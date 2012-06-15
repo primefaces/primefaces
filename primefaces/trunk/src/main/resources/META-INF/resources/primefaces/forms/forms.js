@@ -62,6 +62,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         //remove autocomplete panel
         if(cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
+            $(PrimeFaces.escapeClientId('textarea_simulator')).remove();
         }
         
         this.init(cfg);
@@ -138,8 +139,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
+                case keyCode.TAB:
                 case keyCode.SPACE:
-                    //default
+                case keyCode.CONTROL:
+                case keyCode.ALT:
+                case keyCode.BACKSPACE:
+                case 224:   //mac command
+                    //do not search
                 break;
 
                 default:
@@ -160,57 +166,78 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
             }
 
         }).keydown(function(e) {
-            if(_self.panel.is(':visible')) {
-                var keyCode = $.ui.keyCode,
-                highlightedItem = _self.items.filter('.ui-state-highlight');
+            var overlayVisible = _self.panel.is(':visible'),
+            keyCode = $.ui.keyCode;
 
-                switch(e.which) {
-                    case keyCode.UP:
-                    case keyCode.LEFT:
-                        var prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prev('.ui-autocomplete-item');
-                        
+            switch(e.which) {
+                case keyCode.UP:
+                case keyCode.LEFT:
+                    if(overlayVisible) {
+                        var highlightedItem = _self.items.filter('.ui-state-highlight'),
+                        prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prev();
+
                         if(prev.length == 1) {
                             highlightedItem.removeClass('ui-state-highlight');
                             prev.addClass('ui-state-highlight');
                         }
- 
-                        e.preventDefault();
-                    break;
 
-                    case keyCode.DOWN:
-                    case keyCode.RIGHT:
-                        var next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.next('.ui-autocomplete-item');
+                        e.preventDefault();
+                    }
+                    else {
+                        _self.clearTimeout();
+                    }
+                break;
+
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                    if(overlayVisible) {
+                        var highlightedItem = _self.items.filter('.ui-state-highlight'),
+                        next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.next();
                         
                         if(next.length == 1) {
                             highlightedItem.removeClass('ui-state-highlight');
                             next.addClass('ui-state-highlight');
                         }
-                        
-                        e.preventDefault();
-                    break;
-
-                    case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
-                        highlightedItem.trigger('click');
 
                         e.preventDefault();
-                    break;
+                    }
+                    else {
+                        _self.clearTimeout();
+                    }
+                break;
 
-                    case keyCode.ALT: 
-                    case 224:
-                        break;
-                        
-                    case keyCode.SPACE:
-                        if(_self.panel.is(':visible')) {
-                            _self.hide();
-                        }
-                    break;
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                    if(overlayVisible) {
+                        _self.items.filter('.ui-state-highlight').trigger('click');
 
-                    case keyCode.TAB:
-                        highlightedItem.trigger('click');
+                        e.preventDefault();
+                    }
+                    else {
+                        _self.clearTimeout();
+                    } 
+                break;
+
+                case keyCode.SPACE:
+                case keyCode.CONTROL:
+                case keyCode.ALT:
+                case keyCode.BACKSPACE:
+                case 224:   //mac command
+                    _self.clearTimeout();
+                    
+                    if(overlayVisible) {
                         _self.hide();
-                    break;
-                }
+                    }
+                break;
+
+                case keyCode.TAB:
+                    _self.clearTimeout();
+                    
+                    if(overlayVisible) {
+                        _self.items.filter('.ui-state-highlight').trigger('click');
+                        _self.hide();
+                    }
+                break;
             }
         });
         
@@ -274,6 +301,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    clearTimeout: function() {
+        if(this.timeout) {
+            clearTimeout(this.timeout);
+        }
+        
+        this.timeout = null;
+    },
+    
     extractQuery: function() {
         var end = this.jq.getSelection().end,
         result = /\S+$/.exec(this.jq.get(0).value.slice(0, end)),
@@ -304,30 +339,9 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         
                         _self.bindDynamicEvents();
                         
-                        if(_self.items.length > 0) {
-                            var firstItem = _self.items.eq(0);
-                            
+                        if(_self.items.length > 0) {                            
                             //highlight first item
-                            firstItem.addClass('ui-state-highlight');
-                            
-                            //highlight query string
-                            if(_self.panel.children().is('ul')) {
-                                _self.items.each(function() {
-                                    var item = $(this),
-                                    text = item.text(),
-                                    re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
-                                    highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
-                                    
-                                    item.html(highlighedText);
-                                });
-                            }
-
-                            if(_self.cfg.forceSelection) {
-                                _self.cachedResults = [];
-                                _self.items.each(function(i, item) {
-                                    _self.cachedResults.push($(item).attr('data-item-label'));
-                                });
-                            }
+                            _self.items.eq(0).addClass('ui-state-highlight');
                             
                             //adjust height
                             if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
@@ -340,11 +354,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                             else {
                                 _self.alignPanel(); //with new items
                             }
-                            
-                            //show itemtip if defined
-                            if(_self.cfg.itemtip && firstItem.length == 1) {
-                                _self.showItemtip(firstItem);
-                            }
+
                         }
                         else {
                             _self.panel.hide();
@@ -369,22 +379,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     },
     
     alignPanel: function() {
-        var fixedPosition = this.panel.css('position') == 'fixed',
-        win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
-        panelWidth = this.jq.innerWidth();
-
+        var pos = this.jq.getCaretPosition(),
+        offset = this.jq.offset();
+        
         this.panel.css({
-                        'left':'',
-                        'top':'',
-                        'width': panelWidth,
+                        'left': offset.left + pos.left,
+                        'top': offset.top + pos.top,
+                        'width': this.jq.innerWidth(),
                         'z-index': ++PrimeFaces.zindex
-                })
-                .position({
-                    my: 'left top'
-                    ,at: 'left bottom'
-                    ,of: this.jq,
-                    offset : positionOffset
                 });
     },
     
