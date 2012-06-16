@@ -919,7 +919,7 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.expandTreeItem(link, submenu, false);
             }
 
-            e.preventDefault;
+            e.preventDefault();
         });
     },
 
@@ -1006,6 +1006,10 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
         this.expandedNodes.push(element.attr('id'));
         
         this.saveState();
+    },
+    
+    clearState: function() {
+        PrimeFaces.setCookie(this.stateKey, null);
     }
 
 });
