@@ -288,13 +288,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
             itemValue = item.attr('data-item-value'),
             insertValue = itemValue.substring(_self.query.length);
             
-            _self.jq.insertText(insertValue, _self.jq.getSelection().end, true);
+            _self.jq.focus();
+            
+            _self.jq.insertText(insertValue, _self.jq.getSelection().start, true);
             
             _self.invokeItemSelectBehavior(event, itemValue);
             
             _self.hide();
-            
-            _self.jq.focus();
         });
     },
     
