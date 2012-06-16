@@ -258,6 +258,17 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide();
             }
         });
+        
+        //Hide overlay on resize
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if(_self.panel.is(':visible')) {
+                _self.hide();
+            }
+        });
+
+        //dialog support
+        this.setupDialogSupport();
     },
         
     bindDynamicEvents: function() {
@@ -282,6 +293,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
             _self.invokeItemSelectBehavior(event, itemValue);
             
             _self.hide();
+            
+            _self.jq.focus();
         });
     },
     
@@ -398,6 +411,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     
     hide: function() {        
         this.panel.hide();
+    },
+    
+    setupDialogSupport: function() {
+        var dialog = this.jq.parents('.ui-dialog:first');
+
+        if(dialog.length == 1) {
+            this.panel.css('position', 'fixed');
+        }
     }
     
 });
