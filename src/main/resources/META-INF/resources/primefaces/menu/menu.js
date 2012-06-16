@@ -870,8 +870,10 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
         this.headers = this.jq.children('h3.ui-treemenu-header:not(.ui-state-disabled)');
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
         this.treeLinks = this.jq.find('.ui-menu-parent > .ui-menuitem-link:not(.ui-state-disabled)');
-
         this.bindEvents();
+        this.stateKey = 'treeMenu-' + this.id;
+        
+        this.restoreState();
     },
 
     bindEvents: function() {
@@ -894,7 +896,7 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.collapseRootSubmenu($(this));
             }
             else {
-                _self.expandRootSubmenu($(this));
+                _self.expandRootSubmenu($(this), false);
             }
 
             e.preventDefault();
@@ -914,7 +916,7 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.collapseTreeItem(link, submenu);
             }
             else {
-                _self.expandTreeItem(link, submenu);
+                _self.expandTreeItem(link, submenu, false);
             }
 
             e.preventDefault;
@@ -928,25 +930,82 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
                             .children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
         panel.attr('aria-hidden', true).slideUp('normal', 'easeInOutCirc');
+        
+        this.removeAsExpanded(panel);
     },
 
-    expandRootSubmenu: function(header) {
+    expandRootSubmenu: function(header, restoring) {
         var panel = header.next();
 
         header.attr('aria-expanded', false).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
                 .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
-        panel.attr('aria-hidden', false).slideDown('normal', 'easeInOutCirc');
+        if(restoring) {
+            panel.attr('aria-hidden', false).show();
+        }
+        else {
+            panel.attr('aria-hidden', false).slideDown('normal', 'easeInOutCirc');
+            
+            this.addAsExpanded(panel);
+        }
     },
 
-    expandTreeItem: function(link, submenu) {
+    expandTreeItem: function(link, submenu, restoring) {
         link.children('.ui-treemenu-icon').addClass('ui-icon-triangle-1-s');
         submenu.show();
+        
+        if(!restoring) {
+            this.addAsExpanded(link);
+        }
     },
 
     collapseTreeItem: function(link, submenu) {
         link.children('.ui-treemenu-icon').removeClass('ui-icon-triangle-1-s');
         submenu.hide();
+        
+        this.removeAsExpanded(link);
+    },
+    
+    saveState: function() {
+        var expandedNodeIds = this.expandedNodes.join(',');
+        
+        PrimeFaces.setCookie(this.stateKey, expandedNodeIds);
+    },
+    
+    restoreState: function() {
+        var expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
+        
+        if(expandedNodeIds) {
+            this.expandedNodes = expandedNodeIds.split(',');
+            for(var i = 0 ; i < this.expandedNodes.length; i++) {
+                var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]));
+                if(element.is('div.ui-treemenu-content')) {
+                    this.expandRootSubmenu(element.prev(), true);
+                }
+                else if(element.is('a.ui-menuitem-link')) {
+                    this.expandTreeItem(element, element.next(), true);
+                }
+            }
+        }
+        else {
+            this.expandedNodes = [];
+        }
+    },
+    
+    removeAsExpanded: function(element) {
+        var id = element.attr('id');
+        
+        this.expandedNodes = $.grep(this.expandedNodes, function(value) {
+            return value != id;
+        });
+        
+        this.saveState();
+    },
+
+    addAsExpanded: function(element) {
+        this.expandedNodes.push(element.attr('id'));
+        
+        this.saveState();
     }
 
 });
