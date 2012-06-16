@@ -128,6 +128,7 @@ public class TreeMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("role", "menuitem", null);
         
         writer.startElement("a", null);
+        writer.writeAttribute("id", submenu.getClientId(context), null);
         writer.writeAttribute("class", TreeMenu.MENUITEM_LINK_CLASS, null);
         
         //toggle icon
