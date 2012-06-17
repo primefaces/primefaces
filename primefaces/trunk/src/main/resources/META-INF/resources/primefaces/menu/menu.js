@@ -861,17 +861,17 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 });
 
 /**
- * PrimeFaces TreeMenu Widget
+ * PrimeFaces PanelMenu Widget
  */
-PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
-        this.headers = this.jq.children('h3.ui-treemenu-header:not(.ui-state-disabled)');
+        this.headers = this.jq.children('h3.ui-panelmenu-header:not(.ui-state-disabled)');
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
         this.treeLinks = this.jq.find('.ui-menu-parent > .ui-menuitem-link:not(.ui-state-disabled)');
         this.bindEvents();
-        this.stateKey = 'treeMenu-' + this.id;
+        this.stateKey = 'panelMenu-' + this.id;
         
         this.restoreState();
     },
@@ -951,7 +951,7 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     expandTreeItem: function(link, submenu, restoring) {
-        link.children('.ui-treemenu-icon').addClass('ui-icon-triangle-1-s');
+        link.children('.ui-panelmenu-icon').addClass('ui-icon-triangle-1-s');
         submenu.show();
         
         if(!restoring) {
@@ -960,7 +960,7 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     collapseTreeItem: function(link, submenu) {
-        link.children('.ui-treemenu-icon').removeClass('ui-icon-triangle-1-s');
+        link.children('.ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s');
         submenu.hide();
         
         this.removeAsExpanded(link);
@@ -979,7 +979,7 @@ PrimeFaces.widget.TreeMenu = PrimeFaces.widget.BaseWidget.extend({
             this.expandedNodes = expandedNodeIds.split(',');
             for(var i = 0 ; i < this.expandedNodes.length; i++) {
                 var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]));
-                if(element.is('div.ui-treemenu-content')) {
+                if(element.is('div.ui-panelmenu-content')) {
                     this.expandRootSubmenu(element.prev(), true);
                 }
                 else if(element.is('a.ui-menuitem-link')) {

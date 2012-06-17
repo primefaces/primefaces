@@ -270,32 +270,32 @@
     float:left;
 }
 
-/** TreeMenu **/
-.ui-treemenu { 
+/** PanelMenu **/
+.ui-panelmenu { 
     width: auto; 
 }
 
-.ui-treemenu .ui-treemenu-header { 
+.ui-panelmenu .ui-panelmenu-header { 
     cursor: pointer; 
     position: relative; 
     margin: 0;
     zoom: 1; 
 }
 
-.ui-treemenu .ui-treemenu-header a { 
+.ui-panelmenu .ui-panelmenu-header a { 
     display: block;
     font-size: 1em;
     padding: .5em .5em .5em 2.2em; 
 }
 
-.ui-treemenu .ui-treemenu-header .ui-icon { 
+.ui-panelmenu .ui-panelmenu-header .ui-icon { 
     position: absolute;
     left: .5em;
     top: 50%;
     margin-top: -8px;
 }
 
-.ui-treemenu .ui-treemenu-content { 
+.ui-panelmenu .ui-panelmenu-content { 
     padding: 0.2em 0 0.2em 0.2em;
     border-top: 0; 
     margin-top: -2px; 
@@ -305,16 +305,16 @@
     zoom: 1; 
 }
 
-.ui-treemenu .ui-treemenu-header.ui-state-disabled, 
-.ui-treemenu .ui-treemenu-header.ui-state-disabled a { 
+.ui-panelmenu .ui-panelmenu-header.ui-state-disabled, 
+.ui-panelmenu .ui-panelmenu-header.ui-state-disabled a { 
     cursor: default; 
 }
 
-.ui-treemenu .ui-menu-list { 
+.ui-panelmenu .ui-menu-list { 
     position: static; 
 }
 
-.ui-treemenu .ui-menuitem {
+.ui-panelmenu .ui-menuitem {
     width:100%;
     float:left;
     clear:both;
@@ -322,7 +322,7 @@
     padding:0;
 }
 
-.ui-treemenu .ui-menuitem-link {
+.ui-panelmenu .ui-menuitem-link {
     display:block;
     width:92%;
     outline:none;
@@ -335,16 +335,16 @@
     cursor: pointer;
 }
 
-.ui-treemenu .ui-icon {
+.ui-panelmenu .ui-icon {
     display:inline-block;
     float:left;
 }
 
-.ui-treemenu .ui-menuitem-text {
+.ui-panelmenu .ui-menuitem-text {
     float:left;
 }
 
-.ui-treemenu .ui-menu-parent .ui-menu-list {
+.ui-panelmenu .ui-menu-parent .ui-menu-list {
     display: none;
     margin-left: 20px;
 }
