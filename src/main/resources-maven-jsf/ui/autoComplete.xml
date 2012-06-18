@@ -106,7 +106,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Defines the height of the items viewport.</description>
+            <description>Defines the height of the viewport for autocomplete suggestions.</description>
         </attribute>
         <attribute>
             <name>effect</name>

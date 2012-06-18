@@ -180,6 +180,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                             highlightedItem.removeClass('ui-state-highlight');
                             prev.addClass('ui-state-highlight');
                         }
+                        
+                        if(_self.cfg.scrollHeight) {
+                            _self.alignScrollbar(prev);
+                        }
 
                         e.preventDefault();
                     }
@@ -197,6 +201,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         if(next.length == 1) {
                             highlightedItem.removeClass('ui-state-highlight');
                             next.addClass('ui-state-highlight');
+                        }
+                        
+                        if(_self.cfg.scrollHeight) {
+                            _self.alignScrollbar(next);
                         }
 
                         e.preventDefault();
@@ -401,6 +409,25 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         'width': this.jq.innerWidth(),
                         'z-index': ++PrimeFaces.zindex
                 });
+    },
+    
+    alignScrollbar: function(item) {
+        var relativeTop = item.offset().top - this.items.eq(0).offset().top,
+        visibleTop = relativeTop + item.height(),
+        scrollTop = this.panel.scrollTop(),
+        scrollBottom = scrollTop + this.cfg.scrollHeight,
+        viewportCapacity = parseInt(this.cfg.scrollHeight / item.outerHeight(true));
+        
+        //scroll up
+        if(visibleTop < scrollTop) {
+            this.panel.scrollTop(relativeTop);
+        }
+        //scroll down
+        else if(visibleTop > scrollBottom) {
+            var viewportTopitem = this.items.eq(item.index() - viewportCapacity + 1);
+            
+            this.panel.scrollTop(viewportTopitem.offset().top - this.items.eq(0).offset().top);
+        }
     },
     
     show: function() {
