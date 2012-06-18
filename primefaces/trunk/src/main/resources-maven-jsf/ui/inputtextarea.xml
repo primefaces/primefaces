@@ -73,6 +73,13 @@
             <defaultValue>700</defaultValue>
             <description>Delay to wait in milliseconds before sending each query to the server. Default is 700</description>
         </attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Defines the height of the viewport for autocomplete suggestions.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

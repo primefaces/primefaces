@@ -102,6 +102,9 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.write("PrimeFaces.cw('InputTextarea','" + inputTextarea.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",autoResize:" + autoResize);
+        if(inputTextarea.getScrollHeight() != Integer.MAX_VALUE) {
+            writer.write(",scrollHeight:" + inputTextarea.getScrollHeight());
+        }
         
         if(inputTextarea.getMaxlength() != Integer.MAX_VALUE) {
             writer.write(",maxlength:" + inputTextarea.getMaxlength());
