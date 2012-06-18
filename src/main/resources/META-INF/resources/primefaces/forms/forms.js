@@ -626,13 +626,23 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
+        this.resizeNS = 'resize.' + this.id;
+        this.unbindResize();
+        this.bindResize();
+    },
+    
+    bindResize: function() {
+        var _self = this;
+
+        $(window).bind(this.resizeNS, function(e) {
             if(_self.panel.is(':visible')) {
                 _self.hide();
             }
         });
+    },
+    
+    unbindResize: function() {
+        $(window).unbind(this.resizeNS);
     },
     
     unbindEvents: function() {
@@ -893,7 +903,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
     
+    /**
+     * Positions overlay relative to the dropdown considering fixed positioning and #4231 IE8 bug
+     **/
     alignPanel: function() {
+        var isIE8 = PrimeFaces.isIE8();
+        if(isIE8) {
+            this.unbindResize();
+        }
+        
         var fixedPosition = this.panel.css('position') == 'fixed',
         win = $(window),
         positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
@@ -904,6 +922,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                                         ,of: this.jq
                                         ,offset : positionOffset
                                     });
+           
+        if(isIE8) {
+            this.bindResize();
+        }
     },
     
     setLabel: function(value) {
