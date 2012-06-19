@@ -1003,7 +1003,7 @@ public class DataTableRenderer extends DataRenderer {
     
     protected void encodeEditedRow(FacesContext context, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_editedRowIndex"));
+        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_rowEditIndex"));
 
         table.setRowIndex(editedRowId);
         if(table.isRowAvailable()) {

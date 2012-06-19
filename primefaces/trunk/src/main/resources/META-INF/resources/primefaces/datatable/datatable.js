@@ -21,7 +21,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.selectionMode || this.cfg.columnSelectionMode) {
             this.selectionHolder = this.jqId + '_selection';
 
-            var preselection = $(this.selectionHolder).val();
+            var preselection = $(this.sRowEelectionHolder).val();
             this.selection = preselection == "" ? [] : preselection.split(',');
             
             //shift key based range selection
@@ -972,37 +972,37 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Saves the edited row
      */
-    saveRowEdit: function(element) {
-        this.doRowEditRequest(element, 'save');
+    saveRowEdit: function(rowEditor) {
+        this.doRowEditRequest(rowEditor, 'save');
     },
     
     /**
      * Cancels row editing
      */
-    cancelRowEdit: function(element) {
-        this.doRowEditRequest(element, 'cancel');
+    cancelRowEdit: function(rowEditor) {
+        this.doRowEditRequest(rowEditor, 'cancel');
     },
     
     /**
      * Sends an ajax request to handle row save or cancel
      */
-    doRowEditRequest: function(element, action) {
-        var row = $(element).parents('tr').eq(0),
+    doRowEditRequest: function(rowEditor, action) {
+        var row = rowEditor.parents('tr:first'),
+        rowEditorId = rowEditor.attr('id'),
         options = {
             source: this.id,
+            process: this.id,
             update: this.id,
             formId: this.cfg.formId
         },
-        _self = this,
-        rowEditorId = row.find('span.ui-row-editor').attr('id'),
-        expanded = row.hasClass('ui-expanded-row');
+        expanded = row.hasClass('ui-expanded-row'),
+        _self = this;
 
         if(action === 'save') {
             //Only process cell editors of current row
             var editorsToProcess = new Array();
-
             row.find('span.ui-cell-editor').each(function() {
-            editorsToProcess.push($(this).attr('id'));
+                editorsToProcess.push($(this).attr('id'));
             });
 
             options.process = editorsToProcess.join(' ');
@@ -1023,7 +1023,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     if(!this.args.validationFailed) {
                         //remove row expansion
                         if(expanded) {
-                        row.next().remove();
+                            row.next().remove();
                         }
 
                         row.replaceWith(content);
@@ -1039,19 +1039,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         options.params = [
             {name: rowEditorId, value: rowEditorId},
-            {name: this.id + '_rowEdit', value: true},
-            {name: this.id + '_editedRowIndex', value: this.getRowMeta(row).index}
+            {name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
+            {name: this.id + '_rowEditAction', value: action}
         ];
 
-        if(action === 'cancel') {
-            options.params.push({name: this.id + '_rowEditCancel', value: true});
+        if(action === 'save' && this.hasBehavior('rowEdit')) {
+            this.cfg.behaviors['rowEdit'].call(this, row, options);
         }
-
-        if(this.hasBehavior('rowEdit')) {
-            var rowEditBehavior = this.cfg.behaviors['rowEdit'];
-
-            rowEditBehavior.call(this, row, options);
-        } 
+        else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
+            this.cfg.behaviors['rowEditCancel'].call(this, row, options);
+        }
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
@@ -1107,11 +1104,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         });
 
         rowEditors.find('span.ui-icon-check').die().live('click', function() {
-            _self.saveRowEdit(this);
+            _self.saveRowEdit($(this).parent());
         });
 
         rowEditors.find('span.ui-icon-close').die().live('click', function() {
-            _self.cancelRowEdit(this);
+            _self.cancelRowEdit($(this).parent());
         }); 
     },
     
