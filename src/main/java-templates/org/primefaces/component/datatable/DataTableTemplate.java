@@ -94,7 +94,7 @@ import org.primefaces.model.*;
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
-                                                        "rowUnselect", "rowEdit", "colResize", "toggleSelect", "colReorder"
+                                                        "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder"
                                                         ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"));
 
     public List<Column> columns;
@@ -154,7 +154,14 @@ import org.primefaces.model.*;
     }
 
     public boolean isRowEditRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEdit");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
+    }
+    
+    public boolean isRowEditCancelRequest(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String value = params.get(this.getClientId(context) + "_rowEditAction");
+        
+        return value != null && value.equals("cancel");
     }
 
     public boolean isScrollingRequest(FacesContext context) {
@@ -260,27 +267,33 @@ import org.primefaces.model.*;
 
     @Override
     public void processDecodes(FacesContext context) {
-		String clientId = getClientId(context);
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-        if(params.containsKey(clientId + "_rowEditCancel")) {
-            context.renderResponse();
-        } 
+        if(this.isRowEditRequest(context)) {
+            this.decode(context);
+        }
         else {
             super.processDecodes(context);
+        }
+	}
+    
+    @Override
+    public void processValidators(FacesContext context) {
+        if(!this.isRowEditRequest(context)) {
+            super.processValidators(context);
         }
 	}
 
     @Override
     public void processUpdates(FacesContext context) {
-		super.processUpdates(context);
+        if(!this.isRowEditRequest(context)) {
+            super.processUpdates(context);
 
-        ValueExpression selectionVE = this.getValueExpression("selection");
-        
-        if(selectionVE != null) {
-            selectionVE.setValue(context.getELContext(), this.getLocalSelection());
+            ValueExpression selectionVE = this.getValueExpression("selection");
 
-            this.setSelection(null);
+            if(selectionVE != null) {
+                selectionVE.setValue(context.getELContext(), this.getLocalSelection());
+
+                this.setSelection(null);
+            }
         }
 	}
 
@@ -321,9 +334,9 @@ import org.primefaces.model.*;
             else if(eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredData(), getFilters());
             }
-            else if(eventName.equals("rowEdit")) {
-                int editedRowIndex = Integer.parseInt(params.get(clientId + "_editedRowIndex"));
-                setRowIndex(editedRowIndex);
+            else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")) {
+                int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
+                setRowIndex(rowIndex);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowData());
             }
             else if(eventName.equals("colResize")) {
