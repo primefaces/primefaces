@@ -21,7 +21,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.selectionMode || this.cfg.columnSelectionMode) {
             this.selectionHolder = this.jqId + '_selection';
 
-            var preselection = $(this.sRowEelectionHolder).val();
+            var preselection = $(this.selectionHolder).val();
             this.selection = preselection == "" ? [] : preselection.split(',');
             
             //shift key based range selection
