@@ -10,6 +10,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.centerX = this.cfg.width / 2;
         this.cfg.centerY = this.cfg.height / 2;
         this.raphael = new Raphael(this.id, this.cfg.width, this.cfg.height);
+        this.nodes = [];
         
         if(this.cfg.model) {            
             //root
@@ -23,42 +24,56 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     },
     
     createNode: function(x, y, rx, ry, model) { 
-        var node = this.raphael.ellipse(x, y, rx, ry)
+        var node = this.raphael.ellipse(x, y, rx, ry).attr('opacity', 0)
                             .data('model', model)
                             .data('connections', [])
                             .data('widget', this);
-              
+                            
+        var text = this.raphael.text(x, y, model.data).attr('opacity', 0);
+         
+        text.data('node', node);
+        node.data('text', text); 
+         
         //node options
         if(model.fill) {
             node.attr({fill: '#' + model.fill});
-        }
-            
-        //text
-        var text = this.raphael.text(x, y, model.data);
-        text.data('node', node);
-        node.data('text', text);
+        } 
+         
+        //show
+        node.animate({opacity:1}, 1000);
+        text.animate({opacity:1}, 1000);
 
-        //draggable
+        //make draggable
         node.drag(this.nodeDrag, this.nodeDragStart, this.nodeDragEnd);
         text.drag(this.textDrag, this.textDragStart, this.textDragEnd);
         
         //events
         if(model.selectable) {
-            node.click(this.nodeClick);
-            text.click(this.nodeTextClick);
+            node.click(this.selectNode);
+            text.click(this.selectTextNode);
+            
+            node.attr({cursor:'pointer'});
+            text.attr({cursor:'pointer'});
+        }
+        else if(model.children) {
+            node.click(this.expandNode);
             
             node.attr({cursor:'pointer'});
             text.attr({cursor:'pointer'});
         }
         
+        //add to nodes
+        this.nodes.push(node);
+        
         return node;
     },
     
     createSubNodes: function(node) {        
-        var nodeModel = node.data('model'),
+        var nodeModel = node.data('model'),     
         size = nodeModel.children.length,
         angleFactor = (360 / size);
 
+        //children
         for(var i = 0 ; i < size; i++) { 
             var childModel = nodeModel.children[i];
 
@@ -67,18 +82,13 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             x = node.attr('cx') + 150 * Math.cos(angle),
             y = node.attr('cy') + 150 * Math.sin(angle);
             
-            var childNode = this.createNode(x, y, 40, 25, childModel);
+            var childNode = this.createNode(x, y, 40, 25, childModel, node);
 
             //connection
             var connection = this.raphael.connection(node, childNode, "#000");
             node.data('connections').push(connection);
             childNode.data('connections').push(connection);
-
-            if(childModel.children) {
-                this.createSubNodes(childNode);
-            }
         }
-        
     },
     
     hasBehavior: function(event) {
@@ -89,7 +99,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
     
-    nodeTextClick: function(e) {
+    selectTextNode: function(e) {
         var _self = this.data('node').data('widget');
         
         if(this.dragged) {
@@ -100,7 +110,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    nodeClick: function(e) { 
+    selectNode: function(e) { 
         var _self = this.data('widget');
         
         if(this.dragged) {
@@ -109,6 +119,38 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         else {
             _self.fireNodeSelectEvent(this);
         }
+    },
+    
+    expandNode: function(e) {
+        if(this.dragged) {
+            this.dragged = false;
+        }
+        else {
+            var _self = this.data('widget'),
+            model = this.data('model'),
+            key = model.key;
+
+            //remove other nodes
+            for(var i = 0; i < _self.nodes.length; i++) {
+                var node = _self.nodes[i],
+                nodeKey = node.data('model').key;
+
+                if(nodeKey != key) {
+                    _self.removeNode(node);
+                }
+            }
+            
+            _self.nodes = [];
+            _self.nodes.push(this);
+        
+            //animate current to center and expand children
+            this.data('text').animate({x: _self.cfg.centerX, y: _self.cfg.centerY}, 1000, '<>');
+            this.animate({cx: _self.cfg.centerX, cy: _self.cfg.centerY}, 1000, '<>', function() {
+                if(model.children) {
+                    _self.createSubNodes(this);
+                }
+            });
+        }        
     },
     
     fireNodeSelectEvent: function(node) {
@@ -124,6 +166,25 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
 
             selectBehavior.call(this, node, ext);
         }
+    },
+    
+    removeNode: function(node) {
+        //test
+        node.data('text').remove();
+         
+        //connections 
+        var connections = node.data('connections');
+        for(var i = 0; i < connections.length; i++) {
+            connections[i].line.remove();
+        }
+        
+        //data
+        node.removeData();
+        
+        //ellipse
+        node.animate({opacity:0}, 1000, null, function() {
+            this.remove();
+        });
     },
     
     nodeDragStart: function () {
@@ -232,10 +293,12 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
         line.bg && line.bg.attr({path: path});
         line.line.attr({path: path});
     } else {
-        var color = typeof line == "string" ? line : "#000";
+        var color = typeof line == "string" ? line : "#000",
+        path = this.path(path).attr({stroke: color, fill: "none"}).attr('opacity', 0).animate({opacity:1}, 1000);
+        
         return {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
-            line: this.path(path).attr({stroke: color, fill: "none"}),
+            line: path,
             from: obj1,
             to: obj2
         };

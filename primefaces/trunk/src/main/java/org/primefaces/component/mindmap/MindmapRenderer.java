@@ -70,10 +70,9 @@ public class MindmapRenderer extends CoreRenderer {
         writer.startElement("div", map);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) 
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
-        
-        //content is rendered on client side by the widget
+        }
         
         writer.endElement("div");
     }
@@ -96,7 +95,6 @@ public class MindmapRenderer extends CoreRenderer {
         if(node.isSelectable()) {
             writer.write(",selectable:true");
         }
-        
         
         if(!children.isEmpty()) {
             int size = children.size();
