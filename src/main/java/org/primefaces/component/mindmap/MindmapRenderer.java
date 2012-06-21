@@ -34,8 +34,15 @@ public class MindmapRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Mindmap map = (Mindmap) component;
 
-        encodeMarkup(context, map);
-        encodeScript(context, map);
+        if(map.isNodeSelectRequest(context)) {
+            MindmapNode node = map.getSelectedNode();
+            
+            encodeNode(context, map, node, map.getSelectedNodeKey(context));
+        }
+        else {
+            encodeMarkup(context, map);
+            encodeScript(context, map);
+        }
     }
 
     protected void encodeScript(FacesContext context, Mindmap map) throws IOException {
@@ -51,7 +58,7 @@ public class MindmapRenderer extends CoreRenderer {
       
         if(root != null) {
             writer.write(",model:");
-            encodeNode(context, map, root, null);
+            encodeNode(context, map, root, "root");
         }
         
         encodeClientBehaviors(context, map);
@@ -80,29 +87,27 @@ public class MindmapRenderer extends CoreRenderer {
     protected void encodeNode(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter(); 
         List<MindmapNode> children = node.getChildren();
+        MindmapNode parent = node.getParent();
         
         writer.write("{");
-        writer.write("data:'" + node.getData() + "'");
         
-        if(nodeKey != null) {
-            writer.write(",key:'" + nodeKey + "'");
-        }
+        encodeNodeConfig(context, map, node, nodeKey);
         
-        if(node.getFill() != null) {
-            writer.write(",fill:'" + node.getFill() + "'");
-        }
-        
-        if(node.isSelectable()) {
-            writer.write(",selectable:true");
+        if(parent != null) {
+            String parentNodeKey = (nodeKey.indexOf("_") != -1) ? nodeKey.substring(0, nodeKey.lastIndexOf("_")) : "root";
+            
+            writer.write(",\"parent\":{");
+            encodeNodeConfig(context, map, parent, parentNodeKey);
+            writer.write("}");
         }
         
         if(!children.isEmpty()) {
             int size = children.size();
             
-            writer.write(",children:[");
+            writer.write(",\"children\":[");
             
             for(int i = 0; i < size; i++) {
-                String childKey = (nodeKey == null) ? String.valueOf(i) : nodeKey + "_" + i;
+                String childKey = (nodeKey.equals("root")) ? String.valueOf(i) : nodeKey + "_" + i;
                 
                 MindmapNode child = children.get(i);
                 encodeNode(context, map, child, childKey);
@@ -116,5 +121,15 @@ public class MindmapRenderer extends CoreRenderer {
         }
         
         writer.write("}");
+    }
+    
+    protected void encodeNodeConfig(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
+        ResponseWriter writer = context.getResponseWriter(); 
+        
+        writer.write("\"data\":\"" + node.getData() + "\"");
+        
+        if(nodeKey != null) writer.write(",\"key\":\"" + nodeKey + "\"");
+        if(node.getFill() != null) writer.write(",\"fill\":\"" + node.getFill() + "\"");
+        if(node.isSelectable()) writer.write(",\"selectable\":true");
     }
 }
