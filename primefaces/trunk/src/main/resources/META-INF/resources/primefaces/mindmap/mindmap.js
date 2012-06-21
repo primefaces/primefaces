@@ -49,14 +49,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         
         //events
         if(model.selectable) {
-            node.click(this.selectNode);
-            text.click(this.selectTextNode);
-            
-            node.attr({cursor:'pointer'});
-            text.attr({cursor:'pointer'});
-        }
-        else if(model.children) {
-            node.click(this.expandNode);
+            node.click(this.clickNode);
+            text.click(this.clickNodeText);
             
             node.attr({cursor:'pointer'});
             text.attr({cursor:'pointer'});
@@ -68,8 +62,26 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         return node;
     },
     
-    createSubNodes: function(node) {        
-        var nodeModel = node.data('model'),     
+    centerNode: function(node) {
+        var _self = this,
+        text = node.data('text');
+        
+        text.animate({x: this.cfg.centerX, y: this.cfg.centerY}, 1000, '<>');
+        
+        node.animate({cx: this.cfg.centerX, cy: this.cfg.centerY}, 1000, '<>', 
+            function() {
+                _self.createSubNodes(node);
+            });
+            
+        //remove event handlers
+        node.unclick(this.clickNode);
+        text.unclick(this.clickNodeText);
+        node.attr({cursor:'default'});
+        text.attr({cursor:'default'});
+    },
+    
+    createSubNodes: function(node) {
+        var nodeModel = node.data('model'),
         size = nodeModel.children.length,
         angleFactor = (360 / size);
 
@@ -81,14 +93,28 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
             x = node.attr('cx') + 150 * Math.cos(angle),
             y = node.attr('cy') + 150 * Math.sin(angle);
-            
-            var childNode = this.createNode(x, y, 40, 25, childModel, node);
+
+            var childNode = this.createNode(x, y, 40, 25, childModel);
 
             //connection
             var connection = this.raphael.connection(node, childNode, "#000");
             node.data('connections').push(connection);
             childNode.data('connections').push(connection);
         }
+        
+        //parent
+        var parentModel = nodeModel.parent;
+        if(parentModel) {
+            parentModel.selectable = true;
+            
+            var parentNode = this.createNode(60, 40, 40, 25, parentModel);
+            
+            //connection
+            var parentConnection = this.raphael.connection(node, parentNode, "#000");
+            node.data('connections').push(parentConnection);
+            parentNode.data('connections').push(parentConnection);
+        }
+                
     },
     
     hasBehavior: function(event) {
@@ -121,36 +147,83 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    expandNode: function(e) {
+    clickNode: function() {
+        var _self = this.data('widget');
+
         if(this.dragged) {
             this.dragged = false;
         }
         else {
-            var _self = this.data('widget'),
-            model = this.data('model'),
-            key = model.key;
-
-            //remove other nodes
-            for(var i = 0; i < _self.nodes.length; i++) {
-                var node = _self.nodes[i],
-                nodeKey = node.data('model').key;
-
-                if(nodeKey != key) {
-                    _self.removeNode(node);
-                }
-            }
-            
-            _self.nodes = [];
-            _self.nodes.push(this);
+            _self.expandNode(this);
+        }
+    },
+    
+    clickNodeText: function() {
+        var node = this.data('node'),
+        _self = node.data('widget');
         
-            //animate current to center and expand children
-            this.data('text').animate({x: _self.cfg.centerX, y: _self.cfg.centerY}, 1000, '<>');
-            this.animate({cx: _self.cfg.centerX, cy: _self.cfg.centerY}, 1000, '<>', function() {
-                if(model.children) {
-                    _self.createSubNodes(this);
+        if(node.dragged) {
+            node.dragged = false;
+        }
+        else {
+            _self.expandNode(this);
+        }
+    },
+    
+    expandNode: function(node) {
+        var _self = this,
+        key = node.data('model').key;
+
+        var selectBehavior = this.cfg.behaviors['select'],
+        ext = {
+            params: [
+                {name: this.id + '_nodeKey', value: key}
+            ]
+            ,update: this.id
+            ,onsuccess: function(responseXML) {
+                var xmlDoc = $(responseXML.documentElement),
+                updates = xmlDoc.find("update");
+
+                for(var i=0; i < updates.length; i++) {
+                    var update = updates.eq(i),
+                    id = update.attr('id'),
+                    content = update.text();
+
+                    if(id == _self.id){
+                        var nodeModel = $.parseJSON(content);
+
+                        //update model
+                        node.data('model', nodeModel);
+                        
+                        node.data('connections', []);
+
+                        //remove other nodes
+                        for(var i = 0; i < _self.nodes.length; i++) {
+                            var otherNode = _self.nodes[i],
+                            nodeKey = otherNode.data('model').key;
+
+                            if(nodeKey != key) {
+                                _self.removeNode(otherNode);
+                            }
+                        }
+
+                        _self.nodes = [];
+                        _self.nodes.push(node);
+
+                        _self.centerNode(node);
+                    }
+                    else {
+                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+                    }
                 }
-            });
-        }        
+
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+                return true;
+            }
+        };
+
+        selectBehavior.call(_self, this, ext);      
     },
     
     fireNodeSelectEvent: function(node) {

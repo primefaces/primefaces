@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.util.Constants;
@@ -11,6 +12,16 @@ import org.primefaces.util.Constants;
     public final static String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select"));
+
+    private MindmapNode selectedNode = null;
+
+    public MindmapNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public String getSelectedNodeKey(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().get(this.getClientId(context) + "_nodeKey");
+    }
 
     @Override
     public Collection<String> getEventNames() {
@@ -28,6 +39,7 @@ import org.primefaces.util.Constants;
         if(eventName.equals("select")) {
             String nodeKey = params.get(clientId + "_nodeKey");
             MindmapNode node = nodeKey.equals("root") ? this.getValue() : this.findNode(this.getValue(), nodeKey);
+            this.selectedNode = node;
         
             super.queueEvent(new SelectEvent(this, behaviorEvent.getBehavior(), node));
         }
@@ -51,3 +63,7 @@ import org.primefaces.util.Constants;
 			return findNode(searchRoot, relativeRowKey);
 		}
 	}
+
+    public boolean isNodeSelectRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_nodeKey");
+    }
