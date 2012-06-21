@@ -120,10 +120,6 @@ PrimeFaces = {
     isIE: function(version) {
        return ($.browser.msie && parseInt($.browser.version, 10) == version);
     },
-        
-    isIE8: function() {
-       return ($.browser.msie && parseInt($.browser.version, 10) == 8);
-    },
 
     //ajax shortcut
     ab: function(cfg, ext) {
