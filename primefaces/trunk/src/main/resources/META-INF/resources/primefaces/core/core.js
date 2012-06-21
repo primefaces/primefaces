@@ -117,8 +117,12 @@ PrimeFaces = {
         return this;
     },
     
+    isIE: function(version) {
+       return ($.browser.msie && parseInt($.browser.version, 10) == version);
+    },
+        
     isIE8: function() {
-       return ($.browser.msie && $.browser.version == '8.0');
+       return ($.browser.msie && parseInt($.browser.version, 10) == 8);
     },
 
     //ajax shortcut
