@@ -166,7 +166,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             node.dragged = false;
         }
         else {
-            _self.expandNode(this);
+            _self.expandNode(node);
         }
     },
     
