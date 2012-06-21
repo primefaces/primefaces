@@ -907,7 +907,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
      * Positions overlay relative to the dropdown considering fixed positioning and #4231 IE8 bug
      **/
     alignPanel: function() {
-        var isIE8 = PrimeFaces.isIE8();
+        var isIE8 = PrimeFaces.isIE(8);
         if(isIE8) {
             this.unbindResize();
         }
