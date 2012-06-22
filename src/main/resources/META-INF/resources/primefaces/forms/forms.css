@@ -304,6 +304,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-selectcheckboxmenu-panel {
+    padding: 0.2em;
     position: absolute;
     overflow: auto;
     -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
@@ -312,7 +313,6 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
-    padding: 0.4em;
     border: 0 none;
 }
 
@@ -340,6 +340,22 @@ button.ui-button::-moz-focus-inner {
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
     display: block;
     padding-left: 2.2em;
+}
+
+.ui-selectcheckboxmenu-header {
+    margin-bottom: 0.3em;
+    padding: 0.3em 0 0.3em 0.4em
+}
+
+.ui-selectcheckboxmenu-header span.ui-icon {
+    float:left;
+}
+
+.ui-selectcheckboxmenu-header a.ui-selectcheckboxmenu-all,
+.ui-selectcheckboxmenu-header a.ui-selectcheckboxmenu-none {
+    float:left;
+    margin-right: 10px;
+    display: block;
 }
 
 /** IE Hacks **/
