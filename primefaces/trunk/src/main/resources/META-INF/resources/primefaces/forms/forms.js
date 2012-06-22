@@ -1582,9 +1582,6 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
     
 });
 
-
-
-
 /** 
  * PrimeFaces SelectCheckboxMenu Widget
  */
@@ -1733,32 +1730,42 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {    
-        //calculate panel position
         this.alignPanel();
 
-        this.panel.css('z-index', ++PrimeFaces.zindex);
-
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
-        }
-
         this.panel.show();
+        
+        this.postShow();
     },
     
     hide: function(animate) {
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', '');
-        }
+        var _self = this;
 
-        this.panel.css('z-index', '');
         this.triggers.removeClass('ui-state-focus');
 
-        if(animate)
-            this.panel.fadeOut('fast');
-        else
+        if(animate) {
+            this.panel.fadeOut('fast', function() {
+                _self.postHide();
+            });
+        }
+            
+        else {
             this.panel.hide();
+            this.postHide();
+        }
     },
     
+    postShow: function() {
+        if(this.cfg.onShow) {
+            this.cfg.onShow.call(this);
+        }
+    },
+    
+    postHide: function() {
+        if(this.cfg.onHide) {
+            this.cfg.onHide.call(this);
+        }
+    },
+
     alignPanel: function() {
         var fixedPosition = this.panel.css('position') == 'fixed',
         win = $(window),
@@ -1770,6 +1777,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                                         ,of: this.jq
                                         ,offset : positionOffset
                                     });
+                                    
+        this.panel.css('z-index', ++PrimeFaces.zindex);
     },
     
     toggleItem: function(checkbox) {

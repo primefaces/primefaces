@@ -213,6 +213,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.write("$(function(){");
         writer.write("PrimeFaces.cw('SelectCheckboxMenu','" + menu.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
+        
+        if(menu.getOnShow() != null) writer.write(",onShow:function(){" + menu.getOnShow() + "}");
+        if(menu.getOnHide() != null) writer.write(",onHide:function(){" + menu.getOnHide() + "}");
 
         encodeClientBehaviors(context, menu);
 
