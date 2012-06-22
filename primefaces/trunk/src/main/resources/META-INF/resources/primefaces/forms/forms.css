@@ -358,6 +358,17 @@ button.ui-button::-moz-focus-inner {
     display: block;
 }
 
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close {
+    float:right;
+    padding:1px;
+    margin-right:0.2em;
+    display: block;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close.ui-state-hover {
+    padding:0px;
+}
+
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;

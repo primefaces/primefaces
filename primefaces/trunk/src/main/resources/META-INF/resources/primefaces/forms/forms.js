@@ -1647,8 +1647,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.toggler = $('<div class="ui-chkbox ui-widget"><div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"><span class="ui-chkbox-icon"></span></div></div>')
                             .appendTo(this.header);
         this.togglerBox = this.toggler.children('.ui-chkbox-box');
-       
         this.updateToggler();
+        
+        this.closer = $('<a class="ui-selectcheckboxmenu-close ui-corner-all" href="#"><span class="ui-icon ui-icon-circle-close"></span></a>')
+                    .appendTo(this.header)
+       
+        
     },
    
     renderItems: function() {
@@ -1700,6 +1704,17 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.checkAll();
                 el.removeClass('ui-state-hover');
             }
+        });
+        
+        //closer
+        this.closer.mouseenter(function(){
+            $(this).addClass('ui-state-hover');
+        }).mouseleave(function() {
+            $(this).removeClass('ui-state-hover');
+        }).click(function(e) {
+            _self.hide(true);
+            
+            e.preventDefault();
         });
 
         //Labels
