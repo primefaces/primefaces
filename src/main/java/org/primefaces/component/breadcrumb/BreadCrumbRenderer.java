@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2012 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,6 @@
 package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
-import java.util.Iterator;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -64,6 +63,8 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             UIComponent child = breadCrumb.getChildren().get(i);
             
             if(child.isRendered() && child instanceof MenuItem) {
+                MenuItem item = (MenuItem) child;
+                        
                 //dont render chevron before home icon
                 if(i != 0) {
                     writer.startElement("li", null);
@@ -74,7 +75,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 				writer.startElement("li", null);
                 writer.writeAttribute("role", "menuitem", null);
 
-				encodeMenuItem(context, (MenuItem) child);
+                if(item.isDisabled())
+                    encodeDisabledMenuItem(context, (MenuItem) child);
+                else
+                    encodeMenuItem(context, (MenuItem) child);
 
 				writer.endElement("li");                
 			}
@@ -98,5 +102,27 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         // Do nothing
+    }
+
+    private void encodeDisabledMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        String style = menuItem.getStyle();
+        String styleClass = menuItem.getStyleClass();
+        styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : BreadCrumb.MENUITEM_LINK_CLASS + " " + styleClass;
+        styleClass += " ui-state-disabled";
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", styleClass, null);
+        if(menuItem.getStyle() != null) {
+            writer.writeAttribute("style", menuItem.getStyle(), null);
+        }
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", BreadCrumb.MENUITEM_TEXT_CLASS, null);
+        writer.writeText((String) menuItem.getValue(), "value");
+        writer.endElement("span");
+        
+        writer.endElement("span");
     }
 }
