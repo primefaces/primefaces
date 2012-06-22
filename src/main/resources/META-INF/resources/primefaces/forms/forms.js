@@ -143,7 +143,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.SPACE:
                 case keyCode.CONTROL:
                 case keyCode.ALT:
-                case keyCode.BACKSPACE:
+                case keyCode.ESCAPE:
                 case 224:   //mac command
                     //do not search
                 break;
@@ -154,7 +154,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         
                          //Cancel the search request if user types within the timeout
                         if(_self.timeout) {
-                            clearTimeout(_self.timeout);
+                            _self.clearTimeout(_self.timeout);
                         }
                         
                         _self.timeout = setTimeout(function() {
@@ -230,14 +230,15 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.CONTROL:
                 case keyCode.ALT:
                 case keyCode.BACKSPACE:
+                case keyCode.ESCAPE:
                 case 224:   //mac command
                     _self.clearTimeout();
-                    
+
                     if(overlayVisible) {
                         _self.hide();
                     }
                 break;
-
+  
                 case keyCode.TAB:
                     _self.clearTimeout();
                     
