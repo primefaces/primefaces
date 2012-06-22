@@ -468,7 +468,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.itemContainer = this.panel.children('.ui-selectonemenu-items');
         this.items = this.itemContainer.find('.ui-selectonemenu-item');
         this.options = this.input.children('option');
-        this.cfg.effectDuration = this.cfg.effectDuration||400;
+        this.cfg.effect = this.cfg.effect||'fade';
+        this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
+        
         var _self = this,
         selectedOption = this.options.filter(':selected');
 
@@ -862,7 +864,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
         }
 
-        this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
+        if(this.cfg.effect != 'none')
+            this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed);
+        else
+            this.panel.show();
         
         //highlight current
         this.highlightItem(this.items.eq(this.options.filter(':selected').index()), false);

@@ -36,11 +36,9 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         
         writer.write("PrimeFaces.cw('ThemeSwitcher','" + ts.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400) {
-            writer.write(",effectDuration:" + menu.getEffectDuration());
-        }
+        if(ts.getEffect() != null) writer.write(",effect:'" + ts.getEffect() + "'");
+        if(ts.getEffectSpeed() != null) writer.write(",effectSpeed:'" + ts.getEffectSpeed() + "'");
 
         encodeClientBehaviors(context, menu);
 		
