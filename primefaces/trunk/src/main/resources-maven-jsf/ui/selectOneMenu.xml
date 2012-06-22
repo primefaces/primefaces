@@ -26,13 +26,12 @@
             <name>effect</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>blind</defaultValue>
+            <defaultValue>fade</defaultValue>
         </attribute>
         <attribute>
-            <name>effectDuration</name>
+            <name>effectSpeed</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>400</defaultValue>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <name>disabled</name>

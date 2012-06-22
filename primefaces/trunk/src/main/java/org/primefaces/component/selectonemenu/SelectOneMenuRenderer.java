@@ -272,9 +272,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.write("$(function(){");
         writer.write("PrimeFaces.cw('SelectOneMenu','" + menu.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",effect:'" + menu.getEffect() + "'");
         
-        if(menu.getEffectDuration() != 400) writer.write(",effectDuration:" + menu.getEffectDuration());
+        if(menu.getEffect() != null) writer.write(",effect:'" + menu.getEffect() + "'");
+        if(menu.getEffectSpeed() != null) writer.write(",effectSpeed:'" + menu.getEffectSpeed() + "'");
         if(menu.isEditable())  writer.write(",editable:true");
         if(menu.getOnchange() != null) writer.write(",onchange:function() {" + menu.getOnchange() + "}");
 
