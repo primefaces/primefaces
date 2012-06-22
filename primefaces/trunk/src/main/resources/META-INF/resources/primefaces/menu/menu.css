@@ -210,7 +210,7 @@
     overflow: hidden;
 }
 
-.ui-breadcrumb ul li a {
+.ui-breadcrumb ul li .ui-menuitem-link {
     display: block;
     position: relative;
     overflow: hidden;
