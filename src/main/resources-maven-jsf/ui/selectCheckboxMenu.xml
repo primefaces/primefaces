@@ -70,6 +70,19 @@
             <type>java.lang.String</type>
             <description>Client side callback to execute when overlay is hidden.</description>
         </attribute>
+        <attribute>
+            <name>filter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Renders an input field as a filter when enabled.</description>
+        </attribute>
+        <attribute>
+            <name>filterText</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Placeholder text for the filter input.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

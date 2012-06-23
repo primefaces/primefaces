@@ -185,6 +185,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if(menu.getOnShow() != null) writer.write(",onShow:function(){" + menu.getOnShow() + "}");
         if(menu.getOnHide() != null) writer.write(",onHide:function(){" + menu.getOnHide() + "}");
         if(menu.getHeight() != Integer.MAX_VALUE) writer.write(",height:" + menu.getHeight());
+        if(menu.isFilter()) {
+            writer.write(",filter:true");
+            if(menu.getFilterText() != null) {
+                writer.write(",filterText:'" + menu.getFilterText() + "'");
+            }
+        }
         
         encodeClientBehaviors(context, menu);
 
