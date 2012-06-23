@@ -16,19 +16,17 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
@@ -37,18 +35,15 @@ public class CSVExporter extends Exporter {
 
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+		ExternalContext externalContext = context.getExternalContext();
         
-        response.setContentType("text/csv");
-    	response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
-        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
-        
-		OutputStream os = response.getOutputStream();
-		OutputStreamWriter osw = new OutputStreamWriter(os , encodingType);
-		PrintWriter writer = new PrintWriter(osw);	
+		externalContext.setResponseContentType("text/csv");
+		externalContext.setResponseHeader("Expires", "0");
+		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+		externalContext.setResponseHeader("Pragma", "public");
+		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
+		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
+        Writer writer = externalContext.getResponseOutputWriter();
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
         String rowIndexVar = table.getRowIndexVar();
     	
@@ -74,10 +69,10 @@ public class CSVExporter extends Exporter {
         writer.flush();
         writer.close();
         
-        response.getOutputStream().flush();
+        externalContext.responseFlushBuffer();
 	}
     
-    public void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, PrintWriter writer) throws IOException{
+    public void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, Writer writer) throws IOException{
         int first = table.getFirst();
     	int size = first + table.getRows();
         String rowIndexVar = table.getRowIndexVar();
@@ -96,7 +91,7 @@ public class CSVExporter extends Exporter {
 		}
     }
     
-    public void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, PrintWriter writer) throws IOException{
+    public void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, Writer writer) throws IOException{
         Object selection = table.getSelection();
         boolean single = table.isSingleSelectionMode();
         int size = selection == null  ? 0 : single ? 1 : Array.getLength(selection);
@@ -109,7 +104,7 @@ public class CSVExporter extends Exporter {
 		}
     }
     
-    public void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, PrintWriter writer) throws IOException{
+    public void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, Writer writer) throws IOException{
         String rowIndexVar = table.getRowIndexVar();
         
         int first = table.getFirst();
@@ -159,7 +154,7 @@ public class CSVExporter extends Exporter {
         }
     }
 	
-	private void addColumnValues(PrintWriter writer, List<UIColumn> columns) throws IOException {
+	private void addColumnValues(Writer writer, List<UIColumn> columns) throws IOException {
 		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
             addColumnValue(writer, iterator.next().getChildren());
 
@@ -168,7 +163,7 @@ public class CSVExporter extends Exporter {
 		}
 	}
 
-	private void addFacetColumns(PrintWriter writer, List<UIColumn> columns, ColumnType columnType) throws IOException {
+	private void addFacetColumns(Writer writer, List<UIColumn> columns, ColumnType columnType) throws IOException {
 		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
             addColumnValue(writer, iterator.next().getFacet(columnType.facet()));
 
@@ -179,7 +174,7 @@ public class CSVExporter extends Exporter {
 		writer.write("\n");
     }
 	
-	private void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
+	private void addColumnValue(Writer writer, UIComponent component) throws IOException {
 		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
         
         //escape double quotes
@@ -188,7 +183,7 @@ public class CSVExporter extends Exporter {
         writer.write("\"" + value + "\"");
 	}
 	
-	private void addColumnValue(PrintWriter writer, List<UIComponent> components) throws IOException {
+	private void addColumnValue(Writer writer, List<UIComponent> components) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		
 		for(UIComponent component : components) {

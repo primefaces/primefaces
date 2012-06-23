@@ -17,14 +17,15 @@ package org.primefaces.component.export;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
 
@@ -36,7 +37,6 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.lang.reflect.Array;
-import javax.servlet.http.Cookie;
 import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
@@ -65,7 +65,7 @@ public class PDFExporter extends Exporter {
 	    	
 	        document.close();
 	    	
-	        writePDFToResponse(((HttpServletResponse) context.getExternalContext().getResponse()), baos, filename);
+	        writePDFToResponse(context.getExternalContext(), baos, filename);
 	        
 		} catch (DocumentException e) {
 			throw new IOException(e.getMessage());
@@ -223,17 +223,16 @@ public class PDFExporter extends Exporter {
         pdfTable.addCell(new Paragraph(builder.toString(), font));
     }
     
-    private void writePDFToResponse(HttpServletResponse response, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     
-    	response.setContentType("application/pdf");
-    	response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-disposition", "attachment;filename="+ fileName + ".pdf");
-        response.setContentLength(baos.size());
-        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
-        
-        ServletOutputStream out = response.getOutputStream();
+    private void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     
+    	externalContext.setResponseContentType("application/pdf");
+    	externalContext.setResponseHeader("Expires", "0");
+    	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+    	externalContext.setResponseHeader("Pragma", "public");
+    	externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ fileName + ".pdf");
+    	externalContext.setResponseContentLength(baos.size());
+    	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
+    	OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
-        out.flush();
+        externalContext.responseFlushBuffer();
     }
 }

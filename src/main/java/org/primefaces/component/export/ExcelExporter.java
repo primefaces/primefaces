@@ -16,15 +16,16 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -70,7 +71,7 @@ public class ExcelExporter extends Exporter {
     		postProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
     	
-    	writeExcelToResponse(((HttpServletResponse)context.getExternalContext().getResponse()), wb, filename);
+    	writeExcelToResponse(context.getExternalContext(), wb, filename);
 	}
 	
     protected void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
@@ -207,14 +208,16 @@ public class ExcelExporter extends Exporter {
         cell.setCellValue(new HSSFRichTextString(builder.toString()));
     }
     
-    protected void writeExcelToResponse(HttpServletResponse response, Workbook generatedExcel, String filename) throws IOException {
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xls");
-        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
+    protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
+    	externalContext.setResponseContentType("application/vnd.ms-excel");
+    	externalContext.setResponseHeader("Expires", "0");
+    	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+    	externalContext.setResponseHeader("Pragma", "public");
+    	externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".xls");
+    	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
 
-        generatedExcel.write(response.getOutputStream());
+        OutputStream out = externalContext.getResponseOutputStream();
+        generatedExcel.write(out);
+        externalContext.responseFlushBuffer();        
     }
 }

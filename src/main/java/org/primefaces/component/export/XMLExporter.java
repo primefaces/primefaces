@@ -21,15 +21,15 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
@@ -38,23 +38,22 @@ public class XMLExporter extends Exporter {
 
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+		ExternalContext externalContext = context.getExternalContext();
         
-        response.setContentType("text/xml");
-    	response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
-        response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
+		externalContext.setResponseContentType("text/xml");
+		externalContext.setResponseHeader("Expires", "0");
+		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+		externalContext.setResponseHeader("Pragma", "public");
+		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
+		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
     	
-		OutputStream os = response.getOutputStream();
+		OutputStream os = externalContext.getResponseOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
 		PrintWriter writer = new PrintWriter(osw);	
 		
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	List<String> headers = getFacetTexts(table, columns, ColumnType.HEADER);
     	List<String> footers = getFacetTexts(table, columns, ColumnType.FOOTER);
-    	String var = table.getVar().toLowerCase();
         String rowIndexVar = table.getRowIndexVar();
     	
     	writer.write("<?xml version=\"1.0\"?>\n");
@@ -84,7 +83,7 @@ public class XMLExporter extends Exporter {
         writer.flush();
         writer.close();
         
-        response.getOutputStream().flush();
+        externalContext.responseFlushBuffer();
 	}
 	
     public void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, List<String> headers, PrintWriter writer) throws IOException{
