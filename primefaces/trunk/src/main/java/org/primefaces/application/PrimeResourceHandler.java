@@ -22,11 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
 
@@ -59,20 +58,20 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                 ELContext eLContext = context.getELContext();
                 ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
                 StreamedContent content = (StreamedContent) ve.getValue(eLContext);
-                HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+                ExternalContext externalContext = context.getExternalContext();
 
-                response.setContentType(content.getContentType());
+                externalContext.setResponseStatus(200);
+                externalContext.setResponseContentType(content.getContentType());
 
                 byte[] buffer = new byte[2048];
 
                 int length;
                 InputStream inputStream = content.getStream();
                 while ((length = (inputStream.read(buffer))) >= 0) {
-                    response.getOutputStream().write(buffer, 0, length);
+                	externalContext.getResponseOutputStream().write(buffer, 0, length);
                 }
 
-                response.setStatus(200);
-                response.getOutputStream().flush();
+                externalContext.responseFlushBuffer();
                 context.responseComplete();
 
             } catch(Exception e) {

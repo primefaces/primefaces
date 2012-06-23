@@ -18,17 +18,17 @@ package org.primefaces.component.filedownload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
@@ -55,25 +55,25 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             return;
         }
         
-		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+		ExternalContext externalContext = facesContext.getExternalContext();
 		String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";	
 		
 		try {
-			response.setContentType(content.getContentType());
-			response.setHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-            response.addCookie(new Cookie(Constants.DOWNLOAD_COOKIE, "true"));
+			externalContext.setResponseContentType(content.getContentType());
+			externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
+			externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
             
 			byte[] buffer = new byte[2048];
 			int length;
             InputStream inputStream = content.getStream();
-            OutputStream outputStream = response.getOutputStream();
+            OutputStream outputStream = externalContext.getResponseOutputStream();
             
 			while ((length = (inputStream.read(buffer))) != -1) {
 				outputStream.write(buffer, 0, length);
 			}
 			
-			response.setStatus(200);
-			response.getOutputStream().flush();
+			externalContext.setResponseStatus(200);
+			externalContext.responseFlushBuffer();
             content.getStream().close();
 			facesContext.responseComplete();
 		}
