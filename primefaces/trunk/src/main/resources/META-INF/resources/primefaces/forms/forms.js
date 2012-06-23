@@ -1627,9 +1627,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 
         this.renderHeader();
 
-        this.itemContainer = $('<ul class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></div>')
-                        .appendTo(this.panel);
-        
         this.renderItems();
         
         if(this.cfg.height) {
@@ -1644,11 +1641,24 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.header = $('<div class="ui-widget-header ui-corner-all ui-selectcheckboxmenu-header ui-helper-clearfix"></div>')
                         .appendTo(this.panel); 
         
+        //toggler
         this.toggler = $('<div class="ui-chkbox ui-widget"><div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"><span class="ui-chkbox-icon"></span></div></div>')
                             .appendTo(this.header);
         this.togglerBox = this.toggler.children('.ui-chkbox-box');
         this.updateToggler();
         
+        //filter
+        if(this.cfg.filter) {
+            this.filterInput = $('<input type="text" aria-multiline="false" aria-readonly="false" aria-disabled="false" role="textbox" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">');
+            if(this.cfg.filterText) {
+                this.filterInput.attr('placeholder', this.cfg.filterText);
+            }
+            
+            this.filterInput.appendTo(this.header);
+        }
+        
+        
+        //closer
         this.closer = $('<a class="ui-selectcheckboxmenu-close ui-corner-all" href="#"><span class="ui-icon ui-icon-circle-close"></span></a>')
                     .appendTo(this.header)
        
@@ -1657,6 +1667,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
    
     renderItems: function() {
         var _self = this;
+        
+        this.itemContainer = $('<ul class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></div>')
+                .appendTo(this.panel);
 
         this.inputs.each(function() {
             var input = $(this),
@@ -1685,7 +1698,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     
     bindEvents: function() {
         var _self = this;
-
+        
         //Events for checkboxes
         this.bindCheckboxHover(this.checkboxes);
         this.checkboxes.click(function() {
@@ -1706,7 +1719,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
-        //closer
+        //Filter
+        if(this.cfg.filter) {
+            PrimeFaces.skinInput(this.filterInput);
+            this.filterInput.keyup(function() {
+                _self.filter($(this).val());
+            });
+        }
+
+        //Closer
         this.closer.mouseenter(function(){
             $(this).addClass('ui-state-hover');
         }).mouseleave(function() {
@@ -1793,6 +1814,32 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }).mouseleave(function() {
             $(this).removeClass('ui-state-hover');
         });
+    },
+    
+    filter: function(value) {
+        var filterValue = $.trim(value).toLowerCase(),
+        match = false;
+        
+        if(filterValue === '') {
+            this.labels.filter(':hidden').parent().show();
+        }
+        else {
+            for(var i = 0; i < this.labels.length; i++) {
+                var label = this.labels.eq(i);
+
+                if(label.text().toLowerCase().indexOf(filterValue) == -1) {
+                    label.parent().hide();
+                } 
+                else {
+                    label.parent().show();
+                    match = true;
+                }
+                    
+            }
+        }
+        
+        var overflow = match ? 'auto' : 'visible';
+        this.panel.css('overflow', overflow);
     },
     
     checkAll: function() {

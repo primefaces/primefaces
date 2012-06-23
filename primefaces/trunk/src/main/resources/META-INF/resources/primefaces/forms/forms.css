@@ -347,6 +347,17 @@ button.ui-button::-moz-focus-inner {
     padding: 0.3em 0 0.3em 0.4em
 }
 
+.ui-selectcheckboxmenu-header .ui-chkbox {
+    float:left;
+    cursor:pointer;
+}
+            
+.ui-selectcheckboxmenu-header .ui-inputfield {
+    float:left;
+    padding:0.1em;
+    margin-right:20px;
+}
+
 .ui-selectcheckboxmenu-header span.ui-icon {
     float:left;
 }
