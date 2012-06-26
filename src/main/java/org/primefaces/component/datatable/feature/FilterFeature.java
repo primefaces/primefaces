@@ -45,6 +45,9 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void decode(FacesContext context, DataTable table) {
+        //clear previous filtered value
+        updateFilteredValue(context, table, null);
+        
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
@@ -122,22 +125,17 @@ public class FilterFeature implements DataTableFeature {
                 }
             }
 
-            boolean isAllFiltered = filteredData.size() == table.getRowCount();            
-
             //Metadata for callback
             if(table.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
                 
                 if(requestContext != null) {
-                  int totalRecords = isAllFiltered ? table.getRowCount() : filteredData.size();
-                  requestContext.addCallbackParam("totalRecords", totalRecords);
+                    requestContext.addCallbackParam("totalRecords", filteredData.size());
                 }
             }
 
-            //No need to define filtered data if it is same as actual data
-            if(!isAllFiltered) {
-                table.setFilteredData(filteredData);
-            }
+            //save filtered data
+            updateFilteredValue(context, table, filteredData);
 
             table.setRowIndex(-1);  //reset datamodel
         }
@@ -161,5 +159,16 @@ public class FilterFeature implements DataTableFeature {
   
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         renderer.encodeTbody(context, table, true);
+    }
+    
+    public void updateFilteredValue(FacesContext context, DataTable table, List<?> value) {
+        ValueExpression ve = table.getValueExpression("filteredValue");
+        
+        if(ve != null) {
+            ve.setValue(context.getELContext(), value);
+        }
+        else {
+            table.setFilteredValue(value);
+        }
     }
 }

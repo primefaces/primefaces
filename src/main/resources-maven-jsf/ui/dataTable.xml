@@ -235,6 +235,12 @@
             <description>Defines if lazy loading is enabled for the data component.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>filteredValue</name>
+			<required>false</required>
+			<type>java.util.List</type>
+            <description>List to keep the filtered data if filtering is enabled.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
