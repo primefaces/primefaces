@@ -103,7 +103,7 @@ public class SortFeature implements DataTableFeature {
         }
     }
     
-    private void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+    public void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
         Object value = table.getValue();
         List list = null;
         

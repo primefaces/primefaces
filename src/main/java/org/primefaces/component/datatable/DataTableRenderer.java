@@ -29,6 +29,8 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
+import org.primefaces.component.datatable.feature.DataTableFeatureKey;
+import org.primefaces.component.datatable.feature.SortFeature;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
@@ -165,7 +167,9 @@ public class DataTableRenderer extends DataRenderer {
         
         //default sort
         if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
-            sort(context, table, table.getValueExpression("sortBy"), table.getVar(),
+            SortFeature sortFeature = (SortFeature) DataTable.FEATURES.get(DataTableFeatureKey.SORT);
+            
+            sortFeature.sort(context, table, table.getValueExpression("sortBy"), table.getVar(),
                 SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), table.getSortFunction());
         }
 
@@ -991,25 +995,6 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
     
-    void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
-        Object value = table.getValue();
-        List list = null;
-        
-        if(value == null) {
-            return;
-        }
-
-        if(value instanceof List) {
-            list = (List) value;
-        } else if(value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        } else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
-
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, var, sortOrder, sortFunction));
-    }
-
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
