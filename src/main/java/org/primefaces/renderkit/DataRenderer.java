@@ -22,7 +22,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
-import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
 import org.primefaces.component.paginator.JumpToPageDropdownRenderer;

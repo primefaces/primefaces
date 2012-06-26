@@ -36,7 +36,7 @@ import org.primefaces.model.SortOrder;
 
 public class SortFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
+    private boolean isSortRquest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
     }
 
@@ -124,6 +124,14 @@ public class SortFeature implements DataTableFeature {
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         renderer.encodeTbody(context, table, true);
+    }
+
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return isSortRquest(context, table);
+    }
+
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return isSortRquest(context, table);
     }
     
 }

@@ -23,12 +23,8 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class ScrollFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_scrolling");
-    }
-
     public void decode(FacesContext context, DataTable table) {
-        
+        throw new RuntimeException("RowScrollFeature should not encode.");
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -44,6 +40,14 @@ public class ScrollFeature implements DataTableFeature {
                 renderer.encodeRow(context, table, clientId, i, rowIndexVar);
             }
         }
+    }
+
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return false;
+    }
+
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_scrolling");
     }
     
 }

@@ -24,10 +24,6 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
-        return table.isResizableColumns();
-    }
-
     public void decode(FacesContext context, DataTable table) {
         Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId();
@@ -40,12 +36,14 @@ public class ResizableColumnsFeature implements DataTableFeature {
     }
     
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_rowEditIndex"));
+        throw new RuntimeException("ResizableColumnsFeature should not encode.");
+    }
+    
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return table.isResizableColumns();
+    }
 
-        table.setRowIndex(editedRowId);
-        if(table.isRowAvailable()) {
-            renderer.encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
-        }
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return false;
     }
 }

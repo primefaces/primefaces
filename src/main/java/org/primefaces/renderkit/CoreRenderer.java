@@ -37,60 +37,60 @@ import org.primefaces.util.AjaxRequestBuilder;
 
 public abstract class CoreRenderer extends Renderer {
 	
-	protected void renderChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
 		for (Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
 			UIComponent child = (UIComponent) iterator.next();
-			renderChild(facesContext, child);
+			renderChild(context, child);
 		}
 	}
 
-	protected void renderChild(FacesContext facesContext, UIComponent child) throws IOException {
+	protected void renderChild(FacesContext context, UIComponent child) throws IOException {
 		if (!child.isRendered()) {
 			return;
 		}
 
-		child.encodeBegin(facesContext);
+		child.encodeBegin(context);
 		
 		if (child.getRendersChildren()) {
-			child.encodeChildren(facesContext);
+			child.encodeChildren(context);
 		} else {
-			renderChildren(facesContext, child);
+			renderChildren(context, child);
 		}
-		child.encodeEnd(facesContext);
+		child.encodeEnd(context);
 	}
 	
-	protected String getActionURL(FacesContext facesContext) {
-		String actionURL = facesContext.getApplication().getViewHandler().getActionURL(facesContext, facesContext.getViewRoot().getViewId());
+	protected String getActionURL(FacesContext context) {
+		String actionURL = context.getApplication().getViewHandler().getActionURL(context, context.getViewRoot().getViewId());
 		
-		return facesContext.getExternalContext().encodeActionURL(actionURL);
+		return context.getExternalContext().encodeActionURL(actionURL);
 	}
 	
-    protected String getResourceURL(FacesContext facesContext, String value) {
+    protected String getResourceURL(FacesContext context, String value) {
         if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
             return value;
         } else {
-            String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
+            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
 
-            return facesContext.getExternalContext().encodeResourceURL(url);
+            return context.getExternalContext().encodeResourceURL(url);
         }
     }
     
-    protected String getResourceRequestPath(FacesContext facesContext, String resourceName) {
-		Resource resource = facesContext.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
+    protected String getResourceRequestPath(FacesContext context, String resourceName) {
+		Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
         return resource.getRequestPath();
 	}
     	
-	public boolean isPostback(FacesContext facesContext) {
-		return facesContext.getRenderKit().getResponseStateManager().isPostback(facesContext);
+	public boolean isPostback(FacesContext context) {
+		return context.getRenderKit().getResponseStateManager().isPostback(context);
 	}
 
-    public boolean isAjaxRequest(FacesContext facesContext) {
-		return facesContext.getPartialViewContext().isAjaxRequest();
+    public boolean isAjaxRequest(FacesContext context) {
+		return context.getPartialViewContext().isAjaxRequest();
 	}
 
-	protected void renderPassThruAttributes(FacesContext facesContext, UIComponent component, String var, String[] attrs) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String var, String[] attrs) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		for(String event : attrs) {			
 			String eventHandler = (String) component.getAttributes().get(event);
@@ -100,8 +100,8 @@ public abstract class CoreRenderer extends Renderer {
 		}
 	}
 	
-	protected void renderPassThruAttributes(FacesContext facesContext, UIComponent component, String[] attrs) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		for(String attribute : attrs) {
 			Object value = component.getAttributes().get(attribute);
@@ -111,8 +111,8 @@ public abstract class CoreRenderer extends Renderer {
 		}
 	}
 	
-	protected void renderPassThruAttributes(FacesContext facesContext, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		for(String attribute : attrs) {
 			if(isIgnoredAttribute(attribute, ignoredAttrs)) {
@@ -164,8 +164,9 @@ public abstract class CoreRenderer extends Renderer {
     }
     
     protected boolean isPostBack() {
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
-    	return facesContext.getRenderKit().getResponseStateManager().isPostback(facesContext);
+    	FacesContext context = FacesContext.getCurrentInstance();
+        
+    	return context.getRenderKit().getResponseStateManager().isPostback(context);
     }
    
     public String getEscapedClientId(String clientId){
@@ -419,5 +420,4 @@ public abstract class CoreRenderer extends Renderer {
         
         return sb.length() == 0 ? null : sb.toString();
     }
-
 }

@@ -24,12 +24,8 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class RowExpandFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowExpansion");
-    }
-
     public void decode(FacesContext context, DataTable table) {
-        
+        throw new RuntimeException("RowExpandFeature should not encode.");
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -58,6 +54,14 @@ public class RowExpandFeature implements DataTableFeature {
         writer.endElement("tr");
 
         table.setRowIndex(-1);
+    }
+
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return false;
+    }
+
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowExpansion");
     }
     
 }

@@ -23,7 +23,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -35,7 +34,6 @@ import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
-import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.HTML;
@@ -49,7 +47,7 @@ public class DataTableRenderer extends DataRenderer {
         for(Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext();) {
             DataTableFeature feature = it.next();
             
-            if(feature.isEnabled(context, table)) {
+            if(feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
             }
         }
@@ -61,11 +59,11 @@ public class DataTableRenderer extends DataRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
 
-        if(context.getPartialViewContext().isAjaxRequest()) {
+        if(isAjaxRequest(context)) {
             for(Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext();) {
                 DataTableFeature feature = it.next();
 
-                if(feature.isEnabled(context, table)) {
+                if(feature.shouldEncode(context, table)) {
                     feature.encode(context, this, table);
                 }
             }

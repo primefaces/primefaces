@@ -27,10 +27,6 @@ import org.primefaces.util.ComponentUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
-        return table.isSelectionEnabled();
-    }
-
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -74,7 +70,15 @@ public class SelectionFeature implements DataTableFeature {
 	}
     
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        renderer.encodeTbody(context, table, true);
+        throw new RuntimeException("SelectFeature should not encode.");
+    }
+
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return table.isSelectionEnabled();
+    }
+
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return false;
     }
     
 }
