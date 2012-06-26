@@ -304,7 +304,7 @@ import org.primefaces.component.datatable.feature.*;
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
             }
             else if(eventName.equals("filter")) {
-                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredData(), getFilters());
+                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue(), getFilters());
             }
             else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
@@ -441,7 +441,7 @@ import org.primefaces.component.datatable.feature.*;
 
     public void resetValue() {
         setValue(null);
-        setFilteredData(null);
+        setFilteredValue(null);
         setFilters(null);
     }
 
@@ -469,16 +469,6 @@ import org.primefaces.component.datatable.feature.*;
         return null;
     }
 
-    private List filteredData;
-
-    public void setFilteredData(List list) {
-        this.filteredData = list;
-    }
-
-    public List getFilteredData() {
-        return this.filteredData;
-    }
-
     private SelectableDataModelWrapper selectableDataModelWrapper = null;
 
     /**
@@ -489,15 +479,16 @@ import org.primefaces.component.datatable.feature.*;
     @Override
     public Object getValue() {
         Object value = super.getValue();
+        List<?> filteredValue = this.getFilteredValue();
         
-        if(filteredData != null) {
+        if(filteredValue != null) {
             if(value instanceof SelectableDataModel) {
                 return selectableDataModelWrapper == null 
-                                ? (selectableDataModelWrapper = new SelectableDataModelWrapper((SelectableDataModel) value, filteredData))
+                                ? (selectableDataModelWrapper = new SelectableDataModelWrapper((SelectableDataModel) value, filteredValue))
                                 : selectableDataModelWrapper;
             } 
             else {
-                return filteredData;
+                return filteredValue;
             }
         }
         else {
