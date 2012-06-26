@@ -386,4 +386,11 @@ public class ComponentUtils {
         
         return (value == null) ? false : value.equalsIgnoreCase("partial");
     }
+    
+    public static boolean isValueBlank(String value) {
+		if(value == null)
+			return true;
+
+		return value.trim().equals("");
+	}
 }

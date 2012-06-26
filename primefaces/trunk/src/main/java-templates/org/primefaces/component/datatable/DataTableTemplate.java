@@ -46,7 +46,7 @@ import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import org.primefaces.model.*;
+import org.primefaces.component.datatable.feature.*;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -97,6 +97,22 @@ import org.primefaces.model.*;
                                                         "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder"
                                                         ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"));
 
+                                                        
+    static Map<DataTableFeatureKey,DataTableFeature> FEATURES;
+    
+    static {
+        FEATURES = new HashMap<DataTableFeatureKey,DataTableFeature>();
+        FEATURES.put(DataTableFeatureKey.PAGE, new PageFeature());
+        FEATURES.put(DataTableFeatureKey.SORT, new SortFeature());
+        FEATURES.put(DataTableFeatureKey.FILTER, new FilterFeature());
+        FEATURES.put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
+        FEATURES.put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
+        FEATURES.put(DataTableFeatureKey.SELECT, new SelectionFeature());
+        FEATURES.put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature());
+        FEATURES.put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
+        FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
+    }
+    
     public List<Column> columns;
 
     public List<Column> getColumns() {        
@@ -112,47 +128,11 @@ import org.primefaces.model.*;
 
         return columns;
     }
-
-    private Boolean sortRequest = null;
-    private Boolean filterRequest = null;
-    private Boolean clearFiltersRequest = null;
     
-    public boolean isSortRequest(FacesContext context) {
-        if(sortRequest == null) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-            sortRequest = params.containsKey(this.getClientId(context) + "_sorting");
-        }
-
-        return sortRequest;
+    public void setColumns(List<Column> columns) {
+        this.columns = columns;
     }
-
-    public boolean isFilterRequest(FacesContext context) {
-        if(filterRequest == null) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-            filterRequest = params.containsKey(this.getClientId(context) + "_filtering");
-        }
-
-        return filterRequest;
-    }
-
-    public boolean isGlobalFilterRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_globalFilter");
-    }
-
-    public boolean isInstantSelectionRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelectedRowIndex");
-    }
-
-    public boolean isInstantUnselectionRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantUnselectedRowIndex");
-    }
-
-    public boolean isRowExpansionRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowExpansion");
-    }
-
+    
     public boolean isRowEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
     }
@@ -162,14 +142,6 @@ import org.primefaces.model.*;
         String value = params.get(this.getClientId(context) + "_rowEditAction");
         
         return value != null && value.equals("cancel");
-    }
-
-    public boolean isScrollingRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
-    }
-    
-    public boolean isColResizeRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_colResize");
     }
 
     private Map<String,Column> filterMap;
@@ -353,7 +325,7 @@ import org.primefaces.model.*;
                 wrapperEvent = behaviorEvent;
             }
             else if(eventName.equals("rowToggle")) {
-                boolean expansion = isRowExpansionRequest(context);
+                boolean expansion = params.containsKey(clientId + "_rowExpansion");
                 Visibility visibility = expansion ? Visibility.VISIBLE : Visibility.HIDDEN;
                 String rowIndex = expansion ? params.get(clientId + "_expandedRowIndex") : params.get(clientId + "_collapsedRowIndex");
                 setRowIndex(Integer.parseInt(rowIndex));
@@ -370,7 +342,7 @@ import org.primefaces.model.*;
         }
     }
 
-    private Column findColumn(String clientId) {
+    public Column findColumn(String clientId) {
         for(Column column : getColumns()) {
             if(column.getClientId().equals(clientId)) {
                 return column;

@@ -16,92 +16,57 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.HTML;
 
 public class DataTableRenderer extends DataRenderer {
 
-    protected DataHelper dataHelper;
-
-    public DataTableRenderer() {
-        super();
-        dataHelper = new DataHelper();
-    }
-
     @Override
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
-        boolean isSortRequest = table.isSortRequest(context);
 
-        if(table.isDraggableColumns()) {
-            table.syncColumnOrder();
-        }
-        
-        if(table.isResizableColumns() && table.isColResizeRequest(context)) {
-            table.syncColumnWidths();
-        }
-        
-        if(table.isFilteringEnabled()) {
-            dataHelper.decodeFilters(context, table);
+        for(Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext();) {
+            DataTableFeature feature = it.next();
             
-            if(!isSortRequest && table.getValueExpression("sortBy") != null && !table.isLazy()) {
-                sort(context, table);
+            if(feature.isEnabled(context, table)) {
+                feature.decode(context, table);
             }
         }
-
-        if(table.isSelectionEnabled()) {
-            dataHelper.decodeSelection(context, table);
-        }
-
-        if(isSortRequest) {
-            dataHelper.decodeSortRequest(context, table);
-        }
-
-        decodeBehaviors(context, component);
+        
+        decodeBehaviors(context, component);        
     }
     
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
 
-        if(table.isBodyUpdate(context)) {
-            if(table.isPaginationRequest(context)) {
-                table.updatePaginationData(context, table);
+        if(context.getPartialViewContext().isAjaxRequest()) {
+            for(Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext();) {
+                DataTableFeature feature = it.next();
+
+                if(feature.isEnabled(context, table)) {
+                    feature.encode(context, this, table);
+                }
             }
-            
-            if(table.isLazy()) {
-                table.loadLazyData();
-            }
-            
-            encodeTbody(context, table, true);
-        } 
-        else if(table.isRowExpansionRequest(context)) {
-            encodeRowExpansion(context, table);
-        }
-        else if(table.isRowEditRequest(context)) {
-            encodeEditedRow(context, table);
-        }
-        else if(table.isScrollingRequest(context)) {
-            encodeLiveRows(context, table);
         }
         else {
             encodeMarkup(context, table);
@@ -200,7 +165,8 @@ public class DataTableRenderer extends DataRenderer {
         
         //default sort
         if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
-            sort(context, table);
+            sort(context, table, table.getValueExpression("sortBy"), table.getVar(),
+                SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), table.getSortFunction());
         }
 
         if(hasPaginator) {
@@ -606,7 +572,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("thead");
     }
 
-    protected void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
+    public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
@@ -644,7 +610,7 @@ public class DataTableRenderer extends DataRenderer {
                     
                     encodeRow(context, table, clientId, i, rowIndexVar);
                     
-                    if(summaryRow != null && !dataHelper.isInSameGroup(context, table, i)) {
+                    if(summaryRow != null && !isInSameGroup(context, table, i)) {
                         table.setRowIndex(i);   //restore
                         encodeSummaryRow(context, table, summaryRow);
                     }
@@ -687,7 +653,7 @@ public class DataTableRenderer extends DataRenderer {
         summaryRow.encodeAll(context);
     }
 
-    protected boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
+    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
         //Row index var
         if(rowIndexVar != null) {
             context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
@@ -1025,9 +991,23 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
     
-    protected void sort(FacesContext context, DataTable table) {
-        dataHelper.sort(context, table, table.getValueExpression("sortBy"), table.getVar(), 
-                SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), table.getSortFunction());
+    void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+        Object value = table.getValue();
+        List list = null;
+        
+        if(value == null) {
+            return;
+        }
+
+        if(value instanceof List) {
+            list = (List) value;
+        } else if(value instanceof ListDataModel) {
+            list = (List) ((ListDataModel) value).getWrappedData();
+        } else {
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
+
+        Collections.sort(list, new BeanPropertyComparator(sortByVE, var, sortOrder, sortFunction));
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
@@ -1046,5 +1026,24 @@ public class DataTableRenderer extends DataRenderer {
         if(rowIndexVar != null) {
 			context.getExternalContext().getRequestMap().remove(rowIndexVar);
 		}
+    }
+    
+    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex) {
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        String var = table.getVar();
+        
+        table.setRowIndex(currentRowIndex);
+        Object currentGroupByData = table.getSortBy();
+
+        table.setRowIndex(currentRowIndex + 1);
+        if(!table.isRowAvailable())
+            return false;
+        
+        Object nextGroupByData = table.getSortBy();
+        if(currentGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
+            return true;
+        }
+        
+        return false;
     }
 }
