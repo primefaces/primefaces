@@ -31,9 +31,17 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
-
-    public boolean isEnabled(FacesContext context, DataTable table) {
+    
+    private boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
+    }
+
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return isFilterRequest(context, table);
+    }
+    
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return isFilterRequest(context, table);
     }
 
     public void decode(FacesContext context, DataTable table) {

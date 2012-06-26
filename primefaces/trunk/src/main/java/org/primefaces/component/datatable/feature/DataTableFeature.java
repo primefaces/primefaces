@@ -22,7 +22,9 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public interface DataTableFeature {
     
-    public boolean isEnabled(FacesContext context, DataTable table);
+    public boolean shouldDecode(FacesContext context, DataTable table);
+    
+    public boolean shouldEncode(FacesContext context, DataTable table);
     
     public void decode(FacesContext context, DataTable table);
     

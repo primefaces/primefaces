@@ -28,10 +28,6 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
-        return table.isDraggableColumns();
-    }
-
     public void decode(FacesContext context, DataTable table) {
         List<Column> actualColumns = table.getColumns();
         String clientId = table.getClientId(context);
@@ -69,6 +65,14 @@ public class DraggableColumnsFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        throw new RuntimeException("DraggableColumns Feature should not encode.");
+    }
 
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return table.isDraggableColumns();
+    }
+
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return false;
     }
 }

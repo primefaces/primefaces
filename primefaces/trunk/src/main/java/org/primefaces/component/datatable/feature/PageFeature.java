@@ -22,12 +22,8 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class PageFeature implements DataTableFeature {
 
-    public boolean isEnabled(FacesContext context, DataTable table) {
-        return table.isPaginationRequest(context);
-    }
-
     public void decode(FacesContext context, DataTable table) {
-        
+        throw new RuntimeException("PageFeature should not encode.");
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -38,6 +34,14 @@ public class PageFeature implements DataTableFeature {
         }
         
         renderer.encodeTbody(context, table, true);
+    }
+
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return false;
+    }
+
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return table.isPaginationRequest(context);
     }
     
 }
