@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ValueExpression;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -31,6 +33,8 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
+    
+    private final static Logger logger = Logger.getLogger(DataTable.class.getName());
     
     private boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
@@ -156,7 +160,7 @@ public class FilterFeature implements DataTableFeature {
             return val.substring(val.indexOf(".") + 1);
         }
     }
-  
+    
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         renderer.encodeTbody(context, table, true);
     }
@@ -168,6 +172,14 @@ public class FilterFeature implements DataTableFeature {
             ve.setValue(context.getELContext(), value);
         }
         else {
+            if(value != null) {
+                logger.log(Level.WARNING, "DataTable {0} has filtering enabled but no filteredValue model reference is defined"
+                    + ", for backward compatibility falling back to page viewstate method to keep filteredValue."
+                    + " It is highly suggested to use filtering with a filteredValue model reference as viewstate method is deprecated and will be removed in future."
+                    , new Object[]{table.getClientId(context)});
+            
+            }
+            
             table.setFilteredValue(value);
         }
     }

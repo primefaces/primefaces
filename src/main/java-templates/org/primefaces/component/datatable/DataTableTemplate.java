@@ -102,9 +102,9 @@ import org.primefaces.component.datatable.feature.*;
     
     static {
         FEATURES = new HashMap<DataTableFeatureKey,DataTableFeature>();
+        FEATURES.put(DataTableFeatureKey.FILTER, new FilterFeature());
         FEATURES.put(DataTableFeatureKey.PAGE, new PageFeature());
         FEATURES.put(DataTableFeatureKey.SORT, new SortFeature());
-        FEATURES.put(DataTableFeatureKey.FILTER, new FilterFeature());
         FEATURES.put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
         FEATURES.put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
         FEATURES.put(DataTableFeatureKey.SELECT, new SelectionFeature());
