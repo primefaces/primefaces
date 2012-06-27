@@ -1017,7 +1017,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     doRowEditRequest: function(rowEditor, action) {
         var row = rowEditor.parents('tr:first'),
-        rowEditorId = rowEditor.attr('id'),
         options = {
             source: this.id,
             process: this.id,
@@ -1057,7 +1056,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.params = [
-            {name: rowEditorId, value: rowEditorId},
             {name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
             {name: this.id + '_rowEditAction', value: action}
         ];
