@@ -101,8 +101,13 @@ public class DataTableRenderer extends DataRenderer {
         
         //Filtering
         if(table.isFilteringEnabled()) {
-            writer.write(",filtering:true");
-            writer.write(",filterEvent:'" + table.getFilterEvent() + "'");
+            writer.write(",filter:true");
+            
+            if(table.getFilterEvent() != null)
+                writer.write(",filterEvent:'" + table.getFilterEvent() + "'");
+            
+            if(table.getFilterDelay() != Integer.MAX_VALUE)
+                writer.write(",filterDelay:'" + table.getFilterDelay() + "'");
         }
         
         //Row expansion
@@ -353,6 +358,7 @@ public class DataTableRenderer extends DataRenderer {
         else {
             if(hasFilter) {
                 table.enableFiltering();
+                
                 String filterPosition = column.getFilterPosition();
                 
                 if(filterPosition.equals("bottom")) {
