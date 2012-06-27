@@ -1027,16 +1027,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         expanded = row.hasClass('ui-expanded-row'),
         _self = this;
 
-        if(action === 'save') {
-            //Only process cell editors of current row
-            var editorsToProcess = new Array();
-            row.find('span.ui-cell-editor').each(function() {
-                editorsToProcess.push($(this).attr('id'));
-            });
-
-            options.process = editorsToProcess.join(' ');
-        }
-
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
             updates = xmlDoc.find("update");
@@ -1071,6 +1061,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
             {name: this.id + '_rowEditAction', value: action}
         ];
+        
+        if(action === 'save') {
+            row.find('span.ui-cell-editor').each(function() {
+                var editorId = $(this).attr('id');
+                
+                options.params.push({name: editorId, value: editorId});
+            });
+        }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
             this.cfg.behaviors['rowEdit'].call(this, row, options);

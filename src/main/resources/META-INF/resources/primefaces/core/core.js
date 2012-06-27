@@ -210,6 +210,16 @@ PrimeFaces = {
             });
         }
     },
+    
+    inArray: function(arr, item) {
+        for(var i = 0; i < arr.length; i++) {
+            if(arr[i] === item) {
+                return true;
+            }
+        }
+        
+        return false;
+    },
 
     isNumber: function(value) {
         return typeof value === 'number' && isFinite(value);
@@ -417,7 +427,7 @@ PrimeFaces.ajax.AjaxUtils = {
         }
     },
     
-    findComponents : function(selector) {
+    findComponents: function(selector) {
         //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
         var jqSelector = selector.substring(2, selector.length - 1),
         components = $(jqSelector),
@@ -433,7 +443,33 @@ PrimeFaces.ajax.AjaxUtils = {
         return ids;
     },
     
-    send : function(cfg) {
+    idsToArray: function(cfg, type, selector) {
+        var arr = [],
+        def = cfg[type],
+        ext = cfg.ext ? cfg.ext[type] : null;
+        
+        if(def) {
+            $.merge(arr, def.split(' '));
+        }
+        
+        if(ext) {
+            var extArr = ext.split(' ');
+            
+            for(var i = 0; i < extArr.length; i++) {
+                if(!PrimeFaces.inArray(arr, extArr[i])) {
+                    arr.push(extArr[i]);
+                }
+            }
+        }
+
+        if(selector) {
+            $.merge(arr, PrimeFaces.ajax.AjaxUtils.findComponents(selector));
+        }
+        
+        return arr;
+    },
+    
+    send: function(cfg) {
         PrimeFaces.debug('Initiating ajax request.');
     
         if(cfg.onstart) {
@@ -494,40 +530,16 @@ PrimeFaces.ajax.AjaxUtils = {
         postParams.push({name:PrimeFaces.PARTIAL_SOURCE_PARAM, value:sourceId});
 
         //process
-        var process = [];
-        if(cfg.process) {
-            process.push(cfg.process);
-        }
-        if(cfg.ext && cfg.ext.process) {
-            process.push(cfg.ext.process);
-        }
-
-        //process selector
-        if(cfg.processSelector) {
-            $.merge(process, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.processSelector));
-        }
-
-        var processIds = process.length > 0 ? process.join(' ') : '@all';
+        var processArray = PrimeFaces.ajax.AjaxUtils.idsToArray(cfg, 'process', cfg.processSelector),
+        processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
         postParams.push({name:PrimeFaces.PARTIAL_PROCESS_PARAM, value:processIds});
-
+        
         //update
-        var update = [];
-        if(cfg.update) {
-            update.push(cfg.update);
+        var updateArray = PrimeFaces.ajax.AjaxUtils.idsToArray(cfg, 'update', cfg.updateSelector);
+        if(updateArray.length > 0) {
+            postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:updateArray.join(' ')});
         }
-        if(cfg.ext && cfg.ext.update) {
-            update.push(cfg.ext.update);
-        }
-
-        //update selector
-        if(cfg.updateSelector) {
-            $.merge(update, PrimeFaces.ajax.AjaxUtils.findComponents(cfg.updateSelector));
-        }
-
-        if(update.length > 0) {
-            postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:update.join(' ')});
-        }
-
+        
         //behavior event
         if(cfg.event) {
             postParams.push({name:PrimeFaces.BEHAVIOR_EVENT_PARAM, value:cfg.event});
