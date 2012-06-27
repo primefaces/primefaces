@@ -32,7 +32,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //Filtering
-        if(this.cfg.filtering) {
+        if(this.cfg.filter) {
             this.setupFiltering();
         }
 
@@ -138,28 +138,57 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Binds filter events to filters
      */
     setupFiltering: function() {
-        var _self = this,
-        filterEvent = _self.cfg.filterEvent == 'enter' ? 'keypress' : 'keyup';
+        var _self = this;
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        $(this.jqId + ' thead:first th.ui-filter-column .ui-dt-c .ui-column-filter').each(function(index) {
+        $(this.jqId + ' thead:first th.ui-filter-column div.ui-dt-c .ui-column-filter').each(function() {
             var filter = $(this);
 
             if(filter.is('input:text')) {
                 PrimeFaces.skinInput(filter);
 
-                filter.bind(filterEvent, function(e) {
-                    if(_self.cfg.filterEvent == 'keyup'||(_self.cfg.filterEvent == 'enter' && e.which == $.ui.keyCode.ENTER)){
-                        _self.filter(e);
-
-                        e.preventDefault();
-                    } 
-                });
+                if(_self.cfg.filterEvent === 'enter')
+                    _self.bindEnterKeyFilter(filter);
+                else
+                    _self.bindFilterEvent(filter);
             } 
             else {
                 filter.change(function(e) {
-                    _self.filter(e);
+                    _self.filter();
                 });
             }
+        });
+    },
+    
+    bindEnterKeyFilter: function(filter) {
+        var _self = this;
+    
+        filter.bind('keyup', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                _self.filter();
+
+                e.preventDefault();
+            }
+        });
+    },
+    
+    bindFilterEvent: function(filter) {
+        var _self = this;
+    
+        filter.bind(this.cfg.filterEvent, function(e) {
+            if(_self.filterTimeout) {
+                clearTimeout(_self.filterTimeout);
+            }
+
+            _self.filterTimeout = setTimeout(function() {
+                _self.filter();
+                _self.filterTimeout = null;
+            }, 
+            _self.cfg.filterDelay);
         });
     },
     
