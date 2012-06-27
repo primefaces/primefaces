@@ -237,35 +237,15 @@ import org.primefaces.component.datatable.feature.*;
             return false;
 	}
 
-    @Override
-    public void processDecodes(FacesContext context) {
-        if(this.isRowEditRequest(context)) {
-            this.decode(context);
-        }
-        else {
-            super.processDecodes(context);
-        }
-	}
-    
-    @Override
-    public void processValidators(FacesContext context) {
-        if(!this.isRowEditRequest(context)) {
-            super.processValidators(context);
-        }
-	}
-
-    @Override
     public void processUpdates(FacesContext context) {
-        if(!this.isRowEditRequest(context)) {
-            super.processUpdates(context);
+        super.processUpdates(context);
 
-            ValueExpression selectionVE = this.getValueExpression("selection");
+        ValueExpression selectionVE = this.getValueExpression("selection");
 
-            if(selectionVE != null) {
-                selectionVE.setValue(context.getELContext(), this.getLocalSelection());
+        if(selectionVE != null) {
+            selectionVE.setValue(context.getELContext(), this.getLocalSelection());
 
-                this.setSelection(null);
-            }
+            this.setSelection(null);
         }
 	}
 
