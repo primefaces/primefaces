@@ -11,7 +11,12 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIColumn</parent>
     <description>Column is an extended version of the standard column used by various PrimeFaces components like datatable, treetable and more.</description>
-	<attributes>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.UIColumn</name>
+		</interface>
+	</interfaces>
+    <attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
 			<name>sortBy</name>

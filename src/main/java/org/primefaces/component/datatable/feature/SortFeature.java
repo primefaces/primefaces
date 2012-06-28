@@ -23,8 +23,10 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -47,10 +49,26 @@ public class SortFeature implements DataTableFeature {
         
 		String sortKey = params.get(clientId + "_sortKey");
 		String sortDir  = params.get(clientId + "_sortDir");
-        Column sortColumn = null;
+        boolean dynamicColumn = params.containsKey(clientId + "_dynamic_column");
+        UIColumn sortColumn = null;
 
-        //find the sortColumn if the column is static
-        if(sortKey.indexOf("_colIndex") == -1) {
+        if(dynamicColumn) {
+            String[] idTokens = sortKey.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
+            int colIndex = Integer.parseInt(idTokens[idTokens.length - 1]);
+            Columns columns = null;
+            
+            for(UIComponent child : table.getChildren()) {
+                if(child instanceof Columns) {
+                    columns = (Columns) child;
+                    
+                    break;
+                }
+            }
+            
+            columns.setRowIndex(colIndex);
+            sortColumn = columns;
+        }
+        else {
             ColumnGroup group = table.getColumnGroup("header");
             if(group != null) {
                 outer:
@@ -74,26 +92,11 @@ public class SortFeature implements DataTableFeature {
                 }
             }
         }
-        //sort is a dynamic column
-        else {
-            int colIndex = Integer.parseInt(sortKey.split("_colIndex_")[1]);
-            Columns columns = null;
-            
-            for(UIComponent child : table.getChildren()) {
-                if(child instanceof Columns) {
-                    columns = (Columns) child;
-                    break;
-                }
-            }
-            
-            columns.setColIndex(colIndex);
-            sortColumn = columns;
-        }
         
-
         //Reset state
 		table.setFirst(0);
         
+        //update table sort state
         ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
         table.setValueExpression("sortBy", sortByVE);
         table.setSortOrder(sortDir);

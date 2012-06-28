@@ -104,8 +104,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 PrimeFaces.clearSelection();
-
-                var columnId = $(this).attr('id');
+                
+                var columnHeader = $(this);
 
                 //Reset previous sorted columns
                 $(this).siblings().removeClass('ui-state-active').
@@ -113,23 +113,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 //Update sort state
                 $(this).addClass('ui-state-active');
-                var sortIcon = $(this).find('.ui-sortable-column-icon');
+                var sortIcon = columnHeader.find('.ui-sortable-column-icon');
 
                 if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                     sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
 
-                    _self.sort(columnId, "DESCENDING");
-                    PrimeFaces.clearSelection();
+                    _self.sort(columnHeader, "DESCENDING");
                 }
                 else if(sortIcon.hasClass('ui-icon-triangle-1-s')) {
                     sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
 
-                    _self.sort(columnId, "ASCENDING");
+                    _self.sort(columnHeader, "ASCENDING");
                 } 
                 else {
                     sortIcon.addClass('ui-icon-triangle-1-n');
 
-                    _self.sort(columnId, "ASCENDING");
+                    _self.sort(columnHeader, "ASCENDING");
                 }
             });
     },
@@ -493,7 +492,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Ajax sort
      */
-    sort: function(columnId, asc) {    
+    sort: function(columnHeader, asc) {    
         var options = {
             source: this.id,
             update: this.id,
@@ -530,18 +529,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             return true;
         };
-
+        
+        var columnId = columnHeader.attr('id');
+        
         options.params = [
             {name: this.id + '_sorting', value: true},
             {name: this.id + '_sortKey', value: columnId},
             {name: this.id + '_sortDir', value: asc},
-            {name: this.id + '_updateBody', value: true}
         ];
+        
+        if(columnHeader.hasClass('ui-dynamic-column')) {
+            options.params.push({name: this.id + '_dynamic_column', value: true});
+        }
 
         if(this.hasBehavior('sort')) {
             var sortBehavior = this.cfg.behaviors['sort'];
 
-            sortBehavior.call(this, columnId, options);
+            sortBehavior.call(this, columnHeader, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
