@@ -153,17 +153,15 @@ public class DataTableRenderer extends DataRenderer {
 		String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
+        String style = table.getStyle();
         
         if(table.isLazy()) {
             table.loadLazyData();
         }
 
-        //style
+        //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        
-        String style = null;
-        
         if(table.isResizableColumns()) {
             containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS; 
         }
@@ -183,13 +181,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
-        if((style = table.getStyle()) != null) {
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
         if(scrollable) {
             encodeScrollableTable(context, table);
-        } else {
+        } 
+        else {
             encodeRegularTable(context, table);
         }
 
@@ -226,21 +225,30 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int scrollHeight = table.getScrollHeight();    
         int scrollWidth = table.getScrollWidth();
-        boolean hasScrollHeight = scrollHeight != Integer.MIN_VALUE;
-        boolean hasScrollWidth = scrollWidth != Integer.MIN_VALUE;
-        StringBuilder style = new StringBuilder();
+        StringBuilder bodyStyle = new StringBuilder();
         String tableStyle = table.getStyle();
         String tableStyleClass = table.getStyleClass();
         
-        if(hasScrollHeight)
-            style.append("height:").append(scrollHeight).append("px;");
-        if(hasScrollWidth)
-            style.append("width:").append(scrollWidth).append("px;");
+        if(scrollHeight != Integer.MIN_VALUE)
+            bodyStyle.append("height:").append(scrollHeight).append("px;");
+        if(scrollWidth != Integer.MIN_VALUE)
+            bodyStyle.append("width:").append(scrollWidth).append("px;");
                 
-        //header
+        encodeScrollArea(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        encodeScrollBody(context, table, bodyStyle.toString(), tableStyle, tableStyleClass);
+        encodeScrollArea(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        
+        writer.endElement("div");
+    }
+    
+    protected void encodeScrollArea(FacesContext context, DataTable table, String containerClass, String containerBoxClass, 
+                            String tableStyle, String tableStyleClass, int scrollWidth) throws IOException {
+        
+        ResponseWriter writer = context.getResponseWriter();
+        
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_CLASS, null);
-        if(hasScrollWidth) {
+        writer.writeAttribute("class", containerClass, null);
+        if(scrollWidth != Integer.MIN_VALUE) {
             writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
         }
         
@@ -257,12 +265,15 @@ public class DataTableRenderer extends DataRenderer {
         
         writer.endElement("div");
         writer.endElement("div");
-
-        //body
+    }
+    
+    protected void encodeScrollBody(FacesContext context, DataTable table, String containerStyle, String tableStyle, String tableStyleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        if(style.length() > 0) {
-            writer.writeAttribute("style", style.toString(), null);
+        if(containerStyle.length() > 0) {
+            writer.writeAttribute("style", containerStyle.toString(), null);
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
@@ -274,29 +285,8 @@ public class DataTableRenderer extends DataRenderer {
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
         encodeTbody(context, table, false);
+        
         writer.endElement("table");
-        writer.endElement("div");
-
-        //footer
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_CLASS, null);
-        if(hasScrollWidth) {
-            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
-        }
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.SCROLLABLE_FOOTER_BOX_CLASS, null);
-        
-        writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
-        if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
-        
-        encodeTFoot(context, table);
-        writer.endElement("table");
-        
-        writer.endElement("div");
-        
         writer.endElement("div");
     }
 
