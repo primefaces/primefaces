@@ -234,14 +234,20 @@ public class DataTableRenderer extends DataRenderer {
         if(scrollWidth != Integer.MIN_VALUE)
             bodyStyle.append("width:").append(scrollWidth).append("px;");
                 
-        encodeScrollArea(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        encodeThead(context, table);
+        encodeScrollAreaEnd(context);
+        
         encodeScrollBody(context, table, bodyStyle.toString(), tableStyle, tableStyleClass);
-        encodeScrollArea(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        
+        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        encodeTFoot(context, table);
+        encodeScrollAreaEnd(context);
         
         writer.endElement("div");
     }
     
-    protected void encodeScrollArea(FacesContext context, DataTable table, String containerClass, String containerBoxClass, 
+    protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass, 
                             String tableStyle, String tableStyleClass, int scrollWidth) throws IOException {
         
         ResponseWriter writer = context.getResponseWriter();
@@ -258,15 +264,17 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
+        if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);        
+    }
+    
+    protected void encodeScrollAreaEnd(FacesContext context) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         
-        encodeThead(context, table);
         writer.endElement("table");
-        
         writer.endElement("div");
         writer.endElement("div");
     }
-    
+       
     protected void encodeScrollBody(FacesContext context, DataTable table, String containerStyle, String tableStyle, String tableStyleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
@@ -277,9 +285,6 @@ public class DataTableRenderer extends DataRenderer {
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if(table.getRowCount() == 0) {
-            tableStyle = tableStyle == null ? "width:100%" : tableStyle + ";width:100%";
-        }
         
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);

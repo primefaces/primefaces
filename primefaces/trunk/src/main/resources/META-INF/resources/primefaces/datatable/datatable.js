@@ -339,6 +339,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             _self.saveScrollState();
         });
+        
+        if(_self.isEmpty()) {
+            _self.alignEmptyMessage();
+        }
     },
     
     restoreScrollState: function() {
@@ -582,6 +586,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 paginator.setTotalRecords(this.args.totalRecords);
             }
             
+            //align empty message width for scrolling table
+            if(_self.cfg.scrollable && _self.isEmpty()) {
+                _self.alignEmptyMessage();
+            }
+            
             return true;
         };
 
@@ -598,6 +607,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
+    },
+    
+    alignEmptyMessage: function() {
+        var emptyMessageContainer = this.tbody.find('div.ui-dt-c'),
+        columns = this.scrollHeader.find('thead:first > tr > th > div.ui-dt-c'),
+        emptyMessageWidth = 0;
+
+        for(var i = 0; i < columns.length; i++) {
+            emptyMessageWidth += columns.eq(i).outerWidth();
+            console.log(columns.eq(i).outerWidth());
+        }
+
+        emptyMessageContainer.width(emptyMessageWidth);
     },
     
     onRowClick: function(event, rowElement) {    
