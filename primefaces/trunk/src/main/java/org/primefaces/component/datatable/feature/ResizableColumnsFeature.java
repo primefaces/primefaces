@@ -40,10 +40,14 @@ public class ResizableColumnsFeature implements DataTableFeature {
     }
     
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return table.isResizableColumns();
+        return table.isResizableColumns() && isResizeRequest(context, table);
     }
 
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
+    }
+    
+    private boolean isResizeRequest(FacesContext context, DataTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_colResize");
     }
 }

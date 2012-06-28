@@ -1203,7 +1203,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     source: _self.id,
                     process: _self.id,
                     params: [
-                        {name: _self.id + '_updateBody', value: true},
                         {name: _self.id + '_colResize', value: true},
                         {name: _self.id + '_columnId', value: columnHeader.attr('id')},
                         {name: _self.id + '_width', value: newWidth},
