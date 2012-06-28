@@ -21,9 +21,11 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -295,7 +297,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeColumnHeader(FacesContext context, DataTable table, Column column) throws IOException {
+    protected void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getClientId(context);
         ValueExpression tableSortByVe = table.getValueExpression("sortBy");
@@ -311,6 +313,7 @@ public class DataTableRenderer extends DataRenderer {
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
+        columnClass = column.isDynamic() ? columnClass + " " + DataTable.DYNAMIC_COLUMN_HEADER_CLASS : columnClass;
 
         if(isSortable) {
             String columnSortByExpression = columnSortByVe.getExpressionString();
@@ -378,7 +381,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
     
-    protected void encodeColumnHeaderContent(FacesContext context, Column column, String sortIcon) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, UIColumn column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         if(sortIcon != null) {
@@ -404,9 +407,9 @@ public class DataTableRenderer extends DataRenderer {
         int colCount = ((List<?>) columns.getValue()).size();
 
         for(int i = 0; i < colCount; i++) {
-            columns.setColIndex(i);
+            columns.setRowIndex(i);
             
-            encodeColumnHeader(context, table, columns);
+            encodeColumnHeader(context, table, (UIColumn) columns);
         }
     }
     
@@ -414,21 +417,21 @@ public class DataTableRenderer extends DataRenderer {
         int colCount = ((List<?>) columns.getValue()).size();
 
         for(int i = 0; i < colCount; i++) {
-            columns.setColIndex(i);
+            columns.setRowIndex(i);
             
-            encodeColumnFooter(context, table, columns);
+            encodeColumnFooter(context, table, (UIColumn) columns);
         }
     }
 
-    protected void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
+    protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
-        String filterId = column.getClientId(context) + "_filter";
+        String filterId = column.getClientId(context) + separator + "filter";
         String filterValue = params.containsKey(filterId) && !table.isReset() ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
         
-
         if(column.getValueExpression("filterOptions") == null) {
             filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
             
@@ -474,7 +477,7 @@ public class DataTableRenderer extends DataRenderer {
         
     }
 
-    protected SelectItem[] getFilterOptions(Column column) {
+    protected SelectItem[] getFilterOptions(UIColumn column) {
         Object options = column.getFilterOptions();
         
         if(options instanceof SelectItem[]) {
@@ -486,7 +489,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnFooter(FacesContext context, DataTable table, Column column) throws IOException {
+    protected void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         String style = column.getStyle();
@@ -557,15 +560,13 @@ public class DataTableRenderer extends DataRenderer {
         else {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
-
-            for(Column column : table.getColumns()) {
-                if(column.isRendered()) {
-                    if(column instanceof Columns) {
-                        encodeColumnsHeader(context, table, (Columns) column);
-                    }
-                    else {
-                        encodeColumnHeader(context, table, column);
-                    }
+            
+            for(UIComponent child : table.getChildren()) {
+                if(child instanceof Column) {
+                    encodeColumnHeader(context, table, (UIColumn) child);
+                }
+                else {
+                    encodeColumnsHeader(context, table, (Columns) child);
                 }
             }
 
@@ -701,14 +702,12 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
 
-        for(Column column : table.getColumns()) {
-            if(column.isRendered()) {
-                if(column instanceof Columns) {
-                    encodeDynamicCell(context, table, (Columns) column);
-                }
-                else {
-                    encodeRegularCell(context, table, column, clientId, selected);
-                }
+        for(UIComponent child : table.getChildren()) {
+            if(child instanceof Columns) {
+                encodeDynamicCell(context, table, (Columns) child);
+            }
+            else {
+                encodeRegularCell(context, table, (UIColumn) child, clientId, selected);
             }
         }
 
@@ -717,7 +716,7 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeRegularCell(FacesContext context, DataTable table, Column column, String clientId, boolean selected) throws IOException {
+    protected void encodeRegularCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
         String style = column.getStyle();
@@ -746,7 +745,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
         else {
-            column.encodeAll(context);            
+            ((UIComponent) column).encodeAll(context);            
         }
         
         writer.endElement("div");
@@ -758,7 +757,7 @@ public class DataTableRenderer extends DataRenderer {
         int colCount = ((List<?>) columns.getValue()).size();
 
         for(int i = 0; i < colCount; i++) {
-            columns.setColIndex(i);
+            columns.setRowIndex(i);
             
             encodeRegularCell(context, table, columns, null, false);
         }
@@ -791,15 +790,13 @@ public class DataTableRenderer extends DataRenderer {
         }
         else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);
-
-            for(Column column : table.getColumns()) {
-                if(column.isRendered()) {
-                    if(column instanceof Columns) {
-                        encodeColumnsFooter(context, table, (Columns) column);
-                    }
-                    else {
-                        encodeColumnFooter(context, table, column);
-                    }
+            
+            for(UIComponent child : table.getChildren()) {
+                if(child instanceof Columns) {
+                    encodeColumnsFooter(context, table, (Columns) child);
+                }
+                else {
+                    encodeColumnFooter(context, table, (UIColumn) child);
                 }
             }
 
@@ -911,7 +908,7 @@ public class DataTableRenderer extends DataRenderer {
         table.setRowIndex(-1);
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, Column column, boolean selected) throws IOException {
+    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected) throws IOException {
         String selectionMode = column.getSelectionMode();
         boolean disabled = column.isDisabledSelection();
 

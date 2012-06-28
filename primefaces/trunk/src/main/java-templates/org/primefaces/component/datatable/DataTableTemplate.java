@@ -52,6 +52,7 @@ import org.primefaces.component.datatable.feature.*;
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String DYNAMIC_COLUMN_HEADER_CLASS = "ui-dynamic-column";
     public static final String COLUMN_HEADER_CONTAINER_CLASS = "ui-header-column";
     public static final String COLUMN_FOOTER_CLASS = "ui-state-default";
     public static final String COLUMN_FOOTER_CONTAINER_CLASS = "ui-footer-column";
@@ -146,61 +147,7 @@ import org.primefaces.component.datatable.feature.*;
 
     private Map<String,Column> filterMap;
 
-    public Map<String,Column> getFilterMap() {
-      if(filterMap == null) {
-         filterMap = new HashMap<String,Column>();
 
-         ColumnGroup group = getColumnGroup("header");
-         if(group != null) {
-            //column group
-            for(UIComponent child : group.getChildren()) {
-               Row headerRow = (Row) child;
-               
-               if(headerRow.isRendered()) {
-                   for(UIComponent headerRowChild : headerRow.getChildren()) {
-                      Column column= (Column) headerRowChild;
-
-                      if(column.isRendered() && column.getValueExpression("filterBy") != null) {
-                         filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
-                      }
-                   }
-               }
-            }
-         } 
-         else {
-
-            for(UIComponent child : getChildren()) {
-                if(child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    List<?> columnModel = (List<?>) columns.getValue();
-                    
-                    if(columnModel != null && columns.getValueExpression("filterBy") != null) {
-                        for(int i = 0; i < columnModel.size(); i++) {
-                            columns.setColIndex(i);
-                            
-                            filterMap.put(columns.getClientId(FacesContext.getCurrentInstance()) + "_filter", columns);
-                        }
-                        
-                        columns.setColIndex(-1);    //reset
-                    }
-                }
-                else if(child instanceof Column) {
-                    Column column = (Column) child;
-                    if(column.getValueExpression("filterBy") != null) {
-                        filterMap.put(column.getClientId(FacesContext.getCurrentInstance()) + "_filter", column);
-                    }
-                }
-            }
-            
-         }
-      }
-
-      return filterMap;
-   }
-
-	public boolean hasFilter() {
-		return getFilterMap().size() > 0;
-	}
 
     public boolean isRowSelectionEnabled() {
         return this.getSelectionMode() != null;
@@ -680,7 +627,7 @@ import org.primefaces.component.datatable.feature.*;
         for(Iterator<Column> iter = cols.iterator(); iter.hasNext();) {
             Column column = iter.next();
             
-            if(column instanceof Columns) {
+            /*if(column instanceof Columns) {
                 Columns uicolumns = (Columns) column;
                 List<?> model = (List<?>) uicolumns.getValue();
                 int size = model.size();
@@ -697,14 +644,14 @@ import org.primefaces.component.datatable.feature.*;
                     }
                 }
             }
-            else {
+            else {*/
                 builder.append(column.getClientId());
 
                 if(iter.hasNext()) {
                     builder.append(",");
                 }
             }
-        }
+        
 
         return builder.toString();
     }
