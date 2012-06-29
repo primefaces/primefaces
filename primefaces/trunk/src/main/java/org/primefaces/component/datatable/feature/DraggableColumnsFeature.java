@@ -29,7 +29,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 public class DraggableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        List<Column> actualColumns = table.getColumns();
+        List<Column> actualColumns = null;
         String clientId = table.getClientId(context);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String[] order = params.get(clientId + "_columnOrder").split(",");
@@ -60,7 +60,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
                 }
             }
             
-            table.setColumns(orderedColumns);
+            //table.setColumns(orderedColumns);
         }
     }
 
