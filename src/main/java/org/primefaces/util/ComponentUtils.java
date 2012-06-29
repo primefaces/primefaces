@@ -27,13 +27,7 @@ import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIInput;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.*;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -157,6 +151,34 @@ public class ComponentUtils {
 		
 		return null;
 	}
+    
+    public static UniqueIdVendor findParentUniqueIdVendor(UIComponent component) {
+        UIComponent parent = component.getParent();
+
+        while(parent != null) {
+            if(parent instanceof UniqueIdVendor) {
+                return (UniqueIdVendor) parent;
+            }
+            
+            parent = parent.getParent();
+        }
+        
+        return null;
+    }
+    
+    public static UIComponent findParentNamingContainer(UIComponent component) {
+        UIComponent parent = component.getParent();
+
+        while(parent != null) {
+            if(parent instanceof NamingContainer) {
+                return (UIComponent) parent;
+            }
+            
+            parent = parent.getParent();
+        }
+        
+        return null;
+    }
 	
 	public static void decorateAttribute(UIComponent component, String attribute, String value) {
 		String attributeValue = (String) component.getAttributes().get(attribute);
