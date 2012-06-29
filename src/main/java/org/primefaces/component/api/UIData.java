@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
-import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -229,18 +228,15 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         pushComponentToEL(context, this);
-        Application app = context.getApplication();
-        app.publishEvent(context, PreValidateEvent.class, this);
         processPhase(context, PhaseId.UPDATE_MODEL_VALUES);
-        app.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
     }
     
     protected void processPhase(FacesContext context, PhaseId phaseId) {
         setRowIndex(-1);
-        processFacets(context, PhaseId.APPLY_REQUEST_VALUES);
-        processChildrenFacets(context, PhaseId.APPLY_REQUEST_VALUES);
-        processChildren(context, PhaseId.APPLY_REQUEST_VALUES);
+        processFacets(context, phaseId);
+        processChildrenFacets(context, phaseId);
+        processChildren(context, phaseId);
         setRowIndex(-1);
     }
     
@@ -276,9 +272,7 @@ public class UIData extends javax.faces.component.UIData {
             
             for(UIComponent child : this.getChildren()) {
                 if(child.isRendered()) {
-                    for(UIComponent grandkid : child.getChildren()) {
-                        process(context, grandkid, phaseId);
-                    }
+                    process(context, child, phaseId);
                 }
             }            
         }
@@ -356,7 +350,7 @@ public class UIData extends javax.faces.component.UIData {
         String componentClientId = this.getClientId(context);
         
         int rowIndex = getRowIndex();
-        if (rowIndex == -1) {
+        if(rowIndex == -1) {
             return componentClientId;
         }
 
@@ -407,7 +401,7 @@ public class UIData extends javax.faces.component.UIData {
     public int getRowIndex() {
         return (Integer) getStateHelper().eval(PropertyKeys.rowIndex, -1);
     }
-        
+    
     protected void saveDescendantState() {
         FacesContext context = getFacesContext();
         
