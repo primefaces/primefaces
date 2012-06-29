@@ -627,7 +627,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", DataTable.EMPTY_MESSAGE_ROW_CLASS, null);
 
             writer.startElement("td", null);
-            writer.writeAttribute("colspan", table.getColumns().size(), null);
+            writer.writeAttribute("colspan", table.getColumnsCount(), null);
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             writer.write(emptyMessage);
