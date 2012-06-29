@@ -15,6 +15,9 @@
  */
 package org.primefaces.component.api;
 
+import java.sql.ResultSet;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -25,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
+import javax.faces.model.*;
 import javax.faces.render.Renderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -49,6 +53,7 @@ public class UIData extends javax.faces.component.UIData {
     
     private String clientId = null;
     private StringBuilder idBuilder = new StringBuilder();
+    private DataModel model = null;
     
     protected enum PropertyKeys {
         paginator
@@ -176,12 +181,12 @@ public class UIData extends javax.faces.component.UIData {
     
     public void updatePaginationData(FacesContext context, UIData data) {
         data.setRowIndex(-1);
-        String clientId = data.getClientId(context);
+        String componentClientId = data.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ELContext elContext = context.getELContext();
         
-		String firstParam = params.get(clientId + "_first");
-		String rowsParam = params.get(clientId + "_rows");
+		String firstParam = params.get(componentClientId + "_first");
+		String rowsParam = params.get(componentClientId + "_rows");
 
 		data.setFirst(Integer.valueOf(firstParam));
 		data.setRows(Integer.valueOf(rowsParam));
@@ -531,6 +536,40 @@ public class UIData extends javax.faces.component.UIData {
             }
         }
 
+    }
+    
+    @Override
+    protected DataModel getDataModel() {
+        if(this.model != null) {
+            return (model);
+        }
+
+        Object current = getValue();
+        if(current == null) {
+            setDataModel(new ListDataModel(Collections.EMPTY_LIST));
+        } 
+        else if (current instanceof DataModel) {
+            setDataModel((DataModel) current);
+        } 
+        else if (current instanceof List) {
+            setDataModel(new ListDataModel((List) current));
+        } 
+        else if (Object[].class.isAssignableFrom(current.getClass())) {
+            setDataModel(new ArrayDataModel((Object[]) current));
+        } 
+        else if (current instanceof ResultSet) {
+            setDataModel(new ResultSetDataModel((ResultSet) current));
+        } 
+        else {
+            setDataModel(new ScalarDataModel(current));
+        }
+        
+        return model;
+    }
+
+    @Override
+    protected void setDataModel(DataModel dataModel) {
+        this.model = dataModel;
     }
 }
 

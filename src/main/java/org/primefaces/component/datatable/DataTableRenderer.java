@@ -299,7 +299,7 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = column.getClientId(context);
+        String clientId = column.getContainerClientId(context);
         ValueExpression tableSortByVe = table.getValueExpression("sortBy");
         ValueExpression columnSortByVe = column.getValueExpression("sortBy");
         boolean isSortable = columnSortByVe != null;
@@ -428,7 +428,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
-        String filterId = column.getClientId(context) + separator + "filter";
+        String filterId = column.getContainerClientId(context) + separator + "filter";
         String filterValue = params.containsKey(filterId) && !table.isReset() ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
         

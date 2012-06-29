@@ -25,6 +25,8 @@ public interface UIColumn {
     
     public ValueExpression getValueExpression(String property);
     
+    public String getContainerClientId(FacesContext context);
+    
     public String getClientId();
     
     public String getClientId(FacesContext context);

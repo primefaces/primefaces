@@ -57,8 +57,10 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void decode(FacesContext context, DataTable table) {
-        //clear previous filtered value
+        //reset state
         updateFilteredValue(context, table, null);
+        table.setFirst(0);
+        table.setRowIndex(-1);
         
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -66,9 +68,6 @@ public class FilterFeature implements DataTableFeature {
         boolean hasGlobalFilter = params.containsKey(globalFilterParam);
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
-        //Reset state
-        table.setFirst(0);
-        
         //populate filters
         Map<String,String> filters = new HashMap<String, String>();
         Map<String,Column> filterMap = this.populateFilterMap(context, table);
@@ -234,7 +233,7 @@ public class FilterFeature implements DataTableFeature {
                     if(hasFiltering) {
                         for(int i = 0; i < columnModel.size(); i++) {
                             columns.setRowIndex(i);
-                            String filterId = columns.getClientId(FacesContext.getCurrentInstance()) + separator + "filter";
+                            String filterId = columns.getContainerClientId(FacesContext.getCurrentInstance()) + separator + "filter";
                             filterMap.put(filterId, columns);
                         }
 
