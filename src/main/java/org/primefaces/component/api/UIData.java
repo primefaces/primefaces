@@ -377,6 +377,12 @@ public class UIData extends javax.faces.component.UIData {
     public void setRowIndex(int rowIndex) {
         saveDescendantState();
 
+        setRowModel(rowIndex);
+
+        restoreDescendantState();
+    }
+        
+    public void setRowModel(int rowIndex) {
         //update rowIndex
         getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
         getDataModel().setRowIndex(rowIndex);
@@ -398,8 +404,6 @@ public class UIData extends javax.faces.component.UIData {
                 requestMap.remove(var);
             }
         }
-
-        restoreDescendantState();
     }
     
     @Override

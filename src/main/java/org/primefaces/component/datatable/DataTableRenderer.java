@@ -407,7 +407,7 @@ public class DataTableRenderer extends DataRenderer {
         int colCount = ((List<?>) columns.getValue()).size();
 
         for(int i = 0; i < colCount; i++) {
-            columns.setRowIndex(i);
+            columns.setRowModel(i);
             
             encodeColumnHeader(context, table, (UIColumn) columns);
         }
@@ -417,7 +417,7 @@ public class DataTableRenderer extends DataRenderer {
         int colCount = ((List<?>) columns.getValue()).size();
 
         for(int i = 0; i < colCount; i++) {
-            columns.setRowIndex(i);
+            columns.setRowModel(i);
             
             encodeColumnFooter(context, table, (UIColumn) columns);
         }
