@@ -172,6 +172,10 @@ public class FilterFeature implements DataTableFeature {
     }
     
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        if(table.isLazy()) {
+            table.loadLazyData();
+        }
+        
         renderer.encodeTbody(context, table, true);
     }
     
