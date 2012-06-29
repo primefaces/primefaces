@@ -45,6 +45,7 @@ import org.primefaces.model.SelectableDataModelWrapper;
 import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
+import org.primefaces.component.api.UIColumn;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.feature.*;
 
@@ -114,26 +115,6 @@ import org.primefaces.component.datatable.feature.*;
         FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
     }
     
-    public List<Column> columns;
-
-    public List<Column> getColumns() {        
-        if(columns == null) {
-            columns = new ArrayList<Column>();
-
-            for(UIComponent child : this.getChildren()) {
-                if(child.isRendered() && child instanceof Column) {
-                    columns.add((Column) child);
-                }
-            }
-        }
-
-        return columns;
-    }
-    
-    public void setColumns(List<Column> columns) {
-        this.columns = columns;
-    }
-    
     public boolean isRowEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
     }
@@ -145,10 +126,6 @@ import org.primefaces.component.datatable.feature.*;
         return value != null && value.equals("cancel");
     }
 
-    private Map<String,Column> filterMap;
-
-
-
     public boolean isRowSelectionEnabled() {
         return this.getSelectionMode() != null;
 	}
@@ -158,10 +135,13 @@ import org.primefaces.component.datatable.feature.*;
 	}
 
     public String getColumnSelectionMode() {
-        for(Column column : getColumns()) {
-            String selectionMode = column.getSelectionMode();
-            if(selectionMode != null) {
-                return selectionMode;
+        for(UIComponent child : getChildren()) {
+            if(child.isRendered() && (child instanceof Column)) {
+                String selectionMode = ((Column) child).getSelectionMode();
+                
+                if(selectionMode != null) {
+                    return selectionMode;
+                }
             }
         }
 
@@ -270,9 +250,9 @@ import org.primefaces.component.datatable.feature.*;
     }
 
     public Column findColumn(String clientId) {
-        for(Column column : getColumns()) {
+        for(UIComponent column : getChildren()) {
             if(column.getClientId().equals(clientId)) {
-                return column;
+                return (Column) column;
             }
         }
         
@@ -296,9 +276,14 @@ import org.primefaces.component.datatable.feature.*;
     }
 
     public boolean hasFooterColumn() {
-        for(Column column : getColumns()) {
-            if(column.getFacet("footer") != null || column.getFooterText() != null)
-                return true;
+        for(UIComponent child : getChildren()) {
+            if(child.isRendered() && (child instanceof UIColumn)) {
+                UIColumn column = (UIColumn) child;
+                
+                if(column.getFacet("footer") != null || column.getFooterText() != null)
+                    return true; 
+            }
+            
         }
 
         return false;
@@ -585,7 +570,7 @@ import org.primefaces.component.datatable.feature.*;
     }
     
     public void syncColumnOrder() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        /*FacesContext context = FacesContext.getCurrentInstance();
         List<Column> actualColumns = getColumns();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String[] order = params.get(getClientId(context) + "_columnOrder").split(",");
@@ -617,17 +602,17 @@ import org.primefaces.component.datatable.feature.*;
             }
             
             this.columns = orderedColumns;
-        }
+        }*/
     }
     
     public String getColumnIds() {
         StringBuilder builder = new StringBuilder();
-        List<Column> cols = getColumns();
+        /*List<Column> cols = getColumns();
         
         for(Iterator<Column> iter = cols.iterator(); iter.hasNext();) {
             Column column = iter.next();
             
-            /*if(column instanceof Columns) {
+            if(column instanceof Columns) {
                 Columns uicolumns = (Columns) column;
                 List<?> model = (List<?>) uicolumns.getValue();
                 int size = model.size();
@@ -644,7 +629,7 @@ import org.primefaces.component.datatable.feature.*;
                     }
                 }
             }
-            else {*/
+            else {
                 builder.append(column.getClientId());
 
                 if(iter.hasNext()) {
@@ -652,7 +637,7 @@ import org.primefaces.component.datatable.feature.*;
                 }
             }
         
-
+        * */
         return builder.toString();
     }
     

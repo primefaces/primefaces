@@ -72,21 +72,24 @@ public class SortFeature implements DataTableFeature {
             ColumnGroup group = table.getColumnGroup("header");
             if(group != null) {
                 outer:
-                for (UIComponent child : group.getChildren()) {
+                for(UIComponent child : group.getChildren()) {
                     Row headerRow = (Row) child;
-                    for (UIComponent headerRowChild : headerRow.getChildren()) {
+                    
+                    for(UIComponent headerRowChild : headerRow.getChildren()) {
                         Column column = (Column) headerRowChild;
-                        if (column.getClientId(context).equals(sortKey)) {
+                        
+                        if(column.getClientId(context).equals(sortKey)) {
                             sortColumn = column;
                             break outer;
                         }
                     }
                 }
-            } else {
+            } 
+            else {
                 //single header row
-                for (Column column : table.getColumns()) {
-                    if (column.getClientId(context).equals(sortKey)) {
-                        sortColumn = column;
+                for(UIComponent child : table.getChildren()) {
+                    if(child.getClientId(context).equals(sortKey)) {
+                        sortColumn = (Column) child;
                         break;
                     }
                 }
