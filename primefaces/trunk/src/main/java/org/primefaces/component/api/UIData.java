@@ -18,9 +18,16 @@ package org.primefaces.component.api;
 import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.Application;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.model.LazyDataModel;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
+import javax.faces.model.DataModel;
+import javax.faces.render.Renderer;
+import org.primefaces.util.ComponentUtils;
 
 public class UIData extends javax.faces.component.UIData {
 
@@ -41,6 +48,9 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all"; 
     public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end"; 
     
+    private String clientId = null;
+    private StringBuilder idBuilder = new StringBuilder();
+    
     protected enum PropertyKeys {
         paginator
 		,paginatorTemplate
@@ -48,8 +58,10 @@ public class UIData extends javax.faces.component.UIData {
 		,currentPageReportTemplate
 		,pageLinks
 		,paginatorPosition
-		,paginatorAlwaysVisible,
-        lazy;
+		,paginatorAlwaysVisible
+        ,rowIndex
+        ,saved
+        ,lazy;
 
         String toString;
 
@@ -183,4 +195,348 @@ public class UIData extends javax.faces.component.UIData {
         if(rowsVe != null && !rowsVe.isReadOnly(elContext))
             rowsVe.setValue(context.getELContext(), data.getRows());
     }
+    
+    @Override
+    public void processDecodes(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+        
+        pushComponentToEL(context, this);
+        processPhase(context, PhaseId.APPLY_REQUEST_VALUES);
+        decode(context);
+        popComponentFromEL(context);
+    }
+    
+    @Override
+    public void processValidators(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+        
+        pushComponentToEL(context, this);
+        Application app = context.getApplication();
+        app.publishEvent(context, PreValidateEvent.class, this);
+        processPhase(context, PhaseId.PROCESS_VALIDATIONS);
+        app.publishEvent(context, PostValidateEvent.class, this);
+        popComponentFromEL(context);
+    }
+    
+    @Override
+    public void processUpdates(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+        
+        pushComponentToEL(context, this);
+        Application app = context.getApplication();
+        app.publishEvent(context, PreValidateEvent.class, this);
+        processPhase(context, PhaseId.UPDATE_MODEL_VALUES);
+        app.publishEvent(context, PostValidateEvent.class, this);
+        popComponentFromEL(context);
+    }
+    
+    protected void processPhase(FacesContext context, PhaseId phaseId) {
+        setRowIndex(-1);
+        processFacets(context, PhaseId.APPLY_REQUEST_VALUES);
+        processChildrenFacets(context, PhaseId.APPLY_REQUEST_VALUES);
+        processChildren(context, PhaseId.APPLY_REQUEST_VALUES);
+        setRowIndex(-1);
+    }
+    
+    protected void processFacets(FacesContext context, PhaseId phaseId) {
+        if(this.getFacetCount() > 0) {
+            for(UIComponent facet : getFacets().values()) {
+                process(context, facet, phaseId);
+            }
+        }
+    }
+    
+    protected void processChildrenFacets(FacesContext context, PhaseId phaseId) {
+        for(UIComponent child : this.getChildren()) {
+            if(child.isRendered() && (child.getFacetCount() > 0)) {
+                for(UIComponent facet : child.getFacets().values()) {
+                    process(context, facet, phaseId);
+                }
+            }
+        }
+    }
+    
+    protected void processChildren(FacesContext context, PhaseId phaseId) {
+        int first = getFirst();
+        int rows = getRows();
+        int last = rows == 0 ? getRowCount() : (first + rows);
+        
+        for(int rowIndex = first; rowIndex < last; rowIndex++) {
+            setRowIndex(rowIndex);
+
+            if(!isRowAvailable()) {
+                break;
+            }
+            
+            for(UIComponent child : this.getChildren()) {
+                if(child.isRendered()) {
+                    for(UIComponent grandkid : child.getChildren()) {
+                        process(context, grandkid, phaseId);
+                    }
+                }
+            }            
+        }
+    }
+    
+    protected void process(FacesContext context, UIComponent component, PhaseId phaseId) {
+        if(phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+            component.processDecodes(context);
+        }
+        else if(phaseId == PhaseId.PROCESS_VALIDATIONS) {
+            component.processValidators(context);
+        }
+        else if(phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+            component.processUpdates(context);
+        }
+        
+    }
+    
+    @Override
+    public String getClientId(FacesContext context) {
+        if(this.clientId != null) {
+            return this.clientId;
+        }
+
+        String id = getId();
+        if(id == null) {
+            UniqueIdVendor parentUniqueIdVendor = ComponentUtils.findParentUniqueIdVendor(this);
+            
+            if(parentUniqueIdVendor == null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+                
+                if(viewRoot != null) {
+                    id = viewRoot.createUniqueId();
+                }
+                else {
+                    throw new FacesException("Cannot create clientId for " + this.getClass().getCanonicalName());
+                }
+            }
+            else {
+                id = parentUniqueIdVendor.createUniqueId(context, null);
+            }
+            
+            this.setId(id);
+        }
+
+        UIComponent namingContainer = ComponentUtils.findParentNamingContainer(this);
+        if(namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            
+            if(containerClientId != null) {                
+                this.clientId = this.idBuilder.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+                this.idBuilder.setLength(0);
+            }
+            else
+            {
+                this.clientId = id;
+            }
+        }
+        else
+        {
+            this.clientId = id;
+        }
+
+        Renderer renderer = getRenderer(context);
+        if(renderer != null) {
+            this.clientId = renderer.convertClientId(context, this.clientId);
+        }
+
+        return this.clientId;
+    }
+    
+    @Override
+    public String getContainerClientId(FacesContext context) {
+        //clientId is without rowIndex
+        String componentClientId = this.getClientId(context);
+        
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1) {
+            return componentClientId;
+        }
+
+        String containerClientId = idBuilder.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
+        idBuilder.setLength(0);
+        
+        return containerClientId;
+    }
+    
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+
+        //clear
+        this.clientId = null;
+    }
+    
+    @Override
+    public void setRowIndex(int rowIndex) {
+        saveDescendantState();
+
+        //update rowIndex
+        getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
+        getDataModel().setRowIndex(rowIndex);
+        
+        //clear datamodel
+        if(rowIndex == -1) {
+            setDataModel(null);
+        }
+        
+        //update var
+        String var = (String) this.getVar();
+        if(var != null) {
+            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+            
+            if(isRowAvailable()) {
+                requestMap.put(var, getRowData());
+            }
+            else {
+                requestMap.remove(var);
+            }
+        }
+
+        restoreDescendantState();
+    }
+    
+    @Override
+    public int getRowIndex() {
+        return (Integer) getStateHelper().eval(PropertyKeys.rowIndex, -1);
+    }
+        
+    protected void saveDescendantState() {
+        FacesContext context = getFacesContext();
+        
+        if(getChildCount() > 0) {
+            for(UIComponent kid : getChildren()) {
+                saveDescendantState(kid, context);
+            }
+        }
+    }
+    
+    protected void saveDescendantState(UIComponent component, FacesContext context) {
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+        
+        if(component instanceof EditableValueHolder) {
+            EditableValueHolder input = (EditableValueHolder) component;
+            SavedState state = null;
+            String componentClientId = component.getClientId(context);
+            
+            if(saved == null) {
+                state = new SavedState();
+                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
+            }
+            
+            if(state == null) {
+                state = saved.get(componentClientId);
+                
+                if(state == null) {
+                    state = new SavedState();
+                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
+                }
+            }
+            
+            state.setValue(input.getLocalValue());
+            state.setValid(input.isValid());
+            state.setSubmittedValue(input.getSubmittedValue());
+            state.setLocalValueSet(input.isLocalValueSet());
+        } 
+        else if (component instanceof UIForm) {
+            UIForm form = (UIForm) component;
+            String componentClientId = component.getClientId(context);
+            SavedState state = null;
+            if (saved == null) {
+                state = new SavedState();
+                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
+            }
+            
+            if (state == null) {
+                state = saved.get(componentClientId);
+                if (state == null) {
+                    state = new SavedState();
+                    //saved.put(clientId, state);
+                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
+                }
+            }
+            state.setSubmitted(form.isSubmitted());
+        }
+
+        //save state for children
+        if(component.getChildCount() > 0) {
+            for(UIComponent kid : component.getChildren()) {
+                saveDescendantState(kid, context);
+            }
+        }
+
+        //save state for facets
+        if(component.getFacetCount() > 0) {
+            for(UIComponent facet : component.getFacets().values()) {
+                saveDescendantState(facet, context);
+            }
+        }
+
+    }
+    
+    protected void restoreDescendantState() {
+        FacesContext context = getFacesContext();
+        
+        if(getChildCount() > 0) {
+            for(UIComponent kid : getChildren()) {
+                restoreDescendantState(kid, context);
+            }
+        }
+    }
+
+
+    protected void restoreDescendantState(UIComponent component, FacesContext context) {
+        String id = component.getId();
+        component.setId(id); //reset the client id
+        Map<String, SavedState> saved = (Map<String,SavedState>) getStateHelper().get(PropertyKeys.saved);
+        
+        if(component instanceof EditableValueHolder) {
+            EditableValueHolder input = (EditableValueHolder) component;
+            String componentClientId = component.getClientId(context);
+
+            SavedState state = saved.get(componentClientId);
+            if(state == null) {
+                state = new SavedState();
+            }
+            
+            input.setValue(state.getValue());
+            input.setValid(state.isValid());
+            input.setSubmittedValue(state.getSubmittedValue());
+            input.setLocalValueSet(state.isLocalValueSet());
+        } 
+        else if (component instanceof UIForm) {
+            UIForm form = (UIForm) component;
+            String componentClientId = component.getClientId(context);
+            SavedState state = saved.get(componentClientId);
+            if(state == null) {
+                state = new SavedState();
+            }
+            
+            form.setSubmitted(state.getSubmitted());
+            state.setSubmitted(form.isSubmitted());
+        }
+
+        //restore state of children
+        if(component.getChildCount() > 0) {
+            for(UIComponent kid : component.getChildren()) {
+                restoreDescendantState(kid, context);
+            }
+        }
+
+        //restore state of facets
+        if(component.getFacetCount() > 0) {
+            for(UIComponent facet : component.getFacets().values()) {
+                restoreDescendantState(facet, context);
+            }
+        }
+
+    }
 }
+

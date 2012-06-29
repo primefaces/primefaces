@@ -15,7 +15,6 @@
  */
 package org.primefaces.component.api;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -482,96 +481,4 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-}
-
-@SuppressWarnings({"SerializableHasSerializationMethods","NonSerializableFieldInSerializableClass"})
-class SavedState implements Serializable {
-
-    private static final long serialVersionUID = 4325654657465654768L;
-    
-    private Object submittedValue;
-    
-    private boolean submitted;
-
-    Object getSubmittedValue() {
-        return (this.submittedValue);
-    }
-
-    void setSubmittedValue(Object submittedValue) {
-        this.submittedValue = submittedValue;
-    }
-
-    private boolean valid = true;
-
-    boolean isValid() {
-        return (this.valid);
-    }
-
-    void setValid(boolean valid) {
-        this.valid = valid;
-    }
-
-    private Object value;
-
-    Object getValue() {
-        return (this.value);
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    private boolean localValueSet;
-
-    boolean isLocalValueSet() {
-        return (this.localValueSet);
-    }
-
-    public void setLocalValueSet(boolean localValueSet) {
-        this.localValueSet = localValueSet;
-    }
-
-    public boolean getSubmitted() {
-        return this.submitted;
-    }
-
-    public void setSubmitted(boolean submitted) {
-        this.submitted = submitted;
-    }
-}
-
-class WrapperEvent extends FacesEvent {
-
-    public WrapperEvent(UIComponent component, FacesEvent event, String rowKey) {
-        super(component);
-        this.event = event;
-        this.rowKey = rowKey;
-    }
-
-    private FacesEvent event = null;
-    private String rowKey = null;
-
-    public FacesEvent getFacesEvent() {
-        return (this.event);
-    }
-
-    public String getRowKey() {
-        return rowKey;
-    }
-
-    public PhaseId getPhaseId() {
-        return (this.event.getPhaseId());
-    }
-
-    public void setPhaseId(PhaseId phaseId) {
-        this.event.setPhaseId(phaseId);
-    }
-
-    public boolean isAppropriateListener(FacesListener listener) {
-        return (false);
-    }
-
-    public void processListener(FacesListener listener) {
-        throw new IllegalStateException();
-    }
 }

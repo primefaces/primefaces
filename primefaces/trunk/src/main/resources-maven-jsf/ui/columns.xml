@@ -8,7 +8,7 @@
     <componentClass>org.primefaces.component.columns.Columns</componentClass>
     <componentType>org.primefaces.component.Columns</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
-    <parent>javax.faces.component.UIData</parent>
+    <parent>org.primefaces.component.api.UIData</parent>
     <interfaces>
 		<interface>
 			<name>org.primefaces.component.api.UIColumn</name>
