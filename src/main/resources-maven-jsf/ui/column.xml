@@ -142,5 +142,12 @@
             <defaultValue>-1</defaultValue>
             <description>Width of the column in pixels.</description>
 		</attribute>
+        <attribute>
+			<name>exportable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if the column should be exported by dataexporter.</description>
+		</attribute>
 	</attributes>
 </component>

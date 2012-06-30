@@ -18,11 +18,9 @@ package org.primefaces.component.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -32,6 +30,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
@@ -39,34 +39,32 @@ import org.primefaces.util.Constants;
 public class ExcelExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
     	Workbook wb = new HSSFWorkbook();
     	Sheet sheet = wb.createSheet();
-    	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-        String rowIndexVar = table.getRowIndexVar();
+        
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-        addFacetColumns(sheet, columns, ColumnType.HEADER, 0);
-    	
-        if(pageOnly)
-            exportPageOnly(context, table, columns, sheet);
-        else if(selectionOnly)
-            exportSelectionOnly(context, table, columns, sheet);
-        else
-            exportAll(context, table, columns, sheet);
+        addColumnFacets(sheet, table, ColumnType.HEADER);
         
-        if(hasColumnFooter(columns)) {
-            addFacetColumns(sheet, columns, ColumnType.FOOTER, sheet.getLastRowNum() + 1);
+        if(pageOnly) {
+            exportPageOnly(context, table, sheet);
+        }
+        else if(selectionOnly) {
+            exportSelectionOnly(context, table, sheet);
+        }
+        else {
+            exportAll(context, table, sheet);
+        }
+        
+        if(table.hasFooterColumn()) {
+            addColumnFacets(sheet, table, ColumnType.FOOTER);
         }
     	
     	table.setRowIndex(-1);
-        
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().remove(rowIndexVar);
-        }
-    	
+            	
     	if(postProcessor != null) {
     		postProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
@@ -74,81 +72,54 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(context.getExternalContext(), wb, filename);
 	}
 	
-    protected void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
-        String rowIndexVar = table.getRowIndexVar();
-        int numberOfColumns = columns.size();
-        
+    protected void exportPageOnly(FacesContext context, DataTable table, Sheet sheet) {        
         int first = table.getFirst();
     	int rowsToExport = first + table.getRows();
-        int sheetRowIndex = 1;
         
-        for(int i = first; i < rowsToExport; i++) {
-    		table.setRowIndex(i);
-            if(!table.isRowAvailable())
-                break;
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-            }
-            
-			Row row = sheet.createRow(sheetRowIndex++);
-			
-			for(int j = 0; j < numberOfColumns; j++) {
-                addColumnValue(row, columns.get(j).getChildren(), j);
-			}
-		}
+        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
+            exportRow(sheet, table, rowIndex);
+        }
     }
     
-    protected void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
-        int numberOfColumns = columns.size();
-        
+    protected void exportSelectionOnly(FacesContext context, DataTable table, Sheet sheet) {        
         Object selection = table.getSelection();
-        boolean single = table.isSingleSelectionMode();
-        int sheetRowIndex = 1;
+        String var = table.getVar();
         
-    	int size = selection == null  ? 0 : single ? 1 : Array.getLength(selection);
-
-        for(int i = 0; i < size; i++) {
-            context.getExternalContext().getRequestMap().put(table.getVar(), single ? selection : Array.get(selection, i));
+        if(selection != null) {
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
             
-			Row row = sheet.createRow(sheetRowIndex++);
-			
-			for(int j = 0; j < numberOfColumns; j++) {
-                addColumnValue(row, columns.get(j).getChildren(), j);
-			}
-		}
+            if(selection.getClass().isArray()) {
+                int size = Array.getLength(selection);
+                
+                for(int i = 0; i < size; i++) {
+                    requestMap.put(var, Array.get(selection, i));
+                    
+                    exportCells(sheet, table);
+                }
+            }
+            else {
+                requestMap.put(var, selection);
+                
+                exportCells(sheet, table);
+            }
+        }
+
     }
     
-    protected void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, Sheet sheet) {
-        String rowIndexVar = table.getRowIndexVar();
-        int numberOfColumns = columns.size();
-        
+    protected void exportAll(FacesContext context, DataTable table, Sheet sheet) {
         int first = table.getFirst();
     	int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
-        int sheetRowIndex = 1;
         
         if(lazy) {
-            for(int i = 0; i < rowCount; i++) {
-                if(i % rows == 0) {
-                    table.setFirst(i);
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                if(rowIndex % rows == 0) {
+                    table.setFirst(rowIndex);
                     table.loadLazyData();
                 }
 
-                table.setRowIndex(i);
-                if(!table.isRowAvailable())
-                    break;
-
-                if(rowIndexVar != null) {
-                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-                }
-
-                Row row = sheet.createRow(sheetRowIndex++);
-
-                for(int j = 0; j < numberOfColumns; j++) {
-                    addColumnValue(row, columns.get(j).getChildren(), j);
-                }
+                exportRow(sheet, table, rowIndex);
             }
      
             //restore
@@ -156,44 +127,106 @@ public class ExcelExporter extends Exporter {
             table.loadLazyData();
         } 
         else {
-            for(int i = 0; i < rowCount; i++) {
-                table.setRowIndex(i);
-                if(!table.isRowAvailable())
-                    break;
-
-                if(rowIndexVar != null) {
-                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-                }
-
-                Row row = sheet.createRow(sheetRowIndex++);
-
-                for(int j = 0; j < numberOfColumns; j++) {
-                    addColumnValue(row, columns.get(j).getChildren(), j);
-                }
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
+                exportRow(sheet, table, rowIndex);
             }
             
             //restore
             table.setFirst(first);
         }
     }
-    
-	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
-        Row rowHeader = sheet.createRow(rowIndex);
 
-        for(int i = 0; i < columns.size(); i++) {            
-            addColumnValue(rowHeader, columns.get(i).getFacet(columnType.facet()), i);
+    protected void exportRow(Sheet sheet, DataTable table, int rowIndex) {
+        table.setRowIndex(rowIndex);
+        
+        if(!table.isRowAvailable()) {
+            return;
+        }
+       
+        exportCells(sheet, table);
+    }
+    
+    protected void exportCells(Sheet sheet, DataTable table) {
+        int sheetRowIndex = sheet.getLastRowNum() + 1;
+        Row row = sheet.createRow(sheetRowIndex);
+        
+        for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+
+            if(child instanceof Column) {
+                Column column = (Column) child;
+
+                if(column.isExportable()) {
+                    addColumnValue(row, column.getChildren());
+                }
+            }
+            else if(child instanceof Columns) {
+                Columns columns = (Columns) child;
+                Object value = columns.getValue();
+
+                if(value != null) {
+                    int columnsCount = ((Collection<?>) columns.getValue()).size();
+
+                    for(int cc = 0; cc < columnsCount; cc++) {
+                        columns.setRowModel(cc);
+
+                        if(columns.isExportable()) {;
+                            addColumnValue(row, columns.getChildren());
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+	protected void addColumnFacets(Sheet sheet, DataTable table, ColumnType columnType) {
+        int sheetRowIndex = columnType.equals(ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
+        Row rowHeader = sheet.createRow(sheetRowIndex);
+        
+        for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+                        
+            if(child instanceof Column) {
+                Column column = (Column) child;
+                
+                if(column.isExportable()) {
+                    addColumnValue(rowHeader, column.getFacet(columnType.facet()));
+                } 
+            }
+            else if(child instanceof Columns) {
+                Columns columns = (Columns) child;
+                Object value = columns.getValue();
+                
+                if(value != null) {
+                    int columnsCount = ((Collection<?>) columns.getValue()).size();
+
+                    for(int i = 0; i < columnsCount; i++) {
+                        columns.setRowModel(i);
+
+                        if(columns.isExportable()) {
+                            addColumnValue(rowHeader, columns.getFacet(columnType.facet()));
+                        }
+                    }
+                }
+            }
         }
     }
 	
-    protected void addColumnValue(Row row, UIComponent component, int index) {
-        Cell cell = row.createCell(index);
+    protected void addColumnValue(Row row, UIComponent component) {
+        int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
+        Cell cell = row.createCell(cellIndex);
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
         cell.setCellValue(new HSSFRichTextString(value));
     }
     
-    protected void addColumnValue(Row row, List<UIComponent> components, int index) {
-        Cell cell = row.createCell(index);
+    protected void addColumnValue(Row row, List<UIComponent> components) {
+        int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
+        Cell cell = row.createCell(cellIndex);
         StringBuilder builder = new StringBuilder();
         
         for(UIComponent component : components) {

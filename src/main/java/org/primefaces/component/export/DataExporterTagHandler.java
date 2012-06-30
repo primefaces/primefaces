@@ -37,7 +37,6 @@ public class DataExporterTagHandler extends TagHandler {
 	private final TagAttribute fileName;
 	private final TagAttribute pageOnly;
 	private final TagAttribute selectionOnly;
-	private final TagAttribute excludeColumns;
 	private final TagAttribute preProcessor;
 	private final TagAttribute postProcessor;
 	private final TagAttribute encoding;
@@ -49,7 +48,6 @@ public class DataExporterTagHandler extends TagHandler {
 		this.fileName = getRequiredAttribute("fileName");
 		this.pageOnly = getAttribute("pageOnly");
 		this.selectionOnly = getAttribute("selectionOnly");
-		this.excludeColumns = getAttribute("excludeColumns");
 		this.encoding = getAttribute("encoding");
 		this.preProcessor = getAttribute("preProcessor");
 		this.postProcessor = getAttribute("postProcessor");
@@ -67,9 +65,6 @@ public class DataExporterTagHandler extends TagHandler {
 			MethodExpression preProcessorME = null;
 			MethodExpression postProcessorME = null;
 			
-			if(excludeColumns != null) {
-				excludeColumnsVE = excludeColumns.getValueExpression(faceletContext, Object.class);
-			}
 			if(encoding != null) {
 				encodingVE = encoding.getValueExpression(faceletContext, Object.class);
 			}
@@ -87,7 +82,7 @@ public class DataExporterTagHandler extends TagHandler {
 			}
 			
 			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, excludeColumnsVE,encodingVE, preProcessorME, postProcessorME));
+			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, encodingVE, preProcessorME, postProcessorME));
 		}
 	}
 

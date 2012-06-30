@@ -34,7 +34,7 @@ import javax.faces.convert.Converter;
 import org.primefaces.component.datatable.DataTable;
 
 public abstract class Exporter {
-	
+	    
 	protected enum ColumnType{
 		HEADER("header"),
 		FOOTER("footer");
@@ -56,12 +56,12 @@ public abstract class Exporter {
 	};
 
     public abstract void export(FacesContext facesContext, DataTable table,
-			String outputFileName, boolean pageOnly, boolean selectionOnly, int[] excludedColumnIndexes,
+			String outputFileName, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
 			MethodExpression postProcessor) throws IOException;
 
 	
-	protected List<UIColumn> getColumnsToExport(UIData table, int[] excludedColumns) {
+	protected List<UIColumn> getColumnsToExport(UIData table) {
         List<UIColumn> columns = new ArrayList<UIColumn>();
         int columnIndex = -1;
 
@@ -70,9 +70,7 @@ public abstract class Exporter {
                 UIColumn column = (UIColumn) child;
                 columnIndex++;
 
-                if(excludedColumns == null || column.isRendered() && Arrays.binarySearch(excludedColumns, columnIndex) < 0) {
-                    columns.add(column);
-                }
+                columns.add(column);
             }
         }
 
@@ -141,7 +139,8 @@ public abstract class Exporter {
 
 			//No converter found just return the value as string
 			return value.toString();
-		} else {
+		} 
+        else {
 			//This would get the plain texts on UIInstructions when using Facelets
 			String value = component.toString();
 

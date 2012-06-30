@@ -34,7 +34,7 @@ import org.primefaces.util.Constants;
 public class CSVExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		ExternalContext externalContext = context.getExternalContext();
         
 		externalContext.setResponseContentType("text/csv");
@@ -44,7 +44,7 @@ public class CSVExporter extends Exporter {
 		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
 		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
         Writer writer = externalContext.getResponseOutputWriter();
-		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+		List<UIColumn> columns = getColumnsToExport(table);
         String rowIndexVar = table.getRowIndexVar();
     	
     	addFacetColumns(writer, columns, ColumnType.HEADER);

@@ -15,18 +15,38 @@
  */
 package org.primefaces.component.export;
 
+import javax.faces.FacesException;
+
 public class ExporterFactory {
 
 	public static Exporter getExporterForType(String type) {
-		if(type.equalsIgnoreCase("xls"))
-			return new ExcelExporter();
-		else if(type.equalsIgnoreCase("pdf"))
-			return new PDFExporter();
-		else if(type.equalsIgnoreCase("csv"))
-			return new CSVExporter();
-		else if(type.equalsIgnoreCase("xml"))
-			return new XMLExporter();
-		
-		throw new IllegalArgumentException("Invalid file type to export:" + type + ", export type can only be xls, pdf, csv or xml");
+        Exporter exporter = null;
+        
+        try {
+            ExporterType exporterType = ExporterType.valueOf(type.toUpperCase());
+
+            switch(exporterType) {
+                case XLS:
+                    exporter = new ExcelExporter();
+                break;
+                
+                case PDF:
+                    exporter = new PDFExporter();
+                break; 
+                
+                case CSV:
+                    exporter = new CSVExporter();
+                break; 
+                
+                case XML:
+                    exporter = new XMLExporter();
+                break;
+            }
+        }
+        catch(IllegalArgumentException e) {
+            throw new FacesException(e);
+        } 
+        
+        return exporter;
 	}
 }

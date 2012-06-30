@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.api;
 
+import java.util.List;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -70,4 +71,8 @@ public interface UIColumn {
     public boolean isDynamic();
     
     public MethodExpression getSortFunction();
+    
+    public List<UIComponent> getChildren();
+    
+    public boolean isExportable();
 }

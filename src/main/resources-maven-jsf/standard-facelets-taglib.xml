@@ -76,12 +76,6 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
         <attribute>
-			<description>Comma separated list(if more than one) of column indexes to be excluded from export.</description>
-			<name>excludeColumns</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-        <attribute>
 			<description>PreProcessor for the exported document.</description>
 			<name>preProcessor</name>
 			<required>false</required>

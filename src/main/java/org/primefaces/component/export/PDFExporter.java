@@ -42,7 +42,7 @@ import org.primefaces.util.Constants;
 public class PDFExporter extends Exporter {
 
 	@Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
 		try {
 	        Document document = new Document();
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -56,7 +56,7 @@ public class PDFExporter extends Exporter {
                 document.open();
             }
 	        
-			PdfPTable pdfTable = exportPDFTable(context, table, pageOnly, selectionOnly, excludeColumns, encodingType);
+			PdfPTable pdfTable = exportPDFTable(context, table, pageOnly, selectionOnly, encodingType);
 	    	document.add(pdfTable);
 	    	
 	    	if(postProcessor != null) {
@@ -72,32 +72,30 @@ public class PDFExporter extends Exporter {
 		}
 	}
 	
-	private PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encoding) {
-		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+	private PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
+		List<UIColumn> columns = getColumnsToExport(table);
     	int numberOfColumns = columns.size();
     	PdfPTable pdfTable = new PdfPTable(numberOfColumns);
     	Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
     	Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
-        String rowIndexVar = table.getRowIndexVar();
     	
     	addFacetColumns(pdfTable, columns, headerFont, ColumnType.HEADER);
         
-        if(pageOnly)
+        if(pageOnly) {
             exportPageOnly(context, table, columns, pdfTable, font);
-        else if(selectionOnly)
+        }
+        else if(selectionOnly) {
             exportSelectionOnly(context, table, columns, pdfTable, font);
-        else
+        }
+        else {
             exportAll(context, table, columns, pdfTable, font);
+        }
         
         if(hasColumnFooter(columns)) {
             addFacetColumns(pdfTable, columns, headerFont, ColumnType.FOOTER);
         }
     	
     	table.setRowIndex(-1);
-        
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().remove(rowIndexVar);
-        }
     	
     	return pdfTable;
 	}
