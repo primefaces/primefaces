@@ -37,7 +37,7 @@ import org.primefaces.util.Constants;
 public class XMLExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		ExternalContext externalContext = context.getExternalContext();
         
 		externalContext.setResponseContentType("text/xml");
@@ -51,7 +51,7 @@ public class XMLExporter extends Exporter {
 		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
 		PrintWriter writer = new PrintWriter(osw);	
 		
-		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+		List<UIColumn> columns = getColumnsToExport(table);
     	List<String> headers = getFacetTexts(table, columns, ColumnType.HEADER);
     	List<String> footers = getFacetTexts(table, columns, ColumnType.FOOTER);
         String rowIndexVar = table.getRowIndexVar();
