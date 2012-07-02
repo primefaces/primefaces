@@ -50,7 +50,7 @@ public class ExcelExporter extends Exporter {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-        addColumnFacets(sheet, table, ColumnType.HEADER);
+        addColumnFacets(table, sheet, ColumnType.HEADER);
         
         if(pageOnly) {
             exportPageOnly(context, table, sheet);
@@ -63,7 +63,7 @@ public class ExcelExporter extends Exporter {
         }
         
         if(table.hasFooterColumn()) {
-            addColumnFacets(sheet, table, ColumnType.FOOTER);
+            addColumnFacets(table, sheet, ColumnType.FOOTER);
         }
     	
     	table.setRowIndex(-1);
@@ -80,7 +80,7 @@ public class ExcelExporter extends Exporter {
     	int rowsToExport = first + table.getRows();
         
         for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
-            exportRow(sheet, table, rowIndex);
+            exportRow(table, sheet, rowIndex);
         }
     }
     
@@ -97,13 +97,13 @@ public class ExcelExporter extends Exporter {
                 for(int i = 0; i < size; i++) {
                     requestMap.put(var, Array.get(selection, i));
                     
-                    exportCells(sheet, table);
+                    exportCells(table, sheet);
                 }
             }
             else {
                 requestMap.put(var, selection);
                 
-                exportCells(sheet, table);
+                exportCells(table, sheet);
             }
         }
     }
@@ -121,7 +121,7 @@ public class ExcelExporter extends Exporter {
                     table.loadLazyData();
                 }
 
-                exportRow(sheet, table, rowIndex);
+                exportRow(table, sheet, rowIndex);
             }
      
             //restore
@@ -130,7 +130,7 @@ public class ExcelExporter extends Exporter {
         } 
         else {
             for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
-                exportRow(sheet, table, rowIndex);
+                exportRow(table, sheet, rowIndex);
             }
             
             //restore
@@ -138,17 +138,17 @@ public class ExcelExporter extends Exporter {
         }
     }
 
-    protected void exportRow(Sheet sheet, DataTable table, int rowIndex) {
+    protected void exportRow(DataTable table, Sheet sheet, int rowIndex) {
         table.setRowIndex(rowIndex);
         
         if(!table.isRowAvailable()) {
             return;
         }
        
-        exportCells(sheet, table);
+        exportCells(table, sheet);
     }
     
-    protected void exportCells(Sheet sheet, DataTable table) {
+    protected void exportCells(DataTable table, Sheet sheet) {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
         
@@ -183,7 +183,7 @@ public class ExcelExporter extends Exporter {
         }
     }
     
-	protected void addColumnFacets(Sheet sheet, DataTable table, ColumnType columnType) {
+	protected void addColumnFacets(DataTable table, Sheet sheet, ColumnType columnType) {
         int sheetRowIndex = columnType.equals(ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
         Row rowHeader = sheet.createRow(sheetRowIndex);
         
