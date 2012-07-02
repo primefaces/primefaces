@@ -565,7 +565,7 @@ public class DataTableRenderer extends DataRenderer {
                 if(child instanceof Column) {
                     encodeColumnHeader(context, table, (UIColumn) child);
                 }
-                else {
+                if(child instanceof Columns) {
                     encodeColumnsHeader(context, table, (Columns) child);
                 }
             }
@@ -703,11 +703,11 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         for(UIComponent child : table.getChildren()) {
-            if(child instanceof Columns) {
-                encodeDynamicCell(context, table, (Columns) child);
-            }
-            else {
+            if(child instanceof Column) {
                 encodeRegularCell(context, table, (UIColumn) child, clientId, selected);
+            }
+            else if(child instanceof Columns) {
+                encodeDynamicCell(context, table, (Columns) child);
             }
         }
 
