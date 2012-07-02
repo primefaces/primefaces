@@ -94,7 +94,8 @@ public abstract class Exporter {
 
             if(value != null) {
                 return String.valueOf(value);
-            } else {
+            } 
+            else {
                 //export first value holder
                 for(UIComponent child : link.getChildren()) {
                     if(child instanceof ValueHolder) {
@@ -102,7 +103,7 @@ public abstract class Exporter {
                     }
                 }
 
-                return null;
+                return "";
             }
         }
         else if(component instanceof ValueHolder) {

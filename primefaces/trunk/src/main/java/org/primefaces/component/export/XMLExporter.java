@@ -15,21 +15,20 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
@@ -39,135 +38,90 @@ public class XMLExporter extends Exporter {
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		ExternalContext externalContext = context.getExternalContext();
-        
-		externalContext.setResponseContentType("text/xml");
-		externalContext.setResponseHeader("Expires", "0");
-		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-		externalContext.setResponseHeader("Pragma", "public");
-		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
-		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
-    	
+        configureResponse(externalContext, filename);
 		OutputStream os = externalContext.getResponseOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
 		PrintWriter writer = new PrintWriter(osw);	
 		
-		List<UIColumn> columns = getColumnsToExport(table);
-    	List<String> headers = getFacetTexts(table, columns, ColumnType.HEADER);
-    	List<String> footers = getFacetTexts(table, columns, ColumnType.FOOTER);
-        String rowIndexVar = table.getRowIndexVar();
-    	
     	writer.write("<?xml version=\"1.0\"?>\n");
     	writer.write("<" + table.getId() + ">\n");
     	
-        if(pageOnly)
-            exportPageOnly(context, table, columns, headers, writer);
-        else if(selectionOnly)
-            exportSelectionOnly(context, table, columns, headers, writer);
-        else
-            exportAll(context, table, columns, headers, writer);
-        
-        if(hasColumnFooter(columns)) {
-            writer.write("\t<footers>\n");
-            addFooterValues(writer, footers, headers);
-            writer.write("\t</footers>\n");
+        if(pageOnly) {
+            exportPageOnly(table, writer);
+        }
+        else if(selectionOnly) {
+            exportSelectionOnly(context, table, writer);
+        }
+        else {
+            exportAll(table, writer);
         }
     	
     	writer.write("</" + table.getId() + ">");
     	
     	table.setRowIndex(-1);
-        
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().remove(rowIndexVar);
-        }
-    	
+            	
         writer.flush();
         writer.close();
         
         externalContext.responseFlushBuffer();
 	}
 	
-    public void exportPageOnly(FacesContext context, DataTable table, List<UIColumn> columns, List<String> headers, PrintWriter writer) throws IOException{
+    public void exportPageOnly(DataTable table, Writer writer) throws IOException{
         int first = table.getFirst();
-    	int size = first + table.getRows();
-        String rowIndexVar = table.getRowIndexVar();
-        String var = table.getVar().toLowerCase();
-    	
-    	for (int i = first; i < size; i++) {
-    		table.setRowIndex(i);
-            if(!table.isRowAvailable())
-                break;
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-            }
-    		
-    		writer.write("\t<" + var + ">\n");
-    		addColumnValues(writer, columns, headers);
-    		writer.write("\t</" + var + ">\n");
-		}
-    }
-    
-    public void exportSelectionOnly(FacesContext context, DataTable table, List<UIColumn> columns, List<String> headers, PrintWriter writer) throws IOException{
-        Object selection = table.getSelection();
-        boolean single = table.isSingleSelectionMode();
-        int size = selection == null  ? 0 : single ?  1 : Array.getLength(selection);
-        String var = table.getVar().toLowerCase();
-    	
-    	for (int i = 0; i < size; i++) {
-    		context.getExternalContext().getRequestMap().put(table.getVar(), single ? selection : Array.get(selection, i));
+        int rowsToExport = first + table.getRows();
 
-    		writer.write("\t<" + var + ">\n");
-    		addColumnValues(writer, columns, headers);
-    		writer.write("\t</" + var + ">\n");
-		}
+        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
+            exportRow(table, writer, rowIndex);
+        }
     }
     
-    public void exportAll(FacesContext context, DataTable table, List<UIColumn> columns, List<String> headers, PrintWriter writer) throws IOException{
-        String var = table.getVar().toLowerCase();
-        String rowIndexVar = table.getRowIndexVar();
+    public void exportSelectionOnly(FacesContext context, DataTable table, Writer writer) throws IOException{
+        Object selection = table.getSelection();
+        String var = table.getVar();
         
+        if(selection != null) {
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            
+            if(selection.getClass().isArray()) {
+                int size = Array.getLength(selection);
+                
+                for(int i = 0; i < size; i++) {
+                    requestMap.put(var, Array.get(selection, i));
+                    
+                    exportCells(table, writer);
+                }
+            }
+            else {
+                requestMap.put(var, selection);
+                
+                exportCells(table, writer);
+            }
+        }
+    }
+    
+    public void exportAll(DataTable table, Writer writer) throws IOException {
         int first = table.getFirst();
     	int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
         
         if(lazy) {
-            for(int i = 0; i < rowCount; i++) {
-                if(i % rows == 0) {
-                    table.setFirst(i);
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                if(rowIndex % rows == 0) {
+                    table.setFirst(rowIndex);
                     table.loadLazyData();
                 }
 
-                table.setRowIndex(i);
-                if(!table.isRowAvailable())
-                    break;
-
-                if(rowIndexVar != null) {
-                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-                }
-
-                writer.write("\t<" + var + ">\n");
-                addColumnValues(writer, columns, headers);
-                writer.write("\t</" + var + ">\n");
+                exportRow(table, writer, rowIndex);
             }
      
             //restore
             table.setFirst(first);
             table.loadLazyData();
-        }
+        } 
         else {
-            for(int i = 0; i < rowCount; i++) {
-                table.setRowIndex(i);
-                if(!table.isRowAvailable())
-                    break;
-
-                if(rowIndexVar != null) {
-                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-                }
-
-                writer.write("\t<" + var + ">\n");
-                addColumnValues(writer, columns, headers);
-                writer.write("\t</" + var + ">\n");
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
+                exportRow(table, writer, rowIndex);
             }
             
             //restore
@@ -175,40 +129,70 @@ public class XMLExporter extends Exporter {
         }
     }
     
-	private void addColumnValues(PrintWriter writer, List<UIColumn> columns, List<String> headers) throws IOException {
-		for(int i = 0; i < columns.size(); i++) {
-            addColumnValue(writer, columns.get(i).getChildren(), headers.get(i));
-		}
-	}
-	
-	private void addFooterValues(PrintWriter writer, List<String> footers, List<String> headers) throws IOException {
-		for (int i = 0; i < footers.size(); i++) {
-			String footer = footers.get(i);
-			
-			if(!footer.isEmpty())
-				addColumnValue(writer, footer, headers.get(i));
-		}
-	}	
-	
-	private List<String> getFacetTexts(UIData data, List<UIColumn> columns, ColumnType columnType) {
-		List<String> facets = new ArrayList<String>();
-		 
-        for(UIColumn column : columns) {
-            UIComponent facet = column.getFacet(columnType.facet());
-            	
-            if(facet != null && facet.isRendered()) {
-                facets.add(exportValue(FacesContext.getCurrentInstance(), facet));
-            } 
-            else {
-                facets.add("");
+    protected void exportRow(DataTable table, Writer writer, int rowIndex) throws IOException {
+        String var = table.getVar().toLowerCase();
+        table.setRowIndex(rowIndex);
+        
+        if(!table.isRowAvailable()) {
+            return;
+        }
+        
+        writer.write("\t<" + var + ">\n");
+        exportCells(table, writer);
+        writer.write("\t</" + var + ">\n");
+    }
+    
+    protected void exportCells(DataTable table, Writer writer) throws IOException {                
+        for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+  
+            if(child instanceof Column) {
+                Column column = (Column) child;
+                String columnTag = getColumnTag(column);
+                
+                if(column.isExportable()) {
+                    addColumnValue(writer, column.getChildren(), columnTag);
+                }
+            }
+            else if(child instanceof Columns) {
+                Columns columns = (Columns) child;
+                Object value = columns.getValue();
+
+                if(value != null) {
+                    int columnsCount = columns.getRowCount();
+
+                    for(int cc = 0; cc < columnsCount; cc++) {
+                        columns.setRowModel(cc);
+                        String columnTag = getColumnTag(columns);
+
+                        if(columns.isExportable()) {
+                            addColumnValue(writer, columns.getChildren(), columnTag);
+                        }
+                    }
+                }
             }
         }
-        return facets;
-	}
-
-	private void addColumnValue(PrintWriter writer, List<UIComponent> components, String header) throws IOException {
+    }
+    
+    protected String getColumnTag(UIColumn column) {
+        String headerText = column.getHeaderText();
+        UIComponent facet = column.getFacet("header");
+        
+        if(headerText != null) {
+            return headerText.toLowerCase();
+        }
+        else if(facet != null) {
+            return exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();            
+        }
+        else {
+            throw new FacesException("No suitable xml tag found for " + column);
+        }
+    }
+    		
+	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag) throws IOException {
 		StringBuilder builder = new StringBuilder();
-		String tag = header.toLowerCase();
 		writer.write("\t\t<" + tag + ">");
 
 		for(UIComponent component : components) {
@@ -223,14 +207,14 @@ public class XMLExporter extends Exporter {
 		
 		writer.write("</" + tag + ">\n");
 	}
-	
-	private void addColumnValue(PrintWriter writer, String footer, String header) throws IOException {
-		String tag = header.toLowerCase();
-		writer.write("\t\t<" + tag + ">");
-
-		writer.write(footer.toLowerCase());
-		
-		writer.write("</" + tag + ">\n");
-	}
+	    
+    protected void configureResponse(ExternalContext externalContext, String filename) {
+        externalContext.setResponseContentType("text/xml");
+		externalContext.setResponseHeader("Expires", "0");
+		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+		externalContext.setResponseHeader("Pragma", "public");
+		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
+		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
+    }
 	
 }
