@@ -18,7 +18,10 @@ package org.primefaces.component.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -103,7 +106,6 @@ public class ExcelExporter extends Exporter {
                 exportCells(sheet, table);
             }
         }
-
     }
     
     protected void exportAll(FacesContext context, DataTable table, Sheet sheet) {

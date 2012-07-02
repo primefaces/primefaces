@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -37,10 +36,17 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Map;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
-
+    
+    private Font cellFont;
+    private Font facetFont;
+       
 	@Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException { 
 		try {
@@ -56,8 +62,7 @@ public class PDFExporter extends Exporter {
                 document.open();
             }
 	        
-			PdfPTable pdfTable = exportPDFTable(context, table, pageOnly, selectionOnly, encodingType);
-	    	document.add(pdfTable);
+	    	document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
 	    	
 	    	if(postProcessor != null) {
 	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
@@ -67,32 +72,31 @@ public class PDFExporter extends Exporter {
 	    	
 	        writePDFToResponse(context.getExternalContext(), baos, filename);
 	        
-		} catch (DocumentException e) {
+		} catch(DocumentException e) {
 			throw new IOException(e.getMessage());
 		}
 	}
 	
-	private PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
-		List<UIColumn> columns = getColumnsToExport(table);
-    	int numberOfColumns = columns.size();
-    	PdfPTable pdfTable = new PdfPTable(numberOfColumns);
-    	Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
-    	Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
+	protected PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
+    	int columnsCount = getColumnsCount(table);
+    	PdfPTable pdfTable = new PdfPTable(columnsCount);
+    	this.cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
+    	this.facetFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
     	
-    	addFacetColumns(pdfTable, columns, headerFont, ColumnType.HEADER);
+    	addColumnFacets(table, pdfTable, ColumnType.HEADER);
         
         if(pageOnly) {
-            exportPageOnly(context, table, columns, pdfTable, font);
+            exportPageOnly(context, table, pdfTable);
         }
         else if(selectionOnly) {
-            exportSelectionOnly(context, table, columns, pdfTable, font);
+            exportSelectionOnly(context, table, pdfTable);
         }
         else {
-            exportAll(context, table, columns, pdfTable, font);
+            exportAll(context, table, pdfTable);
         }
         
-        if(hasColumnFooter(columns)) {
-            addFacetColumns(pdfTable, columns, headerFont, ColumnType.FOOTER);
+        if(table.hasFooterColumn()) {
+            addColumnFacets(table, pdfTable, ColumnType.FOOTER);
         }
     	
     	table.setRowIndex(-1);
@@ -100,113 +104,150 @@ public class PDFExporter extends Exporter {
     	return pdfTable;
 	}
     
-    private void exportPageOnly( FacesContext context, DataTable table, List<UIColumn> columns, PdfPTable pdfTable, Font font){
-        String rowIndexVar = table.getRowIndexVar();
-        int numberOfColumns = columns.size();
-        
+    protected void exportPageOnly(FacesContext context, DataTable table, PdfPTable pdfTable) {
         int first = table.getFirst();
-    	int size = first + table.getRows();
+    	int rowsToExport = first + table.getRows();
         
-        for(int i = first; i < size; i++) {
-    		table.setRowIndex(i);
-            if(!table.isRowAvailable())
-                break;
-            
-            if(rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-            }
-
-			for(int j = 0; j < numberOfColumns; j++) {				
-                addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
-			}
-		}
+        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
+            exportRow(table, pdfTable, rowIndex);
+        }
     }
     
-    private void exportSelectionOnly( FacesContext context, DataTable table, List<UIColumn> columns, PdfPTable pdfTable, Font font){
-        int numberOfColumns = columns.size();
-        
+    protected void exportSelectionOnly(FacesContext context, DataTable table, PdfPTable pdfTable) {
         Object selection = table.getSelection();
-        boolean single = table.isSingleSelectionMode();
+        String var = table.getVar();
         
-    	int size = selection == null  ? 0 : single ? 1 : Array.getLength(selection);
-        
-        for(int i = 0; i < size; i++) {
-            context.getExternalContext().getRequestMap().put(table.getVar(), single ? selection : Array.get(selection, i) );
-
-			for(int j = 0; j < numberOfColumns; j++) {				
-                addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
-			}
-		}
+        if(selection != null) {
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            
+            if(selection.getClass().isArray()) {
+                int size = Array.getLength(selection);
+                
+                for(int i = 0; i < size; i++) {
+                    requestMap.put(var, Array.get(selection, i));
+                    
+                    exportCells(table, pdfTable);
+                }
+            }
+            else {
+                requestMap.put(var, selection);
+                
+                exportCells(table, pdfTable);
+            }
+        }
     }
     
-    private void exportAll( FacesContext context, DataTable table, List<UIColumn> columns, PdfPTable pdfTable, Font font ){
-        String rowIndexVar = table.getRowIndexVar();
-        int numberOfColumns = columns.size();
-        
+    protected void exportAll(FacesContext context, DataTable table, PdfPTable pdfTable) {
         int first = table.getFirst();
     	int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
         
         if(lazy) {
-            for(int i = 0; i < rowCount; i++) {
-                if(i % rows == 0) {
-                    table.setFirst(i);
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                if(rowIndex % rows == 0) {
+                    table.setFirst(rowIndex);
                     table.loadLazyData();
                 }
 
-                table.setRowIndex(i);
-                if(!table.isRowAvailable())
-                    break;
-
-                if(rowIndexVar != null) {
-                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-                }
-
-                for(int j = 0; j < numberOfColumns; j++) {
-                    addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
-                }
+                exportRow(table, pdfTable, rowIndex);
             }
      
             //restore
             table.setFirst(first);
             table.loadLazyData();
-        }
+        } 
         else {
-            for(int i = 0; i < rowCount; i++) {
-                table.setRowIndex(i);
-                if(!table.isRowAvailable())
-                    break;
-
-                if(rowIndexVar != null) {
-                    context.getExternalContext().getRequestMap().put(rowIndexVar, i);
-                }
-
-                for(int j = 0; j < numberOfColumns; j++) {
-                    addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
-                }
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
+                exportRow(table, pdfTable, rowIndex);
             }
             
             //restore
             table.setFirst(first);
         }
     }
-	
-	private void addFacetColumns(PdfPTable pdfTable, List<UIColumn> columns, Font font, ColumnType columnType) {
-        for(int i = 0; i < columns.size(); i++) {
-            UIColumn column = (UIColumn) columns.get(i);
+    
+    protected void exportRow(DataTable table, PdfPTable pdfTable, int rowIndex) {
+        table.setRowIndex(rowIndex);
+        
+        if(!table.isRowAvailable()) {
+            return;
+        }
+       
+        exportCells(table, pdfTable);
+    }
+    
+    protected void exportCells(DataTable table, PdfPTable pdfTable) {        
+        for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
 
-            addColumnValue(pdfTable, column.getFacet(columnType.facet()), font);
+            if(child instanceof Column) {
+                Column column = (Column) child;
+
+                if(column.isExportable()) {
+                    addColumnValue(pdfTable, column.getChildren(), this.cellFont);
+                }
+            }
+            else if(child instanceof Columns) {
+                Columns columns = (Columns) child;
+                Object value = columns.getValue();
+
+                if(value != null) {
+                    int columnsCount = ((Collection<?>) columns.getValue()).size();
+
+                    for(int cc = 0; cc < columnsCount; cc++) {
+                        columns.setRowModel(cc);
+
+                        if(columns.isExportable()) {
+                            addColumnValue(pdfTable, columns.getChildren(), this.cellFont);
+                        }
+                    }
+                }
+            }
+        }
+    }
+	
+	protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
+        for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+                        
+            if(child instanceof Column) {
+                Column column = (Column) child;
+                
+                if(column.isExportable()) {
+                    addColumnValue(pdfTable, column.getFacet(columnType.facet()), this.facetFont);
+                }
+            }
+            else if(child instanceof Columns) {
+                Columns columns = (Columns) child;
+                Object value = columns.getValue();
+                
+                if(value != null) {
+                    int columnsCount = ((Collection<?>) columns.getValue()).size();
+
+                    for(int i = 0; i < columnsCount; i++) {
+                        columns.setRowModel(i);
+
+                        if(columns.isExportable()) {
+                            addColumnValue(pdfTable, columns.getFacet(columnType.facet()), this.facetFont);
+                        }
+                    }
+                }
+            }
         }
 	}
 	
-    private void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
+    protected void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
     	String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
             
         pdfTable.addCell(new Paragraph(value, font));
     }
     
-    private void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, int index, Font font) {
+    protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font) {
         StringBuilder builder = new StringBuilder();
         
         for(UIComponent component : components) {
@@ -221,7 +262,7 @@ public class PDFExporter extends Exporter {
         pdfTable.addCell(new Paragraph(builder.toString(), font));
     }
     
-    private void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     
+    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     
     	externalContext.setResponseContentType("application/pdf");
     	externalContext.setResponseHeader("Expires", "0");
     	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
@@ -232,5 +273,32 @@ public class PDFExporter extends Exporter {
     	OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
         externalContext.responseFlushBuffer();
+    }
+    
+    protected int getColumnsCount(DataTable table) {
+        int count = 0;
+        
+        for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+
+            if(child instanceof Column) {
+                Column column = (Column) child;
+                
+                if(column.isExportable()) {
+                    count++;
+                }
+            }
+            else if(child instanceof Columns) {
+                Columns columns = (Columns) child;
+                
+                if(columns.isExportable()) {
+                    count += columns.getRowCount();
+                }
+            }
+        }
+        
+        return count;
     }
 }
