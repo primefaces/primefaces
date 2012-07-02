@@ -80,7 +80,7 @@ public class BaseChartRenderer extends CoreRenderer {
         String labelText = label == null ? "" : label;
         
         writer.write(name + ":{");
-        writer.write("title:'" + labelText + "'");
+        writer.write("label:'" + labelText + "'");
         writer.write(",angle:" + angle);
         
         if(min != Double.MIN_VALUE) writer.write(",min:" + min);
