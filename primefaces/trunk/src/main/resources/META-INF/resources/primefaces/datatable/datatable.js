@@ -97,7 +97,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 $(this).toggleClass('ui-state-hover');}
             )
             .click(function(event) {
-
                 //Stop event if target is a clickable element inside header
                 if($(event.target).is(':not(th,span,.ui-dt-c)')) {
                     return;
@@ -105,30 +104,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 PrimeFaces.clearSelection();
                 
-                var columnHeader = $(this);
-
-                //Reset previous sorted columns
-                $(this).siblings().removeClass('ui-state-active').
-                    find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
-
-                //Update sort state
-                $(this).addClass('ui-state-active');
-                var sortIcon = columnHeader.find('.ui-sortable-column-icon');
-
-                if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
-                    sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-
-                    _self.sort(columnHeader, "DESCENDING");
+                var columnHeader = $(this),
+                sortorder = columnHeader.data('sortorder');
+                
+                if(sortorder) {
+                    if(sortorder === 'DESCENDING')
+                        _self.sort(columnHeader, 'ASCENDING');
+                    else if(sortorder === 'ASCENDING')
+                        _self.sort(columnHeader, 'DESCENDING');
                 }
-                else if(sortIcon.hasClass('ui-icon-triangle-1-s')) {
-                    sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
-
-                    _self.sort(columnHeader, "ASCENDING");
-                } 
                 else {
-                    sortIcon.addClass('ui-icon-triangle-1-n');
-
-                    _self.sort(columnHeader, "ASCENDING");
+                    _self.sort(columnHeader, 'ASCENDING');
                 }
             });
     },
@@ -492,7 +478,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Ajax sort
      */
-    sort: function(columnHeader, asc) {    
+    sort: function(columnHeader, order) {  
+        columnHeader.data('sortorder', order);
+    
         var options = {
             source: this.id,
             update: this.id,
@@ -510,7 +498,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
+                if(id == _self.id) {
                     //update body
                     _self.tbody.html(content);
 
@@ -522,6 +510,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+                }
+                
+                //Update sort state visuals
+                columnHeader.siblings('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
+                            .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                
+                columnHeader.addClass('ui-state-active');
+                var sortIcon = columnHeader.find('.ui-sortable-column-icon');
+
+                if(order === 'DESCENDING') {
+                    sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                }
+                else if(order === 'ASCENDING') {
+                    sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                 }
             }
 
@@ -535,7 +537,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         options.params = [
             {name: this.id + '_sorting', value: true},
             {name: this.id + '_sortKey', value: columnId},
-            {name: this.id + '_sortDir', value: asc},
+            {name: this.id + '_sortDir', value: order},
         ];
         
         if(columnHeader.hasClass('ui-dynamic-column')) {
