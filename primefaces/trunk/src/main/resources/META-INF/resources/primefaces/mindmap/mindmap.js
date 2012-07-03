@@ -81,36 +81,39 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     },
     
     createSubNodes: function(node) {
-        var nodeModel = node.data('model'),
-        size = nodeModel.children.length,
-        radius = 150,
-        capacity = parseInt((radius*2) / 25),
-        angleFactor = (360 / Math.min(size, capacity)),
-        capacityCounter = 0;
+        var nodeModel = node.data('model');
         
-        //children
-        for(var i = 0 ; i < size; i++) { 
-            var childModel = nodeModel.children[i];
-            capacityCounter++;
+        if(nodeModel.children) {
+            var size = nodeModel.children.length,
+            radius = 150,
+            capacity = parseInt((radius*2) / 25),
+            angleFactor = (360 / Math.min(size, capacity)),
+            capacityCounter = 0;
 
-            //coordinates
-            var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
-            x = node.attr('cx') + radius * Math.cos(angle),
-            y = node.attr('cy') + radius * Math.sin(angle);
+            //children
+            for(var i = 0 ; i < size; i++) { 
+                var childModel = nodeModel.children[i];
+                capacityCounter++;
 
-            var childNode = this.createNode(x, y, 40, 25, childModel);
+                //coordinates
+                var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
+                x = node.attr('cx') + radius * Math.cos(angle),
+                y = node.attr('cy') + radius * Math.sin(angle);
 
-            //connection
-            var connection = this.raphael.connection(node, childNode, "#000");
-            node.data('connections').push(connection);
-            childNode.data('connections').push(connection);
-            
-            //new ring
-            if(capacityCounter === capacity) {
-                radius = radius + 125;
-                capacity = parseInt((radius*2) / 25);
-                angleFactor = (360 / Math.min(capacity, (size - (i + 1) )));
-                capacityCounter = 0;
+                var childNode = this.createNode(x, y, 40, 25, childModel);
+
+                //connection
+                var connection = this.raphael.connection(node, childNode, "#000");
+                node.data('connections').push(connection);
+                childNode.data('connections').push(connection);
+
+                //new ring
+                if(capacityCounter === capacity) {
+                    radius = radius + 125;
+                    capacity = parseInt((radius*2) / 25);
+                    angleFactor = (360 / Math.min(capacity, (size - (i + 1) )));
+                    capacityCounter = 0;
+                }
             }
         }
         
@@ -275,6 +278,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     nodeDragStart: function () {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
+        this.toFront();
+        this.data('text').toFront();
     },
     
     nodeDrag: function(dx, dy) {
