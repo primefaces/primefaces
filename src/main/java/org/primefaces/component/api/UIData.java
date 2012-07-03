@@ -64,6 +64,7 @@ public class UIData extends javax.faces.component.UIData {
 		,paginatorPosition
 		,paginatorAlwaysVisible
         ,rowIndex
+        ,rowIndexVar
         ,saved
         ,lazy;
 
@@ -134,6 +135,13 @@ public class UIData extends javax.faces.component.UIData {
 	}
 	public void setLazy(boolean _lazy) {
 		getStateHelper().put(PropertyKeys.lazy, _lazy);
+	}
+    
+    public java.lang.String getRowIndexVar() {
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
+	}
+	public void setRowIndexVar(java.lang.String _rowIndexVar) {
+		getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
 	}
     
     public void calculatePage() {
@@ -394,14 +402,21 @@ public class UIData extends javax.faces.component.UIData {
         
         //update var
         String var = (String) this.getVar();
+        String rowIndexVar = this.getRowIndexVar();
         if(var != null) {
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
             
             if(isRowAvailable()) {
                 requestMap.put(var, getRowData());
+                
+                if(rowIndexVar != null)
+                    requestMap.put(rowIndexVar, rowIndex);
             }
             else {
                 requestMap.remove(var);
+                
+                if(rowIndexVar != null)
+                    requestMap.remove(rowIndexVar);
             }
         }
     }

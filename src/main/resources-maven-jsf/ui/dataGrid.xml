@@ -98,6 +98,7 @@
             <name>rowIndexVar</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Name of iterator to refer each row index.</description>
         </attribute>
         <attribute>
