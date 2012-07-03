@@ -33,13 +33,16 @@ public class DefaultMindmapNode implements MindmapNode {
     public DefaultMindmapNode(Object data) {
         this.data = data;
         this.children = new ArrayList<MindmapNode>();
-        this.selectable = false;
+        this.selectable = true;
+    }
+    
+    public DefaultMindmapNode(Object data, String fill) {
+        this(data);
+        this.fill = fill;
     }
     
     public DefaultMindmapNode(Object data, String fill, boolean selectable) {
-        this.data = data;
-        this.children = new ArrayList<MindmapNode>();
-        this.fill = fill;
+        this(data, fill);
         this.selectable = selectable;
     }
 
