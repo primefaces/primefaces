@@ -83,16 +83,20 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     createSubNodes: function(node) {
         var nodeModel = node.data('model'),
         size = nodeModel.children.length,
-        angleFactor = (360 / size);
-
+        radius = 150,
+        capacity = parseInt((radius*2) / 25),
+        angleFactor = (360 / Math.min(size, capacity)),
+        capacityCounter = 0;
+        
         //children
         for(var i = 0 ; i < size; i++) { 
             var childModel = nodeModel.children[i];
+            capacityCounter++;
 
             //coordinates
             var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
-            x = node.attr('cx') + 150 * Math.cos(angle),
-            y = node.attr('cy') + 150 * Math.sin(angle);
+            x = node.attr('cx') + radius * Math.cos(angle),
+            y = node.attr('cy') + radius * Math.sin(angle);
 
             var childNode = this.createNode(x, y, 40, 25, childModel);
 
@@ -100,6 +104,14 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             var connection = this.raphael.connection(node, childNode, "#000");
             node.data('connections').push(connection);
             childNode.data('connections').push(connection);
+            
+            //new ring
+            if(capacityCounter === capacity) {
+                radius = radius + 125;
+                capacity = parseInt((radius*2) / 25);
+                angleFactor = (360 / Math.min(capacity, (size - (i + 1) )));
+                capacityCounter = 0;
+            }
         }
         
         //parent
@@ -114,9 +126,9 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             node.data('connections').push(parentConnection);
             parentNode.data('connections').push(parentConnection);
         }
-                
+  
     },
-    
+
     hasBehavior: function(event) {
         if(this.cfg.behaviors) {
             return this.cfg.behaviors[event] != undefined;
@@ -368,6 +380,7 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
     } else {
         var color = typeof line == "string" ? line : "#000",
         path = this.path(path).attr({stroke: color, fill: "none"}).attr('opacity', 0).animate({opacity:1}, 1000);
+        path.toBack();
         
         return {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
