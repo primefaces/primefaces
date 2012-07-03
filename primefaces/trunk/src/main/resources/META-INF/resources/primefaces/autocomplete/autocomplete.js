@@ -388,14 +388,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             //highlight first item
                             firstItem.addClass('ui-state-highlight');
                             
-                            //highlight query string
+                                                        //highlight query string
                             if(_self.panel.children().is('ul')) {
                                 _self.items.each(function() {
                                     var item = $(this),
-                                    text = item.text(),
+                                    text = item.html(),
                                     re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
                                     highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
-                                    
+
                                     item.html(highlighedText);
                                 });
                             }
