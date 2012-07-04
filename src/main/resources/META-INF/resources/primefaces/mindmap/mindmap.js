@@ -23,13 +23,21 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    createNode: function(x, y, rx, ry, model) { 
+    createNode: function(x, y, rx, ry, model) {
         var node = this.raphael.ellipse(x, y, rx, ry).attr('opacity', 0)
                             .data('model', model)
                             .data('connections', [])
                             .data('widget', this);
                             
-        var text = this.raphael.text(x, y, model.data).attr('opacity', 0);
+        var label = model.data,
+        title = null;
+        
+        if(label.length > 40) {
+            title = label;
+            label = label.substring(0, 12) + '...';
+        }
+                            
+        var text = this.raphael.text(x, y, label).attr('opacity', 0);
          
         text.data('node', node);
         node.data('text', text); 
@@ -37,7 +45,13 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         //node options
         if(model.fill) {
             node.attr({fill: '#' + model.fill});
-        } 
+        }
+        
+        //title
+        if(title) {
+            node.attr('title', title);
+            text.attr('title', title);
+        }
          
         //show
         node.animate({opacity:1}, this.cfg.effectSpeed);
