@@ -61,6 +61,8 @@ public class MindmapRenderer extends CoreRenderer {
             encodeNode(context, map, root, "root");
         }
         
+        writer.write(",effectSpeed:" + map.getEffectSpeed());
+        
         encodeClientBehaviors(context, map);
 
         writer.write("});});");
