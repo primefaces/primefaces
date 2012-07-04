@@ -24,32 +24,45 @@ public class DefaultMindmapNode implements MindmapNode {
     
     private List<MindmapNode> children;
     
+    private String label;
+    
     private Object data;
     
     private String fill;
     
     private boolean selectable;
+   
+    public DefaultMindmapNode() {}
     
-    public DefaultMindmapNode(Object data) {
-        this.data = data;
+    public DefaultMindmapNode(String label) {
+        this.label = label;
         this.children = new ArrayList<MindmapNode>();
         this.selectable = true;
     }
     
-    public DefaultMindmapNode(Object data, String fill) {
-        this(data);
+    public DefaultMindmapNode(String label, Object data) {
+        this(label);
+        this.data = data;
+    }
+    
+    public DefaultMindmapNode(String label, Object data, String fill) {
+        this(label, data);
         this.fill = fill;
     }
     
-    public DefaultMindmapNode(Object data, String fill, boolean selectable) {
-        this(data, fill);
+    public DefaultMindmapNode(String label, Object data, String fill, boolean selectable) {
+        this(label, data, fill);
         this.selectable = selectable;
     }
 
-    public List<MindmapNode> getChildren() {
-        return this.children;
+    public String getLabel() {
+        return label;
     }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
+    
     public MindmapNode getParent() {
         return this.parent;
     }
@@ -57,6 +70,11 @@ public class DefaultMindmapNode implements MindmapNode {
     public Object getData() {
         return this.data;
     }
+    
+    public void setData(Object data) {
+        this.data = data;
+    }
+
     
     public void setParent(MindmapNode parent) {
         if(this.parent != null) {
@@ -73,8 +91,12 @@ public class DefaultMindmapNode implements MindmapNode {
     public String getFill() {
         return this.fill;
     }
+    
+    public void setFill(String fill) {
+        this.fill = fill;
+    }
 
-    public void add(MindmapNode node) {
+    public void addNode(MindmapNode node) {
         node.setParent(this);
     }
 
@@ -84,5 +106,13 @@ public class DefaultMindmapNode implements MindmapNode {
 
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
+    }
+    
+    public List<MindmapNode> getChildren() {
+        return this.children;
+    }
+
+    public void setChildren(List<MindmapNode> children) {
+        this.children = children;
     }
 }

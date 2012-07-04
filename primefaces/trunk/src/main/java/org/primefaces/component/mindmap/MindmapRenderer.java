@@ -128,7 +128,7 @@ public class MindmapRenderer extends CoreRenderer {
     protected void encodeNodeConfig(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter(); 
         
-        writer.write("\"data\":\"" + node.getData() + "\"");
+        writer.write("\"label\":\"" + node.getLabel() + "\"");
         
         if(nodeKey != null) writer.write(",\"key\":\"" + nodeKey + "\"");
         if(node.getFill() != null) writer.write(",\"fill\":\"" + node.getFill() + "\"");
