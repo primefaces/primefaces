@@ -44,6 +44,13 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
+        <attribute>
+            <name>effectSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>300</defaultValue>
+            <description>Speed of the animations in ms.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

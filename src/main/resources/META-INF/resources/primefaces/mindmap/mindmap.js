@@ -40,8 +40,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         } 
          
         //show
-        node.animate({opacity:1}, 1000);
-        text.animate({opacity:1}, 1000);
+        node.animate({opacity:1}, this.cfg.effectSpeed);
+        text.animate({opacity:1}, this.cfg.effectSpeed);
 
         //make draggable
         node.drag(this.nodeDrag, this.nodeDragStart, this.nodeDragEnd);
@@ -66,9 +66,9 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         var _self = this,
         text = node.data('text');
         
-        text.animate({x: this.cfg.centerX, y: this.cfg.centerY}, 1000, '<>');
+        text.animate({x: this.cfg.centerX, y: this.cfg.centerY}, this.cfg.effectSpeed, '<>');
         
-        node.animate({cx: this.cfg.centerX, cy: this.cfg.centerY}, 1000, '<>', 
+        node.animate({cx: this.cfg.centerX, cy: this.cfg.centerY}, this.cfg.effectSpeed, '<>', 
             function() {
                 _self.createSubNodes(node);
             });
@@ -103,7 +103,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
                 var childNode = this.createNode(x, y, 40, 25, childModel);
 
                 //connection
-                var connection = this.raphael.connection(node, childNode, "#000");
+                var connection = this.raphael.connection(node, childNode, "#000", null, this.cfg.effectSpeed);
                 node.data('connections').push(connection);
                 childNode.data('connections').push(connection);
 
@@ -125,7 +125,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
             var parentNode = this.createNode(60, 40, 40, 25, parentModel);
             
             //connection
-            var parentConnection = this.raphael.connection(node, parentNode, "#000");
+            var parentConnection = this.raphael.connection(node, parentNode, "#000", null, this.cfg.effectSpeed);
             node.data('connections').push(parentConnection);
             parentNode.data('connections').push(parentConnection);
         }
@@ -270,7 +270,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         node.removeData();
         
         //ellipse
-        node.animate({opacity:0}, 1000, null, function() {
+        node.animate({opacity:0}, this.cfg.effectSpeed, null, function() {
             this.remove();
         });
     },
@@ -278,11 +278,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     nodeDragStart: function () {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
-        this.toFront();
-        this.data('text').toFront();
     },
     
     nodeDrag: function(dx, dy) {
+        
+        
         //update location
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         
@@ -302,7 +302,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     
     textDragStart: function () {
         this.ox = this.attr("x");
-        this.oy = this.attr("y");
+        this.oy = this.attr("y");        
     },
     
     textDrag: function(dx, dy) {
@@ -336,7 +336,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     }
 });
 
-Raphael.fn.connection = function (obj1, obj2, line, bg) {
+Raphael.fn.connection = function (obj1, obj2, line, bg, effectSpeed) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -384,9 +384,9 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
         line.line.attr({path: path});
     } else {
         var color = typeof line == "string" ? line : "#000",
-        path = this.path(path).attr({stroke: color, fill: "none"}).attr('opacity', 0).animate({opacity:1}, 1000);
+        path = this.path(path).attr({stroke: color, fill: "none"}).attr('opacity', 0).animate({opacity:1}, effectSpeed);
         path.toBack();
-        
+
         return {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
             line: path,
