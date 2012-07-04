@@ -420,7 +420,7 @@ import org.primefaces.component.datatable.feature.*;
     public boolean isRequestSource(FacesContext context) {
         String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
 
-        return partialSource != null && this.getClientId(context).startsWith(partialSource);
+        return partialSource != null && this.getClientId(context).equals(partialSource);
     }
 
     public boolean isBodyUpdate(FacesContext context) {
