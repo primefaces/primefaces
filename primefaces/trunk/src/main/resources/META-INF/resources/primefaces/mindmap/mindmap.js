@@ -40,7 +40,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         var text = this.raphael.text(x, y, label).attr('opacity', 0);
          
         text.data('node', node);
-        node.data('text', text); 
+        node.data('text', text);
          
         //node options
         if(model.fill) {
@@ -154,36 +154,29 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
     
-    selectTextNode: function(e) {
-        var _self = this.data('node').data('widget');
-        
-        if(this.dragged) {
-            this.dragged = false;
-        }
-        else {
-            _self.fireNodeSelectEvent(this.data('node'));
-        }
-    },
-    
-    selectNode: function(e) { 
-        var _self = this.data('widget');
-        
-        if(this.dragged) {
-            this.dragged = false;
-        }
-        else {
-            _self.fireNodeSelectEvent(this);
-        }
-    },
-    
     clickNode: function() {
-        var _self = this.data('widget');
-
-        if(this.dragged) {
-            this.dragged = false;
+        var _self = this.data('widget'),
+        node = this,
+        clickTimeout = this.data('clicktimeout');
+        
+        if(clickTimeout) {
+            clearTimeout(clickTimeout);
+            this.removeData('clicktimeout');
+            
+            _self.dblclickNode(this);
         }
         else {
-            _self.expandNode(this);
+            var timeout = setTimeout(function() {
+            
+                if(node.dragged) {
+                    node.dragged = false;
+                }
+                else {
+                    _self.expandNode(node);
+                }
+            }, 300);
+
+            this.data('clicktimeout', timeout);
         }
     },
     
@@ -196,6 +189,21 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             _self.expandNode(node);
+        }
+    },
+    
+    dblclickNode: function(node) {
+        if(this.hasBehavior('dblselect')) {
+            var dblselectBehavior = this.cfg.behaviors['dblselect'],
+            key = node.data('model').key;
+
+            var ext = {
+                params: [
+                    {name: this.id + '_nodeKey', value: key}
+                ]
+            };
+
+            dblselectBehavior.call(this, node, ext);
         }
     },
     
@@ -254,22 +262,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
 
         selectBehavior.call(_self, this, ext);      
     },
-    
-    fireNodeSelectEvent: function(node) {
-        if(this.hasBehavior('select')) {
-            var selectBehavior = this.cfg.behaviors['select'],
-            key = node.data('model').key||'root';
-
-            var ext = {
-                params: [
-                    {name: this.id + '_nodeKey', value: key}
-                ]
-            };
-
-            selectBehavior.call(this, node, ext);
-        }
-    },
-    
+        
     removeNode: function(node) {
         //test
         node.data('text').remove();
@@ -295,8 +288,6 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     },
     
     nodeDrag: function(dx, dy) {
-        
-        
         //update location
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         
