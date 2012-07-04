@@ -27,9 +27,11 @@ public interface MindmapNode {
     
     public Object getData();
     
+    public String getLabel();
+    
     public String getFill();
     
-    public void add(MindmapNode node);
+    public void addNode(MindmapNode node);
     
     public void setSelectable(boolean selectable);
     

@@ -29,7 +29,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
                             .data('connections', [])
                             .data('widget', this);
                             
-        var label = model.data,
+        var label = model.label,
         title = null;
         
         if(label.length > 40) {
