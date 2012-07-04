@@ -11,7 +11,7 @@ import org.primefaces.util.Constants;
 
     public final static String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select", "dblselect"));
 
     private MindmapNode selectedNode = null;
 
@@ -36,7 +36,7 @@ import org.primefaces.util.Constants;
         AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
         String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if(eventName.equals("select")) {
+        if(eventName.equals("select")||eventName.equals("dblselect")) {
             String nodeKey = params.get(clientId + "_nodeKey");
             MindmapNode node = nodeKey.equals("root") ? this.getValue() : this.findNode(this.getValue(), nodeKey);
             this.selectedNode = node;
