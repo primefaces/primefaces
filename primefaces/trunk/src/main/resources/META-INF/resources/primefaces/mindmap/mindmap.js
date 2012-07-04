@@ -154,45 +154,44 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
     
-    clickNode: function() {
-        var _self = this.data('widget'),
-        node = this,
-        clickTimeout = this.data('clicktimeout');
+    handleNodeClick: function(node) {
+        if(node.dragged) {
+            node.dragged = false;
+            return;
+        }
+        
+        var _self = this,
+        clickTimeout = node.data('clicktimeout');
         
         if(clickTimeout) {
             clearTimeout(clickTimeout);
-            this.removeData('clicktimeout');
+            node.removeData('clicktimeout');
             
-            _self.dblclickNode(this);
+            _self.handleDblclickNode(node);
         }
         else {
             var timeout = setTimeout(function() {
-            
-                if(node.dragged) {
-                    node.dragged = false;
-                }
-                else {
-                    _self.expandNode(node);
-                }
+                _self.expandNode(node);
             }, 300);
 
-            this.data('clicktimeout', timeout);
+            node.data('clicktimeout', timeout);
         }
+    },
+    
+    clickNode: function() {
+        var _self = this.data('widget');
+        
+        _self.handleNodeClick(this);
     },
     
     clickNodeText: function() {
         var node = this.data('node'),
         _self = node.data('widget');
         
-        if(node.dragged) {
-            node.dragged = false;
-        }
-        else {
-            _self.expandNode(node);
-        }
+        _self.handleNodeClick(node);
     },
     
-    dblclickNode: function(node) {
+    handleDblclickNode: function(node) {
         if(this.hasBehavior('dblselect')) {
             var dblselectBehavior = this.cfg.behaviors['dblselect'],
             key = node.data('model').key;
@@ -324,7 +323,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         _self.updateConnections(node);
         
         //flag to prevent drag to invoke nodeClick
-        this.dragged = true;
+        node.dragged = true;
     },
     
     textDragEnd: function () {
