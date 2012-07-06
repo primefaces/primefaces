@@ -6,13 +6,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 
 public class PushContextImpl implements PushContext {
 
     @Override
     public <T> Future<T> push(String channel, final T t) {
-
-        final Future<?> f = MetaBroadcaster.getDefault().broadcastTo(channel, t);
+        String data = toJSON(t);
+        final Future<?> f = MetaBroadcaster.getDefault().broadcastTo(channel, data);
 
         return new Future<T>() {
 
@@ -38,5 +40,43 @@ public class PushContextImpl implements PushContext {
                 return t;
             }
         };
+    }
+    
+    private String toJSON(Object data) {
+        try {
+            StringBuilder jsonBuilder = new StringBuilder();
+            jsonBuilder.append("{");
+
+            if(isBean(data)) {
+                jsonBuilder.append("\"").append("data").append("\":").append(new JSONObject(data).toString());
+            } 
+            else {
+                String json = new JSONObject().put("data", data).toString();
+
+                jsonBuilder.append(json.substring(1, json.length() - 1));
+            }
+
+            jsonBuilder.append("}");
+
+            return jsonBuilder.toString();
+        }
+        catch(JSONException e) {
+            System.out.println(e.getMessage());
+            
+            throw new RuntimeException(e);
+        }
+        
+    }
+    
+    private boolean isBean(Object value) {
+        if(value == null) {
+            return false;
+        }
+
+        if(value instanceof Boolean || value instanceof String || value instanceof Number) {
+            return false;
+        }
+
+        return true;
     }
 }
