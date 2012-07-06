@@ -2005,7 +2005,7 @@ jQuery.atmosphere = function() {
 
 }(jQuery));
 
-/**
+                /**
  * PrimeFaces Push Widget
  */
 PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
@@ -2019,15 +2019,11 @@ PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
             transport: 'websocket',
             fallbackTransport: 'long-polling',
             enableXDR: false,
-            onMessage: function(resource) {
-                _self.publish(resource);
+            onMessage: function(response) {
+                _self.publish(response);
             }
         };
-        
-        if(this.cfg.onMessage) {
-            this.cfg.request.onMessage = this.cfg.onMessage
-        }
-        
+                
         if(this.cfg.autoConnect) {
             this.connect();
         }
@@ -2037,9 +2033,11 @@ PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
         this.connection = $.atmosphere.subscribe(this.cfg.request);
     },
     
-    publish: function(resource) {
+    publish: function(response) {
+        var json = $.parseJSON(response.responseBody);
+        
         if(this.cfg.onMessage) {
-            this.cfg.onMessage.call(this, resource);
+            this.cfg.onMessage.call(this, json.data);
         }
         
         if(this.cfg.behaviors && this.cfg.behaviors['publish']) {
