@@ -403,9 +403,6 @@ PrimeFaces.ajax.AjaxUtils = {
         else {
             //args
             this.args = callbackParams.length > 0 ? $.parseJSON(callbackParams.text()) : {};
-            
-            //push data
-            this.pushData = pushData.length > 0 ? $.parseJSON(pushData.text()) : null;
 
             //scripts to execute
             for(var i=0; i < scripts.length; i++) {
