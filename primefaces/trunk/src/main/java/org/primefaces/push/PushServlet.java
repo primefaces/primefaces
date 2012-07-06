@@ -36,13 +36,6 @@ import java.io.InputStreamReader;
 
 import static org.atmosphere.cpr.BroadcasterLifeCyclePolicy.EMPTY_DESTROY;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jfarcand
- * Date: 12-07-06
- * Time: 5:10 AM
- * To change this template use File | Settings | File Templates.
- */
 public class PushServlet extends AtmosphereServlet {
 
     @Override
