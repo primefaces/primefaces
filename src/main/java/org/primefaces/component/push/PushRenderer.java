@@ -38,7 +38,7 @@ public class PushRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("$(function() {");
-		writer.write(push.resolveWidgetVar() + " = new PrimeFaces.widget.PrimeWebSocket({");
+		writer.write(push.resolveWidgetVar() + " = new PrimeFaces.widget.Push({");
 		writer.write("url:'" + url + "'");
 		writer.write(",onMessage:" + push.getOnMessage());
         writer.write(",autoConnect:" + push.isAutoConnect());
