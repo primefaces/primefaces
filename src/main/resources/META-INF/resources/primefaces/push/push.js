@@ -1964,3 +1964,30 @@ jQuery.atmosphere = function() {
     };
 
 }(jQuery));
+
+/**
+ * PrimeFaces Push Widget
+ */
+PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.cfg.request = {
+            url: this.cfg.url,
+            transport: 'websocket',
+            fallbackTransport: 'long-polling',
+            trackMessageLength:true,
+            enableXDR: false,
+            onMessage: this.cfg.onMessage
+        };
+        
+        if(this.cfg.autoConnect) {
+            this.connect();
+        }
+    },
+
+    connect: function() {
+        this.connection = $.atmosphere.subscribe(this.cfg.request);
+    }
+    
+});
