@@ -2016,7 +2016,6 @@ PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
             url: this.cfg.url,
             transport: 'websocket',
             fallbackTransport: 'long-polling',
-            trackMessageLength:true,
             enableXDR: false,
             onMessage: this.cfg.onMessage
         };
