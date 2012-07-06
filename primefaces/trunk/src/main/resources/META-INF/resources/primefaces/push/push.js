@@ -2012,13 +2012,21 @@ PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this.cfg = cfg;
+        var _self = this;
+        
         this.cfg.request = {
             url: this.cfg.url,
             transport: 'websocket',
             fallbackTransport: 'long-polling',
             enableXDR: false,
-            onMessage: this.cfg.onMessage
+            onMessage: function(resource) {
+                _self.publish(resource);
+            }
         };
+        
+        if(this.cfg.onMessage) {
+            this.cfg.request.onMessage = this.cfg.onMessage
+        }
         
         if(this.cfg.autoConnect) {
             this.connect();
@@ -2027,6 +2035,16 @@ PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
 
     connect: function() {
         this.connection = $.atmosphere.subscribe(this.cfg.request);
+    },
+    
+    publish: function(resource) {
+        if(this.cfg.onMessage) {
+            this.cfg.onMessage.call(this, resource);
+        }
+        
+        if(this.cfg.behaviors && this.cfg.behaviors['publish']) {
+            this.cfg.behaviors['publish'].call(this);
+        }
     }
     
 });
