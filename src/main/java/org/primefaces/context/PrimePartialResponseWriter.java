@@ -44,10 +44,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             try {
                 encodeCallbackParams(requestContext);
                 encodeScripts(requestContext);
-                encodePushData(requestContext);
-            } catch (Exception exception) {
+            } 
+            catch (Exception exception) {
                 throw new AbortProcessingException(exception);
-            } finally {
+            } 
+            finally {
                 requestContext.release();
             }
         }
@@ -114,7 +115,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }           
     }
     
-    private void encodePushData(RequestContext requestContext) throws IOException, JSONException {
+    /*private void encodePushData(RequestContext requestContext) throws IOException, JSONException {
         Map<String,List<Object>> pushData = requestContext.getPushData();
         
         if(!pushData.isEmpty()) {
@@ -163,7 +164,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             
             endExtension();
         }
-    }
+    }*/
 
     @Override
     public void delete(String targetId) throws IOException {

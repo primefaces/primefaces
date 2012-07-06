@@ -319,7 +319,6 @@ PrimeFaces = {
  */
 PrimeFaces.ajax = {};
 PrimeFaces.widget = {};
-PrimeFaces.websockets = {};
 
 /**
  * BaseWidget for PrimeFaces Widgets
@@ -396,7 +395,6 @@ PrimeFaces.ajax.AjaxUtils = {
     handleResponse: function(xmlDoc) {
         var redirect = xmlDoc.find('redirect'),
         callbackParams = xmlDoc.find('extension[ln="primefaces"][type="args"]'),
-        pushData = xmlDoc.find('extension[ln="primefaces"][type="push-data"]'),
         scripts = xmlDoc.find('eval');
 
         if(redirect.length > 0) {
@@ -412,17 +410,6 @@ PrimeFaces.ajax.AjaxUtils = {
             //scripts to execute
             for(var i=0; i < scripts.length; i++) {
                 $.globalEval(scripts.eq(i).text());
-            }
-        }
-        
-        //Handle push data
-        if(this.pushData) {
-            for(var channel in this.pushData) {
-                if(channel) {
-                    var message = JSON.stringify(this.pushData[channel].data);
-
-                    PrimeFaces.websockets[channel].send(message);
-                }
             }
         }
     },
@@ -752,47 +739,4 @@ Array.prototype.remove = function(from, to) {
 
 String.prototype.startsWith = function(str){
     return (this.indexOf(str) === 0);
-}
-
-/**
- * Prime Push Widget
- */
-PrimeFaces.widget.PrimeWebSocket = function(cfg) {
-    this.cfg = cfg;
-
-    if(this.cfg.autoConnect) {
-        this.connect();
-    }
-}
-
-PrimeFaces.widget.PrimeWebSocket.prototype.send = function(data) {
-    this.ws.send(data);
-}
-
-PrimeFaces.widget.PrimeWebSocket.prototype.connect = function() {
-    this.ws = new WebSocket(this.cfg.url);
-
-    var _self = this;
-
-    this.ws.onmessage = function(evt) {
-        var pushData = $.parseJSON(evt.data);
-
-        if(_self.cfg.onmessage) {
-            _self.cfg.onmessage.call(_self, evt, pushData);
-        }
-    };
-
-    this.ws.onclose = function() {
-        
-    };
-    
-    this.ws.onerror = function(evt) {
-        alert(evt.data);
-    };
-
-    PrimeFaces.websockets[this.cfg.channel] = this;
-}
-
-PrimeFaces.widget.PrimeWebSocket.prototype.close = function() {
-    this.ws.close();
 }

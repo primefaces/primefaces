@@ -56,12 +56,8 @@ public abstract class RequestContext {
     public abstract void addPartialUpdateTargets(Collection<String> collection);
 
     public abstract List<String> getScriptsToExecute();
-    
-    public abstract Map<String, List<Object>> getPushData();
 
     public abstract void execute(String script);
-    
-    public abstract void push(String channel, Object data);
     
     public abstract void scrollTo(String clientId);
     
