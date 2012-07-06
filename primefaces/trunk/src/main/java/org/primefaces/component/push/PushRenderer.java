@@ -18,7 +18,6 @@ package org.primefaces.component.push;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -29,28 +28,22 @@ public class PushRenderer extends CoreRenderer {
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 		Push push = (Push) component;
-		
-		ResponseWriter writer = context.getResponseWriter();
-        ExternalContext externalContext = context.getExternalContext();
-        String widgetVar = push.resolveWidgetVar();
-        
-        StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append(context.getExternalContext().getInitParameter(Constants.PUSH_SERVER_URL))
-                  .append(Constants.PUSH_PATH)
-                  .append(push.getChannel());
-        
-        String url = context.getExternalContext().encodeActionURL(urlBuilder.toString());
-		
+        String channel = push.getChannel();
+        String channelUrl = Constants.PUSH_PATH + channel;
+        String url = getResourceURL(context, channelUrl);
+
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		writer.write("$(function() {");
-		writer.write(widgetVar + " = new PrimeFaces.widget.PrimeWebSocket({");
+		writer.write(push.resolveWidgetVar() + " = new PrimeFaces.widget.PrimeWebSocket({");
 		writer.write("url:'" + url + "'");
-        writer.write(",channel:'" + push.getChannel() + "'");
-		writer.write(",onmessage:" + push.getOnmessage());
+		writer.write(",onMessage:" + push.getOnMessage());
         writer.write(",autoConnect:" + push.isAutoConnect());
+        writer.write(",transport:'" + push.getTransport() + "'");
+        writer.write(",fallbackTransport:'" + push.getFallbackTransport() + "'");
         
         encodeClientBehaviors(context, push);
         
