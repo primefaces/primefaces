@@ -73,6 +73,9 @@ public class PushServlet extends AtmosphereServlet {
         }
 
         Broadcaster lookupBroadcaster(String pathInfo, boolean create) {
+            if (pathInfo == null) {
+                pathInfo = "/root";
+            }
             String[] decodedPath = pathInfo.split("/");
             final Broadcaster b = BroadcasterFactory.getDefault().lookup(decodedPath[decodedPath.length - 1], create);
             if (create) {
