@@ -28,19 +28,27 @@
 			<name>channel</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-            <description>Unique channel name of the connection between subscriber and the server.</description>
+            <description>Channel name of the connection.</description>
+		</attribute>
+        <attribute>
+			<name>transport</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>long-polling</defaultValue>
+            <description>Desired protocol to be used valid values are websocket, streaming, long-polling (default), jsonp. Default is websocket.</description>
 		</attribute>
 		<attribute>
-			<name>onmessage</name>
+			<name>fallbackTransport</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>streaming</defaultValue>
+            <description>Desired protocol to be used valid values are websocket, streaming (default), long-polling, jsonp. Default is websocket.</description>
+		</attribute>
+		<attribute>
+			<name>onMessage</name>
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Javascript event handler that is processed when the server publishes data.</description>
-		</attribute>
-        <attribute>
-			<name>onclose</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Javascript event handler that is process when the connection is closed.</description>
 		</attribute>
         <attribute>
 			<name>autoConnect</name>
@@ -57,5 +65,8 @@
 		<resource>
 			<name>primefaces.js</name>
 		</resource>
+        <resource>
+            <name>push/push.js</name>
+        </resource>
 	</resources>
 </component>
