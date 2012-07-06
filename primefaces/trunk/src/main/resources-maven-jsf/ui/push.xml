@@ -34,15 +34,15 @@
 			<name>transport</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>long-polling</defaultValue>
-            <description>Desired protocol to be used valid values are websocket, streaming, long-polling (default), jsonp. Default is websocket.</description>
+            <defaultValue>websocket</defaultValue>
+            <description>Desired protocol to be used valid values are websocket (default), sse, streaming, long-polling, jsonp. Default is websocket.</description>
 		</attribute>
 		<attribute>
 			<name>fallbackTransport</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>streaming</defaultValue>
-            <description>Desired protocol to be used valid values are websocket, streaming (default), long-polling, jsonp. Default is websocket.</description>
+            <defaultValue>long-polling</defaultValue>
+            <description>Desired protocol to be used valid values are websocket, sse, streaming, long-polling (default), jsonp. Default is websocket.</description>
 		</attribute>
 		<attribute>
 			<name>onMessage</name>
