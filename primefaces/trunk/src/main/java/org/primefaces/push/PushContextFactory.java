@@ -15,6 +15,9 @@
  */
 package org.primefaces.push;
 
+/**
+ * Factory for retrieving {@link PushContext}
+ */
 public class PushContextFactory {
 
     private static final PushContextFactory p = new PushContextFactory();
@@ -24,9 +27,12 @@ public class PushContextFactory {
         pushContext = new PushContextImpl();
     }
 
+    public final static PushContextFactory getDefault() {
+        return p;
+    }
 
-    public final static PushContext getDefault() {
-        return p.pushContext;
+    public PushContext getPushContext(){
+        return pushContext;
     }
 
 }

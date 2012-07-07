@@ -51,17 +51,10 @@ public class PushServlet extends AtmosphereServlet {
 
         public void onRequest(AtmosphereResource resource) throws IOException {
             AtmosphereRequest r = resource.getRequest();
+            // We only handle GET. POST are supported by PrimeFaces directly via the Broadcaster.
             if (r.getMethod().equalsIgnoreCase("GET")) {
                 resource.setBroadcaster(lookupBroadcaster(r.getPathInfo(), true))
                         .addEventListener(new WebSocketEventListenerAdapter());
-            } else {
-                String message = loadRequestBody(r.getInputStream());
-                if (message != null) {
-                    Broadcaster b = lookupBroadcaster(r.getPathInfo(), false);
-                    if (b != null) {
-                        b.broadcast(message);
-                    }
-                }
             }
         }
 
@@ -91,34 +84,6 @@ public class PushServlet extends AtmosphereServlet {
                 });
             }
             return b;
-        }
-
-        private String loadRequestBody(ServletInputStream inputStream) {
-            StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = null;
-            try {
-                if (inputStream != null) {
-                    bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    char[] charBuffer = new char[8192];
-                    int bytesRead = -1;
-                    while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                        stringBuilder.append(charBuffer, 0, bytesRead);
-                    }
-                } else {
-                    stringBuilder.append("");
-                }
-            } catch (IOException ex) {
-                logger.warn("", ex);
-            } finally {
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException ex) {
-                        logger.warn("", ex);
-                    }
-                }
-            }
-            return stringBuilder.toString();
         }
 
         public void destroy() {
