@@ -16,16 +16,13 @@
 package org.primefaces.push;
 
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-/**
- * TODO: Expose other events like disconnect, onMessage, etc.
- */
+
 public interface PushContext {
 
     <T> Future<T> push(String channel, T t);
 
-//    PushContext addPushContextListener(String channel, PushContextListener p);
-//
-//    PushContext removePushContextListener(PushContextListener p);
+    <T> Future<T> schedule(String channel, T t, int time, TimeUnit unit);
 
 }
