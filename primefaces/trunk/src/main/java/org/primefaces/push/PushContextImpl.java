@@ -11,7 +11,6 @@ import org.primefaces.json.JSONObject;
 
 public class PushContextImpl implements PushContext {
 
-    @Override
     public <T> Future<T> push(String channel, final T t) {
         String data = toJSON(t);
         final Future<?> f = MetaBroadcaster.getDefault().broadcastTo(channel, data);
@@ -41,7 +40,37 @@ public class PushContextImpl implements PushContext {
             }
         };
     }
-    
+
+    public <T> Future<T> schedule(String channel, final T t, int time, TimeUnit unit) {
+        String data = toJSON(t);
+        final Future<?> f = MetaBroadcaster.getDefault().scheduleTo(channel, data, time, unit);
+
+        return new Future<T>() {
+
+            public boolean cancel(boolean b) {
+                return f.cancel(b);
+            }
+
+            public boolean isCancelled() {
+                return f.isCancelled();
+            }
+
+            public boolean isDone() {
+                return f.isDone();
+            }
+
+            public T get() throws InterruptedException, ExecutionException {
+                f.get();
+                return t;
+            }
+
+            public T get(long l, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+                f.get(l, timeUnit);
+                return t;
+            }
+        };
+    }
+
     private String toJSON(Object data) {
         try {
             StringBuilder jsonBuilder = new StringBuilder();
