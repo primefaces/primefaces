@@ -15,8 +15,10 @@
  */
 package org.primefaces.push;
 
+import org.atmosphere.cache.HeaderBroadcasterCache;
 import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereServlet;
+import org.atmosphere.cpr.BroadcasterCache;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 
 import javax.servlet.ServletConfig;
@@ -38,6 +40,9 @@ public class PushServlet extends AtmosphereServlet {
         // This behavior can be changed using a PushRule.
         framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
 
+        // Set the BroadcasterCache. This can be changed by overring the configureCache method
+        //framework().setBroadcasterCacheClassName(configureCache());
+
         PushContext c = PushContextFactory.getDefault().getPushContext();
         if (PushContextImpl.class.isAssignableFrom(c.getClass())) {
             framework().asyncSupportListener(PushContextImpl.class.cast(c));
@@ -50,7 +55,11 @@ public class PushServlet extends AtmosphereServlet {
                 .initAtmosphereHandler(sc);
     }
 
-    public List<PushRule> configureRules(ServletConfig sc) {
+    public String configureCache() {
+        return HeaderBroadcasterCache.class.getName();
+    }
+
+    List<PushRule> configureRules(ServletConfig sc) {
         List<PushRule> rules = new ArrayList<PushRule>();
 
         String s = sc.getInitParameter(RULES);
