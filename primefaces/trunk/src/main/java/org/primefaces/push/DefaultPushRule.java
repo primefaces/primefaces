@@ -35,8 +35,7 @@ public class DefaultPushRule implements PushRule {
             return true;
         }
 
-        String[] decodedPath = pathInfo.split("/");
-        final Broadcaster b = BroadcasterFactory.getDefault().lookup("/" + decodedPath[decodedPath.length - 1], true);
+        final Broadcaster b = BroadcasterFactory.getDefault().lookup(pathInfo, true);
         b.setBroadcasterLifeCyclePolicy(EMPTY_DESTROY);
         b.addBroadcasterLifeCyclePolicyListener(new BroadcasterLifeCyclePolicyListener() {
 
