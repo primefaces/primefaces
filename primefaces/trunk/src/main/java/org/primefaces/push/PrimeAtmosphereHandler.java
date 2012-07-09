@@ -17,23 +17,16 @@ package org.primefaces.push;
 
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResource;
-import org.atmosphere.cpr.Broadcaster;
-import org.atmosphere.cpr.BroadcasterFactory;
-import org.atmosphere.cpr.BroadcasterLifeCyclePolicyListener;
 import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.atmosphere.cpr.BroadcasterLifeCyclePolicy.EMPTY_DESTROY;
-
 public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
 
-    private final List<Rule> rules;
+    private final List<PushRule> rules;
 
-    public PrimeAtmosphereHandler(List<Rule> rules) {
+    public PrimeAtmosphereHandler(List<PushRule> rules) {
         this.rules = rules;
     }
 
@@ -45,48 +38,14 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         }
     }
 
-    public void applyRules(AtmosphereResource resource) {
+    protected void applyRules(AtmosphereResource resource) {
         boolean ok;
-        for (Rule r : rules) {
+        for (PushRule r : rules) {
             ok = r.apply(resource);
             if (!ok) return;
         }
     }
 
     public void destroy() {
-    }
-
-    public final static class DefaultRule implements Rule {
-
-        public boolean apply(AtmosphereResource resource) {
-            String pathInfo = resource.getRequest().getPathInfo();
-            if (pathInfo == null) {
-                resource.setBroadcaster(BroadcasterFactory.getDefault().lookup("/*"));
-                return true;
-            }
-
-            String[] decodedPath = pathInfo.split("/");
-            final Broadcaster b = BroadcasterFactory.getDefault().lookup("/" + decodedPath[decodedPath.length - 1], true);
-            b.setBroadcasterLifeCyclePolicy(EMPTY_DESTROY);
-            b.addBroadcasterLifeCyclePolicyListener(new BroadcasterLifeCyclePolicyListener() {
-
-                private final Logger logger = LoggerFactory.getLogger(BroadcasterLifeCyclePolicyListener.class);
-
-                public void onEmpty() {
-                    logger.trace("onEmpty {}", b.getID());
-                }
-
-                public void onIdle() {
-                    logger.trace("onIdle {}", b.getID());
-                }
-
-                public void onDestroy() {
-                    logger.trace("onDestroy {}", b.getID());
-                }
-            });
-            resource.setBroadcaster(b);
-
-            return true;
-        }
     }
 }

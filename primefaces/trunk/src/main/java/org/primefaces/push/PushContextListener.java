@@ -19,4 +19,11 @@ public interface PushContextListener {
 
     void onComplete(String channel, Object message);
 
+    /**
+     * Return the original request that was suspended by the {@link PushServlet}.
+     * @param request
+     */
+    void onDisconnect(Object request);
+
 }
+

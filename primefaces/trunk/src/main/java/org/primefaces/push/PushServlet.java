@@ -35,8 +35,13 @@ public class PushServlet extends AtmosphereServlet {
     public void init(final ServletConfig sc) throws ServletException {
 
         // Shareable ThreadPool amongs all created Broadcasters.
-        // This behavior can be changed using a Rule.
+        // This behavior can be changed using a PushRule.
         framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
+
+        PushContext c = PushContextFactory.getDefault().getPushContext();
+        if (PushContextImpl.class.isAssignableFrom(c.getClass())) {
+            framework().asyncSupportListener(PushContextImpl.class.cast(c));
+        }
 
         super.init(sc);
 
@@ -45,8 +50,8 @@ public class PushServlet extends AtmosphereServlet {
                 .initAtmosphereHandler(sc);
     }
 
-    public List<Rule> configureRules(ServletConfig sc) {
-        List<Rule> rules = new ArrayList<Rule>();
+    public List<PushRule> configureRules(ServletConfig sc) {
+        List<PushRule> rules = new ArrayList<PushRule>();
 
         String s = sc.getInitParameter(RULES);
         if (s != null) {
@@ -54,25 +59,25 @@ public class PushServlet extends AtmosphereServlet {
             for (String rule : r) {
                 try {
                     rules.add(loadRule(rule));
-                    logger.log(Level.INFO, "Rule " + rule + " loaded");
+                    logger.log(Level.INFO, "PushRule " + rule + " loaded");
                 } catch (Throwable t) {
-                    logger.log(Level.WARNING, "Unable to load Rule " + rule, t);
+                    logger.log(Level.WARNING, "Unable to load PushRule " + rule, t);
                 }
             }
         }
 
         if (rules.isEmpty()) {
-            rules.add(new PrimeAtmosphereHandler.DefaultRule());
+            rules.add(new DefaultPushRule());
         }
 
         return rules;
     }
 
-    Rule loadRule(String ruleName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    PushRule loadRule(String ruleName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         try {
-            return (Rule) Thread.currentThread().getContextClassLoader().loadClass(ruleName).newInstance();
+            return (PushRule) Thread.currentThread().getContextClassLoader().loadClass(ruleName).newInstance();
         } catch (Throwable t) {
-            return (Rule) getClass().getClassLoader().loadClass(ruleName).newInstance();
+            return (PushRule) getClass().getClassLoader().loadClass(ruleName).newInstance();
         }
     }
 
