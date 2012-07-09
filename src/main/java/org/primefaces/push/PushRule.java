@@ -4,7 +4,7 @@ import org.atmosphere.cpr.AtmosphereResource;
 
 import java.util.List;
 
-public interface Rule {
+public interface PushRule {
 
     boolean apply(AtmosphereResource resource);
 

@@ -1,21 +1,40 @@
+/*
+ * Copyright 2009-2012 Prime Teknoloji.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.primefaces.push;
 
+import org.atmosphere.cpr.AsyncSupportListenerAdapter;
+import org.atmosphere.cpr.AtmosphereRequest;
+import org.atmosphere.cpr.AtmosphereResponse;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterListener;
 import org.atmosphere.cpr.MetaBroadcaster;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
 
-public class PushContextImpl implements PushContext {
+public class PushContextImpl extends AsyncSupportListenerAdapter implements PushContext {
 
     private final ConcurrentLinkedQueue<PushContextListener> listeners = new ConcurrentLinkedQueue<PushContextListener>();
     private final MetaBroadcaster broadcaster = MetaBroadcaster.getDefault();
+
 
     public <T> Future<T> push(final String channel, final T t) {
         String data = toJSON(t);
@@ -73,6 +92,7 @@ public class PushContextImpl implements PushContext {
 
             return jsonBuilder.toString();
         }
+
         catch(JSONException e) {
             System.out.println(e.getMessage());
             
@@ -91,6 +111,18 @@ public class PushContextImpl implements PushContext {
         }
 
         return true;
+    }
+
+    public void onTimeout(AtmosphereRequest request, AtmosphereResponse response) {
+        for (PushContextListener l : listeners) {
+            l.onDisconnect(request);
+        }
+    }
+
+    public void onClose(AtmosphereRequest request, AtmosphereResponse response) {
+        for (PushContextListener l : listeners) {
+            l.onDisconnect(request);
+        }
     }
 
     private final static class WrappedFuture<T> implements Future {
