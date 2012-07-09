@@ -35,10 +35,8 @@ public class PushServlet extends AtmosphereServlet {
     public void init(final ServletConfig sc) throws ServletException {
 
         // Shareable ThreadPool amongs all created Broadcaster.
-        // TODO: This is hardcoded, some application may want to not use it.
+        // This behavior can be changed using a Rule.
         framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
-        framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
-
 
         super.init(sc);
 
