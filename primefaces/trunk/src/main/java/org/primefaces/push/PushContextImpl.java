@@ -35,7 +35,6 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     private final ConcurrentLinkedQueue<PushContextListener> listeners = new ConcurrentLinkedQueue<PushContextListener>();
     private final MetaBroadcaster broadcaster = MetaBroadcaster.getDefault();
 
-
     public <T> Future<T> push(final String channel, final T t) {
         String data = toJSON(t);
         final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
@@ -60,6 +59,20 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
                 }
             }
         }).scheduleTo(channel, data, time, unit);
+
+        return new WrappedFuture(f, t);
+    }
+
+    public <T> Future<T> delay(final String channel, final T t, int time, TimeUnit unit) {
+        String data = toJSON(t);
+        final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
+            public void onComplete(Broadcaster b) {
+                for (PushContextListener p: listeners) {
+                    p.onComplete(channel, t);
+                    broadcaster.removeBroadcasterListener(this);
+                }
+            }
+        }).delayTo(channel, data, time, unit);
 
         return new WrappedFuture(f, t);
     }
