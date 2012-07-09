@@ -2029,7 +2029,11 @@ PrimeFaces.widget.Push = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    connect: function() {
+    connect: function(uniquePath) {
+        if(uniquePath) {
+            this.cfg.request.url += uniquePath;
+        }
+        
         this.connection = $.atmosphere.subscribe(this.cfg.request);
     },
     
