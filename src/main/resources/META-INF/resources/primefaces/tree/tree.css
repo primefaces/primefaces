@@ -14,7 +14,7 @@
 }
 
 .ui-tree .ui-tree-child {
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 .ui-tree .ui-tree-nodes .ui-tree-node {
@@ -29,7 +29,6 @@
 
 .ui-tree-node-content {
 	border: 1px solid transparent;
-	padding: 3px;
 	vertical-align:middle;
 }
 .ui-tree .ui-tree-nodes .ui-tree-node .ui-tree-node-content .ui-tree-node-label {
