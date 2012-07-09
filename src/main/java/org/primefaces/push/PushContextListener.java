@@ -15,8 +15,8 @@
  */
 package org.primefaces.push;
 
-public interface PushContextListener<T> {
+public interface PushContextListener {
 
-    void onPush(String channel, T message);
+    void onComplete(String channel, Object message);
 
 }
