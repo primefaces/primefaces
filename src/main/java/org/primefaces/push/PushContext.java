@@ -25,6 +25,8 @@ public interface PushContext {
 
     <T> Future<T> schedule(String channel, T t, int time, TimeUnit unit);
 
+    <T> Future<T> delay(String channel, T t, int time, TimeUnit unit);
+
     PushContext addListener(PushContextListener p);
 
     PushContext removeListener(PushContextListener p);
