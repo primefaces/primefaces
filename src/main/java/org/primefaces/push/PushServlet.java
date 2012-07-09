@@ -15,26 +15,13 @@
  */
 package org.primefaces.push;
 
-import org.atmosphere.cpr.AtmosphereRequest;
-import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereServlet;
-import org.atmosphere.cpr.Broadcaster;
-import org.atmosphere.cpr.BroadcasterFactory;
-import org.atmosphere.cpr.BroadcasterLifeCyclePolicyListener;
-import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
-import org.atmosphere.websocket.WebSocketEventListenerAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import static org.atmosphere.cpr.BroadcasterLifeCyclePolicy.EMPTY_DESTROY;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PushServlet extends AtmosphereServlet {
 
@@ -43,50 +30,37 @@ public class PushServlet extends AtmosphereServlet {
         super.init(sc);
 
         framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
-                .addAtmosphereHandler("/*", new PrimeAtmosphereHandler())
+                .addAtmosphereHandler("/*", new PrimeAtmosphereHandler(configureRules(sc)))
                 .initAtmosphereHandler(sc);
     }
 
-    public final static class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
+    public List<Rule> configureRules(ServletConfig sc) {
+        List<Rule> rules = new ArrayList<Rule>();
 
-        public void onRequest(AtmosphereResource resource) throws IOException {
-            AtmosphereRequest r = resource.getRequest();
-            // We only handle GET. POST are supported by PrimeFaces directly via the Broadcaster.
-            if (r.getMethod().equalsIgnoreCase("GET")) {
-                resource.setBroadcaster(lookupBroadcaster(r.getPathInfo(), true))
-                        .addEventListener(new WebSocketEventListenerAdapter());
+        String s = sc.getInitParameter("org.primefaces.atmosphere.rules");
+        if (s != null) {
+            String[] r = s.split(",");
+            for (String rule : r) {
+                try {
+                    rules.add(loadRule(rule));
+                } catch (Throwable t) {
+                    logger.warn("Unable to load Rule {}", rule, t);
+                }
             }
         }
 
-        Broadcaster lookupBroadcaster(String pathInfo, boolean create) {
-            if (pathInfo == null) {
-                pathInfo = "/root";
-            }
-            String[] decodedPath = pathInfo.split("/");
-            final Broadcaster b = BroadcasterFactory.getDefault().lookup("/" + decodedPath[decodedPath.length - 1], create);
-            if (create) {
-                b.setBroadcasterLifeCyclePolicy(EMPTY_DESTROY);
-                b.addBroadcasterLifeCyclePolicyListener(new BroadcasterLifeCyclePolicyListener() {
-
-                    private final Logger logger = LoggerFactory.getLogger(BroadcasterLifeCyclePolicyListener.class);
-
-                    public void onEmpty() {
-                        logger.trace("onEmpty {}", b.getID());
-                    }
-
-                    public void onIdle() {
-                        logger.trace("onIdle {}", b.getID());
-                    }
-
-                    public void onDestroy() {
-                        logger.trace("onDestroy {}", b.getID());
-                    }
-                });
-            }
-            return b;
+        if (rules.isEmpty()) {
+            rules.add(new PrimeAtmosphereHandler.DefaultRule());
         }
 
-        public void destroy() {
+        return rules;
+    }
+
+    Rule loadRule(String ruleName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        try {
+            return (Rule) Thread.currentThread().getContextClassLoader().loadClass(ruleName).newInstance();
+        } catch (Throwable t) {
+            return (Rule) getClass().getClassLoader().loadClass(ruleName).newInstance();
         }
     }
 
