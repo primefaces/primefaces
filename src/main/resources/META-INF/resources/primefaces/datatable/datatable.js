@@ -183,96 +183,106 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     setupSelectionEvents: function() {
         var _self = this;
 
-        //Row mouseover, mouseout, click
         if(this.cfg.selectionMode) {
-            $(this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)').css('cursor', 'pointer')
-                .die('mouseover.datatable mouseout.datatable contextmenu.datatable click.datatable')
-                .live('mouseover.datatable', function() {
-                    var element = $(this);
+            var rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
+            
+            $(document).off('mouseover.datatable mouseout.datatable contextmenu.datatable dblclick.datatable click.datatable', rowSelector)
+                        .on('mouseover.datatable', rowSelector, null, function() {
+                            var element = $(this);
 
-                    if(!element.hasClass('ui-state-highlight')) {
-                        element.addClass('ui-state-hover');
-                    }
-                })
-                .live('mouseout.datatable', function() {
-                    var element = $(this);
+                            if(!element.hasClass('ui-state-highlight')) {
+                                element.addClass('ui-state-hover');
+                            }
+                        })
+                        .on('mouseout.datatable', rowSelector, null, function() {
+                            var element = $(this);
 
-                    if(!element.hasClass('ui-state-highlight')) {
-                        element.removeClass('ui-state-hover');
-                    }
-                })
-                .live('click.datatable', function(event) {
-                    _self.onRowClick(event, this);
-                })
-                .live('dblclick.datatable', function(event) {
-                    _self.onRowDblclick(event, this);
-                })
-                .live('contextmenu.datatable', function(event) {
-                    _self.onRowClick(event, this);
-                    event.preventDefault();
-                });
+                            if(!element.hasClass('ui-state-highlight')) {
+                                element.removeClass('ui-state-hover');
+                            }
+                        })
+                        .on('click.datatable', rowSelector, null, function(e) {
+                            _self.onRowClick(e, this);
+                        })
+                        .on('dblclick.datatable', rowSelector, null, function(event) {
+                            _self.onRowDblclick(event, this);
+                        })
+                        .on('contextmenu.datatable', rowSelector, null, function(e) {
+                            _self.onRowClick(e, this);
+                            e.preventDefault();
+                        });
         }
         //Radio-Checkbox based rowselection
         else if(this.cfg.columnSelectionMode) {
 
             if(this.cfg.columnSelectionMode == 'single') {
-                var radios = $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-radiobutton .ui-radiobutton-box');
+                var radioSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-radiobutton .ui-radiobutton-box';
+                
+                $(document).off('click.ui-radiobutton mouseover.ui-radiobutton mouseout.ui-radiobutton', radioSelector)
+                                .on('click.ui-radiobutton', radioSelector, null, function() {
+                                    var radio = $(this),
+                                    checked = radio.hasClass('ui-state-active'),
+                                    disabled = radio.hasClass('ui-state-disabled');
 
-                radios.die('click').live('click', function() {
-                    var radio = $(this),
-                    checked = radio.hasClass('ui-state-active'),
-                    disabled = radio.hasClass('ui-state-disabled');
-
-                    if(!disabled && !checked) {
-                        _self.selectRowWithRadio(radio);
-                    }
-                }).die('mouseover').live('mouseover', function() {
-                    var radio = $(this);
-                    if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
-                        radio.addClass('ui-state-hover');
-                    }
-                }).die('mouseout').live('mouseout', function() {
-                    var radio = $(this);
-                    radio.removeClass('ui-state-hover');
-                });
+                                    if(!disabled && !checked) {
+                                        _self.selectRowWithRadio(radio);
+                                    }
+                                })
+                                .on('mouseover.ui-radiobutton', radioSelector, null, function() {
+                                    var radio = $(this);
+                                    if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
+                                        radio.addClass('ui-state-hover');
+                                    }
+                                })
+                                .on('mouseout.ui-radiobutton', radioSelector, null, function() {
+                                    var radio = $(this);
+                                    radio.removeClass('ui-state-hover');
+                                });
             }
             else {
-                this.checkAllToggler = $(this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box');
+                var checkAllTogglerSelector = this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box';
+                this.checkAllToggler = $(checkAllTogglerSelector);
 
                 //check-uncheck all
-                this.checkAllToggler.die('mouseover').live('mouseover', function() {
+                this.checkAllToggler.on('mouseover', function() {
                     var box = $(this);
                     if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
                         box.addClass('ui-state-hover');
                     }
-                }).die('mouseout').live('mouseout', function() {
+                })
+                .on('mouseout', function() {
                     $(this).removeClass('ui-state-hover');
-                }).die('click').live('click', function() {
+                })
+                .on('click', function() {
                     _self.toggleCheckAll();
                 });
+                
+                var checkboxSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-chkbox .ui-chkbox-box';
 
-                //row checkboxes
-                $(this.jqId + ' tbody.ui-datatable-data td.ui-selection-column .ui-chkbox .ui-chkbox-box').die('mouseover').live('mouseover', function() {
-                    var box = $(this);
-                    if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
-                        box.addClass('ui-state-hover');
-                    }
-                }).die('mouseout').live('mouseout', function() {
-                    $(this).removeClass('ui-state-hover');
-                }).die('click').live('click', function() {
-                    var checkbox = $(this);
+                $(document).off('mouseover.ui-chkbox mouseover.ui-chkbox click.ui-chkbox', checkboxSelector)
+                            .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
+                                var box = $(this);
+                                if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
+                                    box.addClass('ui-state-hover');
+                                }
+                            })
+                            .on('mouseout.ui-chkbox', checkboxSelector, null, function() {
+                                $(this).removeClass('ui-state-hover');
+                            })
+                            .on('click.ui-chkbox', checkboxSelector, null, function() {
+                                var checkbox = $(this);
 
-                    if(!checkbox.hasClass('ui-state-disabled')) {
-                        var checked = checkbox.hasClass('ui-state-active');
+                                if(!checkbox.hasClass('ui-state-disabled')) {
+                                    var checked = checkbox.hasClass('ui-state-active');
 
-                        if(checked) {
-                            _self.unselectRowWithCheckbox(checkbox);
-                        } 
-                        else {                        
-                            _self.selectRowWithCheckbox(checkbox);
-                        }
-                    }
-                });
+                                    if(checked) {
+                                        _self.unselectRowWithCheckbox(checkbox);
+                                    } 
+                                    else {                        
+                                        _self.selectRowWithCheckbox(checkbox);
+                                    }
+                                }
+                            });
             }
         }
     },
