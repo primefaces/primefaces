@@ -15,6 +15,7 @@
  */
 package org.primefaces.push;
 
+import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereServlet;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 
@@ -22,11 +23,23 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PushServlet extends AtmosphereServlet {
 
+    private final Logger logger = Logger.getLogger(PushServlet.class.getName());
+    public final static String RULES = "org.primefaces.push.rules";
+
     @Override
     public void init(final ServletConfig sc) throws ServletException {
+
+        // Shareable ThreadPool amongs all created Broadcaster.
+        // TODO: This is hardcoded, some application may want to not use it.
+        framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
+        framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
+
+
         super.init(sc);
 
         framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
@@ -37,14 +50,15 @@ public class PushServlet extends AtmosphereServlet {
     public List<Rule> configureRules(ServletConfig sc) {
         List<Rule> rules = new ArrayList<Rule>();
 
-        String s = sc.getInitParameter("org.primefaces.atmosphere.rules");
+        String s = sc.getInitParameter(RULES);
         if (s != null) {
             String[] r = s.split(",");
             for (String rule : r) {
                 try {
                     rules.add(loadRule(rule));
+                    logger.log(Level.INFO, "Rule " + rule + " loaded");
                 } catch (Throwable t) {
-                    logger.warn("Unable to load Rule {}", rule, t);
+                    logger.log(Level.WARNING, "Unable to load Rule " + rule, t);
                 }
             }
         }
