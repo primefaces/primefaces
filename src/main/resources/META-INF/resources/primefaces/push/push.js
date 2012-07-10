@@ -99,6 +99,7 @@ jQuery.atmosphere = function() {
                 connectTimeout : -1,
                 reconnectInterval : 0,
                 dropAtmosphereHeaders : true,
+                uuid : 0,
                 onError : function(response) {
                 },
                 onClose : function(response) {
@@ -130,13 +131,6 @@ jQuery.atmosphere = function() {
                 request : null,
                 id : 0
             };
-
-            /**
-             * {number} Request id.
-             *
-             * @private
-             */
-            var _uuid = 0;
 
             /**
              * {websocket} Opened web socket.
@@ -204,7 +198,6 @@ jQuery.atmosphere = function() {
              * @private
              */
             function _init() {
-                _uuid = 0;
                 _subscribed = true;
                 _abordingConnection = false;
                 _requestCount = 0;
@@ -236,7 +229,6 @@ jQuery.atmosphere = function() {
                 _reinit();
 
                 _request = jQuery.extend(_request, options);
-                _uuid = jQuery.atmosphere.guid();
             }
 
             /**
@@ -495,8 +487,8 @@ jQuery.atmosphere = function() {
 
                 var location = _buildSSEUrl(_request.url);
 
-                jQuery.atmosphere.log(_request.logLevel, ["Invoking executeSSE"]);
                 if (_request.logLevel == 'debug') {
+                    jQuery.atmosphere.debug("Invoking executeSSE");
                     jQuery.atmosphere.debug("Using URL: " + location);
                 }
 
@@ -537,6 +529,11 @@ jQuery.atmosphere = function() {
                 };
 
                 _sse.onmessage = function(message) {
+                    if (message.origin != "http://" + window.location.host) {
+                        jQuery.atmosphere.log(_request.logLevel, ["Origin was not " + "http://" + window.location.host]);
+                        return;
+                    }
+
                     _response.state = 'messageReceived';
                     _response.status = 200;
 
@@ -593,8 +590,8 @@ jQuery.atmosphere = function() {
                 var location = _buildWebSocketUrl(_request.url);
                 var closed = false;
 
-                jQuery.atmosphere.log(_request.logLevel, ["Invoking executeWebSocket"]);
                 if (_request.logLevel == 'debug') {
+                    jQuery.atmosphere.debug("Invoking executeWebSocket");
                     jQuery.atmosphere.debug("Using URL: " + location);
                 }
 
@@ -826,7 +823,7 @@ jQuery.atmosphere = function() {
                 }
 
                 url += (url.indexOf('?') != -1) ? '&' : '?';
-                url += "X-Atmosphere-tracking-id=" + _uuid;
+                url += "X-Atmosphere-tracking-id=" + rq.uuid;
                 url += "&X-Atmosphere-Framework=" + jQuery.atmosphere.version;
                 url += "&X-Atmosphere-Transport=" + rq.transport;
 
@@ -978,23 +975,28 @@ jQuery.atmosphere = function() {
                             clearTimeout(rq.id);
                         }
 
+                        try {
+                            var tempUUID = ajaxRequest.getResponseHeader('X-Atmosphere-tracking-id');
+                            if (tempUUID != null || tempUUID != undefined) {
+                                _request.uuid = tempUUID.split(" ").pop();
+                            }
+                        } catch (e) {
+                        }
+
                         if (update) {
                             var responseText = ajaxRequest.responseText;
 
-                            if (!_request.dropAtmosphereHeaders) {
-                                // Do not fail on trying to retrieve headers. Chrome migth fail with
-                                // Refused to get unsafe header
-                                // Let the failure happens later with a better error message
-                                try {
-                                    var tempDate = ajaxRequest.getResponseHeader('X-Cache-Date');
-                                    if (tempDate != null || tempDate != undefined) {
-                                        _request.lastTimestamp = tempDate.split(" ").pop();
-                                    }
-                                } catch (e) {
+                            // Do not fail on trying to retrieve headers. Chrome migth fail with
+                            // Refused to get unsafe header
+                            // Let the failure happens later with a better error message
+                            try {
+                                var tempDate = ajaxRequest.getResponseHeader('X-Cache-Date');
+                                if (tempDate != null || tempDate != undefined) {
+                                    _request.lastTimestamp = tempDate.split(" ").pop();
                                 }
+                            } catch (e) {
                             }
 
-                            this.previousLastIndex = rq.lastIndex;
                             if (rq.transport == 'streaming') {
                                 var text = responseText.substring(rq.lastIndex, responseText.length);
                                 _response.isJunkEnded = true;
@@ -1169,7 +1171,7 @@ jQuery.atmosphere = function() {
                     if (request.contentType != '') {
                         ajaxRequest.setRequestHeader("Content-Type", request.contentType);
                     }
-                    ajaxRequest.setRequestHeader("X-Atmosphere-tracking-id", _uuid);
+                    ajaxRequest.setRequestHeader("X-Atmosphere-tracking-id", request.uuid);
                 }
 
                 jQuery.each(request.headers, function(name, value) {
@@ -1525,7 +1527,9 @@ jQuery.atmosphere = function() {
                     logLevel : 'info',
                     requestCount : 0,
                     transport: 'polling',
-                    attachHeadersAsQueryString: true
+                    attachHeadersAsQueryString: true,
+                    enableXDR: _request.enableXDR,
+                    uuid : _request.uuid
                 };
 
                 if (typeof(message) == 'object') {
@@ -1565,30 +1569,6 @@ jQuery.atmosphere = function() {
                     _reconnectWithFallbackTransport("Websocket failed. Downgrading to Comet and resending " + data);
                     _pushAjaxMessage(message);
                 }
-            }
-
-            function _buffering(message, request, response) {
-                function ends(string, w) {
-                    return w == string.substr(string.length - w.length);
-                }
-
-                if (response.bufferBody)
-                    message = response.bufferBody + message;
-
-                if (request.trackMessageLength && !ends(message, request.messageDelimiter)) {
-                    var messages = message.split(_request.messageDelimiter), lastMessage = messages.pop();
-
-                    response.bufferBody = lastMessage;
-
-                    if (!messages.length) return true;
-
-                    response.responseBody = messages.join(request.messageDelimiter);
-                } else {
-                    response.responseBody = message;
-                    response.bufferBody = '';
-                }
-
-                return false
             }
 
             function _prepareCallback(messageBody, state, errorCode, transport) {
@@ -1632,6 +1612,7 @@ jQuery.atmosphere = function() {
                     case "re-opening" :
                         if (typeof(f.onReconnect) != 'undefined') f.onReconnect(_request, response);
                         break;
+                    case "unsubscribe" :
                     case "closed" :
                         if (typeof(f.onClose) != 'undefined') f.onClose(response);
                         break;
@@ -1647,8 +1628,6 @@ jQuery.atmosphere = function() {
                 var call = function (index, func) {
                     func(_response);
                 };
-
-                if (_response.state == 'messageReceived' && _buffering(_response.responseBody, _request, _response)) return;
 
                 var messages = typeof(_response.responseBody) == 'string' ? _response.responseBody.split(_request.messageDelimiter) : new Array(_response.responseBody);
                 for (var i = 0; i < messages.length; i++) {
