@@ -15,6 +15,7 @@
  */
 package org.primefaces.push;
 
+import java.util.concurrent.*;
 import org.atmosphere.cpr.AsyncSupportListenerAdapter;
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResponse;
@@ -23,12 +24,6 @@ import org.atmosphere.cpr.BroadcasterListener;
 import org.atmosphere.cpr.MetaBroadcaster;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
-
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class PushContextImpl extends AsyncSupportListenerAdapter implements PushContext {
 
@@ -50,7 +45,11 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     }
 
     public <T> Future<T> schedule(final String channel, final T t, int time, TimeUnit unit) {
-        String data = toJSON(t);
+        Object data = t;        
+        if(!(t instanceof Callable || t instanceof Runnable)) {
+            data = toJSON(t);
+        }
+        
         final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
             public void onComplete(Broadcaster b) {
                 for (PushContextListener p: listeners) {
@@ -126,12 +125,14 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         return true;
     }
 
+    @Override
     public void onTimeout(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
         }
     }
 
+    @Override
     public void onClose(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
