@@ -2016,6 +2016,10 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
         this.connection = $.atmosphere.subscribe(this.cfg.request);
     },
     
+    push: function(data) {
+        this.connection.push(JSON.stringify(data));
+    },
+
     onMessage: function(response) {
         var json = $.parseJSON(response.responseBody);
         
