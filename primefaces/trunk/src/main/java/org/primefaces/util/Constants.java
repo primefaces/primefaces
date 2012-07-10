@@ -35,7 +35,7 @@ public class Constants {
 
     public final static String CUSTOM_EVENT = "CUSTOM_EVENT";
     
-    public final static String PUSH_PATH = "/prime-push/";
+    public final static String PUSH_PATH = "/primepush";
     
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
 }

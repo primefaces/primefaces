@@ -2044,8 +2044,8 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.onMessage.call(this, json.data);
         }
         
-        if(this.cfg.behaviors && this.cfg.behaviors['publish']) {
-            this.cfg.behaviors['publish'].call(this);
+        if(this.cfg.behaviors && this.cfg.behaviors['message']) {
+            this.cfg.behaviors['message'].call(this);
         }
     }
     
