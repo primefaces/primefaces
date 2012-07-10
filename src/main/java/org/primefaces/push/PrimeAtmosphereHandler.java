@@ -22,6 +22,15 @@ import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Simple {@link org.atmosphere.cpr.AtmosphereHandler} who delegate HTTP METHOD GET to {@link PushRule}. See the
+ * {@link DefaultPushRule}
+ * <br/>
+ * If your application needs to support POST for whatever reason, extends the {@link #onRequest(org.atmosphere.cpr.AtmosphereResource)}
+ * method and add your logic there.
+ * <strong>This AtmosphereHandler doesn't invoke the {@link org.atmosphere.cpr.AtmosphereResource#suspend()}.
+ * The {@link org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor} is taking care of it</strong>
+ */
 public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
 
     private final List<PushRule> rules;

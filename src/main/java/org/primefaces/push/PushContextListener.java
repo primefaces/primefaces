@@ -15,8 +15,17 @@
  */
 package org.primefaces.push;
 
+/**
+ * Received {@link PushContext} notification when a message has been successfully pushed (@link PushContext#push) or
+ * when a client disconnected (the connection has been closed).
+ */
 public interface PushContextListener {
 
+    /**
+     * Invoked when a message has been successfully pushed to channel.
+     * @param channel A String used when calling the {@link PushContext#push(String, Object)}
+     * @param message The message pushed.
+     */
     void onComplete(String channel, Object message);
 
     /**

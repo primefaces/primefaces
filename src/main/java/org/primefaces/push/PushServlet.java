@@ -15,10 +15,8 @@
  */
 package org.primefaces.push;
 
-import org.atmosphere.cache.HeaderBroadcasterCache;
 import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereServlet;
-import org.atmosphere.cpr.BroadcasterCache;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 
 import javax.servlet.ServletConfig;
@@ -36,12 +34,9 @@ public class PushServlet extends AtmosphereServlet {
     @Override
     public void init(final ServletConfig sc) throws ServletException {
 
-        // Shareable ThreadPool amongs all created Broadcasters.
+        // Shareable ThreadPool amongst all created Broadcasters.
         // This behavior can be changed using a PushRule.
         framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
-
-        // Set the BroadcasterCache. This can be changed by overring the configureCache method
-        //framework().setBroadcasterCacheClassName(configureCache());
 
         PushContext c = PushContextFactory.getDefault().getPushContext();
         if (PushContextImpl.class.isAssignableFrom(c.getClass())) {
@@ -55,14 +50,11 @@ public class PushServlet extends AtmosphereServlet {
                 .initAtmosphereHandler(sc);
     }
 
-    public String configureCache() {
-        return HeaderBroadcasterCache.class.getName();
-    }
-
     List<PushRule> configureRules(ServletConfig sc) {
         List<PushRule> rules = new ArrayList<PushRule>();
 
         String s = sc.getInitParameter(RULES);
+
         if (s != null) {
             String[] r = s.split(",");
             for (String rule : r) {

@@ -25,9 +25,15 @@ import org.slf4j.LoggerFactory;
 import static org.atmosphere.cpr.BroadcasterLifeCyclePolicy.EMPTY_DESTROY;
 
 /**
- * The Default {@link PushRule} that creates channel based on the last path of a URI.
+ * The Default {@link PushRule} that creates channel based on the {@link org.atmosphere.cpr.AtmosphereRequest#getPathInfo()}.
  */
 public class DefaultPushRule implements PushRule {
+
+    /**
+     * Creates channel (named {@link Broadcaster} in Atmosphere) based on the {@link org.atmosphere.cpr.AtmosphereRequest#getPathInfo()}
+     * @param resource  An {@link AtmosphereResource}
+     * @return
+     */
     public boolean apply(AtmosphereResource resource) {
         String pathInfo = resource.getRequest().getPathInfo();
         if (pathInfo == null) {
