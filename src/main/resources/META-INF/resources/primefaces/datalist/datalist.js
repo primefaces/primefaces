@@ -1,5 +1,5 @@
 /**
- * PrimeFaces DataGrid Widget
+ * PrimeFaces DataList Widget
  */
 PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
     
@@ -7,7 +7,8 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
-        this.content = this.jqId + '_content';
+        this.content = $(this.jqId + '_content');
+        this.list = this.content.children('.ui-datalist-data');
 
         if(this.cfg.paginator) {
             this.setupPaginator();
@@ -40,7 +41,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
                     content = update.text();
 
                     if(id == _self.id){
-                        $(_self.content).html(content);
+                        _self.content.html(content);
                     }
                     else {
                         PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -72,5 +73,4 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
     getPaginator: function() {
         return this.paginator;
     }
-    
 });
