@@ -27,10 +27,18 @@ public class PushContextFactory {
         pushContext = new PushContextImpl();
     }
 
+    /**
+     * Return the default factory
+     * @return the default factory
+     */
     public final static PushContextFactory getDefault() {
         return p;
     }
 
+    /**
+     * Retrieve a {@link PushContext}
+     * @return
+     */
     public PushContext getPushContext(){
         return pushContext;
     }
