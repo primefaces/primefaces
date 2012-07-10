@@ -15,7 +15,10 @@
  */
 package org.primefaces.push;
 
+import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.atmosphere.cpr.AsyncSupportListenerAdapter;
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResponse;
@@ -33,11 +36,17 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     public <T> Future<T> push(final String channel, final T t) {
         String data = toJSON(t);
         final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
+            public void onPostCreate(Broadcaster broadcaster) {
+            }
+
             public void onComplete(Broadcaster b) {
                 for (PushContextListener p: listeners) {
                     p.onComplete(channel, t);
                     broadcaster.removeBroadcasterListener(this);
                 }
+            }
+
+            public void onPreDestroy(Broadcaster broadcaster) {
             }
         }).broadcastTo(channel, data);
 
@@ -49,13 +58,21 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         if(!(t instanceof Callable || t instanceof Runnable)) {
             data = toJSON(t);
         }
-        
-        final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
+
+        final AtomicBoolean completed = new AtomicBoolean();
+        final Future<List<Broadcaster>> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
+            public void onPostCreate(Broadcaster broadcaster) {
+            }
+
             public void onComplete(Broadcaster b) {
+                completed.set(true);
                 for (PushContextListener p: listeners) {
                     p.onComplete(channel, t);
                     broadcaster.removeBroadcasterListener(this);
                 }
+            }
+
+            public void onPreDestroy(Broadcaster broadcaster) {
             }
         }).scheduleTo(channel, data, time, unit);
 
@@ -65,11 +82,17 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     public <T> Future<T> delay(final String channel, final T t, int time, TimeUnit unit) {
         String data = toJSON(t);
         final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
+            public void onPostCreate(Broadcaster broadcaster) {
+            }
+
             public void onComplete(Broadcaster b) {
                 for (PushContextListener p: listeners) {
                     p.onComplete(channel, t);
                     broadcaster.removeBroadcasterListener(this);
                 }
+            }
+
+            public void onPreDestroy(Broadcaster broadcaster) {
             }
         }).delayTo(channel, data, time, unit);
 
@@ -137,6 +160,11 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
         }
+    }
+
+    @Override
+    public void onSuspend(AtmosphereRequest request, AtmosphereResponse response) {
+
     }
 
     private final static class WrappedFuture<T> implements Future {
