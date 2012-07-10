@@ -17,9 +17,13 @@ package org.primefaces.push;
 
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResource;
+import org.atmosphere.cpr.MetaBroadcaster;
 import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -44,6 +48,31 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         // We only handle GET. POST are supported by PrimeFaces directly via the Broadcaster.
         if (r.getMethod().equalsIgnoreCase("GET")) {
             applyRules(resource);
+        } else {
+            StringBuilder stringBuilder = new StringBuilder();
+            BufferedReader bufferedReader = null;
+            try {
+                InputStream inputStream = r.getRequest().getInputStream();
+                if (inputStream != null) {
+                    bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    char[] charBuffer = new char[8192];
+                    int bytesRead = -1;
+                    while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+                        stringBuilder.append(charBuffer, 0, bytesRead);
+                    }
+                } else {
+                    stringBuilder.append("");
+                }
+            } catch (IOException ex) {
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException ex) {
+                    }
+                }
+            }
+            MetaBroadcaster.getDefault().broadcastTo("/*", stringBuilder.toString());
         }
     }
 
