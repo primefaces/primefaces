@@ -54,17 +54,9 @@
 }
 .ui-colorpicker_new_color {
 	position: absolute;
-	width: 60px;
+	width: 130px;
 	height: 30px;
 	left: 213px;
-	top: 13px;
-	background: #f00;
-}
-.ui-colorpicker_current_color {
-	position: absolute;
-	width: 60px;
-	height: 30px;
-	left: 283px;
 	top: 13px;
 	background: #f00;
 }
@@ -137,15 +129,6 @@
 	background-image: url("#{resource['primefaces:colorpicker/images/colorpicker_hsb_b.png']}");
 	top: 112px;
 	left: 282px;
-}
-.ui-colorpicker_submit {
-	position: absolute;
-	width: 22px;
-	height: 22px;
-	background: url("#{resource['primefaces:colorpicker/images/colorpicker_submit.png']}") top;
-	left: 322px;
-	top: 142px;
-	overflow: hidden;
 }
 .ui-colorpicker_focus {
 	background-position: center;
