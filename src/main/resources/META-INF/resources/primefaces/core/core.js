@@ -574,7 +574,7 @@ PrimeFaces.ajax.AjaxUtils = {
                         componentPostParams = jqProcess.find(':input').serializeArray();
                     }
                     
-                    $.merge(postParams, componentPostParams);
+                    postParams = postParams.concat(componentPostParams);
                 });
             }
             
@@ -585,7 +585,7 @@ PrimeFaces.ajax.AjaxUtils = {
 
         }
         else {
-            $.merge(postParams, form.serializeArray());
+            postParams = postParams.concat(form.serializeArray());
         }
 
         //serialize
@@ -724,16 +724,3 @@ PrimeFaces.ajax.Queue = {
         return this.requests.length == 0;
     }
 };
-
-/**
- * Utilities
- */
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
-
-String.prototype.startsWith = function(str){
-    return (this.indexOf(str) === 0);
-}
