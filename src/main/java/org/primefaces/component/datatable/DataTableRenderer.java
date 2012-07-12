@@ -562,10 +562,14 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("role", "row", null);
             
             for(UIComponent child : table.getChildren()) {
+                if(!child.isRendered()) {
+                    continue;
+                }
+                
                 if(child instanceof Column) {
                     encodeColumnHeader(context, table, (UIColumn) child);
                 }
-                if(child instanceof Columns) {
+                else if(child instanceof Columns) {
                     encodeColumnsHeader(context, table, (Columns) child);
                 }
             }
@@ -703,6 +707,10 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         for(UIComponent child : table.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+            
             if(child instanceof Column) {
                 encodeRegularCell(context, table, (UIColumn) child, clientId, selected);
             }
@@ -792,6 +800,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tr", null);
             
             for(UIComponent child : table.getChildren()) {
+                if(!child.isRendered()) {
+                    continue;
+                }
+                
                 if(child instanceof Columns) {
                     encodeColumnsFooter(context, table, (Columns) child);
                 }
