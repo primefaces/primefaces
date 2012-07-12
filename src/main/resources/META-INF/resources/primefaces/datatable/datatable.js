@@ -149,7 +149,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var _self = this;
     
-        filter.bind('keyup', function(e) {
+        filter.bind('keydown', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        }).bind('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
