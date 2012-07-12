@@ -215,7 +215,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                             _self.onRowDblclick(event, this);
                         })
                         .on('contextmenu.datatable', rowSelector, null, function(e) {
-                            _self.onRowClick(e, this);
+                            _self.onRowClick(e, this, true);
                             e.preventDefault();
                         });
         }
@@ -645,7 +645,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         emptyMessageContainer.width(emptyMessageWidth);
     },
     
-    onRowClick: function(event, rowElement) {    
+    onRowClick: function(event, rowElement, silent) {    
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is('.ui-dt-c,td,span')) {
             var row = $(rowElement),
@@ -654,7 +654,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             //unselect a selected row if metakey is on
             if(selected && metaKey) {
-                this.unselectRow(row);
+                this.unselectRow(row, silent);
             }
             else {
                 //unselect previous selection if this is single selection or multiple one with no keys
@@ -671,7 +671,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     this.originRowIndex = row.index();
                     this.cursorIndex = null;
                     
-                    this.selectRow(row);
+                    this.selectRow(row, silent);
                 }
             } 
 
