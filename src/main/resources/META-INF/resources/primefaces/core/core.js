@@ -178,11 +178,6 @@ PrimeFaces = {
         }
     },
     
-    extend: function(subClass, superClass) {
-        subClass.prototype = new superClass;
-        subClass.prototype.constructor = subClass;
-    },
-    
     cw : function(widgetConstructor, widgetVar, cfg, resource) {
         PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
     },
