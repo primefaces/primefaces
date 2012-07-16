@@ -245,8 +245,6 @@ public class DataTableRenderer extends DataRenderer {
         encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
         encodeTFoot(context, table);
         encodeScrollAreaEnd(context);
-        
-        writer.endElement("div");
     }
     
     protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass, 
