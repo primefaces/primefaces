@@ -105,8 +105,6 @@ public class TreeRenderer extends CoreRenderer {
         String selectionMode = tree.getSelectionMode();
 			
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
         
         writer.write("PrimeFaces.cw('Tree','" + tree.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
@@ -131,7 +129,7 @@ public class TreeRenderer extends CoreRenderer {
         
         encodeClientBehaviors(context, tree);
 
-        writer.write("});});");
+        writer.write("});");
 
 		endScript(writer);
 	}

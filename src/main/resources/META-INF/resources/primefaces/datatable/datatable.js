@@ -193,7 +193,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.selectionMode) {
             var rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
             
-            $(document).off('mouseover.datatable mouseout.datatable contextmenu.datatable dblclick.datatable click.datatable', rowSelector)
+            $(document).off('mouseover.datatable mouseout.datatable dblclick.datatable click.datatable', this.rowSelector)
                         .on('mouseover.datatable', rowSelector, null, function() {
                             var element = $(this);
 
@@ -213,11 +213,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         })
                         .on('dblclick.datatable', rowSelector, null, function(event) {
                             _self.onRowDblclick(event, this);
-                        })
-                        .on('contextmenu.datatable', rowSelector, null, function(e) {
-                            _self.onRowClick(e, this, true);
-                            e.preventDefault();
                         });
+                        
         }
         //Radio-Checkbox based rowselection
         else if(this.cfg.columnSelectionMode) {
