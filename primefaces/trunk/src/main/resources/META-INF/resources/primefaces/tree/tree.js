@@ -52,13 +52,9 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         }
         
         //node click
-        $(document).off('click.tree contextmenu.tree', nodeSelector)
+        $(document).off('click.tree', nodeSelector)
                         .on('click.tree', nodeSelector, null, function(e) {
                             _self.nodeClick(e, $(this));
-                        })
-                        .on('contextmenu.tree', nodeSelector, null, function(e) {
-                            _self.nodeClick(e, $(this));
-                            e.preventDefault();
                         });
     },
     

@@ -328,6 +328,8 @@ PrimeFaces.widget.BaseWidget = Class.extend({
     
     //remove script tag
     $(this.jqId + '_s').remove();
+    
+    this.jq.data('primefaces-widget', this);
   },
   
   //used mostly in ajax updates, reloads the widget configuration

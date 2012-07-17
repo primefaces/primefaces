@@ -81,9 +81,7 @@ public class DataTableRenderer extends DataRenderer {
 		String clientId = table.getClientId(context);
 
         startScript(writer, clientId);
-        
-        writer.write("$(function() {");
-        
+                
         writer.write("PrimeFaces.cw('DataTable','" + table.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
 
@@ -145,7 +143,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Behaviors
         encodeClientBehaviors(context, table);
-        writer.write("});});");
+        writer.write("});");
 
         endScript(writer);
 	}

@@ -65,10 +65,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                 .live('click.treetable', function(e) {
                     _self.onRowClick(e, $(this));
                     e.preventDefault();
-                })           
-                .live('contextmenu.treetable', function(event) {
-                _self.onRowClick(event, $(this));
-                event.preventDefault();
                 });
     },
     
