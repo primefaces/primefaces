@@ -189,32 +189,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     setupSelectionEvents: function() {
         var _self = this;
+        this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
 
         if(this.cfg.selectionMode) {
-            var rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
+            this.bindRowHover();
             
-            $(document).off('mouseover.datatable mouseout.datatable dblclick.datatable click.datatable', this.rowSelector)
-                        .on('mouseover.datatable', rowSelector, null, function() {
-                            var element = $(this);
-
-                            if(!element.hasClass('ui-state-highlight')) {
-                                element.addClass('ui-state-hover');
-                            }
-                        })
-                        .on('mouseout.datatable', rowSelector, null, function() {
-                            var element = $(this);
-
-                            if(!element.hasClass('ui-state-highlight')) {
-                                element.removeClass('ui-state-hover');
-                            }
-                        })
-                        .on('click.datatable', rowSelector, null, function(e) {
-                            _self.onRowClick(e, this);
-                        })
-                        .on('dblclick.datatable', rowSelector, null, function(event) {
-                            _self.onRowDblclick(event, this);
-                        });
-                        
+            $(document).off('click.datatable', this.rowSelector).on('click.datatable', this.rowSelector, null, function(e) {
+                _self.onRowClick(e, this);
+            });
         }
         //Radio-Checkbox based rowselection
         else if(this.cfg.columnSelectionMode) {
@@ -289,6 +271,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                             });
             }
         }
+        
+        //double click
+        if(this.hasBehavior('rowDblselect')) {
+            $(document).off('dblclick.datatable', this.rowSelector).on('dblclick.datatable', this.rowSelector, null, function(e) {
+                _self.onRowDblclick(e, $(this));
+            });
+        };
+    },
+    
+    bindRowHover: function() {
+        $(document).off('mouseover.datatable mouseout.datatable', this.rowSelector)
+                    .on('mouseover.datatable', this.rowSelector, null, function() {
+                        var element = $(this);
+
+                        if(!element.hasClass('ui-state-highlight')) {
+                            element.addClass('ui-state-hover');
+                        }
+                    })
+                    .on('mouseout.datatable', this.rowSelector, null, function() {
+                        var element = $(this);
+
+                        if(!element.hasClass('ui-state-highlight')) {
+                            element.removeClass('ui-state-hover');
+                        }
+                    });
     },
     
     /**
@@ -636,7 +643,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         for(var i = 0; i < columns.length; i++) {
             emptyMessageWidth += columns.eq(i).outerWidth();
-            console.log(columns.eq(i).outerWidth());
         }
 
         emptyMessageContainer.width(emptyMessageWidth);
@@ -676,19 +682,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    onRowDblclick: function(event, rowElement) {   
-        var rowDblclickBehavior = this.cfg.behaviors['rowDblselect'];
+    onRowDblclick: function(event, row) {
+        PrimeFaces.clearSelection();
         
-        if(rowDblclickBehavior) {
-            //Check if rowclick triggered this event not a clickable element in row content
-            if($(event.target).is('.ui-dt-c,td,span')) {
-                var row = $(rowElement),
-                rowMeta = this.getRowMeta(row);
-                
-                this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
-            }
+        //Check if rowclick triggered this event not a clickable element in row content
+        if($(event.target).is('.ui-dt-c,td,span')) {
+            var rowMeta = this.getRowMeta(row);
+
+            this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
         }
-        
     },
     
     /**
