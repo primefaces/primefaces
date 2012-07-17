@@ -164,6 +164,7 @@
 .ui-datatable .ui-datatable-data tr.ui-state-hover {
     border-color: inherit;
     font-weight: inherit;
+    cursor: pointer;
     *font-weight: normal; /*IE7 hack*/
 }
 
