@@ -38,3 +38,20 @@
     /*IE7 hack*/
     *position: relative;
 }
+
+.ui-picklist .ui-picklist-filter {
+    padding-right: 15px;
+    width: 90%;
+}
+
+.ui-picklist .ui-picklist-filter-container {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.ui-picklist .ui-picklist-filter-container .ui-icon {
+    position: absolute;
+    top: 5px;
+    right: 2px;
+}
