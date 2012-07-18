@@ -33,6 +33,11 @@ public class SocketRenderer extends CoreRenderer {
         String channel = socket.getChannel();
         String channelUrl = Constants.PUSH_PATH + channel;
         String url = getResourceURL(context, channelUrl);
+        String pushServer = context.getExternalContext().getInitParameter(Constants.PUSH_SERVER_URL);
+        
+        if(pushServer != null) {
+            url = pushServer + url;
+        }
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
