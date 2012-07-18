@@ -177,6 +177,12 @@
 			<defaultValue>false</defaultValue>
             <description>Displays an input filter for target list.</description>
 		</attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Match mode for filtering, valid values are startsWith (default), contains and endsWith.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>
