@@ -6,7 +6,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.bindToCore();
+        if(window.jsf && window.jsf.ajax) {
+            this.bindToCore();
+        }
     },
     
     bindFacet: function(eventName, facetToShow) {
