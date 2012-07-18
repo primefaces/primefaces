@@ -163,6 +163,20 @@
 			<defaultValue>false</defaultValue>
             <description>Specifies if an item can be picked or not.</description>
 		</attribute>
+        <attribute>
+			<name>showSourceFilter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays an input filter for source list.</description>
+		</attribute>
+        <attribute>
+			<name>showTargetFilter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays an input filter for target list.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>

@@ -79,7 +79,7 @@ public class PickListRenderer extends CoreRenderer {
         }
  
 		//Source List
-		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"));
+		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
 
 		//Buttons
 		writer.startElement("td", null);
@@ -90,7 +90,7 @@ public class PickListRenderer extends CoreRenderer {
 		writer.endElement("td");
 
 		//Target List
-		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"));
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowSourceFilter());
 
         //Target List Reorder Buttons
         if(pickList.isShowTargetControls()) {
@@ -167,10 +167,14 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("button");
 	}
 	
-	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption) throws IOException {
+	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
                 
         writer.startElement("td", null);
+        
+        if(filter) {
+            encodeFilter(context, pickList, listId + "_filter");
+        }
         
         if(caption != null) {
             encodeCaption(context, caption);
@@ -215,12 +219,14 @@ public class PickListRenderer extends CoreRenderer {
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
 			context.getExternalContext().getRequestMap().put(var, item);
-			String value = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
+			String itemValue = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
+            String itemLabel = pickList.getItemLabel();
             String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
             
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
-            writer.writeAttribute("data-item-value", value, null);
+            writer.writeAttribute("data-item-value", itemValue, null);
+            writer.writeAttribute("data-item-label", itemLabel, null);
 			
             if(pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
@@ -245,7 +251,7 @@ public class PickListRenderer extends CoreRenderer {
                 writer.endElement("table");
             }
             else {
-                writer.writeText(pickList.getItemLabel(), null);
+                writer.writeText(itemLabel, null);
             }
                 
 			writer.endElement("li");
@@ -288,6 +294,26 @@ public class PickListRenderer extends CoreRenderer {
 				model.add(convertedValue);
 		}
 	}
+    
+    protected void encodeFilter(FacesContext context, PickList pickList, String name) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("id", name, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("class", PickList.FILTER_CLASS, null);
+        writer.endElement("input");
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-search", null);
+        writer.endElement("span");
+        
+        writer.endElement("div");
+    }
     
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

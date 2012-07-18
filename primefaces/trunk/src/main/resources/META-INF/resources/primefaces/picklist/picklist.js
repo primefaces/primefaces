@@ -6,8 +6,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.sourceList = this.jq.find('.ui-picklist-source');
-        this.targetList = this.jq.find('.ui-picklist-target');
+        this.sourceList = this.jq.find('ul.ui-picklist-source');
+        this.targetList = this.jq.find('ul.ui-picklist-target');
         this.sourceInput = $(this.jqId + '_source');
         this.targetInput = $(this.jqId + '_target');
         this.items = this.jq.find('.ui-picklist-item:not(.ui-state-disabled)');
@@ -15,9 +15,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
-
-        //Buttons
-        this.setupButtons();
 
         if(this.cfg.disabled) {
             $(this.jqId + ' li.ui-picklist-item').addClass('ui-state-disabled');
@@ -40,60 +37,70 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     _self.fireOnTransferEvent(ui.item, ui.sender, ui.item.parents('ul.ui-picklist-list:first'), 'dragdrop');
                 }
             });
+            
+            this.bindItemEvents();
 
-            //Visual selection and Double click transfer
-            this.items.mouseover(function(e) {
-                var element = $(this);
-
-                if(!element.hasClass('ui-state-highlight'))
-                    $(this).addClass('ui-state-hover');
-            })
-            .mouseout(function(e) {
-                var element = $(this);
-
-                if(!element.hasClass('ui-state-highlight'))
-                    $(this).removeClass('ui-state-hover');
-            })
-            .mousedown(function(e) {
-                var element = $(this),
-                metaKey = (e.metaKey||e.ctrlKey);
-
-                if(!metaKey) {
-                    element.removeClass('ui-state-hover').addClass('ui-state-highlight')
-                    .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
-                }
-                else {
-                    if(element.hasClass('ui-state-highlight'))
-                        element.removeClass('ui-state-highlight');
-                    else
-                        element.removeClass('ui-state-hover').addClass('ui-state-highlight');
-                }
-            })
-            .dblclick(function() {
-                var item = $(this);
-
-                item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                    if($(this).parent().hasClass('ui-picklist-source'))
-                        _self.transfer($(this), _self.sourceList, _self.targetList, 'dblclick');
-                    else
-                        _self.transfer($(this), _self.targetList, _self.sourceList, 'dblclick');
-                });
-
-                PrimeFaces.clearSelection();
-            });
+            this.bindButtonEvents();
+            
+            this.bindFilterEvents();
         }
+    },
+    
+    bindItemEvents: function() {
+        var _self = this;
+        
+        this.items.mouseover(function(e) {
+            var element = $(this);
+
+            if(!element.hasClass('ui-state-highlight'))
+                $(this).addClass('ui-state-hover');
+        })
+        .mouseout(function(e) {
+            var element = $(this);
+
+            if(!element.hasClass('ui-state-highlight'))
+                $(this).removeClass('ui-state-hover');
+        })
+        .mousedown(function(e) {
+            var element = $(this),
+            metaKey = (e.metaKey||e.ctrlKey);
+
+            if(!metaKey) {
+                element.removeClass('ui-state-hover').addClass('ui-state-highlight')
+                .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+            }
+            else {
+                if(element.hasClass('ui-state-highlight'))
+                    element.removeClass('ui-state-highlight');
+                else
+                    element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+            }
+        })
+        .dblclick(function() {
+            var item = $(this);
+
+            item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                if($(this).parent().hasClass('ui-picklist-source'))
+                    _self.transfer($(this), _self.sourceList, _self.targetList, 'dblclick');
+                else
+                    _self.transfer($(this), _self.targetList, _self.sourceList, 'dblclick');
+            });
+
+            PrimeFaces.clearSelection();
+        });
     },
     
     generateItems: function(list, input) {   
         list.children('.ui-picklist-item').each(function() {
             var item = $(this),
-            itemValue = item.attr('data-item-value');
+            itemValue = item.attr('data-item-value'),
+            itemLabel = item.attr('data-item-label');
 
-            input.append('<option value="' + itemValue + '" selected="selected">' + itemValue + '</option>');
+            input.append('<option value="' + itemValue + '" selected="selected">' + itemLabel + '</option>');
         });
     },
     
-    setupButtons: function() {
+    bindButtonEvents: function() {
         var _self = this;
 
         //visuals
@@ -106,17 +113,55 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         $(this.jqId + ' .ui-picklist-button-remove-all').click(function() {_self.removeAll();});
 
         if(this.cfg.showSourceControls) {
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls  .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.sourceList);});
+            $(this.jqId + ' td.ui-picklist-source-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.sourceList);});
+            $(this.jqId + ' td.ui-picklist-source-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.sourceList);});
+            $(this.jqId + ' td.ui-picklist-source-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.sourceList);});
+            $(this.jqId + ' td.ui-picklist-source-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.sourceList);});
         }
 
         if(this.cfg.showTargetControls) {
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.targetList);});
+            $(this.jqId + ' td.ui-picklist-target-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.targetList);});
+            $(this.jqId + ' td.ui-picklist-target-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.targetList);});
+            $(this.jqId + ' td.ui-picklist-target-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.targetList);});
+            $(this.jqId + ' td.ui-picklist-target-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.targetList);});
+        }
+    },
+    
+    bindFilterEvents: function() {
+        this.sourceFilter = $(this.jqId + '_source_filter');
+        this.targetFilter = $(this.jqId + '_target_filter');
+        var _self = this;
+        
+        PrimeFaces.skinInput(this.sourceFilter);
+        PrimeFaces.skinInput(this.targetFilter);
+        
+        this.sourceFilter.on('keyup', function(e) {
+            _self.filter(this.value, _self.sourceList);
+        });
+        
+        this.targetFilter.on('keyup', function(e) {
+            _self.filter(this.value, _self.targetList);
+        });
+    },
+    
+    filter: function(value, list) {
+        var filterValue = $.trim(value).toLowerCase(),
+        items = list.children('li.ui-picklist-item');
+        
+        if(filterValue === '') {
+            items.filter(':hidden').show();
+        }
+        else {
+            for(var i = 0; i < items.length; i++) {
+                var item = items.eq(i);
+
+                if(item.attr('data-item-label').toLowerCase().indexOf(filterValue) == -1) {
+                    item.hide();
+                } 
+                else {
+                    item.show();
+                }
+            }
         }
     },
     
@@ -131,7 +176,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     addAll: function() {
         var _self = this;
 
-        this.sourceList.children('li.ui-picklist-item:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+        this.sourceList.children('li.ui-picklist-item::visible:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
             _self.transfer($(this), _self.sourceList, _self.targetList, 'command');
         });
     },
@@ -147,7 +192,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     removeAll: function() {
         var _self = this;
 
-        this.targetList.children('li.ui-picklist-item:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+        this.targetList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
             _self.transfer($(this), _self.targetList, _self.sourceList, 'command');
         });
     },

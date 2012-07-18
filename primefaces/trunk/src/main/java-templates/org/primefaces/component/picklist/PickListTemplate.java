@@ -27,7 +27,8 @@ import javax.faces.application.FacesMessage;
     public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-
+    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
 	protected void validateValue(FacesContext facesContext, Object newValue) {
 		super.validateValue(facesContext, newValue);
