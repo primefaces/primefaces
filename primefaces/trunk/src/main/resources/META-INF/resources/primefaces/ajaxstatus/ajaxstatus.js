@@ -5,6 +5,8 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        
+        this.bindToCore();
     },
     
     bindFacet: function(eventName, facetToShow) {
@@ -15,10 +17,32 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
 
             $(_self.jqId + '_' + facetToShow).show();
         });
-    }
+    },
     
-    ,bindCallback: function(eventName, fn) {
+    bindCallback: function(eventName, fn) {
         $(document).bind(eventName, fn);
+    },
+    
+    bindToCore: function() {
+        $(function() {
+            jsf.ajax.addOnEvent(function(data) {
+                var doc = $(document);
+
+                if(data.status == 'begin') {
+                    doc.trigger('ajaxStart');
+                }
+                else if(data.status == 'complete') {
+                    doc.trigger('ajaxSuccess');
+                }
+                else if(data.status == 'success') {
+                    doc.trigger('ajaxComplete');
+                }
+            });
+
+            jsf.ajax.addOnError(function(data) {
+                $(document).trigger('ajaxError');
+            });
+        });
     }
     
 });
