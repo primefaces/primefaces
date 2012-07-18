@@ -126,18 +126,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $(this.jqId + ' td.ui-picklist-target-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.targetList);});
         }
     },
-    
-    setupFilterMatcher: function() {
-        this.filterMatchers = {
-            'startsWith': this.startsWithFilter
-            ,'contains': this.containsFilter
-            ,'endsWith': this.endsWithFilter
-        };
         
-        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
-        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
-    },
-    
     bindFilterEvents: function() {
         this.setupFilterMatcher();
         
@@ -155,6 +144,18 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.targetFilter.on('keyup', function(e) {
             _self.filter(this.value, _self.targetList);
         });
+    },
+    
+    setupFilterMatcher: function() {
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.filterMatchers = {
+            'startsWith': this.startsWithFilter
+            ,'contains': this.containsFilter
+            ,'endsWith': this.endsWithFilter
+            ,'custom': this.cfg.filterFunction
+        };
+                
+        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
     },
     
     filter: function(value, list) {
@@ -176,18 +177,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     item.hide();
                 }
             }
-        }
-    },
-    
-    setFilterFunction: function() {
-        if(this.cfg.filterMatchMode === 'startsWith') {
-            this.cfg.filterFunction = this.startsWithFilter;
-        }
-        else if(this.cfg.filterMatchMode === 'contains') {
-            this.cfg.filterFunction = this.containsFilter;
-        }
-        else if(this.cfg.filterMatchMode === 'endsWith') {
-            this.cfg.filterFunction = this.endsWithFilter;
         }
     },
     

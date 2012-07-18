@@ -118,6 +118,7 @@ public class PickListRenderer extends CoreRenderer {
         if(pickList.isShowTargetControls()) writer.write(",showTargetControls:true");
         if(pickList.isDisabled()) writer.write(",disabled:true");
         if(pickList.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + pickList.getFilterMatchMode() + "'");
+        if(pickList.getFilterFunction() != null) writer.write(",filterFunction:" + pickList.getFilterFunction());
         if(pickList.getOnTransfer() != null) writer.write((",onTransfer:function(e) {" + pickList.getOnTransfer() + ";}"));
 
         writer.write("});");

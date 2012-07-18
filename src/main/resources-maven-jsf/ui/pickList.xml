@@ -181,7 +181,13 @@
 			<name>filterMatchMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Match mode for filtering, valid values are startsWith (default), contains and endsWith.</description>
+            <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
+		</attribute>
+        <attribute>
+			<name>filterFunction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side function to use in custom filterMatchMode.</description>
 		</attribute>
 	</attributes>
 	    <resources>
