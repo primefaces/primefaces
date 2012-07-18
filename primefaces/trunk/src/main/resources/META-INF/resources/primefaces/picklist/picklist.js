@@ -11,7 +11,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.sourceInput = $(this.jqId + '_source');
         this.targetInput = $(this.jqId + '_target');
         this.items = this.jq.find('.ui-picklist-item:not(.ui-state-disabled)');
-
+                
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
@@ -127,7 +127,20 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    setupFilterMatcher: function() {
+        this.filterMatchers = {
+            'startsWith': this.startsWithFilter
+            ,'contains': this.containsFilter
+            ,'endsWith': this.endsWithFilter
+        };
+        
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
+    },
+    
     bindFilterEvents: function() {
+        this.setupFilterMatcher();
+        
         this.sourceFilter = $(this.jqId + '_source_filter');
         this.targetFilter = $(this.jqId + '_target_filter');
         var _self = this;
@@ -153,16 +166,41 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             for(var i = 0; i < items.length; i++) {
-                var item = items.eq(i);
+                var item = items.eq(i),
+                itemLabel = item.attr('data-item-label');
 
-                if(item.attr('data-item-label').toLowerCase().indexOf(filterValue) == -1) {
-                    item.hide();
-                } 
-                else {
+                if(this.filterMatcher(itemLabel, filterValue)) {
                     item.show();
+                }
+                else {
+                    item.hide();
                 }
             }
         }
+    },
+    
+    setFilterFunction: function() {
+        if(this.cfg.filterMatchMode === 'startsWith') {
+            this.cfg.filterFunction = this.startsWithFilter;
+        }
+        else if(this.cfg.filterMatchMode === 'contains') {
+            this.cfg.filterFunction = this.containsFilter;
+        }
+        else if(this.cfg.filterMatchMode === 'endsWith') {
+            this.cfg.filterFunction = this.endsWithFilter;
+        }
+    },
+    
+    startsWithFilter: function(value, filter) {
+        return value.toLowerCase().indexOf(filter) === 0;
+    },
+    
+    containsFilter: function(value, filter) {
+        return value.toLowerCase().indexOf(filter) !== -1;
+    },
+    
+    endsWithFilter: function(value, filter) {
+        return value.indexOf(filter, value.length - filter.length) !== -1;
     },
     
     add: function() {
