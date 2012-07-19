@@ -93,6 +93,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(checkbox.getOnchange() != null) writer.writeAttribute("onchange", checkbox.getOnchange(), null);
+        if(checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
 
         writer.endElement("input");
 
