@@ -34,7 +34,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     _self.saveState();
                 },
                 receive: function(event, ui) {
-                    _self.fireOnTransferEvent(ui.item, ui.sender, ui.item.parents('ul.ui-picklist-list:first'), 'dragdrop');
+                    _self.fireTransferEvent(ui.item, ui.sender, ui.item.parents('ul.ui-picklist-list:first'), 'dragdrop');
                 }
             });
             
@@ -193,35 +193,27 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
     
     add: function() {
-        var _self = this;
-
-        this.sourceList.children('li.ui-picklist-item.ui-state-highlight').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            _self.transfer($(this), _self.sourceList, _self.targetList, 'command');
-        });
+        var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight')
+        
+        this.transfer(items, this.sourceList, this.targetList, 'command');
     },
     
     addAll: function() {
-        var _self = this;
-
-        this.sourceList.children('li.ui-picklist-item::visible:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            _self.transfer($(this), _self.sourceList, _self.targetList, 'command');
-        });
+        var items = this.sourceList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
+        
+        this.transfer(items, this.sourceList, this.targetList, 'command');
     },
     
     remove: function() {
-        var _self = this;
-
-        this.targetList.children('li.ui-picklist-item.ui-state-highlight').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            _self.transfer($(this), _self.targetList, _self.sourceList, 'command');
-        });
+        var items = this.targetList.children('li.ui-picklist-item.ui-state-highlight');
+        
+        this.transfer(items, this.targetList, this.sourceList, 'command');
     },
     
     removeAll: function() {
-        var _self = this;
-
-        this.targetList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-            _self.transfer($(this), _self.targetList, _self.sourceList, 'command');
-        });
+        var items = this.targetList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
+        
+        this.transfer(items, this.targetList, this.sourceList, 'command');
     },
     
     moveUp: function(list) {
@@ -302,24 +294,59 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.generateItems(this.targetList, this.targetInput);
     },
     
-    transfer: function(item, from, to, type) {    
-        var _self = this;
-
-        item.appendTo(to).removeClass('ui-state-highlight').show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
-            _self.saveState();
-            _self.fireOnTransferEvent(item, from, to, type);
+    transfer: function(items, from, to, type) {    
+        var _self = this,
+        itemsCount = items.length,
+        transferCount = 0;
+        
+        items.removeClass('ui-state-highlight').hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
+            var item = $(this);
+            
+            item.appendTo(to).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                _self.saveState();
+                
+                transferCount++;
+                
+                //fire transfer when all items are transferred
+                if(transferCount == itemsCount) {
+                    _self.fireTransferEvent(items, from, to, type);
+                }
+            });
         });
     },
     
-    fireOnTransferEvent: function(item, from, to, type) {
+    /**
+     * Fire transfer ajax behavior event
+     */
+    fireTransferEvent: function(items, from, to, type) {
         if(this.cfg.onTransfer) {
             var obj = {};
-            obj.item = item;
+            obj.items = items;
             obj.from = from;
             obj.to = to;
             obj.type = type;
 
             this.cfg.onTransfer.call(this, obj);
+        }
+        
+        if(this.cfg.behaviors) {
+            var transferBehavior = this.cfg.behaviors['transfer'];
+
+            if(transferBehavior) {
+                var ext = {
+                    params: []
+                },
+                paramName = this.id + '_transferred',
+                isAdd = from.hasClass('ui-picklist-source');
+                
+                items.each(function(index, item) {
+                    ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
+                });
+                
+                ext.params.push({name:this.id + '_add', value:isAdd});
+
+                transferBehavior.call(this, null, ext);
+            }
         }
     }
 

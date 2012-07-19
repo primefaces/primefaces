@@ -46,6 +46,8 @@ public class PickListRenderer extends CoreRenderer {
 		String[] targetParam = params.containsKey(targetParamKey) ? params.get(targetParamKey) : new String[]{};
 
 		pickList.setSubmittedValue(new String[][]{sourceParam, targetParam});
+        
+        decodeBehaviors(context, pickList);
 	}
 	
 	@Override
@@ -121,6 +123,8 @@ public class PickListRenderer extends CoreRenderer {
         if(pickList.getFilterFunction() != null) writer.write(",filterFunction:" + pickList.getFilterFunction());
         if(pickList.getOnTransfer() != null) writer.write((",onTransfer:function(e) {" + pickList.getOnTransfer() + ";}"));
 
+        encodeClientBehaviors(context, pickList);
+        
         writer.write("});");
 		
 		endScript(writer);
@@ -272,8 +276,8 @@ public class PickListRenderer extends CoreRenderer {
             String[] targetValue = value[1];
             DualListModel model = new DualListModel();
 
-            doConvertValue(context, pickList, sourceValue, model.getSource());
-            doConvertValue(context, pickList, targetValue, model.getTarget());
+            pickList.populateModel(context, sourceValue, model.getSource());
+            pickList.populateModel(context, targetValue, model.getTarget());
 
             return model;
         }
@@ -281,22 +285,7 @@ public class PickListRenderer extends CoreRenderer {
             throw new ConverterException(exception);
         }
 	}
-	
-	@SuppressWarnings("unchecked")
-	protected void doConvertValue(FacesContext context, PickList pickList, String[] values, List model) {
-		Converter converter = pickList.getConverter();
 
-        for(String item : values) {            
-			if(isValueBlank(item))
-				continue;
-			                    
-			Object convertedValue = converter != null ? converter.getAsObject(context, pickList, item) : item;
-			
-			if(convertedValue != null)
-				model.add(convertedValue);
-		}
-	}
-    
     protected void encodeFilter(FacesContext context, PickList pickList, String name) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         

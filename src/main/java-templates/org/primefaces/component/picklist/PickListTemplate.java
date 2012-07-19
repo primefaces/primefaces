@@ -1,6 +1,19 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import org.primefaces.model.DualListModel;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.component.picklist.PickList;
+import org.primefaces.event.TransferEvent;
+import org.primefaces.util.Constants;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-picklist ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
@@ -30,6 +43,13 @@ import javax.faces.application.FacesMessage;
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer","reorder"));
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 	protected void validateValue(FacesContext facesContext, Object newValue) {
 		super.validateValue(facesContext, newValue);
 		
@@ -53,5 +73,54 @@ import javax.faces.application.FacesMessage;
 
 			facesContext.addMessage(getClientId(facesContext), message);
 	        setValid(false);
+		}
+	}
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+            Map<String,String[]> paramValues = context.getExternalContext().getRequestParameterValuesMap();
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+
+            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String clientId = this.getClientId(context);
+
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+
+            if(eventName.equals("transfer")) {
+                String[] items = paramValues.get(clientId + "_transferred");
+                boolean isAdd = Boolean.valueOf(params.get(clientId + "_add"));
+                List transferredItems = new ArrayList();
+                this.populateModel(context, items, transferredItems);
+                TransferEvent transferEvent = new TransferEvent(this, behaviorEvent.getBehavior(), transferredItems, isAdd);
+                transferEvent.setPhaseId(transferEvent.getPhaseId());
+
+                super.queueEvent(transferEvent);
+            }
+        }
+        else {
+            super.queueEvent(event);
+        }
+    }
+
+    private boolean isRequestSource(FacesContext context) {
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+    }
+
+    @SuppressWarnings("unchecked")
+	public void populateModel(FacesContext context, String[] values, List model) {
+		Converter converter = this.getConverter();
+
+        for(String item : values) {            
+			if(item == null || item.trim().equals(""))
+				continue;
+			                    
+			Object convertedValue = converter != null ? converter.getAsObject(context, this, item) : item;
+			
+			if(convertedValue != null) {
+				model.add(convertedValue);
+            }
 		}
 	}
