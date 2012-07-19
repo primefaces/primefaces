@@ -171,10 +171,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 itemLabel = item.attr('data-item-label');
 
                 if(this.filterMatcher(itemLabel, filterValue)) {
-                    item.show();
+                    item.fadeIn('fast');
                 }
                 else {
-                    item.hide();
+                    item.fadeOut('fast');
                 }
             }
         }
