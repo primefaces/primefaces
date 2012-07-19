@@ -58,6 +58,13 @@
             <type>java.lang.String</type>
             <description>Label to display next to checkbox.</description>
         </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
