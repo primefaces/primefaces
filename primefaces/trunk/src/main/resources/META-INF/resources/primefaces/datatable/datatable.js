@@ -483,7 +483,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_pagination', value: true},
             {name: this.id + '_first', value: newState.first},
             {name: this.id + '_rows', value: newState.rows},
-            {name: this.id + '_updateBody', value: true},
+            {name: this.id + '_updateBody', value: true}
         ];
 
         if(this.hasBehavior('page')) {
@@ -558,7 +558,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         options.params = [
             {name: this.id + '_sorting', value: true},
             {name: this.id + '_sortKey', value: columnId},
-            {name: this.id + '_sortDir', value: order},
+            {name: this.id + '_sortDir', value: order}
         ];
         
         if(columnHeader.hasClass('ui-dynamic-column')) {
