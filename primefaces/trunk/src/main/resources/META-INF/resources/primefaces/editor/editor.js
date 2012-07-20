@@ -140,7 +140,7 @@
   UNSELECTABLE     = "unselectable",
 
   // Class name constants
-  MAIN_CLASS       = "ui-editor",    // main containing div
+  MAIN_CLASS       = "ui-editor ui-widget-content",    // main containing div
   TOOLBAR_CLASS    = "ui-editor-toolbar", // toolbar div inside main div
   GROUP_CLASS      = "ui-editor-group",   // group divs inside the toolbar div
   BUTTON_CLASS     = "ui-editor-button",  // button divs inside group div
@@ -1178,6 +1178,10 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.BaseWidget.extend({
                 this.disable();
             }
 
+            if(this.cfg.invalid) {
+                this.invalidate();
+            }
+
             if(this.cfg.change) {
                 this.editor.change(this.cfg.change);
             }
@@ -1206,6 +1210,10 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.BaseWidget.extend({
     
     disable: function() {
         this.editor.disable(true);
+    },
+    
+    invalidate: function() {
+        this.jq.children('div.ui-editor').addClass('ui-state-error');
     },
     
     focus: function() {
