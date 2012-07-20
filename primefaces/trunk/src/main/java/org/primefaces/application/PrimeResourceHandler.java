@@ -52,12 +52,12 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
             Map<String,Object> session = context.getExternalContext().getSessionMap();
-            
+            String dynamicContentEL = (String) session.get(dynamicContentId);
+            ELContext eLContext = context.getELContext();
+            ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
+            StreamedContent content = (StreamedContent) ve.getValue(eLContext);
+             
             try {
-                String dynamicContentEL = (String) session.get(dynamicContentId);
-                ELContext eLContext = context.getELContext();
-                ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
-                StreamedContent content = (StreamedContent) ve.getValue(eLContext);
                 ExternalContext externalContext = context.getExternalContext();
 
                 externalContext.setResponseStatus(200);
@@ -75,9 +75,12 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                 context.responseComplete();
 
             } catch(Exception e) {
-                logger.log(Level.SEVERE, "Error in streaming dynamic resource.");
-            } finally {
+                logger.log(Level.SEVERE, "Error in streaming dynamic resource. {0}", new Object[]{e.getMessage()});
+            }
+            finally {
+                //cleanup
                 session.remove(dynamicContentId);
+                content.getStream().close();
             }
         }
         else {
