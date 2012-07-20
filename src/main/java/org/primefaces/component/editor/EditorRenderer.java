@@ -93,6 +93,7 @@ public class EditorRenderer extends CoreRenderer{
         writer.write("id:'" + clientId + "'");
 
         if(editor.isDisabled()) writer.write(",disabled:true");
+        if(!editor.isValid()) writer.write(",invalid:true");
         if(editor.getControls() != null) writer.write(",controls:'" + editor.getControls() + "'");
         if(editor.getWidth() != Integer.MIN_VALUE) writer.write(",width:" + editor.getWidth());
         if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
