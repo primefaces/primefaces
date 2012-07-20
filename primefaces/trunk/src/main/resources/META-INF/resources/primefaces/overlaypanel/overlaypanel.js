@@ -12,8 +12,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         //configuration
         this.cfg.my = this.cfg.my||'left top';
         this.cfg.at = this.cfg.at||'left bottom';
-        this.cfg.showEvent = this.cfg.showEvent||'mousedown';
-        this.cfg.hideEvent = this.cfg.hideEvent||'mousedown';
+        this.cfg.showEvent = this.cfg.showEvent||'click.ui-overlay';
+        this.cfg.hideEvent = this.cfg.hideEvent||'click.ui-overlay';
 
         this.bindEvents();
 
@@ -34,14 +34,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             var event = this.cfg.showEvent;
             
             $(document).off(event, this.targetId).on(event, this.targetId, this, function(e) {
-                var _self = e.data;
-                
-                if(_self.jq.hasClass('ui-overlay-hidden')) {
-                    _self.show();
-                } 
-                else {
-                    _self.hide();
-                }
+                e.data.toggle();
             });
         }
         else {
@@ -51,18 +44,21 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             $(document).off(showEvent + ' ' + hideEvent, this.targetId).on(showEvent, this.targetId, this, function(e) {
                 var _self = e.data;
 
-                if(_self.jq.hasClass('ui-overlay-hidden')) {
+                if(!_self.isVisible()) {
                     _self.show();
                 }
             })
             .on(hideEvent, this.targetId, this, function(e) {
                 var _self = e.data;
 
-                if(_self.jq.hasClass('ui-overlay-visible')) {
+                if(_self.isVisible()) {
                     _self.hide();
                 }
             });
         }
+        
+        //enter key support for mousedown event
+        this.bindKeyEvents();
         
         var _self = this;
 
@@ -96,6 +92,33 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide();
             }
         });
+    },
+    
+    bindKeyEvents: function() {
+        $(document).off('keydown.ui-overlay keyup.ui-overlay', this.targetId).on('keydown.ui-overlay', this.targetId, this, function(e) {
+            var keyCode = $.ui.keyCode, key = e.which;
+            
+            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+                e.preventDefault();
+            }
+        })
+        .on('keyup.ui-overlay', this.targetId, this, function(e) {
+            var keyCode = $.ui.keyCode, key = e.which;
+            
+            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+                e.data.toggle();
+                e.preventDefault();
+            }
+        });
+    },
+    
+    toggle: function() {
+        if(!this.isVisible()) {
+            this.show();
+        } 
+        else {
+            this.hide();
+        }
     },
     
     show: function() {
@@ -231,6 +254,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         ];
 
         PrimeFaces.ajax.AjaxRequest(options);
+    },
+    
+    isVisible: function() {
+        return this.jq.hasClass('ui-overlay-visible');
     }
 
 });
