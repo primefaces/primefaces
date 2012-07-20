@@ -571,7 +571,7 @@ PrimeFaces.ajax.AjaxUtils = {
                         componentPostParams = jqProcess.find(':input').serializeArray();
                     }
                     
-                    postParams = postParams.concat(componentPostParams);
+                    $.merge(postParams, componentPostParams);
                 });
             }
             
@@ -582,7 +582,7 @@ PrimeFaces.ajax.AjaxUtils = {
 
         }
         else {
-            postParams = postParams.concat(form.serializeArray());
+            $.merge(postParams, form.serializeArray());
         }
 
         //serialize
