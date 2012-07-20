@@ -6,9 +6,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        if(window.jsf && window.jsf.ajax) {
-            this.bindToCore();
-        }
+        this.bindToCore();
     },
     
     bindFacet: function(eventName, facetToShow) {
@@ -27,23 +25,25 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     
     bindToCore: function() {
         $(function() {
-            jsf.ajax.addOnEvent(function(data) {
-                var doc = $(document);
+            if(window.jsf && window.jsf.ajax) {
+                jsf.ajax.addOnEvent(function(data) {
+                    var doc = $(document);
 
-                if(data.status == 'begin') {
-                    doc.trigger('ajaxStart');
-                }
-                else if(data.status == 'complete') {
-                    doc.trigger('ajaxSuccess');
-                }
-                else if(data.status == 'success') {
-                    doc.trigger('ajaxComplete');
-                }
-            });
+                    if(data.status == 'begin') {
+                        doc.trigger('ajaxStart');
+                    }
+                    else if(data.status == 'complete') {
+                        doc.trigger('ajaxSuccess');
+                    }
+                    else if(data.status == 'success') {
+                        doc.trigger('ajaxComplete');
+                    }
+                });
 
-            jsf.ajax.addOnError(function(data) {
-                $(document).trigger('ajaxError');
-            });
+                jsf.ajax.addOnError(function(data) {
+                    $(document).trigger('ajaxError');
+                });
+            }
         });
     }
     
