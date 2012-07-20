@@ -46,7 +46,7 @@ public class RadioButtonRenderer extends InputRenderer {
         Converter converter = getConverter(context, selectOneRadio);
         SelectItem selecItem = selectOneRadio.getSelectItems().get(radio.getItemIndex());
         Object itemValue = selecItem.getValue();
-        String itemValueAsString = getOptionAsString(context, radio, converter, itemValue);
+        String itemValueAsString = getOptionAsString(context, selectOneRadio, converter, itemValue);
         
         //selected
         Object value = selectOneRadio.getSubmittedValue();
