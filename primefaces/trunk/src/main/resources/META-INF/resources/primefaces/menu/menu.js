@@ -1057,3 +1057,29 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     }
 
 });
+
+/**
+ * PrimeFaces TabMenu Widget
+ */
+PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.items = this.jq.find('> .ui-tabmenu-nav > li:not(.ui-state-disabled)');
+
+        this.bindEvents();
+    },
+    
+    bindEvents: function() {
+        this.items.on('mouseover.tabmenu', function(e) {
+                    var element = $(this);
+                    if(!element.hasClass('ui-state-active')) {
+                        element.addClass('ui-state-hover');
+                    }
+                })
+                .on('mouseout.tabmenu', function(e) {
+                    $(this).removeClass('ui-state-hover');
+                });
+    }
+});
