@@ -15,21 +15,27 @@
  */
 package org.primefaces.component.media.player;
 
-public interface MediaPlayer {
+public class PDFPlayer implements MediaPlayer {
 
-	public static final String WINDOWS = "windows";
-	public static final String QUICKTIME = "quicktime";
-	public static final String FLASH = "flash";
-	public static final String REAL = "real";
-    public static final String PDF = "pdf";
+	private final static String[] supportedTypes = new String[]{"pdf"};
 	
-	public String getClassId();
+	public String getClassId() {
+		return null;
+	}
+
+	public String getCodebase() {
+		return null;
+	}
 	
-	public String getCodebase();
-		
-	public String getSourceParam();
-	
-	public String getType();
-	
-	public String[] getSupportedTypes();
+	public String getSourceParam() {
+		return null;
+	}
+
+	public String getType() {
+		return "application/pdf";
+	}
+
+    public String[] getSupportedTypes() {
+        return supportedTypes;
+    }
 }

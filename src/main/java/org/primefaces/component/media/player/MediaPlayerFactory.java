@@ -32,6 +32,7 @@ public class MediaPlayerFactory {
 			players.put(MediaPlayer.FLASH, new FlashPlayer());
 			players.put(MediaPlayer.WINDOWS, new WindowsPlayer());
 			players.put(MediaPlayer.REAL, new RealPlayer());
+            players.put(MediaPlayer.PDF, new PDFPlayer());
 		}
 		
 		return players;
