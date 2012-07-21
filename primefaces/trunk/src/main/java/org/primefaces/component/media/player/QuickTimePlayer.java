@@ -27,10 +27,6 @@ public class QuickTimePlayer implements MediaPlayer {
 	public String getCodebase() {
 		return "http://www.apple.com/qtactivex/qtplugin.cab";
 	}
-
-	public String getPlugingPage() {
-		return "http://www.apple.com/quicktime/download/";
-	}
 	
 	public String getSourceParam() {
 		return "src";
@@ -40,12 +36,7 @@ public class QuickTimePlayer implements MediaPlayer {
 		return null;
 	}
 	
-	public boolean isAppropriatePlayer(String sourceType) {
-		for(String supportedType : supportedTypes) {
-			if(sourceType.equals(supportedType))
-				return true;
-		}
-		
-		return false;
-	}
+    public String[] getSupportedTypes() {
+        return supportedTypes;
+    }
 }

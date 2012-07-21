@@ -26,25 +26,16 @@ public class FlashPlayer implements MediaPlayer {
 	public String getCodebase() {
 		return "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7";
 	}
-
-	public String getPlugingPage() {
-		return "http://www.adobe.com/go/getflashplayer";
-	}
 	
 	public String getSourceParam() {
-		return "src";
+		return "movie";
 	}
 
 	public String getType() {
 		return "application/x-shockwave-flash";
 	}
 
-	public boolean isAppropriatePlayer(String sourceType) {
-		for(String supportedType : supportedTypes) {
-			if(sourceType.equals(supportedType))
-				return true;
-		}
-		
-		return false;
-	}
+    public String[] getSupportedTypes() {
+        return supportedTypes;
+    }
 }

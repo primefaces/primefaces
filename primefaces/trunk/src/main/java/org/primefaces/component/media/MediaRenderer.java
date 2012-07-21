@@ -39,25 +39,22 @@ public class MediaRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Media media = (Media) component;
 		MediaPlayer player = resolvePlayer(context, media);
-		
-		if(AgentUtils.isIE(context))
-			encodeObjectTag(context, media, player);
-		else
-			encodeEmbedTag(context, media, player);
-	}
-	
-	private void encodeObjectTag(FacesContext context, Media media, MediaPlayer player) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String src = getMediaSrc(context, media);
+        boolean isIE = AgentUtils.isIE(context);
 		
 		writer.startElement("object", media);
-		writer.writeAttribute("classid", player.getClassId(), null);
-		if(player.getCodebase() != null) {
-			writer.writeAttribute("codebase", player.getCodebase(), null);
-		}
+        writer.writeAttribute("type", player.getType(), null);
+        writer.writeAttribute("data", src, null);
+        
+        if(isIE) {
+            encodeIEConfig(writer, player);
+        }
+		
 		if(media.getStyleClass() != null) {
 			writer.writeAttribute("class", media.getStyleClass(), null);
 		}
+        
 		renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
 		
 		encodeParam(writer, player.getSourceParam(), src, false);
@@ -72,35 +69,16 @@ public class MediaRenderer extends CoreRenderer {
 		
 		writer.endElement("object");
 	}
-	
-	private void encodeEmbedTag(FacesContext context, Media media, MediaPlayer player) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String src = getMediaSrc(context, media);
-		
-		writer.startElement("embed", media);
-		writer.writeAttribute("pluginspage", player.getPlugingPage(), null);
-		writer.writeAttribute("src", src, null);
-		if(media.getStyleClass() != null) {
-			writer.writeAttribute("class", media.getStyleClass(), null);
+    
+    protected void encodeIEConfig(ResponseWriter writer, MediaPlayer player) throws IOException {
+        writer.writeAttribute("classid", player.getClassId(), null);
+        
+		if(player.getCodebase() != null) {
+			writer.writeAttribute("codebase", player.getCodebase(), null);
 		}
-		if(player.getType() != null) {
-			writer.writeAttribute("type", player.getType(), null);
-		}
-		
-		renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
-		
-		for(UIComponent child : media.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter param = (UIParameter) child;
-				
-				encodeParam(writer, param.getName(), param.getValue(), true);
-			}
-		}
-		
-		writer.endElement("embed");
-	}
-
-	private void encodeParam(ResponseWriter writer, String name, Object value, boolean asAttribute) throws IOException {
+    }
+     
+    protected void encodeParam(ResponseWriter writer, String name, Object value, boolean asAttribute) throws IOException {
 		if(value == null)
 			return;
 		
@@ -114,30 +92,33 @@ public class MediaRenderer extends CoreRenderer {
 		}
 	}
 
-	private MediaPlayer resolvePlayer(FacesContext context, Media media) {
+	protected MediaPlayer resolvePlayer(FacesContext context, Media media) {
 		if(media.getPlayer() != null) {
 			return MediaPlayerFactory.getPlayer(media.getPlayer());
 		}
-		else if(media.getValue() instanceof String){
+		else if(media.getValue() instanceof String) {
 			Map<String,MediaPlayer> players = MediaPlayerFactory.getPlayers();
 			String[] tokens = ((String) media.getValue()).split("\\.");
 			String type = tokens[tokens.length-1];
 			
 			for(MediaPlayer mp : players.values()) {
-				if(mp.isAppropriatePlayer(type))
-					return mp;
+                for(String supportedType : mp.getSupportedTypes()) {
+                    if(supportedType.equalsIgnoreCase(type)) {
+                        return mp;
+                    }
+                }
 			}
-		}
+        } 
 		
 		throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(context) + "', cannot play source:" + media.getValue());
 	}
 
 	protected String getMediaSrc(FacesContext context, Media media) {
-		String src = null;
+		String src;
 		Object value = media.getValue();
         
         if(value == null) {
-            src = "";
+            src = null;
         }
         else {
             if(value instanceof StreamedContent) {
@@ -163,6 +144,10 @@ public class MediaRenderer extends CoreRenderer {
             }
             else {
                 src = getResourceURL(context, (String) value);
+                
+                if(src.startsWith("/")) {
+                    src = context.getExternalContext().encodeResourceURL(src);
+                }
             }
         }
 

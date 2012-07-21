@@ -25,12 +25,10 @@ public interface MediaPlayer {
 	public String getClassId();
 	
 	public String getCodebase();
-	
-	public String getPlugingPage();
-	
+		
 	public String getSourceParam();
 	
 	public String getType();
 	
-	public boolean isAppropriatePlayer(String source);
+	public String[] getSupportedTypes();
 }
