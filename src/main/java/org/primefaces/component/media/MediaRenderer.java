@@ -70,6 +70,8 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
         
+        renderChildren(context, media);
+        
 		
 		writer.endElement("object");
 	}
@@ -174,5 +176,15 @@ public class MediaRenderer extends CoreRenderer {
         StringBuilder builder = new StringBuilder();
         
         return builder.append(Constants.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
