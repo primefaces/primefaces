@@ -79,6 +79,9 @@ public class TabMenuRenderer extends BaseMenuRenderer {
     protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
+        if(item.getIcon() != null) {
+            containerClass += " ui-tabmenuitem-hasicon";
+        }
         
         //header container
         writer.startElement("li", null);
@@ -87,12 +90,10 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
 
         encodeMenuItem(context, item);
-
+        
         writer.endElement("li");
     }
 
-
-    
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		// Do nothing

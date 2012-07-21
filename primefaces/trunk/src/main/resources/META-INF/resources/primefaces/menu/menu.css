@@ -360,7 +360,7 @@
     padding: .2em .2em 0; 
 }
 
-.ui-tabmenu .ui-tabmenu-nav li { 
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem { 
     list-style: none; 
     float: left; 
     position: relative; 
@@ -372,15 +372,19 @@
     top: 1px; 
 }
 
-.ui-tabmenu .ui-tabmenu-nav li a { 
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem a { 
     float: left; 
-    padding: .5em 1em; 
+    padding: 0.5em 1em;
     text-decoration: none; 
 }
 
-.ui-tabmenu .ui-tabmenu-nav li .ui-icon { 
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem-hasicon a { 
+    padding: 0.5em 1em 0.5em 0.2em;
+}
+
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-icon { 
     float: left; 
-    margin: 0.4em 0.2em 0 0; 
     cursor: pointer; 
+    margin-top: -1px;
 }
 
