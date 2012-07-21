@@ -42,6 +42,7 @@ public class MediaRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String src = getMediaSrc(context, media);
         boolean isIE = AgentUtils.isIE(context);
+        String sourceParam = player.getSourceParam();
 		
 		writer.startElement("object", media);
         writer.writeAttribute("type", player.getType(), null);
@@ -57,15 +58,18 @@ public class MediaRenderer extends CoreRenderer {
         
 		renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
 		
-		encodeParam(writer, player.getSourceParam(), src, false);
-	
-		for(UIComponent child : media.getChildren()) {
-			if(child instanceof UIParameter) {
-				UIParameter param = (UIParameter) child;
-				
-				encodeParam(writer, param.getName(), param.getValue(), false);
-			}
-		}
+        if(sourceParam != null) {
+            encodeParam(writer, player.getSourceParam(), src, false);
+        }
+        
+        for(UIComponent child : media.getChildren()) {
+            if(child instanceof UIParameter) {
+                UIParameter param = (UIParameter) child;
+
+                encodeParam(writer, param.getName(), param.getValue(), false);
+            }
+        }
+        
 		
 		writer.endElement("object");
 	}
