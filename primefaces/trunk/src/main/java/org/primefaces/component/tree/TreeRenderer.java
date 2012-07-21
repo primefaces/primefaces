@@ -140,7 +140,7 @@ public class TreeRenderer extends CoreRenderer {
         TreeNode root = (TreeNode) tree.getValue();
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
-        boolean selectable = tree.getSelectionMode() != null;
+        boolean selectable = selectionMode != null;
         boolean multiselectable = selectable && selectionMode.equals("single");
         boolean checkbox = selectable && selectionMode.equals("checkbox");
         
@@ -179,7 +179,7 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(rowKey);
             boolean isLeaf = node.isLeaf();
             boolean expanded = node.isExpanded();
-            boolean selectable = node.isSelectable() && (tree.getSelectionMode() != null);
+            boolean selectable = node.isSelectable();
             String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
             Object datakey = tree.getDatakey();
