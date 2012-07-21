@@ -27,24 +27,15 @@ public class RealPlayer implements MediaPlayer {
 		return null;
 	}
 
-	public String getPlugingPage() {
-		return "http://www.real.com";
-	}
-
 	public String getSourceParam() {
 		return "src";
 	}
 
 	public String getType() {
-		return null;
+		return "audio/x-pn-realaudio-plugin";
 	}
-	
-	public boolean isAppropriatePlayer(String sourceType) {
-		for(String supportedType : supportedTypes) {
-			if(sourceType.equals(supportedType))
-				return true;
-		}
-		
-		return false;
-	}
+
+    public String[] getSupportedTypes() {
+        return supportedTypes;
+    }
 }
