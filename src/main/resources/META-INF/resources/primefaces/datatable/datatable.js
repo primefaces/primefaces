@@ -1279,18 +1279,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Remove given rowIndex from selection
      */
-    removeSelection: function(rowIndex) {
-        var selection = this.selection;
-
-        $.each(selection, function(index, value) {
-            if(value === rowIndex) {
-                selection.remove(index);
-
-                return false;       //break
-            } 
-            else {
-                return true;        //continue
-            }
+    removeSelection: function(rowIndex) {        
+        this.selection = $.grep(this.selection, function(value) {
+            return value != rowIndex;
         });
     },
     
@@ -1307,21 +1298,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Finds if given rowIndex is in selection
      */
     isSelected: function(rowIndex) {
-        var selection = this.selection,
-        selected = false;
-
-        $.each(selection, function(index, value) {
-            if(value === rowIndex) {
-                selected = true;
-
-                return false;       //break
-            } 
-            else {
-                return true;        //continue
-            }
-        });
-
-        return selected;
+        return PrimeFaces.inArray(this.selection, rowIndex);
     },
     
     getRowMeta: function(row) {
