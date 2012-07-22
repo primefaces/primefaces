@@ -558,7 +558,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         options.params = [
             {name: this.id + '_sorting', value: true},
             {name: this.id + '_sortKey', value: columnId},
-            {name: this.id + '_sortDir', value: order}
+            {name: this.id + '_sortDir', value: order},
+            {name: this.id + '_skipChildren', value: true}
         ];
         
         if(columnHeader.hasClass('ui-dynamic-column')) {

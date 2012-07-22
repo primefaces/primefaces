@@ -659,3 +659,8 @@ import org.primefaces.component.datatable.feature.*;
         
         return value == null ? "0,0" : value;
     }
+    
+    @Override
+    protected boolean shouldProcessChildren(FacesContext context) {
+        return !context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_skipChildren");
+    }
