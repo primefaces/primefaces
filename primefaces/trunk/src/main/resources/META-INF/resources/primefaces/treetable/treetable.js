@@ -207,17 +207,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
      * Remove given rowIndex from selection
      */
     removeSelection: function(nodeKey) {
-        var selection = this.selection;
-
-        $.each(selection, function(index, value) {
-            if(value === nodeKey) {
-                selection.remove(index);
-
-                return false;       //break
-            } 
-            else {
-                return true;        //continue
-            }
+        this.selection = $.grep(this.selection, function(value) {
+            return value != nodeKey;
         });
     },
     
