@@ -292,6 +292,10 @@ public class UIData extends javax.faces.component.UIData {
     }
     
     protected void process(FacesContext context, UIComponent component, PhaseId phaseId) {
+        if(!shouldProcessChildren(context)) {
+            return;
+        }
+        
         if(phaseId == PhaseId.APPLY_REQUEST_VALUES) {
             component.processDecodes(context);
         }
@@ -589,6 +593,10 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     protected void setDataModel(DataModel dataModel) {
         this.model = dataModel;
+    }
+    
+    protected boolean shouldProcessChildren(FacesContext context) {
+        return true;
     }
 }
 
