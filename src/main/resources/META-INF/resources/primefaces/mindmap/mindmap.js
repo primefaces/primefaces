@@ -7,6 +7,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.cfg.width = this.jq.width();
         this.cfg.height = this.jq.height();
+        this.cfg.nodeRX = this.cfg.width * 0.04;
+        this.cfg.nodeRY = this.cfg.height * 0.04;
         this.cfg.centerX = this.cfg.width / 2;
         this.cfg.centerY = this.cfg.height / 2;
         this.raphael = new Raphael(this.id, this.cfg.width, this.cfg.height);
@@ -14,7 +16,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.cfg.model) {            
             //root
-            this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, 40, 25, this.cfg.model);
+            this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, this.cfg.model);
             
             //children
             if(this.cfg.model.children) {
@@ -23,22 +25,25 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    createNode: function(x, y, rx, ry, model) {
-        var node = this.raphael.ellipse(x, y, rx, ry).attr('opacity', 0)
+    createNode: function(x, y, model) {
+        var node = this.raphael.ellipse(x, y, this.cfg.nodeRX, this.cfg.nodeRY).attr('opacity', 0)
                             .data('model', model)
                             .data('connections', [])
                             .data('widget', this);
                             
         var label = model.label,
+        nodeWidth = node.getBBox().width,
         title = null;
         
-        if(label.length > 40) {
+        var text = this.raphael.text(x, y, label).attr('opacity', 0),
+        fontSize = text.attr('font-size');
+                
+        if(nodeWidth <= text.getBBox().width) {
             title = label;
-            label = label.substring(0, 12) + '...';
+            label = label.substring(0, (nodeWidth / fontSize));
+            text.attr('text', label + '...');
         }
-                            
-        var text = this.raphael.text(x, y, label).attr('opacity', 0);
-         
+                
         text.data('node', node);
         node.data('text', text);
          
@@ -114,7 +119,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
                 x = node.attr('cx') + radius * Math.cos(angle),
                 y = node.attr('cy') + radius * Math.sin(angle);
 
-                var childNode = this.createNode(x, y, 40, 25, childModel);
+                var childNode = this.createNode(x, y, childModel);
 
                 //connection
                 var connection = this.raphael.connection(node, childNode, "#000", null, this.cfg.effectSpeed);
@@ -136,7 +141,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         if(parentModel) {
             parentModel.selectable = true;
             
-            var parentNode = this.createNode(60, 40, 40, 25, parentModel);
+            var parentNode = this.createNode(60, 40, parentModel);
             
             //connection
             var parentConnection = this.raphael.connection(node, parentNode, "#000", null, this.cfg.effectSpeed);
