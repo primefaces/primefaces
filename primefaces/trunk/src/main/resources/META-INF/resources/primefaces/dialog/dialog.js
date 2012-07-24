@@ -1,4 +1,4 @@
-/**
+            /**
  * PrimeFaces Dialog Widget
  */ 
 PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
@@ -167,7 +167,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.moveToTop();
-        this.focusFirstInput();
+        this.applyFocus();
 
         if(this.cfg.modal)
             this.enableModality();
@@ -202,7 +202,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.disableModality();
     },
     
-    focusFirstInput: function() {
+    applyFocus: function() {
         this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
     },
     
@@ -514,6 +514,12 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.hideEffect = 'fade';
         
         this._super(cfg);
+        
+        this.buttonPane = this.jq.children('div.ui-dialog-buttonpane');
+    },
+    
+    applyFocus: function() {
+        this.buttonPane.find('button,input[type="button"],:submit').filter(':visible:enabled').eq(0).focus();
     }
 
 });
