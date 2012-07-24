@@ -82,6 +82,13 @@
 			<type>java.lang.String</type>
             <description>Comma seperated list of severities to display only.</description>
 		</attribute>
+        <attribute>
+			<name>closable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Adds a close icon to hide the messages.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

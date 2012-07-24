@@ -76,3 +76,8 @@
 .ui-message-warn-icon {background-position: 0px -492px;}
 .ui-message-error-icon {background-position: 0px -96px;}
 .ui-message-fatal-icon {background-position: 0px -228px;}
+
+.ui-messages .ui-messages-close {
+    float:right;
+    margin:10px;
+}
