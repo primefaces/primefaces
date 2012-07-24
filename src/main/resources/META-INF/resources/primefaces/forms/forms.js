@@ -1469,23 +1469,9 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         
         this.buttons = this.jq.children('div:not(:disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
-        var _self = this;
 
-        this.buttons.mouseover(function() {
-            var button = $(this);
-            if(!button.hasClass('ui-state-active')) {
-                button.addClass('ui-state-hover');
-            }
-        }).mouseout(function() {
-            $(this).removeClass('ui-state-hover');
-        }).click(function() {
-            var button = $(this);
-
-            if(!button.hasClass('ui-state-active')) {
-                _self.select(button);
-            }
-        });
-
+        this.bindEvents();
+        
         //Client behaviors
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
@@ -1495,14 +1481,31 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
-    select: function(button) {
-        this.unselect(this.buttons.filter('.ui-state-active'));
+    bindEvents: function() {
+        var _self = this;
+                
+        this.buttons.on('mouseover', function() {
+            var button = $(this);
+            if(!button.hasClass('ui-state-active')) {
+                button.addClass('ui-state-hover');
+            }
+        })
+        .on('mouseout', function() {
+            $(this).removeClass('ui-state-hover');
+        })
+        .on('click', function() {
+            var button = $(this);
 
-        button.addClass('ui-state-active').children(':radio').attr('checked','checked').change();
+            if(!button.hasClass('ui-state-active')) {
+                _self.select(button);
+            }
+        });
     },
     
-    unselect: function(button) {
-        button.removeClass('ui-state-active ui-state-hover').children(':radio').removeAttr('checked').change();
+    select: function(button) {
+        this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').removeAttr('checked');
+
+        button.addClass('ui-state-active').children(':radio').attr('checked','checked').change();
     }
     
 });
