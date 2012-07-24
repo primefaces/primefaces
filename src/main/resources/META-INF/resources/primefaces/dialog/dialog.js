@@ -519,7 +519,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     },
     
     applyFocus: function() {
-        this.buttonPane.find('button,input[type="button"],:submit').filter(':visible:enabled').eq(0).focus();
+        this.buttonPane.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
     }
 
 });
