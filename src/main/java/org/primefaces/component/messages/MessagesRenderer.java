@@ -63,6 +63,10 @@ public class MessagesRenderer extends UINotificationRenderer {
 		writer.startElement("div", uiMessages);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-messages ui-widget", null);
+        
+        if(!messagesMap.isEmpty() && uiMessages.isClosable()) {
+            encodeCloseIcon(context, uiMessages);
+        }
 		
 		for(String severity : messagesMap.keySet()) {
 			List<FacesMessage> severityMessages = messagesMap.get(severity);
@@ -140,4 +144,19 @@ public class MessagesRenderer extends UINotificationRenderer {
 		
 		writer.endElement("div");
 	}
+
+    protected void encodeCloseIcon(FacesContext context, Messages uiMessages) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", "ui-messages-close", null);
+        writer.writeAttribute("onclick", "$('" + getEscapedClientId(uiMessages.getClientId(context)) + "').fadeOut();return false;", null);
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+        writer.endElement("span");
+        
+        writer.endElement("a");
+    }
 }

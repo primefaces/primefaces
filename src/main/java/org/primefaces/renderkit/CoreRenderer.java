@@ -170,7 +170,7 @@ public abstract class CoreRenderer extends Renderer {
     }
    
     public String getEscapedClientId(String clientId){
-    	return clientId.replaceAll(":", "\\\\\\\\:");
+    	return "#" + clientId.replaceAll(":", "\\\\\\\\:");
     }
     
     public boolean isValueEmpty(String value) {
