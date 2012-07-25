@@ -22,3 +22,7 @@
 .ui-editor-prompt input,
 .ui-editor-prompt textarea {font:8.5pt Arial,Verdana;}
 .ui-editor-message {background-color:#FDFCEE; width:150px; padding:4px; font-size:8.5pt}
+
+/** IE fix within overlays **/
+.ui-overlay-hidden .ui-editor iframe{display: none !important;} 
+.ui-overlay-visible .ui-editor iframe{display: inline !important;} 
