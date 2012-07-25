@@ -1187,6 +1187,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     clearFilters: function() {
         $(this.jqId + ' thead th .ui-column-filter').val('');
+        
+        this.filter();
     },
     
     /**
