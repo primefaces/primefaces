@@ -471,8 +471,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         
-        this.input.parent().removeClass('ui-helper-hidden-accessible');
-        
         var _self = this,
         selectedOption = this.options.filter(':selected');
 
@@ -481,15 +479,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
         });
         
-        //triggers and default label value
-        if(this.cfg.editable) {
-            this.triggers = this.jq.find('.ui-selectonemenu-trigger');
-        } 
-        else {
-            this.triggers = this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-            //this.setLabel(selectedOption.text());
-            //this.value = selectedOption.val();
-        }
+        //triggers
+        this.triggers = this.cfg.editable ? this.jq.find('.ui-selectonemenu-trigger') : this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
         
         //activate selected
         this.activateItem(this.items.eq(selectedOption.index()));
@@ -502,7 +493,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             
             this.bindConstantEvents();
             
-            //dialog support
             this.setupDialogSupport();
         }
 
@@ -584,13 +574,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             else {
                 _self.hide();
                 
-                //revert
-                _self.activateItem(_self.items.eq(_self.preValue.index()));
+                //revert to preShowValue
+                _self.activateItem(_self.items.eq(_self.preShowValue.index()));
             }
 
             _self.jq.removeClass('ui-state-hover');
             _self.menuIcon.removeClass('ui-state-hover');          
-            _self.input.focus();
+            _self.input.trigger('focus');
             e.preventDefault();
         });
         
@@ -638,7 +628,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide();
                 
                 //revert
-                _self.activateItem(_self.items.eq(_self.preValue.index()));
+                _self.activateItem(_self.items.eq(_self.preShowValue.index()));
             }
         });
 
@@ -665,21 +655,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.items.filter(':not(.ui-state-disabled)').unbind('mouseover click');
         this.triggers.unbind('mouseover mouseout click');
         this.input.unbind('focus blur keydown keyup');
-    },
-    
-    highlightItem: function(item, updateLabel) {
-        this.unhighlightItem(this.items.filter('.ui-state-highlight'));
-        item.addClass('ui-state-highlight');
-        
-        if(updateLabel) {
-            this.setLabel(item.text());
-        }
-
-        this.alignScroller(item);
-    },
-    
-    unhighlightItem: function(item) {
-        item.removeClass('ui-state-highlight');
     },
     
     activateItem: function(item) {
@@ -758,9 +733,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                     if(mozilla) {
-                        var activeItem = _self.items.filter('.ui-state-active');
-
-                        _self.input.val(_self.options.eq(activeItem.index()).val());
+                        _self.input.val(_self.options.eq(_self.getActiveItem().index()).val());
                     }
                     
                     e.preventDefault();
@@ -776,8 +749,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 default:
                     var currentOption = _self.options.filter(':selected'),
                     item = _self.items.eq(currentOption.index()),
-                    activeItem = _self.getActiveItem(),
-                    activeItemOption = _self.options.eq(activeItem.index());
+                    activeItemOption = _self.options.eq(_self.getActiveItem().index());
                     
                     if(activeItemOption.val() != currentOption.val()) {
                         _self.activateItem(item);
@@ -850,7 +822,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.hide();
 
             //check if current value is different from pre shown value
-            if(this.input.val() !== this.preValue.val()) {
+            if(this.input.val() !== this.preShowValue.val()) {
                 this.triggerChange();
             }
         }  
@@ -892,7 +864,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.panel.show();
         
         //value before panel is shown
-        this.preValue = this.options.filter(':selected');
+        this.preShowValue = this.options.filter(':selected');
     },
     
     hide: function() {
