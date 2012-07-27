@@ -599,8 +599,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
     
 });
 
-
-/*
+/**
  * PrimeFaces ContextMenu Widget
  */
 PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
@@ -631,13 +630,13 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             });
         }
         else {
-            if(this.jqTarget.hasClass('ui-datatable')) {
+            if(this.cfg.type === 'DataTable') {
                 this.bindDataTable();
             }
-            else if(this.jqTarget.hasClass('ui-treetable')) {
+            else if(this.cfg.type === 'TreeTable') {
                 this.bindTreeTable();
             }
-            else if(this.jqTarget.hasClass('ui-tree')) {
+            else if(this.cfg.type === 'Tree') {
                 this.bindTree();
             }
             else {                
@@ -652,42 +651,39 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindDataTable: function() {
-        var dataTable = this.jqTarget.data('primefaces-widget'),
-        rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
+        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
         event = this.cfg.event + '.datatable',
         _self = this;
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        dataTable.onRowClick(e, this, true);
+                        window[_self.cfg.targetWidgetVar].onRowClick(e, this, true);
                         _self.show(e);
                         e.preventDefault();
                     });
     },
     
     bindTreeTable: function() {
-        var treeTable = this.jqTarget.data('primefaces-widget'),
-        rowSelector = this.jqTargetId + ' .ui-treetable-data > ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node'),
+        var rowSelector = this.jqTargetId + ' .ui-treetable-data > ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node'),
         event = this.cfg.event + '.treetable',
         _self = this;
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        treeTable.onRowClick(e, $(this));
+                        window[_self.cfg.targetWidgetVar].onRowClick(e, $(this));
                         _self.show(e);
                         e.preventDefault();
                     });
     },
     
     bindTree: function() {
-        var tree = this.jqTarget.data('primefaces-widget'),
-        rowSelector = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node'),
+        var rowSelector = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node'),
         event = this.cfg.event + '.tree',
         _self = this;
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        tree.nodeClick(e, $(this));
+                        window[_self.cfg.targetWidgetVar].nodeClick(e, $(this));
                         _self.show(e);
                         e.preventDefault();
                     });

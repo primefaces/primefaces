@@ -21,9 +21,13 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.Widget;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.menu.AbstractMenu;
 
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.component.tree.Tree;
+import org.primefaces.component.treetable.TreeTable;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
@@ -33,7 +37,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String widgetVar = menu.resolveWidgetVar();
 		String clientId = menu.getClientId(context);
-		String target = findTarget(context, menu);
+		UIComponent target = findTarget(context, menu);
         String event = menu.getEvent();
 		
         startScript(writer, clientId);
@@ -43,7 +47,14 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         writer.write("PrimeFaces.cw('ContextMenu','" + widgetVar + "',{");
         writer.write("id:'" + clientId + "'");     
         
-        if(target != null) writer.write(",target:" + target);
+        if(target != null) {
+            String targetWidgetVar = ((Widget) target).resolveWidgetVar();
+            
+            writer.write(",target:'" + target.getClientId(context) + "'");
+            writer.write(",type:'" + target.getClass().getSimpleName() + "'");
+            writer.write(",targetWidgetVar:'" + targetWidgetVar + "'");
+        }
+        
         if(menu.getNodeType() != null) writer.write(",nodeType:'" + menu.getNodeType() + "'");
         if(event != null) writer.write(",event:'" + event + "'");
         
@@ -62,19 +73,18 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         encodeMenu(context, menu, style, styleClass, "menu");
 	}
 
-    protected String findTarget(FacesContext context, ContextMenu menu) {
+    protected UIComponent findTarget(FacesContext context, ContextMenu menu) {
 		String _for = menu.getFor();
 
 		if(_for != null) {
 			UIComponent forComponent = menu.findComponent(_for);
-
-			if(forComponent == null)
+			if(forComponent == null) {
 				throw new FacesException("Cannot find component '" + _for + "' in view.");
-			else 
-                return "'" + forComponent.getClientId(context) + "'";
+            }
+			 
+            return forComponent;   
 		}
         else {
-            //null means document as target
             return null;
         }
 	}
