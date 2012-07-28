@@ -162,26 +162,24 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodePanel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean customContent = menu.getVar() != null;
-        int height = calculatePanelHeight(menu, selectItems.size());
-        String panelStyle = menu.getPanelStyle() != null ? menu.getPanelStyle() : "";
+        String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
-             
-        if(height != -1) {
-            panelStyle += ";height:" + height + "px";
-        }
         
         writer.startElement("div", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", panelStyleClass, null);
-        
-        if(!isValueEmpty(panelStyle)) {
+        if(panelStyle != null) {
             writer.writeAttribute("style", panelStyle, null);
         }
         
         if(menu.isFilter()) {
             encodeFilter(context, menu);
         }
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
 
         if(customContent) {
             writer.startElement("table", menu);
@@ -198,6 +196,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.endElement("ul");
         }
         
+        writer.endElement("div");
         writer.endElement("div");
     }
 
@@ -335,16 +334,16 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("option");
     }
 
-    protected int calculatePanelHeight(SelectOneMenu menu, int itemSize) {
+    protected String calculateWrapperHeight(SelectOneMenu menu, int itemSize) {
         int height = menu.getHeight();
         
         if(height != Integer.MAX_VALUE) {
-            return height;
+            return height + "px";
         } else if(itemSize > 10) {
-            return 200;
+            return 200 + "px";
         }
         
-        return -1;
+        return "auto";
     }
 
     @Override
