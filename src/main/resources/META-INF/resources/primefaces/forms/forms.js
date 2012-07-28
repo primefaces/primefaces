@@ -465,8 +465,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
         this.panel = this.jq.children(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
-        this.itemContainer = this.panel.children('.ui-selectonemenu-items');
-        this.items = this.itemContainer.find('.ui-selectonemenu-item');
+        this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
+        this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
+        this.items = this.itemsContainer.find('.ui-selectonemenu-item');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
@@ -476,7 +477,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //disable options
         this.options.filter(':disabled').each(function() {
-            _self.itemContainer.children().eq($(this).index()).addClass('ui-state-disabled');
+            _self.itemsContainer.children().eq($(this).index()).addClass('ui-state-disabled');
         });
         
         //triggers
@@ -605,9 +606,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         
         //filter
         if(this.cfg.filter) {
-            this.cfg.initialHeight = this.panel.height();
+            this.cfg.initialHeight = this.itemsWrapper.height();
             this.setupFilterMatcher();
             this.filterInput = this.panel.find('> div.ui-selectonemenu-filter-container > input.ui-selectonemenu-filter');
+            
             PrimeFaces.skinInput(this.filterInput);
 
             this.filterInput.keyup(function() {
@@ -843,7 +845,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     alignScroller: function(item) {
         var scrollHeight = this.panel.height();
         
-        if(scrollHeight < this.itemContainer.height()) {
+        if(scrollHeight < this.itemsContainer.height()) {
             var itemTop = item.offset().top - this.items.eq(0).offset().top,
             visibleTop = itemTop + item.height(),
             scrollTop = this.panel.scrollTop(),
@@ -1005,11 +1007,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         
-        if(this.itemContainer.height() < this.cfg.initialHeight) {
-            this.panel.css('height', 'auto');
+        if(this.itemsContainer.height() < this.cfg.initialHeight) {
+            this.itemsWrapper.css('height', 'auto');
         }
         else {
-            this.panel.height(this.cfg.initialHeight);
+            this.itemsWrapper.height(this.cfg.initialHeight);
         }
     }
     

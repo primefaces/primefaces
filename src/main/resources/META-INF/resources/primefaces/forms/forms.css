@@ -152,6 +152,10 @@
 
 .ui-selectonemenu-panel {
     position: absolute;
+    height: auto;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-items-wrapper {
     overflow: auto;
 }
 
@@ -194,7 +198,7 @@
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container {
     position: relative;
     margin: 0;
-    padding: 0.4em 0.4em 0 0.4em;
+    padding: 0.4em;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
