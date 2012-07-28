@@ -178,6 +178,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(!isValueEmpty(panelStyle)) {
             writer.writeAttribute("style", panelStyle, null);
         }
+        
+        if(menu.isFilter()) {
+            encodeFilter(context, menu);
+        }
 
         if(customContent) {
             writer.startElement("table", menu);
@@ -278,6 +282,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(menu.isEditable())  writer.write(",editable:true");
         if(menu.getOnchange() != null) writer.write(",onchange:function() {" + menu.getOnchange() + "}");
 
+        if(menu.isFilter()) {
+            writer.write(",filter:true");
+            
+            if(menu.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + menu.getFilterMatchMode() + "'");     
+            if(menu.getFilterFunction() != null) writer.write(",filterFunction:" + menu.getFilterFunction());
+        }
+        
         encodeClientBehaviors(context, menu);
 
         writer.write("});});");
@@ -349,5 +360,28 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context) + "_input";
+    }
+
+    protected void encodeFilter(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = menu.getClientId(context) + "_filter";
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-selectonemenu-filter-container", null);
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("class", "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-search", id);
+        writer.endElement("span");
+        
+        writer.endElement("input");
+        
+        writer.endElement("div");
     }
 }

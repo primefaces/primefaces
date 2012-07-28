@@ -470,7 +470,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
-        
+                
         var _self = this,
         selectedOption = this.options.filter(':selected');
 
@@ -602,6 +602,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         
         //key bindings
         this.bindKeyEvents();
+        
+        //filter
+        if(this.cfg.filter) {
+            this.cfg.initialHeight = this.panel.height();
+            this.setupFilterMatcher();
+            this.filterInput = this.panel.find('> div.ui-selectonemenu-filter-container > input.ui-selectonemenu-filter');
+            PrimeFaces.skinInput(this.filterInput);
+
+            this.filterInput.keyup(function() {
+                _self.filter($(this).val());
+            });
+        }
     },
     
     bindConstantEvents: function() {
@@ -948,6 +960,57 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     
     getActiveItem: function() {
         return this.items.filter('.ui-state-active');
+    },
+    
+    setupFilterMatcher: function() {
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.filterMatchers = {
+            'startsWith': this.startsWithFilter
+            ,'contains': this.containsFilter
+            ,'endsWith': this.endsWithFilter
+            ,'custom': this.cfg.filterFunction
+        };
+                        
+        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
+    },
+    
+    startsWithFilter: function(value, filter) {
+        return value.toLowerCase().indexOf(filter) === 0;
+    },
+    
+    containsFilter: function(value, filter) {
+        return value.toLowerCase().indexOf(filter) !== -1;
+    },
+    
+    endsWithFilter: function(value, filter) {
+        return value.indexOf(filter, value.length - filter.length) !== -1;
+    },
+    
+    filter: function(value) {
+        var filterValue = $.trim(value).toLowerCase();
+        
+        if(filterValue === '') {
+            this.items.filter(':hidden').show();
+        }
+        else {
+            for(var i = 0; i < this.options.length; i++) {
+                var option = this.options.eq(i),
+                itemLabel = option.text(),
+                item = this.items.eq(i);
+
+                if(this.filterMatcher(itemLabel, filterValue))
+                    item.show();
+                else
+                    item.hide();
+            }
+        }
+        
+        if(this.itemContainer.height() < this.cfg.initialHeight) {
+            this.panel.css('height', 'auto');
+        }
+        else {
+            this.panel.height(this.cfg.initialHeight);
+        }
     }
     
 });
