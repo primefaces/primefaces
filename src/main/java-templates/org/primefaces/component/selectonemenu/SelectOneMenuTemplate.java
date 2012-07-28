@@ -18,6 +18,9 @@ import org.primefaces.util.MessageFactory;
     public final static String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
     public final static String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
+    public final static String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
+    public final static String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
     public List<Column> getColums() {
         List<Column> columns = new ArrayList<Column>();

@@ -99,6 +99,7 @@
     margin-left: 1px;
 }
 
+/** SelectOneMenu **/
 .ui-selectonemenu {
     display: inline-block;
     position: relative;
@@ -183,6 +184,23 @@
     border-style: solid;
     border-color: inherit;
     padding:4px 10px 4px 10px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+    width: 85%;
+    padding-right:15px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container {
+    position: relative;
+    margin: 0;
+    padding: 0.4em 0.4em 0 0.4em;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .ui-state-disabled a{outline: none;}
