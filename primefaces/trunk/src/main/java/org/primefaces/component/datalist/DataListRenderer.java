@@ -125,7 +125,9 @@ public class DataListRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean isDefinition = list.isDefinition();
-        UIComponent definition = list.getFacet("description");
+        UIComponent definitionFacet = list.getFacet("description");
+        boolean renderDefinition = isDefinition && definitionFacet != null;
+        
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
         String varStatus = list.getVarStatus();
@@ -163,9 +165,9 @@ public class DataListRenderer extends DataRenderer {
                 renderChildren(context, list);
                 writer.endElement(listItemTag);
 
-                if(isDefinition) {
+                if(renderDefinition) {
                     writer.startElement("dd", null);
-                    definition.encodeAll(context);
+                    definitionFacet.encodeAll(context);
                     writer.endElement("dd");
                 }
             }
