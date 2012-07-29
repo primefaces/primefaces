@@ -91,6 +91,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             });
         }
         
+        //mark target and descandants of target as a trigger for a primefaces overlay
+        if(this.cfg.popup) {
+            this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
+        }
+        
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
