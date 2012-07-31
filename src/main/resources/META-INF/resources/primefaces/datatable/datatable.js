@@ -424,8 +424,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         options.params = [
             {name: this.id + '_scrolling', value: true},
-            {name: this.id + '_scrollOffset', value: this.scrollOffset}
-            
+            {name: this.id + '_scrollOffset', value: this.scrollOffset},
+            {name: this.id + '_encodeFeature', value: true}
         ];
 
         PrimeFaces.ajax.AjaxRequest(options);
@@ -483,7 +483,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_pagination', value: true},
             {name: this.id + '_first', value: newState.first},
             {name: this.id + '_rows', value: newState.rows},
-            {name: this.id + '_updateBody', value: true}
+            {name: this.id + '_encodeFeature', value: true}
         ];
 
         if(this.hasBehavior('page')) {
@@ -559,7 +559,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_sorting', value: true},
             {name: this.id + '_sortKey', value: columnId},
             {name: this.id + '_sortDir', value: order},
-            {name: this.id + '_skipChildren', value: true}
+            {name: this.id + '_skipChildren', value: true},
+            {name: this.id + '_encodeFeature', value: true}
         ];
         
         if(columnHeader.hasClass('ui-dynamic-column')) {
@@ -624,7 +625,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         options.params = [
             {name: this.id + '_filtering', value: true},
-            {name: this.id + '_updateBody', value: true}
+            {name: this.id + '_encodeFeature', value: true}
         ];
 
         if(this.hasBehavior('filter')) {
@@ -996,7 +997,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         options.params = [
             {name: this.id + '_rowExpansion', value: true},
-            {name: this.id + '_expandedRowIndex', value: rowIndex}
+            {name: this.id + '_expandedRowIndex', value: rowIndex},
+            {name: this.id + '_encodeFeature', value: true}
         ];
         
         if(this.hasBehavior('rowToggle')) {
@@ -1102,7 +1104,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         options.params = [
             {name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
-            {name: this.id + '_rowEditAction', value: action}
+            {name: this.id + '_rowEditAction', value: action},
+            {name: this.id + '_encodeFeature', value: true}
         ];
         
         if(action === 'save') {

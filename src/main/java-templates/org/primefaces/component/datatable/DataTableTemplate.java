@@ -116,6 +116,10 @@ import org.primefaces.component.datatable.feature.*;
         FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
     }
     
+    public boolean shouldEncodeFeature(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_encodeFeature");
+    }
+    
     public boolean isRowEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
     }
