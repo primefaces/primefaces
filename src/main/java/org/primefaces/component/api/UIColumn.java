@@ -75,4 +75,6 @@ public interface UIColumn {
     public List<UIComponent> getChildren();
     
     public boolean isExportable();
+    
+    public boolean isRendered();
 }

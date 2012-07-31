@@ -19,49 +19,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        List<Column> actualColumns = null;
-        String clientId = table.getClientId(context);
+        List<UIColumn> actualColumns = table.getColumns();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String[] order = params.get(clientId + "_columnOrder").split(",");
-        UIComponent firstChild = actualColumns.get(0);
+        String[] order = params.get(table.getClientId(context) + "_columnOrder").split(",");
+        UIColumn firstChild = actualColumns.get(0);
+        List<UIColumn> orderedColumns = new ArrayList<UIColumn>();
         
-        if(firstChild instanceof Columns) {
-            Columns uicolumns = (Columns) firstChild;
-            List<?> model = (List<?>) uicolumns.getValue();
-            List orderedModel = new ArrayList();
-            
-            for(String columnId : order) {
-                int colIndex = Integer.parseInt(columnId.split("_colIndex_")[1]);
-                
-                orderedModel.add(model.get(colIndex));
-            }
-            
-            uicolumns.getValueExpression("value").setValue(context.getELContext(), orderedModel);
-        }
-        else {
-            List<Column> orderedColumns = new ArrayList<Column>();
-            for(String columnId : order) {
-                for(Column column : actualColumns) {
-                    if(columnId.equals(column.getClientId(context))) {
-                        orderedColumns.add(column);
-                        break;                    
-                    }
-
+        for(String columnId : order) {
+            for(UIColumn column : actualColumns) {
+                if(columnId.equals(column.getClientId(context))) {
+                    orderedColumns.add(column);
+                    break;                    
                 }
+
             }
-            
-            //table.setColumns(orderedColumns);
         }
+        
+        table.setColumns(orderedColumns);
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -75,4 +57,5 @@ public class DraggableColumnsFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
     }
+
 }
