@@ -1314,10 +1314,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupDraggableColumns : function() {
+        this.orderStateHolder = $(this.jqId + '_columnOrder');
+        this.saveColumnOrder();
+        
         this.dragIndicatorTop = $('<div id="' + this.id + '_dnd_top" class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
         this.dragIndicatorBottom = $('<div id="' + this.id + '_dnd_bottom" class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
-    
-        this.orderStateHolder = $(this.jqId + '_columnOrder');
+
 
         var _self = this;
 
@@ -1398,15 +1400,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
                
                 //save order
-                var columns = $(_self.jqId + ' thead:first th'),
-                columnIds = [];
-
-                columns.each(function(i, item) {
-                    columnIds.push($(item).attr('id'));
-                });
-
-                _self.orderStateHolder.val(columnIds.join(','));
-                
+                _self.saveColumnOrder();
 
                 //fire toggleCheckAll event
                 if(_self.cfg.behaviors) {
@@ -1418,6 +1412,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         });
+    },
+    
+    saveColumnOrder: function() {
+        var columnIds = [],
+        columns = $(this.jqId + ' thead:first th');
+
+        columns.each(function(i, item) {
+            columnIds.push($(item).attr('id'));
+        });
+
+        this.orderStateHolder.val(columnIds.join(','));
     },
     
     /**

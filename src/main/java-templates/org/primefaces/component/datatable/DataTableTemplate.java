@@ -598,42 +598,7 @@ import org.primefaces.component.datatable.feature.*;
     public void setColumns(List<UIColumn> columns) {
         this.columns = columns;
     }
-      
-    public String getColumnIds() {
-        StringBuilder builder = new StringBuilder();
-        List cols = getColumns();
         
-        for(Iterator iter = cols.iterator(); iter.hasNext();) {
-            Object column = iter.next();
-            
-            if(column instanceof Column) {
-                builder.append(((Column) column).getClientId());
-            }
-            else if(column instanceof ColumnsMeta) {
-                ColumnsMeta columnsMeta = (ColumnsMeta) column;
-
-                builder.append(columnsMeta.getColumns().getContainerClientId(FacesContext.getCurrentInstance()));
-            }
-            
-            if(iter.hasNext()) {
-                builder.append(",");
-            }
-        }
-        
-        return builder.toString();
-    }
-    
-    public void syncColumnWidths() {
-        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String clientId = this.getClientId();
-        
-        String columnId = params.get(clientId + "_columnId");
-        String width = params.get(clientId + "_width");
-        Column column = findColumn(columnId);
-        
-        column.setWidth(Integer.parseInt(width));
-    }
-    
     public String getScrollState() {
         Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
         String name = this.getClientId() + "_scrollState";
