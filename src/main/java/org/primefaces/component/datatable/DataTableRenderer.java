@@ -25,6 +25,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.api.ColumnsMeta;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -294,6 +295,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        if(!column.isRendered()) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
         ValueExpression tableSortByVe = table.getValueExpression("sortBy");
@@ -398,27 +403,7 @@ public class DataTableRenderer extends DataRenderer {
         
         writer.endElement("span");
     }
-
-    protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
-        int colCount = ((List<?>) columns.getValue()).size();
-
-        for(int i = 0; i < colCount; i++) {
-            columns.setRowModel(i);
-            
-            encodeColumnHeader(context, table, (UIColumn) columns);
-        }
-    }
     
-    protected void encodeColumnsFooter(FacesContext context, DataTable table, Columns columns) throws IOException {
-        int colCount = ((List<?>) columns.getValue()).size();
-
-        for(int i = 0; i < colCount; i++) {
-            columns.setRowModel(i);
-            
-            encodeColumnFooter(context, table, (UIColumn) columns);
-        }
-    }
-
     protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
@@ -486,6 +471,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        if(!column.isRendered()) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         
         String style = column.getStyle();
@@ -557,16 +546,14 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
             
-            for(UIColumn child : table.getColumns()) {
-                if(!child.isRendered()) {
-                    continue;
-                }
-                
+            for(Object child : table.getColumns()) {                
                 if(child instanceof Column) {
                     encodeColumnHeader(context, table, (UIColumn) child);
                 }
-                else if(child instanceof Columns) {
-                    encodeColumnsHeader(context, table, (Columns) child);
+                else if(child instanceof ColumnsMeta) {
+                    ColumnsMeta columnsMeta = (ColumnsMeta) child;
+                    
+                    encodeColumnHeader(context, table, columnsMeta.getColumns());
                 }
             }
 
@@ -702,16 +689,14 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
 
-        for(UIColumn child : table.getColumns()) {
-            if(!child.isRendered()) {
-                continue;
-            }
-            
+        for(Object child : table.getColumns()) {            
             if(child instanceof Column) {
                 encodeRegularCell(context, table, (UIColumn) child, clientId, selected);
             }
-            else if(child instanceof Columns) {
-                encodeDynamicCell(context, table, (Columns) child);
+            else if(child instanceof ColumnsMeta) {
+                ColumnsMeta columnsMeta = (ColumnsMeta) child;
+                
+                encodeRegularCell(context, table, columnsMeta.getColumns(), null, false);
             }
         }
 
@@ -721,6 +706,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeRegularCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
+        if(!column.isRendered()) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
         String style = column.getStyle();
@@ -757,16 +746,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("td");
     }
 
-    protected void encodeDynamicCell(FacesContext context, DataTable table, Columns columns) throws IOException {
-        int colCount = ((List<?>) columns.getValue()).size();
-
-        for(int i = 0; i < colCount; i++) {
-            columns.setRowIndex(i);
-            
-            encodeRegularCell(context, table, columns, null, false);
-        }
-    }
-
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("footer");
@@ -795,16 +774,14 @@ public class DataTableRenderer extends DataRenderer {
         else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);
             
-            for(UIColumn child : table.getColumns()) {
-                if(!child.isRendered()) {
-                    continue;
-                }
-                
-                if(child instanceof Columns) {
-                    encodeColumnsFooter(context, table, (Columns) child);
-                }
-                else {
+            for(Object child : table.getColumns()) {                
+                if(child instanceof Column) {
                     encodeColumnFooter(context, table, (UIColumn) child);
+                }
+                else if(child instanceof ColumnsMeta) {
+                    ColumnsMeta columnsMeta = (ColumnsMeta) child;
+
+                    encodeColumnFooter(context, table, columnsMeta.getColumns());
                 }
             }
 
