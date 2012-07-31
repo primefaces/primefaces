@@ -62,7 +62,7 @@ public class DataTableRenderer extends DataRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
 		DataTable table = (DataTable) component;
 
-        if(isAjaxRequest(context) && table.isRequestSource(context)) {
+        if(table.shouldEncodeFeature(context)) {
             for(Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext();) {
                 DataTableFeature feature = it.next();
 
