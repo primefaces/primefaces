@@ -19,28 +19,39 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.ColumnsMeta;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        List<UIColumn> actualColumns = table.getColumns();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String[] order = params.get(table.getClientId(context) + "_columnOrder").split(",");
-        UIColumn firstChild = actualColumns.get(0);
-        List<UIColumn> orderedColumns = new ArrayList<UIColumn>();
+        List orderedColumns = new ArrayList();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         
         for(String columnId : order) {
-            for(UIColumn column : actualColumns) {
-                if(columnId.equals(column.getClientId(context))) {
-                    orderedColumns.add(column);
-                    break;                    
+            
+            for(UIComponent child : table.getChildren()) {
+                if(child instanceof Column && child.getClientId(context).equals(columnId)) {
+                    orderedColumns.add(child);
+                    break;
                 }
-
+                else if(child instanceof Columns && columnId.startsWith(child.getClientId(context))) {
+                    String[] ids = columnId.split(separator);
+                    int index = Integer.parseInt(ids[ids.length - 1]);
+                    
+                    orderedColumns.add(new ColumnsMeta(index, (Columns) child));
+                    break;
+                }
             }
+                        
         }
         
         table.setColumns(orderedColumns);

@@ -46,6 +46,7 @@ import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.ColumnsMeta;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.feature.*;
 
@@ -569,15 +570,24 @@ import org.primefaces.component.datatable.feature.*;
         return columnsCount;
     }
     
-    private List<UIColumn> columns;
+    private List columns;
     
-    public List<UIColumn> getColumns() {
+    public List getColumns() {
         if(columns == null) {
-            columns = new ArrayList<UIColumn>();
+            columns = new ArrayList();
             
-            for(UIComponent child : this.getChildren()) {
-                if(child instanceof UIColumn) {
+            for(int i=0; i < this.getChildCount(); i++) {
+                UIComponent child = this.getChildren().get(i);
+                
+                if(child instanceof Column) {
                     columns.add((UIColumn) child);
+                }
+                else if(child instanceof Columns) {
+                    Columns uiColumns = (Columns) child;
+                    
+                    for(int j=0; j < uiColumns.getRowCount(); j++) {
+                        columns.add(new ColumnsMeta(j, uiColumns));
+                    }
                 }
             }
         }
@@ -591,13 +601,20 @@ import org.primefaces.component.datatable.feature.*;
       
     public String getColumnIds() {
         StringBuilder builder = new StringBuilder();
-        List<UIColumn> cols = getColumns();
+        List cols = getColumns();
         
-        for(Iterator<UIColumn> iter = cols.iterator(); iter.hasNext();) {
-            UIColumn column = iter.next();
+        for(Iterator iter = cols.iterator(); iter.hasNext();) {
+            Object column = iter.next();
             
-            builder.append(column.getClientId());
+            if(column instanceof Column) {
+                builder.append(((Column) column).getClientId());
+            }
+            else if(column instanceof ColumnsMeta) {
+                ColumnsMeta columnsMeta = (ColumnsMeta) column;
 
+                builder.append(columnsMeta.getColumns().getContainerClientId(FacesContext.getCurrentInstance()));
+            }
+            
             if(iter.hasNext()) {
                 builder.append(",");
             }
