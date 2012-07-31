@@ -557,7 +557,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
             
-            for(UIComponent child : table.getChildren()) {
+            for(UIColumn child : table.getColumns()) {
                 if(!child.isRendered()) {
                     continue;
                 }
@@ -702,7 +702,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
 
-        for(UIComponent child : table.getChildren()) {
+        for(UIColumn child : table.getColumns()) {
             if(!child.isRendered()) {
                 continue;
             }
@@ -795,7 +795,7 @@ public class DataTableRenderer extends DataRenderer {
         else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);
             
-            for(UIComponent child : table.getChildren()) {
+            for(UIColumn child : table.getColumns()) {
                 if(!child.isRendered()) {
                     continue;
                 }

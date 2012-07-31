@@ -104,11 +104,11 @@ import org.primefaces.component.datatable.feature.*;
     
     static {
         FEATURES = new HashMap<DataTableFeatureKey,DataTableFeature>();
+        FEATURES.put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
         FEATURES.put(DataTableFeatureKey.FILTER, new FilterFeature());
         FEATURES.put(DataTableFeatureKey.PAGE, new PageFeature());
         FEATURES.put(DataTableFeatureKey.SORT, new SortFeature());
         FEATURES.put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
-        FEATURES.put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
         FEATURES.put(DataTableFeatureKey.SELECT, new SelectionFeature());
         FEATURES.put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature());
         FEATURES.put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
@@ -569,75 +569,40 @@ import org.primefaces.component.datatable.feature.*;
         return columnsCount;
     }
     
-    public void syncColumnOrder() {
-        /*FacesContext context = FacesContext.getCurrentInstance();
-        List<Column> actualColumns = getColumns();
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String[] order = params.get(getClientId(context) + "_columnOrder").split(",");
-        UIComponent firstChild = actualColumns.get(0);
-        
-        if(firstChild instanceof Columns) {
-            Columns uicolumns = (Columns) firstChild;
-            List<?> model = (List<?>) uicolumns.getValue();
-            List orderedModel = new ArrayList();
+    private List<UIColumn> columns;
+    
+    public List<UIColumn> getColumns() {
+        if(columns == null) {
+            columns = new ArrayList<UIColumn>();
             
-            for(String columnId : order) {
-                int colIndex = Integer.parseInt(columnId.split("_colIndex_")[1]);
-                
-                orderedModel.add(model.get(colIndex));
-            }
-            
-            uicolumns.getValueExpression("value").setValue(context.getELContext(), orderedModel);
-        }
-        else {
-            List<Column> orderedColumns = new ArrayList<Column>();
-            for(String columnId : order) {
-                for(Column column : actualColumns) {
-                    if(columnId.equals(column.getClientId(context))) {
-                        orderedColumns.add(column);
-                        break;                    
-                    }
-
+            for(UIComponent child : this.getChildren()) {
+                if(child instanceof UIColumn) {
+                    columns.add((UIColumn) child);
                 }
             }
-            
-            this.columns = orderedColumns;
-        }*/
+        }
+        
+        return columns;
     }
     
+    public void setColumns(List<UIColumn> columns) {
+        this.columns = columns;
+    }
+      
     public String getColumnIds() {
         StringBuilder builder = new StringBuilder();
-        /*List<Column> cols = getColumns();
+        List<UIColumn> cols = getColumns();
         
-        for(Iterator<Column> iter = cols.iterator(); iter.hasNext();) {
-            Column column = iter.next();
+        for(Iterator<UIColumn> iter = cols.iterator(); iter.hasNext();) {
+            UIColumn column = iter.next();
             
-            if(column instanceof Columns) {
-                Columns uicolumns = (Columns) column;
-                List<?> model = (List<?>) uicolumns.getValue();
-                int size = model.size();
-                
-                if(model != null) {
-                    for(int i = 0; i < size; i++) {
-                        uicolumns.setColIndex(i);
-                        
-                        builder.append(uicolumns.getClientId());
-                        
-                        if(i != (size - 1)) {
-                            builder.append(",");
-                        }
-                    }
-                }
-            }
-            else {
-                builder.append(column.getClientId());
+            builder.append(column.getClientId());
 
-                if(iter.hasNext()) {
-                    builder.append(",");
-                }
+            if(iter.hasNext()) {
+                builder.append(",");
             }
+        }
         
-        * */
         return builder.toString();
     }
     
