@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.ColumnsMeta;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
@@ -47,7 +47,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
                     String[] ids = columnId.split(separator);
                     int index = Integer.parseInt(ids[ids.length - 1]);
                     
-                    orderedColumns.add(new ColumnsMeta(index, (Columns) child));
+                    orderedColumns.add(new DynamicColumn(index, (Columns) child));
                     break;
                 }
             }

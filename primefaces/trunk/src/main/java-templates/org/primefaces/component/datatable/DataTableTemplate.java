@@ -46,7 +46,7 @@ import java.lang.reflect.Array;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.ColumnsMeta;
+import org.primefaces.component.api.DynamicColumn;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.feature.*;
 
@@ -574,15 +574,13 @@ import org.primefaces.component.datatable.feature.*;
         return columnsCount;
     }
     
-    private List columns;
+    private List<UIColumn> columns;
     
-    public List getColumns() {
+    public List<UIColumn> getColumns() {
         if(columns == null) {
-            columns = new ArrayList();
+            columns = new ArrayList<UIColumn>();
             
-            for(int i=0; i < this.getChildCount(); i++) {
-                UIComponent child = this.getChildren().get(i);
-                
+            for(UIComponent child : this.getChildren()) {
                 if(child instanceof Column) {
                     columns.add((UIColumn) child);
                 }
@@ -590,7 +588,7 @@ import org.primefaces.component.datatable.feature.*;
                     Columns uiColumns = (Columns) child;
                     
                     for(int j=0; j < uiColumns.getRowCount(); j++) {
-                        columns.add(new ColumnsMeta(j, uiColumns));
+                        columns.add(new DynamicColumn(j, uiColumns));
                     }
                 }
             }

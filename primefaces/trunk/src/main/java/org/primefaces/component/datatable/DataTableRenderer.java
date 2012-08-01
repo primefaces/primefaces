@@ -25,11 +25,10 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.api.ColumnsMeta;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatureKey;
 import org.primefaces.component.datatable.feature.SortFeature;
@@ -546,14 +545,15 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
             
-            for(Object child : table.getColumns()) {                
-                if(child instanceof Column) {
-                    encodeColumnHeader(context, table, (UIColumn) child);
+            for(UIColumn column : table.getColumns()) {                
+                if(column instanceof Column) {
+                    encodeColumnHeader(context, table, column);
                 }
-                else if(child instanceof ColumnsMeta) {
-                    ColumnsMeta columnsMeta = (ColumnsMeta) child;
+                else if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
                     
-                    encodeColumnHeader(context, table, columnsMeta.getColumns());
+                    encodeColumnHeader(context, table, dynamicColumn);
                 }
             }
 
@@ -688,15 +688,16 @@ public class DataTableRenderer extends DataRenderer {
         if(selectionEnabled) {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
-
-        for(Object child : table.getColumns()) {            
-            if(child instanceof Column) {
-                encodeRegularCell(context, table, (UIColumn) child, clientId, selected);
+        
+        for(UIColumn column : table.getColumns()) {                
+            if(column instanceof Column) {
+                encodeRegularCell(context, table, column, clientId, selected);
             }
-            else if(child instanceof ColumnsMeta) {
-                ColumnsMeta columnsMeta = (ColumnsMeta) child;
-                
-                encodeRegularCell(context, table, columnsMeta.getColumns(), null, false);
+            else if(column instanceof DynamicColumn) {
+                DynamicColumn dynamicColumn = (DynamicColumn) column;
+                dynamicColumn.applyModel();
+
+                encodeRegularCell(context, table, dynamicColumn, null, false);
             }
         }
 
@@ -738,7 +739,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
         else {
-            ((UIComponent) column).encodeAll(context);            
+            column.encodeAll(context);            
         }
         
         writer.endElement("div");
@@ -774,17 +775,18 @@ public class DataTableRenderer extends DataRenderer {
         else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);
             
-            for(Object child : table.getColumns()) {                
-                if(child instanceof Column) {
-                    encodeColumnFooter(context, table, (UIColumn) child);
+            for(UIColumn column : table.getColumns()) {                
+                if(column instanceof Column) {
+                    encodeColumnFooter(context, table, column);
                 }
-                else if(child instanceof ColumnsMeta) {
-                    ColumnsMeta columnsMeta = (ColumnsMeta) child;
+                else if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
 
-                    encodeColumnFooter(context, table, columnsMeta.getColumns());
+                    encodeColumnFooter(context, table, dynamicColumn);
                 }
             }
-
+            
             writer.endElement("tr");
         }
         
