@@ -1013,6 +1013,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.itemsWrapper.height(this.cfg.initialHeight);
         }
+    },
+    
+    getSelectedValue: function() {
+        return this.input.val();
+    },
+
+    getSelectedLabel: function() {
+        return this.options.filter(':selected').text();
     }
     
 });
