@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.api;
 
+import java.io.IOException;
 import java.util.List;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -77,4 +78,6 @@ public interface UIColumn {
     public boolean isExportable();
     
     public boolean isRendered();
+    
+    public void encodeAll(FacesContext context) throws IOException;
 }
