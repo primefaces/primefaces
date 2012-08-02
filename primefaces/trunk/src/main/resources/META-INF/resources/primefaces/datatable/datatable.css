@@ -94,6 +94,13 @@
     width: 44px;
 }
 
+.ui-datatable .ui-selection-column .ui-chkbox-all {
+    display: block;
+    margin: 0px auto;
+    width: 16px;
+    height: 16px;
+}
+
 .ui-datatable-scrollable {}
 
 .ui-datatable-scrollable-body {
