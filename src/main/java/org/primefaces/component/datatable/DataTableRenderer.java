@@ -350,30 +350,29 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
         }
 
-        if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
+        if(hasFilter) {
+            table.enableFiltering();
+
+            String filterPosition = column.getFilterPosition();
+
+            if(filterPosition.equals("bottom")) {
+                encodeColumnHeaderContent(context, column, sortIcon);
+                encodeFilter(context, table, column);
+            }
+            else if(filterPosition.equals("top")) {
+                encodeFilter(context, table, column);
+                encodeColumnHeaderContent(context, column, sortIcon);
+            } 
+            else {
+                throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
+            }
         }
         else {
-            if(hasFilter) {
-                table.enableFiltering();
-                
-                String filterPosition = column.getFilterPosition();
-                
-                if(filterPosition.equals("bottom")) {
-                    encodeColumnHeaderContent(context, column, sortIcon);
-                    encodeFilter(context, table, column);
-                }
-                else if(filterPosition.equals("top")) {
-                    encodeFilter(context, table, column);
-                    encodeColumnHeaderContent(context, column, sortIcon);
-                } 
-                else {
-                    throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
-                }
-            }
-            else {
-                encodeColumnHeaderContent(context, column, sortIcon);
-            }
+            encodeColumnHeaderContent(context, column, sortIcon);
+        }
+        
+        if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
+            encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
         }
         
         writer.endElement("div");
