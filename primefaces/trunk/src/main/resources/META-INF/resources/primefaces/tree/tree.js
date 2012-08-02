@@ -13,8 +13,9 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             var selectionsValue = this.selectionHolder.val();
             this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
-            if(this.cfg.selectionMode == 'checkbox')
+            if(this.cfg.selectionMode == 'checkbox') {
                 this.preselectCheckboxPropagation();
+            }
         }
 
         this.bindEvents();
@@ -376,10 +377,10 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //propagate selection up
-        node.parents('li').each(function() {
+        node.parents('li.ui-tree-parent').each(function() {
             var parentNode = $(this),
             rowKey = _self.getRowKey(parentNode),
-            icon = parentNode.find('> .ui-tree-node > .ui-tree-selectable-node > .ui-tree-checkbox'),
+            icon = parentNode.children('.ui-tree-node').find('.ui-tree-checkbox-icon'),
             checkedChildren = parentNode.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon.ui-icon-check'),
             allChildren = parentNode.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon');
 
