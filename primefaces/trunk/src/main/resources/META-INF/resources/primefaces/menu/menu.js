@@ -661,8 +661,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                         widget.onRowClick(e, this, true);
                         
                         if(widget.hasBehavior('contextMenu')) {
-                            var row = widget.findRow($(this)),
-                            rowMeta = widget.getRowMeta(row);
+                            var rowMeta = widget.getRowMeta($(this));
         
                             widget.fireRowSelectEvent(rowMeta.key, 'contextMenu');
                         }
