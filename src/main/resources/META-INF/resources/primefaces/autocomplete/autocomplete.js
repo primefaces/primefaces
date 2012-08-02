@@ -348,6 +348,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     search: function(query) {
+        //allow empty string but not undefined or null
+        if(query === undefined || query === null) {
+            return;
+        }
+        
         if(!this.active) {
             return;
         }
@@ -388,8 +393,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             //highlight first item
                             firstItem.addClass('ui-state-highlight');
                             
-                                                        //highlight query string
-                            if(_self.panel.children().is('ul')) {
+                            //highlight query string
+                            if(_self.panel.children().is('ul') && query.length > 0) {
                                 _self.items.each(function() {
                                     var item = $(this),
                                     text = item.html(),
