@@ -97,7 +97,7 @@ import org.primefaces.component.datatable.feature.*;
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
-                                                        "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder"
+                                                        "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
                                                         ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"));
 
                                                         
@@ -194,7 +194,8 @@ import org.primefaces.component.datatable.feature.*;
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("rowSelectCheckbox")||eventName.equals("rowDblselect")) {
+            if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("contextMenu")
+                    ||eventName.equals("rowSelectCheckbox")||eventName.equals("rowDblselect")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
             }

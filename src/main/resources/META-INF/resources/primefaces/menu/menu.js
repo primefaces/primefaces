@@ -657,8 +657,18 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        window[_self.cfg.targetWidgetVar].onRowClick(e, this, true);
+                        var widget = window[_self.cfg.targetWidgetVar];
+                        widget.onRowClick(e, this, true);
+                        
+                        if(widget.hasBehavior('contextMenu')) {
+                            var row = widget.findRow($(this)),
+                            rowMeta = widget.getRowMeta(row);
+        
+                            widget.fireRowSelectEvent(rowMeta.key, 'contextMenu');
+                        }
+                        
                         _self.show(e);
+
                         e.preventDefault();
                     });
     },
