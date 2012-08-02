@@ -22,12 +22,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.Widget;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.menu.AbstractMenu;
 
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
-import org.primefaces.component.tree.Tree;
-import org.primefaces.component.treetable.TreeTable;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
