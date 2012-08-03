@@ -7,7 +7,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.links = this.jq.children(':not(.ui-lightbox-inline)');
-        this.onshowHandlers = [];
 
         this.createPanel();
 
@@ -26,10 +25,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.panel.data('widget', this);
+        this.links.data('primefaces-lightbox-trigger', true).find('*').data('primefaces-lightbox-trigger', true);
     },
     
     createPanel: function() {
-        var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-hidden-container">';
+        var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-overlay-hidden ui-corner-all ui-shadow">';
         dom += '<div class="ui-lightbox-content-wrapper">';
         dom += '<a class="ui-state-default ui-lightbox-nav-left ui-corner-right ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-w">go</span></a>';
         dom += '<div class="ui-lightbox-content ui-corner-all"></div>';
@@ -112,7 +112,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.links.click(function(e) {
             var link = $(this);
             
-            if(_self.panel.is(':hidden')) {
+            if(_self.isHidden()) {
                 _self.content.addClass('ui-lightbox-loading').width(32).height(32);
                 _self.show();
             }
@@ -142,7 +142,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
 
             e.preventDefault();
-            e.stopPropagation();
         });
     },
     
@@ -152,8 +151,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         winHeight = win.height(),
         imageWidth = image.width(),
         imageHeight = image.height(),
-        panelWidth = imageWidth,
-        panelHeight = imageHeight + this.caption.outerHeight(),
         ratio = imageHeight / imageWidth;
         
         if(imageWidth >= winWidth && ratio <= 1){
@@ -186,7 +183,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             }
 
             e.preventDefault();
-            e.stopPropagation();
         });
     },
     
@@ -208,7 +204,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             }
 
             e.preventDefault();
-            e.stopPropagation();
         });
     },
     
@@ -228,7 +223,13 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
         //hide when outside is clicked
         $(document.body).bind('click.ui-lightbox', function (e) {            
-            if(_self.panel.is(":hidden")) {
+            if(_self.isHidden()) {
+                return;
+            }
+            
+            //do nothing if target is the link
+            var target = $(e.target);
+            if(target.data('primefaces-lightbox-trigger')) {
                 return;
             }
 
@@ -250,47 +251,47 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
                     'width': $(document).width()
                     ,'height': $(document).height()
                 });
-                
-                
             }
         });
     },
     
     show: function() {
         this.center();
-        this.panel.css('z-index', ++PrimeFaces.zindex).show();
+        
+        this.panel.css('z-index', ++PrimeFaces.zindex).addClass('ui-overlay-visible').removeClass('ui-overlay-hidden');
         this.enableModality();
 
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
-
-        //execute onshowHandlers and remove successful ones
-        this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
-            return !fn.call();
-        });
     },
     
     hide: function() {
-        this.panel.fadeOut();
+        this.panel.fadeOut(function() {
+            $(this).addClass('ui-overlay-hidden').removeClass('ui-overlay-visible').css('display','block');
+        });
+        
         this.disableModality();
-        this.imageDisplay.hide();
-        this.hideNavigators();
         this.caption.hide();
+
+        if(this.cfg.mode == 'image') {
+            this.imageDisplay.hide();
+            this.hideNavigators();
+        }
 
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
     },
     
-    center: function() {    
+    center: function() { 
         var win = $(window),
         left = (win.width() / 2 ) - (this.panel.width() / 2),
         top = (win.height() / 2 ) - (this.panel.height() / 2);
 
         this.panel.css({
-        'left': left,
-        'top': top
+            'left': left,
+            'top': top
         });
     },
     
@@ -317,6 +318,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     
     addOnshowHandler: function(fn) {
         this.onshowHandlers.push(fn);
+    },
+    
+    isHidden: function() {
+        return this.panel.hasClass('ui-overlay-hidden');
     }
     
 });
