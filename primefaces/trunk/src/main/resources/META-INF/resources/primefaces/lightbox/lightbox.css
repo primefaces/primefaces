@@ -32,5 +32,21 @@
 }
 
 .ui-lightbox-caption {
-    padding: 0.5em 1em 0.3em;
+    padding: 0.4em 0.4em 0.4em 1em;
+    display: none;
+}
+
+.ui-lightbox-caption-text {
+    margin: 0.3em 0 0.1em 0;
+    float:left;
+}
+
+.ui-lightbox-close {
+    float:right;
+    margin:0;
+    padding:1px;
+}
+
+.ui-lightbox-close.ui-state-hover {
+    padding: 0;
 }
