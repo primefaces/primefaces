@@ -5,6 +5,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        this.header = this.jq.children('div.ui-panel-titlebar');
+        this.title = this.header.children('span.ui-panel-title');
+        
         this.onshowHandlers = [];
         
         if(this.cfg.toggleable) {
@@ -12,19 +15,19 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             this.toggleStateHolder = $(this.jqId + '_collapsed');
             this.content = $(this.jqId + '_content');
 
-            this.setupToggleTrigger();
+            this.bindToggler();
         }
 
         if(this.cfg.closable) {
             this.visibleStateHolder = $(this.jqId + "_visible");
 
-            this.setupCloseTrigger();
+            this.bindCloser();
         }
 
         if(this.cfg.hasMenu) {
             this.visibleStateHolder = $(this.jqId + "_visible");
 
-            this.setupMenuTrigger();
+            this.bindMenu();
         }
         
         this.jq.data('widget', this);
@@ -40,23 +43,68 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     expand: function() {
-        var _self = this;
-        
-        this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            _self.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
-                
-            if(_self.onshowHandlers.length > 0) {
-                _self.invokeOnshowHandlers();
-            }
-        });
-        
+        if(this.cfg.toggleOrientation === 'vertical')
+            this.slideDown();
+        else if(this.cfg.toggleOrientation === 'horizontal')
+            this.slideRight();    
     },
     
     collapse: function() {
+        if(this.cfg.toggleOrientation === 'vertical')
+            this.slideUp();
+        else if(this.cfg.toggleOrientation === 'horizontal')
+            this.slideLeft();
+    },
+    
+    slideUp: function() {
         var _self = this;
         
         this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             _self.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+        });
+    },
+    
+    slideDown: function() {
+        var _self = this;
+        
+        this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
+        });
+    },
+    
+    slideLeft: function() {
+        var _self = this;
+        
+        this.originalWidth = this.jq.width();
+                
+        this.title.hide();
+        
+        this.content.css({
+            'visibility':'hidden'
+            ,'height': this.content.height()
+        });
+        
+        this.jq.animate({
+            width: '42px'
+        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+        });
+    },
+    
+    slideRight: function() {
+        var _self = this;
+        
+        this.jq.animate({
+            width: this.originalWidth
+        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
+            
+            _self.title.show();
+        
+            _self.content.css({
+                'visibility':'visible'
+                ,'height': 'auto'
+            });
         });
     },
     
@@ -104,31 +152,31 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.visibleStateHolder.val(true);
     },
     
-    setupToggleTrigger: function() {
+    bindToggler: function() {
         var _self = this,
         trigger = this.toggler.parent();
 
-        this.setupTriggerVisuals(trigger);
+        this.bindTriggerVisuals(trigger);
 
         trigger.click(function() {_self.toggle();});
     },
     
-    setupCloseTrigger: function() {
+    bindCloser: function() {
         var _self = this,
         trigger = $(this.jqId + '_closer').parent();
 
-        this.setupTriggerVisuals(trigger);
+        this.bindTriggerVisuals(trigger);
 
         trigger.click(function() {_self.close();});
     },
     
-    setupMenuTrigger: function() {
+    bindMenu: function() {
         var trigger = $(this.jqId + '_menu').parent();
 
-        this.setupTriggerVisuals(trigger);
+        this.bindTriggerVisuals(trigger);
     },
     
-    setupTriggerVisuals: function(trigger) {
+    bindTriggerVisuals: function(trigger) {
         trigger.mouseover(function() {$(this).addClass('ui-state-hover');})
                 .mouseout(function() {$(this).removeClass('ui-state-hover');});
     },

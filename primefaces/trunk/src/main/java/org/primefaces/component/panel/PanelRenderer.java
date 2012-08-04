@@ -70,6 +70,7 @@ public class PanelRenderer extends CoreRenderer {
             writer.write(",toggleable:true");
             writer.write(",toggleSpeed:" + panel.getToggleSpeed());
             writer.write(",collapsed:" + panel.isCollapsed());
+            writer.write(",toggleOrientation:'" + panel.getToggleOrientation() + "'");
         }
 
         //Toggle configuration
