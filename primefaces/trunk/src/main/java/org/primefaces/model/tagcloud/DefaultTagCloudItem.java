@@ -26,11 +26,15 @@ public class DefaultTagCloudItem implements TagCloudItem {
     public DefaultTagCloudItem() {
 
     }
+    
+    public DefaultTagCloudItem(String label, int strength) {
+        this.label = label;
+        this.strength = strength;
+    }
 
     public DefaultTagCloudItem(String label, String url, int strength) {
-        this.label = label;
+        this(label, strength);
         this.url = url;
-        this.strength = strength;
     }
 
     public String getLabel() {
