@@ -108,6 +108,13 @@
             <type>java.lang.String</type>
             <description>Title attribute for menu element on panel header.</description>
         </attribute>
+        <attribute>
+            <name>toggleOrientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>vertical</defaultValue>
+            <description>Defines the orientation of the toggle animation, valid values are "vertical" and "horizontal".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
