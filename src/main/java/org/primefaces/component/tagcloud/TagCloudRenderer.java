@@ -26,6 +26,11 @@ import org.primefaces.renderkit.CoreRenderer;
 public class TagCloudRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         TagCloud tagCloud = (TagCloud) component;
 
@@ -43,17 +48,22 @@ public class TagCloudRenderer extends CoreRenderer {
         writer.startElement("div", tagCloud);
         writer.writeAttribute("id", tagCloud.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) writer.writeAttribute("style", style, "style");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
 
 
         writer.startElement("ul", null);
 
         for(TagCloudItem item : model.getTags()) {
+            String url = item.getUrl();
+            String href = url == null ? "#" :  getResourceURL(context, item.getUrl());
+            
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tagcloud-strength-" + item.getStrength(), null);
 
             writer.startElement("a", null);
-            writer.writeAttribute("href", getResourceURL(context, item.getUrl()), null);
+            writer.writeAttribute("href", href, null);
             writer.writeText(item.getLabel(), null);
             writer.endElement("a");
 
@@ -73,6 +83,9 @@ public class TagCloudRenderer extends CoreRenderer {
         
         writer.write("PrimeFaces.cw('TagCloud','" + tagCloud.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
+        
+        encodeClientBehaviors(context, tagCloud);
+        
         writer.write("});");
         
         endScript(writer);
