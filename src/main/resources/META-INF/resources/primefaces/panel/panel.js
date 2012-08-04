@@ -32,31 +32,50 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     
     toggle: function() {
         if(this.cfg.collapsed) {
-            this.toggler.removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
-            this.cfg.collapsed = false;
-            this.toggleStateHolder.val(false);
+            this.expand();
         }
         else {
-            this.toggler.removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
-            this.cfg.collapsed = true;
-            this.toggleStateHolder.val(true);
+            this.collapse();
         }
-
+    },
+    
+    expand: function() {
         var _self = this;
-
-        this.content.slideToggle(this.cfg.toggleSpeed, 'easeInOutCirc',
-            function(e) {
-                if(_self.cfg.behaviors) {
-                    var toggleBehavior = _self.cfg.behaviors['toggle'];
-                    if(toggleBehavior) {
-                        toggleBehavior.call(_self, e);
-                    }
-                }
+        
+        this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
                 
-                if(_self.onshowHandlers.length > 0) {
-                    _self.invokeOnshowHandlers();
-                }
-            });
+            if(_self.onshowHandlers.length > 0) {
+                _self.invokeOnshowHandlers();
+            }
+        });
+        
+    },
+    
+    collapse: function() {
+        var _self = this;
+        
+        this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+        });
+    },
+    
+    toggleState: function(collapsed, removeIcon, addIcon) {
+        this.toggler.removeClass(removeIcon).addClass(addIcon);
+        this.cfg.collapsed = collapsed;
+        this.toggleStateHolder.val(collapsed);
+        
+        this.fireToggleEvent();
+    },
+    
+    fireToggleEvent: function() {
+        if(this.cfg.behaviors) {
+            var toggleBehavior = this.cfg.behaviors['toggle'];
+            
+            if(toggleBehavior) {
+                toggleBehavior.call(this);
+            }
+        }
     },
     
     close: function() {
