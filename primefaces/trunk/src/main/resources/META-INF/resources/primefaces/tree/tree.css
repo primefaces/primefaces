@@ -1,113 +1,55 @@
 .ui-tree {
-    width: 300px;
-    padding: 0.5em;
+    width: auto;
 }
 
-.ui-tree .ui-tree-checkbox {
+.ui-tree-container {
+    border: 1px dotted gray;
+    height: 100%;
     margin: 0;
-    float: left;
+    overflow: auto;
+    padding: 3px;
+    white-space: nowrap;
 }
 
-.ui-tree .ui-tree-parent span,
-.ui-tree .ui-tree-item span {
-    float: left;
-}
-
-.ui-tree .ui-tree-child {
-    margin-left: 15px;
-}
-
-.ui-tree .ui-tree-nodes .ui-tree-node {
-    border: 0px;
-    background: none;
-    display: block;
-    float: left;
-    clear: both;
-    font-weight: normal;
-    margin: 0 20px 0 0;
-}
-
-.ui-tree-node-content {
-	border: 1px solid transparent;
-	vertical-align:middle;
-}
-.ui-tree .ui-tree-nodes .ui-tree-node .ui-tree-node-content .ui-tree-node-label {
-    margin:0.2em 0 0 0.5em;
-    float: left;
-}
-
-.ui-tree .ui-tree-nodes li.ui-tree-node {
-	margin-left:16px;
-}
-
-.ui-tree .ui-tree-nodes .ui-state-default a, .ui-tree .ui-tree-nodes .ui-state-default {
-    color: inherit;
-}
-
-.ui-tree .ui-tree-nodes .ui-state-hover, .ui-tree .ui-tree-nodes .ui-state-active {
-    font-weight: normal;
-}
-
-.ui-tree a.ui-state-default:link,
-.ui-tree a.ui-state-default:visited,
-.ui-tree a.ui-state-default:hover,
-.ui-tree a.ui-state-default:active,
-.ui-tree a.ui-state-hover:link,
-.ui-tree a.ui-state-hover:visited,
-.ui-tree a.ui-state-hover:hover,
-.ui-tree a.ui-state-hover:active,
-.ui-tree a.ui-state-active:link,
-.ui-tree a.ui-state-active:visited,
-.ui-tree a.ui-state-active:hover,
-.ui-tree a.ui-state-active:active {
-    border-style: solid;
-    font-weight: normal;
-}
-
-.ui-tree .ui-tree-nodes .ui-tree-item {
-    padding: 0;
-    width: 100%;
-    float: left;
-    clear:left;
-    margin: 0 0 0 16px;
-    display: inline;
-    width:100%;
-}
-.ui-tree .ui-tree-nodes .ui-tree-parent {
-	margin: 0;
-    padding: 0;
-    width: 100%;
-    float: left;
-    clear:left;
-}
-.ui-tree-insertion {
-	height:1px;
-	font-size:0px;
-}
-
-.ui-tree .ui-tree-checkbox {
-    position: relative;
-    line-height: 16px;
-    width: 16px;
+.ui-treenode-children {
     margin: 0;
-    float: left;
+    padding: 0 0 0 16px;
 }
-.ui-tree .ui-tree-checkbox .ui-tree-checkbox-box {
-    position: relative;
-    bottom: 0;
-    left: 0;
+
+.ui-treenode {
+    background-attachment: scroll;
+    background-color: transparent;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat-y;
+    list-style: none outside none;
+    margin: 0;
+    padding: 1px 0 0;
+}
+
+.ui-treenode-content {
+
+}
+
+.ui-tree-toggler {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ui-treenode-icon {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ui-treenode-label {
+    display: inline-block;
+    margin: 2px 0 0 3px;
+    vertical-align: top;
+}
+
+.ui-tree-leaf-icon {
     width: 16px;
     height: 16px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    margin-right: 3px;
-}
-
-.ui-tree .ui-tree-icon {
-    cursor: pointer;
-}
-
-.ui-tree .ui-tree-selectable-node {
-    cursor: pointer;
+    display: inline-block;
 }

@@ -24,16 +24,16 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var _self = this,
         selectionMode = this.cfg.selectionMode,
-        iconSelector = this.jqId + ' .ui-tree-icon',
+        togglerSelector = this.jqId + ' .ui-tree-toggler',
         nodeSelector = this.jqId  + ' .ui-tree-node-content';
 
         //expand-collapse
-        $(document).off('click', iconSelector)
-                    .on('click', iconSelector, null, function(e) {
-                        var icon = $(this),
-                        node = icon.parents('li:first');
+        $(document).off('click', togglerSelector)
+                    .on('click', togglerSelector, null, function(e) {
+                        var toggleIcon = $(this),
+                        node = toggleIcon.parents('li:first');
 
-                        if(icon.hasClass('ui-icon-triangle-1-e'))
+                        if(toggleIcon.hasClass('ui-icon-triangle-1-e'))
                             _self.expandNode(node);
                         else
                             _self.collapseNode(node);
@@ -167,7 +167,21 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     collapseNode: function(node) {
-        var _self = this,
+        //aria
+        node.attr('aria-expanded', true);
+        
+        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        childrenContainer = node.children('.ui-treenode-children');
+        
+        toggleIcon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+        
+        childrenContainer.slideUp('fast');
+
+        if(this.cfg.dynamic && ! this.cfg.cache) {
+            childrenContainer.empty();
+        }
+
+        /*var _self = this,
         icon = node.find('.ui-tree-icon:first'),
         lastClass = node.attr('class').split(' ').slice(-1),
         nodeIcon = icon.next(),
@@ -189,7 +203,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             childNodeContainer.empty();
         }
 
-        _self.fireCollapseEvent(node);
+        _self.fireCollapseEvent(node);*/
     },
     
     fireCollapseEvent: function(node) {
@@ -209,20 +223,22 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     
     showNodeChildren: function(node) {
         //aria
-        node.children('.ui-tree-node').attr('aria-expanded', true);
+        node.attr('aria-expanded', true);
+        
+        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler');
 
-        var icon = node.find('.ui-tree-icon:first'),
+        /*var toggleIcon = node.find('.ui-tree-icon:first'),
         lastClass = node.attr('class').split(' ').slice(-1),
-        nodeIcon = icon.next(),
-        iconState = this.cfg.iconStates[lastClass];
+        nodeIcon = toggleIcon.next(),
+        iconState = this.cfg.iconStates[lastClass];*/
 
-        icon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
 
-        if(iconState) {
+        /*if(iconState) {
             nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
-        }
+        }*/
 
-        node.children('.ui-tree-nodes').show();
+        node.children('.ui-treenode-children').slideDown('fast');
     },
     
     selectNode: function(e, node) {
