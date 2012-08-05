@@ -7,26 +7,19 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.header = this.jq.children('div.ui-panel-titlebar');
         this.title = this.header.children('span.ui-panel-title');
+        this.content = $(this.jqId + '_content');
         
         this.onshowHandlers = [];
         
         if(this.cfg.toggleable) {
-            this.toggler = $(this.jqId + '_toggler');
-            this.toggleStateHolder = $(this.jqId + '_collapsed');
-            this.content = $(this.jqId + '_content');
-
             this.bindToggler();
         }
 
         if(this.cfg.closable) {
-            this.visibleStateHolder = $(this.jqId + "_visible");
-
             this.bindCloser();
         }
 
         if(this.cfg.hasMenu) {
-            this.visibleStateHolder = $(this.jqId + "_visible");
-
             this.bindMenu();
         }
         
@@ -43,6 +36,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     expand: function() {
+        this.jq.removeClass('ui-panel-collapsed');
+        this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
+        
         if(this.cfg.toggleOrientation === 'vertical')
             this.slideDown();
         else if(this.cfg.toggleOrientation === 'horizontal')
@@ -50,66 +46,68 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     collapse: function() {
+        this.jq.addClass('ui-panel-collapsed');
+        this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+        
         if(this.cfg.toggleOrientation === 'vertical')
             this.slideUp();
         else if(this.cfg.toggleOrientation === 'horizontal')
             this.slideLeft();
     },
     
-    slideUp: function() {
-        var _self = this;
-        
-        this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            _self.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
-        });
+    slideUp: function() {        
+        this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc');
     },
     
-    slideDown: function() {
-        var _self = this;
-        
-        this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            _self.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
-        });
+    slideDown: function() {        
+        this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
     },
     
     slideLeft: function() {
         var _self = this;
         
         this.originalWidth = this.jq.width();
+        this.originalHeaderHeight = this.header.height();
                 
         this.title.hide();
+        this.toggler.hide();
         
         this.content.css({
             'visibility':'hidden'
             ,'height': this.content.height()
         });
         
+        this.header.height(this.originalHeaderHeight);
+        
         this.jq.animate({
             width: '42px'
-        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            _self.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.toggler.show();
         });
     },
     
     slideRight: function() {
         var _self = this;
         
+        this.toggler.hide();
+        
         this.jq.animate({
             width: this.originalWidth
-        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            _self.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
-            
+        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {            
             _self.title.show();
+            _self.toggler.show();
         
             _self.content.css({
                 'visibility':'visible'
                 ,'height': 'auto'
             });
+            
+            _self.header.css('height', 'auto');
         });
     },
     
     toggleState: function(collapsed, removeIcon, addIcon) {
-        this.toggler.removeClass(removeIcon).addClass(addIcon);
+        this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
         
@@ -153,27 +151,31 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindToggler: function() {
-        var _self = this,
-        trigger = this.toggler.parent();
+        var _self = this;
+        
+        this.toggler = $(this.jqId + '_toggler');
+        this.toggleStateHolder = $(this.jqId + '_collapsed');
 
-        this.bindTriggerVisuals(trigger);
+        this.bindTriggerVisuals(this.toggler);
 
-        trigger.click(function() {_self.toggle();});
+        this.toggler.click(function() {_self.toggle();});
     },
     
     bindCloser: function() {
-        var _self = this,
-        trigger = $(this.jqId + '_closer').parent();
+        var _self = this;
+        
+        this.closer = $(this.jqId + '_closer');
+        this.visibleStateHolder = $(this.jqId + "_visible");
 
-        this.bindTriggerVisuals(trigger);
+        this.bindTriggerVisuals(this.closer);
 
-        trigger.click(function() {_self.close();});
+        this.closer.click(function() {_self.close();});
     },
     
     bindMenu: function() {
-        var trigger = $(this.jqId + '_menu').parent();
+        this.menuTrigger = $(this.jqId + '_menu');
 
-        this.bindTriggerVisuals(trigger);
+        this.bindTriggerVisuals(this.menuTrigger);
     },
     
     bindTriggerVisuals: function(trigger) {

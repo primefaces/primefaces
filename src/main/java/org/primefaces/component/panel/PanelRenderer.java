@@ -218,6 +218,9 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
+        if(id != null) {
+            writer.writeAttribute("id", id, null);
+        }
         writer.writeAttribute("href", "javascript:void(0)", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
         if(title != null) {
@@ -225,13 +228,7 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         writer.startElement("span", null);
-        
-        if(id != null) {
-            writer.writeAttribute("id", id, null);
-        }
-
         writer.writeAttribute("class", "ui-icon " + iconClass, null);
-
         writer.endElement("span");
 
         writer.endElement("a");
