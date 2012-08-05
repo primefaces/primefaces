@@ -25,7 +25,8 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         var _self = this,
         selectionMode = this.cfg.selectionMode,
         togglerSelector = this.jqId + ' .ui-tree-toggler',
-        nodeSelector = this.jqId  + ' .ui-tree-node-content';
+        nodeLabelSelector = this.jqId  + ' .ui-treenode-label',
+        nodeContentSelector = this.jqId + ' .ui-treenode-content';
 
         //expand-collapse
         $(document).off('click', togglerSelector)
@@ -41,20 +42,26 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
 
         //selection hover
         if(selectionMode && this.cfg.highlight) {
-            $(document).off('hover.tree', nodeSelector)
-                        .on('hover.tree', nodeSelector, null, function() {
+            $(document).off('mouseout.tree mouseover.tree', nodeLabelSelector)
+                        .on('mouseout.tree', nodeLabelSelector, null, function() {
                             var element = $(this);
 
-                            if(!element.hasClass('ui-state-highlight') && element.hasClass('ui-tree-selectable-node')) {
-                                $(this).toggleClass('ui-state-hover');
+                            if(element.hasClass('ui-state-hover')) {
+                                element.removeClass('ui-state-hover');
+                            }
+                        })
+                        .on('mouseover.tree', nodeLabelSelector, null, function() {
+                            var element = $(this);
+
+                            if(!element.hasClass('ui-state-highlight') && element.parent().hasClass('ui-tree-selectable')) {
+                                $(this).addClass('ui-state-hover');
                             }
                         });
-                
         }
         
         //node click
-        $(document).off('click.tree', nodeSelector)
-                        .on('click.tree', nodeSelector, null, function(e) {
+        $(document).off('click.tree', nodeContentSelector)
+                        .on('click.tree', nodeContentSelector, null, function(e) {
                             _self.nodeClick(e, $(this));
                         });
     },
@@ -62,18 +69,26 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     nodeClick: function(e, nodeContent) {
         PrimeFaces.clearSelection();
         
-        var node = nodeContent.parents('li:first');
-
-        if($(e.target).is(':not(.ui-tree-icon)')) {
+        if($(e.target).is(':not(.ui-tree-toggler)')) {
+            var node = nodeContent.parent(),
+            metaKey = (e.metaKey||e.ctrlKey);
+                    
             if(this.cfg.onNodeClick) {
                 this.cfg.onNodeClick.call(this, node);
             }
             
-            if(nodeContent.hasClass('ui-tree-selectable-node') && this.cfg.selectionMode) {
-                if(this.isNodeSelected(node))
-                    this.unselectNode(e, node);
-                else
-                    this.selectNode(e, node);
+            if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode) {
+                if(this.isCheckboxSelection()) {
+                    
+                }
+                else {
+                    if(this.isNodeSelected(node) && metaKey) {
+                        this.unselectNode(node);
+                    }
+                    else {
+                        this.selectNode(node, metaKey);
+                    }
+                }
             };
         }
     },
@@ -241,60 +256,35 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    selectNode: function(e, node) {
-        var metaKey = (e.metaKey||e.ctrlKey);
-
-        if(this.isCheckboxSelection()) {
-            this.toggleCheckbox(node, true);
+    selectNode: function(node, metaKey) {        
+        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
+            this.selections = [];
+            this.jq.find('.ui-treenode-label.ui-state-highlight').each(function() {
+                $(this).removeClass('ui-state-highlight').parents('.ui-treenode:first').attr('aria-selected', false);
+            });
         }
-        else {
-            if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
-                //clean all selections
-                this.selections = [];
-                this.jq.find('.ui-tree-node-content.ui-state-highlight').each(function() {
-                    $(this).removeClass('ui-state-highlight').parent().attr('aria-selected', false);
-                });
-            }
 
-            //select node
-            node.children('.ui-tree-node').attr('aria-selected', true);
-            node.find('.ui-tree-node-content:first').removeClass('ui-state-hover').addClass('ui-state-highlight');
+        node.attr('aria-selected', true)
+            .find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
-            this.addToSelection(this.getRowKey(node));
-        }
+        this.addToSelection(this.getRowKey(node));
 
         this.writeSelections();
 
         this.fireNodeSelectEvent(node);
     },
     
-    unselectNode: function(e, node) {
-        var rowKey = this.getRowKey(node),
-        metaKey = (e.metaKey||e.ctrlKey);
+    unselectNode: function(node) {
+        var rowKey = this.getRowKey(node);
+           
+        node.attr('aria-selected', false).
+            find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight ui-state-hover');
 
-        //select node
-        if(this.isCheckboxSelection()) {
-            this.toggleCheckbox(node, false);
-            this.writeSelections();
-            this.fireNodeUnselectEvent(node);
-        }
-        else if(metaKey) {
-            //remove visual style    
-            node.find('.ui-tree-node-content:first').removeClass('ui-state-highlight');
+        this.removeFromSelection(rowKey);
 
-            //aria
-            node.children('.ui-tree-node').attr('aria-selected', false);
+        this.writeSelections();
 
-            //remove from selection
-            this.removeFromSelection(rowKey);
-
-            this.writeSelections();
-
-            this.fireNodeUnselectEvent(node);
-        } 
-        else if(this.isMultipleSelection()){
-            this.selectNode(e, node);
-        }
+        this.fireNodeUnselectEvent(node);
     },
     
     writeSelections: function() {    

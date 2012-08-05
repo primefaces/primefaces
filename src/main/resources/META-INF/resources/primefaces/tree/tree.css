@@ -3,7 +3,6 @@
 }
 
 .ui-tree-container {
-    border: 1px dotted gray;
     height: 100%;
     margin: 0;
     overflow: auto;
@@ -44,8 +43,16 @@
 
 .ui-treenode-label {
     display: inline-block;
-    margin: 2px 0 0 3px;
+    margin: 2px 0 0 0;
     vertical-align: top;
+    padding: 0 3px;
+}
+
+.ui-treenode-label.ui-state-hover,
+.ui-treenode-label.ui-state-highlight {
+    cursor: pointer;
+    font-weight: normal;
+    border: 0 none;
 }
 
 .ui-tree-leaf-icon {
