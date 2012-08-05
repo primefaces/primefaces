@@ -98,7 +98,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.dynamic) {
 
-            if(this.cfg.cache && node.children('.ui-tree-nodes').children().length > 0) {
+            if(this.cfg.cache && node.children('.ui-treenode-children').children().length > 0) {
                 this.showNodeChildren(node);
 
                 return;
@@ -128,7 +128,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                     content = update.text();
 
                     if(id == _self.id){
-                        node.children('.ui-tree-nodes').append(content);
+                        node.children('.ui-treenode-children').append(content);
 
                         _self.showNodeChildren(node);
                     }
@@ -160,7 +160,6 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            //expand dom
             this.showNodeChildren(node);
             this.fireExpandEvent(node);
         }
