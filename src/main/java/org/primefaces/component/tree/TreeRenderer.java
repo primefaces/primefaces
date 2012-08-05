@@ -152,9 +152,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tree", null);
         writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
-		if(tree.getStyle() != null) 
+		if(tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
-
+        }
+        
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
@@ -180,7 +181,8 @@ public class TreeRenderer extends CoreRenderer {
             boolean isLeaf = node.isLeaf();
             boolean expanded = node.isExpanded();
             boolean selectable = node.isSelectable();
-            String iconClass = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
+            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS : Tree.COLLAPSED_ICON_CLASS;
+            String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
             Object datakey = tree.getDatakey();
             String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
@@ -192,7 +194,7 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             //style class of node container
-            String containerClass = isLeaf ? Tree.LEAF_CLASS : Tree.PARENT_CLASS;
+            String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             containerClass = containerClass + " " + uiTreeNode.getType();
 
@@ -200,15 +202,15 @@ public class TreeRenderer extends CoreRenderer {
                 writer.writeAttribute("id", nodeId, null);
                 writer.writeAttribute("data-rowkey", rowKey, null);
                 writer.writeAttribute("class", containerClass, null);
+                writer.writeAttribute("role", "treeitem", null);
 
                 if(datakey != null) {
                     writer.writeAttribute("data-datakey", datakey, null);
                 }
                 
-                //label
+                //content
                 writer.startElement("div", null);
-                writer.writeAttribute("class", Tree.NODE_CLASS, null);
-                writer.writeAttribute("role", "treeitem", null);
+                writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS, null);
                 writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
                 writer.writeAttribute("aria-selected", String.valueOf(selected), null);
                 if(checkbox) {
@@ -216,38 +218,34 @@ public class TreeRenderer extends CoreRenderer {
                 }
 
                     //node content
-                    String nodeContentClass = (selected && !checkbox) ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
+                    /*String nodeContentClass = (selected && !checkbox) ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
                     nodeContentClass = selectable ? nodeContentClass + " " + Tree.SELECTABLE_NODE_CLASS : nodeContentClass;
                     
                     writer.startElement("span", null);
                     writer.writeAttribute("class", nodeContentClass, null);
+*/
+                    //state icon
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", stateIcon, null);
+                    writer.endElement("span");
 
-                        //state icon
-                        if(!isLeaf) {
-                            writer.startElement("span", null);
-                            writer.writeAttribute("class", iconClass, null);
-                            writer.endElement("span");
-                        }
+                    //node icon
+                    writer.startElement("span", null);
+                    String icon = uiTreeNode.getIconToRender(expanded);
+                    if(icon != null) {
+                        writer.writeAttribute("class", Tree.NODE_ICON_CLASS + " " + icon, null);
+                    }
+                    writer.endElement("span");
 
-                        //node icon
-                        writer.startElement("span", null);
-                        String icon = uiTreeNode.getIconToRender(expanded);
-                        if(icon != null) {
-                            writer.writeAttribute("class", "ui-icon " + icon, null);
-                        }
-                        writer.endElement("span");
+                    /*//checkbox
+                    if(checkbox && selectable) {
+                        encodeCheckbox(context, tree, node, selected);
+                    }*/
 
-                        //checkbox
-                        if(checkbox && selectable) {
-                            encodeCheckbox(context, tree, node, selected);
-                        }
-
-                        //content
-                        writer.startElement("span", null);
-                        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
-                        uiTreeNode.encodeAll(context);
-                        writer.endElement("span");
-
+                    //label
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+                    uiTreeNode.encodeAll(context);
                     writer.endElement("span");
 
                 writer.endElement("div");
@@ -256,7 +254,7 @@ public class TreeRenderer extends CoreRenderer {
                 boolean shouldRender = (dynamic && expanded) || !dynamic;
                 
                 writer.startElement("ul", null);
-                writer.writeAttribute("class", Tree.NODES_CLASS , null);
+                writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS , null);
                 
                 if(!expanded)
                     writer.writeAttribute("style", "display:none", null);
