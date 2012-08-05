@@ -64,3 +64,9 @@
     height: 16px;
     display: inline-block;
 }
+
+.ui-tree .ui-chkbox-box {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+}

@@ -27,6 +27,8 @@ import org.primefaces.component.api.UITree;
 
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
+import org.w3c.dom.html.HTMLCollection;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -228,6 +230,11 @@ public class TreeRenderer extends CoreRenderer {
                     writer.startElement("span", null);
                     writer.writeAttribute("class", stateIcon, null);
                     writer.endElement("span");
+                    
+                    //checkbox
+                    if(checkbox && selectable) {
+                        encodeCheckbox(context, tree, node, selected);
+                    }
 
                     //node icon
                     writer.startElement("span", null);
@@ -236,11 +243,6 @@ public class TreeRenderer extends CoreRenderer {
                         writer.writeAttribute("class", Tree.NODE_ICON_CLASS + " " + icon, null);
                     }
                     writer.endElement("span");
-
-                    /*//checkbox
-                    if(checkbox && selectable) {
-                        encodeCheckbox(context, tree, node, selected);
-                    }*/
 
                     //label
                     String nodeLabelClass = (selected && !checkbox) ? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
@@ -330,13 +332,13 @@ public class TreeRenderer extends CoreRenderer {
 
 	protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String iconClass = selected ? Tree.CHECKBOX_ICON_CHECKED_CLASS : Tree.CHECKBOX_ICON_CLASS;
+        String iconClass = selected ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_ICON_CLASS;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Tree.CHECKBOX_CLASS, null);
+        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Tree.CHECKBOX_BOX_CLASS, null);
+        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
