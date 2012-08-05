@@ -48,9 +48,13 @@
     padding: 0 3px;
 }
 
+.ui-tree .ui-tree-selectable .ui-treenode-label,
+.ui-tree .ui-tree-selectable .ui-treenode-icon {
+    cursor: pointer;
+}
+
 .ui-treenode-label.ui-state-hover,
 .ui-treenode-label.ui-state-highlight {
-    cursor: pointer;
     font-weight: normal;
     border: 0 none;
 }
