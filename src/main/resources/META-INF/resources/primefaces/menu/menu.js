@@ -686,12 +686,12 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindTree: function() {
-        var rowSelector = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable-node': '.ui-tree-selectable-node'),
+        var nodeSelector = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable': '.ui-tree-selectable'),
         event = this.cfg.event + '.tree',
         _self = this;
         
-        $(document).off(event, rowSelector)
-                    .on(event, rowSelector, null, function(e) {
+        $(document).off(event, nodeSelector)
+                    .on(event, nodeSelector, null, function(e) {
                         window[_self.cfg.targetWidgetVar].nodeClick(e, $(this));
                         _self.show(e);
                         e.preventDefault();
