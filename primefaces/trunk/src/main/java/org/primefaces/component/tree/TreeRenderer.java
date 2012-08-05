@@ -213,21 +213,17 @@ public class TreeRenderer extends CoreRenderer {
                 }
                                 
                 //content
+                String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS : Tree.NODE_CONTENT_CLASS;
+                
+                
                 writer.startElement("div", null);
-                writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS, null);
+                writer.writeAttribute("class", contentClass, null);
                 writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
                 writer.writeAttribute("aria-selected", String.valueOf(selected), null);
                 if(checkbox) {
                     writer.writeAttribute("aria-checked", String.valueOf(selected), null);
                 }
 
-                    //node content
-                    /*String nodeContentClass = (selected && !checkbox) ? Tree.NODE_CONTENT_CLASS + " ui-state-highlight" : Tree.NODE_CONTENT_CLASS;
-                    nodeContentClass = selectable ? nodeContentClass + " " + Tree.SELECTABLE_NODE_CLASS : nodeContentClass;
-                    
-                    writer.startElement("span", null);
-                    writer.writeAttribute("class", nodeContentClass, null);
-*/
                     //state icon
                     writer.startElement("span", null);
                     writer.writeAttribute("class", stateIcon, null);
@@ -247,8 +243,10 @@ public class TreeRenderer extends CoreRenderer {
                     }*/
 
                     //label
+                    String nodeLabelClass = (selected && !checkbox) ? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
+                        
                     writer.startElement("span", null);
-                    writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+                    writer.writeAttribute("class", nodeLabelClass, null);
                     uiTreeNode.encodeAll(context);
                     writer.endElement("span");
 

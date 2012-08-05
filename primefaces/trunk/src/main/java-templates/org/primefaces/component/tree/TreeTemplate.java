@@ -84,18 +84,18 @@ import org.primefaces.model.TreeNode;
         return getStateHelper().get(PropertyKeys.selection);
     }
 
-    public static String CONTAINER_CLASS = "ui-tree ui-widget ui-corner-all";
-    public static String SELECTABLE_NODE_CLASS = "ui-tree-selectable-node";
+    public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static String ROOT_NODES_CLASS = "ui-tree-container";
     public static String PARENT_NODE_CLASS = "ui-treenode ui-tree-parent";
     public static String LEAF_NODE_CLASS = "ui-treenode ui-tree-leaf";
     public static String CHILDREN_NODES_CLASS = "ui-treenode-children";
     public static String NODE_CONTENT_CLASS = "ui-treenode-content";
+    public static String SELECTABLE_NODE_CONTENT_CLASS = "ui-treenode-content ui-tree-selectable";
     public static String EXPANDED_ICON_CLASS = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
     public static String COLLAPSED_ICON_CLASS = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
     public static String LEAF_ICON_CLASS = "ui-tree-leaf-icon";
     public static String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
-    public static String NODE_LABEL_CLASS = "ui-treenode-label";
+    public static String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
     public static String CHECKBOX_CLASS = "ui-tree-checkbox ui-widget";
     public static String CHECKBOX_BOX_CLASS = "ui-tree-checkbox-box ui-widget ui-corner-all ui-state-default";
     public static String CHECKBOX_ICON_CLASS = "ui-tree-checkbox-icon";
