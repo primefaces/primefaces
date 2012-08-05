@@ -13,7 +13,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             var selectionsValue = this.selectionHolder.val();
             this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
-            if(this.cfg.selectionMode == 'checkbox') {
+            if(this.isCheckboxSelection()) {
                 this.preselectCheckboxPropagation();
             }
         }
@@ -440,11 +440,11 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     preselectCheckboxPropagation: function() {
-        this.jq.find('.ui-tree-checkbox-icon').not('.ui-icon-check').each(function() {
+        this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
             var icon = $(this),
             node = icon.parents('li:first');
 
-            if(node.children('.ui-tree-nodes').find('.ui-tree-checkbox-icon.ui-icon-check').length > 0) {
+            if(node.children('.ui-treenode-children').find('.ui-chkbox-icon.ui-icon-check').length > 0) {
                 icon.addClass('ui-icon ui-icon-minus');
             }
         });

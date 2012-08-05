@@ -28,7 +28,6 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
-import org.w3c.dom.html.HTMLCollection;
 
 public class TreeRenderer extends CoreRenderer {
 
