@@ -152,7 +152,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", "ui-messages-close", null);
-        writer.writeAttribute("onclick", "$(this).parent().fadeOut();return false;", null);
+        writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
         
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-close", null);
