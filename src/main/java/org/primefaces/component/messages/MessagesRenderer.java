@@ -64,15 +64,12 @@ public class MessagesRenderer extends UINotificationRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-messages ui-widget", null);
         
-        if(!messagesMap.isEmpty() && uiMessages.isClosable()) {
-            encodeCloseIcon(context, uiMessages);
-        }
-		
 		for(String severity : messagesMap.keySet()) {
 			List<FacesMessage> severityMessages = messagesMap.get(severity);
 			
-			if(severityMessages.size() > 0)
+			if(severityMessages.size() > 0) {
 				encodeSeverityMessages(context, uiMessages, severity, severityMessages);
+            }
 		}
 		
 		writer.endElement("div");
@@ -98,6 +95,10 @@ public class MessagesRenderer extends UINotificationRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("class", styleClassPrefix + " ui-corner-all", null);
+        
+        if(uiMessages.isClosable()) {
+            encodeCloseIcon(context, uiMessages);
+        }
 		
 		writer.startElement("span", null);
 		writer.writeAttribute("class", styleClassPrefix + "-icon", null);
@@ -151,7 +152,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", "ui-messages-close", null);
-        writer.writeAttribute("onclick", "$('" + getEscapedClientId(uiMessages.getClientId(context)) + "').fadeOut();return false;", null);
+        writer.writeAttribute("onclick", "$(this).parent().fadeOut();return false;", null);
         
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-close", null);
