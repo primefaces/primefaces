@@ -80,4 +80,5 @@
 .ui-messages .ui-messages-close {
     float:right;
     margin:10px;
+    cursor: pointer;
 }
