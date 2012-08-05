@@ -167,43 +167,40 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     collapseNode: function(node) {
+        var _self = this;
+        
         //aria
         node.attr('aria-expanded', true);
         
         var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        nodeType = node.attr('class').split(' ').slice(-1),
+        nodeIcon = toggleIcon.next(),
+        iconState = this.cfg.iconStates[nodeType],
         childrenContainer = node.children('.ui-treenode-children');
         
         toggleIcon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
         
-        childrenContainer.slideUp('fast');
-
-        if(this.cfg.dynamic && ! this.cfg.cache) {
-            childrenContainer.empty();
-        }
-
-        /*var _self = this,
-        icon = node.find('.ui-tree-icon:first'),
-        lastClass = node.attr('class').split(' ').slice(-1),
-        nodeIcon = icon.next(),
-        iconState = this.cfg.iconStates[lastClass];
-
-        icon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
-
         if(iconState) {
             nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
         }
-
-        //aria
-        node.children('.ui-tree-node').attr('aria-expanded', false);
-
-        var childNodeContainer = node.children('.ui-tree-nodes');
-        childNodeContainer.hide();
-
-        if(_self.cfg.dynamic && !_self.cfg.cache) {
-            childNodeContainer.empty();
+        
+        if(this.cfg.animate) {
+            childrenContainer.slideUp('fast', function() {
+                _self.postCollapse(node, childrenContainer);
+            });
         }
+        else {
+            childrenContainer.hide();
+            this.postCollapse(node, childrenContainer);
+        }
+    },
 
-        _self.fireCollapseEvent(node);*/
+    postCollapse: function(node, childrenContainer) {
+        if(this.cfg.dynamic && !this.cfg.cache) {
+            childrenContainer.empty();
+        }
+        
+        this.fireCollapseEvent(node);
     },
     
     fireCollapseEvent: function(node) {
@@ -225,20 +222,23 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         //aria
         node.attr('aria-expanded', true);
         
-        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler');
-
-        /*var toggleIcon = node.find('.ui-tree-icon:first'),
-        lastClass = node.attr('class').split(' ').slice(-1),
+        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        nodeType = node.attr('class').split(' ').slice(-1),
         nodeIcon = toggleIcon.next(),
-        iconState = this.cfg.iconStates[lastClass];*/
+        iconState = this.cfg.iconStates[nodeType];
 
         toggleIcon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
 
-        /*if(iconState) {
+        if(iconState) {
             nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
-        }*/
+        }
 
-        node.children('.ui-treenode-children').slideDown('fast');
+        if(this.cfg.animate) {
+            node.children('.ui-treenode-children').slideDown('fast');
+        }
+        else {
+            node.children('.ui-treenode-children').show();
+        }
     },
     
     selectNode: function(e, node) {

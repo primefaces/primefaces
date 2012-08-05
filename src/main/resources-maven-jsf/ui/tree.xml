@@ -95,6 +95,13 @@
 			<type>java.lang.Object</type>
             <description>Unique key of the data presented by tree nodes.</description>
 		</attribute>
+        <attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, Displays slide effect during toggling of a node.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
