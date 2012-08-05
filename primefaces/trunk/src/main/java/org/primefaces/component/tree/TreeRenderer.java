@@ -123,6 +123,10 @@ public class TreeRenderer extends CoreRenderer {
         if(tree.getOnNodeClick() != null) {
             writer.write(",onNodeClick:function(node) {" + tree.getOnNodeClick() + "}");
         }
+        
+        if(tree.isAnimate()) {
+            writer.write(",animate:true");
+        }
 
         //expand-collapse icon states for specific treenodes
         encodeIconStates(context, tree);
@@ -193,7 +197,7 @@ public class TreeRenderer extends CoreRenderer {
                 tree.getSelectedRowKeys().add(rowKey);
             }
 
-            //style class of node container
+            //style class of node
             String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             containerClass = containerClass + " " + uiTreeNode.getType();
@@ -207,7 +211,7 @@ public class TreeRenderer extends CoreRenderer {
                 if(datakey != null) {
                     writer.writeAttribute("data-datakey", datakey, null);
                 }
-                
+                                
                 //content
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS, null);
