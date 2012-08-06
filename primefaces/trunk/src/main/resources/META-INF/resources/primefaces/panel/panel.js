@@ -36,7 +36,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     expand: function() {
-        this.jq.removeClass('ui-panel-collapsed');
         this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
         
         if(this.cfg.toggleOrientation === 'vertical')
@@ -46,7 +45,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     collapse: function() {
-        this.jq.addClass('ui-panel-collapsed');
         this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
         
         if(this.cfg.toggleOrientation === 'vertical')
@@ -83,6 +81,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             width: '42px'
         }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             _self.toggler.show();
+            _self.jq.addClass('ui-panel-collapsed-h');
         });
     },
     
@@ -93,7 +92,8 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         
         this.jq.animate({
             width: this.originalWidth
-        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {            
+        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            _self.jq.removeClass('ui-panel-collapsed-h');
             _self.title.show();
             _self.toggler.show();
         
