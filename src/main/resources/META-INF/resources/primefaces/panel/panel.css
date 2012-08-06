@@ -22,12 +22,6 @@
     *margin:-1.5em 0em 0em 0.2em;
 }
 
-.ui-panel-collapsed .ui-panel-titlebar-icon,
-.ui-panel-collapsed .ui-panel-titlebar-icon:hover,
-.ui-panel-collapsed .ui-panel-titlebar-icon:focus {
-    *margin:-0.2em 0em 0em 0.1em;
-}
-
 .ui-panel .ui-panel-content {
 	border: 0;
     background: none;
@@ -39,4 +33,10 @@
 	margin:0.5em 0 0;
 	padding:0.5em 1em;
 	text-align:left;
+}
+
+.ui-panel-collapsed-h .ui-panel-titlebar-icon,
+.ui-panel-collapsed-h .ui-panel-titlebar-icon:hover,
+.ui-panel-collapsed-h .ui-panel-titlebar-icon:focus {
+    *margin:-0.2em 0em 0em 0.1em;
 }
