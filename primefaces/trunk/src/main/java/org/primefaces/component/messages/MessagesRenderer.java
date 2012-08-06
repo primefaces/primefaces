@@ -94,7 +94,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         boolean escape = uiMessages.isEscape();
 		
 		writer.startElement("div", null);
-		writer.writeAttribute("class", styleClassPrefix + " ui-corner-all", null);
+		writer.writeAttribute("class", styleClassPrefix + " ui-corner-all ui-shadow", null);
         
         if(uiMessages.isClosable()) {
             encodeCloseIcon(context, uiMessages);
