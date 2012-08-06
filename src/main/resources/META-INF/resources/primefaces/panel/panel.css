@@ -12,6 +12,7 @@
 
 .ui-panel .ui-panel-titlebar-icon {
 	float: right;
+    cursor: pointer;
 }
 
 .ui-panel .ui-panel-titlebar-icon,
