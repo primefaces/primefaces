@@ -79,7 +79,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         
         this.jq.animate({
             width: '42px'
-        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+        }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             _self.toggler.show();
             _self.jq.addClass('ui-panel-collapsed-h');
         });
