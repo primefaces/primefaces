@@ -28,6 +28,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 cancel: '.ui-state-disabled',
                 connectWith: this.jqId + ' .ui-picklist-list',
                 revert: true,
+                containment: this.jq,
                 update: function(event, ui) {
                     ui.item.removeClass('ui-state-highlight');
 
