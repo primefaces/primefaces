@@ -217,7 +217,7 @@ public class TreeRenderer extends CoreRenderer {
                 String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS : Tree.NODE_CONTENT_CLASS;
                 
                 
-                writer.startElement("div", null);
+                writer.startElement("span", null);
                 writer.writeAttribute("class", contentClass, null);
                 writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
                 writer.writeAttribute("aria-selected", String.valueOf(selected), null);
@@ -251,7 +251,7 @@ public class TreeRenderer extends CoreRenderer {
                     uiTreeNode.encodeAll(context);
                     writer.endElement("span");
 
-                writer.endElement("div");
+                writer.endElement("span");
 
                 //children nodes
                 boolean shouldRender = (dynamic && expanded) || !dynamic;
