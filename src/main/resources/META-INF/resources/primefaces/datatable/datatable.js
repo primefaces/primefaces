@@ -28,7 +28,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.originRowIndex = 0;
             this.cursorIndex = null;
 
-            this.setupSelectionEvents();
+            this.bindSelectionEvents();
         }
 
         //Filtering
@@ -187,7 +187,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Applies events related to selection in a non-obstrusive way
      */
-    setupSelectionEvents: function() {
+    bindSelectionEvents: function() {
         var _self = this;
         this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
 
@@ -202,73 +202,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         else if(this.cfg.columnSelectionMode) {
 
             if(this.cfg.columnSelectionMode == 'single') {
-                var radioSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-radiobutton .ui-radiobutton-box';
-                
-                $(document).off('click.ui-radiobutton mouseover.ui-radiobutton mouseout.ui-radiobutton', radioSelector)
-                                .on('click.ui-radiobutton', radioSelector, null, function() {
-                                    var radio = $(this),
-                                    checked = radio.hasClass('ui-state-active'),
-                                    disabled = radio.hasClass('ui-state-disabled');
-
-                                    if(!disabled && !checked) {
-                                        _self.selectRowWithRadio(radio);
-                                    }
-                                })
-                                .on('mouseover.ui-radiobutton', radioSelector, null, function() {
-                                    var radio = $(this);
-                                    if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
-                                        radio.addClass('ui-state-hover');
-                                    }
-                                })
-                                .on('mouseout.ui-radiobutton', radioSelector, null, function() {
-                                    var radio = $(this);
-                                    radio.removeClass('ui-state-hover');
-                                });
+                this.bindRadioEvents();
             }
             else {
-                var checkAllTogglerSelector = this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box';
-                this.checkAllToggler = $(checkAllTogglerSelector);
-
-                //check-uncheck all
-                this.checkAllToggler.on('mouseover', function() {
-                    var box = $(this);
-                    if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
-                        box.addClass('ui-state-hover');
-                    }
-                })
-                .on('mouseout', function() {
-                    $(this).removeClass('ui-state-hover');
-                })
-                .on('click', function() {
-                    _self.toggleCheckAll();
-                });
-                
-                var checkboxSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-chkbox .ui-chkbox-box';
-
-                $(document).off('mouseover.ui-chkbox mouseover.ui-chkbox click.ui-chkbox', checkboxSelector)
-                            .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
-                                var box = $(this);
-                                if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
-                                    box.addClass('ui-state-hover');
-                                }
-                            })
-                            .on('mouseout.ui-chkbox', checkboxSelector, null, function() {
-                                $(this).removeClass('ui-state-hover');
-                            })
-                            .on('click.ui-chkbox', checkboxSelector, null, function() {
-                                var checkbox = $(this);
-
-                                if(!checkbox.hasClass('ui-state-disabled')) {
-                                    var checked = checkbox.hasClass('ui-state-active');
-
-                                    if(checked) {
-                                        _self.unselectRowWithCheckbox(checkbox);
-                                    } 
-                                    else {                        
-                                        _self.selectRowWithCheckbox(checkbox);
-                                    }
-                                }
-                            });
+                this.bindCheckboxEvents();
             }
         }
         
@@ -296,6 +233,159 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                             element.removeClass('ui-state-hover');
                         }
                     });
+    },
+    
+    bindRadioEvents: function() {
+        var radioSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-radiobutton .ui-radiobutton-box',
+        radioInputSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-radiobutton input',
+        _self = this;
+                
+        $(document).off('click.ui-radiobutton mouseover.ui-radiobutton mouseout.ui-radiobutton', radioSelector)
+                        .on('click.ui-radiobutton', radioSelector, null, function() {
+                            var radio = $(this),
+                            checked = radio.hasClass('ui-state-active'),
+                            disabled = radio.hasClass('ui-state-disabled');
+
+                            if(!disabled && !checked) {
+                                _self.selectRowWithRadio(radio);
+                            }
+                        })
+                        .on('mouseover.ui-radiobutton', radioSelector, null, function() {
+                            var radio = $(this);
+                            if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
+                                radio.addClass('ui-state-hover');
+                            }
+                        })
+                        .on('mouseout.ui-radiobutton', radioSelector, null, function() {
+                            var radio = $(this);
+                            radio.removeClass('ui-state-hover');
+                        });
+                       
+        //keyboard support
+        $(document).off('focus.ui-radiobutton blur.ui-radiobutton', radioInputSelector)
+                        .on('focus.ui-radiobutton', radioInputSelector, null, function() {
+                            var input = $(this),
+                            box = input.parent().next();
+
+                            if(input.prop('checked')) {
+                                box.removeClass('ui-state-active');
+                            }
+
+                            box.addClass('ui-state-focus');
+                        })
+                        .on('blur.ui-radiobutton', radioInputSelector, null, function() {
+                            var input = $(this),
+                            box = input.parent().next();
+
+                            if(input.prop('checked')) {
+                                box.addClass('ui-state-active');
+                            }
+
+                            box.removeClass('ui-state-focus');
+                        })
+                        .on('change.ui-radiobutton', radioInputSelector, null, function() {
+                            var currentInput = $(radioInputSelector).filter(':checked'),
+                            currentRadio = currentInput.parent().next();
+
+                            _self.selectRowWithRadio(currentRadio);
+                        });
+                      
+    },
+    
+    bindCheckboxEvents: function() {
+        var checkAllTogglerSelector = this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box',
+        _self = this;
+        
+        this.checkAllToggler = $(checkAllTogglerSelector),
+        
+        //check-uncheck all
+        this.checkAllToggler.on('mouseover', function() {
+            var box = $(this);
+            if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
+                box.addClass('ui-state-hover');
+            }
+        })
+        .on('mouseout', function() {
+            $(this).removeClass('ui-state-hover');
+        })
+        .on('click', function() {
+            _self.toggleCheckAll();
+        });
+
+        //row checkboxes
+        var checkboxSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-chkbox .ui-chkbox-box',
+        checkboxInputSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-chkbox input';
+
+        $(document).off('mouseover.ui-chkbox mouseover.ui-chkbox click.ui-chkbox', checkboxSelector)
+                    .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
+                        var box = $(this);
+                        if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
+                            box.addClass('ui-state-hover');
+                        }
+                    })
+                    .on('mouseout.ui-chkbox', checkboxSelector, null, function() {
+                        $(this).removeClass('ui-state-hover');
+                    })
+                    .on('click.ui-chkbox', checkboxSelector, null, function() {
+                        var checkbox = $(this);
+
+                        if(!checkbox.hasClass('ui-state-disabled')) {
+                            var checked = checkbox.hasClass('ui-state-active');
+
+                            if(checked) {
+                                _self.unselectRowWithCheckbox(checkbox);
+                            } 
+                            else {                        
+                                _self.selectRowWithCheckbox(checkbox);
+                            }
+                        }
+                    });
+
+        //keyboard support
+        $(document).off('focus.ui-chkbox blur.ui-chkbox keydown.ui-chkbox keyup.ui-chkbox', checkboxInputSelector)
+                .on('focus.ui-chkbox', checkboxInputSelector, null, function() {
+                    var input = $(this),
+                    box = input.parent().next();
+
+                    if(input.prop('checked')) {
+                        box.removeClass('ui-state-active');
+                    }
+
+                    box.addClass('ui-state-focus');
+                })
+                .on('blur.ui-chkbox', checkboxInputSelector, null, function() {
+                    var input = $(this),
+                    box = input.parent().next();
+
+                    if(input.prop('checked')) {
+                        box.addClass('ui-state-active');
+                    }
+
+                    box.removeClass('ui-state-focus');
+                })
+                .on('keydown.ui-chkbox', checkboxInputSelector, null, function(e) {
+                    var keyCode = $.ui.keyCode;
+                    if(e.which == keyCode.SPACE) {
+                        e.preventDefault();
+                    }
+                })
+                .on('keyup.ui-chkbox', checkboxInputSelector, null, function(e) {
+                    var keyCode = $.ui.keyCode;
+
+                    if(e.which == keyCode.SPACE) {
+                        var input = $(this),
+                        box = input.parent().next();
+
+                        if(input.prop('checked')) {
+                            _self.unselectRowWithCheckbox(box);
+                        } 
+                        else {                        
+                            _self.selectRowWithCheckbox(box);
+                        }
+
+                        e.preventDefault();
+                    }
+                });
     },
     
     /**
@@ -816,9 +906,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         row.siblings('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false)      //row
             .find('td.ui-selection-column .ui-radiobutton .ui-radiobutton-box').removeClass('ui-state-active')  //radio
             .children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');                        //radio icon
-
+        
+        if(this.currentRadio) {
+            this.currentRadio.prev().children('input').removeAttr('checked');        
+        }
+               
         //select current
         radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+        radio.prev().children('input').attr('checked', 'checked');
+        this.currentRadio = radio;
 
         //add to selection
         this.addSelection(rowMeta.key);
@@ -841,6 +937,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         checkbox.addClass('ui-state-active').children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
         row.addClass('ui-state-highlight').attr('aria-selected', true);
 
+        //check input
+        checkbox.prev().children('input').attr('checked', 'checked');
+
         //add to selection
         this.addSelection(rowMeta.key);
 
@@ -862,6 +961,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         checkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
+
+        //uncheck input
+        checkbox.prev().children('input').removeAttr('checked');
 
         //remove from selection
         this.removeSelection(rowMeta.key);

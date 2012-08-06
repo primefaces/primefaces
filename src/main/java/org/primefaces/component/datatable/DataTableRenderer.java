@@ -900,9 +900,11 @@ public class DataTableRenderer extends DataRenderer {
 
         if(selectionMode.equalsIgnoreCase("single")) {
             encodeRadio(context, table, selected, disabled);
-        } else if(selectionMode.equalsIgnoreCase("multiple")) {
+        } 
+        else if(selectionMode.equalsIgnoreCase("multiple")) {
             encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS);
-        } else {
+        } 
+        else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
 
@@ -919,6 +921,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "radio", null);
+        writer.writeAttribute("name", table.getClientId(context) + "_radio", null);
+        writer.endElement("input");
+        writer.endElement("div");
+        
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);
 
@@ -940,6 +950,14 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, "styleClass");
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);
+        writer.endElement("input");
+        writer.endElement("div");
         
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

@@ -1192,7 +1192,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             .keyup(function(e) {
                 var keyCode = $.ui.keyCode;
                 if(e.which == keyCode.SPACE) {
-                    _self.toggle();
+                    _self.toggle(true);
                     
                     e.preventDefault();
                 }
@@ -1213,12 +1213,12 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
-    toggle: function() {  
+    toggle: function(keypress) {  
         if(this.isChecked()) {
-            this.uncheck();
+            this.uncheck(keypress);
         }
         else {
-            this.check();
+            this.check(keypress);
         }
     },
     
@@ -1226,12 +1226,16 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         return this.input.is(':checked');
     },
     
-    check: function() {
+    check: function(keypress) {
         if(!this.isChecked()) {
             this.input.prop('checked', true);
-            this.box.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            this.box.children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
             
             this.input.trigger('change');
+        }
+        
+        if(!keypress) {
+            this.box.addClass('ui-state-active');
         }
     },
     
