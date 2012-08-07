@@ -241,15 +241,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         _self = this;
                 
         $(document).off('click.ui-radiobutton mouseover.ui-radiobutton mouseout.ui-radiobutton', radioSelector)
-                        .on('click.ui-radiobutton', radioSelector, null, function() {
-                            var radio = $(this),
-                            checked = radio.hasClass('ui-state-active'),
-                            disabled = radio.hasClass('ui-state-disabled');
-
-                            if(!disabled && !checked) {
-                                _self.selectRowWithRadio(radio);
-                            }
-                        })
                         .on('mouseover.ui-radiobutton', radioSelector, null, function() {
                             var radio = $(this);
                             if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
@@ -259,10 +250,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         .on('mouseout.ui-radiobutton', radioSelector, null, function() {
                             var radio = $(this);
                             radio.removeClass('ui-state-hover');
+                        })
+                        .on('click.ui-radiobutton', radioSelector, null, function() {
+                            var radio = $(this),
+                            checked = radio.hasClass('ui-state-active'),
+                            disabled = radio.hasClass('ui-state-disabled');
+
+                            if(!disabled && !checked) {
+                                _self.selectRowWithRadio(radio);
+                            }
                         });
+    
                        
         //keyboard support
-        $(document).off('focus.ui-radiobutton blur.ui-radiobutton', radioInputSelector)
+        $(document).off('focus.ui-radiobutton blur.ui-radiobutton change.ui-radiobutton', radioInputSelector)
                         .on('focus.ui-radiobutton', radioInputSelector, null, function() {
                             var input = $(this),
                             box = input.parent().next();
@@ -296,7 +297,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var checkAllTogglerSelector = this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box',
         _self = this;
         
-        this.checkAllToggler = $(checkAllTogglerSelector),
+        this.checkAllToggler = $(checkAllTogglerSelector);
         
         //check-uncheck all
         this.checkAllToggler.on('mouseover', function() {
@@ -912,7 +913,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
                
         //select current
-        radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+        if(!radio.hasClass('ui-state-focus')) {
+            radio.addClass('ui-state-active');
+        }
+        radio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
         radio.prev().children('input').attr('checked', 'checked');
         this.currentRadio = radio;
 
@@ -934,7 +938,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         rowMeta = this.getRowMeta(row);
 
         //update visuals
-        checkbox.addClass('ui-state-active').children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
+        if(!checkbox.hasClass('ui-state-focus')) {
+            checkbox.addClass('ui-state-active');
+        }
+        checkbox.children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
         row.addClass('ui-state-highlight').attr('aria-selected', true);
 
         //check input
