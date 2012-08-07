@@ -127,6 +127,13 @@
 			<type>java.lang.String</type>
             <description>Client side function to use in custom filterMatchMode.</description>
 		</attribute>
+        <attribute>
+			<name>caseSensitive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if filtering would be case sensitive. Default is false.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
