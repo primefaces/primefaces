@@ -977,11 +977,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     startsWithFilter: function(value, filter) {
-        return value.toLowerCase().indexOf(filter) === 0;
+        return value.indexOf(filter) === 0;
     },
     
     containsFilter: function(value, filter) {
-        return value.toLowerCase().indexOf(filter) !== -1;
+        return value.indexOf(filter) !== -1;
     },
     
     endsWithFilter: function(value, filter) {
@@ -989,15 +989,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     filter: function(value) {
-        var filterValue = $.trim(value).toLowerCase();
-        
+        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+
         if(filterValue === '') {
             this.items.filter(':hidden').show();
         }
         else {
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = option.text(),
+                itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
                 item = this.items.eq(i);
 
                 if(this.filterMatcher(itemLabel, filterValue))

@@ -286,6 +286,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             
             if(menu.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + menu.getFilterMatchMode() + "'");     
             if(menu.getFilterFunction() != null) writer.write(",filterFunction:" + menu.getFilterFunction());
+            if(menu.isCaseSensitive()) writer.write(",caseSensitive:true");
         }
         
         encodeClientBehaviors(context, menu);
