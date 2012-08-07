@@ -118,17 +118,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 _self.fireDateSelectEvent();
             }
             else {
-                var newDate = $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate()),
-                oldDate = _self.input.val();
+                var newDate = $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate());
 
-                if(oldDate == newDate) {
-                    _self.setDate(null);
-                    _self.input.val('');
-                }
-                else {
-                    _self.input.val(newDate);
-                    _self.fireDateSelectEvent();
-                }
+                _self.input.val(newDate);
+                _self.fireDateSelectEvent();
             }
         };
     },
