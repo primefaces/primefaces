@@ -2,7 +2,7 @@
     width: auto;
 }
 
-.ui-tree-container {
+.ui-tree .ui-tree-container {
     height: 100%;
     margin: 0;
     overflow: auto;
@@ -10,12 +10,12 @@
     white-space: nowrap;
 }
 
-.ui-treenode-children {
+.ui-tree .ui-treenode-children {
     margin: 0;
     padding: 0 0 0 16px;
 }
 
-.ui-treenode {
+.ui-tree .ui-treenode {
     background-attachment: scroll;
     background-color: transparent;
     background-image: none;
@@ -26,22 +26,22 @@
     padding: 0;
 }
 
-.ui-treenode-content {
+.ui-tree .ui-treenode-content {
 
 }
 
-.ui-tree-toggler {
+.ui-tree .ui-tree-toggler {
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
 }
 
-.ui-treenode-icon {
+.ui-tree .ui-treenode-icon {
     display: inline-block;
     vertical-align: top;
 }
 
-.ui-treenode-label {
+.ui-tree .ui-treenode-label {
     display: inline-block;
     margin: 2px 0 0 0;
     vertical-align: top;
@@ -59,13 +59,13 @@
     border: 0 none;
 }
 
-.ui-tree-leaf-icon {
+.ui-tree .ui-treenode-leaf-icon {
     width: 16px;
     height: 16px;
     display: inline-block;
 }
 
-.ui-tree .ui-chkbox-box {
+.ui-tree .ui-tree .ui-chkbox-box {
     cursor: pointer;
     width: 15px;
     height: 15px;
