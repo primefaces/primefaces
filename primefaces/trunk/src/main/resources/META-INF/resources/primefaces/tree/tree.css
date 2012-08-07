@@ -1,7 +1,7 @@
 .ui-tree {
-    width: auto;
+    width: 300px;
 }
-
+            
 .ui-tree .ui-tree-container {
     height: 100%;
     margin: 0;
@@ -22,8 +22,8 @@
     background-position: 0 0;
     background-repeat: repeat-y;
     list-style: none outside none;
-    margin: 2px 0px;
-    padding: 0;
+    margin: 0;
+    padding: 1px 0 0;
 }
 
 .ui-tree .ui-treenode-content {
@@ -53,8 +53,8 @@
     cursor: pointer;
 }
 
-.ui-treenode-label.ui-state-hover,
-.ui-treenode-label.ui-state-highlight {
+.ui-tree .ui-treenode-label.ui-state-hover,
+.ui-tree .ui-treenode-label.ui-state-highlight {
     font-weight: normal;
     border: 0 none;
 }
@@ -65,7 +65,7 @@
     display: inline-block;
 }
 
-.ui-tree .ui-tree .ui-chkbox-box {
+.ui-tree .ui-chkbox-box {
     cursor: pointer;
     width: 15px;
     height: 15px;
