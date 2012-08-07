@@ -139,6 +139,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     _self.bindFilterEvent(filter);
             } 
             else {
+                PrimeFaces.skinSelect(filter);
+                
                 filter.change(function(e) {
                     _self.filter();
                 });

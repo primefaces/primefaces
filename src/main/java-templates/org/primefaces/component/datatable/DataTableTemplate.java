@@ -68,7 +68,7 @@ import org.primefaces.component.datatable.feature.*;
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
-    public static final String COLUMN_FILTER_CLASS = "ui-column-filter";
+    public static final String COLUMN_FILTER_CLASS = "ui-column-filter ui-widget ui-state-default ui-corner-all";
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String EXPANDED_ROW_CLASS = "ui-expanded-row";
