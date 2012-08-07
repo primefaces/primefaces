@@ -22,8 +22,8 @@
     background-position: 0 0;
     background-repeat: repeat-y;
     list-style: none outside none;
-    margin: 0;
-    padding: 1px 0 0;
+    margin: 2px 0px;
+    padding: 0;
 }
 
 .ui-treenode-content {
@@ -69,4 +69,10 @@
     cursor: pointer;
     width: 15px;
     height: 15px;
+}
+
+.ui-tree .ui-chkbox {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
 }
