@@ -105,6 +105,7 @@
 
 .ui-datatable-scrollable-body {
     overflow:auto;
+    *position: relative;
 }
 .ui-datatable-scrollable-header,
 .ui-datatable-scrollable-footer {
