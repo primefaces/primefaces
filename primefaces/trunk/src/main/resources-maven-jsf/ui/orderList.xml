@@ -92,7 +92,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>Move Bottom</defaultValue>
-            <description>Text of move bottom button. Default is "Move Down".</description>
+            <description>Text of move bottom button. Default is "Move Bottom".</description>
 		</attribute>
         <attribute>
 			<name>controlsLocation</name>
