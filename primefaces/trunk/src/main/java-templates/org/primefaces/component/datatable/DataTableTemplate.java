@@ -342,7 +342,7 @@ import org.primefaces.component.datatable.feature.*;
             return SortOrder.valueOf(sortOrder.toUpperCase(Locale.ENGLISH));
     }
 
-    protected String resolveStaticField(ValueExpression expression) {
+    public String resolveStaticField(ValueExpression expression) {
         if(expression != null) {
             String expressionString = expression.getExpressionString();
             expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
@@ -354,7 +354,7 @@ import org.primefaces.component.datatable.feature.*;
         }
     }
     
-    protected String resolveDynamicField(ValueExpression expression) {
+    public String resolveDynamicField(ValueExpression expression) {
         if(expression != null) {
             String expressionString = expression.getExpressionString();
             expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            

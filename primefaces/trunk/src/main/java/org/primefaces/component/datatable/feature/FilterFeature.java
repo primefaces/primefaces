@@ -69,7 +69,7 @@ public class FilterFeature implements DataTableFeature {
         //populate filter maps (filterFieldName, Column)
         Map<String,UIColumn> filterMap = this.populateFilterMap(context, table);
         
-        //process with filtering for non-lazy data
+        //populate lazy filter map
         if(table.isLazy()) {
             Map<String,String> lazyFilters = new HashMap<String, String>();
 
@@ -78,7 +78,16 @@ public class FilterFeature implements DataTableFeature {
                 String filterValue = params.get(filterName);
 
                 if(!ComponentUtils.isValueBlank(filterValue)) {
-                    String filterField = resolveField(column.getValueExpression("filterBy"));
+                    String filterField = null;
+                    
+                    if(column instanceof DynamicColumn) {
+                        ((DynamicColumn) column).applyModel();
+                        
+                        filterField = table.resolveDynamicField(column.getValueExpression("filterBy"));
+                    }
+                    else {
+                        filterField = resolveField(column.getValueExpression("filterBy"));
+                    }
 
                     lazyFilters.put(filterField, filterValue);
                 }
