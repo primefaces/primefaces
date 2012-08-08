@@ -26,10 +26,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.row.Row;
@@ -49,24 +49,25 @@ public class SortFeature implements DataTableFeature {
         
 		String sortKey = params.get(clientId + "_sortKey");
 		String sortDir  = params.get(clientId + "_sortDir");
-        boolean dynamicColumn = params.containsKey(clientId + "_dynamic_column");
+        boolean isDynamicColumn = params.containsKey(clientId + "_dynamic_column");
         UIColumn sortColumn = null;
 
-        if(dynamicColumn) {
+        if(isDynamicColumn) {
             String[] idTokens = sortKey.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
             int colIndex = Integer.parseInt(idTokens[idTokens.length - 1]);
-            Columns columns = null;
-            
-            for(UIComponent child : table.getChildren()) {
-                if(child instanceof Columns) {
-                    columns = (Columns) child;
+                   
+            for(UIColumn column : table.getColumns()) {
+                if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
                     
-                    break;
+                    if(dynamicColumn.getIndex() == colIndex) {
+                        dynamicColumn.applyModel();
+                        sortColumn = dynamicColumn;
+                        
+                        break;
+                    }
                 }
             }
-            
-            columns.setRowIndex(colIndex);
-            sortColumn = columns;
         }
         else {
             ColumnGroup group = table.getColumnGroup("header");
