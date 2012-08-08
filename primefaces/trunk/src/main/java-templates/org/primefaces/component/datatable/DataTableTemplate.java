@@ -43,6 +43,7 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SelectableDataModelWrapper;
 import java.lang.reflect.Array;
+import javax.el.ELContext;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
 import org.primefaces.component.api.UIColumn;
@@ -300,8 +301,8 @@ import org.primefaces.component.datatable.feature.*;
         
         if(model != null && model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
-
-            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField(this.getValueExpression("sortBy")), convertSortOrder(), getFilters());
+            
+            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField() , convertSortOrder(), getFilters());
             
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -316,6 +317,21 @@ import org.primefaces.component.datatable.feature.*;
             }
         }
     }
+    
+    protected String resolveSortField() {
+        UIColumn column = this.getSortColumn();
+        String sortField = null;
+        ValueExpression sortVE = this.getValueExpression("sortBy");
+        
+        if(column == null) {
+            sortField = resolveStaticField(sortVE);
+        }
+        else {
+            sortField = (column instanceof DynamicColumn) ? resolveDynamicField(sortVE) : resolveStaticField(sortVE);
+        }
+        
+        return sortField;
+    }
 
     protected SortOrder convertSortOrder() {
         String sortOrder = getSortOrder();
@@ -326,12 +342,30 @@ import org.primefaces.component.datatable.feature.*;
             return SortOrder.valueOf(sortOrder.toUpperCase(Locale.ENGLISH));
     }
 
-    protected String resolveSortField(ValueExpression expression) {
+    protected String resolveStaticField(ValueExpression expression) {
         if(expression != null) {
             String expressionString = expression.getExpressionString();
             expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
 
             return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+        }
+        else {
+            return null;
+        }
+    }
+    
+    protected String resolveDynamicField(ValueExpression expression) {
+        if(expression != null) {
+            String expressionString = expression.getExpressionString();
+            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
+            expressionString = "#{" + expressionString + "}";
+            
+            FacesContext context = getFacesContext();
+            ELContext eLContext = context.getELContext();
+            ValueExpression dynaVE = context.getApplication()
+                                    .getExpressionFactory().createValueExpression(eLContext, expressionString, String.class);
+
+            return (String) dynaVE.getValue(eLContext);
         }
         else {
             return null;
@@ -613,4 +647,13 @@ import org.primefaces.component.datatable.feature.*;
     @Override
     protected boolean shouldProcessChildren(FacesContext context) {
         return !context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_skipChildren");
+    }
+    
+    private UIColumn sortColumn;
+    
+    public void setSortColumn(UIColumn column) {
+        this.sortColumn = column;
+    }
+    public UIColumn getSortColumn() {
+        return this.sortColumn;
     }

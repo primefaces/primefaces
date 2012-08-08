@@ -103,6 +103,7 @@ public class SortFeature implements DataTableFeature {
         //update table sort state
         ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
         table.setValueExpression("sortBy", sortByVE);
+        table.setSortColumn(sortColumn);
         table.setSortOrder(sortDir);
 
         if(!table.isLazy()) {

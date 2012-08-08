@@ -153,4 +153,8 @@ public class DynamicColumn implements UIColumn {
     public void encodeAll(FacesContext context) throws IOException {
         this.columns.encodeAll(context);
     }
+
+    public String resolveField(ValueExpression ve) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
