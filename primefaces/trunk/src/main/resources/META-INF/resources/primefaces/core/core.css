@@ -25,3 +25,7 @@ ui-overlay-visible * {
 .ui-overlay-hidden table {
     *border-collapse: separate !important;
 }
+
+.ui-datepicker .ui-datepicker-current.ui-priority-secondary {
+    opacity: 1;
+}
