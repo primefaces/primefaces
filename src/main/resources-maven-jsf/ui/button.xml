@@ -17,6 +17,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.UIOutcomeTarget</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -44,6 +47,7 @@
 		</attribute>
 		<attribute>
 			<name>fragment</name>
+            <required>false</required>
 			<type>java.lang.String</type>
             <description>Identifier of the target page which should be scrolled to.</description>
 		</attribute>

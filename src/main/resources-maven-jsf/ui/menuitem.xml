@@ -18,6 +18,9 @@
 		<interface>
 			<name>java.io.Serializable</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.UIOutcomeTarget</name>
+		</interface>        
 	</interfaces>
 	<attributes>
 		&command_component_attributes;
@@ -134,6 +137,25 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <description>Title text of the menuitem.</description>
+		</attribute>
+        <attribute>
+			<name>outcome</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Used to resolve a navigation case.</description>
+		</attribute>
+        <attribute>
+			<name>includeViewParams</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether to include page parameters in target URI. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>fragment</name>
+            <required>false</required>
+			<type>java.lang.String</type>
+            <description>Identifier of the target page which should be scrolled to.</description>
 		</attribute>
 	</attributes>
 </component>

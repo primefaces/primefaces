@@ -16,20 +16,13 @@
 package org.primefaces.component.button;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
 
-public class ButtonRenderer extends CoreRenderer {
+public class ButtonRenderer extends OutcomeTargetRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -90,7 +83,6 @@ public class ButtonRenderer extends CoreRenderer {
     public void encodeScript(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
-		boolean hasValue = (button.getValue() != null);
 
         startScript(writer, clientId);
         
@@ -102,10 +94,9 @@ public class ButtonRenderer extends CoreRenderer {
     }
 
     protected String buildOnclick(FacesContext context, Button button) {
-        String href = button.getHref();
         String userOnclick = button.getOnclick();
         StringBuilder onclick = new StringBuilder();
-        String url;
+        String targetURL = getTargetURL(context, button);
         
         if(userOnclick != null) {
             onclick.append(userOnclick).append(";");
@@ -115,82 +106,13 @@ public class ButtonRenderer extends CoreRenderer {
         if(onclickBehaviors != null) {
             onclick.append(onclickBehaviors).append(";");
         }
-        
-        if(href != null) {
-            url = getResourceURL(context, href);
-        } 
-        else {
-            NavigationCase navCase = findNavigationCase(context, button);
-            String toViewId = navCase.getToViewId(context);
-            boolean isIncludeViewParams = isIncludeViewParams(button, navCase);
-            Map<String, List<String>> params = getParams(navCase, button);
 
-            url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
-
-            //fragment
-            if(button.getFragment() != null) {
-                url += "#" + button.getFragment();
-            }
-        }
-        
-        if(url != null) {
-            onclick.append("window.location.href='").append(url).append("';");
+        if(targetURL != null) {
+            onclick.append("window.location.href='").append(targetURL).append("'");
         }
         
         return onclick.toString();
     }
 
-    protected NavigationCase findNavigationCase(FacesContext context, Button button) {
-        ConfigurableNavigationHandler navHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
-        String outcome = button.getOutcome();
-        
-        if(outcome == null) {
-            outcome = context.getViewRoot().getViewId();
-        }
-        
-        return navHandler.getNavigationCase(context, null, outcome);
-    }
-
-    /**
-     * Find all parameters to include by looking at nested uiparams and params of navigation case
-     */
-    protected Map<String, List<String>> getParams(NavigationCase navCase, Button button) {
-        Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-
-        //UIParams
-        for(UIComponent child : button.getChildren()) {
-            if(child.isRendered() && (child instanceof UIParameter)) {
-                UIParameter uiParam = (UIParameter) child;
-                
-                if(!uiParam.isDisable()) {
-                    List<String> paramValues = params.get(uiParam.getName());
-                    if(paramValues == null) {
-                        paramValues = new ArrayList<String>();
-                        params.put(uiParam.getName(), paramValues);
-                    }
-
-                    paramValues.add(String.valueOf(uiParam.getValue()));
-                }
-            }
-        }
-
-        //NavCase Params
-        Map<String, List<String>> navCaseParams = navCase.getParameters();
-        if(navCaseParams != null && !navCaseParams.isEmpty()) {
-            for(Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
-                String key = entry.getKey();
-
-                //UIParams take precedence
-                if(!params.containsKey(key)) {
-                    params.put(key, entry.getValue());
-                }
-            }
-        }
-
-        return params;
-    }
-
-    protected boolean isIncludeViewParams(Button button, NavigationCase navCase) {
-        return button.isIncludeViewParams() || navCase.isIncludeViewParams();
-    }
+    
 }

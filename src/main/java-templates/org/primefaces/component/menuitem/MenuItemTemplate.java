@@ -31,3 +31,7 @@ import javax.faces.event.ActionEvent;
     public boolean isPartialSubmitSet() {
         return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression("partialSubmit") != null); 
     }
+
+    public String getHref() {
+        return this.getUrl();
+    }
