@@ -22,10 +22,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentUtils;
 
-public abstract class BaseMenuRenderer extends CoreRenderer {
+public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -68,16 +68,21 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             
             writer.writeAttribute("class", styleClass, null);
             
-            if(menuItem.getStyle() != null) 
+            if(menuItem.getStyle() != null) {
                 writer.writeAttribute("style", menuItem.getStyle(), null);
-                        
-			if(menuItem.getUrl() != null) {
-                String href = disabled ? "#" : getResourceURL(context, menuItem.getUrl());
-				writer.writeAttribute("href", href, null);
+            }
+                  
+            //GET
+			if(menuItem.getUrl() != null || menuItem.getOutcome() != null) {
+                String targetURL = getTargetURL(context, menuItem);
+                String href = disabled ? "#" : targetURL;
+				writer.writeAttribute("href", targetURL, null);
                                 
-				if(menuItem.getTarget() != null) 
+				if(menuItem.getTarget() != null) {
                     writer.writeAttribute("target", menuItem.getTarget(), null);
+                }
 			}
+            //POST
             else {
 				writer.writeAttribute("href", "#", null);
                 
