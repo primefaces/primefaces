@@ -741,6 +741,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
 
         emptyMessageContainer.width(emptyMessageWidth);
+        
+        this.restoreScrollState();
     },
     
     onRowClick: function(event, rowElement, silent) {    
