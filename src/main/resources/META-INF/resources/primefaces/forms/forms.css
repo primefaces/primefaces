@@ -199,6 +199,7 @@
     position: relative;
     margin: 0;
     padding: 0.4em;
+    display: inline-block;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
@@ -388,7 +389,7 @@ button.ui-button::-moz-focus-inner {
     position: absolute;
     right: 5px;
     top: 2px;
-    *right:10px;
+    *right:15px;
 }
             
 .ui-selectcheckboxmenu-header .ui-inputfield {
