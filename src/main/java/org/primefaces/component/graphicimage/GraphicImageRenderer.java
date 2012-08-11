@@ -18,19 +18,25 @@ package org.primefaces.component.graphicimage;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 
 public class GraphicImageRenderer extends CoreRenderer {
+    
+    private final static Logger logger = Logger.getLogger(GraphicImageRenderer.class.getName());
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -53,13 +59,32 @@ public class GraphicImageRenderer extends CoreRenderer {
 	
 	protected String getImageSrc(FacesContext context, GraphicImage image) {
 		String src = null;
-		Object value = image.getValue();
-
-		if(value == null) {
-            src = "";
+        String name = image.getName();
+        
+        if(name != null) {
+            String libName = image.getLibrary();
+            ResourceHandler handler = context.getApplication().getResourceHandler();
+            Resource res = handler.createResource(name, libName);
+            
+            if(res == null) {
+                return "RES_NOT_FOUND";
+            } 
+            else {
+            	String requestPath = res.getRequestPath();
+                
+            	return context.getExternalContext().encodeResourceURL(requestPath);
+            }
         }
         else {
-            if(value instanceof StreamedContent) {
+            Object value = image.getValue();
+            
+            if(value == null) {
+                return "";
+            }
+            else  if(value instanceof String) {
+                src = getResourceURL(context, (String) value);
+            }
+            else if(value instanceof StreamedContent) {
                 StreamedContent streamedContent = (StreamedContent) value;
                 Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
@@ -80,16 +105,13 @@ public class GraphicImageRenderer extends CoreRenderer {
 
                 context.getExternalContext().getSessionMap().put(rid, image.getValueExpression("value").getExpressionString());
             }
-            else {
-                src = getResourceURL(context, (String) value);
-            }
 
-            //Add caching if needed
             if(!image.isCache()) {
                 src += src.contains("?") ? "&" : "?";
-
-                src = src + "primefaces_image=" + UUID.randomUUID().toString();
+                src += "primefaces_image=" + UUID.randomUUID().toString();
             }
+            
+            src = context.getExternalContext().encodeResourceURL(src);
         }
 
 		return src;

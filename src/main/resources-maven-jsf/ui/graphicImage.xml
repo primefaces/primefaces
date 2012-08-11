@@ -179,5 +179,17 @@
 			<defaultValue>true</defaultValue>
             <description>Enables/Disables browser from caching the image.</description>
 		</attribute>
+        <attribute>
+			<name>name</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the image</description>
+		</attribute>
+        <attribute>
+			<name>library</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Library name of the image</description>
+		</attribute>
 	</attributes>
 </component>
