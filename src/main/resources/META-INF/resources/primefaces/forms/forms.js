@@ -1707,8 +1707,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.renderItems();
         
-        if(this.cfg.height) {
-            this.itemContainerWrapper.height(this.cfg.height);
+        if(this.cfg.scrollHeight) {
+            this.itemContainerWrapper.height(this.cfg.scrollHeight);
         }
         else if(this.inputs.length > 10) {
             this.itemContainerWrapper.height(200)
@@ -1923,7 +1923,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        if(this.cfg.height) {
+        if(this.cfg.scrollHeight) {
             if(this.itemContainer.height() < this.cfg.initialHeight) {
                 this.itemContainerWrapper.css('height', 'auto');
             }
