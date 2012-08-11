@@ -187,9 +187,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if(menu.getHeight() != Integer.MAX_VALUE) writer.write(",height:" + menu.getHeight());
         if(menu.isFilter()) {
             writer.write(",filter:true");
-            if(menu.getFilterText() != null) {
-                writer.write(",filterText:'" + menu.getFilterText() + "'");
-            }
+            
+            if(menu.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + menu.getFilterMatchMode() + "'");     
+            if(menu.getFilterFunction() != null) writer.write(",filterFunction:" + menu.getFilterFunction());
+            if(menu.isCaseSensitive()) writer.write(",caseSensitive:true");
         }
         
         encodeClientBehaviors(context, menu);

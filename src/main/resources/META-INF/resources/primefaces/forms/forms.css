@@ -328,10 +328,14 @@ button.ui-button::-moz-focus-inner {
 .ui-selectcheckboxmenu-panel {
     padding: 0.2em;
     position: absolute;
-    overflow: auto;
+    overflow: hidden;
     -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-items-wrapper {
+    overflow: auto;
 }
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
@@ -373,11 +377,21 @@ button.ui-button::-moz-focus-inner {
     float:left;
     cursor:pointer;
 }
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container {
+    float: left;
+    position: relative;
+    margin-right: 10px;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-icon{
+    position: absolute;
+    right: 25px;
+    top: 2px;
+}
             
 .ui-selectcheckboxmenu-header .ui-inputfield {
-    float:left;
-    padding:0.1em;
-    margin-right:20px;
+    padding: 1px 20px 1px 2px;
 }
 
 .ui-selectcheckboxmenu-header span.ui-icon {

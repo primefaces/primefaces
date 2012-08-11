@@ -78,11 +78,24 @@
             <description>Renders an input field as a filter when enabled.</description>
         </attribute>
         <attribute>
-            <name>filterText</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Placeholder text for the filter input.</description>
-        </attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
+		</attribute>
+        <attribute>
+			<name>filterFunction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side function to use in custom filterMatchMode.</description>
+		</attribute>
+        <attribute>
+			<name>caseSensitive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if filtering would be case sensitive. Default is false.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

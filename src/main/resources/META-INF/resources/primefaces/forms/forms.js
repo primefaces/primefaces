@@ -1708,10 +1708,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.renderItems();
         
         if(this.cfg.height) {
-            this.panel.height(this.cfg.height);
+            this.itemContainerWrapper.height(this.cfg.height);
         }
         else if(this.inputs.length > 10) {
-            this.panel.height(200)
+            this.itemContainerWrapper.height(200)
         }
     },
     
@@ -1727,14 +1727,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         
         //filter
         if(this.cfg.filter) {
-            this.filterInput = $('<input type="text" aria-multiline="false" aria-readonly="false" aria-disabled="false" role="textbox" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">');
-            if(this.cfg.filterText) {
-                this.filterInput.attr('placeholder', this.cfg.filterText);
-            }
-            
-            this.filterInput.appendTo(this.header);
+            this.filterInputWrapper = $('<div class="ui-selectcheckboxmenu-filter-container"></div>').appendTo(this.header);
+            this.filterInput = $('<input type="text" aria-multiline="false" aria-readonly="false" aria-disabled="false" role="textbox" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">')
+                                .appendTo(this.filterInputWrapper);
+                                
+            this.filterInputWrapper.append("<span class='ui-icon ui-icon-search'></span>");
         }
-        
         
         //closer
         this.closer = $('<a class="ui-selectcheckboxmenu-close ui-corner-all" href="#"><span class="ui-icon ui-icon-circle-close"></span></a>')
@@ -1746,8 +1744,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     renderItems: function() {
         var _self = this;
         
-        this.itemContainer = $('<ul class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></div>')
+        this.itemContainerWrapper = $('<div class="ui-selectcheckboxmenu-items-wrapper"><ul class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></ul></div>')
                 .appendTo(this.panel);
+                
+        this.itemContainer = this.itemContainerWrapper.children('ul.ui-selectcheckboxmenu-items');
 
         this.inputs.each(function() {
             var input = $(this),
@@ -1797,14 +1797,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
-        //Filter
+        //filter
         if(this.cfg.filter) {
+            this.cfg.initialHeight = this.itemContainerWrapper.height();
+            this.setupFilterMatcher();
+            
             PrimeFaces.skinInput(this.filterInput);
+
             this.filterInput.keyup(function() {
                 _self.filter($(this).val());
             });
         }
-
+        
         //Closer
         this.closer.mouseenter(function(){
             $(this).addClass('ui-state-hover');
@@ -1895,29 +1899,56 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     filter: function(value) {
-        var filterValue = $.trim(value).toLowerCase(),
-        match = false;
-        
+        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+
         if(filterValue === '') {
-            this.labels.filter(':hidden').parent().show();
+            this.itemContainer.children('li.ui-selectcheckboxmenu-item').filter(':hidden').show();
         }
         else {
             for(var i = 0; i < this.labels.length; i++) {
-                var label = this.labels.eq(i);
-
-                if(label.text().toLowerCase().indexOf(filterValue) == -1) {
-                    label.parent().hide();
-                } 
-                else {
-                    label.parent().show();
-                    match = true;
+                var labelElement = this.labels.eq(i),
+                item = labelElement.parent(),
+                itemLabel = this.cfg.caseSensitive ? labelElement.text() : labelElement.text().toLowerCase();
+                
+                if(this.filterMatcher(itemLabel, filterValue)) {
+                    item.show();
                 }
-                    
+                else {
+                    item.hide();
+                }
             }
         }
-        
-        var overflow = match ? 'auto' : 'visible';
-        this.panel.css('overflow', overflow);
+
+        if(this.itemContainer.height() < this.cfg.initialHeight) {
+            this.itemContainerWrapper.css('height', 'auto');
+        }
+        else {
+            this.itemContainerWrapper.height(this.cfg.initialHeight);
+        }
+    },
+    
+    setupFilterMatcher: function() {
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.filterMatchers = {
+            'startsWith': this.startsWithFilter
+            ,'contains': this.containsFilter
+            ,'endsWith': this.endsWithFilter
+            ,'custom': this.cfg.filterFunction
+        };
+                        
+        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
+    },
+    
+    startsWithFilter: function(value, filter) {
+        return value.indexOf(filter) === 0;
+    },
+    
+    containsFilter: function(value, filter) {
+        return value.indexOf(filter) !== -1;
+    },
+    
+    endsWithFilter: function(value, filter) {
+        return value.indexOf(filter, value.length - filter.length) !== -1;
     },
     
     checkAll: function() {
