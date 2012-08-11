@@ -21,6 +21,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
                 this.createSubNodes(this.root);
             }
         }
+        
+        this.tooltip = $('<div class="ui-tooltip ui-mindmap-tooltip ui-widget ui-widget-content ui-corner-all"></div>').appendTo(document.body);
     },
     
     createNode: function(x, y, model) {
@@ -33,8 +35,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         nodeWidth = node.getBBox().width,
         title = null;
         
-        var text = this.raphael.text(x, y, label).attr('opacity', 0),
-        fontSize = text.attr('font-size');
+        var text = this.raphael.text(x, y, label).attr('opacity', 0);
                 
         if(nodeWidth <= text.getBBox().width) {
             title = label;
@@ -52,8 +53,13 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         
         //title
         if(title) {
-            node.attr('title', title);
-            text.attr('title', title);
+            node.data('title', title);
+            
+            node.mouseover(this.mouseoverNode);
+            node.mouseout(this.mouseoutNode);
+            
+            text.mouseover(this.mouseoverText);
+            text.mouseout(this.mouseoutText);
         }
          
         //show
@@ -77,6 +83,61 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         this.nodes.push(node);
         
         return node;
+    },
+    
+    mouseoverNode: function() {
+        var _self = this.data('widget');
+        
+        _self.showTooltip(this);
+    },
+    
+    mouseoutNode: function() {
+        var _self = this.data('widget');
+        
+        _self.hideTooltip(this);
+    },
+    
+    mouseoverText: function() {
+        var node = this.data('node'),
+        _self = node.data('widget');
+        
+        _self.showTooltip(node);
+    },
+    
+    mouseoutText: function() {
+        var node = this.data('node'),
+        _self = node.data('widget');
+        
+        _self.hideTooltip(node);
+    },
+    
+    showTooltip: function(node) {
+        var title = node.data('title');
+        
+        if(title) {
+            var _self = node.data('widget'),
+            offset = _self.jq.offset();
+            
+            _self.tooltip.text(title)
+                        .css(
+                            {
+                                'left': offset.left + node.attr('cx') + 20,
+                                'top':offset.top + node.attr('cy') + 10
+                            })
+                        .show();
+        }
+        
+        
+    },
+    
+    hideTooltip: function(node) {
+        var title = node.data('title');
+        
+        if(title) {
+            var _self = node.data('widget');
+            
+            _self.tooltip.hide();
+        }
     },
     
     centerNode: function(node) {
