@@ -1738,9 +1738,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         
         //closer
         this.closer = $('<a class="ui-selectcheckboxmenu-close ui-corner-all" href="#"><span class="ui-icon ui-icon-circle-close"></span></a>')
-                    .appendTo(this.header)
+                    .appendTo(this.header);
        
-        
     },
    
     renderItems: function() {
