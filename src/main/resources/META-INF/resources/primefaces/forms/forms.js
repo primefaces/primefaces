@@ -1723,7 +1723,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.toggler = $('<div class="ui-chkbox ui-widget"><div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"><span class="ui-chkbox-icon"></span></div></div>')
                             .appendTo(this.header);
         this.togglerBox = this.toggler.children('.ui-chkbox-box');
-        this.updateToggler();
+        if(this.inputs.filter(':not(:checked)').length === 0) {
+            this.check(this.togglerBox);
+        }
         
         //filter
         if(this.cfg.filter) {
@@ -1754,7 +1756,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             label = input.next(),
             disabled = input.is(':disabled'),
             checked = input.is(':checked'),
-            boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default';
+            boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default',
+            itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all';
 
             if(disabled) {
                 boxClass += " ui-state-disabled";
@@ -1764,9 +1767,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 boxClass += " ui-state-active";
             }
 
-            var iconClass = checked ? 'ui-chkbox-icon ui-icon ui-icon-check' : 'ui-chkbox-icon';
+            var iconClass = checked ? 'ui-chkbox-icon ui-icon ui-icon-check' : 'ui-chkbox-icon',
+            itemClass = checked ? itemClass + ' ui-selectcheckboxmenu-checked' : itemClass + ' ui-selectcheckboxmenu-unchecked';
 
-            var dom = '<li class="ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all">';
+            var dom = '<li class="' + itemClass + '">';
             dom += '<div class="ui-chkbox ui-widget"><div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>';
             dom += '<label>' + label.text() +  '</label></li>';
 
@@ -1926,7 +1930,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             else {
                 this.itemContainerWrapper.height(this.cfg.initialHeight);
             }
-        } 
+        }
+        
+        this.updateToggler();
     },
     
     setupFilterMatcher: function() {
@@ -1954,20 +1960,54 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     checkAll: function() {
-        this.inputs.prop('checked', true);
-        this.check(this.checkboxes);
+        var visibleItems = this.itemContainer.children('li.ui-selectcheckboxmenu-item').filter(':visible'),
+        _self = this;
         
-        if(this.toggler) {
-            this.check(this.togglerBox);
-        }
+        visibleItems.each(function() {
+            _self.inputs.eq($(this).index()).attr('checked', true);
+            _self.check($(this).children('.ui-chkbox').children('.ui-chkbox-box'));
+        });
+        
+        this.check(this.togglerBox);
     },
     
     uncheckAll: function() {
-        this.inputs.prop('checked', false);
-        this.uncheck(this.checkboxes);
+        var visibleItems = this.itemContainer.children('li.ui-selectcheckboxmenu-item').filter(':visible'),
+        _self = this;
         
-        if(this.toggler) {
-            this.uncheck(this.togglerBox);
+        visibleItems.each(function() {
+            _self.inputs.eq($(this).index()).attr('checked', false);
+            _self.uncheck($(this).children('.ui-chkbox').children('.ui-chkbox-box'));
+        });
+        
+        this.uncheck(this.togglerBox);
+    },
+    
+    check: function(checkbox, updateInput) {
+        if(!checkbox.hasClass('ui-state-disabled')) {
+            checkbox.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            checkbox.parents('li.ui-selectcheckboxmenu-item:first').removeClass('ui-selectcheckboxmenu-unchecked').addClass('ui-selectcheckboxmenu-checked');
+            
+            if(updateInput) {
+                var input = this.inputs.eq(checkbox.parents('li:first').index());
+                input.attr('checked', 'checked').change();
+                
+                this.updateToggler();
+            }
+        }
+    },
+    
+    uncheck : function(checkbox, updateInput) {
+        if(!checkbox.hasClass('ui-state-disabled')) {
+            checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+            checkbox.parents('li.ui-selectcheckboxmenu-item:first').addClass('ui-selectcheckboxmenu-unchecked').removeClass('ui-selectcheckboxmenu-checked');
+
+            if(updateInput) {
+                var input = this.inputs.eq(checkbox.parents('li:first').index());
+                input.removeAttr('checked').change();
+                
+                this.updateToggler();
+            }
         }
     },
     
@@ -2036,34 +2076,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    check: function(checkbox, updateInput) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
-            checkbox.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
-            
-            if(updateInput) {
-                var input = this.inputs.eq(checkbox.parents('li:first').index());
-                input.attr('checked', 'checked').change();
-                
-                this.updateToggler();
-            }
-        }
-    },
-    
-    uncheck : function(checkbox, updateInput) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
-            checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
-
-            if(updateInput) {
-                var input = this.inputs.eq(checkbox.parents('li:first').index());
-                input.removeAttr('checked').change();
-                
-                this.updateToggler();
-            }
-        }
-    },
-    
     updateToggler: function() {
-        if(this.inputs.length === this.inputs.filter(':checked').length) {
+        if(this.itemContainer.children('li.ui-selectcheckboxmenu-item:visible').filter('.ui-selectcheckboxmenu-unchecked').length === 0) {
             this.check(this.togglerBox);
         }
         else {
