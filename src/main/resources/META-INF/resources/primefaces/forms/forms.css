@@ -386,7 +386,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-icon{
     position: absolute;
-    right: 25px;
+    right: 5px;
     top: 2px;
 }
             

@@ -1919,12 +1919,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        if(this.itemContainer.height() < this.cfg.initialHeight) {
-            this.itemContainerWrapper.css('height', 'auto');
-        }
-        else {
-            this.itemContainerWrapper.height(this.cfg.initialHeight);
-        }
+        if(this.cfg.height) {
+            if(this.itemContainer.height() < this.cfg.initialHeight) {
+                this.itemContainerWrapper.css('height', 'auto');
+            }
+            else {
+                this.itemContainerWrapper.height(this.cfg.initialHeight);
+            }
+        } 
     },
     
     setupFilterMatcher: function() {
