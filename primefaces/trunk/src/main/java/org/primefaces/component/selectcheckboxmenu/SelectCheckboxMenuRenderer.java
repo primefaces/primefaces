@@ -193,6 +193,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             if(menu.isCaseSensitive()) writer.write(",caseSensitive:true");
         }
         
+        if(menu.getPanelStyle() != null) writer.write(",panelStyle:'" + menu.getPanelStyle() + "'");
+        if(menu.getPanelStyleClass() != null) writer.write(",panelStyleClass:'" + menu.getPanelStyleClass() + "'");
+        
         encodeClientBehaviors(context, menu);
 
         writer.write("});});");
