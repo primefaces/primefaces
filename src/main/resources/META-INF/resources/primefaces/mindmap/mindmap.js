@@ -7,13 +7,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.cfg.width = this.jq.width();
         this.cfg.height = this.jq.height();
-        this.cfg.nodeRX = this.cfg.width * 0.04;
-        this.cfg.nodeRY = this.cfg.height * 0.04;
         this.cfg.centerX = this.cfg.width / 2;
         this.cfg.centerY = this.cfg.height / 2;
         this.raphael = new Raphael(this.id, this.cfg.width, this.cfg.height);
         this.nodes = [];
-        
+
         if(this.cfg.model) {            
             //root
             this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, this.cfg.model);
@@ -26,7 +24,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
     },
     
     createNode: function(x, y, model) {
-        var node = this.raphael.ellipse(x, y, this.cfg.nodeRX, this.cfg.nodeRY).attr('opacity', 0)
+        var node = this.raphael.ellipse(x, y, 40, 25).attr('opacity', 0)
                             .data('model', model)
                             .data('connections', [])
                             .data('widget', this);
@@ -40,7 +38,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
                 
         if(nodeWidth <= text.getBBox().width) {
             title = label;
-            label = label.substring(0, (nodeWidth / fontSize));
+            label = label.substring(0, 12);
             text.attr('text', label + '...');
         }
                 
