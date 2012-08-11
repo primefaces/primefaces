@@ -53,7 +53,7 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
          <attribute>
-            <name>height</name>
+            <name>scrollHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
