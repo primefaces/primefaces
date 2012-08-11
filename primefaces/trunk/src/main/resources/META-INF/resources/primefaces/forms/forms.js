@@ -484,8 +484,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.triggers = this.cfg.editable ? this.jq.find('.ui-selectonemenu-trigger') : this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
         
         //activate selected
-        this.activateItem(this.items.eq(selectedOption.index()));
-        
+        if(this.cfg.editable) {
+            var customInputVal = this.label.val();
+            
+            //predefined input
+            if(customInputVal === selectedOption.text()) {
+                this.activateItem(this.items.eq(selectedOption.index()));
+            }
+            //custom input
+            else {
+                this.items.eq(0).addClass('ui-state-active');
+                this.customInput = true;
+                this.customInputVal = customInputVal;
+            }
+        }
+        else {
+            this.activateItem(this.items.eq(selectedOption.index()));
+        }
+                
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
@@ -575,8 +591,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             else {
                 _self.hide();
                 
-                //revert to preShowValue
-                _self.activateItem(_self.items.eq(_self.preShowValue.index()));
+                _self.revert();
             }
 
             _self.jq.removeClass('ui-state-hover');
@@ -598,6 +613,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.editable) {
             this.label.change(function() {
                 _self.triggerChange(true);
+                _self.customInput = true;
+                _self.customInputVal = $(this).val();
+                _self.items.filter('.ui-state-active').removeClass('ui-state-active');
+                _self.items.eq(0).addClass('ui-state-active');
             });
         }
         
@@ -641,8 +660,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 _self.hide();
                 
-                //revert
-                _self.activateItem(_self.items.eq(_self.preShowValue.index()));
+                _self.revert();
             }
         });
 
@@ -669,6 +687,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.items.filter(':not(.ui-state-disabled)').unbind('mouseover click');
         this.triggers.unbind('mouseover mouseout click');
         this.input.unbind('focus blur keydown keyup');
+    },
+    
+    revert: function() {
+        if(this.cfg.editable && this.customInput) {
+            this.setLabel(this.customInputVal);
+            this.items.filter('.ui-state-active').removeClass('ui-state-active');
+            this.items.eq(0).addClass('ui-state-active');
+        }
+        else {
+            this.activateItem(this.items.eq(this.preShowValue.index()));
+        }
     },
     
     activateItem: function(item) {
@@ -722,9 +751,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if(shouldChange) {
             //visuals
             this.activateItem(item);
-                        
+        
             //trigger change
             this.triggerChange();
+            
+            if(this.cfg.editable) {
+                this.customInput = false;
+            }
         }
 
         if(!silent) {
@@ -783,14 +816,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             switch(e.which) { 
                 case keyCode.UP:
                 case keyCode.LEFT:
-                    var highlightedItem = _self.items.filter('.ui-state-highlight');
-                    if(highlightedItem.length == 0) {
-                        highlightedItem = _self.getActiveItem();
-                    }
+                    var activeItem = _self.getActiveItem(),
+                    prev = activeItem.prevAll(':not(.ui-state-disabled):first');
                     
-                    var prev = highlightedItem.prevAll(':not(.ui-state-disabled):first');
                     if(prev.length == 1) {
-                        _self.activateItem(prev, true);
+                        _self.activateItem(prev);
                         
                         if(_self.panel.is(':hidden')) {
                             _self.triggerChange();
@@ -834,6 +864,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     hideAndChange: function() {
         if(this.panel.is(":visible")) {
             this.hide();
+            
+            if(this.cfg.editable) {
+                this.customInput = false;
+            }
 
             //check if current value is different from pre shown value
             if(this.input.val() !== this.preShowValue.val()) {
