@@ -96,6 +96,16 @@
             <defaultValue>false</defaultValue>
             <description>Defines if filtering would be case sensitive. Default is false.</description>
 		</attribute>
+        <attribute>
+            <name>panelStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

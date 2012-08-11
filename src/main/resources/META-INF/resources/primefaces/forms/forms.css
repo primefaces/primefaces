@@ -388,6 +388,7 @@ button.ui-button::-moz-focus-inner {
     position: absolute;
     right: 5px;
     top: 2px;
+    *right:10px;
 }
             
 .ui-selectcheckboxmenu-header .ui-inputfield {
