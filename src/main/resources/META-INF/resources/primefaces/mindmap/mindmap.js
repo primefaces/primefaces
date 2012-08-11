@@ -237,8 +237,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.BaseWidget.extend({
                         node.data('connections', []);
 
                         //remove other nodes
-                        for(var i = 0; i < _self.nodes.length; i++) {
-                            var otherNode = _self.nodes[i],
+                        for(var j = 0; j < _self.nodes.length; j++) {
+                            var otherNode = _self.nodes[j],
                             nodeKey = otherNode.data('model').key;
 
                             if(nodeKey != key) {
