@@ -6,6 +6,11 @@
             org.primefaces.context.PrimePartialViewContextFactory
         </partial-view-context-factory>
     </factory>
+    
+    <lifecycle>
+        <phase-listener>org.primefaces.lifecycle.RenderResponsePhaseListener</phase-listener>
+        <phase-listener>org.primefaces.lifecycle.RestoreViewPhaseListener</phase-listener>
+    </lifecycle>
 
     <application>
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>

@@ -38,7 +38,7 @@ import org.primefaces.context.RequestContext;
                 //if there is info window, update and show it
                 GMapInfoWindow infoWindow = getInfoWindow();
                 if(infoWindow != null) {
-                    RequestContext.getCurrentInstance().addPartialUpdateTarget(infoWindow.getClientId(context));
+                    RequestContext.getCurrentInstance().update(infoWindow.getClientId(context));
                 }
             }
             else if(eventName.equals("stateChange")) {
