@@ -246,3 +246,16 @@
 			<type>java.lang.String</type>
 		</attribute>
     </tag>
+    
+    <tag>
+		<tag-name>resetInput</tag-name>
+		<handler-class>
+			org.primefaces.component.resetinput.ResetInputTagHandler
+		</handler-class>
+        <attribute>
+			<description>Comma or white-space separated list of component ids.</description>
+			<name>target</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
