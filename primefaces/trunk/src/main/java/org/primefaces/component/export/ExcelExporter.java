@@ -18,7 +18,6 @@ package org.primefaces.component.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +32,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
@@ -152,33 +151,17 @@ public class ExcelExporter extends Exporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
         
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
-
-            if(child instanceof Column) {
-                Column column = (Column) child;
-
-                if(column.isExportable()) {
-                    addColumnValue(row, column.getChildren());
-                }
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
             }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-
-                if(value != null) {
-                    int columnsCount = ((Collection<?>) columns.getValue()).size();
-
-                    for(int cc = 0; cc < columnsCount; cc++) {
-                        columns.setRowModel(cc);
-
-                        if(columns.isExportable()) {;
-                            addColumnValue(row, columns.getChildren());
-                        }
-                    }
-                }
+            
+            if(col.isExportable()) {
+                addColumnValue(row, col.getChildren());
             }
         }
     }
@@ -187,33 +170,17 @@ public class ExcelExporter extends Exporter {
         int sheetRowIndex = columnType.equals(ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
         Row rowHeader = sheet.createRow(sheetRowIndex);
         
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
-                        
-            if(child instanceof Column) {
-                Column column = (Column) child;
-                
-                if(column.isExportable()) {
-                    addColumnValue(rowHeader, column.getFacet(columnType.facet()));
-                } 
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
             }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-                
-                if(value != null) {
-                    int columnsCount = ((Collection<?>) columns.getValue()).size();
-
-                    for(int i = 0; i < columnsCount; i++) {
-                        columns.setRowModel(i);
-
-                        if(columns.isExportable()) {
-                            addColumnValue(rowHeader, columns.getFacet(columnType.facet()));
-                        }
-                    }
-                }
+            
+            if(col.isExportable()) {
+                addColumnValue(rowHeader, col.getFacet(columnType.facet()));
             }
         }
     }

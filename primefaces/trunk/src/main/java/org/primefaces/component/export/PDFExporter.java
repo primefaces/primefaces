@@ -38,6 +38,8 @@ import com.lowagie.text.pdf.PdfWriter;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.util.Constants;
@@ -177,66 +179,34 @@ public class PDFExporter extends Exporter {
         exportCells(table, pdfTable);
     }
     
-    protected void exportCells(DataTable table, PdfPTable pdfTable) {        
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+    protected void exportCells(DataTable table, PdfPTable pdfTable) {
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
-
-            if(child instanceof Column) {
-                Column column = (Column) child;
-
-                if(column.isExportable()) {
-                    addColumnValue(pdfTable, column.getChildren(), this.cellFont);
-                }
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
             }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-
-                if(value != null) {
-                    int columnsCount = ((Collection<?>) columns.getValue()).size();
-
-                    for(int cc = 0; cc < columnsCount; cc++) {
-                        columns.setRowModel(cc);
-
-                        if(columns.isExportable()) {
-                            addColumnValue(pdfTable, columns.getChildren(), this.cellFont);
-                        }
-                    }
-                }
+            
+            if(col.isExportable()) {
+                addColumnValue(pdfTable, col.getChildren(), this.cellFont);
             }
         }
     }
 	
 	protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
-                        
-            if(child instanceof Column) {
-                Column column = (Column) child;
-                
-                if(column.isExportable()) {
-                    addColumnValue(pdfTable, column.getFacet(columnType.facet()), this.facetFont);
-                }
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
             }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-                
-                if(value != null) {
-                    int columnsCount = ((Collection<?>) columns.getValue()).size();
-
-                    for(int i = 0; i < columnsCount; i++) {
-                        columns.setRowModel(i);
-
-                        if(columns.isExportable()) {
-                            addColumnValue(pdfTable, columns.getFacet(columnType.facet()), this.facetFont);
-                        }
-                    }
-                }
+            
+            if(col.isExportable()) {
+                addColumnValue(pdfTable, col.getFacet(columnType.facet()), this.facetFont);
             }
         }
 	}

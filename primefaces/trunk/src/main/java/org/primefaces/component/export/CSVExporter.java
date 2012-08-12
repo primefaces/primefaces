@@ -21,12 +21,11 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
@@ -62,49 +61,29 @@ public class CSVExporter extends Exporter {
 	}
     
     protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
-        boolean firstColumn = true;
+        boolean firstCell = true;
         
-		for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
             
-            if(firstColumn) {
-                firstColumn = false;
+            if(firstCell) {
+                firstCell = false;
             }
             else {
                 writer.write(",");
             }
-                        
-            if(child instanceof Column) {
-                Column column = (Column) child;
-                
-                if(column.isExportable()) {
-                    addColumnValue(writer, column.getFacet(columnType.facet()));
-                }
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
             }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-                
-                if(value != null) {
-                    int columnsCount = columns.getRowCount();
-
-                    for(int i = 0; i < columnsCount; i++) {
-                        columns.setRowModel(i);
-                        
-                        if(i != 0) {
-                            writer.write(",");
-                        }
-
-                        if(columns.isExportable()) {
-                            addColumnValue(writer, columns.getFacet(columnType.facet()));
-                        }
-                    }
-                }
+            
+            if(col.isExportable()) {
+                addColumnValue(writer, col.getFacet(columnType.facet()));
             }
         }
-        		
+	
 		writer.write("\n");
     }
     
@@ -185,10 +164,10 @@ public class CSVExporter extends Exporter {
     
     protected void exportCells(DataTable table, Writer writer) throws IOException {
         boolean firstCell = true;
-                
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+        
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
             
             if(firstCell) {
@@ -197,33 +176,13 @@ public class CSVExporter extends Exporter {
             else {
                 writer.write(",");
             }
-
-            if(child instanceof Column) {
-                Column column = (Column) child;
-
-                if(column.isExportable()) {
-                    addColumnValue(writer, column.getChildren());
-                }
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
             }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-
-                if(value != null) {
-                    int columnsCount = columns.getRowCount();
-
-                    for(int cc = 0; cc < columnsCount; cc++) {
-                        columns.setRowModel(cc);
-                        
-                        if(cc != 0) {
-                            writer.write(",");
-                        }
-
-                        if(columns.isExportable()) {
-                            addColumnValue(writer, columns.getChildren());
-                        }
-                    }
-                }
+            
+            if(col.isExportable()) {
+                addColumnValue(writer, col.getChildren());
             }
         }
     }

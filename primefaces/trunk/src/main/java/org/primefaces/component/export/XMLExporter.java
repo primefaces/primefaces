@@ -26,6 +26,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
@@ -142,36 +143,20 @@ public class XMLExporter extends Exporter {
         writer.write("\t</" + var + ">\n");
     }
     
-    protected void exportCells(DataTable table, Writer writer) throws IOException {                
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
-                continue;
+    protected void exportCells(DataTable table, Writer writer) throws IOException {
+        for(UIColumn col : table.getColumns()) {
+            if(!col.isRendered()) {
+                return;
             }
-  
-            if(child instanceof Column) {
-                Column column = (Column) child;
-                String columnTag = getColumnTag(column);
+            
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyModel();
+            }
+            
+            if(col.isExportable()) {
+                String columnTag = getColumnTag(col);
                 
-                if(column.isExportable()) {
-                    addColumnValue(writer, column.getChildren(), columnTag);
-                }
-            }
-            else if(child instanceof Columns) {
-                Columns columns = (Columns) child;
-                Object value = columns.getValue();
-
-                if(value != null) {
-                    int columnsCount = columns.getRowCount();
-
-                    for(int cc = 0; cc < columnsCount; cc++) {
-                        columns.setRowModel(cc);
-                        String columnTag = getColumnTag(columns);
-
-                        if(columns.isExportable()) {
-                            addColumnValue(writer, columns.getChildren(), columnTag);
-                        }
-                    }
-                }
+                addColumnValue(writer, col.getChildren(), columnTag);
             }
         }
     }
