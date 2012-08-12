@@ -34,28 +34,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         super(writer);
         wrapped = (PartialResponseWriter) writer;
     }
-
-    @Override
-    public void endDocument() throws IOException {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-
-        if(requestContext != null) {
-
-            try {
-                encodeCallbackParams(requestContext);
-                encodeScripts(requestContext);
-            } 
-            catch (Exception exception) {
-                throw new AbortProcessingException(exception);
-            } 
-            finally {
-                requestContext.release();
-            }
-        }
-
-            
-        wrapped.endDocument();
-    }
     
     private void encodeCallbackParams(RequestContext requestContext) throws IOException, JSONException {
         //callback params
@@ -114,57 +92,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             endEval();
         }           
     }
-    
-    /*private void encodePushData(RequestContext requestContext) throws IOException, JSONException {
-        Map<String,List<Object>> pushData = requestContext.getPushData();
-        
-        if(!pushData.isEmpty()) {
-            StringBuilder jsonBuilder = new StringBuilder();
-            Map<String, String> callbackParamExtension = new HashMap<String, String>();
-            callbackParamExtension.put("ln", "primefaces");
-            callbackParamExtension.put("type", "push-data");
-
-            startExtension(callbackParamExtension);
-            
-            jsonBuilder.append("{");
-
-            for(Iterator<String> channelIterator = pushData.keySet().iterator(); channelIterator.hasNext();) {
-                String channel = channelIterator.next();
-                List<Object> channelData = pushData.get(channel);
-                
-                jsonBuilder.append("\"").append(channel).append("\":{");
-                
-                for(Iterator<Object> dataIterator = channelData.iterator(); dataIterator.hasNext();) {
-                    Object data = dataIterator.next();
-
-                    if(isBean(data)) {
-                        jsonBuilder.append("\"").append("data").append("\":").append(new JSONObject(data).toString());
-                    } 
-                    else {
-                        String json = new JSONObject().put("data", data).toString();
-                        jsonBuilder.append(json.substring(1, json.length() - 1));
-                    }
-
-                    if(dataIterator.hasNext()) {
-                        jsonBuilder.append(",");
-                    }
-                }
-                
-                jsonBuilder.append("}");
-                
-                if(channelIterator.hasNext()) {
-                    jsonBuilder.append(",");
-                }                
-            }
-
-            jsonBuilder.append("}");
-            
-            write(jsonBuilder.toString());
-            jsonBuilder.setLength(0);
-            
-            endExtension();
-        }
-    }*/
 
     @Override
     public void delete(String targetId) throws IOException {
@@ -204,6 +131,23 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startDocument() throws IOException {
         wrapped.startDocument();
+    }
+    
+    @Override
+    public void endDocument() throws IOException {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+
+        if(requestContext != null) {
+            try {
+                encodeCallbackParams(requestContext);
+                encodeScripts(requestContext);
+            } 
+            catch (Exception exception) {
+                throw new AbortProcessingException(exception);
+            } 
+        }
+            
+        wrapped.endDocument();
     }
 
     @Override

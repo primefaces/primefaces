@@ -49,12 +49,6 @@ public abstract class RequestContext {
 
     public abstract Map<String, Object> getCallbackParams();
 
-    @Deprecated
-    public abstract void addPartialUpdateTarget(String name);
-
-    @Deprecated
-    public abstract void addPartialUpdateTargets(Collection<String> collection);
-
     public abstract List<String> getScriptsToExecute();
 
     public abstract void execute(String script);

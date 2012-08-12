@@ -27,9 +27,6 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
     public PrimePartialViewContext(PartialViewContext wrapped) {
         this.wrapped = wrapped;
-        if(isAjaxRequest()) {
-            new DefaultRequestContext();    //initialize RequestContext instance
-        }
     }
     
     @Override

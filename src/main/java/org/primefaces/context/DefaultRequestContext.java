@@ -53,16 +53,6 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
-    public void addPartialUpdateTarget(String target) {
-        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(target);
-    }
-
-    @Override
-    public void addPartialUpdateTargets(Collection<String> collection) {
-        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().addAll(collection);
-    }
-
-    @Override
     public void execute(String script) {
         getScriptsToExecute().add(script);
     }
