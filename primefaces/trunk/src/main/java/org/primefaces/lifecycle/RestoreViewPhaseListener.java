@@ -15,15 +15,19 @@
  */
 package org.primefaces.lifecycle;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import org.primefaces.context.DefaultRequestContext;
+import org.primefaces.util.Constants;
 
 public class RestoreViewPhaseListener implements PhaseListener {
 
     public void afterPhase(PhaseEvent event) {
-        new DefaultRequestContext();
+        FacesContext context = event.getFacesContext();
+        
+        context.getAttributes().put(Constants.REQUEST_CONTEXT_ATTR, new DefaultRequestContext());
     }
 
     public void beforePhase(PhaseEvent event) {

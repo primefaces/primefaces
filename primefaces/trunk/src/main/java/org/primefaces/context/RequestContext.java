@@ -18,32 +18,16 @@ package org.primefaces.context;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.faces.context.FacesContext;
+import org.primefaces.util.Constants;
 
 public abstract class RequestContext {
 
-    private static ThreadLocal<RequestContext> instance = new ThreadLocal<RequestContext>() {
-
-        @Override
-        protected RequestContext initialValue() {
-            return null;
-        }
-    };
-
     public static RequestContext getCurrentInstance() {
-        return instance.get();
-    }
-
-    protected static void setCurrentInstance(RequestContext requestContext) {
-        if (requestContext == null) {
-            instance.remove();
-        } else {
-            instance.set(requestContext);
-        }
+        return (RequestContext) FacesContext.getCurrentInstance().getAttributes().get(Constants.REQUEST_CONTEXT_ATTR);
     }
 
     public abstract boolean isAjaxRequest();
-
-    public abstract void release();
 
     public abstract void addCallbackParam(String name, Object value);
 

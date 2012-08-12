@@ -30,21 +30,12 @@ public class DefaultRequestContext extends RequestContext {
     private Map<String, Object> attributes;
 
     public DefaultRequestContext() {
-        this.attributes = new HashMap<String, Object>();
-
-        setCurrentInstance(this);
+        attributes = new HashMap<String, Object>();
     }
 
     @Override
     public boolean isAjaxRequest() {
         return FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest();
-    }
-
-    @Override
-    public void release() {
-        attributes = null;
-
-        setCurrentInstance(null);
     }
 
     @Override
