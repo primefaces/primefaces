@@ -42,4 +42,8 @@ public abstract class RequestContext {
     public abstract void update(String name);
 
     public abstract void update(Collection<String> collection);
+    
+    public abstract void reset(String id);
+    
+    public abstract void reset(Collection<String> ids);
 }

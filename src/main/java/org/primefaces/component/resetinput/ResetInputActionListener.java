@@ -18,7 +18,6 @@ package org.primefaces.component.resetinput;
 import java.util.EnumSet;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -27,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ResetInputActionListener implements ActionListener {
     

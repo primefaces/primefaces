@@ -79,4 +79,14 @@ public class DefaultRequestContext extends RequestContext {
     public void update(Collection<String> collection) {
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().addAll(collection);
     }
+
+    @Override
+    public void reset(String id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void reset(Collection<String> ids) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
