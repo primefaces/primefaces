@@ -18,6 +18,7 @@ package org.primefaces.component.resetinput;
 import java.util.EnumSet;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -49,6 +50,9 @@ public class ResetInputActionListener implements ActionListener {
         String[] ids = targetIds.split("[,\\s]+");
         for(String id : ids) {
             UIComponent targetComponent = source.findComponent(id);
+            if(targetComponent == null) {
+                throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from \"" + source.getClientId(context) + "\".");
+            }
             
             targetComponent.visitTree(visitContext, visitCallback);
         }

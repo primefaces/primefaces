@@ -17,11 +17,17 @@ package org.primefaces.context;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
 
 import javax.faces.context.FacesContext;
+import org.primefaces.visit.ResetInputVisitCallback;
 
 public class DefaultRequestContext extends RequestContext {
 
@@ -81,12 +87,21 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
-    public void reset(String id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public void reset(Collection<String> ids) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        FacesContext context = FacesContext.getCurrentInstance();
+        EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+        VisitContext visitContext = VisitContext.createVisitContext(context, ids, hints);
+        VisitCallback visitCallback = new ResetInputVisitCallback();
+        UIViewRoot root = context.getViewRoot();
+        
+        root.visitTree(visitContext, visitCallback);
+    }
+    
+    @Override
+    public void reset(String id) {
+        Collection<String> list = new ArrayList<String>();
+        list.add(id);
+        
+        reset(list);
     }
 }
