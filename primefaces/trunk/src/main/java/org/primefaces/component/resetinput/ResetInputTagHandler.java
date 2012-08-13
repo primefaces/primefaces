@@ -26,6 +26,7 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.FaceletException;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.TagException;
 import javax.faces.view.facelets.TagHandler;
 
 public class ResetInputTagHandler extends TagHandler {
@@ -38,12 +39,19 @@ public class ResetInputTagHandler extends TagHandler {
 	}
 
 	public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-		if(ComponentHandler.isNew(parent)) {
+		if(parent == null || !ComponentHandler.isNew(parent)) {
+            return;
+        }
+        
+        if(parent instanceof ActionSource) {
 			ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
 			
 			ActionSource actionSource = (ActionSource) parent;
 			actionSource.addActionListener(new ResetInputActionListener(targetVE));
 		}
+        else {
+            throw new TagException(this.tag, "ResetInput can only be attached to ActionSource components.");
+        }
 	}
     
 }
