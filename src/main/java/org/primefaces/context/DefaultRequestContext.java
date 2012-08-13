@@ -21,6 +21,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -87,14 +89,21 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
-    public void reset(Collection<String> ids) {
+    public void reset(Collection<String> ids) {        
         FacesContext context = FacesContext.getCurrentInstance();
         EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
-        VisitContext visitContext = VisitContext.createVisitContext(context, ids, hints);
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, hints);
         VisitCallback visitCallback = new ResetInputVisitCallback();
         UIViewRoot root = context.getViewRoot();
-        
-        root.visitTree(visitContext, visitCallback);
+                
+        for(String id : ids) {
+            UIComponent targetComponent = root.findComponent(id);
+            if(targetComponent == null) {
+                throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from viewroot.");
+            }
+            
+            targetComponent.visitTree(visitContext, visitCallback);
+        }
     }
     
     @Override
