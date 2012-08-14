@@ -16,6 +16,7 @@
 package org.primefaces.component.api;
 
 import java.sql.ResultSet;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,10 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.*;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
@@ -597,6 +602,127 @@ public class UIData extends javax.faces.component.UIData {
     
     protected boolean shouldProcessChildren(FacesContext context) {
         return true;
+    }
+    
+    protected boolean shouldVisitChildren(VisitContext context, boolean visitRows) {
+        if(visitRows) {
+            setRowIndex(-1);
+        }
+        
+        Collection<String> idsToVisit = context.getSubtreeIdsToVisit(this);
+
+        return (!idsToVisit.isEmpty());
+    }
+    
+    @Override
+    public boolean visitTree(VisitContext context,  VisitCallback callback) {
+        if(!isVisitable(context)) {
+            return false;
+        }
+
+        FacesContext facesContext = context.getFacesContext();
+        boolean visitRows = !context.getHints().contains(VisitHint.SKIP_ITERATION); 
+
+        int rowIndex = -1;
+        if(visitRows) {
+            rowIndex = getRowIndex();
+            setRowIndex(-1);
+        }
+
+        pushComponentToEL(facesContext, null);
+
+        try {
+            VisitResult result = context.invokeVisitCallback(this, callback);
+
+            if(result == VisitResult.COMPLETE) {
+                return true;
+            }
+
+            if((result == VisitResult.ACCEPT) && shouldVisitChildren(context, visitRows)) {
+                if(visitFacets(context, callback, visitRows)) {
+                    return true;
+                }
+
+                if(visitChildrenFacets(context, callback, visitRows)) {
+                    return true;
+                }
+
+                if(visitRows && visitRows(context, callback)) {
+                    return true;
+                }
+                
+            }
+        }
+        finally {
+            popComponentFromEL(facesContext);
+            
+            if(visitRows) {
+                setRowIndex(rowIndex);
+            }
+        }
+
+        return false;
+    }
+    
+    protected boolean visitFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if(visitRows) {
+            setRowIndex(-1);
+        }
+        
+        if(getFacetCount() > 0) {
+            for(UIComponent facet : getFacets().values()) {
+                if(facet.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    protected boolean visitChildrenFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if(visitRows) {
+            setRowIndex(-1);
+        }
+        
+        if(getChildCount() > 0) {
+            for(UIComponent column : getChildren()) {
+                if(column.getFacetCount() > 0) {
+                    for(UIComponent columnFacet : column.getFacets().values()) {
+                        if(columnFacet.visitTree(context, callback)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    protected boolean visitRows(VisitContext context, VisitCallback callback) {
+        int first = getFirst();
+        int rows = getRows();
+        int last = rows == 0 ? getRowCount() : (first + rows);
+        
+        for(int rowIndex = first; rowIndex < last; rowIndex++) {
+            setRowIndex(rowIndex);
+
+            if(!isRowAvailable()) {
+                break;
+            }
+            
+            if(this.getChildCount() > 0) {
+                for(UIComponent child : this.getChildren()) {
+                    if(child.visitTree(context, callback)) {
+                        return true;
+                    }
+                }
+            }
+                      
+        }
+        
+        return false;
     }
 }
 
