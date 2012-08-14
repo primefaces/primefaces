@@ -723,12 +723,13 @@ $.extend(Keypad.prototype, {
 			(!inst._inline && $.browser.msie && parseInt($.browser.version, 10) < 7 ?
 			'<iframe src="javascript:false;" class="' + $.keypad._coverClass + '"></iframe>' : '');
 		html = $(html);
-		var thisInst = inst;
-		html.find('button').mousedown(function() { $(this).addClass('ui-state-active'); }).
-			mouseup(function() { $(this).removeClass('ui-state-active'); }).
-			mouseout(function() { $(this).removeClass('ui-state-hover'); }).
-            mouseover(function() { $(this).addClass('ui-state-hover'); }).
-			filter('.keypad-clear').click(function() { $.keypad._clearValue(thisInst); }).end().
+        
+		var thisInst = inst,
+        buttons = html.find('button');
+        
+        PrimeFaces.skinButton(buttons);
+        
+		buttons.filter('.keypad-clear').click(function() { $.keypad._clearValue(thisInst); }).end().
 			filter('.keypad-back').click(function() { $.keypad._backValue(thisInst); }).end().
 			filter('.keypad-close').click(function() {
 				$.keypad._curInst = (thisInst._inline ? thisInst : $.keypad._curInst);
