@@ -19,6 +19,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 
 public interface MenuModel {
@@ -28,4 +29,6 @@ public interface MenuModel {
 	public void addSubmenu(Submenu submenu);
 	
 	public void addMenuItem(MenuItem menuItem);
+    
+    public void addSeparator(Separator separator);
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 
 public class DefaultMenuModel implements MenuModel, Serializable {
@@ -39,6 +40,10 @@ public class DefaultMenuModel implements MenuModel, Serializable {
         contents.add(menuItem);
     }
 
+    public void addSeparator(Separator separator) {
+        contents.add(separator);
+    }
+    
     public List<UIComponent> getContents() {
         return contents;
     }
