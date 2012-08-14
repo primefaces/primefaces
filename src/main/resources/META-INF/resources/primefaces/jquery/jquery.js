@@ -15659,7 +15659,8 @@ $.extend(Datepicker.prototype, {
 	 */
 	_attachHandlers: function(inst) {
 		var stepMonths = this._get(inst, 'stepMonths');
-		var id = '#' + inst.id;
+        var id = "#" + inst.input.attr('id').replace(/:/g,"\\:");
+
 		inst.dpDiv.find('[data-handler]').map(function () {
 			var handler = {
 				prev: function () {
