@@ -1,0 +1,87 @@
+.ui-treetable table {
+	border-collapse:collapse;
+    width:100%;
+}
+
+.ui-treetable .ui-treetable-header,
+.ui-treetable .ui-treetable-footer {
+    text-align:center;
+    padding:4px 10px;
+}
+
+.ui-treetable .ui-treetable-header {
+    border-bottom: 0px none;
+}
+
+.ui-treetable .ui-treetable-footer {
+    border-top: 0px none;
+}
+
+.ui-treetable th, .ui-treetable tfoot td {
+    text-align:center;
+    white-space:nowrap;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-treetable .ui-treetable-data td,
+.ui-treetable .ui-treetable-data-empty td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-treetable th div.ui-tt-c,
+.ui-treetable .ui-treetable-data td div.ui-tt-c,
+.ui-treetable tfoot td div.ui-tt-c {
+    padding: 4px 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.ui-treetable .ui-treetable-toggler {
+    float:left;
+    margin-top: -2px;
+    cursor: pointer;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-state-highlight {
+    cursor: pointer;
+}
+
+.ui-treetable-scrollable {}
+
+.ui-treetable-scrollable-body {
+    overflow:auto;
+}
+.ui-treetable-scrollable-header,
+.ui-treetable-scrollable-footer {
+    overflow: hidden;
+    border:0 none;
+}
+
+.ui-treetable-scrollable .ui-treetable-scrollable-body table,
+.ui-treetable-scrollable .ui-treetable-scrollable-header table,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer table {
+    width:auto;
+}
+.ui-treetable-scrollable .ui-treetable-scrollable-header,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer {
+    position: relative;
+} 
+            
+.ui-treetable-scrollable .ui-treetable-scrollable-header-box,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer-box {
+    float:left;
+    padding-right: 40px;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-state-hover {
+    border-color: inherit;
+    font-weight: inherit;
+    *font-weight: normal; /*IE7 hack*/
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>blockUI</tag>
+	<tagClass>org.primefaces.component.blockui.BlockUI</tagClass>
+	<componentClass>org.primefaces.component.blockui.BlockUI</componentClass>
+	<componentType>org.primefaces.component.BlockUI</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.BlockUIRenderer</rendererType>
+	<rendererClass>org.primefaces.component.blockui.BlockUIRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>
+      BlockUI blocks JSF components during ajax processing.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>trigger</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Identifier of component(s) to bind the block UI.</description>
+		</attribute>
+		<attribute>
+			<name>block</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Component whose UI to block.</description>
+		</attribute>
+        <attribute>
+			<name>blocked</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Blocks the ui by default when enabled.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,4 @@
+.ui-toolbar {padding:0.2em;}
+.ui-toolbar .ui-separator {display: inline-block;vertical-align: middle;}
+.ui-toolbar-group-left {float:left;}
+.ui-toolbar-group-right {float:right;}
