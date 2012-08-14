@@ -79,10 +79,10 @@ PrimeFaces = {
         }).mousedown(function() {
             var el = $(this);
             if(!button.hasClass('ui-state-disabled')) {
-                el.addClass('ui-state-active');
+                el.addClass('ui-state-active').removeClass('ui-state-hover');
             }
         }).mouseup(function() {
-            $(this).removeClass('ui-state-active');
+            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
         }).focus(function() {
             $(this).addClass('ui-state-focus');
         }).blur(function() {
