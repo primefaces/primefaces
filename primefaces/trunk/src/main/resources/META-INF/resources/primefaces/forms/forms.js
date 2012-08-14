@@ -1069,7 +1069,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         
         //custom layout
         if(this.cfg.custom) {
-            this.inputs = $('input:radio[name="' + this.id + '"]:not:(:disabled)');
+            this.inputs = $('input:radio[name="' + this.id + '"]:not(:disabled)');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box:not(.ui-state-disabled)');
             this.labels = $();
             this.icons = this.outputs.find('.ui-radiobutton-icon');
