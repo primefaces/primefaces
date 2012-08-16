@@ -1,2 +1,1 @@
 - Added custom button for datepicker. Lines 14287, 14480, 14481.
-- Added support for colons in attach handlers. Line 15662. 
