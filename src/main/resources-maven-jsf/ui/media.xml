@@ -25,7 +25,7 @@
 			<name>player</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Type of the player, possible values are "quicktime","windows","flash","real".</description>
+            <description>Type of the player, possible values are "quicktime","windows","flash","real" and "pdf".</description>
 		</attribute>
 		<attribute>
 			<name>width</name>
