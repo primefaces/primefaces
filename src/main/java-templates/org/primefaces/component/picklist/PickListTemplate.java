@@ -43,7 +43,7 @@ import javax.faces.event.AjaxBehaviorEvent;
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer","reorder"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer"));
 
     @Override
     public Collection<String> getEventNames() {
