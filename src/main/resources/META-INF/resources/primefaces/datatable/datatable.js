@@ -1111,7 +1111,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         options.params = [
             {name: this.id + '_rowExpansion', value: true},
             {name: this.id + '_expandedRowIndex', value: rowIndex},
-            {name: this.id + '_encodeFeature', value: true}
+            {name: this.id + '_encodeFeature', value: true},
+            {name: this.id + '_skipChildren', value: true}
         ];
         
         if(this.hasBehavior('rowToggle')) {
