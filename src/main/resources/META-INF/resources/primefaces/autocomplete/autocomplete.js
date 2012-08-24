@@ -602,7 +602,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             panelWidth = this.multiItemContainer.innerWidth() - (this.input.position().left - this.multiItemContainer.position().left);
         }
         else {
-            panelWidth = this.input.innerWidth();
+            if(this.panel.is(':visible')) {
+                panelWidth = this.panel.children('.ui-autocomplete-items').outerWidth();
+            }
+            else {
+                this.panel.css({'visibility':'hidden','display':'block'});
+                panelWidth = this.panel.children('.ui-autocomplete-items').outerWidth();
+                this.panel.css({'visibility':'visible','display':'none'});
+            }
+            
+            var inputWidth = this.input.outerWidth();
+            if(panelWidth < inputWidth) {
+                panelWidth = inputWidth;
+            }
         }
 
         this.panel.css({
