@@ -18,12 +18,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.closable) {
             this.bindCloser();
         }
-
-        if(this.cfg.hasMenu) {
-            this.bindMenu();
-        }
         
-        this.jq.data('widget', this);
+        //visuals for action items
+        this.header.find('.ui-panel-titlebar-icon').on('hover.ui-panel', function() {$(this).toggleClass('ui-state-hover');});
     },
     
     toggle: function() {
@@ -156,8 +153,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.toggler = $(this.jqId + '_toggler');
         this.toggleStateHolder = $(this.jqId + '_collapsed');
 
-        this.bindTriggerVisuals(this.toggler);
-
         this.toggler.click(function() {_self.toggle();});
     },
     
@@ -167,22 +162,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.closer = $(this.jqId + '_closer');
         this.visibleStateHolder = $(this.jqId + "_visible");
 
-        this.bindTriggerVisuals(this.closer);
-
         this.closer.click(function() {_self.close();});
     },
-    
-    bindMenu: function() {
-        this.menuTrigger = $(this.jqId + '_menu');
-
-        this.bindTriggerVisuals(this.menuTrigger);
-    },
-    
-    bindTriggerVisuals: function(trigger) {
-        trigger.mouseover(function() {$(this).addClass('ui-state-hover');})
-                .mouseout(function() {$(this).removeClass('ui-state-hover');});
-    },
-    
+        
     addOnshowHandler: function(fn) {
         this.onshowHandlers.push(fn);
     },
