@@ -137,7 +137,6 @@ public class PanelRenderer extends CoreRenderer {
 
     protected void encodeHeader(FacesContext context, Panel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String widgetVar = panel.resolveWidgetVar();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
@@ -156,7 +155,8 @@ public class PanelRenderer extends CoreRenderer {
 
         if(header != null) {
             renderChild(context, header);
-        } else if(headerText != null) {
+        } 
+        else if(headerText != null) {
             writer.write(headerText);
         }
 
@@ -174,6 +174,12 @@ public class PanelRenderer extends CoreRenderer {
 
         if(panel.getOptionsMenu() != null) {
             encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle());
+        }
+        
+        //Actions
+        UIComponent actionsFacet = panel.getFacet("actions");
+        if(actionsFacet != null) {
+            actionsFacet.encodeAll(context);
         }
 
         writer.endElement("div");
