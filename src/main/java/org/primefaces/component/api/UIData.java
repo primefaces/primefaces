@@ -621,7 +621,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitRows = !context.getHints().contains(VisitHint.SKIP_ITERATION); 
+        boolean visitRows = shouldVisitRows(facesContext, context);
 
         int rowIndex = -1;
         if(visitRows) {
@@ -723,6 +723,19 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         return false;
+    }
+    
+    protected boolean shouldVisitRows(FacesContext context, VisitContext visitContext) {
+        try {
+            //JSF 2.1
+            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
+            return !visitContext.getHints().contains(skipHint);
+        }
+        catch(IllegalArgumentException e) {
+            //JSF 2.0
+            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
+            return !Boolean.TRUE.equals(skipHint);
+        }
     }
 }
 
