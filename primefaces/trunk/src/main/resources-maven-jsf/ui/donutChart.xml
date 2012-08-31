@@ -50,12 +50,6 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>breakOnNull</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-        </attribute>
-        <attribute>
             <name>seriesColors</name>
             <required>false</required>
             <type>java.lang.String</type>
