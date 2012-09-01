@@ -253,7 +253,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     moveDown: function(list) {
         var _self = this;
 
-        list.children('.ui-state-highlight').each(function() {
+        $(list.children('.ui-state-highlight').get().reverse()).each(function() {
             var item = $(this);
 
             if(!item.is(':last-child')) {
