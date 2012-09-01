@@ -27,52 +27,51 @@ import javax.faces.context.FacesContext;
  */
 public class BeanPropertyComparator implements Comparator {
 
-	private ValueExpression sortBy;
-	
-	private boolean asc;
-	
-	private String var;
-	
-	private MethodExpression sortFunction;
-	
-	private final static Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
-	
-	public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction) {
-		this.sortBy = sortBy;
-		this.var = var;
-		this.asc = sortOrder.equals(SortOrder.ASCENDING);
-		this.sortFunction = sortFunction;
-	}
+    private ValueExpression sortBy;
+    private boolean asc;
+    private String var;
+    private MethodExpression sortFunction;
+    private final static Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
 
-	@SuppressWarnings("unchecked")
-	public int compare(Object obj1, Object obj2) {
-		try {
-			FacesContext context = FacesContext.getCurrentInstance();
-			
-			context.getExternalContext().getRequestMap().put(var, obj1);
-			Object value1 = sortBy.getValue(context.getELContext());
-			context.getExternalContext().getRequestMap().put(var, obj2);
-			Object value2 = sortBy.getValue(context.getELContext());
-			
-			//Empty check
-			if(value1 == null)
-				return 1;
-			else if(value2 == null)
-				return -1;
-				
-			int result;
-			if(sortFunction == null) {
-				result = ((Comparable) value1).compareTo(value2);
-			} else {
-				result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
-			}
-			
-			return asc ? result : -1 * result;
-			
-		} catch (Exception e) {
-			logger.severe("Error in sorting");
-			
-			throw new RuntimeException(e);
-		}
-	}
+    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+        this.sortBy = sortBy;
+        this.var = var;
+        this.asc = sortOrder.equals(SortOrder.ASCENDING);
+        this.sortFunction = sortFunction;
+    }
+
+    @SuppressWarnings("unchecked")
+    public int compare(Object obj1, Object obj2) {
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+
+            context.getExternalContext().getRequestMap().put(var, obj1);
+            Object value1 = sortBy.getValue(context.getELContext());
+            context.getExternalContext().getRequestMap().put(var, obj2);
+            Object value2 = sortBy.getValue(context.getELContext());
+
+            //Empty check
+            if (value1 == null && value2 == null) {
+                return 0;
+            } else if (value1 == null) {
+                return 1;
+            } else if (value2 == null) {
+                return -1;
+            }
+
+            int result;
+            if (sortFunction == null) {
+                result = ((Comparable) value1).compareTo(value2);
+            } else {
+                result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
+            }
+
+            return asc ? result : -1 * result;
+
+        } catch (Exception e) {
+            logger.severe("Error in sorting");
+
+            throw new RuntimeException(e);
+        }
+    }
 }
