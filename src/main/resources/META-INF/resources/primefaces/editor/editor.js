@@ -157,7 +157,7 @@
   ie6 = /msie\s6/i.test(navigator.userAgent),
 
   // Test for iPhone/iTouch/iPad
-  iOS = /iphone|ipad|ipod/i.test(navigator.userAgent),
+  iOS = /(?!.*5).*(iphone|ipad|ipod)/i.test(navigator.userAgent),
 
   // Popups are created once as needed and shared by all editor instances
   popups = {},
