@@ -36,7 +36,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     generateItems: function() {
         var _self = this;
 
-        this.list.children('.ui-orderlist-item').each(function(i, item) {
+        this.list.children('.ui-orderlist-item').each(function() {
             var item = $(this),
             itemValue = item.data('item-value');
 
@@ -134,7 +134,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     moveDown: function(list) {
         var _self = this;
 
-        this.items.filter('.ui-state-highlight').each(function() {
+        $(this.items.filter('.ui-state-highlight').get().reverse()).each(function() {
             var item = $(this);
 
             if(!item.is(':last-child')) {
