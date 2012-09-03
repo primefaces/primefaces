@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>defaultCommand</tag>
+    <tagClass>org.primefaces.component.defaultcommand.DefaultCommandTag</tagClass>
+    <componentClass>org.primefaces.component.defaultcommand.DefaultCommand</componentClass>
+    <componentType>org.primefaces.component.DefaultCommand</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DefaultCommandRenderer</rendererType>
+    <rendererClass>org.primefaces.component.defaultcommand.DefaultCommandRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>DefaultCommand defines the default command component to invoke when enter key is pressed in a form.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>target</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <description>Identifier of the default command component.</description>
+        </attribute>
+        <attribute>
+            <name>scope</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Identifier of the grouping component to enable multiple default commands in a form.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
+</component>

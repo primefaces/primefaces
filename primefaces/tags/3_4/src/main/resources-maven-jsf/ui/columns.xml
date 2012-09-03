@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+    <tag>columns</tag>
+    <tagClass>org.primefaces.component.columns.ColumnsTag</tagClass>
+    <componentClass>org.primefaces.component.columns.Columns</componentClass>
+    <componentType>org.primefaces.component.Columns</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <parent>org.primefaces.component.api.UIData</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.UIColumn</name>
+		</interface>
+	</interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+			<name>sortBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Property to be used for sorting.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the column.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the column.</description>
+		</attribute>
+		<attribute>
+			<name>sortFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
+            <description>Custom pluggable sortFunction.</description>
+		</attribute>
+		<attribute>
+			<name>filterBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+			<defaultValue>false</defaultValue>
+            <description>Property to be used for filtering.</description>
+		</attribute>
+		<attribute>
+			<name>filterStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the filter element.</description>
+		</attribute>
+		<attribute>
+			<name>filterStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the filter element.</description>
+		</attribute>
+        <attribute>
+			<name>filterOptions</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>A collection of selectitems for filter dropdown.</description>
+		</attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>startsWith</defaultValue>
+            <description>Match mode for filtering.</description>
+		</attribute>
+        <attribute>
+			<name>filterPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>bottom</defaultValue>
+            <description>Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.</description>
+		</attribute>
+        <attribute>
+			<name>rowspan</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+            <description>Defines the number of rows the column spans.</description>
+		</attribute>
+        <attribute>
+			<name>colspan</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+            <description>Defines the number of columns the column spans.</description>
+		</attribute>
+        <attribute>
+			<name>headerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Shortcut for header facet.</description>
+		</attribute>
+        <attribute>
+			<name>footerText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Shortcut for footer facet.</description>
+		</attribute>
+        <attribute>
+			<name>filterMaxLength</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Maximum number of characters for an input filter.</description>
+		</attribute>
+        <attribute>
+			<name>resizable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.</description>
+		</attribute>
+        <attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>-1</defaultValue>
+            <description>Width of the column in pixels.</description>
+		</attribute>
+        <attribute>
+			<name>exportable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if the column should be exported by dataexporter.</description>
+		</attribute>
+        <attribute>
+			<name>columnIndexVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Name of iterator to refer each row index.</description>
+		</attribute>
+    </attributes>
+</component>

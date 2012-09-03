@@ -1,0 +1,20 @@
+.ui-panelgrid {
+    border-collapse: collapse;
+}
+
+.ui-panelgrid .ui-panelgrid-header {
+    text-align:center;
+    padding:4px 10px;
+}
+
+.ui-panelgrid .ui-panelgrid-footer {
+    text-align: left;
+    padding:2px 5px;
+}
+
+.ui-panelgrid td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:4px 10px;
+}

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>dataTable</tag>
+	<tagClass>org.primefaces.component.datatable.DataTableTag</tagClass>
+	<componentClass>org.primefaces.component.datatable.DataTable</componentClass>
+    <componentHandlerClass>org.primefaces.component.datatable.DataTableHandler</componentHandlerClass>
+	<componentType>org.primefaces.component.DataTable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.DataTableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.datatable.DataTableRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UIData</parent>
+    <description>DataTable is an enhanced version of the standard Datatable that provides built-in solutions to many commons use cases like paging, sorting, selection, lazy loading, filtering and more.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&data_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>paginator</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Enables pagination. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>paginatorTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template of the paginator.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>rowsPerPageTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template of the rowsPerPage dropdown.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>currentPageReportTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template of the currentPageReport UI.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>pageLinks</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>10</defaultValue>
+            <description>Maximum number of page links to display. Default is 10.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+         <attribute>
+			<name>paginatorPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>both</defaultValue>
+            <description>Position of the paginator. Default is both.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+         <attribute>
+			<name>paginatorAlwaysVisible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines if paginator should be hidden if total data count is less than number of rows per page. Default is true.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>scrollable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes data scrollable with fixed header. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>scrollHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height in pixels for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>scrollWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width in pixels for scrollable data.</description>
+		</attribute>
+		<attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Enables data selection, valid values are "single" and "multiple".</description>
+		</attribute>
+		<attribute>
+			<name>selection</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Reference to the selection data.</description>
+		</attribute>
+		<attribute>
+			<name>rowIndexVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Name of iterator to refer each row index.</description>
+		</attribute>
+		<attribute>
+			<name>emptyMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>No records found.</defaultValue>
+            <description>Text to display when there is no data to display. Default is "No records found."</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+        <attribute>
+			<name>liveScroll</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Enables live scrolling. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>rowStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class for each row.</description>
+		</attribute>
+        <attribute>
+			<name>onExpandStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute before row expansion.</description>
+		</attribute>
+        <attribute>
+			<name>resizableColumns</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Decides whether datatable columns are resizable or not.</description>
+		</attribute>
+        <attribute>
+			<name>sortBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Property to be used for default sorting.</description>
+		</attribute>
+        <attribute>
+			<name>sortOrder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>ascending</defaultValue>
+            <description>Sets sorting order. Default is "ascending"</description>
+		</attribute>
+		<attribute>
+			<name>sortFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
+            <description>Custom pluggable sortFunction for default sorting.</description>
+		</attribute>
+        <attribute>
+			<name>scrollRows</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+		</attribute>
+        <attribute>
+			<name>rowKey</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Unique identifier of row data.</description>
+		</attribute>
+        <attribute>
+			<name>filterEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side event to invoke datatable filtering for input fields. Default is keyup.</description>
+		</attribute>
+        <attribute>
+			<name>filterDelay</name>
+			<required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Delay to wait in milliseconds before sending each filter query. Default is 300.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the table element.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the table element.</description>
+		</attribute>
+        <attribute>
+			<name>draggableColumns</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Decides whether datatable columns can be reordered using dragdrop.</description>
+		</attribute>
+        <attribute>
+			<name>editable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls incell editing.</description>
+		</attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>filteredValue</name>
+			<required>false</required>
+			<type>java.util.List</type>
+            <description>List to keep the filtered data if filtering is enabled.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>socket</tag>
+	<tagClass>org.primefaces.component.socket.SocketTag</tagClass>
+	<componentClass>org.primefaces.component.socket.Socket</componentClass>
+	<componentType>org.primefaces.component.Socket</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SocketRenderer</rendererType>
+	<rendererClass>org.primefaces.component.socket.SocketRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Socket component is an agent that creates a channel between the server and the client.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>channel</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Channel name of the connection.</description>
+		</attribute>
+        <attribute>
+			<name>transport</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>websocket</defaultValue>
+            <description>Desired protocol to be used valid values are websocket (default), sse, streaming, long-polling, jsonp.</description>
+		</attribute>
+		<attribute>
+			<name>fallbackTransport</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>long-polling</defaultValue>
+            <description>Fallback protocol to be used when desired transport is not supported in environment, valid values are websocket, sse, streaming, long-polling (default), jsonp.</description>
+		</attribute>
+		<attribute>
+			<name>onMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler that is processed when the server publishes data.</description>
+		</attribute>
+        <attribute>
+			<name>onError</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler that is processed when there is an error.</description>
+		</attribute>
+        <attribute>
+			<name>autoConnect</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if client should connect to the channel on page load.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+            <name>push/push.js</name>
+        </resource>
+	</resources>
+</component>

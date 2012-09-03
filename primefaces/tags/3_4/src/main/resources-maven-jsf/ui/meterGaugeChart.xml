@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>meterGaugeChart</tag>
+    <tagClass>org.primefaces.component.chart.metergauge.MeterGaugeChartTag</tagClass>
+    <componentClass>org.primefaces.component.chart.metergauge.MeterGaugeChart</componentClass>
+    <componentType>org.primefaces.component.chart.MeterGaugeChart</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.chart.MeterGaugeChartRenderer</rendererType>
+    <rendererClass>org.primefaces.component.chart.metergauge.MeterGaugeChartRenderer</rendererClass>
+    <parent>org.primefaces.component.chart.UIChart</parent>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.chart.MeterGaugeChartModel</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>seriesColors</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>showTickLabels</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>labelHeightAdjust</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>-25</defaultValue>
+        </attribute>
+        <attribute>
+            <name>intervalOuterRadius</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>85</defaultValue>
+        </attribute>
+        <attribute>
+			<name>min</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <description>Minimum value boundary.</description>
+		</attribute>
+		<attribute>
+			<name>max</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+			<defaultValue>java.lang.Double.MAX_VALUE</defaultValue>
+            <description>Maximum value boundary.</description>
+		</attribute>
+        <attribute>
+            <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Label of the gauge.</description>
+        </attribute>
+        <attribute>
+			<name>extender</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Javascript function to extend the chart with low level jqplot options.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+    </attributes>
+	<resources>
+        <resource>
+			<name>charts/charts.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>charts/charts.js</name>
+		</resource>
+	</resources>
+</component>
