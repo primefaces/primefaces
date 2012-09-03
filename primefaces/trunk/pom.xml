@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>3.4-SNAPSHOT</version>
+    <version>3.4</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
     
@@ -111,7 +111,7 @@
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
-            <version>1.0.0.beta3</version>
+            <version>1.0.0.RC1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
