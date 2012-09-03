@@ -395,7 +395,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //propagate selection up
-        node.parents('li.ui-tree-parent').each(function() {
+        node.parents('li.ui-treenode-parent').each(function() {
             var parentNode = $(this),
             rowKey = _self.getRowKey(parentNode),
             icon = parentNode.children('.ui-treenode-content').find('.ui-chkbox-icon'),
