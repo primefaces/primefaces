@@ -153,7 +153,7 @@ public class ExcelExporter extends Exporter {
         
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
-                return;
+                continue;
             }
             
             if(col instanceof DynamicColumn) {
@@ -172,7 +172,7 @@ public class ExcelExporter extends Exporter {
         
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
-                return;
+                continue;
             }
             
             if(col instanceof DynamicColumn) {

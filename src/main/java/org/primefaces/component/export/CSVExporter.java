@@ -61,26 +61,24 @@ public class CSVExporter extends Exporter {
 	}
     
     protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
-        boolean firstCell = true;
+        boolean firstCellWritten = false;
         
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
-                return;
+                continue;
             }
-            
-            if(firstCell) {
-                firstCell = false;
-            }
-            else {
-                writer.write(",");
-            }
-            
+                        
             if(col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
             if(col.isExportable()) {
+                if(firstCellWritten) {
+                    writer.write(",");
+                }
+                
                 addColumnValue(writer, col.getFacet(columnType.facet()));
+                firstCellWritten = true;
             }
         }
 	
@@ -163,26 +161,24 @@ public class CSVExporter extends Exporter {
     }
     
     protected void exportCells(DataTable table, Writer writer) throws IOException {
-        boolean firstCell = true;
+        boolean firstCellWritten = false;
         
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
-                return;
+                continue;
             }
-            
-            if(firstCell) {
-                firstCell = false;
-            }
-            else {
-                writer.write(",");
-            }
-            
+                        
             if(col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
             if(col.isExportable()) {
+                if(firstCellWritten) {
+                    writer.write(",");
+                }
+                
                 addColumnValue(writer, col.getChildren());
+                firstCellWritten = true;
             }
         }
     }
