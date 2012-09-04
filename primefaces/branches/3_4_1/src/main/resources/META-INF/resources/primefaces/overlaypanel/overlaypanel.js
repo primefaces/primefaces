@@ -89,7 +89,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if(_self.jq.hasClass('ui-overlay-visible')) {
-                _self.hide();
+                _self.align();
             }
         });
     },

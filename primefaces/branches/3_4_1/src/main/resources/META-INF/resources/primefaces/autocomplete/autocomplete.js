@@ -58,14 +58,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
             }
 
-            //Hide overlay on resize
-            var resizeNS = 'resize.' + this.id;
-            $(window).unbind(resizeNS).bind(resizeNS, function() {
-                if(_self.panel.is(':visible')) {
-                    _self.hide();
-                }
-            });
-
             //dialog support
             this.setupDialogSupport();
         }
@@ -171,6 +163,24 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 _self.hide();
             }
         });
+        
+        this.resizeNS = 'resize.' + this.id;
+        this.unbindResize();
+        this.bindResize();
+    },
+    
+    bindResize: function() {
+        var _self = this;
+
+        $(window).bind(this.resizeNS, function(e) {
+            if(_self.panel.is(':visible')) {
+                _self.alignPanel();
+            }
+        });
+    },
+    
+    unbindResize: function() {
+        $(window).unbind(this.resizeNS);
     },
     
     bindKeyEvents: function() {

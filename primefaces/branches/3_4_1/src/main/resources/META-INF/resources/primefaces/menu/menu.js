@@ -74,7 +74,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if(_self.jq.is(':visible')) {
-                _self.hide();
+                _self.align();
             }
         });
 
@@ -557,11 +557,11 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //hide overlay on window resize
+        //Realign overlay on window resize
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if(_self.menu.is(':visible')) {
-                _self.menu.hide();
+                _self.alignPanel();
             }
         });
 
