@@ -6,8 +6,8 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>3.4</version>
-    <name>primefaces</name>
+    <version>3.4.1-SNAPSHOT</version>
+    <name>primefaces-3.4.1</name>
     <url>http://www.primefaces.org</url>
     
     <licenses>
