@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>slider</tag>
+	<tagClass>org.primefaces.component.slider.SliderTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.slider.SliderHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.slider.Slider</componentClass>
+	<componentType>org.primefaces.component.Slider</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SliderRenderer</rendererType>
+	<rendererClass>org.primefaces.component.slider.SliderRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Slider is used to provide input with various customization options like orientation, display modes and skinning.</description>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+		<interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the input text that the slider will be used for.</description>
+		</attribute>
+		<attribute>
+			<name>display</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the component to display the slider value.</description>
+		</attribute>
+		<attribute>
+			<name>minValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Minimum value of the slider. Default is 0.</description>
+		</attribute>
+		<attribute>
+			<name>maxValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>100</defaultValue>
+            <description>Maximum value of the slider. Default is 100.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Boolean value to enable/disable the animated move when background of slider is clicked. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>horizontal</defaultValue>
+            <description>Sets the type of the slider, "horizontal" or "vertical". Default is horizontal.</description>
+		</attribute>
+		<attribute>
+			<name>step</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+            <description>Fixed pixel increments that the slider move in. Default is 1.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables or enables the slider.</description>
+		</attribute>
+        <attribute>
+			<name>onSlideStart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when slide begins.</description>
+		</attribute>
+         <attribute>
+			<name>onSlide</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute during sliding.</description>
+		</attribute>
+        <attribute>
+			<name>onSlideEnd</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when slide ends.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

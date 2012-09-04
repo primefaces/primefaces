@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>imageSwitch</tag>
+	<tagClass>org.primefaces.component.imageswitch.ImageSwitchTag</tagClass>
+	<componentClass>org.primefaces.component.imageswitch.ImageSwitch</componentClass>
+	<componentType>org.primefaces.component.ImageSwitch</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ImageSwitchRenderer</rendererType>
+	<rendererClass>org.primefaces.component.imageswitch.ImageSwitchRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Imageswitch component is used to enable switching between a set of images with nice effects. ImageSwitch also provides a simple client side api for flexibility.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Name of the effect for transition. Required.</description>
+		</attribute>
+		<attribute>
+			<name>speed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>500</defaultValue>
+            <description>Speed of the effect in milliseconds. Default is 500.</description>
+		</attribute>
+		<attribute>
+			<name>slideshowSpeed</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>3000</defaultValue>
+            <description>Slideshow speed in milliseconds. Default is 3000.</description>
+		</attribute>
+		<attribute>
+			<name>slideshowAuto</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Starts slideshow automatically on page load. Default is true.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>imageswitch/imageswitch.js</name>
+		</resource>
+	</resources>
+</component>

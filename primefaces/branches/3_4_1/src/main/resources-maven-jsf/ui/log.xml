@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>log</tag>
+	<tagClass>org.primefaces.component.log.LogTag</tagClass>
+	<componentClass>org.primefaces.component.log.Log</componentClass>
+	<componentType>org.primefaces.component.Log</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.LogRenderer</rendererType>
+    <rendererClass>org.primefaces.component.log.LogRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Log component is a visual console to display logs of PrimeFaces. Using log client side API, you can also use the component.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>log/log.css</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>log/log.js</name>
+		</resource>
+	</resources>
+</component>

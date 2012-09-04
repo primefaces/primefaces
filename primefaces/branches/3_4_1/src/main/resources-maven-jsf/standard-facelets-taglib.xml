@@ -1,0 +1,261 @@
+	<function>
+		<function-name>component</function-name>
+		<function-class>org.primefaces.util.ComponentUtils</function-class>
+		<function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
+	</function>
+
+    <function>
+		<function-name>widgetVar</function-name>
+		<function-class>org.primefaces.util.ComponentUtils</function-class>
+		<function-signature>java.lang.String getWidgetVar(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<function-name>ifGranted</function-name>
+		<function-class>org.primefaces.util.SecurityUtils</function-class>
+		<function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<function-name>ifAllGranted</function-name>
+		<function-class>org.primefaces.util.SecurityUtils</function-class>
+		<function-signature>java.lang.Boolean ifAllGranted(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<function-name>ifAnyGranted</function-name>
+		<function-class>org.primefaces.util.SecurityUtils</function-class>
+		<function-signature>java.lang.Boolean ifAnyGranted(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<function-name>ifNoneGranted</function-name>
+		<function-class>org.primefaces.util.SecurityUtils</function-class>
+		<function-signature>java.lang.Boolean ifNoneGranted(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<function-name>remoteUser</function-name>
+		<function-class>org.primefaces.util.SecurityUtils</function-class>
+		<function-signature>java.lang.String remoteUser()</function-signature>
+	</function>
+	
+    <function>
+		<function-name>userPrincipal</function-name>
+		<function-class>org.primefaces.util.SecurityUtils</function-class>
+		<function-signature>java.security.Principal userPrincipal()</function-signature>
+	</function>
+	
+	<tag>
+		<tag-name>dataExporter</tag-name>
+		<handler-class>
+			org.primefaces.component.export.DataExporterTagHandler
+		</handler-class>
+        <attribute>
+			<description>Server side id of the datatable whose data would be exported.</description>
+			<name>target</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description>Export type: "xls","pdf","csv", "xml".</description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description>Filename of the generated export file, defaults to datatable server side id.</description>
+			<name>fileName</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description>Exports only current page instead of whole dataset.</description>
+			<name>pageOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+        <attribute>
+			<description>PreProcessor for the exported document.</description>
+			<name>preProcessor</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
+        <attribute>
+			<description>PostProcessor for the exported document.</description>
+			<name>postProcessor</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
+        <attribute>
+			<description>Character encoding to use.</description>
+			<name>encoding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description>When enabled, only selection would be exported.</description>
+			<name>selectionOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<tag-name>fileDownload</tag-name>
+		<handler-class>
+			org.primefaces.component.filedownload.FileDownloadTagHandler
+		</handler-class>
+        <attribute>
+			<description>A streamed content instance.</description>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>Specifies display mode, valid values are "attachment" (default) and "inline".</description>
+			<name>contentDisposition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<tag-name>collector</tag-name>
+		<handler-class>
+			org.primefaces.component.collector.CollectorTagHandler
+		</handler-class>
+        <attribute>
+			<description>Value to be used in collection operation.</description>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>Reference to the Collection instance.</description>
+			<name>addTo</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+        <attribute>
+			<description>Reference to the Collection instance.</description>
+			<name>removeFrom</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+	</tag>
+
+    <tag>
+        <tag-name>ajax</tag-name>
+        <behavior>
+            <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+            <handler-class>org.primefaces.component.behavior.ajax.AjaxBehaviorHandler</handler-class>
+        </behavior>
+		<attribute>
+			<description>Method to process in partial request.</description>
+			<name>listener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
+		<attribute>
+			<description>Boolean value that determines the phaseId to execute listener. Default is false meaning "Invoke Application" phase, when true
+            phase is "Apply Request Values".</description>
+			<name>immediate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>When set to true, ajax requests are not queued.</description>
+			<name>async</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Component(s) to process in partial request. Defaults to @this.</description>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Component(s) to update with ajax.</description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Client side callback execute before ajax request is begins.</description>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Client side callback execute when ajax request is completed and dom is updated.</description>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Client side callback execute when ajax requests returns with error response.</description>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Client side callback execute before dom is updated.</description>
+			<name>onsuccess</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
+			<name>global</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+        <attribute>
+			<description>Disables ajax behavior.</description>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+        <attribute>
+			<description>Client side event to trigger ajax request. 
+            Default value is defined by parent ClientBehaviorHolder component the behavior is attached to.</description>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            instead of whole form.</description>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+    </tag>
+    
+    <tag>
+        <tag-name>printer</tag-name>
+        <behavior>
+            <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        </behavior>
+		<attribute>
+			<description>Id of the component to print.</description>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+    </tag>
+    
+    <tag>
+		<tag-name>resetInput</tag-name>
+		<handler-class>
+			org.primefaces.component.resetinput.ResetInputTagHandler
+		</handler-class>
+        <attribute>
+			<description>Comma or white-space separated list of component ids.</description>
+			<name>target</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>

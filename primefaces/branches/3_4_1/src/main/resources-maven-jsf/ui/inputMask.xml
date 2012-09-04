@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>inputMask</tag>
+	<tagClass>org.primefaces.component.inputmask.InputMaskTag</tagClass>
+	<componentClass>org.primefaces.component.inputmask.InputMask</componentClass>
+	<componentType>org.primefaces.component.InputMask</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InputMaskRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inputmask.InputMaskRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>InputMask forces an input to fit in a defined mask template.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&html_input_text_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>mask</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Mask template. Required.</description>
+		</attribute>
+		<attribute>
+			<name>placeHolder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>PlaceHolder in mask template.</description>
+		</attribute>
+	</attributes>
+	    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

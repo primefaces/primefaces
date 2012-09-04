@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>columnGroup</tag>
+	<tagClass>org.primefaces.component.columngroup.ColumnGroupTag</tagClass>
+	<componentClass>org.primefaces.component.columngroup.ColumnGroup</componentClass>
+	<componentType>org.primefaces.component.ColumnGroup</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>ColumnGroup is used by datatable for grouping.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Type of group, valid values are header and footer.</description>
+		</attribute>
+	</attributes>
+</component>

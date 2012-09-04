@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>imageCompare</tag>
+	<tagClass>org.primefaces.component.imagecompare.ImageCompareTag</tagClass>
+	<componentClass>org.primefaces.component.imagecompare.ImageCompare</componentClass>
+	<componentType>org.primefaces.component.ImageCompare</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ImageCompareRenderer</rendererType>
+	<rendererClass>org.primefaces.component.imagecompare.ImageCompareRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>ImageCompare provides a rich user interface to compare two images.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>leftImage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Source of the image placed on the left side.</description>
+		</attribute>
+		<attribute>
+			<name>rightImage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Source of the image placed on the right side</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Width of the images.</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Height of the images.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the image container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the image container element.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>imagecompare/imagecompare.js</name>
+		</resource>
+	</resources>
+</component>

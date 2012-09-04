@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>treeTable</tag>
+	<tagClass>org.primefaces.component.treetable.TreeTableTag</tagClass>
+	<componentClass>org.primefaces.component.treetable.TreeTable</componentClass>
+	<componentType>org.primefaces.component.TreeTable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TreeTableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.treetable.TreeTableRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UITree</parent>
+    <description>Treetable is is used for displaying hierarchical data in tabular format.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+        &standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.TreeNode</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <literal>true</literal>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+            <name>selection</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>TreeNode array to reference the selections.</description>
+		</attribute>
+        <attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Defines the selectionMode, valid values are "single" and "multiple".</description>
+		</attribute>
+        <attribute>
+			<name>scrollable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes data scrollable with fixed header. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>scrollHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height in pixels for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>scrollWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width in pixels for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the table element.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the table element.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
