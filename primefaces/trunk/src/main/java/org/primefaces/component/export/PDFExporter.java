@@ -36,7 +36,6 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.Map;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -182,7 +181,7 @@ public class PDFExporter extends Exporter {
     protected void exportCells(DataTable table, PdfPTable pdfTable) {
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
-                return;
+                continue;
             }
             
             if(col instanceof DynamicColumn) {
@@ -198,7 +197,7 @@ public class PDFExporter extends Exporter {
 	protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
-                return;
+                continue;
             }
             
             if(col instanceof DynamicColumn) {
