@@ -40,7 +40,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if(_self.jq.is(':visible')) {
-                _self.hide();
+                _self.align();
             }
         });
         
@@ -58,9 +58,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    show: function() {
-        var _self = this;
-
+    align: function() {
         this.jq.css({
             left:'', 
             top:'',
@@ -71,8 +69,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             at: 'right bottom',
             of: this.target
         });
+    },
+    
+    show: function() {
+        var _self = this;
 
         this.timeout = setTimeout(function() {
+            _self.align();
             _self.jq.show(_self.cfg.showEffect, {}, 400);
         }, 150);
     },

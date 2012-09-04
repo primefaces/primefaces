@@ -674,7 +674,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         $(window).bind(this.resizeNS, function(e) {
             if(_self.panel.is(':visible')) {
-                _self.hide();
+                _self.alignPanel();
             }
         });
     },
@@ -954,12 +954,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Positions overlay relative to the dropdown considering fixed positioning and #4231 IE8 bug
      **/
-    alignPanel: function() {
-        var isIE8 = PrimeFaces.isIE(8);
-        if(isIE8) {
-            this.unbindResize();
-        }
-        
+    alignPanel: function() {        
         var fixedPosition = this.panel.css('position') == 'fixed',
         win = $(window),
         positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
@@ -970,10 +965,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                                         ,of: this.jq
                                         ,offset : positionOffset
                                     });
-           
-        if(isIE8) {
-            this.bindResize();
-        }
     },
     
     setLabel: function(value) {
@@ -1917,11 +1908,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //Hide overlay on resize
+        //Realign overlay on resize
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if(_self.panel.is(':visible')) {
-                _self.hide(false);
+                _self.alignPanel();
             }
         });
         
@@ -2267,7 +2258,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             var resizeNS = 'resize.' + this.id;
             $(window).unbind(resizeNS).bind(resizeNS, function() {
                 if(_self.panel.is(':visible')) {
-                    _self.panel.hide();
+                    _self.align();
                 }
             });
         }
@@ -2306,19 +2297,22 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    align: function() {
+        this.panel.css({
+            left:'', 
+            top:'',
+            'z-index': ++PrimeFaces.zindex
+        })
+        .position({
+            my: 'left top',
+            at: 'right top',
+            of: this.jq
+        });
+    },
+    
     show: function() {
-        //align panel before showing
         if(!this.cfg.inline) {
-            this.panel.css({
-                left:'', 
-                top:'',
-                'z-index': ++PrimeFaces.zindex
-            })
-            .position({
-                my: 'left top',
-                at: 'right top',
-                of: this.jq
-            });
+            this.align();
 
             this.panel.fadeIn();
         }
@@ -2472,7 +2466,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if(_self.menu.is(':visible')) {
-                _self.menu.hide();
+                _self.alignPanel();
             }
         });
     },
