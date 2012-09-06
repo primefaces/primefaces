@@ -76,3 +76,69 @@
     *display: inline;
     zoom: 1;
 }
+
+/* Horizontal Tree */
+.ui-tree-horizontal {
+    width:auto;
+    padding:10px 0px;
+}
+
+.ui-tree.ui-tree-horizontal table,
+.ui-tree.ui-tree-horizontal tr,
+.ui-tree.ui-tree-horizontal td {
+    border-collapse: collapse;
+    margin:0;
+    padding:0;
+    vertical-align: middle;
+}
+
+.ui-tree.ui-tree-horizontal .ui-tree-toggler {
+    vertical-align: bottom;
+}
+
+.ui-tree-horizontal .ui-treenode-content {
+    font-weight: normal;
+}
+
+.ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
+    padding: 0.4em 1em 0.4em 0.2em;
+}
+
+.ui-tree-horizontal .ui-treenode-leaf .ui-treenode-content {
+    padding: 0.4em 1em;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode {
+    background: url("#{resource['primefaces:tree/images/line.gif']}") repeat-x scroll center center transparent;
+    padding: 5px 40px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode.ui-treenode-leaf,
+.ui-tree.ui-tree-horizontal .ui-treenode.ui-treenode-collapsed {
+    padding-right:0px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-children {
+    padding:0;
+    margin:0;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-connector {
+    height: 100%;
+    width: 1px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-connector-table {
+    height: 100%;
+    width: 1px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-connector-line {
+    background: url("#{resource['primefaces:tree/images/line.gif']}") repeat-y scroll 0 0 transparent;
+    width: 1px;
+}

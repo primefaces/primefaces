@@ -459,3 +459,54 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+
+/**
+ * PrimeFaces Horizontal Tree Widget
+ */
+PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.Tree.extend({
+        
+    bindEvents: function() {
+        var _self = this,
+        nodeContentSelector = this.jqId + ' .ui-treenode-parent .ui-treenode-content';
+
+        //toggle
+        $(document).off('click.ui-tree hover.ui-tree', nodeContentSelector)
+                    .on('hover.ui-tree', nodeContentSelector, null, function() {
+                        $(this).toggleClass('ui-state-hover');
+                    })
+                    .on('click.ui-tree', nodeContentSelector, null, function(e) {
+                        var content = $(this),
+                        node = content.parent();
+                        
+                        if(node.next().is(':visible')) {
+                            _self.collapseNode(node);
+                        }
+                        else {
+                            _self.expandNode(node);
+                        }
+                    });
+
+    },
+    
+    expandNode: function(node) {
+        var childrenContainer = node.next();
+        
+        node.find('> .ui-treenode-content > .ui-tree-toggler').addClass('ui-icon-minus').removeClass('ui-icon-plus');
+        node.css('padding-right', 40);
+        childrenContainer.show();
+    },
+    
+    collapseNode: function(node) {
+        var childrenContainer = node.next();
+        
+        node.find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+        node.css('padding-right', 0);
+        childrenContainer.hide()
+    },
+    
+    preselectCheckboxPropagation: function() {
+        
+    }
+    
+});

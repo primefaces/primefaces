@@ -102,6 +102,13 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, Displays slide effect during toggling of a node.</description>
 		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>vertical</defaultValue>
+            <description>Defines the orientation of the tree, valid values are, "vertical" (default) and horizontal.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
