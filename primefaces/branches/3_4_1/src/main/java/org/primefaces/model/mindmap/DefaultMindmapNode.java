@@ -15,10 +15,11 @@
  */
 package org.primefaces.model.mindmap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultMindmapNode implements MindmapNode {
+public class DefaultMindmapNode implements MindmapNode, Serializable {
     
     private MindmapNode parent;
     

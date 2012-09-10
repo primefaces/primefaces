@@ -15,7 +15,9 @@
  */
 package org.primefaces.model.tagcloud;
 
-public class DefaultTagCloudItem implements TagCloudItem {
+import java.io.Serializable;
+
+public class DefaultTagCloudItem implements TagCloudItem, Serializable {
 
     private String label;
 
