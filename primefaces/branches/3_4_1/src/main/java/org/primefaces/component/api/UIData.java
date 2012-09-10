@@ -643,11 +643,11 @@ public class UIData extends javax.faces.component.UIData {
                     return true;
                 }
 
-                if(visitChildrenFacets(context, callback, visitRows)) {
+                if(visitColumnsAndColumnFacets(context, callback, visitRows)) {
                     return true;
                 }
 
-                if(visitRows && visitRows(context, callback)) {
+                if(visitRows(context, callback, visitRows)) {
                     return true;
                 }
                 
@@ -680,13 +680,18 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
     
-    protected boolean visitChildrenFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
         if(visitRows) {
             setRowIndex(-1);
         }
         
         if(getChildCount() > 0) {
             for(UIComponent column : getChildren()) {
+                VisitResult result = context.invokeVisitCallback(column, callback); // visit the column directly
+                if (result == VisitResult.COMPLETE) {
+                    return true;
+                }
+                    
                 if(column.getFacetCount() > 0) {
                     for(UIComponent columnFacet : column.getFacets().values()) {
                         if(columnFacet.visitTree(context, callback)) {
@@ -694,34 +699,53 @@ public class UIData extends javax.faces.component.UIData {
                         }
                     }
                 }
+                
             }
         }
 
         return false;
     }
     
-    protected boolean visitRows(VisitContext context, VisitCallback callback) {
-        int first = getFirst();
-        int rows = getRows();
-        int last = rows == 0 ? getRowCount() : (first + rows);
-        
-        for(int rowIndex = first; rowIndex < last; rowIndex++) {
-            setRowIndex(rowIndex);
+    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+        int processed = 0;
+        int rowIndex = 0;
+        int rows = 0;
+        if (visitRows) {
+            rowIndex = getFirst() - 1;
+            rows = getRows();
+        }
 
-            if(!isRowAvailable()) {
-                break;
+        while(true) {
+            if(visitRows) {
+                if((rows > 0) && (++processed > rows)) {
+                    break;
+                }
+
+                setRowIndex(++rowIndex);
+                if(!isRowAvailable()) {
+                    break;
+                }
             }
-            
-            if(this.getChildCount() > 0) {
-                for(UIComponent child : this.getChildren()) {
-                    if(child.visitTree(context, callback)) {
-                        return true;
+
+            if(getChildCount() > 0) {
+                for(UIComponent kid : getChildren()) {
+
+                    if(kid.getChildCount() > 0) {
+                        for(UIComponent grandkid : kid.getChildren()) {
+                            if(grandkid.visitTree(context, callback)) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
-                      
+
+            if(!visitRows) {
+                break;
+            }
+
         }
-        
+
         return false;
     }
     
