@@ -107,6 +107,12 @@
             <defaultValue>top</defaultValue>
             <description>Orientation of the tab headers, valid values are "top" and "bottom".</description>
 		</attribute>
+        <attribute>
+            <name>onTabClose</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute before a tab is closed. Return false to prevent closing.</description>
+        </attribute>
     </attributes>
 	<resources>
         <resource>

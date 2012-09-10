@@ -88,6 +88,7 @@ public class TabViewRenderer extends CoreRenderer {
         
         if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(index) {" + tabView.getOnTabChange() + "}");
         if(tabView.getOnTabShow() != null) writer.write(",onTabShow:function(index) {" + tabView.getOnTabShow() + "}");
+        if(tabView.getOnTabClose() != null) writer.write(",onTabClose:function(index) {" + tabView.getOnTabClose() + "}");
 
         if(tabView.getEffect() != null) {
             writer.write(",effect: {");
