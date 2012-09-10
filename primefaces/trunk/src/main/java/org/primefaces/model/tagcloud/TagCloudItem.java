@@ -1,8 +1,6 @@
 package org.primefaces.model.tagcloud;
 
-import java.io.Serializable;
-
-public interface TagCloudItem extends Serializable {
+public interface TagCloudItem {
 
     public String getLabel();
 
