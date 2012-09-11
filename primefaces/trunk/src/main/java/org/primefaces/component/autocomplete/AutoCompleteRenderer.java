@@ -126,7 +126,6 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeSingleMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
-        Object value = ac.getValue();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
         
@@ -138,10 +137,10 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("style", ac.getStyle(), null);
         }
 
-        encodeInput(context, ac, clientId, value);
+        encodeInput(context, ac, clientId);
         
         if(ac.getVar() != null) {
-            encodeHiddenInput(context, ac, clientId, value);
+            encodeHiddenInput(context, ac, clientId);
         }
         
         if(ac.isDropdown()) {
@@ -153,9 +152,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("span");
     }
     
-    protected void encodeInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
+    protected void encodeInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean disabled = ac.isDisabled();
+        String itemLabel;
         String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
         String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
         styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
@@ -167,12 +167,24 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
         
-        if(value != null) {
-            if(ac.getVar() == null) {
-                writer.writeAttribute("value", ComponentUtils.getValueToRender(context, ac), null);
-            } else {
-                context.getExternalContext().getRequestMap().put(ac.getVar(), value);
-                writer.writeAttribute("value", ac.getItemLabel(), null);
+        if(ac.getVar() == null) {
+            itemLabel = ComponentUtils.getValueToRender(context, ac);
+            
+            if(itemLabel != null) {
+                writer.writeAttribute("value", itemLabel , null);
+            }
+        }
+        else {
+            if(ac.isValid()) {
+                context.getExternalContext().getRequestMap().put(ac.getVar(), ac.getValue());
+                itemLabel = ac.getItemLabel();
+            }
+            else {
+                itemLabel = String.valueOf(ac.getSubmittedValue());
+            }
+
+            if(itemLabel != null) {
+                writer.writeAttribute("value", itemLabel, null);
             }
         }
 
@@ -184,17 +196,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("input");
     }
     
-    protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId, Object value) throws IOException {
+    protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String valueToRender;
-        if(value == null) {
-            valueToRender = null;
-        } else {
-            if(ac.isMultiple())
-                valueToRender = (String) value;
-            else
-                valueToRender = ComponentUtils.getValueToRender(context, ac);
-        }
+        String valueToRender = ComponentUtils.getValueToRender(context, ac);
         
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_hinput", null);
