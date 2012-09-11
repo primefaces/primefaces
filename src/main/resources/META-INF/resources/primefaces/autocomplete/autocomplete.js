@@ -56,6 +56,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             //itemtip
             if(this.cfg.itemtip) {
                 this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
+                this.cfg.itemtipMyPosition = this.cfg.itemtipMyPosition||'left top';
+                this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition||'right bottom';
             }
 
             //dialog support
@@ -350,8 +352,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         'width': content.outerWidth()
                     })
                     .position({
-                        my: 'left top'
-                        ,at: 'right bottom'
+                        my: this.cfg.itemtipMyPosition
+                        ,at: this.cfg.itemtipAtPosition
                         ,of: item
                     })
                     .show();
