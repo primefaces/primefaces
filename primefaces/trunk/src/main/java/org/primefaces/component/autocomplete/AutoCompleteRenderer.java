@@ -480,7 +480,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
         if(ac.isMultiple()) writer.write(",multiple:true");
         if(ac.getProcess() != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, ac, ac.getProcess()) + "'");
-        if(ac.getFacet("itemtip") != null) writer.write(",itemtip:true");
+        
 
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
@@ -491,6 +491,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(effect != null) {
             writer.write(",effect:'" + effect + "'");
             writer.write(",effectDuration:" + ac.getEffectDuration());
+        }
+        
+        if(ac.getFacet("itemtip") != null) {
+            writer.write(",itemtip:true");
+            
+            if(ac.getItemtipMyPosition() != null) writer.write(",itemtipMyPosition:'" + ac.getItemtipMyPosition() + "'");
+            if(ac.getItemtipAtPosition() != null) writer.write(",itemtipAtPosition:'" + ac.getItemtipAtPosition() + "'");
         }
   
         //Behaviors

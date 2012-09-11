@@ -147,6 +147,18 @@
             <type>java.lang.String</type>
             <description>Component(s) to process during autocomplete request.</description>
         </attribute>
+        <attribute>
+            <name>itemtipMyPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of itemtip with respect to item. Default is "left top".</description>
+        </attribute>
+        <attribute>
+            <name>itemtipAtPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of item with respect to item. Default is "right bottom".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
