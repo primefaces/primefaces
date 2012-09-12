@@ -100,9 +100,12 @@
     font-weight: normal;
 }
 
+.ui-tree-horizontal .ui-treenode-content.ui-tree-selectable {
+    cursor: pointer;
+}
+
 .ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
     font-weight: normal;
-    cursor: pointer;
     white-space: nowrap;
 }
 
@@ -147,3 +150,4 @@
 .ui-tree.ui-tree-horizontal table {
 	height:0px;
 }
+
