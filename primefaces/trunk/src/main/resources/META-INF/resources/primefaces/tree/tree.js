@@ -20,7 +20,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
             if(this.isCheckboxSelection()) {
-                this.preselectCheckboxPropagation();
+                this.preselectCheckbox();
             }
         }
     },
@@ -236,6 +236,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unselectNode: function(node) {        
+        throw "Unsupported Operation";
+    },
+    
+    preselectCheckbox: function() {
         throw "Unsupported Operation";
     }
     
@@ -480,7 +484,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.fireNodeSelectEvent(node);
     },
     
-    preselectCheckboxPropagation: function() {
+    preselectCheckbox: function() {
         this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
             var icon = $(this),
             node = icon.parents('li:first');
@@ -535,7 +539,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         }
         
         //checkboxes
-        /*if(this.isCheckboxSelection()) {
+        if(this.isCheckboxSelection()) {
             var checkboxSelector = this.jqId + ' .ui-chkbox-box';
             
             $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
@@ -548,7 +552,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                         .on('click.tree-checkbox', checkboxSelector, null, function() {
                             _self.toggleCheckbox($(this));
                         });
-        }*/
+        }
         
         //node click
         $(document).off('click.tree', nodeContentSelector)
@@ -627,6 +631,85 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         this.writeSelections();
 
         this.fireNodeUnselectEvent(node);
+    },
+    
+    preselectCheckbox: function() {
+        var _self = this;
+        
+        this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
+            var icon = $(this),
+            node = icon.parents('.ui-treenode:first'),
+            childrenContainer = _self.getNodeChildrenContainer(node);
+
+            if(childrenContainer.find('.ui-chkbox-icon.ui-icon-check').length > 0) {
+                icon.addClass('ui-icon ui-icon-minus');
+            }
+        });
+    },
+    
+    toggleCheckbox: function(checkbox) {
+        var _self = this,
+        nodeContainer = checkbox.parents('table:first'),
+        node = checkbox.parents('.ui-treenode:first'),
+        checked = checkbox.children('.ui-chkbox-icon').hasClass('ui-icon-check');
+
+        //propagate selection down
+        nodeContainer.find('.ui-chkbox-icon').each(function() {
+            var icon = $(this),
+            node = icon.parents('.ui-treenode:first'),
+            rowKey = _self.getRowKey(node);
+
+            if(checked) {
+                icon.removeClass('ui-icon ui-icon-check');
+
+                _self.removeFromSelection(rowKey);
+            }
+            else {
+                if($.inArray(rowKey, _self.selections) == -1) {
+                    icon.addClass('ui-icon ui-icon-check');
+
+                    _self.addToSelection(rowKey);
+                }
+            }
+        });
+        
+        //propagate selection up
+        nodeContainer.parents('table').each(function() {
+            var parentNodeContainer = $(this),
+            parentNode = parentNodeContainer.find('> tbody > tr > td.ui-treenode'),
+            parentNodeContent = parentNode.children('.ui-treenode-content'),
+            parentNodeChildrenContainer = parentNode.next(),
+            rowKey = _self.getRowKey(parentNode),
+            icon = parentNodeContent.find('.ui-chkbox-icon'),
+            checkedChildren = parentNodeChildrenContainer.find('.ui-chkbox-icon.ui-icon-check'),
+            allChildren = parentNodeChildrenContainer.find('.ui-chkbox-icon');
+
+            if(checked) {
+                if(checkedChildren.length > 0) {
+                    icon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+                } 
+                else {
+                    icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
+                }
+
+                _self.removeFromSelection(rowKey);             
+            }
+            else {
+                if(checkedChildren.length === allChildren.length) {
+                    icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
+
+                    _self.addToSelection(rowKey);
+                } 
+                else {
+                    icon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+                }
+            }
+
+        });
+        
+        this.writeSelections();
+
+        this.fireNodeSelectEvent(node);
     }
 
     

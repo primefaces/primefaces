@@ -151,3 +151,7 @@
 	height:0px;
 }
 
+.ui-tree.ui-tree-horizontal .ui-chkbox {
+    vertical-align: bottom;
+}
+
