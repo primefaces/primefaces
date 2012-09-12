@@ -101,6 +101,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	}
     
     protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
+        if(rowKey == null) {
+            return null;
+        }
+        
+        if(rowKey.equals("root")) {
+            return this.getValue();
+        }
+        
 		String[] paths = rowKey.split(SEPARATOR);
 		
 		if(paths.length == 0)
