@@ -77,7 +77,7 @@
     zoom: 1;
 }
 
-/* Horizontal Tree */
+/** Horizontal Tree **/
 .ui-tree-horizontal {
     width:auto;
     padding:10px 0px;
