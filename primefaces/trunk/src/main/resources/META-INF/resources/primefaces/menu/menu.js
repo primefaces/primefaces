@@ -686,15 +686,21 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindTree: function() {
-        var nodeSelector = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable': '.ui-tree-selectable'),
-        event = this.cfg.event + '.tree',
+        var nodeContentSelector = this.jqTargetId + ' .ui-tree-selectable',
+        event = this.cfg.nodeType ? this.cfg.event + '.tree.' + this.cfg.nodeType : this.cfg.event + '.tree',
         _self = this;
         
-        $(document).off(event, nodeSelector)
-                    .on(event, nodeSelector, null, function(e) {
-                        window[_self.cfg.targetWidgetVar].nodeClick(e, $(this));
-                        _self.show(e);
-                        e.preventDefault();
+        this.cfg.nodeType = this.cfg.nodeType||'default';
+        
+        $(document).off(event, nodeContentSelector)
+                    .on(event, nodeContentSelector, null, function(e) {
+                        var nodeContent = $(this);
+                        
+                        if(nodeContent.parent().data('nodetype') === _self.cfg.nodeType) {
+                            window[_self.cfg.targetWidgetVar].nodeClick(e, nodeContent);
+                            _self.show(e);
+                            e.preventDefault();
+                        }
                     });
     },
     
