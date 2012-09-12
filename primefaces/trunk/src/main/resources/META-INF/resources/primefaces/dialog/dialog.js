@@ -512,14 +512,12 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.modal = true;
         cfg.showEffect = 'fade';
         cfg.hideEffect = 'fade';
-        
+                
         this._super(cfg);
-        
-        this.buttonPane = this.jq.children('div.ui-dialog-buttonpane');
     },
     
     applyFocus: function() {
-        this.buttonPane.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
+        this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
     }
 
 });
