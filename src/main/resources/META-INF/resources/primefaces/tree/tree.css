@@ -81,6 +81,7 @@
 .ui-tree-horizontal {
     width:auto;
     padding:10px 0px;
+    overflow:auto;
 }
 
 .ui-tree.ui-tree-horizontal table,
@@ -133,7 +134,6 @@
 }
 
 .ui-tree.ui-tree-horizontal .ui-treenode-connector {
-    height: 100%;
     width: 1px;
 }
 

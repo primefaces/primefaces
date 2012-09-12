@@ -578,6 +578,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         toggleIcon.addClass('ui-icon-minus').removeClass('ui-icon-plus');
         node.removeClass('ui-treenode-collapsed');
         childrenContainer.show();
+        
+        if($.browser.msie) {
+            this.drawConnectors();
+        }
     },
     
     collapseNode: function(node) {
@@ -599,6 +603,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         }
         
         this.fireCollapseEvent(node);
+        
+        if($.browser.msie) {
+            this.drawConnectors();
+        }
     },
     
     //@Override
@@ -710,7 +718,14 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         this.writeSelections();
 
         this.fireNodeSelectEvent(node);
-    }
+    },
+    
+    drawConnectors: function() {
+        this.jq.find('table.ui-treenode-connector-table').each(function() {
+            var table = $(this);
 
+            table.height(0).height(table.parent().height());
+        });
+    }
     
 });
