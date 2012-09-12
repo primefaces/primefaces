@@ -502,6 +502,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
  */
 PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         
+    init: function(cfg) {
+        this._super(cfg);
+        
+        if($.browser.msie) {
+            this.drawConnectors();
+        }
+    },
+    
     //@Override
     bindEvents: function() {
         var _self = this,
