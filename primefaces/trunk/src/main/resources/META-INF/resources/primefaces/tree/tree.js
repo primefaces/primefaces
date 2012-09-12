@@ -109,7 +109,7 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.dynamic) {
 
-            if(this.cfg.cache && node.children('.ui-treenode-children').children().length > 0) {
+            if(this.cfg.cache && _self.getNodeChildrenContainer(node).children().length > 0) {
                 this.showNodeChildren(node);
 
                 return;
@@ -132,14 +132,14 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             options.onsuccess = function(responseXML) {
                 var xmlDoc = $(responseXML.documentElement),
                 updates = xmlDoc.find("update");
-
+                
                 for(var i=0; i < updates.length; i++) {
                     var update = updates.eq(i),
                     id = update.attr('id'),
                     content = update.text();
 
-                    if(id == _self.id){
-                        node.children('.ui-treenode-children').append(content);
+                    if(id == _self.id) {
+                        _self.getNodeChildrenContainer(node).append(content);
 
                         _self.showNodeChildren(node);
                     }
@@ -241,6 +241,10 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                 collapseBehavior.call(this, node, ext);
             }
         }
+    },
+    
+    getNodeChildrenContainer: function(node) {
+        return node.children('.ui-treenode-children');
     },
     
     showNodeChildren: function(node) {
@@ -460,7 +464,6 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     
 });
 
-
 /**
  * PrimeFaces Horizontal Tree Widget
  */
@@ -489,20 +492,32 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.Tree.extend({
 
     },
     
-    expandNode: function(node) {
+    showNodeChildren: function(node) {
+        node.attr('aria-expanded', true);
+                
         var childrenContainer = node.next();
         
         node.find('> .ui-treenode-content > .ui-tree-toggler').addClass('ui-icon-minus').removeClass('ui-icon-plus');
-        node.css('padding-right', 40);
+        node.removeClass('ui-treenode-collapsed');
         childrenContainer.show();
     },
-    
+            
     collapseNode: function(node) {
         var childrenContainer = node.next();
         
         node.find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-icon-minus').addClass('ui-icon-plus');
-        node.css('padding-right', 0);
-        childrenContainer.hide()
+        node.addClass('ui-treenode-collapsed');
+        childrenContainer.hide();
+        
+        if(this.cfg.dynamic && !this.cfg.cache) {
+            childrenContainer.children('.ui-treenode-children').empty();
+        }
+        
+        this.fireCollapseEvent(node);
+    },
+    
+    getNodeChildrenContainer: function(node) {
+        return node.next('.ui-treenode-children-container').children('.ui-treenode-children');
     },
     
     preselectCheckboxPropagation: function() {

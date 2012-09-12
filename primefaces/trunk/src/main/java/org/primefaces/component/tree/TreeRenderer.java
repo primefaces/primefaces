@@ -88,17 +88,32 @@ public class TreeRenderer extends CoreRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;
+        boolean vertical = tree.getOrientation().equals("vertical");
 
         if(tree.isNodeExpandRequest(context)) {
             String clientId = tree.getClientId(context);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String rowKey = params.get(clientId + "_expandNode");
-            tree.setRowKey(rowKey);
-            TreeNode node = tree.getRowNode();
-            node.setExpanded(true);
             
-            encodeTreeNodeChildren(context, tree, node, clientId, rowKey, tree.isDynamic(), tree.isCheckboxSelection());
-            tree.setRowKey(null);
+            
+            if(!vertical && rowKey.equals("root")) {
+                encodeHorizontalTreeNodeChildren(context, tree, tree.getValue(), tree.getClientId(context), null, tree.isDynamic());
+            }
+            else {
+                tree.setRowKey(rowKey);
+                TreeNode node = tree.getRowNode();
+                node.setExpanded(true);
+                
+                if(vertical) {
+                    encodeTreeNodeChildren(context, tree, node, clientId, rowKey, tree.isDynamic(), tree.isCheckboxSelection());
+                }
+                else {
+                    encodeHorizontalTreeNodeChildren(context, tree, node, tree.getClientId(context), rowKey, tree.isDynamic());
+                }
+                
+                
+                tree.setRowKey(null);
+            }            
         }
         else {
             encodeMarkup(context, tree);
@@ -219,7 +234,8 @@ public class TreeRenderer extends CoreRenderer {
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         boolean expanded = node.isExpanded();
         boolean leaf = node.isLeaf();
-        String nodeClass = leaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
+        
+        String nodeClass;
         if(leaf) {
             nodeClass = Tree.LEAF_NODE_CLASS;
         }
@@ -228,16 +244,7 @@ public class TreeRenderer extends CoreRenderer {
             nodeClass = expanded ? nodeClass + " ui-treenode-expanded" : nodeClass + " ui-treenode-collapsed";
         }
         
-        writer.startElement("table", tree);
-        if(rowKey != null) {
-            tree.setRowKey(rowKey);
-            writer.writeAttribute("data-rowkey", rowKey, null);
-        }
-        else {
-            context.getExternalContext().getRequestMap().put(tree.getVar(), tree.getValue().getData());
-            writer.writeAttribute("data-rowkey", "root", null);
-        }
-        
+        writer.startElement("table", tree);        
         writer.startElement("tbody", null);
         writer.startElement("tr", null);
         
@@ -249,6 +256,16 @@ public class TreeRenderer extends CoreRenderer {
         //node
         writer.startElement("td", null); 
         writer.writeAttribute("class", nodeClass, null);
+        
+        if(rowKey != null) {
+            tree.setRowKey(rowKey);
+            writer.writeAttribute("data-rowkey", rowKey, null);
+        }
+        else {
+            context.getExternalContext().getRequestMap().put(tree.getVar(), tree.getValue().getData());
+            writer.writeAttribute("data-rowkey", "root", null);
+        }
+        
         writer.startElement("div", null);
         writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS + " ui-state-default ui-corner-all", null);
         
@@ -263,10 +280,7 @@ public class TreeRenderer extends CoreRenderer {
         uiTreeNode.encodeAll(context);
         writer.endElement("div");
         writer.endElement("td");
-        
-        //children nodes
-        boolean shouldRenderChildren = (dynamic && expanded) || !dynamic;
-        
+                
         //children
         if(!leaf) {
             writer.startElement("td", null);
@@ -279,26 +293,10 @@ public class TreeRenderer extends CoreRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
 
-            int childIndex = 0;
-            for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
-                
-                NodeOrder no = null;
-                if(node.getChildCount() == 1) {
-                    no = NodeOrder.NONE;
-                } else if(childIndex == 0) {
-                    no = NodeOrder.FIRST;
-                } else if(childIndex == (node.getChildCount() - 1)) {
-                    no = NodeOrder.LAST;
-                } else {
-                    no = NodeOrder.MIDDLE;
-                }
-
-                encodeHorizontalTreeNode(context, tree, iterator.next(), clientId, childRowKey, no, dynamic);
-
-                childIndex++;
+            if((dynamic && expanded) || !dynamic) {
+                encodeHorizontalTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic);
             }
-
+            
             writer.endElement("div");
             writer.endElement("td");
         }
@@ -306,6 +304,28 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("tr");
         writer.endElement("tbody");
         writer.endElement("table");
+    }
+    
+    protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic) throws IOException {
+        int childIndex = 0;
+        for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
+            String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
+
+            NodeOrder no = null;
+            if(node.getChildCount() == 1) {
+                no = NodeOrder.NONE;
+            } else if(childIndex == 0) {
+                no = NodeOrder.FIRST;
+            } else if(childIndex == (node.getChildCount() - 1)) {
+                no = NodeOrder.LAST;
+            } else {
+                no = NodeOrder.MIDDLE;
+            }
+
+            encodeHorizontalTreeNode(context, tree, iterator.next(), clientId, childRowKey, no, dynamic);
+
+            childIndex++;
+        }
     }
     
     protected void encodeConnector(FacesContext context, Tree tree, NodeOrder nodeOrder) throws IOException {
@@ -414,17 +434,17 @@ public class TreeRenderer extends CoreRenderer {
 
                 writer.endElement("span");
 
-                //children nodes
-                boolean shouldRender = (dynamic && expanded) || !dynamic;
-                
+                //children nodes                
                 writer.startElement("ul", null);
                 writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS , null);
                 
-                if(!expanded)
+                if(!expanded) {
                     writer.writeAttribute("style", "display:none", null);
+                }
                 
-                if(shouldRender)
+                if((dynamic && expanded) || !dynamic) {
                     encodeTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox);
+                }
                 
                 writer.endElement("ul");
 
