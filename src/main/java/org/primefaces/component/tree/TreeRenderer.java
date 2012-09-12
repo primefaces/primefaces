@@ -126,7 +126,7 @@ public class TreeRenderer extends CoreRenderer {
 		String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
-        String widget = tree.getOrientation().equals("vertical") ? "Tree" : "HorizontalTree";
+        String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 			
         startScript(writer, clientId);
         
@@ -225,6 +225,10 @@ public class TreeRenderer extends CoreRenderer {
         if(root != null) {
             encodeHorizontalTreeNode(context, tree, root, clientId, null, NodeOrder.NONE, dynamic);
         }
+        
+        if(tree.getSelectionMode() != null) {
+            encodeSelectionHolder(context, tree);
+        }
                
         writer.endElement("div");
     }
@@ -266,12 +270,13 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("data-rowkey", "root", null);
         }
         
+        String nodeContentClass = node.isSelectable() ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
         writer.startElement("div", null);
-        writer.writeAttribute("class", Tree.NODE_CONTENT_CLASS + " ui-state-default ui-corner-all", null);
+        writer.writeAttribute("class", nodeContentClass, null);
         
         //toggler
         if(!leaf) {
-            String toggleIcon = expanded ? Tree.EXPANDED_H_ICON_CLASS : Tree.COLLAPSED_H_ICON_CLASS;
+            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_H : Tree.COLLAPSED_ICON_CLASS_H;
             writer.startElement("span", null); 
             writer.writeAttribute("class", toggleIcon, null);
             writer.endElement("span");
@@ -368,7 +373,7 @@ public class TreeRenderer extends CoreRenderer {
             boolean isLeaf = node.isLeaf();
             boolean expanded = node.isExpanded();
             boolean selectable = node.isSelectable();
-            String toggleIcon = expanded ? Tree.EXPANDED_V_ICON_CLASS : Tree.COLLAPSED_V_ICON_CLASS;
+            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V;
             String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
             Object datakey = tree.getDatakey();
@@ -396,7 +401,7 @@ public class TreeRenderer extends CoreRenderer {
                 }
                                 
                 //content
-                String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS : Tree.NODE_CONTENT_CLASS;
+                String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
                 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", contentClass, null);

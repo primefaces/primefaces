@@ -1,13 +1,19 @@
 /**
  * PrimeFaces Tree Widget
  */
-PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
         
         this.cfg.formId = this.jq.parents('form:first').attr('id');
 
+        this.initSelection();
+
+        this.bindEvents();
+    },
+    
+    initSelection: function() {
         if(this.cfg.selectionMode) {
             this.selectionHolder = $(this.jqId + '_selection');
             var selectionsValue = this.selectionHolder.val();
@@ -16,91 +22,6 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
             if(this.isCheckboxSelection()) {
                 this.preselectCheckboxPropagation();
             }
-        }
-
-        this.bindEvents();
-    },
-    
-    bindEvents: function() {
-        var _self = this,
-        selectionMode = this.cfg.selectionMode,
-        togglerSelector = this.jqId + ' .ui-tree-toggler',
-        nodeLabelSelector = this.jqId  + ' .ui-treenode-label',
-        nodeContentSelector = this.jqId + ' .ui-treenode-content';
-
-        //expand-collapse
-        $(document).off('click', togglerSelector)
-                    .on('click', togglerSelector, null, function(e) {
-                        var toggleIcon = $(this),
-                        node = toggleIcon.parents('li:first');
-
-                        if(toggleIcon.hasClass('ui-icon-triangle-1-e'))
-                            _self.expandNode(node);
-                        else
-                            _self.collapseNode(node);
-                    });
-
-        //selection hover
-        if(selectionMode && !this.isCheckboxSelection() && this.cfg.highlight) {
-            $(document).off('mouseout.tree mouseover.tree', nodeLabelSelector)
-                        .on('mouseout.tree', nodeLabelSelector, null, function() {
-                            var element = $(this);
-
-                            if(element.hasClass('ui-state-hover')) {
-                                element.removeClass('ui-state-hover');
-                            }
-                        })
-                        .on('mouseover.tree', nodeLabelSelector, null, function() {
-                            var element = $(this);
-
-                            if(!element.hasClass('ui-state-highlight') && element.parent().hasClass('ui-tree-selectable')) {
-                                $(this).addClass('ui-state-hover');
-                            }
-                        });
-        }
-        
-        //checkboxes
-        if(this.isCheckboxSelection()) {
-            var checkboxSelector = this.jqId + ' .ui-chkbox-box';
-            
-            $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
-                        .on('mouseout.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
-                        })
-                        .on('mouseover.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).addClass('ui-state-hover');
-                        })
-                        .on('click.tree-checkbox', checkboxSelector, null, function() {
-                            _self.toggleCheckbox($(this));
-                        });
-        }
-        
-        //node click
-        $(document).off('click.tree', nodeContentSelector)
-                        .on('click.tree', nodeContentSelector, null, function(e) {
-                            _self.nodeClick(e, $(this));
-                        });
-    },
-    
-    nodeClick: function(e, nodeContent) {
-        PrimeFaces.clearSelection();
-        
-        if($(e.target).is(':not(.ui-tree-toggler)')) {
-            var node = nodeContent.parent(),
-            metaKey = (e.metaKey||e.ctrlKey);
-                    
-            if(this.cfg.onNodeClick) {
-                this.cfg.onNodeClick.call(this, node);
-            }
-            
-            if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode && !this.isCheckboxSelection()) {
-                if(this.isNodeSelected(node) && metaKey) {
-                    this.unselectNode(node);
-                }
-                else {
-                    this.selectNode(node, metaKey);
-                }
-            };
         }
     },
     
@@ -191,43 +112,6 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    collapseNode: function(node) {
-        var _self = this;
-        
-        //aria
-        node.attr('aria-expanded', true);
-        
-        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
-        nodeType = node.attr('class').split(' ').slice(-1),
-        nodeIcon = toggleIcon.next(),
-        iconState = this.cfg.iconStates[nodeType],
-        childrenContainer = node.children('.ui-treenode-children');
-        
-        toggleIcon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
-        
-        if(iconState) {
-            nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
-        }
-        
-        if(this.cfg.animate) {
-            childrenContainer.slideUp('fast', function() {
-                _self.postCollapse(node, childrenContainer);
-            });
-        }
-        else {
-            childrenContainer.hide();
-            this.postCollapse(node, childrenContainer);
-        }
-    },
-
-    postCollapse: function(node, childrenContainer) {
-        if(this.cfg.dynamic && !this.cfg.cache) {
-            childrenContainer.empty();
-        }
-        
-        this.fireCollapseEvent(node);
-    },
-    
     fireCollapseEvent: function(node) {
         if(this.cfg.behaviors) {
             var collapseBehavior = this.cfg.behaviors['collapse'];
@@ -244,67 +128,16 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     getNodeChildrenContainer: function(node) {
-        return node.children('.ui-treenode-children');
+        throw "Unsupported Operation";
     },
     
     showNodeChildren: function(node) {
-        //aria
-        node.attr('aria-expanded', true);
-        
-        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
-        nodeType = node.attr('class').split(' ').slice(-1),
-        nodeIcon = toggleIcon.next(),
-        iconState = this.cfg.iconStates[nodeType];
-
-        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
-
-        if(iconState) {
-            nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
-        }
-
-        if(this.cfg.animate) {
-            node.children('.ui-treenode-children').slideDown('fast');
-        }
-        else {
-            node.children('.ui-treenode-children').show();
-        }
-    },
-    
-    selectNode: function(node, metaKey) {        
-        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
-            this.selections = [];
-            this.jq.find('.ui-treenode-label.ui-state-highlight').each(function() {
-                $(this).removeClass('ui-state-highlight').parents('.ui-treenode:first').attr('aria-selected', false);
-            });
-        }
-
-        node.attr('aria-selected', true)
-            .find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-hover').addClass('ui-state-highlight');
-
-        this.addToSelection(this.getRowKey(node));
-
-        this.writeSelections();
-
-        this.fireNodeSelectEvent(node);
-    },
-    
-    unselectNode: function(node) {
-        var rowKey = this.getRowKey(node);
-           
-        node.attr('aria-selected', false).
-            find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight ui-state-hover');
-
-        this.removeFromSelection(rowKey);
-
-        this.writeSelections();
-
-        this.fireNodeUnselectEvent(node);
+        throw "Unsupported Operation";
     },
     
     writeSelections: function() {    
         this.selectionHolder.val(this.selections.join(','));
     },
-    
     fireNodeSelectEvent: function(node) {
         if(this.cfg.behaviors) {
             var selectBehavior = this.cfg.behaviors['select'];
@@ -367,6 +200,210 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+
+        return false;
+    },
+    
+        
+    nodeClick: function(e, nodeContent) {
+        PrimeFaces.clearSelection();
+        
+        if($(e.target).is(':not(.ui-tree-toggler)')) {
+            var node = nodeContent.parent(),
+            metaKey = (e.metaKey||e.ctrlKey);
+                    
+            if(this.cfg.onNodeClick) {
+                this.cfg.onNodeClick.call(this, node);
+            }
+            
+            if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode && !this.isCheckboxSelection()) {
+                if(this.isNodeSelected(node) && metaKey) {
+                    this.unselectNode(node);
+                }
+                else {
+                    this.selectNode(node, metaKey);
+                }
+            };
+        }
+    },
+    
+    selectNode: function(node, metaKey) {        
+        throw "Unsupported Operation";
+    },
+    
+    unselectNode: function(node) {        
+        throw "Unsupported Operation";
+    }
+    
+});
+
+/**
+ * PrimeFaces Tree Widget
+ */
+PrimeFaces.widget.Tree = PrimeFaces.widget.BaseTree.extend({
+        
+    bindEvents: function() {
+        var _self = this,
+        selectionMode = this.cfg.selectionMode,
+        togglerSelector = this.jqId + ' .ui-tree-toggler',
+        nodeLabelSelector = this.jqId  + ' .ui-treenode-label',
+        nodeContentSelector = this.jqId + ' .ui-treenode-content';
+
+        //expand-collapse
+        $(document).off('click', togglerSelector)
+                    .on('click', togglerSelector, null, function(e) {
+                        var toggleIcon = $(this),
+                        node = toggleIcon.parents('li:first');
+
+                        if(toggleIcon.hasClass('ui-icon-triangle-1-e'))
+                            _self.expandNode(node);
+                        else
+                            _self.collapseNode(node);
+                    });
+
+        //selection hover
+        if(selectionMode && !this.isCheckboxSelection() && this.cfg.highlight) {
+            $(document).off('mouseout.tree mouseover.tree', nodeLabelSelector)
+                        .on('mouseout.tree', nodeLabelSelector, null, function() {
+                            var element = $(this);
+
+                            if(element.hasClass('ui-state-hover')) {
+                                element.removeClass('ui-state-hover');
+                            }
+                        })
+                        .on('mouseover.tree', nodeLabelSelector, null, function() {
+                            var element = $(this);
+
+                            if(!element.hasClass('ui-state-highlight') && element.parent().hasClass('ui-tree-selectable')) {
+                                $(this).addClass('ui-state-hover');
+                            }
+                        });
+        }
+        
+        //checkboxes
+        if(this.isCheckboxSelection()) {
+            var checkboxSelector = this.jqId + ' .ui-chkbox-box';
+            
+            $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
+                        .on('mouseout.tree-checkbox', checkboxSelector, null, function() {
+                            $(this).removeClass('ui-state-hover');
+                        })
+                        .on('mouseover.tree-checkbox', checkboxSelector, null, function() {
+                            $(this).addClass('ui-state-hover');
+                        })
+                        .on('click.tree-checkbox', checkboxSelector, null, function() {
+                            _self.toggleCheckbox($(this));
+                        });
+        }
+        
+        //node click
+        $(document).off('click.tree', nodeContentSelector)
+                        .on('click.tree', nodeContentSelector, null, function(e) {
+                            _self.nodeClick(e, $(this));
+                        });
+    },
+        
+    collapseNode: function(node) {
+        var _self = this;
+        
+        //aria
+        node.attr('aria-expanded', true);
+        
+        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        nodeType = node.attr('class').split(' ').slice(-1),
+        nodeIcon = toggleIcon.next(),
+        iconState = this.cfg.iconStates[nodeType],
+        childrenContainer = node.children('.ui-treenode-children');
+        
+        toggleIcon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+        
+        if(iconState) {
+            nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
+        }
+        
+        if(this.cfg.animate) {
+            childrenContainer.slideUp('fast', function() {
+                _self.postCollapse(node, childrenContainer);
+            });
+        }
+        else {
+            childrenContainer.hide();
+            this.postCollapse(node, childrenContainer);
+        }
+    },
+
+    postCollapse: function(node, childrenContainer) {
+        if(this.cfg.dynamic && !this.cfg.cache) {
+            childrenContainer.empty();
+        }
+        
+        this.fireCollapseEvent(node);
+    },
+        
+    //@Override
+    getNodeChildrenContainer: function(node) {
+        return node.children('.ui-treenode-children');
+    },
+    
+    //@Override
+    showNodeChildren: function(node) {
+        //aria
+        node.attr('aria-expanded', true);
+        
+        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        nodeType = node.attr('class').split(' ').slice(-1),
+        nodeIcon = toggleIcon.next(),
+        iconState = this.cfg.iconStates[nodeType];
+
+        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+
+        if(iconState) {
+            nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
+        }
+
+        if(this.cfg.animate) {
+            node.children('.ui-treenode-children').slideDown('fast');
+        }
+        else {
+            node.children('.ui-treenode-children').show();
+        }
+    },
+    
+    selectNode: function(node, metaKey) {        
+        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
+            this.selections = [];
+            this.jq.find('.ui-treenode-label.ui-state-highlight').each(function() {
+                $(this).removeClass('ui-state-highlight').parents('.ui-treenode:first').attr('aria-selected', false);
+            });
+        }
+
+        node.attr('aria-selected', true)
+            .find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-hover').addClass('ui-state-highlight');
+
+        this.addToSelection(this.getRowKey(node));
+
+        this.writeSelections();
+
+        this.fireNodeSelectEvent(node);
+    },
+    
+    unselectNode: function(node) {
+        var rowKey = this.getRowKey(node);
+           
+        node.attr('aria-selected', false).
+            find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight ui-state-hover');
+
+        this.removeFromSelection(rowKey);
+
+        this.writeSelections();
+
+        this.fireNodeUnselectEvent(node);
+    },
+
     toggleCheckbox: function(checkbox) {
         var _self = this,
         node = checkbox.parents('.ui-treenode:first'),
@@ -452,14 +489,6 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
                 icon.addClass('ui-icon ui-icon-minus');
             }
         });
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     }
     
 });
@@ -467,31 +496,69 @@ PrimeFaces.widget.Tree = PrimeFaces.widget.BaseWidget.extend({
 /**
  * PrimeFaces Horizontal Tree Widget
  */
-PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.Tree.extend({
+PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         
+    //@Override
     bindEvents: function() {
         var _self = this,
-        nodeContentSelector = this.jqId + ' .ui-treenode-parent .ui-treenode-content';
+        selectionMode = this.cfg.selectionMode,
+        togglerSelector = this.jqId + ' .ui-tree-toggler',
+        nodeContentSelector = this.jqId + ' .ui-treenode-content';
 
         //toggle
-        $(document).off('click.ui-tree hover.ui-tree', nodeContentSelector)
-                    .on('hover.ui-tree', nodeContentSelector, null, function() {
-                        $(this).toggleClass('ui-state-hover');
-                    })
-                    .on('click.ui-tree', nodeContentSelector, null, function(e) {
-                        var content = $(this),
-                        node = content.parent();
+        $(document).off('click.tree', togglerSelector)
+                    .on('click.tree', togglerSelector, null, function() {
+                        var icon = $(this),
+                        node = icon.parents('td.ui-treenode:first');
                         
-                        if(node.next().is(':visible')) {
-                            _self.collapseNode(node);
-                        }
-                        else {
+                        if(node.hasClass('ui-treenode-collapsed')) {
                             _self.expandNode(node);
                         }
+                        else {
+                            _self.collapseNode(node);
+                        }
                     });
+                    
+        //selection hover
+        if(selectionMode && !this.isCheckboxSelection() && this.cfg.highlight) {
+            $(document).off('mouseout.tree mouseover.tree', nodeContentSelector)
+                        .on('mouseout.tree', nodeContentSelector, null, function() {
+                            $(this).removeClass('ui-state-hover');
+                        })
+                        .on('mouseover.tree', nodeContentSelector, null, function() {
+                            var element = $(this);
+
+                            if(!element.hasClass('ui-state-highlight') && element.hasClass('ui-tree-selectable')) {
+                                $(this).addClass('ui-state-hover');
+                            }
+                        });
+        }
+        
+        //checkboxes
+        /*if(this.isCheckboxSelection()) {
+            var checkboxSelector = this.jqId + ' .ui-chkbox-box';
+            
+            $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
+                        .on('mouseout.tree-checkbox', checkboxSelector, null, function() {
+                            $(this).removeClass('ui-state-hover');
+                        })
+                        .on('mouseover.tree-checkbox', checkboxSelector, null, function() {
+                            $(this).addClass('ui-state-hover');
+                        })
+                        .on('click.tree-checkbox', checkboxSelector, null, function() {
+                            _self.toggleCheckbox($(this));
+                        });
+        }*/
+        
+        //node click
+        $(document).off('click.tree', nodeContentSelector)
+                        .on('click.tree', nodeContentSelector, null, function(e) {
+                            _self.nodeClick(e, $(this));
+                        });
 
     },
     
+    //@Override
     showNodeChildren: function(node) {
         node.attr('aria-expanded', true);
                 
@@ -501,7 +568,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.Tree.extend({
         node.removeClass('ui-treenode-collapsed');
         childrenContainer.show();
     },
-            
+    
     collapseNode: function(node) {
         var childrenContainer = node.next();
         
@@ -516,12 +583,37 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.Tree.extend({
         this.fireCollapseEvent(node);
     },
     
+    //@Override
     getNodeChildrenContainer: function(node) {
         return node.next('.ui-treenode-children-container').children('.ui-treenode-children');
     },
     
-    preselectCheckboxPropagation: function() {
-        
+    selectNode: function(node, metaKey) {        
+        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
+            this.selections = [];
+            this.jq.find('.ui-treenode-content.ui-state-highlight').removeClass('ui-state-highlight');
+        }
+
+        node.children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
+
+        this.addToSelection(this.getRowKey(node));
+
+        this.writeSelections();
+
+        this.fireNodeSelectEvent(node);
+    },
+    
+    unselectNode: function(node) {
+        var rowKey = this.getRowKey(node);
+           
+        node.children('.ui-treenode-content').removeClass('ui-state-highlight');
+
+        this.removeFromSelection(rowKey);
+
+        this.writeSelections();
+
+        this.fireNodeUnselectEvent(node);
     }
+
     
 });
