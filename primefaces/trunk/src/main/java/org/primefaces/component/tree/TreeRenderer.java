@@ -260,6 +260,7 @@ public class TreeRenderer extends CoreRenderer {
         //node
         writer.startElement("td", null); 
         writer.writeAttribute("class", nodeClass, null);
+        writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
         
         if(rowKey != null) {
             tree.setRowKey(rowKey);
@@ -281,6 +282,9 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("class", toggleIcon, null);
             writer.endElement("span");
         }
+        
+        //icon
+        encodeIcon(context, uiTreeNode, expanded);
         
         uiTreeNode.encodeAll(context);
         writer.endElement("div");
@@ -388,11 +392,11 @@ public class TreeRenderer extends CoreRenderer {
             //style class of node
             String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
-            containerClass = containerClass + " " + uiTreeNode.getType();
 
             writer.startElement("li", null);
                 writer.writeAttribute("id", nodeId, null);
                 writer.writeAttribute("data-rowkey", rowKey, null);
+                writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
                 writer.writeAttribute("class", containerClass, null);
                 writer.writeAttribute("role", "treeitem", null);
 
@@ -401,7 +405,7 @@ public class TreeRenderer extends CoreRenderer {
                 }
                                 
                 //content
-                String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
+                String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS_V : Tree.NODE_CONTENT_CLASS_V;
                 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", contentClass, null);
@@ -422,12 +426,7 @@ public class TreeRenderer extends CoreRenderer {
                     }
 
                     //node icon
-                    writer.startElement("span", null);
-                    String icon = uiTreeNode.getIconToRender(expanded);
-                    if(icon != null) {
-                        writer.writeAttribute("class", Tree.NODE_ICON_CLASS + " " + icon, null);
-                    }
-                    writer.endElement("span");
+                    encodeIcon(context, uiTreeNode, expanded);
 
                     //label
                     String nodeLabelClass = (selected && !checkbox) ? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
@@ -500,6 +499,16 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.write("}");
+    }
+    
+    protected void encodeIcon(FacesContext context, UITreeNode uiTreeNode, boolean expanded) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", null);
+        String icon = uiTreeNode.getIconToRender(expanded);
+        if(icon != null) {
+            writer.writeAttribute("class", Tree.NODE_ICON_CLASS + " " + icon, null);
+        }
+        writer.endElement("span");
     }
 
     protected void encodeSelectionHolder(FacesContext context, Tree tree) throws IOException {

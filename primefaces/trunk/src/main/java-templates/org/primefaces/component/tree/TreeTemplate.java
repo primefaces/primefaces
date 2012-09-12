@@ -90,7 +90,7 @@ import org.primefaces.model.TreeNode;
     public static String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
     public static String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
     public static String CHILDREN_NODES_CLASS = "ui-treenode-children";
-    public static String NODE_CONTENT_CLASS_V = "ui-treenode-content ";
+    public static String NODE_CONTENT_CLASS_V = "ui-treenode-content";
     public static String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
     public static String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default ui-corner-all";
     public static String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
