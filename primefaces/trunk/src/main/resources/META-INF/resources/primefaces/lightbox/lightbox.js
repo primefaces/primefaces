@@ -282,7 +282,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.caption.hide();
 
         if(this.cfg.mode == 'image') {
-            this.imageDisplay.hide();
+            this.imageDisplay.hide().attr('src', '').removeAttr('style');
             this.hideNavigators();
         }
 
