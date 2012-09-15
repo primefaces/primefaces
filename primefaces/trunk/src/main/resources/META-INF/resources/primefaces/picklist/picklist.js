@@ -218,70 +218,144 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
     
     moveUp: function(list) {
-        var _self = this;
-
-        list.children('.ui-state-highlight').each(function() {
+        var _self = this,
+        animated = _self.isAnimated(),
+        items = list.children('.ui-state-highlight'),
+        itemsCount = items.length,
+        movedCount = 0;
+            
+        items.each(function() {
             var item = $(this);
 
             if(!item.is(':first-child')) {
-                item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                    item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        _self.saveState();
+                
+                if(animated) {
+                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            movedCount++;
+
+                            if(movedCount === itemsCount) {
+                                _self.saveState();
+                            }
+                        });
                     });
-                });
+                }
+                else {
+                    item.hide().insertBefore(item.prev()).show();
+                }
+                
             }
         });
+        
+        if(!animated) {
+            this.saveState();
+        }
+        
     },
     
     moveTop: function(list) {
-        var _self = this;
+        var _self = this,
+        animated = _self.isAnimated(),
+        items = list.children('.ui-state-highlight'),
+        itemsCount = items.length,
+        movedCount = 0;
 
         list.children('.ui-state-highlight').each(function() {
             var item = $(this);
 
             if(!item.is(':first-child')) {
-                item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                    item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
-                        _self.saveState();
+                
+                if(animated) {
+                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
+                            movedCount++;
+                            
+                            if(movedCount === itemsCount) {
+                                _self.saveState();
+                            }
+                        });
                     });
-                });
+                }
+                else {
+                    item.hide().prependTo(item.parent()).show();
+                }
             }
-
         });
+        
+        if(!animated) {
+            this.saveState();
+        }
     },
     
     moveDown: function(list) {
-        var _self = this;
+        var _self = this,
+        animated = _self.isAnimated(),
+        items = list.children('.ui-state-highlight'),
+        itemsCount = items.length,
+        movedCount = 0;
 
         $(list.children('.ui-state-highlight').get().reverse()).each(function() {
             var item = $(this);
 
             if(!item.is(':last-child')) {
-                item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                    item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        _self.saveState();
+                if(animated) {
+                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            movedCount++;
+                            
+                            if(movedCount === itemsCount) {
+                                _self.saveState();
+                            }
+                        });
                     });
-                });
+                }
+                else {
+                    item.hide().insertAfter(item.next()).show();
+                }
+                
+                
             }
 
         });
+        
+        if(!animated) {
+            this.saveState();
+        }
     },
     
     moveBottom: function(list) {
-        var _self = this;
+        var _self = this,
+        animated = _self.isAnimated(),
+        items = list.children('.ui-state-highlight'),
+        itemsCount = items.length,
+        movedCount = 0;
 
         list.children('.ui-state-highlight').each(function() {
             var item = $(this);
 
             if(!item.is(':last-child')) {
-                item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                    item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        _self.saveState();
+                
+                if(animated) {
+                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            movedCount++;
+                            
+                            if(movedCount === itemsCount) {
+                                _self.saveState();
+                            }
+                        });
                     });
-                });
+                }
+                else {
+                    item.hide().appendTo(item.parent()).show();
+                }
             }
 
         });
+        
+        if(!animated) {
+            this.saveState();
+        }
     },
     
     /**
@@ -300,20 +374,27 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         itemsCount = items.length,
         transferCount = 0;
         
-        items.removeClass('ui-state-highlight').hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
-            var item = $(this);
-            
-            item.appendTo(to).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                _self.saveState();
-                
-                transferCount++;
-                
-                //fire transfer when all items are transferred
-                if(transferCount == itemsCount) {
-                    _self.fireTransferEvent(items, from, to, type);
-                }
+        if(this.isAnimated()) {
+            items.removeClass('ui-state-highlight').hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
+                var item = $(this);
+
+                item.appendTo(to).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                    transferCount++;
+
+                    //fire transfer when all items are transferred
+                    if(transferCount == itemsCount) {
+                        _self.saveState();
+                        _self.fireTransferEvent(items, from, to, type);
+                    }
+                });
             });
-        });
+        }
+        else {
+            items.removeClass('ui-state-highlight').hide().appendTo(to).show();
+            this.saveState();
+            this.fireTransferEvent(items, from, to, type);
+        }
+
     },
     
     /**
@@ -349,6 +430,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 transferBehavior.call(this, null, ext);
             }
         }
+    },
+    
+    isAnimated: function() {
+        return (this.cfg.effect && this.cfg.effect != 'none');
     }
 
 });
