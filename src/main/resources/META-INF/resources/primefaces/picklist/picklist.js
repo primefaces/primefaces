@@ -53,39 +53,35 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.items.mouseover(function(e) {
             var element = $(this);
 
-            if(!element.hasClass('ui-state-highlight'))
+            if(!element.hasClass('ui-state-highlight')) {
                 $(this).addClass('ui-state-hover');
+            }
         })
         .mouseout(function(e) {
-            var element = $(this);
-
-            if(!element.hasClass('ui-state-highlight'))
-                $(this).removeClass('ui-state-hover');
+            $(this).removeClass('ui-state-hover');
         })
         .mousedown(function(e) {
             var element = $(this),
             metaKey = (e.metaKey||e.ctrlKey);
 
-            if(!metaKey) {
-                element.removeClass('ui-state-hover').addClass('ui-state-highlight')
-                .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
-            }
-            else {
+            if(metaKey) {
                 if(element.hasClass('ui-state-highlight'))
                     element.removeClass('ui-state-highlight');
                 else
                     element.removeClass('ui-state-hover').addClass('ui-state-highlight');
             }
+            else {
+                element.removeClass('ui-state-hover').addClass('ui-state-highlight')
+                    .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+            }
         })
         .dblclick(function() {
             var item = $(this);
 
-            item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                if($(this).parent().hasClass('ui-picklist-source'))
-                    _self.transfer($(this), _self.sourceList, _self.targetList, 'dblclick');
-                else
-                    _self.transfer($(this), _self.targetList, _self.sourceList, 'dblclick');
-            });
+            if($(this).parent().hasClass('ui-picklist-source'))
+                _self.transfer(item, _self.sourceList, _self.targetList, 'dblclick');
+            else
+                _self.transfer(item, _self.targetList, _self.sourceList, 'dblclick');
 
             PrimeFaces.clearSelection();
         });
@@ -369,7 +365,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.generateItems(this.targetList, this.targetInput);
     },
     
-    transfer: function(items, from, to, type) {    
+    transfer: function(items, from, to, type) {  
         var _self = this,
         itemsCount = items.length,
         transferCount = 0;
