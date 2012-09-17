@@ -124,7 +124,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId() + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-            writer.writeAttribute("tabindex", -1, null);
+            
+            if(menu.getTabindex() != null) {
+                writer.writeAttribute("tabindex", menu.getTabindex(), null);
+            }
             
             if(menu.isDisabled()) {
                 writer.writeAttribute("disabled", "disabled", null);
