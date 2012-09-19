@@ -275,6 +275,11 @@
     width: auto; 
 }
 
+.ui-panelmenu .ui-panelmenu-panel { 
+    padding: 0;
+    margin: 0;
+}
+
 .ui-panelmenu .ui-panelmenu-header { 
     cursor: pointer; 
     position: relative; 
