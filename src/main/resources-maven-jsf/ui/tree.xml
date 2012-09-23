@@ -109,6 +109,20 @@
             <defaultValue>vertical</defaultValue>
             <description>Defines the orientation of the tree, valid values are, "vertical" (default) and horizontal.</description>
 		</attribute>
+        <attribute>
+			<name>propagateSelectionUp</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines upwards selection propagation for checkbox mode, default is true.</description>
+		</attribute>
+        <attribute>
+			<name>propagateSelectionDown</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines upwards selection propagation for checkbox mode, default is true..</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

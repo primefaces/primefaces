@@ -141,6 +141,8 @@ public class TreeRenderer extends CoreRenderer {
         if(selectionMode != null) {
             writer.write(",selectionMode:'" + selectionMode + "'");
             writer.write(",highlight:" + tree.isHighlight());
+            writer.write(",propagateUp:" + tree.isPropagateSelectionUp());
+            writer.write(",propagateDown:" + tree.isPropagateSelectionDown());
         }
 
         if(tree.getOnNodeClick() != null) {
@@ -255,6 +257,8 @@ public class TreeRenderer extends CoreRenderer {
             nodeClass = Tree.PARENT_NODE_CLASS;
             nodeClass = expanded ? nodeClass + " ui-treenode-expanded" : nodeClass + " ui-treenode-collapsed";
         }
+        
+        nodeClass = selected ? nodeClass + " ui-treenode-selected" : nodeClass + " ui-treenode-unselected";
         
         writer.startElement("table", tree);        
         writer.startElement("tbody", null);
@@ -404,6 +408,7 @@ public class TreeRenderer extends CoreRenderer {
 
             //style class of node
             String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
+            containerClass = selected ? containerClass + " ui-treenode-selected" : containerClass + " ui-treenode-unselected";
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
 
             writer.startElement("li", null);
