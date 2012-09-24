@@ -396,6 +396,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         _self.items = _self.panel.find('.ui-autocomplete-item');
                         
                         _self.bindDynamicEvents();
+                        
+                        var hidden = _self.panel.is(':hidden');
 
                         if(_self.items.length > 0) {
                             var firstItem = _self.items.eq(0);
@@ -423,15 +425,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             }
                             
                             //adjust height
-                            if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
-                                _self.panel.height(_self.cfg.scrollHeight);
+                            if(_self.cfg.scrollHeight) {
+                                var heightConstraint = hidden ? _self.panel.height() : _self.panel.children().height();
+
+                                if(heightConstraint > _self.cfg.scrollHeight)
+                                    _self.panel.height(_self.cfg.scrollHeight);
+                                else
+                                    _self.panel.css('height', 'auto');                              
+                                 
                             }
 
-                            if(_self.panel.is(':hidden')) {
+                            if(hidden) {
                                 _self.show();
-                            } 
+                            }
                             else {
-                                _self.alignPanel(); //with new items
+                                _self.alignPanel();
                             }
                             
                             //show itemtip if defined
@@ -484,7 +492,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     
     hide: function() {        
         this.panel.hide();
-        
+        this.panel.css('height', 'auto');
+       
         if(this.cfg.itemtip) {
             this.itemtip.hide();
         }
