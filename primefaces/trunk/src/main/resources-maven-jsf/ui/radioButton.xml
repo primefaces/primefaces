@@ -57,6 +57,12 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
