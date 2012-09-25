@@ -1,0 +1,185 @@
+<!-- Components having these attributes must extend from HtmlInputTextArea so all the attributes are defined as ignoreInComponet 
+	which will ignore code generation in component class since they are already defined in parent HtmlInputText
+-->
+<attribute>
+	<name>accesskey</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Access key to transfer focus to the input element.</description>
+</attribute>
+<attribute>
+	<name>cols</name>
+	<required>false</required>
+	<type>int</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Specifies the visible width of input element.</description>
+</attribute>
+<attribute>
+	<name>dir</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Direction indication for text that does not inherit directionality.</description>
+</attribute>
+<attribute>
+	<name>disabled</name>
+	<required></required>
+	<type>boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Disables the input element, default is false.</description>
+</attribute>
+<attribute>
+	<name>label</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>A localized user presentable name.</description>
+</attribute>
+<attribute>
+	<name>lang</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>A localized user presentable name.</description>
+</attribute>
+<attribute>
+	<name>onblur</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when input element loses focus.</description>
+</attribute>
+<attribute>
+	<name>onchange</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when input element loses focus and its value has been modified since gaining focus.</description>
+</attribute>
+<attribute>
+	<name>onclick</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when input element is clicked.</description>
+</attribute>
+<attribute>
+	<name>ondblclick</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when input element is double clicked.</description>
+</attribute>
+<attribute>
+	<name>onfocus</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when input element receives focus.</description>
+</attribute>
+<attribute>
+	<name>onkeydown</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a key is pressed down over input element.</description>
+</attribute>
+<attribute>
+	<name>onkeypress</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a key is pressed and released over input element.</description>
+</attribute>
+<attribute>
+	<name>onkeyup</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a key is released over input element.</description>
+</attribute>
+<attribute>
+	<name>onmousedown</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer input element is pressed down over input element.</description>
+</attribute>
+<attribute>
+	<name>onmousemove</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer input element is moved within input element.</description>
+</attribute>
+<attribute>
+	<name>onmouseout</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer input element is moved away from input element.</description>
+</attribute>
+<attribute>
+	<name>onmouseover</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer input element is moved onto input element.</description>
+</attribute>
+<attribute>
+	<name>onmouseup</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer input element is released over input element.</description>
+</attribute>
+<attribute>
+	<name>onselect</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when text within input element is selected by user.</description>
+</attribute>
+<attribute>
+	<name>readonly</name>
+	<required></required>
+	<type>boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Flag indicating that this input element will prevent changes by the user.</description>
+</attribute>
+<attribute>
+	<name>rows</name>
+	<required>false</required>
+	<type>int</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Specifies the visible height of input element.</description>
+</attribute>
+<attribute>
+	<name>style</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Inline style of the input element.</description>
+</attribute>
+<attribute>
+	<name>styleClass</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Style class of the input element.</description>
+</attribute>
+<attribute>
+	<name>tabindex</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Advisory tooltip information.</description>
+</attribute>
+<attribute>
+	<name>title</name>
+	<required></required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Advisory tooltip information.</description>
+</attribute>

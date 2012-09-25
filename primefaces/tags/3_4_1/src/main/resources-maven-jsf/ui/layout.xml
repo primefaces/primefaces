@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>layout</tag>
+    <tagClass>org.primefaces.component.layout.LayoutTag</tagClass>
+    <componentClass>org.primefaces.component.layout.Layout</componentClass>
+    <componentType>org.primefaces.component.Layout</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.LayoutRenderer</rendererType>
+    <rendererClass>org.primefaces.component.layout.LayoutRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
+    <description>Layout component features a highly customizable borderLayout model making it very easy to create complex layouts even if you're not familar with web design.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>fullPage</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Specifies whether layout should span all page or not.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style to apply to container element, this is only applicable to element based layouts.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class to apply to container element, this is only applicable to element based layouts.</description>
+        </attribute>
+        <attribute>
+            <name>onResize</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>A server side listener to process a ResizeEvent.</description>
+        </attribute>
+        <attribute>
+            <name>onClose</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>A server side listener to process a CloseEvent.</description>
+        </attribute>
+        <attribute>
+            <name>onToggle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>A server side listener to process a ToggleEvent.</description>
+        </attribute>
+        <attribute>
+			<name>resizeTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Title label for the resizer element.</description>
+		</attribute>
+        <attribute>
+			<name>collapseTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Collapse</defaultValue>
+            <description>Title label for the collapse button of collapsible units. Default is "Collapse"</description>
+		</attribute>
+        <attribute>
+			<name>expandTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Title label for the expand button of closable units.</description>
+		</attribute>
+        <attribute>
+			<name>closeTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>Close</defaultValue>
+            <description>Title label for the close button of closable units. Default is "Close".</description>
+		</attribute>
+        <attribute>
+			<name>stateful</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, layout state is saved in a cookie for the session.</description>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
+            <name>layout/layout.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>layout/layout.js</name>
+        </resource>
+    </resources>
+</component>

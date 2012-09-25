@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
+]>
+<component>
+    <tag>remoteCommand</tag>
+    <tagClass>org.primefaces.component.remotecommand.RemoteCommandTag</tagClass>
+    <componentClass>org.primefaces.component.remotecommand.RemoteCommand</componentClass>
+    <componentType>org.primefaces.component.RemoteCommand</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.RemoteCommandRenderer</rendererType>
+    <rendererClass>org.primefaces.component.remotecommand.RemoteCommandRenderer</rendererClass>
+    <parent>javax.faces.component.UICommand</parent>
+    <description>RemoteCommand provides a way to execute JSF backing bean methods directly from javascript.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.AjaxSource</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &command_component_attributes;
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of the command.</description>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to update with ajax.</description>
+        </attribute>
+        <attribute>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to process partially instead of whole view.</description>
+        </attribute>
+        <attribute>
+            <name>onstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute before ajax request is begins.</description>
+        </attribute>
+        <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request is completed.</description>
+        </attribute>
+        <attribute>
+            <name>onerror</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request fails.</description>
+        </attribute>
+        <attribute>
+            <name>onsuccess</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request succeeds.</description>
+        </attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
+        </attribute>
+        <attribute>
+            <name>async</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set to true, ajax requests are not queued.</description>
+        </attribute>
+        <attribute>
+            <name>autoRun</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set to true, command will be invoked on page load.</description>
+        </attribute>
+        <attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            instead of whole form.</description>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
+</component>

@@ -1,0 +1,51 @@
+.ui-tagcloud {
+    width:250px;
+}
+
+.ui-tagcloud ul {
+    margin:1em;
+    padding:0.1em;
+    text-align:center;
+}
+
+.ui-tagcloud li {
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:inline-block;
+}
+
+.ui-tagcloud li {
+    *display:inline;
+}
+
+.ui-tagcloud li a {
+    text-decoration:none;
+    padding:0 5px;
+}
+
+.ui-tagcloud-strength-1{
+    font-size:100%;
+}
+
+.ui-tagcloud-strength-2{
+    font-size:120%;
+}
+
+.ui-tagcloud-strength-3{
+    font-size:140%;
+}
+
+.ui-tagcloud-strength-4{
+    font-size:160%;
+}
+
+.ui-tagcloud-strength-5{
+    font-size:180%;
+}
+
+.ui-tagcloud li a.ui-state-hover {
+    border: 0px none;
+    font-weight: inherit;
+    *font-weight: normal;
+}

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>orderList</tag>
+	<tagClass>org.primefaces.component.orderlist.OrderListTag</tagClass>
+	<componentClass>org.primefaces.component.orderlist.OrderList</componentClass>
+	<componentType>org.primefaces.component.OrderList</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.OrderListRenderer</rendererType>
+	<rendererClass>org.primefaces.component.orderlist.OrderListRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>OrderList is used to sort a collection.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the iterator.</description>
+		</attribute>
+		<attribute>
+			<name>itemLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of an item.</description>
+		</attribute>
+		<attribute>
+			<name>itemValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Value of an item.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables the component.</description>
+		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the animation to display. Default is fade.</description>
+		</attribute>
+        <attribute>
+			<name>moveUpLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Up</defaultValue>
+            <description>Text of move up button. Default is "Move Up".</description>
+		</attribute>
+        <attribute>
+			<name>moveTopLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Top</defaultValue>
+            <description>Text of move top button. Default is "Move Top".</description>
+		</attribute>
+        <attribute>
+			<name>moveDownLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Down</defaultValue>
+            <description>Text of move down button. Default is "Move Down".</description>
+		</attribute>
+        <attribute>
+			<name>moveBottomLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Bottom</defaultValue>
+            <description>Text of move bottom button. Default is "Move Bottom".</description>
+		</attribute>
+        <attribute>
+			<name>controlsLocation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>left</defaultValue>
+            <description>Location of the order controls, valid values are "left" (default), "right" and none.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

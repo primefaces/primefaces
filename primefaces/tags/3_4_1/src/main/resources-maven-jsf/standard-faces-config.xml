@@ -1,0 +1,46 @@
+    
+    <name>primefaces</name>
+    
+    <factory>
+        <partial-view-context-factory>
+            org.primefaces.context.PrimePartialViewContextFactory
+        </partial-view-context-factory>
+    </factory>
+    
+    <lifecycle>
+        <phase-listener>org.primefaces.lifecycle.RestoreViewPhaseListener</phase-listener>
+    </lifecycle>
+
+    <application>
+        <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
+        <system-event-listener>
+            <source-class>javax.faces.application.Application</source-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
+        </system-event-listener>
+        <system-event-listener>
+            <source-class>org.primefaces.component.messages.Messages</source-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+        </system-event-listener>
+        <system-event-listener>
+            <source-class>org.primefaces.component.growl.Growl</source-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+        </system-event-listener>
+        <system-event-listener>
+            <source-class>org.primefaces.component.outputpanel.OutputPanel</source-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+        </system-event-listener>
+    </application>
+    
+    <behavior>
+        <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+        <behavior-class>org.primefaces.component.behavior.ajax.AjaxBehavior</behavior-class>
+    </behavior>
+    
+    <behavior>
+        <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        <behavior-class>org.primefaces.component.behavior.printer.PrinterBehavior</behavior-class>
+    </behavior>
