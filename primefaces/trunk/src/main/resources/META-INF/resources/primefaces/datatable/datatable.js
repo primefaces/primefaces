@@ -208,6 +208,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 this.bindCheckboxEvents();
+                this.updateHeaderCheckbox();
             }
         }
         
