@@ -113,6 +113,9 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("tr", null);
+        if(shouldWriteId(row)) {
+            writer.writeAttribute("id", row.getClientId(context), null);
+        }
         writer.writeAttribute("class", rowClass, null);
         writer.writeAttribute("role", "row", null);
         
@@ -127,6 +130,9 @@ public class PanelGridRenderer extends CoreRenderer {
                 else if(userStyleClass == null && columnClass != null) styleClass = columnClass;
                 
                 writer.startElement("td", null);
+                if(shouldWriteId(column)) {
+                    writer.writeAttribute("id", column.getClientId(context), null);
+                }
                 writer.writeAttribute("role", columnRole, null);
                 
                 if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
