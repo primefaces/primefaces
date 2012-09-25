@@ -408,8 +408,26 @@ public class DataTableRenderer extends DataRenderer {
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
         String filterId = column.getContainerClientId(context) + separator + "filter";
-        String filterValue = params.containsKey(filterId) && !table.isReset() ? params.get(filterId) : "";
         String filterStyleClass = column.getFilterStyleClass();
+        
+        String filterValue = null;
+        if(table.isReset()) {
+            filterValue = "";
+        }
+        else {
+            if(params.containsKey(filterId)) {
+                filterValue = params.get(filterId);
+            }
+            else {
+                ValueExpression filterValueVE = column.getValueExpression("filterValue");
+                if(filterValueVE != null) {
+                    filterValue = (String) filterValueVE.getValue(context.getELContext());
+                }
+                else {
+                    filterValue = "";
+                }
+            }
+        }
         
         if(column.getValueExpression("filterOptions") == null) {
             filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;

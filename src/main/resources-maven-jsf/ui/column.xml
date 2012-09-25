@@ -149,5 +149,11 @@
             <defaultValue>true</defaultValue>
             <description>Defines if the column should be exported by dataexporter.</description>
 		</attribute>
+        <attribute>
+			<name>filterValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Value of the filter field.</description>
+		</attribute>
 	</attributes>
 </component>

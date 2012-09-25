@@ -62,47 +62,15 @@ public class FilterFeature implements DataTableFeature {
         table.setFirst(0);
         table.setRowIndex(-1);
         
-        String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+        String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+        Map<String,UIColumn> columnFilterMap = this.populateColumnFilterMap(context, table);
+        Map<String,String> filterParameterMap = this.populateFilterParameterMap(context, table, columnFilterMap, globalFilterParam);
 
-        //populate filter maps (filterFieldName, Column)
-        Map<String,UIColumn> filterMap = this.populateFilterMap(context, table);
+        table.setFilters(filterParameterMap);
         
-        //populate lazy filter map
-        if(table.isLazy()) {
-            Map<String,String> lazyFilters = new HashMap<String, String>();
-
-            for(String filterName : filterMap.keySet()) {
-                UIColumn column = filterMap.get(filterName);
-                String filterValue = params.get(filterName);
-
-                if(!ComponentUtils.isValueBlank(filterValue)) {
-                    String filterField = null;
-                    
-                    if(column instanceof DynamicColumn) {
-                        ((DynamicColumn) column).applyModel();
-                        
-                        filterField = table.resolveDynamicField(column.getValueExpression("filterBy"));
-                    }
-                    else {
-                        filterField = resolveField(column.getValueExpression("filterBy"));
-                    }
-
-                    lazyFilters.put(filterField, filterValue);
-                }
-            }
-
-            if(params.containsKey(globalFilterParam)) {
-                lazyFilters.put("globalFilter", params.get(globalFilterParam));
-            }
-
-            table.setFilters(lazyFilters);
+        if(!table.isLazy()) {
+            filter(context, table, columnFilterMap, globalFilterParam);
         }
-        else {
-            filter(context, table, filterMap, globalFilterParam);
-        }
-
     }
     
     protected void filter(FacesContext context, DataTable table, Map<String,UIColumn> filterMap, String globalFilterParam) {
@@ -139,7 +107,6 @@ public class FilterFeature implements DataTableFeature {
                     localMatch = false;
                     break;
                 }
-
             }
 
             boolean matches = localMatch;
@@ -166,23 +133,7 @@ public class FilterFeature implements DataTableFeature {
 
         table.setRowIndex(-1);  //reset datamodel
     }
-    
-    private String resolveField(ValueExpression expression) {
-        Object newValue = expression.getValue(FacesContext.getCurrentInstance().getELContext());
-
-        if(newValue == null || !(newValue instanceof String)) {
-            String expressionString = expression.getExpressionString();
-            expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
         
-            return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
-        }
-        else {
-            String val = (String) newValue;
-            
-            return val.substring(val.indexOf(".") + 1);
-        }
-    }
-    
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if(table.isLazy()) {
             table.loadLazyData();
@@ -210,7 +161,38 @@ public class FilterFeature implements DataTableFeature {
         }
     }
     
-    public Map<String,UIColumn> populateFilterMap(FacesContext context, DataTable table) {
+    public Map<String,String> populateFilterParameterMap(FacesContext context, DataTable table, Map<String,UIColumn> filterColumnMap, String globalFilterParam) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap(); 
+        Map<String,String> filterParameterMap = new HashMap<String, String>();
+
+        for(String filterName : filterColumnMap.keySet()) {
+            UIColumn column = filterColumnMap.get(filterName);
+            String filterValue = params.get(filterName);
+
+            if(!ComponentUtils.isValueBlank(filterValue)) {
+                String filterField = null;
+
+                if(column instanceof DynamicColumn) {
+                    ((DynamicColumn) column).applyModel();
+
+                    filterField = table.resolveDynamicField(column.getValueExpression("filterBy"));
+                }
+                else {
+                    filterField = table.resolveStaticField(column.getValueExpression("filterBy"));
+                }
+
+                filterParameterMap.put(filterField, filterValue);
+            }
+        }
+
+        if(params.containsKey(globalFilterParam)) {
+            filterParameterMap.put("globalFilter", params.get(globalFilterParam));
+        }
+        
+        return filterParameterMap;
+    }
+    
+    public Map<String,UIColumn> populateColumnFilterMap(FacesContext context, DataTable table) {
         Map filterMap = new HashMap<String,UIColumn>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
