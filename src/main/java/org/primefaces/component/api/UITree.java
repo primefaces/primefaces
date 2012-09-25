@@ -30,6 +30,7 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
 import org.primefaces.model.TreeNode;
 
@@ -101,14 +102,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	}
     
     protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
-        if(rowKey == null) {
-            return null;
-        }
-        
-        if(rowKey.equals("root")) {
-            return this.getValue();
-        }
-        
 		String[] paths = rowKey.split(SEPARATOR);
 		
 		if(paths.length == 0)

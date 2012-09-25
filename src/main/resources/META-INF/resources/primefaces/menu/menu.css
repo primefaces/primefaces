@@ -1,5 +1,5 @@
 .ui-menu {
-    width: 12.5em;
+    width:150px;
     padding:0.3em;
     position:relative;
 }
@@ -78,7 +78,7 @@
 
 .ui-menu .ui-menu-parent .ui-menu-child {
     display:none;
-    width:12.5em;
+    width:150px;
     padding:0.3em;
     position:absolute;
     margin:0; 
@@ -181,7 +181,7 @@
 }
 
 .ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
-    width: 12.5em;
+    width: 150px;
 }
 
 /** Breadcrumb **/
@@ -273,11 +273,6 @@
 /** PanelMenu **/
 .ui-panelmenu { 
     width: auto; 
-}
-
-.ui-panelmenu .ui-panelmenu-panel { 
-    padding: 0;
-    margin: 0;
 }
 
 .ui-panelmenu .ui-panelmenu-header { 

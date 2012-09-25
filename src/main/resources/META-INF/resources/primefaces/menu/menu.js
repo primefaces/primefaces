@@ -694,21 +694,15 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindTree: function() {
-        var nodeContentSelector = this.jqTargetId + ' .ui-tree-selectable',
-        event = this.cfg.nodeType ? this.cfg.event + '.tree.' + this.cfg.nodeType : this.cfg.event + '.tree',
+        var nodeSelector = this.jqTargetId + ' ' + (this.cfg.nodeType ? 'li.' + this.cfg.nodeType + ' .ui-tree-selectable': '.ui-tree-selectable'),
+        event = this.cfg.event + '.tree',
         _self = this;
         
-        this.cfg.nodeType = this.cfg.nodeType||'default';
-        
-        $(document).off(event, nodeContentSelector)
-                    .on(event, nodeContentSelector, null, function(e) {
-                        var nodeContent = $(this);
-                        
-                        if(nodeContent.parent().data('nodetype') === _self.cfg.nodeType) {
-                            window[_self.cfg.targetWidgetVar].nodeClick(e, nodeContent);
-                            _self.show(e);
-                            e.preventDefault();
-                        }
+        $(document).off(event, nodeSelector)
+                    .on(event, nodeSelector, null, function(e) {
+                        window[_self.cfg.targetWidgetVar].nodeClick(e, $(this));
+                        _self.show(e);
+                        e.preventDefault();
                     });
     },
     
@@ -930,7 +924,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
-        this.headers = this.jq.find('> .ui-panelmenu-panel > h3.ui-panelmenu-header:not(.ui-state-disabled)');
+        this.headers = this.jq.children('h3.ui-panelmenu-header:not(.ui-state-disabled)');
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
         this.treeLinks = this.jq.find('.ui-menu-parent > .ui-menuitem-link:not(.ui-state-disabled)');
         this.bindEvents();
