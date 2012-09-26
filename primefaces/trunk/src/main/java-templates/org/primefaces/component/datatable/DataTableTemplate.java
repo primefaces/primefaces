@@ -657,3 +657,7 @@ import org.primefaces.component.datatable.feature.*;
     public UIColumn getSortColumn() {
         return this.sortColumn;
     }
+    
+    public boolean isMultiSort() {
+        return this.getSortMode().equals("multiple");
+    }
