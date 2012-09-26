@@ -31,7 +31,7 @@ public class Constants {
     
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
 
-    public final static String VERSION = "3.5-SNAPSHOT";
+    public final static String VERSION = "4.0-SNAPSHOT";
     public final static String LIBRARY = "primefaces";
 
     public final static String CUSTOM_EVENT = "CUSTOM_EVENT";

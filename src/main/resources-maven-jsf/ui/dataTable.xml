@@ -248,6 +248,13 @@
 			<type>java.util.List</type>
             <description>List to keep the filtered data if filtering is enabled.</description>
 		</attribute>
+        <attribute>
+			<name>sortMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>single</defaultValue>
+            <description>Defines sorting mode, valid values are "single" (default) and "multiple".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

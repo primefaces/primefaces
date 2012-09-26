@@ -140,6 +140,11 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isEditable()) {
             writer.write(",editable:true");
         }
+        
+        //MultiColumn Sorting
+        if(table.isMultiSort()) {
+            writer.write(",multiSort:true");
+        }
 
         //Behaviors
         encodeClientBehaviors(context, table);
