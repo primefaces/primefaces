@@ -50,7 +50,9 @@ public class DualListModel<T> implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 3;
+        hash = 29 * hash + (this.source != null ? this.source.hashCode() : 0);
+        hash = 29 * hash + (this.target != null ? this.target.hashCode() : 0);
         return hash;
     }
 }
