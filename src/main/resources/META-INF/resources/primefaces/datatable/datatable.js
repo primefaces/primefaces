@@ -11,11 +11,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         //Paginator
         if(this.cfg.paginator) {
-            this.setupPaginator();
+            this.bindPaginator();
         }
 
         //Sort events
-        this.setupSortEvents();
+        this.bindSortEvents();
 
         //Selection events
         if(this.cfg.selectionMode || this.cfg.columnSelectionMode) {
@@ -74,7 +74,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Binds the change event listener and renders the paginator
      */
-    setupPaginator: function() {
+    bindPaginator: function() {
         var _self = this;
         this.cfg.paginator.paginate = function(newState) {
             _self.paginate(newState);
@@ -86,37 +86,61 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Applies events related to sorting in a non-obstrusive way
      */
-    setupSortEvents: function() {
+    bindSortEvents: function() {
         var _self = this;
+        
+        if(this.cfg.multiSort) {
+            this.sortMeta = [];
+        }
 
         $(this.jqId + ' th.ui-sortable-column').
-            mouseover(function(){
+            on('hover.dataTable', function() {
                 $(this).toggleClass('ui-state-hover');
-            })
-            .mouseout(function(){
-                $(this).toggleClass('ui-state-hover');}
-            )
-            .click(function(event) {
-                //Stop event if target is a clickable element inside header
-                if($(event.target).is(':not(th,span,.ui-dt-c)')) {
+            }).
+            on('click.dataTable', function(e) {
+                if($(e.target).is(':not(th,span,.ui-dt-c)')) {
                     return;
                 }
 
                 PrimeFaces.clearSelection();
                 
                 var columnHeader = $(this),
-                sortorder = columnHeader.data('sortorder');
+                sortOrder = columnHeader.data('sortorder')||'DESCENDING',
+                metaKey = e.metaKey||e.ctrlKey;
                 
-                if(sortorder) {
-                    if(sortorder === 'DESCENDING')
-                        _self.sort(columnHeader, 'ASCENDING');
-                    else if(sortorder === 'ASCENDING')
-                        _self.sort(columnHeader, 'DESCENDING');
+                if(sortOrder === 'ASCENDING') {
+                    sortOrder = 'DESCENDING';
+                }
+                else if(sortOrder === 'DESCENDING') {
+                    sortOrder = 'ASCENDING';
+                }
+                
+                if(_self.cfg.multiSort) {                      
+                    if(metaKey) {
+                        _self.addSortMeta({col: columnHeader.attr('id'), order: sortOrder});
+                        _self.sort(columnHeader, sortOrder, true);
+                    }
+                    else {
+                        _self.sortMeta = [];
+                        _self.addSortMeta({col: columnHeader.attr('id'), order: sortOrder});
+                        _self.sort(columnHeader, sortOrder);
+                    }
                 }
                 else {
-                    _self.sort(columnHeader, 'ASCENDING');
+                    _self.sort(columnHeader, sortOrder);
                 }
+
             });
+    },
+    
+    addSortMeta: function(meta) {
+        this.sortMeta = $.grep(this.sortMeta, function(value) {
+            return value.col !== meta.col;
+        });
+        
+        this.sortMeta.push(meta);
+        
+        var x = 10;
     },
       
     /**
@@ -593,7 +617,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Ajax sort
      */
-    sort: function(columnHeader, order) {  
+    sort: function(columnHeader, order, multi) {  
         columnHeader.data('sortorder', order);
     
         var options = {
@@ -627,9 +651,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
                 
-                //Update sort state visuals
-                columnHeader.siblings('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
+                if(!multi) {
+                    columnHeader.siblings('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
                             .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                }
                 
                 columnHeader.addClass('ui-state-active');
                 var sortIcon = columnHeader.find('.ui-sortable-column-icon');
@@ -646,19 +671,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             return true;
         };
-        
-        var columnId = columnHeader.attr('id');
-        
+                
         options.params = [
             {name: this.id + '_sorting', value: true},
-            {name: this.id + '_sortKey', value: columnId},
-            {name: this.id + '_sortDir', value: order},
             {name: this.id + '_skipChildren', value: true},
             {name: this.id + '_encodeFeature', value: true}
         ];
-        
-        if(columnHeader.hasClass('ui-dynamic-column')) {
-            options.params.push({name: this.id + '_dynamic_column', value: true});
+
+        if(multi) {
+            options.params.push({name: this.id + '_multiSorting', value: true});
+            options.params.push({name: this.id + '_sortKey', value: _self.joinSortMetaOption('col')});
+            options.params.push({name: this.id + '_sortDir', value: _self.joinSortMetaOption('order')});
+        }
+        else {
+            options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
+            options.params.push({name: this.id + '_sortDir', value: order});
+            
+            if(columnHeader.hasClass('ui-dynamic-column')) {
+                options.params.push({name: this.id + '_dynamic_column', value: true});
+            }
         }
 
         if(this.hasBehavior('sort')) {
@@ -671,6 +702,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    joinSortMetaOption: function(option) {
+        var value = '';
+        
+        for(var i = 0; i < this.sortMeta.length; i++) {
+            value += this.sortMeta[i][option];
+            
+            if(i !== (this.sortMeta.length - 1)) {
+                value += ',';
+            }
+        }
+        
+        return value;
+    },
+        
     /**
      * Ajax filter
      */
