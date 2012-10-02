@@ -447,6 +447,10 @@ import org.primefaces.component.datatable.feature.*;
             return value;
         }
     }
+    
+    public void setSelectableDataModelWrapper(SelectableDataModelWrapper wrapper) {
+        this.selectableDataModelWrapper = wrapper;
+    }
 
     public Object getLocalSelection() {
 		return getStateHelper().get(PropertyKeys.selection);
