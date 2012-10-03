@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>effect</tag>
+	<tagClass>org.primefaces.component.effect.EffectTag</tagClass>
+	<componentClass>org.primefaces.component.effect.Effect</componentClass>
+	<componentType>org.primefaces.component.Effect</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.EffectRenderer</rendererType>
+	<rendererClass>org.primefaces.component.effect.EffectRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Effect component is based on the jQuery UI effects library.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>event</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Dom event to attach the event that executes the animation. Required.</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Specifies the name of the animation. Required.</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Component that is animated.</description>
+		</attribute>
+		<attribute>
+			<name>speed</name>
+			<required>false</required>
+			<defaultValue>1000</defaultValue>
+			<type>java.lang.Integer</type>
+            <description>Speed of the animation in ms. Default is 1000.</description>
+		</attribute>
+        <attribute>
+			<name>delay</name>
+			<required>false</required>
+			<defaultValue>0</defaultValue>
+			<type>java.lang.Integer</type>
+            <description>Startup delay on firing animation.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

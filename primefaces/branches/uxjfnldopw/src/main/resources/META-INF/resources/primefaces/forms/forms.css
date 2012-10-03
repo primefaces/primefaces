@@ -1,0 +1,457 @@
+.ui-inputfield {
+    margin: 0;
+    outline: medium none;
+    padding: 4px;
+    font-weight: normal;
+}
+
+.ui-widget-header .ui-inputfield,
+.ui-widget-content .ui-inputfield {
+    font-weight: normal;
+}
+
+.ui-inputtextarea-resizable {
+    overflow: hidden;
+    resize:none;
+}
+
+.ui-selectonelistbox, .ui-selectmanymenu {
+    width:100px;
+    overflow:auto;
+    padding:2px;
+    position: relative;
+}
+
+.ui-selectonelistbox ul, .ui-selectmanymenu ul {
+    list-style-type: none; 
+    margin: 0;
+    padding: 0;
+}
+
+.ui-selectonelistbox .ui-selectlistbox-item,
+.ui-selectmanymenu .ui-selectlistbox-item {
+    margin:2px;
+    border:0 none;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+/**
+ * Checkbox
+ */
+.ui-chkbox {
+    display: inline-block;
+}
+
+.ui-chkbox .ui-chkbox-box {
+    float: left;
+    width: 16px;
+    height: 16px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    margin-right: 3px;
+}
+
+.ui-chkbox .ui-chkbox-label {
+    cursor: pointer;
+    display: block;
+    margin: 0 3px;
+    outline: medium none;
+    z-index: 1;
+    float: left;
+}
+
+.ui-selectmanycheckbox label,
+.ui-selectoneradio label {
+    display: block;
+    margin-top: 4px;
+}
+
+.ui-radiobutton {
+    position: relative;
+    margin: 3px 0;
+    width: 16px;
+    line-height: 16px;
+}
+.ui-radiobutton .ui-radiobutton-inputwrapper {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+.ui-radiobutton .ui-radiobutton-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+.ui-radiobutton .ui-radiobutton-relative {
+    position: relative;
+    float: left;
+    margin-right: 3px;
+}
+.ui-radiobutton-icon {
+    margin-left: 1px;
+}
+
+/** SelectOneMenu **/
+.ui-selectonemenu {
+    display: inline-block;
+    position: relative;
+    width: auto;
+    zoom: 1;
+    cursor: pointer;
+    overflow: hidden;
+    *display: inline;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    cursor: pointer;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 3px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger  .ui-icon {
+    margin-top: 3px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label  {
+    display: block;
+    border: none;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: normal;
+    width: 100%;
+    float:left;
+}
+
+.ui-selectonemenu.ui-state-disabled .ui-selectonemenu-trigger,
+.ui-selectonemenu.ui-state-disabled .ui-selectonemenu-label {
+    cursor: default;
+}
+
+.ui-selectonemenu label.ui-selectonemenu-label  {
+    cursor: pointer;
+}
+
+.ui-selectonemenu input.ui-selectonemenu-label  {
+    cursor: default;
+}
+
+.ui-selectonemenu-panel {
+    position: absolute;
+    height: auto;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-items-wrapper {
+    overflow: auto;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-item {
+    font-weight: normal;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list {
+    padding: 0.4em;
+    border: 0 none;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+    border:0px none;
+    cursor:pointer;
+    margin:1px 0;
+    padding:3px 5px;
+    text-align:left;
+    white-space: nowrap;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-table {
+    border-collapse:collapse;
+    width:100%;
+    *width:auto;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-table td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:4px 10px 4px 10px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+    width: 85%;
+    padding-right:15px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container {
+    position: relative;
+    margin: 0;
+    padding: 0.4em;
+    display: inline-block;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.ui-state-disabled a{outline: none;}
+
+/* Button */
+.ui-button { 
+    display: inline-block; 
+    position: relative; 
+    padding: 0; 
+    margin-right: .1em; 
+    text-decoration: none !important; 
+    cursor: pointer; 
+    text-align: center; 
+    zoom: 1; 
+    overflow: visible; /* the overflow property removes extra width in IE */
+} 
+
+.ui-button-icon-only { 
+    width: 2.4em;
+} 
+
+/*button text element */
+.ui-button .ui-button-text { 
+    display: block; 
+    line-height: 1.4;  
+}
+
+.ui-button-text-only .ui-button-text { 
+    padding: .4em 1em; 
+}
+
+.ui-button-icon-only .ui-button-text { 
+    padding: .4em; 
+    text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-left .ui-button-text { 
+    padding: .4em 1em .4em 2.1em; 
+}
+
+.ui-button-text-icon-right .ui-button-text { 
+    padding: .4em 2.1em .4em 1em; 
+}
+
+/*button icon element(s) */
+.ui-button-icon-only .ui-icon, 
+.ui-button-text-icon-left .ui-icon, 
+.ui-button-text-icon-right .ui-icon { 
+    position: absolute; 
+    top: 50%; 
+    margin-top: -8px; 
+}
+
+.ui-button-icon-only .ui-icon { 
+    left: 50%; 
+    margin-left: -8px; 
+}
+
+.ui-button-icon-left {
+    left: .5em; 
+}
+
+.ui-button-icon-right {
+    right: .5em; 
+}
+
+/*button sets*/
+.ui-buttonset { 
+    margin-right: 7px; 
+}
+.ui-buttonset .ui-button { 
+    margin-left: 0; 
+    margin-right: 0;
+}
+
+/* workarounds */
+button.ui-button::-moz-focus-inner { 
+    border: 0; padding: 0; /* reset extra padding in Firefox */
+}
+
+/** SelectCheckbox Menu **/
+.ui-selectcheckboxmenu {
+    display: inline-block;
+    position: relative;
+    width: auto;
+    zoom: 1;
+    cursor: pointer;
+    *display: inline;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    cursor: pointer;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 3px;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger  .ui-icon {
+    margin-top: 3px;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label  {
+    display: block;
+    padding: 3px 26px 3px 5px;
+    width: auto;
+    border: none;
+    cursor: pointer;
+}
+
+.ui-selectcheckboxmenu.ui-state-disabled .ui-selectcheckboxmenu-trigger,
+.ui-selectcheckboxmenu.ui-state-disabled .ui-selectcheckboxmenu-label {
+    cursor: auto
+}
+
+.ui-selectcheckboxmenu-panel {
+    padding: 0.2em;
+    position: absolute;
+    overflow: hidden;
+    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-items-wrapper {
+    overflow: auto;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
+    border: 0 none;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+    border:0px none;
+    cursor:pointer;
+    font-weight:normal;
+    margin:1px 0;
+    padding:3px 5px;
+    text-align:left;
+    white-space: nowrap;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+    display: block;
+    position: relative;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox {
+    position: absolute;
+    top:50%;
+    margin-top:-8px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+    display: block;
+    padding-left: 2.2em;
+}
+
+.ui-selectcheckboxmenu-header {
+    margin-bottom: 0.3em;
+    padding: 0.3em 0 0.3em 0.4em
+}
+
+.ui-selectcheckboxmenu-header .ui-chkbox {
+    float:left;
+    cursor:pointer;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container {
+    float: left;
+    position: relative;
+    margin-right: 10px;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-icon{
+    position: absolute;
+    right: 5px;
+    top: 2px;
+    *right:15px;
+}
+            
+.ui-selectcheckboxmenu-header .ui-inputfield {
+    padding: 1px 20px 1px 2px;
+}
+
+.ui-selectcheckboxmenu-header span.ui-icon {
+    float:left;
+}
+
+.ui-selectcheckboxmenu-header a.ui-selectcheckboxmenu-all,
+.ui-selectcheckboxmenu-header a.ui-selectcheckboxmenu-none {
+    float:left;
+    margin-right: 10px;
+    display: block;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close {
+    float:right;
+    padding:1px;
+    margin-right:0.2em;
+    display: block;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close.ui-state-hover {
+    padding:0px;
+}
+
+/** IE Hacks **/
+div.ui-button, .ui-splitbutton {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}
+
+/** Password **/
+.ui-password-panel {
+    padding: 4px 10px;
+    width: 150px;
+    margin-top: 2px;
+}
+
+.ui-password-panel .ui-password-meter { 
+    height: 10px; 
+    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top; 
+    padding: 0;
+    margin: 0;
+}
+
+.ui-password-info { 
+    margin-top: 4px;
+}
+
+.ui-password-panel-overlay { 
+    position: absolute; 
+}
+
+/* OutputLabel */
+.ui-outputlabel.ui-state-error {
+    border:0 none;
+}
+
+.ui-outputlabel .ui-outputlabel-rfi {
+    margin-left: 0.4em;
+}

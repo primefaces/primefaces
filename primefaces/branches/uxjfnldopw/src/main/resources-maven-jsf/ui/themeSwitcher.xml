@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>themeSwitcher</tag>
+	<tagClass>org.primefaces.component.themeswitcher.ThemeSwitcherTag</tagClass>
+	<componentClass>org.primefaces.component.themeswitcher.ThemeSwitcher</componentClass>
+	<componentType>org.primefaces.component.ThemeSwitcher</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ThemeSwitcherRenderer</rendererType>
+	<rendererClass>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</rendererClass>
+	<parent>org.primefaces.component.selectonemenu.SelectOneMenu</parent>
+    <description>ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refresh.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>buttonPreText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Prefix text displayed on button.</description>
+		</attribute>
+        <attribute>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>fade</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>effectSpeed</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required></required>
+            <type>boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>label</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>onchange</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

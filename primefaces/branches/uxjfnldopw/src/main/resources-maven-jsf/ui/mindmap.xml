@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>mindmap</tag>
+    <tagClass>org.primefaces.component.mindmap.MindmapTag</tagClass>
+    <componentClass>org.primefaces.component.mindmap.Mindmap</componentClass>
+    <componentType>org.primefaces.Mindmap</componentType>
+    <componentFamily>org.primefaces</componentFamily>
+    <rendererType>org.primefaces.component.MindmapRenderer</rendererType>
+    <rendererClass>org.primefaces.component.mindmap.MindmapRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>
+        MindMap is an interactive mindmapping component.
+    </description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.mindmap.MindmapNode</type>
+            <description>An org.primefaces.model.MindmapNode instance as the root node.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
+        </attribute>
+        <attribute>
+            <name>effectSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>300</defaultValue>
+            <description>Speed of the animations in ms.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>primefaces.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>raphael/raphael.js</name>
+        </resource>
+        <resource>
+            <name>mindmap/mindmap.js</name>
+        </resource>
+    </resources>
+</component>

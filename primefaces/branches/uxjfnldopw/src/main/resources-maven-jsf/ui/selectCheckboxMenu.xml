@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>selectCheckboxMenu</tag>
+	<tagClass>org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenuTag</tagClass>
+	<componentClass>org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu</componentClass>
+	<componentType>org.primefaces.component.SelectCheckboxMenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SelectCheckboxMenuRenderer</rendererType>
+	<rendererClass>org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenuRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlSelectManyCheckbox</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>label</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>onchange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+         <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+        </attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when overlay is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when overlay is hidden.</description>
+        </attribute>
+        <attribute>
+            <name>filter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Renders an input field as a filter when enabled.</description>
+        </attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
+		</attribute>
+        <attribute>
+			<name>filterFunction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side function to use in custom filterMatchMode.</description>
+		</attribute>
+        <attribute>
+			<name>caseSensitive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if filtering would be case sensitive. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>panelStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

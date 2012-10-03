@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+]>
+<component>
+	<tag>tooltip</tag>
+	<tagClass>org.primefaces.component.tooltip.TooltipTag</tagClass>
+	<componentClass>org.primefaces.component.tooltip.Tooltip</componentClass>
+	<componentType>org.primefaces.component.Tooltip</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TooltipRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tooltip.TooltipRenderer</rendererClass>
+	<parent>javax.faces.component.UIOutput</parent>
+    <description>Tooltip goes beyond the legacy html title attribute by providing custom effects, events, html content and advance theme support.</description>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&output_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>showEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event displaying the tooltip. Default is mouseover.</description>
+		</attribute>
+		<attribute>
+			<name>showEffect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Effect to be used for displaying. Default is fade.</description>
+		</attribute>
+		<attribute>
+			<name>hideEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event hiding the tooltip. Default is mouseout.</description>
+		</attribute>
+		<attribute>
+			<name>hideEffect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Effect to be used for hiding. Default is fade.</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Id of the component to attach the tooltip.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the tooltip.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the tooltip.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

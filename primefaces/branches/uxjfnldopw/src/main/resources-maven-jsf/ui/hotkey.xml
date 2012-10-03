@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+    <tag>hotkey</tag>
+    <tagClass>org.primefaces.component.hotkey.HotkeyTag</tagClass>
+    <componentClass>org.primefaces.component.hotkey.Hotkey</componentClass>
+    <componentType>org.primefaces.component.Hotkey</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.HotkeyRenderer</rendererType>
+    <rendererClass>org.primefaces.component.hotkey.HotkeyRenderer</rendererClass>
+    <parent>javax.faces.component.UICommand</parent>
+    <description>HotKey is a generic key binding component that can bind any formation of keys to javascript event handlers or ajax calls.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.AjaxSource</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        <attribute>
+            <name>actionListener</name>
+            <required>false</required>
+            <type>javax.faces.event.ActionListener</type>
+            <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>An actionlistener that'd be processed in the partial request caused by uiajax.</description>
+        </attribute>
+        <attribute>
+            <name>action</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.lang.Object action()</method-signature>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>A method expression that'd be processed in the partial request caused by uiajax.</description>
+        </attribute>
+        <attribute>
+            <name>immediate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.</description>
+        </attribute>
+        <attribute>
+            <name>bind</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <description>The Key binding. Required.</description>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side id of the component(s) to be updated after async partial submit request.</description>
+        </attribute>
+        <attribute>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component id(s) to process partially instead of whole view.</description>
+        </attribute>
+        <attribute>
+            <name>handler</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript event handler to be executed when the key binding is pressed.</description>
+        </attribute>
+        <attribute>
+            <name>onstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute before ajax request is begins.</description>
+        </attribute>
+        <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request is completed.</description>
+        </attribute>
+        <attribute>
+            <name>onerror</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request fails.</description>
+        </attribute>
+        <attribute>
+            <name>onsuccess</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request succeeds.</description>
+        </attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>async</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set to true, ajax requests are not queued. Default is false.</description>
+        </attribute>
+        <attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            instead of whole form.</description>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>hotkey/hotkey.js</name>
+        </resource>
+    </resources>
+</component>

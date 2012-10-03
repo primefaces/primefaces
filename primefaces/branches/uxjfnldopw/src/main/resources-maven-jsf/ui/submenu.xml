@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>submenu</tag>
+	<tagClass>org.primefaces.component.submenu.SubmenuTag</tagClass>
+	<componentClass>org.primefaces.component.submenu.Submenu</componentClass>
+	<componentType>org.primefaces.component.Submenu</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Submenu is nested in menu components and represents a sub menu items.</description>
+	<interfaces>
+		<interface>
+			<name>java.io.Serializable</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the submenu header.</description>
+		</attribute>
+        <attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Icon of a submenu, see menuitem to see how it is used.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the menu.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the submenu.</description>
+		</attribute>
+	</attributes>
+</component>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>galleriaContent</tag>
+	<tagClass>org.primefaces.component.galleria.GalleriaContentTag</tagClass>
+	<componentClass>org.primefaces.component.galleria.GalleriaContent</componentClass>
+	<componentType>org.primefaces.component.GalleriaContent</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.GalleriaContentRenderer</rendererType>
+	<rendererClass>org.primefaces.component.galleria.GalleriaContentRenderer</rendererClass>
+	<parent>javax.faces.component.UIColumn</parent>
+</component>
