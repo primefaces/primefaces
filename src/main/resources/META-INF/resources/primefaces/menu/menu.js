@@ -280,7 +280,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
         else {  
             submenu.css({                                    //root menuitem         
                 'left': 0
-                ,'top': menuitemHeight
+                ,'top': menuitem.outerHeight()
             });
             
         }
